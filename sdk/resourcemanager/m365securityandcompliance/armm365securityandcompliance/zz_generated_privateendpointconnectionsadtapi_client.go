@@ -11,7 +11,6 @@ package armm365securityandcompliance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // PrivateEndpointConnectionsAdtAPIClient contains the methods for the PrivateEndpointConnectionsAdtAPI group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsAdtAPIClient() instead.
 type PrivateEndpointConnectionsAdtAPIClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateEndpointConnectionsAdtAPIClient creates a new instance of PrivateEndpointConnectionsAdtAPIClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateEndpointConnectionsAdtAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionsAdtAPIClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateEndpointConnectionsAdtAPIClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateEndpointConnectionsAdtAPIClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Update the state of the specified private endpoint connection associated with the service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateEndpointConnectionsAdtAPIClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsAdtAPIBeginCreateOrUpdateOptions) (PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// properties - The private endpoint connection properties.
+// options - PrivateEndpointConnectionsAdtAPIClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.BeginCreateOrUpdate
+// method.
+func (client *PrivateEndpointConnectionsAdtAPIClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsAdtAPIClientBeginCreateOrUpdateOptions) (PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, properties, options)
 	if err != nil {
-		return PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse{}, err
+		return PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse{
+	result := PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionsAdtAPIClient.CreateOrUpdate", "location", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("PrivateEndpointConnectionsAdtAPIClient.CreateOrUpdate", "location", resp, client.pl)
 	if err != nil {
-		return PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse{}, err
+		return PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &PrivateEndpointConnectionsAdtAPICreateOrUpdatePoller{
+	result.Poller = &PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Update the state of the specified private endpoint connection associated with the service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateEndpointConnectionsAdtAPIClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsAdtAPIBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateEndpointConnectionsAdtAPIClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsAdtAPIClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, properties, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateEndpointConnectionsAdtAPIClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsAdtAPIBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsAdtAPIClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsAdtAPIClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForO365ManagementActivityAPI/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) createOrUpdateCreateReques
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,34 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) createOrUpdateCreateReques
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateEndpointConnectionsAdtAPIClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a private endpoint connection.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateEndpointConnectionsAdtAPIClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIBeginDeleteOptions) (PrivateEndpointConnectionsAdtAPIDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// options - PrivateEndpointConnectionsAdtAPIClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.BeginDelete
+// method.
+func (client *PrivateEndpointConnectionsAdtAPIClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIClientBeginDeleteOptions) (PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionsAdtAPIDeletePollerResponse{}, err
+		return PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse{}, err
 	}
-	result := PrivateEndpointConnectionsAdtAPIDeletePollerResponse{
+	result := PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionsAdtAPIClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("PrivateEndpointConnectionsAdtAPIClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return PrivateEndpointConnectionsAdtAPIDeletePollerResponse{}, err
+		return PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse{}, err
 	}
-	result.Poller = &PrivateEndpointConnectionsAdtAPIDeletePoller{
+	result.Poller = &PrivateEndpointConnectionsAdtAPIClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a private endpoint connection.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateEndpointConnectionsAdtAPIClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateEndpointConnectionsAdtAPIClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) deleteOperation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionsAdtAPIClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIBeginDeleteOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsAdtAPIClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForO365ManagementActivityAPI/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +183,7 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) deleteCreateRequest(ctx co
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +194,30 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) deleteCreateRequest(ctx co
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PrivateEndpointConnectionsAdtAPIClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the specified private endpoint connection associated with the service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateEndpointConnectionsAdtAPIClient) Get(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIGetOptions) (PrivateEndpointConnectionsAdtAPIGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// options - PrivateEndpointConnectionsAdtAPIClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.Get
+// method.
+func (client *PrivateEndpointConnectionsAdtAPIClient) Get(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIClientGetOptions) (PrivateEndpointConnectionsAdtAPIClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionsAdtAPIGetResponse{}, err
+		return PrivateEndpointConnectionsAdtAPIClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsAdtAPIGetResponse{}, err
+		return PrivateEndpointConnectionsAdtAPIClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionsAdtAPIGetResponse{}, client.getHandleError(resp)
+		return PrivateEndpointConnectionsAdtAPIClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionsAdtAPIClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIGetOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsAdtAPIClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsAdtAPIClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForO365ManagementActivityAPI/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +235,7 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) getCreateRequest(ctx conte
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +247,34 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionsAdtAPIClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsAdtAPIGetResponse, error) {
-	result := PrivateEndpointConnectionsAdtAPIGetResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsAdtAPIClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsAdtAPIClientGetResponse, error) {
+	result := PrivateEndpointConnectionsAdtAPIClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
-		return PrivateEndpointConnectionsAdtAPIGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsAdtAPIClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateEndpointConnectionsAdtAPIClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByService - Lists all private endpoint connections for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateEndpointConnectionsAdtAPIClient) ListByService(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsAdtAPIListByServiceOptions) *PrivateEndpointConnectionsAdtAPIListByServicePager {
-	return &PrivateEndpointConnectionsAdtAPIListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// options - PrivateEndpointConnectionsAdtAPIClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.ListByService
+// method.
+func (client *PrivateEndpointConnectionsAdtAPIClient) ListByService(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsAdtAPIClientListByServiceOptions) *PrivateEndpointConnectionsAdtAPIClientListByServicePager {
+	return &PrivateEndpointConnectionsAdtAPIClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, resourceName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsAdtAPIListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsAdtAPIClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResult.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *PrivateEndpointConnectionsAdtAPIClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsAdtAPIListByServiceOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsAdtAPIClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsAdtAPIClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForO365ManagementActivityAPI/{resourceName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +288,7 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) listByServiceCreateRequest
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,23 +300,10 @@ func (client *PrivateEndpointConnectionsAdtAPIClient) listByServiceCreateRequest
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *PrivateEndpointConnectionsAdtAPIClient) listByServiceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsAdtAPIListByServiceResponse, error) {
-	result := PrivateEndpointConnectionsAdtAPIListByServiceResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsAdtAPIClient) listByServiceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsAdtAPIClientListByServiceResponse, error) {
+	result := PrivateEndpointConnectionsAdtAPIClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
-		return PrivateEndpointConnectionsAdtAPIListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsAdtAPIClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *PrivateEndpointConnectionsAdtAPIClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

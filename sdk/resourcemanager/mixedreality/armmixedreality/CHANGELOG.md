@@ -1,0 +1,310 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ObjectAnchorsAccountsClient.Update` parameter(s) have been changed from `(context.Context, string, string, ObjectAnchorsAccount, *ObjectAnchorsAccountsUpdateOptions)` to `(context.Context, string, string, ObjectAnchorsAccount, *ObjectAnchorsAccountsClientUpdateOptions)`
+- Function `*ObjectAnchorsAccountsClient.Update` return value(s) have been changed from `(ObjectAnchorsAccountsUpdateResponse, error)` to `(ObjectAnchorsAccountsClientUpdateResponse, error)`
+- Function `*ObjectAnchorsAccountsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ObjectAnchorsAccountsDeleteOptions)` to `(context.Context, string, string, *ObjectAnchorsAccountsClientDeleteOptions)`
+- Function `*ObjectAnchorsAccountsClient.Delete` return value(s) have been changed from `(ObjectAnchorsAccountsDeleteResponse, error)` to `(ObjectAnchorsAccountsClientDeleteResponse, error)`
+- Function `*RemoteRenderingAccountsClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, *RemoteRenderingAccountsListKeysOptions)` to `(context.Context, string, string, *RemoteRenderingAccountsClientListKeysOptions)`
+- Function `*RemoteRenderingAccountsClient.ListKeys` return value(s) have been changed from `(RemoteRenderingAccountsListKeysResponse, error)` to `(RemoteRenderingAccountsClientListKeysResponse, error)`
+- Function `*RemoteRenderingAccountsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *RemoteRenderingAccountsDeleteOptions)` to `(context.Context, string, string, *RemoteRenderingAccountsClientDeleteOptions)`
+- Function `*RemoteRenderingAccountsClient.Delete` return value(s) have been changed from `(RemoteRenderingAccountsDeleteResponse, error)` to `(RemoteRenderingAccountsClientDeleteResponse, error)`
+- Function `*SpatialAnchorsAccountsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *SpatialAnchorsAccountsListByResourceGroupOptions)` to `(string, *SpatialAnchorsAccountsClientListByResourceGroupOptions)`
+- Function `*SpatialAnchorsAccountsClient.ListByResourceGroup` return value(s) have been changed from `(*SpatialAnchorsAccountsListByResourceGroupPager)` to `(*SpatialAnchorsAccountsClientListByResourceGroupPager)`
+- Function `*RemoteRenderingAccountsClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, AccountKeyRegenerateRequest, *RemoteRenderingAccountsRegenerateKeysOptions)` to `(context.Context, string, string, AccountKeyRegenerateRequest, *RemoteRenderingAccountsClientRegenerateKeysOptions)`
+- Function `*RemoteRenderingAccountsClient.RegenerateKeys` return value(s) have been changed from `(RemoteRenderingAccountsRegenerateKeysResponse, error)` to `(RemoteRenderingAccountsClientRegenerateKeysResponse, error)`
+- Function `*RemoteRenderingAccountsClient.ListBySubscription` parameter(s) have been changed from `(*RemoteRenderingAccountsListBySubscriptionOptions)` to `(*RemoteRenderingAccountsClientListBySubscriptionOptions)`
+- Function `*RemoteRenderingAccountsClient.ListBySubscription` return value(s) have been changed from `(*RemoteRenderingAccountsListBySubscriptionPager)` to `(*RemoteRenderingAccountsClientListBySubscriptionPager)`
+- Function `*SpatialAnchorsAccountsClient.ListBySubscription` parameter(s) have been changed from `(*SpatialAnchorsAccountsListBySubscriptionOptions)` to `(*SpatialAnchorsAccountsClientListBySubscriptionOptions)`
+- Function `*SpatialAnchorsAccountsClient.ListBySubscription` return value(s) have been changed from `(*SpatialAnchorsAccountsListBySubscriptionPager)` to `(*SpatialAnchorsAccountsClientListBySubscriptionPager)`
+- Function `*ObjectAnchorsAccountsClient.Create` parameter(s) have been changed from `(context.Context, string, string, ObjectAnchorsAccount, *ObjectAnchorsAccountsCreateOptions)` to `(context.Context, string, string, ObjectAnchorsAccount, *ObjectAnchorsAccountsClientCreateOptions)`
+- Function `*ObjectAnchorsAccountsClient.Create` return value(s) have been changed from `(ObjectAnchorsAccountsCreateResponse, error)` to `(ObjectAnchorsAccountsClientCreateResponse, error)`
+- Function `*SpatialAnchorsAccountsClient.Update` parameter(s) have been changed from `(context.Context, string, string, SpatialAnchorsAccount, *SpatialAnchorsAccountsUpdateOptions)` to `(context.Context, string, string, SpatialAnchorsAccount, *SpatialAnchorsAccountsClientUpdateOptions)`
+- Function `*SpatialAnchorsAccountsClient.Update` return value(s) have been changed from `(SpatialAnchorsAccountsUpdateResponse, error)` to `(SpatialAnchorsAccountsClientUpdateResponse, error)`
+- Function `*SpatialAnchorsAccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SpatialAnchorsAccountsGetOptions)` to `(context.Context, string, string, *SpatialAnchorsAccountsClientGetOptions)`
+- Function `*SpatialAnchorsAccountsClient.Get` return value(s) have been changed from `(SpatialAnchorsAccountsGetResponse, error)` to `(SpatialAnchorsAccountsClientGetResponse, error)`
+- Function `*SpatialAnchorsAccountsClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, AccountKeyRegenerateRequest, *SpatialAnchorsAccountsRegenerateKeysOptions)` to `(context.Context, string, string, AccountKeyRegenerateRequest, *SpatialAnchorsAccountsClientRegenerateKeysOptions)`
+- Function `*SpatialAnchorsAccountsClient.RegenerateKeys` return value(s) have been changed from `(SpatialAnchorsAccountsRegenerateKeysResponse, error)` to `(SpatialAnchorsAccountsClientRegenerateKeysResponse, error)`
+- Function `*RemoteRenderingAccountsClient.Update` parameter(s) have been changed from `(context.Context, string, string, RemoteRenderingAccount, *RemoteRenderingAccountsUpdateOptions)` to `(context.Context, string, string, RemoteRenderingAccount, *RemoteRenderingAccountsClientUpdateOptions)`
+- Function `*RemoteRenderingAccountsClient.Update` return value(s) have been changed from `(RemoteRenderingAccountsUpdateResponse, error)` to `(RemoteRenderingAccountsClientUpdateResponse, error)`
+- Function `*RemoteRenderingAccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RemoteRenderingAccountsGetOptions)` to `(context.Context, string, string, *RemoteRenderingAccountsClientGetOptions)`
+- Function `*RemoteRenderingAccountsClient.Get` return value(s) have been changed from `(RemoteRenderingAccountsGetResponse, error)` to `(RemoteRenderingAccountsClientGetResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*SpatialAnchorsAccountsClient.Create` parameter(s) have been changed from `(context.Context, string, string, SpatialAnchorsAccount, *SpatialAnchorsAccountsCreateOptions)` to `(context.Context, string, string, SpatialAnchorsAccount, *SpatialAnchorsAccountsClientCreateOptions)`
+- Function `*SpatialAnchorsAccountsClient.Create` return value(s) have been changed from `(SpatialAnchorsAccountsCreateResponse, error)` to `(SpatialAnchorsAccountsClientCreateResponse, error)`
+- Function `*RemoteRenderingAccountsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *RemoteRenderingAccountsListByResourceGroupOptions)` to `(string, *RemoteRenderingAccountsClientListByResourceGroupOptions)`
+- Function `*RemoteRenderingAccountsClient.ListByResourceGroup` return value(s) have been changed from `(*RemoteRenderingAccountsListByResourceGroupPager)` to `(*RemoteRenderingAccountsClientListByResourceGroupPager)`
+- Function `*SpatialAnchorsAccountsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *SpatialAnchorsAccountsDeleteOptions)` to `(context.Context, string, string, *SpatialAnchorsAccountsClientDeleteOptions)`
+- Function `*SpatialAnchorsAccountsClient.Delete` return value(s) have been changed from `(SpatialAnchorsAccountsDeleteResponse, error)` to `(SpatialAnchorsAccountsClientDeleteResponse, error)`
+- Function `*ObjectAnchorsAccountsClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, *ObjectAnchorsAccountsListKeysOptions)` to `(context.Context, string, string, *ObjectAnchorsAccountsClientListKeysOptions)`
+- Function `*ObjectAnchorsAccountsClient.ListKeys` return value(s) have been changed from `(ObjectAnchorsAccountsListKeysResponse, error)` to `(ObjectAnchorsAccountsClientListKeysResponse, error)`
+- Function `*ObjectAnchorsAccountsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ObjectAnchorsAccountsListByResourceGroupOptions)` to `(string, *ObjectAnchorsAccountsClientListByResourceGroupOptions)`
+- Function `*ObjectAnchorsAccountsClient.ListByResourceGroup` return value(s) have been changed from `(*ObjectAnchorsAccountsListByResourceGroupPager)` to `(*ObjectAnchorsAccountsClientListByResourceGroupPager)`
+- Function `*ObjectAnchorsAccountsClient.ListBySubscription` parameter(s) have been changed from `(*ObjectAnchorsAccountsListBySubscriptionOptions)` to `(*ObjectAnchorsAccountsClientListBySubscriptionOptions)`
+- Function `*ObjectAnchorsAccountsClient.ListBySubscription` return value(s) have been changed from `(*ObjectAnchorsAccountsListBySubscriptionPager)` to `(*ObjectAnchorsAccountsClientListBySubscriptionPager)`
+- Function `*ObjectAnchorsAccountsClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, AccountKeyRegenerateRequest, *ObjectAnchorsAccountsRegenerateKeysOptions)` to `(context.Context, string, string, AccountKeyRegenerateRequest, *ObjectAnchorsAccountsClientRegenerateKeysOptions)`
+- Function `*ObjectAnchorsAccountsClient.RegenerateKeys` return value(s) have been changed from `(ObjectAnchorsAccountsRegenerateKeysResponse, error)` to `(ObjectAnchorsAccountsClientRegenerateKeysResponse, error)`
+- Function `*ObjectAnchorsAccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ObjectAnchorsAccountsGetOptions)` to `(context.Context, string, string, *ObjectAnchorsAccountsClientGetOptions)`
+- Function `*ObjectAnchorsAccountsClient.Get` return value(s) have been changed from `(ObjectAnchorsAccountsGetResponse, error)` to `(ObjectAnchorsAccountsClientGetResponse, error)`
+- Function `*RemoteRenderingAccountsClient.Create` parameter(s) have been changed from `(context.Context, string, string, RemoteRenderingAccount, *RemoteRenderingAccountsCreateOptions)` to `(context.Context, string, string, RemoteRenderingAccount, *RemoteRenderingAccountsClientCreateOptions)`
+- Function `*RemoteRenderingAccountsClient.Create` return value(s) have been changed from `(RemoteRenderingAccountsCreateResponse, error)` to `(RemoteRenderingAccountsClientCreateResponse, error)`
+- Function `*SpatialAnchorsAccountsClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, *SpatialAnchorsAccountsListKeysOptions)` to `(context.Context, string, string, *SpatialAnchorsAccountsClientListKeysOptions)`
+- Function `*SpatialAnchorsAccountsClient.ListKeys` return value(s) have been changed from `(SpatialAnchorsAccountsListKeysResponse, error)` to `(SpatialAnchorsAccountsClientListKeysResponse, error)`
+- Type of `ObjectAnchorsAccount.Properties` has been changed from `*MixedRealityAccountProperties` to `*AccountProperties`
+- Type of `SpatialAnchorsAccount.Properties` has been changed from `*MixedRealityAccountProperties` to `*AccountProperties`
+- Type of `RemoteRenderingAccount.Properties` has been changed from `*MixedRealityAccountProperties` to `*AccountProperties`
+- Function `*RemoteRenderingAccountsListByResourceGroupPager.Err` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ObjectAnchorsAccountsListByResourceGroupPager.NextPage` has been removed
+- Function `*RemoteRenderingAccountsListBySubscriptionPager.PageResponse` has been removed
+- Function `*SpatialAnchorsAccountsListBySubscriptionPager.NextPage` has been removed
+- Function `*ObjectAnchorsAccountsListBySubscriptionPager.NextPage` has been removed
+- Function `*SpatialAnchorsAccountsListBySubscriptionPager.Err` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*SpatialAnchorsAccountsListByResourceGroupPager.NextPage` has been removed
+- Function `*SpatialAnchorsAccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `*ObjectAnchorsAccountsListByResourceGroupPager.Err` has been removed
+- Function `*RemoteRenderingAccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `*RemoteRenderingAccountsListByResourceGroupPager.NextPage` has been removed
+- Function `*ObjectAnchorsAccountsListBySubscriptionPager.PageResponse` has been removed
+- Function `*MixedRealityClient.CheckNameAvailabilityLocal` has been removed
+- Function `*SpatialAnchorsAccountsListByResourceGroupPager.Err` has been removed
+- Function `*SpatialAnchorsAccountsListBySubscriptionPager.PageResponse` has been removed
+- Function `*ObjectAnchorsAccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `*ObjectAnchorsAccountsListBySubscriptionPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*RemoteRenderingAccountsListBySubscriptionPager.Err` has been removed
+- Function `*RemoteRenderingAccountsListBySubscriptionPager.NextPage` has been removed
+- Function `NewMixedRealityClient` has been removed
+- Function `CloudError.Error` has been removed
+- Struct `MixedRealityAccountProperties` has been removed
+- Struct `MixedRealityClient` has been removed
+- Struct `MixedRealityClientCheckNameAvailabilityLocalOptions` has been removed
+- Struct `MixedRealityClientCheckNameAvailabilityLocalResponse` has been removed
+- Struct `MixedRealityClientCheckNameAvailabilityLocalResult` has been removed
+- Struct `ObjectAnchorsAccountsCreateOptions` has been removed
+- Struct `ObjectAnchorsAccountsCreateResponse` has been removed
+- Struct `ObjectAnchorsAccountsCreateResult` has been removed
+- Struct `ObjectAnchorsAccountsDeleteOptions` has been removed
+- Struct `ObjectAnchorsAccountsDeleteResponse` has been removed
+- Struct `ObjectAnchorsAccountsGetOptions` has been removed
+- Struct `ObjectAnchorsAccountsGetResponse` has been removed
+- Struct `ObjectAnchorsAccountsGetResult` has been removed
+- Struct `ObjectAnchorsAccountsListByResourceGroupOptions` has been removed
+- Struct `ObjectAnchorsAccountsListByResourceGroupPager` has been removed
+- Struct `ObjectAnchorsAccountsListByResourceGroupResponse` has been removed
+- Struct `ObjectAnchorsAccountsListByResourceGroupResult` has been removed
+- Struct `ObjectAnchorsAccountsListBySubscriptionOptions` has been removed
+- Struct `ObjectAnchorsAccountsListBySubscriptionPager` has been removed
+- Struct `ObjectAnchorsAccountsListBySubscriptionResponse` has been removed
+- Struct `ObjectAnchorsAccountsListBySubscriptionResult` has been removed
+- Struct `ObjectAnchorsAccountsListKeysOptions` has been removed
+- Struct `ObjectAnchorsAccountsListKeysResponse` has been removed
+- Struct `ObjectAnchorsAccountsListKeysResult` has been removed
+- Struct `ObjectAnchorsAccountsRegenerateKeysOptions` has been removed
+- Struct `ObjectAnchorsAccountsRegenerateKeysResponse` has been removed
+- Struct `ObjectAnchorsAccountsRegenerateKeysResult` has been removed
+- Struct `ObjectAnchorsAccountsUpdateOptions` has been removed
+- Struct `ObjectAnchorsAccountsUpdateResponse` has been removed
+- Struct `ObjectAnchorsAccountsUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `RemoteRenderingAccountsCreateOptions` has been removed
+- Struct `RemoteRenderingAccountsCreateResponse` has been removed
+- Struct `RemoteRenderingAccountsCreateResult` has been removed
+- Struct `RemoteRenderingAccountsDeleteOptions` has been removed
+- Struct `RemoteRenderingAccountsDeleteResponse` has been removed
+- Struct `RemoteRenderingAccountsGetOptions` has been removed
+- Struct `RemoteRenderingAccountsGetResponse` has been removed
+- Struct `RemoteRenderingAccountsGetResult` has been removed
+- Struct `RemoteRenderingAccountsListByResourceGroupOptions` has been removed
+- Struct `RemoteRenderingAccountsListByResourceGroupPager` has been removed
+- Struct `RemoteRenderingAccountsListByResourceGroupResponse` has been removed
+- Struct `RemoteRenderingAccountsListByResourceGroupResult` has been removed
+- Struct `RemoteRenderingAccountsListBySubscriptionOptions` has been removed
+- Struct `RemoteRenderingAccountsListBySubscriptionPager` has been removed
+- Struct `RemoteRenderingAccountsListBySubscriptionResponse` has been removed
+- Struct `RemoteRenderingAccountsListBySubscriptionResult` has been removed
+- Struct `RemoteRenderingAccountsListKeysOptions` has been removed
+- Struct `RemoteRenderingAccountsListKeysResponse` has been removed
+- Struct `RemoteRenderingAccountsListKeysResult` has been removed
+- Struct `RemoteRenderingAccountsRegenerateKeysOptions` has been removed
+- Struct `RemoteRenderingAccountsRegenerateKeysResponse` has been removed
+- Struct `RemoteRenderingAccountsRegenerateKeysResult` has been removed
+- Struct `RemoteRenderingAccountsUpdateOptions` has been removed
+- Struct `RemoteRenderingAccountsUpdateResponse` has been removed
+- Struct `RemoteRenderingAccountsUpdateResult` has been removed
+- Struct `SpatialAnchorsAccountsCreateOptions` has been removed
+- Struct `SpatialAnchorsAccountsCreateResponse` has been removed
+- Struct `SpatialAnchorsAccountsCreateResult` has been removed
+- Struct `SpatialAnchorsAccountsDeleteOptions` has been removed
+- Struct `SpatialAnchorsAccountsDeleteResponse` has been removed
+- Struct `SpatialAnchorsAccountsGetOptions` has been removed
+- Struct `SpatialAnchorsAccountsGetResponse` has been removed
+- Struct `SpatialAnchorsAccountsGetResult` has been removed
+- Struct `SpatialAnchorsAccountsListByResourceGroupOptions` has been removed
+- Struct `SpatialAnchorsAccountsListByResourceGroupPager` has been removed
+- Struct `SpatialAnchorsAccountsListByResourceGroupResponse` has been removed
+- Struct `SpatialAnchorsAccountsListByResourceGroupResult` has been removed
+- Struct `SpatialAnchorsAccountsListBySubscriptionOptions` has been removed
+- Struct `SpatialAnchorsAccountsListBySubscriptionPager` has been removed
+- Struct `SpatialAnchorsAccountsListBySubscriptionResponse` has been removed
+- Struct `SpatialAnchorsAccountsListBySubscriptionResult` has been removed
+- Struct `SpatialAnchorsAccountsListKeysOptions` has been removed
+- Struct `SpatialAnchorsAccountsListKeysResponse` has been removed
+- Struct `SpatialAnchorsAccountsListKeysResult` has been removed
+- Struct `SpatialAnchorsAccountsRegenerateKeysOptions` has been removed
+- Struct `SpatialAnchorsAccountsRegenerateKeysResponse` has been removed
+- Struct `SpatialAnchorsAccountsRegenerateKeysResult` has been removed
+- Struct `SpatialAnchorsAccountsUpdateOptions` has been removed
+- Struct `SpatialAnchorsAccountsUpdateResponse` has been removed
+- Struct `SpatialAnchorsAccountsUpdateResult` has been removed
+- Field `TrackedResource` of struct `SpatialAnchorsAccount` has been removed
+- Field `TrackedResource` of struct `ObjectAnchorsAccount` has been removed
+- Field `TrackedResource` of struct `RemoteRenderingAccount` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Identity` of struct `ObjectAnchorsAccountIdentity` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+
+### Features Added
+
+- New function `*ObjectAnchorsAccountsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*RemoteRenderingAccountsClientListByResourceGroupPager.Err() error`
+- New function `*SpatialAnchorsAccountsClientListBySubscriptionPager.Err() error`
+- New function `*SpatialAnchorsAccountsClientListBySubscriptionPager.PageResponse() SpatialAnchorsAccountsClientListBySubscriptionResponse`
+- New function `*ObjectAnchorsAccountsClientListByResourceGroupPager.Err() error`
+- New function `*RemoteRenderingAccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ObjectAnchorsAccountsClientListBySubscriptionPager.PageResponse() ObjectAnchorsAccountsClientListBySubscriptionResponse`
+- New function `*SpatialAnchorsAccountsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*ObjectAnchorsAccountsClientListBySubscriptionPager.Err() error`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*Client.CheckNameAvailabilityLocal(context.Context, string, CheckNameAvailabilityRequest, *ClientCheckNameAvailabilityLocalOptions) (ClientCheckNameAvailabilityLocalResponse, error)`
+- New function `*RemoteRenderingAccountsClientListBySubscriptionPager.PageResponse() RemoteRenderingAccountsClientListBySubscriptionResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ObjectAnchorsAccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SpatialAnchorsAccountsClientListByResourceGroupPager.PageResponse() SpatialAnchorsAccountsClientListByResourceGroupResponse`
+- New function `*RemoteRenderingAccountsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*SpatialAnchorsAccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*RemoteRenderingAccountsClientListBySubscriptionPager.Err() error`
+- New function `*ObjectAnchorsAccountsClientListByResourceGroupPager.PageResponse() ObjectAnchorsAccountsClientListByResourceGroupResponse`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*RemoteRenderingAccountsClientListByResourceGroupPager.PageResponse() RemoteRenderingAccountsClientListByResourceGroupResponse`
+- New function `*SpatialAnchorsAccountsClientListByResourceGroupPager.Err() error`
+- New struct `AccountProperties`
+- New struct `Client`
+- New struct `ClientCheckNameAvailabilityLocalOptions`
+- New struct `ClientCheckNameAvailabilityLocalResponse`
+- New struct `ClientCheckNameAvailabilityLocalResult`
+- New struct `ObjectAnchorsAccountsClientCreateOptions`
+- New struct `ObjectAnchorsAccountsClientCreateResponse`
+- New struct `ObjectAnchorsAccountsClientCreateResult`
+- New struct `ObjectAnchorsAccountsClientDeleteOptions`
+- New struct `ObjectAnchorsAccountsClientDeleteResponse`
+- New struct `ObjectAnchorsAccountsClientGetOptions`
+- New struct `ObjectAnchorsAccountsClientGetResponse`
+- New struct `ObjectAnchorsAccountsClientGetResult`
+- New struct `ObjectAnchorsAccountsClientListByResourceGroupOptions`
+- New struct `ObjectAnchorsAccountsClientListByResourceGroupPager`
+- New struct `ObjectAnchorsAccountsClientListByResourceGroupResponse`
+- New struct `ObjectAnchorsAccountsClientListByResourceGroupResult`
+- New struct `ObjectAnchorsAccountsClientListBySubscriptionOptions`
+- New struct `ObjectAnchorsAccountsClientListBySubscriptionPager`
+- New struct `ObjectAnchorsAccountsClientListBySubscriptionResponse`
+- New struct `ObjectAnchorsAccountsClientListBySubscriptionResult`
+- New struct `ObjectAnchorsAccountsClientListKeysOptions`
+- New struct `ObjectAnchorsAccountsClientListKeysResponse`
+- New struct `ObjectAnchorsAccountsClientListKeysResult`
+- New struct `ObjectAnchorsAccountsClientRegenerateKeysOptions`
+- New struct `ObjectAnchorsAccountsClientRegenerateKeysResponse`
+- New struct `ObjectAnchorsAccountsClientRegenerateKeysResult`
+- New struct `ObjectAnchorsAccountsClientUpdateOptions`
+- New struct `ObjectAnchorsAccountsClientUpdateResponse`
+- New struct `ObjectAnchorsAccountsClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `RemoteRenderingAccountsClientCreateOptions`
+- New struct `RemoteRenderingAccountsClientCreateResponse`
+- New struct `RemoteRenderingAccountsClientCreateResult`
+- New struct `RemoteRenderingAccountsClientDeleteOptions`
+- New struct `RemoteRenderingAccountsClientDeleteResponse`
+- New struct `RemoteRenderingAccountsClientGetOptions`
+- New struct `RemoteRenderingAccountsClientGetResponse`
+- New struct `RemoteRenderingAccountsClientGetResult`
+- New struct `RemoteRenderingAccountsClientListByResourceGroupOptions`
+- New struct `RemoteRenderingAccountsClientListByResourceGroupPager`
+- New struct `RemoteRenderingAccountsClientListByResourceGroupResponse`
+- New struct `RemoteRenderingAccountsClientListByResourceGroupResult`
+- New struct `RemoteRenderingAccountsClientListBySubscriptionOptions`
+- New struct `RemoteRenderingAccountsClientListBySubscriptionPager`
+- New struct `RemoteRenderingAccountsClientListBySubscriptionResponse`
+- New struct `RemoteRenderingAccountsClientListBySubscriptionResult`
+- New struct `RemoteRenderingAccountsClientListKeysOptions`
+- New struct `RemoteRenderingAccountsClientListKeysResponse`
+- New struct `RemoteRenderingAccountsClientListKeysResult`
+- New struct `RemoteRenderingAccountsClientRegenerateKeysOptions`
+- New struct `RemoteRenderingAccountsClientRegenerateKeysResponse`
+- New struct `RemoteRenderingAccountsClientRegenerateKeysResult`
+- New struct `RemoteRenderingAccountsClientUpdateOptions`
+- New struct `RemoteRenderingAccountsClientUpdateResponse`
+- New struct `RemoteRenderingAccountsClientUpdateResult`
+- New struct `SpatialAnchorsAccountsClientCreateOptions`
+- New struct `SpatialAnchorsAccountsClientCreateResponse`
+- New struct `SpatialAnchorsAccountsClientCreateResult`
+- New struct `SpatialAnchorsAccountsClientDeleteOptions`
+- New struct `SpatialAnchorsAccountsClientDeleteResponse`
+- New struct `SpatialAnchorsAccountsClientGetOptions`
+- New struct `SpatialAnchorsAccountsClientGetResponse`
+- New struct `SpatialAnchorsAccountsClientGetResult`
+- New struct `SpatialAnchorsAccountsClientListByResourceGroupOptions`
+- New struct `SpatialAnchorsAccountsClientListByResourceGroupPager`
+- New struct `SpatialAnchorsAccountsClientListByResourceGroupResponse`
+- New struct `SpatialAnchorsAccountsClientListByResourceGroupResult`
+- New struct `SpatialAnchorsAccountsClientListBySubscriptionOptions`
+- New struct `SpatialAnchorsAccountsClientListBySubscriptionPager`
+- New struct `SpatialAnchorsAccountsClientListBySubscriptionResponse`
+- New struct `SpatialAnchorsAccountsClientListBySubscriptionResult`
+- New struct `SpatialAnchorsAccountsClientListKeysOptions`
+- New struct `SpatialAnchorsAccountsClientListKeysResponse`
+- New struct `SpatialAnchorsAccountsClientListKeysResult`
+- New struct `SpatialAnchorsAccountsClientRegenerateKeysOptions`
+- New struct `SpatialAnchorsAccountsClientRegenerateKeysResponse`
+- New struct `SpatialAnchorsAccountsClientRegenerateKeysResult`
+- New struct `SpatialAnchorsAccountsClientUpdateOptions`
+- New struct `SpatialAnchorsAccountsClientUpdateResponse`
+- New struct `SpatialAnchorsAccountsClientUpdateResult`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Tags` in struct `SpatialAnchorsAccount`
+- New field `ID` in struct `SpatialAnchorsAccount`
+- New field `Name` in struct `SpatialAnchorsAccount`
+- New field `Type` in struct `SpatialAnchorsAccount`
+- New field `Location` in struct `SpatialAnchorsAccount`
+- New field `Error` in struct `CloudError`
+- New field `Type` in struct `ObjectAnchorsAccount`
+- New field `ID` in struct `ObjectAnchorsAccount`
+- New field `Location` in struct `ObjectAnchorsAccount`
+- New field `Tags` in struct `ObjectAnchorsAccount`
+- New field `Name` in struct `ObjectAnchorsAccount`
+- New field `Name` in struct `RemoteRenderingAccount`
+- New field `Tags` in struct `RemoteRenderingAccount`
+- New field `ID` in struct `RemoteRenderingAccount`
+- New field `Type` in struct `RemoteRenderingAccount`
+- New field `Location` in struct `RemoteRenderingAccount`
+- New field `TenantID` in struct `ObjectAnchorsAccountIdentity`
+- New field `Type` in struct `ObjectAnchorsAccountIdentity`
+- New field `PrincipalID` in struct `ObjectAnchorsAccountIdentity`
+
+
+## 0.1.0 (2021-12-16)
+
+- Init release.

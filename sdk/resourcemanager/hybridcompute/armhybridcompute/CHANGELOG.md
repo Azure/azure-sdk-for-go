@@ -1,0 +1,441 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*MachinesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *MachinesListByResourceGroupOptions)` to `(string, *MachinesClientListByResourceGroupOptions)`
+- Function `*MachinesClient.ListByResourceGroup` return value(s) have been changed from `(*MachinesListByResourceGroupPager)` to `(*MachinesClientListByResourceGroupPager)`
+- Function `*PrivateLinkScopesClient.UpdateTags` parameter(s) have been changed from `(context.Context, string, string, TagsResource, *PrivateLinkScopesUpdateTagsOptions)` to `(context.Context, string, string, TagsResource, *PrivateLinkScopesClientUpdateTagsOptions)`
+- Function `*PrivateLinkScopesClient.UpdateTags` return value(s) have been changed from `(PrivateLinkScopesUpdateTagsResponse, error)` to `(PrivateLinkScopesClientUpdateTagsResponse, error)`
+- Function `*PrivateLinkScopesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkScopesGetOptions)` to `(context.Context, string, string, *PrivateLinkScopesClientGetOptions)`
+- Function `*PrivateLinkScopesClient.Get` return value(s) have been changed from `(PrivateLinkScopesGetResponse, error)` to `(PrivateLinkScopesClientGetResponse, error)`
+- Function `*MachineExtensionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *MachineExtensionsGetOptions)` to `(context.Context, string, string, string, *MachineExtensionsClientGetOptions)`
+- Function `*MachineExtensionsClient.Get` return value(s) have been changed from `(MachineExtensionsGetResponse, error)` to `(MachineExtensionsClientGetResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkScope` parameter(s) have been changed from `(string, string, *PrivateLinkResourcesListByPrivateLinkScopeOptions)` to `(string, string, *PrivateLinkResourcesClientListByPrivateLinkScopeOptions)`
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkScope` return value(s) have been changed from `(*PrivateLinkResourcesListByPrivateLinkScopePager)` to `(*PrivateLinkResourcesClientListByPrivateLinkScopePager)`
+- Function `*MachinesClient.ListBySubscription` parameter(s) have been changed from `(*MachinesListBySubscriptionOptions)` to `(*MachinesClientListBySubscriptionOptions)`
+- Function `*MachinesClient.ListBySubscription` return value(s) have been changed from `(*MachinesListBySubscriptionPager)` to `(*MachinesClientListBySubscriptionPager)`
+- Function `*MachineExtensionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, MachineExtensionUpdate, *MachineExtensionsBeginUpdateOptions)` to `(context.Context, string, string, string, MachineExtensionUpdate, *MachineExtensionsClientBeginUpdateOptions)`
+- Function `*MachineExtensionsClient.BeginUpdate` return value(s) have been changed from `(MachineExtensionsUpdatePollerResponse, error)` to `(MachineExtensionsClientUpdatePollerResponse, error)`
+- Function `*PrivateLinkScopesClient.List` parameter(s) have been changed from `(*PrivateLinkScopesListOptions)` to `(*PrivateLinkScopesClientListOptions)`
+- Function `*PrivateLinkScopesClient.List` return value(s) have been changed from `(*PrivateLinkScopesListPager)` to `(*PrivateLinkScopesClientListPager)`
+- Function `*PrivateLinkScopesClient.GetValidationDetailsForMachine` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkScopesGetValidationDetailsForMachineOptions)` to `(context.Context, string, string, *PrivateLinkScopesClientGetValidationDetailsForMachineOptions)`
+- Function `*PrivateLinkScopesClient.GetValidationDetailsForMachine` return value(s) have been changed from `(PrivateLinkScopesGetValidationDetailsForMachineResponse, error)` to `(PrivateLinkScopesClientGetValidationDetailsForMachineResponse, error)`
+- Function `*MachineExtensionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, MachineExtension, *MachineExtensionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, MachineExtension, *MachineExtensionsClientBeginCreateOrUpdateOptions)`
+- Function `*MachineExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(MachineExtensionsCreateOrUpdatePollerResponse, error)` to `(MachineExtensionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*MachinesClient.Update` parameter(s) have been changed from `(context.Context, string, string, MachineUpdate, *MachinesUpdateOptions)` to `(context.Context, string, string, MachineUpdate, *MachinesClientUpdateOptions)`
+- Function `*MachinesClient.Update` return value(s) have been changed from `(MachinesUpdateResponse, error)` to `(MachinesClientUpdateResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*PrivateLinkScopesClient.GetValidationDetails` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkScopesGetValidationDetailsOptions)` to `(context.Context, string, string, *PrivateLinkScopesClientGetValidationDetailsOptions)`
+- Function `*PrivateLinkScopesClient.GetValidationDetails` return value(s) have been changed from `(PrivateLinkScopesGetValidationDetailsResponse, error)` to `(PrivateLinkScopesClientGetValidationDetailsResponse, error)`
+- Function `*PrivateLinkScopesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, HybridComputePrivateLinkScope, *PrivateLinkScopesCreateOrUpdateOptions)` to `(context.Context, string, string, PrivateLinkScope, *PrivateLinkScopesClientCreateOrUpdateOptions)`
+- Function `*PrivateLinkScopesClient.CreateOrUpdate` return value(s) have been changed from `(PrivateLinkScopesCreateOrUpdateResponse, error)` to `(PrivateLinkScopesClientCreateOrUpdateResponse, error)`
+- Function `*MachinesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Machine, *MachinesCreateOrUpdateOptions)` to `(context.Context, string, string, Machine, *MachinesClientCreateOrUpdateOptions)`
+- Function `*MachinesClient.CreateOrUpdate` return value(s) have been changed from `(MachinesCreateOrUpdateResponse, error)` to `(MachinesClientCreateOrUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionsListByPrivateLinkScopeOptions)` to `(string, string, *PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope` return value(s) have been changed from `(*PrivateEndpointConnectionsListByPrivateLinkScopePager)` to `(*PrivateEndpointConnectionsClientListByPrivateLinkScopePager)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*MachinesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *MachinesDeleteOptions)` to `(context.Context, string, string, *MachinesClientDeleteOptions)`
+- Function `*MachinesClient.Delete` return value(s) have been changed from `(MachinesDeleteResponse, error)` to `(MachinesClientDeleteResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*PrivateLinkScopesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkScopesBeginDeleteOptions)` to `(context.Context, string, string, *PrivateLinkScopesClientBeginDeleteOptions)`
+- Function `*PrivateLinkScopesClient.BeginDelete` return value(s) have been changed from `(PrivateLinkScopesDeletePollerResponse, error)` to `(PrivateLinkScopesClientDeletePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*MachineExtensionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *MachineExtensionsBeginDeleteOptions)` to `(context.Context, string, string, string, *MachineExtensionsClientBeginDeleteOptions)`
+- Function `*MachineExtensionsClient.BeginDelete` return value(s) have been changed from `(MachineExtensionsDeletePollerResponse, error)` to `(MachineExtensionsClientDeletePollerResponse, error)`
+- Function `*PrivateLinkScopesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *PrivateLinkScopesListByResourceGroupOptions)` to `(string, *PrivateLinkScopesClientListByResourceGroupOptions)`
+- Function `*PrivateLinkScopesClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkScopesListByResourceGroupPager)` to `(*PrivateLinkScopesClientListByResourceGroupPager)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdatePollerResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*MachinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *MachinesGetOptions)` to `(context.Context, string, string, *MachinesClientGetOptions)`
+- Function `*MachinesClient.Get` return value(s) have been changed from `(MachinesGetResponse, error)` to `(MachinesClientGetResponse, error)`
+- Function `*MachineExtensionsClient.List` parameter(s) have been changed from `(string, string, *MachineExtensionsListOptions)` to `(string, string, *MachineExtensionsClientListOptions)`
+- Function `*MachineExtensionsClient.List` return value(s) have been changed from `(*MachineExtensionsListPager)` to `(*MachineExtensionsClientListPager)`
+- Function `MachineExtensionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `MachineExtensionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*MachinesListByResourceGroupPager.Err` has been removed
+- Function `*MachinesListByResourceGroupPager.NextPage` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*MachineExtensionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkResourcesListByPrivateLinkScopePager.NextPage` has been removed
+- Function `PrivateEndpointConnectionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*MachineExtensionsUpdatePoller.Poll` has been removed
+- Function `*MachineExtensionsDeletePoller.Poll` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*MachineExtensionsDeletePoller.Done` has been removed
+- Function `*PrivateLinkScopesDeletePollerResponse.Resume` has been removed
+- Function `HybridComputeManagementClientUpgradeExtensionsPollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MachineExtensionsDeletePoller.ResumeToken` has been removed
+- Function `*MachineExtensionsListPager.PageResponse` has been removed
+- Function `*PrivateLinkScopesListByResourceGroupPager.Err` has been removed
+- Function `*MachineExtensionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*MachineExtensionsCreateOrUpdatePoller.Done` has been removed
+- Function `*MachineExtensionsListPager.Err` has been removed
+- Function `*PrivateLinkScopesDeletePoller.Done` has been removed
+- Function `*PrivateLinkScopesListPager.PageResponse` has been removed
+- Function `*PrivateLinkResourcesListByPrivateLinkScopePager.PageResponse` has been removed
+- Function `*HybridComputeManagementClientUpgradeExtensionsPollerResponse.Resume` has been removed
+- Function `MachineExtensionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `HybridComputePrivateLinkScope.MarshalJSON` has been removed
+- Function `HybridComputePrivateLinkScopeListResult.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsListByPrivateLinkScopePager.PageResponse` has been removed
+- Function `*MachineExtensionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkScopesListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsListByPrivateLinkScopePager.Err` has been removed
+- Function `*MachinesListBySubscriptionPager.NextPage` has been removed
+- Function `*MachineExtensionsDeletePoller.FinalResponse` has been removed
+- Function `*HybridComputeManagementClientUpgradeExtensionsPoller.FinalResponse` has been removed
+- Function `*PrivateLinkScopesDeletePoller.Poll` has been removed
+- Function `*MachineExtensionsDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Done` has been removed
+- Function `HybridComputePrivateLinkScopeProperties.MarshalJSON` has been removed
+- Function `NewHybridComputeManagementClient` has been removed
+- Function `*MachineExtensionsUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkScopesDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkScopesListPager.NextPage` has been removed
+- Function `*HybridComputeManagementClient.BeginUpgradeExtensions` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*HybridComputeManagementClientUpgradeExtensionsPoller.ResumeToken` has been removed
+- Function `*MachineExtensionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*HybridComputeManagementClientUpgradeExtensionsPoller.Poll` has been removed
+- Function `*PrivateLinkScopesListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateLinkScopesListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkScopesDeletePoller.ResumeToken` has been removed
+- Function `*MachinesListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsListByPrivateLinkScopePager.NextPage` has been removed
+- Function `*MachineExtensionsUpdatePoller.Done` has been removed
+- Function `*MachineExtensionsUpdatePoller.FinalResponse` has been removed
+- Function `*MachinesListBySubscriptionPager.PageResponse` has been removed
+- Function `*MachineExtensionsListPager.NextPage` has been removed
+- Function `*MachineExtensionsUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*MachinesListBySubscriptionPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*HybridComputeManagementClientUpgradeExtensionsPoller.Done` has been removed
+- Function `PrivateLinkScopesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkResourcesListByPrivateLinkScopePager.Err` has been removed
+- Struct `HybridComputeManagementClient` has been removed
+- Struct `HybridComputeManagementClientBeginUpgradeExtensionsOptions` has been removed
+- Struct `HybridComputeManagementClientUpgradeExtensionsPoller` has been removed
+- Struct `HybridComputeManagementClientUpgradeExtensionsPollerResponse` has been removed
+- Struct `HybridComputeManagementClientUpgradeExtensionsResponse` has been removed
+- Struct `HybridComputePrivateLinkScope` has been removed
+- Struct `HybridComputePrivateLinkScopeListResult` has been removed
+- Struct `HybridComputePrivateLinkScopeProperties` has been removed
+- Struct `MachineExtensionsBeginCreateOrUpdateOptions` has been removed
+- Struct `MachineExtensionsBeginDeleteOptions` has been removed
+- Struct `MachineExtensionsBeginUpdateOptions` has been removed
+- Struct `MachineExtensionsCreateOrUpdatePoller` has been removed
+- Struct `MachineExtensionsCreateOrUpdatePollerResponse` has been removed
+- Struct `MachineExtensionsCreateOrUpdateResponse` has been removed
+- Struct `MachineExtensionsCreateOrUpdateResult` has been removed
+- Struct `MachineExtensionsDeletePoller` has been removed
+- Struct `MachineExtensionsDeletePollerResponse` has been removed
+- Struct `MachineExtensionsDeleteResponse` has been removed
+- Struct `MachineExtensionsGetOptions` has been removed
+- Struct `MachineExtensionsGetResponse` has been removed
+- Struct `MachineExtensionsGetResult` has been removed
+- Struct `MachineExtensionsListOptions` has been removed
+- Struct `MachineExtensionsListPager` has been removed
+- Struct `MachineExtensionsListResponse` has been removed
+- Struct `MachineExtensionsListResultEnvelope` has been removed
+- Struct `MachineExtensionsUpdatePoller` has been removed
+- Struct `MachineExtensionsUpdatePollerResponse` has been removed
+- Struct `MachineExtensionsUpdateResponse` has been removed
+- Struct `MachineExtensionsUpdateResult` has been removed
+- Struct `MachinesCreateOrUpdateOptions` has been removed
+- Struct `MachinesCreateOrUpdateResponse` has been removed
+- Struct `MachinesCreateOrUpdateResult` has been removed
+- Struct `MachinesDeleteOptions` has been removed
+- Struct `MachinesDeleteResponse` has been removed
+- Struct `MachinesGetOptions` has been removed
+- Struct `MachinesGetResponse` has been removed
+- Struct `MachinesGetResult` has been removed
+- Struct `MachinesListByResourceGroupOptions` has been removed
+- Struct `MachinesListByResourceGroupPager` has been removed
+- Struct `MachinesListByResourceGroupResponse` has been removed
+- Struct `MachinesListByResourceGroupResult` has been removed
+- Struct `MachinesListBySubscriptionOptions` has been removed
+- Struct `MachinesListBySubscriptionPager` has been removed
+- Struct `MachinesListBySubscriptionResponse` has been removed
+- Struct `MachinesListBySubscriptionResult` has been removed
+- Struct `MachinesUpdateOptions` has been removed
+- Struct `MachinesUpdateResponse` has been removed
+- Struct `MachinesUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListByPrivateLinkScopeOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByPrivateLinkScopePager` has been removed
+- Struct `PrivateEndpointConnectionsListByPrivateLinkScopeResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByPrivateLinkScopeResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListByPrivateLinkScopeOptions` has been removed
+- Struct `PrivateLinkResourcesListByPrivateLinkScopePager` has been removed
+- Struct `PrivateLinkResourcesListByPrivateLinkScopeResponse` has been removed
+- Struct `PrivateLinkResourcesListByPrivateLinkScopeResult` has been removed
+- Struct `PrivateLinkScopesBeginDeleteOptions` has been removed
+- Struct `PrivateLinkScopesCreateOrUpdateOptions` has been removed
+- Struct `PrivateLinkScopesCreateOrUpdateResponse` has been removed
+- Struct `PrivateLinkScopesCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkScopesDeletePoller` has been removed
+- Struct `PrivateLinkScopesDeletePollerResponse` has been removed
+- Struct `PrivateLinkScopesDeleteResponse` has been removed
+- Struct `PrivateLinkScopesGetOptions` has been removed
+- Struct `PrivateLinkScopesGetResponse` has been removed
+- Struct `PrivateLinkScopesGetResult` has been removed
+- Struct `PrivateLinkScopesGetValidationDetailsForMachineOptions` has been removed
+- Struct `PrivateLinkScopesGetValidationDetailsForMachineResponse` has been removed
+- Struct `PrivateLinkScopesGetValidationDetailsForMachineResult` has been removed
+- Struct `PrivateLinkScopesGetValidationDetailsOptions` has been removed
+- Struct `PrivateLinkScopesGetValidationDetailsResponse` has been removed
+- Struct `PrivateLinkScopesGetValidationDetailsResult` has been removed
+- Struct `PrivateLinkScopesListByResourceGroupOptions` has been removed
+- Struct `PrivateLinkScopesListByResourceGroupPager` has been removed
+- Struct `PrivateLinkScopesListByResourceGroupResponse` has been removed
+- Struct `PrivateLinkScopesListByResourceGroupResult` has been removed
+- Struct `PrivateLinkScopesListOptions` has been removed
+- Struct `PrivateLinkScopesListPager` has been removed
+- Struct `PrivateLinkScopesListResponse` has been removed
+- Struct `PrivateLinkScopesListResult` has been removed
+- Struct `PrivateLinkScopesUpdateTagsOptions` has been removed
+- Struct `PrivateLinkScopesUpdateTagsResponse` has been removed
+- Struct `PrivateLinkScopesUpdateTagsResult` has been removed
+- Field `ProxyResource` of struct `PrivateLinkResource` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ResourceUpdate` of struct `MachineUpdate` has been removed
+- Field `TrackedResource` of struct `MachineExtension` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `TrackedResource` of struct `Machine` has been removed
+- Field `ResourceUpdate` of struct `MachineExtensionUpdate` has been removed
+- Field `ProxyResource` of struct `PrivateEndpointConnection` has been removed
+
+### Features Added
+
+- New function `*ManagementClient.BeginUpgradeExtensions(context.Context, string, string, MachineExtensionUpgrade, *ManagementClientBeginUpgradeExtensionsOptions) (ManagementClientUpgradeExtensionsPollerResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MachineExtensionsClientListPager.Err() error`
+- New function `*MachineExtensionsClientDeletePoller.Done() bool`
+- New function `MachineExtensionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (MachineExtensionsClientUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagementClientUpgradeExtensionsPollerResponse.Resume(context.Context, *ManagementClient, string) error`
+- New function `*MachineExtensionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*PrivateLinkScopesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*MachinesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkScopesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*MachineExtensionsClientCreateOrUpdatePoller.Done() bool`
+- New function `MachineExtensionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (MachineExtensionsClientDeleteResponse, error)`
+- New function `*MachineExtensionsClientListPager.PageResponse() MachineExtensionsClientListResponse`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*MachineExtensionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (MachineExtensionsClientCreateOrUpdateResponse, error)`
+- New function `*MachinesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*MachineExtensionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) *ManagementClient`
+- New function `*PrivateLinkScopesClientListPager.PageResponse() PrivateLinkScopesClientListResponse`
+- New function `*MachineExtensionsClientDeletePoller.FinalResponse(context.Context) (MachineExtensionsClientDeleteResponse, error)`
+- New function `PrivateLinkScopeProperties.MarshalJSON() ([]byte, error)`
+- New function `*MachineExtensionsClientUpdatePoller.FinalResponse(context.Context) (MachineExtensionsClientUpdateResponse, error)`
+- New function `*ManagementClientUpgradeExtensionsPoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `PrivateLinkScopeListResult.MarshalJSON() ([]byte, error)`
+- New function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.NextPage(context.Context) bool`
+- New function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.PageResponse() PrivateLinkResourcesClientListByPrivateLinkScopeResponse`
+- New function `*MachineExtensionsClientDeletePollerResponse.Resume(context.Context, *MachineExtensionsClient, string) error`
+- New function `*MachineExtensionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*MachineExtensionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.Err() error`
+- New function `*ManagementClientUpgradeExtensionsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MachineExtensionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*MachinesClientListBySubscriptionPager.Err() error`
+- New function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.NextPage(context.Context) bool`
+- New function `ManagementClientUpgradeExtensionsPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagementClientUpgradeExtensionsResponse, error)`
+- New function `*PrivateLinkScopesClientDeletePollerResponse.Resume(context.Context, *PrivateLinkScopesClient, string) error`
+- New function `*PrivateLinkScopesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*MachinesClientListByResourceGroupPager.Err() error`
+- New function `*PrivateLinkScopesClientDeletePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateLinkScopesClientListByResourceGroupPager.Err() error`
+- New function `*MachineExtensionsClientUpdatePoller.Done() bool`
+- New function `*ManagementClientUpgradeExtensionsPoller.ResumeToken() (string, error)`
+- New function `*MachineExtensionsClientUpdatePollerResponse.Resume(context.Context, *MachineExtensionsClient, string) error`
+- New function `*MachineExtensionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MachineExtensionsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkScopesClientListPager.Err() error`
+- New function `PrivateLinkScope.MarshalJSON() ([]byte, error)`
+- New function `*MachinesClientListByResourceGroupPager.PageResponse() MachinesClientListByResourceGroupResponse`
+- New function `*MachineExtensionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *MachineExtensionsClient, string) error`
+- New function `*MachinesClientListBySubscriptionPager.PageResponse() MachinesClientListBySubscriptionResponse`
+- New function `*ManagementClientUpgradeExtensionsPoller.FinalResponse(context.Context) (ManagementClientUpgradeExtensionsResponse, error)`
+- New function `*PrivateLinkScopesClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkScopesClientDeletePoller.FinalResponse(context.Context) (PrivateLinkScopesClientDeleteResponse, error)`
+- New function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.Err() error`
+- New function `MachineExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (MachineExtensionsClientCreateOrUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.PageResponse() PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*PrivateLinkScopesClientListByResourceGroupPager.PageResponse() PrivateLinkScopesClientListByResourceGroupResponse`
+- New function `PrivateLinkScopesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateLinkScopesClientDeleteResponse, error)`
+- New function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New struct `MachineExtensionsClientBeginCreateOrUpdateOptions`
+- New struct `MachineExtensionsClientBeginDeleteOptions`
+- New struct `MachineExtensionsClientBeginUpdateOptions`
+- New struct `MachineExtensionsClientCreateOrUpdatePoller`
+- New struct `MachineExtensionsClientCreateOrUpdatePollerResponse`
+- New struct `MachineExtensionsClientCreateOrUpdateResponse`
+- New struct `MachineExtensionsClientCreateOrUpdateResult`
+- New struct `MachineExtensionsClientDeletePoller`
+- New struct `MachineExtensionsClientDeletePollerResponse`
+- New struct `MachineExtensionsClientDeleteResponse`
+- New struct `MachineExtensionsClientGetOptions`
+- New struct `MachineExtensionsClientGetResponse`
+- New struct `MachineExtensionsClientGetResult`
+- New struct `MachineExtensionsClientListOptions`
+- New struct `MachineExtensionsClientListPager`
+- New struct `MachineExtensionsClientListResponse`
+- New struct `MachineExtensionsClientListResult`
+- New struct `MachineExtensionsClientUpdatePoller`
+- New struct `MachineExtensionsClientUpdatePollerResponse`
+- New struct `MachineExtensionsClientUpdateResponse`
+- New struct `MachineExtensionsClientUpdateResult`
+- New struct `MachinesClientCreateOrUpdateOptions`
+- New struct `MachinesClientCreateOrUpdateResponse`
+- New struct `MachinesClientCreateOrUpdateResult`
+- New struct `MachinesClientDeleteOptions`
+- New struct `MachinesClientDeleteResponse`
+- New struct `MachinesClientGetOptions`
+- New struct `MachinesClientGetResponse`
+- New struct `MachinesClientGetResult`
+- New struct `MachinesClientListByResourceGroupOptions`
+- New struct `MachinesClientListByResourceGroupPager`
+- New struct `MachinesClientListByResourceGroupResponse`
+- New struct `MachinesClientListByResourceGroupResult`
+- New struct `MachinesClientListBySubscriptionOptions`
+- New struct `MachinesClientListBySubscriptionPager`
+- New struct `MachinesClientListBySubscriptionResponse`
+- New struct `MachinesClientListBySubscriptionResult`
+- New struct `MachinesClientUpdateOptions`
+- New struct `MachinesClientUpdateResponse`
+- New struct `MachinesClientUpdateResult`
+- New struct `ManagementClient`
+- New struct `ManagementClientBeginUpgradeExtensionsOptions`
+- New struct `ManagementClientUpgradeExtensionsPoller`
+- New struct `ManagementClientUpgradeExtensionsPollerResponse`
+- New struct `ManagementClientUpgradeExtensionsResponse`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions`
+- New struct `PrivateEndpointConnectionsClientListByPrivateLinkScopePager`
+- New struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse`
+- New struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListByPrivateLinkScopeOptions`
+- New struct `PrivateLinkResourcesClientListByPrivateLinkScopePager`
+- New struct `PrivateLinkResourcesClientListByPrivateLinkScopeResponse`
+- New struct `PrivateLinkResourcesClientListByPrivateLinkScopeResult`
+- New struct `PrivateLinkScope`
+- New struct `PrivateLinkScopeListResult`
+- New struct `PrivateLinkScopeProperties`
+- New struct `PrivateLinkScopesClientBeginDeleteOptions`
+- New struct `PrivateLinkScopesClientCreateOrUpdateOptions`
+- New struct `PrivateLinkScopesClientCreateOrUpdateResponse`
+- New struct `PrivateLinkScopesClientCreateOrUpdateResult`
+- New struct `PrivateLinkScopesClientDeletePoller`
+- New struct `PrivateLinkScopesClientDeletePollerResponse`
+- New struct `PrivateLinkScopesClientDeleteResponse`
+- New struct `PrivateLinkScopesClientGetOptions`
+- New struct `PrivateLinkScopesClientGetResponse`
+- New struct `PrivateLinkScopesClientGetResult`
+- New struct `PrivateLinkScopesClientGetValidationDetailsForMachineOptions`
+- New struct `PrivateLinkScopesClientGetValidationDetailsForMachineResponse`
+- New struct `PrivateLinkScopesClientGetValidationDetailsForMachineResult`
+- New struct `PrivateLinkScopesClientGetValidationDetailsOptions`
+- New struct `PrivateLinkScopesClientGetValidationDetailsResponse`
+- New struct `PrivateLinkScopesClientGetValidationDetailsResult`
+- New struct `PrivateLinkScopesClientListByResourceGroupOptions`
+- New struct `PrivateLinkScopesClientListByResourceGroupPager`
+- New struct `PrivateLinkScopesClientListByResourceGroupResponse`
+- New struct `PrivateLinkScopesClientListByResourceGroupResult`
+- New struct `PrivateLinkScopesClientListOptions`
+- New struct `PrivateLinkScopesClientListPager`
+- New struct `PrivateLinkScopesClientListResponse`
+- New struct `PrivateLinkScopesClientListResult`
+- New struct `PrivateLinkScopesClientUpdateTagsOptions`
+- New struct `PrivateLinkScopesClientUpdateTagsResponse`
+- New struct `PrivateLinkScopesClientUpdateTagsResult`
+- New field `Name` in struct `Machine`
+- New field `Type` in struct `Machine`
+- New field `Location` in struct `Machine`
+- New field `Tags` in struct `Machine`
+- New field `ID` in struct `Machine`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Tags` in struct `MachineExtensionUpdate`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `Tags` in struct `MachineExtension`
+- New field `ID` in struct `MachineExtension`
+- New field `Name` in struct `MachineExtension`
+- New field `Type` in struct `MachineExtension`
+- New field `Location` in struct `MachineExtension`
+- New field `Tags` in struct `MachineUpdate`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `Error` in struct `ErrorResponse`
+
+
+## 0.1.0 (2021-12-16)
+
+- Init release.

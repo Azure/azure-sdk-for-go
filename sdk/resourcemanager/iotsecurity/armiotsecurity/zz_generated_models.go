@@ -34,12 +34,20 @@ func (a AlertListModel) MarshalJSON() ([]byte, error) {
 
 // AlertModel - IoT alert
 type AlertModel struct {
-	ProxyResource
 	// Alert properties
 	Properties *AlertPropertiesModel `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AlertPatchPropertiesModel - IoT alert properties
@@ -123,12 +131,20 @@ func (a AlertPropertiesModel) MarshalJSON() ([]byte, error) {
 
 // AlertType - IoT alert type.
 type AlertType struct {
-	ProxyResource
 	// Alert type properties
 	Properties *AlertTypeProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AlertTypeList - List of alert types
@@ -189,33 +205,46 @@ func (a AlertTypeProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AlertTypesGetOptions contains the optional parameters for the AlertTypes.Get method.
-type AlertTypesGetOptions struct {
+// AlertTypesClientGetOptions contains the optional parameters for the AlertTypesClient.Get method.
+type AlertTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertTypesListOptions contains the optional parameters for the AlertTypes.List method.
-type AlertTypesListOptions struct {
+// AlertTypesClientListOptions contains the optional parameters for the AlertTypesClient.List method.
+type AlertTypesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefenderSettingsCreateOrUpdateOptions contains the optional parameters for the DefenderSettings.CreateOrUpdate method.
-type DefenderSettingsCreateOrUpdateOptions struct {
+// DefenderSettingsClientCreateOrUpdateOptions contains the optional parameters for the DefenderSettingsClient.CreateOrUpdate
+// method.
+type DefenderSettingsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefenderSettingsDeleteOptions contains the optional parameters for the DefenderSettings.Delete method.
-type DefenderSettingsDeleteOptions struct {
+// DefenderSettingsClientDeleteOptions contains the optional parameters for the DefenderSettingsClient.Delete method.
+type DefenderSettingsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefenderSettingsDownloadManagerActivationOptions contains the optional parameters for the DefenderSettings.DownloadManagerActivation method.
-type DefenderSettingsDownloadManagerActivationOptions struct {
+// DefenderSettingsClientDownloadManagerActivationOptions contains the optional parameters for the DefenderSettingsClient.DownloadManagerActivation
+// method.
+type DefenderSettingsClientDownloadManagerActivationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefenderSettingsGetOptions contains the optional parameters for the DefenderSettings.Get method.
-type DefenderSettingsGetOptions struct {
+// DefenderSettingsClientGetOptions contains the optional parameters for the DefenderSettingsClient.Get method.
+type DefenderSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefenderSettingsClientListOptions contains the optional parameters for the DefenderSettingsClient.List method.
+type DefenderSettingsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefenderSettingsClientPackageDownloadsOptions contains the optional parameters for the DefenderSettingsClient.PackageDownloads
+// method.
+type DefenderSettingsClientPackageDownloadsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -232,21 +261,19 @@ func (d DefenderSettingsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DefenderSettingsListOptions contains the optional parameters for the DefenderSettings.List method.
-type DefenderSettingsListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // DefenderSettingsModel - IoT Defender settings
 type DefenderSettingsModel struct {
-	ProxyResource
 	// IoT Defender settings properties
 	Properties *DefenderSettingsProperties `json:"properties,omitempty"`
-}
 
-// DefenderSettingsPackageDownloadsOptions contains the optional parameters for the DefenderSettings.PackageDownloads method.
-type DefenderSettingsPackageDownloadsOptions struct {
-	// placeholder for future optional parameters
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DefenderSettingsProperties - IoT Defender settings properties
@@ -335,31 +362,39 @@ func (d DeviceGroupList) MarshalJSON() ([]byte, error) {
 
 // DeviceGroupModel - Device group
 type DeviceGroupModel struct {
-	ProxyResource
 	// Device group properties
 	Properties map[string]interface{} `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// DeviceGroupsCreateOrUpdateOptions contains the optional parameters for the DeviceGroups.CreateOrUpdate method.
-type DeviceGroupsCreateOrUpdateOptions struct {
+// DeviceGroupsClientCreateOrUpdateOptions contains the optional parameters for the DeviceGroupsClient.CreateOrUpdate method.
+type DeviceGroupsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeviceGroupsDeleteOptions contains the optional parameters for the DeviceGroups.Delete method.
-type DeviceGroupsDeleteOptions struct {
+// DeviceGroupsClientDeleteOptions contains the optional parameters for the DeviceGroupsClient.Delete method.
+type DeviceGroupsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeviceGroupsGetOptions contains the optional parameters for the DeviceGroups.Get method.
-type DeviceGroupsGetOptions struct {
+// DeviceGroupsClientGetOptions contains the optional parameters for the DeviceGroupsClient.Get method.
+type DeviceGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeviceGroupsListOptions contains the optional parameters for the DeviceGroups.List method.
-type DeviceGroupsListOptions struct {
+// DeviceGroupsClientListOptions contains the optional parameters for the DeviceGroupsClient.List method.
+type DeviceGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -382,12 +417,20 @@ func (d DeviceList) MarshalJSON() ([]byte, error) {
 
 // DeviceModel - Device
 type DeviceModel struct {
-	ProxyResource
 	// Device properties
 	Properties *DeviceProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DeviceProperties - Device properties
@@ -694,12 +737,20 @@ func (d DeviceVulnerabilityListModel) MarshalJSON() ([]byte, error) {
 
 // DeviceVulnerabilityModel - IoT Device Vulnerability
 type DeviceVulnerabilityModel struct {
-	ProxyResource
 	// Device Vulnerability properties
 	Properties *DeviceVulnerabilityPropertiesModel `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DeviceVulnerabilityPropertiesModel - IoT Device Vulnerability properties
@@ -735,13 +786,13 @@ func (d DeviceVulnerabilityPropertiesModel) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DevicesGetOptions contains the optional parameters for the Devices.Get method.
-type DevicesGetOptions struct {
+// DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
+type DevicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesListOptions contains the optional parameters for the Devices.List method.
-type DevicesListOptions struct {
+// DevicesClientListOptions contains the optional parameters for the DevicesClient.List method.
+type DevicesClientListOptions struct {
 	// Skip token used for pagination
 	SkipToken *string
 }
@@ -814,49 +865,49 @@ type ErrorModel struct {
 // MarshalJSON implements the json.Marshaller interface for type ErrorModel.
 func (e ErrorModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (e ErrorModel) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "code", e.Code)
 	populate(objectMap, "details", e.Details)
 	populate(objectMap, "message", e.Message)
 	populate(objectMap, "target", e.Target)
+	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ErrorResponseModel - Default error response model
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponseModel struct {
-	raw string
 	// READ-ONLY; Gets or sets the error.
-	InnerError *ErrorResponseModelError `json:"error,omitempty" azure:"ro"`
-}
-
-// Error implements the error interface for type ErrorResponseModel.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponseModel) Error() string {
-	return e.raw
+	Error *ErrorResponseModelError `json:"error,omitempty" azure:"ro"`
 }
 
 // ErrorResponseModelError - Gets or sets the error.
 type ErrorResponseModelError struct {
-	ErrorModel
+	// READ-ONLY; Gets or sets the code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets the details.
+	Details []*ErrorModel `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets the messages.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets the target.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ErrorResponseModelError.
+func (e ErrorResponseModelError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "details", e.Details)
+	populate(objectMap, "message", e.Message)
+	populate(objectMap, "target", e.Target)
+	return json.Marshal(objectMap)
 }
 
 // Firmware - Device firmware data
@@ -892,42 +943,42 @@ type Hardware struct {
 	Vendor *string `json:"vendor,omitempty"`
 }
 
-// IotAlertsGetOptions contains the optional parameters for the IotAlerts.Get method.
-type IotAlertsGetOptions struct {
+// IotAlertsClientGetOptions contains the optional parameters for the IotAlertsClient.Get method.
+type IotAlertsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotAlertsListOptions contains the optional parameters for the IotAlerts.List method.
-type IotAlertsListOptions struct {
+// IotAlertsClientListOptions contains the optional parameters for the IotAlertsClient.List method.
+type IotAlertsClientListOptions struct {
 	// Skip token used for pagination
 	SkipToken *string
 }
 
-// IotAlertsPatchOptions contains the optional parameters for the IotAlerts.Patch method.
-type IotAlertsPatchOptions struct {
+// IotAlertsClientPatchOptions contains the optional parameters for the IotAlertsClient.Patch method.
+type IotAlertsClientPatchOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDeviceVulnerabilityGetOptions contains the optional parameters for the IotDeviceVulnerability.Get method.
-type IotDeviceVulnerabilityGetOptions struct {
+// IotDeviceVulnerabilityClientGetOptions contains the optional parameters for the IotDeviceVulnerabilityClient.Get method.
+type IotDeviceVulnerabilityClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDeviceVulnerabilityListOptions contains the optional parameters for the IotDeviceVulnerability.List method.
-type IotDeviceVulnerabilityListOptions struct {
+// IotDeviceVulnerabilityClientListOptions contains the optional parameters for the IotDeviceVulnerabilityClient.List method.
+type IotDeviceVulnerabilityClientListOptions struct {
 	// Device ID filter
 	DeviceID *string
 	// Skip token used for pagination
 	SkipToken *string
 }
 
-// IotRecommendationsGetOptions contains the optional parameters for the IotRecommendations.Get method.
-type IotRecommendationsGetOptions struct {
+// IotRecommendationsClientGetOptions contains the optional parameters for the IotRecommendationsClient.Get method.
+type IotRecommendationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotRecommendationsListOptions contains the optional parameters for the IotRecommendations.List method.
-type IotRecommendationsListOptions struct {
+// IotRecommendationsClientListOptions contains the optional parameters for the IotRecommendationsClient.List method.
+type IotRecommendationsClientListOptions struct {
 	// Skip token used for pagination
 	SkipToken *string
 }
@@ -951,21 +1002,29 @@ func (l LocationList) MarshalJSON() ([]byte, error) {
 
 // LocationModel - IoT Defender location
 type LocationModel struct {
-	ProxyResource
 	// IoT Defender location properties
 	Properties map[string]interface{} `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// LocationsGetOptions contains the optional parameters for the Locations.Get method.
-type LocationsGetOptions struct {
+// LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
+type LocationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationsListOptions contains the optional parameters for the Locations.List method.
-type LocationsListOptions struct {
+// LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
+type LocationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1058,36 +1117,52 @@ func (n *Nic) UnmarshalJSON(data []byte) error {
 
 // OnPremiseSensor - On-premise IoT sensor
 type OnPremiseSensor struct {
-	ProxyResource
 	// On-premise IoT sensor properties
 	Properties map[string]interface{} `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// OnPremiseSensorsCreateOrUpdateOptions contains the optional parameters for the OnPremiseSensors.CreateOrUpdate method.
-type OnPremiseSensorsCreateOrUpdateOptions struct {
+// OnPremiseSensorsClientCreateOrUpdateOptions contains the optional parameters for the OnPremiseSensorsClient.CreateOrUpdate
+// method.
+type OnPremiseSensorsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OnPremiseSensorsDeleteOptions contains the optional parameters for the OnPremiseSensors.Delete method.
-type OnPremiseSensorsDeleteOptions struct {
+// OnPremiseSensorsClientDeleteOptions contains the optional parameters for the OnPremiseSensorsClient.Delete method.
+type OnPremiseSensorsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OnPremiseSensorsDownloadActivationOptions contains the optional parameters for the OnPremiseSensors.DownloadActivation method.
-type OnPremiseSensorsDownloadActivationOptions struct {
+// OnPremiseSensorsClientDownloadActivationOptions contains the optional parameters for the OnPremiseSensorsClient.DownloadActivation
+// method.
+type OnPremiseSensorsClientDownloadActivationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OnPremiseSensorsDownloadResetPasswordOptions contains the optional parameters for the OnPremiseSensors.DownloadResetPassword method.
-type OnPremiseSensorsDownloadResetPasswordOptions struct {
+// OnPremiseSensorsClientDownloadResetPasswordOptions contains the optional parameters for the OnPremiseSensorsClient.DownloadResetPassword
+// method.
+type OnPremiseSensorsClientDownloadResetPasswordOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OnPremiseSensorsGetOptions contains the optional parameters for the OnPremiseSensors.Get method.
-type OnPremiseSensorsGetOptions struct {
+// OnPremiseSensorsClientGetOptions contains the optional parameters for the OnPremiseSensorsClient.Get method.
+type OnPremiseSensorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OnPremiseSensorsClientListOptions contains the optional parameters for the OnPremiseSensorsClient.List method.
+type OnPremiseSensorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1102,11 +1177,6 @@ func (o OnPremiseSensorsList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
-}
-
-// OnPremiseSensorsListOptions contains the optional parameters for the OnPremiseSensors.List method.
-type OnPremiseSensorsListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // OperatingSystem - Device operating system data
@@ -1219,7 +1289,8 @@ type OperationMetaMetricSpecification struct {
 	// dimension name use to replace resource id if specified
 	ResourceIDDimensionNameOverride *string `json:"resourceIdDimensionNameOverride,omitempty"`
 
-	// Metric namespace. Only set the namespace if different from the default value, leaving it empty makes it use the value from the ARM manifest.
+	// Metric namespace. Only set the namespace if different from the default value, leaving it empty makes it use the value from
+	// the ARM manifest.
 	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
 
 	// supported aggregation types
@@ -1273,8 +1344,8 @@ type OperationProperties struct {
 	ServiceSpecification *OperationMetaServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1450,9 +1521,17 @@ func (p PackageDownloadsSensorFullOvf) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecommendationListModel - List of IoT recommendations
@@ -1474,12 +1553,20 @@ func (r RecommendationListModel) MarshalJSON() ([]byte, error) {
 
 // RecommendationModel - IoT recommendation
 type RecommendationModel struct {
-	ProxyResource
 	// Recommendation properties
 	Properties *RecommendationPropertiesModel `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecommendationPropertiesModel - IoT recommendation properties
@@ -1508,12 +1595,20 @@ type RecommendationPropertiesModel struct {
 
 // RecommendationType - IoT recommendation type.
 type RecommendationType struct {
-	ProxyResource
 	// Recommendation type properties
 	Properties *RecommendationTypeProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecommendationTypeList - List of recommendation types
@@ -1574,13 +1669,13 @@ func (r RecommendationTypeProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RecommendationTypesGetOptions contains the optional parameters for the RecommendationTypes.Get method.
-type RecommendationTypesGetOptions struct {
+// RecommendationTypesClientGetOptions contains the optional parameters for the RecommendationTypesClient.Get method.
+type RecommendationTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationTypesListOptions contains the optional parameters for the RecommendationTypes.List method.
-type RecommendationTypesListOptions struct {
+// RecommendationTypesClientListOptions contains the optional parameters for the RecommendationTypesClient.List method.
+type RecommendationTypesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1619,12 +1714,20 @@ type Sensor struct {
 
 // SensorModel - IoT sensor model
 type SensorModel struct {
-	Resource
 	// IoT sensor properties
 	Properties *SensorProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SensorProperties - IoT sensor properties
@@ -1660,28 +1763,40 @@ type SensorProperties struct {
 	TiVersion *string `json:"tiVersion,omitempty" azure:"ro"`
 }
 
-// SensorsCreateOrUpdateOptions contains the optional parameters for the Sensors.CreateOrUpdate method.
-type SensorsCreateOrUpdateOptions struct {
+// SensorsClientCreateOrUpdateOptions contains the optional parameters for the SensorsClient.CreateOrUpdate method.
+type SensorsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SensorsDeleteOptions contains the optional parameters for the Sensors.Delete method.
-type SensorsDeleteOptions struct {
+// SensorsClientDeleteOptions contains the optional parameters for the SensorsClient.Delete method.
+type SensorsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SensorsDownloadActivationOptions contains the optional parameters for the Sensors.DownloadActivation method.
-type SensorsDownloadActivationOptions struct {
+// SensorsClientDownloadActivationOptions contains the optional parameters for the SensorsClient.DownloadActivation method.
+type SensorsClientDownloadActivationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SensorsDownloadResetPasswordOptions contains the optional parameters for the Sensors.DownloadResetPassword method.
-type SensorsDownloadResetPasswordOptions struct {
+// SensorsClientDownloadResetPasswordOptions contains the optional parameters for the SensorsClient.DownloadResetPassword
+// method.
+type SensorsClientDownloadResetPasswordOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SensorsGetOptions contains the optional parameters for the Sensors.Get method.
-type SensorsGetOptions struct {
+// SensorsClientGetOptions contains the optional parameters for the SensorsClient.Get method.
+type SensorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SensorsClientListOptions contains the optional parameters for the SensorsClient.List method.
+type SensorsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SensorsClientTriggerTiPackageUpdateOptions contains the optional parameters for the SensorsClient.TriggerTiPackageUpdate
+// method.
+type SensorsClientTriggerTiPackageUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1698,24 +1813,22 @@ func (s SensorsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SensorsListOptions contains the optional parameters for the Sensors.List method.
-type SensorsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SensorsTriggerTiPackageUpdateOptions contains the optional parameters for the Sensors.TriggerTiPackageUpdate method.
-type SensorsTriggerTiPackageUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // SiteModel - IoT site model
 type SiteModel struct {
-	ProxyResource
 	// IoT site properties
 	Properties *SiteProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SiteProperties - IoT site properties
@@ -1735,18 +1848,23 @@ func (s SiteProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SitesCreateOrUpdateOptions contains the optional parameters for the Sites.CreateOrUpdate method.
-type SitesCreateOrUpdateOptions struct {
+// SitesClientCreateOrUpdateOptions contains the optional parameters for the SitesClient.CreateOrUpdate method.
+type SitesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SitesDeleteOptions contains the optional parameters for the Sites.Delete method.
-type SitesDeleteOptions struct {
+// SitesClientDeleteOptions contains the optional parameters for the SitesClient.Delete method.
+type SitesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SitesGetOptions contains the optional parameters for the Sites.Get method.
-type SitesGetOptions struct {
+// SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
+type SitesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SitesClientListOptions contains the optional parameters for the SitesClient.List method.
+type SitesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1761,11 +1879,6 @@ func (s SitesList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
-}
-
-// SitesListOptions contains the optional parameters for the Sites.List method.
-type SitesListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Slot data in PLC backplane
@@ -1910,9 +2023,17 @@ type TechniqueModel struct {
 
 // UpgradePackageDownloadInfo - Information on a specific package upgrade download
 type UpgradePackageDownloadInfo struct {
-	PackageDownloadInfo
 	// READ-ONLY; Minimum base version for upgrade
 	FromVersion *string `json:"fromVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; Download link
+	Link *string `json:"link,omitempty" azure:"ro"`
+
+	// READ-ONLY; Version number
+	Version *string `json:"version,omitempty" azure:"ro"`
+
+	// READ-ONLY; Kind of the version
+	VersionKind *VersionKind `json:"versionKind,omitempty" azure:"ro"`
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

@@ -11,7 +11,6 @@ package armservicebus
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // QueuesClient contains the methods for the Queues group.
 // Don't use this type directly, use NewQueuesClient() instead.
 type QueuesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewQueuesClient creates a new instance of QueuesClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewQueuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueuesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &QueuesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &QueuesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a Service Bus queue. This operation is idempotent.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, parameters SBQueue, options *QueuesCreateOrUpdateOptions) (QueuesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// parameters - Parameters supplied to create or update a queue resource.
+// options - QueuesClientCreateOrUpdateOptions contains the optional parameters for the QueuesClient.CreateOrUpdate method.
+func (client *QueuesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, parameters SBQueue, options *QueuesClientCreateOrUpdateOptions) (QueuesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, queueName, parameters, options)
 	if err != nil {
-		return QueuesCreateOrUpdateResponse{}, err
+		return QueuesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueuesCreateOrUpdateResponse{}, err
+		return QueuesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueuesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return QueuesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *QueuesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, parameters SBQueue, options *QueuesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *QueuesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, parameters SBQueue, options *QueuesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,58 +92,52 @@ func (client *QueuesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *QueuesClient) createOrUpdateHandleResponse(resp *http.Response) (QueuesCreateOrUpdateResponse, error) {
-	result := QueuesCreateOrUpdateResponse{RawResponse: resp}
+func (client *QueuesClient) createOrUpdateHandleResponse(resp *http.Response) (QueuesClientCreateOrUpdateResponse, error) {
+	result := QueuesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueue); err != nil {
-		return QueuesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return QueuesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *QueuesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdateAuthorizationRule - Creates an authorization rule for a queue.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters SBAuthorizationRule, options *QueuesCreateOrUpdateAuthorizationRuleOptions) (QueuesCreateOrUpdateAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// authorizationRuleName - The authorization rule name.
+// parameters - The shared access authorization rule.
+// options - QueuesClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the QueuesClient.CreateOrUpdateAuthorizationRule
+// method.
+func (client *QueuesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters SBAuthorizationRule, options *QueuesClientCreateOrUpdateAuthorizationRuleOptions) (QueuesClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	req, err := client.createOrUpdateAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters, options)
 	if err != nil {
-		return QueuesCreateOrUpdateAuthorizationRuleResponse{}, err
+		return QueuesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueuesCreateOrUpdateAuthorizationRuleResponse{}, err
+		return QueuesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueuesCreateOrUpdateAuthorizationRuleResponse{}, client.createOrUpdateAuthorizationRuleHandleError(resp)
+		return QueuesClientCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateAuthorizationRuleHandleResponse(resp)
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
-func (client *QueuesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters SBAuthorizationRule, options *QueuesCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *QueuesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters SBAuthorizationRule, options *QueuesClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -152,58 +159,49 @@ func (client *QueuesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
-func (client *QueuesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (QueuesCreateOrUpdateAuthorizationRuleResponse, error) {
-	result := QueuesCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
+func (client *QueuesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (QueuesClientCreateOrUpdateAuthorizationRuleResponse, error) {
+	result := QueuesClientCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
-		return QueuesCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
+		return QueuesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateAuthorizationRuleHandleError handles the CreateOrUpdateAuthorizationRule error response.
-func (client *QueuesClient) createOrUpdateAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a queue from the specified namespace in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesDeleteOptions) (QueuesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// options - QueuesClientDeleteOptions contains the optional parameters for the QueuesClient.Delete method.
+func (client *QueuesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesClientDeleteOptions) (QueuesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, queueName, options)
 	if err != nil {
-		return QueuesDeleteResponse{}, err
+		return QueuesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueuesDeleteResponse{}, err
+		return QueuesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return QueuesDeleteResponse{}, client.deleteHandleError(resp)
+		return QueuesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return QueuesDeleteResponse{RawResponse: resp}, nil
+	return QueuesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *QueuesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesDeleteOptions) (*policy.Request, error) {
+func (client *QueuesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -221,49 +219,42 @@ func (client *QueuesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *QueuesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteAuthorizationRule - Deletes a queue authorization rule.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesDeleteAuthorizationRuleOptions) (QueuesDeleteAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// authorizationRuleName - The authorization rule name.
+// options - QueuesClientDeleteAuthorizationRuleOptions contains the optional parameters for the QueuesClient.DeleteAuthorizationRule
+// method.
+func (client *QueuesClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesClientDeleteAuthorizationRuleOptions) (QueuesClientDeleteAuthorizationRuleResponse, error) {
 	req, err := client.deleteAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, queueName, authorizationRuleName, options)
 	if err != nil {
-		return QueuesDeleteAuthorizationRuleResponse{}, err
+		return QueuesClientDeleteAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueuesDeleteAuthorizationRuleResponse{}, err
+		return QueuesClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return QueuesDeleteAuthorizationRuleResponse{}, client.deleteAuthorizationRuleHandleError(resp)
+		return QueuesClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
-	return QueuesDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
+	return QueuesClientDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
-func (client *QueuesClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesDeleteAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *QueuesClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -285,49 +276,40 @@ func (client *QueuesClient) deleteAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteAuthorizationRuleHandleError handles the DeleteAuthorizationRule error response.
-func (client *QueuesClient) deleteAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns a description for the specified queue.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesGetOptions) (QueuesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// options - QueuesClientGetOptions contains the optional parameters for the QueuesClient.Get method.
+func (client *QueuesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesClientGetOptions) (QueuesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, queueName, options)
 	if err != nil {
-		return QueuesGetResponse{}, err
+		return QueuesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueuesGetResponse{}, err
+		return QueuesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueuesGetResponse{}, client.getHandleError(resp)
+		return QueuesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *QueuesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesGetOptions) (*policy.Request, error) {
+func (client *QueuesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -345,58 +327,51 @@ func (client *QueuesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *QueuesClient) getHandleResponse(resp *http.Response) (QueuesGetResponse, error) {
-	result := QueuesGetResponse{RawResponse: resp}
+func (client *QueuesClient) getHandleResponse(resp *http.Response) (QueuesClientGetResponse, error) {
+	result := QueuesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueue); err != nil {
-		return QueuesGetResponse{}, runtime.NewResponseError(err, resp)
+		return QueuesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *QueuesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAuthorizationRule - Gets an authorization rule for a queue by rule name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesGetAuthorizationRuleOptions) (QueuesGetAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// authorizationRuleName - The authorization rule name.
+// options - QueuesClientGetAuthorizationRuleOptions contains the optional parameters for the QueuesClient.GetAuthorizationRule
+// method.
+func (client *QueuesClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesClientGetAuthorizationRuleOptions) (QueuesClientGetAuthorizationRuleResponse, error) {
 	req, err := client.getAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, queueName, authorizationRuleName, options)
 	if err != nil {
-		return QueuesGetAuthorizationRuleResponse{}, err
+		return QueuesClientGetAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueuesGetAuthorizationRuleResponse{}, err
+		return QueuesClientGetAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueuesGetAuthorizationRuleResponse{}, client.getAuthorizationRuleHandleError(resp)
+		return QueuesClientGetAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAuthorizationRuleHandleResponse(resp)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *QueuesClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesGetAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *QueuesClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -418,55 +393,47 @@ func (client *QueuesClient) getAuthorizationRuleCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *QueuesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (QueuesGetAuthorizationRuleResponse, error) {
-	result := QueuesGetAuthorizationRuleResponse{RawResponse: resp}
+func (client *QueuesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (QueuesClientGetAuthorizationRuleResponse, error) {
+	result := QueuesClientGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
-		return QueuesGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
+		return QueuesClientGetAuthorizationRuleResponse{}, err
 	}
 	return result, nil
 }
 
-// getAuthorizationRuleHandleError handles the GetAuthorizationRule error response.
-func (client *QueuesClient) getAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAuthorizationRules - Gets all authorization rules for a queue.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, queueName string, options *QueuesListAuthorizationRulesOptions) *QueuesListAuthorizationRulesPager {
-	return &QueuesListAuthorizationRulesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// options - QueuesClientListAuthorizationRulesOptions contains the optional parameters for the QueuesClient.ListAuthorizationRules
+// method.
+func (client *QueuesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, queueName string, options *QueuesClientListAuthorizationRulesOptions) *QueuesClientListAuthorizationRulesPager {
+	return &QueuesClientListAuthorizationRulesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, queueName, options)
 		},
-		advancer: func(ctx context.Context, resp QueuesListAuthorizationRulesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp QueuesClientListAuthorizationRulesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SBAuthorizationRuleListResult.NextLink)
 		},
 	}
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *QueuesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesListAuthorizationRulesOptions) (*policy.Request, error) {
+func (client *QueuesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, options *QueuesClientListAuthorizationRulesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -484,55 +451,45 @@ func (client *QueuesClient) listAuthorizationRulesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *QueuesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (QueuesListAuthorizationRulesResponse, error) {
-	result := QueuesListAuthorizationRulesResponse{RawResponse: resp}
+func (client *QueuesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (QueuesClientListAuthorizationRulesResponse, error) {
+	result := QueuesClientListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRuleListResult); err != nil {
-		return QueuesListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
+		return QueuesClientListAuthorizationRulesResponse{}, err
 	}
 	return result, nil
 }
 
-// listAuthorizationRulesHandleError handles the ListAuthorizationRules error response.
-func (client *QueuesClient) listAuthorizationRulesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByNamespace - Gets the queues within a namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) ListByNamespace(resourceGroupName string, namespaceName string, options *QueuesListByNamespaceOptions) *QueuesListByNamespacePager {
-	return &QueuesListByNamespacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// options - QueuesClientListByNamespaceOptions contains the optional parameters for the QueuesClient.ListByNamespace method.
+func (client *QueuesClient) ListByNamespace(resourceGroupName string, namespaceName string, options *QueuesClientListByNamespaceOptions) *QueuesClientListByNamespacePager {
+	return &QueuesClientListByNamespacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
 		},
-		advancer: func(ctx context.Context, resp QueuesListByNamespaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp QueuesClientListByNamespaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SBQueueListResult.NextLink)
 		},
 	}
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *QueuesClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *QueuesListByNamespaceOptions) (*policy.Request, error) {
+func (client *QueuesClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *QueuesClientListByNamespaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -546,12 +503,12 @@ func (client *QueuesClient) listByNamespaceCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -564,46 +521,38 @@ func (client *QueuesClient) listByNamespaceCreateRequest(ctx context.Context, re
 }
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
-func (client *QueuesClient) listByNamespaceHandleResponse(resp *http.Response) (QueuesListByNamespaceResponse, error) {
-	result := QueuesListByNamespaceResponse{RawResponse: resp}
+func (client *QueuesClient) listByNamespaceHandleResponse(resp *http.Response) (QueuesClientListByNamespaceResponse, error) {
+	result := QueuesClientListByNamespaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueueListResult); err != nil {
-		return QueuesListByNamespaceResponse{}, runtime.NewResponseError(err, resp)
+		return QueuesClientListByNamespaceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByNamespaceHandleError handles the ListByNamespace error response.
-func (client *QueuesClient) listByNamespaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListKeys - Primary and secondary connection strings to the queue.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesListKeysOptions) (QueuesListKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// authorizationRuleName - The authorization rule name.
+// options - QueuesClientListKeysOptions contains the optional parameters for the QueuesClient.ListKeys method.
+func (client *QueuesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesClientListKeysOptions) (QueuesClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, queueName, authorizationRuleName, options)
 	if err != nil {
-		return QueuesListKeysResponse{}, err
+		return QueuesClientListKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueuesListKeysResponse{}, err
+		return QueuesClientListKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueuesListKeysResponse{}, client.listKeysHandleError(resp)
+		return QueuesClientListKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listKeysHandleResponse(resp)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *QueuesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesListKeysOptions) (*policy.Request, error) {
+func (client *QueuesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, options *QueuesClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}/ListKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -625,58 +574,51 @@ func (client *QueuesClient) listKeysCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *QueuesClient) listKeysHandleResponse(resp *http.Response) (QueuesListKeysResponse, error) {
-	result := QueuesListKeysResponse{RawResponse: resp}
+func (client *QueuesClient) listKeysHandleResponse(resp *http.Response) (QueuesClientListKeysResponse, error) {
+	result := QueuesClientListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return QueuesListKeysResponse{}, runtime.NewResponseError(err, resp)
+		return QueuesClientListKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listKeysHandleError handles the ListKeys error response.
-func (client *QueuesClient) listKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the queue.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueuesClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *QueuesRegenerateKeysOptions) (QueuesRegenerateKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// queueName - The queue name.
+// authorizationRuleName - The authorization rule name.
+// parameters - Parameters supplied to regenerate the authorization rule.
+// options - QueuesClientRegenerateKeysOptions contains the optional parameters for the QueuesClient.RegenerateKeys method.
+func (client *QueuesClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *QueuesClientRegenerateKeysOptions) (QueuesClientRegenerateKeysResponse, error) {
 	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters, options)
 	if err != nil {
-		return QueuesRegenerateKeysResponse{}, err
+		return QueuesClientRegenerateKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueuesRegenerateKeysResponse{}, err
+		return QueuesClientRegenerateKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueuesRegenerateKeysResponse{}, client.regenerateKeysHandleError(resp)
+		return QueuesClientRegenerateKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateKeysHandleResponse(resp)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *QueuesClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *QueuesRegenerateKeysOptions) (*policy.Request, error) {
+func (client *QueuesClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *QueuesClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -698,35 +640,22 @@ func (client *QueuesClient) regenerateKeysCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *QueuesClient) regenerateKeysHandleResponse(resp *http.Response) (QueuesRegenerateKeysResponse, error) {
-	result := QueuesRegenerateKeysResponse{RawResponse: resp}
+func (client *QueuesClient) regenerateKeysHandleResponse(resp *http.Response) (QueuesClientRegenerateKeysResponse, error) {
+	result := QueuesClientRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return QueuesRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
+		return QueuesClientRegenerateKeysResponse{}, err
 	}
 	return result, nil
-}
-
-// regenerateKeysHandleError handles the RegenerateKeys error response.
-func (client *QueuesClient) regenerateKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

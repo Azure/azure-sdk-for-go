@@ -24,46 +24,60 @@ import (
 // LinkedServicesClient contains the methods for the LinkedServices group.
 // Don't use this type directly, use NewLinkedServicesClient() instead.
 type LinkedServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLinkedServicesClient creates a new instance of LinkedServicesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LinkedServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LinkedServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LinkedServicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a linked service.
-// If the operation fails it returns a generic error.
-func (client *LinkedServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesBeginCreateOrUpdateOptions) (LinkedServicesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// linkedServiceName - Name of the linkedServices resource
+// parameters - The parameters required to create or update a linked service.
+// options - LinkedServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.BeginCreateOrUpdate
+// method.
+func (client *LinkedServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (LinkedServicesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, linkedServiceName, parameters, options)
 	if err != nil {
-		return LinkedServicesCreateOrUpdatePollerResponse{}, err
+		return LinkedServicesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := LinkedServicesCreateOrUpdatePollerResponse{
+	result := LinkedServicesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LinkedServicesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("LinkedServicesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return LinkedServicesCreateOrUpdatePollerResponse{}, err
+		return LinkedServicesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &LinkedServicesCreateOrUpdatePoller{
+	result.Poller = &LinkedServicesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a linked service.
-// If the operation fails it returns a generic error.
-func (client *LinkedServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LinkedServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, linkedServiceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +87,13 @@ func (client *LinkedServicesClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +111,7 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +122,34 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LinkedServicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a linked service instance.
-// If the operation fails it returns a generic error.
-func (client *LinkedServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesBeginDeleteOptions) (LinkedServicesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// linkedServiceName - Name of the linked service.
+// options - LinkedServicesClientBeginDeleteOptions contains the optional parameters for the LinkedServicesClient.BeginDelete
+// method.
+func (client *LinkedServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (LinkedServicesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, linkedServiceName, options)
 	if err != nil {
-		return LinkedServicesDeletePollerResponse{}, err
+		return LinkedServicesClientDeletePollerResponse{}, err
 	}
-	result := LinkedServicesDeletePollerResponse{
+	result := LinkedServicesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LinkedServicesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("LinkedServicesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return LinkedServicesDeletePollerResponse{}, err
+		return LinkedServicesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &LinkedServicesDeletePoller{
+	result.Poller = &LinkedServicesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a linked service instance.
-// If the operation fails it returns a generic error.
-func (client *LinkedServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LinkedServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, linkedServiceName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +159,13 @@ func (client *LinkedServicesClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesBeginDeleteOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +183,7 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,37 +194,29 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LinkedServicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a linked service instance.
-// If the operation fails it returns a generic error.
-func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesGetOptions) (LinkedServicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// linkedServiceName - Name of the linked service.
+// options - LinkedServicesClientGetOptions contains the optional parameters for the LinkedServicesClient.Get method.
+func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientGetOptions) (LinkedServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, linkedServiceName, options)
 	if err != nil {
-		return LinkedServicesGetResponse{}, err
+		return LinkedServicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LinkedServicesGetResponse{}, err
+		return LinkedServicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LinkedServicesGetResponse{}, client.getHandleError(resp)
+		return LinkedServicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesGetOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -235,7 +234,7 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -247,45 +246,37 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (LinkedServicesGetResponse, error) {
-	result := LinkedServicesGetResponse{RawResponse: resp}
+func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (LinkedServicesClientGetResponse, error) {
+	result := LinkedServicesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedService); err != nil {
-		return LinkedServicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return LinkedServicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LinkedServicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByWorkspace - Gets the linked services instances in a workspace.
-// If the operation fails it returns a generic error.
-func (client *LinkedServicesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedServicesListByWorkspaceOptions) (LinkedServicesListByWorkspaceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.ListByWorkspace
+// method.
+func (client *LinkedServicesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedServicesClientListByWorkspaceOptions) (LinkedServicesClientListByWorkspaceResponse, error) {
 	req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return LinkedServicesListByWorkspaceResponse{}, err
+		return LinkedServicesClientListByWorkspaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LinkedServicesListByWorkspaceResponse{}, err
+		return LinkedServicesClientListByWorkspaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LinkedServicesListByWorkspaceResponse{}, client.listByWorkspaceHandleError(resp)
+		return LinkedServicesClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByWorkspaceHandleResponse(resp)
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedServicesListByWorkspaceOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedServicesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -299,7 +290,7 @@ func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -311,22 +302,10 @@ func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Con
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *LinkedServicesClient) listByWorkspaceHandleResponse(resp *http.Response) (LinkedServicesListByWorkspaceResponse, error) {
-	result := LinkedServicesListByWorkspaceResponse{RawResponse: resp}
+func (client *LinkedServicesClient) listByWorkspaceHandleResponse(resp *http.Response) (LinkedServicesClientListByWorkspaceResponse, error) {
+	result := LinkedServicesClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServiceListResult); err != nil {
-		return LinkedServicesListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return LinkedServicesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *LinkedServicesClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

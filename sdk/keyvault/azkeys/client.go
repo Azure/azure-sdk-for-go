@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
@@ -56,32 +56,12 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	genOptions.PerRetryPolicies = append(
 		genOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
+		shared.NewKeyVaultChallengePolicy(credential),
 	)
 
-	conn := generated.NewConnection(genOptions)
+	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
-		kvClient: generated.NewKeyVaultClient(conn),
-		vaultUrl: vaultUrl,
-	}, nil
-}
-
-func createTestClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions, recordingPolicy policy.Policy) (*Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-
-	genOptions := options.toConnectionOptions()
-
-	genOptions.PerRetryPolicies = append(
-		genOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
-	)
-	genOptions.PerCallPolicies = append(genOptions.PerCallPolicies, recordingPolicy)
-
-	conn := generated.NewConnection(genOptions)
-	return &Client{
-		kvClient: generated.NewKeyVaultClient(conn),
+		kvClient: generated.NewKeyVaultClient(pl),
 		vaultUrl: vaultUrl,
 	}, nil
 }
@@ -102,7 +82,7 @@ type CreateKeyOptions struct {
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert CreateKeyOptions to *generated.KeyVaultClientCreateKeyOptions
@@ -117,7 +97,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		attribs = c.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
+	var ops []*generated.JSONWebKeyOperation
 	for _, o := range c.KeyOps {
 		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
 	}
@@ -129,7 +109,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		KeyOps:         ops,
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Tags:           convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -147,7 +127,7 @@ func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse)
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(g.Attributes),
 			Key:        jsonWebKeyFromGenerated(g.Key),
-			Tags:       g.Tags,
+			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
 	}
@@ -175,7 +155,7 @@ type CreateECKeyOptions struct {
 	CurveName *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// Whether to create an EC key with HSM protection
 	HardwareProtected bool
@@ -186,7 +166,7 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 	return generated.KeyCreateParameters{
 		Kty:   keyType.toGenerated(),
 		Curve: (*generated.JSONWebKeyCurveName)(c.CurveName),
-		Tags:  c.Tags,
+		Tags:  convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -204,7 +184,7 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(g.Attributes),
 			Key:        jsonWebKeyFromGenerated(g.Key),
-			Tags:       g.Tags,
+			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
 	}
@@ -224,7 +204,7 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
-		return CreateECKeyResponse{}, nil
+		return CreateECKeyResponse{}, err
 	}
 
 	return createECKeyResponseFromGenerated(resp), nil
@@ -239,7 +219,7 @@ type CreateOCTKeyOptions struct {
 	KeySize *int32 `json:"key_size,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // conver the CreateOCTKeyOptions to generated.KeyCreateParameters
@@ -247,7 +227,7 @@ func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 	return generated.KeyCreateParameters{
 		Kty:     keyType.toGenerated(),
 		KeySize: c.KeySize,
-		Tags:    c.Tags,
+		Tags:    convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -265,7 +245,7 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -273,7 +253,7 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 
 // CreateKey - The create key operation can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
 // If the named key already exists, Azure Key Vault creates
-// a new version of the key. It requires the keys/create  permission.
+// a new version of the key. It requires the keys/create permission.
 func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
 	keyType := Oct
 
@@ -284,8 +264,11 @@ func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateO
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
+	if err != nil {
+		return CreateOCTKeyResponse{}, err
+	}
 
-	return createOCTKeyResponseFromGenerated(resp), err
+	return createOCTKeyResponseFromGenerated(resp), nil
 }
 
 // CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.
@@ -300,7 +283,7 @@ type CreateRSAKeyOptions struct {
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
@@ -309,7 +292,7 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 		Kty:            k.toGenerated(),
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Tags:           convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -327,7 +310,7 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -455,7 +438,7 @@ func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKe
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -499,7 +482,7 @@ func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyR
 			KeyBundle: KeyBundle{
 				Attributes: keyAttributesFromGenerated(i.Attributes),
 				Key:        jsonWebKeyFromGenerated(i.Key),
-				Tags:       i.Tags,
+				Tags:       convertGeneratedMap(i.Tags),
 				Managed:    i.Managed,
 			},
 			RecoveryID:         i.RecoveryID,
@@ -619,11 +602,16 @@ func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error)
 		// Service recognizes DeletedKey, operation is done
 		s.lastResponse = resp
 		return resp.RawResponse, nil
-	} else if err != nil {
-		return s.deleteResponse.RawResponse, nil
 	}
-	s.lastResponse = resp
-	return resp.RawResponse, nil
+
+	var httpResponseErr *azcore.ResponseError
+	if errors.As(err, &httpResponseErr) {
+		if httpResponseErr.StatusCode == http.StatusNotFound {
+			// This is the expected result
+			return s.deleteResponse.RawResponse, nil
+		}
+	}
+	return s.deleteResponse.RawResponse, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -673,9 +661,9 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 	}
 
 	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, keyName, nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return DeleteKeyPollerResponse{}, err
 		}
 	}
@@ -778,9 +766,9 @@ func (b *beginRecoverPoller) Done() bool {
 func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetKey(ctx, b.vaultUrl, b.keyName, "", nil)
 	b.lastResponse = resp
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		return httpErr.RawResponse(), err
+		return httpErr.RawResponse, err
 	}
 	return resp.RawResponse, nil
 }
@@ -828,7 +816,7 @@ func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDel
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -858,9 +846,9 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 	}
 
 	getResp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, "", nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return RecoverDeletedKeyPollerResponse{}, err
 		}
 	}
@@ -893,7 +881,7 @@ type UpdateKeyPropertiesOptions struct {
 	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert the options to generated.KeyUpdateParameters struct
@@ -903,7 +891,7 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateP
 		attribs = u.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
+	var ops []*generated.JSONWebKeyOperation
 	for _, o := range u.KeyOps {
 		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
 	}
@@ -911,7 +899,7 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateP
 	return generated.KeyUpdateParameters{
 		KeyOps:        ops,
 		KeyAttributes: attribs,
-		Tags:          u.Tags,
+		Tags:          convertToGeneratedMap(u.Tags),
 	}
 }
 
@@ -934,7 +922,7 @@ func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyRespons
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1156,7 +1144,7 @@ func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyR
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1186,7 +1174,7 @@ type ImportKeyOptions struct {
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
@@ -1198,7 +1186,7 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 		Key:           key.toGenerated(),
 		Hsm:           i.Hsm,
 		KeyAttributes: attribs,
-		Tags:          i.Tags,
+		Tags:          convertToGeneratedMap(i.Tags),
 	}
 }
 
@@ -1216,7 +1204,7 @@ func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse)
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1311,7 +1299,7 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 			Attributes:    keyAttributesFromGenerated(resp.Attributes),
 			Key:           jsonWebKeyFromGenerated(resp.Key),
 			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
-			Tags:          resp.Tags,
+			Tags:          convertGeneratedMap(resp.Tags),
 			Managed:       resp.Managed,
 		},
 	}, nil

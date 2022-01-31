@@ -11,7 +11,6 @@ package armcdn
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,62 +24,55 @@ import (
 // RuleSetsClient contains the methods for the RuleSets group.
 // Don't use this type directly, use NewRuleSetsClient() instead.
 type RuleSetsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRuleSetsClient creates a new instance of RuleSetsClient with the specified values.
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RuleSetsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &RuleSetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
-}
-
-// BeginCreate - Creates a new rule set within the specified profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *RuleSetsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsBeginCreateOptions) (RuleSetsCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, profileName, ruleSetName, options)
-	if err != nil {
-		return RuleSetsCreatePollerResponse{}, err
+	client := &RuleSetsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
 	}
-	result := RuleSetsCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("RuleSetsClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
-	if err != nil {
-		return RuleSetsCreatePollerResponse{}, err
-	}
-	result.Poller = &RuleSetsCreatePoller{
-		pt: pt,
-	}
-	return result, nil
+	return client
 }
 
 // Create - Creates a new rule set within the specified profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *RuleSetsClient) create(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// ruleSetName - Name of the rule set under the profile which is unique globally
+// options - RuleSetsClientCreateOptions contains the optional parameters for the RuleSetsClient.Create method.
+func (client *RuleSetsClient) Create(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientCreateOptions) (RuleSetsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
 	if err != nil {
-		return nil, err
+		return RuleSetsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return RuleSetsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return RuleSetsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
-	return resp, nil
+	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsBeginCreateOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,53 +90,56 @@ func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *RuleSetsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
+// createHandleResponse handles the Create response.
+func (client *RuleSetsClient) createHandleResponse(resp *http.Response) (RuleSetsClientCreateResponse, error) {
+	result := RuleSetsClientCreateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RuleSet); err != nil {
+		return RuleSetsClientCreateResponse{}, err
 	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
+	return result, nil
 }
 
-// BeginDelete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription, resource group and profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsBeginDeleteOptions) (RuleSetsDeletePollerResponse, error) {
+// BeginDelete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
+// resource group and profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// ruleSetName - Name of the rule set under the profile which is unique globally.
+// options - RuleSetsClientBeginDeleteOptions contains the optional parameters for the RuleSetsClient.BeginDelete method.
+func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (RuleSetsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, ruleSetName, options)
 	if err != nil {
-		return RuleSetsDeletePollerResponse{}, err
+		return RuleSetsClientDeletePollerResponse{}, err
 	}
-	result := RuleSetsDeletePollerResponse{
+	result := RuleSetsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RuleSetsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("RuleSetsClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return RuleSetsDeletePollerResponse{}, err
+		return RuleSetsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &RuleSetsDeletePoller{
+	result.Poller = &RuleSetsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription, resource group and profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *RuleSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsBeginDeleteOptions) (*http.Response, error) {
+// Delete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
+// resource group and profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RuleSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
 	if err != nil {
 		return nil, err
@@ -153,14 +148,14 @@ func (client *RuleSetsClient) deleteOperation(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsBeginDeleteOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,49 +173,42 @@ func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RuleSetsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Gets an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription, resource group and profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *RuleSetsClient) Get(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsGetOptions) (RuleSetsGetResponse, error) {
+// Get - Gets an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription, resource
+// group and profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// ruleSetName - Name of the rule set under the profile which is unique globally.
+// options - RuleSetsClientGetOptions contains the optional parameters for the RuleSetsClient.Get method.
+func (client *RuleSetsClient) Get(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientGetOptions) (RuleSetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
 	if err != nil {
-		return RuleSetsGetResponse{}, err
+		return RuleSetsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RuleSetsGetResponse{}, err
+		return RuleSetsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RuleSetsGetResponse{}, client.getHandleError(resp)
+		return RuleSetsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsGetOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,55 +226,46 @@ func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RuleSetsClient) getHandleResponse(resp *http.Response) (RuleSetsGetResponse, error) {
-	result := RuleSetsGetResponse{RawResponse: resp}
+func (client *RuleSetsClient) getHandleResponse(resp *http.Response) (RuleSetsClientGetResponse, error) {
+	result := RuleSetsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleSet); err != nil {
-		return RuleSetsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RuleSetsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RuleSetsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProfile - Lists existing AzureFrontDoor rule sets within a profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *RuleSetsClient) ListByProfile(resourceGroupName string, profileName string, options *RuleSetsListByProfileOptions) *RuleSetsListByProfilePager {
-	return &RuleSetsListByProfilePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// options - RuleSetsClientListByProfileOptions contains the optional parameters for the RuleSetsClient.ListByProfile method.
+func (client *RuleSetsClient) ListByProfile(resourceGroupName string, profileName string, options *RuleSetsClientListByProfileOptions) *RuleSetsClientListByProfilePager {
+	return &RuleSetsClientListByProfilePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
 		},
-		advancer: func(ctx context.Context, resp RuleSetsListByProfileResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RuleSetsClientListByProfileResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RuleSetListResult.NextLink)
 		},
 	}
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *RuleSetsListByProfileOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *RuleSetsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,55 +279,48 @@ func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByProfileHandleResponse handles the ListByProfile response.
-func (client *RuleSetsClient) listByProfileHandleResponse(resp *http.Response) (RuleSetsListByProfileResponse, error) {
-	result := RuleSetsListByProfileResponse{RawResponse: resp}
+func (client *RuleSetsClient) listByProfileHandleResponse(resp *http.Response) (RuleSetsClientListByProfileResponse, error) {
+	result := RuleSetsClientListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleSetListResult); err != nil {
-		return RuleSetsListByProfileResponse{}, runtime.NewResponseError(err, resp)
+		return RuleSetsClientListByProfileResponse{}, err
 	}
 	return result, nil
 }
 
-// listByProfileHandleError handles the ListByProfile error response.
-func (client *RuleSetsClient) listByProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *RuleSetsClient) ListResourceUsage(resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsListResourceUsageOptions) *RuleSetsListResourceUsagePager {
-	return &RuleSetsListResourceUsagePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// ruleSetName - Name of the rule set under the profile which is unique globally.
+// options - RuleSetsClientListResourceUsageOptions contains the optional parameters for the RuleSetsClient.ListResourceUsage
+// method.
+func (client *RuleSetsClient) ListResourceUsage(resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientListResourceUsageOptions) *RuleSetsClientListResourceUsagePager {
+	return &RuleSetsClientListResourceUsagePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
 		},
-		advancer: func(ctx context.Context, resp RuleSetsListResourceUsageResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RuleSetsClientListResourceUsageResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
 		},
 	}
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
-func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsListResourceUsageOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientListResourceUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -366,35 +338,22 @@ func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listResourceUsageHandleResponse handles the ListResourceUsage response.
-func (client *RuleSetsClient) listResourceUsageHandleResponse(resp *http.Response) (RuleSetsListResourceUsageResponse, error) {
-	result := RuleSetsListResourceUsageResponse{RawResponse: resp}
+func (client *RuleSetsClient) listResourceUsageHandleResponse(resp *http.Response) (RuleSetsClientListResourceUsageResponse, error) {
+	result := RuleSetsClientListResourceUsageResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
-		return RuleSetsListResourceUsageResponse{}, runtime.NewResponseError(err, resp)
+		return RuleSetsClientListResourceUsageResponse{}, err
 	}
 	return result, nil
-}
-
-// listResourceUsageHandleError handles the ListResourceUsage error response.
-func (client *RuleSetsClient) listResourceUsageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,0 +1,734 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ComputeClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, *ComputeBeginStopOptions)` to `(context.Context, string, string, string, *ComputeClientBeginStopOptions)`
+- Function `*ComputeClient.BeginStop` return value(s) have been changed from `(ComputeStopPollerResponse, error)` to `(ComputeClientStopPollerResponse, error)`
+- Function `*WorkspacesClient.ListOutboundNetworkDependenciesEndpoints` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesListOutboundNetworkDependenciesEndpointsOptions)` to `(context.Context, string, string, *WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions)`
+- Function `*WorkspacesClient.ListOutboundNetworkDependenciesEndpoints` return value(s) have been changed from `(WorkspacesListOutboundNetworkDependenciesEndpointsResponse, error)` to `(WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*WorkspacesClient.ListNotebookKeys` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesListNotebookKeysOptions)` to `(context.Context, string, string, *WorkspacesClientListNotebookKeysOptions)`
+- Function `*WorkspacesClient.ListNotebookKeys` return value(s) have been changed from `(WorkspacesListNotebookKeysResponse, error)` to `(WorkspacesClientListNotebookKeysResponse, error)`
+- Function `*WorkspaceConnectionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *WorkspaceConnectionsDeleteOptions)` to `(context.Context, string, string, string, *WorkspaceConnectionsClientDeleteOptions)`
+- Function `*WorkspaceConnectionsClient.Delete` return value(s) have been changed from `(WorkspaceConnectionsDeleteResponse, error)` to `(WorkspaceConnectionsClientDeleteResponse, error)`
+- Function `*ComputeClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ComputeGetOptions)` to `(context.Context, string, string, string, *ComputeClientGetOptions)`
+- Function `*ComputeClient.Get` return value(s) have been changed from `(ComputeGetResponse, error)` to `(ComputeClientGetResponse, error)`
+- Function `*WorkspacesClient.ListNotebookAccessToken` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesListNotebookAccessTokenOptions)` to `(context.Context, string, string, *WorkspacesClientListNotebookAccessTokenOptions)`
+- Function `*WorkspacesClient.ListNotebookAccessToken` return value(s) have been changed from `(WorkspacesListNotebookAccessTokenResponse, error)` to `(WorkspacesClientListNotebookAccessTokenResponse, error)`
+- Function `*WorkspaceConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *WorkspaceConnectionsGetOptions)` to `(context.Context, string, string, string, *WorkspaceConnectionsClientGetOptions)`
+- Function `*WorkspaceConnectionsClient.Get` return value(s) have been changed from `(WorkspaceConnectionsGetResponse, error)` to `(WorkspaceConnectionsClientGetResponse, error)`
+- Function `*QuotasClient.Update` parameter(s) have been changed from `(context.Context, string, QuotaUpdateParameters, *QuotasUpdateOptions)` to `(context.Context, string, QuotaUpdateParameters, *QuotasClientUpdateOptions)`
+- Function `*QuotasClient.Update` return value(s) have been changed from `(QuotasUpdateResponse, error)` to `(QuotasClientUpdateResponse, error)`
+- Function `*WorkspacesClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesListKeysOptions)` to `(context.Context, string, string, *WorkspacesClientListKeysOptions)`
+- Function `*WorkspacesClient.ListKeys` return value(s) have been changed from `(WorkspacesListKeysResponse, error)` to `(WorkspacesClientListKeysResponse, error)`
+- Function `*WorkspacesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesBeginDeleteOptions)` to `(context.Context, string, string, *WorkspacesClientBeginDeleteOptions)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(WorkspacesDeletePollerResponse, error)` to `(WorkspacesClientDeletePollerResponse, error)`
+- Function `*WorkspaceFeaturesClient.List` parameter(s) have been changed from `(string, string, *WorkspaceFeaturesListOptions)` to `(string, string, *WorkspaceFeaturesClientListOptions)`
+- Function `*WorkspaceFeaturesClient.List` return value(s) have been changed from `(*WorkspaceFeaturesListPager)` to `(*WorkspaceFeaturesClientListPager)`
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdateResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*PrivateLinkResourcesClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(PrivateLinkResourcesListResponse, error)` to `(PrivateLinkResourcesClientListResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListResponse, error)` to `(PrivateEndpointConnectionsClientListResponse, error)`
+- Function `*WorkspacesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *WorkspacesListByResourceGroupOptions)` to `(string, *WorkspacesClientListByResourceGroupOptions)`
+- Function `*WorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(*WorkspacesListByResourceGroupPager)` to `(*WorkspacesClientListByResourceGroupPager)`
+- Function `*WorkspacesClient.BeginResyncKeys` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesBeginResyncKeysOptions)` to `(context.Context, string, string, *WorkspacesClientBeginResyncKeysOptions)`
+- Function `*WorkspacesClient.BeginResyncKeys` return value(s) have been changed from `(WorkspacesResyncKeysPollerResponse, error)` to `(WorkspacesClientResyncKeysPollerResponse, error)`
+- Function `*ComputeClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, UnderlyingResourceAction, *ComputeBeginDeleteOptions)` to `(context.Context, string, string, string, UnderlyingResourceAction, *ComputeClientBeginDeleteOptions)`
+- Function `*ComputeClient.BeginDelete` return value(s) have been changed from `(ComputeDeletePollerResponse, error)` to `(ComputeClientDeletePollerResponse, error)`
+- Function `*VirtualMachineSizesClient.List` parameter(s) have been changed from `(context.Context, string, *VirtualMachineSizesListOptions)` to `(context.Context, string, *VirtualMachineSizesClientListOptions)`
+- Function `*VirtualMachineSizesClient.List` return value(s) have been changed from `(VirtualMachineSizesListResponse, error)` to `(VirtualMachineSizesClientListResponse, error)`
+- Function `*WorkspaceConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *WorkspaceConnectionsListOptions)` to `(context.Context, string, string, *WorkspaceConnectionsClientListOptions)`
+- Function `*WorkspaceConnectionsClient.List` return value(s) have been changed from `(WorkspaceConnectionsListResponse, error)` to `(WorkspaceConnectionsClientListResponse, error)`
+- Function `*ComputeClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, *ComputeListKeysOptions)` to `(context.Context, string, string, string, *ComputeClientListKeysOptions)`
+- Function `*ComputeClient.ListKeys` return value(s) have been changed from `(ComputeListKeysResponse, error)` to `(ComputeClientListKeysResponse, error)`
+- Function `*WorkspacesClient.BeginPrepareNotebook` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesBeginPrepareNotebookOptions)` to `(context.Context, string, string, *WorkspacesClientBeginPrepareNotebookOptions)`
+- Function `*WorkspacesClient.BeginPrepareNotebook` return value(s) have been changed from `(WorkspacesPrepareNotebookPollerResponse, error)` to `(WorkspacesClientPrepareNotebookPollerResponse, error)`
+- Function `*WorkspacesClient.Update` parameter(s) have been changed from `(context.Context, string, string, WorkspaceUpdateParameters, *WorkspacesUpdateOptions)` to `(context.Context, string, string, WorkspaceUpdateParameters, *WorkspacesClientUpdateOptions)`
+- Function `*WorkspacesClient.Update` return value(s) have been changed from `(WorkspacesUpdateResponse, error)` to `(WorkspacesClientUpdateResponse, error)`
+- Function `*ComputeClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, string, string, *ComputeBeginRestartOptions)` to `(context.Context, string, string, string, *ComputeClientBeginRestartOptions)`
+- Function `*ComputeClient.BeginRestart` return value(s) have been changed from `(ComputeRestartPollerResponse, error)` to `(ComputeClientRestartPollerResponse, error)`
+- Function `*WorkspaceConnectionsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, WorkspaceConnection, *WorkspaceConnectionsCreateOptions)` to `(context.Context, string, string, string, WorkspaceConnection, *WorkspaceConnectionsClientCreateOptions)`
+- Function `*WorkspaceConnectionsClient.Create` return value(s) have been changed from `(WorkspaceConnectionsCreateResponse, error)` to `(WorkspaceConnectionsClientCreateResponse, error)`
+- Function `*WorkspaceSKUsClient.List` parameter(s) have been changed from `(*WorkspaceSKUsListOptions)` to `(*WorkspaceSKUsClientListOptions)`
+- Function `*WorkspaceSKUsClient.List` return value(s) have been changed from `(*WorkspaceSKUsListPager)` to `(*WorkspaceSKUsClientListPager)`
+- Function `*WorkspacesClient.ListStorageAccountKeys` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesListStorageAccountKeysOptions)` to `(context.Context, string, string, *WorkspacesClientListStorageAccountKeysOptions)`
+- Function `*WorkspacesClient.ListStorageAccountKeys` return value(s) have been changed from `(WorkspacesListStorageAccountKeysResponse, error)` to `(WorkspacesClientListStorageAccountKeysResponse, error)`
+- Function `*ComputeClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ClusterUpdateParameters, *ComputeBeginUpdateOptions)` to `(context.Context, string, string, string, ClusterUpdateParameters, *ComputeClientBeginUpdateOptions)`
+- Function `*ComputeClient.BeginUpdate` return value(s) have been changed from `(ComputeUpdatePollerResponse, error)` to `(ComputeClientUpdatePollerResponse, error)`
+- Function `*ComputeClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ComputeResource, *ComputeBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, ComputeResource, *ComputeClientBeginCreateOrUpdateOptions)`
+- Function `*ComputeClient.BeginCreateOrUpdate` return value(s) have been changed from `(ComputeCreateOrUpdatePollerResponse, error)` to `(ComputeClientCreateOrUpdatePollerResponse, error)`
+- Function `*WorkspacesClient.ListBySubscription` parameter(s) have been changed from `(*WorkspacesListBySubscriptionOptions)` to `(*WorkspacesClientListBySubscriptionOptions)`
+- Function `*WorkspacesClient.ListBySubscription` return value(s) have been changed from `(*WorkspacesListBySubscriptionPager)` to `(*WorkspacesClientListBySubscriptionPager)`
+- Function `*WorkspacesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesGetOptions)` to `(context.Context, string, string, *WorkspacesClientGetOptions)`
+- Function `*WorkspacesClient.Get` return value(s) have been changed from `(WorkspacesGetResponse, error)` to `(WorkspacesClientGetResponse, error)`
+- Function `*UsagesClient.List` parameter(s) have been changed from `(string, *UsagesListOptions)` to `(string, *UsagesClientListOptions)`
+- Function `*UsagesClient.List` return value(s) have been changed from `(*UsagesListPager)` to `(*UsagesClientListPager)`
+- Function `*WorkspacesClient.BeginDiagnose` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesBeginDiagnoseOptions)` to `(context.Context, string, string, *WorkspacesClientBeginDiagnoseOptions)`
+- Function `*WorkspacesClient.BeginDiagnose` return value(s) have been changed from `(WorkspacesDiagnosePollerResponse, error)` to `(WorkspacesClientDiagnosePollerResponse, error)`
+- Function `*ComputeClient.List` parameter(s) have been changed from `(string, string, *ComputeListOptions)` to `(string, string, *ComputeClientListOptions)`
+- Function `*ComputeClient.List` return value(s) have been changed from `(*ComputeListPager)` to `(*ComputeClientListPager)`
+- Function `*PrivateEndpointConnectionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.Delete` return value(s) have been changed from `(PrivateEndpointConnectionsDeleteResponse, error)` to `(PrivateEndpointConnectionsClientDeleteResponse, error)`
+- Function `*ComputeClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *ComputeBeginStartOptions)` to `(context.Context, string, string, string, *ComputeClientBeginStartOptions)`
+- Function `*ComputeClient.BeginStart` return value(s) have been changed from `(ComputeStartPollerResponse, error)` to `(ComputeClientStartPollerResponse, error)`
+- Function `*ComputeClient.ListNodes` parameter(s) have been changed from `(string, string, string, *ComputeListNodesOptions)` to `(string, string, string, *ComputeClientListNodesOptions)`
+- Function `*ComputeClient.ListNodes` return value(s) have been changed from `(*ComputeListNodesPager)` to `(*ComputeClientListNodesPager)`
+- Function `*QuotasClient.List` parameter(s) have been changed from `(string, *QuotasListOptions)` to `(string, *QuotasClientListOptions)`
+- Function `*QuotasClient.List` return value(s) have been changed from `(*QuotasListPager)` to `(*QuotasClientListPager)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Workspace, *WorkspacesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Workspace, *WorkspacesClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspacesCreateOrUpdatePollerResponse, error)` to `(WorkspacesClientCreateOrUpdatePollerResponse, error)`
+- Function `ComputeDeletePollerResponse.PollUntilDone` has been removed
+- Function `*KubernetesSchema.UnmarshalJSON` has been removed
+- Function `*WorkspaceFeaturesListPager.NextPage` has been removed
+- Function `*WorkspacesDiagnosePollerResponse.Resume` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ComputeRestartPoller.Poll` has been removed
+- Function `*WorkspacesDiagnosePoller.Done` has been removed
+- Function `*ComputeUpdatePoller.ResumeToken` has been removed
+- Function `*ComputeDeletePoller.ResumeToken` has been removed
+- Function `WorkspacesResyncKeysPollerResponse.PollUntilDone` has been removed
+- Function `*UsagesListPager.PageResponse` has been removed
+- Function `*ComputeListNodesPager.Err` has been removed
+- Function `ComputeStartPollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesResyncKeysPoller.ResumeToken` has been removed
+- Function `*WorkspacesDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkResource.UnmarshalJSON` has been removed
+- Function `*AksComputeSecretsProperties.UnmarshalJSON` has been removed
+- Function `AksComputeSecretsProperties.MarshalJSON` has been removed
+- Function `*ComputeStartPoller.Done` has been removed
+- Function `*ComputeListPager.NextPage` has been removed
+- Function `*UsagesListPager.NextPage` has been removed
+- Function `*WorkspacesListBySubscriptionPager.Err` has been removed
+- Function `*WorkspacesPrepareNotebookPoller.Done` has been removed
+- Function `*WorkspacesPrepareNotebookPoller.ResumeToken` has been removed
+- Function `*WorkspacesListByResourceGroupPager.NextPage` has been removed
+- Function `*UsagesListPager.Err` has been removed
+- Function `*ComputeListNodesPager.NextPage` has been removed
+- Function `*ComputeListPager.PageResponse` has been removed
+- Function `*ComputeRestartPoller.FinalResponse` has been removed
+- Function `KubernetesSchema.MarshalJSON` has been removed
+- Function `*ComputeRestartPollerResponse.Resume` has been removed
+- Function `*ComputeCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WorkspacesListBySubscriptionPager.NextPage` has been removed
+- Function `*WorkspaceFeaturesListPager.Err` has been removed
+- Function `*ComputeListPager.Err` has been removed
+- Function `*ComputeStopPoller.ResumeToken` has been removed
+- Function `*WorkspacesPrepareNotebookPoller.Poll` has been removed
+- Function `*WorkspacesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ComputeDeletePoller.Poll` has been removed
+- Function `*WorkspacesDiagnosePoller.FinalResponse` has been removed
+- Function `*WorkspacesDiagnosePoller.Poll` has been removed
+- Function `*ComputeRestartPoller.ResumeToken` has been removed
+- Function `*WorkspacesDiagnosePoller.ResumeToken` has been removed
+- Function `*WorkspacesListByResourceGroupPager.PageResponse` has been removed
+- Function `*ComputeDeletePoller.FinalResponse` has been removed
+- Function `*ComputeStartPoller.Poll` has been removed
+- Function `*WorkspaceFeaturesListPager.PageResponse` has been removed
+- Function `*WorkspacesResyncKeysPoller.Poll` has been removed
+- Function `*QuotasListPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*WorkspacesListByResourceGroupPager.Err` has been removed
+- Function `ComputeUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ComputeStartPoller.FinalResponse` has been removed
+- Function `ComputeCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ComputeStopPoller.Done` has been removed
+- Function `*ComputeListKeysResult.UnmarshalJSON` has been removed
+- Function `*WorkspacesDeletePollerResponse.Resume` has been removed
+- Function `*ComputeCreateOrUpdatePoller.Done` has been removed
+- Function `*ComputeStopPoller.Poll` has been removed
+- Function `*QuotasListPager.PageResponse` has been removed
+- Function `*ComputeUpdatePoller.Done` has been removed
+- Function `*WorkspacesDeletePoller.Done` has been removed
+- Function `*ComputeStartPoller.ResumeToken` has been removed
+- Function `*WorkspaceSKUsListPager.PageResponse` has been removed
+- Function `DatabricksComputeSecretsProperties.MarshalJSON` has been removed
+- Function `*WorkspacesResyncKeysPoller.FinalResponse` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*PrivateEndpointConnection.UnmarshalJSON` has been removed
+- Function `*WorkspacesListBySubscriptionPager.PageResponse` has been removed
+- Function `*ComputeUpdatePoller.FinalResponse` has been removed
+- Function `WorkspacesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceSKUsListPager.NextPage` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkspacesDeletePoller.FinalResponse` has been removed
+- Function `*ComputeStopPoller.FinalResponse` has been removed
+- Function `*ComputeDeletePoller.Done` has been removed
+- Function `*WorkspacesDeletePoller.Poll` has been removed
+- Function `ComputeRestartPollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesResyncKeysPollerResponse.Resume` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkspacesResyncKeysPoller.Done` has been removed
+- Function `WorkspacesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ComputeRestartPoller.Done` has been removed
+- Function `*WorkspacesPrepareNotebookPollerResponse.Resume` has been removed
+- Function `*ComputeCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ComputeListNodesPager.PageResponse` has been removed
+- Function `*ComputeSecrets.UnmarshalJSON` has been removed
+- Function `*ComputeDeletePollerResponse.Resume` has been removed
+- Function `*ComputeCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `WorkspacesPrepareNotebookPollerResponse.PollUntilDone` has been removed
+- Function `*ComputeStartPollerResponse.Resume` has been removed
+- Function `*Workspace.UnmarshalJSON` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ComputeUpdatePoller.Poll` has been removed
+- Function `*DatabricksComputeSecretsProperties.UnmarshalJSON` has been removed
+- Function `*ComputeUpdatePollerResponse.Resume` has been removed
+- Function `*QuotasListPager.Err` has been removed
+- Function `WorkspacesDiagnosePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceSKUsListPager.Err` has been removed
+- Function `*WorkspacesPrepareNotebookPoller.FinalResponse` has been removed
+- Function `*ComputeCreateOrUpdatePoller.Poll` has been removed
+- Function `*ComputeStopPollerResponse.Resume` has been removed
+- Function `ComputeStopPollerResponse.PollUntilDone` has been removed
+- Struct `ComputeBeginCreateOrUpdateOptions` has been removed
+- Struct `ComputeBeginDeleteOptions` has been removed
+- Struct `ComputeBeginRestartOptions` has been removed
+- Struct `ComputeBeginStartOptions` has been removed
+- Struct `ComputeBeginStopOptions` has been removed
+- Struct `ComputeBeginUpdateOptions` has been removed
+- Struct `ComputeCreateOrUpdatePoller` has been removed
+- Struct `ComputeCreateOrUpdatePollerResponse` has been removed
+- Struct `ComputeCreateOrUpdateResponse` has been removed
+- Struct `ComputeCreateOrUpdateResult` has been removed
+- Struct `ComputeDeletePoller` has been removed
+- Struct `ComputeDeletePollerResponse` has been removed
+- Struct `ComputeDeleteResponse` has been removed
+- Struct `ComputeGetOptions` has been removed
+- Struct `ComputeGetResponse` has been removed
+- Struct `ComputeGetResult` has been removed
+- Struct `ComputeListKeysOptions` has been removed
+- Struct `ComputeListKeysResponse` has been removed
+- Struct `ComputeListKeysResult` has been removed
+- Struct `ComputeListNodesOptions` has been removed
+- Struct `ComputeListNodesPager` has been removed
+- Struct `ComputeListNodesResponse` has been removed
+- Struct `ComputeListNodesResult` has been removed
+- Struct `ComputeListOptions` has been removed
+- Struct `ComputeListPager` has been removed
+- Struct `ComputeListResponse` has been removed
+- Struct `ComputeListResult` has been removed
+- Struct `ComputeRestartPoller` has been removed
+- Struct `ComputeRestartPollerResponse` has been removed
+- Struct `ComputeRestartResponse` has been removed
+- Struct `ComputeStartPoller` has been removed
+- Struct `ComputeStartPollerResponse` has been removed
+- Struct `ComputeStartResponse` has been removed
+- Struct `ComputeStopPoller` has been removed
+- Struct `ComputeStopPollerResponse` has been removed
+- Struct `ComputeStopResponse` has been removed
+- Struct `ComputeUpdatePoller` has been removed
+- Struct `ComputeUpdatePollerResponse` has been removed
+- Struct `ComputeUpdateResponse` has been removed
+- Struct `ComputeUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Struct `QuotasListOptions` has been removed
+- Struct `QuotasListPager` has been removed
+- Struct `QuotasListResponse` has been removed
+- Struct `QuotasListResult` has been removed
+- Struct `QuotasUpdateOptions` has been removed
+- Struct `QuotasUpdateResponse` has been removed
+- Struct `QuotasUpdateResult` has been removed
+- Struct `UsagesListOptions` has been removed
+- Struct `UsagesListPager` has been removed
+- Struct `UsagesListResponse` has been removed
+- Struct `UsagesListResult` has been removed
+- Struct `VirtualMachineSizesListOptions` has been removed
+- Struct `VirtualMachineSizesListResponse` has been removed
+- Struct `VirtualMachineSizesListResult` has been removed
+- Struct `WorkspaceConnectionsCreateOptions` has been removed
+- Struct `WorkspaceConnectionsCreateResponse` has been removed
+- Struct `WorkspaceConnectionsCreateResult` has been removed
+- Struct `WorkspaceConnectionsDeleteOptions` has been removed
+- Struct `WorkspaceConnectionsDeleteResponse` has been removed
+- Struct `WorkspaceConnectionsGetOptions` has been removed
+- Struct `WorkspaceConnectionsGetResponse` has been removed
+- Struct `WorkspaceConnectionsGetResult` has been removed
+- Struct `WorkspaceConnectionsListOptions` has been removed
+- Struct `WorkspaceConnectionsListResponse` has been removed
+- Struct `WorkspaceConnectionsListResult` has been removed
+- Struct `WorkspaceFeaturesListOptions` has been removed
+- Struct `WorkspaceFeaturesListPager` has been removed
+- Struct `WorkspaceFeaturesListResponse` has been removed
+- Struct `WorkspaceFeaturesListResult` has been removed
+- Struct `WorkspaceSKUsListOptions` has been removed
+- Struct `WorkspaceSKUsListPager` has been removed
+- Struct `WorkspaceSKUsListResponse` has been removed
+- Struct `WorkspaceSKUsListResult` has been removed
+- Struct `WorkspacesBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspacesBeginDeleteOptions` has been removed
+- Struct `WorkspacesBeginDiagnoseOptions` has been removed
+- Struct `WorkspacesBeginPrepareNotebookOptions` has been removed
+- Struct `WorkspacesBeginResyncKeysOptions` has been removed
+- Struct `WorkspacesCreateOrUpdatePoller` has been removed
+- Struct `WorkspacesCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspacesCreateOrUpdateResponse` has been removed
+- Struct `WorkspacesCreateOrUpdateResult` has been removed
+- Struct `WorkspacesDeletePoller` has been removed
+- Struct `WorkspacesDeletePollerResponse` has been removed
+- Struct `WorkspacesDeleteResponse` has been removed
+- Struct `WorkspacesDiagnosePoller` has been removed
+- Struct `WorkspacesDiagnosePollerResponse` has been removed
+- Struct `WorkspacesDiagnoseResponse` has been removed
+- Struct `WorkspacesDiagnoseResult` has been removed
+- Struct `WorkspacesGetOptions` has been removed
+- Struct `WorkspacesGetResponse` has been removed
+- Struct `WorkspacesGetResult` has been removed
+- Struct `WorkspacesListByResourceGroupOptions` has been removed
+- Struct `WorkspacesListByResourceGroupPager` has been removed
+- Struct `WorkspacesListByResourceGroupResponse` has been removed
+- Struct `WorkspacesListByResourceGroupResult` has been removed
+- Struct `WorkspacesListBySubscriptionOptions` has been removed
+- Struct `WorkspacesListBySubscriptionPager` has been removed
+- Struct `WorkspacesListBySubscriptionResponse` has been removed
+- Struct `WorkspacesListBySubscriptionResult` has been removed
+- Struct `WorkspacesListKeysOptions` has been removed
+- Struct `WorkspacesListKeysResponse` has been removed
+- Struct `WorkspacesListKeysResult` has been removed
+- Struct `WorkspacesListNotebookAccessTokenOptions` has been removed
+- Struct `WorkspacesListNotebookAccessTokenResponse` has been removed
+- Struct `WorkspacesListNotebookAccessTokenResult` has been removed
+- Struct `WorkspacesListNotebookKeysOptions` has been removed
+- Struct `WorkspacesListNotebookKeysResponse` has been removed
+- Struct `WorkspacesListNotebookKeysResult` has been removed
+- Struct `WorkspacesListOutboundNetworkDependenciesEndpointsOptions` has been removed
+- Struct `WorkspacesListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Struct `WorkspacesListOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `WorkspacesListStorageAccountKeysOptions` has been removed
+- Struct `WorkspacesListStorageAccountKeysResponse` has been removed
+- Struct `WorkspacesListStorageAccountKeysResult` has been removed
+- Struct `WorkspacesPrepareNotebookPoller` has been removed
+- Struct `WorkspacesPrepareNotebookPollerResponse` has been removed
+- Struct `WorkspacesPrepareNotebookResponse` has been removed
+- Struct `WorkspacesPrepareNotebookResult` has been removed
+- Struct `WorkspacesResyncKeysPoller` has been removed
+- Struct `WorkspacesResyncKeysPollerResponse` has been removed
+- Struct `WorkspacesResyncKeysResponse` has been removed
+- Struct `WorkspacesUpdateOptions` has been removed
+- Struct `WorkspacesUpdateResponse` has been removed
+- Struct `WorkspacesUpdateResult` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `Compute` of struct `DataLakeAnalytics` has been removed
+- Field `Components1D3SwueSchemasComputeresourceAllof1` of struct `ComputeResource` has been removed
+- Field `Resource` of struct `ComputeResource` has been removed
+- Field `Compute` of struct `ComputeInstance` has been removed
+- Field `ComputeSecrets` of struct `VirtualMachineSecrets` has been removed
+- Field `Compute` of struct `VirtualMachine` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `Compute` of struct `Databricks` has been removed
+- Field `Compute` of struct `HDInsight` has been removed
+- Field `AksComputeSecretsProperties` of struct `AksComputeSecrets` has been removed
+- Field `ComputeSecrets` of struct `AksComputeSecrets` has been removed
+- Field `Compute` of struct `DataFactory` has been removed
+- Field `Compute` of struct `SynapseSpark` has been removed
+- Field `ComputeSecrets` of struct `DatabricksComputeSecrets` has been removed
+- Field `DatabricksComputeSecretsProperties` of struct `DatabricksComputeSecrets` has been removed
+- Field `Compute` of struct `Kubernetes` has been removed
+- Field `KubernetesSchema` of struct `Kubernetes` has been removed
+- Field `Resource` of struct `Workspace` has been removed
+- Field `Compute` of struct `AKS` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Compute` of struct `AmlCompute` has been removed
+
+### Features Added
+
+- New function `*WorkspacesClientDiagnosePoller.ResumeToken() (string, error)`
+- New function `*WorkspacesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ComputeClientStopPoller.ResumeToken() (string, error)`
+- New function `*WorkspacesClientDiagnosePoller.Done() bool`
+- New function `ComputeClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ComputeClientDeleteResponse, error)`
+- New function `*WorkspacesClientListBySubscriptionPager.PageResponse() WorkspacesClientListBySubscriptionResponse`
+- New function `*ComputeClientListNodesPager.Err() error`
+- New function `*AksComputeSecrets.UnmarshalJSON([]byte) error`
+- New function `*ComputeClientListNodesPager.PageResponse() ComputeClientListNodesResponse`
+- New function `*WorkspaceSKUsClientListPager.Err() error`
+- New function `*WorkspaceFeaturesClientListPager.Err() error`
+- New function `ComputeClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (ComputeClientRestartResponse, error)`
+- New function `WorkspacesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientDeleteResponse, error)`
+- New function `*DataFactory.GetCompute() *Compute`
+- New function `*VirtualMachineSecrets.GetComputeSecrets() *ComputeSecrets`
+- New function `*WorkspacesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspacesClientPrepareNotebookPollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `*WorkspacesClientListByResourceGroupPager.PageResponse() WorkspacesClientListByResourceGroupResponse`
+- New function `*WorkspacesClientDeletePoller.FinalResponse(context.Context) (WorkspacesClientDeleteResponse, error)`
+- New function `*ComputeClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ComputeClientUpdatePoller.Done() bool`
+- New function `*ComputeClientListKeysResult.UnmarshalJSON([]byte) error`
+- New function `*ComputeClientRestartPoller.ResumeToken() (string, error)`
+- New function `*WorkspacesClientDiagnosePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ComputeClientCreateOrUpdatePollerResponse.Resume(context.Context, *ComputeClient, string) error`
+- New function `*WorkspaceFeaturesClientListPager.PageResponse() WorkspaceFeaturesClientListResponse`
+- New function `*UsagesClientListPager.NextPage(context.Context) bool`
+- New function `*WorkspacesClientPrepareNotebookPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ComputeClientStartPoller.FinalResponse(context.Context) (ComputeClientStartResponse, error)`
+- New function `*ComputeClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachine.GetCompute() *Compute`
+- New function `*WorkspacesClientResyncKeysPoller.ResumeToken() (string, error)`
+- New function `*WorkspaceFeaturesClientListPager.NextPage(context.Context) bool`
+- New function `*ComputeClientRestartPollerResponse.Resume(context.Context, *ComputeClient, string) error`
+- New function `*ComputeClientStopPoller.FinalResponse(context.Context) (ComputeClientStopResponse, error)`
+- New function `*ComputeClientCreateOrUpdatePoller.FinalResponse(context.Context) (ComputeClientCreateOrUpdateResponse, error)`
+- New function `*WorkspacesClientDeletePollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `*WorkspaceSKUsClientListPager.PageResponse() WorkspaceSKUsClientListResponse`
+- New function `*WorkspacesClientResyncKeysPoller.FinalResponse(context.Context) (WorkspacesClientResyncKeysResponse, error)`
+- New function `*WorkspacesClientPrepareNotebookPoller.ResumeToken() (string, error)`
+- New function `*QuotasClientListPager.NextPage(context.Context) bool`
+- New function `*ComputeClientStartPoller.Done() bool`
+- New function `*UsagesClientListPager.Err() error`
+- New function `*ComputeClientUpdatePollerResponse.Resume(context.Context, *ComputeClient, string) error`
+- New function `*ComputeClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ComputeClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AksComputeSecrets.GetComputeSecrets() *ComputeSecrets`
+- New function `*ComputeClientDeletePoller.Done() bool`
+- New function `*QuotasClientListPager.Err() error`
+- New function `*ComputeClientListPager.NextPage(context.Context) bool`
+- New function `*WorkspacesClientResyncKeysPoller.Done() bool`
+- New function `ComputeClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (ComputeClientStopResponse, error)`
+- New function `*ComputeInstance.GetCompute() *Compute`
+- New function `*ComputeClientStartPoller.ResumeToken() (string, error)`
+- New function `*WorkspacesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `ComputeClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (ComputeClientStartResponse, error)`
+- New function `*ComputeClientDeletePollerResponse.Resume(context.Context, *ComputeClient, string) error`
+- New function `*WorkspacesClientResyncKeysPollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `*DataFactory.UnmarshalJSON([]byte) error`
+- New function `*WorkspacesClientPrepareNotebookPoller.FinalResponse(context.Context) (WorkspacesClientPrepareNotebookResponse, error)`
+- New function `*ComputeClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `WorkspacesClientResyncKeysPollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientResyncKeysResponse, error)`
+- New function `*ComputeClientDeletePoller.FinalResponse(context.Context) (ComputeClientDeleteResponse, error)`
+- New function `*ComputeClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SynapseSpark.GetCompute() *Compute`
+- New function `*WorkspacesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DataLakeAnalytics.GetCompute() *Compute`
+- New function `*WorkspacesClientResyncKeysPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ComputeClientRestartPoller.FinalResponse(context.Context) (ComputeClientRestartResponse, error)`
+- New function `*ComputeClientRestartPoller.Done() bool`
+- New function `*WorkspacesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*Kubernetes.GetCompute() *Compute`
+- New function `*ComputeClientStopPollerResponse.Resume(context.Context, *ComputeClient, string) error`
+- New function `*WorkspacesClientDiagnosePollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `WorkspacesClientPrepareNotebookPollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientPrepareNotebookResponse, error)`
+- New function `*WorkspacesClientDeletePoller.Done() bool`
+- New function `*ComputeClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ComputeClientListNodesPager.NextPage(context.Context) bool`
+- New function `*WorkspacesClientDiagnosePoller.FinalResponse(context.Context) (WorkspacesClientDiagnoseResponse, error)`
+- New function `*WorkspacesClientPrepareNotebookPoller.Done() bool`
+- New function `*DatabricksComputeSecrets.UnmarshalJSON([]byte) error`
+- New function `*ComputeClientCreateOrUpdatePoller.Done() bool`
+- New function `*ComputeClientStopPoller.Done() bool`
+- New function `*QuotasClientListPager.PageResponse() QuotasClientListResponse`
+- New function `*Kubernetes.UnmarshalJSON([]byte) error`
+- New function `*DatabricksComputeSecrets.GetComputeSecrets() *ComputeSecrets`
+- New function `ComputeClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ComputeClientUpdateResponse, error)`
+- New function `*Databricks.GetCompute() *Compute`
+- New function `*WorkspacesClientCreateOrUpdatePoller.Done() bool`
+- New function `*ComputeClientStartPollerResponse.Resume(context.Context, *ComputeClient, string) error`
+- New function `*WorkspacesClientListByResourceGroupPager.Err() error`
+- New function `*ComputeClientListPager.PageResponse() ComputeClientListResponse`
+- New function `ComputeClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ComputeClientCreateOrUpdateResponse, error)`
+- New function `*ComputeClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspacesClientListBySubscriptionPager.Err() error`
+- New function `*AKS.GetCompute() *Compute`
+- New function `*WorkspacesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*UsagesClientListPager.PageResponse() UsagesClientListResponse`
+- New function `*WorkspaceSKUsClientListPager.NextPage(context.Context) bool`
+- New function `*ComputeClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspacesClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `WorkspacesClientDiagnosePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientDiagnoseResponse, error)`
+- New function `*AmlCompute.GetCompute() *Compute`
+- New function `*WorkspacesClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspacesClientCreateOrUpdateResponse, error)`
+- New function `*ComputeClientListPager.Err() error`
+- New function `*ComputeClientUpdatePoller.FinalResponse(context.Context) (ComputeClientUpdateResponse, error)`
+- New function `*HDInsight.GetCompute() *Compute`
+- New function `WorkspacesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientCreateOrUpdateResponse, error)`
+- New function `Compute.MarshalJSON() ([]byte, error)`
+- New struct `ComputeClientBeginCreateOrUpdateOptions`
+- New struct `ComputeClientBeginDeleteOptions`
+- New struct `ComputeClientBeginRestartOptions`
+- New struct `ComputeClientBeginStartOptions`
+- New struct `ComputeClientBeginStopOptions`
+- New struct `ComputeClientBeginUpdateOptions`
+- New struct `ComputeClientCreateOrUpdatePoller`
+- New struct `ComputeClientCreateOrUpdatePollerResponse`
+- New struct `ComputeClientCreateOrUpdateResponse`
+- New struct `ComputeClientCreateOrUpdateResult`
+- New struct `ComputeClientDeletePoller`
+- New struct `ComputeClientDeletePollerResponse`
+- New struct `ComputeClientDeleteResponse`
+- New struct `ComputeClientGetOptions`
+- New struct `ComputeClientGetResponse`
+- New struct `ComputeClientGetResult`
+- New struct `ComputeClientListKeysOptions`
+- New struct `ComputeClientListKeysResponse`
+- New struct `ComputeClientListKeysResult`
+- New struct `ComputeClientListNodesOptions`
+- New struct `ComputeClientListNodesPager`
+- New struct `ComputeClientListNodesResponse`
+- New struct `ComputeClientListNodesResult`
+- New struct `ComputeClientListOptions`
+- New struct `ComputeClientListPager`
+- New struct `ComputeClientListResponse`
+- New struct `ComputeClientListResult`
+- New struct `ComputeClientRestartPoller`
+- New struct `ComputeClientRestartPollerResponse`
+- New struct `ComputeClientRestartResponse`
+- New struct `ComputeClientStartPoller`
+- New struct `ComputeClientStartPollerResponse`
+- New struct `ComputeClientStartResponse`
+- New struct `ComputeClientStopPoller`
+- New struct `ComputeClientStopPollerResponse`
+- New struct `ComputeClientStopResponse`
+- New struct `ComputeClientUpdatePoller`
+- New struct `ComputeClientUpdatePollerResponse`
+- New struct `ComputeClientUpdateResponse`
+- New struct `ComputeClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `QuotasClientListOptions`
+- New struct `QuotasClientListPager`
+- New struct `QuotasClientListResponse`
+- New struct `QuotasClientListResult`
+- New struct `QuotasClientUpdateOptions`
+- New struct `QuotasClientUpdateResponse`
+- New struct `QuotasClientUpdateResult`
+- New struct `UsagesClientListOptions`
+- New struct `UsagesClientListPager`
+- New struct `UsagesClientListResponse`
+- New struct `UsagesClientListResult`
+- New struct `VirtualMachineSizesClientListOptions`
+- New struct `VirtualMachineSizesClientListResponse`
+- New struct `VirtualMachineSizesClientListResult`
+- New struct `WorkspaceConnectionsClientCreateOptions`
+- New struct `WorkspaceConnectionsClientCreateResponse`
+- New struct `WorkspaceConnectionsClientCreateResult`
+- New struct `WorkspaceConnectionsClientDeleteOptions`
+- New struct `WorkspaceConnectionsClientDeleteResponse`
+- New struct `WorkspaceConnectionsClientGetOptions`
+- New struct `WorkspaceConnectionsClientGetResponse`
+- New struct `WorkspaceConnectionsClientGetResult`
+- New struct `WorkspaceConnectionsClientListOptions`
+- New struct `WorkspaceConnectionsClientListResponse`
+- New struct `WorkspaceConnectionsClientListResult`
+- New struct `WorkspaceFeaturesClientListOptions`
+- New struct `WorkspaceFeaturesClientListPager`
+- New struct `WorkspaceFeaturesClientListResponse`
+- New struct `WorkspaceFeaturesClientListResult`
+- New struct `WorkspaceSKUsClientListOptions`
+- New struct `WorkspaceSKUsClientListPager`
+- New struct `WorkspaceSKUsClientListResponse`
+- New struct `WorkspaceSKUsClientListResult`
+- New struct `WorkspacesClientBeginCreateOrUpdateOptions`
+- New struct `WorkspacesClientBeginDeleteOptions`
+- New struct `WorkspacesClientBeginDiagnoseOptions`
+- New struct `WorkspacesClientBeginPrepareNotebookOptions`
+- New struct `WorkspacesClientBeginResyncKeysOptions`
+- New struct `WorkspacesClientCreateOrUpdatePoller`
+- New struct `WorkspacesClientCreateOrUpdatePollerResponse`
+- New struct `WorkspacesClientCreateOrUpdateResponse`
+- New struct `WorkspacesClientCreateOrUpdateResult`
+- New struct `WorkspacesClientDeletePoller`
+- New struct `WorkspacesClientDeletePollerResponse`
+- New struct `WorkspacesClientDeleteResponse`
+- New struct `WorkspacesClientDiagnosePoller`
+- New struct `WorkspacesClientDiagnosePollerResponse`
+- New struct `WorkspacesClientDiagnoseResponse`
+- New struct `WorkspacesClientDiagnoseResult`
+- New struct `WorkspacesClientGetOptions`
+- New struct `WorkspacesClientGetResponse`
+- New struct `WorkspacesClientGetResult`
+- New struct `WorkspacesClientListByResourceGroupOptions`
+- New struct `WorkspacesClientListByResourceGroupPager`
+- New struct `WorkspacesClientListByResourceGroupResponse`
+- New struct `WorkspacesClientListByResourceGroupResult`
+- New struct `WorkspacesClientListBySubscriptionOptions`
+- New struct `WorkspacesClientListBySubscriptionPager`
+- New struct `WorkspacesClientListBySubscriptionResponse`
+- New struct `WorkspacesClientListBySubscriptionResult`
+- New struct `WorkspacesClientListKeysOptions`
+- New struct `WorkspacesClientListKeysResponse`
+- New struct `WorkspacesClientListKeysResult`
+- New struct `WorkspacesClientListNotebookAccessTokenOptions`
+- New struct `WorkspacesClientListNotebookAccessTokenResponse`
+- New struct `WorkspacesClientListNotebookAccessTokenResult`
+- New struct `WorkspacesClientListNotebookKeysOptions`
+- New struct `WorkspacesClientListNotebookKeysResponse`
+- New struct `WorkspacesClientListNotebookKeysResult`
+- New struct `WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions`
+- New struct `WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse`
+- New struct `WorkspacesClientListOutboundNetworkDependenciesEndpointsResult`
+- New struct `WorkspacesClientListStorageAccountKeysOptions`
+- New struct `WorkspacesClientListStorageAccountKeysResponse`
+- New struct `WorkspacesClientListStorageAccountKeysResult`
+- New struct `WorkspacesClientPrepareNotebookPoller`
+- New struct `WorkspacesClientPrepareNotebookPollerResponse`
+- New struct `WorkspacesClientPrepareNotebookResponse`
+- New struct `WorkspacesClientPrepareNotebookResult`
+- New struct `WorkspacesClientResyncKeysPoller`
+- New struct `WorkspacesClientResyncKeysPollerResponse`
+- New struct `WorkspacesClientResyncKeysResponse`
+- New struct `WorkspacesClientUpdateOptions`
+- New struct `WorkspacesClientUpdateResponse`
+- New struct `WorkspacesClientUpdateResult`
+- New field `ProvisioningState` in struct `AKS`
+- New field `ProvisioningErrors` in struct `AKS`
+- New field `Description` in struct `AKS`
+- New field `CreatedOn` in struct `AKS`
+- New field `ModifiedOn` in struct `AKS`
+- New field `DisableLocalAuth` in struct `AKS`
+- New field `IsAttachedCompute` in struct `AKS`
+- New field `ResourceID` in struct `AKS`
+- New field `ComputeType` in struct `AKS`
+- New field `ComputeLocation` in struct `AKS`
+- New field `ComputeType` in struct `AksComputeSecrets`
+- New field `AdminKubeConfig` in struct `AksComputeSecrets`
+- New field `ImagePullSecretName` in struct `AksComputeSecrets`
+- New field `UserKubeConfig` in struct `AksComputeSecrets`
+- New field `ID` in struct `Workspace`
+- New field `Name` in struct `Workspace`
+- New field `Type` in struct `Workspace`
+- New field `ComputeLocation` in struct `Databricks`
+- New field `DisableLocalAuth` in struct `Databricks`
+- New field `ProvisioningState` in struct `Databricks`
+- New field `ResourceID` in struct `Databricks`
+- New field `ComputeType` in struct `Databricks`
+- New field `CreatedOn` in struct `Databricks`
+- New field `ModifiedOn` in struct `Databricks`
+- New field `ProvisioningErrors` in struct `Databricks`
+- New field `Description` in struct `Databricks`
+- New field `IsAttachedCompute` in struct `Databricks`
+- New field `Name` in struct `ComputeResource`
+- New field `ID` in struct `ComputeResource`
+- New field `Type` in struct `ComputeResource`
+- New field `Properties` in struct `ComputeResource`
+- New field `ResourceID` in struct `ComputeInstance`
+- New field `IsAttachedCompute` in struct `ComputeInstance`
+- New field `Description` in struct `ComputeInstance`
+- New field `DisableLocalAuth` in struct `ComputeInstance`
+- New field `ModifiedOn` in struct `ComputeInstance`
+- New field `ProvisioningState` in struct `ComputeInstance`
+- New field `ComputeType` in struct `ComputeInstance`
+- New field `ComputeLocation` in struct `ComputeInstance`
+- New field `CreatedOn` in struct `ComputeInstance`
+- New field `ProvisioningErrors` in struct `ComputeInstance`
+- New field `IsAttachedCompute` in struct `DataLakeAnalytics`
+- New field `ComputeType` in struct `DataLakeAnalytics`
+- New field `Description` in struct `DataLakeAnalytics`
+- New field `CreatedOn` in struct `DataLakeAnalytics`
+- New field `DisableLocalAuth` in struct `DataLakeAnalytics`
+- New field `ModifiedOn` in struct `DataLakeAnalytics`
+- New field `ProvisioningErrors` in struct `DataLakeAnalytics`
+- New field `ProvisioningState` in struct `DataLakeAnalytics`
+- New field `ComputeLocation` in struct `DataLakeAnalytics`
+- New field `ResourceID` in struct `DataLakeAnalytics`
+- New field `Description` in struct `Kubernetes`
+- New field `DisableLocalAuth` in struct `Kubernetes`
+- New field `Properties` in struct `Kubernetes`
+- New field `IsAttachedCompute` in struct `Kubernetes`
+- New field `ProvisioningErrors` in struct `Kubernetes`
+- New field `ComputeType` in struct `Kubernetes`
+- New field `CreatedOn` in struct `Kubernetes`
+- New field `ComputeLocation` in struct `Kubernetes`
+- New field `ResourceID` in struct `Kubernetes`
+- New field `ModifiedOn` in struct `Kubernetes`
+- New field `ProvisioningState` in struct `Kubernetes`
+- New field `ComputeType` in struct `VirtualMachineSecrets`
+- New field `CreatedOn` in struct `AmlCompute`
+- New field `DisableLocalAuth` in struct `AmlCompute`
+- New field `ModifiedOn` in struct `AmlCompute`
+- New field `ComputeType` in struct `AmlCompute`
+- New field `ComputeLocation` in struct `AmlCompute`
+- New field `IsAttachedCompute` in struct `AmlCompute`
+- New field `Description` in struct `AmlCompute`
+- New field `ResourceID` in struct `AmlCompute`
+- New field `ProvisioningErrors` in struct `AmlCompute`
+- New field `ProvisioningState` in struct `AmlCompute`
+- New field `ComputeType` in struct `VirtualMachine`
+- New field `ProvisioningErrors` in struct `VirtualMachine`
+- New field `ResourceID` in struct `VirtualMachine`
+- New field `CreatedOn` in struct `VirtualMachine`
+- New field `ModifiedOn` in struct `VirtualMachine`
+- New field `DisableLocalAuth` in struct `VirtualMachine`
+- New field `ProvisioningState` in struct `VirtualMachine`
+- New field `IsAttachedCompute` in struct `VirtualMachine`
+- New field `ComputeLocation` in struct `VirtualMachine`
+- New field `Description` in struct `VirtualMachine`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `IsAttachedCompute` in struct `HDInsight`
+- New field `ModifiedOn` in struct `HDInsight`
+- New field `DisableLocalAuth` in struct `HDInsight`
+- New field `ComputeLocation` in struct `HDInsight`
+- New field `Description` in struct `HDInsight`
+- New field `ResourceID` in struct `HDInsight`
+- New field `CreatedOn` in struct `HDInsight`
+- New field `ComputeType` in struct `HDInsight`
+- New field `ProvisioningErrors` in struct `HDInsight`
+- New field `ProvisioningState` in struct `HDInsight`
+- New field `Description` in struct `SynapseSpark`
+- New field `ProvisioningState` in struct `SynapseSpark`
+- New field `ResourceID` in struct `SynapseSpark`
+- New field `ModifiedOn` in struct `SynapseSpark`
+- New field `ProvisioningErrors` in struct `SynapseSpark`
+- New field `DisableLocalAuth` in struct `SynapseSpark`
+- New field `CreatedOn` in struct `SynapseSpark`
+- New field `IsAttachedCompute` in struct `SynapseSpark`
+- New field `ComputeType` in struct `SynapseSpark`
+- New field `ComputeLocation` in struct `SynapseSpark`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `ComputeType` in struct `DatabricksComputeSecrets`
+- New field `DatabricksAccessToken` in struct `DatabricksComputeSecrets`
+- New field `CreatedOn` in struct `DataFactory`
+- New field `IsAttachedCompute` in struct `DataFactory`
+- New field `ProvisioningErrors` in struct `DataFactory`
+- New field `ProvisioningState` in struct `DataFactory`
+- New field `ModifiedOn` in struct `DataFactory`
+- New field `ComputeType` in struct `DataFactory`
+- New field `ComputeLocation` in struct `DataFactory`
+- New field `Description` in struct `DataFactory`
+- New field `DisableLocalAuth` in struct `DataFactory`
+- New field `ResourceID` in struct `DataFactory`
+- New field `Error` in struct `ErrorResponse`
+
+
+## 0.1.0 (2021-12-16)
+
+- Init release.

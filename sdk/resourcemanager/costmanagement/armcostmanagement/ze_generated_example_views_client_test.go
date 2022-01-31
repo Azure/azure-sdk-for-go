@@ -26,12 +26,16 @@ func ExampleViewsClient_List() {
 	ctx := context.Background()
 	client := armcostmanagement.NewViewsClient(cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("View.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -46,12 +50,16 @@ func ExampleViewsClient_ListByScope() {
 	client := armcostmanagement.NewViewsClient(cred, nil)
 	pager := client.ListByScope("<scope>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("View.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -70,7 +78,7 @@ func ExampleViewsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("View.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ViewsClientGetResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateViewCreateOrUpdate.json
@@ -84,56 +92,53 @@ func ExampleViewsClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<view-name>",
 		armcostmanagement.View{
-			ProxyResource: armcostmanagement.ProxyResource{
-				ETag: to.StringPtr("<etag>"),
-			},
+			ETag: to.StringPtr("<etag>"),
 			Properties: &armcostmanagement.ViewProperties{
-				Accumulated: armcostmanagement.AccumulatedTypeTrue.ToPtr(),
-				Chart:       armcostmanagement.ChartTypeTable.ToPtr(),
+				Accumulated: armcostmanagement.AccumulatedType("true").ToPtr(),
+				Chart:       armcostmanagement.ChartType("Table").ToPtr(),
 				DisplayName: to.StringPtr("<display-name>"),
 				Kpis: []*armcostmanagement.KpiProperties{
 					{
-						Type:    armcostmanagement.KpiTypeForecast.ToPtr(),
+						Type:    armcostmanagement.KpiType("Forecast").ToPtr(),
 						Enabled: to.BoolPtr(true),
-						ID:      to.StringPtr("<id>"),
 					},
 					{
-						Type:    armcostmanagement.KpiTypeBudget.ToPtr(),
+						Type:    armcostmanagement.KpiType("Budget").ToPtr(),
 						Enabled: to.BoolPtr(true),
 						ID:      to.StringPtr("<id>"),
 					}},
-				Metric: armcostmanagement.MetricTypeActualCost.ToPtr(),
+				Metric: armcostmanagement.MetricType("ActualCost").ToPtr(),
 				Pivots: []*armcostmanagement.PivotProperties{
 					{
 						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotTypeDimension.ToPtr(),
+						Type: armcostmanagement.PivotType("Dimension").ToPtr(),
 					},
 					{
 						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotTypeDimension.ToPtr(),
+						Type: armcostmanagement.PivotType("Dimension").ToPtr(),
 					},
 					{
 						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotTypeTagKey.ToPtr(),
+						Type: armcostmanagement.PivotType("TagKey").ToPtr(),
 					}},
 				Query: &armcostmanagement.ReportConfigDefinition{
-					Type: armcostmanagement.ReportTypeUsage.ToPtr(),
+					Type: armcostmanagement.ReportType("Usage").ToPtr(),
 					DataSet: &armcostmanagement.ReportConfigDataset{
 						Aggregation: map[string]*armcostmanagement.ReportConfigAggregation{
 							"totalCost": {
 								Name:     to.StringPtr("<name>"),
-								Function: armcostmanagement.FunctionTypeSum.ToPtr(),
+								Function: armcostmanagement.FunctionType("Sum").ToPtr(),
 							},
 						},
-						Granularity: armcostmanagement.ReportGranularityTypeDaily.ToPtr(),
+						Granularity: armcostmanagement.ReportGranularityType("Daily").ToPtr(),
 						Grouping:    []*armcostmanagement.ReportConfigGrouping{},
 						Sorting: []*armcostmanagement.ReportConfigSorting{
 							{
 								Name:      to.StringPtr("<name>"),
-								Direction: armcostmanagement.ReportConfigSortingDirectionAscending.ToPtr(),
+								Direction: armcostmanagement.ReportConfigSortingDirection("Ascending").ToPtr(),
 							}},
 					},
-					Timeframe: armcostmanagement.ReportTimeframeTypeMonthToDate.ToPtr(),
+					Timeframe: armcostmanagement.ReportTimeframeType("MonthToDate").ToPtr(),
 				},
 			},
 		},
@@ -141,7 +146,7 @@ func ExampleViewsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("View.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ViewsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/PrivateViewDelete.json
@@ -175,7 +180,7 @@ func ExampleViewsClient_GetByScope() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("View.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ViewsClientGetByScopeResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewCreateOrUpdateByResourceGroup.json
@@ -190,56 +195,53 @@ func ExampleViewsClient_CreateOrUpdateByScope() {
 		"<scope>",
 		"<view-name>",
 		armcostmanagement.View{
-			ProxyResource: armcostmanagement.ProxyResource{
-				ETag: to.StringPtr("<etag>"),
-			},
+			ETag: to.StringPtr("<etag>"),
 			Properties: &armcostmanagement.ViewProperties{
-				Accumulated: armcostmanagement.AccumulatedTypeTrue.ToPtr(),
-				Chart:       armcostmanagement.ChartTypeTable.ToPtr(),
+				Accumulated: armcostmanagement.AccumulatedType("true").ToPtr(),
+				Chart:       armcostmanagement.ChartType("Table").ToPtr(),
 				DisplayName: to.StringPtr("<display-name>"),
 				Kpis: []*armcostmanagement.KpiProperties{
 					{
-						Type:    armcostmanagement.KpiTypeForecast.ToPtr(),
+						Type:    armcostmanagement.KpiType("Forecast").ToPtr(),
 						Enabled: to.BoolPtr(true),
-						ID:      to.StringPtr("<id>"),
 					},
 					{
-						Type:    armcostmanagement.KpiTypeBudget.ToPtr(),
+						Type:    armcostmanagement.KpiType("Budget").ToPtr(),
 						Enabled: to.BoolPtr(true),
 						ID:      to.StringPtr("<id>"),
 					}},
-				Metric: armcostmanagement.MetricTypeActualCost.ToPtr(),
+				Metric: armcostmanagement.MetricType("ActualCost").ToPtr(),
 				Pivots: []*armcostmanagement.PivotProperties{
 					{
 						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotTypeDimension.ToPtr(),
+						Type: armcostmanagement.PivotType("Dimension").ToPtr(),
 					},
 					{
 						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotTypeDimension.ToPtr(),
+						Type: armcostmanagement.PivotType("Dimension").ToPtr(),
 					},
 					{
 						Name: to.StringPtr("<name>"),
-						Type: armcostmanagement.PivotTypeTagKey.ToPtr(),
+						Type: armcostmanagement.PivotType("TagKey").ToPtr(),
 					}},
 				Query: &armcostmanagement.ReportConfigDefinition{
-					Type: armcostmanagement.ReportTypeUsage.ToPtr(),
+					Type: armcostmanagement.ReportType("Usage").ToPtr(),
 					DataSet: &armcostmanagement.ReportConfigDataset{
 						Aggregation: map[string]*armcostmanagement.ReportConfigAggregation{
 							"totalCost": {
 								Name:     to.StringPtr("<name>"),
-								Function: armcostmanagement.FunctionTypeSum.ToPtr(),
+								Function: armcostmanagement.FunctionType("Sum").ToPtr(),
 							},
 						},
-						Granularity: armcostmanagement.ReportGranularityTypeDaily.ToPtr(),
+						Granularity: armcostmanagement.ReportGranularityType("Daily").ToPtr(),
 						Grouping:    []*armcostmanagement.ReportConfigGrouping{},
 						Sorting: []*armcostmanagement.ReportConfigSorting{
 							{
 								Name:      to.StringPtr("<name>"),
-								Direction: armcostmanagement.ReportConfigSortingDirectionAscending.ToPtr(),
+								Direction: armcostmanagement.ReportConfigSortingDirection("Ascending").ToPtr(),
 							}},
 					},
-					Timeframe: armcostmanagement.ReportTimeframeTypeMonthToDate.ToPtr(),
+					Timeframe: armcostmanagement.ReportTimeframeType("MonthToDate").ToPtr(),
 				},
 			},
 		},
@@ -247,7 +249,7 @@ func ExampleViewsClient_CreateOrUpdateByScope() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("View.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ViewsClientCreateOrUpdateByScopeResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ViewDeleteByResourceGroup.json

@@ -16,7 +16,9 @@ import (
 )
 
 type BasicAuthentication struct {
-	HTTPAuthentication
+	// REQUIRED; Gets or sets the HTTP authentication type.
+	Type *HTTPAuthenticationType `json:"type,omitempty"`
+
 	// Gets or sets the password, return value will always be empty.
 	Password *string `json:"password,omitempty"`
 
@@ -24,11 +26,18 @@ type BasicAuthentication struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// GetHTTPAuthentication implements the HTTPAuthenticationClassification interface for type BasicAuthentication.
+func (b *BasicAuthentication) GetHTTPAuthentication() *HTTPAuthentication {
+	return &HTTPAuthentication{
+		Type: b.Type,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type BasicAuthentication.
 func (b BasicAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.HTTPAuthentication.marshalInternal(objectMap, HTTPAuthenticationTypeBasic)
 	populate(objectMap, "password", b.Password)
+	objectMap["type"] = HTTPAuthenticationTypeBasic
 	populate(objectMap, "username", b.Username)
 	return json.Marshal(objectMap)
 }
@@ -45,6 +54,9 @@ func (b *BasicAuthentication) UnmarshalJSON(data []byte) error {
 		case "password":
 			err = unpopulate(val, &b.Password)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &b.Type)
+			delete(rawMsg, key)
 		case "username":
 			err = unpopulate(val, &b.Username)
 			delete(rawMsg, key)
@@ -53,14 +65,13 @@ func (b *BasicAuthentication) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := b.HTTPAuthentication.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 type ClientCertAuthentication struct {
-	HTTPAuthentication
+	// REQUIRED; Gets or sets the HTTP authentication type.
+	Type *HTTPAuthenticationType `json:"type,omitempty"`
+
 	// Gets or sets the certificate expiration date.
 	CertificateExpirationDate *time.Time `json:"certificateExpirationDate,omitempty"`
 
@@ -77,15 +88,22 @@ type ClientCertAuthentication struct {
 	Pfx *string `json:"pfx,omitempty"`
 }
 
+// GetHTTPAuthentication implements the HTTPAuthenticationClassification interface for type ClientCertAuthentication.
+func (c *ClientCertAuthentication) GetHTTPAuthentication() *HTTPAuthentication {
+	return &HTTPAuthentication{
+		Type: c.Type,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ClientCertAuthentication.
 func (c ClientCertAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.HTTPAuthentication.marshalInternal(objectMap, HTTPAuthenticationTypeClientCertificate)
 	populateTimeRFC3339(objectMap, "certificateExpirationDate", c.CertificateExpirationDate)
 	populate(objectMap, "certificateSubjectName", c.CertificateSubjectName)
 	populate(objectMap, "certificateThumbprint", c.CertificateThumbprint)
 	populate(objectMap, "password", c.Password)
 	populate(objectMap, "pfx", c.Pfx)
+	objectMap["type"] = HTTPAuthenticationTypeClientCertificate
 	return json.Marshal(objectMap)
 }
 
@@ -113,13 +131,13 @@ func (c *ClientCertAuthentication) UnmarshalJSON(data []byte) error {
 		case "pfx":
 			err = unpopulate(val, &c.Pfx)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &c.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.HTTPAuthentication.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -140,35 +158,6 @@ type HTTPAuthentication struct {
 
 // GetHTTPAuthentication implements the HTTPAuthenticationClassification interface for type HTTPAuthentication.
 func (h *HTTPAuthentication) GetHTTPAuthentication() *HTTPAuthentication { return h }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HTTPAuthentication.
-func (h *HTTPAuthentication) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return h.unmarshalInternal(rawMsg)
-}
-
-func (h HTTPAuthentication) marshalInternal(objectMap map[string]interface{}, discValue HTTPAuthenticationType) {
-	h.Type = &discValue
-	objectMap["type"] = h.Type
-}
-
-func (h *HTTPAuthentication) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "type":
-			err = unpopulate(val, &h.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 type HTTPRequest struct {
 	// Gets or sets the authentication method of the request.
@@ -323,43 +312,46 @@ type JobCollectionQuota struct {
 	MaxRecurrence *JobMaxRecurrence `json:"maxRecurrence,omitempty"`
 }
 
-// JobCollectionsBeginDeleteOptions contains the optional parameters for the JobCollections.BeginDelete method.
-type JobCollectionsBeginDeleteOptions struct {
+// JobCollectionsClientBeginDeleteOptions contains the optional parameters for the JobCollectionsClient.BeginDelete method.
+type JobCollectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobCollectionsBeginDisableOptions contains the optional parameters for the JobCollections.BeginDisable method.
-type JobCollectionsBeginDisableOptions struct {
+// JobCollectionsClientBeginDisableOptions contains the optional parameters for the JobCollectionsClient.BeginDisable method.
+type JobCollectionsClientBeginDisableOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobCollectionsBeginEnableOptions contains the optional parameters for the JobCollections.BeginEnable method.
-type JobCollectionsBeginEnableOptions struct {
+// JobCollectionsClientBeginEnableOptions contains the optional parameters for the JobCollectionsClient.BeginEnable method.
+type JobCollectionsClientBeginEnableOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobCollectionsCreateOrUpdateOptions contains the optional parameters for the JobCollections.CreateOrUpdate method.
-type JobCollectionsCreateOrUpdateOptions struct {
+// JobCollectionsClientCreateOrUpdateOptions contains the optional parameters for the JobCollectionsClient.CreateOrUpdate
+// method.
+type JobCollectionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobCollectionsGetOptions contains the optional parameters for the JobCollections.Get method.
-type JobCollectionsGetOptions struct {
+// JobCollectionsClientGetOptions contains the optional parameters for the JobCollectionsClient.Get method.
+type JobCollectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobCollectionsListByResourceGroupOptions contains the optional parameters for the JobCollections.ListByResourceGroup method.
-type JobCollectionsListByResourceGroupOptions struct {
+// JobCollectionsClientListByResourceGroupOptions contains the optional parameters for the JobCollectionsClient.ListByResourceGroup
+// method.
+type JobCollectionsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobCollectionsListBySubscriptionOptions contains the optional parameters for the JobCollections.ListBySubscription method.
-type JobCollectionsListBySubscriptionOptions struct {
+// JobCollectionsClientListBySubscriptionOptions contains the optional parameters for the JobCollectionsClient.ListBySubscription
+// method.
+type JobCollectionsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobCollectionsPatchOptions contains the optional parameters for the JobCollections.Patch method.
-type JobCollectionsPatchOptions struct {
+// JobCollectionsClientPatchOptions contains the optional parameters for the JobCollectionsClient.Patch method.
+type JobCollectionsClientPatchOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -713,7 +705,8 @@ type JobStatus struct {
 	// READ-ONLY; Gets the number of times this job has failed.
 	FailureCount *int32 `json:"failureCount,omitempty" azure:"ro"`
 
-	// READ-ONLY; Gets the number of faulted occurrences (occurrences that were retried and failed as many times as the retry policy states).
+	// READ-ONLY; Gets the number of faulted occurrences (occurrences that were retried and failed as many times as the retry
+	// policy states).
 	FaultedCount *int32 `json:"faultedCount,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the time the last occurrence executed in ISO-8601 format. Could be empty if job has not run yet.
@@ -766,23 +759,23 @@ func (j *JobStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JobsCreateOrUpdateOptions contains the optional parameters for the Jobs.CreateOrUpdate method.
-type JobsCreateOrUpdateOptions struct {
+// JobsClientCreateOrUpdateOptions contains the optional parameters for the JobsClient.CreateOrUpdate method.
+type JobsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsDeleteOptions contains the optional parameters for the Jobs.Delete method.
-type JobsDeleteOptions struct {
+// JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
+type JobsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsGetOptions contains the optional parameters for the Jobs.Get method.
-type JobsGetOptions struct {
+// JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsListJobHistoryOptions contains the optional parameters for the Jobs.ListJobHistory method.
-type JobsListJobHistoryOptions struct {
+// JobsClientListJobHistoryOptions contains the optional parameters for the JobsClient.ListJobHistory method.
+type JobsClientListJobHistoryOptions struct {
 	// The filter to apply on the job state.
 	Filter *string
 	// The (0-based) index of the job history list from which to begin requesting entries.
@@ -791,8 +784,8 @@ type JobsListJobHistoryOptions struct {
 	Top *int32
 }
 
-// JobsListOptions contains the optional parameters for the Jobs.List method.
-type JobsListOptions struct {
+// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+type JobsClientListOptions struct {
 	// The filter to apply on the job state.
 	Filter *string
 	// The (0-based) index of the job history list from which to begin requesting entries.
@@ -801,18 +794,20 @@ type JobsListOptions struct {
 	Top *int32
 }
 
-// JobsPatchOptions contains the optional parameters for the Jobs.Patch method.
-type JobsPatchOptions struct {
+// JobsClientPatchOptions contains the optional parameters for the JobsClient.Patch method.
+type JobsClientPatchOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsRunOptions contains the optional parameters for the Jobs.Run method.
-type JobsRunOptions struct {
+// JobsClientRunOptions contains the optional parameters for the JobsClient.Run method.
+type JobsClientRunOptions struct {
 	// placeholder for future optional parameters
 }
 
 type OAuthAuthentication struct {
-	HTTPAuthentication
+	// REQUIRED; Gets or sets the HTTP authentication type.
+	Type *HTTPAuthenticationType `json:"type,omitempty"`
+
 	// Gets or sets the audience.
 	Audience *string `json:"audience,omitempty"`
 
@@ -826,14 +821,21 @@ type OAuthAuthentication struct {
 	Tenant *string `json:"tenant,omitempty"`
 }
 
+// GetHTTPAuthentication implements the HTTPAuthenticationClassification interface for type OAuthAuthentication.
+func (o *OAuthAuthentication) GetHTTPAuthentication() *HTTPAuthentication {
+	return &HTTPAuthentication{
+		Type: o.Type,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type OAuthAuthentication.
 func (o OAuthAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.HTTPAuthentication.marshalInternal(objectMap, HTTPAuthenticationTypeActiveDirectoryOAuth)
 	populate(objectMap, "audience", o.Audience)
 	populate(objectMap, "clientId", o.ClientID)
 	populate(objectMap, "secret", o.Secret)
 	populate(objectMap, "tenant", o.Tenant)
+	objectMap["type"] = HTTPAuthenticationTypeActiveDirectoryOAuth
 	return json.Marshal(objectMap)
 }
 
@@ -858,13 +860,13 @@ func (o *OAuthAuthentication) UnmarshalJSON(data []byte) error {
 		case "tenant":
 			err = unpopulate(val, &o.Tenant)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &o.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := o.HTTPAuthentication.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1035,44 +1037,84 @@ type ServiceBusMessage struct {
 // MarshalJSON implements the json.Marshaller interface for type ServiceBusMessage.
 func (s ServiceBusMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (s ServiceBusMessage) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "authentication", s.Authentication)
 	populate(objectMap, "brokeredMessageProperties", s.BrokeredMessageProperties)
 	populate(objectMap, "customMessageProperties", s.CustomMessageProperties)
 	populate(objectMap, "message", s.Message)
 	populate(objectMap, "namespace", s.Namespace)
 	populate(objectMap, "transportType", s.TransportType)
+	return json.Marshal(objectMap)
 }
 
 type ServiceBusQueueMessage struct {
-	ServiceBusMessage
+	// Gets or sets the Service Bus authentication.
+	Authentication *ServiceBusAuthentication `json:"authentication,omitempty"`
+
+	// Gets or sets the brokered message properties.
+	BrokeredMessageProperties *ServiceBusBrokeredMessageProperties `json:"brokeredMessageProperties,omitempty"`
+
+	// Gets or sets the custom message properties.
+	CustomMessageProperties map[string]*string `json:"customMessageProperties,omitempty"`
+
+	// Gets or sets the message.
+	Message *string `json:"message,omitempty"`
+
+	// Gets or sets the namespace.
+	Namespace *string `json:"namespace,omitempty"`
+
 	// Gets or sets the queue name.
 	QueueName *string `json:"queueName,omitempty"`
+
+	// Gets or sets the transport type.
+	TransportType *ServiceBusTransportType `json:"transportType,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceBusQueueMessage.
 func (s ServiceBusQueueMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ServiceBusMessage.marshalInternal(objectMap)
+	populate(objectMap, "authentication", s.Authentication)
+	populate(objectMap, "brokeredMessageProperties", s.BrokeredMessageProperties)
+	populate(objectMap, "customMessageProperties", s.CustomMessageProperties)
+	populate(objectMap, "message", s.Message)
+	populate(objectMap, "namespace", s.Namespace)
 	populate(objectMap, "queueName", s.QueueName)
+	populate(objectMap, "transportType", s.TransportType)
 	return json.Marshal(objectMap)
 }
 
 type ServiceBusTopicMessage struct {
-	ServiceBusMessage
+	// Gets or sets the Service Bus authentication.
+	Authentication *ServiceBusAuthentication `json:"authentication,omitempty"`
+
+	// Gets or sets the brokered message properties.
+	BrokeredMessageProperties *ServiceBusBrokeredMessageProperties `json:"brokeredMessageProperties,omitempty"`
+
+	// Gets or sets the custom message properties.
+	CustomMessageProperties map[string]*string `json:"customMessageProperties,omitempty"`
+
+	// Gets or sets the message.
+	Message *string `json:"message,omitempty"`
+
+	// Gets or sets the namespace.
+	Namespace *string `json:"namespace,omitempty"`
+
 	// Gets or sets the topic path.
 	TopicPath *string `json:"topicPath,omitempty"`
+
+	// Gets or sets the transport type.
+	TransportType *ServiceBusTransportType `json:"transportType,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceBusTopicMessage.
 func (s ServiceBusTopicMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ServiceBusMessage.marshalInternal(objectMap)
+	populate(objectMap, "authentication", s.Authentication)
+	populate(objectMap, "brokeredMessageProperties", s.BrokeredMessageProperties)
+	populate(objectMap, "customMessageProperties", s.CustomMessageProperties)
+	populate(objectMap, "message", s.Message)
+	populate(objectMap, "namespace", s.Namespace)
 	populate(objectMap, "topicPath", s.TopicPath)
+	populate(objectMap, "transportType", s.TransportType)
 	return json.Marshal(objectMap)
 }
 

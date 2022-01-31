@@ -10,170 +10,170 @@ package armagrifood
 
 import "net/http"
 
-// ExtensionsCreateResponse contains the response from method Extensions.Create.
-type ExtensionsCreateResponse struct {
-	ExtensionsCreateResult
+// ExtensionsClientCreateResponse contains the response from method ExtensionsClient.Create.
+type ExtensionsClientCreateResponse struct {
+	ExtensionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsCreateResult contains the result from method Extensions.Create.
-type ExtensionsCreateResult struct {
+// ExtensionsClientCreateResult contains the result from method ExtensionsClient.Create.
+type ExtensionsClientCreateResult struct {
 	Extension
 }
 
-// ExtensionsDeleteResponse contains the response from method Extensions.Delete.
-type ExtensionsDeleteResponse struct {
+// ExtensionsClientDeleteResponse contains the response from method ExtensionsClient.Delete.
+type ExtensionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsGetResponse contains the response from method Extensions.Get.
-type ExtensionsGetResponse struct {
-	ExtensionsGetResult
+// ExtensionsClientGetResponse contains the response from method ExtensionsClient.Get.
+type ExtensionsClientGetResponse struct {
+	ExtensionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsGetResult contains the result from method Extensions.Get.
-type ExtensionsGetResult struct {
+// ExtensionsClientGetResult contains the result from method ExtensionsClient.Get.
+type ExtensionsClientGetResult struct {
 	Extension
 }
 
-// ExtensionsListByFarmBeatsResponse contains the response from method Extensions.ListByFarmBeats.
-type ExtensionsListByFarmBeatsResponse struct {
-	ExtensionsListByFarmBeatsResult
+// ExtensionsClientListByFarmBeatsResponse contains the response from method ExtensionsClient.ListByFarmBeats.
+type ExtensionsClientListByFarmBeatsResponse struct {
+	ExtensionsClientListByFarmBeatsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsListByFarmBeatsResult contains the result from method Extensions.ListByFarmBeats.
-type ExtensionsListByFarmBeatsResult struct {
+// ExtensionsClientListByFarmBeatsResult contains the result from method ExtensionsClient.ListByFarmBeats.
+type ExtensionsClientListByFarmBeatsResult struct {
 	ExtensionListResponse
 }
 
-// ExtensionsUpdateResponse contains the response from method Extensions.Update.
-type ExtensionsUpdateResponse struct {
-	ExtensionsUpdateResult
+// ExtensionsClientUpdateResponse contains the response from method ExtensionsClient.Update.
+type ExtensionsClientUpdateResponse struct {
+	ExtensionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsUpdateResult contains the result from method Extensions.Update.
-type ExtensionsUpdateResult struct {
+// ExtensionsClientUpdateResult contains the result from method ExtensionsClient.Update.
+type ExtensionsClientUpdateResult struct {
 	Extension
 }
 
-// FarmBeatsExtensionsGetResponse contains the response from method FarmBeatsExtensions.Get.
-type FarmBeatsExtensionsGetResponse struct {
-	FarmBeatsExtensionsGetResult
+// FarmBeatsExtensionsClientGetResponse contains the response from method FarmBeatsExtensionsClient.Get.
+type FarmBeatsExtensionsClientGetResponse struct {
+	FarmBeatsExtensionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FarmBeatsExtensionsGetResult contains the result from method FarmBeatsExtensions.Get.
-type FarmBeatsExtensionsGetResult struct {
+// FarmBeatsExtensionsClientGetResult contains the result from method FarmBeatsExtensionsClient.Get.
+type FarmBeatsExtensionsClientGetResult struct {
 	FarmBeatsExtension
 }
 
-// FarmBeatsExtensionsListResponse contains the response from method FarmBeatsExtensions.List.
-type FarmBeatsExtensionsListResponse struct {
-	FarmBeatsExtensionsListResult
+// FarmBeatsExtensionsClientListResponse contains the response from method FarmBeatsExtensionsClient.List.
+type FarmBeatsExtensionsClientListResponse struct {
+	FarmBeatsExtensionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FarmBeatsExtensionsListResult contains the result from method FarmBeatsExtensions.List.
-type FarmBeatsExtensionsListResult struct {
+// FarmBeatsExtensionsClientListResult contains the result from method FarmBeatsExtensionsClient.List.
+type FarmBeatsExtensionsClientListResult struct {
 	FarmBeatsExtensionListResponse
 }
 
-// FarmBeatsModelsCreateOrUpdateResponse contains the response from method FarmBeatsModels.CreateOrUpdate.
-type FarmBeatsModelsCreateOrUpdateResponse struct {
-	FarmBeatsModelsCreateOrUpdateResult
+// FarmBeatsModelsClientCreateOrUpdateResponse contains the response from method FarmBeatsModelsClient.CreateOrUpdate.
+type FarmBeatsModelsClientCreateOrUpdateResponse struct {
+	FarmBeatsModelsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FarmBeatsModelsCreateOrUpdateResult contains the result from method FarmBeatsModels.CreateOrUpdate.
-type FarmBeatsModelsCreateOrUpdateResult struct {
+// FarmBeatsModelsClientCreateOrUpdateResult contains the result from method FarmBeatsModelsClient.CreateOrUpdate.
+type FarmBeatsModelsClientCreateOrUpdateResult struct {
 	FarmBeats
 }
 
-// FarmBeatsModelsDeleteResponse contains the response from method FarmBeatsModels.Delete.
-type FarmBeatsModelsDeleteResponse struct {
+// FarmBeatsModelsClientDeleteResponse contains the response from method FarmBeatsModelsClient.Delete.
+type FarmBeatsModelsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FarmBeatsModelsGetResponse contains the response from method FarmBeatsModels.Get.
-type FarmBeatsModelsGetResponse struct {
-	FarmBeatsModelsGetResult
+// FarmBeatsModelsClientGetResponse contains the response from method FarmBeatsModelsClient.Get.
+type FarmBeatsModelsClientGetResponse struct {
+	FarmBeatsModelsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FarmBeatsModelsGetResult contains the result from method FarmBeatsModels.Get.
-type FarmBeatsModelsGetResult struct {
+// FarmBeatsModelsClientGetResult contains the result from method FarmBeatsModelsClient.Get.
+type FarmBeatsModelsClientGetResult struct {
 	FarmBeats
 }
 
-// FarmBeatsModelsListByResourceGroupResponse contains the response from method FarmBeatsModels.ListByResourceGroup.
-type FarmBeatsModelsListByResourceGroupResponse struct {
-	FarmBeatsModelsListByResourceGroupResult
+// FarmBeatsModelsClientListByResourceGroupResponse contains the response from method FarmBeatsModelsClient.ListByResourceGroup.
+type FarmBeatsModelsClientListByResourceGroupResponse struct {
+	FarmBeatsModelsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FarmBeatsModelsListByResourceGroupResult contains the result from method FarmBeatsModels.ListByResourceGroup.
-type FarmBeatsModelsListByResourceGroupResult struct {
+// FarmBeatsModelsClientListByResourceGroupResult contains the result from method FarmBeatsModelsClient.ListByResourceGroup.
+type FarmBeatsModelsClientListByResourceGroupResult struct {
 	FarmBeatsListResponse
 }
 
-// FarmBeatsModelsListBySubscriptionResponse contains the response from method FarmBeatsModels.ListBySubscription.
-type FarmBeatsModelsListBySubscriptionResponse struct {
-	FarmBeatsModelsListBySubscriptionResult
+// FarmBeatsModelsClientListBySubscriptionResponse contains the response from method FarmBeatsModelsClient.ListBySubscription.
+type FarmBeatsModelsClientListBySubscriptionResponse struct {
+	FarmBeatsModelsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FarmBeatsModelsListBySubscriptionResult contains the result from method FarmBeatsModels.ListBySubscription.
-type FarmBeatsModelsListBySubscriptionResult struct {
+// FarmBeatsModelsClientListBySubscriptionResult contains the result from method FarmBeatsModelsClient.ListBySubscription.
+type FarmBeatsModelsClientListBySubscriptionResult struct {
 	FarmBeatsListResponse
 }
 
-// FarmBeatsModelsUpdateResponse contains the response from method FarmBeatsModels.Update.
-type FarmBeatsModelsUpdateResponse struct {
-	FarmBeatsModelsUpdateResult
+// FarmBeatsModelsClientUpdateResponse contains the response from method FarmBeatsModelsClient.Update.
+type FarmBeatsModelsClientUpdateResponse struct {
+	FarmBeatsModelsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FarmBeatsModelsUpdateResult contains the result from method FarmBeatsModels.Update.
-type FarmBeatsModelsUpdateResult struct {
+// FarmBeatsModelsClientUpdateResult contains the result from method FarmBeatsModelsClient.Update.
+type FarmBeatsModelsClientUpdateResult struct {
 	FarmBeats
 }
 
-// LocationsCheckNameAvailabilityResponse contains the response from method Locations.CheckNameAvailability.
-type LocationsCheckNameAvailabilityResponse struct {
-	LocationsCheckNameAvailabilityResult
+// LocationsClientCheckNameAvailabilityResponse contains the response from method LocationsClient.CheckNameAvailability.
+type LocationsClientCheckNameAvailabilityResponse struct {
+	LocationsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsCheckNameAvailabilityResult contains the result from method Locations.CheckNameAvailability.
-type LocationsCheckNameAvailabilityResult struct {
+// LocationsClientCheckNameAvailabilityResult contains the result from method LocationsClient.CheckNameAvailability.
+type LocationsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResponse
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

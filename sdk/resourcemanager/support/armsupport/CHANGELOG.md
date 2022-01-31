@@ -1,0 +1,194 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*CommunicationsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, CheckNameAvailabilityInput, *CommunicationsCheckNameAvailabilityOptions)` to `(context.Context, string, CheckNameAvailabilityInput, *CommunicationsClientCheckNameAvailabilityOptions)`
+- Function `*CommunicationsClient.CheckNameAvailability` return value(s) have been changed from `(CommunicationsCheckNameAvailabilityResponse, error)` to `(CommunicationsClientCheckNameAvailabilityResponse, error)`
+- Function `*CommunicationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CommunicationsGetOptions)` to `(context.Context, string, string, *CommunicationsClientGetOptions)`
+- Function `*CommunicationsClient.Get` return value(s) have been changed from `(CommunicationsGetResponse, error)` to `(CommunicationsClientGetResponse, error)`
+- Function `*ServicesClient.List` parameter(s) have been changed from `(context.Context, *ServicesListOptions)` to `(context.Context, *ServicesClientListOptions)`
+- Function `*ServicesClient.List` return value(s) have been changed from `(ServicesListResponse, error)` to `(ServicesClientListResponse, error)`
+- Function `*CommunicationsClient.List` parameter(s) have been changed from `(string, *CommunicationsListOptions)` to `(string, *CommunicationsClientListOptions)`
+- Function `*CommunicationsClient.List` return value(s) have been changed from `(*CommunicationsListPager)` to `(*CommunicationsClientListPager)`
+- Function `*ProblemClassificationsClient.List` parameter(s) have been changed from `(context.Context, string, *ProblemClassificationsListOptions)` to `(context.Context, string, *ProblemClassificationsClientListOptions)`
+- Function `*ProblemClassificationsClient.List` return value(s) have been changed from `(ProblemClassificationsListResponse, error)` to `(ProblemClassificationsClientListResponse, error)`
+- Function `*ServicesClient.Get` parameter(s) have been changed from `(context.Context, string, *ServicesGetOptions)` to `(context.Context, string, *ServicesClientGetOptions)`
+- Function `*ServicesClient.Get` return value(s) have been changed from `(ServicesGetResponse, error)` to `(ServicesClientGetResponse, error)`
+- Function `*ProblemClassificationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ProblemClassificationsGetOptions)` to `(context.Context, string, string, *ProblemClassificationsClientGetOptions)`
+- Function `*ProblemClassificationsClient.Get` return value(s) have been changed from `(ProblemClassificationsGetResponse, error)` to `(ProblemClassificationsClientGetResponse, error)`
+- Function `*CommunicationsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, CommunicationDetails, *CommunicationsBeginCreateOptions)` to `(context.Context, string, string, CommunicationDetails, *CommunicationsClientBeginCreateOptions)`
+- Function `*CommunicationsClient.BeginCreate` return value(s) have been changed from `(CommunicationsCreatePollerResponse, error)` to `(CommunicationsClientCreatePollerResponse, error)`
+- Function `SupportTicketsListResult.MarshalJSON` has been removed
+- Function `SupportTicketsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SupportTicketsCreatePoller.FinalResponse` has been removed
+- Function `*CommunicationsListPager.PageResponse` has been removed
+- Function `SupportTicketDetailsProperties.MarshalJSON` has been removed
+- Function `*SupportTicketsCreatePollerResponse.Resume` has been removed
+- Function `ExceptionResponse.Error` has been removed
+- Function `*SupportTicketsCreatePoller.ResumeToken` has been removed
+- Function `*CommunicationsCreatePoller.Poll` has been removed
+- Function `*SupportTicketsClient.BeginCreate` has been removed
+- Function `NewSupportTicketsClient` has been removed
+- Function `*SupportTicketsCreatePoller.Poll` has been removed
+- Function `*CommunicationsListPager.Err` has been removed
+- Function `*CommunicationsListPager.NextPage` has been removed
+- Function `*SupportTicketsListPager.PageResponse` has been removed
+- Function `*CommunicationsCreatePoller.FinalResponse` has been removed
+- Function `*SupportTicketsListPager.Err` has been removed
+- Function `*SupportTicketDetailsProperties.UnmarshalJSON` has been removed
+- Function `*SupportTicketsClient.CheckNameAvailability` has been removed
+- Function `*CommunicationsCreatePoller.ResumeToken` has been removed
+- Function `*CommunicationsCreatePoller.Done` has been removed
+- Function `*CommunicationsCreatePollerResponse.Resume` has been removed
+- Function `*SupportTicketsListPager.NextPage` has been removed
+- Function `CommunicationsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SupportTicketsClient.Get` has been removed
+- Function `*SupportTicketsClient.List` has been removed
+- Function `*SupportTicketsClient.Update` has been removed
+- Function `*SupportTicketsCreatePoller.Done` has been removed
+- Struct `CommunicationsBeginCreateOptions` has been removed
+- Struct `CommunicationsCheckNameAvailabilityOptions` has been removed
+- Struct `CommunicationsCheckNameAvailabilityResponse` has been removed
+- Struct `CommunicationsCheckNameAvailabilityResult` has been removed
+- Struct `CommunicationsCreatePoller` has been removed
+- Struct `CommunicationsCreatePollerResponse` has been removed
+- Struct `CommunicationsCreateResponse` has been removed
+- Struct `CommunicationsCreateResult` has been removed
+- Struct `CommunicationsGetOptions` has been removed
+- Struct `CommunicationsGetResponse` has been removed
+- Struct `CommunicationsGetResult` has been removed
+- Struct `CommunicationsListOptions` has been removed
+- Struct `CommunicationsListPager` has been removed
+- Struct `CommunicationsListResponse` has been removed
+- Struct `CommunicationsListResultEnvelope` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResultEnvelope` has been removed
+- Struct `ProblemClassificationsGetOptions` has been removed
+- Struct `ProblemClassificationsGetResponse` has been removed
+- Struct `ProblemClassificationsGetResult` has been removed
+- Struct `ProblemClassificationsListOptions` has been removed
+- Struct `ProblemClassificationsListResponse` has been removed
+- Struct `ProblemClassificationsListResultEnvelope` has been removed
+- Struct `ServicesGetOptions` has been removed
+- Struct `ServicesGetResponse` has been removed
+- Struct `ServicesGetResult` has been removed
+- Struct `ServicesListOptions` has been removed
+- Struct `ServicesListResponse` has been removed
+- Struct `ServicesListResultEnvelope` has been removed
+- Struct `SupportEngineer` has been removed
+- Struct `SupportTicketDetails` has been removed
+- Struct `SupportTicketDetailsProperties` has been removed
+- Struct `SupportTicketsBeginCreateOptions` has been removed
+- Struct `SupportTicketsCheckNameAvailabilityOptions` has been removed
+- Struct `SupportTicketsCheckNameAvailabilityResponse` has been removed
+- Struct `SupportTicketsCheckNameAvailabilityResult` has been removed
+- Struct `SupportTicketsClient` has been removed
+- Struct `SupportTicketsCreatePoller` has been removed
+- Struct `SupportTicketsCreatePollerResponse` has been removed
+- Struct `SupportTicketsCreateResponse` has been removed
+- Struct `SupportTicketsCreateResult` has been removed
+- Struct `SupportTicketsGetOptions` has been removed
+- Struct `SupportTicketsGetResponse` has been removed
+- Struct `SupportTicketsGetResult` has been removed
+- Struct `SupportTicketsListOptions` has been removed
+- Struct `SupportTicketsListPager` has been removed
+- Struct `SupportTicketsListResponse` has been removed
+- Struct `SupportTicketsListResult` has been removed
+- Struct `SupportTicketsListResultEnvelope` has been removed
+- Struct `SupportTicketsUpdateOptions` has been removed
+- Struct `SupportTicketsUpdateResponse` has been removed
+- Struct `SupportTicketsUpdateResult` has been removed
+- Field `InnerError` of struct `ExceptionResponse` has been removed
+
+### Features Added
+
+- New function `CommunicationsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (CommunicationsClientCreateResponse, error)`
+- New function `NewTicketsClient(string, azcore.TokenCredential, *arm.ClientOptions) *TicketsClient`
+- New function `*TicketsClient.CheckNameAvailability(context.Context, CheckNameAvailabilityInput, *TicketsClientCheckNameAvailabilityOptions) (TicketsClientCheckNameAvailabilityResponse, error)`
+- New function `*CommunicationsClientListPager.Err() error`
+- New function `*CommunicationsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CommunicationsClientListPager.PageResponse() CommunicationsClientListResponse`
+- New function `*TicketsClientListPager.PageResponse() TicketsClientListResponse`
+- New function `*CommunicationsClientCreatePoller.Done() bool`
+- New function `*TicketsClientCreatePollerResponse.Resume(context.Context, *TicketsClient, string) error`
+- New function `*TicketDetailsProperties.UnmarshalJSON([]byte) error`
+- New function `*TicketsClient.Update(context.Context, string, UpdateSupportTicket, *TicketsClientUpdateOptions) (TicketsClientUpdateResponse, error)`
+- New function `*TicketsClient.BeginCreate(context.Context, string, TicketDetails, *TicketsClientBeginCreateOptions) (TicketsClientCreatePollerResponse, error)`
+- New function `*TicketsClientCreatePoller.ResumeToken() (string, error)`
+- New function `TicketDetailsProperties.MarshalJSON() ([]byte, error)`
+- New function `TicketsListResult.MarshalJSON() ([]byte, error)`
+- New function `*TicketsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `TicketsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (TicketsClientCreateResponse, error)`
+- New function `*TicketsClient.List(*TicketsClientListOptions) *TicketsClientListPager`
+- New function `*CommunicationsClientListPager.NextPage(context.Context) bool`
+- New function `*TicketsClient.Get(context.Context, string, *TicketsClientGetOptions) (TicketsClientGetResponse, error)`
+- New function `*TicketsClientListPager.Err() error`
+- New function `*CommunicationsClientCreatePoller.FinalResponse(context.Context) (CommunicationsClientCreateResponse, error)`
+- New function `*TicketsClientCreatePoller.FinalResponse(context.Context) (TicketsClientCreateResponse, error)`
+- New function `*CommunicationsClientCreatePollerResponse.Resume(context.Context, *CommunicationsClient, string) error`
+- New function `*TicketsClientListPager.NextPage(context.Context) bool`
+- New function `*CommunicationsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*TicketsClientCreatePoller.Done() bool`
+- New struct `CommunicationsClientBeginCreateOptions`
+- New struct `CommunicationsClientCheckNameAvailabilityOptions`
+- New struct `CommunicationsClientCheckNameAvailabilityResponse`
+- New struct `CommunicationsClientCheckNameAvailabilityResult`
+- New struct `CommunicationsClientCreatePoller`
+- New struct `CommunicationsClientCreatePollerResponse`
+- New struct `CommunicationsClientCreateResponse`
+- New struct `CommunicationsClientCreateResult`
+- New struct `CommunicationsClientGetOptions`
+- New struct `CommunicationsClientGetResponse`
+- New struct `CommunicationsClientGetResult`
+- New struct `CommunicationsClientListOptions`
+- New struct `CommunicationsClientListPager`
+- New struct `CommunicationsClientListResponse`
+- New struct `CommunicationsClientListResult`
+- New struct `Engineer`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `ProblemClassificationsClientGetOptions`
+- New struct `ProblemClassificationsClientGetResponse`
+- New struct `ProblemClassificationsClientGetResult`
+- New struct `ProblemClassificationsClientListOptions`
+- New struct `ProblemClassificationsClientListResponse`
+- New struct `ProblemClassificationsClientListResult`
+- New struct `ServicesClientGetOptions`
+- New struct `ServicesClientGetResponse`
+- New struct `ServicesClientGetResult`
+- New struct `ServicesClientListOptions`
+- New struct `ServicesClientListResponse`
+- New struct `ServicesClientListResult`
+- New struct `TicketDetails`
+- New struct `TicketDetailsProperties`
+- New struct `TicketsClient`
+- New struct `TicketsClientBeginCreateOptions`
+- New struct `TicketsClientCheckNameAvailabilityOptions`
+- New struct `TicketsClientCheckNameAvailabilityResponse`
+- New struct `TicketsClientCheckNameAvailabilityResult`
+- New struct `TicketsClientCreatePoller`
+- New struct `TicketsClientCreatePollerResponse`
+- New struct `TicketsClientCreateResponse`
+- New struct `TicketsClientCreateResult`
+- New struct `TicketsClientGetOptions`
+- New struct `TicketsClientGetResponse`
+- New struct `TicketsClientGetResult`
+- New struct `TicketsClientListOptions`
+- New struct `TicketsClientListPager`
+- New struct `TicketsClientListResponse`
+- New struct `TicketsClientListResult`
+- New struct `TicketsClientUpdateOptions`
+- New struct `TicketsClientUpdateResponse`
+- New struct `TicketsClientUpdateResult`
+- New struct `TicketsListResult`
+- New field `Error` in struct `ExceptionResponse`
+
+
+## 0.1.0 (2021-12-22)
+
+- Init release.

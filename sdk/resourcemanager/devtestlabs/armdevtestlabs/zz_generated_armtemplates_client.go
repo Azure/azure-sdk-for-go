@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // ArmTemplatesClient contains the methods for the ArmTemplates group.
 // Don't use this type directly, use NewArmTemplatesClient() instead.
 type ArmTemplatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewArmTemplatesClient creates a new instance of ArmTemplatesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewArmTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ArmTemplatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ArmTemplatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ArmTemplatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get azure resource manager template.
-// If the operation fails it returns the *CloudError error type.
-func (client *ArmTemplatesClient) Get(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, options *ArmTemplatesGetOptions) (ArmTemplatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// artifactSourceName - The name of the artifact source.
+// name - The name of the azure resource manager template.
+// options - ArmTemplatesClientGetOptions contains the optional parameters for the ArmTemplatesClient.Get method.
+func (client *ArmTemplatesClient) Get(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, options *ArmTemplatesClientGetOptions) (ArmTemplatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, artifactSourceName, name, options)
 	if err != nil {
-		return ArmTemplatesGetResponse{}, err
+		return ArmTemplatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ArmTemplatesGetResponse{}, err
+		return ArmTemplatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ArmTemplatesGetResponse{}, client.getHandleError(resp)
+		return ArmTemplatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ArmTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, options *ArmTemplatesGetOptions) (*policy.Request, error) {
+func (client *ArmTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, options *ArmTemplatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{artifactSourceName}/armtemplates/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,7 +95,7 @@ func (client *ArmTemplatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,43 +110,34 @@ func (client *ArmTemplatesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ArmTemplatesClient) getHandleResponse(resp *http.Response) (ArmTemplatesGetResponse, error) {
-	result := ArmTemplatesGetResponse{RawResponse: resp}
+func (client *ArmTemplatesClient) getHandleResponse(resp *http.Response) (ArmTemplatesClientGetResponse, error) {
+	result := ArmTemplatesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmTemplate); err != nil {
-		return ArmTemplatesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ArmTemplatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ArmTemplatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List azure resource manager templates in a given artifact source.
-// If the operation fails it returns the *CloudError error type.
-func (client *ArmTemplatesClient) List(resourceGroupName string, labName string, artifactSourceName string, options *ArmTemplatesListOptions) *ArmTemplatesListPager {
-	return &ArmTemplatesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// artifactSourceName - The name of the artifact source.
+// options - ArmTemplatesClientListOptions contains the optional parameters for the ArmTemplatesClient.List method.
+func (client *ArmTemplatesClient) List(resourceGroupName string, labName string, artifactSourceName string, options *ArmTemplatesClientListOptions) *ArmTemplatesClientListPager {
+	return &ArmTemplatesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, labName, artifactSourceName, options)
 		},
-		advancer: func(ctx context.Context, resp ArmTemplatesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ArmTemplatesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ArmTemplateList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ArmTemplatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, options *ArmTemplatesListOptions) (*policy.Request, error) {
+func (client *ArmTemplatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, options *ArmTemplatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{artifactSourceName}/armtemplates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -152,7 +155,7 @@ func (client *ArmTemplatesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter artifactSourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{artifactSourceName}", url.PathEscape(artifactSourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -176,23 +179,10 @@ func (client *ArmTemplatesClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *ArmTemplatesClient) listHandleResponse(resp *http.Response) (ArmTemplatesListResponse, error) {
-	result := ArmTemplatesListResponse{RawResponse: resp}
+func (client *ArmTemplatesClient) listHandleResponse(resp *http.Response) (ArmTemplatesClientListResponse, error) {
+	result := ArmTemplatesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmTemplateList); err != nil {
-		return ArmTemplatesListResponse{}, runtime.NewResponseError(err, resp)
+		return ArmTemplatesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ArmTemplatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

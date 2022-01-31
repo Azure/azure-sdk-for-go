@@ -24,42 +24,56 @@ import (
 // VaultCertificatesClient contains the methods for the VaultCertificates group.
 // Don't use this type directly, use NewVaultCertificatesClient() instead.
 type VaultCertificatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVaultCertificatesClient creates a new instance of VaultCertificatesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVaultCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VaultCertificatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VaultCertificatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VaultCertificatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Uploads a certificate for a resource.
-// If the operation fails it returns a generic error.
-func (client *VaultCertificatesClient) Create(ctx context.Context, resourceGroupName string, vaultName string, certificateName string, certificateRequest CertificateRequest, options *VaultCertificatesCreateOptions) (VaultCertificatesCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// vaultName - The name of the recovery services vault.
+// certificateName - Certificate friendly name.
+// certificateRequest - Input parameters for uploading the vault certificate.
+// options - VaultCertificatesClientCreateOptions contains the optional parameters for the VaultCertificatesClient.Create
+// method.
+func (client *VaultCertificatesClient) Create(ctx context.Context, resourceGroupName string, vaultName string, certificateName string, certificateRequest CertificateRequest, options *VaultCertificatesClientCreateOptions) (VaultCertificatesClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vaultName, certificateName, certificateRequest, options)
 	if err != nil {
-		return VaultCertificatesCreateResponse{}, err
+		return VaultCertificatesClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VaultCertificatesCreateResponse{}, err
+		return VaultCertificatesClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VaultCertificatesCreateResponse{}, client.createHandleError(resp)
+		return VaultCertificatesClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *VaultCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, certificateName string, certificateRequest CertificateRequest, options *VaultCertificatesCreateOptions) (*policy.Request, error) {
+func (client *VaultCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, certificateName string, certificateRequest CertificateRequest, options *VaultCertificatesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,34 +91,22 @@ func (client *VaultCertificatesClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, certificateRequest)
 }
 
 // createHandleResponse handles the Create response.
-func (client *VaultCertificatesClient) createHandleResponse(resp *http.Response) (VaultCertificatesCreateResponse, error) {
-	result := VaultCertificatesCreateResponse{RawResponse: resp}
+func (client *VaultCertificatesClient) createHandleResponse(resp *http.Response) (VaultCertificatesClientCreateResponse, error) {
+	result := VaultCertificatesClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultCertificateResponse); err != nil {
-		return VaultCertificatesCreateResponse{}, runtime.NewResponseError(err, resp)
+		return VaultCertificatesClientCreateResponse{}, err
 	}
 	return result, nil
-}
-
-// createHandleError handles the Create error response.
-func (client *VaultCertificatesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

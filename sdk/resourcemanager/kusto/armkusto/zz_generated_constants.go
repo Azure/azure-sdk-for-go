@@ -9,8 +9,8 @@
 package armkusto
 
 const (
-	module  = "armkusto"
-	version = "v0.1.0"
+	moduleName    = "armkusto"
+	moduleVersion = "v0.2.0"
 )
 
 // AzureSKUName - SKU name.
@@ -145,7 +145,8 @@ func (c BlobStorageEventType) ToPtr() *BlobStorageEventType {
 	return &c
 }
 
-// ClusterNetworkAccessFlag - Whether or not to restrict outbound network access. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
+// ClusterNetworkAccessFlag - Whether or not to restrict outbound network access. Value is optional but if passed in, must
+// be 'Enabled' or 'Disabled'
 type ClusterNetworkAccessFlag string
 
 const (
@@ -450,8 +451,8 @@ func (c EventHubDataFormat) ToPtr() *EventHubDataFormat {
 	return &c
 }
 
-// IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned
-// identities. The type 'None' will remove all
+// IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+// identity and a set of user-assigned identities. The type 'None' will remove all
 // identities.
 type IdentityType string
 
@@ -643,7 +644,8 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// PublicNetworkAccess - Public network access to the cluster is enabled by default. When disabled, only private endpoint connection to the cluster is allowed
+// PublicNetworkAccess - Public network access to the cluster is enabled by default. When disabled, only private endpoint
+// connection to the cluster is allowed
 type PublicNetworkAccess string
 
 const (

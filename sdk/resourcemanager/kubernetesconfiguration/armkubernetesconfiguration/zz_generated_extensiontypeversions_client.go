@@ -11,7 +11,6 @@ package armkubernetesconfiguration
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // ExtensionTypeVersionsClient contains the methods for the ExtensionTypeVersions group.
 // Don't use this type directly, use NewExtensionTypeVersionsClient() instead.
 type ExtensionTypeVersionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExtensionTypeVersionsClient creates a new instance of ExtensionTypeVersionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExtensionTypeVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExtensionTypeVersionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExtensionTypeVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExtensionTypeVersionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List available versions for an Extension Type
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionTypeVersionsClient) List(location string, extensionTypeName string, options *ExtensionTypeVersionsListOptions) *ExtensionTypeVersionsListPager {
-	return &ExtensionTypeVersionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - extension location
+// extensionTypeName - Extension type name
+// options - ExtensionTypeVersionsClientListOptions contains the optional parameters for the ExtensionTypeVersionsClient.List
+// method.
+func (client *ExtensionTypeVersionsClient) List(location string, extensionTypeName string, options *ExtensionTypeVersionsClientListOptions) *ExtensionTypeVersionsClientListPager {
+	return &ExtensionTypeVersionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, extensionTypeName, options)
 		},
-		advancer: func(ctx context.Context, resp ExtensionTypeVersionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ExtensionTypeVersionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExtensionVersionList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ExtensionTypeVersionsClient) listCreateRequest(ctx context.Context, location string, extensionTypeName string, options *ExtensionTypeVersionsListOptions) (*policy.Request, error) {
+func (client *ExtensionTypeVersionsClient) listCreateRequest(ctx context.Context, location string, extensionTypeName string, options *ExtensionTypeVersionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KubernetesConfiguration/locations/{location}/extensionTypes/{extensionTypeName}/versions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +82,7 @@ func (client *ExtensionTypeVersionsClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter extensionTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionTypeName}", url.PathEscape(extensionTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +94,10 @@ func (client *ExtensionTypeVersionsClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *ExtensionTypeVersionsClient) listHandleResponse(resp *http.Response) (ExtensionTypeVersionsListResponse, error) {
-	result := ExtensionTypeVersionsListResponse{RawResponse: resp}
+func (client *ExtensionTypeVersionsClient) listHandleResponse(resp *http.Response) (ExtensionTypeVersionsClientListResponse, error) {
+	result := ExtensionTypeVersionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionVersionList); err != nil {
-		return ExtensionTypeVersionsListResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionTypeVersionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ExtensionTypeVersionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// ViewsListByScopePager provides operations for iterating over paged responses.
-type ViewsListByScopePager struct {
+// ViewsClientListByScopePager provides operations for iterating over paged responses.
+type ViewsClientListByScopePager struct {
 	client    *ViewsClient
-	current   ViewsListByScopeResponse
+	current   ViewsClientListByScopeResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ViewsListByScopeResponse) (*policy.Request, error)
+	advancer  func(context.Context, ViewsClientListByScopeResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ViewsListByScopePager) Err() error {
+func (p *ViewsClientListByScopePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ViewsListByScopePager) NextPage(ctx context.Context) bool {
+func (p *ViewsClientListByScopePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *ViewsListByScopePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByScopeHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByScopeHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *ViewsListByScopePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ViewsListByScopeResponse page.
-func (p *ViewsListByScopePager) PageResponse() ViewsListByScopeResponse {
+// PageResponse returns the current ViewsClientListByScopeResponse page.
+func (p *ViewsClientListByScopePager) PageResponse() ViewsClientListByScopeResponse {
 	return p.current
 }
 
-// ViewsListPager provides operations for iterating over paged responses.
-type ViewsListPager struct {
+// ViewsClientListPager provides operations for iterating over paged responses.
+type ViewsClientListPager struct {
 	client    *ViewsClient
-	current   ViewsListResponse
+	current   ViewsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ViewsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ViewsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ViewsListPager) Err() error {
+func (p *ViewsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ViewsListPager) NextPage(ctx context.Context) bool {
+func (p *ViewsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *ViewsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,7 +173,7 @@ func (p *ViewsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ViewsListResponse page.
-func (p *ViewsListPager) PageResponse() ViewsListResponse {
+// PageResponse returns the current ViewsClientListResponse page.
+func (p *ViewsClientListPager) PageResponse() ViewsClientListResponse {
 	return p.current
 }

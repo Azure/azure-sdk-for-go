@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // UserClient contains the methods for the User group.
 // Don't use this type directly, use NewUserClient() instead.
 type UserClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUserClient creates a new instance of UserClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UserClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UserClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or Updates a user.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserCreateParameters, options *UserCreateOrUpdateOptions) (UserCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// parameters - Create or update parameters.
+// options - UserClientCreateOrUpdateOptions contains the optional parameters for the UserClient.CreateOrUpdate method.
+func (client *UserClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserCreateParameters, options *UserClientCreateOrUpdateOptions) (UserClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, userID, parameters, options)
 	if err != nil {
-		return UserCreateOrUpdateResponse{}, err
+		return UserClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserCreateOrUpdateResponse{}, err
+		return UserClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return UserCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return UserClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserCreateParameters, options *UserCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserCreateParameters, options *UserClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +92,7 @@ func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,49 +110,42 @@ func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *UserClient) createOrUpdateHandleResponse(resp *http.Response) (UserCreateOrUpdateResponse, error) {
-	result := UserCreateOrUpdateResponse{RawResponse: resp}
+func (client *UserClient) createOrUpdateHandleResponse(resp *http.Response) (UserClientCreateOrUpdateResponse, error) {
+	result := UserClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
-		return UserCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return UserClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *UserClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes specific user.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, options *UserDeleteOptions) (UserDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - UserClientDeleteOptions contains the optional parameters for the UserClient.Delete method.
+func (client *UserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, options *UserClientDeleteOptions) (UserClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, userID, ifMatch, options)
 	if err != nil {
-		return UserDeleteResponse{}, err
+		return UserClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserDeleteResponse{}, err
+		return UserClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return UserDeleteResponse{}, client.deleteHandleError(resp)
+		return UserClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return UserDeleteResponse{RawResponse: resp}, nil
+	return UserClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, options *UserDeleteOptions) (*policy.Request, error) {
+func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, options *UserClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -157,7 +163,7 @@ func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -178,38 +184,30 @@ func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *UserClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GenerateSsoURL - Retrieves a redirection URL containing an authentication token for signing a given user into the developer portal.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) GenerateSsoURL(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGenerateSsoURLOptions) (UserGenerateSsoURLResponse, error) {
+// GenerateSsoURL - Retrieves a redirection URL containing an authentication token for signing a given user into the developer
+// portal.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// options - UserClientGenerateSsoURLOptions contains the optional parameters for the UserClient.GenerateSsoURL method.
+func (client *UserClient) GenerateSsoURL(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserClientGenerateSsoURLOptions) (UserClientGenerateSsoURLResponse, error) {
 	req, err := client.generateSsoURLCreateRequest(ctx, resourceGroupName, serviceName, userID, options)
 	if err != nil {
-		return UserGenerateSsoURLResponse{}, err
+		return UserClientGenerateSsoURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserGenerateSsoURLResponse{}, err
+		return UserClientGenerateSsoURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UserGenerateSsoURLResponse{}, client.generateSsoURLHandleError(resp)
+		return UserClientGenerateSsoURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.generateSsoURLHandleResponse(resp)
 }
 
 // generateSsoURLCreateRequest creates the GenerateSsoURL request.
-func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGenerateSsoURLOptions) (*policy.Request, error) {
+func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserClientGenerateSsoURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/generateSsoUrl"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -227,7 +225,7 @@ func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,46 +237,37 @@ func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resou
 }
 
 // generateSsoURLHandleResponse handles the GenerateSsoURL response.
-func (client *UserClient) generateSsoURLHandleResponse(resp *http.Response) (UserGenerateSsoURLResponse, error) {
-	result := UserGenerateSsoURLResponse{RawResponse: resp}
+func (client *UserClient) generateSsoURLHandleResponse(resp *http.Response) (UserClientGenerateSsoURLResponse, error) {
+	result := UserClientGenerateSsoURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateSsoURLResult); err != nil {
-		return UserGenerateSsoURLResponse{}, runtime.NewResponseError(err, resp)
+		return UserClientGenerateSsoURLResponse{}, err
 	}
 	return result, nil
 }
 
-// generateSsoURLHandleError handles the GenerateSsoURL error response.
-func (client *UserClient) generateSsoURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the user specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) Get(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGetOptions) (UserGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// options - UserClientGetOptions contains the optional parameters for the UserClient.Get method.
+func (client *UserClient) Get(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserClientGetOptions) (UserClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, userID, options)
 	if err != nil {
-		return UserGetResponse{}, err
+		return UserClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserGetResponse{}, err
+		return UserClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UserGetResponse{}, client.getHandleError(resp)
+		return UserClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGetOptions) (*policy.Request, error) {
+func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -296,7 +285,7 @@ func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,46 +297,36 @@ func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *UserClient) getHandleResponse(resp *http.Response) (UserGetResponse, error) {
-	result := UserGetResponse{RawResponse: resp}
+func (client *UserClient) getHandleResponse(resp *http.Response) (UserClientGetResponse, error) {
+	result := UserClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
-		return UserGetResponse{}, runtime.NewResponseError(err, resp)
+		return UserClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *UserClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the user specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGetEntityTagOptions) (UserGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// options - UserClientGetEntityTagOptions contains the optional parameters for the UserClient.GetEntityTag method.
+func (client *UserClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserClientGetEntityTagOptions) (UserClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, userID, options)
 	if err != nil {
-		return UserGetEntityTagResponse{}, err
+		return UserClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserGetEntityTagResponse{}, err
+		return UserClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGetEntityTagOptions) (*policy.Request, error) {
+func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -365,7 +344,7 @@ func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -377,8 +356,8 @@ func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourc
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *UserClient) getEntityTagHandleResponse(resp *http.Response) (UserGetEntityTagResponse, error) {
-	result := UserGetEntityTagResponse{RawResponse: resp}
+func (client *UserClient) getEntityTagHandleResponse(resp *http.Response) (UserClientGetEntityTagResponse, error) {
+	result := UserClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -389,24 +368,30 @@ func (client *UserClient) getEntityTagHandleResponse(resp *http.Response) (UserG
 }
 
 // GetSharedAccessToken - Gets the Shared Access Authorization Token for the User.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) GetSharedAccessToken(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserTokenParameters, options *UserGetSharedAccessTokenOptions) (UserGetSharedAccessTokenResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// parameters - Create Authorization Token parameters.
+// options - UserClientGetSharedAccessTokenOptions contains the optional parameters for the UserClient.GetSharedAccessToken
+// method.
+func (client *UserClient) GetSharedAccessToken(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserTokenParameters, options *UserClientGetSharedAccessTokenOptions) (UserClientGetSharedAccessTokenResponse, error) {
 	req, err := client.getSharedAccessTokenCreateRequest(ctx, resourceGroupName, serviceName, userID, parameters, options)
 	if err != nil {
-		return UserGetSharedAccessTokenResponse{}, err
+		return UserClientGetSharedAccessTokenResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserGetSharedAccessTokenResponse{}, err
+		return UserClientGetSharedAccessTokenResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UserGetSharedAccessTokenResponse{}, client.getSharedAccessTokenHandleError(resp)
+		return UserClientGetSharedAccessTokenResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSharedAccessTokenHandleResponse(resp)
 }
 
 // getSharedAccessTokenCreateRequest creates the GetSharedAccessToken request.
-func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserTokenParameters, options *UserGetSharedAccessTokenOptions) (*policy.Request, error) {
+func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserTokenParameters, options *UserClientGetSharedAccessTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/token"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -424,7 +409,7 @@ func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -436,43 +421,33 @@ func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context,
 }
 
 // getSharedAccessTokenHandleResponse handles the GetSharedAccessToken response.
-func (client *UserClient) getSharedAccessTokenHandleResponse(resp *http.Response) (UserGetSharedAccessTokenResponse, error) {
-	result := UserGetSharedAccessTokenResponse{RawResponse: resp}
+func (client *UserClient) getSharedAccessTokenHandleResponse(resp *http.Response) (UserClientGetSharedAccessTokenResponse, error) {
+	result := UserClientGetSharedAccessTokenResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserTokenResult); err != nil {
-		return UserGetSharedAccessTokenResponse{}, runtime.NewResponseError(err, resp)
+		return UserClientGetSharedAccessTokenResponse{}, err
 	}
 	return result, nil
 }
 
-// getSharedAccessTokenHandleError handles the GetSharedAccessToken error response.
-func (client *UserClient) getSharedAccessTokenHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByService - Lists a collection of registered users in the specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) ListByService(resourceGroupName string, serviceName string, options *UserListByServiceOptions) *UserListByServicePager {
-	return &UserListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - UserClientListByServiceOptions contains the optional parameters for the UserClient.ListByService method.
+func (client *UserClient) ListByService(resourceGroupName string, serviceName string, options *UserClientListByServiceOptions) *UserClientListByServicePager {
+	return &UserClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp UserListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UserClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *UserListByServiceOptions) (*policy.Request, error) {
+func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *UserClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -486,7 +461,7 @@ func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -510,46 +485,40 @@ func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resour
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *UserClient) listByServiceHandleResponse(resp *http.Response) (UserListByServiceResponse, error) {
-	result := UserListByServiceResponse{RawResponse: resp}
+func (client *UserClient) listByServiceHandleResponse(resp *http.Response) (UserClientListByServiceResponse, error) {
+	result := UserClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserCollection); err != nil {
-		return UserListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return UserClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *UserClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the details of the user specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) Update(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, parameters UserUpdateParameters, options *UserUpdateOptions) (UserUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - UserClientUpdateOptions contains the optional parameters for the UserClient.Update method.
+func (client *UserClient) Update(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, parameters UserUpdateParameters, options *UserClientUpdateOptions) (UserClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, userID, ifMatch, parameters, options)
 	if err != nil {
-		return UserUpdateResponse{}, err
+		return UserClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserUpdateResponse{}, err
+		return UserClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UserUpdateResponse{}, client.updateHandleError(resp)
+		return UserClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, parameters UserUpdateParameters, options *UserUpdateOptions) (*policy.Request, error) {
+func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, parameters UserUpdateParameters, options *UserClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -567,7 +536,7 @@ func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -580,26 +549,13 @@ func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroup
 }
 
 // updateHandleResponse handles the Update response.
-func (client *UserClient) updateHandleResponse(resp *http.Response) (UserUpdateResponse, error) {
-	result := UserUpdateResponse{RawResponse: resp}
+func (client *UserClient) updateHandleResponse(resp *http.Response) (UserClientUpdateResponse, error) {
+	result := UserClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
-		return UserUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return UserClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *UserClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

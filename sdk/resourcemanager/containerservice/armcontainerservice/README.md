@@ -11,7 +11,7 @@ The `armcontainerservice` module provides operations for working with Azure Cont
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,12 @@ options = arm.ClientOptions{
 }
 client := armcontainerservice.NewSnapshotsClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Agent Pool](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/agent_pool)
+- [Maintenance Configuration](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/maintenance_configurations)
+- [Managed Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/managed_clusters)
 
 ## Provide Feedback
 

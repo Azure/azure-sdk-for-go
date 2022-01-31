@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// AccountsListByResourceGroupPager provides operations for iterating over paged responses.
-type AccountsListByResourceGroupPager struct {
+// AccountsClientListByResourceGroupPager provides operations for iterating over paged responses.
+type AccountsClientListByResourceGroupPager struct {
 	client    *AccountsClient
-	current   AccountsListByResourceGroupResponse
+	current   AccountsClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AccountsListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, AccountsClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AccountsListByResourceGroupPager) Err() error {
+func (p *AccountsClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AccountsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *AccountsClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *AccountsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *AccountsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AccountsListByResourceGroupResponse page.
-func (p *AccountsListByResourceGroupPager) PageResponse() AccountsListByResourceGroupResponse {
+// PageResponse returns the current AccountsClientListByResourceGroupResponse page.
+func (p *AccountsClientListByResourceGroupPager) PageResponse() AccountsClientListByResourceGroupResponse {
 	return p.current
 }
 
-// AccountsListBySubscriptionPager provides operations for iterating over paged responses.
-type AccountsListBySubscriptionPager struct {
+// AccountsClientListBySubscriptionPager provides operations for iterating over paged responses.
+type AccountsClientListBySubscriptionPager struct {
 	client    *AccountsClient
-	current   AccountsListBySubscriptionResponse
+	current   AccountsClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AccountsListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, AccountsClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AccountsListBySubscriptionPager) Err() error {
+func (p *AccountsClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *AccountsClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AccountsListBySubscriptionResponse page.
-func (p *AccountsListBySubscriptionPager) PageResponse() AccountsListBySubscriptionResponse {
+// PageResponse returns the current AccountsClientListBySubscriptionResponse page.
+func (p *AccountsClientListBySubscriptionPager) PageResponse() AccountsClientListBySubscriptionResponse {
 	return p.current
 }
 
-// ConsumerInvitationsListInvitationsPager provides operations for iterating over paged responses.
-type ConsumerInvitationsListInvitationsPager struct {
+// ConsumerInvitationsClientListInvitationsPager provides operations for iterating over paged responses.
+type ConsumerInvitationsClientListInvitationsPager struct {
 	client    *ConsumerInvitationsClient
-	current   ConsumerInvitationsListInvitationsResponse
+	current   ConsumerInvitationsClientListInvitationsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ConsumerInvitationsListInvitationsResponse) (*policy.Request, error)
+	advancer  func(context.Context, ConsumerInvitationsClientListInvitationsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ConsumerInvitationsListInvitationsPager) Err() error {
+func (p *ConsumerInvitationsClientListInvitationsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ConsumerInvitationsListInvitationsPager) NextPage(ctx context.Context) bool {
+func (p *ConsumerInvitationsClientListInvitationsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *ConsumerInvitationsListInvitationsPager) NextPage(ctx context.Context) 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listInvitationsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listInvitationsHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *ConsumerInvitationsListInvitationsPager) NextPage(ctx context.Context) 
 	return true
 }
 
-// PageResponse returns the current ConsumerInvitationsListInvitationsResponse page.
-func (p *ConsumerInvitationsListInvitationsPager) PageResponse() ConsumerInvitationsListInvitationsResponse {
+// PageResponse returns the current ConsumerInvitationsClientListInvitationsResponse page.
+func (p *ConsumerInvitationsClientListInvitationsPager) PageResponse() ConsumerInvitationsClientListInvitationsResponse {
 	return p.current
 }
 
-// ConsumerSourceDataSetsListByShareSubscriptionPager provides operations for iterating over paged responses.
-type ConsumerSourceDataSetsListByShareSubscriptionPager struct {
+// ConsumerSourceDataSetsClientListByShareSubscriptionPager provides operations for iterating over paged responses.
+type ConsumerSourceDataSetsClientListByShareSubscriptionPager struct {
 	client    *ConsumerSourceDataSetsClient
-	current   ConsumerSourceDataSetsListByShareSubscriptionResponse
+	current   ConsumerSourceDataSetsClientListByShareSubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ConsumerSourceDataSetsListByShareSubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, ConsumerSourceDataSetsClientListByShareSubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ConsumerSourceDataSetsListByShareSubscriptionPager) Err() error {
+func (p *ConsumerSourceDataSetsClientListByShareSubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ConsumerSourceDataSetsListByShareSubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *ConsumerSourceDataSetsClientListByShareSubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *ConsumerSourceDataSetsListByShareSubscriptionPager) NextPage(ctx contex
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByShareSubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByShareSubscriptionHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *ConsumerSourceDataSetsListByShareSubscriptionPager) NextPage(ctx contex
 	return true
 }
 
-// PageResponse returns the current ConsumerSourceDataSetsListByShareSubscriptionResponse page.
-func (p *ConsumerSourceDataSetsListByShareSubscriptionPager) PageResponse() ConsumerSourceDataSetsListByShareSubscriptionResponse {
+// PageResponse returns the current ConsumerSourceDataSetsClientListByShareSubscriptionResponse page.
+func (p *ConsumerSourceDataSetsClientListByShareSubscriptionPager) PageResponse() ConsumerSourceDataSetsClientListByShareSubscriptionResponse {
 	return p.current
 }
 
-// DataSetMappingsListByShareSubscriptionPager provides operations for iterating over paged responses.
-type DataSetMappingsListByShareSubscriptionPager struct {
+// DataSetMappingsClientListByShareSubscriptionPager provides operations for iterating over paged responses.
+type DataSetMappingsClientListByShareSubscriptionPager struct {
 	client    *DataSetMappingsClient
-	current   DataSetMappingsListByShareSubscriptionResponse
+	current   DataSetMappingsClientListByShareSubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DataSetMappingsListByShareSubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, DataSetMappingsClientListByShareSubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DataSetMappingsListByShareSubscriptionPager) Err() error {
+func (p *DataSetMappingsClientListByShareSubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DataSetMappingsListByShareSubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *DataSetMappingsClientListByShareSubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *DataSetMappingsListByShareSubscriptionPager) NextPage(ctx context.Conte
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByShareSubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByShareSubscriptionHandleResponse(resp)
@@ -281,28 +281,28 @@ func (p *DataSetMappingsListByShareSubscriptionPager) NextPage(ctx context.Conte
 	return true
 }
 
-// PageResponse returns the current DataSetMappingsListByShareSubscriptionResponse page.
-func (p *DataSetMappingsListByShareSubscriptionPager) PageResponse() DataSetMappingsListByShareSubscriptionResponse {
+// PageResponse returns the current DataSetMappingsClientListByShareSubscriptionResponse page.
+func (p *DataSetMappingsClientListByShareSubscriptionPager) PageResponse() DataSetMappingsClientListByShareSubscriptionResponse {
 	return p.current
 }
 
-// DataSetsListBySharePager provides operations for iterating over paged responses.
-type DataSetsListBySharePager struct {
+// DataSetsClientListBySharePager provides operations for iterating over paged responses.
+type DataSetsClientListBySharePager struct {
 	client    *DataSetsClient
-	current   DataSetsListByShareResponse
+	current   DataSetsClientListByShareResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DataSetsListByShareResponse) (*policy.Request, error)
+	advancer  func(context.Context, DataSetsClientListByShareResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DataSetsListBySharePager) Err() error {
+func (p *DataSetsClientListBySharePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DataSetsListBySharePager) NextPage(ctx context.Context) bool {
+func (p *DataSetsClientListBySharePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -323,7 +323,7 @@ func (p *DataSetsListBySharePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByShareHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByShareHandleResponse(resp)
@@ -335,28 +335,28 @@ func (p *DataSetsListBySharePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current DataSetsListByShareResponse page.
-func (p *DataSetsListBySharePager) PageResponse() DataSetsListByShareResponse {
+// PageResponse returns the current DataSetsClientListByShareResponse page.
+func (p *DataSetsClientListBySharePager) PageResponse() DataSetsClientListByShareResponse {
 	return p.current
 }
 
-// InvitationsListBySharePager provides operations for iterating over paged responses.
-type InvitationsListBySharePager struct {
+// InvitationsClientListBySharePager provides operations for iterating over paged responses.
+type InvitationsClientListBySharePager struct {
 	client    *InvitationsClient
-	current   InvitationsListByShareResponse
+	current   InvitationsClientListByShareResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, InvitationsListByShareResponse) (*policy.Request, error)
+	advancer  func(context.Context, InvitationsClientListByShareResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *InvitationsListBySharePager) Err() error {
+func (p *InvitationsClientListBySharePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *InvitationsListBySharePager) NextPage(ctx context.Context) bool {
+func (p *InvitationsClientListBySharePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -377,7 +377,7 @@ func (p *InvitationsListBySharePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByShareHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByShareHandleResponse(resp)
@@ -389,28 +389,28 @@ func (p *InvitationsListBySharePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current InvitationsListByShareResponse page.
-func (p *InvitationsListBySharePager) PageResponse() InvitationsListByShareResponse {
+// PageResponse returns the current InvitationsClientListByShareResponse page.
+func (p *InvitationsClientListBySharePager) PageResponse() InvitationsClientListByShareResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -431,7 +431,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -443,28 +443,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// ProviderShareSubscriptionsListBySharePager provides operations for iterating over paged responses.
-type ProviderShareSubscriptionsListBySharePager struct {
+// ProviderShareSubscriptionsClientListBySharePager provides operations for iterating over paged responses.
+type ProviderShareSubscriptionsClientListBySharePager struct {
 	client    *ProviderShareSubscriptionsClient
-	current   ProviderShareSubscriptionsListByShareResponse
+	current   ProviderShareSubscriptionsClientListByShareResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ProviderShareSubscriptionsListByShareResponse) (*policy.Request, error)
+	advancer  func(context.Context, ProviderShareSubscriptionsClientListByShareResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ProviderShareSubscriptionsListBySharePager) Err() error {
+func (p *ProviderShareSubscriptionsClientListBySharePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ProviderShareSubscriptionsListBySharePager) NextPage(ctx context.Context) bool {
+func (p *ProviderShareSubscriptionsClientListBySharePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -485,7 +485,7 @@ func (p *ProviderShareSubscriptionsListBySharePager) NextPage(ctx context.Contex
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByShareHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByShareHandleResponse(resp)
@@ -497,28 +497,28 @@ func (p *ProviderShareSubscriptionsListBySharePager) NextPage(ctx context.Contex
 	return true
 }
 
-// PageResponse returns the current ProviderShareSubscriptionsListByShareResponse page.
-func (p *ProviderShareSubscriptionsListBySharePager) PageResponse() ProviderShareSubscriptionsListByShareResponse {
+// PageResponse returns the current ProviderShareSubscriptionsClientListByShareResponse page.
+func (p *ProviderShareSubscriptionsClientListBySharePager) PageResponse() ProviderShareSubscriptionsClientListByShareResponse {
 	return p.current
 }
 
-// ShareSubscriptionsListByAccountPager provides operations for iterating over paged responses.
-type ShareSubscriptionsListByAccountPager struct {
+// ShareSubscriptionsClientListByAccountPager provides operations for iterating over paged responses.
+type ShareSubscriptionsClientListByAccountPager struct {
 	client    *ShareSubscriptionsClient
-	current   ShareSubscriptionsListByAccountResponse
+	current   ShareSubscriptionsClientListByAccountResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ShareSubscriptionsListByAccountResponse) (*policy.Request, error)
+	advancer  func(context.Context, ShareSubscriptionsClientListByAccountResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ShareSubscriptionsListByAccountPager) Err() error {
+func (p *ShareSubscriptionsClientListByAccountPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ShareSubscriptionsListByAccountPager) NextPage(ctx context.Context) bool {
+func (p *ShareSubscriptionsClientListByAccountPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -539,7 +539,7 @@ func (p *ShareSubscriptionsListByAccountPager) NextPage(ctx context.Context) boo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByAccountHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByAccountHandleResponse(resp)
@@ -551,28 +551,28 @@ func (p *ShareSubscriptionsListByAccountPager) NextPage(ctx context.Context) boo
 	return true
 }
 
-// PageResponse returns the current ShareSubscriptionsListByAccountResponse page.
-func (p *ShareSubscriptionsListByAccountPager) PageResponse() ShareSubscriptionsListByAccountResponse {
+// PageResponse returns the current ShareSubscriptionsClientListByAccountResponse page.
+func (p *ShareSubscriptionsClientListByAccountPager) PageResponse() ShareSubscriptionsClientListByAccountResponse {
 	return p.current
 }
 
-// ShareSubscriptionsListSourceShareSynchronizationSettingsPager provides operations for iterating over paged responses.
-type ShareSubscriptionsListSourceShareSynchronizationSettingsPager struct {
+// ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager provides operations for iterating over paged responses.
+type ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager struct {
 	client    *ShareSubscriptionsClient
-	current   ShareSubscriptionsListSourceShareSynchronizationSettingsResponse
+	current   ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ShareSubscriptionsListSourceShareSynchronizationSettingsResponse) (*policy.Request, error)
+	advancer  func(context.Context, ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ShareSubscriptionsListSourceShareSynchronizationSettingsPager) Err() error {
+func (p *ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ShareSubscriptionsListSourceShareSynchronizationSettingsPager) NextPage(ctx context.Context) bool {
+func (p *ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -593,7 +593,7 @@ func (p *ShareSubscriptionsListSourceShareSynchronizationSettingsPager) NextPage
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listSourceShareSynchronizationSettingsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listSourceShareSynchronizationSettingsHandleResponse(resp)
@@ -605,28 +605,28 @@ func (p *ShareSubscriptionsListSourceShareSynchronizationSettingsPager) NextPage
 	return true
 }
 
-// PageResponse returns the current ShareSubscriptionsListSourceShareSynchronizationSettingsResponse page.
-func (p *ShareSubscriptionsListSourceShareSynchronizationSettingsPager) PageResponse() ShareSubscriptionsListSourceShareSynchronizationSettingsResponse {
+// PageResponse returns the current ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse page.
+func (p *ShareSubscriptionsClientListSourceShareSynchronizationSettingsPager) PageResponse() ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse {
 	return p.current
 }
 
-// ShareSubscriptionsListSynchronizationDetailsPager provides operations for iterating over paged responses.
-type ShareSubscriptionsListSynchronizationDetailsPager struct {
+// ShareSubscriptionsClientListSynchronizationDetailsPager provides operations for iterating over paged responses.
+type ShareSubscriptionsClientListSynchronizationDetailsPager struct {
 	client    *ShareSubscriptionsClient
-	current   ShareSubscriptionsListSynchronizationDetailsResponse
+	current   ShareSubscriptionsClientListSynchronizationDetailsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ShareSubscriptionsListSynchronizationDetailsResponse) (*policy.Request, error)
+	advancer  func(context.Context, ShareSubscriptionsClientListSynchronizationDetailsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ShareSubscriptionsListSynchronizationDetailsPager) Err() error {
+func (p *ShareSubscriptionsClientListSynchronizationDetailsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ShareSubscriptionsListSynchronizationDetailsPager) NextPage(ctx context.Context) bool {
+func (p *ShareSubscriptionsClientListSynchronizationDetailsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -647,7 +647,7 @@ func (p *ShareSubscriptionsListSynchronizationDetailsPager) NextPage(ctx context
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listSynchronizationDetailsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listSynchronizationDetailsHandleResponse(resp)
@@ -659,28 +659,28 @@ func (p *ShareSubscriptionsListSynchronizationDetailsPager) NextPage(ctx context
 	return true
 }
 
-// PageResponse returns the current ShareSubscriptionsListSynchronizationDetailsResponse page.
-func (p *ShareSubscriptionsListSynchronizationDetailsPager) PageResponse() ShareSubscriptionsListSynchronizationDetailsResponse {
+// PageResponse returns the current ShareSubscriptionsClientListSynchronizationDetailsResponse page.
+func (p *ShareSubscriptionsClientListSynchronizationDetailsPager) PageResponse() ShareSubscriptionsClientListSynchronizationDetailsResponse {
 	return p.current
 }
 
-// ShareSubscriptionsListSynchronizationsPager provides operations for iterating over paged responses.
-type ShareSubscriptionsListSynchronizationsPager struct {
+// ShareSubscriptionsClientListSynchronizationsPager provides operations for iterating over paged responses.
+type ShareSubscriptionsClientListSynchronizationsPager struct {
 	client    *ShareSubscriptionsClient
-	current   ShareSubscriptionsListSynchronizationsResponse
+	current   ShareSubscriptionsClientListSynchronizationsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ShareSubscriptionsListSynchronizationsResponse) (*policy.Request, error)
+	advancer  func(context.Context, ShareSubscriptionsClientListSynchronizationsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ShareSubscriptionsListSynchronizationsPager) Err() error {
+func (p *ShareSubscriptionsClientListSynchronizationsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ShareSubscriptionsListSynchronizationsPager) NextPage(ctx context.Context) bool {
+func (p *ShareSubscriptionsClientListSynchronizationsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -701,7 +701,7 @@ func (p *ShareSubscriptionsListSynchronizationsPager) NextPage(ctx context.Conte
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listSynchronizationsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listSynchronizationsHandleResponse(resp)
@@ -713,28 +713,28 @@ func (p *ShareSubscriptionsListSynchronizationsPager) NextPage(ctx context.Conte
 	return true
 }
 
-// PageResponse returns the current ShareSubscriptionsListSynchronizationsResponse page.
-func (p *ShareSubscriptionsListSynchronizationsPager) PageResponse() ShareSubscriptionsListSynchronizationsResponse {
+// PageResponse returns the current ShareSubscriptionsClientListSynchronizationsResponse page.
+func (p *ShareSubscriptionsClientListSynchronizationsPager) PageResponse() ShareSubscriptionsClientListSynchronizationsResponse {
 	return p.current
 }
 
-// SharesListByAccountPager provides operations for iterating over paged responses.
-type SharesListByAccountPager struct {
+// SharesClientListByAccountPager provides operations for iterating over paged responses.
+type SharesClientListByAccountPager struct {
 	client    *SharesClient
-	current   SharesListByAccountResponse
+	current   SharesClientListByAccountResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SharesListByAccountResponse) (*policy.Request, error)
+	advancer  func(context.Context, SharesClientListByAccountResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SharesListByAccountPager) Err() error {
+func (p *SharesClientListByAccountPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SharesListByAccountPager) NextPage(ctx context.Context) bool {
+func (p *SharesClientListByAccountPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -755,7 +755,7 @@ func (p *SharesListByAccountPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByAccountHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByAccountHandleResponse(resp)
@@ -767,28 +767,28 @@ func (p *SharesListByAccountPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current SharesListByAccountResponse page.
-func (p *SharesListByAccountPager) PageResponse() SharesListByAccountResponse {
+// PageResponse returns the current SharesClientListByAccountResponse page.
+func (p *SharesClientListByAccountPager) PageResponse() SharesClientListByAccountResponse {
 	return p.current
 }
 
-// SharesListSynchronizationDetailsPager provides operations for iterating over paged responses.
-type SharesListSynchronizationDetailsPager struct {
+// SharesClientListSynchronizationDetailsPager provides operations for iterating over paged responses.
+type SharesClientListSynchronizationDetailsPager struct {
 	client    *SharesClient
-	current   SharesListSynchronizationDetailsResponse
+	current   SharesClientListSynchronizationDetailsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SharesListSynchronizationDetailsResponse) (*policy.Request, error)
+	advancer  func(context.Context, SharesClientListSynchronizationDetailsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SharesListSynchronizationDetailsPager) Err() error {
+func (p *SharesClientListSynchronizationDetailsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SharesListSynchronizationDetailsPager) NextPage(ctx context.Context) bool {
+func (p *SharesClientListSynchronizationDetailsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -809,7 +809,7 @@ func (p *SharesListSynchronizationDetailsPager) NextPage(ctx context.Context) bo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listSynchronizationDetailsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listSynchronizationDetailsHandleResponse(resp)
@@ -821,28 +821,28 @@ func (p *SharesListSynchronizationDetailsPager) NextPage(ctx context.Context) bo
 	return true
 }
 
-// PageResponse returns the current SharesListSynchronizationDetailsResponse page.
-func (p *SharesListSynchronizationDetailsPager) PageResponse() SharesListSynchronizationDetailsResponse {
+// PageResponse returns the current SharesClientListSynchronizationDetailsResponse page.
+func (p *SharesClientListSynchronizationDetailsPager) PageResponse() SharesClientListSynchronizationDetailsResponse {
 	return p.current
 }
 
-// SharesListSynchronizationsPager provides operations for iterating over paged responses.
-type SharesListSynchronizationsPager struct {
+// SharesClientListSynchronizationsPager provides operations for iterating over paged responses.
+type SharesClientListSynchronizationsPager struct {
 	client    *SharesClient
-	current   SharesListSynchronizationsResponse
+	current   SharesClientListSynchronizationsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SharesListSynchronizationsResponse) (*policy.Request, error)
+	advancer  func(context.Context, SharesClientListSynchronizationsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SharesListSynchronizationsPager) Err() error {
+func (p *SharesClientListSynchronizationsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SharesListSynchronizationsPager) NextPage(ctx context.Context) bool {
+func (p *SharesClientListSynchronizationsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -863,7 +863,7 @@ func (p *SharesListSynchronizationsPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listSynchronizationsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listSynchronizationsHandleResponse(resp)
@@ -875,28 +875,28 @@ func (p *SharesListSynchronizationsPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current SharesListSynchronizationsResponse page.
-func (p *SharesListSynchronizationsPager) PageResponse() SharesListSynchronizationsResponse {
+// PageResponse returns the current SharesClientListSynchronizationsResponse page.
+func (p *SharesClientListSynchronizationsPager) PageResponse() SharesClientListSynchronizationsResponse {
 	return p.current
 }
 
-// SynchronizationSettingsListBySharePager provides operations for iterating over paged responses.
-type SynchronizationSettingsListBySharePager struct {
+// SynchronizationSettingsClientListBySharePager provides operations for iterating over paged responses.
+type SynchronizationSettingsClientListBySharePager struct {
 	client    *SynchronizationSettingsClient
-	current   SynchronizationSettingsListByShareResponse
+	current   SynchronizationSettingsClientListByShareResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SynchronizationSettingsListByShareResponse) (*policy.Request, error)
+	advancer  func(context.Context, SynchronizationSettingsClientListByShareResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SynchronizationSettingsListBySharePager) Err() error {
+func (p *SynchronizationSettingsClientListBySharePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SynchronizationSettingsListBySharePager) NextPage(ctx context.Context) bool {
+func (p *SynchronizationSettingsClientListBySharePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -917,7 +917,7 @@ func (p *SynchronizationSettingsListBySharePager) NextPage(ctx context.Context) 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByShareHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByShareHandleResponse(resp)
@@ -929,28 +929,28 @@ func (p *SynchronizationSettingsListBySharePager) NextPage(ctx context.Context) 
 	return true
 }
 
-// PageResponse returns the current SynchronizationSettingsListByShareResponse page.
-func (p *SynchronizationSettingsListBySharePager) PageResponse() SynchronizationSettingsListByShareResponse {
+// PageResponse returns the current SynchronizationSettingsClientListByShareResponse page.
+func (p *SynchronizationSettingsClientListBySharePager) PageResponse() SynchronizationSettingsClientListByShareResponse {
 	return p.current
 }
 
-// TriggersListByShareSubscriptionPager provides operations for iterating over paged responses.
-type TriggersListByShareSubscriptionPager struct {
+// TriggersClientListByShareSubscriptionPager provides operations for iterating over paged responses.
+type TriggersClientListByShareSubscriptionPager struct {
 	client    *TriggersClient
-	current   TriggersListByShareSubscriptionResponse
+	current   TriggersClientListByShareSubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, TriggersListByShareSubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, TriggersClientListByShareSubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *TriggersListByShareSubscriptionPager) Err() error {
+func (p *TriggersClientListByShareSubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *TriggersListByShareSubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *TriggersClientListByShareSubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -971,7 +971,7 @@ func (p *TriggersListByShareSubscriptionPager) NextPage(ctx context.Context) boo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByShareSubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByShareSubscriptionHandleResponse(resp)
@@ -983,7 +983,7 @@ func (p *TriggersListByShareSubscriptionPager) NextPage(ctx context.Context) boo
 	return true
 }
 
-// PageResponse returns the current TriggersListByShareSubscriptionResponse page.
-func (p *TriggersListByShareSubscriptionPager) PageResponse() TriggersListByShareSubscriptionResponse {
+// PageResponse returns the current TriggersClientListByShareSubscriptionResponse page.
+func (p *TriggersClientListByShareSubscriptionPager) PageResponse() TriggersClientListByShareSubscriptionResponse {
 	return p.current
 }

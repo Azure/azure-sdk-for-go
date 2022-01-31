@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // FieldsClient contains the methods for the Fields group.
 // Don't use this type directly, use NewFieldsClient() instead.
 type FieldsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFieldsClient creates a new instance of FieldsClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFieldsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FieldsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FieldsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FieldsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByType - Retrieve a list of fields of a given type identified by module name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FieldsClient) ListByType(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *FieldsListByTypeOptions) (FieldsListByTypeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// moduleName - The name of module.
+// typeName - The name of type.
+// options - FieldsClientListByTypeOptions contains the optional parameters for the FieldsClient.ListByType method.
+func (client *FieldsClient) ListByType(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *FieldsClientListByTypeOptions) (FieldsClientListByTypeResponse, error) {
 	req, err := client.listByTypeCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, typeName, options)
 	if err != nil {
-		return FieldsListByTypeResponse{}, err
+		return FieldsClientListByTypeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FieldsListByTypeResponse{}, err
+		return FieldsClientListByTypeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FieldsListByTypeResponse{}, client.listByTypeHandleError(resp)
+		return FieldsClientListByTypeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByTypeHandleResponse(resp)
 }
 
 // listByTypeCreateRequest creates the ListByType request.
-func (client *FieldsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *FieldsListByTypeOptions) (*policy.Request, error) {
+func (client *FieldsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *FieldsClientListByTypeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/types/{typeName}/fields"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -82,7 +95,7 @@ func (client *FieldsClient) listByTypeCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,23 +107,10 @@ func (client *FieldsClient) listByTypeCreateRequest(ctx context.Context, resourc
 }
 
 // listByTypeHandleResponse handles the ListByType response.
-func (client *FieldsClient) listByTypeHandleResponse(resp *http.Response) (FieldsListByTypeResponse, error) {
-	result := FieldsListByTypeResponse{RawResponse: resp}
+func (client *FieldsClient) listByTypeHandleResponse(resp *http.Response) (FieldsClientListByTypeResponse, error) {
+	result := FieldsClientListByTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TypeFieldListResult); err != nil {
-		return FieldsListByTypeResponse{}, runtime.NewResponseError(err, resp)
+		return FieldsClientListByTypeResponse{}, err
 	}
 	return result, nil
-}
-
-// listByTypeHandleError handles the ListByType error response.
-func (client *FieldsClient) listByTypeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

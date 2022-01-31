@@ -60,6 +60,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("commit", "", "Specifies the commit hash of azure-rest-api-specs")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.String("package-config", "", "Additional config for package")
+	flagSet.String("go-version", "1.16", "Go version")
 }
 
 // ParseFlags parses the flags to a Flags struct
@@ -71,6 +72,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		Commit:        flags.GetString(flagSet, "commit"),
 		ReleaseDate:   flags.GetString(flagSet, "release-date"),
 		PackageConfig: flags.GetString(flagSet, "package-config"),
+		GoVersion:     flags.GetString(flagSet, "go-version"),
 	}
 }
 
@@ -82,6 +84,7 @@ type Flags struct {
 	Commit        string
 	ReleaseDate   string
 	PackageConfig string
+	GoVersion     string
 }
 
 // GeneratePackageByTemplate creates a new set of files based on the things in template directory
@@ -102,7 +105,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	}
 
 	// build the replaceMap
-	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate)
+	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate, flags.GoVersion)
 
 	// copy everything to destination directory
 	for _, file := range fileList {
@@ -126,7 +129,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	return nil
 }
 
-func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate string) {
+func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate, goVersion string) {
 	replaceMap = make(map[string]string)
 
 	replaceMap[RPNameKey] = rpName
@@ -139,6 +142,7 @@ func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID,
 	} else {
 		replaceMap[ReleaseDate] = releaseDate
 	}
+	replaceMap[GoVersion] = goVersion
 }
 
 func readAndReplace(path string) (string, error) {
@@ -181,4 +185,5 @@ const (
 	FilenameSuffix   = ".tpl"
 	ReleaseDate      = "{{releaseDate}}"
 	PackageConfigKey = "{{packageConfig}}"
+	GoVersion        = "{{goVersion}}"
 )

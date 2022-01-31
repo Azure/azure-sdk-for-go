@@ -22,24 +22,24 @@ const (
 type AccessRights = original.AccessRights
 
 const (
-	Listen        AccessRights = original.Listen
-	Manage        AccessRights = original.Manage
-	SendEnumValue AccessRights = original.SendEnumValue
+	AccessRightsListen AccessRights = original.AccessRightsListen
+	AccessRightsManage AccessRights = original.AccessRightsManage
+	AccessRightsSend   AccessRights = original.AccessRightsSend
 )
 
 type NamespaceType = original.NamespaceType
 
 const (
-	Messaging       NamespaceType = original.Messaging
-	NotificationHub NamespaceType = original.NotificationHub
+	NamespaceTypeMessaging       NamespaceType = original.NamespaceTypeMessaging
+	NamespaceTypeNotificationHub NamespaceType = original.NamespaceTypeNotificationHub
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic    SkuName = original.Basic
-	Free     SkuName = original.Free
-	Standard SkuName = original.Standard
+	SkuNameBasic    SkuName = original.SkuNameBasic
+	SkuNameFree     SkuName = original.SkuNameFree
+	SkuNameStandard SkuName = original.SkuNameStandard
 )
 
 type AdmCredential = original.AdmCredential

@@ -1,0 +1,5161 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*IntegrationRuntimesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesGetOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientGetOptions)`
+- Function `*IntegrationRuntimesClient.Get` return value(s) have been changed from `(IntegrationRuntimesGetResponse, error)` to `(IntegrationRuntimesClientGetResponse, error)`
+- Function `*DataFlowDebugSessionClient.BeginExecuteCommand` parameter(s) have been changed from `(context.Context, string, string, DataFlowDebugCommandRequest, *DataFlowDebugSessionBeginExecuteCommandOptions)` to `(context.Context, string, string, DataFlowDebugCommandRequest, *DataFlowDebugSessionClientBeginExecuteCommandOptions)`
+- Function `*DataFlowDebugSessionClient.BeginExecuteCommand` return value(s) have been changed from `(DataFlowDebugSessionExecuteCommandPollerResponse, error)` to `(DataFlowDebugSessionClientExecuteCommandPollerResponse, error)`
+- Function `*DataFlowDebugSessionClient.QueryByFactory` parameter(s) have been changed from `(string, string, *DataFlowDebugSessionQueryByFactoryOptions)` to `(string, string, *DataFlowDebugSessionClientQueryByFactoryOptions)`
+- Function `*DataFlowDebugSessionClient.QueryByFactory` return value(s) have been changed from `(*DataFlowDebugSessionQueryByFactoryPager)` to `(*DataFlowDebugSessionClientQueryByFactoryPager)`
+- Function `*PipelinesClient.CreateRun` parameter(s) have been changed from `(context.Context, string, string, string, *PipelinesCreateRunOptions)` to `(context.Context, string, string, string, *PipelinesClientCreateRunOptions)`
+- Function `*PipelinesClient.CreateRun` return value(s) have been changed from `(PipelinesCreateRunResponse, error)` to `(PipelinesClientCreateRunResponse, error)`
+- Function `*FactoriesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Factory, *FactoriesCreateOrUpdateOptions)` to `(context.Context, string, string, Factory, *FactoriesClientCreateOrUpdateOptions)`
+- Function `*FactoriesClient.CreateOrUpdate` return value(s) have been changed from `(FactoriesCreateOrUpdateResponse, error)` to `(FactoriesClientCreateOrUpdateResponse, error)`
+- Function `*PipelineRunsClient.Cancel` parameter(s) have been changed from `(context.Context, string, string, string, *PipelineRunsCancelOptions)` to `(context.Context, string, string, string, *PipelineRunsClientCancelOptions)`
+- Function `*PipelineRunsClient.Cancel` return value(s) have been changed from `(PipelineRunsCancelResponse, error)` to `(PipelineRunsClientCancelResponse, error)`
+- Function `*DatasetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DatasetsGetOptions)` to `(context.Context, string, string, string, *DatasetsClientGetOptions)`
+- Function `*DatasetsClient.Get` return value(s) have been changed from `(DatasetsGetResponse, error)` to `(DatasetsClientGetResponse, error)`
+- Function `*IntegrationRuntimeNodesClient.GetIPAddress` parameter(s) have been changed from `(context.Context, string, string, string, string, *IntegrationRuntimeNodesGetIPAddressOptions)` to `(context.Context, string, string, string, string, *IntegrationRuntimeNodesClientGetIPAddressOptions)`
+- Function `*IntegrationRuntimeNodesClient.GetIPAddress` return value(s) have been changed from `(IntegrationRuntimeNodesGetIPAddressResponse, error)` to `(IntegrationRuntimeNodesClientGetIPAddressResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*PrivateEndpointConnectionClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionClientGetOptions)`
+- Function `*PrivateEndpointConnectionClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionGetResponse, error)` to `(PrivateEndpointConnectionClientGetResponse, error)`
+- Function `*DataFlowDebugSessionClient.Delete` parameter(s) have been changed from `(context.Context, string, string, DeleteDataFlowDebugSessionRequest, *DataFlowDebugSessionDeleteOptions)` to `(context.Context, string, string, DeleteDataFlowDebugSessionRequest, *DataFlowDebugSessionClientDeleteOptions)`
+- Function `*DataFlowDebugSessionClient.Delete` return value(s) have been changed from `(DataFlowDebugSessionDeleteResponse, error)` to `(DataFlowDebugSessionClientDeleteResponse, error)`
+- Function `*ExposureControlClient.QueryFeatureValuesByFactory` parameter(s) have been changed from `(context.Context, string, string, ExposureControlBatchRequest, *ExposureControlQueryFeatureValuesByFactoryOptions)` to `(context.Context, string, string, ExposureControlBatchRequest, *ExposureControlClientQueryFeatureValuesByFactoryOptions)`
+- Function `*ExposureControlClient.QueryFeatureValuesByFactory` return value(s) have been changed from `(ExposureControlQueryFeatureValuesByFactoryResponse, error)` to `(ExposureControlClientQueryFeatureValuesByFactoryResponse, error)`
+- Function `*TriggersClient.GetEventSubscriptionStatus` parameter(s) have been changed from `(context.Context, string, string, string, *TriggersGetEventSubscriptionStatusOptions)` to `(context.Context, string, string, string, *TriggersClientGetEventSubscriptionStatusOptions)`
+- Function `*TriggersClient.GetEventSubscriptionStatus` return value(s) have been changed from `(TriggersGetEventSubscriptionStatusResponse, error)` to `(TriggersClientGetEventSubscriptionStatusResponse, error)`
+- Function `*TriggersClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *TriggersDeleteOptions)` to `(context.Context, string, string, string, *TriggersClientDeleteOptions)`
+- Function `*TriggersClient.Delete` return value(s) have been changed from `(TriggersDeleteResponse, error)` to `(TriggersClientDeleteResponse, error)`
+- Function `*IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesListOutboundNetworkDependenciesEndpointsOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions)`
+- Function `*IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints` return value(s) have been changed from `(IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse, error)` to `(IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse, error)`
+- Function `*IntegrationRuntimesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesDeleteOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientDeleteOptions)`
+- Function `*IntegrationRuntimesClient.Delete` return value(s) have been changed from `(IntegrationRuntimesDeleteResponse, error)` to `(IntegrationRuntimesClientDeleteResponse, error)`
+- Function `*FactoriesClient.ConfigureFactoryRepo` parameter(s) have been changed from `(context.Context, string, FactoryRepoUpdate, *FactoriesConfigureFactoryRepoOptions)` to `(context.Context, string, FactoryRepoUpdate, *FactoriesClientConfigureFactoryRepoOptions)`
+- Function `*FactoriesClient.ConfigureFactoryRepo` return value(s) have been changed from `(FactoriesConfigureFactoryRepoResponse, error)` to `(FactoriesClientConfigureFactoryRepoResponse, error)`
+- Function `*TriggersClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, *TriggersBeginStopOptions)` to `(context.Context, string, string, string, *TriggersClientBeginStopOptions)`
+- Function `*TriggersClient.BeginStop` return value(s) have been changed from `(TriggersStopPollerResponse, error)` to `(TriggersClientStopPollerResponse, error)`
+- Function `*TriggerRunsClient.Rerun` parameter(s) have been changed from `(context.Context, string, string, string, string, *TriggerRunsRerunOptions)` to `(context.Context, string, string, string, string, *TriggerRunsClientRerunOptions)`
+- Function `*TriggerRunsClient.Rerun` return value(s) have been changed from `(TriggerRunsRerunResponse, error)` to `(TriggerRunsClientRerunResponse, error)`
+- Function `*IntegrationRuntimeNodesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, UpdateIntegrationRuntimeNodeRequest, *IntegrationRuntimeNodesUpdateOptions)` to `(context.Context, string, string, string, string, UpdateIntegrationRuntimeNodeRequest, *IntegrationRuntimeNodesClientUpdateOptions)`
+- Function `*IntegrationRuntimeNodesClient.Update` return value(s) have been changed from `(IntegrationRuntimeNodesUpdateResponse, error)` to `(IntegrationRuntimeNodesClientUpdateResponse, error)`
+- Function `*IntegrationRuntimesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, UpdateIntegrationRuntimeRequest, *IntegrationRuntimesUpdateOptions)` to `(context.Context, string, string, string, UpdateIntegrationRuntimeRequest, *IntegrationRuntimesClientUpdateOptions)`
+- Function `*IntegrationRuntimesClient.Update` return value(s) have been changed from `(IntegrationRuntimesUpdateResponse, error)` to `(IntegrationRuntimesClientUpdateResponse, error)`
+- Function `*PrivateEndPointConnectionsClient.ListByFactory` parameter(s) have been changed from `(string, string, *PrivateEndPointConnectionsListByFactoryOptions)` to `(string, string, *PrivateEndPointConnectionsClientListByFactoryOptions)`
+- Function `*PrivateEndPointConnectionsClient.ListByFactory` return value(s) have been changed from `(*PrivateEndPointConnectionsListByFactoryPager)` to `(*PrivateEndPointConnectionsClientListByFactoryPager)`
+- Function `*TriggersClient.ListByFactory` parameter(s) have been changed from `(string, string, *TriggersListByFactoryOptions)` to `(string, string, *TriggersClientListByFactoryOptions)`
+- Function `*TriggersClient.ListByFactory` return value(s) have been changed from `(*TriggersListByFactoryPager)` to `(*TriggersClientListByFactoryPager)`
+- Function `*PipelineRunsClient.QueryByFactory` parameter(s) have been changed from `(context.Context, string, string, RunFilterParameters, *PipelineRunsQueryByFactoryOptions)` to `(context.Context, string, string, RunFilterParameters, *PipelineRunsClientQueryByFactoryOptions)`
+- Function `*PipelineRunsClient.QueryByFactory` return value(s) have been changed from `(PipelineRunsQueryByFactoryResponse, error)` to `(PipelineRunsClientQueryByFactoryResponse, error)`
+- Function `*FactoriesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *FactoriesGetOptions)` to `(context.Context, string, string, *FactoriesClientGetOptions)`
+- Function `*FactoriesClient.Get` return value(s) have been changed from `(FactoriesGetResponse, error)` to `(FactoriesClientGetResponse, error)`
+- Function `*IntegrationRuntimesClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesBeginStopOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientBeginStopOptions)`
+- Function `*IntegrationRuntimesClient.BeginStop` return value(s) have been changed from `(IntegrationRuntimesStopPollerResponse, error)` to `(IntegrationRuntimesClientStopPollerResponse, error)`
+- Function `*IntegrationRuntimesClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesBeginStartOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientBeginStartOptions)`
+- Function `*IntegrationRuntimesClient.BeginStart` return value(s) have been changed from `(IntegrationRuntimesStartPollerResponse, error)` to `(IntegrationRuntimesClientStartPollerResponse, error)`
+- Function `*TriggerRunsClient.Cancel` parameter(s) have been changed from `(context.Context, string, string, string, string, *TriggerRunsCancelOptions)` to `(context.Context, string, string, string, string, *TriggerRunsClientCancelOptions)`
+- Function `*TriggerRunsClient.Cancel` return value(s) have been changed from `(TriggerRunsCancelResponse, error)` to `(TriggerRunsClientCancelResponse, error)`
+- Function `*ManagedVirtualNetworksClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ManagedVirtualNetworksGetOptions)` to `(context.Context, string, string, string, *ManagedVirtualNetworksClientGetOptions)`
+- Function `*ManagedVirtualNetworksClient.Get` return value(s) have been changed from `(ManagedVirtualNetworksGetResponse, error)` to `(ManagedVirtualNetworksClientGetResponse, error)`
+- Function `*PipelinesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PipelinesDeleteOptions)` to `(context.Context, string, string, string, *PipelinesClientDeleteOptions)`
+- Function `*PipelinesClient.Delete` return value(s) have been changed from `(PipelinesDeleteResponse, error)` to `(PipelinesClientDeleteResponse, error)`
+- Function `*FactoriesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *FactoriesDeleteOptions)` to `(context.Context, string, string, *FactoriesClientDeleteOptions)`
+- Function `*FactoriesClient.Delete` return value(s) have been changed from `(FactoriesDeleteResponse, error)` to `(FactoriesClientDeleteResponse, error)`
+- Function `*ActivityRunsClient.QueryByPipelineRun` parameter(s) have been changed from `(context.Context, string, string, string, RunFilterParameters, *ActivityRunsQueryByPipelineRunOptions)` to `(context.Context, string, string, string, RunFilterParameters, *ActivityRunsClientQueryByPipelineRunOptions)`
+- Function `*ActivityRunsClient.QueryByPipelineRun` return value(s) have been changed from `(ActivityRunsQueryByPipelineRunResponse, error)` to `(ActivityRunsClientQueryByPipelineRunResponse, error)`
+- Function `*IntegrationRuntimesClient.RemoveLinks` parameter(s) have been changed from `(context.Context, string, string, string, LinkedIntegrationRuntimeRequest, *IntegrationRuntimesRemoveLinksOptions)` to `(context.Context, string, string, string, LinkedIntegrationRuntimeRequest, *IntegrationRuntimesClientRemoveLinksOptions)`
+- Function `*IntegrationRuntimesClient.RemoveLinks` return value(s) have been changed from `(IntegrationRuntimesRemoveLinksResponse, error)` to `(IntegrationRuntimesClientRemoveLinksResponse, error)`
+- Function `*DatasetsClient.ListByFactory` parameter(s) have been changed from `(string, string, *DatasetsListByFactoryOptions)` to `(string, string, *DatasetsClientListByFactoryOptions)`
+- Function `*DatasetsClient.ListByFactory` return value(s) have been changed from `(*DatasetsListByFactoryPager)` to `(*DatasetsClientListByFactoryPager)`
+- Function `*LinkedServicesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, LinkedServiceResource, *LinkedServicesCreateOrUpdateOptions)` to `(context.Context, string, string, string, LinkedServiceResource, *LinkedServicesClientCreateOrUpdateOptions)`
+- Function `*LinkedServicesClient.CreateOrUpdate` return value(s) have been changed from `(LinkedServicesCreateOrUpdateResponse, error)` to `(LinkedServicesClientCreateOrUpdateResponse, error)`
+- Function `*IntegrationRuntimesClient.SyncCredentials` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesSyncCredentialsOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientSyncCredentialsOptions)`
+- Function `*IntegrationRuntimesClient.SyncCredentials` return value(s) have been changed from `(IntegrationRuntimesSyncCredentialsResponse, error)` to `(IntegrationRuntimesClientSyncCredentialsResponse, error)`
+- Function `*ManagedPrivateEndpointsClient.ListByFactory` parameter(s) have been changed from `(string, string, string, *ManagedPrivateEndpointsListByFactoryOptions)` to `(string, string, string, *ManagedPrivateEndpointsClientListByFactoryOptions)`
+- Function `*ManagedPrivateEndpointsClient.ListByFactory` return value(s) have been changed from `(*ManagedPrivateEndpointsListByFactoryPager)` to `(*ManagedPrivateEndpointsClientListByFactoryPager)`
+- Function `*ExposureControlClient.GetFeatureValue` parameter(s) have been changed from `(context.Context, string, ExposureControlRequest, *ExposureControlGetFeatureValueOptions)` to `(context.Context, string, ExposureControlRequest, *ExposureControlClientGetFeatureValueOptions)`
+- Function `*ExposureControlClient.GetFeatureValue` return value(s) have been changed from `(ExposureControlGetFeatureValueResponse, error)` to `(ExposureControlClientGetFeatureValueResponse, error)`
+- Function `*LinkedServicesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *LinkedServicesDeleteOptions)` to `(context.Context, string, string, string, *LinkedServicesClientDeleteOptions)`
+- Function `*LinkedServicesClient.Delete` return value(s) have been changed from `(LinkedServicesDeleteResponse, error)` to `(LinkedServicesClientDeleteResponse, error)`
+- Function `*IntegrationRuntimesClient.RegenerateAuthKey` parameter(s) have been changed from `(context.Context, string, string, string, IntegrationRuntimeRegenerateKeyParameters, *IntegrationRuntimesRegenerateAuthKeyOptions)` to `(context.Context, string, string, string, IntegrationRuntimeRegenerateKeyParameters, *IntegrationRuntimesClientRegenerateAuthKeyOptions)`
+- Function `*IntegrationRuntimesClient.RegenerateAuthKey` return value(s) have been changed from `(IntegrationRuntimesRegenerateAuthKeyResponse, error)` to `(IntegrationRuntimesClientRegenerateAuthKeyResponse, error)`
+- Function `*FactoriesClient.GetDataPlaneAccess` parameter(s) have been changed from `(context.Context, string, string, UserAccessPolicy, *FactoriesGetDataPlaneAccessOptions)` to `(context.Context, string, string, UserAccessPolicy, *FactoriesClientGetDataPlaneAccessOptions)`
+- Function `*FactoriesClient.GetDataPlaneAccess` return value(s) have been changed from `(FactoriesGetDataPlaneAccessResponse, error)` to `(FactoriesClientGetDataPlaneAccessResponse, error)`
+- Function `*LinkedServicesClient.ListByFactory` parameter(s) have been changed from `(string, string, *LinkedServicesListByFactoryOptions)` to `(string, string, *LinkedServicesClientListByFactoryOptions)`
+- Function `*LinkedServicesClient.ListByFactory` return value(s) have been changed from `(*LinkedServicesListByFactoryPager)` to `(*LinkedServicesClientListByFactoryPager)`
+- Function `*TriggersClient.BeginSubscribeToEvents` parameter(s) have been changed from `(context.Context, string, string, string, *TriggersBeginSubscribeToEventsOptions)` to `(context.Context, string, string, string, *TriggersClientBeginSubscribeToEventsOptions)`
+- Function `*TriggersClient.BeginSubscribeToEvents` return value(s) have been changed from `(TriggersSubscribeToEventsPollerResponse, error)` to `(TriggersClientSubscribeToEventsPollerResponse, error)`
+- Function `*IntegrationRuntimesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, IntegrationRuntimeResource, *IntegrationRuntimesCreateOrUpdateOptions)` to `(context.Context, string, string, string, IntegrationRuntimeResource, *IntegrationRuntimesClientCreateOrUpdateOptions)`
+- Function `*IntegrationRuntimesClient.CreateOrUpdate` return value(s) have been changed from `(IntegrationRuntimesCreateOrUpdateResponse, error)` to `(IntegrationRuntimesClientCreateOrUpdateResponse, error)`
+- Function `*DataFlowDebugSessionClient.AddDataFlow` parameter(s) have been changed from `(context.Context, string, string, DataFlowDebugPackage, *DataFlowDebugSessionAddDataFlowOptions)` to `(context.Context, string, string, DataFlowDebugPackage, *DataFlowDebugSessionClientAddDataFlowOptions)`
+- Function `*DataFlowDebugSessionClient.AddDataFlow` return value(s) have been changed from `(DataFlowDebugSessionAddDataFlowResponse, error)` to `(DataFlowDebugSessionClientAddDataFlowResponse, error)`
+- Function `*DataFlowsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DataFlowResource, *DataFlowsCreateOrUpdateOptions)` to `(context.Context, string, string, string, DataFlowResource, *DataFlowsClientCreateOrUpdateOptions)`
+- Function `*DataFlowsClient.CreateOrUpdate` return value(s) have been changed from `(DataFlowsCreateOrUpdateResponse, error)` to `(DataFlowsClientCreateOrUpdateResponse, error)`
+- Function `*TriggersClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, TriggerResource, *TriggersCreateOrUpdateOptions)` to `(context.Context, string, string, string, TriggerResource, *TriggersClientCreateOrUpdateOptions)`
+- Function `*TriggersClient.CreateOrUpdate` return value(s) have been changed from `(TriggersCreateOrUpdateResponse, error)` to `(TriggersClientCreateOrUpdateResponse, error)`
+- Function `*FactoriesClient.GetGitHubAccessToken` parameter(s) have been changed from `(context.Context, string, string, GitHubAccessTokenRequest, *FactoriesGetGitHubAccessTokenOptions)` to `(context.Context, string, string, GitHubAccessTokenRequest, *FactoriesClientGetGitHubAccessTokenOptions)`
+- Function `*FactoriesClient.GetGitHubAccessToken` return value(s) have been changed from `(FactoriesGetGitHubAccessTokenResponse, error)` to `(FactoriesClientGetGitHubAccessTokenResponse, error)`
+- Function `*PipelinesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PipelineResource, *PipelinesCreateOrUpdateOptions)` to `(context.Context, string, string, string, PipelineResource, *PipelinesClientCreateOrUpdateOptions)`
+- Function `*PipelinesClient.CreateOrUpdate` return value(s) have been changed from `(PipelinesCreateOrUpdateResponse, error)` to `(PipelinesClientCreateOrUpdateResponse, error)`
+- Function `*TriggerRunsClient.QueryByFactory` parameter(s) have been changed from `(context.Context, string, string, RunFilterParameters, *TriggerRunsQueryByFactoryOptions)` to `(context.Context, string, string, RunFilterParameters, *TriggerRunsClientQueryByFactoryOptions)`
+- Function `*TriggerRunsClient.QueryByFactory` return value(s) have been changed from `(TriggerRunsQueryByFactoryResponse, error)` to `(TriggerRunsClientQueryByFactoryResponse, error)`
+- Function `*PrivateEndpointConnectionClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionClientDeleteOptions)`
+- Function `*PrivateEndpointConnectionClient.Delete` return value(s) have been changed from `(PrivateEndpointConnectionDeleteResponse, error)` to `(PrivateEndpointConnectionClientDeleteResponse, error)`
+- Function `*IntegrationRuntimeObjectMetadataClient.BeginRefresh` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeObjectMetadataBeginRefreshOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions)`
+- Function `*IntegrationRuntimeObjectMetadataClient.BeginRefresh` return value(s) have been changed from `(IntegrationRuntimeObjectMetadataRefreshPollerResponse, error)` to `(IntegrationRuntimeObjectMetadataClientRefreshPollerResponse, error)`
+- Function `*ManagedPrivateEndpointsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, ManagedPrivateEndpointResource, *ManagedPrivateEndpointsCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, ManagedPrivateEndpointResource, *ManagedPrivateEndpointsClientCreateOrUpdateOptions)`
+- Function `*ManagedPrivateEndpointsClient.CreateOrUpdate` return value(s) have been changed from `(ManagedPrivateEndpointsCreateOrUpdateResponse, error)` to `(ManagedPrivateEndpointsClientCreateOrUpdateResponse, error)`
+- Function `*DatasetsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *DatasetsDeleteOptions)` to `(context.Context, string, string, string, *DatasetsClientDeleteOptions)`
+- Function `*DatasetsClient.Delete` return value(s) have been changed from `(DatasetsDeleteResponse, error)` to `(DatasetsClientDeleteResponse, error)`
+- Function `*DataFlowsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataFlowsGetOptions)` to `(context.Context, string, string, string, *DataFlowsClientGetOptions)`
+- Function `*DataFlowsClient.Get` return value(s) have been changed from `(DataFlowsGetResponse, error)` to `(DataFlowsClientGetResponse, error)`
+- Function `*IntegrationRuntimesClient.GetConnectionInfo` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesGetConnectionInfoOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientGetConnectionInfoOptions)`
+- Function `*IntegrationRuntimesClient.GetConnectionInfo` return value(s) have been changed from `(IntegrationRuntimesGetConnectionInfoResponse, error)` to `(IntegrationRuntimesClientGetConnectionInfoResponse, error)`
+- Function `*IntegrationRuntimesClient.ListAuthKeys` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesListAuthKeysOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientListAuthKeysOptions)`
+- Function `*IntegrationRuntimesClient.ListAuthKeys` return value(s) have been changed from `(IntegrationRuntimesListAuthKeysResponse, error)` to `(IntegrationRuntimesClientListAuthKeysResponse, error)`
+- Function `*FactoriesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *FactoriesListByResourceGroupOptions)` to `(string, *FactoriesClientListByResourceGroupOptions)`
+- Function `*FactoriesClient.ListByResourceGroup` return value(s) have been changed from `(*FactoriesListByResourceGroupPager)` to `(*FactoriesClientListByResourceGroupPager)`
+- Function `*ExposureControlClient.GetFeatureValueByFactory` parameter(s) have been changed from `(context.Context, string, string, ExposureControlRequest, *ExposureControlGetFeatureValueByFactoryOptions)` to `(context.Context, string, string, ExposureControlRequest, *ExposureControlClientGetFeatureValueByFactoryOptions)`
+- Function `*ExposureControlClient.GetFeatureValueByFactory` return value(s) have been changed from `(ExposureControlGetFeatureValueByFactoryResponse, error)` to `(ExposureControlClientGetFeatureValueByFactoryResponse, error)`
+- Function `*ManagedVirtualNetworksClient.ListByFactory` parameter(s) have been changed from `(string, string, *ManagedVirtualNetworksListByFactoryOptions)` to `(string, string, *ManagedVirtualNetworksClientListByFactoryOptions)`
+- Function `*ManagedVirtualNetworksClient.ListByFactory` return value(s) have been changed from `(*ManagedVirtualNetworksListByFactoryPager)` to `(*ManagedVirtualNetworksClientListByFactoryPager)`
+- Function `*TriggersClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *TriggersBeginStartOptions)` to `(context.Context, string, string, string, *TriggersClientBeginStartOptions)`
+- Function `*TriggersClient.BeginStart` return value(s) have been changed from `(TriggersStartPollerResponse, error)` to `(TriggersClientStartPollerResponse, error)`
+- Function `*PrivateEndpointConnectionClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *PrivateEndpointConnectionCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *PrivateEndpointConnectionClientCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionClient.CreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionCreateOrUpdateResponse, error)` to `(PrivateEndpointConnectionClientCreateOrUpdateResponse, error)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*FactoriesClient.Update` parameter(s) have been changed from `(context.Context, string, string, FactoryUpdateParameters, *FactoriesUpdateOptions)` to `(context.Context, string, string, FactoryUpdateParameters, *FactoriesClientUpdateOptions)`
+- Function `*FactoriesClient.Update` return value(s) have been changed from `(FactoriesUpdateResponse, error)` to `(FactoriesClientUpdateResponse, error)`
+- Function `*PipelineRunsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PipelineRunsGetOptions)` to `(context.Context, string, string, string, *PipelineRunsClientGetOptions)`
+- Function `*PipelineRunsClient.Get` return value(s) have been changed from `(PipelineRunsGetResponse, error)` to `(PipelineRunsClientGetResponse, error)`
+- Function `*TriggersClient.QueryByFactory` parameter(s) have been changed from `(context.Context, string, string, TriggerFilterParameters, *TriggersQueryByFactoryOptions)` to `(context.Context, string, string, TriggerFilterParameters, *TriggersClientQueryByFactoryOptions)`
+- Function `*TriggersClient.QueryByFactory` return value(s) have been changed from `(TriggersQueryByFactoryResponse, error)` to `(TriggersClientQueryByFactoryResponse, error)`
+- Function `*PipelinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PipelinesGetOptions)` to `(context.Context, string, string, string, *PipelinesClientGetOptions)`
+- Function `*PipelinesClient.Get` return value(s) have been changed from `(PipelinesGetResponse, error)` to `(PipelinesClientGetResponse, error)`
+- Function `*ManagedPrivateEndpointsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ManagedPrivateEndpointsDeleteOptions)` to `(context.Context, string, string, string, string, *ManagedPrivateEndpointsClientDeleteOptions)`
+- Function `*ManagedPrivateEndpointsClient.Delete` return value(s) have been changed from `(ManagedPrivateEndpointsDeleteResponse, error)` to `(ManagedPrivateEndpointsClientDeleteResponse, error)`
+- Function `*IntegrationRuntimesClient.Upgrade` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesUpgradeOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientUpgradeOptions)`
+- Function `*IntegrationRuntimesClient.Upgrade` return value(s) have been changed from `(IntegrationRuntimesUpgradeResponse, error)` to `(IntegrationRuntimesClientUpgradeResponse, error)`
+- Function `*LinkedServicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *LinkedServicesGetOptions)` to `(context.Context, string, string, string, *LinkedServicesClientGetOptions)`
+- Function `*LinkedServicesClient.Get` return value(s) have been changed from `(LinkedServicesGetResponse, error)` to `(LinkedServicesClientGetResponse, error)`
+- Function `*IntegrationRuntimeNodesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *IntegrationRuntimeNodesDeleteOptions)` to `(context.Context, string, string, string, string, *IntegrationRuntimeNodesClientDeleteOptions)`
+- Function `*IntegrationRuntimeNodesClient.Delete` return value(s) have been changed from `(IntegrationRuntimeNodesDeleteResponse, error)` to `(IntegrationRuntimeNodesClientDeleteResponse, error)`
+- Function `*IntegrationRuntimesClient.GetMonitoringData` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesGetMonitoringDataOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientGetMonitoringDataOptions)`
+- Function `*IntegrationRuntimesClient.GetMonitoringData` return value(s) have been changed from `(IntegrationRuntimesGetMonitoringDataResponse, error)` to `(IntegrationRuntimesClientGetMonitoringDataResponse, error)`
+- Function `*DataFlowsClient.ListByFactory` parameter(s) have been changed from `(string, string, *DataFlowsListByFactoryOptions)` to `(string, string, *DataFlowsClientListByFactoryOptions)`
+- Function `*DataFlowsClient.ListByFactory` return value(s) have been changed from `(*DataFlowsListByFactoryPager)` to `(*DataFlowsClientListByFactoryPager)`
+- Function `*IntegrationRuntimesClient.GetStatus` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesGetStatusOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientGetStatusOptions)`
+- Function `*IntegrationRuntimesClient.GetStatus` return value(s) have been changed from `(IntegrationRuntimesGetStatusResponse, error)` to `(IntegrationRuntimesClientGetStatusResponse, error)`
+- Function `*ManagedVirtualNetworksClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ManagedVirtualNetworkResource, *ManagedVirtualNetworksCreateOrUpdateOptions)` to `(context.Context, string, string, string, ManagedVirtualNetworkResource, *ManagedVirtualNetworksClientCreateOrUpdateOptions)`
+- Function `*ManagedVirtualNetworksClient.CreateOrUpdate` return value(s) have been changed from `(ManagedVirtualNetworksCreateOrUpdateResponse, error)` to `(ManagedVirtualNetworksClientCreateOrUpdateResponse, error)`
+- Function `*TriggersClient.BeginUnsubscribeFromEvents` parameter(s) have been changed from `(context.Context, string, string, string, *TriggersBeginUnsubscribeFromEventsOptions)` to `(context.Context, string, string, string, *TriggersClientBeginUnsubscribeFromEventsOptions)`
+- Function `*TriggersClient.BeginUnsubscribeFromEvents` return value(s) have been changed from `(TriggersUnsubscribeFromEventsPollerResponse, error)` to `(TriggersClientUnsubscribeFromEventsPollerResponse, error)`
+- Function `*DataFlowDebugSessionClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, CreateDataFlowDebugSessionRequest, *DataFlowDebugSessionBeginCreateOptions)` to `(context.Context, string, string, CreateDataFlowDebugSessionRequest, *DataFlowDebugSessionClientBeginCreateOptions)`
+- Function `*DataFlowDebugSessionClient.BeginCreate` return value(s) have been changed from `(DataFlowDebugSessionCreatePollerResponse, error)` to `(DataFlowDebugSessionClientCreatePollerResponse, error)`
+- Function `*DataFlowsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *DataFlowsDeleteOptions)` to `(context.Context, string, string, string, *DataFlowsClientDeleteOptions)`
+- Function `*DataFlowsClient.Delete` return value(s) have been changed from `(DataFlowsDeleteResponse, error)` to `(DataFlowsClientDeleteResponse, error)`
+- Function `*TriggersClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *TriggersGetOptions)` to `(context.Context, string, string, string, *TriggersClientGetOptions)`
+- Function `*TriggersClient.Get` return value(s) have been changed from `(TriggersGetResponse, error)` to `(TriggersClientGetResponse, error)`
+- Function `*IntegrationRuntimesClient.ListByFactory` parameter(s) have been changed from `(string, string, *IntegrationRuntimesListByFactoryOptions)` to `(string, string, *IntegrationRuntimesClientListByFactoryOptions)`
+- Function `*IntegrationRuntimesClient.ListByFactory` return value(s) have been changed from `(*IntegrationRuntimesListByFactoryPager)` to `(*IntegrationRuntimesClientListByFactoryPager)`
+- Function `*IntegrationRuntimeNodesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *IntegrationRuntimeNodesGetOptions)` to `(context.Context, string, string, string, string, *IntegrationRuntimeNodesClientGetOptions)`
+- Function `*IntegrationRuntimeNodesClient.Get` return value(s) have been changed from `(IntegrationRuntimeNodesGetResponse, error)` to `(IntegrationRuntimeNodesClientGetResponse, error)`
+- Function `*DatasetsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DatasetResource, *DatasetsCreateOrUpdateOptions)` to `(context.Context, string, string, string, DatasetResource, *DatasetsClientCreateOrUpdateOptions)`
+- Function `*DatasetsClient.CreateOrUpdate` return value(s) have been changed from `(DatasetsCreateOrUpdateResponse, error)` to `(DatasetsClientCreateOrUpdateResponse, error)`
+- Function `*FactoriesClient.List` parameter(s) have been changed from `(*FactoriesListOptions)` to `(*FactoriesClientListOptions)`
+- Function `*FactoriesClient.List` return value(s) have been changed from `(*FactoriesListPager)` to `(*FactoriesClientListPager)`
+- Function `*IntegrationRuntimeObjectMetadataClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeObjectMetadataGetOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeObjectMetadataClientGetOptions)`
+- Function `*IntegrationRuntimeObjectMetadataClient.Get` return value(s) have been changed from `(IntegrationRuntimeObjectMetadataGetResponse, error)` to `(IntegrationRuntimeObjectMetadataClientGetResponse, error)`
+- Function `*PipelinesClient.ListByFactory` parameter(s) have been changed from `(string, string, *PipelinesListByFactoryOptions)` to `(string, string, *PipelinesClientListByFactoryOptions)`
+- Function `*PipelinesClient.ListByFactory` return value(s) have been changed from `(*PipelinesListByFactoryPager)` to `(*PipelinesClientListByFactoryPager)`
+- Function `*ManagedPrivateEndpointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *ManagedPrivateEndpointsGetOptions)` to `(context.Context, string, string, string, string, *ManagedPrivateEndpointsClientGetOptions)`
+- Function `*ManagedPrivateEndpointsClient.Get` return value(s) have been changed from `(ManagedPrivateEndpointsGetResponse, error)` to `(ManagedPrivateEndpointsClientGetResponse, error)`
+- Function `*IntegrationRuntimesClient.CreateLinkedIntegrationRuntime` parameter(s) have been changed from `(context.Context, string, string, string, CreateLinkedIntegrationRuntimeRequest, *IntegrationRuntimesCreateLinkedIntegrationRuntimeOptions)` to `(context.Context, string, string, string, CreateLinkedIntegrationRuntimeRequest, *IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions)`
+- Function `*IntegrationRuntimesClient.CreateLinkedIntegrationRuntime` return value(s) have been changed from `(IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse, error)` to `(IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse, error)`
+- Function `*DataFlowDebugSessionCreatePollerResponse.Resume` has been removed
+- Function `DataFlowDebugSessionCreatePollerResponse.PollUntilDone` has been removed
+- Function `*DatasetsListByFactoryPager.PageResponse` has been removed
+- Function `*IntegrationRuntimesStopPollerResponse.Resume` has been removed
+- Function `*TriggersStartPoller.ResumeToken` has been removed
+- Function `*PipelinesListByFactoryPager.NextPage` has been removed
+- Function `SubResource.MarshalJSON` has been removed
+- Function `*SubResource.UnmarshalJSON` has been removed
+- Function `*LinkedIntegrationRuntimeType.UnmarshalJSON` has been removed
+- Function `*DataFlowDebugSessionExecuteCommandPollerResponse.Resume` has been removed
+- Function `*TriggersStartPoller.Poll` has been removed
+- Function `*TriggersUnsubscribeFromEventsPollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPoller.FinalResponse` has been removed
+- Function `*DataFlow.UnmarshalJSON` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*IntegrationRuntimesStartPollerResponse.Resume` has been removed
+- Function `ManagedPrivateEndpointResource.MarshalJSON` has been removed
+- Function `*TriggersListByFactoryPager.Err` has been removed
+- Function `*ManagedPrivateEndpointsListByFactoryPager.NextPage` has been removed
+- Function `*TriggersListByFactoryPager.PageResponse` has been removed
+- Function `*DataFlowDebugSessionExecuteCommandPoller.FinalResponse` has been removed
+- Function `*IntegrationRuntimesStartPoller.Poll` has been removed
+- Function `*ManagedPrivateEndpointResource.UnmarshalJSON` has been removed
+- Function `IntegrationRuntimesStopPollerResponse.PollUntilDone` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPoller.Poll` has been removed
+- Function `IntegrationRuntimeObjectMetadataRefreshPollerResponse.PollUntilDone` has been removed
+- Function `*TriggersStopPollerResponse.Resume` has been removed
+- Function `DataFlowDebugSessionExecuteCommandPollerResponse.PollUntilDone` has been removed
+- Function `*IntegrationRuntimesStopPoller.Done` has been removed
+- Function `*IntegrationRuntimesStartPoller.ResumeToken` has been removed
+- Function `ExecuteDataFlowActivityTypeProperties.MarshalJSON` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*TriggersStartPoller.Done` has been removed
+- Function `*IntegrationRuntimesStartPoller.FinalResponse` has been removed
+- Function `*PrivateEndPointConnectionsListByFactoryPager.Err` has been removed
+- Function `*ManagedPrivateEndpointsListByFactoryPager.Err` has been removed
+- Function `PrivateEndpointConnectionResource.MarshalJSON` has been removed
+- Function `*DataFlowsListByFactoryPager.PageResponse` has been removed
+- Function `*PrivateEndPointConnectionsListByFactoryPager.NextPage` has been removed
+- Function `*FactoriesListPager.Err` has been removed
+- Function `*TriggersSubscribeToEventsPoller.ResumeToken` has been removed
+- Function `*ManagedPrivateEndpointsListByFactoryPager.PageResponse` has been removed
+- Function `SubResourceDebugResource.MarshalJSON` has been removed
+- Function `*CustomSetupBase.UnmarshalJSON` has been removed
+- Function `*DataFlowDebugSessionCreatePoller.FinalResponse` has been removed
+- Function `*FactoriesListByResourceGroupPager.PageResponse` has been removed
+- Function `*DataFlowDebugSessionExecuteCommandPoller.Done` has been removed
+- Function `*SsisObjectMetadata.UnmarshalJSON` has been removed
+- Function `*DataFlowDebugSessionExecuteCommandPoller.Poll` has been removed
+- Function `*TriggersSubscribeToEventsPoller.Done` has been removed
+- Function `*TriggersUnsubscribeFromEventsPoller.ResumeToken` has been removed
+- Function `*FactoriesListPager.PageResponse` has been removed
+- Function `*IntegrationRuntimesListByFactoryPager.Err` has been removed
+- Function `*DataFlowDebugSessionQueryByFactoryPager.NextPage` has been removed
+- Function `*SecretBase.UnmarshalJSON` has been removed
+- Function `*TriggersStopPoller.Done` has been removed
+- Function `*DataFlowDebugSessionCreatePoller.ResumeToken` has been removed
+- Function `*PipelinesListByFactoryPager.Err` has been removed
+- Function `TriggersStartPollerResponse.PollUntilDone` has been removed
+- Function `IntegrationRuntimesStartPollerResponse.PollUntilDone` has been removed
+- Function `*DataFlowDebugSessionQueryByFactoryPager.PageResponse` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPollerResponse.Resume` has been removed
+- Function `*PrivateEndPointConnectionsListByFactoryPager.PageResponse` has been removed
+- Function `*FactoriesListPager.NextPage` has been removed
+- Function `*DataFlowDebugSessionExecuteCommandPoller.ResumeToken` has been removed
+- Function `TriggersSubscribeToEventsPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkConnectionApprovalRequestResource.UnmarshalJSON` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*TriggersUnsubscribeFromEventsPoller.Poll` has been removed
+- Function `*PrivateLinkResource.UnmarshalJSON` has been removed
+- Function `*DataFlowDebugSessionCreatePoller.Poll` has been removed
+- Function `*IntegrationRuntimesListByFactoryPager.PageResponse` has been removed
+- Function `PrivateLinkConnectionApprovalRequestResource.MarshalJSON` has been removed
+- Function `*DataFlowsListByFactoryPager.Err` has been removed
+- Function `*TriggersUnsubscribeFromEventsPoller.FinalResponse` has been removed
+- Function `TriggersStopPollerResponse.PollUntilDone` has been removed
+- Function `*DataFlowDebugSessionCreatePoller.Done` has been removed
+- Function `*ManagedVirtualNetworksListByFactoryPager.PageResponse` has been removed
+- Function `*TriggersSubscribeToEventsPoller.Poll` has been removed
+- Function `*PipelinesListByFactoryPager.PageResponse` has been removed
+- Function `*FactoryRepoConfiguration.UnmarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionResource.UnmarshalJSON` has been removed
+- Function `*IntegrationRuntimesStopPoller.ResumeToken` has been removed
+- Function `*TriggersStopPoller.ResumeToken` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*DatasetsListByFactoryPager.NextPage` has been removed
+- Function `TriggersUnsubscribeFromEventsPollerResponse.PollUntilDone` has been removed
+- Function `*LinkedServicesListByFactoryPager.Err` has been removed
+- Function `*LinkedServicesListByFactoryPager.PageResponse` has been removed
+- Function `*FactoriesListByResourceGroupPager.Err` has been removed
+- Function `*TriggersStopPoller.Poll` has been removed
+- Function `*ManagedVirtualNetworksListByFactoryPager.Err` has been removed
+- Function `*IntegrationRuntimesListByFactoryPager.NextPage` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPoller.ResumeToken` has been removed
+- Function `*TriggersStartPollerResponse.Resume` has been removed
+- Function `*TriggersStopPoller.FinalResponse` has been removed
+- Function `*DatasetsListByFactoryPager.Err` has been removed
+- Function `ManagedVirtualNetworkResource.MarshalJSON` has been removed
+- Function `*IntegrationRuntimesStopPoller.Poll` has been removed
+- Function `*TriggersStartPoller.FinalResponse` has been removed
+- Function `*SubResourceDebugResource.UnmarshalJSON` has been removed
+- Function `*DependencyReference.UnmarshalJSON` has been removed
+- Function `*TriggersSubscribeToEventsPoller.FinalResponse` has been removed
+- Function `*TriggersUnsubscribeFromEventsPoller.Done` has been removed
+- Function `*IntegrationRuntimesStartPoller.Done` has been removed
+- Function `*FactoriesListByResourceGroupPager.NextPage` has been removed
+- Function `*LinkedServicesListByFactoryPager.NextPage` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*TriggersListByFactoryPager.NextPage` has been removed
+- Function `*WebLinkedServiceTypeProperties.UnmarshalJSON` has been removed
+- Function `*DataFlowDebugSessionQueryByFactoryPager.Err` has been removed
+- Function `*IntegrationRuntimesStopPoller.FinalResponse` has been removed
+- Function `*ManagedVirtualNetworksListByFactoryPager.NextPage` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPoller.Done` has been removed
+- Function `*TriggersSubscribeToEventsPollerResponse.Resume` has been removed
+- Function `*DataFlowsListByFactoryPager.NextPage` has been removed
+- Function `*ManagedVirtualNetworkResource.UnmarshalJSON` has been removed
+- Struct `ActivityRunsQueryByPipelineRunOptions` has been removed
+- Struct `ActivityRunsQueryByPipelineRunResponse` has been removed
+- Struct `ActivityRunsQueryByPipelineRunResult` has been removed
+- Struct `DataFlowDebugSessionAddDataFlowOptions` has been removed
+- Struct `DataFlowDebugSessionAddDataFlowResponse` has been removed
+- Struct `DataFlowDebugSessionAddDataFlowResult` has been removed
+- Struct `DataFlowDebugSessionBeginCreateOptions` has been removed
+- Struct `DataFlowDebugSessionBeginExecuteCommandOptions` has been removed
+- Struct `DataFlowDebugSessionCreatePoller` has been removed
+- Struct `DataFlowDebugSessionCreatePollerResponse` has been removed
+- Struct `DataFlowDebugSessionCreateResponse` has been removed
+- Struct `DataFlowDebugSessionCreateResult` has been removed
+- Struct `DataFlowDebugSessionDeleteOptions` has been removed
+- Struct `DataFlowDebugSessionDeleteResponse` has been removed
+- Struct `DataFlowDebugSessionExecuteCommandPoller` has been removed
+- Struct `DataFlowDebugSessionExecuteCommandPollerResponse` has been removed
+- Struct `DataFlowDebugSessionExecuteCommandResponse` has been removed
+- Struct `DataFlowDebugSessionExecuteCommandResult` has been removed
+- Struct `DataFlowDebugSessionQueryByFactoryOptions` has been removed
+- Struct `DataFlowDebugSessionQueryByFactoryPager` has been removed
+- Struct `DataFlowDebugSessionQueryByFactoryResponse` has been removed
+- Struct `DataFlowDebugSessionQueryByFactoryResult` has been removed
+- Struct `DataFlowsCreateOrUpdateOptions` has been removed
+- Struct `DataFlowsCreateOrUpdateResponse` has been removed
+- Struct `DataFlowsCreateOrUpdateResult` has been removed
+- Struct `DataFlowsDeleteOptions` has been removed
+- Struct `DataFlowsDeleteResponse` has been removed
+- Struct `DataFlowsGetOptions` has been removed
+- Struct `DataFlowsGetResponse` has been removed
+- Struct `DataFlowsGetResult` has been removed
+- Struct `DataFlowsListByFactoryOptions` has been removed
+- Struct `DataFlowsListByFactoryPager` has been removed
+- Struct `DataFlowsListByFactoryResponse` has been removed
+- Struct `DataFlowsListByFactoryResult` has been removed
+- Struct `DatasetsCreateOrUpdateOptions` has been removed
+- Struct `DatasetsCreateOrUpdateResponse` has been removed
+- Struct `DatasetsCreateOrUpdateResult` has been removed
+- Struct `DatasetsDeleteOptions` has been removed
+- Struct `DatasetsDeleteResponse` has been removed
+- Struct `DatasetsGetOptions` has been removed
+- Struct `DatasetsGetResponse` has been removed
+- Struct `DatasetsGetResult` has been removed
+- Struct `DatasetsListByFactoryOptions` has been removed
+- Struct `DatasetsListByFactoryPager` has been removed
+- Struct `DatasetsListByFactoryResponse` has been removed
+- Struct `DatasetsListByFactoryResult` has been removed
+- Struct `ExposureControlGetFeatureValueByFactoryOptions` has been removed
+- Struct `ExposureControlGetFeatureValueByFactoryResponse` has been removed
+- Struct `ExposureControlGetFeatureValueByFactoryResult` has been removed
+- Struct `ExposureControlGetFeatureValueOptions` has been removed
+- Struct `ExposureControlGetFeatureValueResponse` has been removed
+- Struct `ExposureControlGetFeatureValueResult` has been removed
+- Struct `ExposureControlQueryFeatureValuesByFactoryOptions` has been removed
+- Struct `ExposureControlQueryFeatureValuesByFactoryResponse` has been removed
+- Struct `ExposureControlQueryFeatureValuesByFactoryResult` has been removed
+- Struct `FactoriesConfigureFactoryRepoOptions` has been removed
+- Struct `FactoriesConfigureFactoryRepoResponse` has been removed
+- Struct `FactoriesConfigureFactoryRepoResult` has been removed
+- Struct `FactoriesCreateOrUpdateOptions` has been removed
+- Struct `FactoriesCreateOrUpdateResponse` has been removed
+- Struct `FactoriesCreateOrUpdateResult` has been removed
+- Struct `FactoriesDeleteOptions` has been removed
+- Struct `FactoriesDeleteResponse` has been removed
+- Struct `FactoriesGetDataPlaneAccessOptions` has been removed
+- Struct `FactoriesGetDataPlaneAccessResponse` has been removed
+- Struct `FactoriesGetDataPlaneAccessResult` has been removed
+- Struct `FactoriesGetGitHubAccessTokenOptions` has been removed
+- Struct `FactoriesGetGitHubAccessTokenResponse` has been removed
+- Struct `FactoriesGetGitHubAccessTokenResult` has been removed
+- Struct `FactoriesGetOptions` has been removed
+- Struct `FactoriesGetResponse` has been removed
+- Struct `FactoriesGetResult` has been removed
+- Struct `FactoriesListByResourceGroupOptions` has been removed
+- Struct `FactoriesListByResourceGroupPager` has been removed
+- Struct `FactoriesListByResourceGroupResponse` has been removed
+- Struct `FactoriesListByResourceGroupResult` has been removed
+- Struct `FactoriesListOptions` has been removed
+- Struct `FactoriesListPager` has been removed
+- Struct `FactoriesListResponse` has been removed
+- Struct `FactoriesListResult` has been removed
+- Struct `FactoriesUpdateOptions` has been removed
+- Struct `FactoriesUpdateResponse` has been removed
+- Struct `FactoriesUpdateResult` has been removed
+- Struct `IntegrationRuntimeNodesDeleteOptions` has been removed
+- Struct `IntegrationRuntimeNodesDeleteResponse` has been removed
+- Struct `IntegrationRuntimeNodesGetIPAddressOptions` has been removed
+- Struct `IntegrationRuntimeNodesGetIPAddressResponse` has been removed
+- Struct `IntegrationRuntimeNodesGetIPAddressResult` has been removed
+- Struct `IntegrationRuntimeNodesGetOptions` has been removed
+- Struct `IntegrationRuntimeNodesGetResponse` has been removed
+- Struct `IntegrationRuntimeNodesGetResult` has been removed
+- Struct `IntegrationRuntimeNodesUpdateOptions` has been removed
+- Struct `IntegrationRuntimeNodesUpdateResponse` has been removed
+- Struct `IntegrationRuntimeNodesUpdateResult` has been removed
+- Struct `IntegrationRuntimeObjectMetadataBeginRefreshOptions` has been removed
+- Struct `IntegrationRuntimeObjectMetadataGetOptions` has been removed
+- Struct `IntegrationRuntimeObjectMetadataGetResponse` has been removed
+- Struct `IntegrationRuntimeObjectMetadataGetResult` has been removed
+- Struct `IntegrationRuntimeObjectMetadataRefreshPoller` has been removed
+- Struct `IntegrationRuntimeObjectMetadataRefreshPollerResponse` has been removed
+- Struct `IntegrationRuntimeObjectMetadataRefreshResponse` has been removed
+- Struct `IntegrationRuntimeObjectMetadataRefreshResult` has been removed
+- Struct `IntegrationRuntimesBeginStartOptions` has been removed
+- Struct `IntegrationRuntimesBeginStopOptions` has been removed
+- Struct `IntegrationRuntimesCreateLinkedIntegrationRuntimeOptions` has been removed
+- Struct `IntegrationRuntimesCreateLinkedIntegrationRuntimeResponse` has been removed
+- Struct `IntegrationRuntimesCreateLinkedIntegrationRuntimeResult` has been removed
+- Struct `IntegrationRuntimesCreateOrUpdateOptions` has been removed
+- Struct `IntegrationRuntimesCreateOrUpdateResponse` has been removed
+- Struct `IntegrationRuntimesCreateOrUpdateResult` has been removed
+- Struct `IntegrationRuntimesDeleteOptions` has been removed
+- Struct `IntegrationRuntimesDeleteResponse` has been removed
+- Struct `IntegrationRuntimesGetConnectionInfoOptions` has been removed
+- Struct `IntegrationRuntimesGetConnectionInfoResponse` has been removed
+- Struct `IntegrationRuntimesGetConnectionInfoResult` has been removed
+- Struct `IntegrationRuntimesGetMonitoringDataOptions` has been removed
+- Struct `IntegrationRuntimesGetMonitoringDataResponse` has been removed
+- Struct `IntegrationRuntimesGetMonitoringDataResult` has been removed
+- Struct `IntegrationRuntimesGetOptions` has been removed
+- Struct `IntegrationRuntimesGetResponse` has been removed
+- Struct `IntegrationRuntimesGetResult` has been removed
+- Struct `IntegrationRuntimesGetStatusOptions` has been removed
+- Struct `IntegrationRuntimesGetStatusResponse` has been removed
+- Struct `IntegrationRuntimesGetStatusResult` has been removed
+- Struct `IntegrationRuntimesListAuthKeysOptions` has been removed
+- Struct `IntegrationRuntimesListAuthKeysResponse` has been removed
+- Struct `IntegrationRuntimesListAuthKeysResult` has been removed
+- Struct `IntegrationRuntimesListByFactoryOptions` has been removed
+- Struct `IntegrationRuntimesListByFactoryPager` has been removed
+- Struct `IntegrationRuntimesListByFactoryResponse` has been removed
+- Struct `IntegrationRuntimesListByFactoryResult` has been removed
+- Struct `IntegrationRuntimesListOutboundNetworkDependenciesEndpointsOptions` has been removed
+- Struct `IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Struct `IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `IntegrationRuntimesRegenerateAuthKeyOptions` has been removed
+- Struct `IntegrationRuntimesRegenerateAuthKeyResponse` has been removed
+- Struct `IntegrationRuntimesRegenerateAuthKeyResult` has been removed
+- Struct `IntegrationRuntimesRemoveLinksOptions` has been removed
+- Struct `IntegrationRuntimesRemoveLinksResponse` has been removed
+- Struct `IntegrationRuntimesStartPoller` has been removed
+- Struct `IntegrationRuntimesStartPollerResponse` has been removed
+- Struct `IntegrationRuntimesStartResponse` has been removed
+- Struct `IntegrationRuntimesStartResult` has been removed
+- Struct `IntegrationRuntimesStopPoller` has been removed
+- Struct `IntegrationRuntimesStopPollerResponse` has been removed
+- Struct `IntegrationRuntimesStopResponse` has been removed
+- Struct `IntegrationRuntimesSyncCredentialsOptions` has been removed
+- Struct `IntegrationRuntimesSyncCredentialsResponse` has been removed
+- Struct `IntegrationRuntimesUpdateOptions` has been removed
+- Struct `IntegrationRuntimesUpdateResponse` has been removed
+- Struct `IntegrationRuntimesUpdateResult` has been removed
+- Struct `IntegrationRuntimesUpgradeOptions` has been removed
+- Struct `IntegrationRuntimesUpgradeResponse` has been removed
+- Struct `LinkedServicesCreateOrUpdateOptions` has been removed
+- Struct `LinkedServicesCreateOrUpdateResponse` has been removed
+- Struct `LinkedServicesCreateOrUpdateResult` has been removed
+- Struct `LinkedServicesDeleteOptions` has been removed
+- Struct `LinkedServicesDeleteResponse` has been removed
+- Struct `LinkedServicesGetOptions` has been removed
+- Struct `LinkedServicesGetResponse` has been removed
+- Struct `LinkedServicesGetResult` has been removed
+- Struct `LinkedServicesListByFactoryOptions` has been removed
+- Struct `LinkedServicesListByFactoryPager` has been removed
+- Struct `LinkedServicesListByFactoryResponse` has been removed
+- Struct `LinkedServicesListByFactoryResult` has been removed
+- Struct `ManagedPrivateEndpointsCreateOrUpdateOptions` has been removed
+- Struct `ManagedPrivateEndpointsCreateOrUpdateResponse` has been removed
+- Struct `ManagedPrivateEndpointsCreateOrUpdateResult` has been removed
+- Struct `ManagedPrivateEndpointsDeleteOptions` has been removed
+- Struct `ManagedPrivateEndpointsDeleteResponse` has been removed
+- Struct `ManagedPrivateEndpointsGetOptions` has been removed
+- Struct `ManagedPrivateEndpointsGetResponse` has been removed
+- Struct `ManagedPrivateEndpointsGetResult` has been removed
+- Struct `ManagedPrivateEndpointsListByFactoryOptions` has been removed
+- Struct `ManagedPrivateEndpointsListByFactoryPager` has been removed
+- Struct `ManagedPrivateEndpointsListByFactoryResponse` has been removed
+- Struct `ManagedPrivateEndpointsListByFactoryResult` has been removed
+- Struct `ManagedVirtualNetworksCreateOrUpdateOptions` has been removed
+- Struct `ManagedVirtualNetworksCreateOrUpdateResponse` has been removed
+- Struct `ManagedVirtualNetworksCreateOrUpdateResult` has been removed
+- Struct `ManagedVirtualNetworksGetOptions` has been removed
+- Struct `ManagedVirtualNetworksGetResponse` has been removed
+- Struct `ManagedVirtualNetworksGetResult` has been removed
+- Struct `ManagedVirtualNetworksListByFactoryOptions` has been removed
+- Struct `ManagedVirtualNetworksListByFactoryPager` has been removed
+- Struct `ManagedVirtualNetworksListByFactoryResponse` has been removed
+- Struct `ManagedVirtualNetworksListByFactoryResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PipelineRunsCancelOptions` has been removed
+- Struct `PipelineRunsCancelResponse` has been removed
+- Struct `PipelineRunsGetOptions` has been removed
+- Struct `PipelineRunsGetResponse` has been removed
+- Struct `PipelineRunsGetResult` has been removed
+- Struct `PipelineRunsQueryByFactoryOptions` has been removed
+- Struct `PipelineRunsQueryByFactoryResponse` has been removed
+- Struct `PipelineRunsQueryByFactoryResult` has been removed
+- Struct `PipelinesCreateOrUpdateOptions` has been removed
+- Struct `PipelinesCreateOrUpdateResponse` has been removed
+- Struct `PipelinesCreateOrUpdateResult` has been removed
+- Struct `PipelinesCreateRunOptions` has been removed
+- Struct `PipelinesCreateRunResponse` has been removed
+- Struct `PipelinesCreateRunResult` has been removed
+- Struct `PipelinesDeleteOptions` has been removed
+- Struct `PipelinesDeleteResponse` has been removed
+- Struct `PipelinesGetOptions` has been removed
+- Struct `PipelinesGetResponse` has been removed
+- Struct `PipelinesGetResult` has been removed
+- Struct `PipelinesListByFactoryOptions` has been removed
+- Struct `PipelinesListByFactoryPager` has been removed
+- Struct `PipelinesListByFactoryResponse` has been removed
+- Struct `PipelinesListByFactoryResult` has been removed
+- Struct `PrivateEndPointConnectionsListByFactoryOptions` has been removed
+- Struct `PrivateEndPointConnectionsListByFactoryPager` has been removed
+- Struct `PrivateEndPointConnectionsListByFactoryResponse` has been removed
+- Struct `PrivateEndPointConnectionsListByFactoryResult` has been removed
+- Struct `PrivateEndpointConnectionCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionGetOptions` has been removed
+- Struct `PrivateEndpointConnectionGetResponse` has been removed
+- Struct `PrivateEndpointConnectionGetResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `TriggerRunsCancelOptions` has been removed
+- Struct `TriggerRunsCancelResponse` has been removed
+- Struct `TriggerRunsQueryByFactoryOptions` has been removed
+- Struct `TriggerRunsQueryByFactoryResponse` has been removed
+- Struct `TriggerRunsQueryByFactoryResult` has been removed
+- Struct `TriggerRunsRerunOptions` has been removed
+- Struct `TriggerRunsRerunResponse` has been removed
+- Struct `TriggersBeginStartOptions` has been removed
+- Struct `TriggersBeginStopOptions` has been removed
+- Struct `TriggersBeginSubscribeToEventsOptions` has been removed
+- Struct `TriggersBeginUnsubscribeFromEventsOptions` has been removed
+- Struct `TriggersCreateOrUpdateOptions` has been removed
+- Struct `TriggersCreateOrUpdateResponse` has been removed
+- Struct `TriggersCreateOrUpdateResult` has been removed
+- Struct `TriggersDeleteOptions` has been removed
+- Struct `TriggersDeleteResponse` has been removed
+- Struct `TriggersGetEventSubscriptionStatusOptions` has been removed
+- Struct `TriggersGetEventSubscriptionStatusResponse` has been removed
+- Struct `TriggersGetEventSubscriptionStatusResult` has been removed
+- Struct `TriggersGetOptions` has been removed
+- Struct `TriggersGetResponse` has been removed
+- Struct `TriggersGetResult` has been removed
+- Struct `TriggersListByFactoryOptions` has been removed
+- Struct `TriggersListByFactoryPager` has been removed
+- Struct `TriggersListByFactoryResponse` has been removed
+- Struct `TriggersListByFactoryResult` has been removed
+- Struct `TriggersQueryByFactoryOptions` has been removed
+- Struct `TriggersQueryByFactoryResponse` has been removed
+- Struct `TriggersQueryByFactoryResult` has been removed
+- Struct `TriggersStartPoller` has been removed
+- Struct `TriggersStartPollerResponse` has been removed
+- Struct `TriggersStartResponse` has been removed
+- Struct `TriggersStopPoller` has been removed
+- Struct `TriggersStopPollerResponse` has been removed
+- Struct `TriggersStopResponse` has been removed
+- Struct `TriggersSubscribeToEventsPoller` has been removed
+- Struct `TriggersSubscribeToEventsPollerResponse` has been removed
+- Struct `TriggersSubscribeToEventsResponse` has been removed
+- Struct `TriggersSubscribeToEventsResult` has been removed
+- Struct `TriggersUnsubscribeFromEventsPoller` has been removed
+- Struct `TriggersUnsubscribeFromEventsPollerResponse` has been removed
+- Struct `TriggersUnsubscribeFromEventsResponse` has been removed
+- Struct `TriggersUnsubscribeFromEventsResult` has been removed
+- Field `Dataset` of struct `HBaseObjectDataset` has been removed
+- Field `TabularSource` of struct `VerticaSource` has been removed
+- Field `TabularSource` of struct `EloquaSource` has been removed
+- Field `DatasetLocation` of struct `HTTPServerLocation` has been removed
+- Field `WebLinkedServiceTypeProperties` of struct `WebAnonymousAuthentication` has been removed
+- Field `LinkedService` of struct `DynamicsCrmLinkedService` has been removed
+- Field `Dataset` of struct `PaypalObjectDataset` has been removed
+- Field `CopySink` of struct `MicrosoftAccessSink` has been removed
+- Field `SubResource` of struct `IntegrationRuntimeResource` has been removed
+- Field `CopySink` of struct `AzureQueueSink` has been removed
+- Field `LinkedService` of struct `SparkLinkedService` has been removed
+- Field `DatasetLocation` of struct `AmazonS3CompatibleLocation` has been removed
+- Field `ExecutionActivity` of struct `AzureMLExecutePipelineActivity` has been removed
+- Field `Dataset` of struct `DocumentDbCollectionDataset` has been removed
+- Field `Dataset` of struct `SparkObjectDataset` has been removed
+- Field `LinkedService` of struct `HDInsightOnDemandLinkedService` has been removed
+- Field `StoreWriteSettings` of struct `SftpWriteSettings` has been removed
+- Field `CopyTranslator` of struct `TabularTranslator` has been removed
+- Field `Dataset` of struct `SharePointOnlineListResourceDataset` has been removed
+- Field `Dataset` of struct `AzureSQLMITableDataset` has been removed
+- Field `ControlActivity` of struct `FilterActivity` has been removed
+- Field `Dataset` of struct `SalesforceMarketingCloudObjectDataset` has been removed
+- Field `CopySource` of struct `DelimitedTextSource` has been removed
+- Field `LinkedService` of struct `ImpalaLinkedService` has been removed
+- Field `LinkedService` of struct `CouchbaseLinkedService` has been removed
+- Field `ControlActivity` of struct `ValidationActivity` has been removed
+- Field `LinkedService` of struct `SalesforceMarketingCloudLinkedService` has been removed
+- Field `TabularSource` of struct `SybaseSource` has been removed
+- Field `LinkedService` of struct `AzureDataLakeAnalyticsLinkedService` has been removed
+- Field `LinkedService` of struct `WebLinkedService` has been removed
+- Field `ExecutionActivity` of struct `HDInsightMapReduceActivity` has been removed
+- Field `DataFlowSource` of struct `PowerQuerySource` has been removed
+- Field `Dataset` of struct `ShopifyObjectDataset` has been removed
+- Field `Dataset` of struct `HubspotObjectDataset` has been removed
+- Field `LinkedService` of struct `SapOpenHubLinkedService` has been removed
+- Field `LinkedService` of struct `SalesforceLinkedService` has been removed
+- Field `CopySink` of struct `SalesforceServiceCloudSink` has been removed
+- Field `LinkedService` of struct `OracleCloudStorageLinkedService` has been removed
+- Field `Dataset` of struct `MySQLTableDataset` has been removed
+- Field `StoreReadSettings` of struct `SftpReadSettings` has been removed
+- Field `LinkedService` of struct `MongoDbLinkedService` has been removed
+- Field `Dataset` of struct `RestResourceDataset` has been removed
+- Field `Dataset` of struct `HTTPDataset` has been removed
+- Field `LinkedService` of struct `HBaseLinkedService` has been removed
+- Field `Dataset` of struct `ExcelDataset` has been removed
+- Field `LinkedService` of struct `AzureMLServiceLinkedService` has been removed
+- Field `LinkedService` of struct `AzureBlobStorageLinkedService` has been removed
+- Field `Dataset` of struct `Db2TableDataset` has been removed
+- Field `DataFlow` of struct `Flowlet` has been removed
+- Field `ControlActivity` of struct `SwitchActivity` has been removed
+- Field `TabularSource` of struct `AzureSQLSource` has been removed
+- Field `LinkedService` of struct `MariaDBLinkedService` has been removed
+- Field `LinkedService` of struct `HTTPLinkedService` has been removed
+- Field `IntegrationRuntimeStatus` of struct `ManagedIntegrationRuntimeStatus` has been removed
+- Field `CopySource` of struct `BlobSource` has been removed
+- Field `CopySource` of struct `AvroSource` has been removed
+- Field `CopySource` of struct `SnowflakeSource` has been removed
+- Field `WebLinkedServiceTypeProperties` of struct `WebClientCertificateAuthentication` has been removed
+- Field `Dataset` of struct `AmazonMWSObjectDataset` has been removed
+- Field `Dataset` of struct `AzureSearchIndexDataset` has been removed
+- Field `LinkedService` of struct `ODataLinkedService` has been removed
+- Field `ImportSettings` of struct `SnowflakeImportCopyCommand` has been removed
+- Field `FormatWriteSettings` of struct `AvroWriteSettings` has been removed
+- Field `Dataset` of struct `ZohoObjectDataset` has been removed
+- Field `TabularSource` of struct `PaypalSource` has been removed
+- Field `ExecutionActivity` of struct `DatabricksNotebookActivity` has been removed
+- Field `CopySink` of struct `AzureSQLSink` has been removed
+- Field `SsisObjectMetadata` of struct `SsisPackage` has been removed
+- Field `SubResource` of struct `PrivateLinkConnectionApprovalRequestResource` has been removed
+- Field `CopySink` of struct `CommonDataServiceForAppsSink` has been removed
+- Field `Dataset` of struct `CustomDataset` has been removed
+- Field `LinkedService` of struct `Db2LinkedService` has been removed
+- Field `CopySource` of struct `AzureDatabricksDeltaLakeSource` has been removed
+- Field `CopySink` of struct `AzureDatabricksDeltaLakeSink` has been removed
+- Field `SsisObjectMetadata` of struct `SsisProject` has been removed
+- Field `Dataset` of struct `SquareObjectDataset` has been removed
+- Field `LinkedService` of struct `FtpServerLinkedService` has been removed
+- Field `LinkedService` of struct `AzurePostgreSQLLinkedService` has been removed
+- Field `StoreReadSettings` of struct `AmazonS3CompatibleReadSettings` has been removed
+- Field `Transformation` of struct `DataFlowSink` has been removed
+- Field `ExecutionActivity` of struct `AzureMLBatchExecutionActivity` has been removed
+- Field `Dataset` of struct `AzureSQLTableDataset` has been removed
+- Field `Dataset` of struct `ConcurObjectDataset` has been removed
+- Field `Dataset` of struct `RelationalTableDataset` has been removed
+- Field `Dataset` of struct `AmazonRedshiftTableDataset` has been removed
+- Field `TabularSource` of struct `CouchbaseSource` has been removed
+- Field `CopySource` of struct `SharePointOnlineListSource` has been removed
+- Field `LinkedService` of struct `NetezzaLinkedService` has been removed
+- Field `CopySink` of struct `SnowflakeSink` has been removed
+- Field `SubResource` of struct `PrivateEndpointConnectionResource` has been removed
+- Field `ImportSettings` of struct `AzureDatabricksDeltaLakeImportCommand` has been removed
+- Field `Dataset` of struct `CouchbaseTableDataset` has been removed
+- Field `IntegrationRuntimeStatus` of struct `SelfHostedIntegrationRuntimeStatus` has been removed
+- Field `Dataset` of struct `GoogleAdWordsObjectDataset` has been removed
+- Field `Dataset` of struct `MarketoObjectDataset` has been removed
+- Field `TriggerDependencyReference` of struct `TumblingWindowTriggerDependencyReference` has been removed
+- Field `DatasetLocation` of struct `AzureBlobStorageLocation` has been removed
+- Field `Dataset` of struct `CosmosDbSQLAPICollectionDataset` has been removed
+- Field `Dataset` of struct `FileShareDataset` has been removed
+- Field `Dataset` of struct `TeradataTableDataset` has been removed
+- Field `DatasetLocation` of struct `HdfsLocation` has been removed
+- Field `Dataset` of struct `EloquaObjectDataset` has been removed
+- Field `CopySource` of struct `DynamicsSource` has been removed
+- Field `LinkedService` of struct `AzureFunctionLinkedService` has been removed
+- Field `CopySink` of struct `MongoDbV2Sink` has been removed
+- Field `LinkedService` of struct `HdfsLinkedService` has been removed
+- Field `FormatReadSettings` of struct `JSONReadSettings` has been removed
+- Field `Dataset` of struct `SapHanaTableDataset` has been removed
+- Field `Dataset` of struct `MagentoObjectDataset` has been removed
+- Field `LinkedService` of struct `CommonDataServiceForAppsLinkedService` has been removed
+- Field `SsisObjectMetadata` of struct `SsisFolder` has been removed
+- Field `LinkedService` of struct `SapHanaLinkedService` has been removed
+- Field `Transformation` of struct `DataFlowSource` has been removed
+- Field `Dataset` of struct `InformixTableDataset` has been removed
+- Field `IntegrationRuntime` of struct `ManagedIntegrationRuntime` has been removed
+- Field `CopySink` of struct `AvroSink` has been removed
+- Field `CopySource` of struct `CommonDataServiceForAppsSource` has been removed
+- Field `ExecutionActivity` of struct `CustomActivity` has been removed
+- Field `Dataset` of struct `DynamicsEntityDataset` has been removed
+- Field `Dataset` of struct `DrillTableDataset` has been removed
+- Field `ExecutionActivity` of struct `HDInsightHiveActivity` has been removed
+- Field `TabularSource` of struct `HBaseSource` has been removed
+- Field `TabularSource` of struct `GoogleAdWordsSource` has been removed
+- Field `CopySource` of struct `MongoDbSource` has been removed
+- Field `Dataset` of struct `SQLServerTableDataset` has been removed
+- Field `StoreReadSettings` of struct `AzureBlobStorageReadSettings` has been removed
+- Field `LinkedService` of struct `GoogleAdWordsLinkedService` has been removed
+- Field `Dataset` of struct `CassandraTableDataset` has been removed
+- Field `LinkedService` of struct `AzureFileStorageLinkedService` has been removed
+- Field `TabularSource` of struct `ImpalaSource` has been removed
+- Field `StoreReadSettings` of struct `HdfsReadSettings` has been removed
+- Field `ExecutionActivity` of struct `WebActivity` has been removed
+- Field `Dataset` of struct `OdbcTableDataset` has been removed
+- Field `LinkedService` of struct `ShopifyLinkedService` has been removed
+- Field `LinkedService` of struct `TeradataLinkedService` has been removed
+- Field `Activity` of struct `ControlActivity` has been removed
+- Field `LinkedService` of struct `AmazonRdsForSQLServerLinkedService` has been removed
+- Field `CopySink` of struct `AzureTableSink` has been removed
+- Field `TabularSource` of struct `HiveSource` has been removed
+- Field `Trigger` of struct `ChainingTrigger` has been removed
+- Field `DatasetStorageFormat` of struct `TextFormat` has been removed
+- Field `LinkedService` of struct `XeroLinkedService` has been removed
+- Field `LinkedService` of struct `EloquaLinkedService` has been removed
+- Field `LinkedService` of struct `SnowflakeLinkedService` has been removed
+- Field `ExecutionActivity` of struct `LookupActivity` has been removed
+- Field `ControlActivity` of struct `WaitActivity` has been removed
+- Field `DatasetLocation` of struct `SftpLocation` has been removed
+- Field `TabularSource` of struct `AzureTableSource` has been removed
+- Field `CopySink` of struct `SQLDWSink` has been removed
+- Field `CopySink` of struct `DocumentDbCollectionSink` has been removed
+- Field `Dataset` of struct `DynamicsCrmEntityDataset` has been removed
+- Field `TabularSource` of struct `SapBwSource` has been removed
+- Field `DatasetLocation` of struct `OracleCloudStorageLocation` has been removed
+- Field `LinkedService` of struct `AmazonRdsForOracleLinkedService` has been removed
+- Field `TabularSource` of struct `MySQLSource` has been removed
+- Field `SubResourceDebugResource` of struct `IntegrationRuntimeDebugResource` has been removed
+- Field `CopySink` of struct `OdbcSink` has been removed
+- Field `LinkedService` of struct `AzureSQLDWLinkedService` has been removed
+- Field `CopySource` of struct `DynamicsCrmSource` has been removed
+- Field `ControlActivity` of struct `ForEachActivity` has been removed
+- Field `Dataset` of struct `AzureDataLakeStoreDataset` has been removed
+- Field `Dataset` of struct `AzureMariaDBTableDataset` has been removed
+- Field `StoreReadSettings` of struct `FtpReadSettings` has been removed
+- Field `ControlActivity` of struct `SetVariableActivity` has been removed
+- Field `StoreReadSettings` of struct `AmazonS3ReadSettings` has been removed
+- Field `StoreWriteSettings` of struct `AzureBlobStorageWriteSettings` has been removed
+- Field `CopySource` of struct `AzureBlobFSSource` has been removed
+- Field `Dataset` of struct `MongoDbV2CollectionDataset` has been removed
+- Field `LinkedService` of struct `SquareLinkedService` has been removed
+- Field `Dataset` of struct `AzurePostgreSQLTableDataset` has been removed
+- Field `Dataset` of struct `DynamicsAXResourceDataset` has been removed
+- Field `Dataset` of struct `MariaDBTableDataset` has been removed
+- Field `CopySource` of struct `AmazonRdsForOracleSource` has been removed
+- Field `DatasetLocation` of struct `FileServerLocation` has been removed
+- Field `CustomSetupBase` of struct `ComponentSetup` has been removed
+- Field `LinkedService` of struct `CassandraLinkedService` has been removed
+- Field `CopySource` of struct `WebSource` has been removed
+- Field `LinkedService` of struct `CosmosDbLinkedService` has been removed
+- Field `CopySink` of struct `AzureDataLakeStoreSink` has been removed
+- Field `SubResource` of struct `ManagedVirtualNetworkResource` has been removed
+- Field `Trigger` of struct `RerunTumblingWindowTrigger` has been removed
+- Field `LinkedService` of struct `SybaseLinkedService` has been removed
+- Field `TabularSource` of struct `SquareSource` has been removed
+- Field `Dataset` of struct `AvroDataset` has been removed
+- Field `Dataset` of struct `GreenplumTableDataset` has been removed
+- Field `DatasetStorageFormat` of struct `ParquetFormat` has been removed
+- Field `StoreReadSettings` of struct `AzureDataLakeStoreReadSettings` has been removed
+- Field `StoreWriteSettings` of struct `FileServerWriteSettings` has been removed
+- Field `LinkedService` of struct `SapBWLinkedService` has been removed
+- Field `LinkedService` of struct `DynamicsLinkedService` has been removed
+- Field `SubResource` of struct `PipelineResource` has been removed
+- Field `LinkedService` of struct `AzureDatabricksLinkedService` has been removed
+- Field `Dataset` of struct `PhoenixObjectDataset` has been removed
+- Field `LinkedService` of struct `AmazonMWSLinkedService` has been removed
+- Field `Dataset` of struct `AmazonS3Dataset` has been removed
+- Field `ExecutionActivity` of struct `HDInsightStreamingActivity` has been removed
+- Field `WebLinkedServiceTypeProperties` of struct `WebBasicAuthentication` has been removed
+- Field `Dataset` of struct `CommonDataServiceForAppsEntityDataset` has been removed
+- Field `Trigger` of struct `MultiplePipelineTrigger` has been removed
+- Field `CompressionReadSettings` of struct `TarReadSettings` has been removed
+- Field `Dataset` of struct `BinaryDataset` has been removed
+- Field `TabularSource` of struct `ShopifySource` has been removed
+- Field `CopySink` of struct `DynamicsCrmSink` has been removed
+- Field `TabularSource` of struct `AmazonRedshiftSource` has been removed
+- Field `ControlActivity` of struct `ExecutePipelineActivity` has been removed
+- Field `Dataset` of struct `SapBwCubeDataset` has been removed
+- Field `DataFlow` of struct `MappingDataFlow` has been removed
+- Field `Dataset` of struct `ServiceNowObjectDataset` has been removed
+- Field `SubResourceDebugResource` of struct `LinkedServiceDebugResource` has been removed
+- Field `LinkedService` of struct `QuickBooksLinkedService` has been removed
+- Field `ExecutionActivity` of struct `DeleteActivity` has been removed
+- Field `TabularSource` of struct `OdbcSource` has been removed
+- Field `DatasetLocation` of struct `GoogleCloudStorageLocation` has been removed
+- Field `Dataset` of struct `NetezzaTableDataset` has been removed
+- Field `CopySource` of struct `RestSource` has been removed
+- Field `CopySink` of struct `DynamicsSink` has been removed
+- Field `SsisObjectMetadata` of struct `SsisEnvironment` has been removed
+- Field `Dataset` of struct `AzureTableDataset` has been removed
+- Field `DatasetLocation` of struct `AmazonS3Location` has been removed
+- Field `TabularSource` of struct `CassandraSource` has been removed
+- Field `Dataset` of struct `MicrosoftAccessTableDataset` has been removed
+- Field `Dataset` of struct `CosmosDbMongoDbAPICollectionDataset` has been removed
+- Field `CopySource` of struct `HdfsSource` has been removed
+- Field `LinkedService` of struct `AzureDatabricksDeltaLakeLinkedService` has been removed
+- Field `LinkedService` of struct `PhoenixLinkedService` has been removed
+- Field `CopySink` of struct `ParquetSink` has been removed
+- Field `LinkedService` of struct `AmazonS3CompatibleLinkedService` has been removed
+- Field `DependencyReference` of struct `SelfDependencyTumblingWindowTriggerReference` has been removed
+- Field `CompressionReadSettings` of struct `ZipDeflateReadSettings` has been removed
+- Field `ExecutionActivity` of struct `CopyActivity` has been removed
+- Field `CopySource` of struct `SalesforceServiceCloudSource` has been removed
+- Field `CopySource` of struct `MicrosoftAccessSource` has been removed
+- Field `TabularSource` of struct `SapCloudForCustomerSource` has been removed
+- Field `LinkedService` of struct `AzureMLLinkedService` has been removed
+- Field `Dataset` of struct `JSONDataset` has been removed
+- Field `TabularSource` of struct `JiraSource` has been removed
+- Field `Dataset` of struct `OracleTableDataset` has been removed
+- Field `TabularSource` of struct `MarketoSource` has been removed
+- Field `LinkedService` of struct `HubspotLinkedService` has been removed
+- Field `TabularSource` of struct `AzureMySQLSource` has been removed
+- Field `Dataset` of struct `AmazonRdsForOracleTableDataset` has been removed
+- Field `LinkedService` of struct `AmazonS3LinkedService` has been removed
+- Field `CopySink` of struct `OrcSink` has been removed
+- Field `FormatWriteSettings` of struct `DelimitedTextWriteSettings` has been removed
+- Field `ExecuteDataFlowActivityTypeProperties` of struct `ExecutePowerQueryActivityTypeProperties` has been removed
+- Field `StoreReadSettings` of struct `HTTPReadSettings` has been removed
+- Field `CopySource` of struct `MongoDbAtlasSource` has been removed
+- Field `Resource` of struct `Factory` has been removed
+- Field `LinkedService` of struct `MongoDbAtlasLinkedService` has been removed
+- Field `StoreWriteSettings` of struct `AzureFileStorageWriteSettings` has been removed
+- Field `TabularSource` of struct `AzureMariaDBSource` has been removed
+- Field `Dataset` of struct `VerticaTableDataset` has been removed
+- Field `CopySink` of struct `BinarySink` has been removed
+- Field `DatasetLocation` of struct `AzureDataLakeStoreLocation` has been removed
+- Field `LinkedService` of struct `HiveLinkedService` has been removed
+- Field `DatasetStorageFormat` of struct `OrcFormat` has been removed
+- Field `CopySink` of struct `JSONSink` has been removed
+- Field `LinkedService` of struct `AzureMySQLLinkedService` has been removed
+- Field `TabularSource` of struct `PhoenixSource` has been removed
+- Field `CopySource` of struct `XMLSource` has been removed
+- Field `FormatWriteSettings` of struct `JSONWriteSettings` has been removed
+- Field `TabularSource` of struct `SapOpenHubSource` has been removed
+- Field `ExecutionActivity` of struct `AzureDataExplorerCommandActivity` has been removed
+- Field `TabularSource` of struct `SQLServerSource` has been removed
+- Field `LinkedService` of struct `VerticaLinkedService` has been removed
+- Field `Dataset` of struct `SalesforceServiceCloudObjectDataset` has been removed
+- Field `ControlActivity` of struct `UntilActivity` has been removed
+- Field `Dataset` of struct `DelimitedTextDataset` has been removed
+- Field `LinkedService` of struct `AzureDataExplorerLinkedService` has been removed
+- Field `DatasetStorageFormat` of struct `JSONFormat` has been removed
+- Field `LinkedService` of struct `AzureSQLDatabaseLinkedService` has been removed
+- Field `CopySource` of struct `AzureDataLakeStoreSource` has been removed
+- Field `Dataset` of struct `XMLDataset` has been removed
+- Field `CopySink` of struct `OracleSink` has been removed
+- Field `LinkedIntegrationRuntimeType` of struct `LinkedIntegrationRuntimeKeyAuthorization` has been removed
+- Field `CopySource` of struct `BinarySource` has been removed
+- Field `LinkedService` of struct `CosmosDbMongoDbAPILinkedService` has been removed
+- Field `CopySource` of struct `FileSystemSource` has been removed
+- Field `StoreWriteSettings` of struct `AzureDataLakeStoreWriteSettings` has been removed
+- Field `LinkedService` of struct `SftpServerLinkedService` has been removed
+- Field `CopySource` of struct `JSONSource` has been removed
+- Field `LinkedService` of struct `InformixLinkedService` has been removed
+- Field `TabularSource` of struct `MariaDBSource` has been removed
+- Field `DatasetLocation` of struct `AzureFileStorageLocation` has been removed
+- Field `TabularSource` of struct `ServiceNowSource` has been removed
+- Field `Dataset` of struct `ImpalaObjectDataset` has been removed
+- Field `TabularSource` of struct `Db2Source` has been removed
+- Field `ExecutionActivity` of struct `DatabricksSparkPythonActivity` has been removed
+- Field `SubResource` of struct `LinkedServiceResource` has been removed
+- Field `ExecutionActivity` of struct `DatabricksSparkJarActivity` has been removed
+- Field `LinkedService` of struct `AzureMariaDBLinkedService` has been removed
+- Field `LinkedService` of struct `MongoDbV2LinkedService` has been removed
+- Field `Dataset` of struct `ODataResourceDataset` has been removed
+- Field `ControlActivity` of struct `IfConditionActivity` has been removed
+- Field `TabularSource` of struct `DynamicsAXSource` has been removed
+- Field `CopySink` of struct `DelimitedTextSink` has been removed
+- Field `LinkedService` of struct `OracleLinkedService` has been removed
+- Field `Dataset` of struct `Office365Dataset` has been removed
+- Field `LinkedService` of struct `SapEccLinkedService` has been removed
+- Field `LinkedService` of struct `MicrosoftAccessLinkedService` has been removed
+- Field `FormatReadSettings` of struct `XMLReadSettings` has been removed
+- Field `CopySource` of struct `CosmosDbMongoDbAPISource` has been removed
+- Field `SubResource` of struct `CredentialResource` has been removed
+- Field `LinkedService` of struct `HDInsightLinkedService` has been removed
+- Field `CopySource` of struct `RelationalSource` has been removed
+- Field `SubResourceDebugResource` of struct `DatasetDebugResource` has been removed
+- Field `TabularSource` of struct `SparkSource` has been removed
+- Field `LinkedService` of struct `AzureSQLMILinkedService` has been removed
+- Field `Dataset` of struct `XeroObjectDataset` has been removed
+- Field `LinkedService` of struct `FileServerLinkedService` has been removed
+- Field `LinkedService` of struct `ServiceNowLinkedService` has been removed
+- Field `FactoryRepoConfiguration` of struct `FactoryGitHubConfiguration` has been removed
+- Field `LinkedService` of struct `OracleServiceCloudLinkedService` has been removed
+- Field `ExportSettings` of struct `SnowflakeExportCopyCommand` has been removed
+- Field `TabularSource` of struct `SapTableSource` has been removed
+- Field `IntegrationRuntime` of struct `SelfHostedIntegrationRuntime` has been removed
+- Field `ExecutionActivity` of struct `HDInsightPigActivity` has been removed
+- Field `LinkedService` of struct `ResponsysLinkedService` has been removed
+- Field `SubResource` of struct `ManagedPrivateEndpointResource` has been removed
+- Field `CopySource` of struct `OracleSource` has been removed
+- Field `LinkedService` of struct `SapTableLinkedService` has been removed
+- Field `FormatReadSettings` of struct `DelimitedTextReadSettings` has been removed
+- Field `MultiplePipelineTrigger` of struct `BlobEventsTrigger` has been removed
+- Field `StoreWriteSettings` of struct `AzureBlobFSWriteSettings` has been removed
+- Field `TabularSource` of struct `InformixSource` has been removed
+- Field `CopySource` of struct `Office365Source` has been removed
+- Field `Dataset` of struct `SalesforceObjectDataset` has been removed
+- Field `TabularSource` of struct `SQLMISource` has been removed
+- Field `TabularSource` of struct `ConcurSource` has been removed
+- Field `LinkedService` of struct `AmazonRedshiftLinkedService` has been removed
+- Field `TabularSource` of struct `GreenplumSource` has been removed
+- Field `DatasetLocation` of struct `AzureBlobFSLocation` has been removed
+- Field `ExecutionActivity` of struct `AzureFunctionActivity` has been removed
+- Field `ExecutionActivity` of struct `AzureMLUpdateResourceActivity` has been removed
+- Field `LinkedService` of struct `AzureTableStorageLinkedService` has been removed
+- Field `LinkedService` of struct `SapCloudForCustomerLinkedService` has been removed
+- Field `TabularSource` of struct `TeradataSource` has been removed
+- Field `CopySink` of struct `SQLServerSink` has been removed
+- Field `ControlActivity` of struct `AppendVariableActivity` has been removed
+- Field `ExecutionActivity` of struct `GetMetadataActivity` has been removed
+- Field `TabularSource` of struct `PostgreSQLSource` has been removed
+- Field `CopySink` of struct `SQLSink` has been removed
+- Field `SecretBase` of struct `AzureKeyVaultSecretReference` has been removed
+- Field `CopySink` of struct `AzurePostgreSQLSink` has been removed
+- Field `LinkedService` of struct `AzureSearchLinkedService` has been removed
+- Field `TabularSource` of struct `DrillSource` has been removed
+- Field `LinkedService` of struct `AzureStorageLinkedService` has been removed
+- Field `MultiplePipelineTrigger` of struct `BlobTrigger` has been removed
+- Field `LinkedService` of struct `AzureBatchLinkedService` has been removed
+- Field `Trigger` of struct `TumblingWindowTrigger` has been removed
+- Field `CopySource` of struct `ParquetSource` has been removed
+- Field `DatasetLocation` of struct `FtpServerLocation` has been removed
+- Field `LinkedService` of struct `AzureKeyVaultLinkedService` has been removed
+- Field `CompressionReadSettings` of struct `TarGZipReadSettings` has been removed
+- Field `LinkedService` of struct `DynamicsAXLinkedService` has been removed
+- Field `CopySink` of struct `SQLMISink` has been removed
+- Field `SubResource` of struct `DataFlowResource` has been removed
+- Field `TabularSource` of struct `AmazonMWSSource` has been removed
+- Field `FormatWriteSettings` of struct `ParquetWriteSettings` has been removed
+- Field `LinkedIntegrationRuntimeType` of struct `LinkedIntegrationRuntimeRbacAuthorization` has been removed
+- Field `LinkedService` of struct `GreenplumLinkedService` has been removed
+- Field `SubResourceDebugResource` of struct `DataFlowDebugResource` has been removed
+- Field `Dataset` of struct `ResponsysObjectDataset` has been removed
+- Field `StoreReadSettings` of struct `GoogleCloudStorageReadSettings` has been removed
+- Field `Activity` of struct `ExecutionActivity` has been removed
+- Field `Dataset` of struct `AzureBlobDataset` has been removed
+- Field `StoreReadSettings` of struct `OracleCloudStorageReadSettings` has been removed
+- Field `LinkedService` of struct `CustomDataSourceLinkedService` has been removed
+- Field `ControlActivity` of struct `WebHookActivity` has been removed
+- Field `DataFlowSink` of struct `PowerQuerySink` has been removed
+- Field `TabularSource` of struct `SapEccSource` has been removed
+- Field `Dataset` of struct `PostgreSQLTableDataset` has been removed
+- Field `ExecutionActivity` of struct `ExecuteSSISPackageActivity` has been removed
+- Field `LinkedService` of struct `SharePointOnlineListLinkedService` has been removed
+- Field `CopySink` of struct `InformixSink` has been removed
+- Field `LinkedService` of struct `MarketoLinkedService` has been removed
+- Field `Activity` of struct `ExecuteWranglingDataflowActivity` has been removed
+- Field `TabularSource` of struct `AzurePostgreSQLSource` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `TabularSource` of struct `AmazonRdsForSQLServerSource` has been removed
+- Field `LinkedService` of struct `SQLServerLinkedService` has been removed
+- Field `Dataset` of struct `SybaseTableDataset` has been removed
+- Field `CopySink` of struct `SalesforceSink` has been removed
+- Field `CopySource` of struct `HTTPSource` has been removed
+- Field `CopySink` of struct `AzureDataExplorerSink` has been removed
+- Field `Dataset` of struct `OracleServiceCloudObjectDataset` has been removed
+- Field `StoreReadSettings` of struct `AzureBlobFSReadSettings` has been removed
+- Field `LinkedService` of struct `GoogleCloudStorageLinkedService` has been removed
+- Field `LinkedService` of struct `PaypalLinkedService` has been removed
+- Field `TabularSource` of struct `PrestoSource` has been removed
+- Field `TabularSource` of struct `OracleServiceCloudSource` has been removed
+- Field `LinkedService` of struct `MagentoLinkedService` has been removed
+- Field `SecretBase` of struct `SecureString` has been removed
+- Field `TabularSource` of struct `MagentoSource` has been removed
+- Field `TabularSource` of struct `ZohoSource` has been removed
+- Field `CopySink` of struct `SapCloudForCustomerSink` has been removed
+- Field `LinkedService` of struct `RestServiceLinkedService` has been removed
+- Field `CopySource` of struct `OrcSource` has been removed
+- Field `CustomSetupBase` of struct `AzPowerShellSetup` has been removed
+- Field `TabularSource` of struct `SalesforceMarketingCloudSource` has been removed
+- Field `Dataset` of struct `SapEccResourceDataset` has been removed
+- Field `CustomSetupBase` of struct `EnvironmentVariableSetup` has been removed
+- Field `CopySink` of struct `AzureSearchIndexSink` has been removed
+- Field `TabularSource` of struct `ResponsysSource` has been removed
+- Field `LinkedService` of struct `PrestoLinkedService` has been removed
+- Field `TabularSource` of struct `NetezzaSource` has been removed
+- Field `Dataset` of struct `AzureDataExplorerTableDataset` has been removed
+- Field `MultiplePipelineTrigger` of struct `CustomEventsTrigger` has been removed
+- Field `LinkedService` of struct `ConcurLinkedService` has been removed
+- Field `ExecutionActivity` of struct `ExecuteDataFlowActivity` has been removed
+- Field `CopySink` of struct `BlobSink` has been removed
+- Field `LinkedService` of struct `PostgreSQLLinkedService` has been removed
+- Field `Dataset` of struct `AzureSQLDWTableDataset` has been removed
+- Field `CopySink` of struct `CosmosDbSQLAPISink` has been removed
+- Field `TabularSource` of struct `SQLDWSource` has been removed
+- Field `Dataset` of struct `JiraObjectDataset` has been removed
+- Field `Dataset` of struct `MongoDbCollectionDataset` has been removed
+- Field `CopySink` of struct `AzureMySQLSink` has been removed
+- Field `Dataset` of struct `HiveObjectDataset` has been removed
+- Field `LinkedService` of struct `OdbcLinkedService` has been removed
+- Field `CopySink` of struct `AzureBlobFSSink` has been removed
+- Field `CopySource` of struct `MongoDbV2Source` has been removed
+- Field `Dataset` of struct `SapOpenHubTableDataset` has been removed
+- Field `LinkedService` of struct `GoogleBigQueryLinkedService` has been removed
+- Field `LinkedService` of struct `Office365LinkedService` has been removed
+- Field `TabularSource` of struct `SQLSource` has been removed
+- Field `FormatReadSettings` of struct `BinaryReadSettings` has been removed
+- Field `TabularSource` of struct `GoogleBigQuerySource` has been removed
+- Field `CopySource` of struct `DocumentDbCollectionSource` has been removed
+- Field `Dataset` of struct `SnowflakeDataset` has been removed
+- Field `CopySink` of struct `FileSystemSink` has been removed
+- Field `Dataset` of struct `AmazonRdsForSQLServerTableDataset` has been removed
+- Field `Dataset` of struct `AzureMySQLTableDataset` has been removed
+- Field `LinkedService` of struct `JiraLinkedService` has been removed
+- Field `StoreReadSettings` of struct `FileServerReadSettings` has been removed
+- Field `TabularSource` of struct `HubspotSource` has been removed
+- Field `Dataset` of struct `PrestoObjectDataset` has been removed
+- Field `TabularSource` of struct `SapHanaSource` has been removed
+- Field `SubResource` of struct `PrivateLinkResource` has been removed
+- Field `DatasetStorageFormat` of struct `AvroFormat` has been removed
+- Field `CustomSetupBase` of struct `CmdkeySetup` has been removed
+- Field `TabularSource` of struct `XeroSource` has been removed
+- Field `LinkedService` of struct `AzureDataLakeStoreLinkedService` has been removed
+- Field `CopySink` of struct `RestSink` has been removed
+- Field `FactoryRepoConfiguration` of struct `FactoryVSTSConfiguration` has been removed
+- Field `ExportSettings` of struct `AzureDatabricksDeltaLakeExportCommand` has been removed
+- Field `CopySink` of struct `MongoDbAtlasSink` has been removed
+- Field `LinkedService` of struct `AzureBlobFSLinkedService` has been removed
+- Field `Dataset` of struct `SapTableResourceDataset` has been removed
+- Field `FormatWriteSettings` of struct `OrcWriteSettings` has been removed
+- Field `LinkedService` of struct `SalesforceServiceCloudLinkedService` has been removed
+- Field `LinkedService` of struct `ZohoLinkedService` has been removed
+- Field `CopySink` of struct `CosmosDbMongoDbAPISink` has been removed
+- Field `TabularSource` of struct `QuickBooksSource` has been removed
+- Field `CopySource` of struct `TabularSource` has been removed
+- Field `ExecutionActivity` of struct `HDInsightSparkActivity` has been removed
+- Field `Dataset` of struct `WebTableDataset` has been removed
+- Field `CopySource` of struct `ExcelSource` has been removed
+- Field `LinkedService` of struct `MySQLLinkedService` has been removed
+- Field `LinkedService` of struct `DrillLinkedService` has been removed
+- Field `CopySource` of struct `ODataSource` has been removed
+- Field `CopySource` of struct `AzureDataExplorerSource` has been removed
+- Field `DependencyReference` of struct `TriggerDependencyReference` has been removed
+- Field `ExecutionActivity` of struct `SQLServerStoredProcedureActivity` has been removed
+- Field `ExecutionActivity` of struct `DataLakeAnalyticsUSQLActivity` has been removed
+- Field `Dataset` of struct `OrcDataset` has been removed
+- Field `Dataset` of struct `GoogleBigQueryObjectDataset` has been removed
+- Field `Dataset` of struct `SapCloudForCustomerResourceDataset` has been removed
+- Field `Dataset` of struct `AzureBlobFSDataset` has been removed
+- Field `MultiplePipelineTrigger` of struct `ScheduleTrigger` has been removed
+- Field `Dataset` of struct `MongoDbAtlasCollectionDataset` has been removed
+- Field `TabularSource` of struct `SalesforceSource` has been removed
+- Field `Dataset` of struct `ParquetDataset` has been removed
+- Field `StoreReadSettings` of struct `AzureFileStorageReadSettings` has been removed
+- Field `SubResource` of struct `DatasetResource` has been removed
+- Field `Dataset` of struct `AzureDatabricksDeltaLakeDataset` has been removed
+- Field `SubResource` of struct `TriggerResource` has been removed
+- Field `DataFlow` of struct `WranglingDataFlow` has been removed
+- Field `Dataset` of struct `QuickBooksObjectDataset` has been removed
+- Field `CopySource` of struct `CosmosDbSQLAPISource` has been removed
+
+### Features Added
+
+- New function `Activity.MarshalJSON() ([]byte, error)`
+- New function `*AzureMySQLTableDataset.GetDataset() *Dataset`
+- New function `*AzureTableDataset.GetDataset() *Dataset`
+- New function `*FileServerWriteSettings.UnmarshalJSON([]byte) error`
+- New function `*WebActivity.GetActivity() *Activity`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPollerResponse.Resume(context.Context, *IntegrationRuntimeObjectMetadataClient, string) error`
+- New function `*SybaseTableDataset.GetDataset() *Dataset`
+- New function `*TriggersClientStartPoller.FinalResponse(context.Context) (TriggersClientStartResponse, error)`
+- New function `*ConcurSource.GetCopySource() *CopySource`
+- New function `*CustomEventsTrigger.GetTrigger() *Trigger`
+- New function `IntegrationRuntime.MarshalJSON() ([]byte, error)`
+- New function `*SwitchActivity.GetControlActivity() *ControlActivity`
+- New function `*BinarySink.GetCopySink() *CopySink`
+- New function `*AzureDatabricksDeltaLakeLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureDataLakeStoreDataset.GetDataset() *Dataset`
+- New function `*ScheduleTrigger.GetTrigger() *Trigger`
+- New function `*AzureMySQLLinkedService.GetLinkedService() *LinkedService`
+- New function `*TarGZipReadSettings.GetCompressionReadSettings() *CompressionReadSettings`
+- New function `*TriggersClientStopPoller.FinalResponse(context.Context) (TriggersClientStopResponse, error)`
+- New function `*NetezzaSource.GetTabularSource() *TabularSource`
+- New function `*SalesforceLinkedService.GetLinkedService() *LinkedService`
+- New function `*MarketoSource.GetCopySource() *CopySource`
+- New function `DatasetStorageFormat.MarshalJSON() ([]byte, error)`
+- New function `*FactoriesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ResponsysSource.GetTabularSource() *TabularSource`
+- New function `*AzureFileStorageWriteSettings.UnmarshalJSON([]byte) error`
+- New function `*DataFlowDebugSessionClientExecuteCommandPoller.FinalResponse(context.Context) (DataFlowDebugSessionClientExecuteCommandResponse, error)`
+- New function `*AzureBlobFSSource.GetCopySource() *CopySource`
+- New function `Trigger.MarshalJSON() ([]byte, error)`
+- New function `*AzureDatabricksDeltaLakeExportCommand.GetExportSettings() *ExportSettings`
+- New function `*CustomActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*FactoryVSTSConfiguration.GetFactoryRepoConfiguration() *FactoryRepoConfiguration`
+- New function `*HDInsightMapReduceActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*AppendVariableActivity.GetActivity() *Activity`
+- New function `*FactoriesClientListPager.PageResponse() FactoriesClientListResponse`
+- New function `*ShopifySource.GetCopySource() *CopySource`
+- New function `*AzureSQLDWTableDataset.GetDataset() *Dataset`
+- New function `*HDInsightStreamingActivity.GetActivity() *Activity`
+- New function `*NetezzaTableDataset.GetDataset() *Dataset`
+- New function `*ForEachActivity.GetActivity() *Activity`
+- New function `*ExecutePipelineActivity.GetActivity() *Activity`
+- New function `*MariaDBSource.GetTabularSource() *TabularSource`
+- New function `*DelimitedTextSink.GetCopySink() *CopySink`
+- New function `*OracleServiceCloudSource.GetTabularSource() *TabularSource`
+- New function `*VerticaTableDataset.GetDataset() *Dataset`
+- New function `*SQLMISink.GetCopySink() *CopySink`
+- New function `*FactoriesClientListPager.Err() error`
+- New function `*AzurePostgreSQLSource.GetTabularSource() *TabularSource`
+- New function `*SapBWLinkedService.GetLinkedService() *LinkedService`
+- New function `*FileServerReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*AzureQueueSink.GetCopySink() *CopySink`
+- New function `*QuickBooksSource.GetTabularSource() *TabularSource`
+- New function `FormatWriteSettings.MarshalJSON() ([]byte, error)`
+- New function `*SquareObjectDataset.GetDataset() *Dataset`
+- New function `*PrestoObjectDataset.GetDataset() *Dataset`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.FinalResponse(context.Context) (IntegrationRuntimeObjectMetadataClientRefreshResponse, error)`
+- New function `*DrillSource.GetTabularSource() *TabularSource`
+- New function `*SapOpenHubLinkedService.GetLinkedService() *LinkedService`
+- New function `DataFlowDebugSessionClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (DataFlowDebugSessionClientCreateResponse, error)`
+- New function `*RestSource.GetCopySource() *CopySource`
+- New function `*MySQLSource.GetCopySource() *CopySource`
+- New function `*SftpReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*AvroFormat.UnmarshalJSON([]byte) error`
+- New function `*AzureBatchLinkedService.GetLinkedService() *LinkedService`
+- New function `*SparkObjectDataset.GetDataset() *Dataset`
+- New function `*IntegrationRuntimesClientStartPoller.FinalResponse(context.Context) (IntegrationRuntimesClientStartResponse, error)`
+- New function `*IntegrationRuntimesClientStartPollerResponse.Resume(context.Context, *IntegrationRuntimesClient, string) error`
+- New function `*PrestoSource.GetTabularSource() *TabularSource`
+- New function `*MagentoSource.GetTabularSource() *TabularSource`
+- New function `*FactoriesClientListPager.NextPage(context.Context) bool`
+- New function `*ManagedVirtualNetworksClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*IntegrationRuntimesClientListByFactoryPager.Err() error`
+- New function `*SalesforceServiceCloudLinkedService.GetLinkedService() *LinkedService`
+- New function `*PaypalSource.GetCopySource() *CopySource`
+- New function `*AzureSQLSource.GetTabularSource() *TabularSource`
+- New function `*FailActivity.UnmarshalJSON([]byte) error`
+- New function `*AzureKeyVaultLinkedService.GetLinkedService() *LinkedService`
+- New function `*OdbcSink.GetCopySink() *CopySink`
+- New function `*CosmosDbSQLAPICollectionDataset.GetDataset() *Dataset`
+- New function `*AzureSQLDatabaseLinkedService.GetLinkedService() *LinkedService`
+- New function `*SalesforceObjectDataset.GetDataset() *Dataset`
+- New function `*ControlActivity.UnmarshalJSON([]byte) error`
+- New function `*DeleteActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*IntegrationRuntimesClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SquareSource.GetTabularSource() *TabularSource`
+- New function `*ImpalaSource.GetTabularSource() *TabularSource`
+- New function `*MongoDbV2CollectionDataset.GetDataset() *Dataset`
+- New function `*ControlActivity.GetActivity() *Activity`
+- New function `*Db2TableDataset.GetDataset() *Dataset`
+- New function `*XeroObjectDataset.GetDataset() *Dataset`
+- New function `*AmazonRdsForSQLServerSource.GetCopySource() *CopySource`
+- New function `*SapEccSource.GetCopySource() *CopySource`
+- New function `*CommonDataServiceForAppsLinkedService.GetLinkedService() *LinkedService`
+- New function `*AmazonRdsForSQLServerTableDataset.GetDataset() *Dataset`
+- New function `*DynamicsCrmEntityDataset.GetDataset() *Dataset`
+- New function `*SQLServerTableDataset.GetDataset() *Dataset`
+- New function `*LookupActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*GoogleBigQueryObjectDataset.GetDataset() *Dataset`
+- New function `*AmazonMWSSource.GetCopySource() *CopySource`
+- New function `*MySQLTableDataset.GetDataset() *Dataset`
+- New function `*SnowflakeSource.GetCopySource() *CopySource`
+- New function `*ShopifyObjectDataset.GetDataset() *Dataset`
+- New function `*SnowflakeExportCopyCommand.GetExportSettings() *ExportSettings`
+- New function `*AmazonS3ReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*InformixSource.GetCopySource() *CopySource`
+- New function `*MongoDbAtlasCollectionDataset.GetDataset() *Dataset`
+- New function `*FtpServerLinkedService.GetLinkedService() *LinkedService`
+- New function `*SalesforceServiceCloudSource.GetCopySource() *CopySource`
+- New function `*RelationalSource.GetCopySource() *CopySource`
+- New function `*EnvironmentVariableSetup.GetCustomSetupBase() *CustomSetupBase`
+- New function `*WebClientCertificateAuthentication.GetWebLinkedServiceTypeProperties() *WebLinkedServiceTypeProperties`
+- New function `*ManagedVirtualNetworksClientListByFactoryPager.Err() error`
+- New function `*ServiceNowObjectDataset.GetDataset() *Dataset`
+- New function `*TriggersClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*AzureDataLakeStoreReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*ZohoSource.GetTabularSource() *TabularSource`
+- New function `*AzureKeyVaultSecretReference.GetSecretBase() *SecretBase`
+- New function `*AzureSQLMITableDataset.GetDataset() *Dataset`
+- New function `*DynamicsAXLinkedService.GetLinkedService() *LinkedService`
+- New function `*MongoDbAtlasSink.GetCopySink() *CopySink`
+- New function `*SalesforceMarketingCloudObjectDataset.GetDataset() *Dataset`
+- New function `*AzureDatabricksDeltaLakeSink.GetCopySink() *CopySink`
+- New function `*TriggersClientStopPoller.Done() bool`
+- New function `*FactoriesClientListByResourceGroupPager.PageResponse() FactoriesClientListByResourceGroupResponse`
+- New function `*MongoDbV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*FtpServerLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*RestSink.GetCopySink() *CopySink`
+- New function `*EloquaLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureBlobFSWriteSettings.GetStoreWriteSettings() *StoreWriteSettings`
+- New function `*FailActivity.GetControlActivity() *ControlActivity`
+- New function `*TriggersClientStartPoller.Done() bool`
+- New function `*SapBwSource.GetTabularSource() *TabularSource`
+- New function `*SapCloudForCustomerSink.GetCopySink() *CopySink`
+- New function `DatasetLocation.MarshalJSON() ([]byte, error)`
+- New function `*TriggersClientSubscribeToEventsPoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*AzureSQLTableDataset.GetDataset() *Dataset`
+- New function `*LinkedServicesClientListByFactoryPager.Err() error`
+- New function `*DelimitedTextDataset.GetDataset() *Dataset`
+- New function `*ServicePrincipalCredential.GetCredential() *Credential`
+- New function `*IntegrationRuntimesClientStopPollerResponse.Resume(context.Context, *IntegrationRuntimesClient, string) error`
+- New function `*ExecutionActivity.GetActivity() *Activity`
+- New function `*PhoenixSource.GetCopySource() *CopySource`
+- New function `*ZohoObjectDataset.GetDataset() *Dataset`
+- New function `*SapBwCubeDataset.GetDataset() *Dataset`
+- New function `*SftpWriteSettings.GetStoreWriteSettings() *StoreWriteSettings`
+- New function `*TriggersClientUnsubscribeFromEventsPoller.ResumeToken() (string, error)`
+- New function `*SapCloudForCustomerSource.GetCopySource() *CopySource`
+- New function `*AzureSearchLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureDatabricksDeltaLakeDataset.GetDataset() *Dataset`
+- New function `*DatabricksSparkPythonActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*SalesforceSource.GetTabularSource() *TabularSource`
+- New function `*OrcFormat.UnmarshalJSON([]byte) error`
+- New function `*WranglingDataFlow.GetDataFlow() *DataFlow`
+- New function `*CouchbaseSource.GetCopySource() *CopySource`
+- New function `*WebTableDataset.GetDataset() *Dataset`
+- New function `*ForEachActivity.GetControlActivity() *ControlActivity`
+- New function `*SQLDWSource.GetTabularSource() *TabularSource`
+- New function `*SQLSink.GetCopySink() *CopySink`
+- New function `*SybaseLinkedService.GetLinkedService() *LinkedService`
+- New function `*ValidationActivity.GetControlActivity() *ControlActivity`
+- New function `*HTTPDataset.GetDataset() *Dataset`
+- New function `FailActivity.MarshalJSON() ([]byte, error)`
+- New function `*AzurePostgreSQLSink.GetCopySink() *CopySink`
+- New function `*WebActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*AzureDataExplorerCommandActivity.GetActivity() *Activity`
+- New function `IntegrationRuntimeStatus.MarshalJSON() ([]byte, error)`
+- New function `*MongoDbCollectionDataset.GetDataset() *Dataset`
+- New function `*SnowflakeDataset.GetDataset() *Dataset`
+- New function `*SelfHostedIntegrationRuntime.GetIntegrationRuntime() *IntegrationRuntime`
+- New function `*DrillSource.GetCopySource() *CopySource`
+- New function `*HiveLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureMLBatchExecutionActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*QuickBooksSource.GetCopySource() *CopySource`
+- New function `*IntegrationRuntimesClientStopPoller.FinalResponse(context.Context) (IntegrationRuntimesClientStopResponse, error)`
+- New function `*OracleCloudStorageLinkedService.GetLinkedService() *LinkedService`
+- New function `*PaypalLinkedService.GetLinkedService() *LinkedService`
+- New function `*BlobSink.GetCopySink() *CopySink`
+- New function `*IntegrationRuntimesClientStopPoller.Done() bool`
+- New function `*HDInsightHiveActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*SybaseSource.GetTabularSource() *TabularSource`
+- New function `*VerticaSource.GetTabularSource() *TabularSource`
+- New function `*DataFlowDebugSessionClientCreatePoller.ResumeToken() (string, error)`
+- New function `*SQLSource.GetCopySource() *CopySource`
+- New function `*HDInsightLinkedService.GetLinkedService() *LinkedService`
+- New function `*JiraLinkedService.GetLinkedService() *LinkedService`
+- New function `*SapEccLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureBlobFSLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*OrcDataset.GetDataset() *Dataset`
+- New function `*SparkSource.GetTabularSource() *TabularSource`
+- New function `*TriggersClientStopPollerResponse.Resume(context.Context, *TriggersClient, string) error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*SQLDWSink.GetCopySink() *CopySink`
+- New function `*SQLMISource.GetTabularSource() *TabularSource`
+- New function `*AzureMLBatchExecutionActivity.GetActivity() *Activity`
+- New function `*CosmosDbMongoDbAPISink.GetCopySink() *CopySink`
+- New function `*SftpLocation.UnmarshalJSON([]byte) error`
+- New function `*MariaDBTableDataset.GetDataset() *Dataset`
+- New function `*ExcelDataset.GetDataset() *Dataset`
+- New function `*DrillTableDataset.GetDataset() *Dataset`
+- New function `*HDInsightMapReduceActivity.GetActivity() *Activity`
+- New function `*FactoryGitHubConfiguration.GetFactoryRepoConfiguration() *FactoryRepoConfiguration`
+- New function `*CouchbaseLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureSearchIndexDataset.GetDataset() *Dataset`
+- New function `*TriggersClientUnsubscribeFromEventsPoller.Done() bool`
+- New function `*TriggersClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AzureDataExplorerLinkedService.GetLinkedService() *LinkedService`
+- New function `*GetMetadataActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*Office365LinkedService.GetLinkedService() *LinkedService`
+- New function `*JiraSource.GetTabularSource() *TabularSource`
+- New function `*FileServerWriteSettings.GetStoreWriteSettings() *StoreWriteSettings`
+- New function `*MarketoObjectDataset.GetDataset() *Dataset`
+- New function `*SparkLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureQueueSink.UnmarshalJSON([]byte) error`
+- New function `*SapHanaSource.GetTabularSource() *TabularSource`
+- New function `*ManagedVirtualNetworksClientListByFactoryPager.PageResponse() ManagedVirtualNetworksClientListByFactoryResponse`
+- New function `*PrivateEndPointConnectionsClientListByFactoryPager.PageResponse() PrivateEndPointConnectionsClientListByFactoryResponse`
+- New function `*SalesforceServiceCloudSink.GetCopySink() *CopySink`
+- New function `*MongoDbAtlasLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureFileStorageLinkedService.GetLinkedService() *LinkedService`
+- New function `*SybaseSource.GetCopySource() *CopySource`
+- New function `*SwitchActivity.GetActivity() *Activity`
+- New function `*AzureBlobStorageLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*LinkedIntegrationRuntimeRbacAuthorization.GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType`
+- New function `*MongoDbAtlasSource.GetCopySource() *CopySource`
+- New function `*AzureMariaDBSource.GetTabularSource() *TabularSource`
+- New function `*SQLMISource.GetCopySource() *CopySource`
+- New function `*InformixTableDataset.GetDataset() *Dataset`
+- New function `*ExcelSource.GetCopySource() *CopySource`
+- New function `*ShopifyLinkedService.GetLinkedService() *LinkedService`
+- New function `*TriggerDependencyReference.GetDependencyReference() *DependencyReference`
+- New function `*AzureTableSource.GetTabularSource() *TabularSource`
+- New function `*AzureDataLakeStoreLocation.UnmarshalJSON([]byte) error`
+- New function `*AzureDataLakeAnalyticsLinkedService.GetLinkedService() *LinkedService`
+- New function `*Office365Dataset.GetDataset() *Dataset`
+- New function `*SalesforceSink.GetCopySink() *CopySink`
+- New function `*AzureMLUpdateResourceActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*SharePointOnlineListLinkedService.GetLinkedService() *LinkedService`
+- New function `*ComponentSetup.GetCustomSetupBase() *CustomSetupBase`
+- New function `*AzureDataLakeStoreWriteSettings.GetStoreWriteSettings() *StoreWriteSettings`
+- New function `*AzureFileStorageLocation.UnmarshalJSON([]byte) error`
+- New function `CompressionReadSettings.MarshalJSON() ([]byte, error)`
+- New function `*HubspotLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureFunctionActivity.GetActivity() *Activity`
+- New function `*AzureTableSource.GetCopySource() *CopySource`
+- New function `*ParquetDataset.GetDataset() *Dataset`
+- New function `*HubspotSource.GetTabularSource() *TabularSource`
+- New function `*GetMetadataActivity.GetActivity() *Activity`
+- New function `*TeradataTableDataset.GetDataset() *Dataset`
+- New function `LinkedService.MarshalJSON() ([]byte, error)`
+- New function `*ManagedIntegrationRuntime.GetIntegrationRuntime() *IntegrationRuntime`
+- New function `*ShopifySource.GetTabularSource() *TabularSource`
+- New function `*FilterActivity.GetActivity() *Activity`
+- New function `*AzurePostgreSQLLinkedService.GetLinkedService() *LinkedService`
+- New function `*SQLServerSource.GetCopySource() *CopySource`
+- New function `*SapTableLinkedService.GetLinkedService() *LinkedService`
+- New function `*DatasetsClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*DocumentDbCollectionSink.GetCopySink() *CopySink`
+- New function `*OrcSource.GetCopySource() *CopySource`
+- New function `*SapEccSource.GetTabularSource() *TabularSource`
+- New function `*WebAnonymousAuthentication.UnmarshalJSON([]byte) error`
+- New function `*AmazonS3LinkedService.GetLinkedService() *LinkedService`
+- New function `*DataLakeAnalyticsUSQLActivity.GetActivity() *Activity`
+- New function `*CopyActivity.GetActivity() *Activity`
+- New function `*DataFlowDebugSessionClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AzureMLExecutePipelineActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*PrivateEndPointConnectionsClientListByFactoryPager.Err() error`
+- New function `*XeroSource.GetTabularSource() *TabularSource`
+- New function `CopySink.MarshalJSON() ([]byte, error)`
+- New function `*SharePointOnlineListResourceDataset.GetDataset() *Dataset`
+- New function `*TriggersClientUnsubscribeFromEventsPollerResponse.Resume(context.Context, *TriggersClient, string) error`
+- New function `*HTTPReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*GoogleCloudStorageLinkedService.GetLinkedService() *LinkedService`
+- New function `*WaitActivity.GetControlActivity() *ControlActivity`
+- New function `*JSONDataset.GetDataset() *Dataset`
+- New function `*DynamicsSink.GetCopySink() *CopySink`
+- New function `*LinkedServicesClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*BlobTrigger.GetTrigger() *Trigger`
+- New function `*AzureSearchIndexSink.GetCopySink() *CopySink`
+- New function `*DataFlowDebugSessionClientExecuteCommandPoller.Done() bool`
+- New function `*GreenplumLinkedService.GetLinkedService() *LinkedService`
+- New function `*DynamicsEntityDataset.GetDataset() *Dataset`
+- New function `*PostgreSQLLinkedService.GetLinkedService() *LinkedService`
+- New function `*ManagedPrivateEndpointsClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*MongoDbV2Source.GetCopySource() *CopySource`
+- New function `*SftpLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*AzureMLExecutePipelineActivity.GetActivity() *Activity`
+- New function `*ChainingTrigger.GetTrigger() *Trigger`
+- New function `FormatReadSettings.MarshalJSON() ([]byte, error)`
+- New function `*AmazonRdsForOracleTableDataset.GetDataset() *Dataset`
+- New function `*AzureDataExplorerTableDataset.GetDataset() *Dataset`
+- New function `*SsisProject.GetSsisObjectMetadata() *SsisObjectMetadata`
+- New function `*DataLakeAnalyticsUSQLActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*DatabricksNotebookActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*VerticaLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureFileStorageWriteSettings.GetStoreWriteSettings() *StoreWriteSettings`
+- New function `ImportSettings.MarshalJSON() ([]byte, error)`
+- New function `*SecureString.GetSecretBase() *SecretBase`
+- New function `*EloquaSource.GetTabularSource() *TabularSource`
+- New function `*AzurePostgreSQLTableDataset.GetDataset() *Dataset`
+- New function `TriggersClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (TriggersClientStartResponse, error)`
+- New function `*DrillLinkedService.GetLinkedService() *LinkedService`
+- New function `*OdbcTableDataset.GetDataset() *Dataset`
+- New function `*SsisFolder.GetSsisObjectMetadata() *SsisObjectMetadata`
+- New function `*SftpServerLinkedService.GetLinkedService() *LinkedService`
+- New function `*TriggersClientUnsubscribeFromEventsPoller.FinalResponse(context.Context) (TriggersClientUnsubscribeFromEventsResponse, error)`
+- New function `*SapCloudForCustomerResourceDataset.GetDataset() *Dataset`
+- New function `*AzureFunctionLinkedService.GetLinkedService() *LinkedService`
+- New function `*HTTPServerLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SquareSource.GetCopySource() *CopySource`
+- New function `StoreReadSettings.MarshalJSON() ([]byte, error)`
+- New function `*DataFlowDebugSessionClientQueryByFactoryPager.Err() error`
+- New function `*SapBwCubeDataset.UnmarshalJSON([]byte) error`
+- New function `*CouchbaseTableDataset.GetDataset() *Dataset`
+- New function `*SalesforceMarketingCloudSource.GetTabularSource() *TabularSource`
+- New function `IntegrationRuntimeObjectMetadataClientRefreshPollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimeObjectMetadataClientRefreshResponse, error)`
+- New function `*FailActivity.GetActivity() *Activity`
+- New function `*AzureDataLakeStoreLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*MappingDataFlow.GetDataFlow() *DataFlow`
+- New function `*HdfsReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*OdbcSource.GetCopySource() *CopySource`
+- New function `*ResponsysLinkedService.GetLinkedService() *LinkedService`
+- New function `*PostgreSQLTableDataset.GetDataset() *Dataset`
+- New function `*AzureMySQLSource.GetCopySource() *CopySource`
+- New function `*HDInsightSparkActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*ExecutePipelineActivity.GetControlActivity() *ControlActivity`
+- New function `*BlobEventsTrigger.GetTrigger() *Trigger`
+- New function `*AmazonS3CompatibleReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*AmazonRedshiftSource.GetTabularSource() *TabularSource`
+- New function `*SQLDWSource.GetCopySource() *CopySource`
+- New function `*HdfsLinkedService.GetLinkedService() *LinkedService`
+- New function `*Db2LinkedService.GetLinkedService() *LinkedService`
+- New function `*GoogleBigQueryLinkedService.GetLinkedService() *LinkedService`
+- New function `IntegrationRuntimesClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimesClientStopResponse, error)`
+- New function `*ManagedIdentityCredential.UnmarshalJSON([]byte) error`
+- New function `IntegrationRuntimesClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimesClientStartResponse, error)`
+- New function `*ExecuteSSISPackageActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*CosmosDbSQLAPISink.GetCopySink() *CopySink`
+- New function `*DynamicsAXSource.GetTabularSource() *TabularSource`
+- New function `TriggersClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (TriggersClientStopResponse, error)`
+- New function `*HBaseLinkedService.GetLinkedService() *LinkedService`
+- New function `*WebHookActivity.GetActivity() *Activity`
+- New function `*JiraObjectDataset.GetDataset() *Dataset`
+- New function `*CouchbaseSource.GetTabularSource() *TabularSource`
+- New function `*OrcFormat.GetDatasetStorageFormat() *DatasetStorageFormat`
+- New function `*TeradataSource.GetCopySource() *CopySource`
+- New function `*OracleServiceCloudLinkedService.GetLinkedService() *LinkedService`
+- New function `*PostgreSQLSource.GetTabularSource() *TabularSource`
+- New function `*DataFlowsClientListByFactoryPager.PageResponse() DataFlowsClientListByFactoryResponse`
+- New function `CopySource.MarshalJSON() ([]byte, error)`
+- New function `*OdbcLinkedService.GetLinkedService() *LinkedService`
+- New function `*FtpServerLocation.UnmarshalJSON([]byte) error`
+- New function `*UntilActivity.GetActivity() *Activity`
+- New function `*PhoenixSource.GetTabularSource() *TabularSource`
+- New function `*DataFlowDebugSessionClientCreatePollerResponse.Resume(context.Context, *DataFlowDebugSessionClient, string) error`
+- New function `*DataFlowsClientListByFactoryPager.Err() error`
+- New function `*SelfHostedIntegrationRuntimeStatus.GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus`
+- New function `*ImpalaObjectDataset.GetDataset() *Dataset`
+- New function `*AvroSource.GetCopySource() *CopySource`
+- New function `*AzureDataExplorerCommandActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*AzureMySQLSource.GetTabularSource() *TabularSource`
+- New function `*AzureMariaDBLinkedService.GetLinkedService() *LinkedService`
+- New function `*OracleLinkedService.GetLinkedService() *LinkedService`
+- New function `*TriggersClientListByFactoryPager.Err() error`
+- New function `*DataFlowDebugSessionClientExecuteCommandPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TumblingWindowTrigger.GetTrigger() *Trigger`
+- New function `*ParquetFormat.GetDatasetStorageFormat() *DatasetStorageFormat`
+- New function `*TriggersClientSubscribeToEventsPoller.FinalResponse(context.Context) (TriggersClientSubscribeToEventsResponse, error)`
+- New function `*TriggersClientStopPoller.ResumeToken() (string, error)`
+- New function `*AzureDatabricksDeltaLakeSource.GetCopySource() *CopySource`
+- New function `*AzureMLLinkedService.GetLinkedService() *LinkedService`
+- New function `*GreenplumSource.GetTabularSource() *TabularSource`
+- New function `*TeradataSource.GetTabularSource() *TabularSource`
+- New function `*ConcurSource.GetTabularSource() *TabularSource`
+- New function `*DynamicsCrmSink.GetCopySink() *CopySink`
+- New function `*EloquaSource.GetCopySource() *CopySource`
+- New function `*RestServiceLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureDatabricksLinkedService.GetLinkedService() *LinkedService`
+- New function `*TumblingWindowTriggerDependencyReference.GetDependencyReference() *DependencyReference`
+- New function `*AmazonRdsForOracleLinkedService.GetLinkedService() *LinkedService`
+- New function `*JiraSource.GetCopySource() *CopySource`
+- New function `*ParquetFormat.UnmarshalJSON([]byte) error`
+- New function `*TriggersClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BinaryDataset.GetDataset() *Dataset`
+- New function `*AzPowerShellSetup.GetCustomSetupBase() *CustomSetupBase`
+- New function `*TriggersClientSubscribeToEventsPollerResponse.Resume(context.Context, *TriggersClient, string) error`
+- New function `*AmazonRedshiftLinkedService.GetLinkedService() *LinkedService`
+- New function `*MultiplePipelineTrigger.GetTrigger() *Trigger`
+- New function `*ImpalaSource.GetCopySource() *CopySource`
+- New function `*LinkedServicesClientListByFactoryPager.PageResponse() LinkedServicesClientListByFactoryResponse`
+- New function `*HiveSource.GetTabularSource() *TabularSource`
+- New function `*PrestoLinkedService.GetLinkedService() *LinkedService`
+- New function `*AmazonS3Dataset.GetDataset() *Dataset`
+- New function `*SapEccResourceDataset.GetDataset() *Dataset`
+- New function `*FileSystemSource.GetCopySource() *CopySource`
+- New function `*CassandraSource.GetCopySource() *CopySource`
+- New function `*PhoenixObjectDataset.GetDataset() *Dataset`
+- New function `*DocumentDbCollectionDataset.GetDataset() *Dataset`
+- New function `*NetezzaLinkedService.GetLinkedService() *LinkedService`
+- New function `*IfConditionActivity.GetControlActivity() *ControlActivity`
+- New function `*SalesforceMarketingCloudLinkedService.GetLinkedService() *LinkedService`
+- New function `*OracleSource.GetCopySource() *CopySource`
+- New function `*CustomEventsTrigger.GetMultiplePipelineTrigger() *MultiplePipelineTrigger`
+- New function `*DataFlowDebugSessionClientCreatePoller.Done() bool`
+- New function `DataFlow.MarshalJSON() ([]byte, error)`
+- New function `*QuickBooksLinkedService.GetLinkedService() *LinkedService`
+- New function `*JSONFormat.GetDatasetStorageFormat() *DatasetStorageFormat`
+- New function `*SapHanaLinkedService.GetLinkedService() *LinkedService`
+- New function `*DataFlowDebugSessionClientExecuteCommandPollerResponse.Resume(context.Context, *DataFlowDebugSessionClient, string) error`
+- New function `*DataFlowDebugSessionClientQueryByFactoryPager.PageResponse() DataFlowDebugSessionClientQueryByFactoryResponse`
+- New function `*JSONSink.GetCopySink() *CopySink`
+- New function `*PipelinesClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*AzureBlobFSLinkedService.GetLinkedService() *LinkedService`
+- New function `*SetVariableActivity.GetActivity() *Activity`
+- New function `*PrivateEndPointConnectionsClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*AmazonRdsForSQLServerSource.GetTabularSource() *TabularSource`
+- New function `*HDInsightStreamingActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*MicrosoftAccessLinkedService.GetLinkedService() *LinkedService`
+- New function `*OracleCloudStorageReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*SelfDependencyTumblingWindowTriggerReference.GetDependencyReference() *DependencyReference`
+- New function `*HubspotObjectDataset.GetDataset() *Dataset`
+- New function `*SsisFolder.UnmarshalJSON([]byte) error`
+- New function `*ImpalaLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureSQLMILinkedService.GetLinkedService() *LinkedService`
+- New function `*FilterActivity.GetControlActivity() *ControlActivity`
+- New function `*NetezzaSource.GetCopySource() *CopySource`
+- New function `*TriggersClientUnsubscribeFromEventsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*InformixSource.GetTabularSource() *TabularSource`
+- New function `*AzureStorageLinkedService.GetLinkedService() *LinkedService`
+- New function `*GoogleBigQuerySource.GetTabularSource() *TabularSource`
+- New function `*AzureDataLakeStoreSource.GetCopySource() *CopySource`
+- New function `*IntegrationRuntimesClientStartPoller.ResumeToken() (string, error)`
+- New function `TriggersClientSubscribeToEventsPollerResponse.PollUntilDone(context.Context, time.Duration) (TriggersClientSubscribeToEventsResponse, error)`
+- New function `*GoogleAdWordsSource.GetTabularSource() *TabularSource`
+- New function `*DocumentDbCollectionSource.GetCopySource() *CopySource`
+- New function `*CassandraSource.GetTabularSource() *TabularSource`
+- New function `*CommonDataServiceForAppsSink.GetCopySink() *CopySink`
+- New function `*SQLSource.GetTabularSource() *TabularSource`
+- New function `*CassandraTableDataset.GetDataset() *Dataset`
+- New function `*SapOpenHubSource.GetTabularSource() *TabularSource`
+- New function `*AmazonRedshiftTableDataset.GetDataset() *Dataset`
+- New function `*AzureTableStorageLinkedService.GetLinkedService() *LinkedService`
+- New function `*SapHanaSource.GetCopySource() *CopySource`
+- New function `*IntegrationRuntimesClientStartPoller.Done() bool`
+- New function `*SapTableSource.GetTabularSource() *TabularSource`
+- New function `*DynamicsLinkedService.GetLinkedService() *LinkedService`
+- New function `*CosmosDbSQLAPISource.GetCopySource() *CopySource`
+- New function `*ServiceNowSource.GetTabularSource() *TabularSource`
+- New function `*DataFlowsClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*AvroWriteSettings.GetFormatWriteSettings() *FormatWriteSettings`
+- New function `*IfConditionActivity.GetActivity() *Activity`
+- New function `*ServiceNowLinkedService.GetLinkedService() *LinkedService`
+- New function `*HDInsightOnDemandLinkedService.GetLinkedService() *LinkedService`
+- New function `*SapCloudForCustomerSource.GetTabularSource() *TabularSource`
+- New function `*ParquetSink.GetCopySink() *CopySink`
+- New function `*IntegrationRuntimesClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnowflakeImportCopyCommand.GetImportSettings() *ImportSettings`
+- New function `*CmdkeySetup.GetCustomSetupBase() *CustomSetupBase`
+- New function `*SapOpenHubTableDataset.GetDataset() *Dataset`
+- New function `*AzureTableSink.GetCopySink() *CopySink`
+- New function `*TriggersClientListByFactoryPager.PageResponse() TriggersClientListByFactoryResponse`
+- New function `*SQLServerLinkedService.GetLinkedService() *LinkedService`
+- New function `*GoogleAdWordsObjectDataset.GetDataset() *Dataset`
+- New function `*GreenplumTableDataset.GetDataset() *Dataset`
+- New function `*MarketoLinkedService.GetLinkedService() *LinkedService`
+- New function `*HDInsightSparkActivity.GetActivity() *Activity`
+- New function `*HdfsLocation.UnmarshalJSON([]byte) error`
+- New function `*MicrosoftAccessSink.GetCopySink() *CopySink`
+- New function `*FileSystemSink.GetCopySink() *CopySink`
+- New function `*DatabricksSparkPythonActivity.GetActivity() *Activity`
+- New function `*DatabricksSparkJarActivity.GetActivity() *Activity`
+- New function `*RestResourceDataset.GetDataset() *Dataset`
+- New function `*MongoDbLinkedService.GetLinkedService() *LinkedService`
+- New function `*XMLSource.GetCopySource() *CopySource`
+- New function `*CosmosDbLinkedService.GetLinkedService() *LinkedService`
+- New function `*LookupActivity.GetActivity() *Activity`
+- New function `*MagentoObjectDataset.GetDataset() *Dataset`
+- New function `*AzureSQLSink.GetCopySink() *CopySink`
+- New function `*UntilActivity.GetControlActivity() *ControlActivity`
+- New function `Dataset.MarshalJSON() ([]byte, error)`
+- New function `*TriggersClientSubscribeToEventsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SapBwSource.GetCopySource() *CopySource`
+- New function `*SQLServerSink.GetCopySink() *CopySink`
+- New function `*GoogleCloudStorageReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*MongoDbSource.GetCopySource() *CopySource`
+- New function `*SquareLinkedService.GetLinkedService() *LinkedService`
+- New function `*DatasetsClientListByFactoryPager.Err() error`
+- New function `*WebBasicAuthentication.GetWebLinkedServiceTypeProperties() *WebLinkedServiceTypeProperties`
+- New function `*HTTPLinkedService.GetLinkedService() *LinkedService`
+- New function `*IntegrationRuntimesClientListByFactoryPager.NextPage(context.Context) bool`
+- New function `*HDInsightHiveActivity.GetActivity() *Activity`
+- New function `*MySQLLinkedService.GetLinkedService() *LinkedService`
+- New function `*GreenplumSource.GetCopySource() *CopySource`
+- New function `*AzureBlobStorageWriteSettings.GetStoreWriteSettings() *StoreWriteSettings`
+- New function `*SnowflakeSink.GetCopySink() *CopySink`
+- New function `*ODataLinkedService.GetLinkedService() *LinkedService`
+- New function `*GoogleAdWordsSource.GetCopySource() *CopySource`
+- New function `*AvroDataset.GetDataset() *Dataset`
+- New function `*DynamicsCrmSource.GetCopySource() *CopySource`
+- New function `*BlobEventsTrigger.GetMultiplePipelineTrigger() *MultiplePipelineTrigger`
+- New function `*AmazonRdsForOracleSource.GetCopySource() *CopySource`
+- New function `*HBaseSource.GetTabularSource() *TabularSource`
+- New function `*BinaryReadSettings.GetFormatReadSettings() *FormatReadSettings`
+- New function `*TarReadSettings.GetCompressionReadSettings() *CompressionReadSettings`
+- New function `*AzureMariaDBTableDataset.GetDataset() *Dataset`
+- New function `*LinkedIntegrationRuntimeKeyAuthorization.GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType`
+- New function `*AzureMariaDBSource.GetCopySource() *CopySource`
+- New function `*AppendVariableActivity.GetControlActivity() *ControlActivity`
+- New function `*DelimitedTextWriteSettings.GetFormatWriteSettings() *FormatWriteSettings`
+- New function `*PipelinesClientListByFactoryPager.PageResponse() PipelinesClientListByFactoryResponse`
+- New function `*AzureFileStorageLocation.GetDatasetLocation() *DatasetLocation`
+- New function `DataFlowDebugSessionClientExecuteCommandPollerResponse.PollUntilDone(context.Context, time.Duration) (DataFlowDebugSessionClientExecuteCommandResponse, error)`
+- New function `*ParquetSource.GetCopySource() *CopySource`
+- New function `*PhoenixLinkedService.GetLinkedService() *LinkedService`
+- New function `*BinarySource.GetCopySource() *CopySource`
+- New function `*AmazonRdsForSQLServerLinkedService.GetLinkedService() *LinkedService`
+- New function `*DataFlowDebugSessionClientQueryByFactoryPager.NextPage(context.Context) bool`
+- New function `*SalesforceMarketingCloudSource.GetCopySource() *CopySource`
+- New function `*RerunTumblingWindowTrigger.GetTrigger() *Trigger`
+- New function `*WaitActivity.GetActivity() *Activity`
+- New function `*AmazonS3CompatibleLinkedService.GetLinkedService() *LinkedService`
+- New function `*AmazonMWSObjectDataset.GetDataset() *Dataset`
+- New function `*PrestoSource.GetCopySource() *CopySource`
+- New function `*JSONWriteSettings.GetFormatWriteSettings() *FormatWriteSettings`
+- New function `*AzurePostgreSQLSource.GetCopySource() *CopySource`
+- New function `*AzureFileStorageReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*HBaseSource.GetCopySource() *CopySource`
+- New function `*SQLServerSource.GetTabularSource() *TabularSource`
+- New function `*SapCloudForCustomerLinkedService.GetLinkedService() *LinkedService`
+- New function `*ManagedPrivateEndpointsClientListByFactoryPager.PageResponse() ManagedPrivateEndpointsClientListByFactoryResponse`
+- New function `*HdfsSource.GetCopySource() *CopySource`
+- New function `*EloquaObjectDataset.GetDataset() *Dataset`
+- New function `*DeleteActivity.GetActivity() *Activity`
+- New function `*FactoriesClientListByResourceGroupPager.Err() error`
+- New function `*TriggersClientSubscribeToEventsPoller.Done() bool`
+- New function `*AzureBlobFSDataset.GetDataset() *Dataset`
+- New function `*SalesforceSource.GetCopySource() *CopySource`
+- New function `*WebHookActivity.GetControlActivity() *ControlActivity`
+- New function `*SapTableSource.GetCopySource() *CopySource`
+- New function `*QuickBooksObjectDataset.GetDataset() *Dataset`
+- New function `*IntegrationRuntimesClientListByFactoryPager.PageResponse() IntegrationRuntimesClientListByFactoryResponse`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*MagentoLinkedService.GetLinkedService() *LinkedService`
+- New function `*SharePointOnlineListSource.GetCopySource() *CopySource`
+- New function `*TextFormat.GetDatasetStorageFormat() *DatasetStorageFormat`
+- New function `*ManagedIdentityCredential.GetCredential() *Credential`
+- New function `*DynamicsCrmLinkedService.GetLinkedService() *LinkedService`
+- New function `*DynamicsSource.GetCopySource() *CopySource`
+- New function `*DelimitedTextReadSettings.GetFormatReadSettings() *FormatReadSettings`
+- New function `*ZohoLinkedService.GetLinkedService() *LinkedService`
+- New function `*SetVariableActivity.GetControlActivity() *ControlActivity`
+- New function `*AmazonRedshiftSource.GetCopySource() *CopySource`
+- New function `*AzureDataLakeStoreSink.GetCopySink() *CopySink`
+- New function `*GoogleCloudStorageLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*DataFlowDebugSessionClientExecuteCommandPoller.ResumeToken() (string, error)`
+- New function `*DynamicsAXSource.GetCopySource() *CopySource`
+- New function `*XMLDataset.GetDataset() *Dataset`
+- New function `*AmazonMWSSource.GetTabularSource() *TabularSource`
+- New function `*WebLinkedService.GetLinkedService() *LinkedService`
+- New function `*ManagedIntegrationRuntimeStatus.GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus`
+- New function `*AzureDataExplorerSource.GetCopySource() *CopySource`
+- New function `*AzureMLUpdateResourceActivity.GetActivity() *Activity`
+- New function `*ODataResourceDataset.GetDataset() *Dataset`
+- New function `*ExecuteWranglingDataflowActivity.GetActivity() *Activity`
+- New function `*MagentoSource.GetCopySource() *CopySource`
+- New function `*OrcWriteSettings.GetFormatWriteSettings() *FormatWriteSettings`
+- New function `*MicrosoftAccessTableDataset.GetDataset() *Dataset`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.ResumeToken() (string, error)`
+- New function `*CommonDataServiceForAppsSource.GetCopySource() *CopySource`
+- New function `*OrcSink.GetCopySink() *CopySink`
+- New function `ExportSettings.MarshalJSON() ([]byte, error)`
+- New function `*Db2Source.GetCopySource() *CopySource`
+- New function `TriggersClientUnsubscribeFromEventsPollerResponse.PollUntilDone(context.Context, time.Duration) (TriggersClientUnsubscribeFromEventsResponse, error)`
+- New function `*HBaseObjectDataset.GetDataset() *Dataset`
+- New function `*AzureFunctionActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*AzureDataExplorerSink.GetCopySink() *CopySink`
+- New function `*XMLReadSettings.GetFormatReadSettings() *FormatReadSettings`
+- New function `*SsisPackage.GetSsisObjectMetadata() *SsisObjectMetadata`
+- New function `*ConcurLinkedService.GetLinkedService() *LinkedService`
+- New function `Credential.MarshalJSON() ([]byte, error)`
+- New function `*PostgreSQLSource.GetCopySource() *CopySource`
+- New function `*WebSource.GetCopySource() *CopySource`
+- New function `*MariaDBSource.GetCopySource() *CopySource`
+- New function `*BlobSource.GetCopySource() *CopySource`
+- New function `*HDInsightPigActivity.GetActivity() *Activity`
+- New function `*FileServerLocation.UnmarshalJSON([]byte) error`
+- New function `*MongoDbV2Sink.GetCopySink() *CopySink`
+- New function `*AzureBlobFSSink.GetCopySink() *CopySink`
+- New function `*ScheduleTrigger.GetMultiplePipelineTrigger() *MultiplePipelineTrigger`
+- New function `*OracleSink.GetCopySink() *CopySink`
+- New function `*PaypalObjectDataset.GetDataset() *Dataset`
+- New function `*ManagedPrivateEndpointsClientListByFactoryPager.Err() error`
+- New function `*TeradataLinkedService.GetLinkedService() *LinkedService`
+- New function `*TabularTranslator.GetCopyTranslator() *CopyTranslator`
+- New function `*OdbcSource.GetTabularSource() *TabularSource`
+- New function `*VerticaSource.GetCopySource() *CopySource`
+- New function `*FileServerLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*MarketoSource.GetTabularSource() *TabularSource`
+- New function `*AmazonMWSLinkedService.GetLinkedService() *LinkedService`
+- New function `*OracleServiceCloudObjectDataset.GetDataset() *Dataset`
+- New function `*SQLServerStoredProcedureActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*BlobTrigger.GetMultiplePipelineTrigger() *MultiplePipelineTrigger`
+- New function `*SapTableResourceDataset.GetDataset() *Dataset`
+- New function `*HDInsightPigActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*SQLServerStoredProcedureActivity.GetActivity() *Activity`
+- New function `StoreWriteSettings.MarshalJSON() ([]byte, error)`
+- New function `*SapOpenHubSource.GetCopySource() *CopySource`
+- New function `*TriggersClientStartPoller.ResumeToken() (string, error)`
+- New function `*ServicePrincipalCredential.UnmarshalJSON([]byte) error`
+- New function `*AzureDataLakeStoreLinkedService.GetLinkedService() *LinkedService`
+- New function `*XeroLinkedService.GetLinkedService() *LinkedService`
+- New function `*PipelinesClientListByFactoryPager.Err() error`
+- New function `*HiveSource.GetCopySource() *CopySource`
+- New function `*SparkSource.GetCopySource() *CopySource`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.Done() bool`
+- New function `*CosmosDbMongoDbAPICollectionDataset.GetDataset() *Dataset`
+- New function `*DynamicsAXResourceDataset.GetDataset() *Dataset`
+- New function `*CopyActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*AzureBlobFSReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*ExecuteDataFlowActivity.GetActivity() *Activity`
+- New function `*SnowflakeLinkedService.GetLinkedService() *LinkedService`
+- New function `*AmazonS3CompatibleLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*FtpReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `CopyTranslator.MarshalJSON() ([]byte, error)`
+- New function `*ZohoSource.GetCopySource() *CopySource`
+- New function `*ServiceNowSource.GetCopySource() *CopySource`
+- New function `*AzureSQLDWLinkedService.GetLinkedService() *LinkedService`
+- New function `*DatabricksSparkJarActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*GoogleAdWordsLinkedService.GetLinkedService() *LinkedService`
+- New function `*OracleServiceCloudSource.GetCopySource() *CopySource`
+- New function `*AzureBlobStorageReadSettings.GetStoreReadSettings() *StoreReadSettings`
+- New function `*HiveObjectDataset.GetDataset() *Dataset`
+- New function `*MariaDBLinkedService.GetLinkedService() *LinkedService`
+- New function `*AzureMLServiceLinkedService.GetLinkedService() *LinkedService`
+- New function `*AvroFormat.GetDatasetStorageFormat() *DatasetStorageFormat`
+- New function `*ODataSource.GetCopySource() *CopySource`
+- New function `*Office365Source.GetCopySource() *CopySource`
+- New function `ServicePrincipalCredential.MarshalJSON() ([]byte, error)`
+- New function `*Flowlet.GetDataFlow() *DataFlow`
+- New function `*HubspotSource.GetCopySource() *CopySource`
+- New function `*GoogleBigQuerySource.GetCopySource() *CopySource`
+- New function `*AzureDatabricksDeltaLakeImportCommand.GetImportSettings() *ImportSettings`
+- New function `*FileShareDataset.GetDataset() *Dataset`
+- New function `*TriggersClientStartPollerResponse.Resume(context.Context, *TriggersClient, string) error`
+- New function `*JSONReadSettings.GetFormatReadSettings() *FormatReadSettings`
+- New function `*CustomActivity.GetActivity() *Activity`
+- New function `*SsisEnvironment.GetSsisObjectMetadata() *SsisObjectMetadata`
+- New function `*ExecuteDataFlowActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*ResponsysObjectDataset.GetDataset() *Dataset`
+- New function `*ConcurObjectDataset.GetDataset() *Dataset`
+- New function `*AzureSQLSource.GetCopySource() *CopySource`
+- New function `*HTTPSource.GetCopySource() *CopySource`
+- New function `*AzureBlobDataset.GetDataset() *Dataset`
+- New function `*SalesforceServiceCloudObjectDataset.GetDataset() *Dataset`
+- New function `*CustomDataset.GetDataset() *Dataset`
+- New function `*DataFlowDebugSessionClientCreatePoller.FinalResponse(context.Context) (DataFlowDebugSessionClientCreateResponse, error)`
+- New function `*CassandraLinkedService.GetLinkedService() *LinkedService`
+- New function `*JSONSource.GetCopySource() *CopySource`
+- New function `*CosmosDbMongoDbAPILinkedService.GetLinkedService() *LinkedService`
+- New function `*ExecuteSSISPackageActivity.GetActivity() *Activity`
+- New function `*FileServerLinkedService.GetLinkedService() *LinkedService`
+- New function `*ValidationActivity.GetActivity() *Activity`
+- New function `*CommonDataServiceForAppsEntityDataset.GetDataset() *Dataset`
+- New function `*DatabricksNotebookActivity.GetActivity() *Activity`
+- New function `*AmazonS3Location.GetDatasetLocation() *DatasetLocation`
+- New function `*AzureBlobStorageLinkedService.GetLinkedService() *LinkedService`
+- New function `*ZipDeflateReadSettings.GetCompressionReadSettings() *CompressionReadSettings`
+- New function `*ParquetWriteSettings.GetFormatWriteSettings() *FormatWriteSettings`
+- New function `*DelimitedTextSource.GetCopySource() *CopySource`
+- New function `*IntegrationRuntimesClientStopPoller.ResumeToken() (string, error)`
+- New function `*InformixLinkedService.GetLinkedService() *LinkedService`
+- New function `*MySQLSource.GetTabularSource() *TabularSource`
+- New function `*InformixSink.GetCopySink() *CopySink`
+- New function `ManagedIdentityCredential.MarshalJSON() ([]byte, error)`
+- New function `*TabularSource.GetCopySource() *CopySource`
+- New function `*XeroSource.GetCopySource() *CopySource`
+- New function `*SapHanaTableDataset.GetDataset() *Dataset`
+- New function `*OracleCloudStorageLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*OracleTableDataset.GetDataset() *Dataset`
+- New function `*RelationalTableDataset.GetDataset() *Dataset`
+- New function `*CosmosDbMongoDbAPISource.GetCopySource() *CopySource`
+- New function `*CustomDataSourceLinkedService.GetLinkedService() *LinkedService`
+- New function `*AvroSink.GetCopySink() *CopySink`
+- New function `*MicrosoftAccessSource.GetCopySource() *CopySource`
+- New function `*PaypalSource.GetTabularSource() *TabularSource`
+- New function `*AzureMySQLSink.GetCopySink() *CopySink`
+- New function `*Db2Source.GetTabularSource() *TabularSource`
+- New function `*DatasetsClientListByFactoryPager.PageResponse() DatasetsClientListByFactoryResponse`
+- New function `*WebAnonymousAuthentication.GetWebLinkedServiceTypeProperties() *WebLinkedServiceTypeProperties`
+- New function `*HdfsLocation.GetDatasetLocation() *DatasetLocation`
+- New function `*TumblingWindowTriggerDependencyReference.GetTriggerDependencyReference() *TriggerDependencyReference`
+- New function `*ResponsysSource.GetCopySource() *CopySource`
+- New struct `ActivityRunsClientQueryByPipelineRunOptions`
+- New struct `ActivityRunsClientQueryByPipelineRunResponse`
+- New struct `ActivityRunsClientQueryByPipelineRunResult`
+- New struct `DataFlowDebugSessionClientAddDataFlowOptions`
+- New struct `DataFlowDebugSessionClientAddDataFlowResponse`
+- New struct `DataFlowDebugSessionClientAddDataFlowResult`
+- New struct `DataFlowDebugSessionClientBeginCreateOptions`
+- New struct `DataFlowDebugSessionClientBeginExecuteCommandOptions`
+- New struct `DataFlowDebugSessionClientCreatePoller`
+- New struct `DataFlowDebugSessionClientCreatePollerResponse`
+- New struct `DataFlowDebugSessionClientCreateResponse`
+- New struct `DataFlowDebugSessionClientCreateResult`
+- New struct `DataFlowDebugSessionClientDeleteOptions`
+- New struct `DataFlowDebugSessionClientDeleteResponse`
+- New struct `DataFlowDebugSessionClientExecuteCommandPoller`
+- New struct `DataFlowDebugSessionClientExecuteCommandPollerResponse`
+- New struct `DataFlowDebugSessionClientExecuteCommandResponse`
+- New struct `DataFlowDebugSessionClientExecuteCommandResult`
+- New struct `DataFlowDebugSessionClientQueryByFactoryOptions`
+- New struct `DataFlowDebugSessionClientQueryByFactoryPager`
+- New struct `DataFlowDebugSessionClientQueryByFactoryResponse`
+- New struct `DataFlowDebugSessionClientQueryByFactoryResult`
+- New struct `DataFlowsClientCreateOrUpdateOptions`
+- New struct `DataFlowsClientCreateOrUpdateResponse`
+- New struct `DataFlowsClientCreateOrUpdateResult`
+- New struct `DataFlowsClientDeleteOptions`
+- New struct `DataFlowsClientDeleteResponse`
+- New struct `DataFlowsClientGetOptions`
+- New struct `DataFlowsClientGetResponse`
+- New struct `DataFlowsClientGetResult`
+- New struct `DataFlowsClientListByFactoryOptions`
+- New struct `DataFlowsClientListByFactoryPager`
+- New struct `DataFlowsClientListByFactoryResponse`
+- New struct `DataFlowsClientListByFactoryResult`
+- New struct `DatasetsClientCreateOrUpdateOptions`
+- New struct `DatasetsClientCreateOrUpdateResponse`
+- New struct `DatasetsClientCreateOrUpdateResult`
+- New struct `DatasetsClientDeleteOptions`
+- New struct `DatasetsClientDeleteResponse`
+- New struct `DatasetsClientGetOptions`
+- New struct `DatasetsClientGetResponse`
+- New struct `DatasetsClientGetResult`
+- New struct `DatasetsClientListByFactoryOptions`
+- New struct `DatasetsClientListByFactoryPager`
+- New struct `DatasetsClientListByFactoryResponse`
+- New struct `DatasetsClientListByFactoryResult`
+- New struct `ExposureControlClientGetFeatureValueByFactoryOptions`
+- New struct `ExposureControlClientGetFeatureValueByFactoryResponse`
+- New struct `ExposureControlClientGetFeatureValueByFactoryResult`
+- New struct `ExposureControlClientGetFeatureValueOptions`
+- New struct `ExposureControlClientGetFeatureValueResponse`
+- New struct `ExposureControlClientGetFeatureValueResult`
+- New struct `ExposureControlClientQueryFeatureValuesByFactoryOptions`
+- New struct `ExposureControlClientQueryFeatureValuesByFactoryResponse`
+- New struct `ExposureControlClientQueryFeatureValuesByFactoryResult`
+- New struct `FactoriesClientConfigureFactoryRepoOptions`
+- New struct `FactoriesClientConfigureFactoryRepoResponse`
+- New struct `FactoriesClientConfigureFactoryRepoResult`
+- New struct `FactoriesClientCreateOrUpdateOptions`
+- New struct `FactoriesClientCreateOrUpdateResponse`
+- New struct `FactoriesClientCreateOrUpdateResult`
+- New struct `FactoriesClientDeleteOptions`
+- New struct `FactoriesClientDeleteResponse`
+- New struct `FactoriesClientGetDataPlaneAccessOptions`
+- New struct `FactoriesClientGetDataPlaneAccessResponse`
+- New struct `FactoriesClientGetDataPlaneAccessResult`
+- New struct `FactoriesClientGetGitHubAccessTokenOptions`
+- New struct `FactoriesClientGetGitHubAccessTokenResponse`
+- New struct `FactoriesClientGetGitHubAccessTokenResult`
+- New struct `FactoriesClientGetOptions`
+- New struct `FactoriesClientGetResponse`
+- New struct `FactoriesClientGetResult`
+- New struct `FactoriesClientListByResourceGroupOptions`
+- New struct `FactoriesClientListByResourceGroupPager`
+- New struct `FactoriesClientListByResourceGroupResponse`
+- New struct `FactoriesClientListByResourceGroupResult`
+- New struct `FactoriesClientListOptions`
+- New struct `FactoriesClientListPager`
+- New struct `FactoriesClientListResponse`
+- New struct `FactoriesClientListResult`
+- New struct `FactoriesClientUpdateOptions`
+- New struct `FactoriesClientUpdateResponse`
+- New struct `FactoriesClientUpdateResult`
+- New struct `FailActivity`
+- New struct `FailActivityTypeProperties`
+- New struct `IntegrationRuntimeNodesClientDeleteOptions`
+- New struct `IntegrationRuntimeNodesClientDeleteResponse`
+- New struct `IntegrationRuntimeNodesClientGetIPAddressOptions`
+- New struct `IntegrationRuntimeNodesClientGetIPAddressResponse`
+- New struct `IntegrationRuntimeNodesClientGetIPAddressResult`
+- New struct `IntegrationRuntimeNodesClientGetOptions`
+- New struct `IntegrationRuntimeNodesClientGetResponse`
+- New struct `IntegrationRuntimeNodesClientGetResult`
+- New struct `IntegrationRuntimeNodesClientUpdateOptions`
+- New struct `IntegrationRuntimeNodesClientUpdateResponse`
+- New struct `IntegrationRuntimeNodesClientUpdateResult`
+- New struct `IntegrationRuntimeObjectMetadataClientBeginRefreshOptions`
+- New struct `IntegrationRuntimeObjectMetadataClientGetOptions`
+- New struct `IntegrationRuntimeObjectMetadataClientGetResponse`
+- New struct `IntegrationRuntimeObjectMetadataClientGetResult`
+- New struct `IntegrationRuntimeObjectMetadataClientRefreshPoller`
+- New struct `IntegrationRuntimeObjectMetadataClientRefreshPollerResponse`
+- New struct `IntegrationRuntimeObjectMetadataClientRefreshResponse`
+- New struct `IntegrationRuntimeObjectMetadataClientRefreshResult`
+- New struct `IntegrationRuntimesClientBeginStartOptions`
+- New struct `IntegrationRuntimesClientBeginStopOptions`
+- New struct `IntegrationRuntimesClientCreateLinkedIntegrationRuntimeOptions`
+- New struct `IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse`
+- New struct `IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResult`
+- New struct `IntegrationRuntimesClientCreateOrUpdateOptions`
+- New struct `IntegrationRuntimesClientCreateOrUpdateResponse`
+- New struct `IntegrationRuntimesClientCreateOrUpdateResult`
+- New struct `IntegrationRuntimesClientDeleteOptions`
+- New struct `IntegrationRuntimesClientDeleteResponse`
+- New struct `IntegrationRuntimesClientGetConnectionInfoOptions`
+- New struct `IntegrationRuntimesClientGetConnectionInfoResponse`
+- New struct `IntegrationRuntimesClientGetConnectionInfoResult`
+- New struct `IntegrationRuntimesClientGetMonitoringDataOptions`
+- New struct `IntegrationRuntimesClientGetMonitoringDataResponse`
+- New struct `IntegrationRuntimesClientGetMonitoringDataResult`
+- New struct `IntegrationRuntimesClientGetOptions`
+- New struct `IntegrationRuntimesClientGetResponse`
+- New struct `IntegrationRuntimesClientGetResult`
+- New struct `IntegrationRuntimesClientGetStatusOptions`
+- New struct `IntegrationRuntimesClientGetStatusResponse`
+- New struct `IntegrationRuntimesClientGetStatusResult`
+- New struct `IntegrationRuntimesClientListAuthKeysOptions`
+- New struct `IntegrationRuntimesClientListAuthKeysResponse`
+- New struct `IntegrationRuntimesClientListAuthKeysResult`
+- New struct `IntegrationRuntimesClientListByFactoryOptions`
+- New struct `IntegrationRuntimesClientListByFactoryPager`
+- New struct `IntegrationRuntimesClientListByFactoryResponse`
+- New struct `IntegrationRuntimesClientListByFactoryResult`
+- New struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions`
+- New struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse`
+- New struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResult`
+- New struct `IntegrationRuntimesClientRegenerateAuthKeyOptions`
+- New struct `IntegrationRuntimesClientRegenerateAuthKeyResponse`
+- New struct `IntegrationRuntimesClientRegenerateAuthKeyResult`
+- New struct `IntegrationRuntimesClientRemoveLinksOptions`
+- New struct `IntegrationRuntimesClientRemoveLinksResponse`
+- New struct `IntegrationRuntimesClientStartPoller`
+- New struct `IntegrationRuntimesClientStartPollerResponse`
+- New struct `IntegrationRuntimesClientStartResponse`
+- New struct `IntegrationRuntimesClientStartResult`
+- New struct `IntegrationRuntimesClientStopPoller`
+- New struct `IntegrationRuntimesClientStopPollerResponse`
+- New struct `IntegrationRuntimesClientStopResponse`
+- New struct `IntegrationRuntimesClientSyncCredentialsOptions`
+- New struct `IntegrationRuntimesClientSyncCredentialsResponse`
+- New struct `IntegrationRuntimesClientUpdateOptions`
+- New struct `IntegrationRuntimesClientUpdateResponse`
+- New struct `IntegrationRuntimesClientUpdateResult`
+- New struct `IntegrationRuntimesClientUpgradeOptions`
+- New struct `IntegrationRuntimesClientUpgradeResponse`
+- New struct `LinkedServicesClientCreateOrUpdateOptions`
+- New struct `LinkedServicesClientCreateOrUpdateResponse`
+- New struct `LinkedServicesClientCreateOrUpdateResult`
+- New struct `LinkedServicesClientDeleteOptions`
+- New struct `LinkedServicesClientDeleteResponse`
+- New struct `LinkedServicesClientGetOptions`
+- New struct `LinkedServicesClientGetResponse`
+- New struct `LinkedServicesClientGetResult`
+- New struct `LinkedServicesClientListByFactoryOptions`
+- New struct `LinkedServicesClientListByFactoryPager`
+- New struct `LinkedServicesClientListByFactoryResponse`
+- New struct `LinkedServicesClientListByFactoryResult`
+- New struct `ManagedIdentityCredential`
+- New struct `ManagedIdentityTypeProperties`
+- New struct `ManagedPrivateEndpointsClientCreateOrUpdateOptions`
+- New struct `ManagedPrivateEndpointsClientCreateOrUpdateResponse`
+- New struct `ManagedPrivateEndpointsClientCreateOrUpdateResult`
+- New struct `ManagedPrivateEndpointsClientDeleteOptions`
+- New struct `ManagedPrivateEndpointsClientDeleteResponse`
+- New struct `ManagedPrivateEndpointsClientGetOptions`
+- New struct `ManagedPrivateEndpointsClientGetResponse`
+- New struct `ManagedPrivateEndpointsClientGetResult`
+- New struct `ManagedPrivateEndpointsClientListByFactoryOptions`
+- New struct `ManagedPrivateEndpointsClientListByFactoryPager`
+- New struct `ManagedPrivateEndpointsClientListByFactoryResponse`
+- New struct `ManagedPrivateEndpointsClientListByFactoryResult`
+- New struct `ManagedVirtualNetworksClientCreateOrUpdateOptions`
+- New struct `ManagedVirtualNetworksClientCreateOrUpdateResponse`
+- New struct `ManagedVirtualNetworksClientCreateOrUpdateResult`
+- New struct `ManagedVirtualNetworksClientGetOptions`
+- New struct `ManagedVirtualNetworksClientGetResponse`
+- New struct `ManagedVirtualNetworksClientGetResult`
+- New struct `ManagedVirtualNetworksClientListByFactoryOptions`
+- New struct `ManagedVirtualNetworksClientListByFactoryPager`
+- New struct `ManagedVirtualNetworksClientListByFactoryResponse`
+- New struct `ManagedVirtualNetworksClientListByFactoryResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PipelineRunsClientCancelOptions`
+- New struct `PipelineRunsClientCancelResponse`
+- New struct `PipelineRunsClientGetOptions`
+- New struct `PipelineRunsClientGetResponse`
+- New struct `PipelineRunsClientGetResult`
+- New struct `PipelineRunsClientQueryByFactoryOptions`
+- New struct `PipelineRunsClientQueryByFactoryResponse`
+- New struct `PipelineRunsClientQueryByFactoryResult`
+- New struct `PipelinesClientCreateOrUpdateOptions`
+- New struct `PipelinesClientCreateOrUpdateResponse`
+- New struct `PipelinesClientCreateOrUpdateResult`
+- New struct `PipelinesClientCreateRunOptions`
+- New struct `PipelinesClientCreateRunResponse`
+- New struct `PipelinesClientCreateRunResult`
+- New struct `PipelinesClientDeleteOptions`
+- New struct `PipelinesClientDeleteResponse`
+- New struct `PipelinesClientGetOptions`
+- New struct `PipelinesClientGetResponse`
+- New struct `PipelinesClientGetResult`
+- New struct `PipelinesClientListByFactoryOptions`
+- New struct `PipelinesClientListByFactoryPager`
+- New struct `PipelinesClientListByFactoryResponse`
+- New struct `PipelinesClientListByFactoryResult`
+- New struct `PrivateEndPointConnectionsClientListByFactoryOptions`
+- New struct `PrivateEndPointConnectionsClientListByFactoryPager`
+- New struct `PrivateEndPointConnectionsClientListByFactoryResponse`
+- New struct `PrivateEndPointConnectionsClientListByFactoryResult`
+- New struct `PrivateEndpointConnectionClientCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionClientDeleteOptions`
+- New struct `PrivateEndpointConnectionClientDeleteResponse`
+- New struct `PrivateEndpointConnectionClientGetOptions`
+- New struct `PrivateEndpointConnectionClientGetResponse`
+- New struct `PrivateEndpointConnectionClientGetResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `ServicePrincipalCredential`
+- New struct `ServicePrincipalCredentialTypeProperties`
+- New struct `TriggerRunsClientCancelOptions`
+- New struct `TriggerRunsClientCancelResponse`
+- New struct `TriggerRunsClientQueryByFactoryOptions`
+- New struct `TriggerRunsClientQueryByFactoryResponse`
+- New struct `TriggerRunsClientQueryByFactoryResult`
+- New struct `TriggerRunsClientRerunOptions`
+- New struct `TriggerRunsClientRerunResponse`
+- New struct `TriggersClientBeginStartOptions`
+- New struct `TriggersClientBeginStopOptions`
+- New struct `TriggersClientBeginSubscribeToEventsOptions`
+- New struct `TriggersClientBeginUnsubscribeFromEventsOptions`
+- New struct `TriggersClientCreateOrUpdateOptions`
+- New struct `TriggersClientCreateOrUpdateResponse`
+- New struct `TriggersClientCreateOrUpdateResult`
+- New struct `TriggersClientDeleteOptions`
+- New struct `TriggersClientDeleteResponse`
+- New struct `TriggersClientGetEventSubscriptionStatusOptions`
+- New struct `TriggersClientGetEventSubscriptionStatusResponse`
+- New struct `TriggersClientGetEventSubscriptionStatusResult`
+- New struct `TriggersClientGetOptions`
+- New struct `TriggersClientGetResponse`
+- New struct `TriggersClientGetResult`
+- New struct `TriggersClientListByFactoryOptions`
+- New struct `TriggersClientListByFactoryPager`
+- New struct `TriggersClientListByFactoryResponse`
+- New struct `TriggersClientListByFactoryResult`
+- New struct `TriggersClientQueryByFactoryOptions`
+- New struct `TriggersClientQueryByFactoryResponse`
+- New struct `TriggersClientQueryByFactoryResult`
+- New struct `TriggersClientStartPoller`
+- New struct `TriggersClientStartPollerResponse`
+- New struct `TriggersClientStartResponse`
+- New struct `TriggersClientStopPoller`
+- New struct `TriggersClientStopPollerResponse`
+- New struct `TriggersClientStopResponse`
+- New struct `TriggersClientSubscribeToEventsPoller`
+- New struct `TriggersClientSubscribeToEventsPollerResponse`
+- New struct `TriggersClientSubscribeToEventsResponse`
+- New struct `TriggersClientSubscribeToEventsResult`
+- New struct `TriggersClientUnsubscribeFromEventsPoller`
+- New struct `TriggersClientUnsubscribeFromEventsPollerResponse`
+- New struct `TriggersClientUnsubscribeFromEventsResponse`
+- New struct `TriggersClientUnsubscribeFromEventsResult`
+- New field `DependsOn` in struct `DataLakeAnalyticsUSQLActivity`
+- New field `LinkedServiceName` in struct `DataLakeAnalyticsUSQLActivity`
+- New field `UserProperties` in struct `DataLakeAnalyticsUSQLActivity`
+- New field `AdditionalProperties` in struct `DataLakeAnalyticsUSQLActivity`
+- New field `Description` in struct `DataLakeAnalyticsUSQLActivity`
+- New field `Policy` in struct `DataLakeAnalyticsUSQLActivity`
+- New field `Name` in struct `DataLakeAnalyticsUSQLActivity`
+- New field `Type` in struct `DataLakeAnalyticsUSQLActivity`
+- New field `Annotations` in struct `CassandraLinkedService`
+- New field `ConnectVia` in struct `CassandraLinkedService`
+- New field `Description` in struct `CassandraLinkedService`
+- New field `Parameters` in struct `CassandraLinkedService`
+- New field `Type` in struct `CassandraLinkedService`
+- New field `AdditionalProperties` in struct `CassandraLinkedService`
+- New field `DisableMetricsCollection` in struct `HTTPSource`
+- New field `MaxConcurrentConnections` in struct `HTTPSource`
+- New field `SourceRetryCount` in struct `HTTPSource`
+- New field `SourceRetryWait` in struct `HTTPSource`
+- New field `Type` in struct `HTTPSource`
+- New field `AdditionalProperties` in struct `HTTPSource`
+- New field `ConnectVia` in struct `SapEccLinkedService`
+- New field `Description` in struct `SapEccLinkedService`
+- New field `Parameters` in struct `SapEccLinkedService`
+- New field `Type` in struct `SapEccLinkedService`
+- New field `AdditionalProperties` in struct `SapEccLinkedService`
+- New field `Annotations` in struct `SapEccLinkedService`
+- New field `LinkedServiceName` in struct `BinaryDataset`
+- New field `Description` in struct `BinaryDataset`
+- New field `Parameters` in struct `BinaryDataset`
+- New field `Annotations` in struct `BinaryDataset`
+- New field `Structure` in struct `BinaryDataset`
+- New field `AdditionalProperties` in struct `BinaryDataset`
+- New field `Schema` in struct `BinaryDataset`
+- New field `Type` in struct `BinaryDataset`
+- New field `Folder` in struct `BinaryDataset`
+- New field `DisableMetricsCollection` in struct `AzureDatabricksDeltaLakeSource`
+- New field `MaxConcurrentConnections` in struct `AzureDatabricksDeltaLakeSource`
+- New field `SourceRetryCount` in struct `AzureDatabricksDeltaLakeSource`
+- New field `SourceRetryWait` in struct `AzureDatabricksDeltaLakeSource`
+- New field `Type` in struct `AzureDatabricksDeltaLakeSource`
+- New field `AdditionalProperties` in struct `AzureDatabricksDeltaLakeSource`
+- New field `WriteBatchTimeout` in struct `CosmosDbMongoDbAPISink`
+- New field `Type` in struct `CosmosDbMongoDbAPISink`
+- New field `DisableMetricsCollection` in struct `CosmosDbMongoDbAPISink`
+- New field `AdditionalProperties` in struct `CosmosDbMongoDbAPISink`
+- New field `SinkRetryCount` in struct `CosmosDbMongoDbAPISink`
+- New field `MaxConcurrentConnections` in struct `CosmosDbMongoDbAPISink`
+- New field `SinkRetryWait` in struct `CosmosDbMongoDbAPISink`
+- New field `WriteBatchSize` in struct `CosmosDbMongoDbAPISink`
+- New field `WriteBatchTimeout` in struct `SQLMISink`
+- New field `AdditionalProperties` in struct `SQLMISink`
+- New field `SinkRetryWait` in struct `SQLMISink`
+- New field `DisableMetricsCollection` in struct `SQLMISink`
+- New field `MaxConcurrentConnections` in struct `SQLMISink`
+- New field `SinkRetryCount` in struct `SQLMISink`
+- New field `Type` in struct `SQLMISink`
+- New field `WriteBatchSize` in struct `SQLMISink`
+- New field `LinkedService` in struct `DataFlowSink`
+- New field `Name` in struct `DataFlowSink`
+- New field `Dataset` in struct `DataFlowSink`
+- New field `Description` in struct `DataFlowSink`
+- New field `Flowlet` in struct `DataFlowSink`
+- New field `ConnectVia` in struct `AzureBlobStorageLinkedService`
+- New field `Description` in struct `AzureBlobStorageLinkedService`
+- New field `Parameters` in struct `AzureBlobStorageLinkedService`
+- New field `Type` in struct `AzureBlobStorageLinkedService`
+- New field `AdditionalProperties` in struct `AzureBlobStorageLinkedService`
+- New field `Annotations` in struct `AzureBlobStorageLinkedService`
+- New field `Type` in struct `SalesforceLinkedService`
+- New field `AdditionalProperties` in struct `SalesforceLinkedService`
+- New field `Annotations` in struct `SalesforceLinkedService`
+- New field `ConnectVia` in struct `SalesforceLinkedService`
+- New field `Description` in struct `SalesforceLinkedService`
+- New field `Parameters` in struct `SalesforceLinkedService`
+- New field `Error` in struct `CloudError`
+- New field `Type` in struct `SetVariableActivity`
+- New field `AdditionalProperties` in struct `SetVariableActivity`
+- New field `DependsOn` in struct `SetVariableActivity`
+- New field `Description` in struct `SetVariableActivity`
+- New field `UserProperties` in struct `SetVariableActivity`
+- New field `Name` in struct `SetVariableActivity`
+- New field `AdditionalProperties` in struct `RelationalTableDataset`
+- New field `Annotations` in struct `RelationalTableDataset`
+- New field `Schema` in struct `RelationalTableDataset`
+- New field `Folder` in struct `RelationalTableDataset`
+- New field `Parameters` in struct `RelationalTableDataset`
+- New field `Description` in struct `RelationalTableDataset`
+- New field `Structure` in struct `RelationalTableDataset`
+- New field `LinkedServiceName` in struct `RelationalTableDataset`
+- New field `Type` in struct `RelationalTableDataset`
+- New field `Annotations` in struct `MappingDataFlow`
+- New field `Description` in struct `MappingDataFlow`
+- New field `Folder` in struct `MappingDataFlow`
+- New field `Type` in struct `MappingDataFlow`
+- New field `FolderPath` in struct `FtpServerLocation`
+- New field `Type` in struct `FtpServerLocation`
+- New field `AdditionalProperties` in struct `FtpServerLocation`
+- New field `FileName` in struct `FtpServerLocation`
+- New field `Type` in struct `CommonDataServiceForAppsLinkedService`
+- New field `AdditionalProperties` in struct `CommonDataServiceForAppsLinkedService`
+- New field `Annotations` in struct `CommonDataServiceForAppsLinkedService`
+- New field `ConnectVia` in struct `CommonDataServiceForAppsLinkedService`
+- New field `Description` in struct `CommonDataServiceForAppsLinkedService`
+- New field `Parameters` in struct `CommonDataServiceForAppsLinkedService`
+- New field `Type` in struct `AzPowerShellSetup`
+- New field `Parameters` in struct `AzureBatchLinkedService`
+- New field `Type` in struct `AzureBatchLinkedService`
+- New field `AdditionalProperties` in struct `AzureBatchLinkedService`
+- New field `Annotations` in struct `AzureBatchLinkedService`
+- New field `ConnectVia` in struct `AzureBatchLinkedService`
+- New field `Description` in struct `AzureBatchLinkedService`
+- New field `Structure` in struct `VerticaTableDataset`
+- New field `Type` in struct `VerticaTableDataset`
+- New field `Parameters` in struct `VerticaTableDataset`
+- New field `Description` in struct `VerticaTableDataset`
+- New field `Folder` in struct `VerticaTableDataset`
+- New field `Schema` in struct `VerticaTableDataset`
+- New field `LinkedServiceName` in struct `VerticaTableDataset`
+- New field `AdditionalProperties` in struct `VerticaTableDataset`
+- New field `Annotations` in struct `VerticaTableDataset`
+- New field `LinkedServiceName` in struct `FileShareDataset`
+- New field `AdditionalProperties` in struct `FileShareDataset`
+- New field `Folder` in struct `FileShareDataset`
+- New field `Parameters` in struct `FileShareDataset`
+- New field `Annotations` in struct `FileShareDataset`
+- New field `Type` in struct `FileShareDataset`
+- New field `Description` in struct `FileShareDataset`
+- New field `Schema` in struct `FileShareDataset`
+- New field `Structure` in struct `FileShareDataset`
+- New field `Type` in struct `HdfsSource`
+- New field `AdditionalProperties` in struct `HdfsSource`
+- New field `DisableMetricsCollection` in struct `HdfsSource`
+- New field `MaxConcurrentConnections` in struct `HdfsSource`
+- New field `SourceRetryCount` in struct `HdfsSource`
+- New field `SourceRetryWait` in struct `HdfsSource`
+- New field `SourceRetryCount` in struct `MySQLSource`
+- New field `SourceRetryWait` in struct `MySQLSource`
+- New field `Type` in struct `MySQLSource`
+- New field `AdditionalProperties` in struct `MySQLSource`
+- New field `DisableMetricsCollection` in struct `MySQLSource`
+- New field `AdditionalColumns` in struct `MySQLSource`
+- New field `MaxConcurrentConnections` in struct `MySQLSource`
+- New field `QueryTimeout` in struct `MySQLSource`
+- New field `DisableMetricsCollection` in struct `AzureSearchIndexSink`
+- New field `MaxConcurrentConnections` in struct `AzureSearchIndexSink`
+- New field `SinkRetryCount` in struct `AzureSearchIndexSink`
+- New field `SinkRetryWait` in struct `AzureSearchIndexSink`
+- New field `WriteBatchSize` in struct `AzureSearchIndexSink`
+- New field `WriteBatchTimeout` in struct `AzureSearchIndexSink`
+- New field `Type` in struct `AzureSearchIndexSink`
+- New field `AdditionalProperties` in struct `AzureSearchIndexSink`
+- New field `Type` in struct `AzureBlobFSLocation`
+- New field `AdditionalProperties` in struct `AzureBlobFSLocation`
+- New field `FileName` in struct `AzureBlobFSLocation`
+- New field `FolderPath` in struct `AzureBlobFSLocation`
+- New field `AdditionalProperties` in struct `AmazonRedshiftTableDataset`
+- New field `Type` in struct `AmazonRedshiftTableDataset`
+- New field `Description` in struct `AmazonRedshiftTableDataset`
+- New field `Folder` in struct `AmazonRedshiftTableDataset`
+- New field `Parameters` in struct `AmazonRedshiftTableDataset`
+- New field `Annotations` in struct `AmazonRedshiftTableDataset`
+- New field `Structure` in struct `AmazonRedshiftTableDataset`
+- New field `Schema` in struct `AmazonRedshiftTableDataset`
+- New field `LinkedServiceName` in struct `AmazonRedshiftTableDataset`
+- New field `Type` in struct `AzureDataLakeStoreSource`
+- New field `AdditionalProperties` in struct `AzureDataLakeStoreSource`
+- New field `DisableMetricsCollection` in struct `AzureDataLakeStoreSource`
+- New field `MaxConcurrentConnections` in struct `AzureDataLakeStoreSource`
+- New field `SourceRetryCount` in struct `AzureDataLakeStoreSource`
+- New field `SourceRetryWait` in struct `AzureDataLakeStoreSource`
+- New field `Policy` in struct `AzureDataExplorerCommandActivity`
+- New field `UserProperties` in struct `AzureDataExplorerCommandActivity`
+- New field `Name` in struct `AzureDataExplorerCommandActivity`
+- New field `Type` in struct `AzureDataExplorerCommandActivity`
+- New field `AdditionalProperties` in struct `AzureDataExplorerCommandActivity`
+- New field `DependsOn` in struct `AzureDataExplorerCommandActivity`
+- New field `Description` in struct `AzureDataExplorerCommandActivity`
+- New field `LinkedServiceName` in struct `AzureDataExplorerCommandActivity`
+- New field `AdditionalProperties` in struct `FileServerLinkedService`
+- New field `Annotations` in struct `FileServerLinkedService`
+- New field `ConnectVia` in struct `FileServerLinkedService`
+- New field `Description` in struct `FileServerLinkedService`
+- New field `Parameters` in struct `FileServerLinkedService`
+- New field `Type` in struct `FileServerLinkedService`
+- New field `Type` in struct `CmdkeySetup`
+- New field `AdditionalProperties` in struct `AzureDataLakeStoreReadSettings`
+- New field `Type` in struct `AzureDataLakeStoreReadSettings`
+- New field `DisableMetricsCollection` in struct `AzureDataLakeStoreReadSettings`
+- New field `MaxConcurrentConnections` in struct `AzureDataLakeStoreReadSettings`
+- New field `AdditionalProperties` in struct `PaypalLinkedService`
+- New field `Annotations` in struct `PaypalLinkedService`
+- New field `ConnectVia` in struct `PaypalLinkedService`
+- New field `Description` in struct `PaypalLinkedService`
+- New field `Parameters` in struct `PaypalLinkedService`
+- New field `Type` in struct `PaypalLinkedService`
+- New field `QueryTimeout` in struct `AzureMySQLSource`
+- New field `SourceRetryCount` in struct `AzureMySQLSource`
+- New field `SourceRetryWait` in struct `AzureMySQLSource`
+- New field `Type` in struct `AzureMySQLSource`
+- New field `DisableMetricsCollection` in struct `AzureMySQLSource`
+- New field `MaxConcurrentConnections` in struct `AzureMySQLSource`
+- New field `AdditionalColumns` in struct `AzureMySQLSource`
+- New field `AdditionalProperties` in struct `AzureMySQLSource`
+- New field `QueryTimeout` in struct `DynamicsAXSource`
+- New field `SourceRetryCount` in struct `DynamicsAXSource`
+- New field `SourceRetryWait` in struct `DynamicsAXSource`
+- New field `AdditionalColumns` in struct `DynamicsAXSource`
+- New field `AdditionalProperties` in struct `DynamicsAXSource`
+- New field `DisableMetricsCollection` in struct `DynamicsAXSource`
+- New field `MaxConcurrentConnections` in struct `DynamicsAXSource`
+- New field `Type` in struct `DynamicsAXSource`
+- New field `Name` in struct `HDInsightHiveActivity`
+- New field `UserProperties` in struct `HDInsightHiveActivity`
+- New field `LinkedServiceName` in struct `HDInsightHiveActivity`
+- New field `Policy` in struct `HDInsightHiveActivity`
+- New field `Type` in struct `HDInsightHiveActivity`
+- New field `AdditionalProperties` in struct `HDInsightHiveActivity`
+- New field `DependsOn` in struct `HDInsightHiveActivity`
+- New field `Description` in struct `HDInsightHiveActivity`
+- New field `AdditionalProperties` in struct `HiveLinkedService`
+- New field `Annotations` in struct `HiveLinkedService`
+- New field `ConnectVia` in struct `HiveLinkedService`
+- New field `Description` in struct `HiveLinkedService`
+- New field `Parameters` in struct `HiveLinkedService`
+- New field `Type` in struct `HiveLinkedService`
+- New field `SourceRetryCount` in struct `BlobSource`
+- New field `Type` in struct `BlobSource`
+- New field `AdditionalProperties` in struct `BlobSource`
+- New field `DisableMetricsCollection` in struct `BlobSource`
+- New field `SourceRetryWait` in struct `BlobSource`
+- New field `MaxConcurrentConnections` in struct `BlobSource`
+- New field `AdditionalProperties` in struct `OrcSource`
+- New field `DisableMetricsCollection` in struct `OrcSource`
+- New field `MaxConcurrentConnections` in struct `OrcSource`
+- New field `SourceRetryCount` in struct `OrcSource`
+- New field `SourceRetryWait` in struct `OrcSource`
+- New field `Type` in struct `OrcSource`
+- New field `QueryTimeout` in struct `SapHanaSource`
+- New field `SourceRetryWait` in struct `SapHanaSource`
+- New field `MaxConcurrentConnections` in struct `SapHanaSource`
+- New field `AdditionalColumns` in struct `SapHanaSource`
+- New field `AdditionalProperties` in struct `SapHanaSource`
+- New field `DisableMetricsCollection` in struct `SapHanaSource`
+- New field `SourceRetryCount` in struct `SapHanaSource`
+- New field `Type` in struct `SapHanaSource`
+- New field `AdditionalProperties` in struct `DelimitedTextWriteSettings`
+- New field `Type` in struct `DelimitedTextWriteSettings`
+- New field `AdditionalProperties` in struct `MariaDBLinkedService`
+- New field `Annotations` in struct `MariaDBLinkedService`
+- New field `ConnectVia` in struct `MariaDBLinkedService`
+- New field `Description` in struct `MariaDBLinkedService`
+- New field `Parameters` in struct `MariaDBLinkedService`
+- New field `Type` in struct `MariaDBLinkedService`
+- New field `WriteBatchTimeout` in struct `JSONSink`
+- New field `WriteBatchSize` in struct `JSONSink`
+- New field `Type` in struct `JSONSink`
+- New field `AdditionalProperties` in struct `JSONSink`
+- New field `MaxConcurrentConnections` in struct `JSONSink`
+- New field `SinkRetryCount` in struct `JSONSink`
+- New field `SinkRetryWait` in struct `JSONSink`
+- New field `DisableMetricsCollection` in struct `JSONSink`
+- New field `ConnectVia` in struct `GoogleCloudStorageLinkedService`
+- New field `Description` in struct `GoogleCloudStorageLinkedService`
+- New field `Parameters` in struct `GoogleCloudStorageLinkedService`
+- New field `Type` in struct `GoogleCloudStorageLinkedService`
+- New field `AdditionalProperties` in struct `GoogleCloudStorageLinkedService`
+- New field `Annotations` in struct `GoogleCloudStorageLinkedService`
+- New field `SourceRetryCount` in struct `TabularSource`
+- New field `SourceRetryWait` in struct `TabularSource`
+- New field `Type` in struct `TabularSource`
+- New field `AdditionalProperties` in struct `TabularSource`
+- New field `DisableMetricsCollection` in struct `TabularSource`
+- New field `MaxConcurrentConnections` in struct `TabularSource`
+- New field `AdditionalProperties` in struct `CommonDataServiceForAppsSource`
+- New field `DisableMetricsCollection` in struct `CommonDataServiceForAppsSource`
+- New field `MaxConcurrentConnections` in struct `CommonDataServiceForAppsSource`
+- New field `SourceRetryCount` in struct `CommonDataServiceForAppsSource`
+- New field `SourceRetryWait` in struct `CommonDataServiceForAppsSource`
+- New field `Type` in struct `CommonDataServiceForAppsSource`
+- New field `ConnectVia` in struct `MicrosoftAccessLinkedService`
+- New field `Description` in struct `MicrosoftAccessLinkedService`
+- New field `Parameters` in struct `MicrosoftAccessLinkedService`
+- New field `Type` in struct `MicrosoftAccessLinkedService`
+- New field `AdditionalProperties` in struct `MicrosoftAccessLinkedService`
+- New field `Annotations` in struct `MicrosoftAccessLinkedService`
+- New field `Etag` in struct `DatasetResource`
+- New field `ID` in struct `DatasetResource`
+- New field `Name` in struct `DatasetResource`
+- New field `Type` in struct `DatasetResource`
+- New field `DisableMetricsCollection` in struct `SQLDWSource`
+- New field `MaxConcurrentConnections` in struct `SQLDWSource`
+- New field `AdditionalProperties` in struct `SQLDWSource`
+- New field `QueryTimeout` in struct `SQLDWSource`
+- New field `Type` in struct `SQLDWSource`
+- New field `AdditionalColumns` in struct `SQLDWSource`
+- New field `SourceRetryWait` in struct `SQLDWSource`
+- New field `SourceRetryCount` in struct `SQLDWSource`
+- New field `MaxConcurrentConnections` in struct `FtpReadSettings`
+- New field `Type` in struct `FtpReadSettings`
+- New field `DisableMetricsCollection` in struct `FtpReadSettings`
+- New field `AdditionalProperties` in struct `FtpReadSettings`
+- New field `Folder` in struct `PrestoObjectDataset`
+- New field `AdditionalProperties` in struct `PrestoObjectDataset`
+- New field `Description` in struct `PrestoObjectDataset`
+- New field `LinkedServiceName` in struct `PrestoObjectDataset`
+- New field `Type` in struct `PrestoObjectDataset`
+- New field `Parameters` in struct `PrestoObjectDataset`
+- New field `Schema` in struct `PrestoObjectDataset`
+- New field `Structure` in struct `PrestoObjectDataset`
+- New field `Annotations` in struct `PrestoObjectDataset`
+- New field `DisableMetricsCollection` in struct `AzureBlobFSReadSettings`
+- New field `MaxConcurrentConnections` in struct `AzureBlobFSReadSettings`
+- New field `Type` in struct `AzureBlobFSReadSettings`
+- New field `AdditionalProperties` in struct `AzureBlobFSReadSettings`
+- New field `Parameters` in struct `HDInsightOnDemandLinkedService`
+- New field `Type` in struct `HDInsightOnDemandLinkedService`
+- New field `AdditionalProperties` in struct `HDInsightOnDemandLinkedService`
+- New field `Annotations` in struct `HDInsightOnDemandLinkedService`
+- New field `ConnectVia` in struct `HDInsightOnDemandLinkedService`
+- New field `Description` in struct `HDInsightOnDemandLinkedService`
+- New field `SourceRetryCount` in struct `ShopifySource`
+- New field `SourceRetryWait` in struct `ShopifySource`
+- New field `Type` in struct `ShopifySource`
+- New field `AdditionalProperties` in struct `ShopifySource`
+- New field `DisableMetricsCollection` in struct `ShopifySource`
+- New field `QueryTimeout` in struct `ShopifySource`
+- New field `AdditionalColumns` in struct `ShopifySource`
+- New field `MaxConcurrentConnections` in struct `ShopifySource`
+- New field `AdditionalProperties` in struct `OracleServiceCloudLinkedService`
+- New field `Annotations` in struct `OracleServiceCloudLinkedService`
+- New field `ConnectVia` in struct `OracleServiceCloudLinkedService`
+- New field `Description` in struct `OracleServiceCloudLinkedService`
+- New field `Parameters` in struct `OracleServiceCloudLinkedService`
+- New field `Type` in struct `OracleServiceCloudLinkedService`
+- New field `ConnectVia` in struct `SalesforceMarketingCloudLinkedService`
+- New field `Description` in struct `SalesforceMarketingCloudLinkedService`
+- New field `Parameters` in struct `SalesforceMarketingCloudLinkedService`
+- New field `Type` in struct `SalesforceMarketingCloudLinkedService`
+- New field `AdditionalProperties` in struct `SalesforceMarketingCloudLinkedService`
+- New field `Annotations` in struct `SalesforceMarketingCloudLinkedService`
+- New field `Description` in struct `GetMetadataActivity`
+- New field `LinkedServiceName` in struct `GetMetadataActivity`
+- New field `Policy` in struct `GetMetadataActivity`
+- New field `UserProperties` in struct `GetMetadataActivity`
+- New field `Name` in struct `GetMetadataActivity`
+- New field `AdditionalProperties` in struct `GetMetadataActivity`
+- New field `Type` in struct `GetMetadataActivity`
+- New field `DependsOn` in struct `GetMetadataActivity`
+- New field `Description` in struct `RerunTumblingWindowTrigger`
+- New field `RuntimeState` in struct `RerunTumblingWindowTrigger`
+- New field `Type` in struct `RerunTumblingWindowTrigger`
+- New field `AdditionalProperties` in struct `RerunTumblingWindowTrigger`
+- New field `Annotations` in struct `RerunTumblingWindowTrigger`
+- New field `WriteBatchSize` in struct `AzureSQLSink`
+- New field `Type` in struct `AzureSQLSink`
+- New field `SinkRetryWait` in struct `AzureSQLSink`
+- New field `AdditionalProperties` in struct `AzureSQLSink`
+- New field `DisableMetricsCollection` in struct `AzureSQLSink`
+- New field `WriteBatchTimeout` in struct `AzureSQLSink`
+- New field `MaxConcurrentConnections` in struct `AzureSQLSink`
+- New field `SinkRetryCount` in struct `AzureSQLSink`
+- New field `Type` in struct `MongoDbAtlasSink`
+- New field `DisableMetricsCollection` in struct `MongoDbAtlasSink`
+- New field `MaxConcurrentConnections` in struct `MongoDbAtlasSink`
+- New field `SinkRetryWait` in struct `MongoDbAtlasSink`
+- New field `AdditionalProperties` in struct `MongoDbAtlasSink`
+- New field `SinkRetryCount` in struct `MongoDbAtlasSink`
+- New field `WriteBatchSize` in struct `MongoDbAtlasSink`
+- New field `WriteBatchTimeout` in struct `MongoDbAtlasSink`
+- New field `RunConcurrently` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `Staging` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `Compute` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `ContinueOnError` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `TraceLevel` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `DataFlow` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `IntegrationRuntime` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `ID` in struct `TriggerResource`
+- New field `Name` in struct `TriggerResource`
+- New field `Type` in struct `TriggerResource`
+- New field `Etag` in struct `TriggerResource`
+- New field `Folder` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `LinkedServiceName` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `Type` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `AdditionalProperties` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `Annotations` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `Description` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `Parameters` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `Schema` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `Structure` in struct `CosmosDbMongoDbAPICollectionDataset`
+- New field `ConnectVia` in struct `SapBWLinkedService`
+- New field `Description` in struct `SapBWLinkedService`
+- New field `Parameters` in struct `SapBWLinkedService`
+- New field `Type` in struct `SapBWLinkedService`
+- New field `AdditionalProperties` in struct `SapBWLinkedService`
+- New field `Annotations` in struct `SapBWLinkedService`
+- New field `Etag` in struct `PrivateEndpointConnectionResource`
+- New field `ID` in struct `PrivateEndpointConnectionResource`
+- New field `Name` in struct `PrivateEndpointConnectionResource`
+- New field `Type` in struct `PrivateEndpointConnectionResource`
+- New field `ConnectVia` in struct `XeroLinkedService`
+- New field `Description` in struct `XeroLinkedService`
+- New field `Parameters` in struct `XeroLinkedService`
+- New field `Type` in struct `XeroLinkedService`
+- New field `AdditionalProperties` in struct `XeroLinkedService`
+- New field `Annotations` in struct `XeroLinkedService`
+- New field `Type` in struct `HTTPServerLocation`
+- New field `AdditionalProperties` in struct `HTTPServerLocation`
+- New field `FileName` in struct `HTTPServerLocation`
+- New field `FolderPath` in struct `HTTPServerLocation`
+- New field `Type` in struct `AzureFileStorageLocation`
+- New field `AdditionalProperties` in struct `AzureFileStorageLocation`
+- New field `FileName` in struct `AzureFileStorageLocation`
+- New field `FolderPath` in struct `AzureFileStorageLocation`
+- New field `Parameters` in struct `DynamicsLinkedService`
+- New field `Type` in struct `DynamicsLinkedService`
+- New field `AdditionalProperties` in struct `DynamicsLinkedService`
+- New field `Annotations` in struct `DynamicsLinkedService`
+- New field `ConnectVia` in struct `DynamicsLinkedService`
+- New field `Description` in struct `DynamicsLinkedService`
+- New field `Annotations` in struct `HdfsLinkedService`
+- New field `ConnectVia` in struct `HdfsLinkedService`
+- New field `Description` in struct `HdfsLinkedService`
+- New field `Parameters` in struct `HdfsLinkedService`
+- New field `Type` in struct `HdfsLinkedService`
+- New field `AdditionalProperties` in struct `HdfsLinkedService`
+- New field `Type` in struct `JSONReadSettings`
+- New field `AdditionalProperties` in struct `JSONReadSettings`
+- New field `DisableMetricsCollection` in struct `QuickBooksSource`
+- New field `QueryTimeout` in struct `QuickBooksSource`
+- New field `SourceRetryCount` in struct `QuickBooksSource`
+- New field `SourceRetryWait` in struct `QuickBooksSource`
+- New field `Type` in struct `QuickBooksSource`
+- New field `AdditionalProperties` in struct `QuickBooksSource`
+- New field `MaxConcurrentConnections` in struct `QuickBooksSource`
+- New field `AdditionalColumns` in struct `QuickBooksSource`
+- New field `Type` in struct `Office365LinkedService`
+- New field `AdditionalProperties` in struct `Office365LinkedService`
+- New field `Annotations` in struct `Office365LinkedService`
+- New field `ConnectVia` in struct `Office365LinkedService`
+- New field `Description` in struct `Office365LinkedService`
+- New field `Parameters` in struct `Office365LinkedService`
+- New field `Description` in struct `AzureKeyVaultLinkedService`
+- New field `Parameters` in struct `AzureKeyVaultLinkedService`
+- New field `Type` in struct `AzureKeyVaultLinkedService`
+- New field `AdditionalProperties` in struct `AzureKeyVaultLinkedService`
+- New field `Annotations` in struct `AzureKeyVaultLinkedService`
+- New field `ConnectVia` in struct `AzureKeyVaultLinkedService`
+- New field `Annotations` in struct `BlobTrigger`
+- New field `Description` in struct `BlobTrigger`
+- New field `Pipelines` in struct `BlobTrigger`
+- New field `RuntimeState` in struct `BlobTrigger`
+- New field `Type` in struct `BlobTrigger`
+- New field `AdditionalProperties` in struct `BlobTrigger`
+- New field `AdditionalProperties` in struct `AzureFileStorageLinkedService`
+- New field `Annotations` in struct `AzureFileStorageLinkedService`
+- New field `ConnectVia` in struct `AzureFileStorageLinkedService`
+- New field `Description` in struct `AzureFileStorageLinkedService`
+- New field `Parameters` in struct `AzureFileStorageLinkedService`
+- New field `Type` in struct `AzureFileStorageLinkedService`
+- New field `Parameters` in struct `AmazonS3CompatibleLinkedService`
+- New field `Type` in struct `AmazonS3CompatibleLinkedService`
+- New field `AdditionalProperties` in struct `AmazonS3CompatibleLinkedService`
+- New field `Annotations` in struct `AmazonS3CompatibleLinkedService`
+- New field `ConnectVia` in struct `AmazonS3CompatibleLinkedService`
+- New field `Description` in struct `AmazonS3CompatibleLinkedService`
+- New field `Annotations` in struct `VerticaLinkedService`
+- New field `ConnectVia` in struct `VerticaLinkedService`
+- New field `Description` in struct `VerticaLinkedService`
+- New field `Parameters` in struct `VerticaLinkedService`
+- New field `Type` in struct `VerticaLinkedService`
+- New field `AdditionalProperties` in struct `VerticaLinkedService`
+- New field `Type` in struct `AmazonS3CompatibleLocation`
+- New field `AdditionalProperties` in struct `AmazonS3CompatibleLocation`
+- New field `FileName` in struct `AmazonS3CompatibleLocation`
+- New field `FolderPath` in struct `AmazonS3CompatibleLocation`
+- New field `Structure` in struct `SapCloudForCustomerResourceDataset`
+- New field `Parameters` in struct `SapCloudForCustomerResourceDataset`
+- New field `Type` in struct `SapCloudForCustomerResourceDataset`
+- New field `AdditionalProperties` in struct `SapCloudForCustomerResourceDataset`
+- New field `Schema` in struct `SapCloudForCustomerResourceDataset`
+- New field `LinkedServiceName` in struct `SapCloudForCustomerResourceDataset`
+- New field `Folder` in struct `SapCloudForCustomerResourceDataset`
+- New field `Description` in struct `SapCloudForCustomerResourceDataset`
+- New field `Annotations` in struct `SapCloudForCustomerResourceDataset`
+- New field `AdditionalProperties` in struct `ServiceNowSource`
+- New field `MaxConcurrentConnections` in struct `ServiceNowSource`
+- New field `QueryTimeout` in struct `ServiceNowSource`
+- New field `SourceRetryCount` in struct `ServiceNowSource`
+- New field `SourceRetryWait` in struct `ServiceNowSource`
+- New field `Type` in struct `ServiceNowSource`
+- New field `AdditionalColumns` in struct `ServiceNowSource`
+- New field `DisableMetricsCollection` in struct `ServiceNowSource`
+- New field `DisableMetricsCollection` in struct `ODataSource`
+- New field `SourceRetryWait` in struct `ODataSource`
+- New field `AdditionalProperties` in struct `ODataSource`
+- New field `MaxConcurrentConnections` in struct `ODataSource`
+- New field `SourceRetryCount` in struct `ODataSource`
+- New field `Type` in struct `ODataSource`
+- New field `WriteBatchTimeout` in struct `AzureQueueSink`
+- New field `Type` in struct `AzureQueueSink`
+- New field `AdditionalProperties` in struct `AzureQueueSink`
+- New field `DisableMetricsCollection` in struct `AzureQueueSink`
+- New field `MaxConcurrentConnections` in struct `AzureQueueSink`
+- New field `SinkRetryCount` in struct `AzureQueueSink`
+- New field `SinkRetryWait` in struct `AzureQueueSink`
+- New field `WriteBatchSize` in struct `AzureQueueSink`
+- New field `ConnectVia` in struct `CustomDataSourceLinkedService`
+- New field `Description` in struct `CustomDataSourceLinkedService`
+- New field `Parameters` in struct `CustomDataSourceLinkedService`
+- New field `Type` in struct `CustomDataSourceLinkedService`
+- New field `AdditionalProperties` in struct `CustomDataSourceLinkedService`
+- New field `Annotations` in struct `CustomDataSourceLinkedService`
+- New field `MaxConcurrentConnections` in struct `CassandraSource`
+- New field `AdditionalColumns` in struct `CassandraSource`
+- New field `AdditionalProperties` in struct `CassandraSource`
+- New field `QueryTimeout` in struct `CassandraSource`
+- New field `SourceRetryCount` in struct `CassandraSource`
+- New field `SourceRetryWait` in struct `CassandraSource`
+- New field `Type` in struct `CassandraSource`
+- New field `DisableMetricsCollection` in struct `CassandraSource`
+- New field `Annotations` in struct `OracleServiceCloudObjectDataset`
+- New field `Parameters` in struct `OracleServiceCloudObjectDataset`
+- New field `Structure` in struct `OracleServiceCloudObjectDataset`
+- New field `Type` in struct `OracleServiceCloudObjectDataset`
+- New field `Folder` in struct `OracleServiceCloudObjectDataset`
+- New field `AdditionalProperties` in struct `OracleServiceCloudObjectDataset`
+- New field `Description` in struct `OracleServiceCloudObjectDataset`
+- New field `Schema` in struct `OracleServiceCloudObjectDataset`
+- New field `LinkedServiceName` in struct `OracleServiceCloudObjectDataset`
+- New field `Parameters` in struct `AzureSQLDWLinkedService`
+- New field `Type` in struct `AzureSQLDWLinkedService`
+- New field `AdditionalProperties` in struct `AzureSQLDWLinkedService`
+- New field `Annotations` in struct `AzureSQLDWLinkedService`
+- New field `ConnectVia` in struct `AzureSQLDWLinkedService`
+- New field `Description` in struct `AzureSQLDWLinkedService`
+- New field `ConnectVia` in struct `MySQLLinkedService`
+- New field `Description` in struct `MySQLLinkedService`
+- New field `Parameters` in struct `MySQLLinkedService`
+- New field `Type` in struct `MySQLLinkedService`
+- New field `AdditionalProperties` in struct `MySQLLinkedService`
+- New field `Annotations` in struct `MySQLLinkedService`
+- New field `Annotations` in struct `AzureSQLTableDataset`
+- New field `Parameters` in struct `AzureSQLTableDataset`
+- New field `LinkedServiceName` in struct `AzureSQLTableDataset`
+- New field `Type` in struct `AzureSQLTableDataset`
+- New field `Folder` in struct `AzureSQLTableDataset`
+- New field `Schema` in struct `AzureSQLTableDataset`
+- New field `Structure` in struct `AzureSQLTableDataset`
+- New field `AdditionalProperties` in struct `AzureSQLTableDataset`
+- New field `Description` in struct `AzureSQLTableDataset`
+- New field `Annotations` in struct `OracleCloudStorageLinkedService`
+- New field `ConnectVia` in struct `OracleCloudStorageLinkedService`
+- New field `Description` in struct `OracleCloudStorageLinkedService`
+- New field `Parameters` in struct `OracleCloudStorageLinkedService`
+- New field `Type` in struct `OracleCloudStorageLinkedService`
+- New field `AdditionalProperties` in struct `OracleCloudStorageLinkedService`
+- New field `WriteBatchSize` in struct `AzureDataLakeStoreSink`
+- New field `MaxConcurrentConnections` in struct `AzureDataLakeStoreSink`
+- New field `SinkRetryCount` in struct `AzureDataLakeStoreSink`
+- New field `SinkRetryWait` in struct `AzureDataLakeStoreSink`
+- New field `WriteBatchTimeout` in struct `AzureDataLakeStoreSink`
+- New field `AdditionalProperties` in struct `AzureDataLakeStoreSink`
+- New field `Type` in struct `AzureDataLakeStoreSink`
+- New field `DisableMetricsCollection` in struct `AzureDataLakeStoreSink`
+- New field `Type` in struct `TarGZipReadSettings`
+- New field `AdditionalProperties` in struct `TarGZipReadSettings`
+- New field `Type` in struct `AzureDatabricksDeltaLakeExportCommand`
+- New field `AdditionalProperties` in struct `AzureDatabricksDeltaLakeExportCommand`
+- New field `MaxConcurrentConnections` in struct `MongoDbV2Source`
+- New field `Type` in struct `MongoDbV2Source`
+- New field `DisableMetricsCollection` in struct `MongoDbV2Source`
+- New field `AdditionalProperties` in struct `MongoDbV2Source`
+- New field `SourceRetryCount` in struct `MongoDbV2Source`
+- New field `SourceRetryWait` in struct `MongoDbV2Source`
+- New field `MaxConcurrentConnections` in struct `EloquaSource`
+- New field `SourceRetryCount` in struct `EloquaSource`
+- New field `SourceRetryWait` in struct `EloquaSource`
+- New field `DisableMetricsCollection` in struct `EloquaSource`
+- New field `QueryTimeout` in struct `EloquaSource`
+- New field `Type` in struct `EloquaSource`
+- New field `AdditionalColumns` in struct `EloquaSource`
+- New field `AdditionalProperties` in struct `EloquaSource`
+- New field `Annotations` in struct `TumblingWindowTrigger`
+- New field `Description` in struct `TumblingWindowTrigger`
+- New field `RuntimeState` in struct `TumblingWindowTrigger`
+- New field `Type` in struct `TumblingWindowTrigger`
+- New field `AdditionalProperties` in struct `TumblingWindowTrigger`
+- New field `Etag` in struct `PipelineResource`
+- New field `ID` in struct `PipelineResource`
+- New field `Name` in struct `PipelineResource`
+- New field `Type` in struct `PipelineResource`
+- New field `Schema` in struct `AzureBlobFSDataset`
+- New field `Type` in struct `AzureBlobFSDataset`
+- New field `Annotations` in struct `AzureBlobFSDataset`
+- New field `Parameters` in struct `AzureBlobFSDataset`
+- New field `LinkedServiceName` in struct `AzureBlobFSDataset`
+- New field `Structure` in struct `AzureBlobFSDataset`
+- New field `AdditionalProperties` in struct `AzureBlobFSDataset`
+- New field `Description` in struct `AzureBlobFSDataset`
+- New field `Folder` in struct `AzureBlobFSDataset`
+- New field `Type` in struct `ManagedIntegrationRuntime`
+- New field `AdditionalProperties` in struct `ManagedIntegrationRuntime`
+- New field `Description` in struct `ManagedIntegrationRuntime`
+- New field `DisableMetricsCollection` in struct `AzureBlobFSSource`
+- New field `SourceRetryCount` in struct `AzureBlobFSSource`
+- New field `Type` in struct `AzureBlobFSSource`
+- New field `MaxConcurrentConnections` in struct `AzureBlobFSSource`
+- New field `SourceRetryWait` in struct `AzureBlobFSSource`
+- New field `AdditionalProperties` in struct `AzureBlobFSSource`
+- New field `Type` in struct `XMLReadSettings`
+- New field `AdditionalProperties` in struct `XMLReadSettings`
+- New field `WriteBatchTimeout` in struct `SalesforceSink`
+- New field `Type` in struct `SalesforceSink`
+- New field `AdditionalProperties` in struct `SalesforceSink`
+- New field `DisableMetricsCollection` in struct `SalesforceSink`
+- New field `SinkRetryCount` in struct `SalesforceSink`
+- New field `MaxConcurrentConnections` in struct `SalesforceSink`
+- New field `SinkRetryWait` in struct `SalesforceSink`
+- New field `WriteBatchSize` in struct `SalesforceSink`
+- New field `WorkspaceResourceID` in struct `AzureDatabricksDetltaLakeLinkedServiceTypeProperties`
+- New field `Credential` in struct `AzureDatabricksDetltaLakeLinkedServiceTypeProperties`
+- New field `Type` in struct `AzureMLExecutePipelineActivity`
+- New field `AdditionalProperties` in struct `AzureMLExecutePipelineActivity`
+- New field `Description` in struct `AzureMLExecutePipelineActivity`
+- New field `DependsOn` in struct `AzureMLExecutePipelineActivity`
+- New field `LinkedServiceName` in struct `AzureMLExecutePipelineActivity`
+- New field `Policy` in struct `AzureMLExecutePipelineActivity`
+- New field `UserProperties` in struct `AzureMLExecutePipelineActivity`
+- New field `Name` in struct `AzureMLExecutePipelineActivity`
+- New field `Description` in struct `SapOpenHubLinkedService`
+- New field `Parameters` in struct `SapOpenHubLinkedService`
+- New field `Type` in struct `SapOpenHubLinkedService`
+- New field `AdditionalProperties` in struct `SapOpenHubLinkedService`
+- New field `Annotations` in struct `SapOpenHubLinkedService`
+- New field `ConnectVia` in struct `SapOpenHubLinkedService`
+- New field `Type` in struct `AzureTableStorageLinkedService`
+- New field `AdditionalProperties` in struct `AzureTableStorageLinkedService`
+- New field `Annotations` in struct `AzureTableStorageLinkedService`
+- New field `ConnectVia` in struct `AzureTableStorageLinkedService`
+- New field `Description` in struct `AzureTableStorageLinkedService`
+- New field `Parameters` in struct `AzureTableStorageLinkedService`
+- New field `AdditionalProperties` in struct `ZohoLinkedService`
+- New field `Annotations` in struct `ZohoLinkedService`
+- New field `ConnectVia` in struct `ZohoLinkedService`
+- New field `Description` in struct `ZohoLinkedService`
+- New field `Parameters` in struct `ZohoLinkedService`
+- New field `Type` in struct `ZohoLinkedService`
+- New field `AdditionalProperties` in struct `SnowflakeExportCopyCommand`
+- New field `Type` in struct `SnowflakeExportCopyCommand`
+- New field `Parameters` in struct `MariaDBTableDataset`
+- New field `Description` in struct `MariaDBTableDataset`
+- New field `Folder` in struct `MariaDBTableDataset`
+- New field `Schema` in struct `MariaDBTableDataset`
+- New field `Structure` in struct `MariaDBTableDataset`
+- New field `Annotations` in struct `MariaDBTableDataset`
+- New field `AdditionalProperties` in struct `MariaDBTableDataset`
+- New field `LinkedServiceName` in struct `MariaDBTableDataset`
+- New field `Type` in struct `MariaDBTableDataset`
+- New field `LinkedServiceName` in struct `ServiceNowObjectDataset`
+- New field `Folder` in struct `ServiceNowObjectDataset`
+- New field `Parameters` in struct `ServiceNowObjectDataset`
+- New field `Schema` in struct `ServiceNowObjectDataset`
+- New field `Type` in struct `ServiceNowObjectDataset`
+- New field `Description` in struct `ServiceNowObjectDataset`
+- New field `Structure` in struct `ServiceNowObjectDataset`
+- New field `AdditionalProperties` in struct `ServiceNowObjectDataset`
+- New field `Annotations` in struct `ServiceNowObjectDataset`
+- New field `AdditionalProperties` in struct `SharePointOnlineListSource`
+- New field `DisableMetricsCollection` in struct `SharePointOnlineListSource`
+- New field `MaxConcurrentConnections` in struct `SharePointOnlineListSource`
+- New field `SourceRetryCount` in struct `SharePointOnlineListSource`
+- New field `SourceRetryWait` in struct `SharePointOnlineListSource`
+- New field `Type` in struct `SharePointOnlineListSource`
+- New field `Description` in struct `AmazonRedshiftLinkedService`
+- New field `Parameters` in struct `AmazonRedshiftLinkedService`
+- New field `Type` in struct `AmazonRedshiftLinkedService`
+- New field `AdditionalProperties` in struct `AmazonRedshiftLinkedService`
+- New field `Annotations` in struct `AmazonRedshiftLinkedService`
+- New field `ConnectVia` in struct `AmazonRedshiftLinkedService`
+- New field `SourceRetryCount` in struct `JiraSource`
+- New field `AdditionalColumns` in struct `JiraSource`
+- New field `DisableMetricsCollection` in struct `JiraSource`
+- New field `MaxConcurrentConnections` in struct `JiraSource`
+- New field `SourceRetryWait` in struct `JiraSource`
+- New field `Type` in struct `JiraSource`
+- New field `AdditionalProperties` in struct `JiraSource`
+- New field `QueryTimeout` in struct `JiraSource`
+- New field `Type` in struct `SQLServerLinkedService`
+- New field `AdditionalProperties` in struct `SQLServerLinkedService`
+- New field `Annotations` in struct `SQLServerLinkedService`
+- New field `ConnectVia` in struct `SQLServerLinkedService`
+- New field `Description` in struct `SQLServerLinkedService`
+- New field `Parameters` in struct `SQLServerLinkedService`
+- New field `DisableMetricsCollection` in struct `DelimitedTextSource`
+- New field `MaxConcurrentConnections` in struct `DelimitedTextSource`
+- New field `SourceRetryWait` in struct `DelimitedTextSource`
+- New field `Type` in struct `DelimitedTextSource`
+- New field `SourceRetryCount` in struct `DelimitedTextSource`
+- New field `AdditionalProperties` in struct `DelimitedTextSource`
+- New field `DisableMetricsCollection` in struct `SQLSource`
+- New field `MaxConcurrentConnections` in struct `SQLSource`
+- New field `Type` in struct `SQLSource`
+- New field `AdditionalProperties` in struct `SQLSource`
+- New field `QueryTimeout` in struct `SQLSource`
+- New field `SourceRetryCount` in struct `SQLSource`
+- New field `SourceRetryWait` in struct `SQLSource`
+- New field `AdditionalColumns` in struct `SQLSource`
+- New field `LinkedServiceName` in struct `CouchbaseTableDataset`
+- New field `AdditionalProperties` in struct `CouchbaseTableDataset`
+- New field `Description` in struct `CouchbaseTableDataset`
+- New field `Schema` in struct `CouchbaseTableDataset`
+- New field `Parameters` in struct `CouchbaseTableDataset`
+- New field `Structure` in struct `CouchbaseTableDataset`
+- New field `Type` in struct `CouchbaseTableDataset`
+- New field `Annotations` in struct `CouchbaseTableDataset`
+- New field `Folder` in struct `CouchbaseTableDataset`
+- New field `DisableMetricsCollection` in struct `SalesforceServiceCloudSink`
+- New field `SinkRetryCount` in struct `SalesforceServiceCloudSink`
+- New field `WriteBatchTimeout` in struct `SalesforceServiceCloudSink`
+- New field `Type` in struct `SalesforceServiceCloudSink`
+- New field `AdditionalProperties` in struct `SalesforceServiceCloudSink`
+- New field `MaxConcurrentConnections` in struct `SalesforceServiceCloudSink`
+- New field `SinkRetryWait` in struct `SalesforceServiceCloudSink`
+- New field `WriteBatchSize` in struct `SalesforceServiceCloudSink`
+- New field `Etag` in struct `LinkedServiceResource`
+- New field `ID` in struct `LinkedServiceResource`
+- New field `Name` in struct `LinkedServiceResource`
+- New field `Type` in struct `LinkedServiceResource`
+- New field `Type` in struct `ExecutionActivity`
+- New field `AdditionalProperties` in struct `ExecutionActivity`
+- New field `DependsOn` in struct `ExecutionActivity`
+- New field `Description` in struct `ExecutionActivity`
+- New field `UserProperties` in struct `ExecutionActivity`
+- New field `Name` in struct `ExecutionActivity`
+- New field `Structure` in struct `AzureDataLakeStoreDataset`
+- New field `Description` in struct `AzureDataLakeStoreDataset`
+- New field `Parameters` in struct `AzureDataLakeStoreDataset`
+- New field `LinkedServiceName` in struct `AzureDataLakeStoreDataset`
+- New field `AdditionalProperties` in struct `AzureDataLakeStoreDataset`
+- New field `Schema` in struct `AzureDataLakeStoreDataset`
+- New field `Annotations` in struct `AzureDataLakeStoreDataset`
+- New field `Type` in struct `AzureDataLakeStoreDataset`
+- New field `Folder` in struct `AzureDataLakeStoreDataset`
+- New field `Type` in struct `HdfsLocation`
+- New field `AdditionalProperties` in struct `HdfsLocation`
+- New field `FileName` in struct `HdfsLocation`
+- New field `FolderPath` in struct `HdfsLocation`
+- New field `DisableMetricsCollection` in struct `FileServerReadSettings`
+- New field `AdditionalProperties` in struct `FileServerReadSettings`
+- New field `MaxConcurrentConnections` in struct `FileServerReadSettings`
+- New field `Type` in struct `FileServerReadSettings`
+- New field `AdditionalProperties` in struct `MongoDbAtlasCollectionDataset`
+- New field `Description` in struct `MongoDbAtlasCollectionDataset`
+- New field `Parameters` in struct `MongoDbAtlasCollectionDataset`
+- New field `Structure` in struct `MongoDbAtlasCollectionDataset`
+- New field `Annotations` in struct `MongoDbAtlasCollectionDataset`
+- New field `Folder` in struct `MongoDbAtlasCollectionDataset`
+- New field `Schema` in struct `MongoDbAtlasCollectionDataset`
+- New field `LinkedServiceName` in struct `MongoDbAtlasCollectionDataset`
+- New field `Type` in struct `MongoDbAtlasCollectionDataset`
+- New field `Type` in struct `ParquetFormat`
+- New field `AdditionalProperties` in struct `ParquetFormat`
+- New field `Deserializer` in struct `ParquetFormat`
+- New field `Serializer` in struct `ParquetFormat`
+- New field `AdditionalProperties` in struct `ParquetSource`
+- New field `DisableMetricsCollection` in struct `ParquetSource`
+- New field `MaxConcurrentConnections` in struct `ParquetSource`
+- New field `SourceRetryCount` in struct `ParquetSource`
+- New field `SourceRetryWait` in struct `ParquetSource`
+- New field `Type` in struct `ParquetSource`
+- New field `LinkedServiceName` in struct `SnowflakeDataset`
+- New field `Type` in struct `SnowflakeDataset`
+- New field `Annotations` in struct `SnowflakeDataset`
+- New field `Parameters` in struct `SnowflakeDataset`
+- New field `Schema` in struct `SnowflakeDataset`
+- New field `Structure` in struct `SnowflakeDataset`
+- New field `Description` in struct `SnowflakeDataset`
+- New field `Folder` in struct `SnowflakeDataset`
+- New field `AdditionalProperties` in struct `SnowflakeDataset`
+- New field `Structure` in struct `ZohoObjectDataset`
+- New field `Type` in struct `ZohoObjectDataset`
+- New field `Schema` in struct `ZohoObjectDataset`
+- New field `Description` in struct `ZohoObjectDataset`
+- New field `LinkedServiceName` in struct `ZohoObjectDataset`
+- New field `AdditionalProperties` in struct `ZohoObjectDataset`
+- New field `Annotations` in struct `ZohoObjectDataset`
+- New field `Folder` in struct `ZohoObjectDataset`
+- New field `Parameters` in struct `ZohoObjectDataset`
+- New field `MaxConcurrentConnections` in struct `SquareSource`
+- New field `QueryTimeout` in struct `SquareSource`
+- New field `Type` in struct `SquareSource`
+- New field `AdditionalColumns` in struct `SquareSource`
+- New field `SourceRetryCount` in struct `SquareSource`
+- New field `SourceRetryWait` in struct `SquareSource`
+- New field `AdditionalProperties` in struct `SquareSource`
+- New field `DisableMetricsCollection` in struct `SquareSource`
+- New field `Parameters` in struct `AzureMLLinkedService`
+- New field `Type` in struct `AzureMLLinkedService`
+- New field `AdditionalProperties` in struct `AzureMLLinkedService`
+- New field `Annotations` in struct `AzureMLLinkedService`
+- New field `ConnectVia` in struct `AzureMLLinkedService`
+- New field `Description` in struct `AzureMLLinkedService`
+- New field `SourceRetryWait` in struct `NetezzaSource`
+- New field `AdditionalProperties` in struct `NetezzaSource`
+- New field `MaxConcurrentConnections` in struct `NetezzaSource`
+- New field `QueryTimeout` in struct `NetezzaSource`
+- New field `SourceRetryCount` in struct `NetezzaSource`
+- New field `Type` in struct `NetezzaSource`
+- New field `AdditionalColumns` in struct `NetezzaSource`
+- New field `DisableMetricsCollection` in struct `NetezzaSource`
+- New field `SinkRetryCount` in struct `DynamicsSink`
+- New field `WriteBatchSize` in struct `DynamicsSink`
+- New field `WriteBatchTimeout` in struct `DynamicsSink`
+- New field `Type` in struct `DynamicsSink`
+- New field `AdditionalProperties` in struct `DynamicsSink`
+- New field `DisableMetricsCollection` in struct `DynamicsSink`
+- New field `SinkRetryWait` in struct `DynamicsSink`
+- New field `MaxConcurrentConnections` in struct `DynamicsSink`
+- New field `DisableMetricsCollection` in struct `DynamicsCrmSink`
+- New field `MaxConcurrentConnections` in struct `DynamicsCrmSink`
+- New field `SinkRetryCount` in struct `DynamicsCrmSink`
+- New field `WriteBatchTimeout` in struct `DynamicsCrmSink`
+- New field `AdditionalProperties` in struct `DynamicsCrmSink`
+- New field `SinkRetryWait` in struct `DynamicsCrmSink`
+- New field `WriteBatchSize` in struct `DynamicsCrmSink`
+- New field `Type` in struct `DynamicsCrmSink`
+- New field `MaxConcurrentConnections` in struct `GreenplumSource`
+- New field `SourceRetryCount` in struct `GreenplumSource`
+- New field `SourceRetryWait` in struct `GreenplumSource`
+- New field `AdditionalColumns` in struct `GreenplumSource`
+- New field `DisableMetricsCollection` in struct `GreenplumSource`
+- New field `QueryTimeout` in struct `GreenplumSource`
+- New field `Type` in struct `GreenplumSource`
+- New field `AdditionalProperties` in struct `GreenplumSource`
+- New field `LinkedServiceName` in struct `HDInsightSparkActivity`
+- New field `UserProperties` in struct `HDInsightSparkActivity`
+- New field `Type` in struct `HDInsightSparkActivity`
+- New field `AdditionalProperties` in struct `HDInsightSparkActivity`
+- New field `Description` in struct `HDInsightSparkActivity`
+- New field `Policy` in struct `HDInsightSparkActivity`
+- New field `Name` in struct `HDInsightSparkActivity`
+- New field `DependsOn` in struct `HDInsightSparkActivity`
+- New field `DisableMetricsCollection` in struct `MongoDbSource`
+- New field `MaxConcurrentConnections` in struct `MongoDbSource`
+- New field `SourceRetryCount` in struct `MongoDbSource`
+- New field `SourceRetryWait` in struct `MongoDbSource`
+- New field `Type` in struct `MongoDbSource`
+- New field `AdditionalProperties` in struct `MongoDbSource`
+- New field `AdditionalProperties` in struct `ScheduleTrigger`
+- New field `Annotations` in struct `ScheduleTrigger`
+- New field `Description` in struct `ScheduleTrigger`
+- New field `Pipelines` in struct `ScheduleTrigger`
+- New field `RuntimeState` in struct `ScheduleTrigger`
+- New field `Type` in struct `ScheduleTrigger`
+- New field `AdditionalProperties` in struct `SalesforceServiceCloudSource`
+- New field `SourceRetryCount` in struct `SalesforceServiceCloudSource`
+- New field `SourceRetryWait` in struct `SalesforceServiceCloudSource`
+- New field `Type` in struct `SalesforceServiceCloudSource`
+- New field `DisableMetricsCollection` in struct `SalesforceServiceCloudSource`
+- New field `MaxConcurrentConnections` in struct `SalesforceServiceCloudSource`
+- New field `Annotations` in struct `HBaseObjectDataset`
+- New field `Folder` in struct `HBaseObjectDataset`
+- New field `LinkedServiceName` in struct `HBaseObjectDataset`
+- New field `Type` in struct `HBaseObjectDataset`
+- New field `AdditionalProperties` in struct `HBaseObjectDataset`
+- New field `Schema` in struct `HBaseObjectDataset`
+- New field `Description` in struct `HBaseObjectDataset`
+- New field `Parameters` in struct `HBaseObjectDataset`
+- New field `Structure` in struct `HBaseObjectDataset`
+- New field `AdditionalColumns` in struct `MariaDBSource`
+- New field `DisableMetricsCollection` in struct `MariaDBSource`
+- New field `MaxConcurrentConnections` in struct `MariaDBSource`
+- New field `QueryTimeout` in struct `MariaDBSource`
+- New field `SourceRetryCount` in struct `MariaDBSource`
+- New field `AdditionalProperties` in struct `MariaDBSource`
+- New field `SourceRetryWait` in struct `MariaDBSource`
+- New field `Type` in struct `MariaDBSource`
+- New field `AdditionalProperties` in struct `MarketoSource`
+- New field `DisableMetricsCollection` in struct `MarketoSource`
+- New field `AdditionalColumns` in struct `MarketoSource`
+- New field `MaxConcurrentConnections` in struct `MarketoSource`
+- New field `QueryTimeout` in struct `MarketoSource`
+- New field `SourceRetryCount` in struct `MarketoSource`
+- New field `SourceRetryWait` in struct `MarketoSource`
+- New field `Type` in struct `MarketoSource`
+- New field `Type` in struct `Flowlet`
+- New field `Annotations` in struct `Flowlet`
+- New field `Description` in struct `Flowlet`
+- New field `Folder` in struct `Flowlet`
+- New field `Type` in struct `AzureDatabricksDeltaLakeSink`
+- New field `AdditionalProperties` in struct `AzureDatabricksDeltaLakeSink`
+- New field `SinkRetryCount` in struct `AzureDatabricksDeltaLakeSink`
+- New field `SinkRetryWait` in struct `AzureDatabricksDeltaLakeSink`
+- New field `WriteBatchTimeout` in struct `AzureDatabricksDeltaLakeSink`
+- New field `DisableMetricsCollection` in struct `AzureDatabricksDeltaLakeSink`
+- New field `MaxConcurrentConnections` in struct `AzureDatabricksDeltaLakeSink`
+- New field `WriteBatchSize` in struct `AzureDatabricksDeltaLakeSink`
+- New field `Schema` in struct `MongoDbCollectionDataset`
+- New field `LinkedServiceName` in struct `MongoDbCollectionDataset`
+- New field `Type` in struct `MongoDbCollectionDataset`
+- New field `Annotations` in struct `MongoDbCollectionDataset`
+- New field `Parameters` in struct `MongoDbCollectionDataset`
+- New field `Structure` in struct `MongoDbCollectionDataset`
+- New field `AdditionalProperties` in struct `MongoDbCollectionDataset`
+- New field `Description` in struct `MongoDbCollectionDataset`
+- New field `Folder` in struct `MongoDbCollectionDataset`
+- New field `LinkedServiceName` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `Annotations` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `Schema` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `Structure` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `Type` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `Parameters` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `AdditionalProperties` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `Description` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `Folder` in struct `CommonDataServiceForAppsEntityDataset`
+- New field `Description` in struct `SsisFolder`
+- New field `ID` in struct `SsisFolder`
+- New field `Name` in struct `SsisFolder`
+- New field `Type` in struct `SsisFolder`
+- New field `AdditionalProperties` in struct `AzureDatabricksDeltaLakeImportCommand`
+- New field `Type` in struct `AzureDatabricksDeltaLakeImportCommand`
+- New field `SourceRetryWait` in struct `AmazonRdsForSQLServerSource`
+- New field `AdditionalProperties` in struct `AmazonRdsForSQLServerSource`
+- New field `SourceRetryCount` in struct `AmazonRdsForSQLServerSource`
+- New field `AdditionalColumns` in struct `AmazonRdsForSQLServerSource`
+- New field `DisableMetricsCollection` in struct `AmazonRdsForSQLServerSource`
+- New field `Type` in struct `AmazonRdsForSQLServerSource`
+- New field `QueryTimeout` in struct `AmazonRdsForSQLServerSource`
+- New field `MaxConcurrentConnections` in struct `AmazonRdsForSQLServerSource`
+- New field `ConnectVia` in struct `SapCloudForCustomerLinkedService`
+- New field `Description` in struct `SapCloudForCustomerLinkedService`
+- New field `Parameters` in struct `SapCloudForCustomerLinkedService`
+- New field `Type` in struct `SapCloudForCustomerLinkedService`
+- New field `AdditionalProperties` in struct `SapCloudForCustomerLinkedService`
+- New field `Annotations` in struct `SapCloudForCustomerLinkedService`
+- New field `WriteBatchTimeout` in struct `ParquetSink`
+- New field `MaxConcurrentConnections` in struct `ParquetSink`
+- New field `SinkRetryCount` in struct `ParquetSink`
+- New field `WriteBatchSize` in struct `ParquetSink`
+- New field `Type` in struct `ParquetSink`
+- New field `DisableMetricsCollection` in struct `ParquetSink`
+- New field `AdditionalProperties` in struct `ParquetSink`
+- New field `SinkRetryWait` in struct `ParquetSink`
+- New field `QueryTimeout` in struct `SapTableSource`
+- New field `AdditionalColumns` in struct `SapTableSource`
+- New field `AdditionalProperties` in struct `SapTableSource`
+- New field `SourceRetryCount` in struct `SapTableSource`
+- New field `MaxConcurrentConnections` in struct `SapTableSource`
+- New field `SourceRetryWait` in struct `SapTableSource`
+- New field `Type` in struct `SapTableSource`
+- New field `DisableMetricsCollection` in struct `SapTableSource`
+- New field `ConnectVia` in struct `DynamicsCrmLinkedService`
+- New field `Description` in struct `DynamicsCrmLinkedService`
+- New field `Parameters` in struct `DynamicsCrmLinkedService`
+- New field `Type` in struct `DynamicsCrmLinkedService`
+- New field `AdditionalProperties` in struct `DynamicsCrmLinkedService`
+- New field `Annotations` in struct `DynamicsCrmLinkedService`
+- New field `DependsOn` in struct `HDInsightPigActivity`
+- New field `LinkedServiceName` in struct `HDInsightPigActivity`
+- New field `Type` in struct `HDInsightPigActivity`
+- New field `AdditionalProperties` in struct `HDInsightPigActivity`
+- New field `Description` in struct `HDInsightPigActivity`
+- New field `Policy` in struct `HDInsightPigActivity`
+- New field `UserProperties` in struct `HDInsightPigActivity`
+- New field `Name` in struct `HDInsightPigActivity`
+- New field `AdditionalProperties` in struct `ChainingTrigger`
+- New field `Annotations` in struct `ChainingTrigger`
+- New field `Description` in struct `ChainingTrigger`
+- New field `RuntimeState` in struct `ChainingTrigger`
+- New field `Type` in struct `ChainingTrigger`
+- New field `Name` in struct `ManagedPrivateEndpointResource`
+- New field `Type` in struct `ManagedPrivateEndpointResource`
+- New field `Etag` in struct `ManagedPrivateEndpointResource`
+- New field `ID` in struct `ManagedPrivateEndpointResource`
+- New field `Description` in struct `SybaseTableDataset`
+- New field `Parameters` in struct `SybaseTableDataset`
+- New field `Folder` in struct `SybaseTableDataset`
+- New field `Structure` in struct `SybaseTableDataset`
+- New field `LinkedServiceName` in struct `SybaseTableDataset`
+- New field `Schema` in struct `SybaseTableDataset`
+- New field `Type` in struct `SybaseTableDataset`
+- New field `AdditionalProperties` in struct `SybaseTableDataset`
+- New field `Annotations` in struct `SybaseTableDataset`
+- New field `AdditionalProperties` in struct `BinarySink`
+- New field `DisableMetricsCollection` in struct `BinarySink`
+- New field `MaxConcurrentConnections` in struct `BinarySink`
+- New field `Type` in struct `BinarySink`
+- New field `SinkRetryWait` in struct `BinarySink`
+- New field `WriteBatchSize` in struct `BinarySink`
+- New field `WriteBatchTimeout` in struct `BinarySink`
+- New field `SinkRetryCount` in struct `BinarySink`
+- New field `Description` in struct `CosmosDbLinkedService`
+- New field `Parameters` in struct `CosmosDbLinkedService`
+- New field `Type` in struct `CosmosDbLinkedService`
+- New field `AdditionalProperties` in struct `CosmosDbLinkedService`
+- New field `Annotations` in struct `CosmosDbLinkedService`
+- New field `ConnectVia` in struct `CosmosDbLinkedService`
+- New field `ConnectVia` in struct `AzureDataLakeAnalyticsLinkedService`
+- New field `Description` in struct `AzureDataLakeAnalyticsLinkedService`
+- New field `Parameters` in struct `AzureDataLakeAnalyticsLinkedService`
+- New field `Type` in struct `AzureDataLakeAnalyticsLinkedService`
+- New field `AdditionalProperties` in struct `AzureDataLakeAnalyticsLinkedService`
+- New field `Annotations` in struct `AzureDataLakeAnalyticsLinkedService`
+- New field `Name` in struct `IntegrationRuntimeResource`
+- New field `Type` in struct `IntegrationRuntimeResource`
+- New field `Etag` in struct `IntegrationRuntimeResource`
+- New field `ID` in struct `IntegrationRuntimeResource`
+- New field `AdditionalProperties` in struct `HiveSource`
+- New field `DisableMetricsCollection` in struct `HiveSource`
+- New field `MaxConcurrentConnections` in struct `HiveSource`
+- New field `QueryTimeout` in struct `HiveSource`
+- New field `SourceRetryWait` in struct `HiveSource`
+- New field `SourceRetryCount` in struct `HiveSource`
+- New field `Type` in struct `HiveSource`
+- New field `AdditionalColumns` in struct `HiveSource`
+- New field `DependsOn` in struct `HDInsightStreamingActivity`
+- New field `Description` in struct `HDInsightStreamingActivity`
+- New field `Policy` in struct `HDInsightStreamingActivity`
+- New field `Name` in struct `HDInsightStreamingActivity`
+- New field `Type` in struct `HDInsightStreamingActivity`
+- New field `AdditionalProperties` in struct `HDInsightStreamingActivity`
+- New field `LinkedServiceName` in struct `HDInsightStreamingActivity`
+- New field `UserProperties` in struct `HDInsightStreamingActivity`
+- New field `Credential` in struct `CosmosDbLinkedServiceTypeProperties`
+- New field `ConnectVia` in struct `FtpServerLinkedService`
+- New field `Description` in struct `FtpServerLinkedService`
+- New field `Parameters` in struct `FtpServerLinkedService`
+- New field `Type` in struct `FtpServerLinkedService`
+- New field `AdditionalProperties` in struct `FtpServerLinkedService`
+- New field `Annotations` in struct `FtpServerLinkedService`
+- New field `Type` in struct `GreenplumLinkedService`
+- New field `AdditionalProperties` in struct `GreenplumLinkedService`
+- New field `Annotations` in struct `GreenplumLinkedService`
+- New field `ConnectVia` in struct `GreenplumLinkedService`
+- New field `Description` in struct `GreenplumLinkedService`
+- New field `Parameters` in struct `GreenplumLinkedService`
+- New field `AdditionalProperties` in struct `HTTPLinkedService`
+- New field `Annotations` in struct `HTTPLinkedService`
+- New field `ConnectVia` in struct `HTTPLinkedService`
+- New field `Description` in struct `HTTPLinkedService`
+- New field `Parameters` in struct `HTTPLinkedService`
+- New field `Type` in struct `HTTPLinkedService`
+- New field `Parameters` in struct `ODataLinkedService`
+- New field `Type` in struct `ODataLinkedService`
+- New field `AdditionalProperties` in struct `ODataLinkedService`
+- New field `Annotations` in struct `ODataLinkedService`
+- New field `ConnectVia` in struct `ODataLinkedService`
+- New field `Description` in struct `ODataLinkedService`
+- New field `AdditionalProperties` in struct `SelfHostedIntegrationRuntime`
+- New field `Description` in struct `SelfHostedIntegrationRuntime`
+- New field `Type` in struct `SelfHostedIntegrationRuntime`
+- New field `Description` in struct `ResponsysObjectDataset`
+- New field `LinkedServiceName` in struct `ResponsysObjectDataset`
+- New field `Annotations` in struct `ResponsysObjectDataset`
+- New field `Folder` in struct `ResponsysObjectDataset`
+- New field `Parameters` in struct `ResponsysObjectDataset`
+- New field `Schema` in struct `ResponsysObjectDataset`
+- New field `Type` in struct `ResponsysObjectDataset`
+- New field `AdditionalProperties` in struct `ResponsysObjectDataset`
+- New field `Structure` in struct `ResponsysObjectDataset`
+- New field `SourceRetryCount` in struct `AzureTableSource`
+- New field `SourceRetryWait` in struct `AzureTableSource`
+- New field `Type` in struct `AzureTableSource`
+- New field `AdditionalColumns` in struct `AzureTableSource`
+- New field `AdditionalProperties` in struct `AzureTableSource`
+- New field `DisableMetricsCollection` in struct `AzureTableSource`
+- New field `QueryTimeout` in struct `AzureTableSource`
+- New field `MaxConcurrentConnections` in struct `AzureTableSource`
+- New field `SourceRetryCount` in struct `PostgreSQLSource`
+- New field `AdditionalColumns` in struct `PostgreSQLSource`
+- New field `AdditionalProperties` in struct `PostgreSQLSource`
+- New field `DisableMetricsCollection` in struct `PostgreSQLSource`
+- New field `SourceRetryWait` in struct `PostgreSQLSource`
+- New field `Type` in struct `PostgreSQLSource`
+- New field `MaxConcurrentConnections` in struct `PostgreSQLSource`
+- New field `QueryTimeout` in struct `PostgreSQLSource`
+- New field `Parameters` in struct `HubspotLinkedService`
+- New field `Type` in struct `HubspotLinkedService`
+- New field `AdditionalProperties` in struct `HubspotLinkedService`
+- New field `Annotations` in struct `HubspotLinkedService`
+- New field `ConnectVia` in struct `HubspotLinkedService`
+- New field `Description` in struct `HubspotLinkedService`
+- New field `Type` in struct `InformixLinkedService`
+- New field `AdditionalProperties` in struct `InformixLinkedService`
+- New field `Annotations` in struct `InformixLinkedService`
+- New field `ConnectVia` in struct `InformixLinkedService`
+- New field `Description` in struct `InformixLinkedService`
+- New field `Parameters` in struct `InformixLinkedService`
+- New field `Parameters` in struct `AzureFunctionLinkedService`
+- New field `Type` in struct `AzureFunctionLinkedService`
+- New field `AdditionalProperties` in struct `AzureFunctionLinkedService`
+- New field `Annotations` in struct `AzureFunctionLinkedService`
+- New field `ConnectVia` in struct `AzureFunctionLinkedService`
+- New field `Description` in struct `AzureFunctionLinkedService`
+- New field `MaxConcurrentConnections` in struct `ExcelSource`
+- New field `SourceRetryCount` in struct `ExcelSource`
+- New field `SourceRetryWait` in struct `ExcelSource`
+- New field `Type` in struct `ExcelSource`
+- New field `AdditionalProperties` in struct `ExcelSource`
+- New field `DisableMetricsCollection` in struct `ExcelSource`
+- New field `QueryTimeout` in struct `SapCloudForCustomerSource`
+- New field `SourceRetryCount` in struct `SapCloudForCustomerSource`
+- New field `DisableMetricsCollection` in struct `SapCloudForCustomerSource`
+- New field `MaxConcurrentConnections` in struct `SapCloudForCustomerSource`
+- New field `SourceRetryWait` in struct `SapCloudForCustomerSource`
+- New field `Type` in struct `SapCloudForCustomerSource`
+- New field `AdditionalColumns` in struct `SapCloudForCustomerSource`
+- New field `AdditionalProperties` in struct `SapCloudForCustomerSource`
+- New field `Parameters` in struct `Db2LinkedService`
+- New field `Type` in struct `Db2LinkedService`
+- New field `AdditionalProperties` in struct `Db2LinkedService`
+- New field `Annotations` in struct `Db2LinkedService`
+- New field `ConnectVia` in struct `Db2LinkedService`
+- New field `Description` in struct `Db2LinkedService`
+- New field `Etag` in struct `ManagedVirtualNetworkResource`
+- New field `ID` in struct `ManagedVirtualNetworkResource`
+- New field `Name` in struct `ManagedVirtualNetworkResource`
+- New field `Type` in struct `ManagedVirtualNetworkResource`
+- New field `AdditionalProperties` in struct `AzureSQLSource`
+- New field `DisableMetricsCollection` in struct `AzureSQLSource`
+- New field `Type` in struct `AzureSQLSource`
+- New field `AdditionalColumns` in struct `AzureSQLSource`
+- New field `MaxConcurrentConnections` in struct `AzureSQLSource`
+- New field `QueryTimeout` in struct `AzureSQLSource`
+- New field `SourceRetryCount` in struct `AzureSQLSource`
+- New field `SourceRetryWait` in struct `AzureSQLSource`
+- New field `SourceRetryCount` in struct `OracleSource`
+- New field `SourceRetryWait` in struct `OracleSource`
+- New field `AdditionalProperties` in struct `OracleSource`
+- New field `MaxConcurrentConnections` in struct `OracleSource`
+- New field `Type` in struct `OracleSource`
+- New field `DisableMetricsCollection` in struct `OracleSource`
+- New field `AdditionalProperties` in struct `AmazonS3ReadSettings`
+- New field `Type` in struct `AmazonS3ReadSettings`
+- New field `DisableMetricsCollection` in struct `AmazonS3ReadSettings`
+- New field `MaxConcurrentConnections` in struct `AmazonS3ReadSettings`
+- New field `MaxConcurrentConnections` in struct `OracleCloudStorageReadSettings`
+- New field `Type` in struct `OracleCloudStorageReadSettings`
+- New field `DisableMetricsCollection` in struct `OracleCloudStorageReadSettings`
+- New field `AdditionalProperties` in struct `OracleCloudStorageReadSettings`
+- New field `DisableMetricsCollection` in struct `SftpReadSettings`
+- New field `MaxConcurrentConnections` in struct `SftpReadSettings`
+- New field `AdditionalProperties` in struct `SftpReadSettings`
+- New field `Type` in struct `SftpReadSettings`
+- New field `UserProperties` in struct `ValidationActivity`
+- New field `Name` in struct `ValidationActivity`
+- New field `Type` in struct `ValidationActivity`
+- New field `AdditionalProperties` in struct `ValidationActivity`
+- New field `DependsOn` in struct `ValidationActivity`
+- New field `Description` in struct `ValidationActivity`
+- New field `Type` in struct `CustomActivity`
+- New field `UserProperties` in struct `CustomActivity`
+- New field `Name` in struct `CustomActivity`
+- New field `DependsOn` in struct `CustomActivity`
+- New field `Description` in struct `CustomActivity`
+- New field `LinkedServiceName` in struct `CustomActivity`
+- New field `Policy` in struct `CustomActivity`
+- New field `AdditionalProperties` in struct `CustomActivity`
+- New field `WriteBatchTimeout` in struct `AzureDataExplorerSink`
+- New field `DisableMetricsCollection` in struct `AzureDataExplorerSink`
+- New field `MaxConcurrentConnections` in struct `AzureDataExplorerSink`
+- New field `WriteBatchSize` in struct `AzureDataExplorerSink`
+- New field `Type` in struct `AzureDataExplorerSink`
+- New field `AdditionalProperties` in struct `AzureDataExplorerSink`
+- New field `SinkRetryCount` in struct `AzureDataExplorerSink`
+- New field `SinkRetryWait` in struct `AzureDataExplorerSink`
+- New field `Type` in struct `NetezzaTableDataset`
+- New field `Annotations` in struct `NetezzaTableDataset`
+- New field `Folder` in struct `NetezzaTableDataset`
+- New field `Schema` in struct `NetezzaTableDataset`
+- New field `LinkedServiceName` in struct `NetezzaTableDataset`
+- New field `AdditionalProperties` in struct `NetezzaTableDataset`
+- New field `Parameters` in struct `NetezzaTableDataset`
+- New field `Description` in struct `NetezzaTableDataset`
+- New field `Structure` in struct `NetezzaTableDataset`
+- New field `Name` in struct `LinkedServiceDebugResource`
+- New field `AdditionalProperties` in struct `SapOpenHubSource`
+- New field `MaxConcurrentConnections` in struct `SapOpenHubSource`
+- New field `QueryTimeout` in struct `SapOpenHubSource`
+- New field `AdditionalColumns` in struct `SapOpenHubSource`
+- New field `DisableMetricsCollection` in struct `SapOpenHubSource`
+- New field `SourceRetryCount` in struct `SapOpenHubSource`
+- New field `SourceRetryWait` in struct `SapOpenHubSource`
+- New field `Type` in struct `SapOpenHubSource`
+- New field `SourceRetryWait` in struct `AmazonMWSSource`
+- New field `AdditionalColumns` in struct `AmazonMWSSource`
+- New field `AdditionalProperties` in struct `AmazonMWSSource`
+- New field `DisableMetricsCollection` in struct `AmazonMWSSource`
+- New field `QueryTimeout` in struct `AmazonMWSSource`
+- New field `Type` in struct `AmazonMWSSource`
+- New field `MaxConcurrentConnections` in struct `AmazonMWSSource`
+- New field `SourceRetryCount` in struct `AmazonMWSSource`
+- New field `DependsOn` in struct `SQLServerStoredProcedureActivity`
+- New field `Name` in struct `SQLServerStoredProcedureActivity`
+- New field `Description` in struct `SQLServerStoredProcedureActivity`
+- New field `LinkedServiceName` in struct `SQLServerStoredProcedureActivity`
+- New field `Policy` in struct `SQLServerStoredProcedureActivity`
+- New field `UserProperties` in struct `SQLServerStoredProcedureActivity`
+- New field `Type` in struct `SQLServerStoredProcedureActivity`
+- New field `AdditionalProperties` in struct `SQLServerStoredProcedureActivity`
+- New field `Name` in struct `IntegrationRuntimeDebugResource`
+- New field `AdditionalColumns` in struct `GoogleBigQuerySource`
+- New field `DisableMetricsCollection` in struct `GoogleBigQuerySource`
+- New field `MaxConcurrentConnections` in struct `GoogleBigQuerySource`
+- New field `QueryTimeout` in struct `GoogleBigQuerySource`
+- New field `SourceRetryCount` in struct `GoogleBigQuerySource`
+- New field `SourceRetryWait` in struct `GoogleBigQuerySource`
+- New field `Type` in struct `GoogleBigQuerySource`
+- New field `AdditionalProperties` in struct `GoogleBigQuerySource`
+- New field `Description` in struct `AzureDatabricksLinkedService`
+- New field `Parameters` in struct `AzureDatabricksLinkedService`
+- New field `Type` in struct `AzureDatabricksLinkedService`
+- New field `AdditionalProperties` in struct `AzureDatabricksLinkedService`
+- New field `Annotations` in struct `AzureDatabricksLinkedService`
+- New field `ConnectVia` in struct `AzureDatabricksLinkedService`
+- New field `AuthorizationType` in struct `LinkedIntegrationRuntimeKeyAuthorization`
+- New field `URL` in struct `WebClientCertificateAuthentication`
+- New field `AuthenticationType` in struct `WebClientCertificateAuthentication`
+- New field `WriteBatchSize` in struct `SnowflakeSink`
+- New field `MaxConcurrentConnections` in struct `SnowflakeSink`
+- New field `SinkRetryCount` in struct `SnowflakeSink`
+- New field `SinkRetryWait` in struct `SnowflakeSink`
+- New field `Type` in struct `SnowflakeSink`
+- New field `AdditionalProperties` in struct `SnowflakeSink`
+- New field `WriteBatchTimeout` in struct `SnowflakeSink`
+- New field `DisableMetricsCollection` in struct `SnowflakeSink`
+- New field `SinkRetryCount` in struct `CosmosDbSQLAPISink`
+- New field `WriteBatchTimeout` in struct `CosmosDbSQLAPISink`
+- New field `Type` in struct `CosmosDbSQLAPISink`
+- New field `AdditionalProperties` in struct `CosmosDbSQLAPISink`
+- New field `SinkRetryWait` in struct `CosmosDbSQLAPISink`
+- New field `WriteBatchSize` in struct `CosmosDbSQLAPISink`
+- New field `DisableMetricsCollection` in struct `CosmosDbSQLAPISink`
+- New field `MaxConcurrentConnections` in struct `CosmosDbSQLAPISink`
+- New field `Annotations` in struct `AzureBlobFSLinkedService`
+- New field `ConnectVia` in struct `AzureBlobFSLinkedService`
+- New field `Description` in struct `AzureBlobFSLinkedService`
+- New field `Parameters` in struct `AzureBlobFSLinkedService`
+- New field `Type` in struct `AzureBlobFSLinkedService`
+- New field `AdditionalProperties` in struct `AzureBlobFSLinkedService`
+- New field `Type` in struct `AzureDataLakeStoreLinkedService`
+- New field `AdditionalProperties` in struct `AzureDataLakeStoreLinkedService`
+- New field `Annotations` in struct `AzureDataLakeStoreLinkedService`
+- New field `ConnectVia` in struct `AzureDataLakeStoreLinkedService`
+- New field `Description` in struct `AzureDataLakeStoreLinkedService`
+- New field `Parameters` in struct `AzureDataLakeStoreLinkedService`
+- New field `Structure` in struct `HubspotObjectDataset`
+- New field `Description` in struct `HubspotObjectDataset`
+- New field `Schema` in struct `HubspotObjectDataset`
+- New field `Annotations` in struct `HubspotObjectDataset`
+- New field `LinkedServiceName` in struct `HubspotObjectDataset`
+- New field `Folder` in struct `HubspotObjectDataset`
+- New field `Parameters` in struct `HubspotObjectDataset`
+- New field `Type` in struct `HubspotObjectDataset`
+- New field `AdditionalProperties` in struct `HubspotObjectDataset`
+- New field `UserProperties` in struct `SwitchActivity`
+- New field `Name` in struct `SwitchActivity`
+- New field `Type` in struct `SwitchActivity`
+- New field `AdditionalProperties` in struct `SwitchActivity`
+- New field `DependsOn` in struct `SwitchActivity`
+- New field `Description` in struct `SwitchActivity`
+- New field `LinkedServiceName` in struct `SapTableResourceDataset`
+- New field `AdditionalProperties` in struct `SapTableResourceDataset`
+- New field `Description` in struct `SapTableResourceDataset`
+- New field `Folder` in struct `SapTableResourceDataset`
+- New field `Parameters` in struct `SapTableResourceDataset`
+- New field `Structure` in struct `SapTableResourceDataset`
+- New field `Type` in struct `SapTableResourceDataset`
+- New field `Annotations` in struct `SapTableResourceDataset`
+- New field `Schema` in struct `SapTableResourceDataset`
+- New field `Annotations` in struct `ODataResourceDataset`
+- New field `Description` in struct `ODataResourceDataset`
+- New field `LinkedServiceName` in struct `ODataResourceDataset`
+- New field `Folder` in struct `ODataResourceDataset`
+- New field `Parameters` in struct `ODataResourceDataset`
+- New field `Schema` in struct `ODataResourceDataset`
+- New field `Type` in struct `ODataResourceDataset`
+- New field `Structure` in struct `ODataResourceDataset`
+- New field `AdditionalProperties` in struct `ODataResourceDataset`
+- New field `SchemaLinkedService` in struct `PowerQuerySink`
+- New field `Name` in struct `PowerQuerySink`
+- New field `Dataset` in struct `PowerQuerySink`
+- New field `Description` in struct `PowerQuerySink`
+- New field `Flowlet` in struct `PowerQuerySink`
+- New field `LinkedService` in struct `PowerQuerySink`
+- New field `AdditionalProperties` in struct `AmazonRdsForSQLServerLinkedService`
+- New field `Annotations` in struct `AmazonRdsForSQLServerLinkedService`
+- New field `ConnectVia` in struct `AmazonRdsForSQLServerLinkedService`
+- New field `Description` in struct `AmazonRdsForSQLServerLinkedService`
+- New field `Parameters` in struct `AmazonRdsForSQLServerLinkedService`
+- New field `Type` in struct `AmazonRdsForSQLServerLinkedService`
+- New field `MaxConcurrentConnections` in struct `MongoDbAtlasSource`
+- New field `SourceRetryWait` in struct `MongoDbAtlasSource`
+- New field `AdditionalProperties` in struct `MongoDbAtlasSource`
+- New field `SourceRetryCount` in struct `MongoDbAtlasSource`
+- New field `Type` in struct `MongoDbAtlasSource`
+- New field `DisableMetricsCollection` in struct `MongoDbAtlasSource`
+- New field `Type` in struct `AzureKeyVaultSecretReference`
+- New field `Annotations` in struct `ShopifyObjectDataset`
+- New field `Schema` in struct `ShopifyObjectDataset`
+- New field `Structure` in struct `ShopifyObjectDataset`
+- New field `LinkedServiceName` in struct `ShopifyObjectDataset`
+- New field `Folder` in struct `ShopifyObjectDataset`
+- New field `AdditionalProperties` in struct `ShopifyObjectDataset`
+- New field `Parameters` in struct `ShopifyObjectDataset`
+- New field `Description` in struct `ShopifyObjectDataset`
+- New field `Type` in struct `ShopifyObjectDataset`
+- New field `AdditionalProperties` in struct `RestSource`
+- New field `DisableMetricsCollection` in struct `RestSource`
+- New field `MaxConcurrentConnections` in struct `RestSource`
+- New field `Type` in struct `RestSource`
+- New field `SourceRetryCount` in struct `RestSource`
+- New field `SourceRetryWait` in struct `RestSource`
+- New field `AdditionalProperties` in struct `SnowflakeImportCopyCommand`
+- New field `Type` in struct `SnowflakeImportCopyCommand`
+- New field `Description` in struct `PhoenixObjectDataset`
+- New field `Structure` in struct `PhoenixObjectDataset`
+- New field `Type` in struct `PhoenixObjectDataset`
+- New field `Folder` in struct `PhoenixObjectDataset`
+- New field `Parameters` in struct `PhoenixObjectDataset`
+- New field `Schema` in struct `PhoenixObjectDataset`
+- New field `LinkedServiceName` in struct `PhoenixObjectDataset`
+- New field `AdditionalProperties` in struct `PhoenixObjectDataset`
+- New field `Annotations` in struct `PhoenixObjectDataset`
+- New field `Type` in struct `OrcWriteSettings`
+- New field `AdditionalProperties` in struct `OrcWriteSettings`
+- New field `SourceRetryCount` in struct `AmazonRedshiftSource`
+- New field `SourceRetryWait` in struct `AmazonRedshiftSource`
+- New field `AdditionalProperties` in struct `AmazonRedshiftSource`
+- New field `DisableMetricsCollection` in struct `AmazonRedshiftSource`
+- New field `MaxConcurrentConnections` in struct `AmazonRedshiftSource`
+- New field `Type` in struct `AmazonRedshiftSource`
+- New field `AdditionalColumns` in struct `AmazonRedshiftSource`
+- New field `QueryTimeout` in struct `AmazonRedshiftSource`
+- New field `ConnectVia` in struct `WebLinkedService`
+- New field `Description` in struct `WebLinkedService`
+- New field `Parameters` in struct `WebLinkedService`
+- New field `Type` in struct `WebLinkedService`
+- New field `AdditionalProperties` in struct `WebLinkedService`
+- New field `Annotations` in struct `WebLinkedService`
+- New field `Type` in struct `MultiplePipelineTrigger`
+- New field `AdditionalProperties` in struct `MultiplePipelineTrigger`
+- New field `Annotations` in struct `MultiplePipelineTrigger`
+- New field `Description` in struct `MultiplePipelineTrigger`
+- New field `RuntimeState` in struct `MultiplePipelineTrigger`
+- New field `Schema` in struct `SharePointOnlineListResourceDataset`
+- New field `LinkedServiceName` in struct `SharePointOnlineListResourceDataset`
+- New field `Type` in struct `SharePointOnlineListResourceDataset`
+- New field `Annotations` in struct `SharePointOnlineListResourceDataset`
+- New field `Description` in struct `SharePointOnlineListResourceDataset`
+- New field `Parameters` in struct `SharePointOnlineListResourceDataset`
+- New field `AdditionalProperties` in struct `SharePointOnlineListResourceDataset`
+- New field `Folder` in struct `SharePointOnlineListResourceDataset`
+- New field `Structure` in struct `SharePointOnlineListResourceDataset`
+- New field `Structure` in struct `OracleTableDataset`
+- New field `Annotations` in struct `OracleTableDataset`
+- New field `Type` in struct `OracleTableDataset`
+- New field `Parameters` in struct `OracleTableDataset`
+- New field `Schema` in struct `OracleTableDataset`
+- New field `AdditionalProperties` in struct `OracleTableDataset`
+- New field `Description` in struct `OracleTableDataset`
+- New field `LinkedServiceName` in struct `OracleTableDataset`
+- New field `Folder` in struct `OracleTableDataset`
+- New field `Description` in struct `AzureDataExplorerLinkedService`
+- New field `Parameters` in struct `AzureDataExplorerLinkedService`
+- New field `Type` in struct `AzureDataExplorerLinkedService`
+- New field `AdditionalProperties` in struct `AzureDataExplorerLinkedService`
+- New field `Annotations` in struct `AzureDataExplorerLinkedService`
+- New field `ConnectVia` in struct `AzureDataExplorerLinkedService`
+- New field `Parameters` in struct `PostgreSQLTableDataset`
+- New field `Structure` in struct `PostgreSQLTableDataset`
+- New field `Type` in struct `PostgreSQLTableDataset`
+- New field `LinkedServiceName` in struct `PostgreSQLTableDataset`
+- New field `Schema` in struct `PostgreSQLTableDataset`
+- New field `AdditionalProperties` in struct `PostgreSQLTableDataset`
+- New field `Annotations` in struct `PostgreSQLTableDataset`
+- New field `Description` in struct `PostgreSQLTableDataset`
+- New field `Folder` in struct `PostgreSQLTableDataset`
+- New field `AdditionalProperties` in struct `AvroDataset`
+- New field `Annotations` in struct `AvroDataset`
+- New field `Parameters` in struct `AvroDataset`
+- New field `Schema` in struct `AvroDataset`
+- New field `LinkedServiceName` in struct `AvroDataset`
+- New field `Description` in struct `AvroDataset`
+- New field `Folder` in struct `AvroDataset`
+- New field `Structure` in struct `AvroDataset`
+- New field `Type` in struct `AvroDataset`
+- New field `AdditionalProperties` in struct `PaypalSource`
+- New field `SourceRetryWait` in struct `PaypalSource`
+- New field `MaxConcurrentConnections` in struct `PaypalSource`
+- New field `QueryTimeout` in struct `PaypalSource`
+- New field `SourceRetryCount` in struct `PaypalSource`
+- New field `DisableMetricsCollection` in struct `PaypalSource`
+- New field `Type` in struct `PaypalSource`
+- New field `AdditionalColumns` in struct `PaypalSource`
+- New field `Annotations` in struct `CustomEventsTrigger`
+- New field `Description` in struct `CustomEventsTrigger`
+- New field `Pipelines` in struct `CustomEventsTrigger`
+- New field `RuntimeState` in struct `CustomEventsTrigger`
+- New field `Type` in struct `CustomEventsTrigger`
+- New field `AdditionalProperties` in struct `CustomEventsTrigger`
+- New field `Parameters` in struct `RestResourceDataset`
+- New field `LinkedServiceName` in struct `RestResourceDataset`
+- New field `Structure` in struct `RestResourceDataset`
+- New field `Schema` in struct `RestResourceDataset`
+- New field `Type` in struct `RestResourceDataset`
+- New field `Annotations` in struct `RestResourceDataset`
+- New field `Description` in struct `RestResourceDataset`
+- New field `AdditionalProperties` in struct `RestResourceDataset`
+- New field `Folder` in struct `RestResourceDataset`
+- New field `AdditionalProperties` in struct `AmazonRdsForOracleTableDataset`
+- New field `Description` in struct `AmazonRdsForOracleTableDataset`
+- New field `Folder` in struct `AmazonRdsForOracleTableDataset`
+- New field `Structure` in struct `AmazonRdsForOracleTableDataset`
+- New field `Type` in struct `AmazonRdsForOracleTableDataset`
+- New field `Annotations` in struct `AmazonRdsForOracleTableDataset`
+- New field `Parameters` in struct `AmazonRdsForOracleTableDataset`
+- New field `LinkedServiceName` in struct `AmazonRdsForOracleTableDataset`
+- New field `Schema` in struct `AmazonRdsForOracleTableDataset`
+- New field `AdditionalProperties` in struct `AzureSQLDatabaseLinkedService`
+- New field `Annotations` in struct `AzureSQLDatabaseLinkedService`
+- New field `ConnectVia` in struct `AzureSQLDatabaseLinkedService`
+- New field `Description` in struct `AzureSQLDatabaseLinkedService`
+- New field `Parameters` in struct `AzureSQLDatabaseLinkedService`
+- New field `Type` in struct `AzureSQLDatabaseLinkedService`
+- New field `Folder` in struct `InformixTableDataset`
+- New field `Structure` in struct `InformixTableDataset`
+- New field `Type` in struct `InformixTableDataset`
+- New field `Description` in struct `InformixTableDataset`
+- New field `AdditionalProperties` in struct `InformixTableDataset`
+- New field `Parameters` in struct `InformixTableDataset`
+- New field `Schema` in struct `InformixTableDataset`
+- New field `LinkedServiceName` in struct `InformixTableDataset`
+- New field `Annotations` in struct `InformixTableDataset`
+- New field `UserProperties` in struct `AzureMLBatchExecutionActivity`
+- New field `Type` in struct `AzureMLBatchExecutionActivity`
+- New field `Name` in struct `AzureMLBatchExecutionActivity`
+- New field `AdditionalProperties` in struct `AzureMLBatchExecutionActivity`
+- New field `DependsOn` in struct `AzureMLBatchExecutionActivity`
+- New field `Description` in struct `AzureMLBatchExecutionActivity`
+- New field `LinkedServiceName` in struct `AzureMLBatchExecutionActivity`
+- New field `Policy` in struct `AzureMLBatchExecutionActivity`
+- New field `UserProperties` in struct `AppendVariableActivity`
+- New field `Name` in struct `AppendVariableActivity`
+- New field `Type` in struct `AppendVariableActivity`
+- New field `AdditionalProperties` in struct `AppendVariableActivity`
+- New field `DependsOn` in struct `AppendVariableActivity`
+- New field `Description` in struct `AppendVariableActivity`
+- New field `Description` in struct `ControlActivity`
+- New field `UserProperties` in struct `ControlActivity`
+- New field `Name` in struct `ControlActivity`
+- New field `Type` in struct `ControlActivity`
+- New field `AdditionalProperties` in struct `ControlActivity`
+- New field `DependsOn` in struct `ControlActivity`
+- New field `AdditionalProperties` in struct `Office365Source`
+- New field `DisableMetricsCollection` in struct `Office365Source`
+- New field `MaxConcurrentConnections` in struct `Office365Source`
+- New field `SourceRetryCount` in struct `Office365Source`
+- New field `SourceRetryWait` in struct `Office365Source`
+- New field `Type` in struct `Office365Source`
+- New field `DisableMetricsCollection` in struct `AzureFileStorageReadSettings`
+- New field `Type` in struct `AzureFileStorageReadSettings`
+- New field `MaxConcurrentConnections` in struct `AzureFileStorageReadSettings`
+- New field `AdditionalProperties` in struct `AzureFileStorageReadSettings`
+- New field `AuthenticationType` in struct `WebAnonymousAuthentication`
+- New field `URL` in struct `WebAnonymousAuthentication`
+- New field `WriteBatchTimeout` in struct `SapCloudForCustomerSink`
+- New field `SinkRetryWait` in struct `SapCloudForCustomerSink`
+- New field `WriteBatchSize` in struct `SapCloudForCustomerSink`
+- New field `Type` in struct `SapCloudForCustomerSink`
+- New field `AdditionalProperties` in struct `SapCloudForCustomerSink`
+- New field `DisableMetricsCollection` in struct `SapCloudForCustomerSink`
+- New field `MaxConcurrentConnections` in struct `SapCloudForCustomerSink`
+- New field `SinkRetryCount` in struct `SapCloudForCustomerSink`
+- New field `QueryTimeout` in struct `AzureMariaDBSource`
+- New field `SourceRetryCount` in struct `AzureMariaDBSource`
+- New field `SourceRetryWait` in struct `AzureMariaDBSource`
+- New field `AdditionalColumns` in struct `AzureMariaDBSource`
+- New field `DisableMetricsCollection` in struct `AzureMariaDBSource`
+- New field `MaxConcurrentConnections` in struct `AzureMariaDBSource`
+- New field `Type` in struct `AzureMariaDBSource`
+- New field `AdditionalProperties` in struct `AzureMariaDBSource`
+- New field `Type` in struct `AzureStorageLinkedService`
+- New field `AdditionalProperties` in struct `AzureStorageLinkedService`
+- New field `Annotations` in struct `AzureStorageLinkedService`
+- New field `ConnectVia` in struct `AzureStorageLinkedService`
+- New field `Description` in struct `AzureStorageLinkedService`
+- New field `Parameters` in struct `AzureStorageLinkedService`
+- New field `SourceRetryCount` in struct `DrillSource`
+- New field `SourceRetryWait` in struct `DrillSource`
+- New field `Type` in struct `DrillSource`
+- New field `AdditionalColumns` in struct `DrillSource`
+- New field `MaxConcurrentConnections` in struct `DrillSource`
+- New field `AdditionalProperties` in struct `DrillSource`
+- New field `DisableMetricsCollection` in struct `DrillSource`
+- New field `QueryTimeout` in struct `DrillSource`
+- New field `Type` in struct `SalesforceServiceCloudObjectDataset`
+- New field `AdditionalProperties` in struct `SalesforceServiceCloudObjectDataset`
+- New field `Folder` in struct `SalesforceServiceCloudObjectDataset`
+- New field `Annotations` in struct `SalesforceServiceCloudObjectDataset`
+- New field `Parameters` in struct `SalesforceServiceCloudObjectDataset`
+- New field `Schema` in struct `SalesforceServiceCloudObjectDataset`
+- New field `Structure` in struct `SalesforceServiceCloudObjectDataset`
+- New field `LinkedServiceName` in struct `SalesforceServiceCloudObjectDataset`
+- New field `Description` in struct `SalesforceServiceCloudObjectDataset`
+- New field `Name` in struct `DatabricksNotebookActivity`
+- New field `Type` in struct `DatabricksNotebookActivity`
+- New field `AdditionalProperties` in struct `DatabricksNotebookActivity`
+- New field `DependsOn` in struct `DatabricksNotebookActivity`
+- New field `LinkedServiceName` in struct `DatabricksNotebookActivity`
+- New field `Description` in struct `DatabricksNotebookActivity`
+- New field `Policy` in struct `DatabricksNotebookActivity`
+- New field `UserProperties` in struct `DatabricksNotebookActivity`
+- New field `Description` in struct `DataFlowSource`
+- New field `Flowlet` in struct `DataFlowSource`
+- New field `LinkedService` in struct `DataFlowSource`
+- New field `Name` in struct `DataFlowSource`
+- New field `Dataset` in struct `DataFlowSource`
+- New field `AdditionalProperties` in struct `JSONFormat`
+- New field `Deserializer` in struct `JSONFormat`
+- New field `Serializer` in struct `JSONFormat`
+- New field `Type` in struct `JSONFormat`
+- New field `AdditionalProperties` in struct `SftpLocation`
+- New field `FileName` in struct `SftpLocation`
+- New field `FolderPath` in struct `SftpLocation`
+- New field `Type` in struct `SftpLocation`
+- New field `Type` in struct `XMLDataset`
+- New field `Structure` in struct `XMLDataset`
+- New field `Annotations` in struct `XMLDataset`
+- New field `Schema` in struct `XMLDataset`
+- New field `Description` in struct `XMLDataset`
+- New field `Folder` in struct `XMLDataset`
+- New field `Parameters` in struct `XMLDataset`
+- New field `LinkedServiceName` in struct `XMLDataset`
+- New field `AdditionalProperties` in struct `XMLDataset`
+- New field `Type` in struct `AzureBlobFSWriteSettings`
+- New field `AdditionalProperties` in struct `AzureBlobFSWriteSettings`
+- New field `CopyBehavior` in struct `AzureBlobFSWriteSettings`
+- New field `DisableMetricsCollection` in struct `AzureBlobFSWriteSettings`
+- New field `MaxConcurrentConnections` in struct `AzureBlobFSWriteSettings`
+- New field `Type` in struct `CosmosDbSQLAPISource`
+- New field `AdditionalProperties` in struct `CosmosDbSQLAPISource`
+- New field `MaxConcurrentConnections` in struct `CosmosDbSQLAPISource`
+- New field `DisableMetricsCollection` in struct `CosmosDbSQLAPISource`
+- New field `SourceRetryCount` in struct `CosmosDbSQLAPISource`
+- New field `SourceRetryWait` in struct `CosmosDbSQLAPISource`
+- New field `AdditionalProperties` in struct `AzureBlobFSSink`
+- New field `DisableMetricsCollection` in struct `AzureBlobFSSink`
+- New field `MaxConcurrentConnections` in struct `AzureBlobFSSink`
+- New field `SinkRetryCount` in struct `AzureBlobFSSink`
+- New field `SinkRetryWait` in struct `AzureBlobFSSink`
+- New field `WriteBatchSize` in struct `AzureBlobFSSink`
+- New field `WriteBatchTimeout` in struct `AzureBlobFSSink`
+- New field `Type` in struct `AzureBlobFSSink`
+- New field `Description` in struct `SapHanaLinkedService`
+- New field `Parameters` in struct `SapHanaLinkedService`
+- New field `Type` in struct `SapHanaLinkedService`
+- New field `AdditionalProperties` in struct `SapHanaLinkedService`
+- New field `Annotations` in struct `SapHanaLinkedService`
+- New field `ConnectVia` in struct `SapHanaLinkedService`
+- New field `ConnectVia` in struct `ConcurLinkedService`
+- New field `Description` in struct `ConcurLinkedService`
+- New field `Parameters` in struct `ConcurLinkedService`
+- New field `Type` in struct `ConcurLinkedService`
+- New field `AdditionalProperties` in struct `ConcurLinkedService`
+- New field `Annotations` in struct `ConcurLinkedService`
+- New field `AdditionalProperties` in struct `SelfHostedIntegrationRuntimeStatus`
+- New field `DataFactoryName` in struct `SelfHostedIntegrationRuntimeStatus`
+- New field `State` in struct `SelfHostedIntegrationRuntimeStatus`
+- New field `Type` in struct `SelfHostedIntegrationRuntimeStatus`
+- New field `Parameters` in struct `ShopifyLinkedService`
+- New field `Type` in struct `ShopifyLinkedService`
+- New field `AdditionalProperties` in struct `ShopifyLinkedService`
+- New field `Annotations` in struct `ShopifyLinkedService`
+- New field `ConnectVia` in struct `ShopifyLinkedService`
+- New field `Description` in struct `ShopifyLinkedService`
+- New field `AdditionalProperties` in struct `AzureSQLMILinkedService`
+- New field `Annotations` in struct `AzureSQLMILinkedService`
+- New field `ConnectVia` in struct `AzureSQLMILinkedService`
+- New field `Description` in struct `AzureSQLMILinkedService`
+- New field `Parameters` in struct `AzureSQLMILinkedService`
+- New field `Type` in struct `AzureSQLMILinkedService`
+- New field `DisableMetricsCollection` in struct `BinarySource`
+- New field `MaxConcurrentConnections` in struct `BinarySource`
+- New field `SourceRetryCount` in struct `BinarySource`
+- New field `SourceRetryWait` in struct `BinarySource`
+- New field `Type` in struct `BinarySource`
+- New field `AdditionalProperties` in struct `BinarySource`
+- New field `Name` in struct `FilterActivity`
+- New field `Type` in struct `FilterActivity`
+- New field `AdditionalProperties` in struct `FilterActivity`
+- New field `DependsOn` in struct `FilterActivity`
+- New field `Description` in struct `FilterActivity`
+- New field `UserProperties` in struct `FilterActivity`
+- New field `Credential` in struct `DynamicsLinkedServiceTypeProperties`
+- New field `LinkedServiceName` in struct `HTTPDataset`
+- New field `Folder` in struct `HTTPDataset`
+- New field `Schema` in struct `HTTPDataset`
+- New field `Type` in struct `HTTPDataset`
+- New field `AdditionalProperties` in struct `HTTPDataset`
+- New field `Description` in struct `HTTPDataset`
+- New field `Structure` in struct `HTTPDataset`
+- New field `Annotations` in struct `HTTPDataset`
+- New field `Parameters` in struct `HTTPDataset`
+- New field `ConnectVia` in struct `AmazonMWSLinkedService`
+- New field `Description` in struct `AmazonMWSLinkedService`
+- New field `Parameters` in struct `AmazonMWSLinkedService`
+- New field `Type` in struct `AmazonMWSLinkedService`
+- New field `AdditionalProperties` in struct `AmazonMWSLinkedService`
+- New field `Annotations` in struct `AmazonMWSLinkedService`
+- New field `SinkRetryCount` in struct `SQLDWSink`
+- New field `WriteBatchSize` in struct `SQLDWSink`
+- New field `WriteBatchTimeout` in struct `SQLDWSink`
+- New field `Type` in struct `SQLDWSink`
+- New field `AdditionalProperties` in struct `SQLDWSink`
+- New field `DisableMetricsCollection` in struct `SQLDWSink`
+- New field `SinkRetryWait` in struct `SQLDWSink`
+- New field `MaxConcurrentConnections` in struct `SQLDWSink`
+- New field `Type` in struct `SftpWriteSettings`
+- New field `AdditionalProperties` in struct `SftpWriteSettings`
+- New field `CopyBehavior` in struct `SftpWriteSettings`
+- New field `DisableMetricsCollection` in struct `SftpWriteSettings`
+- New field `MaxConcurrentConnections` in struct `SftpWriteSettings`
+- New field `Type` in struct `AvroFormat`
+- New field `AdditionalProperties` in struct `AvroFormat`
+- New field `Deserializer` in struct `AvroFormat`
+- New field `Serializer` in struct `AvroFormat`
+- New field `DisableMetricsCollection` in struct `ConcurSource`
+- New field `MaxConcurrentConnections` in struct `ConcurSource`
+- New field `QueryTimeout` in struct `ConcurSource`
+- New field `SourceRetryCount` in struct `ConcurSource`
+- New field `SourceRetryWait` in struct `ConcurSource`
+- New field `Type` in struct `ConcurSource`
+- New field `AdditionalColumns` in struct `ConcurSource`
+- New field `AdditionalProperties` in struct `ConcurSource`
+- New field `FileName` in struct `OracleCloudStorageLocation`
+- New field `FolderPath` in struct `OracleCloudStorageLocation`
+- New field `Type` in struct `OracleCloudStorageLocation`
+- New field `AdditionalProperties` in struct `OracleCloudStorageLocation`
+- New field `SourceRetryCount` in struct `HubspotSource`
+- New field `AdditionalColumns` in struct `HubspotSource`
+- New field `AdditionalProperties` in struct `HubspotSource`
+- New field `DisableMetricsCollection` in struct `HubspotSource`
+- New field `MaxConcurrentConnections` in struct `HubspotSource`
+- New field `SourceRetryWait` in struct `HubspotSource`
+- New field `Type` in struct `HubspotSource`
+- New field `QueryTimeout` in struct `HubspotSource`
+- New field `Type` in struct `TriggerDependencyReference`
+- New field `SourceRetryCount` in struct `MicrosoftAccessSource`
+- New field `SourceRetryWait` in struct `MicrosoftAccessSource`
+- New field `Type` in struct `MicrosoftAccessSource`
+- New field `AdditionalProperties` in struct `MicrosoftAccessSource`
+- New field `DisableMetricsCollection` in struct `MicrosoftAccessSource`
+- New field `MaxConcurrentConnections` in struct `MicrosoftAccessSource`
+- New field `Type` in struct `TarReadSettings`
+- New field `AdditionalProperties` in struct `TarReadSettings`
+- New field `Description` in struct `AzureDataExplorerTableDataset`
+- New field `Parameters` in struct `AzureDataExplorerTableDataset`
+- New field `LinkedServiceName` in struct `AzureDataExplorerTableDataset`
+- New field `Annotations` in struct `AzureDataExplorerTableDataset`
+- New field `Folder` in struct `AzureDataExplorerTableDataset`
+- New field `Schema` in struct `AzureDataExplorerTableDataset`
+- New field `AdditionalProperties` in struct `AzureDataExplorerTableDataset`
+- New field `Structure` in struct `AzureDataExplorerTableDataset`
+- New field `Type` in struct `AzureDataExplorerTableDataset`
+- New field `AdditionalProperties` in struct `AzureMariaDBLinkedService`
+- New field `Annotations` in struct `AzureMariaDBLinkedService`
+- New field `ConnectVia` in struct `AzureMariaDBLinkedService`
+- New field `Description` in struct `AzureMariaDBLinkedService`
+- New field `Parameters` in struct `AzureMariaDBLinkedService`
+- New field `Type` in struct `AzureMariaDBLinkedService`
+- New field `Type` in struct `ZipDeflateReadSettings`
+- New field `AdditionalProperties` in struct `ZipDeflateReadSettings`
+- New field `WriteBatchSize` in struct `OracleSink`
+- New field `Type` in struct `OracleSink`
+- New field `AdditionalProperties` in struct `OracleSink`
+- New field `WriteBatchTimeout` in struct `OracleSink`
+- New field `MaxConcurrentConnections` in struct `OracleSink`
+- New field `SinkRetryWait` in struct `OracleSink`
+- New field `DisableMetricsCollection` in struct `OracleSink`
+- New field `SinkRetryCount` in struct `OracleSink`
+- New field `Etag` in struct `PrivateLinkConnectionApprovalRequestResource`
+- New field `ID` in struct `PrivateLinkConnectionApprovalRequestResource`
+- New field `Name` in struct `PrivateLinkConnectionApprovalRequestResource`
+- New field `Type` in struct `PrivateLinkConnectionApprovalRequestResource`
+- New field `Annotations` in struct `SharePointOnlineListLinkedService`
+- New field `ConnectVia` in struct `SharePointOnlineListLinkedService`
+- New field `Description` in struct `SharePointOnlineListLinkedService`
+- New field `Parameters` in struct `SharePointOnlineListLinkedService`
+- New field `Type` in struct `SharePointOnlineListLinkedService`
+- New field `AdditionalProperties` in struct `SharePointOnlineListLinkedService`
+- New field `AdditionalProperties` in struct `DelimitedTextDataset`
+- New field `Parameters` in struct `DelimitedTextDataset`
+- New field `LinkedServiceName` in struct `DelimitedTextDataset`
+- New field `Type` in struct `DelimitedTextDataset`
+- New field `Schema` in struct `DelimitedTextDataset`
+- New field `Annotations` in struct `DelimitedTextDataset`
+- New field `Description` in struct `DelimitedTextDataset`
+- New field `Folder` in struct `DelimitedTextDataset`
+- New field `Structure` in struct `DelimitedTextDataset`
+- New field `UserProperties` in struct `WebActivity`
+- New field `Policy` in struct `WebActivity`
+- New field `Name` in struct `WebActivity`
+- New field `Type` in struct `WebActivity`
+- New field `Description` in struct `WebActivity`
+- New field `AdditionalProperties` in struct `WebActivity`
+- New field `DependsOn` in struct `WebActivity`
+- New field `LinkedServiceName` in struct `WebActivity`
+- New field `Type` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `AdditionalProperties` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `Description` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `Folder` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `Parameters` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `Schema` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `Annotations` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `Structure` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `LinkedServiceName` in struct `CosmosDbSQLAPICollectionDataset`
+- New field `MaxConcurrentConnections` in struct `SybaseSource`
+- New field `SourceRetryCount` in struct `SybaseSource`
+- New field `Type` in struct `SybaseSource`
+- New field `AdditionalColumns` in struct `SybaseSource`
+- New field `AdditionalProperties` in struct `SybaseSource`
+- New field `QueryTimeout` in struct `SybaseSource`
+- New field `SourceRetryWait` in struct `SybaseSource`
+- New field `DisableMetricsCollection` in struct `SybaseSource`
+- New field `Annotations` in struct `DocumentDbCollectionDataset`
+- New field `Description` in struct `DocumentDbCollectionDataset`
+- New field `Parameters` in struct `DocumentDbCollectionDataset`
+- New field `AdditionalProperties` in struct `DocumentDbCollectionDataset`
+- New field `LinkedServiceName` in struct `DocumentDbCollectionDataset`
+- New field `Schema` in struct `DocumentDbCollectionDataset`
+- New field `Folder` in struct `DocumentDbCollectionDataset`
+- New field `Structure` in struct `DocumentDbCollectionDataset`
+- New field `Type` in struct `DocumentDbCollectionDataset`
+- New field `Description` in struct `AzurePostgreSQLTableDataset`
+- New field `Schema` in struct `AzurePostgreSQLTableDataset`
+- New field `Structure` in struct `AzurePostgreSQLTableDataset`
+- New field `Annotations` in struct `AzurePostgreSQLTableDataset`
+- New field `Parameters` in struct `AzurePostgreSQLTableDataset`
+- New field `Type` in struct `AzurePostgreSQLTableDataset`
+- New field `AdditionalProperties` in struct `AzurePostgreSQLTableDataset`
+- New field `Folder` in struct `AzurePostgreSQLTableDataset`
+- New field `LinkedServiceName` in struct `AzurePostgreSQLTableDataset`
+- New field `Type` in struct `OrcDataset`
+- New field `Description` in struct `OrcDataset`
+- New field `Schema` in struct `OrcDataset`
+- New field `Structure` in struct `OrcDataset`
+- New field `AdditionalProperties` in struct `OrcDataset`
+- New field `Annotations` in struct `OrcDataset`
+- New field `LinkedServiceName` in struct `OrcDataset`
+- New field `Folder` in struct `OrcDataset`
+- New field `Parameters` in struct `OrcDataset`
+- New field `AdditionalColumns` in struct `InformixSource`
+- New field `AdditionalProperties` in struct `InformixSource`
+- New field `DisableMetricsCollection` in struct `InformixSource`
+- New field `MaxConcurrentConnections` in struct `InformixSource`
+- New field `QueryTimeout` in struct `InformixSource`
+- New field `SourceRetryCount` in struct `InformixSource`
+- New field `SourceRetryWait` in struct `InformixSource`
+- New field `Type` in struct `InformixSource`
+- New field `AuthenticationType` in struct `WebBasicAuthentication`
+- New field `URL` in struct `WebBasicAuthentication`
+- New field `Annotations` in struct `OdbcTableDataset`
+- New field `AdditionalProperties` in struct `OdbcTableDataset`
+- New field `Folder` in struct `OdbcTableDataset`
+- New field `Parameters` in struct `OdbcTableDataset`
+- New field `LinkedServiceName` in struct `OdbcTableDataset`
+- New field `Description` in struct `OdbcTableDataset`
+- New field `Schema` in struct `OdbcTableDataset`
+- New field `Structure` in struct `OdbcTableDataset`
+- New field `Type` in struct `OdbcTableDataset`
+- New field `Folder` in struct `JSONDataset`
+- New field `Parameters` in struct `JSONDataset`
+- New field `AdditionalProperties` in struct `JSONDataset`
+- New field `Description` in struct `JSONDataset`
+- New field `Structure` in struct `JSONDataset`
+- New field `Type` in struct `JSONDataset`
+- New field `Annotations` in struct `JSONDataset`
+- New field `Schema` in struct `JSONDataset`
+- New field `LinkedServiceName` in struct `JSONDataset`
+- New field `Description` in struct `AzureMLServiceLinkedService`
+- New field `Parameters` in struct `AzureMLServiceLinkedService`
+- New field `Type` in struct `AzureMLServiceLinkedService`
+- New field `AdditionalProperties` in struct `AzureMLServiceLinkedService`
+- New field `Annotations` in struct `AzureMLServiceLinkedService`
+- New field `ConnectVia` in struct `AzureMLServiceLinkedService`
+- New field `Parameters` in struct `AmazonMWSObjectDataset`
+- New field `Schema` in struct `AmazonMWSObjectDataset`
+- New field `Structure` in struct `AmazonMWSObjectDataset`
+- New field `LinkedServiceName` in struct `AmazonMWSObjectDataset`
+- New field `AdditionalProperties` in struct `AmazonMWSObjectDataset`
+- New field `Folder` in struct `AmazonMWSObjectDataset`
+- New field `Type` in struct `AmazonMWSObjectDataset`
+- New field `Annotations` in struct `AmazonMWSObjectDataset`
+- New field `Description` in struct `AmazonMWSObjectDataset`
+- New field `UserProperties` in struct `AzureFunctionActivity`
+- New field `Name` in struct `AzureFunctionActivity`
+- New field `Type` in struct `AzureFunctionActivity`
+- New field `AdditionalProperties` in struct `AzureFunctionActivity`
+- New field `DependsOn` in struct `AzureFunctionActivity`
+- New field `Description` in struct `AzureFunctionActivity`
+- New field `LinkedServiceName` in struct `AzureFunctionActivity`
+- New field `Policy` in struct `AzureFunctionActivity`
+- New field `Schema` in struct `MicrosoftAccessTableDataset`
+- New field `Folder` in struct `MicrosoftAccessTableDataset`
+- New field `Parameters` in struct `MicrosoftAccessTableDataset`
+- New field `AdditionalProperties` in struct `MicrosoftAccessTableDataset`
+- New field `Description` in struct `MicrosoftAccessTableDataset`
+- New field `Type` in struct `MicrosoftAccessTableDataset`
+- New field `LinkedServiceName` in struct `MicrosoftAccessTableDataset`
+- New field `Annotations` in struct `MicrosoftAccessTableDataset`
+- New field `Structure` in struct `MicrosoftAccessTableDataset`
+- New field `AdditionalProperties` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `Description` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `Parameters` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `Schema` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `Type` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `Folder` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `Structure` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `LinkedServiceName` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `Annotations` in struct `AzureDatabricksDeltaLakeDataset`
+- New field `Description` in struct `ForEachActivity`
+- New field `UserProperties` in struct `ForEachActivity`
+- New field `Name` in struct `ForEachActivity`
+- New field `Type` in struct `ForEachActivity`
+- New field `AdditionalProperties` in struct `ForEachActivity`
+- New field `DependsOn` in struct `ForEachActivity`
+- New field `Parameters` in struct `ResponsysLinkedService`
+- New field `Type` in struct `ResponsysLinkedService`
+- New field `AdditionalProperties` in struct `ResponsysLinkedService`
+- New field `Annotations` in struct `ResponsysLinkedService`
+- New field `ConnectVia` in struct `ResponsysLinkedService`
+- New field `Description` in struct `ResponsysLinkedService`
+- New field `WriteBatchSize` in struct `SQLSink`
+- New field `SinkRetryWait` in struct `SQLSink`
+- New field `MaxConcurrentConnections` in struct `SQLSink`
+- New field `SinkRetryCount` in struct `SQLSink`
+- New field `WriteBatchTimeout` in struct `SQLSink`
+- New field `DisableMetricsCollection` in struct `SQLSink`
+- New field `AdditionalProperties` in struct `SQLSink`
+- New field `Type` in struct `SQLSink`
+- New field `ConnectionProperties` in struct `GoogleAdWordsLinkedServiceTypeProperties`
+- New field `Description` in struct `MongoDbV2LinkedService`
+- New field `Parameters` in struct `MongoDbV2LinkedService`
+- New field `Type` in struct `MongoDbV2LinkedService`
+- New field `AdditionalProperties` in struct `MongoDbV2LinkedService`
+- New field `Annotations` in struct `MongoDbV2LinkedService`
+- New field `ConnectVia` in struct `MongoDbV2LinkedService`
+- New field `Name` in struct `SsisProject`
+- New field `Type` in struct `SsisProject`
+- New field `Description` in struct `SsisProject`
+- New field `ID` in struct `SsisProject`
+- New field `DisableMetricsCollection` in struct `PhoenixSource`
+- New field `MaxConcurrentConnections` in struct `PhoenixSource`
+- New field `QueryTimeout` in struct `PhoenixSource`
+- New field `Type` in struct `PhoenixSource`
+- New field `SourceRetryCount` in struct `PhoenixSource`
+- New field `SourceRetryWait` in struct `PhoenixSource`
+- New field `AdditionalProperties` in struct `PhoenixSource`
+- New field `AdditionalColumns` in struct `PhoenixSource`
+- New field `Annotations` in struct `EloquaLinkedService`
+- New field `ConnectVia` in struct `EloquaLinkedService`
+- New field `Description` in struct `EloquaLinkedService`
+- New field `Parameters` in struct `EloquaLinkedService`
+- New field `Type` in struct `EloquaLinkedService`
+- New field `AdditionalProperties` in struct `EloquaLinkedService`
+- New field `SourceRetryCount` in struct `AzurePostgreSQLSource`
+- New field `DisableMetricsCollection` in struct `AzurePostgreSQLSource`
+- New field `SourceRetryWait` in struct `AzurePostgreSQLSource`
+- New field `Type` in struct `AzurePostgreSQLSource`
+- New field `AdditionalColumns` in struct `AzurePostgreSQLSource`
+- New field `AdditionalProperties` in struct `AzurePostgreSQLSource`
+- New field `MaxConcurrentConnections` in struct `AzurePostgreSQLSource`
+- New field `QueryTimeout` in struct `AzurePostgreSQLSource`
+- New field `Folder` in struct `SapOpenHubTableDataset`
+- New field `Parameters` in struct `SapOpenHubTableDataset`
+- New field `Type` in struct `SapOpenHubTableDataset`
+- New field `AdditionalProperties` in struct `SapOpenHubTableDataset`
+- New field `Description` in struct `SapOpenHubTableDataset`
+- New field `LinkedServiceName` in struct `SapOpenHubTableDataset`
+- New field `Annotations` in struct `SapOpenHubTableDataset`
+- New field `Schema` in struct `SapOpenHubTableDataset`
+- New field `Structure` in struct `SapOpenHubTableDataset`
+- New field `Type` in struct `AvroWriteSettings`
+- New field `AdditionalProperties` in struct `AvroWriteSettings`
+- New field `Parameters` in struct `MongoDbAtlasLinkedService`
+- New field `Type` in struct `MongoDbAtlasLinkedService`
+- New field `AdditionalProperties` in struct `MongoDbAtlasLinkedService`
+- New field `Annotations` in struct `MongoDbAtlasLinkedService`
+- New field `ConnectVia` in struct `MongoDbAtlasLinkedService`
+- New field `Description` in struct `MongoDbAtlasLinkedService`
+- New field `Type` in struct `AzureFileStorageWriteSettings`
+- New field `AdditionalProperties` in struct `AzureFileStorageWriteSettings`
+- New field `CopyBehavior` in struct `AzureFileStorageWriteSettings`
+- New field `DisableMetricsCollection` in struct `AzureFileStorageWriteSettings`
+- New field `MaxConcurrentConnections` in struct `AzureFileStorageWriteSettings`
+- New field `Parameters` in struct `AmazonRdsForOracleLinkedService`
+- New field `Type` in struct `AmazonRdsForOracleLinkedService`
+- New field `AdditionalProperties` in struct `AmazonRdsForOracleLinkedService`
+- New field `Annotations` in struct `AmazonRdsForOracleLinkedService`
+- New field `ConnectVia` in struct `AmazonRdsForOracleLinkedService`
+- New field `Description` in struct `AmazonRdsForOracleLinkedService`
+- New field `AdditionalProperties` in struct `DynamicsSource`
+- New field `DisableMetricsCollection` in struct `DynamicsSource`
+- New field `MaxConcurrentConnections` in struct `DynamicsSource`
+- New field `SourceRetryCount` in struct `DynamicsSource`
+- New field `SourceRetryWait` in struct `DynamicsSource`
+- New field `Type` in struct `DynamicsSource`
+- New field `Type` in struct `SelfDependencyTumblingWindowTriggerReference`
+- New field `Type` in struct `BlobSink`
+- New field `MaxConcurrentConnections` in struct `BlobSink`
+- New field `WriteBatchTimeout` in struct `BlobSink`
+- New field `AdditionalProperties` in struct `BlobSink`
+- New field `DisableMetricsCollection` in struct `BlobSink`
+- New field `SinkRetryCount` in struct `BlobSink`
+- New field `SinkRetryWait` in struct `BlobSink`
+- New field `WriteBatchSize` in struct `BlobSink`
+- New field `Description` in struct `JiraLinkedService`
+- New field `Parameters` in struct `JiraLinkedService`
+- New field `Type` in struct `JiraLinkedService`
+- New field `AdditionalProperties` in struct `JiraLinkedService`
+- New field `Annotations` in struct `JiraLinkedService`
+- New field `ConnectVia` in struct `JiraLinkedService`
+- New field `AdditionalProperties` in struct `DatabricksSparkPythonActivity`
+- New field `LinkedServiceName` in struct `DatabricksSparkPythonActivity`
+- New field `Policy` in struct `DatabricksSparkPythonActivity`
+- New field `UserProperties` in struct `DatabricksSparkPythonActivity`
+- New field `Type` in struct `DatabricksSparkPythonActivity`
+- New field `DependsOn` in struct `DatabricksSparkPythonActivity`
+- New field `Description` in struct `DatabricksSparkPythonActivity`
+- New field `Name` in struct `DatabricksSparkPythonActivity`
+- New field `Parameters` in struct `HiveObjectDataset`
+- New field `Annotations` in struct `HiveObjectDataset`
+- New field `Structure` in struct `HiveObjectDataset`
+- New field `LinkedServiceName` in struct `HiveObjectDataset`
+- New field `Folder` in struct `HiveObjectDataset`
+- New field `Schema` in struct `HiveObjectDataset`
+- New field `Description` in struct `HiveObjectDataset`
+- New field `Type` in struct `HiveObjectDataset`
+- New field `AdditionalProperties` in struct `HiveObjectDataset`
+- New field `Folder` in struct `TeradataTableDataset`
+- New field `Parameters` in struct `TeradataTableDataset`
+- New field `Description` in struct `TeradataTableDataset`
+- New field `Structure` in struct `TeradataTableDataset`
+- New field `Annotations` in struct `TeradataTableDataset`
+- New field `AdditionalProperties` in struct `TeradataTableDataset`
+- New field `LinkedServiceName` in struct `TeradataTableDataset`
+- New field `Type` in struct `TeradataTableDataset`
+- New field `Schema` in struct `TeradataTableDataset`
+- New field `Annotations` in struct `MySQLTableDataset`
+- New field `AdditionalProperties` in struct `MySQLTableDataset`
+- New field `Parameters` in struct `MySQLTableDataset`
+- New field `LinkedServiceName` in struct `MySQLTableDataset`
+- New field `Schema` in struct `MySQLTableDataset`
+- New field `Structure` in struct `MySQLTableDataset`
+- New field `Type` in struct `MySQLTableDataset`
+- New field `Description` in struct `MySQLTableDataset`
+- New field `Folder` in struct `MySQLTableDataset`
+- New field `Annotations` in struct `MarketoObjectDataset`
+- New field `Structure` in struct `MarketoObjectDataset`
+- New field `Type` in struct `MarketoObjectDataset`
+- New field `Description` in struct `MarketoObjectDataset`
+- New field `Folder` in struct `MarketoObjectDataset`
+- New field `Schema` in struct `MarketoObjectDataset`
+- New field `LinkedServiceName` in struct `MarketoObjectDataset`
+- New field `AdditionalProperties` in struct `MarketoObjectDataset`
+- New field `Parameters` in struct `MarketoObjectDataset`
+- New field `Name` in struct `Factory`
+- New field `Type` in struct `Factory`
+- New field `ETag` in struct `Factory`
+- New field `ID` in struct `Factory`
+- New field `Location` in struct `Factory`
+- New field `Tags` in struct `Factory`
+- New field `Parameters` in struct `WebTableDataset`
+- New field `LinkedServiceName` in struct `WebTableDataset`
+- New field `Description` in struct `WebTableDataset`
+- New field `AdditionalProperties` in struct `WebTableDataset`
+- New field `Annotations` in struct `WebTableDataset`
+- New field `Folder` in struct `WebTableDataset`
+- New field `Schema` in struct `WebTableDataset`
+- New field `Structure` in struct `WebTableDataset`
+- New field `Type` in struct `WebTableDataset`
+- New field `SourceRetryWait` in struct `XeroSource`
+- New field `Type` in struct `XeroSource`
+- New field `DisableMetricsCollection` in struct `XeroSource`
+- New field `MaxConcurrentConnections` in struct `XeroSource`
+- New field `SourceRetryCount` in struct `XeroSource`
+- New field `AdditionalColumns` in struct `XeroSource`
+- New field `AdditionalProperties` in struct `XeroSource`
+- New field `QueryTimeout` in struct `XeroSource`
+- New field `SourceRetryCount` in struct `PrestoSource`
+- New field `SourceRetryWait` in struct `PrestoSource`
+- New field `AdditionalColumns` in struct `PrestoSource`
+- New field `AdditionalProperties` in struct `PrestoSource`
+- New field `DisableMetricsCollection` in struct `PrestoSource`
+- New field `Type` in struct `PrestoSource`
+- New field `MaxConcurrentConnections` in struct `PrestoSource`
+- New field `QueryTimeout` in struct `PrestoSource`
+- New field `SinkRetryWait` in struct `AzurePostgreSQLSink`
+- New field `WriteBatchSize` in struct `AzurePostgreSQLSink`
+- New field `MaxConcurrentConnections` in struct `AzurePostgreSQLSink`
+- New field `SinkRetryCount` in struct `AzurePostgreSQLSink`
+- New field `WriteBatchTimeout` in struct `AzurePostgreSQLSink`
+- New field `Type` in struct `AzurePostgreSQLSink`
+- New field `AdditionalProperties` in struct `AzurePostgreSQLSink`
+- New field `DisableMetricsCollection` in struct `AzurePostgreSQLSink`
+- New field `AdditionalProperties` in struct `IfConditionActivity`
+- New field `DependsOn` in struct `IfConditionActivity`
+- New field `Description` in struct `IfConditionActivity`
+- New field `UserProperties` in struct `IfConditionActivity`
+- New field `Name` in struct `IfConditionActivity`
+- New field `Type` in struct `IfConditionActivity`
+- New field `Type` in struct `TeradataSource`
+- New field `AdditionalProperties` in struct `TeradataSource`
+- New field `DisableMetricsCollection` in struct `TeradataSource`
+- New field `MaxConcurrentConnections` in struct `TeradataSource`
+- New field `QueryTimeout` in struct `TeradataSource`
+- New field `SourceRetryCount` in struct `TeradataSource`
+- New field `AdditionalColumns` in struct `TeradataSource`
+- New field `SourceRetryWait` in struct `TeradataSource`
+- New field `FileName` in struct `GoogleCloudStorageLocation`
+- New field `FolderPath` in struct `GoogleCloudStorageLocation`
+- New field `Type` in struct `GoogleCloudStorageLocation`
+- New field `AdditionalProperties` in struct `GoogleCloudStorageLocation`
+- New field `AdditionalProperties` in struct `SalesforceMarketingCloudSource`
+- New field `QueryTimeout` in struct `SalesforceMarketingCloudSource`
+- New field `SourceRetryWait` in struct `SalesforceMarketingCloudSource`
+- New field `AdditionalColumns` in struct `SalesforceMarketingCloudSource`
+- New field `DisableMetricsCollection` in struct `SalesforceMarketingCloudSource`
+- New field `MaxConcurrentConnections` in struct `SalesforceMarketingCloudSource`
+- New field `SourceRetryCount` in struct `SalesforceMarketingCloudSource`
+- New field `Type` in struct `SalesforceMarketingCloudSource`
+- New field `Description` in struct `AmazonS3Dataset`
+- New field `Parameters` in struct `AmazonS3Dataset`
+- New field `Type` in struct `AmazonS3Dataset`
+- New field `AdditionalProperties` in struct `AmazonS3Dataset`
+- New field `Annotations` in struct `AmazonS3Dataset`
+- New field `Folder` in struct `AmazonS3Dataset`
+- New field `LinkedServiceName` in struct `AmazonS3Dataset`
+- New field `Schema` in struct `AmazonS3Dataset`
+- New field `Structure` in struct `AmazonS3Dataset`
+- New field `MaxConcurrentConnections` in struct `DelimitedTextSink`
+- New field `SinkRetryCount` in struct `DelimitedTextSink`
+- New field `WriteBatchSize` in struct `DelimitedTextSink`
+- New field `AdditionalProperties` in struct `DelimitedTextSink`
+- New field `DisableMetricsCollection` in struct `DelimitedTextSink`
+- New field `SinkRetryWait` in struct `DelimitedTextSink`
+- New field `WriteBatchTimeout` in struct `DelimitedTextSink`
+- New field `Type` in struct `DelimitedTextSink`
+- New field `Type` in struct `FileServerLocation`
+- New field `AdditionalProperties` in struct `FileServerLocation`
+- New field `FileName` in struct `FileServerLocation`
+- New field `FolderPath` in struct `FileServerLocation`
+- New field `Policy` in struct `ExecuteDataFlowActivity`
+- New field `Description` in struct `ExecuteDataFlowActivity`
+- New field `LinkedServiceName` in struct `ExecuteDataFlowActivity`
+- New field `UserProperties` in struct `ExecuteDataFlowActivity`
+- New field `Name` in struct `ExecuteDataFlowActivity`
+- New field `Type` in struct `ExecuteDataFlowActivity`
+- New field `AdditionalProperties` in struct `ExecuteDataFlowActivity`
+- New field `DependsOn` in struct `ExecuteDataFlowActivity`
+- New field `Type` in struct `XMLSource`
+- New field `SourceRetryCount` in struct `XMLSource`
+- New field `AdditionalProperties` in struct `XMLSource`
+- New field `DisableMetricsCollection` in struct `XMLSource`
+- New field `MaxConcurrentConnections` in struct `XMLSource`
+- New field `SourceRetryWait` in struct `XMLSource`
+- New field `AdditionalProperties` in struct `OrcFormat`
+- New field `Deserializer` in struct `OrcFormat`
+- New field `Serializer` in struct `OrcFormat`
+- New field `Type` in struct `OrcFormat`
+- New field `ReferenceTrigger` in struct `TumblingWindowTriggerDependencyReference`
+- New field `Type` in struct `TumblingWindowTriggerDependencyReference`
+- New field `Type` in struct `EnvironmentVariableSetup`
+- New field `Parameters` in struct `DrillLinkedService`
+- New field `Type` in struct `DrillLinkedService`
+- New field `AdditionalProperties` in struct `DrillLinkedService`
+- New field `Annotations` in struct `DrillLinkedService`
+- New field `ConnectVia` in struct `DrillLinkedService`
+- New field `Description` in struct `DrillLinkedService`
+- New field `AdditionalProperties` in struct `MagentoObjectDataset`
+- New field `Parameters` in struct `MagentoObjectDataset`
+- New field `Annotations` in struct `MagentoObjectDataset`
+- New field `Description` in struct `MagentoObjectDataset`
+- New field `Structure` in struct `MagentoObjectDataset`
+- New field `LinkedServiceName` in struct `MagentoObjectDataset`
+- New field `Type` in struct `MagentoObjectDataset`
+- New field `Folder` in struct `MagentoObjectDataset`
+- New field `Schema` in struct `MagentoObjectDataset`
+- New field `CollaborationBranch` in struct `FactoryGitHubConfiguration`
+- New field `LastCommitID` in struct `FactoryGitHubConfiguration`
+- New field `AccountName` in struct `FactoryGitHubConfiguration`
+- New field `RepositoryName` in struct `FactoryGitHubConfiguration`
+- New field `RootFolder` in struct `FactoryGitHubConfiguration`
+- New field `Type` in struct `FactoryGitHubConfiguration`
+- New field `Parameters` in struct `Db2TableDataset`
+- New field `Structure` in struct `Db2TableDataset`
+- New field `Type` in struct `Db2TableDataset`
+- New field `Folder` in struct `Db2TableDataset`
+- New field `Annotations` in struct `Db2TableDataset`
+- New field `LinkedServiceName` in struct `Db2TableDataset`
+- New field `Schema` in struct `Db2TableDataset`
+- New field `Description` in struct `Db2TableDataset`
+- New field `AdditionalProperties` in struct `Db2TableDataset`
+- New field `ConnectVia` in struct `NetezzaLinkedService`
+- New field `Description` in struct `NetezzaLinkedService`
+- New field `Parameters` in struct `NetezzaLinkedService`
+- New field `Type` in struct `NetezzaLinkedService`
+- New field `AdditionalProperties` in struct `NetezzaLinkedService`
+- New field `Annotations` in struct `NetezzaLinkedService`
+- New field `AdditionalProperties` in struct `EloquaObjectDataset`
+- New field `Description` in struct `EloquaObjectDataset`
+- New field `Folder` in struct `EloquaObjectDataset`
+- New field `Type` in struct `EloquaObjectDataset`
+- New field `Schema` in struct `EloquaObjectDataset`
+- New field `LinkedServiceName` in struct `EloquaObjectDataset`
+- New field `Parameters` in struct `EloquaObjectDataset`
+- New field `Annotations` in struct `EloquaObjectDataset`
+- New field `Structure` in struct `EloquaObjectDataset`
+- New field `Type` in struct `HdfsReadSettings`
+- New field `AdditionalProperties` in struct `HdfsReadSettings`
+- New field `MaxConcurrentConnections` in struct `HdfsReadSettings`
+- New field `DisableMetricsCollection` in struct `HdfsReadSettings`
+- New field `SourceRetryWait` in struct `DocumentDbCollectionSource`
+- New field `AdditionalProperties` in struct `DocumentDbCollectionSource`
+- New field `DisableMetricsCollection` in struct `DocumentDbCollectionSource`
+- New field `SourceRetryCount` in struct `DocumentDbCollectionSource`
+- New field `Type` in struct `DocumentDbCollectionSource`
+- New field `MaxConcurrentConnections` in struct `DocumentDbCollectionSource`
+- New field `Annotations` in struct `SparkLinkedService`
+- New field `ConnectVia` in struct `SparkLinkedService`
+- New field `Description` in struct `SparkLinkedService`
+- New field `Parameters` in struct `SparkLinkedService`
+- New field `Type` in struct `SparkLinkedService`
+- New field `AdditionalProperties` in struct `SparkLinkedService`
+- New field `AdditionalProperties` in struct `SapBwCubeDataset`
+- New field `Parameters` in struct `SapBwCubeDataset`
+- New field `Structure` in struct `SapBwCubeDataset`
+- New field `Annotations` in struct `SapBwCubeDataset`
+- New field `Description` in struct `SapBwCubeDataset`
+- New field `Folder` in struct `SapBwCubeDataset`
+- New field `LinkedServiceName` in struct `SapBwCubeDataset`
+- New field `Schema` in struct `SapBwCubeDataset`
+- New field `Type` in struct `SapBwCubeDataset`
+- New field `Description` in struct `CopyActivity`
+- New field `LinkedServiceName` in struct `CopyActivity`
+- New field `Policy` in struct `CopyActivity`
+- New field `UserProperties` in struct `CopyActivity`
+- New field `Name` in struct `CopyActivity`
+- New field `Type` in struct `CopyActivity`
+- New field `AdditionalProperties` in struct `CopyActivity`
+- New field `DependsOn` in struct `CopyActivity`
+- New field `Annotations` in struct `GoogleAdWordsLinkedService`
+- New field `ConnectVia` in struct `GoogleAdWordsLinkedService`
+- New field `Description` in struct `GoogleAdWordsLinkedService`
+- New field `Parameters` in struct `GoogleAdWordsLinkedService`
+- New field `Type` in struct `GoogleAdWordsLinkedService`
+- New field `AdditionalProperties` in struct `GoogleAdWordsLinkedService`
+- New field `SinkRetryWait` in struct `AzureTableSink`
+- New field `WriteBatchTimeout` in struct `AzureTableSink`
+- New field `AdditionalProperties` in struct `AzureTableSink`
+- New field `WriteBatchSize` in struct `AzureTableSink`
+- New field `Type` in struct `AzureTableSink`
+- New field `DisableMetricsCollection` in struct `AzureTableSink`
+- New field `MaxConcurrentConnections` in struct `AzureTableSink`
+- New field `SinkRetryCount` in struct `AzureTableSink`
+- New field `Name` in struct `ExecutePipelineActivity`
+- New field `Type` in struct `ExecutePipelineActivity`
+- New field `AdditionalProperties` in struct `ExecutePipelineActivity`
+- New field `DependsOn` in struct `ExecutePipelineActivity`
+- New field `Description` in struct `ExecutePipelineActivity`
+- New field `UserProperties` in struct `ExecutePipelineActivity`
+- New field `SourceRetryWait` in struct `SapEccSource`
+- New field `Type` in struct `SapEccSource`
+- New field `DisableMetricsCollection` in struct `SapEccSource`
+- New field `MaxConcurrentConnections` in struct `SapEccSource`
+- New field `QueryTimeout` in struct `SapEccSource`
+- New field `SourceRetryCount` in struct `SapEccSource`
+- New field `AdditionalProperties` in struct `SapEccSource`
+- New field `AdditionalColumns` in struct `SapEccSource`
+- New field `Annotations` in struct `JiraObjectDataset`
+- New field `Schema` in struct `JiraObjectDataset`
+- New field `LinkedServiceName` in struct `JiraObjectDataset`
+- New field `AdditionalProperties` in struct `JiraObjectDataset`
+- New field `Folder` in struct `JiraObjectDataset`
+- New field `Parameters` in struct `JiraObjectDataset`
+- New field `Type` in struct `JiraObjectDataset`
+- New field `Description` in struct `JiraObjectDataset`
+- New field `Structure` in struct `JiraObjectDataset`
+- New field `Type` in struct `DatabricksSparkJarActivity`
+- New field `DependsOn` in struct `DatabricksSparkJarActivity`
+- New field `Name` in struct `DatabricksSparkJarActivity`
+- New field `AdditionalProperties` in struct `DatabricksSparkJarActivity`
+- New field `Description` in struct `DatabricksSparkJarActivity`
+- New field `LinkedServiceName` in struct `DatabricksSparkJarActivity`
+- New field `Policy` in struct `DatabricksSparkJarActivity`
+- New field `UserProperties` in struct `DatabricksSparkJarActivity`
+- New field `WriteBatchSize` in struct `OdbcSink`
+- New field `Type` in struct `OdbcSink`
+- New field `AdditionalProperties` in struct `OdbcSink`
+- New field `SinkRetryWait` in struct `OdbcSink`
+- New field `WriteBatchTimeout` in struct `OdbcSink`
+- New field `SinkRetryCount` in struct `OdbcSink`
+- New field `DisableMetricsCollection` in struct `OdbcSink`
+- New field `MaxConcurrentConnections` in struct `OdbcSink`
+- New field `SinkRetryCount` in struct `InformixSink`
+- New field `WriteBatchSize` in struct `InformixSink`
+- New field `WriteBatchTimeout` in struct `InformixSink`
+- New field `Type` in struct `InformixSink`
+- New field `DisableMetricsCollection` in struct `InformixSink`
+- New field `MaxConcurrentConnections` in struct `InformixSink`
+- New field `SinkRetryWait` in struct `InformixSink`
+- New field `AdditionalProperties` in struct `InformixSink`
+- New field `Type` in struct `FileServerWriteSettings`
+- New field `AdditionalProperties` in struct `FileServerWriteSettings`
+- New field `CopyBehavior` in struct `FileServerWriteSettings`
+- New field `DisableMetricsCollection` in struct `FileServerWriteSettings`
+- New field `MaxConcurrentConnections` in struct `FileServerWriteSettings`
+- New field `Structure` in struct `AzureSearchIndexDataset`
+- New field `Type` in struct `AzureSearchIndexDataset`
+- New field `Parameters` in struct `AzureSearchIndexDataset`
+- New field `Description` in struct `AzureSearchIndexDataset`
+- New field `AdditionalProperties` in struct `AzureSearchIndexDataset`
+- New field `Annotations` in struct `AzureSearchIndexDataset`
+- New field `LinkedServiceName` in struct `AzureSearchIndexDataset`
+- New field `Folder` in struct `AzureSearchIndexDataset`
+- New field `Schema` in struct `AzureSearchIndexDataset`
+- New field `SinkRetryCount` in struct `MongoDbV2Sink`
+- New field `SinkRetryWait` in struct `MongoDbV2Sink`
+- New field `DisableMetricsCollection` in struct `MongoDbV2Sink`
+- New field `WriteBatchSize` in struct `MongoDbV2Sink`
+- New field `WriteBatchTimeout` in struct `MongoDbV2Sink`
+- New field `Type` in struct `MongoDbV2Sink`
+- New field `AdditionalProperties` in struct `MongoDbV2Sink`
+- New field `MaxConcurrentConnections` in struct `MongoDbV2Sink`
+- New field `AdditionalProperties` in struct `ConcurObjectDataset`
+- New field `Description` in struct `ConcurObjectDataset`
+- New field `Structure` in struct `ConcurObjectDataset`
+- New field `Type` in struct `ConcurObjectDataset`
+- New field `Annotations` in struct `ConcurObjectDataset`
+- New field `Folder` in struct `ConcurObjectDataset`
+- New field `Schema` in struct `ConcurObjectDataset`
+- New field `LinkedServiceName` in struct `ConcurObjectDataset`
+- New field `Parameters` in struct `ConcurObjectDataset`
+- New field `AdditionalProperties` in struct `AzureMLUpdateResourceActivity`
+- New field `Description` in struct `AzureMLUpdateResourceActivity`
+- New field `LinkedServiceName` in struct `AzureMLUpdateResourceActivity`
+- New field `Policy` in struct `AzureMLUpdateResourceActivity`
+- New field `UserProperties` in struct `AzureMLUpdateResourceActivity`
+- New field `Name` in struct `AzureMLUpdateResourceActivity`
+- New field `Type` in struct `AzureMLUpdateResourceActivity`
+- New field `DependsOn` in struct `AzureMLUpdateResourceActivity`
+- New field `Type` in struct `PrestoLinkedService`
+- New field `AdditionalProperties` in struct `PrestoLinkedService`
+- New field `Annotations` in struct `PrestoLinkedService`
+- New field `ConnectVia` in struct `PrestoLinkedService`
+- New field `Description` in struct `PrestoLinkedService`
+- New field `Parameters` in struct `PrestoLinkedService`
+- New field `DisableMetricsCollection` in struct `WebSource`
+- New field `MaxConcurrentConnections` in struct `WebSource`
+- New field `SourceRetryCount` in struct `WebSource`
+- New field `SourceRetryWait` in struct `WebSource`
+- New field `Type` in struct `WebSource`
+- New field `AdditionalProperties` in struct `WebSource`
+- New field `Policy` in struct `DeleteActivity`
+- New field `Type` in struct `DeleteActivity`
+- New field `Description` in struct `DeleteActivity`
+- New field `UserProperties` in struct `DeleteActivity`
+- New field `Name` in struct `DeleteActivity`
+- New field `AdditionalProperties` in struct `DeleteActivity`
+- New field `DependsOn` in struct `DeleteActivity`
+- New field `LinkedServiceName` in struct `DeleteActivity`
+- New field `Type` in struct `HDInsightMapReduceActivity`
+- New field `LinkedServiceName` in struct `HDInsightMapReduceActivity`
+- New field `AdditionalProperties` in struct `HDInsightMapReduceActivity`
+- New field `DependsOn` in struct `HDInsightMapReduceActivity`
+- New field `Description` in struct `HDInsightMapReduceActivity`
+- New field `Policy` in struct `HDInsightMapReduceActivity`
+- New field `UserProperties` in struct `HDInsightMapReduceActivity`
+- New field `Name` in struct `HDInsightMapReduceActivity`
+- New field `AdditionalProperties` in struct `CouchbaseSource`
+- New field `MaxConcurrentConnections` in struct `CouchbaseSource`
+- New field `QueryTimeout` in struct `CouchbaseSource`
+- New field `AdditionalColumns` in struct `CouchbaseSource`
+- New field `DisableMetricsCollection` in struct `CouchbaseSource`
+- New field `SourceRetryCount` in struct `CouchbaseSource`
+- New field `SourceRetryWait` in struct `CouchbaseSource`
+- New field `Type` in struct `CouchbaseSource`
+- New field `Type` in struct `FactoryVSTSConfiguration`
+- New field `LastCommitID` in struct `FactoryVSTSConfiguration`
+- New field `AccountName` in struct `FactoryVSTSConfiguration`
+- New field `CollaborationBranch` in struct `FactoryVSTSConfiguration`
+- New field `RepositoryName` in struct `FactoryVSTSConfiguration`
+- New field `RootFolder` in struct `FactoryVSTSConfiguration`
+- New field `DisableMetricsCollection` in struct `SapBwSource`
+- New field `SourceRetryWait` in struct `SapBwSource`
+- New field `AdditionalProperties` in struct `SapBwSource`
+- New field `MaxConcurrentConnections` in struct `SapBwSource`
+- New field `QueryTimeout` in struct `SapBwSource`
+- New field `SourceRetryCount` in struct `SapBwSource`
+- New field `Type` in struct `SapBwSource`
+- New field `AdditionalColumns` in struct `SapBwSource`
+- New field `AdditionalProperties` in struct `HBaseLinkedService`
+- New field `Annotations` in struct `HBaseLinkedService`
+- New field `ConnectVia` in struct `HBaseLinkedService`
+- New field `Description` in struct `HBaseLinkedService`
+- New field `Parameters` in struct `HBaseLinkedService`
+- New field `Type` in struct `HBaseLinkedService`
+- New field `Type` in struct `ExecuteWranglingDataflowActivity`
+- New field `AdditionalProperties` in struct `ExecuteWranglingDataflowActivity`
+- New field `DependsOn` in struct `ExecuteWranglingDataflowActivity`
+- New field `Description` in struct `ExecuteWranglingDataflowActivity`
+- New field `UserProperties` in struct `ExecuteWranglingDataflowActivity`
+- New field `Name` in struct `ExecuteWranglingDataflowActivity`
+- New field `Description` in struct `SapEccResourceDataset`
+- New field `Folder` in struct `SapEccResourceDataset`
+- New field `Parameters` in struct `SapEccResourceDataset`
+- New field `Schema` in struct `SapEccResourceDataset`
+- New field `Annotations` in struct `SapEccResourceDataset`
+- New field `LinkedServiceName` in struct `SapEccResourceDataset`
+- New field `AdditionalProperties` in struct `SapEccResourceDataset`
+- New field `Structure` in struct `SapEccResourceDataset`
+- New field `Type` in struct `SapEccResourceDataset`
+- New field `MaxConcurrentConnections` in struct `AmazonRdsForOracleSource`
+- New field `Type` in struct `AmazonRdsForOracleSource`
+- New field `AdditionalProperties` in struct `AmazonRdsForOracleSource`
+- New field `DisableMetricsCollection` in struct `AmazonRdsForOracleSource`
+- New field `SourceRetryCount` in struct `AmazonRdsForOracleSource`
+- New field `SourceRetryWait` in struct `AmazonRdsForOracleSource`
+- New field `Folder` in struct `DrillTableDataset`
+- New field `Description` in struct `DrillTableDataset`
+- New field `LinkedServiceName` in struct `DrillTableDataset`
+- New field `Structure` in struct `DrillTableDataset`
+- New field `Annotations` in struct `DrillTableDataset`
+- New field `Schema` in struct `DrillTableDataset`
+- New field `Type` in struct `DrillTableDataset`
+- New field `AdditionalProperties` in struct `DrillTableDataset`
+- New field `Parameters` in struct `DrillTableDataset`
+- New field `LinkedServiceName` in struct `SapHanaTableDataset`
+- New field `Type` in struct `SapHanaTableDataset`
+- New field `AdditionalProperties` in struct `SapHanaTableDataset`
+- New field `Folder` in struct `SapHanaTableDataset`
+- New field `Structure` in struct `SapHanaTableDataset`
+- New field `Parameters` in struct `SapHanaTableDataset`
+- New field `Schema` in struct `SapHanaTableDataset`
+- New field `Annotations` in struct `SapHanaTableDataset`
+- New field `Description` in struct `SapHanaTableDataset`
+- New field `Description` in struct `SquareLinkedService`
+- New field `Parameters` in struct `SquareLinkedService`
+- New field `Type` in struct `SquareLinkedService`
+- New field `AdditionalProperties` in struct `SquareLinkedService`
+- New field `Annotations` in struct `SquareLinkedService`
+- New field `ConnectVia` in struct `SquareLinkedService`
+- New field `Description` in struct `RestServiceLinkedService`
+- New field `Parameters` in struct `RestServiceLinkedService`
+- New field `Type` in struct `RestServiceLinkedService`
+- New field `AdditionalProperties` in struct `RestServiceLinkedService`
+- New field `Annotations` in struct `RestServiceLinkedService`
+- New field `ConnectVia` in struct `RestServiceLinkedService`
+- New field `Annotations` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `Schema` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `Structure` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `Description` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `LinkedServiceName` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `AdditionalProperties` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `Folder` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `Parameters` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `Type` in struct `AmazonRdsForSQLServerTableDataset`
+- New field `Structure` in struct `AzureTableDataset`
+- New field `Schema` in struct `AzureTableDataset`
+- New field `Type` in struct `AzureTableDataset`
+- New field `AdditionalProperties` in struct `AzureTableDataset`
+- New field `Description` in struct `AzureTableDataset`
+- New field `Parameters` in struct `AzureTableDataset`
+- New field `LinkedServiceName` in struct `AzureTableDataset`
+- New field `Folder` in struct `AzureTableDataset`
+- New field `Annotations` in struct `AzureTableDataset`
+- New field `Annotations` in struct `AzureBlobDataset`
+- New field `Folder` in struct `AzureBlobDataset`
+- New field `Structure` in struct `AzureBlobDataset`
+- New field `Type` in struct `AzureBlobDataset`
+- New field `AdditionalProperties` in struct `AzureBlobDataset`
+- New field `LinkedServiceName` in struct `AzureBlobDataset`
+- New field `Description` in struct `AzureBlobDataset`
+- New field `Parameters` in struct `AzureBlobDataset`
+- New field `Schema` in struct `AzureBlobDataset`
+- New field `DisableMetricsCollection` in struct `FileSystemSource`
+- New field `MaxConcurrentConnections` in struct `FileSystemSource`
+- New field `SourceRetryCount` in struct `FileSystemSource`
+- New field `SourceRetryWait` in struct `FileSystemSource`
+- New field `Type` in struct `FileSystemSource`
+- New field `AdditionalProperties` in struct `FileSystemSource`
+- New field `AdditionalProperties` in struct `AzureBlobStorageWriteSettings`
+- New field `CopyBehavior` in struct `AzureBlobStorageWriteSettings`
+- New field `DisableMetricsCollection` in struct `AzureBlobStorageWriteSettings`
+- New field `MaxConcurrentConnections` in struct `AzureBlobStorageWriteSettings`
+- New field `Type` in struct `AzureBlobStorageWriteSettings`
+- New field `WriteBatchTimeout` in struct `DocumentDbCollectionSink`
+- New field `AdditionalProperties` in struct `DocumentDbCollectionSink`
+- New field `DisableMetricsCollection` in struct `DocumentDbCollectionSink`
+- New field `Type` in struct `DocumentDbCollectionSink`
+- New field `MaxConcurrentConnections` in struct `DocumentDbCollectionSink`
+- New field `SinkRetryWait` in struct `DocumentDbCollectionSink`
+- New field `SinkRetryCount` in struct `DocumentDbCollectionSink`
+- New field `WriteBatchSize` in struct `DocumentDbCollectionSink`
+- New field `AdditionalProperties` in struct `AzureDataLakeStoreLocation`
+- New field `FileName` in struct `AzureDataLakeStoreLocation`
+- New field `FolderPath` in struct `AzureDataLakeStoreLocation`
+- New field `Type` in struct `AzureDataLakeStoreLocation`
+- New field `Etag` in struct `CredentialResource`
+- New field `ID` in struct `CredentialResource`
+- New field `Name` in struct `CredentialResource`
+- New field `Type` in struct `CredentialResource`
+- New field `DisableMetricsCollection` in struct `AzureDataExplorerSource`
+- New field `Type` in struct `AzureDataExplorerSource`
+- New field `AdditionalProperties` in struct `AzureDataExplorerSource`
+- New field `MaxConcurrentConnections` in struct `AzureDataExplorerSource`
+- New field `SourceRetryCount` in struct `AzureDataExplorerSource`
+- New field `SourceRetryWait` in struct `AzureDataExplorerSource`
+- New field `MaxConcurrentConnections` in struct `ResponsysSource`
+- New field `DisableMetricsCollection` in struct `ResponsysSource`
+- New field `QueryTimeout` in struct `ResponsysSource`
+- New field `SourceRetryCount` in struct `ResponsysSource`
+- New field `SourceRetryWait` in struct `ResponsysSource`
+- New field `Type` in struct `ResponsysSource`
+- New field `AdditionalColumns` in struct `ResponsysSource`
+- New field `AdditionalProperties` in struct `ResponsysSource`
+- New field `ConnectVia` in struct `DynamicsAXLinkedService`
+- New field `Description` in struct `DynamicsAXLinkedService`
+- New field `Parameters` in struct `DynamicsAXLinkedService`
+- New field `Type` in struct `DynamicsAXLinkedService`
+- New field `AdditionalProperties` in struct `DynamicsAXLinkedService`
+- New field `Annotations` in struct `DynamicsAXLinkedService`
+- New field `Type` in struct `ParquetWriteSettings`
+- New field `AdditionalProperties` in struct `ParquetWriteSettings`
+- New field `Parameters` in struct `AzureSQLMITableDataset`
+- New field `Annotations` in struct `AzureSQLMITableDataset`
+- New field `Description` in struct `AzureSQLMITableDataset`
+- New field `Schema` in struct `AzureSQLMITableDataset`
+- New field `LinkedServiceName` in struct `AzureSQLMITableDataset`
+- New field `Type` in struct `AzureSQLMITableDataset`
+- New field `Folder` in struct `AzureSQLMITableDataset`
+- New field `AdditionalProperties` in struct `AzureSQLMITableDataset`
+- New field `Structure` in struct `AzureSQLMITableDataset`
+- New field `AdditionalProperties` in struct `ParquetDataset`
+- New field `Folder` in struct `ParquetDataset`
+- New field `Parameters` in struct `ParquetDataset`
+- New field `LinkedServiceName` in struct `ParquetDataset`
+- New field `Structure` in struct `ParquetDataset`
+- New field `Type` in struct `ParquetDataset`
+- New field `Annotations` in struct `ParquetDataset`
+- New field `Description` in struct `ParquetDataset`
+- New field `Schema` in struct `ParquetDataset`
+- New field `Parameters` in struct `CassandraTableDataset`
+- New field `AdditionalProperties` in struct `CassandraTableDataset`
+- New field `Annotations` in struct `CassandraTableDataset`
+- New field `Description` in struct `CassandraTableDataset`
+- New field `Folder` in struct `CassandraTableDataset`
+- New field `Structure` in struct `CassandraTableDataset`
+- New field `LinkedServiceName` in struct `CassandraTableDataset`
+- New field `Schema` in struct `CassandraTableDataset`
+- New field `Type` in struct `CassandraTableDataset`
+- New field `ConnectVia` in struct `AzureMySQLLinkedService`
+- New field `Description` in struct `AzureMySQLLinkedService`
+- New field `Parameters` in struct `AzureMySQLLinkedService`
+- New field `Type` in struct `AzureMySQLLinkedService`
+- New field `AdditionalProperties` in struct `AzureMySQLLinkedService`
+- New field `Annotations` in struct `AzureMySQLLinkedService`
+- New field `AdditionalProperties` in struct `AzureBlobStorageLocation`
+- New field `FileName` in struct `AzureBlobStorageLocation`
+- New field `FolderPath` in struct `AzureBlobStorageLocation`
+- New field `Type` in struct `AzureBlobStorageLocation`
+- New field `Type` in struct `JSONWriteSettings`
+- New field `AdditionalProperties` in struct `JSONWriteSettings`
+- New field `Structure` in struct `XeroObjectDataset`
+- New field `Folder` in struct `XeroObjectDataset`
+- New field `Parameters` in struct `XeroObjectDataset`
+- New field `LinkedServiceName` in struct `XeroObjectDataset`
+- New field `Annotations` in struct `XeroObjectDataset`
+- New field `Type` in struct `XeroObjectDataset`
+- New field `Description` in struct `XeroObjectDataset`
+- New field `Schema` in struct `XeroObjectDataset`
+- New field `AdditionalProperties` in struct `XeroObjectDataset`
+- New field `DisableMetricsCollection` in struct `AzureMySQLSink`
+- New field `SinkRetryCount` in struct `AzureMySQLSink`
+- New field `Type` in struct `AzureMySQLSink`
+- New field `MaxConcurrentConnections` in struct `AzureMySQLSink`
+- New field `SinkRetryWait` in struct `AzureMySQLSink`
+- New field `WriteBatchSize` in struct `AzureMySQLSink`
+- New field `WriteBatchTimeout` in struct `AzureMySQLSink`
+- New field `AdditionalProperties` in struct `AzureMySQLSink`
+- New field `SourceRetryWait` in struct `SnowflakeSource`
+- New field `Type` in struct `SnowflakeSource`
+- New field `AdditionalProperties` in struct `SnowflakeSource`
+- New field `DisableMetricsCollection` in struct `SnowflakeSource`
+- New field `MaxConcurrentConnections` in struct `SnowflakeSource`
+- New field `SourceRetryCount` in struct `SnowflakeSource`
+- New field `Type` in struct `SsisPackage`
+- New field `Description` in struct `SsisPackage`
+- New field `ID` in struct `SsisPackage`
+- New field `Name` in struct `SsisPackage`
+- New field `AdditionalProperties` in struct `GoogleBigQueryLinkedService`
+- New field `Annotations` in struct `GoogleBigQueryLinkedService`
+- New field `ConnectVia` in struct `GoogleBigQueryLinkedService`
+- New field `Description` in struct `GoogleBigQueryLinkedService`
+- New field `Parameters` in struct `GoogleBigQueryLinkedService`
+- New field `Type` in struct `GoogleBigQueryLinkedService`
+- New field `Annotations` in struct `OracleLinkedService`
+- New field `ConnectVia` in struct `OracleLinkedService`
+- New field `Description` in struct `OracleLinkedService`
+- New field `Parameters` in struct `OracleLinkedService`
+- New field `Type` in struct `OracleLinkedService`
+- New field `AdditionalProperties` in struct `OracleLinkedService`
+- New field `AdditionalProperties` in struct `SQLServerSource`
+- New field `DisableMetricsCollection` in struct `SQLServerSource`
+- New field `MaxConcurrentConnections` in struct `SQLServerSource`
+- New field `QueryTimeout` in struct `SQLServerSource`
+- New field `Type` in struct `SQLServerSource`
+- New field `SourceRetryCount` in struct `SQLServerSource`
+- New field `SourceRetryWait` in struct `SQLServerSource`
+- New field `AdditionalColumns` in struct `SQLServerSource`
+- New field `Annotations` in struct `ImpalaObjectDataset`
+- New field `Description` in struct `ImpalaObjectDataset`
+- New field `Parameters` in struct `ImpalaObjectDataset`
+- New field `AdditionalProperties` in struct `ImpalaObjectDataset`
+- New field `Structure` in struct `ImpalaObjectDataset`
+- New field `Schema` in struct `ImpalaObjectDataset`
+- New field `Folder` in struct `ImpalaObjectDataset`
+- New field `LinkedServiceName` in struct `ImpalaObjectDataset`
+- New field `Type` in struct `ImpalaObjectDataset`
+- New field `AdditionalProperties` in struct `TabularTranslator`
+- New field `Type` in struct `TabularTranslator`
+- New field `Schema` in struct `AzureMariaDBTableDataset`
+- New field `Structure` in struct `AzureMariaDBTableDataset`
+- New field `Type` in struct `AzureMariaDBTableDataset`
+- New field `AdditionalProperties` in struct `AzureMariaDBTableDataset`
+- New field `LinkedServiceName` in struct `AzureMariaDBTableDataset`
+- New field `Folder` in struct `AzureMariaDBTableDataset`
+- New field `Annotations` in struct `AzureMariaDBTableDataset`
+- New field `Description` in struct `AzureMariaDBTableDataset`
+- New field `Parameters` in struct `AzureMariaDBTableDataset`
+- New field `AdditionalProperties` in struct `ServiceNowLinkedService`
+- New field `Annotations` in struct `ServiceNowLinkedService`
+- New field `ConnectVia` in struct `ServiceNowLinkedService`
+- New field `Description` in struct `ServiceNowLinkedService`
+- New field `Parameters` in struct `ServiceNowLinkedService`
+- New field `Type` in struct `ServiceNowLinkedService`
+- New field `Type` in struct `MagentoSource`
+- New field `MaxConcurrentConnections` in struct `MagentoSource`
+- New field `SourceRetryCount` in struct `MagentoSource`
+- New field `SourceRetryWait` in struct `MagentoSource`
+- New field `AdditionalColumns` in struct `MagentoSource`
+- New field `AdditionalProperties` in struct `MagentoSource`
+- New field `DisableMetricsCollection` in struct `MagentoSource`
+- New field `QueryTimeout` in struct `MagentoSource`
+- New field `Name` in struct `UntilActivity`
+- New field `Type` in struct `UntilActivity`
+- New field `AdditionalProperties` in struct `UntilActivity`
+- New field `DependsOn` in struct `UntilActivity`
+- New field `Description` in struct `UntilActivity`
+- New field `UserProperties` in struct `UntilActivity`
+- New field `Description` in struct `PostgreSQLLinkedService`
+- New field `Parameters` in struct `PostgreSQLLinkedService`
+- New field `Type` in struct `PostgreSQLLinkedService`
+- New field `AdditionalProperties` in struct `PostgreSQLLinkedService`
+- New field `Annotations` in struct `PostgreSQLLinkedService`
+- New field `ConnectVia` in struct `PostgreSQLLinkedService`
+- New field `WriteBatchTimeout` in struct `MicrosoftAccessSink`
+- New field `AdditionalProperties` in struct `MicrosoftAccessSink`
+- New field `DisableMetricsCollection` in struct `MicrosoftAccessSink`
+- New field `SinkRetryWait` in struct `MicrosoftAccessSink`
+- New field `Type` in struct `MicrosoftAccessSink`
+- New field `MaxConcurrentConnections` in struct `MicrosoftAccessSink`
+- New field `SinkRetryCount` in struct `MicrosoftAccessSink`
+- New field `WriteBatchSize` in struct `MicrosoftAccessSink`
+- New field `AdditionalProperties` in struct `SalesforceServiceCloudLinkedService`
+- New field `Annotations` in struct `SalesforceServiceCloudLinkedService`
+- New field `ConnectVia` in struct `SalesforceServiceCloudLinkedService`
+- New field `Description` in struct `SalesforceServiceCloudLinkedService`
+- New field `Parameters` in struct `SalesforceServiceCloudLinkedService`
+- New field `Type` in struct `SalesforceServiceCloudLinkedService`
+- New field `AdditionalProperties` in struct `WaitActivity`
+- New field `DependsOn` in struct `WaitActivity`
+- New field `Description` in struct `WaitActivity`
+- New field `UserProperties` in struct `WaitActivity`
+- New field `Name` in struct `WaitActivity`
+- New field `Type` in struct `WaitActivity`
+- New field `AdditionalProperties` in struct `AmazonS3Location`
+- New field `FileName` in struct `AmazonS3Location`
+- New field `FolderPath` in struct `AmazonS3Location`
+- New field `Type` in struct `AmazonS3Location`
+- New field `Annotations` in struct `AzureMySQLTableDataset`
+- New field `Schema` in struct `AzureMySQLTableDataset`
+- New field `Structure` in struct `AzureMySQLTableDataset`
+- New field `AdditionalProperties` in struct `AzureMySQLTableDataset`
+- New field `Description` in struct `AzureMySQLTableDataset`
+- New field `Parameters` in struct `AzureMySQLTableDataset`
+- New field `LinkedServiceName` in struct `AzureMySQLTableDataset`
+- New field `Type` in struct `AzureMySQLTableDataset`
+- New field `Folder` in struct `AzureMySQLTableDataset`
+- New field `Type` in struct `SsisEnvironment`
+- New field `Description` in struct `SsisEnvironment`
+- New field `ID` in struct `SsisEnvironment`
+- New field `Name` in struct `SsisEnvironment`
+- New field `MaxConcurrentConnections` in struct `AzureBlobStorageReadSettings`
+- New field `DisableMetricsCollection` in struct `AzureBlobStorageReadSettings`
+- New field `Type` in struct `AzureBlobStorageReadSettings`
+- New field `AdditionalProperties` in struct `AzureBlobStorageReadSettings`
+- New field `AdditionalProperties` in struct `MongoDbV2CollectionDataset`
+- New field `Parameters` in struct `MongoDbV2CollectionDataset`
+- New field `Schema` in struct `MongoDbV2CollectionDataset`
+- New field `Annotations` in struct `MongoDbV2CollectionDataset`
+- New field `Description` in struct `MongoDbV2CollectionDataset`
+- New field `Folder` in struct `MongoDbV2CollectionDataset`
+- New field `LinkedServiceName` in struct `MongoDbV2CollectionDataset`
+- New field `Structure` in struct `MongoDbV2CollectionDataset`
+- New field `Type` in struct `MongoDbV2CollectionDataset`
+- New field `DependsOn` in struct `ExecuteSSISPackageActivity`
+- New field `LinkedServiceName` in struct `ExecuteSSISPackageActivity`
+- New field `Policy` in struct `ExecuteSSISPackageActivity`
+- New field `UserProperties` in struct `ExecuteSSISPackageActivity`
+- New field `Name` in struct `ExecuteSSISPackageActivity`
+- New field `AdditionalProperties` in struct `ExecuteSSISPackageActivity`
+- New field `Description` in struct `ExecuteSSISPackageActivity`
+- New field `Type` in struct `ExecuteSSISPackageActivity`
+- New field `Type` in struct `BinaryReadSettings`
+- New field `AdditionalProperties` in struct `BinaryReadSettings`
+- New field `Annotations` in struct `WranglingDataFlow`
+- New field `Description` in struct `WranglingDataFlow`
+- New field `Folder` in struct `WranglingDataFlow`
+- New field `Type` in struct `WranglingDataFlow`
+- New field `Type` in struct `DelimitedTextReadSettings`
+- New field `AdditionalProperties` in struct `DelimitedTextReadSettings`
+- New field `AdditionalColumns` in struct `SalesforceSource`
+- New field `MaxConcurrentConnections` in struct `SalesforceSource`
+- New field `QueryTimeout` in struct `SalesforceSource`
+- New field `AdditionalProperties` in struct `SalesforceSource`
+- New field `DisableMetricsCollection` in struct `SalesforceSource`
+- New field `SourceRetryWait` in struct `SalesforceSource`
+- New field `SourceRetryCount` in struct `SalesforceSource`
+- New field `Type` in struct `SalesforceSource`
+- New field `LinkedServiceName` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `Type` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `Folder` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `Parameters` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `Schema` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `Structure` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `AdditionalProperties` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `Annotations` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `Description` in struct `SalesforceMarketingCloudObjectDataset`
+- New field `AdditionalProperties` in struct `ManagedIntegrationRuntimeStatus`
+- New field `DataFactoryName` in struct `ManagedIntegrationRuntimeStatus`
+- New field `State` in struct `ManagedIntegrationRuntimeStatus`
+- New field `Type` in struct `ManagedIntegrationRuntimeStatus`
+- New field `MaxConcurrentConnections` in struct `DynamicsCrmSource`
+- New field `SourceRetryCount` in struct `DynamicsCrmSource`
+- New field `SourceRetryWait` in struct `DynamicsCrmSource`
+- New field `Type` in struct `DynamicsCrmSource`
+- New field `AdditionalProperties` in struct `DynamicsCrmSource`
+- New field `DisableMetricsCollection` in struct `DynamicsCrmSource`
+- New field `Serializer` in struct `TextFormat`
+- New field `Deserializer` in struct `TextFormat`
+- New field `Type` in struct `TextFormat`
+- New field `AdditionalProperties` in struct `TextFormat`
+- New field `Pipelines` in struct `BlobEventsTrigger`
+- New field `RuntimeState` in struct `BlobEventsTrigger`
+- New field `Type` in struct `BlobEventsTrigger`
+- New field `AdditionalProperties` in struct `BlobEventsTrigger`
+- New field `Annotations` in struct `BlobEventsTrigger`
+- New field `Description` in struct `BlobEventsTrigger`
+- New field `LinkedServiceName` in struct `SQLServerTableDataset`
+- New field `AdditionalProperties` in struct `SQLServerTableDataset`
+- New field `Annotations` in struct `SQLServerTableDataset`
+- New field `Type` in struct `SQLServerTableDataset`
+- New field `Parameters` in struct `SQLServerTableDataset`
+- New field `Schema` in struct `SQLServerTableDataset`
+- New field `Description` in struct `SQLServerTableDataset`
+- New field `Folder` in struct `SQLServerTableDataset`
+- New field `Structure` in struct `SQLServerTableDataset`
+- New field `Name` in struct `DataFlowDebugResource`
+- New field `AdditionalProperties` in struct `SQLServerSink`
+- New field `WriteBatchTimeout` in struct `SQLServerSink`
+- New field `WriteBatchSize` in struct `SQLServerSink`
+- New field `DisableMetricsCollection` in struct `SQLServerSink`
+- New field `MaxConcurrentConnections` in struct `SQLServerSink`
+- New field `SinkRetryCount` in struct `SQLServerSink`
+- New field `SinkRetryWait` in struct `SQLServerSink`
+- New field `Type` in struct `SQLServerSink`
+- New field `Annotations` in struct `SalesforceObjectDataset`
+- New field `Structure` in struct `SalesforceObjectDataset`
+- New field `Type` in struct `SalesforceObjectDataset`
+- New field `Parameters` in struct `SalesforceObjectDataset`
+- New field `Schema` in struct `SalesforceObjectDataset`
+- New field `LinkedServiceName` in struct `SalesforceObjectDataset`
+- New field `AdditionalProperties` in struct `SalesforceObjectDataset`
+- New field `Folder` in struct `SalesforceObjectDataset`
+- New field `Description` in struct `SalesforceObjectDataset`
+- New field `AdditionalProperties` in struct `VerticaSource`
+- New field `QueryTimeout` in struct `VerticaSource`
+- New field `SourceRetryCount` in struct `VerticaSource`
+- New field `SourceRetryWait` in struct `VerticaSource`
+- New field `Type` in struct `VerticaSource`
+- New field `DisableMetricsCollection` in struct `VerticaSource`
+- New field `MaxConcurrentConnections` in struct `VerticaSource`
+- New field `AdditionalColumns` in struct `VerticaSource`
+- New field `Annotations` in struct `GreenplumTableDataset`
+- New field `Description` in struct `GreenplumTableDataset`
+- New field `Folder` in struct `GreenplumTableDataset`
+- New field `Type` in struct `GreenplumTableDataset`
+- New field `Structure` in struct `GreenplumTableDataset`
+- New field `Parameters` in struct `GreenplumTableDataset`
+- New field `Schema` in struct `GreenplumTableDataset`
+- New field `AdditionalProperties` in struct `GreenplumTableDataset`
+- New field `LinkedServiceName` in struct `GreenplumTableDataset`
+- New field `AdditionalProperties` in struct `SapTableLinkedService`
+- New field `Annotations` in struct `SapTableLinkedService`
+- New field `ConnectVia` in struct `SapTableLinkedService`
+- New field `Description` in struct `SapTableLinkedService`
+- New field `Parameters` in struct `SapTableLinkedService`
+- New field `Type` in struct `SapTableLinkedService`
+- New field `Description` in struct `DynamicsEntityDataset`
+- New field `Annotations` in struct `DynamicsEntityDataset`
+- New field `Schema` in struct `DynamicsEntityDataset`
+- New field `LinkedServiceName` in struct `DynamicsEntityDataset`
+- New field `AdditionalProperties` in struct `DynamicsEntityDataset`
+- New field `Parameters` in struct `DynamicsEntityDataset`
+- New field `Type` in struct `DynamicsEntityDataset`
+- New field `Folder` in struct `DynamicsEntityDataset`
+- New field `Structure` in struct `DynamicsEntityDataset`
+- New field `MaxConcurrentConnections` in struct `GoogleCloudStorageReadSettings`
+- New field `Type` in struct `GoogleCloudStorageReadSettings`
+- New field `AdditionalProperties` in struct `GoogleCloudStorageReadSettings`
+- New field `DisableMetricsCollection` in struct `GoogleCloudStorageReadSettings`
+- New field `AdditionalProperties` in struct `AmazonS3LinkedService`
+- New field `Annotations` in struct `AmazonS3LinkedService`
+- New field `ConnectVia` in struct `AmazonS3LinkedService`
+- New field `Description` in struct `AmazonS3LinkedService`
+- New field `Parameters` in struct `AmazonS3LinkedService`
+- New field `Type` in struct `AmazonS3LinkedService`
+- New field `Type` in struct `MarketoLinkedService`
+- New field `AdditionalProperties` in struct `MarketoLinkedService`
+- New field `Annotations` in struct `MarketoLinkedService`
+- New field `ConnectVia` in struct `MarketoLinkedService`
+- New field `Description` in struct `MarketoLinkedService`
+- New field `Parameters` in struct `MarketoLinkedService`
+- New field `Type` in struct `LookupActivity`
+- New field `DependsOn` in struct `LookupActivity`
+- New field `Description` in struct `LookupActivity`
+- New field `Policy` in struct `LookupActivity`
+- New field `AdditionalProperties` in struct `LookupActivity`
+- New field `LinkedServiceName` in struct `LookupActivity`
+- New field `UserProperties` in struct `LookupActivity`
+- New field `Name` in struct `LookupActivity`
+- New field `Name` in struct `WebHookActivity`
+- New field `Type` in struct `WebHookActivity`
+- New field `AdditionalProperties` in struct `WebHookActivity`
+- New field `DependsOn` in struct `WebHookActivity`
+- New field `Description` in struct `WebHookActivity`
+- New field `UserProperties` in struct `WebHookActivity`
+- New field `Annotations` in struct `Office365Dataset`
+- New field `Parameters` in struct `Office365Dataset`
+- New field `Schema` in struct `Office365Dataset`
+- New field `Folder` in struct `Office365Dataset`
+- New field `LinkedServiceName` in struct `Office365Dataset`
+- New field `Structure` in struct `Office365Dataset`
+- New field `Type` in struct `Office365Dataset`
+- New field `AdditionalProperties` in struct `Office365Dataset`
+- New field `Description` in struct `Office365Dataset`
+- New field `Schema` in struct `PaypalObjectDataset`
+- New field `Annotations` in struct `PaypalObjectDataset`
+- New field `Description` in struct `PaypalObjectDataset`
+- New field `Folder` in struct `PaypalObjectDataset`
+- New field `Structure` in struct `PaypalObjectDataset`
+- New field `LinkedServiceName` in struct `PaypalObjectDataset`
+- New field `Type` in struct `PaypalObjectDataset`
+- New field `AdditionalProperties` in struct `PaypalObjectDataset`
+- New field `Parameters` in struct `PaypalObjectDataset`
+- New field `Annotations` in struct `HDInsightLinkedService`
+- New field `ConnectVia` in struct `HDInsightLinkedService`
+- New field `Description` in struct `HDInsightLinkedService`
+- New field `Parameters` in struct `HDInsightLinkedService`
+- New field `Type` in struct `HDInsightLinkedService`
+- New field `AdditionalProperties` in struct `HDInsightLinkedService`
+- New field `Structure` in struct `AzureSQLDWTableDataset`
+- New field `Type` in struct `AzureSQLDWTableDataset`
+- New field `Description` in struct `AzureSQLDWTableDataset`
+- New field `Parameters` in struct `AzureSQLDWTableDataset`
+- New field `Schema` in struct `AzureSQLDWTableDataset`
+- New field `Annotations` in struct `AzureSQLDWTableDataset`
+- New field `Folder` in struct `AzureSQLDWTableDataset`
+- New field `LinkedServiceName` in struct `AzureSQLDWTableDataset`
+- New field `AdditionalProperties` in struct `AzureSQLDWTableDataset`
+- New field `Annotations` in struct `ImpalaLinkedService`
+- New field `ConnectVia` in struct `ImpalaLinkedService`
+- New field `Description` in struct `ImpalaLinkedService`
+- New field `Parameters` in struct `ImpalaLinkedService`
+- New field `Type` in struct `ImpalaLinkedService`
+- New field `AdditionalProperties` in struct `ImpalaLinkedService`
+- New field `Type` in struct `ComponentSetup`
+- New field `SourceRetryCount` in struct `OracleServiceCloudSource`
+- New field `SourceRetryWait` in struct `OracleServiceCloudSource`
+- New field `Type` in struct `OracleServiceCloudSource`
+- New field `AdditionalColumns` in struct `OracleServiceCloudSource`
+- New field `AdditionalProperties` in struct `OracleServiceCloudSource`
+- New field `MaxConcurrentConnections` in struct `OracleServiceCloudSource`
+- New field `QueryTimeout` in struct `OracleServiceCloudSource`
+- New field `DisableMetricsCollection` in struct `OracleServiceCloudSource`
+- New field `Type` in struct `PhoenixLinkedService`
+- New field `AdditionalProperties` in struct `PhoenixLinkedService`
+- New field `Annotations` in struct `PhoenixLinkedService`
+- New field `ConnectVia` in struct `PhoenixLinkedService`
+- New field `Description` in struct `PhoenixLinkedService`
+- New field `Parameters` in struct `PhoenixLinkedService`
+- New field `Etag` in struct `DataFlowResource`
+- New field `ID` in struct `DataFlowResource`
+- New field `Name` in struct `DataFlowResource`
+- New field `Type` in struct `DataFlowResource`
+- New field `Type` in struct `MagentoLinkedService`
+- New field `AdditionalProperties` in struct `MagentoLinkedService`
+- New field `Annotations` in struct `MagentoLinkedService`
+- New field `ConnectVia` in struct `MagentoLinkedService`
+- New field `Description` in struct `MagentoLinkedService`
+- New field `Parameters` in struct `MagentoLinkedService`
+- New field `Parameters` in struct `SquareObjectDataset`
+- New field `Structure` in struct `SquareObjectDataset`
+- New field `Type` in struct `SquareObjectDataset`
+- New field `Description` in struct `SquareObjectDataset`
+- New field `Folder` in struct `SquareObjectDataset`
+- New field `AdditionalProperties` in struct `SquareObjectDataset`
+- New field `Schema` in struct `SquareObjectDataset`
+- New field `LinkedServiceName` in struct `SquareObjectDataset`
+- New field `Annotations` in struct `SquareObjectDataset`
+- New field `LinkedServiceName` in struct `SparkObjectDataset`
+- New field `Folder` in struct `SparkObjectDataset`
+- New field `Annotations` in struct `SparkObjectDataset`
+- New field `Parameters` in struct `SparkObjectDataset`
+- New field `Schema` in struct `SparkObjectDataset`
+- New field `Description` in struct `SparkObjectDataset`
+- New field `Type` in struct `SparkObjectDataset`
+- New field `AdditionalProperties` in struct `SparkObjectDataset`
+- New field `Structure` in struct `SparkObjectDataset`
+- New field `Type` in struct `SQLMISource`
+- New field `AdditionalColumns` in struct `SQLMISource`
+- New field `AdditionalProperties` in struct `SQLMISource`
+- New field `MaxConcurrentConnections` in struct `SQLMISource`
+- New field `QueryTimeout` in struct `SQLMISource`
+- New field `SourceRetryCount` in struct `SQLMISource`
+- New field `DisableMetricsCollection` in struct `SQLMISource`
+- New field `SourceRetryWait` in struct `SQLMISource`
+- New field `Type` in struct `AzurePostgreSQLLinkedService`
+- New field `AdditionalProperties` in struct `AzurePostgreSQLLinkedService`
+- New field `Annotations` in struct `AzurePostgreSQLLinkedService`
+- New field `ConnectVia` in struct `AzurePostgreSQLLinkedService`
+- New field `Description` in struct `AzurePostgreSQLLinkedService`
+- New field `Parameters` in struct `AzurePostgreSQLLinkedService`
+- New field `AdditionalProperties` in struct `SparkSource`
+- New field `MaxConcurrentConnections` in struct `SparkSource`
+- New field `DisableMetricsCollection` in struct `SparkSource`
+- New field `QueryTimeout` in struct `SparkSource`
+- New field `SourceRetryCount` in struct `SparkSource`
+- New field `SourceRetryWait` in struct `SparkSource`
+- New field `Type` in struct `SparkSource`
+- New field `AdditionalColumns` in struct `SparkSource`
+- New field `AdditionalProperties` in struct `AzureSearchLinkedService`
+- New field `Annotations` in struct `AzureSearchLinkedService`
+- New field `ConnectVia` in struct `AzureSearchLinkedService`
+- New field `Description` in struct `AzureSearchLinkedService`
+- New field `Parameters` in struct `AzureSearchLinkedService`
+- New field `Type` in struct `AzureSearchLinkedService`
+- New field `Type` in struct `SecureString`
+- New field `Schema` in struct `QuickBooksObjectDataset`
+- New field `Parameters` in struct `QuickBooksObjectDataset`
+- New field `LinkedServiceName` in struct `QuickBooksObjectDataset`
+- New field `Description` in struct `QuickBooksObjectDataset`
+- New field `AdditionalProperties` in struct `QuickBooksObjectDataset`
+- New field `Folder` in struct `QuickBooksObjectDataset`
+- New field `Type` in struct `QuickBooksObjectDataset`
+- New field `Structure` in struct `QuickBooksObjectDataset`
+- New field `Annotations` in struct `QuickBooksObjectDataset`
+- New field `Type` in struct `CouchbaseLinkedService`
+- New field `AdditionalProperties` in struct `CouchbaseLinkedService`
+- New field `Annotations` in struct `CouchbaseLinkedService`
+- New field `ConnectVia` in struct `CouchbaseLinkedService`
+- New field `Description` in struct `CouchbaseLinkedService`
+- New field `Parameters` in struct `CouchbaseLinkedService`
+- New field `Type` in struct `HTTPReadSettings`
+- New field `AdditionalProperties` in struct `HTTPReadSettings`
+- New field `MaxConcurrentConnections` in struct `HTTPReadSettings`
+- New field `DisableMetricsCollection` in struct `HTTPReadSettings`
+- New field `Description` in struct `OdbcLinkedService`
+- New field `Parameters` in struct `OdbcLinkedService`
+- New field `Type` in struct `OdbcLinkedService`
+- New field `AdditionalProperties` in struct `OdbcLinkedService`
+- New field `Annotations` in struct `OdbcLinkedService`
+- New field `ConnectVia` in struct `OdbcLinkedService`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `Etag` in struct `PrivateLinkResource`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `MaxConcurrentConnections` in struct `HBaseSource`
+- New field `QueryTimeout` in struct `HBaseSource`
+- New field `AdditionalColumns` in struct `HBaseSource`
+- New field `AdditionalProperties` in struct `HBaseSource`
+- New field `SourceRetryCount` in struct `HBaseSource`
+- New field `SourceRetryWait` in struct `HBaseSource`
+- New field `Type` in struct `HBaseSource`
+- New field `DisableMetricsCollection` in struct `HBaseSource`
+- New field `MaxConcurrentConnections` in struct `CommonDataServiceForAppsSink`
+- New field `SinkRetryWait` in struct `CommonDataServiceForAppsSink`
+- New field `Type` in struct `CommonDataServiceForAppsSink`
+- New field `WriteBatchTimeout` in struct `CommonDataServiceForAppsSink`
+- New field `SinkRetryCount` in struct `CommonDataServiceForAppsSink`
+- New field `WriteBatchSize` in struct `CommonDataServiceForAppsSink`
+- New field `AdditionalProperties` in struct `CommonDataServiceForAppsSink`
+- New field `DisableMetricsCollection` in struct `CommonDataServiceForAppsSink`
+- New field `Structure` in struct `DynamicsCrmEntityDataset`
+- New field `Annotations` in struct `DynamicsCrmEntityDataset`
+- New field `Schema` in struct `DynamicsCrmEntityDataset`
+- New field `Type` in struct `DynamicsCrmEntityDataset`
+- New field `AdditionalProperties` in struct `DynamicsCrmEntityDataset`
+- New field `Description` in struct `DynamicsCrmEntityDataset`
+- New field `Parameters` in struct `DynamicsCrmEntityDataset`
+- New field `Folder` in struct `DynamicsCrmEntityDataset`
+- New field `LinkedServiceName` in struct `DynamicsCrmEntityDataset`
+- New field `ServicePrincipalCredential` in struct `AzureBlobFSLinkedServiceTypeProperties`
+- New field `ServicePrincipalCredentialType` in struct `AzureBlobFSLinkedServiceTypeProperties`
+- New field `Structure` in struct `GoogleAdWordsObjectDataset`
+- New field `Type` in struct `GoogleAdWordsObjectDataset`
+- New field `AdditionalProperties` in struct `GoogleAdWordsObjectDataset`
+- New field `Schema` in struct `GoogleAdWordsObjectDataset`
+- New field `Folder` in struct `GoogleAdWordsObjectDataset`
+- New field `Annotations` in struct `GoogleAdWordsObjectDataset`
+- New field `Description` in struct `GoogleAdWordsObjectDataset`
+- New field `Parameters` in struct `GoogleAdWordsObjectDataset`
+- New field `LinkedServiceName` in struct `GoogleAdWordsObjectDataset`
+- New field `QueryTimeout` in struct `ZohoSource`
+- New field `SourceRetryCount` in struct `ZohoSource`
+- New field `Type` in struct `ZohoSource`
+- New field `DisableMetricsCollection` in struct `ZohoSource`
+- New field `SourceRetryWait` in struct `ZohoSource`
+- New field `AdditionalProperties` in struct `ZohoSource`
+- New field `AdditionalColumns` in struct `ZohoSource`
+- New field `MaxConcurrentConnections` in struct `ZohoSource`
+- New field `SourceRetryCount` in struct `CosmosDbMongoDbAPISource`
+- New field `DisableMetricsCollection` in struct `CosmosDbMongoDbAPISource`
+- New field `SourceRetryWait` in struct `CosmosDbMongoDbAPISource`
+- New field `Type` in struct `CosmosDbMongoDbAPISource`
+- New field `AdditionalProperties` in struct `CosmosDbMongoDbAPISource`
+- New field `MaxConcurrentConnections` in struct `CosmosDbMongoDbAPISource`
+- New field `AdditionalProperties` in struct `Db2Source`
+- New field `DisableMetricsCollection` in struct `Db2Source`
+- New field `QueryTimeout` in struct `Db2Source`
+- New field `Type` in struct `Db2Source`
+- New field `AdditionalColumns` in struct `Db2Source`
+- New field `MaxConcurrentConnections` in struct `Db2Source`
+- New field `SourceRetryCount` in struct `Db2Source`
+- New field `SourceRetryWait` in struct `Db2Source`
+- New field `SinkRetryCount` in struct `FileSystemSink`
+- New field `WriteBatchSize` in struct `FileSystemSink`
+- New field `Type` in struct `FileSystemSink`
+- New field `SinkRetryWait` in struct `FileSystemSink`
+- New field `WriteBatchTimeout` in struct `FileSystemSink`
+- New field `AdditionalProperties` in struct `FileSystemSink`
+- New field `DisableMetricsCollection` in struct `FileSystemSink`
+- New field `MaxConcurrentConnections` in struct `FileSystemSink`
+- New field `Type` in struct `SnowflakeLinkedService`
+- New field `AdditionalProperties` in struct `SnowflakeLinkedService`
+- New field `Annotations` in struct `SnowflakeLinkedService`
+- New field `ConnectVia` in struct `SnowflakeLinkedService`
+- New field `Description` in struct `SnowflakeLinkedService`
+- New field `Parameters` in struct `SnowflakeLinkedService`
+- New field `Type` in struct `SybaseLinkedService`
+- New field `AdditionalProperties` in struct `SybaseLinkedService`
+- New field `Annotations` in struct `SybaseLinkedService`
+- New field `ConnectVia` in struct `SybaseLinkedService`
+- New field `Description` in struct `SybaseLinkedService`
+- New field `Parameters` in struct `SybaseLinkedService`
+- New field `AdditionalProperties` in struct `MongoDbLinkedService`
+- New field `Annotations` in struct `MongoDbLinkedService`
+- New field `ConnectVia` in struct `MongoDbLinkedService`
+- New field `Description` in struct `MongoDbLinkedService`
+- New field `Parameters` in struct `MongoDbLinkedService`
+- New field `Type` in struct `MongoDbLinkedService`
+- New field `Type` in struct `AvroSource`
+- New field `AdditionalProperties` in struct `AvroSource`
+- New field `DisableMetricsCollection` in struct `AvroSource`
+- New field `MaxConcurrentConnections` in struct `AvroSource`
+- New field `SourceRetryCount` in struct `AvroSource`
+- New field `SourceRetryWait` in struct `AvroSource`
+- New field `AdditionalProperties` in struct `AvroSink`
+- New field `WriteBatchSize` in struct `AvroSink`
+- New field `MaxConcurrentConnections` in struct `AvroSink`
+- New field `DisableMetricsCollection` in struct `AvroSink`
+- New field `SinkRetryCount` in struct `AvroSink`
+- New field `SinkRetryWait` in struct `AvroSink`
+- New field `WriteBatchTimeout` in struct `AvroSink`
+- New field `Type` in struct `AvroSink`
+- New field `Structure` in struct `CustomDataset`
+- New field `AdditionalProperties` in struct `CustomDataset`
+- New field `Annotations` in struct `CustomDataset`
+- New field `Folder` in struct `CustomDataset`
+- New field `Description` in struct `CustomDataset`
+- New field `LinkedServiceName` in struct `CustomDataset`
+- New field `Type` in struct `CustomDataset`
+- New field `Parameters` in struct `CustomDataset`
+- New field `Schema` in struct `CustomDataset`
+- New field `SourceRetryCount` in struct `GoogleAdWordsSource`
+- New field `Type` in struct `GoogleAdWordsSource`
+- New field `DisableMetricsCollection` in struct `GoogleAdWordsSource`
+- New field `MaxConcurrentConnections` in struct `GoogleAdWordsSource`
+- New field `SourceRetryWait` in struct `GoogleAdWordsSource`
+- New field `AdditionalColumns` in struct `GoogleAdWordsSource`
+- New field `AdditionalProperties` in struct `GoogleAdWordsSource`
+- New field `QueryTimeout` in struct `GoogleAdWordsSource`
+- New field `Parameters` in struct `GoogleBigQueryObjectDataset`
+- New field `Schema` in struct `GoogleBigQueryObjectDataset`
+- New field `LinkedServiceName` in struct `GoogleBigQueryObjectDataset`
+- New field `Annotations` in struct `GoogleBigQueryObjectDataset`
+- New field `Description` in struct `GoogleBigQueryObjectDataset`
+- New field `Type` in struct `GoogleBigQueryObjectDataset`
+- New field `AdditionalProperties` in struct `GoogleBigQueryObjectDataset`
+- New field `Folder` in struct `GoogleBigQueryObjectDataset`
+- New field `Structure` in struct `GoogleBigQueryObjectDataset`
+- New field `Description` in struct `SftpServerLinkedService`
+- New field `Parameters` in struct `SftpServerLinkedService`
+- New field `Type` in struct `SftpServerLinkedService`
+- New field `AdditionalProperties` in struct `SftpServerLinkedService`
+- New field `Annotations` in struct `SftpServerLinkedService`
+- New field `ConnectVia` in struct `SftpServerLinkedService`
+- New field `DisableMetricsCollection` in struct `RelationalSource`
+- New field `MaxConcurrentConnections` in struct `RelationalSource`
+- New field `SourceRetryCount` in struct `RelationalSource`
+- New field `SourceRetryWait` in struct `RelationalSource`
+- New field `Type` in struct `RelationalSource`
+- New field `AdditionalProperties` in struct `RelationalSource`
+- New field `AdditionalProperties` in struct `OdbcSource`
+- New field `DisableMetricsCollection` in struct `OdbcSource`
+- New field `Type` in struct `OdbcSource`
+- New field `MaxConcurrentConnections` in struct `OdbcSource`
+- New field `QueryTimeout` in struct `OdbcSource`
+- New field `SourceRetryCount` in struct `OdbcSource`
+- New field `SourceRetryWait` in struct `OdbcSource`
+- New field `AdditionalColumns` in struct `OdbcSource`
+- New field `AdditionalProperties` in struct `QuickBooksLinkedService`
+- New field `Annotations` in struct `QuickBooksLinkedService`
+- New field `ConnectVia` in struct `QuickBooksLinkedService`
+- New field `Description` in struct `QuickBooksLinkedService`
+- New field `Parameters` in struct `QuickBooksLinkedService`
+- New field `Type` in struct `QuickBooksLinkedService`
+- New field `Type` in struct `JSONSource`
+- New field `AdditionalProperties` in struct `JSONSource`
+- New field `DisableMetricsCollection` in struct `JSONSource`
+- New field `MaxConcurrentConnections` in struct `JSONSource`
+- New field `SourceRetryCount` in struct `JSONSource`
+- New field `SourceRetryWait` in struct `JSONSource`
+- New field `ConnectVia` in struct `AzureDatabricksDeltaLakeLinkedService`
+- New field `Description` in struct `AzureDatabricksDeltaLakeLinkedService`
+- New field `Parameters` in struct `AzureDatabricksDeltaLakeLinkedService`
+- New field `Type` in struct `AzureDatabricksDeltaLakeLinkedService`
+- New field `AdditionalProperties` in struct `AzureDatabricksDeltaLakeLinkedService`
+- New field `Annotations` in struct `AzureDatabricksDeltaLakeLinkedService`
+- New field `Description` in struct `TeradataLinkedService`
+- New field `Parameters` in struct `TeradataLinkedService`
+- New field `Type` in struct `TeradataLinkedService`
+- New field `AdditionalProperties` in struct `TeradataLinkedService`
+- New field `Annotations` in struct `TeradataLinkedService`
+- New field `ConnectVia` in struct `TeradataLinkedService`
+- New field `AuthorizationType` in struct `LinkedIntegrationRuntimeRbacAuthorization`
+- New field `Credential` in struct `LinkedIntegrationRuntimeRbacAuthorization`
+- New field `MaxConcurrentConnections` in struct `RestSink`
+- New field `SinkRetryCount` in struct `RestSink`
+- New field `SinkRetryWait` in struct `RestSink`
+- New field `WriteBatchSize` in struct `RestSink`
+- New field `WriteBatchTimeout` in struct `RestSink`
+- New field `AdditionalProperties` in struct `RestSink`
+- New field `DisableMetricsCollection` in struct `RestSink`
+- New field `Type` in struct `RestSink`
+- New field `Annotations` in struct `DynamicsAXResourceDataset`
+- New field `Schema` in struct `DynamicsAXResourceDataset`
+- New field `Structure` in struct `DynamicsAXResourceDataset`
+- New field `Description` in struct `DynamicsAXResourceDataset`
+- New field `Folder` in struct `DynamicsAXResourceDataset`
+- New field `Parameters` in struct `DynamicsAXResourceDataset`
+- New field `LinkedServiceName` in struct `DynamicsAXResourceDataset`
+- New field `Type` in struct `DynamicsAXResourceDataset`
+- New field `AdditionalProperties` in struct `DynamicsAXResourceDataset`
+- New field `AdditionalProperties` in struct `AzureDataLakeStoreWriteSettings`
+- New field `CopyBehavior` in struct `AzureDataLakeStoreWriteSettings`
+- New field `DisableMetricsCollection` in struct `AzureDataLakeStoreWriteSettings`
+- New field `MaxConcurrentConnections` in struct `AzureDataLakeStoreWriteSettings`
+- New field `Type` in struct `AzureDataLakeStoreWriteSettings`
+- New field `Name` in struct `PowerQuerySource`
+- New field `Dataset` in struct `PowerQuerySource`
+- New field `Description` in struct `PowerQuerySource`
+- New field `Flowlet` in struct `PowerQuerySource`
+- New field `LinkedService` in struct `PowerQuerySource`
+- New field `SchemaLinkedService` in struct `PowerQuerySource`
+- New field `Folder` in struct `ExcelDataset`
+- New field `Type` in struct `ExcelDataset`
+- New field `Annotations` in struct `ExcelDataset`
+- New field `LinkedServiceName` in struct `ExcelDataset`
+- New field `Description` in struct `ExcelDataset`
+- New field `AdditionalProperties` in struct `ExcelDataset`
+- New field `Parameters` in struct `ExcelDataset`
+- New field `Schema` in struct `ExcelDataset`
+- New field `Structure` in struct `ExcelDataset`
+- New field `Name` in struct `DatasetDebugResource`
+- New field `Type` in struct `ImpalaSource`
+- New field `DisableMetricsCollection` in struct `ImpalaSource`
+- New field `MaxConcurrentConnections` in struct `ImpalaSource`
+- New field `QueryTimeout` in struct `ImpalaSource`
+- New field `AdditionalProperties` in struct `ImpalaSource`
+- New field `AdditionalColumns` in struct `ImpalaSource`
+- New field `SourceRetryCount` in struct `ImpalaSource`
+- New field `SourceRetryWait` in struct `ImpalaSource`
+- New field `MaxConcurrentConnections` in struct `AmazonS3CompatibleReadSettings`
+- New field `Type` in struct `AmazonS3CompatibleReadSettings`
+- New field `DisableMetricsCollection` in struct `AmazonS3CompatibleReadSettings`
+- New field `AdditionalProperties` in struct `AmazonS3CompatibleReadSettings`
+- New field `Type` in struct `CosmosDbMongoDbAPILinkedService`
+- New field `AdditionalProperties` in struct `CosmosDbMongoDbAPILinkedService`
+- New field `Annotations` in struct `CosmosDbMongoDbAPILinkedService`
+- New field `ConnectVia` in struct `CosmosDbMongoDbAPILinkedService`
+- New field `Description` in struct `CosmosDbMongoDbAPILinkedService`
+- New field `Parameters` in struct `CosmosDbMongoDbAPILinkedService`
+- New field `Type` in struct `OrcSink`
+- New field `WriteBatchTimeout` in struct `OrcSink`
+- New field `SinkRetryWait` in struct `OrcSink`
+- New field `WriteBatchSize` in struct `OrcSink`
+- New field `AdditionalProperties` in struct `OrcSink`
+- New field `DisableMetricsCollection` in struct `OrcSink`
+- New field `MaxConcurrentConnections` in struct `OrcSink`
+- New field `SinkRetryCount` in struct `OrcSink`
+
+
+## 0.1.0 (2021-12-09)
+
+- Init release.

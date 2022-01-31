@@ -33,9 +33,7 @@ func ExampleServersClient_BeginCreate() {
 		armmariadb.ServerForCreate{
 			Location: to.StringPtr("<location>"),
 			Properties: &armmariadb.ServerPropertiesForRestore{
-				ServerPropertiesForCreate: armmariadb.ServerPropertiesForCreate{
-					CreateMode: armmariadb.CreateModePointInTimeRestore.ToPtr(),
-				},
+				CreateMode:         armmariadb.CreateMode("PointInTimeRestore").ToPtr(),
 				RestorePointInTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-14T00:00:37.467Z"); return t }()),
 				SourceServerID:     to.StringPtr("<source-server-id>"),
 			},
@@ -43,7 +41,7 @@ func ExampleServersClient_BeginCreate() {
 				Name:     to.StringPtr("<name>"),
 				Capacity: to.Int32Ptr(2),
 				Family:   to.StringPtr("<family>"),
-				Tier:     armmariadb.SKUTierGeneralPurpose.ToPtr(),
+				Tier:     armmariadb.SKUTier("GeneralPurpose").ToPtr(),
 			},
 			Tags: map[string]*string{
 				"ElasticServer": to.StringPtr("1"),
@@ -57,7 +55,7 @@ func ExampleServersClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Server.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServersClientCreateResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerUpdate.json
@@ -85,7 +83,7 @@ func ExampleServersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Server.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServersClientUpdateResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerDelete.json
@@ -124,7 +122,7 @@ func ExampleServersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Server.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServersClientGetResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerListByResourceGroup.json
@@ -135,12 +133,13 @@ func ExampleServersClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewServersClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServersClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerList.json
@@ -151,11 +150,12 @@ func ExampleServersClient_List() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewServersClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServersClientListResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerRestart.json

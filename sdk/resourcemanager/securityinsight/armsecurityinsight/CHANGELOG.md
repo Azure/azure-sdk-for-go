@@ -1,0 +1,1999 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*IncidentsClient.List` parameter(s) have been changed from `(string, string, *IncidentsListOptions)` to `(string, string, *IncidentsClientListOptions)`
+- Function `*IncidentsClient.List` return value(s) have been changed from `(*IncidentsListPager)` to `(*IncidentsClientListPager)`
+- Function `*DataConnectorsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DataConnectorClassification, *DataConnectorsCreateOrUpdateOptions)` to `(context.Context, string, string, string, DataConnectorClassification, *DataConnectorsClientCreateOrUpdateOptions)`
+- Function `*DataConnectorsClient.CreateOrUpdate` return value(s) have been changed from `(DataConnectorsCreateOrUpdateResponse, error)` to `(DataConnectorsClientCreateOrUpdateResponse, error)`
+- Function `*IncidentsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Incident, *IncidentsCreateOrUpdateOptions)` to `(context.Context, string, string, string, Incident, *IncidentsClientCreateOrUpdateOptions)`
+- Function `*IncidentsClient.CreateOrUpdate` return value(s) have been changed from `(IncidentsCreateOrUpdateResponse, error)` to `(IncidentsClientCreateOrUpdateResponse, error)`
+- Function `*ActionsClient.ListByAlertRule` parameter(s) have been changed from `(string, string, string, *ActionsListByAlertRuleOptions)` to `(string, string, string, *ActionsClientListByAlertRuleOptions)`
+- Function `*ActionsClient.ListByAlertRule` return value(s) have been changed from `(*ActionsListByAlertRulePager)` to `(*ActionsClientListByAlertRulePager)`
+- Function `*ActionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ActionsDeleteOptions)` to `(context.Context, string, string, string, string, *ActionsClientDeleteOptions)`
+- Function `*ActionsClient.Delete` return value(s) have been changed from `(ActionsDeleteResponse, error)` to `(ActionsClientDeleteResponse, error)`
+- Function `*BookmarksClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *BookmarksDeleteOptions)` to `(context.Context, string, string, string, *BookmarksClientDeleteOptions)`
+- Function `*BookmarksClient.Delete` return value(s) have been changed from `(BookmarksDeleteResponse, error)` to `(BookmarksClientDeleteResponse, error)`
+- Function `*ActionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, ActionRequest, *ActionsCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, ActionRequest, *ActionsClientCreateOrUpdateOptions)`
+- Function `*ActionsClient.CreateOrUpdate` return value(s) have been changed from `(ActionsCreateOrUpdateResponse, error)` to `(ActionsClientCreateOrUpdateResponse, error)`
+- Function `*AlertRulesClient.List` parameter(s) have been changed from `(string, string, *AlertRulesListOptions)` to `(string, string, *AlertRulesClientListOptions)`
+- Function `*AlertRulesClient.List` return value(s) have been changed from `(*AlertRulesListPager)` to `(*AlertRulesClientListPager)`
+- Function `*AlertRuleTemplatesClient.List` parameter(s) have been changed from `(string, string, *AlertRuleTemplatesListOptions)` to `(string, string, *AlertRuleTemplatesClientListOptions)`
+- Function `*AlertRuleTemplatesClient.List` return value(s) have been changed from `(*AlertRuleTemplatesListPager)` to `(*AlertRuleTemplatesClientListPager)`
+- Function `*BookmarksClient.List` parameter(s) have been changed from `(string, string, *BookmarksListOptions)` to `(string, string, *BookmarksClientListOptions)`
+- Function `*BookmarksClient.List` return value(s) have been changed from `(*BookmarksListPager)` to `(*BookmarksClientListPager)`
+- Function `*AlertRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AlertRulesGetOptions)` to `(context.Context, string, string, string, *AlertRulesClientGetOptions)`
+- Function `*AlertRulesClient.Get` return value(s) have been changed from `(AlertRulesGetResponse, error)` to `(AlertRulesClientGetResponse, error)`
+- Function `*DataConnectorsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *DataConnectorsDeleteOptions)` to `(context.Context, string, string, string, *DataConnectorsClientDeleteOptions)`
+- Function `*DataConnectorsClient.Delete` return value(s) have been changed from `(DataConnectorsDeleteResponse, error)` to `(DataConnectorsClientDeleteResponse, error)`
+- Function `*DataConnectorsClient.List` parameter(s) have been changed from `(string, string, *DataConnectorsListOptions)` to `(string, string, *DataConnectorsClientListOptions)`
+- Function `*DataConnectorsClient.List` return value(s) have been changed from `(*DataConnectorsListPager)` to `(*DataConnectorsClientListPager)`
+- Function `*BookmarksClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Bookmark, *BookmarksCreateOrUpdateOptions)` to `(context.Context, string, string, string, Bookmark, *BookmarksClientCreateOrUpdateOptions)`
+- Function `*BookmarksClient.CreateOrUpdate` return value(s) have been changed from `(BookmarksCreateOrUpdateResponse, error)` to `(BookmarksClientCreateOrUpdateResponse, error)`
+- Function `*IncidentsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *IncidentsDeleteOptions)` to `(context.Context, string, string, string, *IncidentsClientDeleteOptions)`
+- Function `*IncidentsClient.Delete` return value(s) have been changed from `(IncidentsDeleteResponse, error)` to `(IncidentsClientDeleteResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*IncidentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IncidentsGetOptions)` to `(context.Context, string, string, string, *IncidentsClientGetOptions)`
+- Function `*IncidentsClient.Get` return value(s) have been changed from `(IncidentsGetResponse, error)` to `(IncidentsClientGetResponse, error)`
+- Function `*BookmarksClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *BookmarksGetOptions)` to `(context.Context, string, string, string, *BookmarksClientGetOptions)`
+- Function `*BookmarksClient.Get` return value(s) have been changed from `(BookmarksGetResponse, error)` to `(BookmarksClientGetResponse, error)`
+- Function `*DataConnectorsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataConnectorsGetOptions)` to `(context.Context, string, string, string, *DataConnectorsClientGetOptions)`
+- Function `*DataConnectorsClient.Get` return value(s) have been changed from `(DataConnectorsGetResponse, error)` to `(DataConnectorsClientGetResponse, error)`
+- Function `*ActionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *ActionsGetOptions)` to `(context.Context, string, string, string, string, *ActionsClientGetOptions)`
+- Function `*ActionsClient.Get` return value(s) have been changed from `(ActionsGetResponse, error)` to `(ActionsClientGetResponse, error)`
+- Function `*AlertRuleTemplatesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AlertRuleTemplatesGetOptions)` to `(context.Context, string, string, string, *AlertRuleTemplatesClientGetOptions)`
+- Function `*AlertRuleTemplatesClient.Get` return value(s) have been changed from `(AlertRuleTemplatesGetResponse, error)` to `(AlertRuleTemplatesClientGetResponse, error)`
+- Function `*AlertRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *AlertRulesDeleteOptions)` to `(context.Context, string, string, string, *AlertRulesClientDeleteOptions)`
+- Function `*AlertRulesClient.Delete` return value(s) have been changed from `(AlertRulesDeleteResponse, error)` to `(AlertRulesClientDeleteResponse, error)`
+- Function `*AlertRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, AlertRuleClassification, *AlertRulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, AlertRuleClassification, *AlertRulesClientCreateOrUpdateOptions)`
+- Function `*AlertRulesClient.CreateOrUpdate` return value(s) have been changed from `(AlertRulesCreateOrUpdateResponse, error)` to `(AlertRulesClientCreateOrUpdateResponse, error)`
+- Function `*IncidentCommentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *IncidentCommentsGetOptions)` to `(context.Context, string, string, string, string, *IncidentCommentsClientGetOptions)`
+- Function `*IncidentCommentsClient.Get` return value(s) have been changed from `(IncidentCommentsGetResponse, error)` to `(IncidentCommentsClientGetResponse, error)`
+- Function `ScheduledAlertRuleCommonProperties.MarshalJSON` has been removed
+- Function `*DataConnectorsListPager.Err` has been removed
+- Function `*IncidentCommentsListByIncidentPager.NextPage` has been removed
+- Function `*Incident.UnmarshalJSON` has been removed
+- Function `*ActionResponse.UnmarshalJSON` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*AlertRuleTemplate.UnmarshalJSON` has been removed
+- Function `*BookmarksListPager.PageResponse` has been removed
+- Function `*AlertRuleTemplatesListPager.NextPage` has been removed
+- Function `*ActionRequest.UnmarshalJSON` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*ActionsListByAlertRulePager.PageResponse` has been removed
+- Function `*DataConnectorsListPager.PageResponse` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Function `*IncidentsListPager.Err` has been removed
+- Function `*MicrosoftSecurityIncidentCreationAlertRuleCommonProperties.UnmarshalJSON` has been removed
+- Function `*IncidentComment.UnmarshalJSON` has been removed
+- Function `*ResourceWithEtag.UnmarshalJSON` has been removed
+- Function `*IncidentCommentsListByIncidentPager.PageResponse` has been removed
+- Function `*IncidentCommentsClient.CreateComment` has been removed
+- Function `*AlertRuleTemplatesGetResult.UnmarshalJSON` has been removed
+- Function `*BookmarksListPager.Err` has been removed
+- Function `*AlertRule.UnmarshalJSON` has been removed
+- Function `*DataConnector.UnmarshalJSON` has been removed
+- Function `*IncidentsListPager.NextPage` has been removed
+- Function `*DataConnectorsCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `*AlertRuleTemplatesListPager.Err` has been removed
+- Function `*ActionsListByAlertRulePager.NextPage` has been removed
+- Function `*AlertRulesListPager.NextPage` has been removed
+- Function `*DataConnectorsGetResult.UnmarshalJSON` has been removed
+- Function `*ScheduledAlertRuleCommonProperties.UnmarshalJSON` has been removed
+- Function `*AlertRulesCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `*Bookmark.UnmarshalJSON` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*AlertRuleTemplatesListPager.PageResponse` has been removed
+- Function `*IncidentCommentsListByIncidentPager.Err` has been removed
+- Function `*IncidentCommentsClient.ListByIncident` has been removed
+- Function `*AlertRulesListPager.Err` has been removed
+- Function `*BookmarksListPager.NextPage` has been removed
+- Function `*AlertRulesListPager.PageResponse` has been removed
+- Function `*OfficeConsent.UnmarshalJSON` has been removed
+- Function `*IncidentsListPager.PageResponse` has been removed
+- Function `*DataConnectorsListPager.NextPage` has been removed
+- Function `*ActionsListByAlertRulePager.Err` has been removed
+- Function `*AlertRulesGetResult.UnmarshalJSON` has been removed
+- Struct `ActionsCreateOrUpdateOptions` has been removed
+- Struct `ActionsCreateOrUpdateResponse` has been removed
+- Struct `ActionsCreateOrUpdateResult` has been removed
+- Struct `ActionsDeleteOptions` has been removed
+- Struct `ActionsDeleteResponse` has been removed
+- Struct `ActionsGetOptions` has been removed
+- Struct `ActionsGetResponse` has been removed
+- Struct `ActionsGetResult` has been removed
+- Struct `ActionsListByAlertRuleOptions` has been removed
+- Struct `ActionsListByAlertRulePager` has been removed
+- Struct `ActionsListByAlertRuleResponse` has been removed
+- Struct `ActionsListByAlertRuleResult` has been removed
+- Struct `AlertRuleTemplatesGetOptions` has been removed
+- Struct `AlertRuleTemplatesGetResponse` has been removed
+- Struct `AlertRuleTemplatesGetResult` has been removed
+- Struct `AlertRuleTemplatesListOptions` has been removed
+- Struct `AlertRuleTemplatesListPager` has been removed
+- Struct `AlertRuleTemplatesListResponse` has been removed
+- Struct `AlertRuleTemplatesListResult` has been removed
+- Struct `AlertRulesCreateOrUpdateOptions` has been removed
+- Struct `AlertRulesCreateOrUpdateResponse` has been removed
+- Struct `AlertRulesCreateOrUpdateResult` has been removed
+- Struct `AlertRulesDeleteOptions` has been removed
+- Struct `AlertRulesDeleteResponse` has been removed
+- Struct `AlertRulesGetOptions` has been removed
+- Struct `AlertRulesGetResponse` has been removed
+- Struct `AlertRulesGetResult` has been removed
+- Struct `AlertRulesListOptions` has been removed
+- Struct `AlertRulesListPager` has been removed
+- Struct `AlertRulesListResponse` has been removed
+- Struct `AlertRulesListResult` has been removed
+- Struct `BookmarksCreateOrUpdateOptions` has been removed
+- Struct `BookmarksCreateOrUpdateResponse` has been removed
+- Struct `BookmarksCreateOrUpdateResult` has been removed
+- Struct `BookmarksDeleteOptions` has been removed
+- Struct `BookmarksDeleteResponse` has been removed
+- Struct `BookmarksGetOptions` has been removed
+- Struct `BookmarksGetResponse` has been removed
+- Struct `BookmarksGetResult` has been removed
+- Struct `BookmarksListOptions` has been removed
+- Struct `BookmarksListPager` has been removed
+- Struct `BookmarksListResponse` has been removed
+- Struct `BookmarksListResult` has been removed
+- Struct `DataConnectorsCreateOrUpdateOptions` has been removed
+- Struct `DataConnectorsCreateOrUpdateResponse` has been removed
+- Struct `DataConnectorsCreateOrUpdateResult` has been removed
+- Struct `DataConnectorsDeleteOptions` has been removed
+- Struct `DataConnectorsDeleteResponse` has been removed
+- Struct `DataConnectorsGetOptions` has been removed
+- Struct `DataConnectorsGetResponse` has been removed
+- Struct `DataConnectorsGetResult` has been removed
+- Struct `DataConnectorsListOptions` has been removed
+- Struct `DataConnectorsListPager` has been removed
+- Struct `DataConnectorsListResponse` has been removed
+- Struct `DataConnectorsListResult` has been removed
+- Struct `IncidentCommentsCreateCommentOptions` has been removed
+- Struct `IncidentCommentsCreateCommentResponse` has been removed
+- Struct `IncidentCommentsCreateCommentResult` has been removed
+- Struct `IncidentCommentsGetOptions` has been removed
+- Struct `IncidentCommentsGetResponse` has been removed
+- Struct `IncidentCommentsGetResult` has been removed
+- Struct `IncidentCommentsListByIncidentOptions` has been removed
+- Struct `IncidentCommentsListByIncidentPager` has been removed
+- Struct `IncidentCommentsListByIncidentResponse` has been removed
+- Struct `IncidentCommentsListByIncidentResult` has been removed
+- Struct `IncidentsCreateOrUpdateOptions` has been removed
+- Struct `IncidentsCreateOrUpdateResponse` has been removed
+- Struct `IncidentsCreateOrUpdateResult` has been removed
+- Struct `IncidentsDeleteOptions` has been removed
+- Struct `IncidentsDeleteResponse` has been removed
+- Struct `IncidentsGetOptions` has been removed
+- Struct `IncidentsGetResponse` has been removed
+- Struct `IncidentsGetResult` has been removed
+- Struct `IncidentsListOptions` has been removed
+- Struct `IncidentsListPager` has been removed
+- Struct `IncidentsListResponse` has been removed
+- Struct `IncidentsListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Field `AlertRule` of struct `FusionAlertRule` has been removed
+- Field `ActionPropertiesBase` of struct `ActionRequestProperties` has been removed
+- Field `DataConnectorDataTypeCommon` of struct `TIDataConnectorDataTypesIndicators` has been removed
+- Field `DataConnectorDataTypeCommon` of struct `OfficeDataConnectorDataTypesSharePoint` has been removed
+- Field `AlertsDataTypeOfDataConnector` of struct `MCASDataConnectorDataTypes` has been removed
+- Field `DataConnector` of struct `MCASDataConnector` has been removed
+- Field `Resource` of struct `OfficeConsent` has been removed
+- Field `AlertRuleTemplate` of struct `MicrosoftSecurityIncidentCreationAlertRuleTemplate` has been removed
+- Field `DataConnector` of struct `AATPDataConnector` has been removed
+- Field `DataConnector` of struct `AwsCloudTrailDataConnector` has been removed
+- Field `ResourceWithEtag` of struct `DataConnector` has been removed
+- Field `Details` of struct `ErrorResponse` has been removed
+- Field `Message` of struct `ErrorResponse` has been removed
+- Field `Target` of struct `ErrorResponse` has been removed
+- Field `AdditionalInfo` of struct `ErrorResponse` has been removed
+- Field `Code` of struct `ErrorResponse` has been removed
+- Field `AlertRuleTemplate` of struct `ScheduledAlertRuleTemplate` has been removed
+- Field `AlertRule` of struct `MicrosoftSecurityIncidentCreationAlertRule` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `DataConnectorDataTypeCommon` of struct `OfficeDataConnectorDataTypesExchange` has been removed
+- Field `DataConnector` of struct `OfficeDataConnector` has been removed
+- Field `Resource` of struct `IncidentComment` has been removed
+- Field `TenantName` of struct `OfficeConsentProperties` has been removed
+- Field `ScheduledAlertRuleCommonProperties` of struct `ScheduledAlertRuleProperties` has been removed
+- Field `DataConnector` of struct `AADDataConnector` has been removed
+- Field `AlertRuleTemplate` of struct `FusionAlertRuleTemplate` has been removed
+- Field `Severity` of struct `ScheduledAlertRuleCommonProperties` has been removed
+- Field `Query` of struct `ScheduledAlertRuleCommonProperties` has been removed
+- Field `DataConnector` of struct `MDATPDataConnector` has been removed
+- Field `DataConnector` of struct `TIDataConnector` has been removed
+- Field `ResourceWithEtag` of struct `Incident` has been removed
+- Field `Resource` of struct `AlertRuleTemplate` has been removed
+- Field `ResourceWithEtag` of struct `AlertRule` has been removed
+- Field `ActionPropertiesBase` of struct `ActionResponseProperties` has been removed
+- Field `MicrosoftSecurityIncidentCreationAlertRuleCommonProperties` of struct `MicrosoftSecurityIncidentCreationAlertRuleProperties` has been removed
+- Field `ResourceWithEtag` of struct `Bookmark` has been removed
+- Field `ResourceWithEtag` of struct `ActionRequest` has been removed
+- Field `DataConnectorDataTypeCommon` of struct `AwsCloudTrailDataConnectorDataTypesLogs` has been removed
+- Field `AlertRule` of struct `ScheduledAlertRule` has been removed
+- Field `DataConnector` of struct `ASCDataConnector` has been removed
+- Field `DataConnectorWithAlertsProperties` of struct `ASCDataConnectorProperties` has been removed
+- Field `Resource` of struct `ActionResponse` has been removed
+- Field `DataConnectorDataTypeCommon` of struct `OfficeDataConnectorDataTypesTeams` has been removed
+
+### Features Added
+
+- New const `PollingFrequencyOnceAnHour`
+- New const `EntityQueryKindExpansion`
+- New const `EntityKindSecurityGroup`
+- New const `KindParser`
+- New const `SourceLocalFile`
+- New const `AntispamMailDirectionOutbound`
+- New const `EntityMappingTypeSecurityGroup`
+- New const `SourceKindSourceRepository`
+- New const `EntityKindMalware`
+- New const `ProviderNameMicrosoftOperationalInsightsWorkspaces`
+- New const `AutomationRulePropertyConditionSupportedPropertyProcessID`
+- New const `PermissionProviderScopeResourceGroup`
+- New const `RegistryHiveHKEYUSERS`
+- New const `AutomationRulePropertyConditionSupportedPropertyIoTDeviceVendor`
+- New const `EntityKindFile`
+- New const `AlertStatusInProgress`
+- New const `EntityMappingTypeFile`
+- New const `DataConnectorKindGenericUI`
+- New const `EntityQueryTemplateKindActivity`
+- New const `ConfidenceLevelUnknown`
+- New const `DeliveryActionBlocked`
+- New const `ThreatIntelligenceSortingCriteriaEnumUnsorted`
+- New const `AutomationRulePropertyConditionSupportedPropertyAccountName`
+- New const `RegistryValueKindNone`
+- New const `DeliveryLocationInbox`
+- New const `DataConnectorKindMicrosoftThreatProtection`
+- New const `EntityTimelineKindActivity`
+- New const `EntityMappingTypeMailCluster`
+- New const `DataConnectorKindOfficeATP`
+- New const `RegistryValueKindMultiString`
+- New const `AutomationRulePropertyConditionSupportedPropertyFileHashValue`
+- New const `EntityMappingTypeMailMessage`
+- New const `TriggersOnIncidents`
+- New const `AutomationRulePropertyConditionSupportedPropertyAccountAADUserID`
+- New const `AutomationRulePropertyConditionSupportedPropertyIPAddress`
+- New const `EventGroupingAggregationKindAlertPerResult`
+- New const `EntityKindRegistryKey`
+- New const `MatchingMethodSelected`
+- New const `EntityMappingTypeAccount`
+- New const `ConnectAuthKindOAuth2`
+- New const `AutomationRulePropertyConditionSupportedPropertyCloudApplicationAppName`
+- New const `AutomationRulePropertyConditionSupportedPropertyAccountUPNSuffix`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailboxDisplayName`
+- New const `DataConnectorKindAPIPolling`
+- New const `EntityItemQueryKindInsight`
+- New const `EntityKindIP`
+- New const `ElevationTokenFull`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailMessageSubject`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailMessageP2Sender`
+- New const `DeliveryLocationDropped`
+- New const `AutomationRulePropertyConditionSupportedPropertyProcessCommandLine`
+- New const `OSFamilyLinux`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentDescription`
+- New const `MatchingMethodAllEntities`
+- New const `AutomationRulePropertyConditionSupportedOperatorEquals`
+- New const `EntityKindMailCluster`
+- New const `KindPlaybookTemplate`
+- New const `EntityKindIoTDevice`
+- New const `KillChainIntentCredentialAccess`
+- New const `AutomationRulePropertyConditionSupportedPropertyRegistryKey`
+- New const `SupportTierPartner`
+- New const `AutomationRulePropertyConditionSupportedOperatorNotStartsWith`
+- New const `KindHuntingQuery`
+- New const `KillChainIntentImpact`
+- New const `SettingKindEyesOn`
+- New const `KindSolution`
+- New const `KillChainIntentExploitation`
+- New const `AutomationRulePropertyConditionSupportedPropertyIoTDeviceModel`
+- New const `AutomationRulePropertyConditionSupportedPropertyAccountObjectGUID`
+- New const `DeliveryLocationFailed`
+- New const `SettingTypeInstructionStepsGroup`
+- New const `SettingKindUeba`
+- New const `RegistryHiveHKEYA`
+- New const `KindAnalyticsRuleTemplate`
+- New const `SourceKindLocalWorkspace`
+- New const `AutomationRulePropertyConditionSupportedPropertyFileName`
+- New const `AutomationRulePropertyConditionSupportedPropertyFileDirectory`
+- New const `RegistryHiveHKEYPERFORMANCEDATA`
+- New const `EntityMappingTypeCloudApplication`
+- New const `OSFamilyWindows`
+- New const `AutomationRulePropertyConditionSupportedOperatorEndsWith`
+- New const `DeliveryLocationJunkFolder`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailMessageRecipient`
+- New const `FileHashAlgorithmUnknown`
+- New const `ConfidenceScoreStatusNotApplicable`
+- New const `FileHashAlgorithmMD5`
+- New const `AutomationRulePropertyConditionSupportedOperatorNotEquals`
+- New const `ProviderNameMicrosoftOperationalInsightsSolutions`
+- New const `OperatorOR`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentStatus`
+- New const `KindWatchlist`
+- New const `RegistryHiveHKEYCURRENTUSER`
+- New const `EntityTypeHost`
+- New const `UebaDataSourcesAzureActivity`
+- New const `AutomationRulePropertyConditionSupportedPropertyHostAzureID`
+- New const `RegistryValueKindUnknown`
+- New const `RegistryHiveHKEYCURRENTUSERLOCALSETTINGS`
+- New const `SKUKindCapacityReservation`
+- New const `EntityKindAccount`
+- New const `AutomationRulePropertyConditionSupportedPropertyCloudApplicationAppID`
+- New const `SettingTypeCopyableLabel`
+- New const `EntityKindBookmark`
+- New const `KindPlaybook`
+- New const `EntityMappingTypeSubmissionMail`
+- New const `TriggersWhenCreated`
+- New const `DeliveryLocationForwarded`
+- New const `AutomationRuleConditionTypeProperty`
+- New const `ThreatIntelligenceSortingCriteriaEnumAscending`
+- New const `CreatedByTypeApplication`
+- New const `SourceKindCommunity`
+- New const `ProviderNameMicrosoftAadiamDiagnosticSettings`
+- New const `EntityKindURL`
+- New const `FileHashAlgorithmSHA1`
+- New const `EntityTypeProcess`
+- New const `EntityTypeSecurityAlert`
+- New const `EntityKindHost`
+- New const `RegistryValueKindDWord`
+- New const `EntityKindFileHash`
+- New const `EntityKindAzureResource`
+- New const `OwnerTypeUnknown`
+- New const `DataConnectorKindDynamics365`
+- New const `EntityTypeFile`
+- New const `AutomationRulePropertyConditionSupportedOperatorContains`
+- New const `EntityTypeCloudApplication`
+- New const `EntityMappingTypeRegistryValue`
+- New const `RegistryHiveHKEYCLASSESROOT`
+- New const `PollingFrequencyOnceADay`
+- New const `AlertRuleKindThreatIntelligence`
+- New const `AutomationRulePropertyConditionSupportedPropertyURL`
+- New const `EntityMappingTypeMalware`
+- New const `KindInvestigationQuery`
+- New const `AlertDetailSeverity`
+- New const `AutomationRulePropertyConditionSupportedPropertyAccountAADTenantID`
+- New const `ElevationTokenDefault`
+- New const `KindWorkbookTemplate`
+- New const `RegistryValueKindQWord`
+- New const `AutomationRulePropertyConditionSupportedPropertyHostNetBiosName`
+- New const `EntityKindCloudApplication`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailMessageDeliveryLocation`
+- New const `SupportTierMicrosoft`
+- New const `AutomationRulePropertyConditionSupportedPropertyIoTDeviceOperatingSystem`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailboxUPN`
+- New const `AutomationRulePropertyConditionSupportedPropertyHostName`
+- New const `OutputTypeEntity`
+- New const `CreatedByTypeManagedIdentity`
+- New const `AutomationRulePropertyConditionSupportedPropertyRegistryValueData`
+- New const `DataConnectorLicenseStateValid`
+- New const `ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys`
+- New const `AutomationRulePropertyConditionSupportedPropertyAccountPUID`
+- New const `DeliveryActionUnknown`
+- New const `AlertDetailDisplayName`
+- New const `DataConnectorLicenseStateInvalid`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailMessageDeliveryAction`
+- New const `DeliveryActionDelivered`
+- New const `AntispamMailDirectionUnknown`
+- New const `DeliveryLocationUnknown`
+- New const `KillChainIntentProbing`
+- New const `Enum39Activity`
+- New const `RegistryValueKindString`
+- New const `AutomationRulePropertyConditionSupportedPropertyMalwareCategory`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentTactics`
+- New const `KindWorkbook`
+- New const `DataConnectorKindThreatIntelligenceTaxii`
+- New const `ThreatIntelligenceSortingCriteriaEnumDescending`
+- New const `RegistryHiveHKEYPERFORMANCENLSTEXT`
+- New const `AutomationRulePropertyConditionSupportedPropertyAccountNTDomain`
+- New const `KillChainIntentDefenseEvasion`
+- New const `DataConnectorLicenseStateUnknown`
+- New const `KindWatchlistTemplate`
+- New const `EntityMappingTypeFileHash`
+- New const `RegistryHiveHKEYCURRENTCONFIG`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailMessageP1Sender`
+- New const `EntityMappingTypeProcess`
+- New const `ConfidenceLevelHigh`
+- New const `AutomationRuleActionTypeModifyProperties`
+- New const `EntityTypeDNS`
+- New const `DataConnectorAuthorizationStateInvalid`
+- New const `DeliveryLocationExternal`
+- New const `RegistryHiveHKEYPERFORMANCETEXT`
+- New const `MatchingMethodAnyAlert`
+- New const `KillChainIntentExfiltration`
+- New const `AutomationRulePropertyConditionSupportedPropertyIoTDeviceName`
+- New const `DataConnectorAuthorizationStateValid`
+- New const `DataConnectorKindMicrosoftThreatIntelligence`
+- New const `FileHashAlgorithmSHA256`
+- New const `EntityQueryKindActivity`
+- New const `UebaDataSourcesSecurityEvent`
+- New const `ConfidenceScoreStatusInProcess`
+- New const `UebaDataSourcesSigninLogs`
+- New const `SettingKindAnomalies`
+- New const `MicrosoftSecurityProductNameOffice365AdvancedThreatProtection`
+- New const `KillChainIntentCommandAndControl`
+- New const `Enum8Activity`
+- New const `PermissionProviderScopeWorkspace`
+- New const `EntityTypeRegistryValue`
+- New const `ConfidenceScoreStatusNotFinal`
+- New const `AutomationRulePropertyConditionSupportedPropertyHostOSVersion`
+- New const `EntityTypeAzureResource`
+- New const `FileHashAlgorithmSHA256AC`
+- New const `ContentTypeAnalyticRule`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentTitle`
+- New const `EntityTypeHuntingBookmark`
+- New const `Enum8Expansion`
+- New const `KillChainIntentLateralMovement`
+- New const `DeliveryLocationDeletedFolder`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentProviderName`
+- New const `EntityMappingTypeRegistryKey`
+- New const `ElevationTokenLimited`
+- New const `AutomationRulePropertyConditionSupportedPropertyAzureResourceSubscriptionID`
+- New const `KindDataType`
+- New const `EntityTypeIP`
+- New const `OSFamilyAndroid`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailMessageSenderIP`
+- New const `AutomationRulePropertyConditionSupportedPropertyMailboxPrimaryAddress`
+- New const `EntityMappingTypeMailbox`
+- New const `SourceKindSolution`
+- New const `KillChainIntentPersistence`
+- New const `DeliveryActionDeliveredAsSpam`
+- New const `AutomationRulePropertyConditionSupportedPropertyAzureResourceResourceID`
+- New const `MicrosoftSecurityProductNameMicrosoftDefenderAdvancedThreatProtection`
+- New const `AntispamMailDirectionIntraorg`
+- New const `EntityTypeAccount`
+- New const `AutomationRulePropertyConditionSupportedPropertyHostNTDomain`
+- New const `EntityMappingTypeDNS`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentRelatedAnalyticRuleIDs`
+- New const `EntityQueryKindInsight`
+- New const `AttackTacticPreAttack`
+- New const `ConfidenceLevelLow`
+- New const `EntityTypeRegistryKey`
+- New const `EntityMappingTypeURL`
+- New const `EntityTypeMalware`
+- New const `DeliveryActionReplaced`
+- New const `CustomEntityQueryKindActivity`
+- New const `EntityMappingTypeAzureResource`
+- New const `UebaDataSourcesAuditLogs`
+- New const `ConnectivityTypeIsConnectedQuery`
+- New const `EntityKindProcess`
+- New const `SKUKindPerGB`
+- New const `AutomationRulePropertyConditionSupportedPropertyMalwareName`
+- New const `EntityKindSecurityAlert`
+- New const `DataConnectorKindOfficeIRM`
+- New const `SupportTierCommunity`
+- New const `ThreatIntelligenceResourceKindEnumIndicator`
+- New const `RepoTypeDevOps`
+- New const `AntispamMailDirectionInbound`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentSeverity`
+- New const `AutomationRulePropertyConditionSupportedOperatorNotContains`
+- New const `AlertStatusUnknown`
+- New const `AlertStatusNew`
+- New const `OutputTypeString`
+- New const `AutomationRuleActionTypeRunPlaybook`
+- New const `EntityTypeIoTDevice`
+- New const `RepoTypeGithub`
+- New const `KindDataConnector`
+- New const `EntityKindRegistryValue`
+- New const `AutomationRulePropertyConditionSupportedPropertyIoTDeviceID`
+- New const `AlertRuleKindNRT`
+- New const `PermissionProviderScopeSubscription`
+- New const `SettingKindEntityAnalytics`
+- New const `RegistryValueKindBinary`
+- New const `SettingTypeInfoMessage`
+- New const `EntityTypeURL`
+- New const `AutomationRulePropertyConditionSupportedPropertyDNSDomainName`
+- New const `EntityTypeMailMessage`
+- New const `ConnectAuthKindBasic`
+- New const `KillChainIntentCollection`
+- New const `EntityKindDNSResolution`
+- New const `EntityTypeMailCluster`
+- New const `EntityMappingTypeHost`
+- New const `ProviderNameMicrosoftOperationalInsightsWorkspacesDatasources`
+- New const `KillChainIntentExecution`
+- New const `OwnerTypeUser`
+- New const `KindAnalyticsRule`
+- New const `DataConnectorKindAmazonWebServicesS3`
+- New const `KillChainIntentUnknown`
+- New const `AutomationRulePropertyConditionSupportedPropertyIoTDeviceType`
+- New const `RegistryHiveHKEYLOCALMACHINE`
+- New const `CreatedByTypeUser`
+- New const `OSFamilyUnknown`
+- New const `GetInsightsErrorKindInsight`
+- New const `RegistryValueKindExpandString`
+- New const `CreatedByTypeKey`
+- New const `DeliveryLocationQuarantine`
+- New const `ConnectAuthKindAPIKey`
+- New const `EntityMappingTypeIP`
+- New const `EntityTimelineKindBookmark`
+- New const `ProviderNameMicrosoftAuthorizationPolicyAssignments`
+- New const `EntityKindSubmissionMail`
+- New const `EntityTypeSubmissionMail`
+- New const `AlertRuleKindMLBehaviorAnalytics`
+- New const `AutomationRulePropertyConditionSupportedOperatorNotEndsWith`
+- New const `AlertStatusResolved`
+- New const `EntityKindMailMessage`
+- New const `PollingFrequencyOnceAMinute`
+- New const `EntityTypeSecurityGroup`
+- New const `ConfidenceScoreStatusFinal`
+- New const `AlertStatusDismissed`
+- New const `OutputTypeDate`
+- New const `OperatorAND`
+- New const `EntityTimelineKindSecurityAlert`
+- New const `EntityTypeFileHash`
+- New const `SourceRemoteStorage`
+- New const `OutputTypeNumber`
+- New const `KillChainIntentPrivilegeEscalation`
+- New const `EntityTypeMailbox`
+- New const `AutomationRulePropertyConditionSupportedPropertyAccountSid`
+- New const `AutomationRulePropertyConditionSupportedOperatorStartsWith`
+- New const `ContentTypeWorkbook`
+- New const `EntityKindMailbox`
+- New const `EventGroupingAggregationKindSingleAlert`
+- New const `OSFamilyIOS`
+- New const `KillChainIntentDiscovery`
+- New const `OwnerTypeGroup`
+- New function `*SentinelOnboardingStatesClient.Create(context.Context, string, string, string, *SentinelOnboardingStatesClientCreateOptions) (SentinelOnboardingStatesClientCreateResponse, error)`
+- New function `*EntitiesClient.Expand(context.Context, string, string, string, EntityExpandParameters, *EntitiesClientExpandOptions) (EntitiesClientExpandResponse, error)`
+- New function `PossibleConnectivityTypeValues() []ConnectivityType`
+- New function `*EntitiesClientListPager.Err() error`
+- New function `*BookmarkExpandParameters.UnmarshalJSON([]byte) error`
+- New function `*ThreatIntelligenceIndicatorClientQueryIndicatorsPager.Err() error`
+- New function `URLEntity.MarshalJSON() ([]byte, error)`
+- New function `AlertDetail.ToPtr() *AlertDetail`
+- New function `*EntityQueriesClient.Get(context.Context, string, string, string, *EntityQueriesClientGetOptions) (EntityQueriesClientGetResponse, error)`
+- New function `*Dynamics365DataConnector.GetDataConnector() *DataConnector`
+- New function `*EntitiesClient.GetInsights(context.Context, string, string, string, EntityGetInsightsParameters, *EntitiesClientGetInsightsOptions) (EntitiesClientGetInsightsResponse, error)`
+- New function `PossibleSourceValues() []Source`
+- New function `*EyesOn.UnmarshalJSON([]byte) error`
+- New function `*IncidentCommentsClientListPager.NextPage(context.Context) bool`
+- New function `*MailboxEntity.GetEntity() *Entity`
+- New function `*MCASCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `AwsS3DataConnectorProperties.MarshalJSON() ([]byte, error)`
+- New function `InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem.MarshalJSON() ([]byte, error)`
+- New function `MCASCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*MCASDataConnector.GetDataConnector() *DataConnector`
+- New function `*ThreatIntelligenceAlertRuleTemplate.UnmarshalJSON([]byte) error`
+- New function `*MtpCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `IoTDeviceEntity.MarshalJSON() ([]byte, error)`
+- New function `*ThreatIntelligenceIndicatorsClientListPager.Err() error`
+- New function `PossibleDeliveryLocationValues() []DeliveryLocation`
+- New function `IncidentBookmarkList.MarshalJSON() ([]byte, error)`
+- New function `*DataConnectorsClientListPager.NextPage(context.Context) bool`
+- New function `*SourceControlClientListRepositoriesPager.NextPage(context.Context) bool`
+- New function `*MetadataClient.List(string, string, *MetadataClientListOptions) *MetadataClientListPager`
+- New function `OfficeIRMDataConnector.MarshalJSON() ([]byte, error)`
+- New function `*EntityQueriesClientCreateOrUpdateResult.UnmarshalJSON([]byte) error`
+- New function `*ThreatIntelligenceAlertRule.UnmarshalJSON([]byte) error`
+- New function `*DNSEntity.GetEntity() *Entity`
+- New function `Dynamics365CheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `ThreatIntelligenceMetricsList.MarshalJSON() ([]byte, error)`
+- New function `*AutomationRuleTriggeringLogic.UnmarshalJSON([]byte) error`
+- New function `*AlertRulesClientListPager.PageResponse() AlertRulesClientListResponse`
+- New function `*ExpansionEntityQuery.GetEntityQuery() *EntityQuery`
+- New function `IncidentEntitiesResponse.MarshalJSON() ([]byte, error)`
+- New function `*WatchlistsClientListPager.NextPage(context.Context) bool`
+- New function `HuntingBookmark.MarshalJSON() ([]byte, error)`
+- New function `MailMessageEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `MLBehaviorAnalyticsAlertRuleProperties.MarshalJSON() ([]byte, error)`
+- New function `*HuntingBookmark.GetEntity() *Entity`
+- New function `MTPDataConnector.MarshalJSON() ([]byte, error)`
+- New function `*IncidentRelationsClient.Get(context.Context, string, string, string, string, *IncidentRelationsClientGetOptions) (IncidentRelationsClientGetResponse, error)`
+- New function `CodelessUIConnectorConfigProperties.MarshalJSON() ([]byte, error)`
+- New function `*EntitiesRelationsClient.List(string, string, string, *EntitiesRelationsClientListOptions) *EntitiesRelationsClientListPager`
+- New function `*SourceControlsClient.Get(context.Context, string, string, string, *SourceControlsClientGetOptions) (SourceControlsClientGetResponse, error)`
+- New function `UebaDataSources.ToPtr() *UebaDataSources`
+- New function `*HostEntity.UnmarshalJSON([]byte) error`
+- New function `*AATPCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `InsightQueryItemProperties.MarshalJSON() ([]byte, error)`
+- New function `*ThreatIntelligenceAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
+- New function `PossibleRegistryHiveValues() []RegistryHive`
+- New function `*RegistryValueEntity.GetEntity() *Entity`
+- New function `*Anomalies.UnmarshalJSON([]byte) error`
+- New function `*EntityQueryTemplateList.UnmarshalJSON([]byte) error`
+- New function `*MetadataPropertiesPatch.UnmarshalJSON([]byte) error`
+- New function `*IncidentRelationsClient.List(string, string, string, *IncidentRelationsClientListOptions) *IncidentRelationsClientListPager`
+- New function `GetQueriesResponse.MarshalJSON() ([]byte, error)`
+- New function `AwsCloudTrailCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*Ueba.UnmarshalJSON([]byte) error`
+- New function `ThreatIntelligenceParsedPattern.MarshalJSON() ([]byte, error)`
+- New function `RegistryValueEntity.MarshalJSON() ([]byte, error)`
+- New function `RegistryValueKind.ToPtr() *RegistryValueKind`
+- New function `*AutomationRuleRunPlaybookAction.UnmarshalJSON([]byte) error`
+- New function `*OfficeConsentsClientListPager.NextPage(context.Context) bool`
+- New function `Kind.ToPtr() *Kind`
+- New function `NewEntitiesRelationsClient(string, azcore.TokenCredential, *arm.ClientOptions) *EntitiesRelationsClient`
+- New function `QueryBasedAlertRuleTemplateProperties.MarshalJSON() ([]byte, error)`
+- New function `EnrichmentDomainWhoisDetails.MarshalJSON() ([]byte, error)`
+- New function `*QueryBasedAlertRuleProperties.UnmarshalJSON([]byte) error`
+- New function `SourceKind.ToPtr() *SourceKind`
+- New function `NewAutomationRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) *AutomationRulesClient`
+- New function `*NrtAlertRuleTemplateProperties.UnmarshalJSON([]byte) error`
+- New function `*WatchlistsClientListPager.PageResponse() WatchlistsClientListResponse`
+- New function `AutomationRuleModifyPropertiesActionConfiguration.MarshalJSON() ([]byte, error)`
+- New function `*MetadataClientListPager.NextPage(context.Context) bool`
+- New function `IPEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*EntityQueriesClient.Delete(context.Context, string, string, string, *EntityQueriesClientDeleteOptions) (EntityQueriesClientDeleteResponse, error)`
+- New function `ConnectivityCriteria.MarshalJSON() ([]byte, error)`
+- New function `*SubmissionMailEntity.GetEntity() *Entity`
+- New function `TICheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*IncidentRelationsClient.CreateOrUpdate(context.Context, string, string, string, string, Relation, *IncidentRelationsClientCreateOrUpdateOptions) (IncidentRelationsClientCreateOrUpdateResponse, error)`
+- New function `*BookmarkRelationsClient.Delete(context.Context, string, string, string, string, *BookmarkRelationsClientDeleteOptions) (BookmarkRelationsClientDeleteResponse, error)`
+- New function `*IncidentRelationsClientListPager.Err() error`
+- New function `*AlertRuleTemplatesClientGetResult.UnmarshalJSON([]byte) error`
+- New function `*AutomationRulesClient.Get(context.Context, string, string, string, *AutomationRulesClientGetOptions) (AutomationRulesClientGetResponse, error)`
+- New function `*EntitiesGetTimelineClient.List(context.Context, string, string, string, EntityTimelineParameters, *EntitiesGetTimelineClientListOptions) (EntitiesGetTimelineClientListResponse, error)`
+- New function `PollingFrequency.ToPtr() *PollingFrequency`
+- New function `PossibleAntispamMailDirectionValues() []AntispamMailDirection`
+- New function `CloudApplicationEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*AutomationRulesClient.List(string, string, *AutomationRulesClientListOptions) *AutomationRulesClientListPager`
+- New function `*MailClusterEntityProperties.UnmarshalJSON([]byte) error`
+- New function `ActivityEntityQueriesProperties.MarshalJSON() ([]byte, error)`
+- New function `*MetadataClientListPager.PageResponse() MetadataClientListResponse`
+- New function `PossibleRepoTypeValues() []RepoType`
+- New function `*AlertRulesClientCreateOrUpdateResult.UnmarshalJSON([]byte) error`
+- New function `NewDataConnectorsCheckRequirementsClient(string, azcore.TokenCredential, *arm.ClientOptions) *DataConnectorsCheckRequirementsClient`
+- New function `*SourceControlsClient.List(string, string, *SourceControlsClientListOptions) *SourceControlsClientListPager`
+- New function `*EntitiesRelationsClientListPager.Err() error`
+- New function `*TiTaxiiDataConnectorProperties.UnmarshalJSON([]byte) error`
+- New function `*EntityQueryTemplatesClientListPager.PageResponse() EntityQueryTemplatesClientListResponse`
+- New function `*SettingList.UnmarshalJSON([]byte) error`
+- New function `ThreatIntelligenceSortingCriteriaEnum.ToPtr() *ThreatIntelligenceSortingCriteriaEnum`
+- New function `MatchingMethod.ToPtr() *MatchingMethod`
+- New function `OfficeATPCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*AccountEntity.UnmarshalJSON([]byte) error`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `EntityInsightItemQueryTimeInterval.MarshalJSON() ([]byte, error)`
+- New function `*EntityRelationsClient.GetRelation(context.Context, string, string, string, string, *EntityRelationsClientGetRelationOptions) (EntityRelationsClientGetRelationResponse, error)`
+- New function `*IncidentsClientListPager.Err() error`
+- New function `*MetadataClient.Create(context.Context, string, string, string, MetadataModel, *MetadataClientCreateOptions) (MetadataClientCreateResponse, error)`
+- New function `*AutomationRulesClientListPager.PageResponse() AutomationRulesClientListResponse`
+- New function `PossibleSKUKindValues() []SKUKind`
+- New function `MetadataList.MarshalJSON() ([]byte, error)`
+- New function `*ThreatIntelligenceIndicatorClient.Create(context.Context, string, string, string, ThreatIntelligenceIndicatorModelForRequestBody, *ThreatIntelligenceIndicatorClientCreateOptions) (ThreatIntelligenceIndicatorClientCreateResponse, error)`
+- New function `ProviderName.ToPtr() *ProviderName`
+- New function `*IncidentCommentsClient.Delete(context.Context, string, string, string, string, *IncidentCommentsClientDeleteOptions) (IncidentCommentsClientDeleteResponse, error)`
+- New function `SubmissionMailEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `AutomationRuleModifyPropertiesAction.MarshalJSON() ([]byte, error)`
+- New function `*Entity.GetEntity() *Entity`
+- New function `*IncidentEntitiesResponse.UnmarshalJSON([]byte) error`
+- New function `*IncidentCommentsClientListPager.Err() error`
+- New function `EntityExpandParameters.MarshalJSON() ([]byte, error)`
+- New function `*OfficeConsentsClient.Delete(context.Context, string, string, string, *OfficeConsentsClientDeleteOptions) (OfficeConsentsClientDeleteResponse, error)`
+- New function `PossibleOwnerTypeValues() []OwnerType`
+- New function `*MDATPCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*EntityTimelineParameters.UnmarshalJSON([]byte) error`
+- New function `PossibleSettingTypeValues() []SettingType`
+- New function `OfficeIRMCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*OfficeIRMDataConnector.GetDataConnector() *DataConnector`
+- New function `PossibleEnum39Values() []Enum39`
+- New function `*AutomationRulesClient.CreateOrUpdate(context.Context, string, string, string, AutomationRule, *AutomationRulesClientCreateOrUpdateOptions) (AutomationRulesClientCreateOrUpdateResponse, error)`
+- New function `*IncidentRelationsClient.Delete(context.Context, string, string, string, string, *IncidentRelationsClientDeleteOptions) (IncidentRelationsClientDeleteResponse, error)`
+- New function `EntityType.ToPtr() *EntityType`
+- New function `*ProductSettingsClient.Delete(context.Context, string, string, string, *ProductSettingsClientDeleteOptions) (ProductSettingsClientDeleteResponse, error)`
+- New function `*ActivityCustomEntityQuery.UnmarshalJSON([]byte) error`
+- New function `*EntitiesClientGetResult.UnmarshalJSON([]byte) error`
+- New function `*ActivityEntityQueryTemplate.UnmarshalJSON([]byte) error`
+- New function `EntityEdges.MarshalJSON() ([]byte, error)`
+- New function `PossibleEntityItemQueryKindValues() []EntityItemQueryKind`
+- New function `*MetadataClientListPager.Err() error`
+- New function `PossibleAlertStatusValues() []AlertStatus`
+- New function `PossibleEntityMappingTypeValues() []EntityMappingType`
+- New function `AwsS3DataConnector.MarshalJSON() ([]byte, error)`
+- New function `*BookmarkRelationsClientListPager.NextPage(context.Context) bool`
+- New function `*Dynamics365DataConnector.UnmarshalJSON([]byte) error`
+- New function `WatchlistItemProperties.MarshalJSON() ([]byte, error)`
+- New function `*FusionAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
+- New function `*WatchlistProperties.UnmarshalJSON([]byte) error`
+- New function `*WatchlistsClient.CreateOrUpdate(context.Context, string, string, string, Watchlist, *WatchlistsClientCreateOrUpdateOptions) (WatchlistsClientCreateOrUpdateResponse, error)`
+- New function `*EyesOn.GetSettings() *Settings`
+- New function `DNSEntity.MarshalJSON() ([]byte, error)`
+- New function `NewEntityQueriesClient(string, azcore.TokenCredential, *arm.ClientOptions) *EntityQueriesClient`
+- New function `*EntityAnalytics.UnmarshalJSON([]byte) error`
+- New function `SubmissionMailEntity.MarshalJSON() ([]byte, error)`
+- New function `AutomationRulesList.MarshalJSON() ([]byte, error)`
+- New function `*TiTaxiiDataConnector.UnmarshalJSON([]byte) error`
+- New function `NewIncidentRelationsClient(string, azcore.TokenCredential, *arm.ClientOptions) *IncidentRelationsClient`
+- New function `*MDATPDataConnector.GetDataConnector() *DataConnector`
+- New function `AutomationRulePropertyValuesCondition.MarshalJSON() ([]byte, error)`
+- New function `*BookmarkRelationsClient.Get(context.Context, string, string, string, string, *BookmarkRelationsClientGetOptions) (BookmarkRelationsClientGetResponse, error)`
+- New function `*MSTIDataConnector.GetDataConnector() *DataConnector`
+- New function `GetInsightsResultsMetadata.MarshalJSON() ([]byte, error)`
+- New function `*AutomationRuleModifyPropertiesAction.GetAutomationRuleAction() *AutomationRuleAction`
+- New function `*AwsCloudTrailCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `DeliveryAction.ToPtr() *DeliveryAction`
+- New function `RepoType.ToPtr() *RepoType`
+- New function `HostEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleThreatIntelligenceResourceKindEnumValues() []ThreatIntelligenceResourceKindEnum`
+- New function `Permissions.MarshalJSON() ([]byte, error)`
+- New function `ThreatIntelligenceMetric.MarshalJSON() ([]byte, error)`
+- New function `*MalwareEntity.UnmarshalJSON([]byte) error`
+- New function `*OfficeConsentsClientListPager.Err() error`
+- New function `*ThreatIntelligenceIndicatorClient.Get(context.Context, string, string, string, *ThreatIntelligenceIndicatorClientGetOptions) (ThreatIntelligenceIndicatorClientGetResponse, error)`
+- New function `WatchlistProperties.MarshalJSON() ([]byte, error)`
+- New function `ErrorDetail.MarshalJSON() ([]byte, error)`
+- New function `DeliveryLocation.ToPtr() *DeliveryLocation`
+- New function `ActivityTimelineItem.MarshalJSON() ([]byte, error)`
+- New function `ThreatIntelligenceResourceKindEnum.ToPtr() *ThreatIntelligenceResourceKindEnum`
+- New function `*ScheduledAlertRule.GetAlertRule() *AlertRule`
+- New function `PossibleTriggersOnValues() []TriggersOn`
+- New function `*WatchlistItemsClientListPager.Err() error`
+- New function `ActivityEntityQueryTemplateProperties.MarshalJSON() ([]byte, error)`
+- New function `Enum8.ToPtr() *Enum8`
+- New function `*WatchlistsClient.Get(context.Context, string, string, string, *WatchlistsClientGetOptions) (WatchlistsClientGetResponse, error)`
+- New function `*DataConnectorsClient.Connect(context.Context, string, string, string, DataConnectorConnectBody, *DataConnectorsClientConnectOptions) (DataConnectorsClientConnectResponse, error)`
+- New function `SecurityGroupEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `EventGroupingAggregationKind.ToPtr() *EventGroupingAggregationKind`
+- New function `*OfficeIRMDataConnector.UnmarshalJSON([]byte) error`
+- New function `TimelineResultsMetadata.MarshalJSON() ([]byte, error)`
+- New function `AntispamMailDirection.ToPtr() *AntispamMailDirection`
+- New function `OutputType.ToPtr() *OutputType`
+- New function `*EntityExpandParameters.UnmarshalJSON([]byte) error`
+- New function `*AutomationRuleCondition.GetAutomationRuleCondition() *AutomationRuleCondition`
+- New function `PossibleAutomationRulePropertyConditionSupportedPropertyValues() []AutomationRulePropertyConditionSupportedProperty`
+- New function `*ThreatIntelligenceIndicatorsClientListPager.PageResponse() ThreatIntelligenceIndicatorsClientListResponse`
+- New function `SupportTier.ToPtr() *SupportTier`
+- New function `*MLBehaviorAnalyticsAlertRule.GetAlertRule() *AlertRule`
+- New function `*DataConnectorsClientCreateOrUpdateResult.UnmarshalJSON([]byte) error`
+- New function `PossiblePollingFrequencyValues() []PollingFrequency`
+- New function `*MailMessageEntity.GetEntity() *Entity`
+- New function `*AutomationRuleProperties.UnmarshalJSON([]byte) error`
+- New function `*IncidentsClientListPager.PageResponse() IncidentsClientListResponse`
+- New function `PossibleOutputTypeValues() []OutputType`
+- New function `ConfidenceLevel.ToPtr() *ConfidenceLevel`
+- New function `PossibleDataConnectorLicenseStateValues() []DataConnectorLicenseState`
+- New function `*CodelessUIDataConnector.GetDataConnector() *DataConnector`
+- New function `ProcessEntity.MarshalJSON() ([]byte, error)`
+- New function `*IPEntity.GetEntity() *Entity`
+- New function `EntityGetInsightsParameters.MarshalJSON() ([]byte, error)`
+- New function `*MLBehaviorAnalyticsAlertRule.UnmarshalJSON([]byte) error`
+- New function `SourceControlProperties.MarshalJSON() ([]byte, error)`
+- New function `FileEntity.MarshalJSON() ([]byte, error)`
+- New function `DataConnectorConnectBody.MarshalJSON() ([]byte, error)`
+- New function `Operator.ToPtr() *Operator`
+- New function `TiTaxiiDataConnector.MarshalJSON() ([]byte, error)`
+- New function `CodelessUIConnectorConfigPropertiesInstructionStepsItem.MarshalJSON() ([]byte, error)`
+- New function `*SecurityAlertTimelineItem.UnmarshalJSON([]byte) error`
+- New function `*ProductSettingsClient.List(context.Context, string, string, *ProductSettingsClientListOptions) (ProductSettingsClientListResponse, error)`
+- New function `ConfidenceScoreStatus.ToPtr() *ConfidenceScoreStatus`
+- New function `*MetadataProperties.UnmarshalJSON([]byte) error`
+- New function `PossibleAlertDetailValues() []AlertDetail`
+- New function `*EntitiesClient.Get(context.Context, string, string, string, *EntitiesClientGetOptions) (EntitiesClientGetResponse, error)`
+- New function `PossibleKillChainIntentValues() []KillChainIntent`
+- New function `Dynamics365DataConnector.MarshalJSON() ([]byte, error)`
+- New function `PossibleEntityQueryKindValues() []EntityQueryKind`
+- New function `*OfficeATPDataConnector.GetDataConnector() *DataConnector`
+- New function `PossibleEntityTypeValues() []EntityType`
+- New function `*EntityQueryItem.GetEntityQueryItem() *EntityQueryItem`
+- New function `ContentType.ToPtr() *ContentType`
+- New function `*AutomationRuleAction.GetAutomationRuleAction() *AutomationRuleAction`
+- New function `PossibleCustomEntityQueryKindValues() []CustomEntityQueryKind`
+- New function `ThreatIntelligenceIndicatorProperties.MarshalJSON() ([]byte, error)`
+- New function `*EntityQueryTemplatesClient.Get(context.Context, string, string, string, *EntityQueryTemplatesClientGetOptions) (EntityQueryTemplatesClientGetResponse, error)`
+- New function `*AlertRuleTemplatesClientListPager.NextPage(context.Context) bool`
+- New function `*DomainWhoisClient.Get(context.Context, string, string, *DomainWhoisClientGetOptions) (DomainWhoisClientGetResponse, error)`
+- New function `WatchlistList.MarshalJSON() ([]byte, error)`
+- New function `NewSourceControlClient(string, azcore.TokenCredential, *arm.ClientOptions) *SourceControlClient`
+- New function `*MLBehaviorAnalyticsAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
+- New function `*OfficeIRMCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*AADDataConnector.GetDataConnector() *DataConnector`
+- New function `*SentinelOnboardingStatesClient.Delete(context.Context, string, string, string, *SentinelOnboardingStatesClientDeleteOptions) (SentinelOnboardingStatesClientDeleteResponse, error)`
+- New function `*WatchlistItemProperties.UnmarshalJSON([]byte) error`
+- New function `*EntityQueriesClientListPager.Err() error`
+- New function `*ActionsClientListByAlertRulePager.NextPage(context.Context) bool`
+- New function `AutomationRuleRunPlaybookAction.MarshalJSON() ([]byte, error)`
+- New function `EyesOn.MarshalJSON() ([]byte, error)`
+- New function `IncidentAlertList.MarshalJSON() ([]byte, error)`
+- New function `NrtAlertRuleProperties.MarshalJSON() ([]byte, error)`
+- New function `*ThreatIntelligenceIndicatorClient.AppendTags(context.Context, string, string, string, ThreatIntelligenceAppendTags, *ThreatIntelligenceIndicatorClientAppendTagsOptions) (ThreatIntelligenceIndicatorClientAppendTagsResponse, error)`
+- New function `*AlertRulesClientListPager.NextPage(context.Context) bool`
+- New function `*ActionsClientListByAlertRulePager.PageResponse() ActionsClientListByAlertRuleResponse`
+- New function `MailboxEntity.MarshalJSON() ([]byte, error)`
+- New function `MetadataDependencies.MarshalJSON() ([]byte, error)`
+- New function `*MtpCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `PossibleSourceKindValues() []SourceKind`
+- New function `AccountEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*IncidentCommentsClientListPager.PageResponse() IncidentCommentsClientListResponse`
+- New function `ThreatIntelligenceIndicatorModel.MarshalJSON() ([]byte, error)`
+- New function `*HostEntity.GetEntity() *Entity`
+- New function `*SecurityAlertTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
+- New function `MalwareEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*MetadataClient.Update(context.Context, string, string, string, MetadataPatch, *MetadataClientUpdateOptions) (MetadataClientUpdateResponse, error)`
+- New function `*MailClusterEntity.GetEntity() *Entity`
+- New function `*AlertRuleTemplatesClientListPager.PageResponse() AlertRuleTemplatesClientListResponse`
+- New function `*MicrosoftSecurityIncidentCreationAlertRule.GetAlertRule() *AlertRule`
+- New function `*ASCDataConnector.GetDataConnector() *DataConnector`
+- New function `*ThreatIntelligenceIndicatorClientQueryIndicatorsPager.PageResponse() ThreatIntelligenceIndicatorClientQueryIndicatorsResponse`
+- New function `AwsS3CheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*CodelessAPIPollingDataConnector.GetDataConnector() *DataConnector`
+- New function `*FileHashEntity.UnmarshalJSON([]byte) error`
+- New function `*CloudApplicationEntity.GetEntity() *Entity`
+- New function `EntityInsightItem.MarshalJSON() ([]byte, error)`
+- New function `*DataConnectorsCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*ThreatIntelligenceIndicatorMetricsClient.List(context.Context, string, string, *ThreatIntelligenceIndicatorMetricsClientListOptions) (ThreatIntelligenceIndicatorMetricsClientListResponse, error)`
+- New function `*HuntingBookmarkProperties.UnmarshalJSON([]byte) error`
+- New function `BookmarkExpandParameters.MarshalJSON() ([]byte, error)`
+- New function `AutomationRuleTriggeringLogic.MarshalJSON() ([]byte, error)`
+- New function `*AccountEntity.GetEntity() *Entity`
+- New function `MailClusterEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `BookmarkExpandResponseValue.MarshalJSON() ([]byte, error)`
+- New function `*ActivityCustomEntityQuery.GetCustomEntityQuery() *CustomEntityQuery`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `*SecurityAlert.UnmarshalJSON([]byte) error`
+- New function `*DataConnectorsClientListPager.PageResponse() DataConnectorsClientListResponse`
+- New function `*AutomationRuleRunPlaybookAction.GetAutomationRuleAction() *AutomationRuleAction`
+- New function `*AlertRuleTemplatesClientListPager.Err() error`
+- New function `*TiTaxiiCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*SourceControlsClient.Delete(context.Context, string, string, string, *SourceControlsClientDeleteOptions) (SourceControlsClientDeleteResponse, error)`
+- New function `*EntitiesRelationsClientListPager.NextPage(context.Context) bool`
+- New function `PossibleAutomationRuleConditionTypeValues() []AutomationRuleConditionType`
+- New function `*EntityQueriesClientGetResult.UnmarshalJSON([]byte) error`
+- New function `*IncidentCommentsClient.CreateOrUpdate(context.Context, string, string, string, string, IncidentComment, *IncidentCommentsClientCreateOrUpdateOptions) (IncidentCommentsClientCreateOrUpdateResponse, error)`
+- New function `ElevationToken.ToPtr() *ElevationToken`
+- New function `*OfficeConsentsClientListPager.PageResponse() OfficeConsentsClientListResponse`
+- New function `*BookmarkRelationsClient.List(string, string, string, *BookmarkRelationsClientListOptions) *BookmarkRelationsClientListPager`
+- New function `*WatchlistItemsClientListPager.NextPage(context.Context) bool`
+- New function `*OfficeATPCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `NewSourceControlsClient(string, azcore.TokenCredential, *arm.ClientOptions) *SourceControlsClient`
+- New function `AzureResourceEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*EntitiesClient.List(string, string, *EntitiesClientListOptions) *EntitiesClientListPager`
+- New function `dateType.MarshalJSON() ([]byte, error)`
+- New function `PossibleFileHashAlgorithmValues() []FileHashAlgorithm`
+- New function `*SourceControlClientListRepositoriesPager.Err() error`
+- New function `NrtAlertRuleTemplateProperties.MarshalJSON() ([]byte, error)`
+- New function `FileHashAlgorithm.ToPtr() *FileHashAlgorithm`
+- New function `*URLEntity.UnmarshalJSON([]byte) error`
+- New function `*NrtAlertRule.UnmarshalJSON([]byte) error`
+- New function `NewSentinelOnboardingStatesClient(string, azcore.TokenCredential, *arm.ClientOptions) *SentinelOnboardingStatesClient`
+- New function `NrtAlertRule.MarshalJSON() ([]byte, error)`
+- New function `*BookmarksClientListPager.Err() error`
+- New function `*SentinelOnboardingStatesClient.List(context.Context, string, string, *SentinelOnboardingStatesClientListOptions) (SentinelOnboardingStatesClientListResponse, error)`
+- New function `EnrichmentDomainWhois.MarshalJSON() ([]byte, error)`
+- New function `CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem.MarshalJSON() ([]byte, error)`
+- New function `GetInsightsErrorKind.ToPtr() *GetInsightsErrorKind`
+- New function `*SubmissionMailEntityProperties.UnmarshalJSON([]byte) error`
+- New function `*IncidentsClient.CreateTeam(context.Context, string, string, string, TeamProperties, *IncidentsClientCreateTeamOptions) (IncidentsClientCreateTeamResponse, error)`
+- New function `PossibleSupportTierValues() []SupportTier`
+- New function `*CodelessUIDataConnector.UnmarshalJSON([]byte) error`
+- New function `PossibleEnum8Values() []Enum8`
+- New function `RegistryHive.ToPtr() *RegistryHive`
+- New function `RelationList.MarshalJSON() ([]byte, error)`
+- New function `NewEntityQueryTemplatesClient(string, azcore.TokenCredential, *arm.ClientOptions) *EntityQueryTemplatesClient`
+- New function `*AlertRulesClientGetResult.UnmarshalJSON([]byte) error`
+- New function `CreatedByType.ToPtr() *CreatedByType`
+- New function `TiTaxiiCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `OwnerType.ToPtr() *OwnerType`
+- New function `PossibleContentTypeValues() []ContentType`
+- New function `ThreatIntelligenceFilteringCriteria.MarshalJSON() ([]byte, error)`
+- New function `*CodelessAPIPollingDataConnector.UnmarshalJSON([]byte) error`
+- New function `HuntingBookmarkProperties.MarshalJSON() ([]byte, error)`
+- New function `NewIPGeodataClient(string, azcore.TokenCredential, *arm.ClientOptions) *IPGeodataClient`
+- New function `*AATPCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*AzureResourceEntity.UnmarshalJSON([]byte) error`
+- New function `NewWatchlistsClient(string, azcore.TokenCredential, *arm.ClientOptions) *WatchlistsClient`
+- New function `*SecurityGroupEntity.GetEntity() *Entity`
+- New function `AutomationRulePropertyValuesConditionProperties.MarshalJSON() ([]byte, error)`
+- New function `*MailboxEntity.UnmarshalJSON([]byte) error`
+- New function `*AlertRuleTemplatePropertiesBase.UnmarshalJSON([]byte) error`
+- New function `*EntityQueriesClientListPager.NextPage(context.Context) bool`
+- New function `*WatchlistItemsClient.List(string, string, string, *WatchlistItemsClientListOptions) *WatchlistItemsClientListPager`
+- New function `*ThreatIntelligenceIndicatorClient.CreateIndicator(context.Context, string, string, ThreatIntelligenceIndicatorModelForRequestBody, *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (ThreatIntelligenceIndicatorClientCreateIndicatorResponse, error)`
+- New function `*ActivityEntityQuery.GetEntityQuery() *EntityQuery`
+- New function `RegistryKeyEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `NewEntitiesGetTimelineClient(string, azcore.TokenCredential, *arm.ClientOptions) *EntitiesGetTimelineClient`
+- New function `ExpansionEntityQueriesProperties.MarshalJSON() ([]byte, error)`
+- New function `*MTPDataConnector.UnmarshalJSON([]byte) error`
+- New function `*EntityTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
+- New function `RepoList.MarshalJSON() ([]byte, error)`
+- New function `EntityCommonProperties.MarshalJSON() ([]byte, error)`
+- New function `*ProcessEntity.GetEntity() *Entity`
+- New function `PossibleConfidenceLevelValues() []ConfidenceLevel`
+- New function `*TICheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*CustomEntityQuery.GetCustomEntityQuery() *CustomEntityQuery`
+- New function `*Dynamics365CheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `SentinelOnboardingStatesList.MarshalJSON() ([]byte, error)`
+- New function `*ProcessEntityProperties.UnmarshalJSON([]byte) error`
+- New function `*IncidentsClientListPager.NextPage(context.Context) bool`
+- New function `AADCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `MetadataPropertiesPatch.MarshalJSON() ([]byte, error)`
+- New function `SettingKind.ToPtr() *SettingKind`
+- New function `NrtAlertRuleTemplate.MarshalJSON() ([]byte, error)`
+- New function `*EntitiesClientListPager.NextPage(context.Context) bool`
+- New function `PossibleSettingKindValues() []SettingKind`
+- New function `*DataConnectorsCheckRequirementsClient.Post(context.Context, string, string, DataConnectorsCheckRequirementsClassification, *DataConnectorsCheckRequirementsClientPostOptions) (DataConnectorsCheckRequirementsClientPostResponse, error)`
+- New function `*TIDataConnector.GetDataConnector() *DataConnector`
+- New function `*AlertRulesClientListPager.Err() error`
+- New function `MtpCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `PossibleDataConnectorAuthorizationStateValues() []DataConnectorAuthorizationState`
+- New function `*ThreatIntelligenceIndicatorsClient.List(string, string, *ThreatIntelligenceIndicatorsClientListOptions) *ThreatIntelligenceIndicatorsClientListPager`
+- New function `SKUKind.ToPtr() *SKUKind`
+- New function `*AutomationRulesClient.Delete(context.Context, string, string, string, *AutomationRulesClientDeleteOptions) (AutomationRulesClientDeleteResponse, error)`
+- New function `*HuntingBookmark.UnmarshalJSON([]byte) error`
+- New function `*AwsS3DataConnector.GetDataConnector() *DataConnector`
+- New function `NewDomainWhoisClient(string, azcore.TokenCredential, *arm.ClientOptions) *DomainWhoisClient`
+- New function `*SentinelOnboardingStatesClient.Get(context.Context, string, string, string, *SentinelOnboardingStatesClientGetOptions) (SentinelOnboardingStatesClientGetResponse, error)`
+- New function `InsightQueryItemPropertiesTableQuery.MarshalJSON() ([]byte, error)`
+- New function `PossibleAutomationRuleActionTypeValues() []AutomationRuleActionType`
+- New function `RegistryValueEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*MetadataClient.Delete(context.Context, string, string, string, *MetadataClientDeleteOptions) (MetadataClientDeleteResponse, error)`
+- New function `*EntityQueryTemplatesClientListPager.NextPage(context.Context) bool`
+- New function `*BookmarkRelationsClient.CreateOrUpdate(context.Context, string, string, string, string, Relation, *BookmarkRelationsClientCreateOrUpdateOptions) (BookmarkRelationsClientCreateOrUpdateResponse, error)`
+- New function `*MCASCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `ThreatIntelligenceGranularMarkingModel.MarshalJSON() ([]byte, error)`
+- New function `ActivityCustomEntityQuery.MarshalJSON() ([]byte, error)`
+- New function `AzureResourceEntity.MarshalJSON() ([]byte, error)`
+- New function `*EntityQueryTemplate.GetEntityQueryTemplate() *EntityQueryTemplate`
+- New function `*ExpansionEntityQuery.UnmarshalJSON([]byte) error`
+- New function `URLEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `EntityMappingType.ToPtr() *EntityMappingType`
+- New function `*EntityList.UnmarshalJSON([]byte) error`
+- New function `MLBehaviorAnalyticsAlertRuleTemplate.MarshalJSON() ([]byte, error)`
+- New function `EntityTimelineParameters.MarshalJSON() ([]byte, error)`
+- New function `ThreatIntelligenceAlertRuleProperties.MarshalJSON() ([]byte, error)`
+- New function `*AutomationRulesClientListPager.NextPage(context.Context) bool`
+- New function `ASCCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `MLBehaviorAnalyticsAlertRuleTemplateProperties.MarshalJSON() ([]byte, error)`
+- New function `EnrichmentDomainWhoisContact.MarshalJSON() ([]byte, error)`
+- New function `ConnectAuthKind.ToPtr() *ConnectAuthKind`
+- New function `AutomationRuleProperties.MarshalJSON() ([]byte, error)`
+- New function `EntityQueryTemplateKind.ToPtr() *EntityQueryTemplateKind`
+- New function `*IncidentsClient.ListEntities(context.Context, string, string, string, *IncidentsClientListEntitiesOptions) (IncidentsClientListEntitiesResponse, error)`
+- New function `EntityItemQueryKind.ToPtr() *EntityItemQueryKind`
+- New function `AutomationRulePropertyConditionSupportedOperator.ToPtr() *AutomationRulePropertyConditionSupportedOperator`
+- New function `DNSEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `NewProductSettingsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ProductSettingsClient`
+- New function `Enum39.ToPtr() *Enum39`
+- New function `TriggersWhen.ToPtr() *TriggersWhen`
+- New function `*Anomalies.GetSettings() *Settings`
+- New function `*BookmarkRelationsClientListPager.PageResponse() BookmarkRelationsClientListResponse`
+- New function `AATPCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*EntitiesClientListPager.PageResponse() EntitiesClientListResponse`
+- New function `ActivityEntityQueryTemplate.MarshalJSON() ([]byte, error)`
+- New function `*FusionAlertRule.GetAlertRule() *AlertRule`
+- New function `*SecurityAlert.GetEntity() *Entity`
+- New function `*EntityAnalytics.GetSettings() *Settings`
+- New function `*ThreatIntelligenceIndicatorModel.UnmarshalJSON([]byte) error`
+- New function `PossibleEntityTimelineKindValues() []EntityTimelineKind`
+- New function `InstructionSteps.MarshalJSON() ([]byte, error)`
+- New function `*OfficeATPCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*ThreatIntelligenceIndicatorsClientListPager.NextPage(context.Context) bool`
+- New function `MalwareEntity.MarshalJSON() ([]byte, error)`
+- New function `*WatchlistsClient.Delete(context.Context, string, string, string, *WatchlistsClientDeleteOptions) (WatchlistsClientDeleteResponse, error)`
+- New function `NewThreatIntelligenceIndicatorMetricsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ThreatIntelligenceIndicatorMetricsClient`
+- New function `*InsightQueryItem.UnmarshalJSON([]byte) error`
+- New function `Repo.MarshalJSON() ([]byte, error)`
+- New function `AutomationRuleActionType.ToPtr() *AutomationRuleActionType`
+- New function `*BookmarkExpandResponseValue.UnmarshalJSON([]byte) error`
+- New function `*AwsS3CheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*AwsCloudTrailDataConnector.GetDataConnector() *DataConnector`
+- New function `*AutomationRulePropertyValuesCondition.UnmarshalJSON([]byte) error`
+- New function `CustomEntityQueryKind.ToPtr() *CustomEntityQueryKind`
+- New function `ThreatIntelligenceAlertRule.MarshalJSON() ([]byte, error)`
+- New function `RegistryKeyEntity.MarshalJSON() ([]byte, error)`
+- New function `InsightsTableResult.MarshalJSON() ([]byte, error)`
+- New function `PossibleMatchingMethodValues() []MatchingMethod`
+- New function `*AwsS3DataConnector.UnmarshalJSON([]byte) error`
+- New function `SettingType.ToPtr() *SettingType`
+- New function `DataConnectorAuthorizationState.ToPtr() *DataConnectorAuthorizationState`
+- New function `UebaProperties.MarshalJSON() ([]byte, error)`
+- New function `Ueba.MarshalJSON() ([]byte, error)`
+- New function `*MLBehaviorAnalyticsAlertRuleProperties.UnmarshalJSON([]byte) error`
+- New function `*ProductSettingsClientGetResult.UnmarshalJSON([]byte) error`
+- New function `FileHashEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*EntityQueriesClient.CreateOrUpdate(context.Context, string, string, string, CustomEntityQueryClassification, *EntityQueriesClientCreateOrUpdateOptions) (EntityQueriesClientCreateOrUpdateResponse, error)`
+- New function `PossibleEventGroupingAggregationKindValues() []EventGroupingAggregationKind`
+- New function `ThreatIntelligenceExternalReference.MarshalJSON() ([]byte, error)`
+- New function `CodelessAPIPollingDataConnector.MarshalJSON() ([]byte, error)`
+- New function `*InsightQueryItem.GetEntityQueryItem() *EntityQueryItem`
+- New function `*WatchlistItemsClient.CreateOrUpdate(context.Context, string, string, string, string, WatchlistItem, *WatchlistItemsClientCreateOrUpdateOptions) (WatchlistItemsClientCreateOrUpdateResponse, error)`
+- New function `*TiTaxiiCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*EntitiesRelationsClientListPager.PageResponse() EntitiesRelationsClientListResponse`
+- New function `AlertRuleTemplatePropertiesBase.MarshalJSON() ([]byte, error)`
+- New function `OfficeATPDataConnector.MarshalJSON() ([]byte, error)`
+- New function `SecurityGroupEntity.MarshalJSON() ([]byte, error)`
+- New function `PossiblePermissionProviderScopeValues() []PermissionProviderScope`
+- New function `EntityKind.ToPtr() *EntityKind`
+- New function `EntityQueryKind.ToPtr() *EntityQueryKind`
+- New function `*MSTICheckRequirements.UnmarshalJSON([]byte) error`
+- New function `EntityTimelineKind.ToPtr() *EntityTimelineKind`
+- New function `*SecurityAlertProperties.UnmarshalJSON([]byte) error`
+- New function `*SourceControlClient.ListRepositories(string, string, RepoType, *SourceControlClientListRepositoriesOptions) *SourceControlClientListRepositoriesPager`
+- New function `*FileHashEntity.GetEntity() *Entity`
+- New function `EntityQueryTemplateList.MarshalJSON() ([]byte, error)`
+- New function `PossibleConnectAuthKindValues() []ConnectAuthKind`
+- New function `*OfficeIRMCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*EntityQueryList.UnmarshalJSON([]byte) error`
+- New function `*ThreatIntelligenceIndicatorClientQueryIndicatorsPager.NextPage(context.Context) bool`
+- New function `*NrtAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
+- New function `*IncidentRelationsClientListPager.PageResponse() IncidentRelationsClientListResponse`
+- New function `MailClusterEntity.MarshalJSON() ([]byte, error)`
+- New function `CodelessUIDataConnector.MarshalJSON() ([]byte, error)`
+- New function `PossibleOSFamilyValues() []OSFamily`
+- New function `*IoTDeviceEntity.GetEntity() *Entity`
+- New function `*MSTICheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `PossibleGetInsightsErrorKindValues() []GetInsightsErrorKind`
+- New function `*ProductSettingsClient.Get(context.Context, string, string, string, *ProductSettingsClientGetOptions) (ProductSettingsClientGetResponse, error)`
+- New function `*ProcessEntity.UnmarshalJSON([]byte) error`
+- New function `PossibleEntityKindValues() []EntityKind`
+- New function `NewOfficeConsentsClient(string, azcore.TokenCredential, *arm.ClientOptions) *OfficeConsentsClient`
+- New function `TeamProperties.MarshalJSON() ([]byte, error)`
+- New function `*TiTaxiiDataConnector.GetDataConnector() *DataConnector`
+- New function `*GetQueriesResponse.UnmarshalJSON([]byte) error`
+- New function `ActivityEntityQuery.MarshalJSON() ([]byte, error)`
+- New function `SettingList.MarshalJSON() ([]byte, error)`
+- New function `NewThreatIntelligenceIndicatorsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ThreatIntelligenceIndicatorsClient`
+- New function `SecurityAlertTimelineItem.MarshalJSON() ([]byte, error)`
+- New function `*MailMessageEntityProperties.UnmarshalJSON([]byte) error`
+- New function `*BookmarksClientListPager.NextPage(context.Context) bool`
+- New function `WatchlistItemList.MarshalJSON() ([]byte, error)`
+- New function `*ActivityTimelineItem.UnmarshalJSON([]byte) error`
+- New function `PossibleOperatorValues() []Operator`
+- New function `*ThreatIntelligenceIndicatorClient.ReplaceTags(context.Context, string, string, string, ThreatIntelligenceIndicatorModelForRequestBody, *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (ThreatIntelligenceIndicatorClientReplaceTagsResponse, error)`
+- New function `*IoTDeviceEntity.UnmarshalJSON([]byte) error`
+- New function `*EntityQuery.GetEntityQuery() *EntityQuery`
+- New function `*DataConnectorsClientListPager.Err() error`
+- New function `*WatchlistItemsClientListPager.PageResponse() WatchlistItemsClientListResponse`
+- New function `*OfficeConsentsClient.Get(context.Context, string, string, string, *OfficeConsentsClientGetOptions) (OfficeConsentsClientGetResponse, error)`
+- New function `*OfficeConsentsClient.List(string, string, *OfficeConsentsClientListOptions) *OfficeConsentsClientListPager`
+- New function `CloudApplicationEntity.MarshalJSON() ([]byte, error)`
+- New function `EntityTimelineResponse.MarshalJSON() ([]byte, error)`
+- New function `*FileEntity.UnmarshalJSON([]byte) error`
+- New function `AlertStatus.ToPtr() *AlertStatus`
+- New function `*EntityQueryTemplatesClient.List(string, string, *EntityQueryTemplatesClientListOptions) *EntityQueryTemplatesClientListPager`
+- New function `*BookmarkTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
+- New function `*EntitiesClient.Queries(context.Context, string, string, string, EntityItemQueryKind, *EntitiesClientQueriesOptions) (EntitiesClientQueriesResponse, error)`
+- New function `*ActivityEntityQueryTemplate.GetEntityQueryTemplate() *EntityQueryTemplate`
+- New function `*MicrosoftSecurityIncidentCreationAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
+- New function `*SourceControlsClientListPager.Err() error`
+- New function `ThreatIntelligenceAlertRuleTemplateProperties.MarshalJSON() ([]byte, error)`
+- New function `ExpansionEntityQuery.MarshalJSON() ([]byte, error)`
+- New function `CodelessConnectorPollingResponseProperties.MarshalJSON() ([]byte, error)`
+- New function `AutomationRulePropertyConditionSupportedProperty.ToPtr() *AutomationRulePropertyConditionSupportedProperty`
+- New function `*SourceControlsClientListPager.PageResponse() SourceControlsClientListResponse`
+- New function `*OfficeDataConnector.GetDataConnector() *DataConnector`
+- New function `*AATPDataConnector.GetDataConnector() *DataConnector`
+- New function `NewMetadataClient(string, azcore.TokenCredential, *arm.ClientOptions) *MetadataClient`
+- New function `*WatchlistItemsClient.Delete(context.Context, string, string, string, string, *WatchlistItemsClientDeleteOptions) (WatchlistItemsClientDeleteResponse, error)`
+- New function `*DataConnectorsClientGetResult.UnmarshalJSON([]byte) error`
+- New function `*RegistryKeyEntity.GetEntity() *Entity`
+- New function `*MDATPCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*MetadataClient.Get(context.Context, string, string, string, *MetadataClientGetOptions) (MetadataClientGetResponse, error)`
+- New function `MetadataProperties.MarshalJSON() ([]byte, error)`
+- New function `Repository.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `AccountEntity.MarshalJSON() ([]byte, error)`
+- New function `PossibleEntityQueryTemplateKindValues() []EntityQueryTemplateKind`
+- New function `ThreatIntelligenceAppendTags.MarshalJSON() ([]byte, error)`
+- New function `EntityExpandResponseValue.MarshalJSON() ([]byte, error)`
+- New function `*ActivityEntityQueriesProperties.UnmarshalJSON([]byte) error`
+- New function `ExpansionResultsMetadata.MarshalJSON() ([]byte, error)`
+- New function `*MalwareEntity.GetEntity() *Entity`
+- New function `*IncidentRelationsClientListPager.NextPage(context.Context) bool`
+- New function `NewThreatIntelligenceIndicatorClient(string, azcore.TokenCredential, *arm.ClientOptions) *ThreatIntelligenceIndicatorClient`
+- New function `*SourceControlsClientListPager.NextPage(context.Context) bool`
+- New function `*RegistryValueEntity.UnmarshalJSON([]byte) error`
+- New function `*WatchlistItemsClient.Get(context.Context, string, string, string, string, *WatchlistItemsClientGetOptions) (WatchlistItemsClientGetResponse, error)`
+- New function `*AzureResourceEntity.GetEntity() *Entity`
+- New function `MetadataPatch.MarshalJSON() ([]byte, error)`
+- New function `*ThreatIntelligenceIndicatorClient.QueryIndicators(string, string, ThreatIntelligenceFilteringCriteria, *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) *ThreatIntelligenceIndicatorClientQueryIndicatorsPager`
+- New function `OSFamily.ToPtr() *OSFamily`
+- New function `*MSTIDataConnector.UnmarshalJSON([]byte) error`
+- New function `PossibleRegistryValueKindValues() []RegistryValueKind`
+- New function `TriggersOn.ToPtr() *TriggersOn`
+- New function `*EntityQueryTemplatesClientGetResult.UnmarshalJSON([]byte) error`
+- New function `*ActivityTimelineItem.GetEntityTimelineItem() *EntityTimelineItem`
+- New function `SecurityAlertProperties.MarshalJSON() ([]byte, error)`
+- New function `EntityList.MarshalJSON() ([]byte, error)`
+- New function `FileEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleKindValues() []Kind`
+- New function `*Ueba.GetSettings() *Settings`
+- New function `*EntityQueriesClient.List(string, string, *EntityQueriesClientListOptions) *EntityQueriesClientListPager`
+- New function `*OfficeATPDataConnector.UnmarshalJSON([]byte) error`
+- New function `*EntityTimelineResponse.UnmarshalJSON([]byte) error`
+- New function `*MLBehaviorAnalyticsAlertRuleTemplateProperties.UnmarshalJSON([]byte) error`
+- New function `*DataConnectorsClient.Disconnect(context.Context, string, string, string, *DataConnectorsClientDisconnectOptions) (DataConnectorsClientDisconnectResponse, error)`
+- New function `NewEntityRelationsClient(string, azcore.TokenCredential, *arm.ClientOptions) *EntityRelationsClient`
+- New function `*ProductSettingsClient.Update(context.Context, string, string, string, SettingsClassification, *ProductSettingsClientUpdateOptions) (ProductSettingsClientUpdateResponse, error)`
+- New function `*Settings.GetSettings() *Settings`
+- New function `*AwsS3CheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `*MailMessageEntity.UnmarshalJSON([]byte) error`
+- New function `DataConnectorLicenseState.ToPtr() *DataConnectorLicenseState`
+- New function `BookmarkTimelineItem.MarshalJSON() ([]byte, error)`
+- New function `*EntityInsightItemQueryTimeInterval.UnmarshalJSON([]byte) error`
+- New function `*EntityQueryTemplatesClientListPager.Err() error`
+- New function `*IncidentCommentsClient.List(string, string, string, *IncidentCommentsClientListOptions) *IncidentCommentsClientListPager`
+- New function `NewBookmarkClient(string, azcore.TokenCredential, *arm.ClientOptions) *BookmarkClient`
+- New function `MailMessageEntity.MarshalJSON() ([]byte, error)`
+- New function `*WatchlistsClient.List(string, string, *WatchlistsClientListOptions) *WatchlistsClientListPager`
+- New function `PossibleAutomationRulePropertyConditionSupportedOperatorValues() []AutomationRulePropertyConditionSupportedOperator`
+- New function `IoTDeviceEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*NrtAlertRule.GetAlertRule() *AlertRule`
+- New function `*RegistryKeyEntity.UnmarshalJSON([]byte) error`
+- New function `AutomationRuleConditionType.ToPtr() *AutomationRuleConditionType`
+- New function `NewEntitiesClient(string, azcore.TokenCredential, *arm.ClientOptions) *EntitiesClient`
+- New function `*ActivityEntityQuery.UnmarshalJSON([]byte) error`
+- New function `Anomalies.MarshalJSON() ([]byte, error)`
+- New function `EntityAnalytics.MarshalJSON() ([]byte, error)`
+- New function `MSTICheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*AutomationRulesClientListPager.Err() error`
+- New function `*ThreatIntelligenceAlertRuleProperties.UnmarshalJSON([]byte) error`
+- New function `*IPEntity.UnmarshalJSON([]byte) error`
+- New function `*ThreatIntelligenceIndicatorClient.Delete(context.Context, string, string, string, *ThreatIntelligenceIndicatorClientDeleteOptions) (ThreatIntelligenceIndicatorClientDeleteResponse, error)`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `SourceControlList.MarshalJSON() ([]byte, error)`
+- New function `*MTPDataConnector.GetDataConnector() *DataConnector`
+- New function `*AutomationRuleModifyPropertiesAction.UnmarshalJSON([]byte) error`
+- New function `*AutomationRulePropertyValuesCondition.GetAutomationRuleCondition() *AutomationRuleCondition`
+- New function `*BookmarkTimelineItem.UnmarshalJSON([]byte) error`
+- New function `EntityQueryItemProperties.MarshalJSON() ([]byte, error)`
+- New function `*BookmarksClientListPager.PageResponse() BookmarksClientListResponse`
+- New function `*AADCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*TICheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `PossibleDeliveryActionValues() []DeliveryAction`
+- New function `FileHashEntity.MarshalJSON() ([]byte, error)`
+- New function `KillChainIntent.ToPtr() *KillChainIntent`
+- New function `InsightQueryItem.MarshalJSON() ([]byte, error)`
+- New function `PossibleElevationTokenValues() []ElevationToken`
+- New function `PossibleTriggersWhenValues() []TriggersWhen`
+- New function `*ActionsClientListByAlertRulePager.Err() error`
+- New function `QueryBasedAlertRuleProperties.MarshalJSON() ([]byte, error)`
+- New function `*WatchlistsClientListPager.Err() error`
+- New function `EntityGetInsightsResponse.MarshalJSON() ([]byte, error)`
+- New function `IPEntity.MarshalJSON() ([]byte, error)`
+- New function `PossibleConfidenceScoreStatusValues() []ConfidenceScoreStatus`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `MLBehaviorAnalyticsAlertRule.MarshalJSON() ([]byte, error)`
+- New function `HostEntity.MarshalJSON() ([]byte, error)`
+- New function `*ThreatIntelligenceAlertRule.GetAlertRule() *AlertRule`
+- New function `TiTaxiiDataConnectorProperties.MarshalJSON() ([]byte, error)`
+- New function `*BookmarkRelationsClientListPager.Err() error`
+- New function `ThreatIntelligenceAlertRuleTemplate.MarshalJSON() ([]byte, error)`
+- New function `MetadataCategories.MarshalJSON() ([]byte, error)`
+- New function `*NrtAlertRuleTemplate.UnmarshalJSON([]byte) error`
+- New function `TeamInformation.MarshalJSON() ([]byte, error)`
+- New function `*AwsCloudTrailCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `EntityMapping.MarshalJSON() ([]byte, error)`
+- New function `NewBookmarkRelationsClient(string, azcore.TokenCredential, *arm.ClientOptions) *BookmarkRelationsClient`
+- New function `PossibleThreatIntelligenceSortingCriteriaEnumValues() []ThreatIntelligenceSortingCriteriaEnum`
+- New function `ProcessEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*ProductSettingsClientUpdateResult.UnmarshalJSON([]byte) error`
+- New function `*IncidentsClient.ListBookmarks(context.Context, string, string, string, *IncidentsClientListBookmarksOptions) (IncidentsClientListBookmarksResponse, error)`
+- New function `*MLBehaviorAnalyticsAlertRuleTemplate.UnmarshalJSON([]byte) error`
+- New function `*TeamInformation.UnmarshalJSON([]byte) error`
+- New function `*SourceControlClientListRepositoriesPager.PageResponse() SourceControlClientListRepositoriesResponse`
+- New function `ThreatIntelligenceInformationList.MarshalJSON() ([]byte, error)`
+- New function `*EnrichmentDomainWhois.UnmarshalJSON([]byte) error`
+- New function `*ThreatIntelligenceAlertRuleTemplateProperties.UnmarshalJSON([]byte) error`
+- New function `NewWatchlistItemsClient(string, azcore.TokenCredential, *arm.ClientOptions) *WatchlistItemsClient`
+- New function `*ASCCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `PossibleUebaDataSourcesValues() []UebaDataSources`
+- New function `*EntityExpandResponseValue.UnmarshalJSON([]byte) error`
+- New function `GroupingConfiguration.MarshalJSON() ([]byte, error)`
+- New function `*dateType.UnmarshalJSON([]byte) error`
+- New function `*EntityQueriesClientListPager.PageResponse() EntityQueriesClientListResponse`
+- New function `MailboxEntityProperties.MarshalJSON() ([]byte, error)`
+- New function `*IPGeodataClient.Get(context.Context, string, string, *IPGeodataClientGetOptions) (IPGeodataClientGetResponse, error)`
+- New function `*FileEntity.GetEntity() *Entity`
+- New function `*NrtAlertRuleProperties.UnmarshalJSON([]byte) error`
+- New function `*SubmissionMailEntity.UnmarshalJSON([]byte) error`
+- New function `*MailClusterEntity.UnmarshalJSON([]byte) error`
+- New function `*EntityGetInsightsParameters.UnmarshalJSON([]byte) error`
+- New function `*AADCheckRequirements.GetDataConnectorsCheckRequirements() *DataConnectorsCheckRequirements`
+- New function `PermissionProviderScope.ToPtr() *PermissionProviderScope`
+- New function `MDATPCheckRequirements.MarshalJSON() ([]byte, error)`
+- New function `*ASCCheckRequirements.UnmarshalJSON([]byte) error`
+- New function `Source.ToPtr() *Source`
+- New function `*IncidentsClient.ListAlerts(context.Context, string, string, string, *IncidentsClientListAlertsOptions) (IncidentsClientListAlertsResponse, error)`
+- New function `*ScheduledAlertRuleTemplate.GetAlertRuleTemplate() *AlertRuleTemplate`
+- New function `*Dynamics365CheckRequirements.UnmarshalJSON([]byte) error`
+- New function `*CloudApplicationEntity.UnmarshalJSON([]byte) error`
+- New function `*BookmarkClient.Expand(context.Context, string, string, string, BookmarkExpandParameters, *BookmarkClientExpandOptions) (BookmarkClientExpandResponse, error)`
+- New function `SecurityAlert.MarshalJSON() ([]byte, error)`
+- New function `ConnectivityType.ToPtr() *ConnectivityType`
+- New function `PossibleProviderNameValues() []ProviderName`
+- New function `MSTIDataConnector.MarshalJSON() ([]byte, error)`
+- New function `*SecurityGroupEntity.UnmarshalJSON([]byte) error`
+- New function `*DNSEntity.UnmarshalJSON([]byte) error`
+- New function `EntityQueryList.MarshalJSON() ([]byte, error)`
+- New function `*URLEntity.GetEntity() *Entity`
+- New function `*SourceControlsClient.Create(context.Context, string, string, string, SourceControl, *SourceControlsClientCreateOptions) (SourceControlsClientCreateResponse, error)`
+- New struct `AADCheckRequirements`
+- New struct `AADCheckRequirementsProperties`
+- New struct `AATPCheckRequirements`
+- New struct `AATPCheckRequirementsProperties`
+- New struct `APIPollingParameters`
+- New struct `ASCCheckRequirements`
+- New struct `ASCCheckRequirementsProperties`
+- New struct `AccountEntity`
+- New struct `AccountEntityProperties`
+- New struct `ActionsClientCreateOrUpdateOptions`
+- New struct `ActionsClientCreateOrUpdateResponse`
+- New struct `ActionsClientCreateOrUpdateResult`
+- New struct `ActionsClientDeleteOptions`
+- New struct `ActionsClientDeleteResponse`
+- New struct `ActionsClientGetOptions`
+- New struct `ActionsClientGetResponse`
+- New struct `ActionsClientGetResult`
+- New struct `ActionsClientListByAlertRuleOptions`
+- New struct `ActionsClientListByAlertRulePager`
+- New struct `ActionsClientListByAlertRuleResponse`
+- New struct `ActionsClientListByAlertRuleResult`
+- New struct `ActivityCustomEntityQuery`
+- New struct `ActivityEntityQueriesProperties`
+- New struct `ActivityEntityQueriesPropertiesQueryDefinitions`
+- New struct `ActivityEntityQuery`
+- New struct `ActivityEntityQueryTemplate`
+- New struct `ActivityEntityQueryTemplateProperties`
+- New struct `ActivityEntityQueryTemplatePropertiesQueryDefinitions`
+- New struct `ActivityTimelineItem`
+- New struct `AlertDetailsOverride`
+- New struct `AlertRuleTemplatePropertiesBase`
+- New struct `AlertRuleTemplatesClientGetOptions`
+- New struct `AlertRuleTemplatesClientGetResponse`
+- New struct `AlertRuleTemplatesClientGetResult`
+- New struct `AlertRuleTemplatesClientListOptions`
+- New struct `AlertRuleTemplatesClientListPager`
+- New struct `AlertRuleTemplatesClientListResponse`
+- New struct `AlertRuleTemplatesClientListResult`
+- New struct `AlertRulesClientCreateOrUpdateOptions`
+- New struct `AlertRulesClientCreateOrUpdateResponse`
+- New struct `AlertRulesClientCreateOrUpdateResult`
+- New struct `AlertRulesClientDeleteOptions`
+- New struct `AlertRulesClientDeleteResponse`
+- New struct `AlertRulesClientGetOptions`
+- New struct `AlertRulesClientGetResponse`
+- New struct `AlertRulesClientGetResult`
+- New struct `AlertRulesClientListOptions`
+- New struct `AlertRulesClientListPager`
+- New struct `AlertRulesClientListResponse`
+- New struct `AlertRulesClientListResult`
+- New struct `Anomalies`
+- New struct `AnomaliesSettingsProperties`
+- New struct `AutomationRule`
+- New struct `AutomationRuleAction`
+- New struct `AutomationRuleCondition`
+- New struct `AutomationRuleModifyPropertiesAction`
+- New struct `AutomationRuleModifyPropertiesActionConfiguration`
+- New struct `AutomationRuleProperties`
+- New struct `AutomationRulePropertyValuesCondition`
+- New struct `AutomationRulePropertyValuesConditionProperties`
+- New struct `AutomationRuleRunPlaybookAction`
+- New struct `AutomationRuleRunPlaybookActionConfiguration`
+- New struct `AutomationRuleTriggeringLogic`
+- New struct `AutomationRulesClient`
+- New struct `AutomationRulesClientCreateOrUpdateOptions`
+- New struct `AutomationRulesClientCreateOrUpdateResponse`
+- New struct `AutomationRulesClientCreateOrUpdateResult`
+- New struct `AutomationRulesClientDeleteOptions`
+- New struct `AutomationRulesClientDeleteResponse`
+- New struct `AutomationRulesClientGetOptions`
+- New struct `AutomationRulesClientGetResponse`
+- New struct `AutomationRulesClientGetResult`
+- New struct `AutomationRulesClientListOptions`
+- New struct `AutomationRulesClientListPager`
+- New struct `AutomationRulesClientListResponse`
+- New struct `AutomationRulesClientListResult`
+- New struct `AutomationRulesList`
+- New struct `Availability`
+- New struct `AwsCloudTrailCheckRequirements`
+- New struct `AwsS3CheckRequirements`
+- New struct `AwsS3DataConnector`
+- New struct `AwsS3DataConnectorDataTypes`
+- New struct `AwsS3DataConnectorDataTypesLogs`
+- New struct `AwsS3DataConnectorProperties`
+- New struct `AzureResourceEntity`
+- New struct `AzureResourceEntityProperties`
+- New struct `BookmarkClient`
+- New struct `BookmarkClientExpandOptions`
+- New struct `BookmarkClientExpandResponse`
+- New struct `BookmarkClientExpandResult`
+- New struct `BookmarkExpandParameters`
+- New struct `BookmarkExpandResponse`
+- New struct `BookmarkExpandResponseValue`
+- New struct `BookmarkRelationsClient`
+- New struct `BookmarkRelationsClientCreateOrUpdateOptions`
+- New struct `BookmarkRelationsClientCreateOrUpdateResponse`
+- New struct `BookmarkRelationsClientCreateOrUpdateResult`
+- New struct `BookmarkRelationsClientDeleteOptions`
+- New struct `BookmarkRelationsClientDeleteResponse`
+- New struct `BookmarkRelationsClientGetOptions`
+- New struct `BookmarkRelationsClientGetResponse`
+- New struct `BookmarkRelationsClientGetResult`
+- New struct `BookmarkRelationsClientListOptions`
+- New struct `BookmarkRelationsClientListPager`
+- New struct `BookmarkRelationsClientListResponse`
+- New struct `BookmarkRelationsClientListResult`
+- New struct `BookmarkTimelineItem`
+- New struct `BookmarksClientCreateOrUpdateOptions`
+- New struct `BookmarksClientCreateOrUpdateResponse`
+- New struct `BookmarksClientCreateOrUpdateResult`
+- New struct `BookmarksClientDeleteOptions`
+- New struct `BookmarksClientDeleteResponse`
+- New struct `BookmarksClientGetOptions`
+- New struct `BookmarksClientGetResponse`
+- New struct `BookmarksClientGetResult`
+- New struct `BookmarksClientListOptions`
+- New struct `BookmarksClientListPager`
+- New struct `BookmarksClientListResponse`
+- New struct `BookmarksClientListResult`
+- New struct `CloudApplicationEntity`
+- New struct `CloudApplicationEntityProperties`
+- New struct `CloudErrorBody`
+- New struct `CodelessAPIPollingDataConnector`
+- New struct `CodelessConnectorPollingAuthProperties`
+- New struct `CodelessConnectorPollingConfigProperties`
+- New struct `CodelessConnectorPollingPagingProperties`
+- New struct `CodelessConnectorPollingRequestProperties`
+- New struct `CodelessConnectorPollingResponseProperties`
+- New struct `CodelessParameters`
+- New struct `CodelessUIConnectorConfigProperties`
+- New struct `CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem`
+- New struct `CodelessUIConnectorConfigPropertiesDataTypesItem`
+- New struct `CodelessUIConnectorConfigPropertiesGraphQueriesItem`
+- New struct `CodelessUIConnectorConfigPropertiesInstructionStepsItem`
+- New struct `CodelessUIConnectorConfigPropertiesSampleQueriesItem`
+- New struct `CodelessUIDataConnector`
+- New struct `ConnectedEntity`
+- New struct `ConnectivityCriteria`
+- New struct `ConnectorInstructionModelBase`
+- New struct `ContentPathMap`
+- New struct `CustomEntityQuery`
+- New struct `Customs`
+- New struct `CustomsPermission`
+- New struct `DNSEntity`
+- New struct `DNSEntityProperties`
+- New struct `DataConnectorConnectBody`
+- New struct `DataConnectorRequirementsState`
+- New struct `DataConnectorsCheckRequirements`
+- New struct `DataConnectorsCheckRequirementsClient`
+- New struct `DataConnectorsCheckRequirementsClientPostOptions`
+- New struct `DataConnectorsCheckRequirementsClientPostResponse`
+- New struct `DataConnectorsCheckRequirementsClientPostResult`
+- New struct `DataConnectorsClientConnectOptions`
+- New struct `DataConnectorsClientConnectResponse`
+- New struct `DataConnectorsClientCreateOrUpdateOptions`
+- New struct `DataConnectorsClientCreateOrUpdateResponse`
+- New struct `DataConnectorsClientCreateOrUpdateResult`
+- New struct `DataConnectorsClientDeleteOptions`
+- New struct `DataConnectorsClientDeleteResponse`
+- New struct `DataConnectorsClientDisconnectOptions`
+- New struct `DataConnectorsClientDisconnectResponse`
+- New struct `DataConnectorsClientGetOptions`
+- New struct `DataConnectorsClientGetResponse`
+- New struct `DataConnectorsClientGetResult`
+- New struct `DataConnectorsClientListOptions`
+- New struct `DataConnectorsClientListPager`
+- New struct `DataConnectorsClientListResponse`
+- New struct `DataConnectorsClientListResult`
+- New struct `DataTypeDefinitions`
+- New struct `DomainWhoisClient`
+- New struct `DomainWhoisClientGetOptions`
+- New struct `DomainWhoisClientGetResponse`
+- New struct `DomainWhoisClientGetResult`
+- New struct `Dynamics365CheckRequirements`
+- New struct `Dynamics365CheckRequirementsProperties`
+- New struct `Dynamics365DataConnector`
+- New struct `Dynamics365DataConnectorDataTypes`
+- New struct `Dynamics365DataConnectorDataTypesDynamics365CdsActivities`
+- New struct `Dynamics365DataConnectorProperties`
+- New struct `EnrichmentDomainWhois`
+- New struct `EnrichmentDomainWhoisContact`
+- New struct `EnrichmentDomainWhoisContacts`
+- New struct `EnrichmentDomainWhoisDetails`
+- New struct `EnrichmentDomainWhoisRegistrarDetails`
+- New struct `EnrichmentIPGeodata`
+- New struct `EntitiesClient`
+- New struct `EntitiesClientExpandOptions`
+- New struct `EntitiesClientExpandResponse`
+- New struct `EntitiesClientExpandResult`
+- New struct `EntitiesClientGetInsightsOptions`
+- New struct `EntitiesClientGetInsightsResponse`
+- New struct `EntitiesClientGetInsightsResult`
+- New struct `EntitiesClientGetOptions`
+- New struct `EntitiesClientGetResponse`
+- New struct `EntitiesClientGetResult`
+- New struct `EntitiesClientListOptions`
+- New struct `EntitiesClientListPager`
+- New struct `EntitiesClientListResponse`
+- New struct `EntitiesClientListResult`
+- New struct `EntitiesClientQueriesOptions`
+- New struct `EntitiesClientQueriesResponse`
+- New struct `EntitiesClientQueriesResult`
+- New struct `EntitiesGetTimelineClient`
+- New struct `EntitiesGetTimelineClientListOptions`
+- New struct `EntitiesGetTimelineClientListResponse`
+- New struct `EntitiesGetTimelineClientListResult`
+- New struct `EntitiesRelationsClient`
+- New struct `EntitiesRelationsClientListOptions`
+- New struct `EntitiesRelationsClientListPager`
+- New struct `EntitiesRelationsClientListResponse`
+- New struct `EntitiesRelationsClientListResult`
+- New struct `Entity`
+- New struct `EntityAnalytics`
+- New struct `EntityAnalyticsProperties`
+- New struct `EntityCommonProperties`
+- New struct `EntityEdges`
+- New struct `EntityExpandParameters`
+- New struct `EntityExpandResponse`
+- New struct `EntityExpandResponseValue`
+- New struct `EntityGetInsightsParameters`
+- New struct `EntityGetInsightsResponse`
+- New struct `EntityInsightItem`
+- New struct `EntityInsightItemQueryTimeInterval`
+- New struct `EntityList`
+- New struct `EntityMapping`
+- New struct `EntityQueriesClient`
+- New struct `EntityQueriesClientCreateOrUpdateOptions`
+- New struct `EntityQueriesClientCreateOrUpdateResponse`
+- New struct `EntityQueriesClientCreateOrUpdateResult`
+- New struct `EntityQueriesClientDeleteOptions`
+- New struct `EntityQueriesClientDeleteResponse`
+- New struct `EntityQueriesClientGetOptions`
+- New struct `EntityQueriesClientGetResponse`
+- New struct `EntityQueriesClientGetResult`
+- New struct `EntityQueriesClientListOptions`
+- New struct `EntityQueriesClientListPager`
+- New struct `EntityQueriesClientListResponse`
+- New struct `EntityQueriesClientListResult`
+- New struct `EntityQuery`
+- New struct `EntityQueryItem`
+- New struct `EntityQueryItemProperties`
+- New struct `EntityQueryItemPropertiesDataTypesItem`
+- New struct `EntityQueryList`
+- New struct `EntityQueryTemplate`
+- New struct `EntityQueryTemplateList`
+- New struct `EntityQueryTemplatesClient`
+- New struct `EntityQueryTemplatesClientGetOptions`
+- New struct `EntityQueryTemplatesClientGetResponse`
+- New struct `EntityQueryTemplatesClientGetResult`
+- New struct `EntityQueryTemplatesClientListOptions`
+- New struct `EntityQueryTemplatesClientListPager`
+- New struct `EntityQueryTemplatesClientListResponse`
+- New struct `EntityQueryTemplatesClientListResult`
+- New struct `EntityRelationsClient`
+- New struct `EntityRelationsClientGetRelationOptions`
+- New struct `EntityRelationsClientGetRelationResponse`
+- New struct `EntityRelationsClientGetRelationResult`
+- New struct `EntityTimelineItem`
+- New struct `EntityTimelineParameters`
+- New struct `EntityTimelineResponse`
+- New struct `ErrorDetail`
+- New struct `EventGroupingSettings`
+- New struct `ExpansionEntityQueriesProperties`
+- New struct `ExpansionEntityQuery`
+- New struct `ExpansionResultAggregation`
+- New struct `ExpansionResultsMetadata`
+- New struct `EyesOn`
+- New struct `EyesOnSettingsProperties`
+- New struct `FieldMapping`
+- New struct `FileEntity`
+- New struct `FileEntityProperties`
+- New struct `FileHashEntity`
+- New struct `FileHashEntityProperties`
+- New struct `GeoLocation`
+- New struct `GetInsightsError`
+- New struct `GetInsightsResultsMetadata`
+- New struct `GetQueriesResponse`
+- New struct `GraphQueries`
+- New struct `GroupingConfiguration`
+- New struct `HostEntity`
+- New struct `HostEntityProperties`
+- New struct `HuntingBookmark`
+- New struct `HuntingBookmarkProperties`
+- New struct `IPEntity`
+- New struct `IPEntityProperties`
+- New struct `IPGeodataClient`
+- New struct `IPGeodataClientGetOptions`
+- New struct `IPGeodataClientGetResponse`
+- New struct `IPGeodataClientGetResult`
+- New struct `IncidentAlertList`
+- New struct `IncidentBookmarkList`
+- New struct `IncidentCommentsClientCreateOrUpdateOptions`
+- New struct `IncidentCommentsClientCreateOrUpdateResponse`
+- New struct `IncidentCommentsClientCreateOrUpdateResult`
+- New struct `IncidentCommentsClientDeleteOptions`
+- New struct `IncidentCommentsClientDeleteResponse`
+- New struct `IncidentCommentsClientGetOptions`
+- New struct `IncidentCommentsClientGetResponse`
+- New struct `IncidentCommentsClientGetResult`
+- New struct `IncidentCommentsClientListOptions`
+- New struct `IncidentCommentsClientListPager`
+- New struct `IncidentCommentsClientListResponse`
+- New struct `IncidentCommentsClientListResult`
+- New struct `IncidentConfiguration`
+- New struct `IncidentEntitiesResponse`
+- New struct `IncidentEntitiesResultsMetadata`
+- New struct `IncidentRelationsClient`
+- New struct `IncidentRelationsClientCreateOrUpdateOptions`
+- New struct `IncidentRelationsClientCreateOrUpdateResponse`
+- New struct `IncidentRelationsClientCreateOrUpdateResult`
+- New struct `IncidentRelationsClientDeleteOptions`
+- New struct `IncidentRelationsClientDeleteResponse`
+- New struct `IncidentRelationsClientGetOptions`
+- New struct `IncidentRelationsClientGetResponse`
+- New struct `IncidentRelationsClientGetResult`
+- New struct `IncidentRelationsClientListOptions`
+- New struct `IncidentRelationsClientListPager`
+- New struct `IncidentRelationsClientListResponse`
+- New struct `IncidentRelationsClientListResult`
+- New struct `IncidentsClientCreateOrUpdateOptions`
+- New struct `IncidentsClientCreateOrUpdateResponse`
+- New struct `IncidentsClientCreateOrUpdateResult`
+- New struct `IncidentsClientCreateTeamOptions`
+- New struct `IncidentsClientCreateTeamResponse`
+- New struct `IncidentsClientCreateTeamResult`
+- New struct `IncidentsClientDeleteOptions`
+- New struct `IncidentsClientDeleteResponse`
+- New struct `IncidentsClientGetOptions`
+- New struct `IncidentsClientGetResponse`
+- New struct `IncidentsClientGetResult`
+- New struct `IncidentsClientListAlertsOptions`
+- New struct `IncidentsClientListAlertsResponse`
+- New struct `IncidentsClientListAlertsResult`
+- New struct `IncidentsClientListBookmarksOptions`
+- New struct `IncidentsClientListBookmarksResponse`
+- New struct `IncidentsClientListBookmarksResult`
+- New struct `IncidentsClientListEntitiesOptions`
+- New struct `IncidentsClientListEntitiesResponse`
+- New struct `IncidentsClientListEntitiesResult`
+- New struct `IncidentsClientListOptions`
+- New struct `IncidentsClientListPager`
+- New struct `IncidentsClientListResponse`
+- New struct `IncidentsClientListResult`
+- New struct `InsightQueryItem`
+- New struct `InsightQueryItemProperties`
+- New struct `InsightQueryItemPropertiesAdditionalQuery`
+- New struct `InsightQueryItemPropertiesDefaultTimeRange`
+- New struct `InsightQueryItemPropertiesReferenceTimeRange`
+- New struct `InsightQueryItemPropertiesTableQuery`
+- New struct `InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem`
+- New struct `InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem`
+- New struct `InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem`
+- New struct `InsightsTableResult`
+- New struct `InsightsTableResultColumnsItem`
+- New struct `InstructionSteps`
+- New struct `InstructionStepsInstructionsItem`
+- New struct `IoTDeviceEntity`
+- New struct `IoTDeviceEntityProperties`
+- New struct `LastDataReceivedDataType`
+- New struct `MCASCheckRequirements`
+- New struct `MCASCheckRequirementsProperties`
+- New struct `MDATPCheckRequirements`
+- New struct `MDATPCheckRequirementsProperties`
+- New struct `MLBehaviorAnalyticsAlertRule`
+- New struct `MLBehaviorAnalyticsAlertRuleProperties`
+- New struct `MLBehaviorAnalyticsAlertRuleTemplate`
+- New struct `MLBehaviorAnalyticsAlertRuleTemplateProperties`
+- New struct `MSTICheckRequirements`
+- New struct `MSTICheckRequirementsProperties`
+- New struct `MSTIDataConnector`
+- New struct `MSTIDataConnectorDataTypes`
+- New struct `MSTIDataConnectorDataTypesBingSafetyPhishingURL`
+- New struct `MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed`
+- New struct `MSTIDataConnectorProperties`
+- New struct `MTPCheckRequirementsProperties`
+- New struct `MTPDataConnector`
+- New struct `MTPDataConnectorDataTypes`
+- New struct `MTPDataConnectorDataTypesIncidents`
+- New struct `MTPDataConnectorProperties`
+- New struct `MailClusterEntity`
+- New struct `MailClusterEntityProperties`
+- New struct `MailMessageEntity`
+- New struct `MailMessageEntityProperties`
+- New struct `MailboxEntity`
+- New struct `MailboxEntityProperties`
+- New struct `MalwareEntity`
+- New struct `MalwareEntityProperties`
+- New struct `MetadataAuthor`
+- New struct `MetadataCategories`
+- New struct `MetadataClient`
+- New struct `MetadataClientCreateOptions`
+- New struct `MetadataClientCreateResponse`
+- New struct `MetadataClientCreateResult`
+- New struct `MetadataClientDeleteOptions`
+- New struct `MetadataClientDeleteResponse`
+- New struct `MetadataClientGetOptions`
+- New struct `MetadataClientGetResponse`
+- New struct `MetadataClientGetResult`
+- New struct `MetadataClientListOptions`
+- New struct `MetadataClientListPager`
+- New struct `MetadataClientListResponse`
+- New struct `MetadataClientListResult`
+- New struct `MetadataClientUpdateOptions`
+- New struct `MetadataClientUpdateResponse`
+- New struct `MetadataClientUpdateResult`
+- New struct `MetadataDependencies`
+- New struct `MetadataList`
+- New struct `MetadataModel`
+- New struct `MetadataPatch`
+- New struct `MetadataProperties`
+- New struct `MetadataPropertiesPatch`
+- New struct `MetadataSource`
+- New struct `MetadataSupport`
+- New struct `MtpCheckRequirements`
+- New struct `NrtAlertRule`
+- New struct `NrtAlertRuleProperties`
+- New struct `NrtAlertRuleTemplate`
+- New struct `NrtAlertRuleTemplateProperties`
+- New struct `OfficeATPCheckRequirements`
+- New struct `OfficeATPCheckRequirementsProperties`
+- New struct `OfficeATPDataConnector`
+- New struct `OfficeATPDataConnectorProperties`
+- New struct `OfficeConsentsClient`
+- New struct `OfficeConsentsClientDeleteOptions`
+- New struct `OfficeConsentsClientDeleteResponse`
+- New struct `OfficeConsentsClientGetOptions`
+- New struct `OfficeConsentsClientGetResponse`
+- New struct `OfficeConsentsClientGetResult`
+- New struct `OfficeConsentsClientListOptions`
+- New struct `OfficeConsentsClientListPager`
+- New struct `OfficeConsentsClientListResponse`
+- New struct `OfficeConsentsClientListResult`
+- New struct `OfficeIRMCheckRequirements`
+- New struct `OfficeIRMCheckRequirementsProperties`
+- New struct `OfficeIRMDataConnector`
+- New struct `OfficeIRMDataConnectorProperties`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `Permissions`
+- New struct `PermissionsCustomsItem`
+- New struct `PermissionsResourceProviderItem`
+- New struct `ProcessEntity`
+- New struct `ProcessEntityProperties`
+- New struct `ProductSettingsClient`
+- New struct `ProductSettingsClientDeleteOptions`
+- New struct `ProductSettingsClientDeleteResponse`
+- New struct `ProductSettingsClientGetOptions`
+- New struct `ProductSettingsClientGetResponse`
+- New struct `ProductSettingsClientGetResult`
+- New struct `ProductSettingsClientListOptions`
+- New struct `ProductSettingsClientListResponse`
+- New struct `ProductSettingsClientListResult`
+- New struct `ProductSettingsClientUpdateOptions`
+- New struct `ProductSettingsClientUpdateResponse`
+- New struct `ProductSettingsClientUpdateResult`
+- New struct `QueryBasedAlertRuleProperties`
+- New struct `QueryBasedAlertRuleTemplateProperties`
+- New struct `RegistryKeyEntity`
+- New struct `RegistryKeyEntityProperties`
+- New struct `RegistryValueEntity`
+- New struct `RegistryValueEntityProperties`
+- New struct `Relation`
+- New struct `RelationList`
+- New struct `RelationProperties`
+- New struct `Repo`
+- New struct `RepoList`
+- New struct `Repository`
+- New struct `RequiredPermissions`
+- New struct `ResourceProvider`
+- New struct `SKU`
+- New struct `SampleQueries`
+- New struct `SecurityAlert`
+- New struct `SecurityAlertProperties`
+- New struct `SecurityAlertPropertiesConfidenceReasonsItem`
+- New struct `SecurityAlertTimelineItem`
+- New struct `SecurityGroupEntity`
+- New struct `SecurityGroupEntityProperties`
+- New struct `SentinelOnboardingState`
+- New struct `SentinelOnboardingStateProperties`
+- New struct `SentinelOnboardingStatesClient`
+- New struct `SentinelOnboardingStatesClientCreateOptions`
+- New struct `SentinelOnboardingStatesClientCreateResponse`
+- New struct `SentinelOnboardingStatesClientCreateResult`
+- New struct `SentinelOnboardingStatesClientDeleteOptions`
+- New struct `SentinelOnboardingStatesClientDeleteResponse`
+- New struct `SentinelOnboardingStatesClientGetOptions`
+- New struct `SentinelOnboardingStatesClientGetResponse`
+- New struct `SentinelOnboardingStatesClientGetResult`
+- New struct `SentinelOnboardingStatesClientListOptions`
+- New struct `SentinelOnboardingStatesClientListResponse`
+- New struct `SentinelOnboardingStatesClientListResult`
+- New struct `SentinelOnboardingStatesList`
+- New struct `SettingList`
+- New struct `Settings`
+- New struct `SourceControl`
+- New struct `SourceControlClient`
+- New struct `SourceControlClientListRepositoriesOptions`
+- New struct `SourceControlClientListRepositoriesPager`
+- New struct `SourceControlClientListRepositoriesResponse`
+- New struct `SourceControlClientListRepositoriesResult`
+- New struct `SourceControlList`
+- New struct `SourceControlProperties`
+- New struct `SourceControlsClient`
+- New struct `SourceControlsClientCreateOptions`
+- New struct `SourceControlsClientCreateResponse`
+- New struct `SourceControlsClientCreateResult`
+- New struct `SourceControlsClientDeleteOptions`
+- New struct `SourceControlsClientDeleteResponse`
+- New struct `SourceControlsClientGetOptions`
+- New struct `SourceControlsClientGetResponse`
+- New struct `SourceControlsClientGetResult`
+- New struct `SourceControlsClientListOptions`
+- New struct `SourceControlsClientListPager`
+- New struct `SourceControlsClientListResponse`
+- New struct `SourceControlsClientListResult`
+- New struct `SubmissionMailEntity`
+- New struct `SubmissionMailEntityProperties`
+- New struct `SystemData`
+- New struct `TICheckRequirements`
+- New struct `TICheckRequirementsProperties`
+- New struct `TeamInformation`
+- New struct `TeamProperties`
+- New struct `ThreatIntelligenceAlertRule`
+- New struct `ThreatIntelligenceAlertRuleProperties`
+- New struct `ThreatIntelligenceAlertRuleTemplate`
+- New struct `ThreatIntelligenceAlertRuleTemplateProperties`
+- New struct `ThreatIntelligenceAppendTags`
+- New struct `ThreatIntelligenceExternalReference`
+- New struct `ThreatIntelligenceFilteringCriteria`
+- New struct `ThreatIntelligenceGranularMarkingModel`
+- New struct `ThreatIntelligenceIndicatorClient`
+- New struct `ThreatIntelligenceIndicatorClientAppendTagsOptions`
+- New struct `ThreatIntelligenceIndicatorClientAppendTagsResponse`
+- New struct `ThreatIntelligenceIndicatorClientCreateIndicatorOptions`
+- New struct `ThreatIntelligenceIndicatorClientCreateIndicatorResponse`
+- New struct `ThreatIntelligenceIndicatorClientCreateIndicatorResult`
+- New struct `ThreatIntelligenceIndicatorClientCreateOptions`
+- New struct `ThreatIntelligenceIndicatorClientCreateResponse`
+- New struct `ThreatIntelligenceIndicatorClientCreateResult`
+- New struct `ThreatIntelligenceIndicatorClientDeleteOptions`
+- New struct `ThreatIntelligenceIndicatorClientDeleteResponse`
+- New struct `ThreatIntelligenceIndicatorClientGetOptions`
+- New struct `ThreatIntelligenceIndicatorClientGetResponse`
+- New struct `ThreatIntelligenceIndicatorClientGetResult`
+- New struct `ThreatIntelligenceIndicatorClientQueryIndicatorsOptions`
+- New struct `ThreatIntelligenceIndicatorClientQueryIndicatorsPager`
+- New struct `ThreatIntelligenceIndicatorClientQueryIndicatorsResponse`
+- New struct `ThreatIntelligenceIndicatorClientQueryIndicatorsResult`
+- New struct `ThreatIntelligenceIndicatorClientReplaceTagsOptions`
+- New struct `ThreatIntelligenceIndicatorClientReplaceTagsResponse`
+- New struct `ThreatIntelligenceIndicatorClientReplaceTagsResult`
+- New struct `ThreatIntelligenceIndicatorMetricsClient`
+- New struct `ThreatIntelligenceIndicatorMetricsClientListOptions`
+- New struct `ThreatIntelligenceIndicatorMetricsClientListResponse`
+- New struct `ThreatIntelligenceIndicatorMetricsClientListResult`
+- New struct `ThreatIntelligenceIndicatorModel`
+- New struct `ThreatIntelligenceIndicatorModelForRequestBody`
+- New struct `ThreatIntelligenceIndicatorProperties`
+- New struct `ThreatIntelligenceIndicatorsClient`
+- New struct `ThreatIntelligenceIndicatorsClientListOptions`
+- New struct `ThreatIntelligenceIndicatorsClientListPager`
+- New struct `ThreatIntelligenceIndicatorsClientListResponse`
+- New struct `ThreatIntelligenceIndicatorsClientListResult`
+- New struct `ThreatIntelligenceInformation`
+- New struct `ThreatIntelligenceInformationList`
+- New struct `ThreatIntelligenceKillChainPhase`
+- New struct `ThreatIntelligenceMetric`
+- New struct `ThreatIntelligenceMetricEntity`
+- New struct `ThreatIntelligenceMetrics`
+- New struct `ThreatIntelligenceMetricsList`
+- New struct `ThreatIntelligenceParsedPattern`
+- New struct `ThreatIntelligenceParsedPatternTypeValue`
+- New struct `ThreatIntelligenceResourceKind`
+- New struct `ThreatIntelligenceSortingCriteria`
+- New struct `TiTaxiiCheckRequirements`
+- New struct `TiTaxiiCheckRequirementsProperties`
+- New struct `TiTaxiiDataConnector`
+- New struct `TiTaxiiDataConnectorDataTypes`
+- New struct `TiTaxiiDataConnectorDataTypesTaxiiClient`
+- New struct `TiTaxiiDataConnectorProperties`
+- New struct `TimelineAggregation`
+- New struct `TimelineError`
+- New struct `TimelineResultsMetadata`
+- New struct `URLEntity`
+- New struct `URLEntityProperties`
+- New struct `Ueba`
+- New struct `UebaProperties`
+- New struct `Watchlist`
+- New struct `WatchlistItem`
+- New struct `WatchlistItemList`
+- New struct `WatchlistItemProperties`
+- New struct `WatchlistItemsClient`
+- New struct `WatchlistItemsClientCreateOrUpdateOptions`
+- New struct `WatchlistItemsClientCreateOrUpdateResponse`
+- New struct `WatchlistItemsClientCreateOrUpdateResult`
+- New struct `WatchlistItemsClientDeleteOptions`
+- New struct `WatchlistItemsClientDeleteResponse`
+- New struct `WatchlistItemsClientGetOptions`
+- New struct `WatchlistItemsClientGetResponse`
+- New struct `WatchlistItemsClientGetResult`
+- New struct `WatchlistItemsClientListOptions`
+- New struct `WatchlistItemsClientListPager`
+- New struct `WatchlistItemsClientListResponse`
+- New struct `WatchlistItemsClientListResult`
+- New struct `WatchlistList`
+- New struct `WatchlistProperties`
+- New struct `WatchlistsClient`
+- New struct `WatchlistsClientCreateOrUpdateOptions`
+- New struct `WatchlistsClientCreateOrUpdateResponse`
+- New struct `WatchlistsClientCreateOrUpdateResult`
+- New struct `WatchlistsClientDeleteOptions`
+- New struct `WatchlistsClientDeleteResponse`
+- New struct `WatchlistsClientGetOptions`
+- New struct `WatchlistsClientGetResponse`
+- New struct `WatchlistsClientGetResult`
+- New struct `WatchlistsClientListOptions`
+- New struct `WatchlistsClientListPager`
+- New struct `WatchlistsClientListResponse`
+- New struct `WatchlistsClientListResult`
+- New field `Type` in struct `ScheduledAlertRule`
+- New field `Kind` in struct `ScheduledAlertRule`
+- New field `Etag` in struct `ScheduledAlertRule`
+- New field `ID` in struct `ScheduledAlertRule`
+- New field `Name` in struct `ScheduledAlertRule`
+- New field `SystemData` in struct `ScheduledAlertRule`
+- New field `Etag` in struct `OfficeDataConnector`
+- New field `ID` in struct `OfficeDataConnector`
+- New field `Name` in struct `OfficeDataConnector`
+- New field `SystemData` in struct `OfficeDataConnector`
+- New field `Type` in struct `OfficeDataConnector`
+- New field `Kind` in struct `OfficeDataConnector`
+- New field `OwnerType` in struct `IncidentOwnerInfo`
+- New field `DisplayNamesExcludeFilter` in struct `MicrosoftSecurityIncidentCreationAlertRuleProperties`
+- New field `DisplayNamesFilter` in struct `MicrosoftSecurityIncidentCreationAlertRuleProperties`
+- New field `ProductFilter` in struct `MicrosoftSecurityIncidentCreationAlertRuleProperties`
+- New field `SeveritiesFilter` in struct `MicrosoftSecurityIncidentCreationAlertRuleProperties`
+- New field `EventGroupingSettings` in struct `ScheduledAlertRuleCommonProperties`
+- New field `Type` in struct `MCASDataConnector`
+- New field `Kind` in struct `MCASDataConnector`
+- New field `Etag` in struct `MCASDataConnector`
+- New field `ID` in struct `MCASDataConnector`
+- New field `Name` in struct `MCASDataConnector`
+- New field `SystemData` in struct `MCASDataConnector`
+- New field `ConsentID` in struct `OfficeConsentProperties`
+- New field `Kind` in struct `FusionAlertRule`
+- New field `Etag` in struct `FusionAlertRule`
+- New field `ID` in struct `FusionAlertRule`
+- New field `Name` in struct `FusionAlertRule`
+- New field `SystemData` in struct `FusionAlertRule`
+- New field `Type` in struct `FusionAlertRule`
+- New field `Etag` in struct `ASCDataConnector`
+- New field `ID` in struct `ASCDataConnector`
+- New field `Name` in struct `ASCDataConnector`
+- New field `SystemData` in struct `ASCDataConnector`
+- New field `Type` in struct `ASCDataConnector`
+- New field `Kind` in struct `ASCDataConnector`
+- New field `Name` in struct `ActionRequest`
+- New field `SystemData` in struct `ActionRequest`
+- New field `Type` in struct `ActionRequest`
+- New field `Etag` in struct `ActionRequest`
+- New field `ID` in struct `ActionRequest`
+- New field `Error` in struct `CloudError`
+- New field `Name` in struct `MicrosoftSecurityIncidentCreationAlertRuleTemplate`
+- New field `SystemData` in struct `MicrosoftSecurityIncidentCreationAlertRuleTemplate`
+- New field `Type` in struct `MicrosoftSecurityIncidentCreationAlertRuleTemplate`
+- New field `Kind` in struct `MicrosoftSecurityIncidentCreationAlertRuleTemplate`
+- New field `ID` in struct `MicrosoftSecurityIncidentCreationAlertRuleTemplate`
+- New field `TeamInformation` in struct `IncidentProperties`
+- New field `ProviderIncidentID` in struct `IncidentProperties`
+- New field `ProviderName` in struct `IncidentProperties`
+- New field `ID` in struct `AATPDataConnector`
+- New field `Name` in struct `AATPDataConnector`
+- New field `SystemData` in struct `AATPDataConnector`
+- New field `Type` in struct `AATPDataConnector`
+- New field `Kind` in struct `AATPDataConnector`
+- New field `Etag` in struct `AATPDataConnector`
+- New field `SystemData` in struct `Resource`
+- New field `LastUpdatedDateUTC` in struct `MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties`
+- New field `State` in struct `OfficeDataConnectorDataTypesTeams`
+- New field `SystemData` in struct `ResourceWithEtag`
+- New field `IsDataAction` in struct `Operation`
+- New field `ID` in struct `OfficeConsent`
+- New field `Name` in struct `OfficeConsent`
+- New field `SystemData` in struct `OfficeConsent`
+- New field `Type` in struct `OfficeConsent`
+- New field `Alerts` in struct `MCASDataConnectorDataTypes`
+- New field `State` in struct `OfficeDataConnectorDataTypesSharePoint`
+- New field `Etag` in struct `AwsCloudTrailDataConnector`
+- New field `ID` in struct `AwsCloudTrailDataConnector`
+- New field `Name` in struct `AwsCloudTrailDataConnector`
+- New field `SystemData` in struct `AwsCloudTrailDataConnector`
+- New field `Type` in struct `AwsCloudTrailDataConnector`
+- New field `Kind` in struct `AwsCloudTrailDataConnector`
+- New field `DataTypes` in struct `ASCDataConnectorProperties`
+- New field `Name` in struct `ActionResponse`
+- New field `SystemData` in struct `ActionResponse`
+- New field `Type` in struct `ActionResponse`
+- New field `ID` in struct `ActionResponse`
+- New field `ID` in struct `AlertRuleTemplate`
+- New field `Name` in struct `AlertRuleTemplate`
+- New field `SystemData` in struct `AlertRuleTemplate`
+- New field `Type` in struct `AlertRuleTemplate`
+- New field `Name` in struct `TIDataConnector`
+- New field `SystemData` in struct `TIDataConnector`
+- New field `Type` in struct `TIDataConnector`
+- New field `Kind` in struct `TIDataConnector`
+- New field `Etag` in struct `TIDataConnector`
+- New field `ID` in struct `TIDataConnector`
+- New field `LogicAppResourceID` in struct `ActionRequestProperties`
+- New field `State` in struct `OfficeDataConnectorDataTypesExchange`
+- New field `ID` in struct `ScheduledAlertRuleTemplate`
+- New field `Name` in struct `ScheduledAlertRuleTemplate`
+- New field `SystemData` in struct `ScheduledAlertRuleTemplate`
+- New field `Type` in struct `ScheduledAlertRuleTemplate`
+- New field `Kind` in struct `ScheduledAlertRuleTemplate`
+- New field `State` in struct `AwsCloudTrailDataConnectorDataTypesLogs`
+- New field `Severity` in struct `ScheduledAlertRuleProperties`
+- New field `CustomDetails` in struct `ScheduledAlertRuleProperties`
+- New field `Query` in struct `ScheduledAlertRuleProperties`
+- New field `IncidentConfiguration` in struct `ScheduledAlertRuleProperties`
+- New field `QueryFrequency` in struct `ScheduledAlertRuleProperties`
+- New field `EventGroupingSettings` in struct `ScheduledAlertRuleProperties`
+- New field `TriggerOperator` in struct `ScheduledAlertRuleProperties`
+- New field `TemplateVersion` in struct `ScheduledAlertRuleProperties`
+- New field `AlertDetailsOverride` in struct `ScheduledAlertRuleProperties`
+- New field `TriggerThreshold` in struct `ScheduledAlertRuleProperties`
+- New field `EntityMappings` in struct `ScheduledAlertRuleProperties`
+- New field `QueryPeriod` in struct `ScheduledAlertRuleProperties`
+- New field `ID` in struct `AADDataConnector`
+- New field `Name` in struct `AADDataConnector`
+- New field `SystemData` in struct `AADDataConnector`
+- New field `Type` in struct `AADDataConnector`
+- New field `Kind` in struct `AADDataConnector`
+- New field `Etag` in struct `AADDataConnector`
+- New field `Etag` in struct `Incident`
+- New field `ID` in struct `Incident`
+- New field `Name` in struct `Incident`
+- New field `SystemData` in struct `Incident`
+- New field `Type` in struct `Incident`
+- New field `Kind` in struct `FusionAlertRuleTemplate`
+- New field `ID` in struct `FusionAlertRuleTemplate`
+- New field `Name` in struct `FusionAlertRuleTemplate`
+- New field `SystemData` in struct `FusionAlertRuleTemplate`
+- New field `Type` in struct `FusionAlertRuleTemplate`
+- New field `LogicAppResourceID` in struct `ActionResponseProperties`
+- New field `LastModifiedTimeUTC` in struct `IncidentCommentProperties`
+- New field `Name` in struct `AlertRule`
+- New field `SystemData` in struct `AlertRule`
+- New field `Type` in struct `AlertRule`
+- New field `Etag` in struct `AlertRule`
+- New field `ID` in struct `AlertRule`
+- New field `State` in struct `TIDataConnectorDataTypesIndicators`
+- New field `SystemData` in struct `MDATPDataConnector`
+- New field `Type` in struct `MDATPDataConnector`
+- New field `Kind` in struct `MDATPDataConnector`
+- New field `Etag` in struct `MDATPDataConnector`
+- New field `ID` in struct `MDATPDataConnector`
+- New field `Name` in struct `MDATPDataConnector`
+- New field `EntityMappings` in struct `ScheduledAlertRuleTemplateProperties`
+- New field `Version` in struct `ScheduledAlertRuleTemplateProperties`
+- New field `LastUpdatedDateUTC` in struct `ScheduledAlertRuleTemplateProperties`
+- New field `AlertDetailsOverride` in struct `ScheduledAlertRuleTemplateProperties`
+- New field `CustomDetails` in struct `ScheduledAlertRuleTemplateProperties`
+- New field `EventGroupingSettings` in struct `ScheduledAlertRuleTemplateProperties`
+- New field `SystemData` in struct `Bookmark`
+- New field `Type` in struct `Bookmark`
+- New field `Etag` in struct `Bookmark`
+- New field `ID` in struct `Bookmark`
+- New field `Name` in struct `Bookmark`
+- New field `Error` in struct `ErrorResponse`
+- New field `Etag` in struct `IncidentComment`
+- New field `ID` in struct `IncidentComment`
+- New field `Name` in struct `IncidentComment`
+- New field `SystemData` in struct `IncidentComment`
+- New field `Type` in struct `IncidentComment`
+- New field `Etag` in struct `DataConnector`
+- New field `ID` in struct `DataConnector`
+- New field `Name` in struct `DataConnector`
+- New field `SystemData` in struct `DataConnector`
+- New field `Type` in struct `DataConnector`
+- New field `Kind` in struct `MicrosoftSecurityIncidentCreationAlertRule`
+- New field `Etag` in struct `MicrosoftSecurityIncidentCreationAlertRule`
+- New field `ID` in struct `MicrosoftSecurityIncidentCreationAlertRule`
+- New field `Name` in struct `MicrosoftSecurityIncidentCreationAlertRule`
+- New field `SystemData` in struct `MicrosoftSecurityIncidentCreationAlertRule`
+- New field `Type` in struct `MicrosoftSecurityIncidentCreationAlertRule`
+- New field `LastUpdatedDateUTC` in struct `FusionAlertRuleTemplateProperties`
+
+
+## 0.1.0 (2021-12-09)
+
+- Init release.

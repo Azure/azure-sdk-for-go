@@ -11,7 +11,6 @@ package armanalysisservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // ServersClient contains the methods for the Servers group.
 // Don't use this type directly, use NewServersClient() instead.
 type ServersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServersClient creates a new instance of ServersClient with the specified values.
+// subscriptionID - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for
+// every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Check the name availability in the target location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) CheckNameAvailability(ctx context.Context, location string, serverParameters CheckServerNameAvailabilityParameters, options *ServersCheckNameAvailabilityOptions) (ServersCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The region name which the operation will lookup into.
+// serverParameters - Contains the information used to provision the Analysis Services server.
+// options - ServersClientCheckNameAvailabilityOptions contains the optional parameters for the ServersClient.CheckNameAvailability
+// method.
+func (client *ServersClient) CheckNameAvailability(ctx context.Context, location string, serverParameters CheckServerNameAvailabilityParameters, options *ServersClientCheckNameAvailabilityOptions) (ServersClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, serverParameters, options)
 	if err != nil {
-		return ServersCheckNameAvailabilityResponse{}, err
+		return ServersClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersCheckNameAvailabilityResponse{}, err
+		return ServersClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return ServersClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ServersClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, serverParameters CheckServerNameAvailabilityParameters, options *ServersCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ServersClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, serverParameters CheckServerNameAvailabilityParameters, options *ServersClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/locations/{location}/checkNameAvailability"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -70,7 +82,7 @@ func (client *ServersClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,50 +94,42 @@ func (client *ServersClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ServersClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServersCheckNameAvailabilityResponse, error) {
-	result := ServersCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *ServersClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServersClientCheckNameAvailabilityResponse, error) {
+	result := ServersClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckServerNameAvailabilityResult); err != nil {
-		return ServersCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return ServersClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *ServersClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreate - Provisions the specified Analysis Services server based on the configuration specified in the request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, serverParameters AnalysisServicesServer, options *ServersBeginCreateOptions) (ServersCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server. It must be a minimum of 3 characters, and a maximum of 63.
+// serverParameters - Contains the information used to provision the Analysis Services server.
+// options - ServersClientBeginCreateOptions contains the optional parameters for the ServersClient.BeginCreate method.
+func (client *ServersClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, serverParameters Server, options *ServersClientBeginCreateOptions) (ServersClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, serverName, serverParameters, options)
 	if err != nil {
-		return ServersCreatePollerResponse{}, err
+		return ServersClientCreatePollerResponse{}, err
 	}
-	result := ServersCreatePollerResponse{
+	result := ServersClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServersClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ServersClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ServersCreatePollerResponse{}, err
+		return ServersClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ServersCreatePoller{
+	result.Poller = &ServersClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Provisions the specified Analysis Services server based on the configuration specified in the request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) create(ctx context.Context, resourceGroupName string, serverName string, serverParameters AnalysisServicesServer, options *ServersBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServersClient) create(ctx context.Context, resourceGroupName string, serverName string, serverParameters Server, options *ServersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, serverParameters, options)
 	if err != nil {
 		return nil, err
@@ -135,13 +139,13 @@ func (client *ServersClient) create(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ServersClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, serverParameters AnalysisServicesServer, options *ServersBeginCreateOptions) (*policy.Request, error) {
+func (client *ServersClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, serverParameters Server, options *ServersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -155,7 +159,7 @@ func (client *ServersClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,42 +170,33 @@ func (client *ServersClient) createCreateRequest(ctx context.Context, resourceGr
 	return req, runtime.MarshalAsJSON(req, serverParameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *ServersClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified Analysis Services server.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginDeleteOptions) (ServersDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server. It must be at least 3 characters in length, and no more than 63.
+// options - ServersClientBeginDeleteOptions contains the optional parameters for the ServersClient.BeginDelete method.
+func (client *ServersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginDeleteOptions) (ServersClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServersDeletePollerResponse{}, err
+		return ServersClientDeletePollerResponse{}, err
 	}
-	result := ServersDeletePollerResponse{
+	result := ServersClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServersClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServersClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ServersDeletePollerResponse{}, err
+		return ServersClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ServersDeletePoller{
+	result.Poller = &ServersClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified Analysis Services server.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
 		return nil, err
@@ -211,13 +206,13 @@ func (client *ServersClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -231,7 +226,7 @@ func (client *ServersClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,38 +237,30 @@ func (client *ServersClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DissociateGateway - Dissociates a Unified Gateway associated with the server.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) DissociateGateway(ctx context.Context, resourceGroupName string, serverName string, options *ServersDissociateGatewayOptions) (ServersDissociateGatewayResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server. It must be at least 3 characters in length, and no more than 63.
+// options - ServersClientDissociateGatewayOptions contains the optional parameters for the ServersClient.DissociateGateway
+// method.
+func (client *ServersClient) DissociateGateway(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientDissociateGatewayOptions) (ServersClientDissociateGatewayResponse, error) {
 	req, err := client.dissociateGatewayCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServersDissociateGatewayResponse{}, err
+		return ServersClientDissociateGatewayResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersDissociateGatewayResponse{}, err
+		return ServersClientDissociateGatewayResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersDissociateGatewayResponse{}, client.dissociateGatewayHandleError(resp)
+		return ServersClientDissociateGatewayResponse{}, runtime.NewResponseError(resp)
 	}
-	return ServersDissociateGatewayResponse{RawResponse: resp}, nil
+	return ServersClientDissociateGatewayResponse{RawResponse: resp}, nil
 }
 
 // dissociateGatewayCreateRequest creates the DissociateGateway request.
-func (client *ServersClient) dissociateGatewayCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersDissociateGatewayOptions) (*policy.Request, error) {
+func (client *ServersClient) dissociateGatewayCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientDissociateGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/dissociateGateway"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -287,7 +274,7 @@ func (client *ServersClient) dissociateGatewayCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -298,38 +285,29 @@ func (client *ServersClient) dissociateGatewayCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// dissociateGatewayHandleError handles the DissociateGateway error response.
-func (client *ServersClient) dissociateGatewayHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetDetails - Gets details about the specified Analysis Services server.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) GetDetails(ctx context.Context, resourceGroupName string, serverName string, options *ServersGetDetailsOptions) (ServersGetDetailsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server. It must be a minimum of 3 characters, and a maximum of 63.
+// options - ServersClientGetDetailsOptions contains the optional parameters for the ServersClient.GetDetails method.
+func (client *ServersClient) GetDetails(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientGetDetailsOptions) (ServersClientGetDetailsResponse, error) {
 	req, err := client.getDetailsCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServersGetDetailsResponse{}, err
+		return ServersClientGetDetailsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersGetDetailsResponse{}, err
+		return ServersClientGetDetailsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersGetDetailsResponse{}, client.getDetailsHandleError(resp)
+		return ServersClientGetDetailsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDetailsHandleResponse(resp)
 }
 
 // getDetailsCreateRequest creates the GetDetails request.
-func (client *ServersClient) getDetailsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersGetDetailsOptions) (*policy.Request, error) {
+func (client *ServersClient) getDetailsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientGetDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -343,7 +321,7 @@ func (client *ServersClient) getDetailsCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -355,52 +333,40 @@ func (client *ServersClient) getDetailsCreateRequest(ctx context.Context, resour
 }
 
 // getDetailsHandleResponse handles the GetDetails response.
-func (client *ServersClient) getDetailsHandleResponse(resp *http.Response) (ServersGetDetailsResponse, error) {
-	result := ServersGetDetailsResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisServicesServer); err != nil {
-		return ServersGetDetailsResponse{}, runtime.NewResponseError(err, resp)
+func (client *ServersClient) getDetailsHandleResponse(resp *http.Response) (ServersClientGetDetailsResponse, error) {
+	result := ServersClientGetDetailsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Server); err != nil {
+		return ServersClientGetDetailsResponse{}, err
 	}
 	return result, nil
 }
 
-// getDetailsHandleError handles the GetDetails error response.
-func (client *ServersClient) getDetailsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the Analysis Services servers for the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) List(ctx context.Context, options *ServersListOptions) (ServersListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ServersClientListOptions contains the optional parameters for the ServersClient.List method.
+func (client *ServersClient) List(ctx context.Context, options *ServersClientListOptions) (ServersClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return ServersListResponse{}, err
+		return ServersClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersListResponse{}, err
+		return ServersClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersListResponse{}, client.listHandleError(resp)
+		return ServersClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ServersClient) listCreateRequest(ctx context.Context, options *ServersListOptions) (*policy.Request, error) {
+func (client *ServersClient) listCreateRequest(ctx context.Context, options *ServersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -412,46 +378,37 @@ func (client *ServersClient) listCreateRequest(ctx context.Context, options *Ser
 }
 
 // listHandleResponse handles the List response.
-func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersListResponse, error) {
-	result := ServersListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisServicesServers); err != nil {
-		return ServersListResponse{}, runtime.NewResponseError(err, resp)
+func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersClientListResponse, error) {
+	result := ServersClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Servers); err != nil {
+		return ServersClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ServersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Gets all the Analysis Services servers for the given resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ServersListByResourceGroupOptions) (ServersListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// options - ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup
+// method.
+func (client *ServersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ServersClientListByResourceGroupOptions) (ServersClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return ServersListByResourceGroupResponse{}, err
+		return ServersClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersListByResourceGroupResponse{}, err
+		return ServersClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return ServersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ServersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ServersListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ServersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ServersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -461,7 +418,7 @@ func (client *ServersClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -473,46 +430,38 @@ func (client *ServersClient) listByResourceGroupCreateRequest(ctx context.Contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ServersClient) listByResourceGroupHandleResponse(resp *http.Response) (ServersListByResourceGroupResponse, error) {
-	result := ServersListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisServicesServers); err != nil {
-		return ServersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *ServersClient) listByResourceGroupHandleResponse(resp *http.Response) (ServersClientListByResourceGroupResponse, error) {
+	result := ServersClientListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Servers); err != nil {
+		return ServersClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ServersClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListGatewayStatus - Return the gateway status of the specified Analysis Services server instance.
-// If the operation fails it returns the *GatewayListStatusError error type.
-func (client *ServersClient) ListGatewayStatus(ctx context.Context, resourceGroupName string, serverName string, options *ServersListGatewayStatusOptions) (ServersListGatewayStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server.
+// options - ServersClientListGatewayStatusOptions contains the optional parameters for the ServersClient.ListGatewayStatus
+// method.
+func (client *ServersClient) ListGatewayStatus(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientListGatewayStatusOptions) (ServersClientListGatewayStatusResponse, error) {
 	req, err := client.listGatewayStatusCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServersListGatewayStatusResponse{}, err
+		return ServersClientListGatewayStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersListGatewayStatusResponse{}, err
+		return ServersClientListGatewayStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersListGatewayStatusResponse{}, client.listGatewayStatusHandleError(resp)
+		return ServersClientListGatewayStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listGatewayStatusHandleResponse(resp)
 }
 
 // listGatewayStatusCreateRequest creates the ListGatewayStatus request.
-func (client *ServersClient) listGatewayStatusCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersListGatewayStatusOptions) (*policy.Request, error) {
+func (client *ServersClient) listGatewayStatusCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientListGatewayStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/listGatewayStatus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -526,7 +475,7 @@ func (client *ServersClient) listGatewayStatusCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -538,46 +487,37 @@ func (client *ServersClient) listGatewayStatusCreateRequest(ctx context.Context,
 }
 
 // listGatewayStatusHandleResponse handles the ListGatewayStatus response.
-func (client *ServersClient) listGatewayStatusHandleResponse(resp *http.Response) (ServersListGatewayStatusResponse, error) {
-	result := ServersListGatewayStatusResponse{RawResponse: resp}
+func (client *ServersClient) listGatewayStatusHandleResponse(resp *http.Response) (ServersClientListGatewayStatusResponse, error) {
+	result := ServersClientListGatewayStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayListStatusLive); err != nil {
-		return ServersListGatewayStatusResponse{}, runtime.NewResponseError(err, resp)
+		return ServersClientListGatewayStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// listGatewayStatusHandleError handles the ListGatewayStatus error response.
-func (client *ServersClient) listGatewayStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := GatewayListStatusError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListOperationResults - List the result of the specified operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) ListOperationResults(ctx context.Context, location string, operationID string, options *ServersListOperationResultsOptions) (ServersListOperationResultsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The region name which the operation will lookup into.
+// operationID - The target operation Id.
+// options - ServersClientListOperationResultsOptions contains the optional parameters for the ServersClient.ListOperationResults
+// method.
+func (client *ServersClient) ListOperationResults(ctx context.Context, location string, operationID string, options *ServersClientListOperationResultsOptions) (ServersClientListOperationResultsResponse, error) {
 	req, err := client.listOperationResultsCreateRequest(ctx, location, operationID, options)
 	if err != nil {
-		return ServersListOperationResultsResponse{}, err
+		return ServersClientListOperationResultsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersListOperationResultsResponse{}, err
+		return ServersClientListOperationResultsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return ServersListOperationResultsResponse{}, client.listOperationResultsHandleError(resp)
+		return ServersClientListOperationResultsResponse{}, runtime.NewResponseError(resp)
 	}
-	return ServersListOperationResultsResponse{RawResponse: resp}, nil
+	return ServersClientListOperationResultsResponse{RawResponse: resp}, nil
 }
 
 // listOperationResultsCreateRequest creates the ListOperationResults request.
-func (client *ServersClient) listOperationResultsCreateRequest(ctx context.Context, location string, operationID string, options *ServersListOperationResultsOptions) (*policy.Request, error) {
+func (client *ServersClient) listOperationResultsCreateRequest(ctx context.Context, location string, operationID string, options *ServersClientListOperationResultsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/locations/{location}/operationresults/{operationId}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -591,7 +531,7 @@ func (client *ServersClient) listOperationResultsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -602,38 +542,29 @@ func (client *ServersClient) listOperationResultsCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// listOperationResultsHandleError handles the ListOperationResults error response.
-func (client *ServersClient) listOperationResultsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListOperationStatuses - List the status of operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) ListOperationStatuses(ctx context.Context, location string, operationID string, options *ServersListOperationStatusesOptions) (ServersListOperationStatusesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The region name which the operation will lookup into.
+// operationID - The target operation Id.
+// options - ServersClientListOperationStatusesOptions contains the optional parameters for the ServersClient.ListOperationStatuses
+// method.
+func (client *ServersClient) ListOperationStatuses(ctx context.Context, location string, operationID string, options *ServersClientListOperationStatusesOptions) (ServersClientListOperationStatusesResponse, error) {
 	req, err := client.listOperationStatusesCreateRequest(ctx, location, operationID, options)
 	if err != nil {
-		return ServersListOperationStatusesResponse{}, err
+		return ServersClientListOperationStatusesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersListOperationStatusesResponse{}, err
+		return ServersClientListOperationStatusesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return ServersListOperationStatusesResponse{}, client.listOperationStatusesHandleError(resp)
+		return ServersClientListOperationStatusesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listOperationStatusesHandleResponse(resp)
 }
 
 // listOperationStatusesCreateRequest creates the ListOperationStatuses request.
-func (client *ServersClient) listOperationStatusesCreateRequest(ctx context.Context, location string, operationID string, options *ServersListOperationStatusesOptions) (*policy.Request, error) {
+func (client *ServersClient) listOperationStatusesCreateRequest(ctx context.Context, location string, operationID string, options *ServersClientListOperationStatusesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/locations/{location}/operationstatuses/{operationId}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -647,7 +578,7 @@ func (client *ServersClient) listOperationStatusesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -659,46 +590,38 @@ func (client *ServersClient) listOperationStatusesCreateRequest(ctx context.Cont
 }
 
 // listOperationStatusesHandleResponse handles the ListOperationStatuses response.
-func (client *ServersClient) listOperationStatusesHandleResponse(resp *http.Response) (ServersListOperationStatusesResponse, error) {
-	result := ServersListOperationStatusesResponse{RawResponse: resp}
+func (client *ServersClient) listOperationStatusesHandleResponse(resp *http.Response) (ServersClientListOperationStatusesResponse, error) {
+	result := ServersClientListOperationStatusesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
-		return ServersListOperationStatusesResponse{}, runtime.NewResponseError(err, resp)
+		return ServersClientListOperationStatusesResponse{}, err
 	}
 	return result, nil
 }
 
-// listOperationStatusesHandleError handles the ListOperationStatuses error response.
-func (client *ServersClient) listOperationStatusesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSKUsForExisting - Lists eligible SKUs for an Analysis Services resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) ListSKUsForExisting(ctx context.Context, resourceGroupName string, serverName string, options *ServersListSKUsForExistingOptions) (ServersListSKUsForExistingResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server. It must be at least 3 characters in length, and no more than 63.
+// options - ServersClientListSKUsForExistingOptions contains the optional parameters for the ServersClient.ListSKUsForExisting
+// method.
+func (client *ServersClient) ListSKUsForExisting(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientListSKUsForExistingOptions) (ServersClientListSKUsForExistingResponse, error) {
 	req, err := client.listSKUsForExistingCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServersListSKUsForExistingResponse{}, err
+		return ServersClientListSKUsForExistingResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersListSKUsForExistingResponse{}, err
+		return ServersClientListSKUsForExistingResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersListSKUsForExistingResponse{}, client.listSKUsForExistingHandleError(resp)
+		return ServersClientListSKUsForExistingResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSKUsForExistingHandleResponse(resp)
 }
 
 // listSKUsForExistingCreateRequest creates the ListSKUsForExisting request.
-func (client *ServersClient) listSKUsForExistingCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersListSKUsForExistingOptions) (*policy.Request, error) {
+func (client *ServersClient) listSKUsForExistingCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientListSKUsForExistingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/skus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -712,7 +635,7 @@ func (client *ServersClient) listSKUsForExistingCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -724,52 +647,40 @@ func (client *ServersClient) listSKUsForExistingCreateRequest(ctx context.Contex
 }
 
 // listSKUsForExistingHandleResponse handles the ListSKUsForExisting response.
-func (client *ServersClient) listSKUsForExistingHandleResponse(resp *http.Response) (ServersListSKUsForExistingResponse, error) {
-	result := ServersListSKUsForExistingResponse{RawResponse: resp}
+func (client *ServersClient) listSKUsForExistingHandleResponse(resp *http.Response) (ServersClientListSKUsForExistingResponse, error) {
+	result := ServersClientListSKUsForExistingResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUEnumerationForExistingResourceResult); err != nil {
-		return ServersListSKUsForExistingResponse{}, runtime.NewResponseError(err, resp)
+		return ServersClientListSKUsForExistingResponse{}, err
 	}
 	return result, nil
 }
 
-// listSKUsForExistingHandleError handles the ListSKUsForExisting error response.
-func (client *ServersClient) listSKUsForExistingHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSKUsForNew - Lists eligible SKUs for Analysis Services resource provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) ListSKUsForNew(ctx context.Context, options *ServersListSKUsForNewOptions) (ServersListSKUsForNewResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ServersClientListSKUsForNewOptions contains the optional parameters for the ServersClient.ListSKUsForNew method.
+func (client *ServersClient) ListSKUsForNew(ctx context.Context, options *ServersClientListSKUsForNewOptions) (ServersClientListSKUsForNewResponse, error) {
 	req, err := client.listSKUsForNewCreateRequest(ctx, options)
 	if err != nil {
-		return ServersListSKUsForNewResponse{}, err
+		return ServersClientListSKUsForNewResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersListSKUsForNewResponse{}, err
+		return ServersClientListSKUsForNewResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersListSKUsForNewResponse{}, client.listSKUsForNewHandleError(resp)
+		return ServersClientListSKUsForNewResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSKUsForNewHandleResponse(resp)
 }
 
 // listSKUsForNewCreateRequest creates the ListSKUsForNew request.
-func (client *ServersClient) listSKUsForNewCreateRequest(ctx context.Context, options *ServersListSKUsForNewOptions) (*policy.Request, error) {
+func (client *ServersClient) listSKUsForNewCreateRequest(ctx context.Context, options *ServersClientListSKUsForNewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -781,50 +692,41 @@ func (client *ServersClient) listSKUsForNewCreateRequest(ctx context.Context, op
 }
 
 // listSKUsForNewHandleResponse handles the ListSKUsForNew response.
-func (client *ServersClient) listSKUsForNewHandleResponse(resp *http.Response) (ServersListSKUsForNewResponse, error) {
-	result := ServersListSKUsForNewResponse{RawResponse: resp}
+func (client *ServersClient) listSKUsForNewHandleResponse(resp *http.Response) (ServersClientListSKUsForNewResponse, error) {
+	result := ServersClientListSKUsForNewResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUEnumerationForNewResourceResult); err != nil {
-		return ServersListSKUsForNewResponse{}, runtime.NewResponseError(err, resp)
+		return ServersClientListSKUsForNewResponse{}, err
 	}
 	return result, nil
 }
 
-// listSKUsForNewHandleError handles the ListSKUsForNew error response.
-func (client *ServersClient) listSKUsForNewHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginResume - Resumes operation of the specified Analysis Services server instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) BeginResume(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginResumeOptions) (ServersResumePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server. It must be at least 3 characters in length, and no more than 63.
+// options - ServersClientBeginResumeOptions contains the optional parameters for the ServersClient.BeginResume method.
+func (client *ServersClient) BeginResume(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginResumeOptions) (ServersClientResumePollerResponse, error) {
 	resp, err := client.resume(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServersResumePollerResponse{}, err
+		return ServersClientResumePollerResponse{}, err
 	}
-	result := ServersResumePollerResponse{
+	result := ServersClientResumePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServersClient.Resume", "", resp, client.pl, client.resumeHandleError)
+	pt, err := armruntime.NewPoller("ServersClient.Resume", "", resp, client.pl)
 	if err != nil {
-		return ServersResumePollerResponse{}, err
+		return ServersClientResumePollerResponse{}, err
 	}
-	result.Poller = &ServersResumePoller{
+	result.Poller = &ServersClientResumePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Resume - Resumes operation of the specified Analysis Services server instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) resume(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginResumeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServersClient) resume(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
 		return nil, err
@@ -834,13 +736,13 @@ func (client *ServersClient) resume(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.resumeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *ServersClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginResumeOptions) (*policy.Request, error) {
+func (client *ServersClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/resume"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -854,7 +756,7 @@ func (client *ServersClient) resumeCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -865,42 +767,33 @@ func (client *ServersClient) resumeCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// resumeHandleError handles the Resume error response.
-func (client *ServersClient) resumeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginSuspend - Suspends operation of the specified Analysis Services server instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) BeginSuspend(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginSuspendOptions) (ServersSuspendPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server. It must be at least 3 characters in length, and no more than 63.
+// options - ServersClientBeginSuspendOptions contains the optional parameters for the ServersClient.BeginSuspend method.
+func (client *ServersClient) BeginSuspend(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginSuspendOptions) (ServersClientSuspendPollerResponse, error) {
 	resp, err := client.suspend(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServersSuspendPollerResponse{}, err
+		return ServersClientSuspendPollerResponse{}, err
 	}
-	result := ServersSuspendPollerResponse{
+	result := ServersClientSuspendPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServersClient.Suspend", "", resp, client.pl, client.suspendHandleError)
+	pt, err := armruntime.NewPoller("ServersClient.Suspend", "", resp, client.pl)
 	if err != nil {
-		return ServersSuspendPollerResponse{}, err
+		return ServersClientSuspendPollerResponse{}, err
 	}
-	result.Poller = &ServersSuspendPoller{
+	result.Poller = &ServersClientSuspendPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Suspend - Suspends operation of the specified Analysis Services server instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) suspend(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginSuspendOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServersClient) suspend(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginSuspendOptions) (*http.Response, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
 		return nil, err
@@ -910,13 +803,13 @@ func (client *ServersClient) suspend(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.suspendHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // suspendCreateRequest creates the Suspend request.
-func (client *ServersClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersBeginSuspendOptions) (*policy.Request, error) {
+func (client *ServersClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/suspend"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -930,7 +823,7 @@ func (client *ServersClient) suspendCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -941,42 +834,34 @@ func (client *ServersClient) suspendCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// suspendHandleError handles the Suspend error response.
-func (client *ServersClient) suspendHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates the current state of the specified Analysis Services server.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, serverUpdateParameters AnalysisServicesServerUpdateParameters, options *ServersBeginUpdateOptions) (ServersUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given Analysis Services server is part. This name must
+// be at least 1 character in length, and no more than 90.
+// serverName - The name of the Analysis Services server. It must be at least 3 characters in length, and no more than 63.
+// serverUpdateParameters - Request object that contains the updated information for the server.
+// options - ServersClientBeginUpdateOptions contains the optional parameters for the ServersClient.BeginUpdate method.
+func (client *ServersClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, serverUpdateParameters ServerUpdateParameters, options *ServersClientBeginUpdateOptions) (ServersClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, serverName, serverUpdateParameters, options)
 	if err != nil {
-		return ServersUpdatePollerResponse{}, err
+		return ServersClientUpdatePollerResponse{}, err
 	}
-	result := ServersUpdatePollerResponse{
+	result := ServersClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServersClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ServersClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ServersUpdatePollerResponse{}, err
+		return ServersClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServersUpdatePoller{
+	result.Poller = &ServersClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates the current state of the specified Analysis Services server.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ServersClient) update(ctx context.Context, resourceGroupName string, serverName string, serverUpdateParameters AnalysisServicesServerUpdateParameters, options *ServersBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServersClient) update(ctx context.Context, resourceGroupName string, serverName string, serverUpdateParameters ServerUpdateParameters, options *ServersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, serverUpdateParameters, options)
 	if err != nil {
 		return nil, err
@@ -986,13 +871,13 @@ func (client *ServersClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, serverUpdateParameters AnalysisServicesServerUpdateParameters, options *ServersBeginUpdateOptions) (*policy.Request, error) {
+func (client *ServersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, serverUpdateParameters ServerUpdateParameters, options *ServersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1006,7 +891,7 @@ func (client *ServersClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1015,17 +900,4 @@ func (client *ServersClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, serverUpdateParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ServersClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,7 @@ The `armcosmos` module provides operations for working with Azure Cosmos DB.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,15 @@ options = arm.ClientOptions{
 }
 client := armcosmos.NewDatabaseClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Cassandra](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/cassandra)
+- [Cosmos DB](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/cosmosdb)
+- [Gremlin](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/gremlin)
+- [Mongo DB](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/mongodb)
+- [Sql](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/sql)
+- [Table](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/table)
 
 ## Provide Feedback
 

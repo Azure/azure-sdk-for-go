@@ -36,6 +36,41 @@ type CheckNameResult struct {
 	Reason *Reason `json:"reason,omitempty"`
 }
 
+// ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
+type ClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+type ClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
+type ClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
+type ClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+type ClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListOptions contains the optional parameters for the Client.List method.
+type ClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConnectionProperties - The properties of a private endpoint connection.
 type ConnectionProperties struct {
 	// The list of group ids for the private endpoint connection.
@@ -50,23 +85,27 @@ type ConnectionProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ConnectionProperties.
 func (c ConnectionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (c ConnectionProperties) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "groupIds", c.GroupIDs)
 	populate(objectMap, "privateEndpoint", c.PrivateEndpoint)
 	populate(objectMap, "privateLinkServiceConnectionState", c.PrivateLinkServiceConnectionState)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
+	return json.Marshal(objectMap)
 }
 
 type ConnectionPropertiesPrivateEndpoint struct {
-	PrivateEndpoint
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
 type ConnectionPropertiesPrivateLinkServiceConnectionState struct {
-	ConnectionState
+	// REQUIRED; The description for the current state of a private endpoint connection.
+	Description *string `json:"description,omitempty"`
+
+	// REQUIRED; The status of a private endpoint connection.
+	Status *PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
+
+	// Actions required for a private endpoint connection.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
 // ConnectionState - The current state of a private endpoint connection.
@@ -81,95 +120,107 @@ type ConnectionState struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
-// DigitalTwinsBeginCreateOrUpdateOptions contains the optional parameters for the DigitalTwins.BeginCreateOrUpdate method.
-type DigitalTwinsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
+// Description - The description of the DigitalTwins service.
+type Description struct {
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
 
-// DigitalTwinsBeginDeleteOptions contains the optional parameters for the DigitalTwins.BeginDelete method.
-type DigitalTwinsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
+	// The managed identity for the DigitalTwinsInstance.
+	Identity *Identity `json:"identity,omitempty"`
 
-// DigitalTwinsBeginUpdateOptions contains the optional parameters for the DigitalTwins.BeginUpdate method.
-type DigitalTwinsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DigitalTwinsCheckNameAvailabilityOptions contains the optional parameters for the DigitalTwins.CheckNameAvailability method.
-type DigitalTwinsCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DigitalTwinsDescription - The description of the DigitalTwins service.
-type DigitalTwinsDescription struct {
-	DigitalTwinsResource
 	// DigitalTwins instance properties.
-	Properties *DigitalTwinsProperties `json:"properties,omitempty"`
+	Properties *Properties `json:"properties,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DigitalTwinsDescription.
-func (d DigitalTwinsDescription) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type Description.
+func (d Description) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.DigitalTwinsResource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "identity", d.Identity)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
-// DigitalTwinsDescriptionListResult - A list of DigitalTwins description objects with a next link.
-type DigitalTwinsDescriptionListResult struct {
+// DescriptionListResult - A list of DigitalTwins description objects with a next link.
+type DescriptionListResult struct {
 	// The link used to get the next page of DigitalTwins description objects.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// A list of DigitalTwins description objects.
-	Value []*DigitalTwinsDescription `json:"value,omitempty"`
+	Value []*Description `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DigitalTwinsDescriptionListResult.
-func (d DigitalTwinsDescriptionListResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DescriptionListResult.
+func (d DescriptionListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "nextLink", d.NextLink)
 	populate(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
 }
 
-// DigitalTwinsEndpointBeginCreateOrUpdateOptions contains the optional parameters for the DigitalTwinsEndpoint.BeginCreateOrUpdate method.
-type DigitalTwinsEndpointBeginCreateOrUpdateOptions struct {
+// EndpointClientBeginCreateOrUpdateOptions contains the optional parameters for the EndpointClient.BeginCreateOrUpdate method.
+type EndpointClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DigitalTwinsEndpointBeginDeleteOptions contains the optional parameters for the DigitalTwinsEndpoint.BeginDelete method.
-type DigitalTwinsEndpointBeginDeleteOptions struct {
+// EndpointClientBeginDeleteOptions contains the optional parameters for the EndpointClient.BeginDelete method.
+type EndpointClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DigitalTwinsEndpointGetOptions contains the optional parameters for the DigitalTwinsEndpoint.Get method.
-type DigitalTwinsEndpointGetOptions struct {
+// EndpointClientGetOptions contains the optional parameters for the EndpointClient.Get method.
+type EndpointClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DigitalTwinsEndpointListOptions contains the optional parameters for the DigitalTwinsEndpoint.List method.
-type DigitalTwinsEndpointListOptions struct {
+// EndpointClientListOptions contains the optional parameters for the EndpointClient.List method.
+type EndpointClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DigitalTwinsEndpointResource - DigitalTwinsInstance endpoint resource.
-type DigitalTwinsEndpointResource struct {
-	ExternalResource
+// EndpointResource - DigitalTwinsInstance endpoint resource.
+type EndpointResource struct {
 	// REQUIRED; DigitalTwinsInstance endpoint resource properties.
-	Properties DigitalTwinsEndpointResourcePropertiesClassification `json:"properties,omitempty"`
+	Properties EndpointResourcePropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Extension resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DigitalTwinsEndpointResource.
-func (d DigitalTwinsEndpointResource) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type EndpointResource.
+func (e EndpointResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ExternalResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "id", e.ID)
+	populate(objectMap, "name", e.Name)
+	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DigitalTwinsEndpointResource.
-func (d *DigitalTwinsEndpointResource) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EndpointResource.
+func (e *EndpointResource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -177,48 +228,54 @@ func (d *DigitalTwinsEndpointResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &e.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &e.Name)
+			delete(rawMsg, key)
 		case "properties":
-			d.Properties, err = unmarshalDigitalTwinsEndpointResourcePropertiesClassification(val)
+			e.Properties, err = unmarshalEndpointResourcePropertiesClassification(val)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &e.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := d.ExternalResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// DigitalTwinsEndpointResourceListResult - A list of DigitalTwinsInstance Endpoints with a next link.
-type DigitalTwinsEndpointResourceListResult struct {
+// EndpointResourceListResult - A list of DigitalTwinsInstance Endpoints with a next link.
+type EndpointResourceListResult struct {
 	// The link used to get the next page of DigitalTwinsInstance Endpoints.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// A list of DigitalTwinsInstance Endpoints.
-	Value []*DigitalTwinsEndpointResource `json:"value,omitempty"`
+	Value []*EndpointResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DigitalTwinsEndpointResourceListResult.
-func (d DigitalTwinsEndpointResourceListResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type EndpointResourceListResult.
+func (e EndpointResourceListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
+	populate(objectMap, "nextLink", e.NextLink)
+	populate(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
 }
 
-// DigitalTwinsEndpointResourcePropertiesClassification provides polymorphic access to related types.
-// Call the interface's GetDigitalTwinsEndpointResourceProperties() method to access the common type.
+// EndpointResourcePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEndpointResourceProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *DigitalTwinsEndpointResourceProperties, *EventGrid, *EventHub, *ServiceBus
-type DigitalTwinsEndpointResourcePropertiesClassification interface {
-	// GetDigitalTwinsEndpointResourceProperties returns the DigitalTwinsEndpointResourceProperties content of the underlying type.
-	GetDigitalTwinsEndpointResourceProperties() *DigitalTwinsEndpointResourceProperties
+// - *EndpointResourceProperties, *EventGrid, *EventHub, *ServiceBus
+type EndpointResourcePropertiesClassification interface {
+	// GetEndpointResourceProperties returns the EndpointResourceProperties content of the underlying type.
+	GetEndpointResourceProperties() *EndpointResourceProperties
 }
 
-// DigitalTwinsEndpointResourceProperties - Properties related to Digital Twins Endpoint
-type DigitalTwinsEndpointResourceProperties struct {
+// EndpointResourceProperties - Properties related to Digital Twins Endpoint
+type EndpointResourceProperties struct {
 	// REQUIRED; The type of Digital Twins endpoint
 	EndpointType *EndpointType `json:"endpointType,omitempty"`
 
@@ -238,51 +295,49 @@ type DigitalTwinsEndpointResourceProperties struct {
 	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// GetDigitalTwinsEndpointResourceProperties implements the DigitalTwinsEndpointResourcePropertiesClassification interface for type DigitalTwinsEndpointResourceProperties.
-func (d *DigitalTwinsEndpointResourceProperties) GetDigitalTwinsEndpointResourceProperties() *DigitalTwinsEndpointResourceProperties {
-	return d
+// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type EndpointResourceProperties.
+func (e *EndpointResourceProperties) GetEndpointResourceProperties() *EndpointResourceProperties {
+	return e
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DigitalTwinsEndpointResourceProperties.
-func (d *DigitalTwinsEndpointResourceProperties) UnmarshalJSON(data []byte) error {
+// MarshalJSON implements the json.Marshaller interface for type EndpointResourceProperties.
+func (e EndpointResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "authenticationType", e.AuthenticationType)
+	populateTimeRFC3339(objectMap, "createdTime", e.CreatedTime)
+	populate(objectMap, "deadLetterSecret", e.DeadLetterSecret)
+	populate(objectMap, "deadLetterUri", e.DeadLetterURI)
+	objectMap["endpointType"] = e.EndpointType
+	populate(objectMap, "provisioningState", e.ProvisioningState)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EndpointResourceProperties.
+func (e *EndpointResourceProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DigitalTwinsEndpointResourceProperties) marshalInternal(objectMap map[string]interface{}, discValue EndpointType) {
-	populate(objectMap, "authenticationType", d.AuthenticationType)
-	populateTimeRFC3339(objectMap, "createdTime", d.CreatedTime)
-	populate(objectMap, "deadLetterSecret", d.DeadLetterSecret)
-	populate(objectMap, "deadLetterUri", d.DeadLetterURI)
-	d.EndpointType = &discValue
-	objectMap["endpointType"] = d.EndpointType
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-}
-
-func (d *DigitalTwinsEndpointResourceProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "authenticationType":
-			err = unpopulate(val, &d.AuthenticationType)
+			err = unpopulate(val, &e.AuthenticationType)
 			delete(rawMsg, key)
 		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &d.CreatedTime)
+			err = unpopulateTimeRFC3339(val, &e.CreatedTime)
 			delete(rawMsg, key)
 		case "deadLetterSecret":
-			err = unpopulate(val, &d.DeadLetterSecret)
+			err = unpopulate(val, &e.DeadLetterSecret)
 			delete(rawMsg, key)
 		case "deadLetterUri":
-			err = unpopulate(val, &d.DeadLetterURI)
+			err = unpopulate(val, &e.DeadLetterURI)
 			delete(rawMsg, key)
 		case "endpointType":
-			err = unpopulate(val, &d.EndpointType)
+			err = unpopulate(val, &e.EndpointType)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
+			err = unpopulate(val, &e.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -290,167 +345,6 @@ func (d *DigitalTwinsEndpointResourceProperties) unmarshalInternal(rawMsg map[st
 		}
 	}
 	return nil
-}
-
-// DigitalTwinsGetOptions contains the optional parameters for the DigitalTwins.Get method.
-type DigitalTwinsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DigitalTwinsIdentity - The managed identity for the DigitalTwinsInstance.
-type DigitalTwinsIdentity struct {
-	// The type of Managed Identity used by the DigitalTwinsInstance. Only SystemAssigned is supported.
-	Type *DigitalTwinsIdentityType `json:"type,omitempty"`
-
-	// READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id header in the PUT
-	// request if the resource has a systemAssigned(implicit)
-	// identity
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id header in the PUT request
-	// if the resource has a systemAssigned(implicit) identity
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// DigitalTwinsListByResourceGroupOptions contains the optional parameters for the DigitalTwins.ListByResourceGroup method.
-type DigitalTwinsListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DigitalTwinsListOptions contains the optional parameters for the DigitalTwins.List method.
-type DigitalTwinsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DigitalTwinsPatchDescription - The description of the DigitalTwins service.
-type DigitalTwinsPatchDescription struct {
-	// The managed identity for the DigitalTwinsInstance.
-	Identity *DigitalTwinsIdentity `json:"identity,omitempty"`
-
-	// Properties for the DigitalTwinsInstance.
-	Properties *DigitalTwinsPatchProperties `json:"properties,omitempty"`
-
-	// Instance patch properties
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DigitalTwinsPatchDescription.
-func (d DigitalTwinsPatchDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", d.Identity)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
-}
-
-// DigitalTwinsPatchProperties - The properties of a DigitalTwinsInstance.
-type DigitalTwinsPatchProperties struct {
-	// Public network access for the DigitalTwinsInstance.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-}
-
-// DigitalTwinsProperties - The properties of a DigitalTwinsInstance.
-type DigitalTwinsProperties struct {
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
-
-	// Public network access for the DigitalTwinsInstance.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// READ-ONLY; Time when DigitalTwinsInstance was created.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Api endpoint to work with DigitalTwinsInstance.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Time when DigitalTwinsInstance was updated.
-	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DigitalTwinsProperties.
-func (d DigitalTwinsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdTime", d.CreatedTime)
-	populate(objectMap, "hostName", d.HostName)
-	populateTimeRFC3339(objectMap, "lastUpdatedTime", d.LastUpdatedTime)
-	populate(objectMap, "privateEndpointConnections", d.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DigitalTwinsProperties.
-func (d *DigitalTwinsProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &d.CreatedTime)
-			delete(rawMsg, key)
-		case "hostName":
-			err = unpopulate(val, &d.HostName)
-			delete(rawMsg, key)
-		case "lastUpdatedTime":
-			err = unpopulateTimeRFC3339(val, &d.LastUpdatedTime)
-			delete(rawMsg, key)
-		case "privateEndpointConnections":
-			err = unpopulate(val, &d.PrivateEndpointConnections)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &d.PublicNetworkAccess)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// DigitalTwinsResource - The common properties of a DigitalTwinsInstance.
-type DigitalTwinsResource struct {
-	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
-
-	// The managed identity for the DigitalTwinsInstance.
-	Identity *DigitalTwinsIdentity `json:"identity,omitempty"`
-
-	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DigitalTwinsResource.
-func (d DigitalTwinsResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (d DigitalTwinsResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "identity", d.Identity)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
 }
 
 // ErrorDefinition - Error definition.
@@ -475,38 +369,64 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// Error description
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // EventGrid - Properties related to EventGrid.
 type EventGrid struct {
-	DigitalTwinsEndpointResourceProperties
 	// REQUIRED; EventGrid secondary accesskey. Will be obfuscated during read.
 	AccessKey1 *string `json:"accessKey1,omitempty"`
+
+	// REQUIRED; The type of Digital Twins endpoint
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
 
 	// REQUIRED; EventGrid Topic Endpoint
 	TopicEndpoint *string `json:"TopicEndpoint,omitempty"`
 
 	// EventGrid secondary accesskey. Will be obfuscated during read.
 	AccessKey2 *string `json:"accessKey2,omitempty"`
+
+	// Specifies the authentication type being used for connecting to the endpoint.
+	AuthenticationType *AuthenticationType `json:"authenticationType,omitempty"`
+
+	// Dead letter storage secret for key-based authentication. Will be obfuscated during read.
+	DeadLetterSecret *string `json:"deadLetterSecret,omitempty"`
+
+	// Dead letter storage URL for identity-based authentication.
+	DeadLetterURI *string `json:"deadLetterUri,omitempty"`
+
+	// READ-ONLY; Time when the Endpoint was added to DigitalTwinsInstance.
+	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type EventGrid.
+func (e *EventGrid) GetEndpointResourceProperties() *EndpointResourceProperties {
+	return &EndpointResourceProperties{
+		EndpointType:       e.EndpointType,
+		ProvisioningState:  e.ProvisioningState,
+		CreatedTime:        e.CreatedTime,
+		AuthenticationType: e.AuthenticationType,
+		DeadLetterSecret:   e.DeadLetterSecret,
+		DeadLetterURI:      e.DeadLetterURI,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EventGrid.
 func (e EventGrid) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.DigitalTwinsEndpointResourceProperties.marshalInternal(objectMap, EndpointTypeEventGrid)
 	populate(objectMap, "accessKey1", e.AccessKey1)
 	populate(objectMap, "accessKey2", e.AccessKey2)
+	populate(objectMap, "authenticationType", e.AuthenticationType)
+	populateTimeRFC3339(objectMap, "createdTime", e.CreatedTime)
+	populate(objectMap, "deadLetterSecret", e.DeadLetterSecret)
+	populate(objectMap, "deadLetterUri", e.DeadLetterURI)
+	objectMap["endpointType"] = EndpointTypeEventGrid
+	populate(objectMap, "provisioningState", e.ProvisioningState)
 	populate(objectMap, "TopicEndpoint", e.TopicEndpoint)
 	return json.Marshal(objectMap)
 }
@@ -526,6 +446,24 @@ func (e *EventGrid) UnmarshalJSON(data []byte) error {
 		case "accessKey2":
 			err = unpopulate(val, &e.AccessKey2)
 			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, &e.AuthenticationType)
+			delete(rawMsg, key)
+		case "createdTime":
+			err = unpopulateTimeRFC3339(val, &e.CreatedTime)
+			delete(rawMsg, key)
+		case "deadLetterSecret":
+			err = unpopulate(val, &e.DeadLetterSecret)
+			delete(rawMsg, key)
+		case "deadLetterUri":
+			err = unpopulate(val, &e.DeadLetterURI)
+			delete(rawMsg, key)
+		case "endpointType":
+			err = unpopulate(val, &e.EndpointType)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &e.ProvisioningState)
+			delete(rawMsg, key)
 		case "TopicEndpoint":
 			err = unpopulate(val, &e.TopicEndpoint)
 			delete(rawMsg, key)
@@ -534,36 +472,67 @@ func (e *EventGrid) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := e.DigitalTwinsEndpointResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // EventHub - Properties related to EventHub.
 type EventHub struct {
-	DigitalTwinsEndpointResourceProperties
+	// REQUIRED; The type of Digital Twins endpoint
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
+	// Specifies the authentication type being used for connecting to the endpoint.
+	AuthenticationType *AuthenticationType `json:"authenticationType,omitempty"`
+
 	// PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
 	ConnectionStringPrimaryKey *string `json:"connectionStringPrimaryKey,omitempty"`
 
 	// SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
 	ConnectionStringSecondaryKey *string `json:"connectionStringSecondaryKey,omitempty"`
 
+	// Dead letter storage secret for key-based authentication. Will be obfuscated during read.
+	DeadLetterSecret *string `json:"deadLetterSecret,omitempty"`
+
+	// Dead letter storage URL for identity-based authentication.
+	DeadLetterURI *string `json:"deadLetterUri,omitempty"`
+
 	// The URL of the EventHub namespace for identity-based authentication. It must include the protocol sb://
 	EndpointURI *string `json:"endpointUri,omitempty"`
 
 	// The EventHub name in the EventHub namespace for identity-based authentication.
 	EntityPath *string `json:"entityPath,omitempty"`
+
+	// READ-ONLY; Time when the Endpoint was added to DigitalTwinsInstance.
+	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type EventHub.
+func (e *EventHub) GetEndpointResourceProperties() *EndpointResourceProperties {
+	return &EndpointResourceProperties{
+		EndpointType:       e.EndpointType,
+		ProvisioningState:  e.ProvisioningState,
+		CreatedTime:        e.CreatedTime,
+		AuthenticationType: e.AuthenticationType,
+		DeadLetterSecret:   e.DeadLetterSecret,
+		DeadLetterURI:      e.DeadLetterURI,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EventHub.
 func (e EventHub) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.DigitalTwinsEndpointResourceProperties.marshalInternal(objectMap, EndpointTypeEventHub)
+	populate(objectMap, "authenticationType", e.AuthenticationType)
 	populate(objectMap, "connectionStringPrimaryKey", e.ConnectionStringPrimaryKey)
 	populate(objectMap, "connectionStringSecondaryKey", e.ConnectionStringSecondaryKey)
+	populateTimeRFC3339(objectMap, "createdTime", e.CreatedTime)
+	populate(objectMap, "deadLetterSecret", e.DeadLetterSecret)
+	populate(objectMap, "deadLetterUri", e.DeadLetterURI)
+	objectMap["endpointType"] = EndpointTypeEventHub
 	populate(objectMap, "endpointUri", e.EndpointURI)
 	populate(objectMap, "entityPath", e.EntityPath)
+	populate(objectMap, "provisioningState", e.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -576,11 +545,26 @@ func (e *EventHub) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "authenticationType":
+			err = unpopulate(val, &e.AuthenticationType)
+			delete(rawMsg, key)
 		case "connectionStringPrimaryKey":
 			err = unpopulate(val, &e.ConnectionStringPrimaryKey)
 			delete(rawMsg, key)
 		case "connectionStringSecondaryKey":
 			err = unpopulate(val, &e.ConnectionStringSecondaryKey)
+			delete(rawMsg, key)
+		case "createdTime":
+			err = unpopulateTimeRFC3339(val, &e.CreatedTime)
+			delete(rawMsg, key)
+		case "deadLetterSecret":
+			err = unpopulate(val, &e.DeadLetterSecret)
+			delete(rawMsg, key)
+		case "deadLetterUri":
+			err = unpopulate(val, &e.DeadLetterURI)
+			delete(rawMsg, key)
+		case "endpointType":
+			err = unpopulate(val, &e.EndpointType)
 			delete(rawMsg, key)
 		case "endpointUri":
 			err = unpopulate(val, &e.EndpointURI)
@@ -588,13 +572,13 @@ func (e *EventHub) UnmarshalJSON(data []byte) error {
 		case "entityPath":
 			err = unpopulate(val, &e.EntityPath)
 			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &e.ProvisioningState)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := e.DigitalTwinsEndpointResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -609,49 +593,6 @@ type ExternalResource struct {
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExternalResource.
-func (e ExternalResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExternalResource.
-func (e *ExternalResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return e.unmarshalInternal(rawMsg)
-}
-
-func (e ExternalResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", e.ID)
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "type", e.Type)
-}
-
-func (e *ExternalResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &e.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &e.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // GroupIDInformation - The group information for creating a private endpoint on Digital Twin.
@@ -670,7 +611,23 @@ type GroupIDInformation struct {
 }
 
 type GroupIDInformationProperties struct {
-	GroupIDInformationPropertiesAutoGenerated
+	// The group id
+	GroupID *string `json:"groupId,omitempty"`
+
+	// The required members for a specific group id.
+	RequiredMembers []*string `json:"requiredMembers,omitempty"`
+
+	// The required DNS zones for a specific group id.
+	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GroupIDInformationProperties.
+func (g GroupIDInformationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "groupId", g.GroupID)
+	populate(objectMap, "requiredMembers", g.RequiredMembers)
+	populate(objectMap, "requiredZoneNames", g.RequiredZoneNames)
+	return json.Marshal(objectMap)
 }
 
 // GroupIDInformationPropertiesAutoGenerated - The properties for a group information object.
@@ -688,14 +645,10 @@ type GroupIDInformationPropertiesAutoGenerated struct {
 // MarshalJSON implements the json.Marshaller interface for type GroupIDInformationPropertiesAutoGenerated.
 func (g GroupIDInformationPropertiesAutoGenerated) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (g GroupIDInformationPropertiesAutoGenerated) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "groupId", g.GroupID)
 	populate(objectMap, "requiredMembers", g.RequiredMembers)
 	populate(objectMap, "requiredZoneNames", g.RequiredZoneNames)
+	return json.Marshal(objectMap)
 }
 
 // GroupIDInformationResponse - The available private link resources for a Digital Twin.
@@ -709,6 +662,21 @@ func (g GroupIDInformationResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", g.Value)
 	return json.Marshal(objectMap)
+}
+
+// Identity - The managed identity for the DigitalTwinsInstance.
+type Identity struct {
+	// The type of Managed Identity used by the DigitalTwinsInstance. Only SystemAssigned is supported.
+	Type *DigitalTwinsIdentityType `json:"type,omitempty"`
+
+	// READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id
+	// header in the PUT request if the resource has a systemAssigned(implicit)
+	// identity
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id
+	// header in the PUT request if the resource has a systemAssigned(implicit) identity
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // Operation - DigitalTwins service REST API operation
@@ -741,7 +709,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of DigitalTwins service operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - A list of DigitalTwins service operations. It contains a list of operations and a URL link to get
+// the next set of results.
 type OperationListResult struct {
 	// The link used to get the next page of DigitalTwins description objects.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -758,9 +727,36 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PatchDescription - The description of the DigitalTwins service.
+type PatchDescription struct {
+	// The managed identity for the DigitalTwinsInstance.
+	Identity *Identity `json:"identity,omitempty"`
+
+	// Properties for the DigitalTwinsInstance.
+	Properties *PatchProperties `json:"properties,omitempty"`
+
+	// Instance patch properties
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PatchDescription.
+func (p PatchDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", p.Identity)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	return json.Marshal(objectMap)
+}
+
+// PatchProperties - The properties of a DigitalTwinsInstance.
+type PatchProperties struct {
+	// Public network access for the DigitalTwinsInstance.
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
 // PrivateEndpoint - The private endpoint property of a private endpoint connection.
@@ -785,26 +781,46 @@ type PrivateEndpointConnection struct {
 }
 
 type PrivateEndpointConnectionProperties struct {
-	ConnectionProperties
+	// The list of group ids for the private endpoint connection.
+	GroupIDs                          []*string                                              `json:"groupIds,omitempty"`
+	PrivateEndpoint                   *ConnectionPropertiesPrivateEndpoint                   `json:"privateEndpoint,omitempty"`
+	PrivateLinkServiceConnectionState *ConnectionPropertiesPrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *ConnectionPropertiesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsBeginCreateOrUpdateOptions struct {
+// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProperties.
+func (p PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "groupIds", p.GroupIDs)
+	populate(objectMap, "privateEndpoint", p.PrivateEndpoint)
+	populate(objectMap, "privateLinkServiceConnectionState", p.PrivateLinkServiceConnectionState)
+	populate(objectMap, "provisioningState", p.ProvisioningState)
+	return json.Marshal(objectMap)
+}
+
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -821,19 +837,130 @@ func (p PrivateEndpointConnectionsResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListOptions contains the optional parameters for the PrivateLinkResources.List method.
-type PrivateLinkResourcesListOptions struct {
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Properties - The properties of a DigitalTwinsInstance.
+type Properties struct {
+	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+
+	// Public network access for the DigitalTwinsInstance.
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
+	// READ-ONLY; Time when DigitalTwinsInstance was created.
+	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Api endpoint to work with DigitalTwinsInstance.
+	HostName *string `json:"hostName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Time when DigitalTwinsInstance was updated.
+	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "createdTime", p.CreatedTime)
+	populate(objectMap, "hostName", p.HostName)
+	populateTimeRFC3339(objectMap, "lastUpdatedTime", p.LastUpdatedTime)
+	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
+	populate(objectMap, "provisioningState", p.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Properties.
+func (p *Properties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdTime":
+			err = unpopulateTimeRFC3339(val, &p.CreatedTime)
+			delete(rawMsg, key)
+		case "hostName":
+			err = unpopulate(val, &p.HostName)
+			delete(rawMsg, key)
+		case "lastUpdatedTime":
+			err = unpopulateTimeRFC3339(val, &p.LastUpdatedTime)
+			delete(rawMsg, key)
+		case "privateEndpointConnections":
+			err = unpopulate(val, &p.PrivateEndpointConnections)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &p.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicNetworkAccess":
+			err = unpopulate(val, &p.PublicNetworkAccess)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// Resource - The common properties of a DigitalTwinsInstance.
+type Resource struct {
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The managed identity for the DigitalTwinsInstance.
+	Identity *Identity `json:"identity,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "identity", r.Identity)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // ServiceBus - Properties related to ServiceBus.
 type ServiceBus struct {
-	DigitalTwinsEndpointResourceProperties
+	// REQUIRED; The type of Digital Twins endpoint
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
+	// Specifies the authentication type being used for connecting to the endpoint.
+	AuthenticationType *AuthenticationType `json:"authenticationType,omitempty"`
+
+	// Dead letter storage secret for key-based authentication. Will be obfuscated during read.
+	DeadLetterSecret *string `json:"deadLetterSecret,omitempty"`
+
+	// Dead letter storage URL for identity-based authentication.
+	DeadLetterURI *string `json:"deadLetterUri,omitempty"`
+
 	// The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol sb://
 	EndpointURI *string `json:"endpointUri,omitempty"`
 
@@ -845,15 +972,38 @@ type ServiceBus struct {
 
 	// SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
 	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
+
+	// READ-ONLY; Time when the Endpoint was added to DigitalTwinsInstance.
+	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetEndpointResourceProperties implements the EndpointResourcePropertiesClassification interface for type ServiceBus.
+func (s *ServiceBus) GetEndpointResourceProperties() *EndpointResourceProperties {
+	return &EndpointResourceProperties{
+		EndpointType:       s.EndpointType,
+		ProvisioningState:  s.ProvisioningState,
+		CreatedTime:        s.CreatedTime,
+		AuthenticationType: s.AuthenticationType,
+		DeadLetterSecret:   s.DeadLetterSecret,
+		DeadLetterURI:      s.DeadLetterURI,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceBus.
 func (s ServiceBus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.DigitalTwinsEndpointResourceProperties.marshalInternal(objectMap, EndpointTypeServiceBus)
+	populate(objectMap, "authenticationType", s.AuthenticationType)
+	populateTimeRFC3339(objectMap, "createdTime", s.CreatedTime)
+	populate(objectMap, "deadLetterSecret", s.DeadLetterSecret)
+	populate(objectMap, "deadLetterUri", s.DeadLetterURI)
+	objectMap["endpointType"] = EndpointTypeServiceBus
 	populate(objectMap, "endpointUri", s.EndpointURI)
 	populate(objectMap, "entityPath", s.EntityPath)
 	populate(objectMap, "primaryConnectionString", s.PrimaryConnectionString)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "secondaryConnectionString", s.SecondaryConnectionString)
 	return json.Marshal(objectMap)
 }
@@ -867,6 +1017,21 @@ func (s *ServiceBus) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "authenticationType":
+			err = unpopulate(val, &s.AuthenticationType)
+			delete(rawMsg, key)
+		case "createdTime":
+			err = unpopulateTimeRFC3339(val, &s.CreatedTime)
+			delete(rawMsg, key)
+		case "deadLetterSecret":
+			err = unpopulate(val, &s.DeadLetterSecret)
+			delete(rawMsg, key)
+		case "deadLetterUri":
+			err = unpopulate(val, &s.DeadLetterURI)
+			delete(rawMsg, key)
+		case "endpointType":
+			err = unpopulate(val, &s.EndpointType)
+			delete(rawMsg, key)
 		case "endpointUri":
 			err = unpopulate(val, &s.EndpointURI)
 			delete(rawMsg, key)
@@ -876,6 +1041,9 @@ func (s *ServiceBus) UnmarshalJSON(data []byte) error {
 		case "primaryConnectionString":
 			err = unpopulate(val, &s.PrimaryConnectionString)
 			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &s.ProvisioningState)
+			delete(rawMsg, key)
 		case "secondaryConnectionString":
 			err = unpopulate(val, &s.SecondaryConnectionString)
 			delete(rawMsg, key)
@@ -883,9 +1051,6 @@ func (s *ServiceBus) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.DigitalTwinsEndpointResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }

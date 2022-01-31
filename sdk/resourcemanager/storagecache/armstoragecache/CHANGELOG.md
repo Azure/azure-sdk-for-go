@@ -1,0 +1,440 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*CachesClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, *CachesBeginStopOptions)` to `(context.Context, string, string, *CachesClientBeginStopOptions)`
+- Function `*CachesClient.BeginStop` return value(s) have been changed from `(CachesStopPollerResponse, error)` to `(CachesClientStopPollerResponse, error)`
+- Function `*StorageTargetsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *StorageTargetsBeginDeleteOptions)` to `(context.Context, string, string, string, *StorageTargetsClientBeginDeleteOptions)`
+- Function `*StorageTargetsClient.BeginDelete` return value(s) have been changed from `(StorageTargetsDeletePollerResponse, error)` to `(StorageTargetsClientDeletePollerResponse, error)`
+- Function `*CachesClient.BeginUpgradeFirmware` parameter(s) have been changed from `(context.Context, string, string, *CachesBeginUpgradeFirmwareOptions)` to `(context.Context, string, string, *CachesClientBeginUpgradeFirmwareOptions)`
+- Function `*CachesClient.BeginUpgradeFirmware` return value(s) have been changed from `(CachesUpgradeFirmwarePollerResponse, error)` to `(CachesClientUpgradeFirmwarePollerResponse, error)`
+- Function `*StorageTargetClient.BeginResume` parameter(s) have been changed from `(context.Context, string, string, string, *StorageTargetBeginResumeOptions)` to `(context.Context, string, string, string, *StorageTargetClientBeginResumeOptions)`
+- Function `*StorageTargetClient.BeginResume` return value(s) have been changed from `(StorageTargetResumePollerResponse, error)` to `(StorageTargetClientResumePollerResponse, error)`
+- Function `*CachesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, *CachesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, *CachesClientBeginCreateOrUpdateOptions)`
+- Function `*CachesClient.BeginCreateOrUpdate` return value(s) have been changed from `(CachesCreateOrUpdatePollerResponse, error)` to `(CachesClientCreateOrUpdatePollerResponse, error)`
+- Function `*CachesClient.BeginDebugInfo` parameter(s) have been changed from `(context.Context, string, string, *CachesBeginDebugInfoOptions)` to `(context.Context, string, string, *CachesClientBeginDebugInfoOptions)`
+- Function `*CachesClient.BeginDebugInfo` return value(s) have been changed from `(CachesDebugInfoPollerResponse, error)` to `(CachesClientDebugInfoPollerResponse, error)`
+- Function `*CachesClient.List` parameter(s) have been changed from `(*CachesListOptions)` to `(*CachesClientListOptions)`
+- Function `*CachesClient.List` return value(s) have been changed from `(*CachesListPager)` to `(*CachesClientListPager)`
+- Function `*StorageTargetClient.BeginFlush` parameter(s) have been changed from `(context.Context, string, string, string, *StorageTargetBeginFlushOptions)` to `(context.Context, string, string, string, *StorageTargetClientBeginFlushOptions)`
+- Function `*StorageTargetClient.BeginFlush` return value(s) have been changed from `(StorageTargetFlushPollerResponse, error)` to `(StorageTargetClientFlushPollerResponse, error)`
+- Function `*CachesClient.Update` parameter(s) have been changed from `(context.Context, string, string, *CachesUpdateOptions)` to `(context.Context, string, string, *CachesClientUpdateOptions)`
+- Function `*CachesClient.Update` return value(s) have been changed from `(CachesUpdateResponse, error)` to `(CachesClientUpdateResponse, error)`
+- Function `*AscOperationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AscOperationsGetOptions)` to `(context.Context, string, string, *AscOperationsClientGetOptions)`
+- Function `*AscOperationsClient.Get` return value(s) have been changed from `(AscOperationsGetResponse, error)` to `(AscOperationsClientGetResponse, error)`
+- Function `*CachesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *CachesBeginDeleteOptions)` to `(context.Context, string, string, *CachesClientBeginDeleteOptions)`
+- Function `*CachesClient.BeginDelete` return value(s) have been changed from `(CachesDeletePollerResponse, error)` to `(CachesClientDeletePollerResponse, error)`
+- Function `*SKUsClient.List` parameter(s) have been changed from `(*SKUsListOptions)` to `(*SKUsClientListOptions)`
+- Function `*SKUsClient.List` return value(s) have been changed from `(*SKUsListPager)` to `(*SKUsClientListPager)`
+- Function `*StorageTargetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *StorageTargetsGetOptions)` to `(context.Context, string, string, string, *StorageTargetsClientGetOptions)`
+- Function `*StorageTargetsClient.Get` return value(s) have been changed from `(StorageTargetsGetResponse, error)` to `(StorageTargetsClientGetResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*StorageTargetClient.BeginSuspend` parameter(s) have been changed from `(context.Context, string, string, string, *StorageTargetBeginSuspendOptions)` to `(context.Context, string, string, string, *StorageTargetClientBeginSuspendOptions)`
+- Function `*StorageTargetClient.BeginSuspend` return value(s) have been changed from `(StorageTargetSuspendPollerResponse, error)` to `(StorageTargetClientSuspendPollerResponse, error)`
+- Function `*CachesClient.BeginFlush` parameter(s) have been changed from `(context.Context, string, string, *CachesBeginFlushOptions)` to `(context.Context, string, string, *CachesClientBeginFlushOptions)`
+- Function `*CachesClient.BeginFlush` return value(s) have been changed from `(CachesFlushPollerResponse, error)` to `(CachesClientFlushPollerResponse, error)`
+- Function `*UsageModelsClient.List` parameter(s) have been changed from `(*UsageModelsListOptions)` to `(*UsageModelsClientListOptions)`
+- Function `*UsageModelsClient.List` return value(s) have been changed from `(*UsageModelsListPager)` to `(*UsageModelsClientListPager)`
+- Function `*CachesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *CachesListByResourceGroupOptions)` to `(string, *CachesClientListByResourceGroupOptions)`
+- Function `*CachesClient.ListByResourceGroup` return value(s) have been changed from `(*CachesListByResourceGroupPager)` to `(*CachesClientListByResourceGroupPager)`
+- Function `*StorageTargetsClient.BeginDNSRefresh` parameter(s) have been changed from `(context.Context, string, string, string, *StorageTargetsBeginDNSRefreshOptions)` to `(context.Context, string, string, string, *StorageTargetsClientBeginDNSRefreshOptions)`
+- Function `*StorageTargetsClient.BeginDNSRefresh` return value(s) have been changed from `(StorageTargetsDNSRefreshPollerResponse, error)` to `(StorageTargetsClientDNSRefreshPollerResponse, error)`
+- Function `*StorageTargetsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *StorageTargetsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, *StorageTargetsClientBeginCreateOrUpdateOptions)`
+- Function `*StorageTargetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(StorageTargetsCreateOrUpdatePollerResponse, error)` to `(StorageTargetsClientCreateOrUpdatePollerResponse, error)`
+- Function `*StorageTargetsClient.ListByCache` parameter(s) have been changed from `(string, string, *StorageTargetsListByCacheOptions)` to `(string, string, *StorageTargetsClientListByCacheOptions)`
+- Function `*StorageTargetsClient.ListByCache` return value(s) have been changed from `(*StorageTargetsListByCachePager)` to `(*StorageTargetsClientListByCachePager)`
+- Function `*CachesClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, *CachesBeginStartOptions)` to `(context.Context, string, string, *CachesClientBeginStartOptions)`
+- Function `*CachesClient.BeginStart` return value(s) have been changed from `(CachesStartPollerResponse, error)` to `(CachesClientStartPollerResponse, error)`
+- Function `*CachesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CachesGetOptions)` to `(context.Context, string, string, *CachesClientGetOptions)`
+- Function `*CachesClient.Get` return value(s) have been changed from `(CachesGetResponse, error)` to `(CachesClientGetResponse, error)`
+- Function `*CachesFlushPoller.FinalResponse` has been removed
+- Function `*SKUsListPager.Err` has been removed
+- Function `*CachesDeletePoller.Done` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `StorageTargetFlushPollerResponse.PollUntilDone` has been removed
+- Function `*UsageModelsListPager.NextPage` has been removed
+- Function `*StorageTargetsDNSRefreshPoller.FinalResponse` has been removed
+- Function `*CachesDeletePoller.ResumeToken` has been removed
+- Function `*CachesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*StorageTargetFlushPoller.Poll` has been removed
+- Function `*StorageTargetResumePoller.ResumeToken` has been removed
+- Function `*StorageTargetSuspendPoller.FinalResponse` has been removed
+- Function `*CachesFlushPoller.Done` has been removed
+- Function `CachesUpgradeFirmwarePollerResponse.PollUntilDone` has been removed
+- Function `*StorageTargetsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*StorageTargetSuspendPoller.Poll` has been removed
+- Function `*CachesStartPollerResponse.Resume` has been removed
+- Function `*StorageTargetSuspendPollerResponse.Resume` has been removed
+- Function `*StorageTargetsDeletePoller.FinalResponse` has been removed
+- Function `*CachesDebugInfoPoller.Done` has been removed
+- Function `*CachesStartPoller.Done` has been removed
+- Function `CachesStopPollerResponse.PollUntilDone` has been removed
+- Function `*CachesDebugInfoPoller.FinalResponse` has been removed
+- Function `*CachesUpgradeFirmwarePollerResponse.Resume` has been removed
+- Function `*CachesListByResourceGroupPager.Err` has been removed
+- Function `StorageTargetsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*StorageTargetResumePollerResponse.Resume` has been removed
+- Function `*CachesDebugInfoPoller.Poll` has been removed
+- Function `*StorageTargetsListByCachePager.PageResponse` has been removed
+- Function `*CachesListPager.NextPage` has been removed
+- Function `*StorageTargetsDNSRefreshPollerResponse.Resume` has been removed
+- Function `*StorageTargetsDeletePoller.Poll` has been removed
+- Function `StorageTargetSuspendPollerResponse.PollUntilDone` has been removed
+- Function `*StorageTargetsCreateOrUpdatePoller.Poll` has been removed
+- Function `CachesDebugInfoPollerResponse.PollUntilDone` has been removed
+- Function `*UsageModelsListPager.Err` has been removed
+- Function `*CachesStartPoller.FinalResponse` has been removed
+- Function `*CachesListByResourceGroupPager.NextPage` has been removed
+- Function `*StorageTargetsDNSRefreshPoller.Done` has been removed
+- Function `*CachesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CachesDebugInfoPollerResponse.Resume` has been removed
+- Function `*CachesFlushPollerResponse.Resume` has been removed
+- Function `*StorageTargetsDNSRefreshPoller.Poll` has been removed
+- Function `*CachesStopPoller.Poll` has been removed
+- Function `*CachesCreateOrUpdatePoller.Done` has been removed
+- Function `CachesFlushPollerResponse.PollUntilDone` has been removed
+- Function `CachesStartPollerResponse.PollUntilDone` has been removed
+- Function `CachesDeletePollerResponse.PollUntilDone` has been removed
+- Function `CachesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CachesDeletePoller.FinalResponse` has been removed
+- Function `*CachesFlushPoller.ResumeToken` has been removed
+- Function `*StorageTargetFlushPoller.ResumeToken` has been removed
+- Function `*StorageTargetResumePoller.Done` has been removed
+- Function `*StorageTargetsDeletePoller.ResumeToken` has been removed
+- Function `*StorageTargetResumePoller.Poll` has been removed
+- Function `*CachesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*StorageTargetResumePoller.FinalResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*StorageTargetsCreateOrUpdatePoller.Done` has been removed
+- Function `*StorageTargetsDeletePoller.Done` has been removed
+- Function `*CachesListByResourceGroupPager.PageResponse` has been removed
+- Function `*StorageTargetSuspendPoller.Done` has been removed
+- Function `*StorageTargetsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SKUsListPager.PageResponse` has been removed
+- Function `*CachesStopPoller.Done` has been removed
+- Function `*CachesUpgradeFirmwarePoller.Poll` has been removed
+- Function `*CachesStartPoller.ResumeToken` has been removed
+- Function `*StorageTargetFlushPoller.Done` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*CachesUpgradeFirmwarePoller.FinalResponse` has been removed
+- Function `*CachesUpgradeFirmwarePoller.ResumeToken` has been removed
+- Function `*UsageModelsListPager.PageResponse` has been removed
+- Function `StorageTargetResumePollerResponse.PollUntilDone` has been removed
+- Function `*CachesStopPoller.ResumeToken` has been removed
+- Function `StorageTargetsDNSRefreshPollerResponse.PollUntilDone` has been removed
+- Function `*CachesDeletePollerResponse.Resume` has been removed
+- Function `*CachesCreateOrUpdatePoller.Poll` has been removed
+- Function `*CachesDeletePoller.Poll` has been removed
+- Function `*CachesUpgradeFirmwarePoller.Done` has been removed
+- Function `*StorageTargetFlushPoller.FinalResponse` has been removed
+- Function `*CachesFlushPoller.Poll` has been removed
+- Function `*StorageTargetsDNSRefreshPoller.ResumeToken` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*StorageTargetsListByCachePager.NextPage` has been removed
+- Function `*CachesStartPoller.Poll` has been removed
+- Function `*CachesDebugInfoPoller.ResumeToken` has been removed
+- Function `*CachesStopPoller.FinalResponse` has been removed
+- Function `*CachesStopPollerResponse.Resume` has been removed
+- Function `*CachesListPager.Err` has been removed
+- Function `*StorageTargetSuspendPoller.ResumeToken` has been removed
+- Function `*SKUsListPager.NextPage` has been removed
+- Function `StorageTargetsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*StorageTargetsDeletePollerResponse.Resume` has been removed
+- Function `*StorageTargetsListByCachePager.Err` has been removed
+- Function `*StorageTargetsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CachesListPager.PageResponse` has been removed
+- Function `*StorageTargetFlushPollerResponse.Resume` has been removed
+- Struct `AscOperationsGetOptions` has been removed
+- Struct `AscOperationsGetResponse` has been removed
+- Struct `AscOperationsGetResult` has been removed
+- Struct `CachesBeginCreateOrUpdateOptions` has been removed
+- Struct `CachesBeginDebugInfoOptions` has been removed
+- Struct `CachesBeginDeleteOptions` has been removed
+- Struct `CachesBeginFlushOptions` has been removed
+- Struct `CachesBeginStartOptions` has been removed
+- Struct `CachesBeginStopOptions` has been removed
+- Struct `CachesBeginUpgradeFirmwareOptions` has been removed
+- Struct `CachesCreateOrUpdatePoller` has been removed
+- Struct `CachesCreateOrUpdatePollerResponse` has been removed
+- Struct `CachesCreateOrUpdateResponse` has been removed
+- Struct `CachesCreateOrUpdateResult` has been removed
+- Struct `CachesDebugInfoPoller` has been removed
+- Struct `CachesDebugInfoPollerResponse` has been removed
+- Struct `CachesDebugInfoResponse` has been removed
+- Struct `CachesDeletePoller` has been removed
+- Struct `CachesDeletePollerResponse` has been removed
+- Struct `CachesDeleteResponse` has been removed
+- Struct `CachesFlushPoller` has been removed
+- Struct `CachesFlushPollerResponse` has been removed
+- Struct `CachesFlushResponse` has been removed
+- Struct `CachesGetOptions` has been removed
+- Struct `CachesGetResponse` has been removed
+- Struct `CachesGetResult` has been removed
+- Struct `CachesListByResourceGroupOptions` has been removed
+- Struct `CachesListByResourceGroupPager` has been removed
+- Struct `CachesListByResourceGroupResponse` has been removed
+- Struct `CachesListByResourceGroupResult` has been removed
+- Struct `CachesListOptions` has been removed
+- Struct `CachesListPager` has been removed
+- Struct `CachesListResponse` has been removed
+- Struct `CachesListResultEnvelope` has been removed
+- Struct `CachesStartPoller` has been removed
+- Struct `CachesStartPollerResponse` has been removed
+- Struct `CachesStartResponse` has been removed
+- Struct `CachesStopPoller` has been removed
+- Struct `CachesStopPollerResponse` has been removed
+- Struct `CachesStopResponse` has been removed
+- Struct `CachesUpdateOptions` has been removed
+- Struct `CachesUpdateResponse` has been removed
+- Struct `CachesUpdateResult` has been removed
+- Struct `CachesUpgradeFirmwarePoller` has been removed
+- Struct `CachesUpgradeFirmwarePollerResponse` has been removed
+- Struct `CachesUpgradeFirmwareResponse` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `SKUsListOptions` has been removed
+- Struct `SKUsListPager` has been removed
+- Struct `SKUsListResponse` has been removed
+- Struct `SKUsListResult` has been removed
+- Struct `StorageTargetBeginFlushOptions` has been removed
+- Struct `StorageTargetBeginResumeOptions` has been removed
+- Struct `StorageTargetBeginSuspendOptions` has been removed
+- Struct `StorageTargetFlushPoller` has been removed
+- Struct `StorageTargetFlushPollerResponse` has been removed
+- Struct `StorageTargetFlushResponse` has been removed
+- Struct `StorageTargetResumePoller` has been removed
+- Struct `StorageTargetResumePollerResponse` has been removed
+- Struct `StorageTargetResumeResponse` has been removed
+- Struct `StorageTargetSuspendPoller` has been removed
+- Struct `StorageTargetSuspendPollerResponse` has been removed
+- Struct `StorageTargetSuspendResponse` has been removed
+- Struct `StorageTargetsBeginCreateOrUpdateOptions` has been removed
+- Struct `StorageTargetsBeginDNSRefreshOptions` has been removed
+- Struct `StorageTargetsBeginDeleteOptions` has been removed
+- Struct `StorageTargetsCreateOrUpdatePoller` has been removed
+- Struct `StorageTargetsCreateOrUpdatePollerResponse` has been removed
+- Struct `StorageTargetsCreateOrUpdateResponse` has been removed
+- Struct `StorageTargetsCreateOrUpdateResult` has been removed
+- Struct `StorageTargetsDNSRefreshPoller` has been removed
+- Struct `StorageTargetsDNSRefreshPollerResponse` has been removed
+- Struct `StorageTargetsDNSRefreshResponse` has been removed
+- Struct `StorageTargetsDeletePoller` has been removed
+- Struct `StorageTargetsDeletePollerResponse` has been removed
+- Struct `StorageTargetsDeleteResponse` has been removed
+- Struct `StorageTargetsGetOptions` has been removed
+- Struct `StorageTargetsGetResponse` has been removed
+- Struct `StorageTargetsGetResult` has been removed
+- Struct `StorageTargetsListByCacheOptions` has been removed
+- Struct `StorageTargetsListByCachePager` has been removed
+- Struct `StorageTargetsListByCacheResponse` has been removed
+- Struct `StorageTargetsListByCacheResult` has been removed
+- Struct `UsageModelsListOptions` has been removed
+- Struct `UsageModelsListPager` has been removed
+- Struct `UsageModelsListResponse` has been removed
+- Struct `UsageModelsListResult` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `StorageTargetResource` of struct `StorageTarget` has been removed
+
+### Features Added
+
+- New function `*StorageTargetsClientCreateOrUpdatePollerResponse.Resume(context.Context, *StorageTargetsClient, string) error`
+- New function `*StorageTargetsClientDNSRefreshPoller.ResumeToken() (string, error)`
+- New function `*CachesClientListPager.Err() error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*CachesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*StorageTargetsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CachesClientCreateOrUpdatePoller.FinalResponse(context.Context) (CachesClientCreateOrUpdateResponse, error)`
+- New function `*CachesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CachesClientStartPoller.FinalResponse(context.Context) (CachesClientStartResponse, error)`
+- New function `*StorageTargetsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*UsageModelsClientListPager.NextPage(context.Context) bool`
+- New function `*CachesClientListPager.NextPage(context.Context) bool`
+- New function `*SKUsClientListPager.Err() error`
+- New function `StorageTargetsClientDNSRefreshPollerResponse.PollUntilDone(context.Context, time.Duration) (StorageTargetsClientDNSRefreshResponse, error)`
+- New function `*CachesClientFlushPoller.Done() bool`
+- New function `*CachesClientUpgradeFirmwarePollerResponse.Resume(context.Context, *CachesClient, string) error`
+- New function `*StorageTargetClientSuspendPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CachesClientStartPoller.ResumeToken() (string, error)`
+- New function `*CachesClientStopPoller.FinalResponse(context.Context) (CachesClientStopResponse, error)`
+- New function `StorageTargetClientSuspendPollerResponse.PollUntilDone(context.Context, time.Duration) (StorageTargetClientSuspendResponse, error)`
+- New function `*CachesClientFlushPollerResponse.Resume(context.Context, *CachesClient, string) error`
+- New function `*CachesClientStopPollerResponse.Resume(context.Context, *CachesClient, string) error`
+- New function `*StorageTargetClientFlushPoller.ResumeToken() (string, error)`
+- New function `*CachesClientUpgradeFirmwarePoller.ResumeToken() (string, error)`
+- New function `*StorageTargetClientResumePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StorageTargetsClientDNSRefreshPoller.Poll(context.Context) (*http.Response, error)`
+- New function `CachesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CachesClientDeleteResponse, error)`
+- New function `*StorageTargetClientFlushPoller.Done() bool`
+- New function `*CachesClientFlushPoller.ResumeToken() (string, error)`
+- New function `*StorageTargetsClientDNSRefreshPollerResponse.Resume(context.Context, *StorageTargetsClient, string) error`
+- New function `*CachesClientStopPoller.ResumeToken() (string, error)`
+- New function `*CachesClientFlushPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*UsageModelsClientListPager.PageResponse() UsageModelsClientListResponse`
+- New function `*CachesClientDeletePoller.ResumeToken() (string, error)`
+- New function `CachesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CachesClientCreateOrUpdateResponse, error)`
+- New function `*CachesClientDebugInfoPollerResponse.Resume(context.Context, *CachesClient, string) error`
+- New function `*StorageTargetsClientDeletePoller.FinalResponse(context.Context) (StorageTargetsClientDeleteResponse, error)`
+- New function `*CachesClientDebugInfoPoller.FinalResponse(context.Context) (CachesClientDebugInfoResponse, error)`
+- New function `*CachesClientUpgradeFirmwarePoller.FinalResponse(context.Context) (CachesClientUpgradeFirmwareResponse, error)`
+- New function `*StorageTargetsClientCreateOrUpdatePoller.Done() bool`
+- New function `*StorageTargetsClientDeletePollerResponse.Resume(context.Context, *StorageTargetsClient, string) error`
+- New function `*StorageTargetsClientDNSRefreshPoller.FinalResponse(context.Context) (StorageTargetsClientDNSRefreshResponse, error)`
+- New function `*CachesClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StorageTargetClientResumePollerResponse.Resume(context.Context, *StorageTargetClient, string) error`
+- New function `*CachesClientDebugInfoPoller.Poll(context.Context) (*http.Response, error)`
+- New function `StorageTargetsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (StorageTargetsClientDeleteResponse, error)`
+- New function `*CachesClientListByResourceGroupPager.Err() error`
+- New function `*StorageTargetClientFlushPoller.FinalResponse(context.Context) (StorageTargetClientFlushResponse, error)`
+- New function `CachesClientFlushPollerResponse.PollUntilDone(context.Context, time.Duration) (CachesClientFlushResponse, error)`
+- New function `*CachesClientDebugInfoPoller.ResumeToken() (string, error)`
+- New function `*CachesClientDebugInfoPoller.Done() bool`
+- New function `*CachesClientDeletePollerResponse.Resume(context.Context, *CachesClient, string) error`
+- New function `*StorageTargetsClientDeletePoller.Done() bool`
+- New function `*StorageTargetsClientDNSRefreshPoller.Done() bool`
+- New function `*StorageTargetClientSuspendPoller.FinalResponse(context.Context) (StorageTargetClientSuspendResponse, error)`
+- New function `*StorageTargetsClientListByCachePager.Err() error`
+- New function `*CachesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*StorageTargetsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CachesClientListPager.PageResponse() CachesClientListResponse`
+- New function `*StorageTargetClientSuspendPoller.ResumeToken() (string, error)`
+- New function `*CachesClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StorageTargetClientFlushPollerResponse.Resume(context.Context, *StorageTargetClient, string) error`
+- New function `*CachesClientFlushPoller.FinalResponse(context.Context) (CachesClientFlushResponse, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `CachesClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (CachesClientStartResponse, error)`
+- New function `*CachesClientDeletePoller.Done() bool`
+- New function `*CachesClientStartPollerResponse.Resume(context.Context, *CachesClient, string) error`
+- New function `*StorageTargetsClientCreateOrUpdatePoller.FinalResponse(context.Context) (StorageTargetsClientCreateOrUpdateResponse, error)`
+- New function `*StorageTargetsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*StorageTargetClientResumePoller.Done() bool`
+- New function `*CachesClientListByResourceGroupPager.PageResponse() CachesClientListByResourceGroupResponse`
+- New function `*StorageTargetsClientListByCachePager.PageResponse() StorageTargetsClientListByCacheResponse`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `StorageTargetsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (StorageTargetsClientCreateOrUpdateResponse, error)`
+- New function `*StorageTargetClientResumePoller.ResumeToken() (string, error)`
+- New function `*UsageModelsClientListPager.Err() error`
+- New function `*CachesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StorageTargetClientResumePoller.FinalResponse(context.Context) (StorageTargetClientResumeResponse, error)`
+- New function `*CachesClientStartPoller.Done() bool`
+- New function `StorageTargetClientFlushPollerResponse.PollUntilDone(context.Context, time.Duration) (StorageTargetClientFlushResponse, error)`
+- New function `CachesClientUpgradeFirmwarePollerResponse.PollUntilDone(context.Context, time.Duration) (CachesClientUpgradeFirmwareResponse, error)`
+- New function `*StorageTargetClientSuspendPollerResponse.Resume(context.Context, *StorageTargetClient, string) error`
+- New function `*CachesClientUpgradeFirmwarePoller.Done() bool`
+- New function `*SKUsClientListPager.NextPage(context.Context) bool`
+- New function `*StorageTargetClientFlushPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CachesClientCreateOrUpdatePoller.Done() bool`
+- New function `*CachesClientStopPoller.Done() bool`
+- New function `CachesClientDebugInfoPollerResponse.PollUntilDone(context.Context, time.Duration) (CachesClientDebugInfoResponse, error)`
+- New function `*CachesClientUpgradeFirmwarePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StorageTargetClientSuspendPoller.Done() bool`
+- New function `StorageTargetClientResumePollerResponse.PollUntilDone(context.Context, time.Duration) (StorageTargetClientResumeResponse, error)`
+- New function `CachesClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (CachesClientStopResponse, error)`
+- New function `*CachesClientDeletePoller.FinalResponse(context.Context) (CachesClientDeleteResponse, error)`
+- New function `*SKUsClientListPager.PageResponse() SKUsClientListResponse`
+- New function `*CachesClientCreateOrUpdatePollerResponse.Resume(context.Context, *CachesClient, string) error`
+- New function `*StorageTargetsClientListByCachePager.NextPage(context.Context) bool`
+- New struct `AscOperationsClientGetOptions`
+- New struct `AscOperationsClientGetResponse`
+- New struct `AscOperationsClientGetResult`
+- New struct `CachesClientBeginCreateOrUpdateOptions`
+- New struct `CachesClientBeginDebugInfoOptions`
+- New struct `CachesClientBeginDeleteOptions`
+- New struct `CachesClientBeginFlushOptions`
+- New struct `CachesClientBeginStartOptions`
+- New struct `CachesClientBeginStopOptions`
+- New struct `CachesClientBeginUpgradeFirmwareOptions`
+- New struct `CachesClientCreateOrUpdatePoller`
+- New struct `CachesClientCreateOrUpdatePollerResponse`
+- New struct `CachesClientCreateOrUpdateResponse`
+- New struct `CachesClientCreateOrUpdateResult`
+- New struct `CachesClientDebugInfoPoller`
+- New struct `CachesClientDebugInfoPollerResponse`
+- New struct `CachesClientDebugInfoResponse`
+- New struct `CachesClientDeletePoller`
+- New struct `CachesClientDeletePollerResponse`
+- New struct `CachesClientDeleteResponse`
+- New struct `CachesClientFlushPoller`
+- New struct `CachesClientFlushPollerResponse`
+- New struct `CachesClientFlushResponse`
+- New struct `CachesClientGetOptions`
+- New struct `CachesClientGetResponse`
+- New struct `CachesClientGetResult`
+- New struct `CachesClientListByResourceGroupOptions`
+- New struct `CachesClientListByResourceGroupPager`
+- New struct `CachesClientListByResourceGroupResponse`
+- New struct `CachesClientListByResourceGroupResult`
+- New struct `CachesClientListOptions`
+- New struct `CachesClientListPager`
+- New struct `CachesClientListResponse`
+- New struct `CachesClientListResult`
+- New struct `CachesClientStartPoller`
+- New struct `CachesClientStartPollerResponse`
+- New struct `CachesClientStartResponse`
+- New struct `CachesClientStopPoller`
+- New struct `CachesClientStopPollerResponse`
+- New struct `CachesClientStopResponse`
+- New struct `CachesClientUpdateOptions`
+- New struct `CachesClientUpdateResponse`
+- New struct `CachesClientUpdateResult`
+- New struct `CachesClientUpgradeFirmwarePoller`
+- New struct `CachesClientUpgradeFirmwarePollerResponse`
+- New struct `CachesClientUpgradeFirmwareResponse`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `SKUsClientListOptions`
+- New struct `SKUsClientListPager`
+- New struct `SKUsClientListResponse`
+- New struct `SKUsClientListResult`
+- New struct `StorageTargetClientBeginFlushOptions`
+- New struct `StorageTargetClientBeginResumeOptions`
+- New struct `StorageTargetClientBeginSuspendOptions`
+- New struct `StorageTargetClientFlushPoller`
+- New struct `StorageTargetClientFlushPollerResponse`
+- New struct `StorageTargetClientFlushResponse`
+- New struct `StorageTargetClientResumePoller`
+- New struct `StorageTargetClientResumePollerResponse`
+- New struct `StorageTargetClientResumeResponse`
+- New struct `StorageTargetClientSuspendPoller`
+- New struct `StorageTargetClientSuspendPollerResponse`
+- New struct `StorageTargetClientSuspendResponse`
+- New struct `StorageTargetsClientBeginCreateOrUpdateOptions`
+- New struct `StorageTargetsClientBeginDNSRefreshOptions`
+- New struct `StorageTargetsClientBeginDeleteOptions`
+- New struct `StorageTargetsClientCreateOrUpdatePoller`
+- New struct `StorageTargetsClientCreateOrUpdatePollerResponse`
+- New struct `StorageTargetsClientCreateOrUpdateResponse`
+- New struct `StorageTargetsClientCreateOrUpdateResult`
+- New struct `StorageTargetsClientDNSRefreshPoller`
+- New struct `StorageTargetsClientDNSRefreshPollerResponse`
+- New struct `StorageTargetsClientDNSRefreshResponse`
+- New struct `StorageTargetsClientDeletePoller`
+- New struct `StorageTargetsClientDeletePollerResponse`
+- New struct `StorageTargetsClientDeleteResponse`
+- New struct `StorageTargetsClientGetOptions`
+- New struct `StorageTargetsClientGetResponse`
+- New struct `StorageTargetsClientGetResult`
+- New struct `StorageTargetsClientListByCacheOptions`
+- New struct `StorageTargetsClientListByCachePager`
+- New struct `StorageTargetsClientListByCacheResponse`
+- New struct `StorageTargetsClientListByCacheResult`
+- New struct `UsageModelsClientListOptions`
+- New struct `UsageModelsClientListPager`
+- New struct `UsageModelsClientListResponse`
+- New struct `UsageModelsClientListResult`
+- New field `Error` in struct `CloudError`
+- New field `Name` in struct `StorageTarget`
+- New field `SystemData` in struct `StorageTarget`
+- New field `Type` in struct `StorageTarget`
+- New field `ID` in struct `StorageTarget`
+- New field `Location` in struct `StorageTarget`
+
+
+## 0.1.0 (2021-12-22)
+
+- Init release.

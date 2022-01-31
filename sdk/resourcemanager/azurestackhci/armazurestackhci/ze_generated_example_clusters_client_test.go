@@ -26,12 +26,16 @@ func ExampleClustersClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armazurestackhci.NewClustersClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Cluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -46,12 +50,16 @@ func ExampleClustersClient_ListByResourceGroup() {
 	client := armazurestackhci.NewClustersClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Cluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -71,7 +79,7 @@ func ExampleClustersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientGetResult)
 }
 
 // x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2021-09-01/examples/CreateCluster.json
@@ -86,9 +94,7 @@ func ExampleClustersClient_Create() {
 		"<resource-group-name>",
 		"<cluster-name>",
 		armazurestackhci.Cluster{
-			TrackedResource: armazurestackhci.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armazurestackhci.ClusterProperties{
 				AADClientID:             to.StringPtr("<aadclient-id>"),
 				AADTenantID:             to.StringPtr("<aadtenant-id>"),
@@ -99,7 +105,7 @@ func ExampleClustersClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientCreateResult)
 }
 
 // x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2021-09-01/examples/UpdateCluster.json
@@ -117,8 +123,8 @@ func ExampleClustersClient_Update() {
 			Properties: &armazurestackhci.ClusterPatchProperties{
 				CloudManagementEndpoint: to.StringPtr("<cloud-management-endpoint>"),
 				DesiredProperties: &armazurestackhci.ClusterDesiredProperties{
-					DiagnosticLevel:           armazurestackhci.DiagnosticLevelBasic.ToPtr(),
-					WindowsServerSubscription: armazurestackhci.WindowsServerSubscriptionEnabled.ToPtr(),
+					DiagnosticLevel:           armazurestackhci.DiagnosticLevel("Basic").ToPtr(),
+					WindowsServerSubscription: armazurestackhci.WindowsServerSubscription("Enabled").ToPtr(),
 				},
 			},
 			Tags: map[string]*string{
@@ -130,7 +136,7 @@ func ExampleClustersClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientUpdateResult)
 }
 
 // x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2021-09-01/examples/DeleteCluster.json

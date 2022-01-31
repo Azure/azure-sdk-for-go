@@ -31,7 +31,7 @@ func ExampleGenerateDetailedCostReportClient_BeginCreateOperation() {
 		"<scope>",
 		armcostmanagement.GenerateDetailedCostReportDefinition{
 			BillingPeriod: to.StringPtr("<billing-period>"),
-			Metric:        armcostmanagement.GenerateDetailedCostReportMetricTypeActualCost.ToPtr(),
+			Metric:        armcostmanagement.GenerateDetailedCostReportMetricType("ActualCost").ToPtr(),
 		},
 		nil)
 	if err != nil {
@@ -41,5 +41,5 @@ func ExampleGenerateDetailedCostReportClient_BeginCreateOperation() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GenerateDetailedCostReportOperationResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.GenerateDetailedCostReportClientCreateOperationResult)
 }

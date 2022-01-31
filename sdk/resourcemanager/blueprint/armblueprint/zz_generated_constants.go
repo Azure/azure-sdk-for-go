@@ -9,8 +9,8 @@
 package armblueprint
 
 const (
-	module  = "armblueprint"
-	version = "v0.1.0"
+	moduleName    = "armblueprint"
+	moduleVersion = "v0.2.0"
 )
 
 // ArtifactKind - Specifies the kind of blueprint artifact.
@@ -120,7 +120,8 @@ func (c AssignmentProvisioningState) ToPtr() *AssignmentProvisioningState {
 type BlueprintTargetScope string
 
 const (
-	// BlueprintTargetScopeManagementGroup - The blueprint targets a management group during blueprint assignment. This is reserved for future use.
+	// BlueprintTargetScopeManagementGroup - The blueprint targets a management group during blueprint assignment. This is reserved
+	// for future use.
 	BlueprintTargetScopeManagementGroup BlueprintTargetScope = "managementGroup"
 	// BlueprintTargetScopeSubscription - The blueprint targets a subscription during blueprint assignment.
 	BlueprintTargetScopeSubscription BlueprintTargetScope = "subscription"

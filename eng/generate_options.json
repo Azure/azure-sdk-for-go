@@ -7,7 +7,8 @@
     "--multiapi",
     "--use-onever",
     "--version=V2",
-    "--go.license-header=MICROSOFT_MIT_NO_VERSION"
+    "--go.license-header=MICROSOFT_MIT_NO_VERSION",
+    "--pass-thru:schema-validator-swagger"
   ],
   "additionalOptions": [
     "--enum-prefix"

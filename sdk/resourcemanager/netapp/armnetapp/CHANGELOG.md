@@ -1,0 +1,1012 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*BackupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *BackupsGetOptions)` to `(context.Context, string, string, string, string, string, *BackupsClientGetOptions)`
+- Function `*BackupsClient.Get` return value(s) have been changed from `(BackupsGetResponse, error)` to `(BackupsClientGetResponse, error)`
+- Function `*BackupsClient.GetStatus` parameter(s) have been changed from `(context.Context, string, string, string, string, *BackupsGetStatusOptions)` to `(context.Context, string, string, string, string, *BackupsClientGetStatusOptions)`
+- Function `*BackupsClient.GetStatus` return value(s) have been changed from `(BackupsGetStatusResponse, error)` to `(BackupsClientGetStatusResponse, error)`
+- Function `*SnapshotPoliciesClient.ListVolumes` parameter(s) have been changed from `(context.Context, string, string, string, *SnapshotPoliciesListVolumesOptions)` to `(context.Context, string, string, string, *SnapshotPoliciesClientListVolumesOptions)`
+- Function `*SnapshotPoliciesClient.ListVolumes` return value(s) have been changed from `(SnapshotPoliciesListVolumesResponse, error)` to `(SnapshotPoliciesClientListVolumesResponse, error)`
+- Function `*VolumeGroupsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *VolumeGroupsBeginDeleteOptions)` to `(context.Context, string, string, string, *VolumeGroupsClientBeginDeleteOptions)`
+- Function `*VolumeGroupsClient.BeginDelete` return value(s) have been changed from `(VolumeGroupsDeletePollerResponse, error)` to `(VolumeGroupsClientDeletePollerResponse, error)`
+- Function `*VolumesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *VolumesBeginDeleteOptions)` to `(context.Context, string, string, string, string, *VolumesClientBeginDeleteOptions)`
+- Function `*VolumesClient.BeginDelete` return value(s) have been changed from `(VolumesDeletePollerResponse, error)` to `(VolumesClientDeletePollerResponse, error)`
+- Function `*AccountsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, NetAppAccount, *AccountsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Account, *AccountsClientBeginCreateOrUpdateOptions)`
+- Function `*AccountsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AccountsCreateOrUpdatePollerResponse, error)` to `(AccountsClientCreateOrUpdatePollerResponse, error)`
+- Function `*VolumeGroupsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, VolumeGroupDetails, *VolumeGroupsBeginCreateOptions)` to `(context.Context, string, string, string, VolumeGroupDetails, *VolumeGroupsClientBeginCreateOptions)`
+- Function `*VolumeGroupsClient.BeginCreate` return value(s) have been changed from `(VolumeGroupsCreatePollerResponse, error)` to `(VolumeGroupsClientCreatePollerResponse, error)`
+- Function `*VolumeGroupsClient.ListByNetAppAccount` parameter(s) have been changed from `(context.Context, string, string, *VolumeGroupsListByNetAppAccountOptions)` to `(context.Context, string, string, *VolumeGroupsClientListByNetAppAccountOptions)`
+- Function `*VolumeGroupsClient.ListByNetAppAccount` return value(s) have been changed from `(VolumeGroupsListByNetAppAccountResponse, error)` to `(VolumeGroupsClientListByNetAppAccountResponse, error)`
+- Function `*VolumesClient.BeginPoolChange` parameter(s) have been changed from `(context.Context, string, string, string, string, PoolChangeRequest, *VolumesBeginPoolChangeOptions)` to `(context.Context, string, string, string, string, PoolChangeRequest, *VolumesClientBeginPoolChangeOptions)`
+- Function `*VolumesClient.BeginPoolChange` return value(s) have been changed from `(VolumesPoolChangePollerResponse, error)` to `(VolumesClientPoolChangePollerResponse, error)`
+- Function `*SnapshotPoliciesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, SnapshotPolicyPatch, *SnapshotPoliciesBeginUpdateOptions)` to `(context.Context, string, string, string, SnapshotPolicyPatch, *SnapshotPoliciesClientBeginUpdateOptions)`
+- Function `*SnapshotPoliciesClient.BeginUpdate` return value(s) have been changed from `(SnapshotPoliciesUpdatePollerResponse, error)` to `(SnapshotPoliciesClientUpdatePollerResponse, error)`
+- Function `*VolumesClient.List` parameter(s) have been changed from `(string, string, string, *VolumesListOptions)` to `(string, string, string, *VolumesClientListOptions)`
+- Function `*VolumesClient.List` return value(s) have been changed from `(*VolumesListPager)` to `(*VolumesClientListPager)`
+- Function `*SnapshotsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, Snapshot, *SnapshotsBeginCreateOptions)` to `(context.Context, string, string, string, string, string, Snapshot, *SnapshotsClientBeginCreateOptions)`
+- Function `*SnapshotsClient.BeginCreate` return value(s) have been changed from `(SnapshotsCreatePollerResponse, error)` to `(SnapshotsClientCreatePollerResponse, error)`
+- Function `*BackupPoliciesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *BackupPoliciesBeginDeleteOptions)` to `(context.Context, string, string, string, *BackupPoliciesClientBeginDeleteOptions)`
+- Function `*BackupPoliciesClient.BeginDelete` return value(s) have been changed from `(BackupPoliciesDeletePollerResponse, error)` to `(BackupPoliciesClientDeletePollerResponse, error)`
+- Function `*BackupsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *BackupsBeginDeleteOptions)` to `(context.Context, string, string, string, string, string, *BackupsClientBeginDeleteOptions)`
+- Function `*BackupsClient.BeginDelete` return value(s) have been changed from `(BackupsDeletePollerResponse, error)` to `(BackupsClientDeletePollerResponse, error)`
+- Function `*SnapshotPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SnapshotPoliciesGetOptions)` to `(context.Context, string, string, string, *SnapshotPoliciesClientGetOptions)`
+- Function `*SnapshotPoliciesClient.Get` return value(s) have been changed from `(SnapshotPoliciesGetResponse, error)` to `(SnapshotPoliciesClientGetResponse, error)`
+- Function `*VolumesClient.ReplicationStatus` parameter(s) have been changed from `(context.Context, string, string, string, string, *VolumesReplicationStatusOptions)` to `(context.Context, string, string, string, string, *VolumesClientReplicationStatusOptions)`
+- Function `*VolumesClient.ReplicationStatus` return value(s) have been changed from `(VolumesReplicationStatusResponse, error)` to `(VolumesClientReplicationStatusResponse, error)`
+- Function `*SnapshotsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, map[string]interface{}, *SnapshotsBeginUpdateOptions)` to `(context.Context, string, string, string, string, string, map[string]interface{}, *SnapshotsClientBeginUpdateOptions)`
+- Function `*SnapshotsClient.BeginUpdate` return value(s) have been changed from `(SnapshotsUpdatePollerResponse, error)` to `(SnapshotsClientUpdatePollerResponse, error)`
+- Function `*AccountBackupsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *AccountBackupsBeginDeleteOptions)` to `(context.Context, string, string, string, *AccountBackupsClientBeginDeleteOptions)`
+- Function `*AccountBackupsClient.BeginDelete` return value(s) have been changed from `(AccountBackupsDeletePollerResponse, error)` to `(AccountBackupsClientDeletePollerResponse, error)`
+- Function `*SnapshotsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *SnapshotsBeginDeleteOptions)` to `(context.Context, string, string, string, string, string, *SnapshotsClientBeginDeleteOptions)`
+- Function `*SnapshotsClient.BeginDelete` return value(s) have been changed from `(SnapshotsDeletePollerResponse, error)` to `(SnapshotsClientDeletePollerResponse, error)`
+- Function `*SnapshotsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, *SnapshotsListOptions)` to `(context.Context, string, string, string, string, *SnapshotsClientListOptions)`
+- Function `*SnapshotsClient.List` return value(s) have been changed from `(SnapshotsListResponse, error)` to `(SnapshotsClientListResponse, error)`
+- Function `*BackupPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *BackupPoliciesGetOptions)` to `(context.Context, string, string, string, *BackupPoliciesClientGetOptions)`
+- Function `*BackupPoliciesClient.Get` return value(s) have been changed from `(BackupPoliciesGetResponse, error)` to `(BackupPoliciesClientGetResponse, error)`
+- Function `*SnapshotsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *SnapshotsGetOptions)` to `(context.Context, string, string, string, string, string, *SnapshotsClientGetOptions)`
+- Function `*SnapshotsClient.Get` return value(s) have been changed from `(SnapshotsGetResponse, error)` to `(SnapshotsClientGetResponse, error)`
+- Function `*VolumesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *VolumesGetOptions)` to `(context.Context, string, string, string, string, *VolumesClientGetOptions)`
+- Function `*VolumesClient.Get` return value(s) have been changed from `(VolumesGetResponse, error)` to `(VolumesClientGetResponse, error)`
+- Function `*BackupsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, *BackupsListOptions)` to `(context.Context, string, string, string, string, *BackupsClientListOptions)`
+- Function `*BackupsClient.List` return value(s) have been changed from `(BackupsListResponse, error)` to `(BackupsClientListResponse, error)`
+- Function `*VolumesClient.BeginAuthorizeReplication` parameter(s) have been changed from `(context.Context, string, string, string, string, AuthorizeRequest, *VolumesBeginAuthorizeReplicationOptions)` to `(context.Context, string, string, string, string, AuthorizeRequest, *VolumesClientBeginAuthorizeReplicationOptions)`
+- Function `*VolumesClient.BeginAuthorizeReplication` return value(s) have been changed from `(VolumesAuthorizeReplicationPollerResponse, error)` to `(VolumesClientAuthorizeReplicationPollerResponse, error)`
+- Function `*VaultsClient.List` parameter(s) have been changed from `(context.Context, string, string, *VaultsListOptions)` to `(context.Context, string, string, *VaultsClientListOptions)`
+- Function `*VaultsClient.List` return value(s) have been changed from `(VaultsListResponse, error)` to `(VaultsClientListResponse, error)`
+- Function `*VolumeGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VolumeGroupsGetOptions)` to `(context.Context, string, string, string, *VolumeGroupsClientGetOptions)`
+- Function `*VolumeGroupsClient.Get` return value(s) have been changed from `(VolumeGroupsGetResponse, error)` to `(VolumeGroupsClientGetResponse, error)`
+- Function `*BackupPoliciesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, BackupPolicy, *BackupPoliciesBeginCreateOptions)` to `(context.Context, string, string, string, BackupPolicy, *BackupPoliciesClientBeginCreateOptions)`
+- Function `*BackupPoliciesClient.BeginCreate` return value(s) have been changed from `(BackupPoliciesCreatePollerResponse, error)` to `(BackupPoliciesClientCreatePollerResponse, error)`
+- Function `*AccountBackupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AccountBackupsGetOptions)` to `(context.Context, string, string, string, *AccountBackupsClientGetOptions)`
+- Function `*AccountBackupsClient.Get` return value(s) have been changed from `(AccountBackupsGetResponse, error)` to `(AccountBackupsClientGetResponse, error)`
+- Function `*PoolsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PoolsGetOptions)` to `(context.Context, string, string, string, *PoolsClientGetOptions)`
+- Function `*PoolsClient.Get` return value(s) have been changed from `(PoolsGetResponse, error)` to `(PoolsClientGetResponse, error)`
+- Function `*SnapshotPoliciesClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, SnapshotPolicy, *SnapshotPoliciesCreateOptions)` to `(context.Context, string, string, string, SnapshotPolicy, *SnapshotPoliciesClientCreateOptions)`
+- Function `*SnapshotPoliciesClient.Create` return value(s) have been changed from `(SnapshotPoliciesCreateResponse, error)` to `(SnapshotPoliciesClientCreateResponse, error)`
+- Function `*PoolsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CapacityPoolPatch, *PoolsBeginUpdateOptions)` to `(context.Context, string, string, string, CapacityPoolPatch, *PoolsClientBeginUpdateOptions)`
+- Function `*PoolsClient.BeginUpdate` return value(s) have been changed from `(PoolsUpdatePollerResponse, error)` to `(PoolsClientUpdatePollerResponse, error)`
+- Function `*VolumesClient.BeginDeleteReplication` parameter(s) have been changed from `(context.Context, string, string, string, string, *VolumesBeginDeleteReplicationOptions)` to `(context.Context, string, string, string, string, *VolumesClientBeginDeleteReplicationOptions)`
+- Function `*VolumesClient.BeginDeleteReplication` return value(s) have been changed from `(VolumesDeleteReplicationPollerResponse, error)` to `(VolumesClientDeleteReplicationPollerResponse, error)`
+- Function `*VolumesClient.BeginRevert` parameter(s) have been changed from `(context.Context, string, string, string, string, VolumeRevert, *VolumesBeginRevertOptions)` to `(context.Context, string, string, string, string, VolumeRevert, *VolumesClientBeginRevertOptions)`
+- Function `*VolumesClient.BeginRevert` return value(s) have been changed from `(VolumesRevertPollerResponse, error)` to `(VolumesClientRevertPollerResponse, error)`
+- Function `*VolumesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, Volume, *VolumesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, Volume, *VolumesClientBeginCreateOrUpdateOptions)`
+- Function `*VolumesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VolumesCreateOrUpdatePollerResponse, error)` to `(VolumesClientCreateOrUpdatePollerResponse, error)`
+- Function `*VolumesClient.BeginBreakReplication` parameter(s) have been changed from `(context.Context, string, string, string, string, *VolumesBeginBreakReplicationOptions)` to `(context.Context, string, string, string, string, *VolumesClientBeginBreakReplicationOptions)`
+- Function `*VolumesClient.BeginBreakReplication` return value(s) have been changed from `(VolumesBreakReplicationPollerResponse, error)` to `(VolumesClientBreakReplicationPollerResponse, error)`
+- Function `*BackupPoliciesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, BackupPolicyPatch, *BackupPoliciesBeginUpdateOptions)` to `(context.Context, string, string, string, BackupPolicyPatch, *BackupPoliciesClientBeginUpdateOptions)`
+- Function `*BackupPoliciesClient.BeginUpdate` return value(s) have been changed from `(BackupPoliciesUpdatePollerResponse, error)` to `(BackupPoliciesClientUpdatePollerResponse, error)`
+- Function `*AccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AccountsGetOptions)` to `(context.Context, string, string, *AccountsClientGetOptions)`
+- Function `*AccountsClient.Get` return value(s) have been changed from `(AccountsGetResponse, error)` to `(AccountsClientGetResponse, error)`
+- Function `*BackupPoliciesClient.List` parameter(s) have been changed from `(context.Context, string, string, *BackupPoliciesListOptions)` to `(context.Context, string, string, *BackupPoliciesClientListOptions)`
+- Function `*BackupPoliciesClient.List` return value(s) have been changed from `(BackupPoliciesListResponse, error)` to `(BackupPoliciesClientListResponse, error)`
+- Function `*VolumesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, VolumePatch, *VolumesBeginUpdateOptions)` to `(context.Context, string, string, string, string, VolumePatch, *VolumesClientBeginUpdateOptions)`
+- Function `*VolumesClient.BeginUpdate` return value(s) have been changed from `(VolumesUpdatePollerResponse, error)` to `(VolumesClientUpdatePollerResponse, error)`
+- Function `*BackupsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *BackupsBeginUpdateOptions)` to `(context.Context, string, string, string, string, string, *BackupsClientBeginUpdateOptions)`
+- Function `*BackupsClient.BeginUpdate` return value(s) have been changed from `(BackupsUpdatePollerResponse, error)` to `(BackupsClientUpdatePollerResponse, error)`
+- Function `*VolumesClient.BeginResyncReplication` parameter(s) have been changed from `(context.Context, string, string, string, string, *VolumesBeginResyncReplicationOptions)` to `(context.Context, string, string, string, string, *VolumesClientBeginResyncReplicationOptions)`
+- Function `*VolumesClient.BeginResyncReplication` return value(s) have been changed from `(VolumesResyncReplicationPollerResponse, error)` to `(VolumesClientResyncReplicationPollerResponse, error)`
+- Function `*BackupsClient.GetVolumeRestoreStatus` parameter(s) have been changed from `(context.Context, string, string, string, string, *BackupsGetVolumeRestoreStatusOptions)` to `(context.Context, string, string, string, string, *BackupsClientGetVolumeRestoreStatusOptions)`
+- Function `*BackupsClient.GetVolumeRestoreStatus` return value(s) have been changed from `(BackupsGetVolumeRestoreStatusResponse, error)` to `(BackupsClientGetVolumeRestoreStatusResponse, error)`
+- Function `*PoolsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CapacityPool, *PoolsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, CapacityPool, *PoolsClientBeginCreateOrUpdateOptions)`
+- Function `*PoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PoolsCreateOrUpdatePollerResponse, error)` to `(PoolsClientCreateOrUpdatePollerResponse, error)`
+- Function `*AccountsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, NetAppAccountPatch, *AccountsBeginUpdateOptions)` to `(context.Context, string, string, AccountPatch, *AccountsClientBeginUpdateOptions)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsUpdatePollerResponse, error)` to `(AccountsClientUpdatePollerResponse, error)`
+- Function `*AccountsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *AccountsBeginDeleteOptions)` to `(context.Context, string, string, *AccountsClientBeginDeleteOptions)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsDeletePollerResponse, error)` to `(AccountsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*AccountsClient.ListBySubscription` parameter(s) have been changed from `(*AccountsListBySubscriptionOptions)` to `(*AccountsClientListBySubscriptionOptions)`
+- Function `*AccountsClient.ListBySubscription` return value(s) have been changed from `(*AccountsListBySubscriptionPager)` to `(*AccountsClientListBySubscriptionPager)`
+- Function `*SnapshotPoliciesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *SnapshotPoliciesBeginDeleteOptions)` to `(context.Context, string, string, string, *SnapshotPoliciesClientBeginDeleteOptions)`
+- Function `*SnapshotPoliciesClient.BeginDelete` return value(s) have been changed from `(SnapshotPoliciesDeletePollerResponse, error)` to `(SnapshotPoliciesClientDeletePollerResponse, error)`
+- Function `*AccountsClient.List` parameter(s) have been changed from `(string, *AccountsListOptions)` to `(string, *AccountsClientListOptions)`
+- Function `*AccountsClient.List` return value(s) have been changed from `(*AccountsListPager)` to `(*AccountsClientListPager)`
+- Function `*SnapshotPoliciesClient.List` parameter(s) have been changed from `(context.Context, string, string, *SnapshotPoliciesListOptions)` to `(context.Context, string, string, *SnapshotPoliciesClientListOptions)`
+- Function `*SnapshotPoliciesClient.List` return value(s) have been changed from `(SnapshotPoliciesListResponse, error)` to `(SnapshotPoliciesClientListResponse, error)`
+- Function `*PoolsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PoolsBeginDeleteOptions)` to `(context.Context, string, string, string, *PoolsClientBeginDeleteOptions)`
+- Function `*PoolsClient.BeginDelete` return value(s) have been changed from `(PoolsDeletePollerResponse, error)` to `(PoolsClientDeletePollerResponse, error)`
+- Function `*VolumesClient.BeginReInitializeReplication` parameter(s) have been changed from `(context.Context, string, string, string, string, *VolumesBeginReInitializeReplicationOptions)` to `(context.Context, string, string, string, string, *VolumesClientBeginReInitializeReplicationOptions)`
+- Function `*VolumesClient.BeginReInitializeReplication` return value(s) have been changed from `(VolumesReInitializeReplicationPollerResponse, error)` to `(VolumesClientReInitializeReplicationPollerResponse, error)`
+- Function `*BackupsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, Backup, *BackupsBeginCreateOptions)` to `(context.Context, string, string, string, string, string, Backup, *BackupsClientBeginCreateOptions)`
+- Function `*BackupsClient.BeginCreate` return value(s) have been changed from `(BackupsCreatePollerResponse, error)` to `(BackupsClientCreatePollerResponse, error)`
+- Function `*AccountBackupsClient.List` parameter(s) have been changed from `(context.Context, string, string, *AccountBackupsListOptions)` to `(context.Context, string, string, *AccountBackupsClientListOptions)`
+- Function `*AccountBackupsClient.List` return value(s) have been changed from `(AccountBackupsListResponse, error)` to `(AccountBackupsClientListResponse, error)`
+- Function `*PoolsClient.List` parameter(s) have been changed from `(string, string, *PoolsListOptions)` to `(string, string, *PoolsClientListOptions)`
+- Function `*PoolsClient.List` return value(s) have been changed from `(*PoolsListPager)` to `(*PoolsClientListPager)`
+- Function `*BackupPoliciesCreatePoller.Done` has been removed
+- Function `BackupsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `BackupPoliciesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsDeletePoller.Poll` has been removed
+- Function `*VolumesResyncReplicationPoller.Poll` has been removed
+- Function `NetAppAccountList.MarshalJSON` has been removed
+- Function `VolumesReInitializeReplicationPollerResponse.PollUntilDone` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*AccountsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VolumesPoolChangePoller.ResumeToken` has been removed
+- Function `*VolumesBreakReplicationPoller.Poll` has been removed
+- Function `*BackupPoliciesDeletePoller.Poll` has been removed
+- Function `*VolumesDeletePoller.Done` has been removed
+- Function `*NetAppResourceClient.CheckQuotaAvailability` has been removed
+- Function `*VolumeGroupsCreatePoller.Poll` has been removed
+- Function `*VolumesRevertPoller.Poll` has been removed
+- Function `*VolumesResyncReplicationPoller.FinalResponse` has been removed
+- Function `AccountBackupsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountBackupsDeletePollerResponse.Resume` has been removed
+- Function `PoolsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsUpdatePollerResponse.Resume` has been removed
+- Function `*VolumesPoolChangePoller.Poll` has been removed
+- Function `*VolumesResyncReplicationPoller.ResumeToken` has been removed
+- Function `*SnapshotsCreatePoller.ResumeToken` has been removed
+- Function `*VolumesBreakReplicationPoller.FinalResponse` has been removed
+- Function `*VolumesDeleteReplicationPoller.Poll` has been removed
+- Function `*VolumesBreakReplicationPoller.Done` has been removed
+- Function `VolumesRevertPollerResponse.PollUntilDone` has been removed
+- Function `BackupsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*BackupsUpdatePoller.Poll` has been removed
+- Function `*VolumesReInitializeReplicationPoller.FinalResponse` has been removed
+- Function `*AccountsDeletePollerResponse.Resume` has been removed
+- Function `*BackupsCreatePoller.ResumeToken` has been removed
+- Function `SnapshotsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VolumesReInitializeReplicationPoller.Done` has been removed
+- Function `*SnapshotPoliciesDeletePoller.ResumeToken` has been removed
+- Function `*VolumesUpdatePoller.ResumeToken` has been removed
+- Function `*SnapshotsCreatePollerResponse.Resume` has been removed
+- Function `*SnapshotPoliciesDeletePoller.FinalResponse` has been removed
+- Function `SnapshotsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PoolsUpdatePoller.FinalResponse` has been removed
+- Function `NewNetAppResourceClient` has been removed
+- Function `*AccountsDeletePoller.FinalResponse` has been removed
+- Function `*VolumeGroupsDeletePoller.Done` has been removed
+- Function `*BackupPoliciesUpdatePoller.ResumeToken` has been removed
+- Function `SnapshotsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*BackupPoliciesCreatePoller.FinalResponse` has been removed
+- Function `*SnapshotPoliciesUpdatePollerResponse.Resume` has been removed
+- Function `SnapshotPoliciesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*BackupPoliciesCreatePollerResponse.Resume` has been removed
+- Function `*VolumesPoolChangePoller.FinalResponse` has been removed
+- Function `*BackupsUpdatePoller.ResumeToken` has been removed
+- Function `*VolumesRevertPoller.Done` has been removed
+- Function `*SnapshotsDeletePoller.Poll` has been removed
+- Function `*PoolsDeletePoller.FinalResponse` has been removed
+- Function `*AccountBackupsDeletePoller.Done` has been removed
+- Function `*VolumesAuthorizeReplicationPoller.ResumeToken` has been removed
+- Function `*VolumeGroupsCreatePoller.Done` has been removed
+- Function `*PoolsCreateOrUpdatePoller.Done` has been removed
+- Function `*SnapshotsCreatePoller.FinalResponse` has been removed
+- Function `*BackupPoliciesCreatePoller.ResumeToken` has been removed
+- Function `*VolumesResyncReplicationPoller.Done` has been removed
+- Function `*BackupsCreatePoller.Poll` has been removed
+- Function `*VolumesResyncReplicationPollerResponse.Resume` has been removed
+- Function `NetAppAccount.MarshalJSON` has been removed
+- Function `*AccountsCreateOrUpdatePoller.Done` has been removed
+- Function `*VolumesBreakReplicationPollerResponse.Resume` has been removed
+- Function `*VolumesAuthorizeReplicationPoller.Poll` has been removed
+- Function `*VolumesUpdatePollerResponse.Resume` has been removed
+- Function `*PoolsDeletePoller.ResumeToken` has been removed
+- Function `*VolumesUpdatePoller.Poll` has been removed
+- Function `*SnapshotsCreatePoller.Done` has been removed
+- Function `*AccountsDeletePoller.Done` has been removed
+- Function `*VolumeGroupsCreatePoller.FinalResponse` has been removed
+- Function `*AccountsCreateOrUpdatePoller.Poll` has been removed
+- Function `*VolumesPoolChangePollerResponse.Resume` has been removed
+- Function `*PoolsDeletePollerResponse.Resume` has been removed
+- Function `*BackupsDeletePoller.FinalResponse` has been removed
+- Function `*PoolsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VolumesAuthorizeReplicationPollerResponse.PollUntilDone` has been removed
+- Function `*VolumesDeleteReplicationPoller.FinalResponse` has been removed
+- Function `*SnapshotsCreatePoller.Poll` has been removed
+- Function `*SnapshotPoliciesDeletePollerResponse.Resume` has been removed
+- Function `*VolumesAuthorizeReplicationPollerResponse.Resume` has been removed
+- Function `*VolumesPoolChangePoller.Done` has been removed
+- Function `*VolumeGroupsDeletePoller.FinalResponse` has been removed
+- Function `*VolumesCreateOrUpdatePoller.Done` has been removed
+- Function `*PoolsUpdatePoller.Poll` has been removed
+- Function `*BackupsCreatePoller.FinalResponse` has been removed
+- Function `*BackupPoliciesUpdatePoller.FinalResponse` has been removed
+- Function `*BackupsUpdatePollerResponse.Resume` has been removed
+- Function `*PoolsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `VolumesResyncReplicationPollerResponse.PollUntilDone` has been removed
+- Function `*NetAppResourceQuotaLimitsClient.Get` has been removed
+- Function `*SnapshotsUpdatePoller.Poll` has been removed
+- Function `*VolumesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PoolsDeletePoller.Done` has been removed
+- Function `*VolumesListPager.PageResponse` has been removed
+- Function `*NetAppResourceClient.CheckFilePathAvailability` has been removed
+- Function `*AccountsUpdatePoller.Done` has been removed
+- Function `AccountsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VolumesDeletePoller.ResumeToken` has been removed
+- Function `*AccountsDeletePoller.ResumeToken` has been removed
+- Function `*BackupsCreatePoller.Done` has been removed
+- Function `*PoolsListPager.NextPage` has been removed
+- Function `*VolumesAuthorizeReplicationPoller.FinalResponse` has been removed
+- Function `*BackupPoliciesUpdatePoller.Poll` has been removed
+- Function `VolumesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PoolsListPager.PageResponse` has been removed
+- Function `*VolumesListPager.NextPage` has been removed
+- Function `*SnapshotsDeletePoller.Done` has been removed
+- Function `*AccountsUpdatePollerResponse.Resume` has been removed
+- Function `*BackupPoliciesUpdatePoller.Done` has been removed
+- Function `*BackupPoliciesCreatePoller.Poll` has been removed
+- Function `*AccountsListBySubscriptionPager.NextPage` has been removed
+- Function `VolumesBreakReplicationPollerResponse.PollUntilDone` has been removed
+- Function `*VolumeGroupsCreatePollerResponse.Resume` has been removed
+- Function `BackupPoliciesCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsListPager.PageResponse` has been removed
+- Function `*VolumesAuthorizeReplicationPoller.Done` has been removed
+- Function `*AccountBackupsDeletePoller.Poll` has been removed
+- Function `*VolumesDeletePoller.FinalResponse` has been removed
+- Function `*BackupsDeletePoller.Done` has been removed
+- Function `*SnapshotsDeletePollerResponse.Resume` has been removed
+- Function `*VolumesDeleteReplicationPoller.ResumeToken` has been removed
+- Function `*VolumesRevertPollerResponse.Resume` has been removed
+- Function `*SnapshotsDeletePoller.ResumeToken` has been removed
+- Function `*AccountsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*BackupsUpdatePoller.Done` has been removed
+- Function `*AccountsUpdatePoller.ResumeToken` has been removed
+- Function `*AccountBackupsDeletePoller.ResumeToken` has been removed
+- Function `*PoolsUpdatePoller.Done` has been removed
+- Function `PoolsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsDeletePoller.FinalResponse` has been removed
+- Function `VolumeGroupsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsListBySubscriptionPager.Err` has been removed
+- Function `*BackupPoliciesUpdatePollerResponse.Resume` has been removed
+- Function `*SnapshotPoliciesUpdatePoller.FinalResponse` has been removed
+- Function `*SnapshotPoliciesDeletePoller.Poll` has been removed
+- Function `*VolumeGroupsDeletePoller.Poll` has been removed
+- Function `*SnapshotsUpdatePoller.ResumeToken` has been removed
+- Function `VolumesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VolumesReInitializeReplicationPoller.ResumeToken` has been removed
+- Function `*SnapshotPoliciesUpdatePoller.Poll` has been removed
+- Function `*BackupPoliciesDeletePoller.FinalResponse` has been removed
+- Function `*VolumesListPager.Err` has been removed
+- Function `*PoolsCreateOrUpdatePoller.Poll` has been removed
+- Function `*AccountsListBySubscriptionPager.PageResponse` has been removed
+- Function `VolumesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VolumeGroupsDeletePoller.ResumeToken` has been removed
+- Function `*VolumesDeletePoller.Poll` has been removed
+- Function `*SnapshotPoliciesDeletePoller.Done` has been removed
+- Function `VolumesDeleteReplicationPollerResponse.PollUntilDone` has been removed
+- Function `*BackupPoliciesDeletePoller.Done` has been removed
+- Function `*BackupsCreatePollerResponse.Resume` has been removed
+- Function `PoolsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VolumesUpdatePoller.Done` has been removed
+- Function `*VolumesDeletePollerResponse.Resume` has been removed
+- Function `*AccountsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VolumeGroupsDeletePollerResponse.Resume` has been removed
+- Function `*VolumesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VolumeGroupsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VolumesCreateOrUpdatePoller.Poll` has been removed
+- Function `*VolumesDeleteReplicationPoller.Done` has been removed
+- Function `*AccountsListPager.NextPage` has been removed
+- Function `*BackupPoliciesDeletePoller.ResumeToken` has been removed
+- Function `*PoolsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*NetAppResourceQuotaLimitsClient.List` has been removed
+- Function `*AccountsUpdatePoller.FinalResponse` has been removed
+- Function `*AccountBackupsDeletePoller.FinalResponse` has been removed
+- Function `*PoolsUpdatePollerResponse.Resume` has been removed
+- Function `*PoolsUpdatePoller.ResumeToken` has been removed
+- Function `*BackupsDeletePoller.Poll` has been removed
+- Function `NewNetAppResourceQuotaLimitsClient` has been removed
+- Function `*BackupPoliciesDeletePollerResponse.Resume` has been removed
+- Function `BackupsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*VolumesBreakReplicationPoller.ResumeToken` has been removed
+- Function `*VolumesRevertPoller.FinalResponse` has been removed
+- Function `*VolumesReInitializeReplicationPollerResponse.Resume` has been removed
+- Function `*PoolsDeletePoller.Poll` has been removed
+- Function `*VolumesUpdatePoller.FinalResponse` has been removed
+- Function `AccountsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BackupsUpdatePoller.FinalResponse` has been removed
+- Function `VolumesPoolChangePollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsUpdatePoller.FinalResponse` has been removed
+- Function `*VolumesReInitializeReplicationPoller.Poll` has been removed
+- Function `*SnapshotPoliciesUpdatePoller.Done` has been removed
+- Function `*PoolsListPager.Err` has been removed
+- Function `BackupPoliciesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VolumesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VolumesDeleteReplicationPollerResponse.Resume` has been removed
+- Function `*VolumeGroupsCreatePoller.ResumeToken` has been removed
+- Function `*NetAppResourceClient.CheckNameAvailability` has been removed
+- Function `*AccountsListPager.Err` has been removed
+- Function `*SnapshotPoliciesUpdatePoller.ResumeToken` has been removed
+- Function `*VolumesRevertPoller.ResumeToken` has been removed
+- Function `*AccountsUpdatePoller.Poll` has been removed
+- Function `NetAppAccountPatch.MarshalJSON` has been removed
+- Function `SnapshotPoliciesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsUpdatePoller.Done` has been removed
+- Function `*BackupsDeletePoller.ResumeToken` has been removed
+- Function `*BackupsDeletePollerResponse.Resume` has been removed
+- Function `AccountsDeletePollerResponse.PollUntilDone` has been removed
+- Struct `AccountBackupsBeginDeleteOptions` has been removed
+- Struct `AccountBackupsDeletePoller` has been removed
+- Struct `AccountBackupsDeletePollerResponse` has been removed
+- Struct `AccountBackupsDeleteResponse` has been removed
+- Struct `AccountBackupsGetOptions` has been removed
+- Struct `AccountBackupsGetResponse` has been removed
+- Struct `AccountBackupsGetResult` has been removed
+- Struct `AccountBackupsListOptions` has been removed
+- Struct `AccountBackupsListResponse` has been removed
+- Struct `AccountBackupsListResult` has been removed
+- Struct `AccountsBeginCreateOrUpdateOptions` has been removed
+- Struct `AccountsBeginDeleteOptions` has been removed
+- Struct `AccountsBeginUpdateOptions` has been removed
+- Struct `AccountsCreateOrUpdatePoller` has been removed
+- Struct `AccountsCreateOrUpdatePollerResponse` has been removed
+- Struct `AccountsCreateOrUpdateResponse` has been removed
+- Struct `AccountsCreateOrUpdateResult` has been removed
+- Struct `AccountsDeletePoller` has been removed
+- Struct `AccountsDeletePollerResponse` has been removed
+- Struct `AccountsDeleteResponse` has been removed
+- Struct `AccountsGetOptions` has been removed
+- Struct `AccountsGetResponse` has been removed
+- Struct `AccountsGetResult` has been removed
+- Struct `AccountsListBySubscriptionOptions` has been removed
+- Struct `AccountsListBySubscriptionPager` has been removed
+- Struct `AccountsListBySubscriptionResponse` has been removed
+- Struct `AccountsListBySubscriptionResult` has been removed
+- Struct `AccountsListOptions` has been removed
+- Struct `AccountsListPager` has been removed
+- Struct `AccountsListResponse` has been removed
+- Struct `AccountsListResult` has been removed
+- Struct `AccountsUpdatePoller` has been removed
+- Struct `AccountsUpdatePollerResponse` has been removed
+- Struct `AccountsUpdateResponse` has been removed
+- Struct `AccountsUpdateResult` has been removed
+- Struct `BackupPoliciesBeginCreateOptions` has been removed
+- Struct `BackupPoliciesBeginDeleteOptions` has been removed
+- Struct `BackupPoliciesBeginUpdateOptions` has been removed
+- Struct `BackupPoliciesCreatePoller` has been removed
+- Struct `BackupPoliciesCreatePollerResponse` has been removed
+- Struct `BackupPoliciesCreateResponse` has been removed
+- Struct `BackupPoliciesCreateResult` has been removed
+- Struct `BackupPoliciesDeletePoller` has been removed
+- Struct `BackupPoliciesDeletePollerResponse` has been removed
+- Struct `BackupPoliciesDeleteResponse` has been removed
+- Struct `BackupPoliciesGetOptions` has been removed
+- Struct `BackupPoliciesGetResponse` has been removed
+- Struct `BackupPoliciesGetResult` has been removed
+- Struct `BackupPoliciesListOptions` has been removed
+- Struct `BackupPoliciesListResponse` has been removed
+- Struct `BackupPoliciesListResult` has been removed
+- Struct `BackupPoliciesUpdatePoller` has been removed
+- Struct `BackupPoliciesUpdatePollerResponse` has been removed
+- Struct `BackupPoliciesUpdateResponse` has been removed
+- Struct `BackupPoliciesUpdateResult` has been removed
+- Struct `BackupsBeginCreateOptions` has been removed
+- Struct `BackupsBeginDeleteOptions` has been removed
+- Struct `BackupsBeginUpdateOptions` has been removed
+- Struct `BackupsCreatePoller` has been removed
+- Struct `BackupsCreatePollerResponse` has been removed
+- Struct `BackupsCreateResponse` has been removed
+- Struct `BackupsCreateResult` has been removed
+- Struct `BackupsDeletePoller` has been removed
+- Struct `BackupsDeletePollerResponse` has been removed
+- Struct `BackupsDeleteResponse` has been removed
+- Struct `BackupsGetOptions` has been removed
+- Struct `BackupsGetResponse` has been removed
+- Struct `BackupsGetResult` has been removed
+- Struct `BackupsGetStatusOptions` has been removed
+- Struct `BackupsGetStatusResponse` has been removed
+- Struct `BackupsGetStatusResult` has been removed
+- Struct `BackupsGetVolumeRestoreStatusOptions` has been removed
+- Struct `BackupsGetVolumeRestoreStatusResponse` has been removed
+- Struct `BackupsGetVolumeRestoreStatusResult` has been removed
+- Struct `BackupsListOptions` has been removed
+- Struct `BackupsListResponse` has been removed
+- Struct `BackupsListResult` has been removed
+- Struct `BackupsUpdatePoller` has been removed
+- Struct `BackupsUpdatePollerResponse` has been removed
+- Struct `BackupsUpdateResponse` has been removed
+- Struct `BackupsUpdateResult` has been removed
+- Struct `NetAppAccount` has been removed
+- Struct `NetAppAccountList` has been removed
+- Struct `NetAppAccountPatch` has been removed
+- Struct `NetAppResourceCheckFilePathAvailabilityOptions` has been removed
+- Struct `NetAppResourceCheckFilePathAvailabilityResponse` has been removed
+- Struct `NetAppResourceCheckFilePathAvailabilityResult` has been removed
+- Struct `NetAppResourceCheckNameAvailabilityOptions` has been removed
+- Struct `NetAppResourceCheckNameAvailabilityResponse` has been removed
+- Struct `NetAppResourceCheckNameAvailabilityResult` has been removed
+- Struct `NetAppResourceCheckQuotaAvailabilityOptions` has been removed
+- Struct `NetAppResourceCheckQuotaAvailabilityResponse` has been removed
+- Struct `NetAppResourceCheckQuotaAvailabilityResult` has been removed
+- Struct `NetAppResourceClient` has been removed
+- Struct `NetAppResourceQuotaLimitsClient` has been removed
+- Struct `NetAppResourceQuotaLimitsGetOptions` has been removed
+- Struct `NetAppResourceQuotaLimitsGetResponse` has been removed
+- Struct `NetAppResourceQuotaLimitsGetResult` has been removed
+- Struct `NetAppResourceQuotaLimitsListOptions` has been removed
+- Struct `NetAppResourceQuotaLimitsListResponse` has been removed
+- Struct `NetAppResourceQuotaLimitsListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PoolsBeginCreateOrUpdateOptions` has been removed
+- Struct `PoolsBeginDeleteOptions` has been removed
+- Struct `PoolsBeginUpdateOptions` has been removed
+- Struct `PoolsCreateOrUpdatePoller` has been removed
+- Struct `PoolsCreateOrUpdatePollerResponse` has been removed
+- Struct `PoolsCreateOrUpdateResponse` has been removed
+- Struct `PoolsCreateOrUpdateResult` has been removed
+- Struct `PoolsDeletePoller` has been removed
+- Struct `PoolsDeletePollerResponse` has been removed
+- Struct `PoolsDeleteResponse` has been removed
+- Struct `PoolsGetOptions` has been removed
+- Struct `PoolsGetResponse` has been removed
+- Struct `PoolsGetResult` has been removed
+- Struct `PoolsListOptions` has been removed
+- Struct `PoolsListPager` has been removed
+- Struct `PoolsListResponse` has been removed
+- Struct `PoolsListResult` has been removed
+- Struct `PoolsUpdatePoller` has been removed
+- Struct `PoolsUpdatePollerResponse` has been removed
+- Struct `PoolsUpdateResponse` has been removed
+- Struct `PoolsUpdateResult` has been removed
+- Struct `SnapshotPoliciesBeginDeleteOptions` has been removed
+- Struct `SnapshotPoliciesBeginUpdateOptions` has been removed
+- Struct `SnapshotPoliciesCreateOptions` has been removed
+- Struct `SnapshotPoliciesCreateResponse` has been removed
+- Struct `SnapshotPoliciesCreateResult` has been removed
+- Struct `SnapshotPoliciesDeletePoller` has been removed
+- Struct `SnapshotPoliciesDeletePollerResponse` has been removed
+- Struct `SnapshotPoliciesDeleteResponse` has been removed
+- Struct `SnapshotPoliciesGetOptions` has been removed
+- Struct `SnapshotPoliciesGetResponse` has been removed
+- Struct `SnapshotPoliciesGetResult` has been removed
+- Struct `SnapshotPoliciesListOptions` has been removed
+- Struct `SnapshotPoliciesListResponse` has been removed
+- Struct `SnapshotPoliciesListResult` has been removed
+- Struct `SnapshotPoliciesListVolumesOptions` has been removed
+- Struct `SnapshotPoliciesListVolumesResponse` has been removed
+- Struct `SnapshotPoliciesListVolumesResult` has been removed
+- Struct `SnapshotPoliciesUpdatePoller` has been removed
+- Struct `SnapshotPoliciesUpdatePollerResponse` has been removed
+- Struct `SnapshotPoliciesUpdateResponse` has been removed
+- Struct `SnapshotPoliciesUpdateResult` has been removed
+- Struct `SnapshotsBeginCreateOptions` has been removed
+- Struct `SnapshotsBeginDeleteOptions` has been removed
+- Struct `SnapshotsBeginUpdateOptions` has been removed
+- Struct `SnapshotsCreatePoller` has been removed
+- Struct `SnapshotsCreatePollerResponse` has been removed
+- Struct `SnapshotsCreateResponse` has been removed
+- Struct `SnapshotsCreateResult` has been removed
+- Struct `SnapshotsDeletePoller` has been removed
+- Struct `SnapshotsDeletePollerResponse` has been removed
+- Struct `SnapshotsDeleteResponse` has been removed
+- Struct `SnapshotsGetOptions` has been removed
+- Struct `SnapshotsGetResponse` has been removed
+- Struct `SnapshotsGetResult` has been removed
+- Struct `SnapshotsListOptions` has been removed
+- Struct `SnapshotsListResponse` has been removed
+- Struct `SnapshotsListResult` has been removed
+- Struct `SnapshotsUpdatePoller` has been removed
+- Struct `SnapshotsUpdatePollerResponse` has been removed
+- Struct `SnapshotsUpdateResponse` has been removed
+- Struct `SnapshotsUpdateResult` has been removed
+- Struct `VaultsListOptions` has been removed
+- Struct `VaultsListResponse` has been removed
+- Struct `VaultsListResult` has been removed
+- Struct `VolumeGroupsBeginCreateOptions` has been removed
+- Struct `VolumeGroupsBeginDeleteOptions` has been removed
+- Struct `VolumeGroupsCreatePoller` has been removed
+- Struct `VolumeGroupsCreatePollerResponse` has been removed
+- Struct `VolumeGroupsCreateResponse` has been removed
+- Struct `VolumeGroupsCreateResult` has been removed
+- Struct `VolumeGroupsDeletePoller` has been removed
+- Struct `VolumeGroupsDeletePollerResponse` has been removed
+- Struct `VolumeGroupsDeleteResponse` has been removed
+- Struct `VolumeGroupsGetOptions` has been removed
+- Struct `VolumeGroupsGetResponse` has been removed
+- Struct `VolumeGroupsGetResult` has been removed
+- Struct `VolumeGroupsListByNetAppAccountOptions` has been removed
+- Struct `VolumeGroupsListByNetAppAccountResponse` has been removed
+- Struct `VolumeGroupsListByNetAppAccountResult` has been removed
+- Struct `VolumesAuthorizeReplicationPoller` has been removed
+- Struct `VolumesAuthorizeReplicationPollerResponse` has been removed
+- Struct `VolumesAuthorizeReplicationResponse` has been removed
+- Struct `VolumesBeginAuthorizeReplicationOptions` has been removed
+- Struct `VolumesBeginBreakReplicationOptions` has been removed
+- Struct `VolumesBeginCreateOrUpdateOptions` has been removed
+- Struct `VolumesBeginDeleteOptions` has been removed
+- Struct `VolumesBeginDeleteReplicationOptions` has been removed
+- Struct `VolumesBeginPoolChangeOptions` has been removed
+- Struct `VolumesBeginReInitializeReplicationOptions` has been removed
+- Struct `VolumesBeginResyncReplicationOptions` has been removed
+- Struct `VolumesBeginRevertOptions` has been removed
+- Struct `VolumesBeginUpdateOptions` has been removed
+- Struct `VolumesBreakReplicationPoller` has been removed
+- Struct `VolumesBreakReplicationPollerResponse` has been removed
+- Struct `VolumesBreakReplicationResponse` has been removed
+- Struct `VolumesCreateOrUpdatePoller` has been removed
+- Struct `VolumesCreateOrUpdatePollerResponse` has been removed
+- Struct `VolumesCreateOrUpdateResponse` has been removed
+- Struct `VolumesCreateOrUpdateResult` has been removed
+- Struct `VolumesDeletePoller` has been removed
+- Struct `VolumesDeletePollerResponse` has been removed
+- Struct `VolumesDeleteReplicationPoller` has been removed
+- Struct `VolumesDeleteReplicationPollerResponse` has been removed
+- Struct `VolumesDeleteReplicationResponse` has been removed
+- Struct `VolumesDeleteResponse` has been removed
+- Struct `VolumesGetOptions` has been removed
+- Struct `VolumesGetResponse` has been removed
+- Struct `VolumesGetResult` has been removed
+- Struct `VolumesListOptions` has been removed
+- Struct `VolumesListPager` has been removed
+- Struct `VolumesListResponse` has been removed
+- Struct `VolumesListResult` has been removed
+- Struct `VolumesPoolChangePoller` has been removed
+- Struct `VolumesPoolChangePollerResponse` has been removed
+- Struct `VolumesPoolChangeResponse` has been removed
+- Struct `VolumesReInitializeReplicationPoller` has been removed
+- Struct `VolumesReInitializeReplicationPollerResponse` has been removed
+- Struct `VolumesReInitializeReplicationResponse` has been removed
+- Struct `VolumesReplicationStatusOptions` has been removed
+- Struct `VolumesReplicationStatusResponse` has been removed
+- Struct `VolumesReplicationStatusResult` has been removed
+- Struct `VolumesResyncReplicationPoller` has been removed
+- Struct `VolumesResyncReplicationPollerResponse` has been removed
+- Struct `VolumesResyncReplicationResponse` has been removed
+- Struct `VolumesRevertPoller` has been removed
+- Struct `VolumesRevertPollerResponse` has been removed
+- Struct `VolumesRevertResponse` has been removed
+- Struct `VolumesUpdatePoller` has been removed
+- Struct `VolumesUpdatePollerResponse` has been removed
+- Struct `VolumesUpdateResponse` has been removed
+- Struct `VolumesUpdateResult` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ProxyResource` of struct `SubscriptionQuotaItem` has been removed
+
+### Features Added
+
+- New function `*PoolsClientDeletePollerResponse.Resume(context.Context, *PoolsClient, string) error`
+- New function `*VolumesClientReInitializeReplicationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientUpdatePoller.FinalResponse(context.Context) (VolumesClientUpdateResponse, error)`
+- New function `*BackupPoliciesClientUpdatePoller.FinalResponse(context.Context) (BackupPoliciesClientUpdateResponse, error)`
+- New function `*BackupsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `AccountPatch.MarshalJSON() ([]byte, error)`
+- New function `*BackupPoliciesClientCreatePollerResponse.Resume(context.Context, *BackupPoliciesClient, string) error`
+- New function `*AccountsClientDeletePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*BackupsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnapshotsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnapshotsClientCreatePoller.Done() bool`
+- New function `*VolumeGroupsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*PoolsClientListPager.PageResponse() PoolsClientListResponse`
+- New function `*PoolsClientCreateOrUpdatePoller.Done() bool`
+- New function `*SnapshotPoliciesClientDeletePollerResponse.Resume(context.Context, *SnapshotPoliciesClient, string) error`
+- New function `*PoolsClientListPager.NextPage(context.Context) bool`
+- New function `*VolumeGroupsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BackupPoliciesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BackupsClientDeletePollerResponse.Resume(context.Context, *BackupsClient, string) error`
+- New function `BackupPoliciesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (BackupPoliciesClientCreateResponse, error)`
+- New function `*AccountsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VolumesClientBreakReplicationPoller.Done() bool`
+- New function `*AccountsClientCreateOrUpdatePoller.FinalResponse(context.Context) (AccountsClientCreateOrUpdateResponse, error)`
+- New function `*AccountsClientUpdatePoller.Done() bool`
+- New function `*AccountBackupsClientDeletePollerResponse.Resume(context.Context, *AccountBackupsClient, string) error`
+- New function `*BackupsClientDeletePoller.Done() bool`
+- New function `VolumesClientResyncReplicationPollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientResyncReplicationResponse, error)`
+- New function `*BackupPoliciesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientPoolChangePollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `*BackupsClientUpdatePoller.Done() bool`
+- New function `*VolumeGroupsClientDeletePoller.FinalResponse(context.Context) (VolumeGroupsClientDeleteResponse, error)`
+- New function `*PoolsClientDeletePoller.Done() bool`
+- New function `*VolumesClientResyncReplicationPoller.Done() bool`
+- New function `*SnapshotsClientUpdatePollerResponse.Resume(context.Context, *SnapshotsClient, string) error`
+- New function `*AccountBackupsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientDeletePoller.FinalResponse(context.Context) (AccountsClientDeleteResponse, error)`
+- New function `*VolumesClientPoolChangePoller.FinalResponse(context.Context) (VolumesClientPoolChangeResponse, error)`
+- New function `*PoolsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VolumesClientBreakReplicationPollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientBreakReplicationResponse, error)`
+- New function `SnapshotsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotsClientCreateResponse, error)`
+- New function `*SnapshotsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*BackupPoliciesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*BackupPoliciesClientCreatePoller.Done() bool`
+- New function `*PoolsClientCreateOrUpdatePollerResponse.Resume(context.Context, *PoolsClient, string) error`
+- New function `*VolumesClientCreateOrUpdatePoller.Done() bool`
+- New function `PoolsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PoolsClientUpdateResponse, error)`
+- New function `*VolumesClientUpdatePollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `VolumesClientRevertPollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientRevertResponse, error)`
+- New function `*BackupPoliciesClientUpdatePoller.Done() bool`
+- New function `NewResourceQuotaLimitsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ResourceQuotaLimitsClient`
+- New function `*AccountsClientListBySubscriptionPager.PageResponse() AccountsClientListBySubscriptionResponse`
+- New function `VolumeGroupsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VolumeGroupsClientDeleteResponse, error)`
+- New function `*VolumesClientBreakReplicationPoller.ResumeToken() (string, error)`
+- New function `*BackupsClientUpdatePollerResponse.Resume(context.Context, *BackupsClient, string) error`
+- New function `*VolumesClientPoolChangePoller.ResumeToken() (string, error)`
+- New function `*VolumeGroupsClientDeletePoller.Done() bool`
+- New function `*VolumesClientPoolChangePoller.Done() bool`
+- New function `*VolumesClientBreakReplicationPollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `*SnapshotsClientUpdatePoller.Done() bool`
+- New function `*AccountsClientDeletePoller.Done() bool`
+- New function `VolumesClientDeleteReplicationPollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientDeleteReplicationResponse, error)`
+- New function `*PoolsClientListPager.Err() error`
+- New function `*AccountsClientListPager.PageResponse() AccountsClientListResponse`
+- New function `BackupsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (BackupsClientDeleteResponse, error)`
+- New function `*AccountsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `AccountsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientUpdateResponse, error)`
+- New function `*SnapshotsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*AccountsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BackupsClientDeletePoller.FinalResponse(context.Context) (BackupsClientDeleteResponse, error)`
+- New function `*VolumesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientListPager.NextPage(context.Context) bool`
+- New function `*SnapshotsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountBackupsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VolumeGroupsClientCreatePoller.Done() bool`
+- New function `*VolumesClientRevertPoller.FinalResponse(context.Context) (VolumesClientRevertResponse, error)`
+- New function `*SnapshotsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `VolumesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientUpdateResponse, error)`
+- New function `*SnapshotsClientUpdatePoller.FinalResponse(context.Context) (SnapshotsClientUpdateResponse, error)`
+- New function `*PoolsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientDeletePollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `*VolumesClientListPager.PageResponse() VolumesClientListResponse`
+- New function `*AccountsClientListBySubscriptionPager.Err() error`
+- New function `*VolumesClientRevertPollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `*SnapshotPoliciesClientDeletePoller.Done() bool`
+- New function `*PoolsClientDeletePoller.FinalResponse(context.Context) (PoolsClientDeleteResponse, error)`
+- New function `*VolumesClientDeleteReplicationPollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `VolumesClientAuthorizeReplicationPollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientAuthorizeReplicationResponse, error)`
+- New function `*BackupsClientCreatePollerResponse.Resume(context.Context, *BackupsClient, string) error`
+- New function `*BackupPoliciesClientDeletePoller.FinalResponse(context.Context) (BackupPoliciesClientDeleteResponse, error)`
+- New function `*VolumesClientListPager.Err() error`
+- New function `*SnapshotsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientDeleteReplicationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BackupPoliciesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientDeletePoller.FinalResponse(context.Context) (VolumesClientDeleteResponse, error)`
+- New function `*SnapshotsClientDeletePoller.Done() bool`
+- New function `*VolumesClientResyncReplicationPollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `*SnapshotsClientDeletePoller.FinalResponse(context.Context) (SnapshotsClientDeleteResponse, error)`
+- New function `*AccountBackupsClientDeletePoller.Done() bool`
+- New function `SnapshotPoliciesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotPoliciesClientDeleteResponse, error)`
+- New function `*BackupPoliciesClientDeletePoller.Done() bool`
+- New function `*SnapshotPoliciesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientReInitializeReplicationPoller.ResumeToken() (string, error)`
+- New function `*AccountBackupsClientDeletePoller.FinalResponse(context.Context) (AccountBackupsClientDeleteResponse, error)`
+- New function `*PoolsClientUpdatePoller.Done() bool`
+- New function `*VolumesClientResyncReplicationPoller.ResumeToken() (string, error)`
+- New function `*VolumeGroupsClientDeletePoller.ResumeToken() (string, error)`
+- New function `NewResourceClient(string, azcore.TokenCredential, *arm.ClientOptions) *ResourceClient`
+- New function `*PoolsClientUpdatePoller.FinalResponse(context.Context) (PoolsClientUpdateResponse, error)`
+- New function `*BackupsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientListPager.Err() error`
+- New function `*VolumesClientRevertPoller.ResumeToken() (string, error)`
+- New function `*BackupPoliciesClientCreatePoller.FinalResponse(context.Context) (BackupPoliciesClientCreateResponse, error)`
+- New function `VolumesClientReInitializeReplicationPollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientReInitializeReplicationResponse, error)`
+- New function `*VolumesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientResyncReplicationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceQuotaLimitsClient.Get(context.Context, string, string, *ResourceQuotaLimitsClientGetOptions) (ResourceQuotaLimitsClientGetResponse, error)`
+- New function `*SnapshotPoliciesClientDeletePoller.FinalResponse(context.Context) (SnapshotPoliciesClientDeleteResponse, error)`
+- New function `*BackupsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SnapshotsClientDeletePollerResponse.Resume(context.Context, *SnapshotsClient, string) error`
+- New function `BackupsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (BackupsClientUpdateResponse, error)`
+- New function `*VolumeGroupsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnapshotPoliciesClientUpdatePoller.FinalResponse(context.Context) (SnapshotPoliciesClientUpdateResponse, error)`
+- New function `*VolumesClientAuthorizeReplicationPoller.Done() bool`
+- New function `*BackupsClientUpdatePoller.FinalResponse(context.Context) (BackupsClientUpdateResponse, error)`
+- New function `*VolumeGroupsClientCreatePollerResponse.Resume(context.Context, *VolumeGroupsClient, string) error`
+- New function `*AccountsClientCreateOrUpdatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `VolumesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientCreateOrUpdateResponse, error)`
+- New function `*AccountsClientUpdatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*VolumesClientDeleteReplicationPoller.FinalResponse(context.Context) (VolumesClientDeleteReplicationResponse, error)`
+- New function `BackupsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (BackupsClientCreateResponse, error)`
+- New function `*BackupsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VolumesClientPoolChangePollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientPoolChangeResponse, error)`
+- New function `*BackupsClientCreatePoller.Done() bool`
+- New function `*VolumesClientAuthorizeReplicationPoller.FinalResponse(context.Context) (VolumesClientAuthorizeReplicationResponse, error)`
+- New function `*VolumesClientResyncReplicationPoller.FinalResponse(context.Context) (VolumesClientResyncReplicationResponse, error)`
+- New function `*VolumesClientBreakReplicationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VolumesClientAuthorizeReplicationPoller.ResumeToken() (string, error)`
+- New function `*AccountsClientDeletePoller.ResumeToken() (string, error)`
+- New function `AccountsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientDeleteResponse, error)`
+- New function `*VolumesClientDeleteReplicationPoller.ResumeToken() (string, error)`
+- New function `*BackupPoliciesClientUpdatePollerResponse.Resume(context.Context, *BackupPoliciesClient, string) error`
+- New function `*PoolsClientUpdatePollerResponse.Resume(context.Context, *PoolsClient, string) error`
+- New function `AccountList.MarshalJSON() ([]byte, error)`
+- New function `*VolumesClientUpdatePoller.Done() bool`
+- New function `*VolumesClientCreateOrUpdatePollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `*VolumesClientReInitializeReplicationPoller.FinalResponse(context.Context) (VolumesClientReInitializeReplicationResponse, error)`
+- New function `*SnapshotPoliciesClientUpdatePollerResponse.Resume(context.Context, *SnapshotPoliciesClient, string) error`
+- New function `*VolumesClientCreateOrUpdatePoller.FinalResponse(context.Context) (VolumesClientCreateOrUpdateResponse, error)`
+- New function `*PoolsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `BackupPoliciesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (BackupPoliciesClientUpdateResponse, error)`
+- New function `*VolumesClientDeleteReplicationPoller.Done() bool`
+- New function `SnapshotsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotsClientUpdateResponse, error)`
+- New function `*BackupsClientCreatePoller.FinalResponse(context.Context) (BackupsClientCreateResponse, error)`
+- New function `*PoolsClientCreateOrUpdatePoller.FinalResponse(context.Context) (PoolsClientCreateOrUpdateResponse, error)`
+- New function `AccountBackupsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountBackupsClientDeleteResponse, error)`
+- New function `PoolsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PoolsClientCreateOrUpdateResponse, error)`
+- New function `*VolumesClientReInitializeReplicationPollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New function `*BackupPoliciesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SnapshotsClientCreatePollerResponse.Resume(context.Context, *SnapshotsClient, string) error`
+- New function `*SnapshotPoliciesClientUpdatePoller.Done() bool`
+- New function `*ResourceQuotaLimitsClient.List(context.Context, string, *ResourceQuotaLimitsClientListOptions) (ResourceQuotaLimitsClientListResponse, error)`
+- New function `*SnapshotsClientCreatePoller.FinalResponse(context.Context) (SnapshotsClientCreateResponse, error)`
+- New function `*BackupPoliciesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*AccountsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VolumesClientAuthorizeReplicationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `AccountsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientCreateOrUpdateResponse, error)`
+- New function `*VolumeGroupsClientDeletePollerResponse.Resume(context.Context, *VolumeGroupsClient, string) error`
+- New function `PoolsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PoolsClientDeleteResponse, error)`
+- New function `SnapshotPoliciesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotPoliciesClientUpdateResponse, error)`
+- New function `*VolumesClientBreakReplicationPoller.FinalResponse(context.Context) (VolumesClientBreakReplicationResponse, error)`
+- New function `*VolumeGroupsClientCreatePoller.FinalResponse(context.Context) (VolumeGroupsClientCreateResponse, error)`
+- New function `*ResourceClient.CheckQuotaAvailability(context.Context, string, QuotaAvailabilityRequest, *ResourceClientCheckQuotaAvailabilityOptions) (ResourceClientCheckQuotaAvailabilityResponse, error)`
+- New function `*PoolsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*BackupsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*BackupPoliciesClientDeletePollerResponse.Resume(context.Context, *BackupPoliciesClient, string) error`
+- New function `*VolumesClientRevertPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnapshotPoliciesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VolumesClientDeletePoller.Done() bool`
+- New function `*ResourceClient.CheckNameAvailability(context.Context, string, ResourceNameAvailabilityRequest, *ResourceClientCheckNameAvailabilityOptions) (ResourceClientCheckNameAvailabilityResponse, error)`
+- New function `SnapshotsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotsClientDeleteResponse, error)`
+- New function `VolumesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VolumesClientDeleteResponse, error)`
+- New function `Account.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientUpdatePoller.FinalResponse(context.Context) (AccountsClientUpdateResponse, error)`
+- New function `*AccountsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*VolumesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VolumesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientReInitializeReplicationPoller.Done() bool`
+- New function `*SnapshotPoliciesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientPoolChangePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VolumeGroupsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (VolumeGroupsClientCreateResponse, error)`
+- New function `*ResourceClient.CheckFilePathAvailability(context.Context, string, FilePathAvailabilityRequest, *ResourceClientCheckFilePathAvailabilityOptions) (ResourceClientCheckFilePathAvailabilityResponse, error)`
+- New function `*VolumesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VolumesClientRevertPoller.Done() bool`
+- New function `*SnapshotPoliciesClientDeletePoller.ResumeToken() (string, error)`
+- New function `BackupPoliciesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (BackupPoliciesClientDeleteResponse, error)`
+- New function `*AccountsClientListPager.NextPage(context.Context) bool`
+- New function `*AccountsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*PoolsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*PoolsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VolumesClientAuthorizeReplicationPollerResponse.Resume(context.Context, *VolumesClient, string) error`
+- New struct `Account`
+- New struct `AccountBackupsClientBeginDeleteOptions`
+- New struct `AccountBackupsClientDeletePoller`
+- New struct `AccountBackupsClientDeletePollerResponse`
+- New struct `AccountBackupsClientDeleteResponse`
+- New struct `AccountBackupsClientGetOptions`
+- New struct `AccountBackupsClientGetResponse`
+- New struct `AccountBackupsClientGetResult`
+- New struct `AccountBackupsClientListOptions`
+- New struct `AccountBackupsClientListResponse`
+- New struct `AccountBackupsClientListResult`
+- New struct `AccountList`
+- New struct `AccountPatch`
+- New struct `AccountsClientBeginCreateOrUpdateOptions`
+- New struct `AccountsClientBeginDeleteOptions`
+- New struct `AccountsClientBeginUpdateOptions`
+- New struct `AccountsClientCreateOrUpdatePoller`
+- New struct `AccountsClientCreateOrUpdatePollerResponse`
+- New struct `AccountsClientCreateOrUpdateResponse`
+- New struct `AccountsClientCreateOrUpdateResult`
+- New struct `AccountsClientDeletePoller`
+- New struct `AccountsClientDeletePollerResponse`
+- New struct `AccountsClientDeleteResponse`
+- New struct `AccountsClientGetOptions`
+- New struct `AccountsClientGetResponse`
+- New struct `AccountsClientGetResult`
+- New struct `AccountsClientListBySubscriptionOptions`
+- New struct `AccountsClientListBySubscriptionPager`
+- New struct `AccountsClientListBySubscriptionResponse`
+- New struct `AccountsClientListBySubscriptionResult`
+- New struct `AccountsClientListOptions`
+- New struct `AccountsClientListPager`
+- New struct `AccountsClientListResponse`
+- New struct `AccountsClientListResult`
+- New struct `AccountsClientUpdatePoller`
+- New struct `AccountsClientUpdatePollerResponse`
+- New struct `AccountsClientUpdateResponse`
+- New struct `AccountsClientUpdateResult`
+- New struct `BackupPoliciesClientBeginCreateOptions`
+- New struct `BackupPoliciesClientBeginDeleteOptions`
+- New struct `BackupPoliciesClientBeginUpdateOptions`
+- New struct `BackupPoliciesClientCreatePoller`
+- New struct `BackupPoliciesClientCreatePollerResponse`
+- New struct `BackupPoliciesClientCreateResponse`
+- New struct `BackupPoliciesClientCreateResult`
+- New struct `BackupPoliciesClientDeletePoller`
+- New struct `BackupPoliciesClientDeletePollerResponse`
+- New struct `BackupPoliciesClientDeleteResponse`
+- New struct `BackupPoliciesClientGetOptions`
+- New struct `BackupPoliciesClientGetResponse`
+- New struct `BackupPoliciesClientGetResult`
+- New struct `BackupPoliciesClientListOptions`
+- New struct `BackupPoliciesClientListResponse`
+- New struct `BackupPoliciesClientListResult`
+- New struct `BackupPoliciesClientUpdatePoller`
+- New struct `BackupPoliciesClientUpdatePollerResponse`
+- New struct `BackupPoliciesClientUpdateResponse`
+- New struct `BackupPoliciesClientUpdateResult`
+- New struct `BackupsClientBeginCreateOptions`
+- New struct `BackupsClientBeginDeleteOptions`
+- New struct `BackupsClientBeginUpdateOptions`
+- New struct `BackupsClientCreatePoller`
+- New struct `BackupsClientCreatePollerResponse`
+- New struct `BackupsClientCreateResponse`
+- New struct `BackupsClientCreateResult`
+- New struct `BackupsClientDeletePoller`
+- New struct `BackupsClientDeletePollerResponse`
+- New struct `BackupsClientDeleteResponse`
+- New struct `BackupsClientGetOptions`
+- New struct `BackupsClientGetResponse`
+- New struct `BackupsClientGetResult`
+- New struct `BackupsClientGetStatusOptions`
+- New struct `BackupsClientGetStatusResponse`
+- New struct `BackupsClientGetStatusResult`
+- New struct `BackupsClientGetVolumeRestoreStatusOptions`
+- New struct `BackupsClientGetVolumeRestoreStatusResponse`
+- New struct `BackupsClientGetVolumeRestoreStatusResult`
+- New struct `BackupsClientListOptions`
+- New struct `BackupsClientListResponse`
+- New struct `BackupsClientListResult`
+- New struct `BackupsClientUpdatePoller`
+- New struct `BackupsClientUpdatePollerResponse`
+- New struct `BackupsClientUpdateResponse`
+- New struct `BackupsClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PoolsClientBeginCreateOrUpdateOptions`
+- New struct `PoolsClientBeginDeleteOptions`
+- New struct `PoolsClientBeginUpdateOptions`
+- New struct `PoolsClientCreateOrUpdatePoller`
+- New struct `PoolsClientCreateOrUpdatePollerResponse`
+- New struct `PoolsClientCreateOrUpdateResponse`
+- New struct `PoolsClientCreateOrUpdateResult`
+- New struct `PoolsClientDeletePoller`
+- New struct `PoolsClientDeletePollerResponse`
+- New struct `PoolsClientDeleteResponse`
+- New struct `PoolsClientGetOptions`
+- New struct `PoolsClientGetResponse`
+- New struct `PoolsClientGetResult`
+- New struct `PoolsClientListOptions`
+- New struct `PoolsClientListPager`
+- New struct `PoolsClientListResponse`
+- New struct `PoolsClientListResult`
+- New struct `PoolsClientUpdatePoller`
+- New struct `PoolsClientUpdatePollerResponse`
+- New struct `PoolsClientUpdateResponse`
+- New struct `PoolsClientUpdateResult`
+- New struct `ResourceClient`
+- New struct `ResourceClientCheckFilePathAvailabilityOptions`
+- New struct `ResourceClientCheckFilePathAvailabilityResponse`
+- New struct `ResourceClientCheckFilePathAvailabilityResult`
+- New struct `ResourceClientCheckNameAvailabilityOptions`
+- New struct `ResourceClientCheckNameAvailabilityResponse`
+- New struct `ResourceClientCheckNameAvailabilityResult`
+- New struct `ResourceClientCheckQuotaAvailabilityOptions`
+- New struct `ResourceClientCheckQuotaAvailabilityResponse`
+- New struct `ResourceClientCheckQuotaAvailabilityResult`
+- New struct `ResourceQuotaLimitsClient`
+- New struct `ResourceQuotaLimitsClientGetOptions`
+- New struct `ResourceQuotaLimitsClientGetResponse`
+- New struct `ResourceQuotaLimitsClientGetResult`
+- New struct `ResourceQuotaLimitsClientListOptions`
+- New struct `ResourceQuotaLimitsClientListResponse`
+- New struct `ResourceQuotaLimitsClientListResult`
+- New struct `SnapshotPoliciesClientBeginDeleteOptions`
+- New struct `SnapshotPoliciesClientBeginUpdateOptions`
+- New struct `SnapshotPoliciesClientCreateOptions`
+- New struct `SnapshotPoliciesClientCreateResponse`
+- New struct `SnapshotPoliciesClientCreateResult`
+- New struct `SnapshotPoliciesClientDeletePoller`
+- New struct `SnapshotPoliciesClientDeletePollerResponse`
+- New struct `SnapshotPoliciesClientDeleteResponse`
+- New struct `SnapshotPoliciesClientGetOptions`
+- New struct `SnapshotPoliciesClientGetResponse`
+- New struct `SnapshotPoliciesClientGetResult`
+- New struct `SnapshotPoliciesClientListOptions`
+- New struct `SnapshotPoliciesClientListResponse`
+- New struct `SnapshotPoliciesClientListResult`
+- New struct `SnapshotPoliciesClientListVolumesOptions`
+- New struct `SnapshotPoliciesClientListVolumesResponse`
+- New struct `SnapshotPoliciesClientListVolumesResult`
+- New struct `SnapshotPoliciesClientUpdatePoller`
+- New struct `SnapshotPoliciesClientUpdatePollerResponse`
+- New struct `SnapshotPoliciesClientUpdateResponse`
+- New struct `SnapshotPoliciesClientUpdateResult`
+- New struct `SnapshotsClientBeginCreateOptions`
+- New struct `SnapshotsClientBeginDeleteOptions`
+- New struct `SnapshotsClientBeginUpdateOptions`
+- New struct `SnapshotsClientCreatePoller`
+- New struct `SnapshotsClientCreatePollerResponse`
+- New struct `SnapshotsClientCreateResponse`
+- New struct `SnapshotsClientCreateResult`
+- New struct `SnapshotsClientDeletePoller`
+- New struct `SnapshotsClientDeletePollerResponse`
+- New struct `SnapshotsClientDeleteResponse`
+- New struct `SnapshotsClientGetOptions`
+- New struct `SnapshotsClientGetResponse`
+- New struct `SnapshotsClientGetResult`
+- New struct `SnapshotsClientListOptions`
+- New struct `SnapshotsClientListResponse`
+- New struct `SnapshotsClientListResult`
+- New struct `SnapshotsClientUpdatePoller`
+- New struct `SnapshotsClientUpdatePollerResponse`
+- New struct `SnapshotsClientUpdateResponse`
+- New struct `SnapshotsClientUpdateResult`
+- New struct `VaultsClientListOptions`
+- New struct `VaultsClientListResponse`
+- New struct `VaultsClientListResult`
+- New struct `VolumeGroupsClientBeginCreateOptions`
+- New struct `VolumeGroupsClientBeginDeleteOptions`
+- New struct `VolumeGroupsClientCreatePoller`
+- New struct `VolumeGroupsClientCreatePollerResponse`
+- New struct `VolumeGroupsClientCreateResponse`
+- New struct `VolumeGroupsClientCreateResult`
+- New struct `VolumeGroupsClientDeletePoller`
+- New struct `VolumeGroupsClientDeletePollerResponse`
+- New struct `VolumeGroupsClientDeleteResponse`
+- New struct `VolumeGroupsClientGetOptions`
+- New struct `VolumeGroupsClientGetResponse`
+- New struct `VolumeGroupsClientGetResult`
+- New struct `VolumeGroupsClientListByNetAppAccountOptions`
+- New struct `VolumeGroupsClientListByNetAppAccountResponse`
+- New struct `VolumeGroupsClientListByNetAppAccountResult`
+- New struct `VolumesClientAuthorizeReplicationPoller`
+- New struct `VolumesClientAuthorizeReplicationPollerResponse`
+- New struct `VolumesClientAuthorizeReplicationResponse`
+- New struct `VolumesClientBeginAuthorizeReplicationOptions`
+- New struct `VolumesClientBeginBreakReplicationOptions`
+- New struct `VolumesClientBeginCreateOrUpdateOptions`
+- New struct `VolumesClientBeginDeleteOptions`
+- New struct `VolumesClientBeginDeleteReplicationOptions`
+- New struct `VolumesClientBeginPoolChangeOptions`
+- New struct `VolumesClientBeginReInitializeReplicationOptions`
+- New struct `VolumesClientBeginResyncReplicationOptions`
+- New struct `VolumesClientBeginRevertOptions`
+- New struct `VolumesClientBeginUpdateOptions`
+- New struct `VolumesClientBreakReplicationPoller`
+- New struct `VolumesClientBreakReplicationPollerResponse`
+- New struct `VolumesClientBreakReplicationResponse`
+- New struct `VolumesClientCreateOrUpdatePoller`
+- New struct `VolumesClientCreateOrUpdatePollerResponse`
+- New struct `VolumesClientCreateOrUpdateResponse`
+- New struct `VolumesClientCreateOrUpdateResult`
+- New struct `VolumesClientDeletePoller`
+- New struct `VolumesClientDeletePollerResponse`
+- New struct `VolumesClientDeleteReplicationPoller`
+- New struct `VolumesClientDeleteReplicationPollerResponse`
+- New struct `VolumesClientDeleteReplicationResponse`
+- New struct `VolumesClientDeleteResponse`
+- New struct `VolumesClientGetOptions`
+- New struct `VolumesClientGetResponse`
+- New struct `VolumesClientGetResult`
+- New struct `VolumesClientListOptions`
+- New struct `VolumesClientListPager`
+- New struct `VolumesClientListResponse`
+- New struct `VolumesClientListResult`
+- New struct `VolumesClientPoolChangePoller`
+- New struct `VolumesClientPoolChangePollerResponse`
+- New struct `VolumesClientPoolChangeResponse`
+- New struct `VolumesClientReInitializeReplicationPoller`
+- New struct `VolumesClientReInitializeReplicationPollerResponse`
+- New struct `VolumesClientReInitializeReplicationResponse`
+- New struct `VolumesClientReplicationStatusOptions`
+- New struct `VolumesClientReplicationStatusResponse`
+- New struct `VolumesClientReplicationStatusResult`
+- New struct `VolumesClientResyncReplicationPoller`
+- New struct `VolumesClientResyncReplicationPollerResponse`
+- New struct `VolumesClientResyncReplicationResponse`
+- New struct `VolumesClientRevertPoller`
+- New struct `VolumesClientRevertPollerResponse`
+- New struct `VolumesClientRevertResponse`
+- New struct `VolumesClientUpdatePoller`
+- New struct `VolumesClientUpdatePollerResponse`
+- New struct `VolumesClientUpdateResponse`
+- New struct `VolumesClientUpdateResult`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `SubscriptionQuotaItem`
+- New field `Name` in struct `SubscriptionQuotaItem`
+- New field `Type` in struct `SubscriptionQuotaItem`
+- New field `Error` in struct `CloudError`
+
+
+## 0.1.0 (2021-12-16)
+
+- Init release.

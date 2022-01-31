@@ -16,6 +16,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"golang.org/x/crypto/pkcs12"
 )
 
@@ -34,11 +36,7 @@ type ClientCertificateCredentialOptions struct {
 
 // ClientCertificateCredential authenticates a service principal with a certificate.
 type ClientCertificateCredential struct {
-	client               *aadIdentityClient
-	tenantID             string
-	clientID             string
-	cert                 *certContents
-	sendCertificateChain bool
+	client confidentialClient
 }
 
 // NewClientCertificateCredential constructs a ClientCertificateCredential.
@@ -58,37 +56,53 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)
 	}
-	cp := ClientCertificateCredentialOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &ClientCertificateCredentialOptions{}
 	}
-	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
+	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
 		logCredentialError("Client Certificate Credential", err)
 		return nil, err
 	}
-	cert, err := newCertContents(certs, pk, cp.SendCertificateChain)
+	cert, err := newCertContents(certs, pk, options.SendCertificateChain)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
+	cred := confidential.NewCredFromCert(cert.c, key) // TODO: NewCredFromCert should take a slice
 	if err != nil {
 		return nil, err
 	}
-	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: cp.SendCertificateChain, client: c}, nil
+	o := []confidential.Option{
+		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
+		confidential.WithHTTPClient(newPipelineAdapter(&options.ClientOptions)),
+	}
+	if options.SendCertificateChain {
+		o = append(o, confidential.WithX5C())
+	}
+	c, err := confidential.New(clientID, cred, o...)
+	if err != nil {
+		return nil, err
+	}
+	return &ClientCertificateCredential{client: c}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 // ctx: Context controlling the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, c.sendCertificateChain, opts.Scopes)
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
+	if err == nil {
+		logGetTokenSuccess(c, opts)
+		return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	}
+
+	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Client Certificate Credential", err, true)
-		return nil, err
+		return nil, newAuthenticationFailedError(err, nil)
 	}
 	logGetTokenSuccess(c, opts)
-	return tk, nil
+	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 // ParseCertificates loads certificates and a private key for use with NewClientCertificateCredential.
@@ -147,9 +161,10 @@ func ParseCertificates(certData []byte, password []byte) ([]*x509.Certificate, c
 }
 
 type certContents struct {
-	fp  []byte          // the signing cert's fingerprint, a SHA-1 digest
-	pk  *rsa.PrivateKey // the signing key
-	x5c []string        // concatenation of every provided cert, base64 encoded
+	c   *x509.Certificate // the signing cert
+	fp  []byte            // the signing cert's fingerprint, a SHA-1 digest
+	pk  *rsa.PrivateKey   // the signing key
+	x5c []string          // concatenation of every provided cert, base64 encoded
 }
 
 func newCertContents(certs []*x509.Certificate, key *rsa.PrivateKey, sendCertificateChain bool) (*certContents, error) {
@@ -160,6 +175,7 @@ func newCertContents(certs []*x509.Certificate, key *rsa.PrivateKey, sendCertifi
 		if ok && key.E == certKey.E && key.N.Cmp(certKey.N) == 0 {
 			fp := sha1.Sum(cert.Raw)
 			cc.fp = fp[:]
+			cc.c = cert
 			if sendCertificateChain {
 				// signing cert must be first in x5c
 				cc.x5c = append([]string{base64.StdEncoding.EncodeToString(cert.Raw)}, cc.x5c...)
@@ -168,7 +184,7 @@ func newCertContents(certs []*x509.Certificate, key *rsa.PrivateKey, sendCertifi
 			cc.x5c = append(cc.x5c, base64.StdEncoding.EncodeToString(cert.Raw))
 		}
 	}
-	if len(cc.fp) == 0 {
+	if len(cc.fp) == 0 || cc.c == nil {
 		return nil, errors.New("found no certificate matching 'key'")
 	}
 	return &cc, nil

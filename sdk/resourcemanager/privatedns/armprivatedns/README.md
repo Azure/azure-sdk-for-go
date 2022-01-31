@@ -11,7 +11,7 @@ The `armprivatedns` module provides operations for working with Azure Private DN
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,12 @@ options = arm.ClientOptions{
 }
 client := armprivatedns.NewPrivateZonesClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Private Zone](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/privatezone)
+- [Record Sets](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/record_sets)
+- [Virtual Network Link](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/virtualnetworklink)
 
 ## Provide Feedback
 

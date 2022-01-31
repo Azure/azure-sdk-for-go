@@ -1,5 +1,628 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionClientGetOptions)`
+- Function `*PrivateEndpointConnectionClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionGetResponse, error)` to `(PrivateEndpointConnectionClientGetResponse, error)`
+- Function `*ApplicationPackageClient.Activate` parameter(s) have been changed from `(context.Context, string, string, string, string, ActivateApplicationPackageParameters, *ApplicationPackageActivateOptions)` to `(context.Context, string, string, string, string, ActivateApplicationPackageParameters, *ApplicationPackageClientActivateOptions)`
+- Function `*ApplicationPackageClient.Activate` return value(s) have been changed from `(ApplicationPackageActivateResponse, error)` to `(ApplicationPackageClientActivateResponse, error)`
+- Function `*PoolClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, Pool, *PoolUpdateOptions)` to `(context.Context, string, string, string, Pool, *PoolClientUpdateOptions)`
+- Function `*PoolClient.Update` return value(s) have been changed from `(PoolUpdateResponse, error)` to `(PoolClientUpdateResponse, error)`
+- Function `*ApplicationPackageClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, string, *ApplicationPackageCreateOptions)` to `(context.Context, string, string, string, string, *ApplicationPackageClientCreateOptions)`
+- Function `*ApplicationPackageClient.Create` return value(s) have been changed from `(ApplicationPackageCreateResponse, error)` to `(ApplicationPackageClientCreateResponse, error)`
+- Function `*LocationClient.ListSupportedVirtualMachineSKUs` parameter(s) have been changed from `(string, *LocationListSupportedVirtualMachineSKUsOptions)` to `(string, *LocationClientListSupportedVirtualMachineSKUsOptions)`
+- Function `*LocationClient.ListSupportedVirtualMachineSKUs` return value(s) have been changed from `(*LocationListSupportedVirtualMachineSKUsPager)` to `(*LocationClientListSupportedVirtualMachineSKUsPager)`
+- Function `*PoolClient.ListByBatchAccount` parameter(s) have been changed from `(string, string, *PoolListByBatchAccountOptions)` to `(string, string, *PoolClientListByBatchAccountOptions)`
+- Function `*PoolClient.ListByBatchAccount` return value(s) have been changed from `(*PoolListByBatchAccountPager)` to `(*PoolClientListByBatchAccountPager)`
+- Function `*PoolClient.StopResize` parameter(s) have been changed from `(context.Context, string, string, string, *PoolStopResizeOptions)` to `(context.Context, string, string, string, *PoolClientStopResizeOptions)`
+- Function `*PoolClient.StopResize` return value(s) have been changed from `(PoolStopResizeResponse, error)` to `(PoolClientStopResizeResponse, error)`
+- Function `*ApplicationClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, Application, *ApplicationUpdateOptions)` to `(context.Context, string, string, string, Application, *ApplicationClientUpdateOptions)`
+- Function `*ApplicationClient.Update` return value(s) have been changed from `(ApplicationUpdateResponse, error)` to `(ApplicationClientUpdateResponse, error)`
+- Function `*ApplicationPackageClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *ApplicationPackageGetOptions)` to `(context.Context, string, string, string, string, *ApplicationPackageClientGetOptions)`
+- Function `*ApplicationPackageClient.Get` return value(s) have been changed from `(ApplicationPackageGetResponse, error)` to `(ApplicationPackageClientGetResponse, error)`
+- Function `*ApplicationClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationCreateOptions)` to `(context.Context, string, string, string, *ApplicationClientCreateOptions)`
+- Function `*ApplicationClient.Create` return value(s) have been changed from `(ApplicationCreateResponse, error)` to `(ApplicationClientCreateResponse, error)`
+- Function `*PoolClient.DisableAutoScale` parameter(s) have been changed from `(context.Context, string, string, string, *PoolDisableAutoScaleOptions)` to `(context.Context, string, string, string, *PoolClientDisableAutoScaleOptions)`
+- Function `*PoolClient.DisableAutoScale` return value(s) have been changed from `(PoolDisableAutoScaleResponse, error)` to `(PoolClientDisableAutoScaleResponse, error)`
+- Function `*LocationClient.GetQuotas` parameter(s) have been changed from `(context.Context, string, *LocationGetQuotasOptions)` to `(context.Context, string, *LocationClientGetQuotasOptions)`
+- Function `*LocationClient.GetQuotas` return value(s) have been changed from `(LocationGetQuotasResponse, error)` to `(LocationClientGetQuotasResponse, error)`
+- Function `*PrivateLinkResourceClient.ListByBatchAccount` parameter(s) have been changed from `(string, string, *PrivateLinkResourceListByBatchAccountOptions)` to `(string, string, *PrivateLinkResourceClientListByBatchAccountOptions)`
+- Function `*PrivateLinkResourceClient.ListByBatchAccount` return value(s) have been changed from `(*PrivateLinkResourceListByBatchAccountPager)` to `(*PrivateLinkResourceClientListByBatchAccountPager)`
+- Function `*ApplicationClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationGetOptions)` to `(context.Context, string, string, string, *ApplicationClientGetOptions)`
+- Function `*ApplicationClient.Get` return value(s) have been changed from `(ApplicationGetResponse, error)` to `(ApplicationClientGetResponse, error)`
+- Function `*PoolClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PoolGetOptions)` to `(context.Context, string, string, string, *PoolClientGetOptions)`
+- Function `*PoolClient.Get` return value(s) have been changed from `(PoolGetResponse, error)` to `(PoolClientGetResponse, error)`
+- Function `*CertificateClient.ListByBatchAccount` parameter(s) have been changed from `(string, string, *CertificateListByBatchAccountOptions)` to `(string, string, *CertificateClientListByBatchAccountOptions)`
+- Function `*CertificateClient.ListByBatchAccount` return value(s) have been changed from `(*CertificateListByBatchAccountPager)` to `(*CertificateClientListByBatchAccountPager)`
+- Function `*PrivateLinkResourceClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourceGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourceClientGetOptions)`
+- Function `*PrivateLinkResourceClient.Get` return value(s) have been changed from `(PrivateLinkResourceGetResponse, error)` to `(PrivateLinkResourceClientGetResponse, error)`
+- Function `*ApplicationClient.List` parameter(s) have been changed from `(string, string, *ApplicationListOptions)` to `(string, string, *ApplicationClientListOptions)`
+- Function `*ApplicationClient.List` return value(s) have been changed from `(*ApplicationListPager)` to `(*ApplicationClientListPager)`
+- Function `*CertificateClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, CertificateCreateOrUpdateParameters, *CertificateUpdateOptions)` to `(context.Context, string, string, string, CertificateCreateOrUpdateParameters, *CertificateClientUpdateOptions)`
+- Function `*CertificateClient.Update` return value(s) have been changed from `(CertificateUpdateResponse, error)` to `(CertificateClientUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionClient.ListByBatchAccount` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionListByBatchAccountOptions)` to `(string, string, *PrivateEndpointConnectionClientListByBatchAccountOptions)`
+- Function `*PrivateEndpointConnectionClient.ListByBatchAccount` return value(s) have been changed from `(*PrivateEndpointConnectionListByBatchAccountPager)` to `(*PrivateEndpointConnectionClientListByBatchAccountPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*ApplicationPackageClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ApplicationPackageDeleteOptions)` to `(context.Context, string, string, string, string, *ApplicationPackageClientDeleteOptions)`
+- Function `*ApplicationPackageClient.Delete` return value(s) have been changed from `(ApplicationPackageDeleteResponse, error)` to `(ApplicationPackageClientDeleteResponse, error)`
+- Function `*CertificateClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, CertificateCreateOrUpdateParameters, *CertificateCreateOptions)` to `(context.Context, string, string, string, CertificateCreateOrUpdateParameters, *CertificateClientCreateOptions)`
+- Function `*CertificateClient.Create` return value(s) have been changed from `(CertificateCreateResponse, error)` to `(CertificateClientCreateResponse, error)`
+- Function `*ApplicationClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationDeleteOptions)` to `(context.Context, string, string, string, *ApplicationClientDeleteOptions)`
+- Function `*ApplicationClient.Delete` return value(s) have been changed from `(ApplicationDeleteResponse, error)` to `(ApplicationClientDeleteResponse, error)`
+- Function `*CertificateClient.CancelDeletion` parameter(s) have been changed from `(context.Context, string, string, string, *CertificateCancelDeletionOptions)` to `(context.Context, string, string, string, *CertificateClientCancelDeletionOptions)`
+- Function `*CertificateClient.CancelDeletion` return value(s) have been changed from `(CertificateCancelDeletionResponse, error)` to `(CertificateClientCancelDeletionResponse, error)`
+- Function `*PrivateEndpointConnectionClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionBeginUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionClientBeginUpdateOptions)`
+- Function `*PrivateEndpointConnectionClient.BeginUpdate` return value(s) have been changed from `(PrivateEndpointConnectionUpdatePollerResponse, error)` to `(PrivateEndpointConnectionClientUpdatePollerResponse, error)`
+- Function `*CertificateClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *CertificateBeginDeleteOptions)` to `(context.Context, string, string, string, *CertificateClientBeginDeleteOptions)`
+- Function `*CertificateClient.BeginDelete` return value(s) have been changed from `(CertificateDeletePollerResponse, error)` to `(CertificateClientDeletePollerResponse, error)`
+- Function `*PoolClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PoolBeginDeleteOptions)` to `(context.Context, string, string, string, *PoolClientBeginDeleteOptions)`
+- Function `*PoolClient.BeginDelete` return value(s) have been changed from `(PoolDeletePollerResponse, error)` to `(PoolClientDeletePollerResponse, error)`
+- Function `*PoolClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, Pool, *PoolCreateOptions)` to `(context.Context, string, string, string, Pool, *PoolClientCreateOptions)`
+- Function `*PoolClient.Create` return value(s) have been changed from `(PoolCreateResponse, error)` to `(PoolClientCreateResponse, error)`
+- Function `*LocationClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, CheckNameAvailabilityParameters, *LocationCheckNameAvailabilityOptions)` to `(context.Context, string, CheckNameAvailabilityParameters, *LocationClientCheckNameAvailabilityOptions)`
+- Function `*LocationClient.CheckNameAvailability` return value(s) have been changed from `(LocationCheckNameAvailabilityResponse, error)` to `(LocationClientCheckNameAvailabilityResponse, error)`
+- Function `*ApplicationPackageClient.List` parameter(s) have been changed from `(string, string, string, *ApplicationPackageListOptions)` to `(string, string, string, *ApplicationPackageClientListOptions)`
+- Function `*ApplicationPackageClient.List` return value(s) have been changed from `(*ApplicationPackageListPager)` to `(*ApplicationPackageClientListPager)`
+- Function `*LocationClient.ListSupportedCloudServiceSKUs` parameter(s) have been changed from `(string, *LocationListSupportedCloudServiceSKUsOptions)` to `(string, *LocationClientListSupportedCloudServiceSKUsOptions)`
+- Function `*LocationClient.ListSupportedCloudServiceSKUs` return value(s) have been changed from `(*LocationListSupportedCloudServiceSKUsPager)` to `(*LocationClientListSupportedCloudServiceSKUsPager)`
+- Function `*CertificateClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CertificateGetOptions)` to `(context.Context, string, string, string, *CertificateClientGetOptions)`
+- Function `*CertificateClient.Get` return value(s) have been changed from `(CertificateGetResponse, error)` to `(CertificateClientGetResponse, error)`
+- Type of `Pool.Identity` has been changed from `*BatchPoolIdentity` to `*PoolIdentity`
+- Function `*CertificateDeletePoller.Poll` has been removed
+- Function `*BatchAccountListByResourceGroupPager.NextPage` has been removed
+- Function `CertificateBaseProperties.MarshalJSON` has been removed
+- Function `*BatchAccountListPager.PageResponse` has been removed
+- Function `*CertificateListByBatchAccountPager.NextPage` has been removed
+- Function `BatchAccountDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PoolListByBatchAccountPager.Err` has been removed
+- Function `*PrivateLinkResourceListByBatchAccountPager.PageResponse` has been removed
+- Function `*ApplicationListPager.PageResponse` has been removed
+- Function `*BatchAccountClient.List` has been removed
+- Function `*LocationListSupportedCloudServiceSKUsPager.PageResponse` has been removed
+- Function `BatchAccountCreateProperties.MarshalJSON` has been removed
+- Function `BatchAccountIdentity.MarshalJSON` has been removed
+- Function `*BatchAccountClient.BeginDelete` has been removed
+- Function `*AutoStorageBaseProperties.UnmarshalJSON` has been removed
+- Function `*LocationListSupportedCloudServiceSKUsPager.Err` has been removed
+- Function `NewBatchAccountClient` has been removed
+- Function `*BatchAccountListOutboundNetworkDependenciesEndpointsPager.NextPage` has been removed
+- Function `*CertificateListByBatchAccountPager.PageResponse` has been removed
+- Function `PrivateEndpointConnectionUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BatchAccountCreatePoller.Poll` has been removed
+- Function `*CertificateListByBatchAccountPager.Err` has been removed
+- Function `*BatchAccountClient.GetKeys` has been removed
+- Function `ProxyResource.MarshalJSON` has been removed
+- Function `BatchAccountCreatePollerResponse.PollUntilDone` has been removed
+- Function `*BatchAccountCreatePoller.ResumeToken` has been removed
+- Function `*CertificateDeletePoller.Done` has been removed
+- Function `BatchAccountUpdateParameters.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*PoolListByBatchAccountPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionUpdatePollerResponse.Resume` has been removed
+- Function `*LocationListSupportedCloudServiceSKUsPager.NextPage` has been removed
+- Function `CertificateDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationListPager.Err` has been removed
+- Function `*BatchAccountListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionUpdatePoller.Done` has been removed
+- Function `BatchAccountUpdateProperties.MarshalJSON` has been removed
+- Function `*PrivateLinkResourceListByBatchAccountPager.NextPage` has been removed
+- Function `*LocationListSupportedVirtualMachineSKUsPager.NextPage` has been removed
+- Function `Certificate.MarshalJSON` has been removed
+- Function `*LocationListSupportedVirtualMachineSKUsPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionListByBatchAccountPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionListByBatchAccountPager.Err` has been removed
+- Function `*BatchAccountListByResourceGroupPager.PageResponse` has been removed
+- Function `*LocationListSupportedVirtualMachineSKUsPager.Err` has been removed
+- Function `*BatchAccountCreatePoller.Done` has been removed
+- Function `*BatchAccountClient.RegenerateKey` has been removed
+- Function `ApplicationPackage.MarshalJSON` has been removed
+- Function `*CertificateDeletePoller.ResumeToken` has been removed
+- Function `AutoStorageBaseProperties.MarshalJSON` has been removed
+- Function `BatchAccountProperties.MarshalJSON` has been removed
+- Function `*ApplicationPackageListPager.PageResponse` has been removed
+- Function `BatchAccountListResult.MarshalJSON` has been removed
+- Function `*BatchAccountClient.ListOutboundNetworkDependenciesEndpoints` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*PoolDeletePollerResponse.Resume` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*BatchAccountListByResourceGroupPager.Err` has been removed
+- Function `*BatchAccountListPager.NextPage` has been removed
+- Function `*BatchAccountClient.BeginCreate` has been removed
+- Function `*BatchAccountDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionUpdatePoller.Poll` has been removed
+- Function `*BatchAccountClient.Update` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `CertificateCreateOrUpdateProperties.MarshalJSON` has been removed
+- Function `*BatchAccountClient.ListByResourceGroup` has been removed
+- Function `*ApplicationListPager.NextPage` has been removed
+- Function `*ApplicationPackageListPager.Err` has been removed
+- Function `BatchPoolIdentity.MarshalJSON` has been removed
+- Function `*PrivateLinkResourceListByBatchAccountPager.Err` has been removed
+- Function `*PoolDeletePoller.Done` has been removed
+- Function `BatchAccountCreateParameters.MarshalJSON` has been removed
+- Function `*PoolDeletePoller.FinalResponse` has been removed
+- Function `*PoolListByBatchAccountPager.NextPage` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionListByBatchAccountPager.PageResponse` has been removed
+- Function `*BatchAccountDeletePoller.FinalResponse` has been removed
+- Function `*BatchAccountCreatePoller.FinalResponse` has been removed
+- Function `*BatchAccountClient.Get` has been removed
+- Function `*BatchAccountCreatePollerResponse.Resume` has been removed
+- Function `*CertificateCreateOrUpdateProperties.UnmarshalJSON` has been removed
+- Function `*PoolDeletePoller.ResumeToken` has been removed
+- Function `*BatchAccountDeletePoller.ResumeToken` has been removed
+- Function `*CertificateDeletePollerResponse.Resume` has been removed
+- Function `*BatchAccountClient.SynchronizeAutoStorageKeys` has been removed
+- Function `BatchAccount.MarshalJSON` has been removed
+- Function `*PoolDeletePoller.Poll` has been removed
+- Function `*ApplicationPackageListPager.NextPage` has been removed
+- Function `*BatchAccountDeletePoller.Done` has been removed
+- Function `*BatchAccountListOutboundNetworkDependenciesEndpointsPager.Err` has been removed
+- Function `*CertificateBaseProperties.UnmarshalJSON` has been removed
+- Function `*CertificateDeletePoller.FinalResponse` has been removed
+- Function `*BatchAccountListOutboundNetworkDependenciesEndpointsPager.PageResponse` has been removed
+- Function `*BatchAccountDeletePoller.Poll` has been removed
+- Function `PoolDeletePollerResponse.PollUntilDone` has been removed
+- Struct `ApplicationCreateOptions` has been removed
+- Struct `ApplicationCreateResponse` has been removed
+- Struct `ApplicationCreateResult` has been removed
+- Struct `ApplicationDeleteOptions` has been removed
+- Struct `ApplicationDeleteResponse` has been removed
+- Struct `ApplicationGetOptions` has been removed
+- Struct `ApplicationGetResponse` has been removed
+- Struct `ApplicationGetResult` has been removed
+- Struct `ApplicationListOptions` has been removed
+- Struct `ApplicationListPager` has been removed
+- Struct `ApplicationListResponse` has been removed
+- Struct `ApplicationListResult` has been removed
+- Struct `ApplicationPackageActivateOptions` has been removed
+- Struct `ApplicationPackageActivateResponse` has been removed
+- Struct `ApplicationPackageActivateResult` has been removed
+- Struct `ApplicationPackageCreateOptions` has been removed
+- Struct `ApplicationPackageCreateResponse` has been removed
+- Struct `ApplicationPackageCreateResult` has been removed
+- Struct `ApplicationPackageDeleteOptions` has been removed
+- Struct `ApplicationPackageDeleteResponse` has been removed
+- Struct `ApplicationPackageGetOptions` has been removed
+- Struct `ApplicationPackageGetResponse` has been removed
+- Struct `ApplicationPackageGetResult` has been removed
+- Struct `ApplicationPackageListOptions` has been removed
+- Struct `ApplicationPackageListPager` has been removed
+- Struct `ApplicationPackageListResponse` has been removed
+- Struct `ApplicationPackageListResult` has been removed
+- Struct `ApplicationUpdateOptions` has been removed
+- Struct `ApplicationUpdateResponse` has been removed
+- Struct `ApplicationUpdateResult` has been removed
+- Struct `BatchAccount` has been removed
+- Struct `BatchAccountBeginCreateOptions` has been removed
+- Struct `BatchAccountBeginDeleteOptions` has been removed
+- Struct `BatchAccountClient` has been removed
+- Struct `BatchAccountCreateParameters` has been removed
+- Struct `BatchAccountCreatePoller` has been removed
+- Struct `BatchAccountCreatePollerResponse` has been removed
+- Struct `BatchAccountCreateProperties` has been removed
+- Struct `BatchAccountCreateResponse` has been removed
+- Struct `BatchAccountCreateResult` has been removed
+- Struct `BatchAccountDeletePoller` has been removed
+- Struct `BatchAccountDeletePollerResponse` has been removed
+- Struct `BatchAccountDeleteResponse` has been removed
+- Struct `BatchAccountGetKeysOptions` has been removed
+- Struct `BatchAccountGetKeysResponse` has been removed
+- Struct `BatchAccountGetKeysResult` has been removed
+- Struct `BatchAccountGetOptions` has been removed
+- Struct `BatchAccountGetResponse` has been removed
+- Struct `BatchAccountGetResult` has been removed
+- Struct `BatchAccountIdentity` has been removed
+- Struct `BatchAccountKeys` has been removed
+- Struct `BatchAccountListByResourceGroupOptions` has been removed
+- Struct `BatchAccountListByResourceGroupPager` has been removed
+- Struct `BatchAccountListByResourceGroupResponse` has been removed
+- Struct `BatchAccountListByResourceGroupResult` has been removed
+- Struct `BatchAccountListOptions` has been removed
+- Struct `BatchAccountListOutboundNetworkDependenciesEndpointsOptions` has been removed
+- Struct `BatchAccountListOutboundNetworkDependenciesEndpointsPager` has been removed
+- Struct `BatchAccountListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Struct `BatchAccountListOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `BatchAccountListPager` has been removed
+- Struct `BatchAccountListResponse` has been removed
+- Struct `BatchAccountListResult` has been removed
+- Struct `BatchAccountListResultEnvelope` has been removed
+- Struct `BatchAccountProperties` has been removed
+- Struct `BatchAccountRegenerateKeyOptions` has been removed
+- Struct `BatchAccountRegenerateKeyParameters` has been removed
+- Struct `BatchAccountRegenerateKeyResponse` has been removed
+- Struct `BatchAccountRegenerateKeyResult` has been removed
+- Struct `BatchAccountSynchronizeAutoStorageKeysOptions` has been removed
+- Struct `BatchAccountSynchronizeAutoStorageKeysResponse` has been removed
+- Struct `BatchAccountUpdateOptions` has been removed
+- Struct `BatchAccountUpdateParameters` has been removed
+- Struct `BatchAccountUpdateProperties` has been removed
+- Struct `BatchAccountUpdateResponse` has been removed
+- Struct `BatchAccountUpdateResult` has been removed
+- Struct `BatchLocationQuota` has been removed
+- Struct `BatchPoolIdentity` has been removed
+- Struct `CertificateBeginDeleteOptions` has been removed
+- Struct `CertificateCancelDeletionOptions` has been removed
+- Struct `CertificateCancelDeletionResponse` has been removed
+- Struct `CertificateCancelDeletionResult` has been removed
+- Struct `CertificateCreateOptions` has been removed
+- Struct `CertificateCreateResponse` has been removed
+- Struct `CertificateCreateResult` has been removed
+- Struct `CertificateDeletePoller` has been removed
+- Struct `CertificateDeletePollerResponse` has been removed
+- Struct `CertificateDeleteResponse` has been removed
+- Struct `CertificateGetOptions` has been removed
+- Struct `CertificateGetResponse` has been removed
+- Struct `CertificateGetResult` has been removed
+- Struct `CertificateListByBatchAccountOptions` has been removed
+- Struct `CertificateListByBatchAccountPager` has been removed
+- Struct `CertificateListByBatchAccountResponse` has been removed
+- Struct `CertificateListByBatchAccountResult` has been removed
+- Struct `CertificateUpdateOptions` has been removed
+- Struct `CertificateUpdateResponse` has been removed
+- Struct `CertificateUpdateResult` has been removed
+- Struct `LocationCheckNameAvailabilityOptions` has been removed
+- Struct `LocationCheckNameAvailabilityResponse` has been removed
+- Struct `LocationCheckNameAvailabilityResult` has been removed
+- Struct `LocationGetQuotasOptions` has been removed
+- Struct `LocationGetQuotasResponse` has been removed
+- Struct `LocationGetQuotasResult` has been removed
+- Struct `LocationListSupportedCloudServiceSKUsOptions` has been removed
+- Struct `LocationListSupportedCloudServiceSKUsPager` has been removed
+- Struct `LocationListSupportedCloudServiceSKUsResponse` has been removed
+- Struct `LocationListSupportedCloudServiceSKUsResult` has been removed
+- Struct `LocationListSupportedVirtualMachineSKUsOptions` has been removed
+- Struct `LocationListSupportedVirtualMachineSKUsPager` has been removed
+- Struct `LocationListSupportedVirtualMachineSKUsResponse` has been removed
+- Struct `LocationListSupportedVirtualMachineSKUsResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PoolBeginDeleteOptions` has been removed
+- Struct `PoolCreateOptions` has been removed
+- Struct `PoolCreateResponse` has been removed
+- Struct `PoolCreateResult` has been removed
+- Struct `PoolDeletePoller` has been removed
+- Struct `PoolDeletePollerResponse` has been removed
+- Struct `PoolDeleteResponse` has been removed
+- Struct `PoolDisableAutoScaleOptions` has been removed
+- Struct `PoolDisableAutoScaleResponse` has been removed
+- Struct `PoolDisableAutoScaleResult` has been removed
+- Struct `PoolGetOptions` has been removed
+- Struct `PoolGetResponse` has been removed
+- Struct `PoolGetResult` has been removed
+- Struct `PoolListByBatchAccountOptions` has been removed
+- Struct `PoolListByBatchAccountPager` has been removed
+- Struct `PoolListByBatchAccountResponse` has been removed
+- Struct `PoolListByBatchAccountResult` has been removed
+- Struct `PoolStopResizeOptions` has been removed
+- Struct `PoolStopResizeResponse` has been removed
+- Struct `PoolStopResizeResult` has been removed
+- Struct `PoolUpdateOptions` has been removed
+- Struct `PoolUpdateResponse` has been removed
+- Struct `PoolUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionBeginUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionGetOptions` has been removed
+- Struct `PrivateEndpointConnectionGetResponse` has been removed
+- Struct `PrivateEndpointConnectionGetResult` has been removed
+- Struct `PrivateEndpointConnectionListByBatchAccountOptions` has been removed
+- Struct `PrivateEndpointConnectionListByBatchAccountPager` has been removed
+- Struct `PrivateEndpointConnectionListByBatchAccountResponse` has been removed
+- Struct `PrivateEndpointConnectionListByBatchAccountResult` has been removed
+- Struct `PrivateEndpointConnectionUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionUpdateResult` has been removed
+- Struct `PrivateLinkResourceGetOptions` has been removed
+- Struct `PrivateLinkResourceGetResponse` has been removed
+- Struct `PrivateLinkResourceGetResult` has been removed
+- Struct `PrivateLinkResourceListByBatchAccountOptions` has been removed
+- Struct `PrivateLinkResourceListByBatchAccountPager` has been removed
+- Struct `PrivateLinkResourceListByBatchAccountResponse` has been removed
+- Struct `PrivateLinkResourceListByBatchAccountResult` has been removed
+- Field `AutoStorageBaseProperties` of struct `AutoStorageProperties` has been removed
+- Field `ProxyResource` of struct `ApplicationPackage` has been removed
+- Field `ProxyResource` of struct `PrivateEndpointConnection` has been removed
+- Field `ProxyResource` of struct `CertificateCreateOrUpdateParameters` has been removed
+- Field `ProxyResource` of struct `Pool` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `ProxyResource` of struct `PrivateLinkResource` has been removed
+- Field `CertificateBaseProperties` of struct `CertificateCreateOrUpdateProperties` has been removed
+- Field `ProxyResource` of struct `Certificate` has been removed
+- Field `ProxyResource` of struct `Application` has been removed
+- Field `CertificateBaseProperties` of struct `CertificateProperties` has been removed
+
+### Features Added
+
+- New function `*LocationClientListSupportedVirtualMachineSKUsPager.NextPage(context.Context) bool`
+- New function `*AccountClientCreatePollerResponse.Resume(context.Context, *AccountClient, string) error`
+- New function `*PoolClientDeletePollerResponse.Resume(context.Context, *PoolClient, string) error`
+- New function `*CertificateClientDeletePoller.FinalResponse(context.Context) (CertificateClientDeleteResponse, error)`
+- New function `*AccountClientCreatePoller.FinalResponse(context.Context) (AccountClientCreateResponse, error)`
+- New function `*LocationClientListSupportedVirtualMachineSKUsPager.PageResponse() LocationClientListSupportedVirtualMachineSKUsResponse`
+- New function `AccountUpdateProperties.MarshalJSON() ([]byte, error)`
+- New function `*AccountClientListOutboundNetworkDependenciesEndpointsPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionClientListByBatchAccountPager.Err() error`
+- New function `PoolClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PoolClientDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionClientUpdatePoller.Done() bool`
+- New function `*PrivateLinkResourceClientListByBatchAccountPager.Err() error`
+- New function `*AccountClient.RegenerateKey(context.Context, string, string, AccountRegenerateKeyParameters, *AccountClientRegenerateKeyOptions) (AccountClientRegenerateKeyResponse, error)`
+- New function `*PrivateEndpointConnectionClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LocationClientListSupportedCloudServiceSKUsPager.NextPage(context.Context) bool`
+- New function `*AccountClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ApplicationPackageClientListPager.PageResponse() ApplicationPackageClientListResponse`
+- New function `*PoolClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `AccountCreateProperties.MarshalJSON() ([]byte, error)`
+- New function `*AccountClientDeletePollerResponse.Resume(context.Context, *AccountClient, string) error`
+- New function `*AccountClientCreatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionClientUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionClientUpdateResponse, error)`
+- New function `AccountCreateParameters.MarshalJSON() ([]byte, error)`
+- New function `*CertificateClientDeletePoller.Done() bool`
+- New function `*AccountClient.GetKeys(context.Context, string, string, *AccountClientGetKeysOptions) (AccountClientGetKeysResponse, error)`
+- New function `*PrivateEndpointConnectionClientListByBatchAccountPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkResourceClientListByBatchAccountPager.NextPage(context.Context) bool`
+- New function `*AccountClientListPager.PageResponse() AccountClientListResponse`
+- New function `*PoolClientListByBatchAccountPager.NextPage(context.Context) bool`
+- New function `Account.MarshalJSON() ([]byte, error)`
+- New function `*AccountClient.ListOutboundNetworkDependenciesEndpoints(string, string, *AccountClientListOutboundNetworkDependenciesEndpointsOptions) *AccountClientListOutboundNetworkDependenciesEndpointsPager`
+- New function `*AccountClientListByResourceGroupPager.PageResponse() AccountClientListByResourceGroupResponse`
+- New function `*PoolClientListByBatchAccountPager.PageResponse() PoolClientListByBatchAccountResponse`
+- New function `*AccountClientListByResourceGroupPager.Err() error`
+- New function `*PrivateEndpointConnectionClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*PoolClientDeletePoller.Done() bool`
+- New function `*ApplicationPackageClientListPager.Err() error`
+- New function `*ApplicationClientListPager.Err() error`
+- New function `*PoolClientListByBatchAccountPager.Err() error`
+- New function `*AccountClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `AccountListResult.MarshalJSON() ([]byte, error)`
+- New function `*AccountClientListPager.Err() error`
+- New function `*PoolClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ApplicationClientListPager.PageResponse() ApplicationClientListResponse`
+- New function `*CertificateClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountClient.Get(context.Context, string, string, *AccountClientGetOptions) (AccountClientGetResponse, error)`
+- New function `AccountClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountClientDeleteResponse, error)`
+- New function `*ApplicationPackageClientListPager.NextPage(context.Context) bool`
+- New function `*AccountClient.ListByResourceGroup(string, *AccountClientListByResourceGroupOptions) *AccountClientListByResourceGroupPager`
+- New function `NewAccountClient(string, azcore.TokenCredential, *arm.ClientOptions) *AccountClient`
+- New function `*LocationClientListSupportedCloudServiceSKUsPager.PageResponse() LocationClientListSupportedCloudServiceSKUsResponse`
+- New function `*CertificateClientDeletePollerResponse.Resume(context.Context, *CertificateClient, string) error`
+- New function `*AccountClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountClient.Update(context.Context, string, string, AccountUpdateParameters, *AccountClientUpdateOptions) (AccountClientUpdateResponse, error)`
+- New function `*AccountClientCreatePoller.Done() bool`
+- New function `*CertificateClientListByBatchAccountPager.PageResponse() CertificateClientListByBatchAccountResponse`
+- New function `*CertificateClientListByBatchAccountPager.NextPage(context.Context) bool`
+- New function `CertificateClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CertificateClientDeleteResponse, error)`
+- New function `PrivateEndpointConnectionClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionClientUpdateResponse, error)`
+- New function `*ApplicationClientListPager.NextPage(context.Context) bool`
+- New function `*LocationClientListSupportedCloudServiceSKUsPager.Err() error`
+- New function `*AccountClientDeletePoller.FinalResponse(context.Context) (AccountClientDeleteResponse, error)`
+- New function `*CertificateClientDeletePoller.ResumeToken() (string, error)`
+- New function `PoolIdentity.MarshalJSON() ([]byte, error)`
+- New function `*AccountClientDeletePoller.Done() bool`
+- New function `*AccountClient.BeginDelete(context.Context, string, string, *AccountClientBeginDeleteOptions) (AccountClientDeletePollerResponse, error)`
+- New function `AccountIdentity.MarshalJSON() ([]byte, error)`
+- New function `AccountUpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `AccountClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountClientCreateResponse, error)`
+- New function `*AccountClient.SynchronizeAutoStorageKeys(context.Context, string, string, *AccountClientSynchronizeAutoStorageKeysOptions) (AccountClientSynchronizeAutoStorageKeysResponse, error)`
+- New function `*LocationClientListSupportedVirtualMachineSKUsPager.Err() error`
+- New function `*PoolClientDeletePoller.FinalResponse(context.Context) (PoolClientDeleteResponse, error)`
+- New function `*AccountClientListOutboundNetworkDependenciesEndpointsPager.Err() error`
+- New function `*PrivateLinkResourceClientListByBatchAccountPager.PageResponse() PrivateLinkResourceClientListByBatchAccountResponse`
+- New function `*PrivateEndpointConnectionClientUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionClient, string) error`
+- New function `AccountProperties.MarshalJSON() ([]byte, error)`
+- New function `*AccountClient.BeginCreate(context.Context, string, string, AccountCreateParameters, *AccountClientBeginCreateOptions) (AccountClientCreatePollerResponse, error)`
+- New function `*PrivateEndpointConnectionClientListByBatchAccountPager.PageResponse() PrivateEndpointConnectionClientListByBatchAccountResponse`
+- New function `*AccountClient.List(*AccountClientListOptions) *AccountClientListPager`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*CertificateClientListByBatchAccountPager.Err() error`
+- New function `*AccountClientListOutboundNetworkDependenciesEndpointsPager.PageResponse() AccountClientListOutboundNetworkDependenciesEndpointsResponse`
+- New struct `Account`
+- New struct `AccountClient`
+- New struct `AccountClientBeginCreateOptions`
+- New struct `AccountClientBeginDeleteOptions`
+- New struct `AccountClientCreatePoller`
+- New struct `AccountClientCreatePollerResponse`
+- New struct `AccountClientCreateResponse`
+- New struct `AccountClientCreateResult`
+- New struct `AccountClientDeletePoller`
+- New struct `AccountClientDeletePollerResponse`
+- New struct `AccountClientDeleteResponse`
+- New struct `AccountClientGetKeysOptions`
+- New struct `AccountClientGetKeysResponse`
+- New struct `AccountClientGetKeysResult`
+- New struct `AccountClientGetOptions`
+- New struct `AccountClientGetResponse`
+- New struct `AccountClientGetResult`
+- New struct `AccountClientListByResourceGroupOptions`
+- New struct `AccountClientListByResourceGroupPager`
+- New struct `AccountClientListByResourceGroupResponse`
+- New struct `AccountClientListByResourceGroupResult`
+- New struct `AccountClientListOptions`
+- New struct `AccountClientListOutboundNetworkDependenciesEndpointsOptions`
+- New struct `AccountClientListOutboundNetworkDependenciesEndpointsPager`
+- New struct `AccountClientListOutboundNetworkDependenciesEndpointsResponse`
+- New struct `AccountClientListOutboundNetworkDependenciesEndpointsResult`
+- New struct `AccountClientListPager`
+- New struct `AccountClientListResponse`
+- New struct `AccountClientListResult`
+- New struct `AccountClientRegenerateKeyOptions`
+- New struct `AccountClientRegenerateKeyResponse`
+- New struct `AccountClientRegenerateKeyResult`
+- New struct `AccountClientSynchronizeAutoStorageKeysOptions`
+- New struct `AccountClientSynchronizeAutoStorageKeysResponse`
+- New struct `AccountClientUpdateOptions`
+- New struct `AccountClientUpdateResponse`
+- New struct `AccountClientUpdateResult`
+- New struct `AccountCreateParameters`
+- New struct `AccountCreateProperties`
+- New struct `AccountIdentity`
+- New struct `AccountKeys`
+- New struct `AccountListResult`
+- New struct `AccountProperties`
+- New struct `AccountRegenerateKeyParameters`
+- New struct `AccountUpdateParameters`
+- New struct `AccountUpdateProperties`
+- New struct `ApplicationClientCreateOptions`
+- New struct `ApplicationClientCreateResponse`
+- New struct `ApplicationClientCreateResult`
+- New struct `ApplicationClientDeleteOptions`
+- New struct `ApplicationClientDeleteResponse`
+- New struct `ApplicationClientGetOptions`
+- New struct `ApplicationClientGetResponse`
+- New struct `ApplicationClientGetResult`
+- New struct `ApplicationClientListOptions`
+- New struct `ApplicationClientListPager`
+- New struct `ApplicationClientListResponse`
+- New struct `ApplicationClientListResult`
+- New struct `ApplicationClientUpdateOptions`
+- New struct `ApplicationClientUpdateResponse`
+- New struct `ApplicationClientUpdateResult`
+- New struct `ApplicationPackageClientActivateOptions`
+- New struct `ApplicationPackageClientActivateResponse`
+- New struct `ApplicationPackageClientActivateResult`
+- New struct `ApplicationPackageClientCreateOptions`
+- New struct `ApplicationPackageClientCreateResponse`
+- New struct `ApplicationPackageClientCreateResult`
+- New struct `ApplicationPackageClientDeleteOptions`
+- New struct `ApplicationPackageClientDeleteResponse`
+- New struct `ApplicationPackageClientGetOptions`
+- New struct `ApplicationPackageClientGetResponse`
+- New struct `ApplicationPackageClientGetResult`
+- New struct `ApplicationPackageClientListOptions`
+- New struct `ApplicationPackageClientListPager`
+- New struct `ApplicationPackageClientListResponse`
+- New struct `ApplicationPackageClientListResult`
+- New struct `CertificateClientBeginDeleteOptions`
+- New struct `CertificateClientCancelDeletionOptions`
+- New struct `CertificateClientCancelDeletionResponse`
+- New struct `CertificateClientCancelDeletionResult`
+- New struct `CertificateClientCreateOptions`
+- New struct `CertificateClientCreateResponse`
+- New struct `CertificateClientCreateResult`
+- New struct `CertificateClientDeletePoller`
+- New struct `CertificateClientDeletePollerResponse`
+- New struct `CertificateClientDeleteResponse`
+- New struct `CertificateClientGetOptions`
+- New struct `CertificateClientGetResponse`
+- New struct `CertificateClientGetResult`
+- New struct `CertificateClientListByBatchAccountOptions`
+- New struct `CertificateClientListByBatchAccountPager`
+- New struct `CertificateClientListByBatchAccountResponse`
+- New struct `CertificateClientListByBatchAccountResult`
+- New struct `CertificateClientUpdateOptions`
+- New struct `CertificateClientUpdateResponse`
+- New struct `CertificateClientUpdateResult`
+- New struct `LocationClientCheckNameAvailabilityOptions`
+- New struct `LocationClientCheckNameAvailabilityResponse`
+- New struct `LocationClientCheckNameAvailabilityResult`
+- New struct `LocationClientGetQuotasOptions`
+- New struct `LocationClientGetQuotasResponse`
+- New struct `LocationClientGetQuotasResult`
+- New struct `LocationClientListSupportedCloudServiceSKUsOptions`
+- New struct `LocationClientListSupportedCloudServiceSKUsPager`
+- New struct `LocationClientListSupportedCloudServiceSKUsResponse`
+- New struct `LocationClientListSupportedCloudServiceSKUsResult`
+- New struct `LocationClientListSupportedVirtualMachineSKUsOptions`
+- New struct `LocationClientListSupportedVirtualMachineSKUsPager`
+- New struct `LocationClientListSupportedVirtualMachineSKUsResponse`
+- New struct `LocationClientListSupportedVirtualMachineSKUsResult`
+- New struct `LocationQuota`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PoolClientBeginDeleteOptions`
+- New struct `PoolClientCreateOptions`
+- New struct `PoolClientCreateResponse`
+- New struct `PoolClientCreateResult`
+- New struct `PoolClientDeletePoller`
+- New struct `PoolClientDeletePollerResponse`
+- New struct `PoolClientDeleteResponse`
+- New struct `PoolClientDisableAutoScaleOptions`
+- New struct `PoolClientDisableAutoScaleResponse`
+- New struct `PoolClientDisableAutoScaleResult`
+- New struct `PoolClientGetOptions`
+- New struct `PoolClientGetResponse`
+- New struct `PoolClientGetResult`
+- New struct `PoolClientListByBatchAccountOptions`
+- New struct `PoolClientListByBatchAccountPager`
+- New struct `PoolClientListByBatchAccountResponse`
+- New struct `PoolClientListByBatchAccountResult`
+- New struct `PoolClientStopResizeOptions`
+- New struct `PoolClientStopResizeResponse`
+- New struct `PoolClientStopResizeResult`
+- New struct `PoolClientUpdateOptions`
+- New struct `PoolClientUpdateResponse`
+- New struct `PoolClientUpdateResult`
+- New struct `PoolIdentity`
+- New struct `PrivateEndpointConnectionClientBeginUpdateOptions`
+- New struct `PrivateEndpointConnectionClientGetOptions`
+- New struct `PrivateEndpointConnectionClientGetResponse`
+- New struct `PrivateEndpointConnectionClientGetResult`
+- New struct `PrivateEndpointConnectionClientListByBatchAccountOptions`
+- New struct `PrivateEndpointConnectionClientListByBatchAccountPager`
+- New struct `PrivateEndpointConnectionClientListByBatchAccountResponse`
+- New struct `PrivateEndpointConnectionClientListByBatchAccountResult`
+- New struct `PrivateEndpointConnectionClientUpdatePoller`
+- New struct `PrivateEndpointConnectionClientUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionClientUpdateResponse`
+- New struct `PrivateEndpointConnectionClientUpdateResult`
+- New struct `PrivateLinkResourceClientGetOptions`
+- New struct `PrivateLinkResourceClientGetResponse`
+- New struct `PrivateLinkResourceClientGetResult`
+- New struct `PrivateLinkResourceClientListByBatchAccountOptions`
+- New struct `PrivateLinkResourceClientListByBatchAccountPager`
+- New struct `PrivateLinkResourceClientListByBatchAccountResponse`
+- New struct `PrivateLinkResourceClientListByBatchAccountResult`
+- New field `StorageAccountID` in struct `AutoStorageProperties`
+- New field `AuthenticationMode` in struct `AutoStorageProperties`
+- New field `NodeIdentityReference` in struct `AutoStorageProperties`
+- New field `ID` in struct `Pool`
+- New field `Name` in struct `Pool`
+- New field `Type` in struct `Pool`
+- New field `Etag` in struct `Pool`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `Etag` in struct `PrivateEndpointConnection`
+- New field `Etag` in struct `PrivateLinkResource`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `Error` in struct `CloudError`
+- New field `ID` in struct `ApplicationPackage`
+- New field `Name` in struct `ApplicationPackage`
+- New field `Type` in struct `ApplicationPackage`
+- New field `Etag` in struct `ApplicationPackage`
+- New field `Etag` in struct `CertificateCreateOrUpdateParameters`
+- New field `ID` in struct `CertificateCreateOrUpdateParameters`
+- New field `Name` in struct `CertificateCreateOrUpdateParameters`
+- New field `Type` in struct `CertificateCreateOrUpdateParameters`
+- New field `Type` in struct `Application`
+- New field `Etag` in struct `Application`
+- New field `ID` in struct `Application`
+- New field `Name` in struct `Application`
+- New field `Thumbprint` in struct `CertificateCreateOrUpdateProperties`
+- New field `ThumbprintAlgorithm` in struct `CertificateCreateOrUpdateProperties`
+- New field `Format` in struct `CertificateCreateOrUpdateProperties`
+- New field `Format` in struct `CertificateProperties`
+- New field `Thumbprint` in struct `CertificateProperties`
+- New field `ThumbprintAlgorithm` in struct `CertificateProperties`
+- New field `Name` in struct `Certificate`
+- New field `Type` in struct `Certificate`
+- New field `Etag` in struct `Certificate`
+- New field `ID` in struct `Certificate`
+
+
 ## 0.1.0 (2021-11-16)
 
 - Initial preview release.

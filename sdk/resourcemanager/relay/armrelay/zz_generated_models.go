@@ -35,17 +35,17 @@ type AccessKeys struct {
 
 // AuthorizationRule - Description of a namespace authorization rule.
 type AuthorizationRule struct {
-	Resource
 	// REQUIRED; Authorization rule properties.
 	Properties *AuthorizationRuleProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AuthorizationRule.
-func (a AuthorizationRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AuthorizationRuleListResult - The response from the list namespace operation.
@@ -80,8 +80,8 @@ func (a AuthorizationRuleProperties) MarshalJSON() ([]byte, error) {
 
 // CheckNameAvailability - Description of the check name availability request properties.
 type CheckNameAvailability struct {
-	// REQUIRED; The namespace name to check for availability. The namespace name can contain only letters, numbers, and hyphens. The namespace must start with
-	// a letter, and it must end with a letter or number.
+	// REQUIRED; The namespace name to check for availability. The namespace name can contain only letters, numbers, and hyphens.
+	// The namespace must start with a letter, and it must end with a letter or number.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -97,10 +97,9 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Error reponse indicates Relay service is not able to process the incoming request. The reason is provided in the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error reponse indicates Relay service is not able to process the incoming request. The reason is provided
+// in the error message.
 type ErrorResponse struct {
-	raw string
 	// Error code.
 	Code *string `json:"code,omitempty"`
 
@@ -108,25 +107,19 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
 // HybridConnection - Description of hybrid connection resource.
 type HybridConnection struct {
-	Resource
 	// Properties of the HybridConnection.
 	Properties *HybridConnectionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type HybridConnection.
-func (h HybridConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	h.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", h.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // HybridConnectionListResult - The response of the list hybrid connection operation.
@@ -151,8 +144,8 @@ type HybridConnectionProperties struct {
 	// Returns true if client authorization is needed for this hybrid connection; otherwise, false.
 	RequiresClientAuthorization *bool `json:"requiresClientAuthorization,omitempty"`
 
-	// The usermetadata is a placeholder to store user-defined string data for the hybrid connection endpoint. For example, it can be used to store descriptive
-	// data, such as a list of teams and their contact
+	// The usermetadata is a placeholder to store user-defined string data for the hybrid connection endpoint. For example, it
+	// can be used to store descriptive data, such as a list of teams and their contact
 	// information. Also, user-defined configuration settings can be stored.
 	UserMetadata *string `json:"userMetadata,omitempty"`
 
@@ -209,118 +202,247 @@ func (h *HybridConnectionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// HybridConnectionsCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the HybridConnections.CreateOrUpdateAuthorizationRule method.
-type HybridConnectionsCreateOrUpdateAuthorizationRuleOptions struct {
+// HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the HybridConnectionsClient.CreateOrUpdateAuthorizationRule
+// method.
+type HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsCreateOrUpdateOptions contains the optional parameters for the HybridConnections.CreateOrUpdate method.
-type HybridConnectionsCreateOrUpdateOptions struct {
+// HybridConnectionsClientCreateOrUpdateOptions contains the optional parameters for the HybridConnectionsClient.CreateOrUpdate
+// method.
+type HybridConnectionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsDeleteAuthorizationRuleOptions contains the optional parameters for the HybridConnections.DeleteAuthorizationRule method.
-type HybridConnectionsDeleteAuthorizationRuleOptions struct {
+// HybridConnectionsClientDeleteAuthorizationRuleOptions contains the optional parameters for the HybridConnectionsClient.DeleteAuthorizationRule
+// method.
+type HybridConnectionsClientDeleteAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsDeleteOptions contains the optional parameters for the HybridConnections.Delete method.
-type HybridConnectionsDeleteOptions struct {
+// HybridConnectionsClientDeleteOptions contains the optional parameters for the HybridConnectionsClient.Delete method.
+type HybridConnectionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsGetAuthorizationRuleOptions contains the optional parameters for the HybridConnections.GetAuthorizationRule method.
-type HybridConnectionsGetAuthorizationRuleOptions struct {
+// HybridConnectionsClientGetAuthorizationRuleOptions contains the optional parameters for the HybridConnectionsClient.GetAuthorizationRule
+// method.
+type HybridConnectionsClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsGetOptions contains the optional parameters for the HybridConnections.Get method.
-type HybridConnectionsGetOptions struct {
+// HybridConnectionsClientGetOptions contains the optional parameters for the HybridConnectionsClient.Get method.
+type HybridConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsListAuthorizationRulesOptions contains the optional parameters for the HybridConnections.ListAuthorizationRules method.
-type HybridConnectionsListAuthorizationRulesOptions struct {
+// HybridConnectionsClientListAuthorizationRulesOptions contains the optional parameters for the HybridConnectionsClient.ListAuthorizationRules
+// method.
+type HybridConnectionsClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsListByNamespaceOptions contains the optional parameters for the HybridConnections.ListByNamespace method.
-type HybridConnectionsListByNamespaceOptions struct {
+// HybridConnectionsClientListByNamespaceOptions contains the optional parameters for the HybridConnectionsClient.ListByNamespace
+// method.
+type HybridConnectionsClientListByNamespaceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsListKeysOptions contains the optional parameters for the HybridConnections.ListKeys method.
-type HybridConnectionsListKeysOptions struct {
+// HybridConnectionsClientListKeysOptions contains the optional parameters for the HybridConnectionsClient.ListKeys method.
+type HybridConnectionsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridConnectionsRegenerateKeysOptions contains the optional parameters for the HybridConnections.RegenerateKeys method.
-type HybridConnectionsRegenerateKeysOptions struct {
+// HybridConnectionsClientRegenerateKeysOptions contains the optional parameters for the HybridConnectionsClient.RegenerateKeys
+// method.
+type HybridConnectionsClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesBeginCreateOrUpdateOptions contains the optional parameters for the Namespaces.BeginCreateOrUpdate method.
-type NamespacesBeginCreateOrUpdateOptions struct {
+// Namespace - Description of a namespace resource.
+type Namespace struct {
+	// REQUIRED; Resource location.
+	Location *string `json:"location,omitempty"`
+
+	// Description of Relay namespace
+	Properties *NamespaceProperties `json:"properties,omitempty"`
+
+	// SKU of the namespace.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Namespace.
+func (n Namespace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", n.ID)
+	populate(objectMap, "location", n.Location)
+	populate(objectMap, "name", n.Name)
+	populate(objectMap, "properties", n.Properties)
+	populate(objectMap, "sku", n.SKU)
+	populate(objectMap, "tags", n.Tags)
+	populate(objectMap, "type", n.Type)
+	return json.Marshal(objectMap)
+}
+
+// NamespaceListResult - The response from the list namespace operation.
+type NamespaceListResult struct {
+	// Link to the next set of results. Not empty if value contains incomplete list of namespaces.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Result of the list namespace operation.
+	Value []*Namespace `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NamespaceListResult.
+func (n NamespaceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", n.NextLink)
+	populate(objectMap, "value", n.Value)
+	return json.Marshal(objectMap)
+}
+
+// NamespaceProperties - Properties of the namespace.
+type NamespaceProperties struct {
+	// READ-ONLY; The time the namespace was created.
+	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+
+	// READ-ONLY; Identifier for Azure Insights metrics.
+	MetricID *string `json:"metricId,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	ProvisioningState *ProvisioningStateEnum `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Endpoint you can use to perform Service Bus operations.
+	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time the namespace was updated.
+	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NamespaceProperties.
+func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "createdAt", n.CreatedAt)
+	populate(objectMap, "metricId", n.MetricID)
+	populate(objectMap, "provisioningState", n.ProvisioningState)
+	populate(objectMap, "serviceBusEndpoint", n.ServiceBusEndpoint)
+	populateTimeRFC3339(objectMap, "updatedAt", n.UpdatedAt)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type NamespaceProperties.
+func (n *NamespaceProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdAt":
+			err = unpopulateTimeRFC3339(val, &n.CreatedAt)
+			delete(rawMsg, key)
+		case "metricId":
+			err = unpopulate(val, &n.MetricID)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &n.ProvisioningState)
+			delete(rawMsg, key)
+		case "serviceBusEndpoint":
+			err = unpopulate(val, &n.ServiceBusEndpoint)
+			delete(rawMsg, key)
+		case "updatedAt":
+			err = unpopulateTimeRFC3339(val, &n.UpdatedAt)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
+// method.
+type NamespacesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesBeginDeleteOptions contains the optional parameters for the Namespaces.BeginDelete method.
-type NamespacesBeginDeleteOptions struct {
+// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
+type NamespacesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesCheckNameAvailabilityOptions contains the optional parameters for the Namespaces.CheckNameAvailability method.
-type NamespacesCheckNameAvailabilityOptions struct {
+// NamespacesClientCheckNameAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckNameAvailability
+// method.
+type NamespacesClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the Namespaces.CreateOrUpdateAuthorizationRule method.
-type NamespacesCreateOrUpdateAuthorizationRuleOptions struct {
+// NamespacesClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.CreateOrUpdateAuthorizationRule
+// method.
+type NamespacesClientCreateOrUpdateAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesDeleteAuthorizationRuleOptions contains the optional parameters for the Namespaces.DeleteAuthorizationRule method.
-type NamespacesDeleteAuthorizationRuleOptions struct {
+// NamespacesClientDeleteAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.DeleteAuthorizationRule
+// method.
+type NamespacesClientDeleteAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesGetAuthorizationRuleOptions contains the optional parameters for the Namespaces.GetAuthorizationRule method.
-type NamespacesGetAuthorizationRuleOptions struct {
+// NamespacesClientGetAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.GetAuthorizationRule
+// method.
+type NamespacesClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesGetOptions contains the optional parameters for the Namespaces.Get method.
-type NamespacesGetOptions struct {
+// NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
+type NamespacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListAuthorizationRulesOptions contains the optional parameters for the Namespaces.ListAuthorizationRules method.
-type NamespacesListAuthorizationRulesOptions struct {
+// NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.ListAuthorizationRules
+// method.
+type NamespacesClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListByResourceGroupOptions contains the optional parameters for the Namespaces.ListByResourceGroup method.
-type NamespacesListByResourceGroupOptions struct {
+// NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.ListByResourceGroup
+// method.
+type NamespacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListKeysOptions contains the optional parameters for the Namespaces.ListKeys method.
-type NamespacesListKeysOptions struct {
+// NamespacesClientListKeysOptions contains the optional parameters for the NamespacesClient.ListKeys method.
+type NamespacesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListOptions contains the optional parameters for the Namespaces.List method.
-type NamespacesListOptions struct {
+// NamespacesClientListOptions contains the optional parameters for the NamespacesClient.List method.
+type NamespacesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesRegenerateKeysOptions contains the optional parameters for the Namespaces.RegenerateKeys method.
-type NamespacesRegenerateKeysOptions struct {
+// NamespacesClientRegenerateKeysOptions contains the optional parameters for the NamespacesClient.RegenerateKeys method.
+type NamespacesClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesUpdateOptions contains the optional parameters for the Namespaces.Update method.
-type NamespacesUpdateOptions struct {
+// NamespacesClientUpdateOptions contains the optional parameters for the NamespacesClient.Update method.
+type NamespacesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -345,7 +467,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - Result of the request to list Relay operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list Relay operations. It contains a list of operations and a URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -362,134 +485,19 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegenerateAccessKeyParameters - Parameters supplied to the regenerate authorization rule operation, specifies which key neeeds to be reset.
+// RegenerateAccessKeyParameters - Parameters supplied to the regenerate authorization rule operation, specifies which key
+// neeeds to be reset.
 type RegenerateAccessKeyParameters struct {
 	// REQUIRED; The access key to regenerate.
 	KeyType *KeyType `json:"keyType,omitempty"`
 
 	// Optional. If the key value is provided, this is set to key type, or autogenerated key value set for key type.
 	Key *string `json:"key,omitempty"`
-}
-
-// RelayNamespace - Description of a namespace resource.
-type RelayNamespace struct {
-	TrackedResource
-	// Description of Relay namespace
-	Properties *RelayNamespaceProperties `json:"properties,omitempty"`
-
-	// SKU of the namespace.
-	SKU *SKU `json:"sku,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RelayNamespace.
-func (r RelayNamespace) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "sku", r.SKU)
-	return json.Marshal(objectMap)
-}
-
-// RelayNamespaceListResult - The response from the list namespace operation.
-type RelayNamespaceListResult struct {
-	// Link to the next set of results. Not empty if value contains incomplete list of namespaces.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Result of the list namespace operation.
-	Value []*RelayNamespace `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RelayNamespaceListResult.
-func (r RelayNamespaceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// RelayNamespaceProperties - Properties of the namespace.
-type RelayNamespaceProperties struct {
-	// READ-ONLY; The time the namespace was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
-
-	// READ-ONLY; Identifier for Azure Insights metrics.
-	MetricID *string `json:"metricId,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	ProvisioningState *ProvisioningStateEnum `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Endpoint you can use to perform Service Bus operations.
-	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty" azure:"ro"`
-
-	// READ-ONLY; The time the namespace was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RelayNamespaceProperties.
-func (r RelayNamespaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", r.CreatedAt)
-	populate(objectMap, "metricId", r.MetricID)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "serviceBusEndpoint", r.ServiceBusEndpoint)
-	populateTimeRFC3339(objectMap, "updatedAt", r.UpdatedAt)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RelayNamespaceProperties.
-func (r *RelayNamespaceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &r.CreatedAt)
-			delete(rawMsg, key)
-		case "metricId":
-			err = unpopulate(val, &r.MetricID)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "serviceBusEndpoint":
-			err = unpopulate(val, &r.ServiceBusEndpoint)
-			delete(rawMsg, key)
-		case "updatedAt":
-			err = unpopulateTimeRFC3339(val, &r.UpdatedAt)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// RelayUpdateParameters - Description of a namespace resource.
-type RelayUpdateParameters struct {
-	ResourceNamespacePatch
-	// Description of Relay namespace.
-	Properties *RelayNamespaceProperties `json:"properties,omitempty"`
-
-	// SKU of the namespace.
-	SKU *SKU `json:"sku,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RelayUpdateParameters.
-func (r RelayUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ResourceNamespacePatch.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "sku", r.SKU)
-	return json.Marshal(objectMap)
 }
 
 // Resource - The resource definition.
@@ -504,36 +512,29 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // ResourceNamespacePatch - Definition of resource.
 type ResourceNamespacePatch struct {
-	Resource
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ResourceNamespacePatch.
 func (r ResourceNamespacePatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r ResourceNamespacePatch) marshalInternal(objectMap map[string]interface{}) {
-	r.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // SKU of the namespace.
@@ -547,90 +548,133 @@ type SKU struct {
 
 // TrackedResource - Definition of resource.
 type TrackedResource struct {
-	Resource
 	// REQUIRED; Resource location.
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
+// UpdateParameters - Description of a namespace resource.
+type UpdateParameters struct {
+	// Description of Relay namespace.
+	Properties *NamespaceProperties `json:"properties,omitempty"`
+
+	// SKU of the namespace.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// WCFRelaysCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the WCFRelays.CreateOrUpdateAuthorizationRule method.
-type WCFRelaysCreateOrUpdateAuthorizationRuleOptions struct {
+// MarshalJSON implements the json.Marshaller interface for type UpdateParameters.
+func (u UpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", u.ID)
+	populate(objectMap, "name", u.Name)
+	populate(objectMap, "properties", u.Properties)
+	populate(objectMap, "sku", u.SKU)
+	populate(objectMap, "tags", u.Tags)
+	populate(objectMap, "type", u.Type)
+	return json.Marshal(objectMap)
+}
+
+// WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the WCFRelaysClient.CreateOrUpdateAuthorizationRule
+// method.
+type WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysCreateOrUpdateOptions contains the optional parameters for the WCFRelays.CreateOrUpdate method.
-type WCFRelaysCreateOrUpdateOptions struct {
+// WCFRelaysClientCreateOrUpdateOptions contains the optional parameters for the WCFRelaysClient.CreateOrUpdate method.
+type WCFRelaysClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysDeleteAuthorizationRuleOptions contains the optional parameters for the WCFRelays.DeleteAuthorizationRule method.
-type WCFRelaysDeleteAuthorizationRuleOptions struct {
+// WCFRelaysClientDeleteAuthorizationRuleOptions contains the optional parameters for the WCFRelaysClient.DeleteAuthorizationRule
+// method.
+type WCFRelaysClientDeleteAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysDeleteOptions contains the optional parameters for the WCFRelays.Delete method.
-type WCFRelaysDeleteOptions struct {
+// WCFRelaysClientDeleteOptions contains the optional parameters for the WCFRelaysClient.Delete method.
+type WCFRelaysClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysGetAuthorizationRuleOptions contains the optional parameters for the WCFRelays.GetAuthorizationRule method.
-type WCFRelaysGetAuthorizationRuleOptions struct {
+// WCFRelaysClientGetAuthorizationRuleOptions contains the optional parameters for the WCFRelaysClient.GetAuthorizationRule
+// method.
+type WCFRelaysClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysGetOptions contains the optional parameters for the WCFRelays.Get method.
-type WCFRelaysGetOptions struct {
+// WCFRelaysClientGetOptions contains the optional parameters for the WCFRelaysClient.Get method.
+type WCFRelaysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysListAuthorizationRulesOptions contains the optional parameters for the WCFRelays.ListAuthorizationRules method.
-type WCFRelaysListAuthorizationRulesOptions struct {
+// WCFRelaysClientListAuthorizationRulesOptions contains the optional parameters for the WCFRelaysClient.ListAuthorizationRules
+// method.
+type WCFRelaysClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysListByNamespaceOptions contains the optional parameters for the WCFRelays.ListByNamespace method.
-type WCFRelaysListByNamespaceOptions struct {
+// WCFRelaysClientListByNamespaceOptions contains the optional parameters for the WCFRelaysClient.ListByNamespace method.
+type WCFRelaysClientListByNamespaceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysListKeysOptions contains the optional parameters for the WCFRelays.ListKeys method.
-type WCFRelaysListKeysOptions struct {
+// WCFRelaysClientListKeysOptions contains the optional parameters for the WCFRelaysClient.ListKeys method.
+type WCFRelaysClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WCFRelaysRegenerateKeysOptions contains the optional parameters for the WCFRelays.RegenerateKeys method.
-type WCFRelaysRegenerateKeysOptions struct {
+// WCFRelaysClientRegenerateKeysOptions contains the optional parameters for the WCFRelaysClient.RegenerateKeys method.
+type WCFRelaysClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
 // WcfRelay - Description of the WCF relay resource.
 type WcfRelay struct {
-	Resource
 	// Properties of the WCF relay.
 	Properties *WcfRelayProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type WcfRelay.
-func (w WcfRelay) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WcfRelayProperties - Properties of the WCF relay.
@@ -644,8 +688,8 @@ type WcfRelayProperties struct {
 	// Returns true if transport security is needed for this relay; otherwise, false.
 	RequiresTransportSecurity *bool `json:"requiresTransportSecurity,omitempty"`
 
-	// The usermetadata is a placeholder to store user-defined string data for the WCF Relay endpoint. For example, it can be used to store descriptive data,
-	// such as list of teams and their contact
+	// The usermetadata is a placeholder to store user-defined string data for the WCF Relay endpoint. For example, it can be
+	// used to store descriptive data, such as list of teams and their contact
 	// information. Also, user-defined configuration settings can be stored.
 	UserMetadata *string `json:"userMetadata,omitempty"`
 

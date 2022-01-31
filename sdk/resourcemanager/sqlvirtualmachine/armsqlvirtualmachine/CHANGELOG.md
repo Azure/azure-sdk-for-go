@@ -1,5 +1,384 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*SQLVirtualMachinesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, SQLVirtualMachine, *SQLVirtualMachinesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, SQLVirtualMachine, *SQLVirtualMachinesClientBeginCreateOrUpdateOptions)`
+- Function `*SQLVirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(SQLVirtualMachinesCreateOrUpdatePollerResponse, error)` to `(SQLVirtualMachinesClientCreateOrUpdatePollerResponse, error)`
+- Function `*AvailabilityGroupListenersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *AvailabilityGroupListenersBeginDeleteOptions)` to `(context.Context, string, string, string, *AvailabilityGroupListenersClientBeginDeleteOptions)`
+- Function `*AvailabilityGroupListenersClient.BeginDelete` return value(s) have been changed from `(AvailabilityGroupListenersDeletePollerResponse, error)` to `(AvailabilityGroupListenersClientDeletePollerResponse, error)`
+- Function `*SQLVirtualMachinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SQLVirtualMachinesGetOptions)` to `(context.Context, string, string, *SQLVirtualMachinesClientGetOptions)`
+- Function `*SQLVirtualMachinesClient.Get` return value(s) have been changed from `(SQLVirtualMachinesGetResponse, error)` to `(SQLVirtualMachinesClientGetResponse, error)`
+- Function `*AvailabilityGroupListenersClient.ListByGroup` parameter(s) have been changed from `(string, string, *AvailabilityGroupListenersListByGroupOptions)` to `(string, string, *AvailabilityGroupListenersClientListByGroupOptions)`
+- Function `*AvailabilityGroupListenersClient.ListByGroup` return value(s) have been changed from `(*AvailabilityGroupListenersListByGroupPager)` to `(*AvailabilityGroupListenersClientListByGroupPager)`
+- Function `*SQLVirtualMachinesClient.List` parameter(s) have been changed from `(*SQLVirtualMachinesListOptions)` to `(*SQLVirtualMachinesClientListOptions)`
+- Function `*SQLVirtualMachinesClient.List` return value(s) have been changed from `(*SQLVirtualMachinesListPager)` to `(*SQLVirtualMachinesClientListPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*SQLVirtualMachinesClient.ListBySQLVMGroup` parameter(s) have been changed from `(string, string, *SQLVirtualMachinesListBySQLVMGroupOptions)` to `(string, string, *SQLVirtualMachinesClientListBySQLVMGroupOptions)`
+- Function `*SQLVirtualMachinesClient.ListBySQLVMGroup` return value(s) have been changed from `(*SQLVirtualMachinesListBySQLVMGroupPager)` to `(*SQLVirtualMachinesClientListBySQLVMGroupPager)`
+- Function `*SQLVirtualMachinesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *SQLVirtualMachinesBeginDeleteOptions)` to `(context.Context, string, string, *SQLVirtualMachinesClientBeginDeleteOptions)`
+- Function `*SQLVirtualMachinesClient.BeginDelete` return value(s) have been changed from `(SQLVirtualMachinesDeletePollerResponse, error)` to `(SQLVirtualMachinesClientDeletePollerResponse, error)`
+- Function `*AvailabilityGroupListenersClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, AvailabilityGroupListener, *AvailabilityGroupListenersBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, AvailabilityGroupListener, *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions)`
+- Function `*AvailabilityGroupListenersClient.BeginCreateOrUpdate` return value(s) have been changed from `(AvailabilityGroupListenersCreateOrUpdatePollerResponse, error)` to `(AvailabilityGroupListenersClientCreateOrUpdatePollerResponse, error)`
+- Function `*SQLVirtualMachinesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *SQLVirtualMachinesListByResourceGroupOptions)` to `(string, *SQLVirtualMachinesClientListByResourceGroupOptions)`
+- Function `*SQLVirtualMachinesClient.ListByResourceGroup` return value(s) have been changed from `(*SQLVirtualMachinesListByResourceGroupPager)` to `(*SQLVirtualMachinesClientListByResourceGroupPager)`
+- Function `*AvailabilityGroupListenersClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AvailabilityGroupListenersGetOptions)` to `(context.Context, string, string, string, *AvailabilityGroupListenersClientGetOptions)`
+- Function `*AvailabilityGroupListenersClient.Get` return value(s) have been changed from `(AvailabilityGroupListenersGetResponse, error)` to `(AvailabilityGroupListenersClientGetResponse, error)`
+- Function `*SQLVirtualMachinesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, SQLVirtualMachineUpdate, *SQLVirtualMachinesBeginUpdateOptions)` to `(context.Context, string, string, Update, *SQLVirtualMachinesClientBeginUpdateOptions)`
+- Function `*SQLVirtualMachinesClient.BeginUpdate` return value(s) have been changed from `(SQLVirtualMachinesUpdatePollerResponse, error)` to `(SQLVirtualMachinesClientUpdatePollerResponse, error)`
+- Type of `SQLVirtualMachine.Properties` has been changed from `*SQLVirtualMachineProperties` to `*Properties`
+- Function `NewSQLVirtualMachineGroupsClient` has been removed
+- Function `*SQLVirtualMachinesUpdatePollerResponse.Resume` has been removed
+- Function `*SQLVirtualMachineGroupsUpdatePoller.Poll` has been removed
+- Function `*SQLVirtualMachineGroupsUpdatePollerResponse.Resume` has been removed
+- Function `*SQLVirtualMachineGroupsClient.BeginDelete` has been removed
+- Function `*AvailabilityGroupListenersCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SQLVirtualMachineGroupsListPager.PageResponse` has been removed
+- Function `*SQLVirtualMachineGroupsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SQLVirtualMachineGroupsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SQLVirtualMachineGroupsUpdatePoller.ResumeToken` has been removed
+- Function `SQLVirtualMachineGroup.MarshalJSON` has been removed
+- Function `SQLVirtualMachinesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*SQLVirtualMachinesDeletePoller.Done` has been removed
+- Function `SQLVirtualMachineGroupsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AvailabilityGroupListenersDeletePollerResponse.Resume` has been removed
+- Function `*SQLVirtualMachinesListByResourceGroupPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*SQLVirtualMachineGroupsDeletePoller.ResumeToken` has been removed
+- Function `*SQLVirtualMachinesCreateOrUpdatePoller.Poll` has been removed
+- Function `*SQLVirtualMachinesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SQLVirtualMachineGroupsClient.BeginCreateOrUpdate` has been removed
+- Function `SQLVirtualMachineUpdate.MarshalJSON` has been removed
+- Function `SQLVirtualMachineGroupUpdate.MarshalJSON` has been removed
+- Function `AvailabilityGroupListenersCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AvailabilityGroupListenersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `AvailabilityGroupListener.MarshalJSON` has been removed
+- Function `*AvailabilityGroupListenersListByGroupPager.PageResponse` has been removed
+- Function `*SQLVirtualMachineGroupsListPager.NextPage` has been removed
+- Function `*SQLVirtualMachineGroupsListByResourceGroupPager.PageResponse` has been removed
+- Function `*SQLVirtualMachinesListBySQLVMGroupPager.NextPage` has been removed
+- Function `*SQLVirtualMachinesDeletePoller.Poll` has been removed
+- Function `SQLVirtualMachinesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SQLVirtualMachinesDeletePollerResponse.Resume` has been removed
+- Function `*AvailabilityGroupListenersCreateOrUpdatePoller.Done` has been removed
+- Function `*SQLVirtualMachineGroupsCreateOrUpdatePoller.Done` has been removed
+- Function `*SQLVirtualMachineGroupsUpdatePoller.Done` has been removed
+- Function `*SQLVirtualMachineGroupsCreateOrUpdatePoller.Poll` has been removed
+- Function `SQLVirtualMachinesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLVirtualMachinesCreateOrUpdatePoller.Done` has been removed
+- Function `*SQLVirtualMachinesListPager.NextPage` has been removed
+- Function `*SQLVirtualMachineGroupsListByResourceGroupPager.Err` has been removed
+- Function `*SQLVirtualMachinesListByResourceGroupPager.NextPage` has been removed
+- Function `*AvailabilityGroupListenersDeletePoller.Poll` has been removed
+- Function `*SQLVirtualMachinesUpdatePoller.ResumeToken` has been removed
+- Function `*SQLVirtualMachinesUpdatePoller.Poll` has been removed
+- Function `*SQLVirtualMachinesDeletePoller.ResumeToken` has been removed
+- Function `*SQLVirtualMachinesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SQLVirtualMachineGroupsListByResourceGroupPager.NextPage` has been removed
+- Function `*SQLVirtualMachineGroupsClient.List` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*SQLVirtualMachineGroupsUpdatePoller.FinalResponse` has been removed
+- Function `*SQLVirtualMachineGroupsListPager.Err` has been removed
+- Function `*AvailabilityGroupListenersDeletePoller.Done` has been removed
+- Function `*AvailabilityGroupListenersListByGroupPager.NextPage` has been removed
+- Function `*SQLVirtualMachinesListBySQLVMGroupPager.PageResponse` has been removed
+- Function `*SQLVirtualMachineGroupsClient.BeginUpdate` has been removed
+- Function `*SQLVirtualMachinesListByResourceGroupPager.PageResponse` has been removed
+- Function `*SQLVirtualMachineGroupsClient.ListByResourceGroup` has been removed
+- Function `*AvailabilityGroupListenersDeletePoller.ResumeToken` has been removed
+- Function `SQLVirtualMachineGroupListResult.MarshalJSON` has been removed
+- Function `SQLVirtualMachineGroupsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLVirtualMachineGroupsClient.Get` has been removed
+- Function `*AvailabilityGroupListenersCreateOrUpdatePoller.Poll` has been removed
+- Function `*AvailabilityGroupListenersDeletePoller.FinalResponse` has been removed
+- Function `*SQLVirtualMachineGroupsDeletePoller.FinalResponse` has been removed
+- Function `*SQLVirtualMachinesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SQLVirtualMachinesListPager.Err` has been removed
+- Function `SQLVirtualMachineListResult.MarshalJSON` has been removed
+- Function `*AvailabilityGroupListenersListByGroupPager.Err` has been removed
+- Function `SQLVirtualMachineGroupsDeletePollerResponse.PollUntilDone` has been removed
+- Function `AvailabilityGroupListenersDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SQLVirtualMachineGroupsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SQLVirtualMachinesUpdatePoller.FinalResponse` has been removed
+- Function `*SQLVirtualMachinesListBySQLVMGroupPager.Err` has been removed
+- Function `*SQLVirtualMachinesDeletePoller.FinalResponse` has been removed
+- Function `*SQLVirtualMachinesListPager.PageResponse` has been removed
+- Function `*SQLVirtualMachineGroupsDeletePollerResponse.Resume` has been removed
+- Function `*SQLVirtualMachineGroupsDeletePoller.Poll` has been removed
+- Function `*SQLVirtualMachineGroupsDeletePoller.Done` has been removed
+- Function `*AvailabilityGroupListenersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*SQLVirtualMachinesUpdatePoller.Done` has been removed
+- Struct `AvailabilityGroupListenersBeginCreateOrUpdateOptions` has been removed
+- Struct `AvailabilityGroupListenersBeginDeleteOptions` has been removed
+- Struct `AvailabilityGroupListenersCreateOrUpdatePoller` has been removed
+- Struct `AvailabilityGroupListenersCreateOrUpdatePollerResponse` has been removed
+- Struct `AvailabilityGroupListenersCreateOrUpdateResponse` has been removed
+- Struct `AvailabilityGroupListenersCreateOrUpdateResult` has been removed
+- Struct `AvailabilityGroupListenersDeletePoller` has been removed
+- Struct `AvailabilityGroupListenersDeletePollerResponse` has been removed
+- Struct `AvailabilityGroupListenersDeleteResponse` has been removed
+- Struct `AvailabilityGroupListenersGetOptions` has been removed
+- Struct `AvailabilityGroupListenersGetResponse` has been removed
+- Struct `AvailabilityGroupListenersGetResult` has been removed
+- Struct `AvailabilityGroupListenersListByGroupOptions` has been removed
+- Struct `AvailabilityGroupListenersListByGroupPager` has been removed
+- Struct `AvailabilityGroupListenersListByGroupResponse` has been removed
+- Struct `AvailabilityGroupListenersListByGroupResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `SQLVirtualMachineGroup` has been removed
+- Struct `SQLVirtualMachineGroupListResult` has been removed
+- Struct `SQLVirtualMachineGroupProperties` has been removed
+- Struct `SQLVirtualMachineGroupUpdate` has been removed
+- Struct `SQLVirtualMachineGroupsBeginCreateOrUpdateOptions` has been removed
+- Struct `SQLVirtualMachineGroupsBeginDeleteOptions` has been removed
+- Struct `SQLVirtualMachineGroupsBeginUpdateOptions` has been removed
+- Struct `SQLVirtualMachineGroupsClient` has been removed
+- Struct `SQLVirtualMachineGroupsCreateOrUpdatePoller` has been removed
+- Struct `SQLVirtualMachineGroupsCreateOrUpdatePollerResponse` has been removed
+- Struct `SQLVirtualMachineGroupsCreateOrUpdateResponse` has been removed
+- Struct `SQLVirtualMachineGroupsCreateOrUpdateResult` has been removed
+- Struct `SQLVirtualMachineGroupsDeletePoller` has been removed
+- Struct `SQLVirtualMachineGroupsDeletePollerResponse` has been removed
+- Struct `SQLVirtualMachineGroupsDeleteResponse` has been removed
+- Struct `SQLVirtualMachineGroupsGetOptions` has been removed
+- Struct `SQLVirtualMachineGroupsGetResponse` has been removed
+- Struct `SQLVirtualMachineGroupsGetResult` has been removed
+- Struct `SQLVirtualMachineGroupsListByResourceGroupOptions` has been removed
+- Struct `SQLVirtualMachineGroupsListByResourceGroupPager` has been removed
+- Struct `SQLVirtualMachineGroupsListByResourceGroupResponse` has been removed
+- Struct `SQLVirtualMachineGroupsListByResourceGroupResult` has been removed
+- Struct `SQLVirtualMachineGroupsListOptions` has been removed
+- Struct `SQLVirtualMachineGroupsListPager` has been removed
+- Struct `SQLVirtualMachineGroupsListResponse` has been removed
+- Struct `SQLVirtualMachineGroupsListResult` has been removed
+- Struct `SQLVirtualMachineGroupsUpdatePoller` has been removed
+- Struct `SQLVirtualMachineGroupsUpdatePollerResponse` has been removed
+- Struct `SQLVirtualMachineGroupsUpdateResponse` has been removed
+- Struct `SQLVirtualMachineGroupsUpdateResult` has been removed
+- Struct `SQLVirtualMachineListResult` has been removed
+- Struct `SQLVirtualMachineProperties` has been removed
+- Struct `SQLVirtualMachineUpdate` has been removed
+- Struct `SQLVirtualMachinesBeginCreateOrUpdateOptions` has been removed
+- Struct `SQLVirtualMachinesBeginDeleteOptions` has been removed
+- Struct `SQLVirtualMachinesBeginUpdateOptions` has been removed
+- Struct `SQLVirtualMachinesCreateOrUpdatePoller` has been removed
+- Struct `SQLVirtualMachinesCreateOrUpdatePollerResponse` has been removed
+- Struct `SQLVirtualMachinesCreateOrUpdateResponse` has been removed
+- Struct `SQLVirtualMachinesCreateOrUpdateResult` has been removed
+- Struct `SQLVirtualMachinesDeletePoller` has been removed
+- Struct `SQLVirtualMachinesDeletePollerResponse` has been removed
+- Struct `SQLVirtualMachinesDeleteResponse` has been removed
+- Struct `SQLVirtualMachinesGetOptions` has been removed
+- Struct `SQLVirtualMachinesGetResponse` has been removed
+- Struct `SQLVirtualMachinesGetResult` has been removed
+- Struct `SQLVirtualMachinesListByResourceGroupOptions` has been removed
+- Struct `SQLVirtualMachinesListByResourceGroupPager` has been removed
+- Struct `SQLVirtualMachinesListByResourceGroupResponse` has been removed
+- Struct `SQLVirtualMachinesListByResourceGroupResult` has been removed
+- Struct `SQLVirtualMachinesListBySQLVMGroupOptions` has been removed
+- Struct `SQLVirtualMachinesListBySQLVMGroupPager` has been removed
+- Struct `SQLVirtualMachinesListBySQLVMGroupResponse` has been removed
+- Struct `SQLVirtualMachinesListBySQLVMGroupResult` has been removed
+- Struct `SQLVirtualMachinesListOptions` has been removed
+- Struct `SQLVirtualMachinesListPager` has been removed
+- Struct `SQLVirtualMachinesListResponse` has been removed
+- Struct `SQLVirtualMachinesListResult` has been removed
+- Struct `SQLVirtualMachinesUpdatePoller` has been removed
+- Struct `SQLVirtualMachinesUpdatePollerResponse` has been removed
+- Struct `SQLVirtualMachinesUpdateResponse` has been removed
+- Struct `SQLVirtualMachinesUpdateResult` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `TrackedResource` of struct `SQLVirtualMachine` has been removed
+- Field `ProxyResource` of struct `AvailabilityGroupListener` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+
+### Features Added
+
+- New function `*AvailabilityGroupListenersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLVirtualMachinesClientUpdatePoller.Done() bool`
+- New function `*GroupsClientCreateOrUpdatePollerResponse.Resume(context.Context, *GroupsClient, string) error`
+- New function `*GroupsClientUpdatePoller.Done() bool`
+- New function `*SQLVirtualMachinesClientCreateOrUpdatePollerResponse.Resume(context.Context, *SQLVirtualMachinesClient, string) error`
+- New function `*SQLVirtualMachinesClientUpdatePollerResponse.Resume(context.Context, *SQLVirtualMachinesClient, string) error`
+- New function `GroupsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GroupsClientUpdateResponse, error)`
+- New function `*SQLVirtualMachinesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*GroupsClientUpdatePollerResponse.Resume(context.Context, *GroupsClient, string) error`
+- New function `*GroupsClientListPager.PageResponse() GroupsClientListResponse`
+- New function `SQLVirtualMachinesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLVirtualMachinesClientUpdateResponse, error)`
+- New function `*SQLVirtualMachinesClientListByResourceGroupPager.Err() error`
+- New function `*GroupsClientDeletePollerResponse.Resume(context.Context, *GroupsClient, string) error`
+- New function `*SQLVirtualMachinesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*AvailabilityGroupListenersClientDeletePoller.ResumeToken() (string, error)`
+- New function `*GroupsClientDeletePoller.FinalResponse(context.Context) (GroupsClientDeleteResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `Update.MarshalJSON() ([]byte, error)`
+- New function `*SQLVirtualMachinesClientDeletePoller.FinalResponse(context.Context) (SQLVirtualMachinesClientDeleteResponse, error)`
+- New function `*AvailabilityGroupListenersClientDeletePoller.FinalResponse(context.Context) (AvailabilityGroupListenersClientDeleteResponse, error)`
+- New function `*GroupsClient.ListByResourceGroup(string, *GroupsClientListByResourceGroupOptions) *GroupsClientListByResourceGroupPager`
+- New function `*SQLVirtualMachinesClientCreateOrUpdatePoller.FinalResponse(context.Context) (SQLVirtualMachinesClientCreateOrUpdateResponse, error)`
+- New function `*GroupsClientListByResourceGroupPager.Err() error`
+- New function `*SQLVirtualMachinesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SQLVirtualMachinesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*GroupsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `Group.MarshalJSON() ([]byte, error)`
+- New function `*AvailabilityGroupListenersClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GroupsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*GroupsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GroupsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLVirtualMachinesClientListPager.Err() error`
+- New function `*GroupsClient.BeginCreateOrUpdate(context.Context, string, string, Group, *GroupsClientBeginCreateOrUpdateOptions) (GroupsClientCreateOrUpdatePollerResponse, error)`
+- New function `*GroupsClientUpdatePoller.FinalResponse(context.Context) (GroupsClientUpdateResponse, error)`
+- New function `AvailabilityGroupListenersClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AvailabilityGroupListenersClientCreateOrUpdateResponse, error)`
+- New function `*GroupsClientDeletePoller.Done() bool`
+- New function `*AvailabilityGroupListenersClientListByGroupPager.Err() error`
+- New function `*GroupsClientCreateOrUpdatePoller.Done() bool`
+- New function `*GroupsClient.BeginUpdate(context.Context, string, string, GroupUpdate, *GroupsClientBeginUpdateOptions) (GroupsClientUpdatePollerResponse, error)`
+- New function `*SQLVirtualMachinesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SQLVirtualMachinesClientListBySQLVMGroupPager.PageResponse() SQLVirtualMachinesClientListBySQLVMGroupResponse`
+- New function `*GroupsClient.BeginDelete(context.Context, string, string, *GroupsClientBeginDeleteOptions) (GroupsClientDeletePollerResponse, error)`
+- New function `*SQLVirtualMachinesClientListPager.NextPage(context.Context) bool`
+- New function `*AvailabilityGroupListenersClientCreateOrUpdatePoller.FinalResponse(context.Context) (AvailabilityGroupListenersClientCreateOrUpdateResponse, error)`
+- New function `NewGroupsClient(string, azcore.TokenCredential, *arm.ClientOptions) *GroupsClient`
+- New function `*SQLVirtualMachinesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GroupsClientCreateOrUpdatePoller.FinalResponse(context.Context) (GroupsClientCreateOrUpdateResponse, error)`
+- New function `*GroupsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `GroupListResult.MarshalJSON() ([]byte, error)`
+- New function `*SQLVirtualMachinesClientUpdatePoller.FinalResponse(context.Context) (SQLVirtualMachinesClientUpdateResponse, error)`
+- New function `*GroupsClientDeletePoller.ResumeToken() (string, error)`
+- New function `GroupUpdate.MarshalJSON() ([]byte, error)`
+- New function `*AvailabilityGroupListenersClientCreateOrUpdatePoller.Done() bool`
+- New function `*SQLVirtualMachinesClientListBySQLVMGroupPager.NextPage(context.Context) bool`
+- New function `ListResult.MarshalJSON() ([]byte, error)`
+- New function `*AvailabilityGroupListenersClientListByGroupPager.NextPage(context.Context) bool`
+- New function `*GroupsClient.Get(context.Context, string, string, *GroupsClientGetOptions) (GroupsClientGetResponse, error)`
+- New function `*SQLVirtualMachinesClientDeletePoller.Done() bool`
+- New function `SQLVirtualMachinesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLVirtualMachinesClientDeleteResponse, error)`
+- New function `*AvailabilityGroupListenersClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SQLVirtualMachinesClientDeletePollerResponse.Resume(context.Context, *SQLVirtualMachinesClient, string) error`
+- New function `*SQLVirtualMachinesClientListBySQLVMGroupPager.Err() error`
+- New function `*AvailabilityGroupListenersClientListByGroupPager.PageResponse() AvailabilityGroupListenersClientListByGroupResponse`
+- New function `*SQLVirtualMachinesClientCreateOrUpdatePoller.Done() bool`
+- New function `*SQLVirtualMachinesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `GroupsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GroupsClientCreateOrUpdateResponse, error)`
+- New function `*GroupsClientListByResourceGroupPager.PageResponse() GroupsClientListByResourceGroupResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `AvailabilityGroupListenersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AvailabilityGroupListenersClientDeleteResponse, error)`
+- New function `GroupsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GroupsClientDeleteResponse, error)`
+- New function `*GroupsClientListPager.NextPage(context.Context) bool`
+- New function `*GroupsClient.List(*GroupsClientListOptions) *GroupsClientListPager`
+- New function `*AvailabilityGroupListenersClientDeletePollerResponse.Resume(context.Context, *AvailabilityGroupListenersClient, string) error`
+- New function `*SQLVirtualMachinesClientListPager.PageResponse() SQLVirtualMachinesClientListResponse`
+- New function `*AvailabilityGroupListenersClientCreateOrUpdatePollerResponse.Resume(context.Context, *AvailabilityGroupListenersClient, string) error`
+- New function `*GroupsClientListPager.Err() error`
+- New function `*GroupsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AvailabilityGroupListenersClientDeletePoller.Done() bool`
+- New function `SQLVirtualMachinesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLVirtualMachinesClientCreateOrUpdateResponse, error)`
+- New function `*SQLVirtualMachinesClientListByResourceGroupPager.PageResponse() SQLVirtualMachinesClientListByResourceGroupResponse`
+- New struct `AvailabilityGroupListenersClientBeginCreateOrUpdateOptions`
+- New struct `AvailabilityGroupListenersClientBeginDeleteOptions`
+- New struct `AvailabilityGroupListenersClientCreateOrUpdatePoller`
+- New struct `AvailabilityGroupListenersClientCreateOrUpdatePollerResponse`
+- New struct `AvailabilityGroupListenersClientCreateOrUpdateResponse`
+- New struct `AvailabilityGroupListenersClientCreateOrUpdateResult`
+- New struct `AvailabilityGroupListenersClientDeletePoller`
+- New struct `AvailabilityGroupListenersClientDeletePollerResponse`
+- New struct `AvailabilityGroupListenersClientDeleteResponse`
+- New struct `AvailabilityGroupListenersClientGetOptions`
+- New struct `AvailabilityGroupListenersClientGetResponse`
+- New struct `AvailabilityGroupListenersClientGetResult`
+- New struct `AvailabilityGroupListenersClientListByGroupOptions`
+- New struct `AvailabilityGroupListenersClientListByGroupPager`
+- New struct `AvailabilityGroupListenersClientListByGroupResponse`
+- New struct `AvailabilityGroupListenersClientListByGroupResult`
+- New struct `Group`
+- New struct `GroupListResult`
+- New struct `GroupProperties`
+- New struct `GroupUpdate`
+- New struct `GroupsClient`
+- New struct `GroupsClientBeginCreateOrUpdateOptions`
+- New struct `GroupsClientBeginDeleteOptions`
+- New struct `GroupsClientBeginUpdateOptions`
+- New struct `GroupsClientCreateOrUpdatePoller`
+- New struct `GroupsClientCreateOrUpdatePollerResponse`
+- New struct `GroupsClientCreateOrUpdateResponse`
+- New struct `GroupsClientCreateOrUpdateResult`
+- New struct `GroupsClientDeletePoller`
+- New struct `GroupsClientDeletePollerResponse`
+- New struct `GroupsClientDeleteResponse`
+- New struct `GroupsClientGetOptions`
+- New struct `GroupsClientGetResponse`
+- New struct `GroupsClientGetResult`
+- New struct `GroupsClientListByResourceGroupOptions`
+- New struct `GroupsClientListByResourceGroupPager`
+- New struct `GroupsClientListByResourceGroupResponse`
+- New struct `GroupsClientListByResourceGroupResult`
+- New struct `GroupsClientListOptions`
+- New struct `GroupsClientListPager`
+- New struct `GroupsClientListResponse`
+- New struct `GroupsClientListResult`
+- New struct `GroupsClientUpdatePoller`
+- New struct `GroupsClientUpdatePollerResponse`
+- New struct `GroupsClientUpdateResponse`
+- New struct `GroupsClientUpdateResult`
+- New struct `ListResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `Properties`
+- New struct `SQLVirtualMachinesClientBeginCreateOrUpdateOptions`
+- New struct `SQLVirtualMachinesClientBeginDeleteOptions`
+- New struct `SQLVirtualMachinesClientBeginUpdateOptions`
+- New struct `SQLVirtualMachinesClientCreateOrUpdatePoller`
+- New struct `SQLVirtualMachinesClientCreateOrUpdatePollerResponse`
+- New struct `SQLVirtualMachinesClientCreateOrUpdateResponse`
+- New struct `SQLVirtualMachinesClientCreateOrUpdateResult`
+- New struct `SQLVirtualMachinesClientDeletePoller`
+- New struct `SQLVirtualMachinesClientDeletePollerResponse`
+- New struct `SQLVirtualMachinesClientDeleteResponse`
+- New struct `SQLVirtualMachinesClientGetOptions`
+- New struct `SQLVirtualMachinesClientGetResponse`
+- New struct `SQLVirtualMachinesClientGetResult`
+- New struct `SQLVirtualMachinesClientListByResourceGroupOptions`
+- New struct `SQLVirtualMachinesClientListByResourceGroupPager`
+- New struct `SQLVirtualMachinesClientListByResourceGroupResponse`
+- New struct `SQLVirtualMachinesClientListByResourceGroupResult`
+- New struct `SQLVirtualMachinesClientListBySQLVMGroupOptions`
+- New struct `SQLVirtualMachinesClientListBySQLVMGroupPager`
+- New struct `SQLVirtualMachinesClientListBySQLVMGroupResponse`
+- New struct `SQLVirtualMachinesClientListBySQLVMGroupResult`
+- New struct `SQLVirtualMachinesClientListOptions`
+- New struct `SQLVirtualMachinesClientListPager`
+- New struct `SQLVirtualMachinesClientListResponse`
+- New struct `SQLVirtualMachinesClientListResult`
+- New struct `SQLVirtualMachinesClientUpdatePoller`
+- New struct `SQLVirtualMachinesClientUpdatePollerResponse`
+- New struct `SQLVirtualMachinesClientUpdateResponse`
+- New struct `SQLVirtualMachinesClientUpdateResult`
+- New struct `Update`
+- New field `Type` in struct `AvailabilityGroupListener`
+- New field `ID` in struct `AvailabilityGroupListener`
+- New field `Name` in struct `AvailabilityGroupListener`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Tags` in struct `SQLVirtualMachine`
+- New field `ID` in struct `SQLVirtualMachine`
+- New field `Name` in struct `SQLVirtualMachine`
+- New field `Type` in struct `SQLVirtualMachine`
+- New field `Location` in struct `SQLVirtualMachine`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `ProxyResource`
+
+
 ## 0.1.0 (2021-11-19)
 
 - Initial preview release.

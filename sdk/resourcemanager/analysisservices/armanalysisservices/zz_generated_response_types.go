@@ -15,34 +15,34 @@ import (
 	"time"
 )
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// ServersCheckNameAvailabilityResponse contains the response from method Servers.CheckNameAvailability.
-type ServersCheckNameAvailabilityResponse struct {
-	ServersCheckNameAvailabilityResult
+// ServersClientCheckNameAvailabilityResponse contains the response from method ServersClient.CheckNameAvailability.
+type ServersClientCheckNameAvailabilityResponse struct {
+	ServersClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersCheckNameAvailabilityResult contains the result from method Servers.CheckNameAvailability.
-type ServersCheckNameAvailabilityResult struct {
+// ServersClientCheckNameAvailabilityResult contains the result from method ServersClient.CheckNameAvailability.
+type ServersClientCheckNameAvailabilityResult struct {
 	CheckServerNameAvailabilityResult
 }
 
-// ServersCreatePollerResponse contains the response from method Servers.Create.
-type ServersCreatePollerResponse struct {
+// ServersClientCreatePollerResponse contains the response from method ServersClient.Create.
+type ServersClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServersCreatePoller
+	Poller *ServersClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,9 +51,9 @@ type ServersCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServersCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersCreateResponse, error) {
-	respType := ServersCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AnalysisServicesServer)
+func (l ServersClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersClientCreateResponse, error) {
+	respType := ServersClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Server)
 	if err != nil {
 		return respType, err
 	}
@@ -61,13 +61,13 @@ func (l ServersCreatePollerResponse) PollUntilDone(ctx context.Context, freq tim
 	return respType, nil
 }
 
-// Resume rehydrates a ServersCreatePollerResponse from the provided client and resume token.
-func (l *ServersCreatePollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ServersClientCreatePollerResponse from the provided client and resume token.
+func (l *ServersClientCreatePollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServersCreatePoller{
+	poller := &ServersClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,22 +79,22 @@ func (l *ServersCreatePollerResponse) Resume(ctx context.Context, client *Server
 	return nil
 }
 
-// ServersCreateResponse contains the response from method Servers.Create.
-type ServersCreateResponse struct {
-	ServersCreateResult
+// ServersClientCreateResponse contains the response from method ServersClient.Create.
+type ServersClientCreateResponse struct {
+	ServersClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersCreateResult contains the result from method Servers.Create.
-type ServersCreateResult struct {
-	AnalysisServicesServer
+// ServersClientCreateResult contains the result from method ServersClient.Create.
+type ServersClientCreateResult struct {
+	Server
 }
 
-// ServersDeletePollerResponse contains the response from method Servers.Delete.
-type ServersDeletePollerResponse struct {
+// ServersClientDeletePollerResponse contains the response from method ServersClient.Delete.
+type ServersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServersDeletePoller
+	Poller *ServersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -103,8 +103,8 @@ type ServersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersDeleteResponse, error) {
-	respType := ServersDeleteResponse{}
+func (l ServersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersClientDeleteResponse, error) {
+	respType := ServersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -113,13 +113,13 @@ func (l ServersDeletePollerResponse) PollUntilDone(ctx context.Context, freq tim
 	return respType, nil
 }
 
-// Resume rehydrates a ServersDeletePollerResponse from the provided client and resume token.
-func (l *ServersDeletePollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ServersClientDeletePollerResponse from the provided client and resume token.
+func (l *ServersClientDeletePollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServersDeletePoller{
+	poller := &ServersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -131,112 +131,112 @@ func (l *ServersDeletePollerResponse) Resume(ctx context.Context, client *Server
 	return nil
 }
 
-// ServersDeleteResponse contains the response from method Servers.Delete.
-type ServersDeleteResponse struct {
+// ServersClientDeleteResponse contains the response from method ServersClient.Delete.
+type ServersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersDissociateGatewayResponse contains the response from method Servers.DissociateGateway.
-type ServersDissociateGatewayResponse struct {
+// ServersClientDissociateGatewayResponse contains the response from method ServersClient.DissociateGateway.
+type ServersClientDissociateGatewayResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersGetDetailsResponse contains the response from method Servers.GetDetails.
-type ServersGetDetailsResponse struct {
-	ServersGetDetailsResult
+// ServersClientGetDetailsResponse contains the response from method ServersClient.GetDetails.
+type ServersClientGetDetailsResponse struct {
+	ServersClientGetDetailsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersGetDetailsResult contains the result from method Servers.GetDetails.
-type ServersGetDetailsResult struct {
-	AnalysisServicesServer
+// ServersClientGetDetailsResult contains the result from method ServersClient.GetDetails.
+type ServersClientGetDetailsResult struct {
+	Server
 }
 
-// ServersListByResourceGroupResponse contains the response from method Servers.ListByResourceGroup.
-type ServersListByResourceGroupResponse struct {
-	ServersListByResourceGroupResult
+// ServersClientListByResourceGroupResponse contains the response from method ServersClient.ListByResourceGroup.
+type ServersClientListByResourceGroupResponse struct {
+	ServersClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersListByResourceGroupResult contains the result from method Servers.ListByResourceGroup.
-type ServersListByResourceGroupResult struct {
-	AnalysisServicesServers
+// ServersClientListByResourceGroupResult contains the result from method ServersClient.ListByResourceGroup.
+type ServersClientListByResourceGroupResult struct {
+	Servers
 }
 
-// ServersListGatewayStatusResponse contains the response from method Servers.ListGatewayStatus.
-type ServersListGatewayStatusResponse struct {
-	ServersListGatewayStatusResult
+// ServersClientListGatewayStatusResponse contains the response from method ServersClient.ListGatewayStatus.
+type ServersClientListGatewayStatusResponse struct {
+	ServersClientListGatewayStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersListGatewayStatusResult contains the result from method Servers.ListGatewayStatus.
-type ServersListGatewayStatusResult struct {
+// ServersClientListGatewayStatusResult contains the result from method ServersClient.ListGatewayStatus.
+type ServersClientListGatewayStatusResult struct {
 	GatewayListStatusLive
 }
 
-// ServersListOperationResultsResponse contains the response from method Servers.ListOperationResults.
-type ServersListOperationResultsResponse struct {
+// ServersClientListOperationResultsResponse contains the response from method ServersClient.ListOperationResults.
+type ServersClientListOperationResultsResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersListOperationStatusesResponse contains the response from method Servers.ListOperationStatuses.
-type ServersListOperationStatusesResponse struct {
-	ServersListOperationStatusesResult
+// ServersClientListOperationStatusesResponse contains the response from method ServersClient.ListOperationStatuses.
+type ServersClientListOperationStatusesResponse struct {
+	ServersClientListOperationStatusesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersListOperationStatusesResult contains the result from method Servers.ListOperationStatuses.
-type ServersListOperationStatusesResult struct {
+// ServersClientListOperationStatusesResult contains the result from method ServersClient.ListOperationStatuses.
+type ServersClientListOperationStatusesResult struct {
 	OperationStatus
 }
 
-// ServersListResponse contains the response from method Servers.List.
-type ServersListResponse struct {
-	ServersListResult
+// ServersClientListResponse contains the response from method ServersClient.List.
+type ServersClientListResponse struct {
+	ServersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersListResult contains the result from method Servers.List.
-type ServersListResult struct {
-	AnalysisServicesServers
+// ServersClientListResult contains the result from method ServersClient.List.
+type ServersClientListResult struct {
+	Servers
 }
 
-// ServersListSKUsForExistingResponse contains the response from method Servers.ListSKUsForExisting.
-type ServersListSKUsForExistingResponse struct {
-	ServersListSKUsForExistingResult
+// ServersClientListSKUsForExistingResponse contains the response from method ServersClient.ListSKUsForExisting.
+type ServersClientListSKUsForExistingResponse struct {
+	ServersClientListSKUsForExistingResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersListSKUsForExistingResult contains the result from method Servers.ListSKUsForExisting.
-type ServersListSKUsForExistingResult struct {
+// ServersClientListSKUsForExistingResult contains the result from method ServersClient.ListSKUsForExisting.
+type ServersClientListSKUsForExistingResult struct {
 	SKUEnumerationForExistingResourceResult
 }
 
-// ServersListSKUsForNewResponse contains the response from method Servers.ListSKUsForNew.
-type ServersListSKUsForNewResponse struct {
-	ServersListSKUsForNewResult
+// ServersClientListSKUsForNewResponse contains the response from method ServersClient.ListSKUsForNew.
+type ServersClientListSKUsForNewResponse struct {
+	ServersClientListSKUsForNewResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersListSKUsForNewResult contains the result from method Servers.ListSKUsForNew.
-type ServersListSKUsForNewResult struct {
+// ServersClientListSKUsForNewResult contains the result from method ServersClient.ListSKUsForNew.
+type ServersClientListSKUsForNewResult struct {
 	SKUEnumerationForNewResourceResult
 }
 
-// ServersResumePollerResponse contains the response from method Servers.Resume.
-type ServersResumePollerResponse struct {
+// ServersClientResumePollerResponse contains the response from method ServersClient.Resume.
+type ServersClientResumePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServersResumePoller
+	Poller *ServersClientResumePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -245,8 +245,8 @@ type ServersResumePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServersResumePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersResumeResponse, error) {
-	respType := ServersResumeResponse{}
+func (l ServersClientResumePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersClientResumeResponse, error) {
+	respType := ServersClientResumeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -255,13 +255,13 @@ func (l ServersResumePollerResponse) PollUntilDone(ctx context.Context, freq tim
 	return respType, nil
 }
 
-// Resume rehydrates a ServersResumePollerResponse from the provided client and resume token.
-func (l *ServersResumePollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Resume", token, client.pl, client.resumeHandleError)
+// Resume rehydrates a ServersClientResumePollerResponse from the provided client and resume token.
+func (l *ServersClientResumePollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Resume", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServersResumePoller{
+	poller := &ServersClientResumePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -273,16 +273,16 @@ func (l *ServersResumePollerResponse) Resume(ctx context.Context, client *Server
 	return nil
 }
 
-// ServersResumeResponse contains the response from method Servers.Resume.
-type ServersResumeResponse struct {
+// ServersClientResumeResponse contains the response from method ServersClient.Resume.
+type ServersClientResumeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersSuspendPollerResponse contains the response from method Servers.Suspend.
-type ServersSuspendPollerResponse struct {
+// ServersClientSuspendPollerResponse contains the response from method ServersClient.Suspend.
+type ServersClientSuspendPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServersSuspendPoller
+	Poller *ServersClientSuspendPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -291,8 +291,8 @@ type ServersSuspendPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServersSuspendPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersSuspendResponse, error) {
-	respType := ServersSuspendResponse{}
+func (l ServersClientSuspendPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersClientSuspendResponse, error) {
+	respType := ServersClientSuspendResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -301,13 +301,13 @@ func (l ServersSuspendPollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a ServersSuspendPollerResponse from the provided client and resume token.
-func (l *ServersSuspendPollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Suspend", token, client.pl, client.suspendHandleError)
+// Resume rehydrates a ServersClientSuspendPollerResponse from the provided client and resume token.
+func (l *ServersClientSuspendPollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Suspend", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServersSuspendPoller{
+	poller := &ServersClientSuspendPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -319,16 +319,16 @@ func (l *ServersSuspendPollerResponse) Resume(ctx context.Context, client *Serve
 	return nil
 }
 
-// ServersSuspendResponse contains the response from method Servers.Suspend.
-type ServersSuspendResponse struct {
+// ServersClientSuspendResponse contains the response from method ServersClient.Suspend.
+type ServersClientSuspendResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersUpdatePollerResponse contains the response from method Servers.Update.
-type ServersUpdatePollerResponse struct {
+// ServersClientUpdatePollerResponse contains the response from method ServersClient.Update.
+type ServersClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServersUpdatePoller
+	Poller *ServersClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -337,9 +337,9 @@ type ServersUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersUpdateResponse, error) {
-	respType := ServersUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AnalysisServicesServer)
+func (l ServersClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServersClientUpdateResponse, error) {
+	respType := ServersClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Server)
 	if err != nil {
 		return respType, err
 	}
@@ -347,13 +347,13 @@ func (l ServersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq tim
 	return respType, nil
 }
 
-// Resume rehydrates a ServersUpdatePollerResponse from the provided client and resume token.
-func (l *ServersUpdatePollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ServersClientUpdatePollerResponse from the provided client and resume token.
+func (l *ServersClientUpdatePollerResponse) Resume(ctx context.Context, client *ServersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServersClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServersUpdatePoller{
+	poller := &ServersClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -365,14 +365,14 @@ func (l *ServersUpdatePollerResponse) Resume(ctx context.Context, client *Server
 	return nil
 }
 
-// ServersUpdateResponse contains the response from method Servers.Update.
-type ServersUpdateResponse struct {
-	ServersUpdateResult
+// ServersClientUpdateResponse contains the response from method ServersClient.Update.
+type ServersClientUpdateResponse struct {
+	ServersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServersUpdateResult contains the result from method Servers.Update.
-type ServersUpdateResult struct {
-	AnalysisServicesServer
+// ServersClientUpdateResult contains the result from method ServersClient.Update.
+type ServersClientUpdateResult struct {
+	Server
 }

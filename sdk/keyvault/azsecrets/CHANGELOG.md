@@ -1,14 +1,20 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.5.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Fixes a bug where `UpdateSecretProperties` will delete properties that are not explicitly set each time. This is only a breaking change at runtime, where the request body will change.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.4.0 (2022-01-11)
+
+### Other Changes
+* Bumps `azcore` dependency from `v0.20.0` to `v0.21.0`
 
 ## 0.3.0 (2021-11-09)
 

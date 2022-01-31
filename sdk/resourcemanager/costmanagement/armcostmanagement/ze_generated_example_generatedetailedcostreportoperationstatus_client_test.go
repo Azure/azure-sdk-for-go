@@ -31,5 +31,5 @@ func ExampleGenerateDetailedCostReportOperationStatusClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GenerateDetailedCostReportOperationStatuses.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.GenerateDetailedCostReportOperationStatusClientGetResult)
 }

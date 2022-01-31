@@ -11,7 +11,7 @@ The `armredis` module provides operations for working with Azure Cache for Redis
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,12 @@ options = arm.ClientOptions{
 }
 client := armredis.NewPrivateEndpointConnectionsClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Firewall Rule](https://aka.ms/azsdk/go/mgmt/samples?path=redis/firewallrule)
+- [Patch Schedule](https://aka.ms/azsdk/go/mgmt/samples?path=redis/patchschedule)
+- [Redis](https://aka.ms/azsdk/go/mgmt/samples?path=redis/redis)
 
 ## Provide Feedback
 

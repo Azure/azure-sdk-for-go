@@ -11,6 +11,7 @@ package armcontainerservice_test
 import (
 	"context"
 	"log"
+
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -18,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
 )
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/AgentPoolsList.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/AgentPoolsList.json
 func ExampleAgentPoolsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,17 +30,21 @@ func ExampleAgentPoolsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AgentPool.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/AgentPoolsGet.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/AgentPoolsGet.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,10 +60,10 @@ func ExampleAgentPoolsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgentPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AgentPoolsClientGetResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/AgentPoolsCreate_Snapshot.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/AgentPoolsAssociate_CRG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,14 +77,11 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 		"<agent-pool-name>",
 		armcontainerservice.AgentPool{
 			Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-				Count: to.Int32Ptr(3),
-				CreationData: &armcontainerservice.CreationData{
-					SourceResourceID: to.StringPtr("<source-resource-id>"),
-				},
-				EnableFIPS:          to.BoolPtr(true),
-				OrchestratorVersion: to.StringPtr("<orchestrator-version>"),
-				OSType:              armcontainerservice.OSTypeLinux.ToPtr(),
-				VMSize:              to.StringPtr("<vmsize>"),
+				CapacityReservationGroupID: to.StringPtr("<capacity-reservation-group-id>"),
+				Count:                      to.Int32Ptr(3),
+				OrchestratorVersion:        to.StringPtr("<orchestrator-version>"),
+				OSType:                     armcontainerservice.OSType("Linux").ToPtr(),
+				VMSize:                     to.StringPtr("<vmsize>"),
 			},
 		},
 		nil)
@@ -90,10 +92,10 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgentPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AgentPoolsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/AgentPoolsDelete.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/AgentPoolsDelete.json
 func ExampleAgentPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +117,7 @@ func ExampleAgentPoolsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/AgentPoolsGetUpgradeProfile.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/AgentPoolsGetUpgradeProfile.json
 func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,10 +133,10 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgentPoolUpgradeProfile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AgentPoolsClientGetUpgradeProfileResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/AgentPoolsGetAgentPoolAvailableVersions.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/AgentPoolsGetAgentPoolAvailableVersions.json
 func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,10 +151,10 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgentPoolAvailableVersions.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AgentPoolsClientGetAvailableAgentPoolVersionsResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/AgentPoolsUpgradeNodeImageVersion.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/AgentPoolsUpgradeNodeImageVersion.json
 func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,9 +170,8 @@ func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgentPool.ID: %s\n", *res.ID)
 }

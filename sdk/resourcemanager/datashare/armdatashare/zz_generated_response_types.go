@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// AccountsCreatePollerResponse contains the response from method Accounts.Create.
-type AccountsCreatePollerResponse struct {
+// AccountsClientCreatePollerResponse contains the response from method AccountsClient.Create.
+type AccountsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AccountsCreatePoller
+	Poller *AccountsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type AccountsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AccountsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsCreateResponse, error) {
-	respType := AccountsCreateResponse{}
+func (l AccountsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientCreateResponse, error) {
+	respType := AccountsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Account)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l AccountsCreatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a AccountsCreatePollerResponse from the provided client and resume token.
-func (l *AccountsCreatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a AccountsClientCreatePollerResponse from the provided client and resume token.
+func (l *AccountsClientCreatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AccountsCreatePoller{
+	poller := &AccountsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *AccountsCreatePollerResponse) Resume(ctx context.Context, client *Accou
 	return nil
 }
 
-// AccountsCreateResponse contains the response from method Accounts.Create.
-type AccountsCreateResponse struct {
-	AccountsCreateResult
+// AccountsClientCreateResponse contains the response from method AccountsClient.Create.
+type AccountsClientCreateResponse struct {
+	AccountsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsCreateResult contains the result from method Accounts.Create.
-type AccountsCreateResult struct {
+// AccountsClientCreateResult contains the result from method AccountsClient.Create.
+type AccountsClientCreateResult struct {
 	Account
 }
 
-// AccountsDeletePollerResponse contains the response from method Accounts.Delete.
-type AccountsDeletePollerResponse struct {
+// AccountsClientDeletePollerResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AccountsDeletePoller
+	Poller *AccountsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type AccountsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AccountsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsDeleteResponse, error) {
-	respType := AccountsDeleteResponse{}
+func (l AccountsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientDeleteResponse, error) {
+	respType := AccountsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResponse)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l AccountsDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a AccountsDeletePollerResponse from the provided client and resume token.
-func (l *AccountsDeletePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a AccountsClientDeletePollerResponse from the provided client and resume token.
+func (l *AccountsClientDeletePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AccountsDeletePoller{
+	poller := &AccountsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,128 +107,128 @@ func (l *AccountsDeletePollerResponse) Resume(ctx context.Context, client *Accou
 	return nil
 }
 
-// AccountsDeleteResponse contains the response from method Accounts.Delete.
-type AccountsDeleteResponse struct {
-	AccountsDeleteResult
+// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeleteResponse struct {
+	AccountsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsDeleteResult contains the result from method Accounts.Delete.
-type AccountsDeleteResult struct {
+// AccountsClientDeleteResult contains the result from method AccountsClient.Delete.
+type AccountsClientDeleteResult struct {
 	OperationResponse
 }
 
-// AccountsGetResponse contains the response from method Accounts.Get.
-type AccountsGetResponse struct {
-	AccountsGetResult
+// AccountsClientGetResponse contains the response from method AccountsClient.Get.
+type AccountsClientGetResponse struct {
+	AccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResult contains the result from method Accounts.Get.
-type AccountsGetResult struct {
+// AccountsClientGetResult contains the result from method AccountsClient.Get.
+type AccountsClientGetResult struct {
 	Account
 }
 
-// AccountsListByResourceGroupResponse contains the response from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResponse struct {
-	AccountsListByResourceGroupResult
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResponse struct {
+	AccountsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListByResourceGroupResult contains the result from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResult struct {
+// AccountsClientListByResourceGroupResult contains the result from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResult struct {
 	AccountList
 }
 
-// AccountsListBySubscriptionResponse contains the response from method Accounts.ListBySubscription.
-type AccountsListBySubscriptionResponse struct {
-	AccountsListBySubscriptionResult
+// AccountsClientListBySubscriptionResponse contains the response from method AccountsClient.ListBySubscription.
+type AccountsClientListBySubscriptionResponse struct {
+	AccountsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListBySubscriptionResult contains the result from method Accounts.ListBySubscription.
-type AccountsListBySubscriptionResult struct {
+// AccountsClientListBySubscriptionResult contains the result from method AccountsClient.ListBySubscription.
+type AccountsClientListBySubscriptionResult struct {
 	AccountList
 }
 
-// AccountsUpdateResponse contains the response from method Accounts.Update.
-type AccountsUpdateResponse struct {
-	AccountsUpdateResult
+// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdateResponse struct {
+	AccountsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsUpdateResult contains the result from method Accounts.Update.
-type AccountsUpdateResult struct {
+// AccountsClientUpdateResult contains the result from method AccountsClient.Update.
+type AccountsClientUpdateResult struct {
 	Account
 }
 
-// ConsumerInvitationsGetResponse contains the response from method ConsumerInvitations.Get.
-type ConsumerInvitationsGetResponse struct {
-	ConsumerInvitationsGetResult
+// ConsumerInvitationsClientGetResponse contains the response from method ConsumerInvitationsClient.Get.
+type ConsumerInvitationsClientGetResponse struct {
+	ConsumerInvitationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConsumerInvitationsGetResult contains the result from method ConsumerInvitations.Get.
-type ConsumerInvitationsGetResult struct {
+// ConsumerInvitationsClientGetResult contains the result from method ConsumerInvitationsClient.Get.
+type ConsumerInvitationsClientGetResult struct {
 	ConsumerInvitation
 }
 
-// ConsumerInvitationsListInvitationsResponse contains the response from method ConsumerInvitations.ListInvitations.
-type ConsumerInvitationsListInvitationsResponse struct {
-	ConsumerInvitationsListInvitationsResult
+// ConsumerInvitationsClientListInvitationsResponse contains the response from method ConsumerInvitationsClient.ListInvitations.
+type ConsumerInvitationsClientListInvitationsResponse struct {
+	ConsumerInvitationsClientListInvitationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConsumerInvitationsListInvitationsResult contains the result from method ConsumerInvitations.ListInvitations.
-type ConsumerInvitationsListInvitationsResult struct {
+// ConsumerInvitationsClientListInvitationsResult contains the result from method ConsumerInvitationsClient.ListInvitations.
+type ConsumerInvitationsClientListInvitationsResult struct {
 	ConsumerInvitationList
 }
 
-// ConsumerInvitationsRejectInvitationResponse contains the response from method ConsumerInvitations.RejectInvitation.
-type ConsumerInvitationsRejectInvitationResponse struct {
-	ConsumerInvitationsRejectInvitationResult
+// ConsumerInvitationsClientRejectInvitationResponse contains the response from method ConsumerInvitationsClient.RejectInvitation.
+type ConsumerInvitationsClientRejectInvitationResponse struct {
+	ConsumerInvitationsClientRejectInvitationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConsumerInvitationsRejectInvitationResult contains the result from method ConsumerInvitations.RejectInvitation.
-type ConsumerInvitationsRejectInvitationResult struct {
+// ConsumerInvitationsClientRejectInvitationResult contains the result from method ConsumerInvitationsClient.RejectInvitation.
+type ConsumerInvitationsClientRejectInvitationResult struct {
 	ConsumerInvitation
 }
 
-// ConsumerSourceDataSetsListByShareSubscriptionResponse contains the response from method ConsumerSourceDataSets.ListByShareSubscription.
-type ConsumerSourceDataSetsListByShareSubscriptionResponse struct {
-	ConsumerSourceDataSetsListByShareSubscriptionResult
+// ConsumerSourceDataSetsClientListByShareSubscriptionResponse contains the response from method ConsumerSourceDataSetsClient.ListByShareSubscription.
+type ConsumerSourceDataSetsClientListByShareSubscriptionResponse struct {
+	ConsumerSourceDataSetsClientListByShareSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConsumerSourceDataSetsListByShareSubscriptionResult contains the result from method ConsumerSourceDataSets.ListByShareSubscription.
-type ConsumerSourceDataSetsListByShareSubscriptionResult struct {
+// ConsumerSourceDataSetsClientListByShareSubscriptionResult contains the result from method ConsumerSourceDataSetsClient.ListByShareSubscription.
+type ConsumerSourceDataSetsClientListByShareSubscriptionResult struct {
 	ConsumerSourceDataSetList
 }
 
-// DataSetMappingsCreateResponse contains the response from method DataSetMappings.Create.
-type DataSetMappingsCreateResponse struct {
-	DataSetMappingsCreateResult
+// DataSetMappingsClientCreateResponse contains the response from method DataSetMappingsClient.Create.
+type DataSetMappingsClientCreateResponse struct {
+	DataSetMappingsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSetMappingsCreateResult contains the result from method DataSetMappings.Create.
-type DataSetMappingsCreateResult struct {
+// DataSetMappingsClientCreateResult contains the result from method DataSetMappingsClient.Create.
+type DataSetMappingsClientCreateResult struct {
 	DataSetMappingClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetMappingsCreateResult.
-func (d *DataSetMappingsCreateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetMappingsClientCreateResult.
+func (d *DataSetMappingsClientCreateResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDataSetMappingClassification(data)
 	if err != nil {
 		return err
@@ -237,26 +237,26 @@ func (d *DataSetMappingsCreateResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DataSetMappingsDeleteResponse contains the response from method DataSetMappings.Delete.
-type DataSetMappingsDeleteResponse struct {
+// DataSetMappingsClientDeleteResponse contains the response from method DataSetMappingsClient.Delete.
+type DataSetMappingsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSetMappingsGetResponse contains the response from method DataSetMappings.Get.
-type DataSetMappingsGetResponse struct {
-	DataSetMappingsGetResult
+// DataSetMappingsClientGetResponse contains the response from method DataSetMappingsClient.Get.
+type DataSetMappingsClientGetResponse struct {
+	DataSetMappingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSetMappingsGetResult contains the result from method DataSetMappings.Get.
-type DataSetMappingsGetResult struct {
+// DataSetMappingsClientGetResult contains the result from method DataSetMappingsClient.Get.
+type DataSetMappingsClientGetResult struct {
 	DataSetMappingClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetMappingsGetResult.
-func (d *DataSetMappingsGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetMappingsClientGetResult.
+func (d *DataSetMappingsClientGetResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDataSetMappingClassification(data)
 	if err != nil {
 		return err
@@ -265,32 +265,32 @@ func (d *DataSetMappingsGetResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DataSetMappingsListByShareSubscriptionResponse contains the response from method DataSetMappings.ListByShareSubscription.
-type DataSetMappingsListByShareSubscriptionResponse struct {
-	DataSetMappingsListByShareSubscriptionResult
+// DataSetMappingsClientListByShareSubscriptionResponse contains the response from method DataSetMappingsClient.ListByShareSubscription.
+type DataSetMappingsClientListByShareSubscriptionResponse struct {
+	DataSetMappingsClientListByShareSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSetMappingsListByShareSubscriptionResult contains the result from method DataSetMappings.ListByShareSubscription.
-type DataSetMappingsListByShareSubscriptionResult struct {
+// DataSetMappingsClientListByShareSubscriptionResult contains the result from method DataSetMappingsClient.ListByShareSubscription.
+type DataSetMappingsClientListByShareSubscriptionResult struct {
 	DataSetMappingList
 }
 
-// DataSetsCreateResponse contains the response from method DataSets.Create.
-type DataSetsCreateResponse struct {
-	DataSetsCreateResult
+// DataSetsClientCreateResponse contains the response from method DataSetsClient.Create.
+type DataSetsClientCreateResponse struct {
+	DataSetsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSetsCreateResult contains the result from method DataSets.Create.
-type DataSetsCreateResult struct {
+// DataSetsClientCreateResult contains the result from method DataSetsClient.Create.
+type DataSetsClientCreateResult struct {
 	DataSetClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetsCreateResult.
-func (d *DataSetsCreateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetsClientCreateResult.
+func (d *DataSetsClientCreateResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDataSetClassification(data)
 	if err != nil {
 		return err
@@ -299,10 +299,10 @@ func (d *DataSetsCreateResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DataSetsDeletePollerResponse contains the response from method DataSets.Delete.
-type DataSetsDeletePollerResponse struct {
+// DataSetsClientDeletePollerResponse contains the response from method DataSetsClient.Delete.
+type DataSetsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DataSetsDeletePoller
+	Poller *DataSetsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -311,8 +311,8 @@ type DataSetsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DataSetsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DataSetsDeleteResponse, error) {
-	respType := DataSetsDeleteResponse{}
+func (l DataSetsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DataSetsClientDeleteResponse, error) {
+	respType := DataSetsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -321,13 +321,13 @@ func (l DataSetsDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a DataSetsDeletePollerResponse from the provided client and resume token.
-func (l *DataSetsDeletePollerResponse) Resume(ctx context.Context, client *DataSetsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DataSetsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a DataSetsClientDeletePollerResponse from the provided client and resume token.
+func (l *DataSetsClientDeletePollerResponse) Resume(ctx context.Context, client *DataSetsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DataSetsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DataSetsDeletePoller{
+	poller := &DataSetsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -339,26 +339,26 @@ func (l *DataSetsDeletePollerResponse) Resume(ctx context.Context, client *DataS
 	return nil
 }
 
-// DataSetsDeleteResponse contains the response from method DataSets.Delete.
-type DataSetsDeleteResponse struct {
+// DataSetsClientDeleteResponse contains the response from method DataSetsClient.Delete.
+type DataSetsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSetsGetResponse contains the response from method DataSets.Get.
-type DataSetsGetResponse struct {
-	DataSetsGetResult
+// DataSetsClientGetResponse contains the response from method DataSetsClient.Get.
+type DataSetsClientGetResponse struct {
+	DataSetsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSetsGetResult contains the result from method DataSets.Get.
-type DataSetsGetResult struct {
+// DataSetsClientGetResult contains the result from method DataSetsClient.Get.
+type DataSetsClientGetResult struct {
 	DataSetClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetsGetResult.
-func (d *DataSetsGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetsClientGetResult.
+func (d *DataSetsClientGetResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDataSetClassification(data)
 	if err != nil {
 		return err
@@ -367,148 +367,148 @@ func (d *DataSetsGetResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DataSetsListByShareResponse contains the response from method DataSets.ListByShare.
-type DataSetsListByShareResponse struct {
-	DataSetsListByShareResult
+// DataSetsClientListByShareResponse contains the response from method DataSetsClient.ListByShare.
+type DataSetsClientListByShareResponse struct {
+	DataSetsClientListByShareResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSetsListByShareResult contains the result from method DataSets.ListByShare.
-type DataSetsListByShareResult struct {
+// DataSetsClientListByShareResult contains the result from method DataSetsClient.ListByShare.
+type DataSetsClientListByShareResult struct {
 	DataSetList
 }
 
-// EmailRegistrationsActivateEmailResponse contains the response from method EmailRegistrations.ActivateEmail.
-type EmailRegistrationsActivateEmailResponse struct {
-	EmailRegistrationsActivateEmailResult
+// EmailRegistrationsClientActivateEmailResponse contains the response from method EmailRegistrationsClient.ActivateEmail.
+type EmailRegistrationsClientActivateEmailResponse struct {
+	EmailRegistrationsClientActivateEmailResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmailRegistrationsActivateEmailResult contains the result from method EmailRegistrations.ActivateEmail.
-type EmailRegistrationsActivateEmailResult struct {
+// EmailRegistrationsClientActivateEmailResult contains the result from method EmailRegistrationsClient.ActivateEmail.
+type EmailRegistrationsClientActivateEmailResult struct {
 	EmailRegistration
 }
 
-// EmailRegistrationsRegisterEmailResponse contains the response from method EmailRegistrations.RegisterEmail.
-type EmailRegistrationsRegisterEmailResponse struct {
-	EmailRegistrationsRegisterEmailResult
+// EmailRegistrationsClientRegisterEmailResponse contains the response from method EmailRegistrationsClient.RegisterEmail.
+type EmailRegistrationsClientRegisterEmailResponse struct {
+	EmailRegistrationsClientRegisterEmailResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmailRegistrationsRegisterEmailResult contains the result from method EmailRegistrations.RegisterEmail.
-type EmailRegistrationsRegisterEmailResult struct {
+// EmailRegistrationsClientRegisterEmailResult contains the result from method EmailRegistrationsClient.RegisterEmail.
+type EmailRegistrationsClientRegisterEmailResult struct {
 	EmailRegistration
 }
 
-// InvitationsCreateResponse contains the response from method Invitations.Create.
-type InvitationsCreateResponse struct {
-	InvitationsCreateResult
+// InvitationsClientCreateResponse contains the response from method InvitationsClient.Create.
+type InvitationsClientCreateResponse struct {
+	InvitationsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// InvitationsCreateResult contains the result from method Invitations.Create.
-type InvitationsCreateResult struct {
+// InvitationsClientCreateResult contains the result from method InvitationsClient.Create.
+type InvitationsClientCreateResult struct {
 	Invitation
 }
 
-// InvitationsDeleteResponse contains the response from method Invitations.Delete.
-type InvitationsDeleteResponse struct {
+// InvitationsClientDeleteResponse contains the response from method InvitationsClient.Delete.
+type InvitationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// InvitationsGetResponse contains the response from method Invitations.Get.
-type InvitationsGetResponse struct {
-	InvitationsGetResult
+// InvitationsClientGetResponse contains the response from method InvitationsClient.Get.
+type InvitationsClientGetResponse struct {
+	InvitationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// InvitationsGetResult contains the result from method Invitations.Get.
-type InvitationsGetResult struct {
+// InvitationsClientGetResult contains the result from method InvitationsClient.Get.
+type InvitationsClientGetResult struct {
 	Invitation
 }
 
-// InvitationsListByShareResponse contains the response from method Invitations.ListByShare.
-type InvitationsListByShareResponse struct {
-	InvitationsListByShareResult
+// InvitationsClientListByShareResponse contains the response from method InvitationsClient.ListByShare.
+type InvitationsClientListByShareResponse struct {
+	InvitationsClientListByShareResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// InvitationsListByShareResult contains the result from method Invitations.ListByShare.
-type InvitationsListByShareResult struct {
+// InvitationsClientListByShareResult contains the result from method InvitationsClient.ListByShare.
+type InvitationsClientListByShareResult struct {
 	InvitationList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }
 
-// ProviderShareSubscriptionsAdjustResponse contains the response from method ProviderShareSubscriptions.Adjust.
-type ProviderShareSubscriptionsAdjustResponse struct {
-	ProviderShareSubscriptionsAdjustResult
+// ProviderShareSubscriptionsClientAdjustResponse contains the response from method ProviderShareSubscriptionsClient.Adjust.
+type ProviderShareSubscriptionsClientAdjustResponse struct {
+	ProviderShareSubscriptionsClientAdjustResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderShareSubscriptionsAdjustResult contains the result from method ProviderShareSubscriptions.Adjust.
-type ProviderShareSubscriptionsAdjustResult struct {
+// ProviderShareSubscriptionsClientAdjustResult contains the result from method ProviderShareSubscriptionsClient.Adjust.
+type ProviderShareSubscriptionsClientAdjustResult struct {
 	ProviderShareSubscription
 }
 
-// ProviderShareSubscriptionsGetByShareResponse contains the response from method ProviderShareSubscriptions.GetByShare.
-type ProviderShareSubscriptionsGetByShareResponse struct {
-	ProviderShareSubscriptionsGetByShareResult
+// ProviderShareSubscriptionsClientGetByShareResponse contains the response from method ProviderShareSubscriptionsClient.GetByShare.
+type ProviderShareSubscriptionsClientGetByShareResponse struct {
+	ProviderShareSubscriptionsClientGetByShareResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderShareSubscriptionsGetByShareResult contains the result from method ProviderShareSubscriptions.GetByShare.
-type ProviderShareSubscriptionsGetByShareResult struct {
+// ProviderShareSubscriptionsClientGetByShareResult contains the result from method ProviderShareSubscriptionsClient.GetByShare.
+type ProviderShareSubscriptionsClientGetByShareResult struct {
 	ProviderShareSubscription
 }
 
-// ProviderShareSubscriptionsListByShareResponse contains the response from method ProviderShareSubscriptions.ListByShare.
-type ProviderShareSubscriptionsListByShareResponse struct {
-	ProviderShareSubscriptionsListByShareResult
+// ProviderShareSubscriptionsClientListByShareResponse contains the response from method ProviderShareSubscriptionsClient.ListByShare.
+type ProviderShareSubscriptionsClientListByShareResponse struct {
+	ProviderShareSubscriptionsClientListByShareResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderShareSubscriptionsListByShareResult contains the result from method ProviderShareSubscriptions.ListByShare.
-type ProviderShareSubscriptionsListByShareResult struct {
+// ProviderShareSubscriptionsClientListByShareResult contains the result from method ProviderShareSubscriptionsClient.ListByShare.
+type ProviderShareSubscriptionsClientListByShareResult struct {
 	ProviderShareSubscriptionList
 }
 
-// ProviderShareSubscriptionsReinstateResponse contains the response from method ProviderShareSubscriptions.Reinstate.
-type ProviderShareSubscriptionsReinstateResponse struct {
-	ProviderShareSubscriptionsReinstateResult
+// ProviderShareSubscriptionsClientReinstateResponse contains the response from method ProviderShareSubscriptionsClient.Reinstate.
+type ProviderShareSubscriptionsClientReinstateResponse struct {
+	ProviderShareSubscriptionsClientReinstateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderShareSubscriptionsReinstateResult contains the result from method ProviderShareSubscriptions.Reinstate.
-type ProviderShareSubscriptionsReinstateResult struct {
+// ProviderShareSubscriptionsClientReinstateResult contains the result from method ProviderShareSubscriptionsClient.Reinstate.
+type ProviderShareSubscriptionsClientReinstateResult struct {
 	ProviderShareSubscription
 }
 
-// ProviderShareSubscriptionsRevokePollerResponse contains the response from method ProviderShareSubscriptions.Revoke.
-type ProviderShareSubscriptionsRevokePollerResponse struct {
+// ProviderShareSubscriptionsClientRevokePollerResponse contains the response from method ProviderShareSubscriptionsClient.Revoke.
+type ProviderShareSubscriptionsClientRevokePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ProviderShareSubscriptionsRevokePoller
+	Poller *ProviderShareSubscriptionsClientRevokePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -517,8 +517,8 @@ type ProviderShareSubscriptionsRevokePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ProviderShareSubscriptionsRevokePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProviderShareSubscriptionsRevokeResponse, error) {
-	respType := ProviderShareSubscriptionsRevokeResponse{}
+func (l ProviderShareSubscriptionsClientRevokePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProviderShareSubscriptionsClientRevokeResponse, error) {
+	respType := ProviderShareSubscriptionsClientRevokeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProviderShareSubscription)
 	if err != nil {
 		return respType, err
@@ -527,13 +527,13 @@ func (l ProviderShareSubscriptionsRevokePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a ProviderShareSubscriptionsRevokePollerResponse from the provided client and resume token.
-func (l *ProviderShareSubscriptionsRevokePollerResponse) Resume(ctx context.Context, client *ProviderShareSubscriptionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ProviderShareSubscriptionsClient.Revoke", token, client.pl, client.revokeHandleError)
+// Resume rehydrates a ProviderShareSubscriptionsClientRevokePollerResponse from the provided client and resume token.
+func (l *ProviderShareSubscriptionsClientRevokePollerResponse) Resume(ctx context.Context, client *ProviderShareSubscriptionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ProviderShareSubscriptionsClient.Revoke", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ProviderShareSubscriptionsRevokePoller{
+	poller := &ProviderShareSubscriptionsClientRevokePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -545,22 +545,22 @@ func (l *ProviderShareSubscriptionsRevokePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// ProviderShareSubscriptionsRevokeResponse contains the response from method ProviderShareSubscriptions.Revoke.
-type ProviderShareSubscriptionsRevokeResponse struct {
-	ProviderShareSubscriptionsRevokeResult
+// ProviderShareSubscriptionsClientRevokeResponse contains the response from method ProviderShareSubscriptionsClient.Revoke.
+type ProviderShareSubscriptionsClientRevokeResponse struct {
+	ProviderShareSubscriptionsClientRevokeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderShareSubscriptionsRevokeResult contains the result from method ProviderShareSubscriptions.Revoke.
-type ProviderShareSubscriptionsRevokeResult struct {
+// ProviderShareSubscriptionsClientRevokeResult contains the result from method ProviderShareSubscriptionsClient.Revoke.
+type ProviderShareSubscriptionsClientRevokeResult struct {
 	ProviderShareSubscription
 }
 
-// ShareSubscriptionsCancelSynchronizationPollerResponse contains the response from method ShareSubscriptions.CancelSynchronization.
-type ShareSubscriptionsCancelSynchronizationPollerResponse struct {
+// ShareSubscriptionsClientCancelSynchronizationPollerResponse contains the response from method ShareSubscriptionsClient.CancelSynchronization.
+type ShareSubscriptionsClientCancelSynchronizationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ShareSubscriptionsCancelSynchronizationPoller
+	Poller *ShareSubscriptionsClientCancelSynchronizationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -569,8 +569,8 @@ type ShareSubscriptionsCancelSynchronizationPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ShareSubscriptionsCancelSynchronizationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ShareSubscriptionsCancelSynchronizationResponse, error) {
-	respType := ShareSubscriptionsCancelSynchronizationResponse{}
+func (l ShareSubscriptionsClientCancelSynchronizationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ShareSubscriptionsClientCancelSynchronizationResponse, error) {
+	respType := ShareSubscriptionsClientCancelSynchronizationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ShareSubscriptionSynchronization)
 	if err != nil {
 		return respType, err
@@ -579,13 +579,13 @@ func (l ShareSubscriptionsCancelSynchronizationPollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a ShareSubscriptionsCancelSynchronizationPollerResponse from the provided client and resume token.
-func (l *ShareSubscriptionsCancelSynchronizationPollerResponse) Resume(ctx context.Context, client *ShareSubscriptionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ShareSubscriptionsClient.CancelSynchronization", token, client.pl, client.cancelSynchronizationHandleError)
+// Resume rehydrates a ShareSubscriptionsClientCancelSynchronizationPollerResponse from the provided client and resume token.
+func (l *ShareSubscriptionsClientCancelSynchronizationPollerResponse) Resume(ctx context.Context, client *ShareSubscriptionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ShareSubscriptionsClient.CancelSynchronization", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ShareSubscriptionsCancelSynchronizationPoller{
+	poller := &ShareSubscriptionsClientCancelSynchronizationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -597,34 +597,34 @@ func (l *ShareSubscriptionsCancelSynchronizationPollerResponse) Resume(ctx conte
 	return nil
 }
 
-// ShareSubscriptionsCancelSynchronizationResponse contains the response from method ShareSubscriptions.CancelSynchronization.
-type ShareSubscriptionsCancelSynchronizationResponse struct {
-	ShareSubscriptionsCancelSynchronizationResult
+// ShareSubscriptionsClientCancelSynchronizationResponse contains the response from method ShareSubscriptionsClient.CancelSynchronization.
+type ShareSubscriptionsClientCancelSynchronizationResponse struct {
+	ShareSubscriptionsClientCancelSynchronizationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsCancelSynchronizationResult contains the result from method ShareSubscriptions.CancelSynchronization.
-type ShareSubscriptionsCancelSynchronizationResult struct {
+// ShareSubscriptionsClientCancelSynchronizationResult contains the result from method ShareSubscriptionsClient.CancelSynchronization.
+type ShareSubscriptionsClientCancelSynchronizationResult struct {
 	ShareSubscriptionSynchronization
 }
 
-// ShareSubscriptionsCreateResponse contains the response from method ShareSubscriptions.Create.
-type ShareSubscriptionsCreateResponse struct {
-	ShareSubscriptionsCreateResult
+// ShareSubscriptionsClientCreateResponse contains the response from method ShareSubscriptionsClient.Create.
+type ShareSubscriptionsClientCreateResponse struct {
+	ShareSubscriptionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsCreateResult contains the result from method ShareSubscriptions.Create.
-type ShareSubscriptionsCreateResult struct {
+// ShareSubscriptionsClientCreateResult contains the result from method ShareSubscriptionsClient.Create.
+type ShareSubscriptionsClientCreateResult struct {
 	ShareSubscription
 }
 
-// ShareSubscriptionsDeletePollerResponse contains the response from method ShareSubscriptions.Delete.
-type ShareSubscriptionsDeletePollerResponse struct {
+// ShareSubscriptionsClientDeletePollerResponse contains the response from method ShareSubscriptionsClient.Delete.
+type ShareSubscriptionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ShareSubscriptionsDeletePoller
+	Poller *ShareSubscriptionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -633,8 +633,8 @@ type ShareSubscriptionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ShareSubscriptionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ShareSubscriptionsDeleteResponse, error) {
-	respType := ShareSubscriptionsDeleteResponse{}
+func (l ShareSubscriptionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ShareSubscriptionsClientDeleteResponse, error) {
+	respType := ShareSubscriptionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResponse)
 	if err != nil {
 		return respType, err
@@ -643,13 +643,13 @@ func (l ShareSubscriptionsDeletePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a ShareSubscriptionsDeletePollerResponse from the provided client and resume token.
-func (l *ShareSubscriptionsDeletePollerResponse) Resume(ctx context.Context, client *ShareSubscriptionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ShareSubscriptionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ShareSubscriptionsClientDeletePollerResponse from the provided client and resume token.
+func (l *ShareSubscriptionsClientDeletePollerResponse) Resume(ctx context.Context, client *ShareSubscriptionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ShareSubscriptionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ShareSubscriptionsDeletePoller{
+	poller := &ShareSubscriptionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -661,82 +661,82 @@ func (l *ShareSubscriptionsDeletePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// ShareSubscriptionsDeleteResponse contains the response from method ShareSubscriptions.Delete.
-type ShareSubscriptionsDeleteResponse struct {
-	ShareSubscriptionsDeleteResult
+// ShareSubscriptionsClientDeleteResponse contains the response from method ShareSubscriptionsClient.Delete.
+type ShareSubscriptionsClientDeleteResponse struct {
+	ShareSubscriptionsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsDeleteResult contains the result from method ShareSubscriptions.Delete.
-type ShareSubscriptionsDeleteResult struct {
+// ShareSubscriptionsClientDeleteResult contains the result from method ShareSubscriptionsClient.Delete.
+type ShareSubscriptionsClientDeleteResult struct {
 	OperationResponse
 }
 
-// ShareSubscriptionsGetResponse contains the response from method ShareSubscriptions.Get.
-type ShareSubscriptionsGetResponse struct {
-	ShareSubscriptionsGetResult
+// ShareSubscriptionsClientGetResponse contains the response from method ShareSubscriptionsClient.Get.
+type ShareSubscriptionsClientGetResponse struct {
+	ShareSubscriptionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsGetResult contains the result from method ShareSubscriptions.Get.
-type ShareSubscriptionsGetResult struct {
+// ShareSubscriptionsClientGetResult contains the result from method ShareSubscriptionsClient.Get.
+type ShareSubscriptionsClientGetResult struct {
 	ShareSubscription
 }
 
-// ShareSubscriptionsListByAccountResponse contains the response from method ShareSubscriptions.ListByAccount.
-type ShareSubscriptionsListByAccountResponse struct {
-	ShareSubscriptionsListByAccountResult
+// ShareSubscriptionsClientListByAccountResponse contains the response from method ShareSubscriptionsClient.ListByAccount.
+type ShareSubscriptionsClientListByAccountResponse struct {
+	ShareSubscriptionsClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsListByAccountResult contains the result from method ShareSubscriptions.ListByAccount.
-type ShareSubscriptionsListByAccountResult struct {
+// ShareSubscriptionsClientListByAccountResult contains the result from method ShareSubscriptionsClient.ListByAccount.
+type ShareSubscriptionsClientListByAccountResult struct {
 	ShareSubscriptionList
 }
 
-// ShareSubscriptionsListSourceShareSynchronizationSettingsResponse contains the response from method ShareSubscriptions.ListSourceShareSynchronizationSettings.
-type ShareSubscriptionsListSourceShareSynchronizationSettingsResponse struct {
-	ShareSubscriptionsListSourceShareSynchronizationSettingsResult
+// ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse contains the response from method ShareSubscriptionsClient.ListSourceShareSynchronizationSettings.
+type ShareSubscriptionsClientListSourceShareSynchronizationSettingsResponse struct {
+	ShareSubscriptionsClientListSourceShareSynchronizationSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsListSourceShareSynchronizationSettingsResult contains the result from method ShareSubscriptions.ListSourceShareSynchronizationSettings.
-type ShareSubscriptionsListSourceShareSynchronizationSettingsResult struct {
+// ShareSubscriptionsClientListSourceShareSynchronizationSettingsResult contains the result from method ShareSubscriptionsClient.ListSourceShareSynchronizationSettings.
+type ShareSubscriptionsClientListSourceShareSynchronizationSettingsResult struct {
 	SourceShareSynchronizationSettingList
 }
 
-// ShareSubscriptionsListSynchronizationDetailsResponse contains the response from method ShareSubscriptions.ListSynchronizationDetails.
-type ShareSubscriptionsListSynchronizationDetailsResponse struct {
-	ShareSubscriptionsListSynchronizationDetailsResult
+// ShareSubscriptionsClientListSynchronizationDetailsResponse contains the response from method ShareSubscriptionsClient.ListSynchronizationDetails.
+type ShareSubscriptionsClientListSynchronizationDetailsResponse struct {
+	ShareSubscriptionsClientListSynchronizationDetailsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsListSynchronizationDetailsResult contains the result from method ShareSubscriptions.ListSynchronizationDetails.
-type ShareSubscriptionsListSynchronizationDetailsResult struct {
+// ShareSubscriptionsClientListSynchronizationDetailsResult contains the result from method ShareSubscriptionsClient.ListSynchronizationDetails.
+type ShareSubscriptionsClientListSynchronizationDetailsResult struct {
 	SynchronizationDetailsList
 }
 
-// ShareSubscriptionsListSynchronizationsResponse contains the response from method ShareSubscriptions.ListSynchronizations.
-type ShareSubscriptionsListSynchronizationsResponse struct {
-	ShareSubscriptionsListSynchronizationsResult
+// ShareSubscriptionsClientListSynchronizationsResponse contains the response from method ShareSubscriptionsClient.ListSynchronizations.
+type ShareSubscriptionsClientListSynchronizationsResponse struct {
+	ShareSubscriptionsClientListSynchronizationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsListSynchronizationsResult contains the result from method ShareSubscriptions.ListSynchronizations.
-type ShareSubscriptionsListSynchronizationsResult struct {
+// ShareSubscriptionsClientListSynchronizationsResult contains the result from method ShareSubscriptionsClient.ListSynchronizations.
+type ShareSubscriptionsClientListSynchronizationsResult struct {
 	ShareSubscriptionSynchronizationList
 }
 
-// ShareSubscriptionsSynchronizePollerResponse contains the response from method ShareSubscriptions.Synchronize.
-type ShareSubscriptionsSynchronizePollerResponse struct {
+// ShareSubscriptionsClientSynchronizePollerResponse contains the response from method ShareSubscriptionsClient.Synchronize.
+type ShareSubscriptionsClientSynchronizePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ShareSubscriptionsSynchronizePoller
+	Poller *ShareSubscriptionsClientSynchronizePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -745,8 +745,8 @@ type ShareSubscriptionsSynchronizePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ShareSubscriptionsSynchronizePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ShareSubscriptionsSynchronizeResponse, error) {
-	respType := ShareSubscriptionsSynchronizeResponse{}
+func (l ShareSubscriptionsClientSynchronizePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ShareSubscriptionsClientSynchronizeResponse, error) {
+	respType := ShareSubscriptionsClientSynchronizeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ShareSubscriptionSynchronization)
 	if err != nil {
 		return respType, err
@@ -755,13 +755,13 @@ func (l ShareSubscriptionsSynchronizePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a ShareSubscriptionsSynchronizePollerResponse from the provided client and resume token.
-func (l *ShareSubscriptionsSynchronizePollerResponse) Resume(ctx context.Context, client *ShareSubscriptionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ShareSubscriptionsClient.Synchronize", token, client.pl, client.synchronizeHandleError)
+// Resume rehydrates a ShareSubscriptionsClientSynchronizePollerResponse from the provided client and resume token.
+func (l *ShareSubscriptionsClientSynchronizePollerResponse) Resume(ctx context.Context, client *ShareSubscriptionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ShareSubscriptionsClient.Synchronize", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ShareSubscriptionsSynchronizePoller{
+	poller := &ShareSubscriptionsClientSynchronizePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -773,34 +773,34 @@ func (l *ShareSubscriptionsSynchronizePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// ShareSubscriptionsSynchronizeResponse contains the response from method ShareSubscriptions.Synchronize.
-type ShareSubscriptionsSynchronizeResponse struct {
-	ShareSubscriptionsSynchronizeResult
+// ShareSubscriptionsClientSynchronizeResponse contains the response from method ShareSubscriptionsClient.Synchronize.
+type ShareSubscriptionsClientSynchronizeResponse struct {
+	ShareSubscriptionsClientSynchronizeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ShareSubscriptionsSynchronizeResult contains the result from method ShareSubscriptions.Synchronize.
-type ShareSubscriptionsSynchronizeResult struct {
+// ShareSubscriptionsClientSynchronizeResult contains the result from method ShareSubscriptionsClient.Synchronize.
+type ShareSubscriptionsClientSynchronizeResult struct {
 	ShareSubscriptionSynchronization
 }
 
-// SharesCreateResponse contains the response from method Shares.Create.
-type SharesCreateResponse struct {
-	SharesCreateResult
+// SharesClientCreateResponse contains the response from method SharesClient.Create.
+type SharesClientCreateResponse struct {
+	SharesClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharesCreateResult contains the result from method Shares.Create.
-type SharesCreateResult struct {
+// SharesClientCreateResult contains the result from method SharesClient.Create.
+type SharesClientCreateResult struct {
 	Share
 }
 
-// SharesDeletePollerResponse contains the response from method Shares.Delete.
-type SharesDeletePollerResponse struct {
+// SharesClientDeletePollerResponse contains the response from method SharesClient.Delete.
+type SharesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SharesDeletePoller
+	Poller *SharesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -809,8 +809,8 @@ type SharesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SharesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SharesDeleteResponse, error) {
-	respType := SharesDeleteResponse{}
+func (l SharesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SharesClientDeleteResponse, error) {
+	respType := SharesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResponse)
 	if err != nil {
 		return respType, err
@@ -819,13 +819,13 @@ func (l SharesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time
 	return respType, nil
 }
 
-// Resume rehydrates a SharesDeletePollerResponse from the provided client and resume token.
-func (l *SharesDeletePollerResponse) Resume(ctx context.Context, client *SharesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SharesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SharesClientDeletePollerResponse from the provided client and resume token.
+func (l *SharesClientDeletePollerResponse) Resume(ctx context.Context, client *SharesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SharesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SharesDeletePoller{
+	poller := &SharesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -837,80 +837,80 @@ func (l *SharesDeletePollerResponse) Resume(ctx context.Context, client *SharesC
 	return nil
 }
 
-// SharesDeleteResponse contains the response from method Shares.Delete.
-type SharesDeleteResponse struct {
-	SharesDeleteResult
+// SharesClientDeleteResponse contains the response from method SharesClient.Delete.
+type SharesClientDeleteResponse struct {
+	SharesClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharesDeleteResult contains the result from method Shares.Delete.
-type SharesDeleteResult struct {
+// SharesClientDeleteResult contains the result from method SharesClient.Delete.
+type SharesClientDeleteResult struct {
 	OperationResponse
 }
 
-// SharesGetResponse contains the response from method Shares.Get.
-type SharesGetResponse struct {
-	SharesGetResult
+// SharesClientGetResponse contains the response from method SharesClient.Get.
+type SharesClientGetResponse struct {
+	SharesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharesGetResult contains the result from method Shares.Get.
-type SharesGetResult struct {
+// SharesClientGetResult contains the result from method SharesClient.Get.
+type SharesClientGetResult struct {
 	Share
 }
 
-// SharesListByAccountResponse contains the response from method Shares.ListByAccount.
-type SharesListByAccountResponse struct {
-	SharesListByAccountResult
+// SharesClientListByAccountResponse contains the response from method SharesClient.ListByAccount.
+type SharesClientListByAccountResponse struct {
+	SharesClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharesListByAccountResult contains the result from method Shares.ListByAccount.
-type SharesListByAccountResult struct {
+// SharesClientListByAccountResult contains the result from method SharesClient.ListByAccount.
+type SharesClientListByAccountResult struct {
 	ShareList
 }
 
-// SharesListSynchronizationDetailsResponse contains the response from method Shares.ListSynchronizationDetails.
-type SharesListSynchronizationDetailsResponse struct {
-	SharesListSynchronizationDetailsResult
+// SharesClientListSynchronizationDetailsResponse contains the response from method SharesClient.ListSynchronizationDetails.
+type SharesClientListSynchronizationDetailsResponse struct {
+	SharesClientListSynchronizationDetailsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharesListSynchronizationDetailsResult contains the result from method Shares.ListSynchronizationDetails.
-type SharesListSynchronizationDetailsResult struct {
+// SharesClientListSynchronizationDetailsResult contains the result from method SharesClient.ListSynchronizationDetails.
+type SharesClientListSynchronizationDetailsResult struct {
 	SynchronizationDetailsList
 }
 
-// SharesListSynchronizationsResponse contains the response from method Shares.ListSynchronizations.
-type SharesListSynchronizationsResponse struct {
-	SharesListSynchronizationsResult
+// SharesClientListSynchronizationsResponse contains the response from method SharesClient.ListSynchronizations.
+type SharesClientListSynchronizationsResponse struct {
+	SharesClientListSynchronizationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharesListSynchronizationsResult contains the result from method Shares.ListSynchronizations.
-type SharesListSynchronizationsResult struct {
+// SharesClientListSynchronizationsResult contains the result from method SharesClient.ListSynchronizations.
+type SharesClientListSynchronizationsResult struct {
 	ShareSynchronizationList
 }
 
-// SynchronizationSettingsCreateResponse contains the response from method SynchronizationSettings.Create.
-type SynchronizationSettingsCreateResponse struct {
-	SynchronizationSettingsCreateResult
+// SynchronizationSettingsClientCreateResponse contains the response from method SynchronizationSettingsClient.Create.
+type SynchronizationSettingsClientCreateResponse struct {
+	SynchronizationSettingsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SynchronizationSettingsCreateResult contains the result from method SynchronizationSettings.Create.
-type SynchronizationSettingsCreateResult struct {
+// SynchronizationSettingsClientCreateResult contains the result from method SynchronizationSettingsClient.Create.
+type SynchronizationSettingsClientCreateResult struct {
 	SynchronizationSettingClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SynchronizationSettingsCreateResult.
-func (s *SynchronizationSettingsCreateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SynchronizationSettingsClientCreateResult.
+func (s *SynchronizationSettingsClientCreateResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalSynchronizationSettingClassification(data)
 	if err != nil {
 		return err
@@ -919,10 +919,10 @@ func (s *SynchronizationSettingsCreateResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SynchronizationSettingsDeletePollerResponse contains the response from method SynchronizationSettings.Delete.
-type SynchronizationSettingsDeletePollerResponse struct {
+// SynchronizationSettingsClientDeletePollerResponse contains the response from method SynchronizationSettingsClient.Delete.
+type SynchronizationSettingsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SynchronizationSettingsDeletePoller
+	Poller *SynchronizationSettingsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -931,8 +931,8 @@ type SynchronizationSettingsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SynchronizationSettingsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SynchronizationSettingsDeleteResponse, error) {
-	respType := SynchronizationSettingsDeleteResponse{}
+func (l SynchronizationSettingsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SynchronizationSettingsClientDeleteResponse, error) {
+	respType := SynchronizationSettingsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResponse)
 	if err != nil {
 		return respType, err
@@ -941,13 +941,13 @@ func (l SynchronizationSettingsDeletePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a SynchronizationSettingsDeletePollerResponse from the provided client and resume token.
-func (l *SynchronizationSettingsDeletePollerResponse) Resume(ctx context.Context, client *SynchronizationSettingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SynchronizationSettingsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SynchronizationSettingsClientDeletePollerResponse from the provided client and resume token.
+func (l *SynchronizationSettingsClientDeletePollerResponse) Resume(ctx context.Context, client *SynchronizationSettingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SynchronizationSettingsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SynchronizationSettingsDeletePoller{
+	poller := &SynchronizationSettingsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -959,32 +959,32 @@ func (l *SynchronizationSettingsDeletePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// SynchronizationSettingsDeleteResponse contains the response from method SynchronizationSettings.Delete.
-type SynchronizationSettingsDeleteResponse struct {
-	SynchronizationSettingsDeleteResult
+// SynchronizationSettingsClientDeleteResponse contains the response from method SynchronizationSettingsClient.Delete.
+type SynchronizationSettingsClientDeleteResponse struct {
+	SynchronizationSettingsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SynchronizationSettingsDeleteResult contains the result from method SynchronizationSettings.Delete.
-type SynchronizationSettingsDeleteResult struct {
+// SynchronizationSettingsClientDeleteResult contains the result from method SynchronizationSettingsClient.Delete.
+type SynchronizationSettingsClientDeleteResult struct {
 	OperationResponse
 }
 
-// SynchronizationSettingsGetResponse contains the response from method SynchronizationSettings.Get.
-type SynchronizationSettingsGetResponse struct {
-	SynchronizationSettingsGetResult
+// SynchronizationSettingsClientGetResponse contains the response from method SynchronizationSettingsClient.Get.
+type SynchronizationSettingsClientGetResponse struct {
+	SynchronizationSettingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SynchronizationSettingsGetResult contains the result from method SynchronizationSettings.Get.
-type SynchronizationSettingsGetResult struct {
+// SynchronizationSettingsClientGetResult contains the result from method SynchronizationSettingsClient.Get.
+type SynchronizationSettingsClientGetResult struct {
 	SynchronizationSettingClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SynchronizationSettingsGetResult.
-func (s *SynchronizationSettingsGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SynchronizationSettingsClientGetResult.
+func (s *SynchronizationSettingsClientGetResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalSynchronizationSettingClassification(data)
 	if err != nil {
 		return err
@@ -993,22 +993,22 @@ func (s *SynchronizationSettingsGetResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SynchronizationSettingsListByShareResponse contains the response from method SynchronizationSettings.ListByShare.
-type SynchronizationSettingsListByShareResponse struct {
-	SynchronizationSettingsListByShareResult
+// SynchronizationSettingsClientListByShareResponse contains the response from method SynchronizationSettingsClient.ListByShare.
+type SynchronizationSettingsClientListByShareResponse struct {
+	SynchronizationSettingsClientListByShareResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SynchronizationSettingsListByShareResult contains the result from method SynchronizationSettings.ListByShare.
-type SynchronizationSettingsListByShareResult struct {
+// SynchronizationSettingsClientListByShareResult contains the result from method SynchronizationSettingsClient.ListByShare.
+type SynchronizationSettingsClientListByShareResult struct {
 	SynchronizationSettingList
 }
 
-// TriggersCreatePollerResponse contains the response from method Triggers.Create.
-type TriggersCreatePollerResponse struct {
+// TriggersClientCreatePollerResponse contains the response from method TriggersClient.Create.
+type TriggersClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TriggersCreatePoller
+	Poller *TriggersClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1017,9 +1017,9 @@ type TriggersCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l TriggersCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TriggersCreateResponse, error) {
-	respType := TriggersCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.TriggerClassification)
+func (l TriggersClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TriggersClientCreateResponse, error) {
+	respType := TriggersClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.TriggersClientCreateResult)
 	if err != nil {
 		return respType, err
 	}
@@ -1027,13 +1027,13 @@ func (l TriggersCreatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a TriggersCreatePollerResponse from the provided client and resume token.
-func (l *TriggersCreatePollerResponse) Resume(ctx context.Context, client *TriggersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TriggersClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a TriggersClientCreatePollerResponse from the provided client and resume token.
+func (l *TriggersClientCreatePollerResponse) Resume(ctx context.Context, client *TriggersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TriggersClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TriggersCreatePoller{
+	poller := &TriggersClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1045,20 +1045,20 @@ func (l *TriggersCreatePollerResponse) Resume(ctx context.Context, client *Trigg
 	return nil
 }
 
-// TriggersCreateResponse contains the response from method Triggers.Create.
-type TriggersCreateResponse struct {
-	TriggersCreateResult
+// TriggersClientCreateResponse contains the response from method TriggersClient.Create.
+type TriggersClientCreateResponse struct {
+	TriggersClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TriggersCreateResult contains the result from method Triggers.Create.
-type TriggersCreateResult struct {
+// TriggersClientCreateResult contains the result from method TriggersClient.Create.
+type TriggersClientCreateResult struct {
 	TriggerClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type TriggersCreateResult.
-func (t *TriggersCreateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type TriggersClientCreateResult.
+func (t *TriggersClientCreateResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalTriggerClassification(data)
 	if err != nil {
 		return err
@@ -1067,10 +1067,10 @@ func (t *TriggersCreateResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TriggersDeletePollerResponse contains the response from method Triggers.Delete.
-type TriggersDeletePollerResponse struct {
+// TriggersClientDeletePollerResponse contains the response from method TriggersClient.Delete.
+type TriggersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TriggersDeletePoller
+	Poller *TriggersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1079,8 +1079,8 @@ type TriggersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l TriggersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TriggersDeleteResponse, error) {
-	respType := TriggersDeleteResponse{}
+func (l TriggersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TriggersClientDeleteResponse, error) {
+	respType := TriggersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResponse)
 	if err != nil {
 		return respType, err
@@ -1089,13 +1089,13 @@ func (l TriggersDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a TriggersDeletePollerResponse from the provided client and resume token.
-func (l *TriggersDeletePollerResponse) Resume(ctx context.Context, client *TriggersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TriggersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a TriggersClientDeletePollerResponse from the provided client and resume token.
+func (l *TriggersClientDeletePollerResponse) Resume(ctx context.Context, client *TriggersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TriggersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TriggersDeletePoller{
+	poller := &TriggersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1107,32 +1107,32 @@ func (l *TriggersDeletePollerResponse) Resume(ctx context.Context, client *Trigg
 	return nil
 }
 
-// TriggersDeleteResponse contains the response from method Triggers.Delete.
-type TriggersDeleteResponse struct {
-	TriggersDeleteResult
+// TriggersClientDeleteResponse contains the response from method TriggersClient.Delete.
+type TriggersClientDeleteResponse struct {
+	TriggersClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TriggersDeleteResult contains the result from method Triggers.Delete.
-type TriggersDeleteResult struct {
+// TriggersClientDeleteResult contains the result from method TriggersClient.Delete.
+type TriggersClientDeleteResult struct {
 	OperationResponse
 }
 
-// TriggersGetResponse contains the response from method Triggers.Get.
-type TriggersGetResponse struct {
-	TriggersGetResult
+// TriggersClientGetResponse contains the response from method TriggersClient.Get.
+type TriggersClientGetResponse struct {
+	TriggersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TriggersGetResult contains the result from method Triggers.Get.
-type TriggersGetResult struct {
+// TriggersClientGetResult contains the result from method TriggersClient.Get.
+type TriggersClientGetResult struct {
 	TriggerClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type TriggersGetResult.
-func (t *TriggersGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type TriggersClientGetResult.
+func (t *TriggersClientGetResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalTriggerClassification(data)
 	if err != nil {
 		return err
@@ -1141,14 +1141,14 @@ func (t *TriggersGetResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TriggersListByShareSubscriptionResponse contains the response from method Triggers.ListByShareSubscription.
-type TriggersListByShareSubscriptionResponse struct {
-	TriggersListByShareSubscriptionResult
+// TriggersClientListByShareSubscriptionResponse contains the response from method TriggersClient.ListByShareSubscription.
+type TriggersClientListByShareSubscriptionResponse struct {
+	TriggersClientListByShareSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TriggersListByShareSubscriptionResult contains the result from method Triggers.ListByShareSubscription.
-type TriggersListByShareSubscriptionResult struct {
+// TriggersClientListByShareSubscriptionResult contains the result from method TriggersClient.ListByShareSubscription.
+type TriggersClientListByShareSubscriptionResult struct {
 	TriggerList
 }

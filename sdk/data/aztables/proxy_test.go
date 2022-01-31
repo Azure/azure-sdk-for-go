@@ -20,7 +20,15 @@ import (
 
 func TestMain(m *testing.M) {
 	// 1. Set up session level sanitizers
-	if recording.GetRecordMode() == "record" {
+	switch recording.GetRecordMode() {
+	case recording.PlaybackMode:
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
+			ExcludedHeaders: []string{":path", ":auth", ":method", ":scheme"},
+		})
+		if err != nil {
+			panic(err)
+		}
+	case recording.RecordingMode:
 		for _, val := range []string{"TABLES_COSMOS_ACCOUNT_NAME", "TABLES_STORAGE_ACCOUNT_NAME"} {
 			account, ok := os.LookupEnv(val)
 			if !ok {
@@ -33,8 +41,8 @@ func TestMain(m *testing.M) {
 				panic(err)
 			}
 		}
-	}
 
+	}
 	// Run tests
 	exitVal := m.Run()
 

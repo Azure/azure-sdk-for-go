@@ -1,0 +1,402 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*ApplicationsClient.List` parameter(s) have been changed from `(string, *ApplicationsListOptions)` to `(string, *ApplicationsClientListOptions)`
+- Function `*ApplicationsClient.List` return value(s) have been changed from `(*ApplicationsListPager)` to `(*ApplicationsClientListPager)`
+- Function `*SaasSubscriptionLevelListByAzureSubscriptionPager.Err` has been removed
+- Function `*SaasSubscriptionLevelDeletePoller.ResumeToken` has been removed
+- Function `*SaasSubscriptionLevelClient.Get` has been removed
+- Function `*SaaSOperationGetPoller.FinalResponse` has been removed
+- Function `*SaasSubscriptionLevelMoveResourcesPoller.Poll` has been removed
+- Function `*SaaSClient.BeginCreateResource` has been removed
+- Function `*SaasSubscriptionLevelMoveResourcesPoller.FinalResponse` has been removed
+- Function `*SaaSOperationClient.BeginGet` has been removed
+- Function `*SaasResourcesListPager.Err` has been removed
+- Function `*SaasResourcesListPager.PageResponse` has been removed
+- Function `*SaasSubscriptionLevelUpdatePoller.FinalResponse` has been removed
+- Function `*SaasSubscriptionLevelUpdateToUnsubscribedPoller.FinalResponse` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*SaaSDeletePollerResponse.Resume` has been removed
+- Function `*SaasSubscriptionLevelUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `SaasAppOperationsResponseWithContinuation.MarshalJSON` has been removed
+- Function `*SaasResourcesClient.List` has been removed
+- Function `*SaaSUpdateResourcePoller.Poll` has been removed
+- Function `*SaasSubscriptionLevelListByResourceGroupPager.PageResponse` has been removed
+- Function `*SaasSubscriptionLevelClient.BeginUpdateToUnsubscribed` has been removed
+- Function `*SaaSOperationGetPollerResponse.Resume` has been removed
+- Function `*SaaSClient.BeginUpdateResource` has been removed
+- Function `*ApplicationsListPager.NextPage` has been removed
+- Function `*SaasSubscriptionLevelCreateOrUpdatePoller.Poll` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `SaasSubscriptionLevelCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SaasSubscriptionLevelCreateOrUpdatePoller.Done` has been removed
+- Function `*SaaSCreateResourcePollerResponse.Resume` has been removed
+- Function `*SaasSubscriptionLevelClient.ListByResourceGroup` has been removed
+- Function `SaaSUpdateResourcePollerResponse.PollUntilDone` has been removed
+- Function `SaasSubscriptionLevelMoveResourcesPollerResponse.PollUntilDone` has been removed
+- Function `*SaaSUpdateResourcePoller.FinalResponse` has been removed
+- Function `*SaasSubscriptionLevelUpdateToUnsubscribedPoller.Poll` has been removed
+- Function `*SaaSCreateResourcePoller.Poll` has been removed
+- Function `*SaasSubscriptionLevelClient.BeginCreateOrUpdate` has been removed
+- Function `*SaaSCreateResourcePoller.ResumeToken` has been removed
+- Function `*SaaSOperationGetPoller.Done` has been removed
+- Function `*SaasSubscriptionLevelListByResourceGroupPager.Err` has been removed
+- Function `*SaasSubscriptionLevelCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `NewSaaSOperationClient` has been removed
+- Function `NewSaasSubscriptionLevelClient` has been removed
+- Function `*SaasSubscriptionLevelClient.ListByAzureSubscription` has been removed
+- Function `*SaasSubscriptionLevelListByResourceGroupPager.NextPage` has been removed
+- Function `*SaasSubscriptionLevelUpdatePoller.Poll` has been removed
+- Function `*SaaSUpdateResourcePoller.ResumeToken` has been removed
+- Function `SaaSCreateResourcePollerResponse.PollUntilDone` has been removed
+- Function `*SaasSubscriptionLevelClient.BeginMoveResources` has been removed
+- Function `*SaaSUpdateResourcePollerResponse.Resume` has been removed
+- Function `SaasSubscriptionLevelDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SaasSubscriptionLevelUpdateToUnsubscribedPoller.Done` has been removed
+- Function `SaasCreationProperties.MarshalJSON` has been removed
+- Function `*SaasResourcesListPager.NextPage` has been removed
+- Function `*SaasSubscriptionLevelDeletePoller.Done` has been removed
+- Function `*ApplicationsListPager.Err` has been removed
+- Function `*SaaSDeletePoller.Done` has been removed
+- Function `*SaasSubscriptionLevelUpdatePoller.Done` has been removed
+- Function `*SaasSubscriptionLevelDeletePoller.FinalResponse` has been removed
+- Function `SaasApp.MarshalJSON` has been removed
+- Function `*SaasSubscriptionLevelUpdatePollerResponse.Resume` has been removed
+- Function `*SaaSOperationGetPoller.Poll` has been removed
+- Function `*SaaSOperationGetPoller.ResumeToken` has been removed
+- Function `NewSaasResourcesClient` has been removed
+- Function `*SaasSubscriptionLevelDeletePollerResponse.Resume` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*SaasResourcesClient.ListAccessToken` has been removed
+- Function `SaasResourceCreation.MarshalJSON` has been removed
+- Function `*SaasSubscriptionLevelMoveResourcesPoller.ResumeToken` has been removed
+- Function `*SaaSDeletePoller.ResumeToken` has been removed
+- Function `*SaaSClient.GetResource` has been removed
+- Function `*SaasSubscriptionLevelUpdateToUnsubscribedPoller.ResumeToken` has been removed
+- Function `*SaasSubscriptionLevelCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `NewSaaSClient` has been removed
+- Function `*SaaSClient.BeginDelete` has been removed
+- Function `SaasSubscriptionLevelUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SaasSubscriptionLevelListByAzureSubscriptionPager.NextPage` has been removed
+- Function `SaaSDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse.Resume` has been removed
+- Function `*SaaSCreateResourcePoller.FinalResponse` has been removed
+- Function `SaasResource.MarshalJSON` has been removed
+- Function `*SaaSUpdateResourcePoller.Done` has been removed
+- Function `SaaSOperationGetPollerResponse.PollUntilDone` has been removed
+- Function `*SaasSubscriptionLevelClient.BeginUpdate` has been removed
+- Function `*SaaSDeletePoller.FinalResponse` has been removed
+- Function `SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse.PollUntilDone` has been removed
+- Function `SaasProperties.MarshalJSON` has been removed
+- Function `SaasResourceResponseWithContinuation.MarshalJSON` has been removed
+- Function `*SaasSubscriptionLevelCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SaasSubscriptionLevelMoveResourcesPollerResponse.Resume` has been removed
+- Function `SaasAppResponseWithContinuation.MarshalJSON` has been removed
+- Function `*ApplicationsListPager.PageResponse` has been removed
+- Function `*SaasSubscriptionLevelListByAzureSubscriptionPager.PageResponse` has been removed
+- Function `*SaaSCreateResourcePoller.Done` has been removed
+- Function `*SaaSDeletePoller.Poll` has been removed
+- Function `*SaasSubscriptionLevelClient.BeginDelete` has been removed
+- Function `*SaasSubscriptionLevelClient.ValidateMoveResources` has been removed
+- Function `*SaasSubscriptionLevelDeletePoller.Poll` has been removed
+- Function `*SaasSubscriptionLevelMoveResourcesPoller.Done` has been removed
+- Function `*SaasSubscriptionLevelClient.ListAccessToken` has been removed
+- Struct `ApplicationsListOptions` has been removed
+- Struct `ApplicationsListPager` has been removed
+- Struct `ApplicationsListResponse` has been removed
+- Struct `ApplicationsListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `SaaSBeginCreateResourceOptions` has been removed
+- Struct `SaaSBeginDeleteOptions` has been removed
+- Struct `SaaSBeginUpdateResourceOptions` has been removed
+- Struct `SaaSClient` has been removed
+- Struct `SaaSCreateResourcePoller` has been removed
+- Struct `SaaSCreateResourcePollerResponse` has been removed
+- Struct `SaaSCreateResourceResponse` has been removed
+- Struct `SaaSCreateResourceResult` has been removed
+- Struct `SaaSDeletePoller` has been removed
+- Struct `SaaSDeletePollerResponse` has been removed
+- Struct `SaaSDeleteResponse` has been removed
+- Struct `SaaSGetResourceOptions` has been removed
+- Struct `SaaSGetResourceResponse` has been removed
+- Struct `SaaSGetResourceResult` has been removed
+- Struct `SaaSOperationBeginGetOptions` has been removed
+- Struct `SaaSOperationClient` has been removed
+- Struct `SaaSOperationGetPoller` has been removed
+- Struct `SaaSOperationGetPollerResponse` has been removed
+- Struct `SaaSOperationGetResponse` has been removed
+- Struct `SaaSOperationGetResult` has been removed
+- Struct `SaaSUpdateResourcePoller` has been removed
+- Struct `SaaSUpdateResourcePollerResponse` has been removed
+- Struct `SaaSUpdateResourceResponse` has been removed
+- Struct `SaaSUpdateResourceResult` has been removed
+- Struct `SaasApp` has been removed
+- Struct `SaasAppOperation` has been removed
+- Struct `SaasAppOperationDisplay` has been removed
+- Struct `SaasAppOperationsResponseWithContinuation` has been removed
+- Struct `SaasAppPlan` has been removed
+- Struct `SaasAppProperties` has been removed
+- Struct `SaasAppResponseWithContinuation` has been removed
+- Struct `SaasCreationProperties` has been removed
+- Struct `SaasProperties` has been removed
+- Struct `SaasPropertiesTerm` has been removed
+- Struct `SaasResource` has been removed
+- Struct `SaasResourceCreation` has been removed
+- Struct `SaasResourceProperties` has been removed
+- Struct `SaasResourceResponseWithContinuation` has been removed
+- Struct `SaasResourcesClient` has been removed
+- Struct `SaasResourcesListAccessTokenOptions` has been removed
+- Struct `SaasResourcesListAccessTokenResponse` has been removed
+- Struct `SaasResourcesListAccessTokenResult` has been removed
+- Struct `SaasResourcesListOptions` has been removed
+- Struct `SaasResourcesListPager` has been removed
+- Struct `SaasResourcesListResponse` has been removed
+- Struct `SaasResourcesListResult` has been removed
+- Struct `SaasSubscriptionLevelBeginCreateOrUpdateOptions` has been removed
+- Struct `SaasSubscriptionLevelBeginDeleteOptions` has been removed
+- Struct `SaasSubscriptionLevelBeginMoveResourcesOptions` has been removed
+- Struct `SaasSubscriptionLevelBeginUpdateOptions` has been removed
+- Struct `SaasSubscriptionLevelBeginUpdateToUnsubscribedOptions` has been removed
+- Struct `SaasSubscriptionLevelClient` has been removed
+- Struct `SaasSubscriptionLevelCreateOrUpdatePoller` has been removed
+- Struct `SaasSubscriptionLevelCreateOrUpdatePollerResponse` has been removed
+- Struct `SaasSubscriptionLevelCreateOrUpdateResponse` has been removed
+- Struct `SaasSubscriptionLevelCreateOrUpdateResult` has been removed
+- Struct `SaasSubscriptionLevelDeletePoller` has been removed
+- Struct `SaasSubscriptionLevelDeletePollerResponse` has been removed
+- Struct `SaasSubscriptionLevelDeleteResponse` has been removed
+- Struct `SaasSubscriptionLevelGetOptions` has been removed
+- Struct `SaasSubscriptionLevelGetResponse` has been removed
+- Struct `SaasSubscriptionLevelGetResult` has been removed
+- Struct `SaasSubscriptionLevelListAccessTokenOptions` has been removed
+- Struct `SaasSubscriptionLevelListAccessTokenResponse` has been removed
+- Struct `SaasSubscriptionLevelListAccessTokenResult` has been removed
+- Struct `SaasSubscriptionLevelListByAzureSubscriptionOptions` has been removed
+- Struct `SaasSubscriptionLevelListByAzureSubscriptionPager` has been removed
+- Struct `SaasSubscriptionLevelListByAzureSubscriptionResponse` has been removed
+- Struct `SaasSubscriptionLevelListByAzureSubscriptionResult` has been removed
+- Struct `SaasSubscriptionLevelListByResourceGroupOptions` has been removed
+- Struct `SaasSubscriptionLevelListByResourceGroupPager` has been removed
+- Struct `SaasSubscriptionLevelListByResourceGroupResponse` has been removed
+- Struct `SaasSubscriptionLevelListByResourceGroupResult` has been removed
+- Struct `SaasSubscriptionLevelMoveResourcesPoller` has been removed
+- Struct `SaasSubscriptionLevelMoveResourcesPollerResponse` has been removed
+- Struct `SaasSubscriptionLevelMoveResourcesResponse` has been removed
+- Struct `SaasSubscriptionLevelUpdatePoller` has been removed
+- Struct `SaasSubscriptionLevelUpdatePollerResponse` has been removed
+- Struct `SaasSubscriptionLevelUpdateResponse` has been removed
+- Struct `SaasSubscriptionLevelUpdateResult` has been removed
+- Struct `SaasSubscriptionLevelUpdateToUnsubscribedPoller` has been removed
+- Struct `SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse` has been removed
+- Struct `SaasSubscriptionLevelUpdateToUnsubscribedResponse` has been removed
+- Struct `SaasSubscriptionLevelValidateMoveResourcesOptions` has been removed
+- Struct `SaasSubscriptionLevelValidateMoveResourcesResponse` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New function `*SubscriptionLevelClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*OperationClientGetPoller.ResumeToken() (string, error)`
+- New function `*ClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ResourcesClient.ListAccessToken(context.Context, string, *ResourcesClientListAccessTokenOptions) (ResourcesClientListAccessTokenResponse, error)`
+- New function `*SubscriptionLevelClientUpdateToUnsubscribedPoller.FinalResponse(context.Context) (SubscriptionLevelClientUpdateToUnsubscribedResponse, error)`
+- New function `ClientCreateResourcePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientCreateResourceResponse, error)`
+- New function `SubscriptionLevelClientMoveResourcesPollerResponse.PollUntilDone(context.Context, time.Duration) (SubscriptionLevelClientMoveResourcesResponse, error)`
+- New function `*OperationClientGetPoller.FinalResponse(context.Context) (OperationClientGetResponse, error)`
+- New function `*SubscriptionLevelClientCreateOrUpdatePoller.Done() bool`
+- New function `SubscriptionLevelClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SubscriptionLevelClientDeleteResponse, error)`
+- New function `*SubscriptionLevelClientMoveResourcesPoller.ResumeToken() (string, error)`
+- New function `*ClientUpdateResourcePoller.Done() bool`
+- New function `ClientUpdateResourcePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientUpdateResourceResponse, error)`
+- New function `*SubscriptionLevelClient.ListAccessToken(context.Context, string, string, *SubscriptionLevelClientListAccessTokenOptions) (SubscriptionLevelClientListAccessTokenResponse, error)`
+- New function `*ApplicationsClientListPager.Err() error`
+- New function `*ClientUpdateResourcePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SubscriptionLevelClient.BeginDelete(context.Context, string, string, *SubscriptionLevelClientBeginDeleteOptions) (SubscriptionLevelClientDeletePollerResponse, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*SubscriptionLevelClientDeletePoller.Done() bool`
+- New function `*Client.BeginDelete(context.Context, string, DeleteOptions, *ClientBeginDeleteOptions) (ClientDeletePollerResponse, error)`
+- New function `*OperationClientGetPoller.Done() bool`
+- New function `*SubscriptionLevelClientMoveResourcesPoller.FinalResponse(context.Context) (SubscriptionLevelClientMoveResourcesResponse, error)`
+- New function `*ClientDeletePoller.Done() bool`
+- New function `*SubscriptionLevelClient.BeginUpdateToUnsubscribed(context.Context, string, string, DeleteOptions, *SubscriptionLevelClientBeginUpdateToUnsubscribedOptions) (SubscriptionLevelClientUpdateToUnsubscribedPollerResponse, error)`
+- New function `NewOperationClient(azcore.TokenCredential, *arm.ClientOptions) *OperationClient`
+- New function `*SubscriptionLevelClientUpdateToUnsubscribedPoller.ResumeToken() (string, error)`
+- New function `*SubscriptionLevelClient.BeginMoveResources(context.Context, string, MoveResource, *SubscriptionLevelClientBeginMoveResourcesOptions) (SubscriptionLevelClientMoveResourcesPollerResponse, error)`
+- New function `*ClientUpdateResourcePoller.FinalResponse(context.Context) (ClientUpdateResourceResponse, error)`
+- New function `*SubscriptionLevelClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SubscriptionLevelClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SubscriptionLevelClient.Get(context.Context, string, string, *SubscriptionLevelClientGetOptions) (SubscriptionLevelClientGetResponse, error)`
+- New function `*SubscriptionLevelClientMoveResourcesPollerResponse.Resume(context.Context, *SubscriptionLevelClient, string) error`
+- New function `*SubscriptionLevelClientListByAzureSubscriptionPager.NextPage(context.Context) bool`
+- New function `AppResponseWithContinuation.MarshalJSON() ([]byte, error)`
+- New function `SubscriptionLevelClientUpdateToUnsubscribedPollerResponse.PollUntilDone(context.Context, time.Duration) (SubscriptionLevelClientUpdateToUnsubscribedResponse, error)`
+- New function `*Client.BeginUpdateResource(context.Context, string, ResourceCreation, *ClientBeginUpdateResourceOptions) (ClientUpdateResourcePollerResponse, error)`
+- New function `*ClientCreateResourcePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*SubscriptionLevelClientDeletePollerResponse.Resume(context.Context, *SubscriptionLevelClient, string) error`
+- New function `CreationProperties.MarshalJSON() ([]byte, error)`
+- New function `*OperationClientGetPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SubscriptionLevelClient.BeginUpdate(context.Context, string, string, ResourceCreation, *SubscriptionLevelClientBeginUpdateOptions) (SubscriptionLevelClientUpdatePollerResponse, error)`
+- New function `*Client.BeginCreateResource(context.Context, ResourceCreation, *ClientBeginCreateResourceOptions) (ClientCreateResourcePollerResponse, error)`
+- New function `OperationClientGetPollerResponse.PollUntilDone(context.Context, time.Duration) (OperationClientGetResponse, error)`
+- New function `NewClient(azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `ResourceResponseWithContinuation.MarshalJSON() ([]byte, error)`
+- New function `*SubscriptionLevelClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*OperationClient.BeginGet(context.Context, string, *OperationClientBeginGetOptions) (OperationClientGetPollerResponse, error)`
+- New function `App.MarshalJSON() ([]byte, error)`
+- New function `ClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientDeleteResponse, error)`
+- New function `*SubscriptionLevelClientDeletePoller.FinalResponse(context.Context) (SubscriptionLevelClientDeleteResponse, error)`
+- New function `*SubscriptionLevelClientUpdatePoller.Done() bool`
+- New function `*ApplicationsClientListPager.PageResponse() ApplicationsClientListResponse`
+- New function `NewSubscriptionLevelClient(string, azcore.TokenCredential, *arm.ClientOptions) *SubscriptionLevelClient`
+- New function `*SubscriptionLevelClientUpdateToUnsubscribedPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientCreateResourcePoller.FinalResponse(context.Context) (ClientCreateResourceResponse, error)`
+- New function `*ClientUpdateResourcePoller.ResumeToken() (string, error)`
+- New function `AppOperationsResponseWithContinuation.MarshalJSON() ([]byte, error)`
+- New function `*ClientUpdateResourcePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `SubscriptionLevelClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SubscriptionLevelClientCreateOrUpdateResponse, error)`
+- New function `SubscriptionLevelClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SubscriptionLevelClientUpdateResponse, error)`
+- New function `NewResourcesClient(azcore.TokenCredential, *arm.ClientOptions) *ResourcesClient`
+- New function `*ResourcesClientListPager.Err() error`
+- New function `*SubscriptionLevelClientUpdateToUnsubscribedPoller.Done() bool`
+- New function `*ClientDeletePoller.FinalResponse(context.Context) (ClientDeleteResponse, error)`
+- New function `*SubscriptionLevelClient.ListByResourceGroup(string, *SubscriptionLevelClientListByResourceGroupOptions) *SubscriptionLevelClientListByResourceGroupPager`
+- New function `*SubscriptionLevelClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SubscriptionLevelClient.ListByAzureSubscription(*SubscriptionLevelClientListByAzureSubscriptionOptions) *SubscriptionLevelClientListByAzureSubscriptionPager`
+- New function `*ClientDeletePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*ClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SubscriptionLevelClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourcesClientListPager.PageResponse() ResourcesClientListResponse`
+- New function `*OperationClientGetPollerResponse.Resume(context.Context, *OperationClient, string) error`
+- New function `*SubscriptionLevelClient.BeginCreateOrUpdate(context.Context, string, string, ResourceCreation, *SubscriptionLevelClientBeginCreateOrUpdateOptions) (SubscriptionLevelClientCreateOrUpdatePollerResponse, error)`
+- New function `ResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*SubscriptionLevelClientUpdatePollerResponse.Resume(context.Context, *SubscriptionLevelClient, string) error`
+- New function `*SubscriptionLevelClientListByAzureSubscriptionPager.Err() error`
+- New function `*SubscriptionLevelClientUpdateToUnsubscribedPollerResponse.Resume(context.Context, *SubscriptionLevelClient, string) error`
+- New function `*ApplicationsClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ClientCreateResourcePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ResourcesClient.List(*ResourcesClientListOptions) *ResourcesClientListPager`
+- New function `ResourceCreation.MarshalJSON() ([]byte, error)`
+- New function `Resource.MarshalJSON() ([]byte, error)`
+- New function `*ClientCreateResourcePoller.Done() bool`
+- New function `*SubscriptionLevelClientMoveResourcesPoller.Done() bool`
+- New function `*SubscriptionLevelClientListByResourceGroupPager.Err() error`
+- New function `*SubscriptionLevelClientUpdatePoller.FinalResponse(context.Context) (SubscriptionLevelClientUpdateResponse, error)`
+- New function `*SubscriptionLevelClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SubscriptionLevelClientMoveResourcesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourcesClientListPager.NextPage(context.Context) bool`
+- New function `*SubscriptionLevelClientCreateOrUpdatePoller.FinalResponse(context.Context) (SubscriptionLevelClientCreateOrUpdateResponse, error)`
+- New function `*ClientCreateResourcePoller.ResumeToken() (string, error)`
+- New function `*SubscriptionLevelClientListByAzureSubscriptionPager.PageResponse() SubscriptionLevelClientListByAzureSubscriptionResponse`
+- New function `*SubscriptionLevelClientListByResourceGroupPager.PageResponse() SubscriptionLevelClientListByResourceGroupResponse`
+- New function `*SubscriptionLevelClient.ValidateMoveResources(context.Context, string, MoveResource, *SubscriptionLevelClientValidateMoveResourcesOptions) (SubscriptionLevelClientValidateMoveResourcesResponse, error)`
+- New function `*Client.GetResource(context.Context, string, *ClientGetResourceOptions) (ClientGetResourceResponse, error)`
+- New function `*SubscriptionLevelClientCreateOrUpdatePollerResponse.Resume(context.Context, *SubscriptionLevelClient, string) error`
+- New struct `App`
+- New struct `AppOperation`
+- New struct `AppOperationDisplay`
+- New struct `AppOperationsResponseWithContinuation`
+- New struct `AppPlan`
+- New struct `AppProperties`
+- New struct `AppResponseWithContinuation`
+- New struct `ApplicationsClientListOptions`
+- New struct `ApplicationsClientListPager`
+- New struct `ApplicationsClientListResponse`
+- New struct `ApplicationsClientListResult`
+- New struct `Client`
+- New struct `ClientBeginCreateResourceOptions`
+- New struct `ClientBeginDeleteOptions`
+- New struct `ClientBeginUpdateResourceOptions`
+- New struct `ClientCreateResourcePoller`
+- New struct `ClientCreateResourcePollerResponse`
+- New struct `ClientCreateResourceResponse`
+- New struct `ClientCreateResourceResult`
+- New struct `ClientDeletePoller`
+- New struct `ClientDeletePollerResponse`
+- New struct `ClientDeleteResponse`
+- New struct `ClientGetResourceOptions`
+- New struct `ClientGetResourceResponse`
+- New struct `ClientGetResourceResult`
+- New struct `ClientUpdateResourcePoller`
+- New struct `ClientUpdateResourcePollerResponse`
+- New struct `ClientUpdateResourceResponse`
+- New struct `ClientUpdateResourceResult`
+- New struct `CreationProperties`
+- New struct `OperationClient`
+- New struct `OperationClientBeginGetOptions`
+- New struct `OperationClientGetPoller`
+- New struct `OperationClientGetPollerResponse`
+- New struct `OperationClientGetResponse`
+- New struct `OperationClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `Properties`
+- New struct `PropertiesTerm`
+- New struct `Resource`
+- New struct `ResourceCreation`
+- New struct `ResourceProperties`
+- New struct `ResourceResponseWithContinuation`
+- New struct `ResourcesClient`
+- New struct `ResourcesClientListAccessTokenOptions`
+- New struct `ResourcesClientListAccessTokenResponse`
+- New struct `ResourcesClientListAccessTokenResult`
+- New struct `ResourcesClientListOptions`
+- New struct `ResourcesClientListPager`
+- New struct `ResourcesClientListResponse`
+- New struct `ResourcesClientListResult`
+- New struct `SubscriptionLevelClient`
+- New struct `SubscriptionLevelClientBeginCreateOrUpdateOptions`
+- New struct `SubscriptionLevelClientBeginDeleteOptions`
+- New struct `SubscriptionLevelClientBeginMoveResourcesOptions`
+- New struct `SubscriptionLevelClientBeginUpdateOptions`
+- New struct `SubscriptionLevelClientBeginUpdateToUnsubscribedOptions`
+- New struct `SubscriptionLevelClientCreateOrUpdatePoller`
+- New struct `SubscriptionLevelClientCreateOrUpdatePollerResponse`
+- New struct `SubscriptionLevelClientCreateOrUpdateResponse`
+- New struct `SubscriptionLevelClientCreateOrUpdateResult`
+- New struct `SubscriptionLevelClientDeletePoller`
+- New struct `SubscriptionLevelClientDeletePollerResponse`
+- New struct `SubscriptionLevelClientDeleteResponse`
+- New struct `SubscriptionLevelClientGetOptions`
+- New struct `SubscriptionLevelClientGetResponse`
+- New struct `SubscriptionLevelClientGetResult`
+- New struct `SubscriptionLevelClientListAccessTokenOptions`
+- New struct `SubscriptionLevelClientListAccessTokenResponse`
+- New struct `SubscriptionLevelClientListAccessTokenResult`
+- New struct `SubscriptionLevelClientListByAzureSubscriptionOptions`
+- New struct `SubscriptionLevelClientListByAzureSubscriptionPager`
+- New struct `SubscriptionLevelClientListByAzureSubscriptionResponse`
+- New struct `SubscriptionLevelClientListByAzureSubscriptionResult`
+- New struct `SubscriptionLevelClientListByResourceGroupOptions`
+- New struct `SubscriptionLevelClientListByResourceGroupPager`
+- New struct `SubscriptionLevelClientListByResourceGroupResponse`
+- New struct `SubscriptionLevelClientListByResourceGroupResult`
+- New struct `SubscriptionLevelClientMoveResourcesPoller`
+- New struct `SubscriptionLevelClientMoveResourcesPollerResponse`
+- New struct `SubscriptionLevelClientMoveResourcesResponse`
+- New struct `SubscriptionLevelClientUpdatePoller`
+- New struct `SubscriptionLevelClientUpdatePollerResponse`
+- New struct `SubscriptionLevelClientUpdateResponse`
+- New struct `SubscriptionLevelClientUpdateResult`
+- New struct `SubscriptionLevelClientUpdateToUnsubscribedPoller`
+- New struct `SubscriptionLevelClientUpdateToUnsubscribedPollerResponse`
+- New struct `SubscriptionLevelClientUpdateToUnsubscribedResponse`
+- New struct `SubscriptionLevelClientValidateMoveResourcesOptions`
+- New struct `SubscriptionLevelClientValidateMoveResourcesResponse`
+- New field `Error` in struct `ErrorResponse`
+
+
+## 0.1.0 (2021-12-23)
+
+- Init release.

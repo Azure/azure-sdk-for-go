@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // KeysClient contains the methods for the Keys group.
 // Don't use this type directly, use NewKeysClient() instead.
 type KeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewKeysClient creates a new instance of KeysClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByAutomationAccount - Retrieve the automation keys for an account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeysClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, options *KeysListByAutomationAccountOptions) (KeysListByAutomationAccountResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - KeysClientListByAutomationAccountOptions contains the optional parameters for the KeysClient.ListByAutomationAccount
+// method.
+func (client *KeysClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, options *KeysClientListByAutomationAccountOptions) (KeysClientListByAutomationAccountResponse, error) {
 	req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
-		return KeysListByAutomationAccountResponse{}, err
+		return KeysClientListByAutomationAccountResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeysListByAutomationAccountResponse{}, err
+		return KeysClientListByAutomationAccountResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeysListByAutomationAccountResponse{}, client.listByAutomationAccountHandleError(resp)
+		return KeysClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByAutomationAccountHandleResponse(resp)
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *KeysClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *KeysListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *KeysClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *KeysClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +86,7 @@ func (client *KeysClient) listByAutomationAccountCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +98,10 @@ func (client *KeysClient) listByAutomationAccountCreateRequest(ctx context.Conte
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *KeysClient) listByAutomationAccountHandleResponse(resp *http.Response) (KeysListByAutomationAccountResponse, error) {
-	result := KeysListByAutomationAccountResponse{RawResponse: resp}
+func (client *KeysClient) listByAutomationAccountHandleResponse(resp *http.Response) (KeysClientListByAutomationAccountResponse, error) {
+	result := KeysClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
-		return KeysListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *KeysClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

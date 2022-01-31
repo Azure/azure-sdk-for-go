@@ -30,7 +30,7 @@ func ExamplePartnerClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PartnerResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PartnerClientGetResult)
 }
 
 // x-ms-original-file: specification/managementpartner/resource-manager/Microsoft.ManagementPartner/preview/2018-02-01/examples/PutPartnerDetails.json
@@ -47,7 +47,7 @@ func ExamplePartnerClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PartnerResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PartnerClientCreateResult)
 }
 
 // x-ms-original-file: specification/managementpartner/resource-manager/Microsoft.ManagementPartner/preview/2018-02-01/examples/PatchPartnerDetails.json
@@ -64,7 +64,7 @@ func ExamplePartnerClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PartnerResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PartnerClientUpdateResult)
 }
 
 // x-ms-original-file: specification/managementpartner/resource-manager/Microsoft.ManagementPartner/preview/2018-02-01/examples/DeletePartnerDetails.json

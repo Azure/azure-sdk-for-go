@@ -11,7 +11,6 @@ package armmarketplaceordering
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // MarketplaceAgreementsClient contains the methods for the MarketplaceAgreements group.
 // Don't use this type directly, use NewMarketplaceAgreementsClient() instead.
 type MarketplaceAgreementsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMarketplaceAgreementsClient creates a new instance of MarketplaceAgreementsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MarketplaceAgreementsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MarketplaceAgreementsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MarketplaceAgreementsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Cancel - Cancel marketplace terms.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceAgreementsClient) Cancel(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsCancelOptions) (MarketplaceAgreementsCancelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// publisherID - Publisher identifier string of image being deployed.
+// offerID - Offer identifier string of image being deployed.
+// planID - Plan identifier string of image being deployed.
+// options - MarketplaceAgreementsClientCancelOptions contains the optional parameters for the MarketplaceAgreementsClient.Cancel
+// method.
+func (client *MarketplaceAgreementsClient) Cancel(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsClientCancelOptions) (MarketplaceAgreementsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, publisherID, offerID, planID, options)
 	if err != nil {
-		return MarketplaceAgreementsCancelResponse{}, err
+		return MarketplaceAgreementsClientCancelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MarketplaceAgreementsCancelResponse{}, err
+		return MarketplaceAgreementsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MarketplaceAgreementsCancelResponse{}, client.cancelHandleError(resp)
+		return MarketplaceAgreementsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.cancelHandleResponse(resp)
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *MarketplaceAgreementsClient) cancelCreateRequest(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsCancelOptions) (*policy.Request, error) {
+func (client *MarketplaceAgreementsClient) cancelCreateRequest(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers/{offerId}/plans/{planId}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *MarketplaceAgreementsClient) cancelCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter planID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{planId}", url.PathEscape(planID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +102,40 @@ func (client *MarketplaceAgreementsClient) cancelCreateRequest(ctx context.Conte
 }
 
 // cancelHandleResponse handles the Cancel response.
-func (client *MarketplaceAgreementsClient) cancelHandleResponse(resp *http.Response) (MarketplaceAgreementsCancelResponse, error) {
-	result := MarketplaceAgreementsCancelResponse{RawResponse: resp}
+func (client *MarketplaceAgreementsClient) cancelHandleResponse(resp *http.Response) (MarketplaceAgreementsClientCancelResponse, error) {
+	result := MarketplaceAgreementsClientCancelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgreementTerms); err != nil {
-		return MarketplaceAgreementsCancelResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceAgreementsClientCancelResponse{}, err
 	}
 	return result, nil
 }
 
-// cancelHandleError handles the Cancel error response.
-func (client *MarketplaceAgreementsClient) cancelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Create - Save marketplace terms.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceAgreementsClient) Create(ctx context.Context, offerType OfferType, publisherID string, offerID string, planID string, parameters AgreementTerms, options *MarketplaceAgreementsCreateOptions) (MarketplaceAgreementsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// offerType - Offer Type, currently only virtualmachine type is supported.
+// publisherID - Publisher identifier string of image being deployed.
+// offerID - Offer identifier string of image being deployed.
+// planID - Plan identifier string of image being deployed.
+// parameters - Parameters supplied to the Create Marketplace Terms operation.
+// options - MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create
+// method.
+func (client *MarketplaceAgreementsClient) Create(ctx context.Context, offerType OfferType, publisherID string, offerID string, planID string, parameters AgreementTerms, options *MarketplaceAgreementsClientCreateOptions) (MarketplaceAgreementsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, offerType, publisherID, offerID, planID, parameters, options)
 	if err != nil {
-		return MarketplaceAgreementsCreateResponse{}, err
+		return MarketplaceAgreementsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MarketplaceAgreementsCreateResponse{}, err
+		return MarketplaceAgreementsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MarketplaceAgreementsCreateResponse{}, client.createHandleError(resp)
+		return MarketplaceAgreementsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Context, offerType OfferType, publisherID string, offerID string, planID string, parameters AgreementTerms, options *MarketplaceAgreementsCreateOptions) (*policy.Request, error) {
+func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Context, offerType OfferType, publisherID string, offerID string, planID string, parameters AgreementTerms, options *MarketplaceAgreementsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current"
 	if offerType == "" {
 		return nil, errors.New("parameter offerType cannot be empty")
@@ -151,7 +157,7 @@ func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter planID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{planId}", url.PathEscape(planID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,46 +169,39 @@ func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Conte
 }
 
 // createHandleResponse handles the Create response.
-func (client *MarketplaceAgreementsClient) createHandleResponse(resp *http.Response) (MarketplaceAgreementsCreateResponse, error) {
-	result := MarketplaceAgreementsCreateResponse{RawResponse: resp}
+func (client *MarketplaceAgreementsClient) createHandleResponse(resp *http.Response) (MarketplaceAgreementsClientCreateResponse, error) {
+	result := MarketplaceAgreementsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgreementTerms); err != nil {
-		return MarketplaceAgreementsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceAgreementsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *MarketplaceAgreementsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get marketplace terms.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceAgreementsClient) Get(ctx context.Context, offerType OfferType, publisherID string, offerID string, planID string, options *MarketplaceAgreementsGetOptions) (MarketplaceAgreementsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// offerType - Offer Type, currently only virtualmachine type is supported.
+// publisherID - Publisher identifier string of image being deployed.
+// offerID - Offer identifier string of image being deployed.
+// planID - Plan identifier string of image being deployed.
+// options - MarketplaceAgreementsClientGetOptions contains the optional parameters for the MarketplaceAgreementsClient.Get
+// method.
+func (client *MarketplaceAgreementsClient) Get(ctx context.Context, offerType OfferType, publisherID string, offerID string, planID string, options *MarketplaceAgreementsClientGetOptions) (MarketplaceAgreementsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, offerType, publisherID, offerID, planID, options)
 	if err != nil {
-		return MarketplaceAgreementsGetResponse{}, err
+		return MarketplaceAgreementsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MarketplaceAgreementsGetResponse{}, err
+		return MarketplaceAgreementsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MarketplaceAgreementsGetResponse{}, client.getHandleError(resp)
+		return MarketplaceAgreementsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MarketplaceAgreementsClient) getCreateRequest(ctx context.Context, offerType OfferType, publisherID string, offerID string, planID string, options *MarketplaceAgreementsGetOptions) (*policy.Request, error) {
+func (client *MarketplaceAgreementsClient) getCreateRequest(ctx context.Context, offerType OfferType, publisherID string, offerID string, planID string, options *MarketplaceAgreementsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -224,7 +223,7 @@ func (client *MarketplaceAgreementsClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter planID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{planId}", url.PathEscape(planID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -236,46 +235,38 @@ func (client *MarketplaceAgreementsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *MarketplaceAgreementsClient) getHandleResponse(resp *http.Response) (MarketplaceAgreementsGetResponse, error) {
-	result := MarketplaceAgreementsGetResponse{RawResponse: resp}
+func (client *MarketplaceAgreementsClient) getHandleResponse(resp *http.Response) (MarketplaceAgreementsClientGetResponse, error) {
+	result := MarketplaceAgreementsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgreementTerms); err != nil {
-		return MarketplaceAgreementsGetResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceAgreementsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MarketplaceAgreementsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAgreement - Get marketplace agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceAgreementsClient) GetAgreement(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsGetAgreementOptions) (MarketplaceAgreementsGetAgreementResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// publisherID - Publisher identifier string of image being deployed.
+// offerID - Offer identifier string of image being deployed.
+// planID - Plan identifier string of image being deployed.
+// options - MarketplaceAgreementsClientGetAgreementOptions contains the optional parameters for the MarketplaceAgreementsClient.GetAgreement
+// method.
+func (client *MarketplaceAgreementsClient) GetAgreement(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsClientGetAgreementOptions) (MarketplaceAgreementsClientGetAgreementResponse, error) {
 	req, err := client.getAgreementCreateRequest(ctx, publisherID, offerID, planID, options)
 	if err != nil {
-		return MarketplaceAgreementsGetAgreementResponse{}, err
+		return MarketplaceAgreementsClientGetAgreementResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MarketplaceAgreementsGetAgreementResponse{}, err
+		return MarketplaceAgreementsClientGetAgreementResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MarketplaceAgreementsGetAgreementResponse{}, client.getAgreementHandleError(resp)
+		return MarketplaceAgreementsClientGetAgreementResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAgreementHandleResponse(resp)
 }
 
 // getAgreementCreateRequest creates the GetAgreement request.
-func (client *MarketplaceAgreementsClient) getAgreementCreateRequest(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsGetAgreementOptions) (*policy.Request, error) {
+func (client *MarketplaceAgreementsClient) getAgreementCreateRequest(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsClientGetAgreementOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers/{offerId}/plans/{planId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -293,7 +284,7 @@ func (client *MarketplaceAgreementsClient) getAgreementCreateRequest(ctx context
 		return nil, errors.New("parameter planID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{planId}", url.PathEscape(planID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -305,52 +296,41 @@ func (client *MarketplaceAgreementsClient) getAgreementCreateRequest(ctx context
 }
 
 // getAgreementHandleResponse handles the GetAgreement response.
-func (client *MarketplaceAgreementsClient) getAgreementHandleResponse(resp *http.Response) (MarketplaceAgreementsGetAgreementResponse, error) {
-	result := MarketplaceAgreementsGetAgreementResponse{RawResponse: resp}
+func (client *MarketplaceAgreementsClient) getAgreementHandleResponse(resp *http.Response) (MarketplaceAgreementsClientGetAgreementResponse, error) {
+	result := MarketplaceAgreementsClientGetAgreementResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgreementTerms); err != nil {
-		return MarketplaceAgreementsGetAgreementResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceAgreementsClientGetAgreementResponse{}, err
 	}
 	return result, nil
 }
 
-// getAgreementHandleError handles the GetAgreement error response.
-func (client *MarketplaceAgreementsClient) getAgreementHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List marketplace agreements in the subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceAgreementsClient) List(ctx context.Context, options *MarketplaceAgreementsListOptions) (MarketplaceAgreementsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.List
+// method.
+func (client *MarketplaceAgreementsClient) List(ctx context.Context, options *MarketplaceAgreementsClientListOptions) (MarketplaceAgreementsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return MarketplaceAgreementsListResponse{}, err
+		return MarketplaceAgreementsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MarketplaceAgreementsListResponse{}, err
+		return MarketplaceAgreementsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MarketplaceAgreementsListResponse{}, client.listHandleError(resp)
+		return MarketplaceAgreementsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context, options *MarketplaceAgreementsListOptions) (*policy.Request, error) {
+func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context, options *MarketplaceAgreementsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -362,46 +342,38 @@ func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *MarketplaceAgreementsClient) listHandleResponse(resp *http.Response) (MarketplaceAgreementsListResponse, error) {
-	result := MarketplaceAgreementsListResponse{RawResponse: resp}
+func (client *MarketplaceAgreementsClient) listHandleResponse(resp *http.Response) (MarketplaceAgreementsClientListResponse, error) {
+	result := MarketplaceAgreementsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgreementTermsArray); err != nil {
-		return MarketplaceAgreementsListResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceAgreementsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *MarketplaceAgreementsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Sign - Sign marketplace terms.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceAgreementsClient) Sign(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsSignOptions) (MarketplaceAgreementsSignResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// publisherID - Publisher identifier string of image being deployed.
+// offerID - Offer identifier string of image being deployed.
+// planID - Plan identifier string of image being deployed.
+// options - MarketplaceAgreementsClientSignOptions contains the optional parameters for the MarketplaceAgreementsClient.Sign
+// method.
+func (client *MarketplaceAgreementsClient) Sign(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsClientSignOptions) (MarketplaceAgreementsClientSignResponse, error) {
 	req, err := client.signCreateRequest(ctx, publisherID, offerID, planID, options)
 	if err != nil {
-		return MarketplaceAgreementsSignResponse{}, err
+		return MarketplaceAgreementsClientSignResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MarketplaceAgreementsSignResponse{}, err
+		return MarketplaceAgreementsClientSignResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MarketplaceAgreementsSignResponse{}, client.signHandleError(resp)
+		return MarketplaceAgreementsClientSignResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.signHandleResponse(resp)
 }
 
 // signCreateRequest creates the Sign request.
-func (client *MarketplaceAgreementsClient) signCreateRequest(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsSignOptions) (*policy.Request, error) {
+func (client *MarketplaceAgreementsClient) signCreateRequest(ctx context.Context, publisherID string, offerID string, planID string, options *MarketplaceAgreementsClientSignOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers/{offerId}/plans/{planId}/sign"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -419,7 +391,7 @@ func (client *MarketplaceAgreementsClient) signCreateRequest(ctx context.Context
 		return nil, errors.New("parameter planID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{planId}", url.PathEscape(planID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -431,23 +403,10 @@ func (client *MarketplaceAgreementsClient) signCreateRequest(ctx context.Context
 }
 
 // signHandleResponse handles the Sign response.
-func (client *MarketplaceAgreementsClient) signHandleResponse(resp *http.Response) (MarketplaceAgreementsSignResponse, error) {
-	result := MarketplaceAgreementsSignResponse{RawResponse: resp}
+func (client *MarketplaceAgreementsClient) signHandleResponse(resp *http.Response) (MarketplaceAgreementsClientSignResponse, error) {
+	result := MarketplaceAgreementsClientSignResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgreementTerms); err != nil {
-		return MarketplaceAgreementsSignResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceAgreementsClientSignResponse{}, err
 	}
 	return result, nil
-}
-
-// signHandleError handles the Sign error response.
-func (client *MarketplaceAgreementsClient) signHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

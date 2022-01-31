@@ -25,7 +25,7 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewCheckNameAvailabilityClient("<subscription-id>", cred, nil)
-	_, err = client.Execute(ctx,
+	res, err := client.Execute(ctx,
 		armmariadb.NameAvailabilityRequest{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -34,4 +34,5 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.CheckNameAvailabilityClientExecuteResult)
 }

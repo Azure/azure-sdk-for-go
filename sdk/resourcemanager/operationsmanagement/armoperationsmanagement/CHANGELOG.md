@@ -1,14 +1,177 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ManagementConfigurationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ManagementConfigurationsGetOptions)` to `(context.Context, string, string, *ManagementConfigurationsClientGetOptions)`
+- Function `*ManagementConfigurationsClient.Get` return value(s) have been changed from `(ManagementConfigurationsGetResponse, error)` to `(ManagementConfigurationsClientGetResponse, error)`
+- Function `*ManagementAssociationsClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *ManagementAssociationsListBySubscriptionOptions)` to `(context.Context, *ManagementAssociationsClientListBySubscriptionOptions)`
+- Function `*ManagementAssociationsClient.ListBySubscription` return value(s) have been changed from `(ManagementAssociationsListBySubscriptionResponse, error)` to `(ManagementAssociationsClientListBySubscriptionResponse, error)`
+- Function `*ManagementConfigurationsClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *ManagementConfigurationsListBySubscriptionOptions)` to `(context.Context, *ManagementConfigurationsClientListBySubscriptionOptions)`
+- Function `*ManagementConfigurationsClient.ListBySubscription` return value(s) have been changed from `(ManagementConfigurationsListBySubscriptionResponse, error)` to `(ManagementConfigurationsClientListBySubscriptionResponse, error)`
+- Function `*SolutionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *SolutionsBeginDeleteOptions)` to `(context.Context, string, string, *SolutionsClientBeginDeleteOptions)`
+- Function `*SolutionsClient.BeginDelete` return value(s) have been changed from `(SolutionsDeletePollerResponse, error)` to `(SolutionsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*ManagementConfigurationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ManagementConfigurationsDeleteOptions)` to `(context.Context, string, string, *ManagementConfigurationsClientDeleteOptions)`
+- Function `*ManagementConfigurationsClient.Delete` return value(s) have been changed from `(ManagementConfigurationsDeleteResponse, error)` to `(ManagementConfigurationsClientDeleteResponse, error)`
+- Function `*ManagementAssociationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ManagementAssociationsDeleteOptions)` to `(context.Context, string, string, *ManagementAssociationsClientDeleteOptions)`
+- Function `*ManagementAssociationsClient.Delete` return value(s) have been changed from `(ManagementAssociationsDeleteResponse, error)` to `(ManagementAssociationsClientDeleteResponse, error)`
+- Function `*ManagementConfigurationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ManagementConfiguration, *ManagementConfigurationsCreateOrUpdateOptions)` to `(context.Context, string, string, ManagementConfiguration, *ManagementConfigurationsClientCreateOrUpdateOptions)`
+- Function `*ManagementConfigurationsClient.CreateOrUpdate` return value(s) have been changed from `(ManagementConfigurationsCreateOrUpdateResponse, error)` to `(ManagementConfigurationsClientCreateOrUpdateResponse, error)`
+- Function `*SolutionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, SolutionPatch, *SolutionsBeginUpdateOptions)` to `(context.Context, string, string, SolutionPatch, *SolutionsClientBeginUpdateOptions)`
+- Function `*SolutionsClient.BeginUpdate` return value(s) have been changed from `(SolutionsUpdatePollerResponse, error)` to `(SolutionsClientUpdatePollerResponse, error)`
+- Function `*SolutionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Solution, *SolutionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Solution, *SolutionsClientBeginCreateOrUpdateOptions)`
+- Function `*SolutionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SolutionsCreateOrUpdatePollerResponse, error)` to `(SolutionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*SolutionsClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *SolutionsListByResourceGroupOptions)` to `(context.Context, string, *SolutionsClientListByResourceGroupOptions)`
+- Function `*SolutionsClient.ListByResourceGroup` return value(s) have been changed from `(SolutionsListByResourceGroupResponse, error)` to `(SolutionsClientListByResourceGroupResponse, error)`
+- Function `*ManagementAssociationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ManagementAssociationsGetOptions)` to `(context.Context, string, string, *ManagementAssociationsClientGetOptions)`
+- Function `*ManagementAssociationsClient.Get` return value(s) have been changed from `(ManagementAssociationsGetResponse, error)` to `(ManagementAssociationsClientGetResponse, error)`
+- Function `*SolutionsClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *SolutionsListBySubscriptionOptions)` to `(context.Context, *SolutionsClientListBySubscriptionOptions)`
+- Function `*SolutionsClient.ListBySubscription` return value(s) have been changed from `(SolutionsListBySubscriptionResponse, error)` to `(SolutionsClientListBySubscriptionResponse, error)`
+- Function `*ManagementAssociationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ManagementAssociation, *ManagementAssociationsCreateOrUpdateOptions)` to `(context.Context, string, string, ManagementAssociation, *ManagementAssociationsClientCreateOrUpdateOptions)`
+- Function `*ManagementAssociationsClient.CreateOrUpdate` return value(s) have been changed from `(ManagementAssociationsCreateOrUpdateResponse, error)` to `(ManagementAssociationsClientCreateOrUpdateResponse, error)`
+- Function `*SolutionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SolutionsGetOptions)` to `(context.Context, string, string, *SolutionsClientGetOptions)`
+- Function `*SolutionsClient.Get` return value(s) have been changed from `(SolutionsGetResponse, error)` to `(SolutionsClientGetResponse, error)`
+- Function `*SolutionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SolutionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*SolutionsUpdatePoller.ResumeToken` has been removed
+- Function `*SolutionsDeletePoller.Done` has been removed
+- Function `*SolutionsDeletePoller.FinalResponse` has been removed
+- Function `*SolutionsCreateOrUpdatePoller.Done` has been removed
+- Function `*SolutionsDeletePoller.Poll` has been removed
+- Function `*SolutionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SolutionsDeletePollerResponse.Resume` has been removed
+- Function `*SolutionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SolutionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SolutionsUpdatePollerResponse.Resume` has been removed
+- Function `*SolutionsUpdatePoller.Done` has been removed
+- Function `SolutionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SolutionsDeletePoller.ResumeToken` has been removed
+- Function `SolutionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `CodeMessageError.Error` has been removed
+- Function `*SolutionsUpdatePoller.Poll` has been removed
+- Function `*SolutionsUpdatePoller.FinalResponse` has been removed
+- Struct `ManagementAssociationsCreateOrUpdateOptions` has been removed
+- Struct `ManagementAssociationsCreateOrUpdateResponse` has been removed
+- Struct `ManagementAssociationsCreateOrUpdateResult` has been removed
+- Struct `ManagementAssociationsDeleteOptions` has been removed
+- Struct `ManagementAssociationsDeleteResponse` has been removed
+- Struct `ManagementAssociationsGetOptions` has been removed
+- Struct `ManagementAssociationsGetResponse` has been removed
+- Struct `ManagementAssociationsGetResult` has been removed
+- Struct `ManagementAssociationsListBySubscriptionOptions` has been removed
+- Struct `ManagementAssociationsListBySubscriptionResponse` has been removed
+- Struct `ManagementAssociationsListBySubscriptionResult` has been removed
+- Struct `ManagementConfigurationsCreateOrUpdateOptions` has been removed
+- Struct `ManagementConfigurationsCreateOrUpdateResponse` has been removed
+- Struct `ManagementConfigurationsCreateOrUpdateResult` has been removed
+- Struct `ManagementConfigurationsDeleteOptions` has been removed
+- Struct `ManagementConfigurationsDeleteResponse` has been removed
+- Struct `ManagementConfigurationsGetOptions` has been removed
+- Struct `ManagementConfigurationsGetResponse` has been removed
+- Struct `ManagementConfigurationsGetResult` has been removed
+- Struct `ManagementConfigurationsListBySubscriptionOptions` has been removed
+- Struct `ManagementConfigurationsListBySubscriptionResponse` has been removed
+- Struct `ManagementConfigurationsListBySubscriptionResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `SolutionsBeginCreateOrUpdateOptions` has been removed
+- Struct `SolutionsBeginDeleteOptions` has been removed
+- Struct `SolutionsBeginUpdateOptions` has been removed
+- Struct `SolutionsCreateOrUpdatePoller` has been removed
+- Struct `SolutionsCreateOrUpdatePollerResponse` has been removed
+- Struct `SolutionsCreateOrUpdateResponse` has been removed
+- Struct `SolutionsCreateOrUpdateResult` has been removed
+- Struct `SolutionsDeletePoller` has been removed
+- Struct `SolutionsDeletePollerResponse` has been removed
+- Struct `SolutionsDeleteResponse` has been removed
+- Struct `SolutionsGetOptions` has been removed
+- Struct `SolutionsGetResponse` has been removed
+- Struct `SolutionsGetResult` has been removed
+- Struct `SolutionsListByResourceGroupOptions` has been removed
+- Struct `SolutionsListByResourceGroupResponse` has been removed
+- Struct `SolutionsListByResourceGroupResult` has been removed
+- Struct `SolutionsListBySubscriptionOptions` has been removed
+- Struct `SolutionsListBySubscriptionResponse` has been removed
+- Struct `SolutionsListBySubscriptionResult` has been removed
+- Struct `SolutionsUpdatePoller` has been removed
+- Struct `SolutionsUpdatePollerResponse` has been removed
+- Struct `SolutionsUpdateResponse` has been removed
+- Struct `SolutionsUpdateResult` has been removed
+- Field `InnerError` of struct `CodeMessageError` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `SolutionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SolutionsClientDeleteResponse, error)`
+- New function `*SolutionsClientDeletePoller.FinalResponse(context.Context) (SolutionsClientDeleteResponse, error)`
+- New function `*SolutionsClientUpdatePoller.FinalResponse(context.Context) (SolutionsClientUpdateResponse, error)`
+- New function `*SolutionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SolutionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *SolutionsClient, string) error`
+- New function `SolutionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SolutionsClientCreateOrUpdateResponse, error)`
+- New function `*SolutionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SolutionsClientUpdatePoller.Done() bool`
+- New function `*SolutionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SolutionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SolutionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*SolutionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SolutionsClientUpdatePollerResponse.Resume(context.Context, *SolutionsClient, string) error`
+- New function `*SolutionsClientDeletePollerResponse.Resume(context.Context, *SolutionsClient, string) error`
+- New function `SolutionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SolutionsClientUpdateResponse, error)`
+- New function `*SolutionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*SolutionsClientDeletePoller.Done() bool`
+- New function `*SolutionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (SolutionsClientCreateOrUpdateResponse, error)`
+- New struct `ManagementAssociationsClientCreateOrUpdateOptions`
+- New struct `ManagementAssociationsClientCreateOrUpdateResponse`
+- New struct `ManagementAssociationsClientCreateOrUpdateResult`
+- New struct `ManagementAssociationsClientDeleteOptions`
+- New struct `ManagementAssociationsClientDeleteResponse`
+- New struct `ManagementAssociationsClientGetOptions`
+- New struct `ManagementAssociationsClientGetResponse`
+- New struct `ManagementAssociationsClientGetResult`
+- New struct `ManagementAssociationsClientListBySubscriptionOptions`
+- New struct `ManagementAssociationsClientListBySubscriptionResponse`
+- New struct `ManagementAssociationsClientListBySubscriptionResult`
+- New struct `ManagementConfigurationsClientCreateOrUpdateOptions`
+- New struct `ManagementConfigurationsClientCreateOrUpdateResponse`
+- New struct `ManagementConfigurationsClientCreateOrUpdateResult`
+- New struct `ManagementConfigurationsClientDeleteOptions`
+- New struct `ManagementConfigurationsClientDeleteResponse`
+- New struct `ManagementConfigurationsClientGetOptions`
+- New struct `ManagementConfigurationsClientGetResponse`
+- New struct `ManagementConfigurationsClientGetResult`
+- New struct `ManagementConfigurationsClientListBySubscriptionOptions`
+- New struct `ManagementConfigurationsClientListBySubscriptionResponse`
+- New struct `ManagementConfigurationsClientListBySubscriptionResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `SolutionsClientBeginCreateOrUpdateOptions`
+- New struct `SolutionsClientBeginDeleteOptions`
+- New struct `SolutionsClientBeginUpdateOptions`
+- New struct `SolutionsClientCreateOrUpdatePoller`
+- New struct `SolutionsClientCreateOrUpdatePollerResponse`
+- New struct `SolutionsClientCreateOrUpdateResponse`
+- New struct `SolutionsClientCreateOrUpdateResult`
+- New struct `SolutionsClientDeletePoller`
+- New struct `SolutionsClientDeletePollerResponse`
+- New struct `SolutionsClientDeleteResponse`
+- New struct `SolutionsClientGetOptions`
+- New struct `SolutionsClientGetResponse`
+- New struct `SolutionsClientGetResult`
+- New struct `SolutionsClientListByResourceGroupOptions`
+- New struct `SolutionsClientListByResourceGroupResponse`
+- New struct `SolutionsClientListByResourceGroupResult`
+- New struct `SolutionsClientListBySubscriptionOptions`
+- New struct `SolutionsClientListBySubscriptionResponse`
+- New struct `SolutionsClientListBySubscriptionResult`
+- New struct `SolutionsClientUpdatePoller`
+- New struct `SolutionsClientUpdatePollerResponse`
+- New struct `SolutionsClientUpdateResponse`
+- New struct `SolutionsClientUpdateResult`
+- New field `Error` in struct `CodeMessageError`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

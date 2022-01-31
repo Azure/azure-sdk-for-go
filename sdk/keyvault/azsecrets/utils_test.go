@@ -10,7 +10,6 @@ import (
 	"context"
 	"fmt"
 	"hash/fnv"
-	"net/http"
 	"os"
 	"testing"
 	"time"
@@ -30,47 +29,6 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 
-type recordingPolicy struct {
-	options recording.RecordingOptions
-	t       *testing.T
-}
-
-func (r recordingPolicy) Host() string {
-	if r.options.UseHTTPS {
-		return "localhost:5001"
-	}
-	return "localhost:5000"
-}
-
-func (r recordingPolicy) Scheme() string {
-	if r.options.UseHTTPS {
-		return "https"
-	}
-	return "http"
-}
-
-func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
-	if o == nil {
-		o = &recording.RecordingOptions{UseHTTPS: true}
-	}
-	p := &recordingPolicy{options: *o, t: t}
-	return p
-}
-
-func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if recording.GetRecordMode() != "live" {
-		originalURLHost := req.Raw().URL.Host
-		req.Raw().URL.Scheme = p.Scheme()
-		req.Raw().URL.Host = p.Host()
-		req.Raw().Host = p.Host()
-
-		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
-		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
-	}
-	return req.Next()
-}
-
 func lookupEnvVar(s string) string {
 	ret, ok := os.LookupEnv(s)
 	if !ok {
@@ -82,14 +40,12 @@ func lookupEnvVar(s string) string {
 func createClient(t *testing.T) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
 
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
+	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &ClientOptions{
 		azcore.ClientOptions{
-			Transport:       client,
-			PerCallPolicies: []policy.Policy{p},
+			Transport: client,
 		},
 	}
 

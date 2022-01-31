@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,46 +25,57 @@ import (
 // LabsClient contains the methods for the Labs group.
 // Don't use this type directly, use NewLabsClient() instead.
 type LabsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLabsClient creates a new instance of LabsClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLabsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LabsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LabsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LabsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginClaimAnyVM - Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) BeginClaimAnyVM(ctx context.Context, resourceGroupName string, name string, options *LabsBeginClaimAnyVMOptions) (LabsClaimAnyVMPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// options - LabsClientBeginClaimAnyVMOptions contains the optional parameters for the LabsClient.BeginClaimAnyVM method.
+func (client *LabsClient) BeginClaimAnyVM(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginClaimAnyVMOptions) (LabsClientClaimAnyVMPollerResponse, error) {
 	resp, err := client.claimAnyVM(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return LabsClaimAnyVMPollerResponse{}, err
+		return LabsClientClaimAnyVMPollerResponse{}, err
 	}
-	result := LabsClaimAnyVMPollerResponse{
+	result := LabsClientClaimAnyVMPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabsClient.ClaimAnyVM", "", resp, client.pl, client.claimAnyVMHandleError)
+	pt, err := armruntime.NewPoller("LabsClient.ClaimAnyVM", "", resp, client.pl)
 	if err != nil {
-		return LabsClaimAnyVMPollerResponse{}, err
+		return LabsClientClaimAnyVMPollerResponse{}, err
 	}
-	result.Poller = &LabsClaimAnyVMPoller{
+	result.Poller = &LabsClientClaimAnyVMPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ClaimAnyVM - Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) claimAnyVM(ctx context.Context, resourceGroupName string, name string, options *LabsBeginClaimAnyVMOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabsClient) claimAnyVM(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginClaimAnyVMOptions) (*http.Response, error) {
 	req, err := client.claimAnyVMCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +85,13 @@ func (client *LabsClient) claimAnyVM(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.claimAnyVMHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // claimAnyVMCreateRequest creates the ClaimAnyVM request.
-func (client *LabsClient) claimAnyVMCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LabsBeginClaimAnyVMOptions) (*policy.Request, error) {
+func (client *LabsClient) claimAnyVMCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginClaimAnyVMOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}/claimAnyVm"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +105,7 @@ func (client *LabsClient) claimAnyVMCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -106,42 +116,34 @@ func (client *LabsClient) claimAnyVMCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// claimAnyVMHandleError handles the ClaimAnyVM error response.
-func (client *LabsClient) claimAnyVMHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateEnvironment - Create virtual machines in a lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) BeginCreateEnvironment(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsBeginCreateEnvironmentOptions) (LabsCreateEnvironmentPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// labVirtualMachineCreationParameter - Properties for creating a virtual machine.
+// options - LabsClientBeginCreateEnvironmentOptions contains the optional parameters for the LabsClient.BeginCreateEnvironment
+// method.
+func (client *LabsClient) BeginCreateEnvironment(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsClientBeginCreateEnvironmentOptions) (LabsClientCreateEnvironmentPollerResponse, error) {
 	resp, err := client.createEnvironment(ctx, resourceGroupName, name, labVirtualMachineCreationParameter, options)
 	if err != nil {
-		return LabsCreateEnvironmentPollerResponse{}, err
+		return LabsClientCreateEnvironmentPollerResponse{}, err
 	}
-	result := LabsCreateEnvironmentPollerResponse{
+	result := LabsClientCreateEnvironmentPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabsClient.CreateEnvironment", "", resp, client.pl, client.createEnvironmentHandleError)
+	pt, err := armruntime.NewPoller("LabsClient.CreateEnvironment", "", resp, client.pl)
 	if err != nil {
-		return LabsCreateEnvironmentPollerResponse{}, err
+		return LabsClientCreateEnvironmentPollerResponse{}, err
 	}
-	result.Poller = &LabsCreateEnvironmentPoller{
+	result.Poller = &LabsClientCreateEnvironmentPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateEnvironment - Create virtual machines in a lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) createEnvironment(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsBeginCreateEnvironmentOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabsClient) createEnvironment(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsClientBeginCreateEnvironmentOptions) (*http.Response, error) {
 	req, err := client.createEnvironmentCreateRequest(ctx, resourceGroupName, name, labVirtualMachineCreationParameter, options)
 	if err != nil {
 		return nil, err
@@ -151,13 +153,13 @@ func (client *LabsClient) createEnvironment(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createEnvironmentHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createEnvironmentCreateRequest creates the CreateEnvironment request.
-func (client *LabsClient) createEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsBeginCreateEnvironmentOptions) (*policy.Request, error) {
+func (client *LabsClient) createEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsClientBeginCreateEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}/createEnvironment"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -171,7 +173,7 @@ func (client *LabsClient) createEnvironmentCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -182,42 +184,34 @@ func (client *LabsClient) createEnvironmentCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, labVirtualMachineCreationParameter)
 }
 
-// createEnvironmentHandleError handles the CreateEnvironment error response.
-func (client *LabsClient) createEnvironmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Create or replace an existing lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsBeginCreateOrUpdateOptions) (LabsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// lab - A lab.
+// options - LabsClientBeginCreateOrUpdateOptions contains the optional parameters for the LabsClient.BeginCreateOrUpdate
+// method.
+func (client *LabsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsClientBeginCreateOrUpdateOptions) (LabsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, name, lab, options)
 	if err != nil {
-		return LabsCreateOrUpdatePollerResponse{}, err
+		return LabsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := LabsCreateOrUpdatePollerResponse{
+	result := LabsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("LabsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return LabsCreateOrUpdatePollerResponse{}, err
+		return LabsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &LabsCreateOrUpdatePoller{
+	result.Poller = &LabsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, lab, options)
 	if err != nil {
 		return nil, err
@@ -227,13 +221,13 @@ func (client *LabsClient) createOrUpdate(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LabsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LabsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -247,7 +241,7 @@ func (client *LabsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,42 +252,32 @@ func (client *LabsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	return req, runtime.MarshalAsJSON(req, lab)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LabsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *LabsBeginDeleteOptions) (LabsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// options - LabsClientBeginDeleteOptions contains the optional parameters for the LabsClient.BeginDelete method.
+func (client *LabsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginDeleteOptions) (LabsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return LabsDeletePollerResponse{}, err
+		return LabsClientDeletePollerResponse{}, err
 	}
-	result := LabsDeletePollerResponse{
+	result := LabsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("LabsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return LabsDeletePollerResponse{}, err
+		return LabsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &LabsDeletePoller{
+	result.Poller = &LabsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *LabsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
@@ -303,13 +287,13 @@ func (client *LabsClient) deleteOperation(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LabsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LabsBeginDeleteOptions) (*policy.Request, error) {
+func (client *LabsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -323,7 +307,7 @@ func (client *LabsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -334,42 +318,34 @@ func (client *LabsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LabsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginExportResourceUsage - Exports the lab resource usage into a storage account This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) BeginExportResourceUsage(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsBeginExportResourceUsageOptions) (LabsExportResourceUsagePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// exportResourceUsageParameters - The parameters of the export operation.
+// options - LabsClientBeginExportResourceUsageOptions contains the optional parameters for the LabsClient.BeginExportResourceUsage
+// method.
+func (client *LabsClient) BeginExportResourceUsage(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsClientBeginExportResourceUsageOptions) (LabsClientExportResourceUsagePollerResponse, error) {
 	resp, err := client.exportResourceUsage(ctx, resourceGroupName, name, exportResourceUsageParameters, options)
 	if err != nil {
-		return LabsExportResourceUsagePollerResponse{}, err
+		return LabsClientExportResourceUsagePollerResponse{}, err
 	}
-	result := LabsExportResourceUsagePollerResponse{
+	result := LabsClientExportResourceUsagePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabsClient.ExportResourceUsage", "", resp, client.pl, client.exportResourceUsageHandleError)
+	pt, err := armruntime.NewPoller("LabsClient.ExportResourceUsage", "", resp, client.pl)
 	if err != nil {
-		return LabsExportResourceUsagePollerResponse{}, err
+		return LabsClientExportResourceUsagePollerResponse{}, err
 	}
-	result.Poller = &LabsExportResourceUsagePoller{
+	result.Poller = &LabsClientExportResourceUsagePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ExportResourceUsage - Exports the lab resource usage into a storage account This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) exportResourceUsage(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsBeginExportResourceUsageOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabsClient) exportResourceUsage(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsClientBeginExportResourceUsageOptions) (*http.Response, error) {
 	req, err := client.exportResourceUsageCreateRequest(ctx, resourceGroupName, name, exportResourceUsageParameters, options)
 	if err != nil {
 		return nil, err
@@ -379,13 +355,13 @@ func (client *LabsClient) exportResourceUsage(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.exportResourceUsageHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // exportResourceUsageCreateRequest creates the ExportResourceUsage request.
-func (client *LabsClient) exportResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsBeginExportResourceUsageOptions) (*policy.Request, error) {
+func (client *LabsClient) exportResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsClientBeginExportResourceUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}/exportResourceUsage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -399,7 +375,7 @@ func (client *LabsClient) exportResourceUsageCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -410,38 +386,29 @@ func (client *LabsClient) exportResourceUsageCreateRequest(ctx context.Context, 
 	return req, runtime.MarshalAsJSON(req, exportResourceUsageParameters)
 }
 
-// exportResourceUsageHandleError handles the ExportResourceUsage error response.
-func (client *LabsClient) exportResourceUsageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GenerateUploadURI - Generate a URI for uploading custom disk images to a Lab.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) GenerateUploadURI(ctx context.Context, resourceGroupName string, name string, generateUploadURIParameter GenerateUploadURIParameter, options *LabsGenerateUploadURIOptions) (LabsGenerateUploadURIResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// generateUploadURIParameter - Properties for generating an upload URI.
+// options - LabsClientGenerateUploadURIOptions contains the optional parameters for the LabsClient.GenerateUploadURI method.
+func (client *LabsClient) GenerateUploadURI(ctx context.Context, resourceGroupName string, name string, generateUploadURIParameter GenerateUploadURIParameter, options *LabsClientGenerateUploadURIOptions) (LabsClientGenerateUploadURIResponse, error) {
 	req, err := client.generateUploadURICreateRequest(ctx, resourceGroupName, name, generateUploadURIParameter, options)
 	if err != nil {
-		return LabsGenerateUploadURIResponse{}, err
+		return LabsClientGenerateUploadURIResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LabsGenerateUploadURIResponse{}, err
+		return LabsClientGenerateUploadURIResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LabsGenerateUploadURIResponse{}, client.generateUploadURIHandleError(resp)
+		return LabsClientGenerateUploadURIResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.generateUploadURIHandleResponse(resp)
 }
 
 // generateUploadURICreateRequest creates the GenerateUploadURI request.
-func (client *LabsClient) generateUploadURICreateRequest(ctx context.Context, resourceGroupName string, name string, generateUploadURIParameter GenerateUploadURIParameter, options *LabsGenerateUploadURIOptions) (*policy.Request, error) {
+func (client *LabsClient) generateUploadURICreateRequest(ctx context.Context, resourceGroupName string, name string, generateUploadURIParameter GenerateUploadURIParameter, options *LabsClientGenerateUploadURIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}/generateUploadUri"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -455,7 +422,7 @@ func (client *LabsClient) generateUploadURICreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -467,46 +434,36 @@ func (client *LabsClient) generateUploadURICreateRequest(ctx context.Context, re
 }
 
 // generateUploadURIHandleResponse handles the GenerateUploadURI response.
-func (client *LabsClient) generateUploadURIHandleResponse(resp *http.Response) (LabsGenerateUploadURIResponse, error) {
-	result := LabsGenerateUploadURIResponse{RawResponse: resp}
+func (client *LabsClient) generateUploadURIHandleResponse(resp *http.Response) (LabsClientGenerateUploadURIResponse, error) {
+	result := LabsClientGenerateUploadURIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateUploadURIResponse); err != nil {
-		return LabsGenerateUploadURIResponse{}, runtime.NewResponseError(err, resp)
+		return LabsClientGenerateUploadURIResponse{}, err
 	}
 	return result, nil
 }
 
-// generateUploadURIHandleError handles the GenerateUploadURI error response.
-func (client *LabsClient) generateUploadURIHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get lab.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) Get(ctx context.Context, resourceGroupName string, name string, options *LabsGetOptions) (LabsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// options - LabsClientGetOptions contains the optional parameters for the LabsClient.Get method.
+func (client *LabsClient) Get(ctx context.Context, resourceGroupName string, name string, options *LabsClientGetOptions) (LabsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return LabsGetResponse{}, err
+		return LabsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LabsGetResponse{}, err
+		return LabsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LabsGetResponse{}, client.getHandleError(resp)
+		return LabsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LabsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LabsGetOptions) (*policy.Request, error) {
+func (client *LabsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LabsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -520,7 +477,7 @@ func (client *LabsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -535,50 +492,43 @@ func (client *LabsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *LabsClient) getHandleResponse(resp *http.Response) (LabsGetResponse, error) {
-	result := LabsGetResponse{RawResponse: resp}
+func (client *LabsClient) getHandleResponse(resp *http.Response) (LabsClientGetResponse, error) {
+	result := LabsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lab); err != nil {
-		return LabsGetResponse{}, runtime.NewResponseError(err, resp)
+		return LabsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LabsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginImportVirtualMachine - Import a virtual machine into a different lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) BeginImportVirtualMachine(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsBeginImportVirtualMachineOptions) (LabsImportVirtualMachinePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// importLabVirtualMachineRequest - This represents the payload required to import a virtual machine from a different lab
+// into the current one
+// options - LabsClientBeginImportVirtualMachineOptions contains the optional parameters for the LabsClient.BeginImportVirtualMachine
+// method.
+func (client *LabsClient) BeginImportVirtualMachine(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsClientBeginImportVirtualMachineOptions) (LabsClientImportVirtualMachinePollerResponse, error) {
 	resp, err := client.importVirtualMachine(ctx, resourceGroupName, name, importLabVirtualMachineRequest, options)
 	if err != nil {
-		return LabsImportVirtualMachinePollerResponse{}, err
+		return LabsClientImportVirtualMachinePollerResponse{}, err
 	}
-	result := LabsImportVirtualMachinePollerResponse{
+	result := LabsClientImportVirtualMachinePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabsClient.ImportVirtualMachine", "", resp, client.pl, client.importVirtualMachineHandleError)
+	pt, err := armruntime.NewPoller("LabsClient.ImportVirtualMachine", "", resp, client.pl)
 	if err != nil {
-		return LabsImportVirtualMachinePollerResponse{}, err
+		return LabsClientImportVirtualMachinePollerResponse{}, err
 	}
-	result.Poller = &LabsImportVirtualMachinePoller{
+	result.Poller = &LabsClientImportVirtualMachinePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ImportVirtualMachine - Import a virtual machine into a different lab. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) importVirtualMachine(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsBeginImportVirtualMachineOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabsClient) importVirtualMachine(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsClientBeginImportVirtualMachineOptions) (*http.Response, error) {
 	req, err := client.importVirtualMachineCreateRequest(ctx, resourceGroupName, name, importLabVirtualMachineRequest, options)
 	if err != nil {
 		return nil, err
@@ -588,13 +538,13 @@ func (client *LabsClient) importVirtualMachine(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.importVirtualMachineHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // importVirtualMachineCreateRequest creates the ImportVirtualMachine request.
-func (client *LabsClient) importVirtualMachineCreateRequest(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsBeginImportVirtualMachineOptions) (*policy.Request, error) {
+func (client *LabsClient) importVirtualMachineCreateRequest(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsClientBeginImportVirtualMachineOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}/importVirtualMachine"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -608,7 +558,7 @@ func (client *LabsClient) importVirtualMachineCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -619,35 +569,25 @@ func (client *LabsClient) importVirtualMachineCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, importLabVirtualMachineRequest)
 }
 
-// importVirtualMachineHandleError handles the ImportVirtualMachine error response.
-func (client *LabsClient) importVirtualMachineHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - List labs in a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) ListByResourceGroup(resourceGroupName string, options *LabsListByResourceGroupOptions) *LabsListByResourceGroupPager {
-	return &LabsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.ListByResourceGroup
+// method.
+func (client *LabsClient) ListByResourceGroup(resourceGroupName string, options *LabsClientListByResourceGroupOptions) *LabsClientListByResourceGroupPager {
+	return &LabsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp LabsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LabsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LabList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *LabsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *LabsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *LabsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *LabsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -657,7 +597,7 @@ func (client *LabsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -681,49 +621,37 @@ func (client *LabsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *LabsClient) listByResourceGroupHandleResponse(resp *http.Response) (LabsListByResourceGroupResponse, error) {
-	result := LabsListByResourceGroupResponse{RawResponse: resp}
+func (client *LabsClient) listByResourceGroupHandleResponse(resp *http.Response) (LabsClientListByResourceGroupResponse, error) {
+	result := LabsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabList); err != nil {
-		return LabsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return LabsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *LabsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - List labs in a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) ListBySubscription(options *LabsListBySubscriptionOptions) *LabsListBySubscriptionPager {
-	return &LabsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.ListBySubscription method.
+func (client *LabsClient) ListBySubscription(options *LabsClientListBySubscriptionOptions) *LabsClientListBySubscriptionPager {
+	return &LabsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp LabsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LabsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LabList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *LabsClient) listBySubscriptionCreateRequest(ctx context.Context, options *LabsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *LabsClient) listBySubscriptionCreateRequest(ctx context.Context, options *LabsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevTestLab/labs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -747,43 +675,33 @@ func (client *LabsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *LabsClient) listBySubscriptionHandleResponse(resp *http.Response) (LabsListBySubscriptionResponse, error) {
-	result := LabsListBySubscriptionResponse{RawResponse: resp}
+func (client *LabsClient) listBySubscriptionHandleResponse(resp *http.Response) (LabsClientListBySubscriptionResponse, error) {
+	result := LabsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabList); err != nil {
-		return LabsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return LabsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *LabsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListVhds - List disk images available for custom image creation.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) ListVhds(resourceGroupName string, name string, options *LabsListVhdsOptions) *LabsListVhdsPager {
-	return &LabsListVhdsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// options - LabsClientListVhdsOptions contains the optional parameters for the LabsClient.ListVhds method.
+func (client *LabsClient) ListVhds(resourceGroupName string, name string, options *LabsClientListVhdsOptions) *LabsClientListVhdsPager {
+	return &LabsClientListVhdsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listVhdsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp LabsListVhdsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LabsClientListVhdsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LabVhdList.NextLink)
 		},
 	}
 }
 
 // listVhdsCreateRequest creates the ListVhds request.
-func (client *LabsClient) listVhdsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LabsListVhdsOptions) (*policy.Request, error) {
+func (client *LabsClient) listVhdsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *LabsClientListVhdsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}/listVhds"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -797,7 +715,7 @@ func (client *LabsClient) listVhdsCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -809,46 +727,37 @@ func (client *LabsClient) listVhdsCreateRequest(ctx context.Context, resourceGro
 }
 
 // listVhdsHandleResponse handles the ListVhds response.
-func (client *LabsClient) listVhdsHandleResponse(resp *http.Response) (LabsListVhdsResponse, error) {
-	result := LabsListVhdsResponse{RawResponse: resp}
+func (client *LabsClient) listVhdsHandleResponse(resp *http.Response) (LabsClientListVhdsResponse, error) {
+	result := LabsClientListVhdsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabVhdList); err != nil {
-		return LabsListVhdsResponse{}, runtime.NewResponseError(err, resp)
+		return LabsClientListVhdsResponse{}, err
 	}
 	return result, nil
 }
 
-// listVhdsHandleError handles the ListVhds error response.
-func (client *LabsClient) listVhdsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of labs. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *LabsClient) Update(ctx context.Context, resourceGroupName string, name string, lab LabFragment, options *LabsUpdateOptions) (LabsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the lab.
+// lab - A lab.
+// options - LabsClientUpdateOptions contains the optional parameters for the LabsClient.Update method.
+func (client *LabsClient) Update(ctx context.Context, resourceGroupName string, name string, lab LabFragment, options *LabsClientUpdateOptions) (LabsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, lab, options)
 	if err != nil {
-		return LabsUpdateResponse{}, err
+		return LabsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LabsUpdateResponse{}, err
+		return LabsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LabsUpdateResponse{}, client.updateHandleError(resp)
+		return LabsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *LabsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, lab LabFragment, options *LabsUpdateOptions) (*policy.Request, error) {
+func (client *LabsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, lab LabFragment, options *LabsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -862,7 +771,7 @@ func (client *LabsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -874,23 +783,10 @@ func (client *LabsClient) updateCreateRequest(ctx context.Context, resourceGroup
 }
 
 // updateHandleResponse handles the Update response.
-func (client *LabsClient) updateHandleResponse(resp *http.Response) (LabsUpdateResponse, error) {
-	result := LabsUpdateResponse{RawResponse: resp}
+func (client *LabsClient) updateHandleResponse(resp *http.Response) (LabsClientUpdateResponse, error) {
+	result := LabsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lab); err != nil {
-		return LabsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return LabsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *LabsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armmaintenance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // ApplyUpdateForResourceGroupClient contains the methods for the ApplyUpdateForResourceGroup group.
 // Don't use this type directly, use NewApplyUpdateForResourceGroupClient() instead.
 type ApplyUpdateForResourceGroupClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplyUpdateForResourceGroupClient creates a new instance of ApplyUpdateForResourceGroupClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplyUpdateForResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplyUpdateForResourceGroupClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplyUpdateForResourceGroupClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplyUpdateForResourceGroupClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Get Configuration records within a subscription and resource group
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ApplyUpdateForResourceGroupClient) List(ctx context.Context, resourceGroupName string, options *ApplyUpdateForResourceGroupListOptions) (ApplyUpdateForResourceGroupListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource Group Name
+// options - ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.List
+// method.
+func (client *ApplyUpdateForResourceGroupClient) List(ctx context.Context, resourceGroupName string, options *ApplyUpdateForResourceGroupClientListOptions) (ApplyUpdateForResourceGroupClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return ApplyUpdateForResourceGroupListResponse{}, err
+		return ApplyUpdateForResourceGroupClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplyUpdateForResourceGroupListResponse{}, err
+		return ApplyUpdateForResourceGroupClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplyUpdateForResourceGroupListResponse{}, client.listHandleError(resp)
+		return ApplyUpdateForResourceGroupClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplyUpdateForResourceGroupClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *ApplyUpdateForResourceGroupListOptions) (*policy.Request, error) {
+func (client *ApplyUpdateForResourceGroupClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *ApplyUpdateForResourceGroupClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *ApplyUpdateForResourceGroupClient) listCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,23 +93,10 @@ func (client *ApplyUpdateForResourceGroupClient) listCreateRequest(ctx context.C
 }
 
 // listHandleResponse handles the List response.
-func (client *ApplyUpdateForResourceGroupClient) listHandleResponse(resp *http.Response) (ApplyUpdateForResourceGroupListResponse, error) {
-	result := ApplyUpdateForResourceGroupListResponse{RawResponse: resp}
+func (client *ApplyUpdateForResourceGroupClient) listHandleResponse(resp *http.Response) (ApplyUpdateForResourceGroupClientListResponse, error) {
+	result := ApplyUpdateForResourceGroupClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListApplyUpdate); err != nil {
-		return ApplyUpdateForResourceGroupListResponse{}, runtime.NewResponseError(err, resp)
+		return ApplyUpdateForResourceGroupClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ApplyUpdateForResourceGroupClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

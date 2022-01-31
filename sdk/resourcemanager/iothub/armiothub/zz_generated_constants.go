@@ -9,8 +9,8 @@
 package armiothub
 
 const (
-	module  = "armiothub"
-	version = "v0.2.1"
+	moduleName    = "armiothub"
+	moduleVersion = "v0.3.0"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.
@@ -123,14 +123,14 @@ func (c DefaultAction) ToPtr() *DefaultAction {
 	return &c
 }
 
-// EndpointHealthStatus - Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting messages as expected. The 'unhealthy'
-// status shows that the endpoint is not accepting messages as
-// expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to healthy when IoT Hub has established
-// an eventually consistent state of health.
-// The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial period. See IoT Hub metrics
-// to identify errors and monitor issues with
-// endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages have been delivered to or rejected
-// from this endpoint
+// EndpointHealthStatus - Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting
+// messages as expected. The 'unhealthy' status shows that the endpoint is not accepting messages as
+// expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to
+// healthy when IoT Hub has established an eventually consistent state of health.
+// The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial
+// period. See IoT Hub metrics to identify errors and monitor issues with
+// endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages
+// have been delivered to or rejected from this endpoint
 type EndpointHealthStatus string
 
 const (
@@ -199,8 +199,8 @@ func (c IotHubNameUnavailabilityReason) ToPtr() *IotHubNameUnavailabilityReason 
 	return &c
 }
 
-// IotHubReplicaRoleType - The role of the region, can be either primary or secondary. The primary region is where the IoT hub is currently provisioned.
-// The secondary region is the Azure disaster recovery (DR) paired region and
+// IotHubReplicaRoleType - The role of the region, can be either primary or secondary. The primary region is where the IoT
+// hub is currently provisioned. The secondary region is the Azure disaster recovery (DR) paired region and
 // also the region where the IoT hub can failover to.
 type IotHubReplicaRoleType string
 
@@ -430,8 +430,8 @@ func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
-// and a set of user assigned identities. The type 'None' will remove any
+// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both
+// an implicitly created identity and a set of user assigned identities. The type 'None' will remove any
 // identities from the service.
 type ResourceIdentityType string
 
@@ -486,7 +486,9 @@ const (
 	RoutingSourceDeviceJobLifecycleEvents    RoutingSource = "DeviceJobLifecycleEvents"
 	RoutingSourceDeviceLifecycleEvents       RoutingSource = "DeviceLifecycleEvents"
 	RoutingSourceDeviceMessages              RoutingSource = "DeviceMessages"
+	RoutingSourceDigitalTwinChangeEvents     RoutingSource = "DigitalTwinChangeEvents"
 	RoutingSourceInvalid                     RoutingSource = "Invalid"
+	RoutingSourceMqttBrokerMessages          RoutingSource = "MqttBrokerMessages"
 	RoutingSourceTwinChangeEvents            RoutingSource = "TwinChangeEvents"
 )
 
@@ -497,7 +499,9 @@ func PossibleRoutingSourceValues() []RoutingSource {
 		RoutingSourceDeviceJobLifecycleEvents,
 		RoutingSourceDeviceLifecycleEvents,
 		RoutingSourceDeviceMessages,
+		RoutingSourceDigitalTwinChangeEvents,
 		RoutingSourceInvalid,
+		RoutingSourceMqttBrokerMessages,
 		RoutingSourceTwinChangeEvents,
 	}
 }
@@ -507,8 +511,8 @@ func (c RoutingSource) ToPtr() *RoutingSource {
 	return &c
 }
 
-// RoutingStorageContainerPropertiesEncoding - Encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'.
-// Default value is 'avro'.
+// RoutingStorageContainerPropertiesEncoding - Encoding that is used to serialize messages to blobs. Supported values are
+// 'avro', 'avrodeflate', and 'JSON'. Default value is 'avro'.
 type RoutingStorageContainerPropertiesEncoding string
 
 const (

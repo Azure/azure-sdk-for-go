@@ -1,0 +1,249 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*BillingAccountClient.GetPolicy` parameter(s) have been changed from `(context.Context, string, *BillingAccountGetPolicyOptions)` to `(context.Context, string, *BillingAccountClientGetPolicyOptions)`
+- Function `*BillingAccountClient.GetPolicy` return value(s) have been changed from `(BillingAccountGetPolicyResponse, error)` to `(BillingAccountClientGetPolicyResponse, error)`
+- Function `*AliasClient.List` parameter(s) have been changed from `(context.Context, *AliasListOptions)` to `(context.Context, *AliasClientListOptions)`
+- Function `*AliasClient.List` return value(s) have been changed from `(AliasListResponse, error)` to `(AliasClientListResponse, error)`
+- Function `*AliasClient.Delete` parameter(s) have been changed from `(context.Context, string, *AliasDeleteOptions)` to `(context.Context, string, *AliasClientDeleteOptions)`
+- Function `*AliasClient.Delete` return value(s) have been changed from `(AliasDeleteResponse, error)` to `(AliasClientDeleteResponse, error)`
+- Function `*AliasClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, PutAliasRequest, *AliasBeginCreateOptions)` to `(context.Context, string, PutAliasRequest, *AliasClientBeginCreateOptions)`
+- Function `*AliasClient.BeginCreate` return value(s) have been changed from `(AliasCreatePollerResponse, error)` to `(AliasClientCreatePollerResponse, error)`
+- Function `*AliasClient.Get` parameter(s) have been changed from `(context.Context, string, *AliasGetOptions)` to `(context.Context, string, *AliasClientGetOptions)`
+- Function `*AliasClient.Get` return value(s) have been changed from `(AliasGetResponse, error)` to `(AliasClientGetResponse, error)`
+- Function `*SubscriptionClient.AcceptOwnershipStatus` has been removed
+- Function `AliasCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SubscriptionAcceptOwnershipPoller.Poll` has been removed
+- Function `*SubscriptionAcceptOwnershipPoller.Done` has been removed
+- Function `*SubscriptionPolicyClient.AddUpdatePolicyForTenant` has been removed
+- Function `*SubscriptionClient.BeginAcceptOwnership` has been removed
+- Function `NewSubscriptionPolicyClient` has been removed
+- Function `*SubscriptionClient.Rename` has been removed
+- Function `*SubscriptionPolicyListPolicyForTenantPager.NextPage` has been removed
+- Function `*AliasCreatePollerResponse.Resume` has been removed
+- Function `*SubscriptionClient.Cancel` has been removed
+- Function `*AliasCreatePoller.Poll` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*SubscriptionAcceptOwnershipPollerResponse.Resume` has been removed
+- Function `SubscriptionAliasResponseProperties.MarshalJSON` has been removed
+- Function `ErrorResponseBody.Error` has been removed
+- Function `NewSubscriptionClient` has been removed
+- Function `*SubscriptionAcceptOwnershipPoller.ResumeToken` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*AliasCreatePoller.FinalResponse` has been removed
+- Function `SubscriptionAcceptOwnershipPollerResponse.PollUntilDone` has been removed
+- Function `*SubscriptionPolicyListPolicyForTenantPager.Err` has been removed
+- Function `*SubscriptionPolicyListPolicyForTenantPager.PageResponse` has been removed
+- Function `*AliasCreatePoller.Done` has been removed
+- Function `*SubscriptionPolicyClient.ListPolicyForTenant` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*AliasCreatePoller.ResumeToken` has been removed
+- Function `*SubscriptionPolicyClient.GetPolicyForTenant` has been removed
+- Function `*SubscriptionClient.Enable` has been removed
+- Function `SubscriptionAliasListResult.MarshalJSON` has been removed
+- Function `*SubscriptionAcceptOwnershipPoller.FinalResponse` has been removed
+- Struct `AliasBeginCreateOptions` has been removed
+- Struct `AliasCreatePoller` has been removed
+- Struct `AliasCreatePollerResponse` has been removed
+- Struct `AliasCreateResponse` has been removed
+- Struct `AliasCreateResult` has been removed
+- Struct `AliasDeleteOptions` has been removed
+- Struct `AliasDeleteResponse` has been removed
+- Struct `AliasGetOptions` has been removed
+- Struct `AliasGetResponse` has been removed
+- Struct `AliasGetResult` has been removed
+- Struct `AliasListOptions` has been removed
+- Struct `AliasListResponse` has been removed
+- Struct `BillingAccountGetPolicyOptions` has been removed
+- Struct `BillingAccountGetPolicyResponse` has been removed
+- Struct `BillingAccountGetPolicyResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `SubscriptionAcceptOwnershipPoller` has been removed
+- Struct `SubscriptionAcceptOwnershipPollerResponse` has been removed
+- Struct `SubscriptionAcceptOwnershipResponse` has been removed
+- Struct `SubscriptionAcceptOwnershipStatusOptions` has been removed
+- Struct `SubscriptionAcceptOwnershipStatusResponse` has been removed
+- Struct `SubscriptionAcceptOwnershipStatusResult` has been removed
+- Struct `SubscriptionAliasListResult` has been removed
+- Struct `SubscriptionAliasResponse` has been removed
+- Struct `SubscriptionAliasResponseProperties` has been removed
+- Struct `SubscriptionBeginAcceptOwnershipOptions` has been removed
+- Struct `SubscriptionCancelOptions` has been removed
+- Struct `SubscriptionCancelResponse` has been removed
+- Struct `SubscriptionCancelResult` has been removed
+- Struct `SubscriptionClient` has been removed
+- Struct `SubscriptionEnableOptions` has been removed
+- Struct `SubscriptionEnableResponse` has been removed
+- Struct `SubscriptionEnableResult` has been removed
+- Struct `SubscriptionName` has been removed
+- Struct `SubscriptionPolicyAddUpdatePolicyForTenantOptions` has been removed
+- Struct `SubscriptionPolicyAddUpdatePolicyForTenantResponse` has been removed
+- Struct `SubscriptionPolicyAddUpdatePolicyForTenantResult` has been removed
+- Struct `SubscriptionPolicyClient` has been removed
+- Struct `SubscriptionPolicyGetPolicyForTenantOptions` has been removed
+- Struct `SubscriptionPolicyGetPolicyForTenantResponse` has been removed
+- Struct `SubscriptionPolicyGetPolicyForTenantResult` has been removed
+- Struct `SubscriptionPolicyListPolicyForTenantOptions` has been removed
+- Struct `SubscriptionPolicyListPolicyForTenantPager` has been removed
+- Struct `SubscriptionPolicyListPolicyForTenantResponse` has been removed
+- Struct `SubscriptionPolicyListPolicyForTenantResult` has been removed
+- Struct `SubscriptionRenameOptions` has been removed
+- Struct `SubscriptionRenameResponse` has been removed
+- Struct `SubscriptionRenameResult` has been removed
+- Field `Value` of struct `CanceledSubscriptionID` has been removed
+- Field `Value` of struct `EnabledSubscriptionID` has been removed
+- Field `SubscriptionAliasListResult` of struct `AliasListResult` has been removed
+- Field `InnerError` of struct `ErrorResponseBody` has been removed
+- Field `Value` of struct `RenamedSubscriptionID` has been removed
+
+### Features Added
+
+- New const `SubscriptionStateEnabled`
+- New const `SubscriptionStateWarned`
+- New const `SubscriptionStatePastDue`
+- New const `SubscriptionStateDisabled`
+- New const `SpendingLimitCurrentPeriodOff`
+- New const `SubscriptionStateDeleted`
+- New const `SpendingLimitOff`
+- New const `SpendingLimitOn`
+- New function `*PolicyClient.GetPolicyForTenant(context.Context, *PolicyClientGetPolicyForTenantOptions) (PolicyClientGetPolicyForTenantResponse, error)`
+- New function `PossibleSubscriptionStateValues() []SubscriptionState`
+- New function `*TenantsClientListPager.NextPage(context.Context) bool`
+- New function `ClientAcceptOwnershipPollerResponse.PollUntilDone(context.Context, time.Duration) (ClientAcceptOwnershipResponse, error)`
+- New function `AliasListResult.MarshalJSON() ([]byte, error)`
+- New function `*AliasClientCreatePoller.Done() bool`
+- New function `*SubscriptionsClient.ListLocations(context.Context, string, *SubscriptionsClientListLocationsOptions) (SubscriptionsClientListLocationsResponse, error)`
+- New function `*SubscriptionsClient.Get(context.Context, string, *SubscriptionsClientGetOptions) (SubscriptionsClientGetResponse, error)`
+- New function `*TenantsClient.List(*TenantsClientListOptions) *TenantsClientListPager`
+- New function `*SubscriptionsClientListPager.PageResponse() SubscriptionsClientListResponse`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*PolicyClientListPolicyForTenantPager.PageResponse() PolicyClientListPolicyForTenantResponse`
+- New function `*Client.Cancel(context.Context, string, *ClientCancelOptions) (ClientCancelResponse, error)`
+- New function `*PolicyClientListPolicyForTenantPager.Err() error`
+- New function `*TenantsClientListPager.Err() error`
+- New function `*PolicyClient.ListPolicyForTenant(*PolicyClientListPolicyForTenantOptions) *PolicyClientListPolicyForTenantPager`
+- New function `SpendingLimit.ToPtr() *SpendingLimit`
+- New function `*TenantsClientListPager.PageResponse() TenantsClientListResponse`
+- New function `AliasResponseProperties.MarshalJSON() ([]byte, error)`
+- New function `*Client.Enable(context.Context, string, *ClientEnableOptions) (ClientEnableResponse, error)`
+- New function `*ClientAcceptOwnershipPoller.FinalResponse(context.Context) (ClientAcceptOwnershipResponse, error)`
+- New function `*ClientAcceptOwnershipPoller.ResumeToken() (string, error)`
+- New function `TenantListResult.MarshalJSON() ([]byte, error)`
+- New function `NewClient(azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*ClientAcceptOwnershipPollerResponse.Resume(context.Context, *Client, string) error`
+- New function `NewPolicyClient(azcore.TokenCredential, *arm.ClientOptions) *PolicyClient`
+- New function `*ClientAcceptOwnershipPoller.Done() bool`
+- New function `*AliasClientCreatePoller.FinalResponse(context.Context) (AliasClientCreateResponse, error)`
+- New function `SubscriptionState.ToPtr() *SubscriptionState`
+- New function `*Client.BeginAcceptOwnership(context.Context, string, AcceptOwnershipRequest, *ClientBeginAcceptOwnershipOptions) (ClientAcceptOwnershipPollerResponse, error)`
+- New function `NewSubscriptionsClient(azcore.TokenCredential, *arm.ClientOptions) *SubscriptionsClient`
+- New function `*Client.AcceptOwnershipStatus(context.Context, string, *ClientAcceptOwnershipStatusOptions) (ClientAcceptOwnershipStatusResponse, error)`
+- New function `*AliasClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `AliasClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AliasClientCreateResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ClientAcceptOwnershipPoller.Poll(context.Context) (*http.Response, error)`
+- New function `LocationListResult.MarshalJSON() ([]byte, error)`
+- New function `PossibleSpendingLimitValues() []SpendingLimit`
+- New function `ListResult.MarshalJSON() ([]byte, error)`
+- New function `*AliasClientCreatePoller.ResumeToken() (string, error)`
+- New function `*PolicyClient.AddUpdatePolicyForTenant(context.Context, PutTenantPolicyRequestProperties, *PolicyClientAddUpdatePolicyForTenantOptions) (PolicyClientAddUpdatePolicyForTenantResponse, error)`
+- New function `*PolicyClientListPolicyForTenantPager.NextPage(context.Context) bool`
+- New function `NewTenantsClient(azcore.TokenCredential, *arm.ClientOptions) *TenantsClient`
+- New function `*SubscriptionsClientListPager.Err() error`
+- New function `*SubscriptionsClientListPager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClient.List(*SubscriptionsClientListOptions) *SubscriptionsClientListPager`
+- New function `*AliasClientCreatePollerResponse.Resume(context.Context, *AliasClient, string) error`
+- New function `*Client.Rename(context.Context, string, Name, *ClientRenameOptions) (ClientRenameResponse, error)`
+- New struct `AliasClientBeginCreateOptions`
+- New struct `AliasClientCreatePoller`
+- New struct `AliasClientCreatePollerResponse`
+- New struct `AliasClientCreateResponse`
+- New struct `AliasClientCreateResult`
+- New struct `AliasClientDeleteOptions`
+- New struct `AliasClientDeleteResponse`
+- New struct `AliasClientGetOptions`
+- New struct `AliasClientGetResponse`
+- New struct `AliasClientGetResult`
+- New struct `AliasClientListOptions`
+- New struct `AliasClientListResponse`
+- New struct `AliasClientListResult`
+- New struct `AliasResponse`
+- New struct `AliasResponseProperties`
+- New struct `BillingAccountClientGetPolicyOptions`
+- New struct `BillingAccountClientGetPolicyResponse`
+- New struct `BillingAccountClientGetPolicyResult`
+- New struct `Client`
+- New struct `ClientAcceptOwnershipPoller`
+- New struct `ClientAcceptOwnershipPollerResponse`
+- New struct `ClientAcceptOwnershipResponse`
+- New struct `ClientAcceptOwnershipStatusOptions`
+- New struct `ClientAcceptOwnershipStatusResponse`
+- New struct `ClientAcceptOwnershipStatusResult`
+- New struct `ClientBeginAcceptOwnershipOptions`
+- New struct `ClientCancelOptions`
+- New struct `ClientCancelResponse`
+- New struct `ClientCancelResult`
+- New struct `ClientEnableOptions`
+- New struct `ClientEnableResponse`
+- New struct `ClientEnableResult`
+- New struct `ClientRenameOptions`
+- New struct `ClientRenameResponse`
+- New struct `ClientRenameResult`
+- New struct `ListResult`
+- New struct `Location`
+- New struct `LocationListResult`
+- New struct `Name`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `Policies`
+- New struct `PolicyClient`
+- New struct `PolicyClientAddUpdatePolicyForTenantOptions`
+- New struct `PolicyClientAddUpdatePolicyForTenantResponse`
+- New struct `PolicyClientAddUpdatePolicyForTenantResult`
+- New struct `PolicyClientGetPolicyForTenantOptions`
+- New struct `PolicyClientGetPolicyForTenantResponse`
+- New struct `PolicyClientGetPolicyForTenantResult`
+- New struct `PolicyClientListPolicyForTenantOptions`
+- New struct `PolicyClientListPolicyForTenantPager`
+- New struct `PolicyClientListPolicyForTenantResponse`
+- New struct `PolicyClientListPolicyForTenantResult`
+- New struct `Subscription`
+- New struct `SubscriptionsClient`
+- New struct `SubscriptionsClientGetOptions`
+- New struct `SubscriptionsClientGetResponse`
+- New struct `SubscriptionsClientGetResult`
+- New struct `SubscriptionsClientListLocationsOptions`
+- New struct `SubscriptionsClientListLocationsResponse`
+- New struct `SubscriptionsClientListLocationsResult`
+- New struct `SubscriptionsClientListOptions`
+- New struct `SubscriptionsClientListPager`
+- New struct `SubscriptionsClientListResponse`
+- New struct `SubscriptionsClientListResult`
+- New struct `TenantIDDescription`
+- New struct `TenantListResult`
+- New struct `TenantsClient`
+- New struct `TenantsClientListOptions`
+- New struct `TenantsClientListPager`
+- New struct `TenantsClientListResponse`
+- New struct `TenantsClientListResult`
+- New field `SubscriptionID` in struct `RenamedSubscriptionID`
+- New field `NextLink` in struct `AliasListResult`
+- New field `Value` in struct `AliasListResult`
+- New field `SubscriptionID` in struct `CanceledSubscriptionID`
+- New field `SubscriptionID` in struct `EnabledSubscriptionID`
+- New field `Error` in struct `ErrorResponseBody`
+
+
+## 0.1.0 (2021-12-23)
+
+- Init release.

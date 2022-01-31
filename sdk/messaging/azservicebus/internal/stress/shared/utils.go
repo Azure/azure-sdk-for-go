@@ -50,18 +50,24 @@ func MustGenerateMessages(sc *StressContext, sender *azservicebus.Sender, messag
 }
 
 // MustCreateAutoDeletingQueue creates a queue that will auto-delete 10 minutes after activity has ceased.
-func MustCreateAutoDeletingQueue(sc *StressContext, queueName string) {
+func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.QueueProperties) {
 	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create adminClient", err)
 
 	autoDeleteOnIdle := 10 * time.Minute
 
-	_, err = adminClient.CreateQueue(context.Background(), queueName, &admin.QueueProperties{
-		AutoDeleteOnIdle: &autoDeleteOnIdle,
+	var newQP admin.QueueProperties
 
-		// mostly useful for tracking backwards in case something goes wrong.
-		UserMetadata: &sc.TestRunID,
-	}, nil)
+	if qp != nil {
+		newQP = *qp
+	}
+
+	newQP.AutoDeleteOnIdle = &autoDeleteOnIdle
+
+	// mostly useful for tracking backwards in case something goes wrong.
+	newQP.UserMetadata = &sc.TestRunID
+
+	_, err = adminClient.CreateQueue(context.Background(), queueName, &newQP, nil)
 	sc.PanicOnError("failed to create queue", err)
 }
 
@@ -93,23 +99,31 @@ func ConstantlyUpdateQueue(ctx context.Context, adminClient *admin.Client, queue
 	ticker := time.NewTicker(updateInterval)
 
 	for range ticker.C {
-		resp, err := adminClient.GetQueue(ctx, queue, nil)
-
-		if err != nil {
+		if err := ForceQueueDetach(ctx, adminClient, queue); err != nil {
 			return err
 		}
+	}
 
-		if *resp.MaxDeliveryCount == 10 {
-			*resp.MaxDeliveryCount = 11
-		} else {
-			*resp.MaxDeliveryCount = 10
-		}
+	return nil
+}
 
-		_, err = adminClient.UpdateQueue(ctx, queue, resp.QueueProperties, nil)
+func ForceQueueDetach(ctx context.Context, adminClient *admin.Client, queue string) error {
+	resp, err := adminClient.GetQueue(ctx, queue, nil)
 
-		if err != nil {
-			return err
-		}
+	if err != nil {
+		return err
+	}
+
+	if *resp.MaxDeliveryCount == 10 {
+		*resp.MaxDeliveryCount = 11
+	} else {
+		*resp.MaxDeliveryCount = 10
+	}
+
+	_, err = adminClient.UpdateQueue(ctx, queue, resp.QueueProperties, nil)
+
+	if err != nil {
+		return err
 	}
 
 	return nil

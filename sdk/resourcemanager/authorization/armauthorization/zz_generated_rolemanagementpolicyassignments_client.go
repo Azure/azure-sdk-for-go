@@ -11,7 +11,6 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,59 @@ import (
 // RoleManagementPolicyAssignmentsClient contains the methods for the RoleManagementPolicyAssignments group.
 // Don't use this type directly, use NewRoleManagementPolicyAssignmentsClient() instead.
 type RoleManagementPolicyAssignmentsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewRoleManagementPolicyAssignmentsClient creates a new instance of RoleManagementPolicyAssignmentsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRoleManagementPolicyAssignmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleManagementPolicyAssignmentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RoleManagementPolicyAssignmentsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RoleManagementPolicyAssignmentsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a role management policy assignment
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPolicyAssignmentsClient) Create(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, parameters RoleManagementPolicyAssignment, options *RoleManagementPolicyAssignmentsCreateOptions) (RoleManagementPolicyAssignmentsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy assignment to upsert.
+// roleManagementPolicyAssignmentName - The name of format {guid_guid} the role management policy assignment to upsert.
+// parameters - Parameters for the role management policy assignment.
+// options - RoleManagementPolicyAssignmentsClientCreateOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Create
+// method.
+func (client *RoleManagementPolicyAssignmentsClient) Create(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, parameters RoleManagementPolicyAssignment, options *RoleManagementPolicyAssignmentsClientCreateOptions) (RoleManagementPolicyAssignmentsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, scope, roleManagementPolicyAssignmentName, parameters, options)
 	if err != nil {
-		return RoleManagementPolicyAssignmentsCreateResponse{}, err
+		return RoleManagementPolicyAssignmentsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleManagementPolicyAssignmentsCreateResponse{}, err
+		return RoleManagementPolicyAssignmentsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return RoleManagementPolicyAssignmentsCreateResponse{}, client.createHandleError(resp)
+		return RoleManagementPolicyAssignmentsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *RoleManagementPolicyAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, parameters RoleManagementPolicyAssignment, options *RoleManagementPolicyAssignmentsCreateOptions) (*policy.Request, error) {
+func (client *RoleManagementPolicyAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, parameters RoleManagementPolicyAssignment, options *RoleManagementPolicyAssignmentsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyAssignmentName == "" {
 		return nil, errors.New("parameter roleManagementPolicyAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyAssignmentName}", url.PathEscape(roleManagementPolicyAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,53 +88,44 @@ func (client *RoleManagementPolicyAssignmentsClient) createCreateRequest(ctx con
 }
 
 // createHandleResponse handles the Create response.
-func (client *RoleManagementPolicyAssignmentsClient) createHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsCreateResponse, error) {
-	result := RoleManagementPolicyAssignmentsCreateResponse{RawResponse: resp}
+func (client *RoleManagementPolicyAssignmentsClient) createHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsClientCreateResponse, error) {
+	result := RoleManagementPolicyAssignmentsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicyAssignment); err != nil {
-		return RoleManagementPolicyAssignmentsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return RoleManagementPolicyAssignmentsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *RoleManagementPolicyAssignmentsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a role management policy assignment
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPolicyAssignmentsClient) Delete(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsDeleteOptions) (RoleManagementPolicyAssignmentsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy assignment to delete.
+// roleManagementPolicyAssignmentName - The name of format {guid_guid} the role management policy assignment to delete.
+// options - RoleManagementPolicyAssignmentsClientDeleteOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Delete
+// method.
+func (client *RoleManagementPolicyAssignmentsClient) Delete(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsClientDeleteOptions) (RoleManagementPolicyAssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, roleManagementPolicyAssignmentName, options)
 	if err != nil {
-		return RoleManagementPolicyAssignmentsDeleteResponse{}, err
+		return RoleManagementPolicyAssignmentsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleManagementPolicyAssignmentsDeleteResponse{}, err
+		return RoleManagementPolicyAssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return RoleManagementPolicyAssignmentsDeleteResponse{}, client.deleteHandleError(resp)
+		return RoleManagementPolicyAssignmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RoleManagementPolicyAssignmentsDeleteResponse{RawResponse: resp}, nil
+	return RoleManagementPolicyAssignmentsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RoleManagementPolicyAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsDeleteOptions) (*policy.Request, error) {
+func (client *RoleManagementPolicyAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyAssignmentName == "" {
 		return nil, errors.New("parameter roleManagementPolicyAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyAssignmentName}", url.PathEscape(roleManagementPolicyAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,45 +136,36 @@ func (client *RoleManagementPolicyAssignmentsClient) deleteCreateRequest(ctx con
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RoleManagementPolicyAssignmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the specified role management policy assignment for a resource scope
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPolicyAssignmentsClient) Get(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsGetOptions) (RoleManagementPolicyAssignmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy.
+// roleManagementPolicyAssignmentName - The name of format {guid_guid} the role management policy assignment to get.
+// options - RoleManagementPolicyAssignmentsClientGetOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Get
+// method.
+func (client *RoleManagementPolicyAssignmentsClient) Get(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsClientGetOptions) (RoleManagementPolicyAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleManagementPolicyAssignmentName, options)
 	if err != nil {
-		return RoleManagementPolicyAssignmentsGetResponse{}, err
+		return RoleManagementPolicyAssignmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleManagementPolicyAssignmentsGetResponse{}, err
+		return RoleManagementPolicyAssignmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleManagementPolicyAssignmentsGetResponse{}, client.getHandleError(resp)
+		return RoleManagementPolicyAssignmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoleManagementPolicyAssignmentsClient) getCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsGetOptions) (*policy.Request, error) {
+func (client *RoleManagementPolicyAssignmentsClient) getCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyAssignmentName == "" {
 		return nil, errors.New("parameter roleManagementPolicyAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleManagementPolicyAssignmentName}", url.PathEscape(roleManagementPolicyAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -185,46 +177,36 @@ func (client *RoleManagementPolicyAssignmentsClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *RoleManagementPolicyAssignmentsClient) getHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsGetResponse, error) {
-	result := RoleManagementPolicyAssignmentsGetResponse{RawResponse: resp}
+func (client *RoleManagementPolicyAssignmentsClient) getHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsClientGetResponse, error) {
+	result := RoleManagementPolicyAssignmentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicyAssignment); err != nil {
-		return RoleManagementPolicyAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RoleManagementPolicyAssignmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RoleManagementPolicyAssignmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForScope - Gets role management assignment policies for a resource scope.
-// If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPolicyAssignmentsClient) ListForScope(scope string, options *RoleManagementPolicyAssignmentsListForScopeOptions) *RoleManagementPolicyAssignmentsListForScopePager {
-	return &RoleManagementPolicyAssignmentsListForScopePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy.
+// options - RoleManagementPolicyAssignmentsClientListForScopeOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.ListForScope
+// method.
+func (client *RoleManagementPolicyAssignmentsClient) ListForScope(scope string, options *RoleManagementPolicyAssignmentsClientListForScopeOptions) *RoleManagementPolicyAssignmentsClientListForScopePager {
+	return &RoleManagementPolicyAssignmentsClientListForScopePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForScopeCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp RoleManagementPolicyAssignmentsListForScopeResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RoleManagementPolicyAssignmentsClientListForScopeResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleManagementPolicyAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *RoleManagementPolicyAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleManagementPolicyAssignmentsListForScopeOptions) (*policy.Request, error) {
+func (client *RoleManagementPolicyAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleManagementPolicyAssignmentsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -236,23 +218,10 @@ func (client *RoleManagementPolicyAssignmentsClient) listForScopeCreateRequest(c
 }
 
 // listForScopeHandleResponse handles the ListForScope response.
-func (client *RoleManagementPolicyAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsListForScopeResponse, error) {
-	result := RoleManagementPolicyAssignmentsListForScopeResponse{RawResponse: resp}
+func (client *RoleManagementPolicyAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsClientListForScopeResponse, error) {
+	result := RoleManagementPolicyAssignmentsClientListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicyAssignmentListResult); err != nil {
-		return RoleManagementPolicyAssignmentsListForScopeResponse{}, runtime.NewResponseError(err, resp)
+		return RoleManagementPolicyAssignmentsClientListForScopeResponse{}, err
 	}
 	return result, nil
-}
-
-// listForScopeHandleError handles the ListForScope error response.
-func (client *RoleManagementPolicyAssignmentsClient) listForScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

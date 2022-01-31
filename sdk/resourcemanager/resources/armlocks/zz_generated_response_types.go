@@ -10,182 +10,182 @@ package armlocks
 
 import "net/http"
 
-// AuthorizationOperationsListResponse contains the response from method AuthorizationOperations.List.
-type AuthorizationOperationsListResponse struct {
-	AuthorizationOperationsListResult
+// AuthorizationOperationsClientListResponse contains the response from method AuthorizationOperationsClient.List.
+type AuthorizationOperationsClientListResponse struct {
+	AuthorizationOperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AuthorizationOperationsListResult contains the result from method AuthorizationOperations.List.
-type AuthorizationOperationsListResult struct {
+// AuthorizationOperationsClientListResult contains the result from method AuthorizationOperationsClient.List.
+type AuthorizationOperationsClientListResult struct {
 	OperationListResult
 }
 
-// ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse contains the response from method ManagementLocks.CreateOrUpdateAtResourceGroupLevel.
-type ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse struct {
-	ManagementLocksCreateOrUpdateAtResourceGroupLevelResult
+// ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse contains the response from method ManagementLocksClient.CreateOrUpdateAtResourceGroupLevel.
+type ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse struct {
+	ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksCreateOrUpdateAtResourceGroupLevelResult contains the result from method ManagementLocks.CreateOrUpdateAtResourceGroupLevel.
-type ManagementLocksCreateOrUpdateAtResourceGroupLevelResult struct {
+// ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResult contains the result from method ManagementLocksClient.CreateOrUpdateAtResourceGroupLevel.
+type ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResult struct {
 	ManagementLockObject
 }
 
-// ManagementLocksCreateOrUpdateAtResourceLevelResponse contains the response from method ManagementLocks.CreateOrUpdateAtResourceLevel.
-type ManagementLocksCreateOrUpdateAtResourceLevelResponse struct {
-	ManagementLocksCreateOrUpdateAtResourceLevelResult
+// ManagementLocksClientCreateOrUpdateAtResourceLevelResponse contains the response from method ManagementLocksClient.CreateOrUpdateAtResourceLevel.
+type ManagementLocksClientCreateOrUpdateAtResourceLevelResponse struct {
+	ManagementLocksClientCreateOrUpdateAtResourceLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksCreateOrUpdateAtResourceLevelResult contains the result from method ManagementLocks.CreateOrUpdateAtResourceLevel.
-type ManagementLocksCreateOrUpdateAtResourceLevelResult struct {
+// ManagementLocksClientCreateOrUpdateAtResourceLevelResult contains the result from method ManagementLocksClient.CreateOrUpdateAtResourceLevel.
+type ManagementLocksClientCreateOrUpdateAtResourceLevelResult struct {
 	ManagementLockObject
 }
 
-// ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse contains the response from method ManagementLocks.CreateOrUpdateAtSubscriptionLevel.
-type ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse struct {
-	ManagementLocksCreateOrUpdateAtSubscriptionLevelResult
+// ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse contains the response from method ManagementLocksClient.CreateOrUpdateAtSubscriptionLevel.
+type ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse struct {
+	ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksCreateOrUpdateAtSubscriptionLevelResult contains the result from method ManagementLocks.CreateOrUpdateAtSubscriptionLevel.
-type ManagementLocksCreateOrUpdateAtSubscriptionLevelResult struct {
+// ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResult contains the result from method ManagementLocksClient.CreateOrUpdateAtSubscriptionLevel.
+type ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResult struct {
 	ManagementLockObject
 }
 
-// ManagementLocksCreateOrUpdateByScopeResponse contains the response from method ManagementLocks.CreateOrUpdateByScope.
-type ManagementLocksCreateOrUpdateByScopeResponse struct {
-	ManagementLocksCreateOrUpdateByScopeResult
+// ManagementLocksClientCreateOrUpdateByScopeResponse contains the response from method ManagementLocksClient.CreateOrUpdateByScope.
+type ManagementLocksClientCreateOrUpdateByScopeResponse struct {
+	ManagementLocksClientCreateOrUpdateByScopeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksCreateOrUpdateByScopeResult contains the result from method ManagementLocks.CreateOrUpdateByScope.
-type ManagementLocksCreateOrUpdateByScopeResult struct {
+// ManagementLocksClientCreateOrUpdateByScopeResult contains the result from method ManagementLocksClient.CreateOrUpdateByScope.
+type ManagementLocksClientCreateOrUpdateByScopeResult struct {
 	ManagementLockObject
 }
 
-// ManagementLocksDeleteAtResourceGroupLevelResponse contains the response from method ManagementLocks.DeleteAtResourceGroupLevel.
-type ManagementLocksDeleteAtResourceGroupLevelResponse struct {
+// ManagementLocksClientDeleteAtResourceGroupLevelResponse contains the response from method ManagementLocksClient.DeleteAtResourceGroupLevel.
+type ManagementLocksClientDeleteAtResourceGroupLevelResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksDeleteAtResourceLevelResponse contains the response from method ManagementLocks.DeleteAtResourceLevel.
-type ManagementLocksDeleteAtResourceLevelResponse struct {
+// ManagementLocksClientDeleteAtResourceLevelResponse contains the response from method ManagementLocksClient.DeleteAtResourceLevel.
+type ManagementLocksClientDeleteAtResourceLevelResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksDeleteAtSubscriptionLevelResponse contains the response from method ManagementLocks.DeleteAtSubscriptionLevel.
-type ManagementLocksDeleteAtSubscriptionLevelResponse struct {
+// ManagementLocksClientDeleteAtSubscriptionLevelResponse contains the response from method ManagementLocksClient.DeleteAtSubscriptionLevel.
+type ManagementLocksClientDeleteAtSubscriptionLevelResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksDeleteByScopeResponse contains the response from method ManagementLocks.DeleteByScope.
-type ManagementLocksDeleteByScopeResponse struct {
+// ManagementLocksClientDeleteByScopeResponse contains the response from method ManagementLocksClient.DeleteByScope.
+type ManagementLocksClientDeleteByScopeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksGetAtResourceGroupLevelResponse contains the response from method ManagementLocks.GetAtResourceGroupLevel.
-type ManagementLocksGetAtResourceGroupLevelResponse struct {
-	ManagementLocksGetAtResourceGroupLevelResult
+// ManagementLocksClientGetAtResourceGroupLevelResponse contains the response from method ManagementLocksClient.GetAtResourceGroupLevel.
+type ManagementLocksClientGetAtResourceGroupLevelResponse struct {
+	ManagementLocksClientGetAtResourceGroupLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksGetAtResourceGroupLevelResult contains the result from method ManagementLocks.GetAtResourceGroupLevel.
-type ManagementLocksGetAtResourceGroupLevelResult struct {
+// ManagementLocksClientGetAtResourceGroupLevelResult contains the result from method ManagementLocksClient.GetAtResourceGroupLevel.
+type ManagementLocksClientGetAtResourceGroupLevelResult struct {
 	ManagementLockObject
 }
 
-// ManagementLocksGetAtResourceLevelResponse contains the response from method ManagementLocks.GetAtResourceLevel.
-type ManagementLocksGetAtResourceLevelResponse struct {
-	ManagementLocksGetAtResourceLevelResult
+// ManagementLocksClientGetAtResourceLevelResponse contains the response from method ManagementLocksClient.GetAtResourceLevel.
+type ManagementLocksClientGetAtResourceLevelResponse struct {
+	ManagementLocksClientGetAtResourceLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksGetAtResourceLevelResult contains the result from method ManagementLocks.GetAtResourceLevel.
-type ManagementLocksGetAtResourceLevelResult struct {
+// ManagementLocksClientGetAtResourceLevelResult contains the result from method ManagementLocksClient.GetAtResourceLevel.
+type ManagementLocksClientGetAtResourceLevelResult struct {
 	ManagementLockObject
 }
 
-// ManagementLocksGetAtSubscriptionLevelResponse contains the response from method ManagementLocks.GetAtSubscriptionLevel.
-type ManagementLocksGetAtSubscriptionLevelResponse struct {
-	ManagementLocksGetAtSubscriptionLevelResult
+// ManagementLocksClientGetAtSubscriptionLevelResponse contains the response from method ManagementLocksClient.GetAtSubscriptionLevel.
+type ManagementLocksClientGetAtSubscriptionLevelResponse struct {
+	ManagementLocksClientGetAtSubscriptionLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksGetAtSubscriptionLevelResult contains the result from method ManagementLocks.GetAtSubscriptionLevel.
-type ManagementLocksGetAtSubscriptionLevelResult struct {
+// ManagementLocksClientGetAtSubscriptionLevelResult contains the result from method ManagementLocksClient.GetAtSubscriptionLevel.
+type ManagementLocksClientGetAtSubscriptionLevelResult struct {
 	ManagementLockObject
 }
 
-// ManagementLocksGetByScopeResponse contains the response from method ManagementLocks.GetByScope.
-type ManagementLocksGetByScopeResponse struct {
-	ManagementLocksGetByScopeResult
+// ManagementLocksClientGetByScopeResponse contains the response from method ManagementLocksClient.GetByScope.
+type ManagementLocksClientGetByScopeResponse struct {
+	ManagementLocksClientGetByScopeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksGetByScopeResult contains the result from method ManagementLocks.GetByScope.
-type ManagementLocksGetByScopeResult struct {
+// ManagementLocksClientGetByScopeResult contains the result from method ManagementLocksClient.GetByScope.
+type ManagementLocksClientGetByScopeResult struct {
 	ManagementLockObject
 }
 
-// ManagementLocksListAtResourceGroupLevelResponse contains the response from method ManagementLocks.ListAtResourceGroupLevel.
-type ManagementLocksListAtResourceGroupLevelResponse struct {
-	ManagementLocksListAtResourceGroupLevelResult
+// ManagementLocksClientListAtResourceGroupLevelResponse contains the response from method ManagementLocksClient.ListAtResourceGroupLevel.
+type ManagementLocksClientListAtResourceGroupLevelResponse struct {
+	ManagementLocksClientListAtResourceGroupLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksListAtResourceGroupLevelResult contains the result from method ManagementLocks.ListAtResourceGroupLevel.
-type ManagementLocksListAtResourceGroupLevelResult struct {
+// ManagementLocksClientListAtResourceGroupLevelResult contains the result from method ManagementLocksClient.ListAtResourceGroupLevel.
+type ManagementLocksClientListAtResourceGroupLevelResult struct {
 	ManagementLockListResult
 }
 
-// ManagementLocksListAtResourceLevelResponse contains the response from method ManagementLocks.ListAtResourceLevel.
-type ManagementLocksListAtResourceLevelResponse struct {
-	ManagementLocksListAtResourceLevelResult
+// ManagementLocksClientListAtResourceLevelResponse contains the response from method ManagementLocksClient.ListAtResourceLevel.
+type ManagementLocksClientListAtResourceLevelResponse struct {
+	ManagementLocksClientListAtResourceLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksListAtResourceLevelResult contains the result from method ManagementLocks.ListAtResourceLevel.
-type ManagementLocksListAtResourceLevelResult struct {
+// ManagementLocksClientListAtResourceLevelResult contains the result from method ManagementLocksClient.ListAtResourceLevel.
+type ManagementLocksClientListAtResourceLevelResult struct {
 	ManagementLockListResult
 }
 
-// ManagementLocksListAtSubscriptionLevelResponse contains the response from method ManagementLocks.ListAtSubscriptionLevel.
-type ManagementLocksListAtSubscriptionLevelResponse struct {
-	ManagementLocksListAtSubscriptionLevelResult
+// ManagementLocksClientListAtSubscriptionLevelResponse contains the response from method ManagementLocksClient.ListAtSubscriptionLevel.
+type ManagementLocksClientListAtSubscriptionLevelResponse struct {
+	ManagementLocksClientListAtSubscriptionLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksListAtSubscriptionLevelResult contains the result from method ManagementLocks.ListAtSubscriptionLevel.
-type ManagementLocksListAtSubscriptionLevelResult struct {
+// ManagementLocksClientListAtSubscriptionLevelResult contains the result from method ManagementLocksClient.ListAtSubscriptionLevel.
+type ManagementLocksClientListAtSubscriptionLevelResult struct {
 	ManagementLockListResult
 }
 
-// ManagementLocksListByScopeResponse contains the response from method ManagementLocks.ListByScope.
-type ManagementLocksListByScopeResponse struct {
-	ManagementLocksListByScopeResult
+// ManagementLocksClientListByScopeResponse contains the response from method ManagementLocksClient.ListByScope.
+type ManagementLocksClientListByScopeResponse struct {
+	ManagementLocksClientListByScopeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementLocksListByScopeResult contains the result from method ManagementLocks.ListByScope.
-type ManagementLocksListByScopeResult struct {
+// ManagementLocksClientListByScopeResult contains the result from method ManagementLocksClient.ListByScope.
+type ManagementLocksClientListByScopeResult struct {
 	ManagementLockListResult
 }

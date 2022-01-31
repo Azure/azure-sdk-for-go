@@ -11,7 +11,7 @@ The `armcontainerregistry` module provides operations for working with Azure Con
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,13 @@ options = arm.ClientOptions{
 }
 client := armcontainerregistry.NewImportPipelinesClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Container Registry](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/registry)
+- [Replication](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/replication)
+- [Container Task](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/task)
+- [Container Token](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/token)
 
 ## Provide Feedback
 

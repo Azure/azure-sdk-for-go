@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance"
 )
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerListLogs.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerListLogs.json
 func ExampleContainersClient_ListLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,19 +25,20 @@ func ExampleContainersClient_ListLogs() {
 	}
 	ctx := context.Background()
 	client := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
-	_, err = client.ListLogs(ctx,
+	res, err := client.ListLogs(ctx,
 		"<resource-group-name>",
 		"<container-group-name>",
 		"<container-name>",
-		&armcontainerinstance.ContainersListLogsOptions{Tail: to.Int32Ptr(10),
+		&armcontainerinstance.ContainersClientListLogsOptions{Tail: to.Int32Ptr(10),
 			Timestamps: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ContainersClientListLogsResult)
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerExec.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerExec.json
 func ExampleContainersClient_ExecuteCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +46,7 @@ func ExampleContainersClient_ExecuteCommand() {
 	}
 	ctx := context.Background()
 	client := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
-	_, err = client.ExecuteCommand(ctx,
+	res, err := client.ExecuteCommand(ctx,
 		"<resource-group-name>",
 		"<container-group-name>",
 		"<container-name>",
@@ -60,9 +61,10 @@ func ExampleContainersClient_ExecuteCommand() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ContainersClientExecuteCommandResult)
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerAttach.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerAttach.json
 func ExampleContainersClient_Attach() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +72,7 @@ func ExampleContainersClient_Attach() {
 	}
 	ctx := context.Background()
 	client := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
-	_, err = client.Attach(ctx,
+	res, err := client.Attach(ctx,
 		"<resource-group-name>",
 		"<container-group-name>",
 		"<container-name>",
@@ -78,4 +80,5 @@ func ExampleContainersClient_Attach() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ContainersClientAttachResult)
 }

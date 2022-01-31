@@ -1,0 +1,7858 @@
+# Release History
+
+## 0.2.0 (2022-01-21)
+### Breaking Changes
+
+- Function `*StaticSitesClient.ListStaticSiteSecrets` parameter(s) have been changed from `(context.Context, string, string, *StaticSitesListStaticSiteSecretsOptions)` to `(context.Context, string, string, *StaticSitesClientListStaticSiteSecretsOptions)`
+- Function `*StaticSitesClient.ListStaticSiteSecrets` return value(s) have been changed from `(StaticSitesListStaticSiteSecretsResponse, error)` to `(StaticSitesClientListStaticSiteSecretsResponse, error)`
+- Function `*WebAppsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetOptions)` to `(context.Context, string, string, *WebAppsClientGetOptions)`
+- Function `*WebAppsClient.Get` return value(s) have been changed from `(WebAppsGetResponse, error)` to `(WebAppsClientGetResponse, error)`
+- Function `*WebAppsClient.BeginListPublishingCredentialsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsBeginListPublishingCredentialsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientBeginListPublishingCredentialsSlotOptions)`
+- Function `*WebAppsClient.BeginListPublishingCredentialsSlot` return value(s) have been changed from `(WebAppsListPublishingCredentialsSlotPollerResponse, error)` to `(WebAppsClientListPublishingCredentialsSlotPollerResponse, error)`
+- Function `*StaticSitesClient.GetStaticSiteCustomDomain` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesGetStaticSiteCustomDomainOptions)` to `(context.Context, string, string, string, *StaticSitesClientGetStaticSiteCustomDomainOptions)`
+- Function `*StaticSitesClient.GetStaticSiteCustomDomain` return value(s) have been changed from `(StaticSitesGetStaticSiteCustomDomainResponse, error)` to `(StaticSitesClientGetStaticSiteCustomDomainResponse, error)`
+- Function `*WebAppsClient.GetScmAllowedSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetScmAllowedSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetScmAllowedSlotOptions)`
+- Function `*WebAppsClient.GetScmAllowedSlot` return value(s) have been changed from `(WebAppsGetScmAllowedSlotResponse, error)` to `(WebAppsClientGetScmAllowedSlotResponse, error)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSourceControl` parameter(s) have been changed from `(context.Context, string, string, SiteSourceControl, *WebAppsBeginCreateOrUpdateSourceControlOptions)` to `(context.Context, string, string, SiteSourceControl, *WebAppsClientBeginCreateOrUpdateSourceControlOptions)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSourceControl` return value(s) have been changed from `(WebAppsCreateOrUpdateSourceControlPollerResponse, error)` to `(WebAppsClientCreateOrUpdateSourceControlPollerResponse, error)`
+- Function `*WebAppsClient.RunTriggeredWebJob` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsRunTriggeredWebJobOptions)` to `(context.Context, string, string, string, *WebAppsClientRunTriggeredWebJobOptions)`
+- Function `*WebAppsClient.RunTriggeredWebJob` return value(s) have been changed from `(WebAppsRunTriggeredWebJobResponse, error)` to `(WebAppsClientRunTriggeredWebJobResponse, error)`
+- Function `*WebAppsClient.ListConfigurationsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListConfigurationsSlotOptions)` to `(string, string, string, *WebAppsClientListConfigurationsSlotOptions)`
+- Function `*WebAppsClient.ListConfigurationsSlot` return value(s) have been changed from `(*WebAppsListConfigurationsSlotPager)` to `(*WebAppsClientListConfigurationsSlotPager)`
+- Function `*CertificatesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Certificate, *CertificatesCreateOrUpdateOptions)` to `(context.Context, string, string, AppCertificate, *CertificatesClientCreateOrUpdateOptions)`
+- Function `*CertificatesClient.CreateOrUpdate` return value(s) have been changed from `(CertificatesCreateOrUpdateResponse, error)` to `(CertificatesClientCreateOrUpdateResponse, error)`
+- Function `*WebAppsClient.UpdateBackupConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, BackupRequest, *WebAppsUpdateBackupConfigurationSlotOptions)` to `(context.Context, string, string, string, BackupRequest, *WebAppsClientUpdateBackupConfigurationSlotOptions)`
+- Function `*WebAppsClient.UpdateBackupConfigurationSlot` return value(s) have been changed from `(WebAppsUpdateBackupConfigurationSlotResponse, error)` to `(WebAppsClientUpdateBackupConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateDomainOwnershipIdentifier` parameter(s) have been changed from `(context.Context, string, string, string, Identifier, *WebAppsCreateOrUpdateDomainOwnershipIdentifierOptions)` to `(context.Context, string, string, string, Identifier, *WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions)`
+- Function `*WebAppsClient.CreateOrUpdateDomainOwnershipIdentifier` return value(s) have been changed from `(WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse, error)` to `(WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse, error)`
+- Function `*WebAppsClient.ListTriggeredWebJobHistorySlot` parameter(s) have been changed from `(string, string, string, string, *WebAppsListTriggeredWebJobHistorySlotOptions)` to `(string, string, string, string, *WebAppsClientListTriggeredWebJobHistorySlotOptions)`
+- Function `*WebAppsClient.ListTriggeredWebJobHistorySlot` return value(s) have been changed from `(*WebAppsListTriggeredWebJobHistorySlotPager)` to `(*WebAppsClientListTriggeredWebJobHistorySlotPager)`
+- Function `*WebAppsClient.UpdateRelayServiceConnection` parameter(s) have been changed from `(context.Context, string, string, string, RelayServiceConnectionEntity, *WebAppsUpdateRelayServiceConnectionOptions)` to `(context.Context, string, string, string, RelayServiceConnectionEntity, *WebAppsClientUpdateRelayServiceConnectionOptions)`
+- Function `*WebAppsClient.UpdateRelayServiceConnection` return value(s) have been changed from `(WebAppsUpdateRelayServiceConnectionResponse, error)` to `(WebAppsClientUpdateRelayServiceConnectionResponse, error)`
+- Function `*StaticSitesClient.BeginDetachStaticSite` parameter(s) have been changed from `(context.Context, string, string, *StaticSitesBeginDetachStaticSiteOptions)` to `(context.Context, string, string, *StaticSitesClientBeginDetachStaticSiteOptions)`
+- Function `*StaticSitesClient.BeginDetachStaticSite` return value(s) have been changed from `(StaticSitesDetachStaticSitePollerResponse, error)` to `(StaticSitesClientDetachStaticSitePollerResponse, error)`
+- Function `*WebAppsClient.ListFunctionSecretsSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsListFunctionSecretsSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientListFunctionSecretsSlotOptions)`
+- Function `*WebAppsClient.ListFunctionSecretsSlot` return value(s) have been changed from `(WebAppsListFunctionSecretsSlotResponse, error)` to `(WebAppsClientListFunctionSecretsSlotResponse, error)`
+- Function `*WebAppsClient.StartWebSiteNetworkTrace` parameter(s) have been changed from `(context.Context, string, string, *WebAppsStartWebSiteNetworkTraceOptions)` to `(context.Context, string, string, *WebAppsClientStartWebSiteNetworkTraceOptions)`
+- Function `*WebAppsClient.StartWebSiteNetworkTrace` return value(s) have been changed from `(WebAppsStartWebSiteNetworkTraceResponse, error)` to `(WebAppsClientStartWebSiteNetworkTraceResponse, error)`
+- Function `*WebAppsClient.DeleteBackupSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteBackupSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteBackupSlotOptions)`
+- Function `*WebAppsClient.DeleteBackupSlot` return value(s) have been changed from `(WebAppsDeleteBackupSlotResponse, error)` to `(WebAppsClientDeleteBackupSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, VnetGateway, *WebAppsCreateOrUpdateVnetConnectionGatewaySlotOptions)` to `(context.Context, string, string, string, string, string, VnetGateway, *WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot` return value(s) have been changed from `(WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse, error)` to `(WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse, error)`
+- Function `*WebAppsClient.SyncFunctions` parameter(s) have been changed from `(context.Context, string, string, *WebAppsSyncFunctionsOptions)` to `(context.Context, string, string, *WebAppsClientSyncFunctionsOptions)`
+- Function `*WebAppsClient.SyncFunctions` return value(s) have been changed from `(WebAppsSyncFunctionsResponse, error)` to `(WebAppsClientSyncFunctionsResponse, error)`
+- Function `*WebAppsClient.UpdateAzureStorageAccounts` parameter(s) have been changed from `(context.Context, string, string, AzureStoragePropertyDictionaryResource, *WebAppsUpdateAzureStorageAccountsOptions)` to `(context.Context, string, string, AzureStoragePropertyDictionaryResource, *WebAppsClientUpdateAzureStorageAccountsOptions)`
+- Function `*WebAppsClient.UpdateAzureStorageAccounts` return value(s) have been changed from `(WebAppsUpdateAzureStorageAccountsResponse, error)` to `(WebAppsClientUpdateAzureStorageAccountsResponse, error)`
+- Function `*WebAppsClient.GetProcess` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetProcessOptions)` to `(context.Context, string, string, string, *WebAppsClientGetProcessOptions)`
+- Function `*WebAppsClient.GetProcess` return value(s) have been changed from `(WebAppsGetProcessResponse, error)` to `(WebAppsClientGetProcessResponse, error)`
+- Function `*RecommendationsClient.DisableRecommendationForHostingEnvironment` parameter(s) have been changed from `(context.Context, string, string, string, string, *RecommendationsDisableRecommendationForHostingEnvironmentOptions)` to `(context.Context, string, string, string, string, *RecommendationsClientDisableRecommendationForHostingEnvironmentOptions)`
+- Function `*RecommendationsClient.DisableRecommendationForHostingEnvironment` return value(s) have been changed from `(RecommendationsDisableRecommendationForHostingEnvironmentResponse, error)` to `(RecommendationsClientDisableRecommendationForHostingEnvironmentResponse, error)`
+- Function `*StaticSitesClient.BeginCreateZipDeploymentForStaticSiteBuild` parameter(s) have been changed from `(context.Context, string, string, string, StaticSiteZipDeploymentARMResource, *StaticSitesBeginCreateZipDeploymentForStaticSiteBuildOptions)` to `(context.Context, string, string, string, StaticSiteZipDeploymentARMResource, *StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions)`
+- Function `*StaticSitesClient.BeginCreateZipDeploymentForStaticSiteBuild` return value(s) have been changed from `(StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse, error)` to `(StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck` parameter(s) have been changed from `(context.Context, string, string, SwiftVirtualNetwork, *WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions)` to `(context.Context, string, string, SwiftVirtualNetwork, *WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions)`
+- Function `*WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck` return value(s) have been changed from `(WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error)` to `(WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error)`
+- Function `*WebAppsClient.ListMetadata` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListMetadataOptions)` to `(context.Context, string, string, *WebAppsClientListMetadataOptions)`
+- Function `*WebAppsClient.ListMetadata` return value(s) have been changed from `(WebAppsListMetadataResponse, error)` to `(WebAppsClientListMetadataResponse, error)`
+- Function `*WebAppsClient.ListConfigurationSnapshotInfoSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListConfigurationSnapshotInfoSlotOptions)` to `(string, string, string, *WebAppsClientListConfigurationSnapshotInfoSlotOptions)`
+- Function `*WebAppsClient.ListConfigurationSnapshotInfoSlot` return value(s) have been changed from `(*WebAppsListConfigurationSnapshotInfoSlotPager)` to `(*WebAppsClientListConfigurationSnapshotInfoSlotPager)`
+- Function `*WebAppsClient.DeletePublicCertificateSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeletePublicCertificateSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeletePublicCertificateSlotOptions)`
+- Function `*WebAppsClient.DeletePublicCertificateSlot` return value(s) have been changed from `(WebAppsDeletePublicCertificateSlotResponse, error)` to `(WebAppsClientDeletePublicCertificateSlotResponse, error)`
+- Function `*WebAppsClient.DeleteHybridConnection` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteHybridConnectionOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteHybridConnectionOptions)`
+- Function `*WebAppsClient.DeleteHybridConnection` return value(s) have been changed from `(WebAppsDeleteHybridConnectionResponse, error)` to `(WebAppsClientDeleteHybridConnectionResponse, error)`
+- Function `*WebAppsClient.StartWebSiteNetworkTraceSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsStartWebSiteNetworkTraceSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientStartWebSiteNetworkTraceSlotOptions)`
+- Function `*WebAppsClient.StartWebSiteNetworkTraceSlot` return value(s) have been changed from `(WebAppsStartWebSiteNetworkTraceSlotResponse, error)` to `(WebAppsClientStartWebSiteNetworkTraceSlotResponse, error)`
+- Function `*WebAppsClient.ListBackupStatusSecretsSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, BackupRequest, *WebAppsListBackupStatusSecretsSlotOptions)` to `(context.Context, string, string, string, string, BackupRequest, *WebAppsClientListBackupStatusSecretsSlotOptions)`
+- Function `*WebAppsClient.ListBackupStatusSecretsSlot` return value(s) have been changed from `(WebAppsListBackupStatusSecretsSlotResponse, error)` to `(WebAppsClientListBackupStatusSecretsSlotResponse, error)`
+- Function `*StaticSitesClient.BeginCreateOrUpdateStaticSite` parameter(s) have been changed from `(context.Context, string, string, StaticSiteARMResource, *StaticSitesBeginCreateOrUpdateStaticSiteOptions)` to `(context.Context, string, string, StaticSiteARMResource, *StaticSitesClientBeginCreateOrUpdateStaticSiteOptions)`
+- Function `*StaticSitesClient.BeginCreateOrUpdateStaticSite` return value(s) have been changed from `(StaticSitesCreateOrUpdateStaticSitePollerResponse, error)` to `(StaticSitesClientCreateOrUpdateStaticSitePollerResponse, error)`
+- Function `*WebAppsClient.DeleteHostSecretSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsDeleteHostSecretSlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientDeleteHostSecretSlotOptions)`
+- Function `*WebAppsClient.DeleteHostSecretSlot` return value(s) have been changed from `(WebAppsDeleteHostSecretSlotResponse, error)` to `(WebAppsClientDeleteHostSecretSlotResponse, error)`
+- Function `*StaticSitesClient.UpdateStaticSite` parameter(s) have been changed from `(context.Context, string, string, StaticSitePatchResource, *StaticSitesUpdateStaticSiteOptions)` to `(context.Context, string, string, StaticSitePatchResource, *StaticSitesClientUpdateStaticSiteOptions)`
+- Function `*StaticSitesClient.UpdateStaticSite` return value(s) have been changed from `(StaticSitesUpdateStaticSiteResponse, error)` to `(StaticSitesClientUpdateStaticSiteResponse, error)`
+- Function `*WebAppsClient.GetInstanceProcessDumpSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsGetInstanceProcessDumpSlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientGetInstanceProcessDumpSlotOptions)`
+- Function `*WebAppsClient.GetInstanceProcessDumpSlot` return value(s) have been changed from `(WebAppsGetInstanceProcessDumpSlotResponse, error)` to `(WebAppsClientGetInstanceProcessDumpSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateRelayServiceConnection` parameter(s) have been changed from `(context.Context, string, string, string, RelayServiceConnectionEntity, *WebAppsCreateOrUpdateRelayServiceConnectionOptions)` to `(context.Context, string, string, string, RelayServiceConnectionEntity, *WebAppsClientCreateOrUpdateRelayServiceConnectionOptions)`
+- Function `*WebAppsClient.CreateOrUpdateRelayServiceConnection` return value(s) have been changed from `(WebAppsCreateOrUpdateRelayServiceConnectionResponse, error)` to `(WebAppsClientCreateOrUpdateRelayServiceConnectionResponse, error)`
+- Function `*StaticSitesClient.GetStaticSitesByResourceGroup` parameter(s) have been changed from `(string, *StaticSitesGetStaticSitesByResourceGroupOptions)` to `(string, *StaticSitesClientGetStaticSitesByResourceGroupOptions)`
+- Function `*StaticSitesClient.GetStaticSitesByResourceGroup` return value(s) have been changed from `(*StaticSitesGetStaticSitesByResourceGroupPager)` to `(*StaticSitesClientGetStaticSitesByResourceGroupPager)`
+- Function `*WebAppsClient.ListContinuousWebJobsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListContinuousWebJobsSlotOptions)` to `(string, string, string, *WebAppsClientListContinuousWebJobsSlotOptions)`
+- Function `*WebAppsClient.ListContinuousWebJobsSlot` return value(s) have been changed from `(*WebAppsListContinuousWebJobsSlotPager)` to `(*WebAppsClientListContinuousWebJobsSlotPager)`
+- Function `*WebAppsClient.GetNetworkTraceOperationSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetNetworkTraceOperationSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetNetworkTraceOperationSlotOptions)`
+- Function `*WebAppsClient.GetNetworkTraceOperationSlot` return value(s) have been changed from `(WebAppsGetNetworkTraceOperationSlotResponse, error)` to `(WebAppsClientGetNetworkTraceOperationSlotResponse, error)`
+- Function `*TopLevelDomainsClient.List` parameter(s) have been changed from `(*TopLevelDomainsListOptions)` to `(*TopLevelDomainsClientListOptions)`
+- Function `*TopLevelDomainsClient.List` return value(s) have been changed from `(*TopLevelDomainsListPager)` to `(*TopLevelDomainsClientListPager)`
+- Function `*TopLevelDomainsClient.Get` parameter(s) have been changed from `(context.Context, string, *TopLevelDomainsGetOptions)` to `(context.Context, string, *TopLevelDomainsClientGetOptions)`
+- Function `*TopLevelDomainsClient.Get` return value(s) have been changed from `(TopLevelDomainsGetResponse, error)` to `(TopLevelDomainsClientGetResponse, error)`
+- Function `*WebAppsClient.BeginRestoreFromBackupBlobSlot` parameter(s) have been changed from `(context.Context, string, string, string, RestoreRequest, *WebAppsBeginRestoreFromBackupBlobSlotOptions)` to `(context.Context, string, string, string, RestoreRequest, *WebAppsClientBeginRestoreFromBackupBlobSlotOptions)`
+- Function `*WebAppsClient.BeginRestoreFromBackupBlobSlot` return value(s) have been changed from `(WebAppsRestoreFromBackupBlobSlotPollerResponse, error)` to `(WebAppsClientRestoreFromBackupBlobSlotPollerResponse, error)`
+- Function `*WebAppsClient.UpdateAuthSettings` parameter(s) have been changed from `(context.Context, string, string, SiteAuthSettings, *WebAppsUpdateAuthSettingsOptions)` to `(context.Context, string, string, SiteAuthSettings, *WebAppsClientUpdateAuthSettingsOptions)`
+- Function `*WebAppsClient.UpdateAuthSettings` return value(s) have been changed from `(WebAppsUpdateAuthSettingsResponse, error)` to `(WebAppsClientUpdateAuthSettingsResponse, error)`
+- Function `*WebAppsClient.ListSyncFunctionTriggersSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListSyncFunctionTriggersSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListSyncFunctionTriggersSlotOptions)`
+- Function `*WebAppsClient.ListSyncFunctionTriggersSlot` return value(s) have been changed from `(WebAppsListSyncFunctionTriggersSlotResponse, error)` to `(WebAppsClientListSyncFunctionTriggersSlotResponse, error)`
+- Function `*WebAppsClient.GetVnetConnectionGateway` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetVnetConnectionGatewayOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetVnetConnectionGatewayOptions)`
+- Function `*WebAppsClient.GetVnetConnectionGateway` return value(s) have been changed from `(WebAppsGetVnetConnectionGatewayResponse, error)` to `(WebAppsClientGetVnetConnectionGatewayResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, Identifier, *WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotOptions)` to `(context.Context, string, string, string, string, Identifier, *WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse, error)` to `(WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse, error)`
+- Function `*DomainsClient.Update` parameter(s) have been changed from `(context.Context, string, string, DomainPatchResource, *DomainsUpdateOptions)` to `(context.Context, string, string, DomainPatchResource, *DomainsClientUpdateOptions)`
+- Function `*DomainsClient.Update` return value(s) have been changed from `(DomainsUpdateResponse, error)` to `(DomainsClientUpdateResponse, error)`
+- Function `*WebAppsClient.ListSlotConfigurationNames` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListSlotConfigurationNamesOptions)` to `(context.Context, string, string, *WebAppsClientListSlotConfigurationNamesOptions)`
+- Function `*WebAppsClient.ListSlotConfigurationNames` return value(s) have been changed from `(WebAppsListSlotConfigurationNamesResponse, error)` to `(WebAppsClientListSlotConfigurationNamesResponse, error)`
+- Function `*StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSite` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesDetachUserProvidedFunctionAppFromStaticSiteOptions)` to `(context.Context, string, string, string, *StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteOptions)`
+- Function `*StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSite` return value(s) have been changed from `(StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse, error)` to `(StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateHostNameBinding` parameter(s) have been changed from `(context.Context, string, string, string, HostNameBinding, *WebAppsCreateOrUpdateHostNameBindingOptions)` to `(context.Context, string, string, string, HostNameBinding, *WebAppsClientCreateOrUpdateHostNameBindingOptions)`
+- Function `*WebAppsClient.CreateOrUpdateHostNameBinding` return value(s) have been changed from `(WebAppsCreateOrUpdateHostNameBindingResponse, error)` to `(WebAppsClientCreateOrUpdateHostNameBindingResponse, error)`
+- Function `*WebAppsClient.AddPremierAddOnSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, PremierAddOn, *WebAppsAddPremierAddOnSlotOptions)` to `(context.Context, string, string, string, string, PremierAddOn, *WebAppsClientAddPremierAddOnSlotOptions)`
+- Function `*WebAppsClient.AddPremierAddOnSlot` return value(s) have been changed from `(WebAppsAddPremierAddOnSlotResponse, error)` to `(WebAppsClientAddPremierAddOnSlotResponse, error)`
+- Function `*DomainsClient.GetControlCenterSsoRequest` parameter(s) have been changed from `(context.Context, *DomainsGetControlCenterSsoRequestOptions)` to `(context.Context, *DomainsClientGetControlCenterSsoRequestOptions)`
+- Function `*DomainsClient.GetControlCenterSsoRequest` return value(s) have been changed from `(DomainsGetControlCenterSsoRequestResponse, error)` to `(DomainsClientGetControlCenterSsoRequestResponse, error)`
+- Function `*WebAppsClient.GetSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetSlotOptions)`
+- Function `*WebAppsClient.GetSlot` return value(s) have been changed from `(WebAppsGetSlotResponse, error)` to `(WebAppsClientGetSlotResponse, error)`
+- Function `*WebAppsClient.ListInstanceProcessModules` parameter(s) have been changed from `(string, string, string, string, *WebAppsListInstanceProcessModulesOptions)` to `(string, string, string, string, *WebAppsClientListInstanceProcessModulesOptions)`
+- Function `*WebAppsClient.ListInstanceProcessModules` return value(s) have been changed from `(*WebAppsListInstanceProcessModulesPager)` to `(*WebAppsClientListInstanceProcessModulesPager)`
+- Function `*DeletedWebAppsClient.List` parameter(s) have been changed from `(*DeletedWebAppsListOptions)` to `(*DeletedWebAppsClientListOptions)`
+- Function `*DeletedWebAppsClient.List` return value(s) have been changed from `(*DeletedWebAppsListPager)` to `(*DeletedWebAppsClientListPager)`
+- Function `*StaticSitesClient.CreateUserRolesInvitationLink` parameter(s) have been changed from `(context.Context, string, string, StaticSiteUserInvitationRequestResource, *StaticSitesCreateUserRolesInvitationLinkOptions)` to `(context.Context, string, string, StaticSiteUserInvitationRequestResource, *StaticSitesClientCreateUserRolesInvitationLinkOptions)`
+- Function `*StaticSitesClient.CreateUserRolesInvitationLink` return value(s) have been changed from `(StaticSitesCreateUserRolesInvitationLinkResponse, error)` to `(StaticSitesClientCreateUserRolesInvitationLinkResponse, error)`
+- Function `*WebAppsClient.RestartSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsRestartSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientRestartSlotOptions)`
+- Function `*WebAppsClient.RestartSlot` return value(s) have been changed from `(WebAppsRestartSlotResponse, error)` to `(WebAppsClientRestartSlotResponse, error)`
+- Function `*WebAppsClient.Restart` parameter(s) have been changed from `(context.Context, string, string, *WebAppsRestartOptions)` to `(context.Context, string, string, *WebAppsClientRestartOptions)`
+- Function `*WebAppsClient.Restart` return value(s) have been changed from `(WebAppsRestartResponse, error)` to `(WebAppsClientRestartResponse, error)`
+- Function `*WebAppsClient.GetFtpAllowed` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetFtpAllowedOptions)` to `(context.Context, string, string, *WebAppsClientGetFtpAllowedOptions)`
+- Function `*WebAppsClient.GetFtpAllowed` return value(s) have been changed from `(WebAppsGetFtpAllowedResponse, error)` to `(WebAppsClientGetFtpAllowedResponse, error)`
+- Function `*WebAppsClient.BeginCreateInstanceMSDeployOperationSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, MSDeploy, *WebAppsBeginCreateInstanceMSDeployOperationSlotOptions)` to `(context.Context, string, string, string, string, MSDeploy, *WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions)`
+- Function `*WebAppsClient.BeginCreateInstanceMSDeployOperationSlot` return value(s) have been changed from `(WebAppsCreateInstanceMSDeployOperationSlotPollerResponse, error)` to `(WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse, error)`
+- Function `*WebAppsClient.GetMSDeployStatusSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetMSDeployStatusSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetMSDeployStatusSlotOptions)`
+- Function `*WebAppsClient.GetMSDeployStatusSlot` return value(s) have been changed from `(WebAppsGetMSDeployStatusSlotResponse, error)` to `(WebAppsClientGetMSDeployStatusSlotResponse, error)`
+- Function `*WebAppsClient.GetPrivateLinkResources` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetPrivateLinkResourcesOptions)` to `(context.Context, string, string, *WebAppsClientGetPrivateLinkResourcesOptions)`
+- Function `*WebAppsClient.GetPrivateLinkResources` return value(s) have been changed from `(WebAppsGetPrivateLinkResourcesResponse, error)` to `(WebAppsClientGetPrivateLinkResourcesResponse, error)`
+- Function `*WebAppsClient.DeleteDeployment` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteDeploymentOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteDeploymentOptions)`
+- Function `*WebAppsClient.DeleteDeployment` return value(s) have been changed from `(WebAppsDeleteDeploymentResponse, error)` to `(WebAppsClientDeleteDeploymentResponse, error)`
+- Function `*WebAppsClient.DeleteInstanceProcess` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteInstanceProcessOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteInstanceProcessOptions)`
+- Function `*WebAppsClient.DeleteInstanceProcess` return value(s) have been changed from `(WebAppsDeleteInstanceProcessResponse, error)` to `(WebAppsClientDeleteInstanceProcessResponse, error)`
+- Function `*WebAppsClient.StartSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsStartSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientStartSlotOptions)`
+- Function `*WebAppsClient.StartSlot` return value(s) have been changed from `(WebAppsStartSlotResponse, error)` to `(WebAppsClientStartSlotResponse, error)`
+- Function `*WebAppsClient.ListUsagesSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListUsagesSlotOptions)` to `(string, string, string, *WebAppsClientListUsagesSlotOptions)`
+- Function `*WebAppsClient.ListUsagesSlot` return value(s) have been changed from `(*WebAppsListUsagesSlotPager)` to `(*WebAppsClientListUsagesSlotPager)`
+- Function `*WebAppsClient.ListPublicCertificates` parameter(s) have been changed from `(string, string, *WebAppsListPublicCertificatesOptions)` to `(string, string, *WebAppsClientListPublicCertificatesOptions)`
+- Function `*WebAppsClient.ListPublicCertificates` return value(s) have been changed from `(*WebAppsListPublicCertificatesPager)` to `(*WebAppsClientListPublicCertificatesPager)`
+- Function `*WebAppsClient.CreateOrUpdateHostNameBindingSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, HostNameBinding, *WebAppsCreateOrUpdateHostNameBindingSlotOptions)` to `(context.Context, string, string, string, string, HostNameBinding, *WebAppsClientCreateOrUpdateHostNameBindingSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateHostNameBindingSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateHostNameBindingSlotResponse, error)` to `(WebAppsClientCreateOrUpdateHostNameBindingSlotResponse, error)`
+- Function `*WebAppsClient.DeletePremierAddOnSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeletePremierAddOnSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeletePremierAddOnSlotOptions)`
+- Function `*WebAppsClient.DeletePremierAddOnSlot` return value(s) have been changed from `(WebAppsDeletePremierAddOnSlotResponse, error)` to `(WebAppsClientDeletePremierAddOnSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, SiteConfigResource, *WebAppsCreateOrUpdateConfigurationSlotOptions)` to `(context.Context, string, string, string, SiteConfigResource, *WebAppsClientCreateOrUpdateConfigurationSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateConfigurationSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateConfigurationSlotResponse, error)` to `(WebAppsClientCreateOrUpdateConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.ListHostNameBindings` parameter(s) have been changed from `(string, string, *WebAppsListHostNameBindingsOptions)` to `(string, string, *WebAppsClientListHostNameBindingsOptions)`
+- Function `*WebAppsClient.ListHostNameBindings` return value(s) have been changed from `(*WebAppsListHostNameBindingsPager)` to `(*WebAppsClientListHostNameBindingsPager)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSourceControlSlot` parameter(s) have been changed from `(context.Context, string, string, string, SiteSourceControl, *WebAppsBeginCreateOrUpdateSourceControlSlotOptions)` to `(context.Context, string, string, string, SiteSourceControl, *WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSourceControlSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateSourceControlSlotPollerResponse, error)` to `(WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse, error)`
+- Function `*WebAppsClient.GetFtpAllowedSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetFtpAllowedSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetFtpAllowedSlotOptions)`
+- Function `*WebAppsClient.GetFtpAllowedSlot` return value(s) have been changed from `(WebAppsGetFtpAllowedSlotResponse, error)` to `(WebAppsClientGetFtpAllowedSlotResponse, error)`
+- Function `*WebAppsClient.DiscoverBackup` parameter(s) have been changed from `(context.Context, string, string, RestoreRequest, *WebAppsDiscoverBackupOptions)` to `(context.Context, string, string, RestoreRequest, *WebAppsClientDiscoverBackupOptions)`
+- Function `*WebAppsClient.DiscoverBackup` return value(s) have been changed from `(WebAppsDiscoverBackupResponse, error)` to `(WebAppsClientDiscoverBackupResponse, error)`
+- Function `*WebAppsClient.DeleteSiteExtensionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteSiteExtensionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteSiteExtensionSlotOptions)`
+- Function `*WebAppsClient.DeleteSiteExtensionSlot` return value(s) have been changed from `(WebAppsDeleteSiteExtensionSlotResponse, error)` to `(WebAppsClientDeleteSiteExtensionSlotResponse, error)`
+- Function `*WebAppsClient.BeginListPublishingCredentials` parameter(s) have been changed from `(context.Context, string, string, *WebAppsBeginListPublishingCredentialsOptions)` to `(context.Context, string, string, *WebAppsClientBeginListPublishingCredentialsOptions)`
+- Function `*WebAppsClient.BeginListPublishingCredentials` return value(s) have been changed from `(WebAppsListPublishingCredentialsPollerResponse, error)` to `(WebAppsClientListPublishingCredentialsPollerResponse, error)`
+- Function `*WebAppsClient.GetContinuousWebJob` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetContinuousWebJobOptions)` to `(context.Context, string, string, string, *WebAppsClientGetContinuousWebJobOptions)`
+- Function `*WebAppsClient.GetContinuousWebJob` return value(s) have been changed from `(WebAppsGetContinuousWebJobResponse, error)` to `(WebAppsClientGetContinuousWebJobResponse, error)`
+- Function `*WebAppsClient.ListInstanceProcesses` parameter(s) have been changed from `(string, string, string, *WebAppsListInstanceProcessesOptions)` to `(string, string, string, *WebAppsClientListInstanceProcessesOptions)`
+- Function `*WebAppsClient.ListInstanceProcesses` return value(s) have been changed from `(*WebAppsListInstanceProcessesPager)` to `(*WebAppsClientListInstanceProcessesPager)`
+- Function `*WebAppsClient.DeleteHostNameBinding` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteHostNameBindingOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteHostNameBindingOptions)`
+- Function `*WebAppsClient.DeleteHostNameBinding` return value(s) have been changed from `(WebAppsDeleteHostNameBindingResponse, error)` to `(WebAppsClientDeleteHostNameBindingResponse, error)`
+- Function `*DiagnosticsClient.GetSiteDetector` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiagnosticsGetSiteDetectorOptions)` to `(context.Context, string, string, string, string, *DiagnosticsClientGetSiteDetectorOptions)`
+- Function `*DiagnosticsClient.GetSiteDetector` return value(s) have been changed from `(DiagnosticsGetSiteDetectorResponse, error)` to `(DiagnosticsClientGetSiteDetectorResponse, error)`
+- Function `*WebAppsClient.UpdateAuthSettingsV2Slot` parameter(s) have been changed from `(context.Context, string, string, string, SiteAuthSettingsV2, *WebAppsUpdateAuthSettingsV2SlotOptions)` to `(context.Context, string, string, string, SiteAuthSettingsV2, *WebAppsClientUpdateAuthSettingsV2SlotOptions)`
+- Function `*WebAppsClient.UpdateAuthSettingsV2Slot` return value(s) have been changed from `(WebAppsUpdateAuthSettingsV2SlotResponse, error)` to `(WebAppsClientUpdateAuthSettingsV2SlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdatePublicCertificateSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, PublicCertificate, *WebAppsCreateOrUpdatePublicCertificateSlotOptions)` to `(context.Context, string, string, string, string, PublicCertificate, *WebAppsClientCreateOrUpdatePublicCertificateSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdatePublicCertificateSlot` return value(s) have been changed from `(WebAppsCreateOrUpdatePublicCertificateSlotResponse, error)` to `(WebAppsClientCreateOrUpdatePublicCertificateSlotResponse, error)`
+- Function `*StaticSitesClient.GetPrivateEndpointConnectionList` parameter(s) have been changed from `(string, string, *StaticSitesGetPrivateEndpointConnectionListOptions)` to `(string, string, *StaticSitesClientGetPrivateEndpointConnectionListOptions)`
+- Function `*StaticSitesClient.GetPrivateEndpointConnectionList` return value(s) have been changed from `(*StaticSitesGetPrivateEndpointConnectionListPager)` to `(*StaticSitesClientGetPrivateEndpointConnectionListPager)`
+- Function `*WebAppsClient.BeginRestoreSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, RestoreRequest, *WebAppsBeginRestoreSlotOptions)` to `(context.Context, string, string, string, string, RestoreRequest, *WebAppsClientBeginRestoreSlotOptions)`
+- Function `*WebAppsClient.BeginRestoreSlot` return value(s) have been changed from `(WebAppsRestoreSlotPollerResponse, error)` to `(WebAppsClientRestoreSlotPollerResponse, error)`
+- Function `*WebAppsClient.DeleteHostSecret` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteHostSecretOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteHostSecretOptions)`
+- Function `*WebAppsClient.DeleteHostSecret` return value(s) have been changed from `(WebAppsDeleteHostSecretResponse, error)` to `(WebAppsClientDeleteHostSecretResponse, error)`
+- Function `*StaticSitesClient.ListStaticSiteBuildFunctionAppSettings` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesListStaticSiteBuildFunctionAppSettingsOptions)` to `(context.Context, string, string, string, *StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions)`
+- Function `*StaticSitesClient.ListStaticSiteBuildFunctionAppSettings` return value(s) have been changed from `(StaticSitesListStaticSiteBuildFunctionAppSettingsResponse, error)` to `(StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse, error)`
+- Function `*WebAppsClient.DeleteBackupConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteBackupConfigurationSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteBackupConfigurationSlotOptions)`
+- Function `*WebAppsClient.DeleteBackupConfigurationSlot` return value(s) have been changed from `(WebAppsDeleteBackupConfigurationSlotResponse, error)` to `(WebAppsClientDeleteBackupConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.GetConfiguration` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetConfigurationOptions)` to `(context.Context, string, string, *WebAppsClientGetConfigurationOptions)`
+- Function `*WebAppsClient.GetConfiguration` return value(s) have been changed from `(WebAppsGetConfigurationResponse, error)` to `(WebAppsClientGetConfigurationResponse, error)`
+- Function `*StaticSitesClient.GetStaticSiteBuilds` parameter(s) have been changed from `(string, string, *StaticSitesGetStaticSiteBuildsOptions)` to `(string, string, *StaticSitesClientGetStaticSiteBuildsOptions)`
+- Function `*StaticSitesClient.GetStaticSiteBuilds` return value(s) have been changed from `(*StaticSitesGetStaticSiteBuildsPager)` to `(*StaticSitesClientGetStaticSiteBuildsPager)`
+- Function `*WebAppsClient.ListPremierAddOnsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListPremierAddOnsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListPremierAddOnsSlotOptions)`
+- Function `*WebAppsClient.ListPremierAddOnsSlot` return value(s) have been changed from `(WebAppsListPremierAddOnsSlotResponse, error)` to `(WebAppsClientListPremierAddOnsSlotResponse, error)`
+- Function `*WebAppsClient.DeleteInstanceProcessSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsDeleteInstanceProcessSlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientDeleteInstanceProcessSlotOptions)`
+- Function `*WebAppsClient.DeleteInstanceProcessSlot` return value(s) have been changed from `(WebAppsDeleteInstanceProcessSlotResponse, error)` to `(WebAppsClientDeleteInstanceProcessSlotResponse, error)`
+- Function `*DiagnosticsClient.GetSiteDetectorSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *DiagnosticsGetSiteDetectorSlotOptions)` to `(context.Context, string, string, string, string, string, *DiagnosticsClientGetSiteDetectorSlotOptions)`
+- Function `*DiagnosticsClient.GetSiteDetectorSlot` return value(s) have been changed from `(DiagnosticsGetSiteDetectorSlotResponse, error)` to `(DiagnosticsClientGetSiteDetectorSlotResponse, error)`
+- Function `*WebAppsClient.ListConnectionStrings` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListConnectionStringsOptions)` to `(context.Context, string, string, *WebAppsClientListConnectionStringsOptions)`
+- Function `*WebAppsClient.ListConnectionStrings` return value(s) have been changed from `(WebAppsListConnectionStringsResponse, error)` to `(WebAppsClientListConnectionStringsResponse, error)`
+- Function `*WebAppsClient.GetSourceControl` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetSourceControlOptions)` to `(context.Context, string, string, *WebAppsClientGetSourceControlOptions)`
+- Function `*WebAppsClient.GetSourceControl` return value(s) have been changed from `(WebAppsGetSourceControlResponse, error)` to `(WebAppsClientGetSourceControlResponse, error)`
+- Function `*DomainsClient.GetOwnershipIdentifier` parameter(s) have been changed from `(context.Context, string, string, string, *DomainsGetOwnershipIdentifierOptions)` to `(context.Context, string, string, string, *DomainsClientGetOwnershipIdentifierOptions)`
+- Function `*DomainsClient.GetOwnershipIdentifier` return value(s) have been changed from `(DomainsGetOwnershipIdentifierResponse, error)` to `(DomainsClientGetOwnershipIdentifierResponse, error)`
+- Function `*WebAppsClient.SyncFunctionsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsSyncFunctionsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientSyncFunctionsSlotOptions)`
+- Function `*WebAppsClient.SyncFunctionsSlot` return value(s) have been changed from `(WebAppsSyncFunctionsSlotResponse, error)` to `(WebAppsClientSyncFunctionsSlotResponse, error)`
+- Function `*WebAppsClient.GetPremierAddOnSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetPremierAddOnSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetPremierAddOnSlotOptions)`
+- Function `*WebAppsClient.GetPremierAddOnSlot` return value(s) have been changed from `(WebAppsGetPremierAddOnSlotResponse, error)` to `(WebAppsClientGetPremierAddOnSlotResponse, error)`
+- Function `*DeletedWebAppsClient.GetDeletedWebAppByLocation` parameter(s) have been changed from `(context.Context, string, string, *DeletedWebAppsGetDeletedWebAppByLocationOptions)` to `(context.Context, string, string, *DeletedWebAppsClientGetDeletedWebAppByLocationOptions)`
+- Function `*DeletedWebAppsClient.GetDeletedWebAppByLocation` return value(s) have been changed from `(DeletedWebAppsGetDeletedWebAppByLocationResponse, error)` to `(DeletedWebAppsClientGetDeletedWebAppByLocationResponse, error)`
+- Function `*WebAppsClient.StartContinuousWebJob` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsStartContinuousWebJobOptions)` to `(context.Context, string, string, string, *WebAppsClientStartContinuousWebJobOptions)`
+- Function `*WebAppsClient.StartContinuousWebJob` return value(s) have been changed from `(WebAppsStartContinuousWebJobResponse, error)` to `(WebAppsClientStartContinuousWebJobResponse, error)`
+- Function `*WebAppsClient.StopNetworkTraceSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsStopNetworkTraceSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientStopNetworkTraceSlotOptions)`
+- Function `*WebAppsClient.StopNetworkTraceSlot` return value(s) have been changed from `(WebAppsStopNetworkTraceSlotResponse, error)` to `(WebAppsClientStopNetworkTraceSlotResponse, error)`
+- Function `*CertificateRegistrationProviderClient.ListOperations` parameter(s) have been changed from `(*CertificateRegistrationProviderListOperationsOptions)` to `(*CertificateRegistrationProviderClientListOperationsOptions)`
+- Function `*CertificateRegistrationProviderClient.ListOperations` return value(s) have been changed from `(*CertificateRegistrationProviderListOperationsPager)` to `(*CertificateRegistrationProviderClientListOperationsPager)`
+- Function `*WebAppsClient.GetInstanceProcessDump` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetInstanceProcessDumpOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetInstanceProcessDumpOptions)`
+- Function `*WebAppsClient.GetInstanceProcessDump` return value(s) have been changed from `(WebAppsGetInstanceProcessDumpResponse, error)` to `(WebAppsClientGetInstanceProcessDumpResponse, error)`
+- Function `*WebAppsClient.ListProcesses` parameter(s) have been changed from `(string, string, *WebAppsListProcessesOptions)` to `(string, string, *WebAppsClientListProcessesOptions)`
+- Function `*WebAppsClient.ListProcesses` return value(s) have been changed from `(*WebAppsListProcessesPager)` to `(*WebAppsClientListProcessesPager)`
+- Function `*WebAppsClient.ListHostKeys` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListHostKeysOptions)` to `(context.Context, string, string, *WebAppsClientListHostKeysOptions)`
+- Function `*WebAppsClient.ListHostKeys` return value(s) have been changed from `(WebAppsListHostKeysResponse, error)` to `(WebAppsClientListHostKeysResponse, error)`
+- Function `*KubeEnvironmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *KubeEnvironmentsGetOptions)` to `(context.Context, string, string, *KubeEnvironmentsClientGetOptions)`
+- Function `*KubeEnvironmentsClient.Get` return value(s) have been changed from `(KubeEnvironmentsGetResponse, error)` to `(KubeEnvironmentsClientGetResponse, error)`
+- Function `*WebAppsClient.BeginCreateMSDeployOperation` parameter(s) have been changed from `(context.Context, string, string, MSDeploy, *WebAppsBeginCreateMSDeployOperationOptions)` to `(context.Context, string, string, MSDeploy, *WebAppsClientBeginCreateMSDeployOperationOptions)`
+- Function `*WebAppsClient.BeginCreateMSDeployOperation` return value(s) have been changed from `(WebAppsCreateMSDeployOperationPollerResponse, error)` to `(WebAppsClientCreateMSDeployOperationPollerResponse, error)`
+- Function `*ResourceHealthMetadataClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ResourceHealthMetadataListByResourceGroupOptions)` to `(string, *ResourceHealthMetadataClientListByResourceGroupOptions)`
+- Function `*ResourceHealthMetadataClient.ListByResourceGroup` return value(s) have been changed from `(*ResourceHealthMetadataListByResourceGroupPager)` to `(*ResourceHealthMetadataClientListByResourceGroupPager)`
+- Function `*WebAppsClient.StopWebSiteNetworkTraceSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsStopWebSiteNetworkTraceSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientStopWebSiteNetworkTraceSlotOptions)`
+- Function `*WebAppsClient.StopWebSiteNetworkTraceSlot` return value(s) have been changed from `(WebAppsStopWebSiteNetworkTraceSlotResponse, error)` to `(WebAppsClientStopWebSiteNetworkTraceSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateFunctionSecretSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, KeyInfo, *WebAppsCreateOrUpdateFunctionSecretSlotOptions)` to `(context.Context, string, string, string, string, string, KeyInfo, *WebAppsClientCreateOrUpdateFunctionSecretSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateFunctionSecretSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateFunctionSecretSlotResponse, error)` to `(WebAppsClientCreateOrUpdateFunctionSecretSlotResponse, error)`
+- Function `*WebAppsClient.GetProcessDump` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetProcessDumpOptions)` to `(context.Context, string, string, string, *WebAppsClientGetProcessDumpOptions)`
+- Function `*WebAppsClient.GetProcessDump` return value(s) have been changed from `(WebAppsGetProcessDumpResponse, error)` to `(WebAppsClientGetProcessDumpResponse, error)`
+- Function `*WebAppsClient.ApplySlotConfigToProduction` parameter(s) have been changed from `(context.Context, string, string, CsmSlotEntity, *WebAppsApplySlotConfigToProductionOptions)` to `(context.Context, string, string, CsmSlotEntity, *WebAppsClientApplySlotConfigToProductionOptions)`
+- Function `*WebAppsClient.ApplySlotConfigToProduction` return value(s) have been changed from `(WebAppsApplySlotConfigToProductionResponse, error)` to `(WebAppsClientApplySlotConfigToProductionResponse, error)`
+- Function `*WebAppsClient.IsCloneable` parameter(s) have been changed from `(context.Context, string, string, *WebAppsIsCloneableOptions)` to `(context.Context, string, string, *WebAppsClientIsCloneableOptions)`
+- Function `*WebAppsClient.IsCloneable` return value(s) have been changed from `(WebAppsIsCloneableResponse, error)` to `(WebAppsClientIsCloneableResponse, error)`
+- Function `*StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings` parameter(s) have been changed from `(context.Context, string, string, string, StringDictionary, *StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsOptions)` to `(context.Context, string, string, string, StringDictionary, *StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions)`
+- Function `*StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings` return value(s) have been changed from `(StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse, error)` to `(StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse, error)`
+- Function `*StaticSitesClient.BeginDeletePrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesBeginDeletePrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, *StaticSitesClientBeginDeletePrivateEndpointConnectionOptions)`
+- Function `*StaticSitesClient.BeginDeletePrivateEndpointConnection` return value(s) have been changed from `(StaticSitesDeletePrivateEndpointConnectionPollerResponse, error)` to `(StaticSitesClientDeletePrivateEndpointConnectionPollerResponse, error)`
+- Function `*WebAppsClient.ListHybridConnectionsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListHybridConnectionsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListHybridConnectionsSlotOptions)`
+- Function `*WebAppsClient.ListHybridConnectionsSlot` return value(s) have been changed from `(WebAppsListHybridConnectionsSlotResponse, error)` to `(WebAppsClientListHybridConnectionsSlotResponse, error)`
+- Function `*GlobalClient.GetSubscriptionOperationWithAsyncResponse` parameter(s) have been changed from `(context.Context, string, string, *GlobalGetSubscriptionOperationWithAsyncResponseOptions)` to `(context.Context, string, string, *GlobalClientGetSubscriptionOperationWithAsyncResponseOptions)`
+- Function `*GlobalClient.GetSubscriptionOperationWithAsyncResponse` return value(s) have been changed from `(GlobalGetSubscriptionOperationWithAsyncResponseResponse, error)` to `(GlobalClientGetSubscriptionOperationWithAsyncResponseResponse, error)`
+- Function `*DomainsClient.Renew` parameter(s) have been changed from `(context.Context, string, string, *DomainsRenewOptions)` to `(context.Context, string, string, *DomainsClientRenewOptions)`
+- Function `*DomainsClient.Renew` return value(s) have been changed from `(DomainsRenewResponse, error)` to `(DomainsClientRenewResponse, error)`
+- Function `*WebAppsClient.ListWebJobsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListWebJobsSlotOptions)` to `(string, string, string, *WebAppsClientListWebJobsSlotOptions)`
+- Function `*WebAppsClient.ListWebJobsSlot` return value(s) have been changed from `(*WebAppsListWebJobsSlotPager)` to `(*WebAppsClientListWebJobsSlotPager)`
+- Function `*WebAppsClient.BeginStartNetworkTraceSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsBeginStartNetworkTraceSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientBeginStartNetworkTraceSlotOptions)`
+- Function `*WebAppsClient.BeginStartNetworkTraceSlot` return value(s) have been changed from `(WebAppsStartNetworkTraceSlotPollerResponse, error)` to `(WebAppsClientStartNetworkTraceSlotPollerResponse, error)`
+- Function `*WebAppsClient.DiscoverBackupSlot` parameter(s) have been changed from `(context.Context, string, string, string, RestoreRequest, *WebAppsDiscoverBackupSlotOptions)` to `(context.Context, string, string, string, RestoreRequest, *WebAppsClientDiscoverBackupSlotOptions)`
+- Function `*WebAppsClient.DiscoverBackupSlot` return value(s) have been changed from `(WebAppsDiscoverBackupSlotResponse, error)` to `(WebAppsClientDiscoverBackupSlotResponse, error)`
+- Function `*WebAppsClient.DeleteSiteExtension` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteSiteExtensionOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteSiteExtensionOptions)`
+- Function `*WebAppsClient.DeleteSiteExtension` return value(s) have been changed from `(WebAppsDeleteSiteExtensionResponse, error)` to `(WebAppsClientDeleteSiteExtensionResponse, error)`
+- Function `*WebAppsClient.ListInstanceProcessThreads` parameter(s) have been changed from `(string, string, string, string, *WebAppsListInstanceProcessThreadsOptions)` to `(string, string, string, string, *WebAppsClientListInstanceProcessThreadsOptions)`
+- Function `*WebAppsClient.ListInstanceProcessThreads` return value(s) have been changed from `(*WebAppsListInstanceProcessThreadsPager)` to `(*WebAppsClientListInstanceProcessThreadsPager)`
+- Function `*WebAppsClient.BeginStartNetworkTrace` parameter(s) have been changed from `(context.Context, string, string, *WebAppsBeginStartNetworkTraceOptions)` to `(context.Context, string, string, *WebAppsClientBeginStartNetworkTraceOptions)`
+- Function `*WebAppsClient.BeginStartNetworkTrace` return value(s) have been changed from `(WebAppsStartNetworkTracePollerResponse, error)` to `(WebAppsClientStartNetworkTracePollerResponse, error)`
+- Function `*WebAppsClient.DeleteTriggeredWebJob` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteTriggeredWebJobOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteTriggeredWebJobOptions)`
+- Function `*WebAppsClient.DeleteTriggeredWebJob` return value(s) have been changed from `(WebAppsDeleteTriggeredWebJobResponse, error)` to `(WebAppsClientDeleteTriggeredWebJobResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateFunctionSecret` parameter(s) have been changed from `(context.Context, string, string, string, string, KeyInfo, *WebAppsCreateOrUpdateFunctionSecretOptions)` to `(context.Context, string, string, string, string, KeyInfo, *WebAppsClientCreateOrUpdateFunctionSecretOptions)`
+- Function `*WebAppsClient.CreateOrUpdateFunctionSecret` return value(s) have been changed from `(WebAppsCreateOrUpdateFunctionSecretResponse, error)` to `(WebAppsClientCreateOrUpdateFunctionSecretResponse, error)`
+- Function `*StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *StaticSitesBeginApproveOrRejectPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions)`
+- Function `*StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection` return value(s) have been changed from `(StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse, error)` to `(StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse, error)`
+- Function `*KubeEnvironmentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, KubeEnvironment, *KubeEnvironmentsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, KubeEnvironment, *KubeEnvironmentsClientBeginCreateOrUpdateOptions)`
+- Function `*KubeEnvironmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(KubeEnvironmentsCreateOrUpdatePollerResponse, error)` to `(KubeEnvironmentsClientCreateOrUpdatePollerResponse, error)`
+- Function `*WebAppsClient.GetPrivateEndpointConnectionListSlot` parameter(s) have been changed from `(string, string, string, *WebAppsGetPrivateEndpointConnectionListSlotOptions)` to `(string, string, string, *WebAppsClientGetPrivateEndpointConnectionListSlotOptions)`
+- Function `*WebAppsClient.GetPrivateEndpointConnectionListSlot` return value(s) have been changed from `(*WebAppsGetPrivateEndpointConnectionListSlotPager)` to `(*WebAppsClientGetPrivateEndpointConnectionListSlotPager)`
+- Function `*WebAppsClient.BeginRestoreFromDeletedAppSlot` parameter(s) have been changed from `(context.Context, string, string, string, DeletedAppRestoreRequest, *WebAppsBeginRestoreFromDeletedAppSlotOptions)` to `(context.Context, string, string, string, DeletedAppRestoreRequest, *WebAppsClientBeginRestoreFromDeletedAppSlotOptions)`
+- Function `*WebAppsClient.BeginRestoreFromDeletedAppSlot` return value(s) have been changed from `(WebAppsRestoreFromDeletedAppSlotPollerResponse, error)` to `(WebAppsClientRestoreFromDeletedAppSlotPollerResponse, error)`
+- Function `*DomainsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DomainsGetOptions)` to `(context.Context, string, string, *DomainsClientGetOptions)`
+- Function `*DomainsClient.Get` return value(s) have been changed from `(DomainsGetResponse, error)` to `(DomainsClientGetResponse, error)`
+- Function `*WebAppsClient.BeginSwapSlotWithProduction` parameter(s) have been changed from `(context.Context, string, string, CsmSlotEntity, *WebAppsBeginSwapSlotWithProductionOptions)` to `(context.Context, string, string, CsmSlotEntity, *WebAppsClientBeginSwapSlotWithProductionOptions)`
+- Function `*WebAppsClient.BeginSwapSlotWithProduction` return value(s) have been changed from `(WebAppsSwapSlotWithProductionPollerResponse, error)` to `(WebAppsClientSwapSlotWithProductionPollerResponse, error)`
+- Function `*WebAppsClient.ListRelayServiceConnectionsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListRelayServiceConnectionsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListRelayServiceConnectionsSlotOptions)`
+- Function `*WebAppsClient.ListRelayServiceConnectionsSlot` return value(s) have been changed from `(WebAppsListRelayServiceConnectionsSlotResponse, error)` to `(WebAppsClientListRelayServiceConnectionsSlotResponse, error)`
+- Function `*WebAppsClient.DeleteSourceControl` parameter(s) have been changed from `(context.Context, string, string, *WebAppsDeleteSourceControlOptions)` to `(context.Context, string, string, *WebAppsClientDeleteSourceControlOptions)`
+- Function `*WebAppsClient.DeleteSourceControl` return value(s) have been changed from `(WebAppsDeleteSourceControlResponse, error)` to `(WebAppsClientDeleteSourceControlResponse, error)`
+- Function `*StaticSitesClient.ListStaticSiteUsers` parameter(s) have been changed from `(string, string, string, *StaticSitesListStaticSiteUsersOptions)` to `(string, string, string, *StaticSitesClientListStaticSiteUsersOptions)`
+- Function `*StaticSitesClient.ListStaticSiteUsers` return value(s) have been changed from `(*StaticSitesListStaticSiteUsersPager)` to `(*StaticSitesClientListStaticSiteUsersPager)`
+- Function `*WebAppsClient.Backup` parameter(s) have been changed from `(context.Context, string, string, BackupRequest, *WebAppsBackupOptions)` to `(context.Context, string, string, BackupRequest, *WebAppsClientBackupOptions)`
+- Function `*WebAppsClient.Backup` return value(s) have been changed from `(WebAppsBackupResponse, error)` to `(WebAppsClientBackupResponse, error)`
+- Function `*WebAppsClient.UpdateAzureStorageAccountsSlot` parameter(s) have been changed from `(context.Context, string, string, string, AzureStoragePropertyDictionaryResource, *WebAppsUpdateAzureStorageAccountsSlotOptions)` to `(context.Context, string, string, string, AzureStoragePropertyDictionaryResource, *WebAppsClientUpdateAzureStorageAccountsSlotOptions)`
+- Function `*WebAppsClient.UpdateAzureStorageAccountsSlot` return value(s) have been changed from `(WebAppsUpdateAzureStorageAccountsSlotResponse, error)` to `(WebAppsClientUpdateAzureStorageAccountsSlotResponse, error)`
+- Function `*WebAppsClient.GetFunction` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetFunctionOptions)` to `(context.Context, string, string, string, *WebAppsClientGetFunctionOptions)`
+- Function `*WebAppsClient.GetFunction` return value(s) have been changed from `(WebAppsGetFunctionResponse, error)` to `(WebAppsClientGetFunctionResponse, error)`
+- Function `*WebAppsClient.GetProcessSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetProcessSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetProcessSlotOptions)`
+- Function `*WebAppsClient.GetProcessSlot` return value(s) have been changed from `(WebAppsGetProcessSlotResponse, error)` to `(WebAppsClientGetProcessSlotResponse, error)`
+- Function `*WebAppsClient.UpdateSourceControlSlot` parameter(s) have been changed from `(context.Context, string, string, string, SiteSourceControl, *WebAppsUpdateSourceControlSlotOptions)` to `(context.Context, string, string, string, SiteSourceControl, *WebAppsClientUpdateSourceControlSlotOptions)`
+- Function `*WebAppsClient.UpdateSourceControlSlot` return value(s) have been changed from `(WebAppsUpdateSourceControlSlotResponse, error)` to `(WebAppsClientUpdateSourceControlSlotResponse, error)`
+- Function `*WebAppsClient.ListApplicationSettings` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListApplicationSettingsOptions)` to `(context.Context, string, string, *WebAppsClientListApplicationSettingsOptions)`
+- Function `*WebAppsClient.ListApplicationSettings` return value(s) have been changed from `(WebAppsListApplicationSettingsResponse, error)` to `(WebAppsClientListApplicationSettingsResponse, error)`
+- Function `*WebAppsClient.BeginCreateInstanceFunctionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, FunctionEnvelope, *WebAppsBeginCreateInstanceFunctionSlotOptions)` to `(context.Context, string, string, string, string, FunctionEnvelope, *WebAppsClientBeginCreateInstanceFunctionSlotOptions)`
+- Function `*WebAppsClient.BeginCreateInstanceFunctionSlot` return value(s) have been changed from `(WebAppsCreateInstanceFunctionSlotPollerResponse, error)` to `(WebAppsClientCreateInstanceFunctionSlotPollerResponse, error)`
+- Function `*WebAppsClient.ListUsages` parameter(s) have been changed from `(string, string, *WebAppsListUsagesOptions)` to `(string, string, *WebAppsClientListUsagesOptions)`
+- Function `*WebAppsClient.ListUsages` return value(s) have been changed from `(*WebAppsListUsagesPager)` to `(*WebAppsClientListUsagesPager)`
+- Function `*WebAppsClient.GetSitePhpErrorLogFlag` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetSitePhpErrorLogFlagOptions)` to `(context.Context, string, string, *WebAppsClientGetSitePhpErrorLogFlagOptions)`
+- Function `*WebAppsClient.GetSitePhpErrorLogFlag` return value(s) have been changed from `(WebAppsGetSitePhpErrorLogFlagResponse, error)` to `(WebAppsClientGetSitePhpErrorLogFlagResponse, error)`
+- Function `*WebAppsClient.DeleteBackup` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteBackupOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteBackupOptions)`
+- Function `*WebAppsClient.DeleteBackup` return value(s) have been changed from `(WebAppsDeleteBackupResponse, error)` to `(WebAppsClientDeleteBackupResponse, error)`
+- Function `*DomainsClient.CheckAvailability` parameter(s) have been changed from `(context.Context, NameIdentifier, *DomainsCheckAvailabilityOptions)` to `(context.Context, NameIdentifier, *DomainsClientCheckAvailabilityOptions)`
+- Function `*DomainsClient.CheckAvailability` return value(s) have been changed from `(DomainsCheckAvailabilityResponse, error)` to `(DomainsClientCheckAvailabilityResponse, error)`
+- Function `*WebAppsClient.GetMigrateMySQLStatusSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetMigrateMySQLStatusSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetMigrateMySQLStatusSlotOptions)`
+- Function `*WebAppsClient.GetMigrateMySQLStatusSlot` return value(s) have been changed from `(WebAppsGetMigrateMySQLStatusSlotResponse, error)` to `(WebAppsClientGetMigrateMySQLStatusSlotResponse, error)`
+- Function `*WebAppsClient.ListConfigurationSnapshotInfo` parameter(s) have been changed from `(string, string, *WebAppsListConfigurationSnapshotInfoOptions)` to `(string, string, *WebAppsClientListConfigurationSnapshotInfoOptions)`
+- Function `*WebAppsClient.ListConfigurationSnapshotInfo` return value(s) have been changed from `(*WebAppsListConfigurationSnapshotInfoPager)` to `(*WebAppsClientListConfigurationSnapshotInfoPager)`
+- Function `*WebAppsClient.ListWebJobs` parameter(s) have been changed from `(string, string, *WebAppsListWebJobsOptions)` to `(string, string, *WebAppsClientListWebJobsOptions)`
+- Function `*WebAppsClient.ListWebJobs` return value(s) have been changed from `(*WebAppsListWebJobsPager)` to `(*WebAppsClientListWebJobsPager)`
+- Function `*DomainsClient.UpdateOwnershipIdentifier` parameter(s) have been changed from `(context.Context, string, string, string, DomainOwnershipIdentifier, *DomainsUpdateOwnershipIdentifierOptions)` to `(context.Context, string, string, string, DomainOwnershipIdentifier, *DomainsClientUpdateOwnershipIdentifierOptions)`
+- Function `*DomainsClient.UpdateOwnershipIdentifier` return value(s) have been changed from `(DomainsUpdateOwnershipIdentifierResponse, error)` to `(DomainsClientUpdateOwnershipIdentifierResponse, error)`
+- Function `*WebAppsClient.BeginRestoreSnapshotSlot` parameter(s) have been changed from `(context.Context, string, string, string, SnapshotRestoreRequest, *WebAppsBeginRestoreSnapshotSlotOptions)` to `(context.Context, string, string, string, SnapshotRestoreRequest, *WebAppsClientBeginRestoreSnapshotSlotOptions)`
+- Function `*WebAppsClient.BeginRestoreSnapshotSlot` return value(s) have been changed from `(WebAppsRestoreSnapshotSlotPollerResponse, error)` to `(WebAppsClientRestoreSnapshotSlotPollerResponse, error)`
+- Function `*WebAppsClient.GetInstanceMsDeployStatusSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetInstanceMsDeployStatusSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetInstanceMsDeployStatusSlotOptions)`
+- Function `*WebAppsClient.GetInstanceMsDeployStatusSlot` return value(s) have been changed from `(WebAppsGetInstanceMsDeployStatusSlotResponse, error)` to `(WebAppsClientGetInstanceMsDeployStatusSlotResponse, error)`
+- Function `*WebAppsClient.DeletePublicCertificate` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeletePublicCertificateOptions)` to `(context.Context, string, string, string, *WebAppsClientDeletePublicCertificateOptions)`
+- Function `*WebAppsClient.DeletePublicCertificate` return value(s) have been changed from `(WebAppsDeletePublicCertificateResponse, error)` to `(WebAppsClientDeletePublicCertificateResponse, error)`
+- Function `*WebAppsClient.UpdateHybridConnection` parameter(s) have been changed from `(context.Context, string, string, string, string, HybridConnection, *WebAppsUpdateHybridConnectionOptions)` to `(context.Context, string, string, string, string, HybridConnection, *WebAppsClientUpdateHybridConnectionOptions)`
+- Function `*WebAppsClient.UpdateHybridConnection` return value(s) have been changed from `(WebAppsUpdateHybridConnectionResponse, error)` to `(WebAppsClientUpdateHybridConnectionResponse, error)`
+- Function `*WebAppsClient.GetSiteExtensionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetSiteExtensionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetSiteExtensionSlotOptions)`
+- Function `*WebAppsClient.GetSiteExtensionSlot` return value(s) have been changed from `(WebAppsGetSiteExtensionSlotResponse, error)` to `(WebAppsClientGetSiteExtensionSlotResponse, error)`
+- Function `*WebAppsClient.GetSitePhpErrorLogFlagSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetSitePhpErrorLogFlagSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetSitePhpErrorLogFlagSlotOptions)`
+- Function `*WebAppsClient.GetSitePhpErrorLogFlagSlot` return value(s) have been changed from `(WebAppsGetSitePhpErrorLogFlagSlotResponse, error)` to `(WebAppsClientGetSitePhpErrorLogFlagSlotResponse, error)`
+- Function `*WebAppsClient.BeginDeletePrivateEndpointConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsBeginDeletePrivateEndpointConnectionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions)`
+- Function `*WebAppsClient.BeginDeletePrivateEndpointConnectionSlot` return value(s) have been changed from `(WebAppsDeletePrivateEndpointConnectionSlotPollerResponse, error)` to `(WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse, error)`
+- Function `*WebAppsClient.UpdateSitePushSettings` parameter(s) have been changed from `(context.Context, string, string, PushSettings, *WebAppsUpdateSitePushSettingsOptions)` to `(context.Context, string, string, PushSettings, *WebAppsClientUpdateSitePushSettingsOptions)`
+- Function `*WebAppsClient.UpdateSitePushSettings` return value(s) have been changed from `(WebAppsUpdateSitePushSettingsResponse, error)` to `(WebAppsClientUpdateSitePushSettingsResponse, error)`
+- Function `*WebAppsClient.ListHostNameBindingsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListHostNameBindingsSlotOptions)` to `(string, string, string, *WebAppsClientListHostNameBindingsSlotOptions)`
+- Function `*WebAppsClient.ListHostNameBindingsSlot` return value(s) have been changed from `(*WebAppsListHostNameBindingsSlotPager)` to `(*WebAppsClientListHostNameBindingsSlotPager)`
+- Function `*DiagnosticsClient.GetSiteDiagnosticCategorySlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiagnosticsGetSiteDiagnosticCategorySlotOptions)` to `(context.Context, string, string, string, string, *DiagnosticsClientGetSiteDiagnosticCategorySlotOptions)`
+- Function `*DiagnosticsClient.GetSiteDiagnosticCategorySlot` return value(s) have been changed from `(DiagnosticsGetSiteDiagnosticCategorySlotResponse, error)` to `(DiagnosticsClientGetSiteDiagnosticCategorySlotResponse, error)`
+- Function `*DiagnosticsClient.ListHostingEnvironmentDetectorResponses` parameter(s) have been changed from `(string, string, *DiagnosticsListHostingEnvironmentDetectorResponsesOptions)` to `(string, string, *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions)`
+- Function `*DiagnosticsClient.ListHostingEnvironmentDetectorResponses` return value(s) have been changed from `(*DiagnosticsListHostingEnvironmentDetectorResponsesPager)` to `(*DiagnosticsClientListHostingEnvironmentDetectorResponsesPager)`
+- Function `*KubeEnvironmentsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *KubeEnvironmentsBeginDeleteOptions)` to `(context.Context, string, string, *KubeEnvironmentsClientBeginDeleteOptions)`
+- Function `*KubeEnvironmentsClient.BeginDelete` return value(s) have been changed from `(KubeEnvironmentsDeletePollerResponse, error)` to `(KubeEnvironmentsClientDeletePollerResponse, error)`
+- Function `*WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheckSlot` parameter(s) have been changed from `(context.Context, string, string, string, SwiftVirtualNetwork, *WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions)` to `(context.Context, string, string, string, SwiftVirtualNetwork, *WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions)`
+- Function `*WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheckSlot` return value(s) have been changed from `(WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error)` to `(WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error)`
+- Function `*WebAppsClient.ListBasicPublishingCredentialsPoliciesSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListBasicPublishingCredentialsPoliciesSlotOptions)` to `(string, string, string, *WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions)`
+- Function `*WebAppsClient.ListBasicPublishingCredentialsPoliciesSlot` return value(s) have been changed from `(*WebAppsListBasicPublishingCredentialsPoliciesSlotPager)` to `(*WebAppsClientListBasicPublishingCredentialsPoliciesSlotPager)`
+- Function `*WebAppsClient.GetConfigurationSnapshotSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetConfigurationSnapshotSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetConfigurationSnapshotSlotOptions)`
+- Function `*WebAppsClient.GetConfigurationSnapshotSlot` return value(s) have been changed from `(WebAppsGetConfigurationSnapshotSlotResponse, error)` to `(WebAppsClientGetConfigurationSnapshotSlotResponse, error)`
+- Function `*WebAppsClient.DeleteInstanceFunctionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteInstanceFunctionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteInstanceFunctionSlotOptions)`
+- Function `*WebAppsClient.DeleteInstanceFunctionSlot` return value(s) have been changed from `(WebAppsDeleteInstanceFunctionSlotResponse, error)` to `(WebAppsClientDeleteInstanceFunctionSlotResponse, error)`
+- Function `*WebAppsClient.UpdateVnetConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, VnetInfoResource, *WebAppsUpdateVnetConnectionSlotOptions)` to `(context.Context, string, string, string, string, VnetInfoResource, *WebAppsClientUpdateVnetConnectionSlotOptions)`
+- Function `*WebAppsClient.UpdateVnetConnectionSlot` return value(s) have been changed from `(WebAppsUpdateVnetConnectionSlotResponse, error)` to `(WebAppsClientUpdateVnetConnectionSlotResponse, error)`
+- Function `*WebAppsClient.ListFunctionSecrets` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListFunctionSecretsOptions)` to `(context.Context, string, string, string, *WebAppsClientListFunctionSecretsOptions)`
+- Function `*WebAppsClient.ListFunctionSecrets` return value(s) have been changed from `(WebAppsListFunctionSecretsResponse, error)` to `(WebAppsClientListFunctionSecretsResponse, error)`
+- Function `*WebAppsClient.UpdateFtpAllowedSlot` parameter(s) have been changed from `(context.Context, string, string, string, CsmPublishingCredentialsPoliciesEntity, *WebAppsUpdateFtpAllowedSlotOptions)` to `(context.Context, string, string, string, CsmPublishingCredentialsPoliciesEntity, *WebAppsClientUpdateFtpAllowedSlotOptions)`
+- Function `*WebAppsClient.UpdateFtpAllowedSlot` return value(s) have been changed from `(WebAppsUpdateFtpAllowedSlotResponse, error)` to `(WebAppsClientUpdateFtpAllowedSlotResponse, error)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSlot` parameter(s) have been changed from `(context.Context, string, string, string, Site, *WebAppsBeginCreateOrUpdateSlotOptions)` to `(context.Context, string, string, string, Site, *WebAppsClientBeginCreateOrUpdateSlotOptions)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateSlotPollerResponse, error)` to `(WebAppsClientCreateOrUpdateSlotPollerResponse, error)`
+- Function `*WebAppsClient.PutPrivateAccessVnetSlot` parameter(s) have been changed from `(context.Context, string, string, string, PrivateAccess, *WebAppsPutPrivateAccessVnetSlotOptions)` to `(context.Context, string, string, string, PrivateAccess, *WebAppsClientPutPrivateAccessVnetSlotOptions)`
+- Function `*WebAppsClient.PutPrivateAccessVnetSlot` return value(s) have been changed from `(WebAppsPutPrivateAccessVnetSlotResponse, error)` to `(WebAppsClientPutPrivateAccessVnetSlotResponse, error)`
+- Function `*WebAppsClient.UpdateFtpAllowed` parameter(s) have been changed from `(context.Context, string, string, CsmPublishingCredentialsPoliciesEntity, *WebAppsUpdateFtpAllowedOptions)` to `(context.Context, string, string, CsmPublishingCredentialsPoliciesEntity, *WebAppsClientUpdateFtpAllowedOptions)`
+- Function `*WebAppsClient.UpdateFtpAllowed` return value(s) have been changed from `(WebAppsUpdateFtpAllowedResponse, error)` to `(WebAppsClientUpdateFtpAllowedResponse, error)`
+- Function `*DiagnosticsClient.ListSiteDetectors` parameter(s) have been changed from `(string, string, string, *DiagnosticsListSiteDetectorsOptions)` to `(string, string, string, *DiagnosticsClientListSiteDetectorsOptions)`
+- Function `*DiagnosticsClient.ListSiteDetectors` return value(s) have been changed from `(*DiagnosticsListSiteDetectorsPager)` to `(*DiagnosticsClientListSiteDetectorsPager)`
+- Function `*WebAppsClient.GetVnetConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetVnetConnectionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetVnetConnectionSlotOptions)`
+- Function `*WebAppsClient.GetVnetConnectionSlot` return value(s) have been changed from `(WebAppsGetVnetConnectionSlotResponse, error)` to `(WebAppsClientGetVnetConnectionSlotResponse, error)`
+- Function `*WebAppsClient.ListDomainOwnershipIdentifiersSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListDomainOwnershipIdentifiersSlotOptions)` to `(string, string, string, *WebAppsClientListDomainOwnershipIdentifiersSlotOptions)`
+- Function `*WebAppsClient.ListDomainOwnershipIdentifiersSlot` return value(s) have been changed from `(*WebAppsListDomainOwnershipIdentifiersSlotPager)` to `(*WebAppsClientListDomainOwnershipIdentifiersSlotPager)`
+- Function `*WebAppsClient.UpdateSourceControl` parameter(s) have been changed from `(context.Context, string, string, SiteSourceControl, *WebAppsUpdateSourceControlOptions)` to `(context.Context, string, string, SiteSourceControl, *WebAppsClientUpdateSourceControlOptions)`
+- Function `*WebAppsClient.UpdateSourceControl` return value(s) have been changed from `(WebAppsUpdateSourceControlResponse, error)` to `(WebAppsClientUpdateSourceControlResponse, error)`
+- Function `*WebAppsClient.GetConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetConfigurationSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetConfigurationSlotOptions)`
+- Function `*WebAppsClient.GetConfigurationSlot` return value(s) have been changed from `(WebAppsGetConfigurationSlotResponse, error)` to `(WebAppsClientGetConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.DeletePremierAddOn` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeletePremierAddOnOptions)` to `(context.Context, string, string, string, *WebAppsClientDeletePremierAddOnOptions)`
+- Function `*WebAppsClient.DeletePremierAddOn` return value(s) have been changed from `(WebAppsDeletePremierAddOnResponse, error)` to `(WebAppsClientDeletePremierAddOnResponse, error)`
+- Function `*WebAppsClient.GetPrivateEndpointConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetPrivateEndpointConnectionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetPrivateEndpointConnectionSlotOptions)`
+- Function `*WebAppsClient.GetPrivateEndpointConnectionSlot` return value(s) have been changed from `(WebAppsGetPrivateEndpointConnectionSlotResponse, error)` to `(WebAppsClientGetPrivateEndpointConnectionSlotResponse, error)`
+- Function `*DiagnosticsClient.ListSiteDetectorResponsesSlot` parameter(s) have been changed from `(string, string, string, *DiagnosticsListSiteDetectorResponsesSlotOptions)` to `(string, string, string, *DiagnosticsClientListSiteDetectorResponsesSlotOptions)`
+- Function `*DiagnosticsClient.ListSiteDetectorResponsesSlot` return value(s) have been changed from `(*DiagnosticsListSiteDetectorResponsesSlotPager)` to `(*DiagnosticsClientListSiteDetectorResponsesSlotPager)`
+- Function `*WebAppsClient.UpdateVnetConnectionGateway` parameter(s) have been changed from `(context.Context, string, string, string, string, VnetGateway, *WebAppsUpdateVnetConnectionGatewayOptions)` to `(context.Context, string, string, string, string, VnetGateway, *WebAppsClientUpdateVnetConnectionGatewayOptions)`
+- Function `*WebAppsClient.UpdateVnetConnectionGateway` return value(s) have been changed from `(WebAppsUpdateVnetConnectionGatewayResponse, error)` to `(WebAppsClientUpdateVnetConnectionGatewayResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdatePublicCertificate` parameter(s) have been changed from `(context.Context, string, string, string, PublicCertificate, *WebAppsCreateOrUpdatePublicCertificateOptions)` to `(context.Context, string, string, string, PublicCertificate, *WebAppsClientCreateOrUpdatePublicCertificateOptions)`
+- Function `*WebAppsClient.CreateOrUpdatePublicCertificate` return value(s) have been changed from `(WebAppsCreateOrUpdatePublicCertificateResponse, error)` to `(WebAppsClientCreateOrUpdatePublicCertificateResponse, error)`
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReferencesSlot` parameter(s) have been changed from `(string, string, string, *WebAppsGetSiteConnectionStringKeyVaultReferencesSlotOptions)` to `(string, string, string, *WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions)`
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReferencesSlot` return value(s) have been changed from `(*WebAppsGetSiteConnectionStringKeyVaultReferencesSlotPager)` to `(*WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotPager)`
+- Function `*KubeEnvironmentsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *KubeEnvironmentsListByResourceGroupOptions)` to `(string, *KubeEnvironmentsClientListByResourceGroupOptions)`
+- Function `*KubeEnvironmentsClient.ListByResourceGroup` return value(s) have been changed from `(*KubeEnvironmentsListByResourceGroupPager)` to `(*KubeEnvironmentsClientListByResourceGroupPager)`
+- Function `*WebAppsClient.ListSitePushSettings` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListSitePushSettingsOptions)` to `(context.Context, string, string, *WebAppsClientListSitePushSettingsOptions)`
+- Function `*WebAppsClient.ListSitePushSettings` return value(s) have been changed from `(WebAppsListSitePushSettingsResponse, error)` to `(WebAppsClientListSitePushSettingsResponse, error)`
+- Function `*StaticSitesClient.ListStaticSiteFunctionAppSettings` parameter(s) have been changed from `(context.Context, string, string, *StaticSitesListStaticSiteFunctionAppSettingsOptions)` to `(context.Context, string, string, *StaticSitesClientListStaticSiteFunctionAppSettingsOptions)`
+- Function `*StaticSitesClient.ListStaticSiteFunctionAppSettings` return value(s) have been changed from `(StaticSitesListStaticSiteFunctionAppSettingsResponse, error)` to `(StaticSitesClientListStaticSiteFunctionAppSettingsResponse, error)`
+- Function `*ProviderClient.GetFunctionAppStacksForLocation` parameter(s) have been changed from `(string, *ProviderGetFunctionAppStacksForLocationOptions)` to `(string, *ProviderClientGetFunctionAppStacksForLocationOptions)`
+- Function `*ProviderClient.GetFunctionAppStacksForLocation` return value(s) have been changed from `(*ProviderGetFunctionAppStacksForLocationPager)` to `(*ProviderClientGetFunctionAppStacksForLocationPager)`
+- Function `*WebAppsClient.UpdateApplicationSettings` parameter(s) have been changed from `(context.Context, string, string, StringDictionary, *WebAppsUpdateApplicationSettingsOptions)` to `(context.Context, string, string, StringDictionary, *WebAppsClientUpdateApplicationSettingsOptions)`
+- Function `*WebAppsClient.UpdateApplicationSettings` return value(s) have been changed from `(WebAppsUpdateApplicationSettingsResponse, error)` to `(WebAppsClientUpdateApplicationSettingsResponse, error)`
+- Function `*WebAppsClient.GetConfigurationSnapshot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetConfigurationSnapshotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetConfigurationSnapshotOptions)`
+- Function `*WebAppsClient.GetConfigurationSnapshot` return value(s) have been changed from `(WebAppsGetConfigurationSnapshotResponse, error)` to `(WebAppsClientGetConfigurationSnapshotResponse, error)`
+- Function `*WebAppsClient.ListTriggeredWebJobs` parameter(s) have been changed from `(string, string, *WebAppsListTriggeredWebJobsOptions)` to `(string, string, *WebAppsClientListTriggeredWebJobsOptions)`
+- Function `*WebAppsClient.ListTriggeredWebJobs` return value(s) have been changed from `(*WebAppsListTriggeredWebJobsPager)` to `(*WebAppsClientListTriggeredWebJobsPager)`
+- Function `*WebAppsClient.GetScmAllowed` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetScmAllowedOptions)` to `(context.Context, string, string, *WebAppsClientGetScmAllowedOptions)`
+- Function `*WebAppsClient.GetScmAllowed` return value(s) have been changed from `(WebAppsGetScmAllowedResponse, error)` to `(WebAppsClientGetScmAllowedResponse, error)`
+- Function `*WebAppsClient.GetInstanceProcessModuleSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *WebAppsGetInstanceProcessModuleSlotOptions)` to `(context.Context, string, string, string, string, string, string, *WebAppsClientGetInstanceProcessModuleSlotOptions)`
+- Function `*WebAppsClient.GetInstanceProcessModuleSlot` return value(s) have been changed from `(WebAppsGetInstanceProcessModuleSlotResponse, error)` to `(WebAppsClientGetInstanceProcessModuleSlotResponse, error)`
+- Function `*WebAppsClient.GetMSDeployStatus` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetMSDeployStatusOptions)` to `(context.Context, string, string, *WebAppsClientGetMSDeployStatusOptions)`
+- Function `*WebAppsClient.GetMSDeployStatus` return value(s) have been changed from `(WebAppsGetMSDeployStatusResponse, error)` to `(WebAppsClientGetMSDeployStatusResponse, error)`
+- Function `*WebAppsClient.ListProcessThreads` parameter(s) have been changed from `(string, string, string, *WebAppsListProcessThreadsOptions)` to `(string, string, string, *WebAppsClientListProcessThreadsOptions)`
+- Function `*WebAppsClient.ListProcessThreads` return value(s) have been changed from `(*WebAppsListProcessThreadsPager)` to `(*WebAppsClientListProcessThreadsPager)`
+- Function `*WebAppsClient.AnalyzeCustomHostnameSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsAnalyzeCustomHostnameSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientAnalyzeCustomHostnameSlotOptions)`
+- Function `*WebAppsClient.AnalyzeCustomHostnameSlot` return value(s) have been changed from `(WebAppsAnalyzeCustomHostnameSlotResponse, error)` to `(WebAppsClientAnalyzeCustomHostnameSlotResponse, error)`
+- Function `*WebAppsClient.ListInstanceFunctionsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListInstanceFunctionsSlotOptions)` to `(string, string, string, *WebAppsClientListInstanceFunctionsSlotOptions)`
+- Function `*WebAppsClient.ListInstanceFunctionsSlot` return value(s) have been changed from `(*WebAppsListInstanceFunctionsSlotPager)` to `(*WebAppsClientListInstanceFunctionsSlotPager)`
+- Function `*DomainsClient.List` parameter(s) have been changed from `(*DomainsListOptions)` to `(*DomainsClientListOptions)`
+- Function `*DomainsClient.List` return value(s) have been changed from `(*DomainsListPager)` to `(*DomainsClientListPager)`
+- Function `*WebAppsClient.StopContinuousWebJob` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsStopContinuousWebJobOptions)` to `(context.Context, string, string, string, *WebAppsClientStopContinuousWebJobOptions)`
+- Function `*WebAppsClient.StopContinuousWebJob` return value(s) have been changed from `(WebAppsStopContinuousWebJobResponse, error)` to `(WebAppsClientStopContinuousWebJobResponse, error)`
+- Function `*WebAppsClient.UpdatePremierAddOnSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, PremierAddOnPatchResource, *WebAppsUpdatePremierAddOnSlotOptions)` to `(context.Context, string, string, string, string, PremierAddOnPatchResource, *WebAppsClientUpdatePremierAddOnSlotOptions)`
+- Function `*WebAppsClient.UpdatePremierAddOnSlot` return value(s) have been changed from `(WebAppsUpdatePremierAddOnSlotResponse, error)` to `(WebAppsClientUpdatePremierAddOnSlotResponse, error)`
+- Function `*WebAppsClient.AddPremierAddOn` parameter(s) have been changed from `(context.Context, string, string, string, PremierAddOn, *WebAppsAddPremierAddOnOptions)` to `(context.Context, string, string, string, PremierAddOn, *WebAppsClientAddPremierAddOnOptions)`
+- Function `*WebAppsClient.AddPremierAddOn` return value(s) have been changed from `(WebAppsAddPremierAddOnResponse, error)` to `(WebAppsClientAddPremierAddOnResponse, error)`
+- Function `*WebAppsClient.ListSnapshotsFromDRSecondary` parameter(s) have been changed from `(string, string, *WebAppsListSnapshotsFromDRSecondaryOptions)` to `(string, string, *WebAppsClientListSnapshotsFromDRSecondaryOptions)`
+- Function `*WebAppsClient.ListSnapshotsFromDRSecondary` return value(s) have been changed from `(*WebAppsListSnapshotsFromDRSecondaryPager)` to `(*WebAppsClientListSnapshotsFromDRSecondaryPager)`
+- Function `*WebAppsClient.GetNetworkTraces` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetNetworkTracesOptions)` to `(context.Context, string, string, string, *WebAppsClientGetNetworkTracesOptions)`
+- Function `*WebAppsClient.GetNetworkTraces` return value(s) have been changed from `(WebAppsGetNetworkTracesResponse, error)` to `(WebAppsClientGetNetworkTracesResponse, error)`
+- Function `*DiagnosticsClient.ExecuteSiteDetectorSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *DiagnosticsExecuteSiteDetectorSlotOptions)` to `(context.Context, string, string, string, string, string, *DiagnosticsClientExecuteSiteDetectorSlotOptions)`
+- Function `*DiagnosticsClient.ExecuteSiteDetectorSlot` return value(s) have been changed from `(DiagnosticsExecuteSiteDetectorSlotResponse, error)` to `(DiagnosticsClientExecuteSiteDetectorSlotResponse, error)`
+- Function `*WebAppsClient.UpdateConnectionStrings` parameter(s) have been changed from `(context.Context, string, string, ConnectionStringDictionary, *WebAppsUpdateConnectionStringsOptions)` to `(context.Context, string, string, ConnectionStringDictionary, *WebAppsClientUpdateConnectionStringsOptions)`
+- Function `*WebAppsClient.UpdateConnectionStrings` return value(s) have been changed from `(WebAppsUpdateConnectionStringsResponse, error)` to `(WebAppsClientUpdateConnectionStringsResponse, error)`
+- Function `*ProviderClient.GetAvailableStacks` parameter(s) have been changed from `(*ProviderGetAvailableStacksOptions)` to `(*ProviderClientGetAvailableStacksOptions)`
+- Function `*ProviderClient.GetAvailableStacks` return value(s) have been changed from `(*ProviderGetAvailableStacksPager)` to `(*ProviderClientGetAvailableStacksPager)`
+- Function `*WebAppsClient.BeginInstallSiteExtension` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsBeginInstallSiteExtensionOptions)` to `(context.Context, string, string, string, *WebAppsClientBeginInstallSiteExtensionOptions)`
+- Function `*WebAppsClient.BeginInstallSiteExtension` return value(s) have been changed from `(WebAppsInstallSiteExtensionPollerResponse, error)` to `(WebAppsClientInstallSiteExtensionPollerResponse, error)`
+- Function `*WebAppsClient.GenerateNewSitePublishingPasswordSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGenerateNewSitePublishingPasswordSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGenerateNewSitePublishingPasswordSlotOptions)`
+- Function `*WebAppsClient.GenerateNewSitePublishingPasswordSlot` return value(s) have been changed from `(WebAppsGenerateNewSitePublishingPasswordSlotResponse, error)` to `(WebAppsClientGenerateNewSitePublishingPasswordSlotResponse, error)`
+- Function `*DomainsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DomainsListByResourceGroupOptions)` to `(string, *DomainsClientListByResourceGroupOptions)`
+- Function `*DomainsClient.ListByResourceGroup` return value(s) have been changed from `(*DomainsListByResourceGroupPager)` to `(*DomainsClientListByResourceGroupPager)`
+- Function `*WebAppsClient.GetContainerLogsZip` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetContainerLogsZipOptions)` to `(context.Context, string, string, *WebAppsClientGetContainerLogsZipOptions)`
+- Function `*WebAppsClient.GetContainerLogsZip` return value(s) have been changed from `(WebAppsGetContainerLogsZipResponse, error)` to `(WebAppsClientGetContainerLogsZipResponse, error)`
+- Function `*RecommendationsClient.ListHistoryForWebApp` parameter(s) have been changed from `(string, string, *RecommendationsListHistoryForWebAppOptions)` to `(string, string, *RecommendationsClientListHistoryForWebAppOptions)`
+- Function `*RecommendationsClient.ListHistoryForWebApp` return value(s) have been changed from `(*RecommendationsListHistoryForWebAppPager)` to `(*RecommendationsClientListHistoryForWebAppPager)`
+- Function `*KubeEnvironmentsClient.Update` parameter(s) have been changed from `(context.Context, string, string, KubeEnvironmentPatchResource, *KubeEnvironmentsUpdateOptions)` to `(context.Context, string, string, KubeEnvironmentPatchResource, *KubeEnvironmentsClientUpdateOptions)`
+- Function `*KubeEnvironmentsClient.Update` return value(s) have been changed from `(KubeEnvironmentsUpdateResponse, error)` to `(KubeEnvironmentsClientUpdateResponse, error)`
+- Function `*WebAppsClient.ListContinuousWebJobs` parameter(s) have been changed from `(string, string, *WebAppsListContinuousWebJobsOptions)` to `(string, string, *WebAppsClientListContinuousWebJobsOptions)`
+- Function `*WebAppsClient.ListContinuousWebJobs` return value(s) have been changed from `(*WebAppsListContinuousWebJobsPager)` to `(*WebAppsClientListContinuousWebJobsPager)`
+- Function `*WebAppsClient.UpdateDiagnosticLogsConfig` parameter(s) have been changed from `(context.Context, string, string, SiteLogsConfig, *WebAppsUpdateDiagnosticLogsConfigOptions)` to `(context.Context, string, string, SiteLogsConfig, *WebAppsClientUpdateDiagnosticLogsConfigOptions)`
+- Function `*WebAppsClient.UpdateDiagnosticLogsConfig` return value(s) have been changed from `(WebAppsUpdateDiagnosticLogsConfigResponse, error)` to `(WebAppsClientUpdateDiagnosticLogsConfigResponse, error)`
+- Function `*WebAppsClient.ListPerfMonCountersSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListPerfMonCountersSlotOptions)` to `(string, string, string, *WebAppsClientListPerfMonCountersSlotOptions)`
+- Function `*WebAppsClient.ListPerfMonCountersSlot` return value(s) have been changed from `(*WebAppsListPerfMonCountersSlotPager)` to `(*WebAppsClientListPerfMonCountersSlotPager)`
+- Function `*WebAppsClient.StopSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsStopSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientStopSlotOptions)`
+- Function `*WebAppsClient.StopSlot` return value(s) have been changed from `(WebAppsStopSlotResponse, error)` to `(WebAppsClientStopSlotResponse, error)`
+- Function `*WebAppsClient.ListHybridConnections` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListHybridConnectionsOptions)` to `(context.Context, string, string, *WebAppsClientListHybridConnectionsOptions)`
+- Function `*WebAppsClient.ListHybridConnections` return value(s) have been changed from `(WebAppsListHybridConnectionsResponse, error)` to `(WebAppsClientListHybridConnectionsResponse, error)`
+- Function `*WebAppsClient.DeleteTriggeredWebJobSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteTriggeredWebJobSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteTriggeredWebJobSlotOptions)`
+- Function `*WebAppsClient.DeleteTriggeredWebJobSlot` return value(s) have been changed from `(WebAppsDeleteTriggeredWebJobSlotResponse, error)` to `(WebAppsClientDeleteTriggeredWebJobSlotResponse, error)`
+- Function `*DiagnosticsClient.GetSiteDetectorResponseSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiagnosticsGetSiteDetectorResponseSlotOptions)` to `(context.Context, string, string, string, string, *DiagnosticsClientGetSiteDetectorResponseSlotOptions)`
+- Function `*DiagnosticsClient.GetSiteDetectorResponseSlot` return value(s) have been changed from `(DiagnosticsGetSiteDetectorResponseSlotResponse, error)` to `(DiagnosticsClientGetSiteDetectorResponseSlotResponse, error)`
+- Function `*RecommendationsClient.ListRecommendedRulesForHostingEnvironment` parameter(s) have been changed from `(string, string, *RecommendationsListRecommendedRulesForHostingEnvironmentOptions)` to `(string, string, *RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions)`
+- Function `*RecommendationsClient.ListRecommendedRulesForHostingEnvironment` return value(s) have been changed from `(*RecommendationsListRecommendedRulesForHostingEnvironmentPager)` to `(*RecommendationsClientListRecommendedRulesForHostingEnvironmentPager)`
+- Function `*WebAppsClient.CreateOrUpdateHybridConnection` parameter(s) have been changed from `(context.Context, string, string, string, string, HybridConnection, *WebAppsCreateOrUpdateHybridConnectionOptions)` to `(context.Context, string, string, string, string, HybridConnection, *WebAppsClientCreateOrUpdateHybridConnectionOptions)`
+- Function `*WebAppsClient.CreateOrUpdateHybridConnection` return value(s) have been changed from `(WebAppsCreateOrUpdateHybridConnectionResponse, error)` to `(WebAppsClientCreateOrUpdateHybridConnectionResponse, error)`
+- Function `*WebAppsClient.BeginRestore` parameter(s) have been changed from `(context.Context, string, string, string, RestoreRequest, *WebAppsBeginRestoreOptions)` to `(context.Context, string, string, string, RestoreRequest, *WebAppsClientBeginRestoreOptions)`
+- Function `*WebAppsClient.BeginRestore` return value(s) have been changed from `(WebAppsRestorePollerResponse, error)` to `(WebAppsClientRestorePollerResponse, error)`
+- Function `*WebAppsClient.UpdateVnetConnectionGatewaySlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, VnetGateway, *WebAppsUpdateVnetConnectionGatewaySlotOptions)` to `(context.Context, string, string, string, string, string, VnetGateway, *WebAppsClientUpdateVnetConnectionGatewaySlotOptions)`
+- Function `*WebAppsClient.UpdateVnetConnectionGatewaySlot` return value(s) have been changed from `(WebAppsUpdateVnetConnectionGatewaySlotResponse, error)` to `(WebAppsClientUpdateVnetConnectionGatewaySlotResponse, error)`
+- Function `*WebAppsClient.BeginMigrateMySQL` parameter(s) have been changed from `(context.Context, string, string, MigrateMySQLRequest, *WebAppsBeginMigrateMySQLOptions)` to `(context.Context, string, string, MigrateMySQLRequest, *WebAppsClientBeginMigrateMySQLOptions)`
+- Function `*WebAppsClient.BeginMigrateMySQL` return value(s) have been changed from `(WebAppsMigrateMySQLPollerResponse, error)` to `(WebAppsClientMigrateMySQLPollerResponse, error)`
+- Function `*WebAppsClient.ListDeploymentLog` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListDeploymentLogOptions)` to `(context.Context, string, string, string, *WebAppsClientListDeploymentLogOptions)`
+- Function `*WebAppsClient.ListDeploymentLog` return value(s) have been changed from `(WebAppsListDeploymentLogResponse, error)` to `(WebAppsClientListDeploymentLogResponse, error)`
+- Function `*StaticSitesClient.PreviewWorkflow` parameter(s) have been changed from `(context.Context, string, StaticSitesWorkflowPreviewRequest, *StaticSitesPreviewWorkflowOptions)` to `(context.Context, string, StaticSitesWorkflowPreviewRequest, *StaticSitesClientPreviewWorkflowOptions)`
+- Function `*StaticSitesClient.PreviewWorkflow` return value(s) have been changed from `(StaticSitesPreviewWorkflowResponse, error)` to `(StaticSitesClientPreviewWorkflowResponse, error)`
+- Function `*WebAppsClient.UpdateScmAllowed` parameter(s) have been changed from `(context.Context, string, string, CsmPublishingCredentialsPoliciesEntity, *WebAppsUpdateScmAllowedOptions)` to `(context.Context, string, string, CsmPublishingCredentialsPoliciesEntity, *WebAppsClientUpdateScmAllowedOptions)`
+- Function `*WebAppsClient.UpdateScmAllowed` return value(s) have been changed from `(WebAppsUpdateScmAllowedResponse, error)` to `(WebAppsClientUpdateScmAllowedResponse, error)`
+- Function `*WebAppsClient.UpdateApplicationSettingsSlot` parameter(s) have been changed from `(context.Context, string, string, string, StringDictionary, *WebAppsUpdateApplicationSettingsSlotOptions)` to `(context.Context, string, string, string, StringDictionary, *WebAppsClientUpdateApplicationSettingsSlotOptions)`
+- Function `*WebAppsClient.UpdateApplicationSettingsSlot` return value(s) have been changed from `(WebAppsUpdateApplicationSettingsSlotResponse, error)` to `(WebAppsClientUpdateApplicationSettingsSlotResponse, error)`
+- Function `*StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSiteBuild` parameter(s) have been changed from `(context.Context, string, string, string, string, *StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildOptions)` to `(context.Context, string, string, string, string, *StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildOptions)`
+- Function `*StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSiteBuild` return value(s) have been changed from `(StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse, error)` to `(StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse, error)`
+- Function `*WebAppsClient.GetDiagnosticLogsConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetDiagnosticLogsConfigurationSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetDiagnosticLogsConfigurationSlotOptions)`
+- Function `*WebAppsClient.GetDiagnosticLogsConfigurationSlot` return value(s) have been changed from `(WebAppsGetDiagnosticLogsConfigurationSlotResponse, error)` to `(WebAppsClientGetDiagnosticLogsConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.ListSnapshotsFromDRSecondarySlot` parameter(s) have been changed from `(string, string, string, *WebAppsListSnapshotsFromDRSecondarySlotOptions)` to `(string, string, string, *WebAppsClientListSnapshotsFromDRSecondarySlotOptions)`
+- Function `*WebAppsClient.ListSnapshotsFromDRSecondarySlot` return value(s) have been changed from `(*WebAppsListSnapshotsFromDRSecondarySlotPager)` to `(*WebAppsClientListSnapshotsFromDRSecondarySlotPager)`
+- Function `*WebAppsClient.ListConfigurations` parameter(s) have been changed from `(string, string, *WebAppsListConfigurationsOptions)` to `(string, string, *WebAppsClientListConfigurationsOptions)`
+- Function `*WebAppsClient.ListConfigurations` return value(s) have been changed from `(*WebAppsListConfigurationsPager)` to `(*WebAppsClientListConfigurationsPager)`
+- Function `*WebAppsClient.GetTriggeredWebJobHistorySlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsGetTriggeredWebJobHistorySlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientGetTriggeredWebJobHistorySlotOptions)`
+- Function `*WebAppsClient.GetTriggeredWebJobHistorySlot` return value(s) have been changed from `(WebAppsGetTriggeredWebJobHistorySlotResponse, error)` to `(WebAppsClientGetTriggeredWebJobHistorySlotResponse, error)`
+- Function `*WebAppsClient.ListPublishingProfileXMLWithSecrets` parameter(s) have been changed from `(context.Context, string, string, CsmPublishingProfileOptions, *WebAppsListPublishingProfileXMLWithSecretsOptions)` to `(context.Context, string, string, CsmPublishingProfileOptions, *WebAppsClientListPublishingProfileXMLWithSecretsOptions)`
+- Function `*WebAppsClient.ListPublishingProfileXMLWithSecrets` return value(s) have been changed from `(WebAppsListPublishingProfileXMLWithSecretsResponse, error)` to `(WebAppsClientListPublishingProfileXMLWithSecretsResponse, error)`
+- Function `*TopLevelDomainsClient.ListAgreements` parameter(s) have been changed from `(string, TopLevelDomainAgreementOption, *TopLevelDomainsListAgreementsOptions)` to `(string, TopLevelDomainAgreementOption, *TopLevelDomainsClientListAgreementsOptions)`
+- Function `*TopLevelDomainsClient.ListAgreements` return value(s) have been changed from `(*TopLevelDomainsListAgreementsPager)` to `(*TopLevelDomainsClientListAgreementsPager)`
+- Function `*WebAppsClient.ListSitePushSettingsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListSitePushSettingsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListSitePushSettingsSlotOptions)`
+- Function `*WebAppsClient.ListSitePushSettingsSlot` return value(s) have been changed from `(WebAppsListSitePushSettingsSlotResponse, error)` to `(WebAppsClientListSitePushSettingsSlotResponse, error)`
+- Function `*WebAppsClient.GetBackupStatus` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetBackupStatusOptions)` to `(context.Context, string, string, string, *WebAppsClientGetBackupStatusOptions)`
+- Function `*WebAppsClient.GetBackupStatus` return value(s) have been changed from `(WebAppsGetBackupStatusResponse, error)` to `(WebAppsClientGetBackupStatusResponse, error)`
+- Function `*WebAppsClient.BeginRestoreFromBackupBlob` parameter(s) have been changed from `(context.Context, string, string, RestoreRequest, *WebAppsBeginRestoreFromBackupBlobOptions)` to `(context.Context, string, string, RestoreRequest, *WebAppsClientBeginRestoreFromBackupBlobOptions)`
+- Function `*WebAppsClient.BeginRestoreFromBackupBlob` return value(s) have been changed from `(WebAppsRestoreFromBackupBlobPollerResponse, error)` to `(WebAppsClientRestoreFromBackupBlobPollerResponse, error)`
+- Function `*WebAppsClient.CreateDeployment` parameter(s) have been changed from `(context.Context, string, string, string, Deployment, *WebAppsCreateDeploymentOptions)` to `(context.Context, string, string, string, Deployment, *WebAppsClientCreateDeploymentOptions)`
+- Function `*WebAppsClient.CreateDeployment` return value(s) have been changed from `(WebAppsCreateDeploymentResponse, error)` to `(WebAppsClientCreateDeploymentResponse, error)`
+- Function `*WebAppsClient.DeleteContinuousWebJob` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteContinuousWebJobOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteContinuousWebJobOptions)`
+- Function `*WebAppsClient.DeleteContinuousWebJob` return value(s) have been changed from `(WebAppsDeleteContinuousWebJobResponse, error)` to `(WebAppsClientDeleteContinuousWebJobResponse, error)`
+- Function `*DiagnosticsClient.GetHostingEnvironmentDetectorResponse` parameter(s) have been changed from `(context.Context, string, string, string, *DiagnosticsGetHostingEnvironmentDetectorResponseOptions)` to `(context.Context, string, string, string, *DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions)`
+- Function `*DiagnosticsClient.GetHostingEnvironmentDetectorResponse` return value(s) have been changed from `(DiagnosticsGetHostingEnvironmentDetectorResponseResponse, error)` to `(DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse, error)`
+- Function `*DomainsClient.ListRecommendations` parameter(s) have been changed from `(DomainRecommendationSearchParameters, *DomainsListRecommendationsOptions)` to `(DomainRecommendationSearchParameters, *DomainsClientListRecommendationsOptions)`
+- Function `*DomainsClient.ListRecommendations` return value(s) have been changed from `(*DomainsListRecommendationsPager)` to `(*DomainsClientListRecommendationsPager)`
+- Function `*RecommendationsClient.ListRecommendedRulesForWebApp` parameter(s) have been changed from `(string, string, *RecommendationsListRecommendedRulesForWebAppOptions)` to `(string, string, *RecommendationsClientListRecommendedRulesForWebAppOptions)`
+- Function `*RecommendationsClient.ListRecommendedRulesForWebApp` return value(s) have been changed from `(*RecommendationsListRecommendedRulesForWebAppPager)` to `(*RecommendationsClientListRecommendedRulesForWebAppPager)`
+- Function `*WebAppsClient.CreateDeploymentSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, Deployment, *WebAppsCreateDeploymentSlotOptions)` to `(context.Context, string, string, string, string, Deployment, *WebAppsClientCreateDeploymentSlotOptions)`
+- Function `*WebAppsClient.CreateDeploymentSlot` return value(s) have been changed from `(WebAppsCreateDeploymentSlotResponse, error)` to `(WebAppsClientCreateDeploymentSlotResponse, error)`
+- Function `*WebAppsClient.GetAuthSettingsV2Slot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetAuthSettingsV2SlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetAuthSettingsV2SlotOptions)`
+- Function `*WebAppsClient.GetAuthSettingsV2Slot` return value(s) have been changed from `(WebAppsGetAuthSettingsV2SlotResponse, error)` to `(WebAppsClientGetAuthSettingsV2SlotResponse, error)`
+- Function `*DomainsClient.DeleteOwnershipIdentifier` parameter(s) have been changed from `(context.Context, string, string, string, *DomainsDeleteOwnershipIdentifierOptions)` to `(context.Context, string, string, string, *DomainsClientDeleteOwnershipIdentifierOptions)`
+- Function `*DomainsClient.DeleteOwnershipIdentifier` return value(s) have been changed from `(DomainsDeleteOwnershipIdentifierResponse, error)` to `(DomainsClientDeleteOwnershipIdentifierResponse, error)`
+- Function `*WebAppsClient.ListInstanceProcessModulesSlot` parameter(s) have been changed from `(string, string, string, string, string, *WebAppsListInstanceProcessModulesSlotOptions)` to `(string, string, string, string, string, *WebAppsClientListInstanceProcessModulesSlotOptions)`
+- Function `*WebAppsClient.ListInstanceProcessModulesSlot` return value(s) have been changed from `(*WebAppsListInstanceProcessModulesSlotPager)` to `(*WebAppsClientListInstanceProcessModulesSlotPager)`
+- Function `*WebAppsClient.SyncRepositorySlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsSyncRepositorySlotOptions)` to `(context.Context, string, string, string, *WebAppsClientSyncRepositorySlotOptions)`
+- Function `*WebAppsClient.SyncRepositorySlot` return value(s) have been changed from `(WebAppsSyncRepositorySlotResponse, error)` to `(WebAppsClientSyncRepositorySlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateHostSecret` parameter(s) have been changed from `(context.Context, string, string, string, string, KeyInfo, *WebAppsCreateOrUpdateHostSecretOptions)` to `(context.Context, string, string, string, string, KeyInfo, *WebAppsClientCreateOrUpdateHostSecretOptions)`
+- Function `*WebAppsClient.CreateOrUpdateHostSecret` return value(s) have been changed from `(WebAppsCreateOrUpdateHostSecretResponse, error)` to `(WebAppsClientCreateOrUpdateHostSecretResponse, error)`
+- Function `*WebAppsClient.GetWebSiteContainerLogsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetWebSiteContainerLogsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetWebSiteContainerLogsSlotOptions)`
+- Function `*WebAppsClient.GetWebSiteContainerLogsSlot` return value(s) have been changed from `(WebAppsGetWebSiteContainerLogsSlotResponse, error)` to `(WebAppsClientGetWebSiteContainerLogsSlotResponse, error)`
+- Function `*WebAppsClient.UpdateSlotConfigurationNames` parameter(s) have been changed from `(context.Context, string, string, SlotConfigNamesResource, *WebAppsUpdateSlotConfigurationNamesOptions)` to `(context.Context, string, string, SlotConfigNamesResource, *WebAppsClientUpdateSlotConfigurationNamesOptions)`
+- Function `*WebAppsClient.UpdateSlotConfigurationNames` return value(s) have been changed from `(WebAppsUpdateSlotConfigurationNamesResponse, error)` to `(WebAppsClientUpdateSlotConfigurationNamesResponse, error)`
+- Function `*WebAppsClient.RecoverSiteConfigurationSnapshotSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsRecoverSiteConfigurationSnapshotSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions)`
+- Function `*WebAppsClient.RecoverSiteConfigurationSnapshotSlot` return value(s) have been changed from `(WebAppsRecoverSiteConfigurationSnapshotSlotResponse, error)` to `(WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse, error)`
+- Function `*WebAppsClient.UpdateDomainOwnershipIdentifierSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, Identifier, *WebAppsUpdateDomainOwnershipIdentifierSlotOptions)` to `(context.Context, string, string, string, string, Identifier, *WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions)`
+- Function `*WebAppsClient.UpdateDomainOwnershipIdentifierSlot` return value(s) have been changed from `(WebAppsUpdateDomainOwnershipIdentifierSlotResponse, error)` to `(WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateVnetConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, VnetInfoResource, *WebAppsCreateOrUpdateVnetConnectionSlotOptions)` to `(context.Context, string, string, string, string, VnetInfoResource, *WebAppsClientCreateOrUpdateVnetConnectionSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateVnetConnectionSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateVnetConnectionSlotResponse, error)` to `(WebAppsClientCreateOrUpdateVnetConnectionSlotResponse, error)`
+- Function `*WebAppsClient.StopNetworkTrace` parameter(s) have been changed from `(context.Context, string, string, *WebAppsStopNetworkTraceOptions)` to `(context.Context, string, string, *WebAppsClientStopNetworkTraceOptions)`
+- Function `*WebAppsClient.StopNetworkTrace` return value(s) have been changed from `(WebAppsStopNetworkTraceResponse, error)` to `(WebAppsClientStopNetworkTraceResponse, error)`
+- Function `*WebAppsClient.GetPublicCertificate` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetPublicCertificateOptions)` to `(context.Context, string, string, string, *WebAppsClientGetPublicCertificateOptions)`
+- Function `*WebAppsClient.GetPublicCertificate` return value(s) have been changed from `(WebAppsGetPublicCertificateResponse, error)` to `(WebAppsClientGetPublicCertificateResponse, error)`
+- Function `*WebAppsClient.GetAppSettingsKeyVaultReferencesSlot` parameter(s) have been changed from `(string, string, string, *WebAppsGetAppSettingsKeyVaultReferencesSlotOptions)` to `(string, string, string, *WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions)`
+- Function `*WebAppsClient.GetAppSettingsKeyVaultReferencesSlot` return value(s) have been changed from `(*WebAppsGetAppSettingsKeyVaultReferencesSlotPager)` to `(*WebAppsClientGetAppSettingsKeyVaultReferencesSlotPager)`
+- Function `*StaticSitesClient.UpdateStaticSiteUser` parameter(s) have been changed from `(context.Context, string, string, string, string, StaticSiteUserARMResource, *StaticSitesUpdateStaticSiteUserOptions)` to `(context.Context, string, string, string, string, StaticSiteUserARMResource, *StaticSitesClientUpdateStaticSiteUserOptions)`
+- Function `*StaticSitesClient.UpdateStaticSiteUser` return value(s) have been changed from `(StaticSitesUpdateStaticSiteUserResponse, error)` to `(StaticSitesClientUpdateStaticSiteUserResponse, error)`
+- Function `*ProviderClient.GetFunctionAppStacks` parameter(s) have been changed from `(*ProviderGetFunctionAppStacksOptions)` to `(*ProviderClientGetFunctionAppStacksOptions)`
+- Function `*ProviderClient.GetFunctionAppStacks` return value(s) have been changed from `(*ProviderGetFunctionAppStacksPager)` to `(*ProviderClientGetFunctionAppStacksPager)`
+- Function `*StaticSitesClient.ResetStaticSiteAPIKey` parameter(s) have been changed from `(context.Context, string, string, StaticSiteResetPropertiesARMResource, *StaticSitesResetStaticSiteAPIKeyOptions)` to `(context.Context, string, string, StaticSiteResetPropertiesARMResource, *StaticSitesClientResetStaticSiteAPIKeyOptions)`
+- Function `*StaticSitesClient.ResetStaticSiteAPIKey` return value(s) have been changed from `(StaticSitesResetStaticSiteAPIKeyResponse, error)` to `(StaticSitesClientResetStaticSiteAPIKeyResponse, error)`
+- Function `*RecommendationsClient.ResetAllFilters` parameter(s) have been changed from `(context.Context, *RecommendationsResetAllFiltersOptions)` to `(context.Context, *RecommendationsClientResetAllFiltersOptions)`
+- Function `*RecommendationsClient.ResetAllFilters` return value(s) have been changed from `(RecommendationsResetAllFiltersResponse, error)` to `(RecommendationsClientResetAllFiltersResponse, error)`
+- Function `*StaticSitesClient.DeleteStaticSiteUser` parameter(s) have been changed from `(context.Context, string, string, string, string, *StaticSitesDeleteStaticSiteUserOptions)` to `(context.Context, string, string, string, string, *StaticSitesClientDeleteStaticSiteUserOptions)`
+- Function `*StaticSitesClient.DeleteStaticSiteUser` return value(s) have been changed from `(StaticSitesDeleteStaticSiteUserResponse, error)` to `(StaticSitesClientDeleteStaticSiteUserResponse, error)`
+- Function `*WebAppsClient.GetMSDeployLogSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetMSDeployLogSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetMSDeployLogSlotOptions)`
+- Function `*WebAppsClient.GetMSDeployLogSlot` return value(s) have been changed from `(WebAppsGetMSDeployLogSlotResponse, error)` to `(WebAppsClientGetMSDeployLogSlotResponse, error)`
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite` parameter(s) have been changed from `(string, string, *StaticSitesGetUserProvidedFunctionAppsForStaticSiteOptions)` to `(string, string, *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions)`
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite` return value(s) have been changed from `(*StaticSitesGetUserProvidedFunctionAppsForStaticSitePager)` to `(*StaticSitesClientGetUserProvidedFunctionAppsForStaticSitePager)`
+- Function `*DiagnosticsClient.GetSiteAnalysisSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *DiagnosticsGetSiteAnalysisSlotOptions)` to `(context.Context, string, string, string, string, string, *DiagnosticsClientGetSiteAnalysisSlotOptions)`
+- Function `*DiagnosticsClient.GetSiteAnalysisSlot` return value(s) have been changed from `(DiagnosticsGetSiteAnalysisSlotResponse, error)` to `(DiagnosticsClientGetSiteAnalysisSlotResponse, error)`
+- Function `*WebAppsClient.GetDomainOwnershipIdentifier` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetDomainOwnershipIdentifierOptions)` to `(context.Context, string, string, string, *WebAppsClientGetDomainOwnershipIdentifierOptions)`
+- Function `*WebAppsClient.GetDomainOwnershipIdentifier` return value(s) have been changed from `(WebAppsGetDomainOwnershipIdentifierResponse, error)` to `(WebAppsClientGetDomainOwnershipIdentifierResponse, error)`
+- Function `*WebAppsClient.DeleteDomainOwnershipIdentifier` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteDomainOwnershipIdentifierOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteDomainOwnershipIdentifierOptions)`
+- Function `*WebAppsClient.DeleteDomainOwnershipIdentifier` return value(s) have been changed from `(WebAppsDeleteDomainOwnershipIdentifierResponse, error)` to `(WebAppsClientDeleteDomainOwnershipIdentifierResponse, error)`
+- Function `*WebAppsClient.Start` parameter(s) have been changed from `(context.Context, string, string, *WebAppsStartOptions)` to `(context.Context, string, string, *WebAppsClientStartOptions)`
+- Function `*WebAppsClient.Start` return value(s) have been changed from `(WebAppsStartResponse, error)` to `(WebAppsClientStartResponse, error)`
+- Function `*WebAppsClient.GetPremierAddOn` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetPremierAddOnOptions)` to `(context.Context, string, string, string, *WebAppsClientGetPremierAddOnOptions)`
+- Function `*WebAppsClient.GetPremierAddOn` return value(s) have been changed from `(WebAppsGetPremierAddOnResponse, error)` to `(WebAppsClientGetPremierAddOnResponse, error)`
+- Function `*WebAppsClient.ListRelayServiceConnections` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListRelayServiceConnectionsOptions)` to `(context.Context, string, string, *WebAppsClientListRelayServiceConnectionsOptions)`
+- Function `*WebAppsClient.ListRelayServiceConnections` return value(s) have been changed from `(WebAppsListRelayServiceConnectionsResponse, error)` to `(WebAppsClientListRelayServiceConnectionsResponse, error)`
+- Function `*WebAppsClient.ListTriggeredWebJobHistory` parameter(s) have been changed from `(string, string, string, *WebAppsListTriggeredWebJobHistoryOptions)` to `(string, string, string, *WebAppsClientListTriggeredWebJobHistoryOptions)`
+- Function `*WebAppsClient.ListTriggeredWebJobHistory` return value(s) have been changed from `(*WebAppsListTriggeredWebJobHistoryPager)` to `(*WebAppsClientListTriggeredWebJobHistoryPager)`
+- Function `*WebAppsClient.GetAppSettingKeyVaultReference` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetAppSettingKeyVaultReferenceOptions)` to `(context.Context, string, string, string, *WebAppsClientGetAppSettingKeyVaultReferenceOptions)`
+- Function `*WebAppsClient.GetAppSettingKeyVaultReference` return value(s) have been changed from `(WebAppsGetAppSettingKeyVaultReferenceResponse, error)` to `(WebAppsClientGetAppSettingKeyVaultReferenceResponse, error)`
+- Function `*WebAppsClient.ListSyncFunctionTriggers` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListSyncFunctionTriggersOptions)` to `(context.Context, string, string, *WebAppsClientListSyncFunctionTriggersOptions)`
+- Function `*WebAppsClient.ListSyncFunctionTriggers` return value(s) have been changed from `(WebAppsListSyncFunctionTriggersResponse, error)` to `(WebAppsClientListSyncFunctionTriggersResponse, error)`
+- Function `*WebAppsClient.GetProcessModule` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetProcessModuleOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetProcessModuleOptions)`
+- Function `*WebAppsClient.GetProcessModule` return value(s) have been changed from `(WebAppsGetProcessModuleResponse, error)` to `(WebAppsClientGetProcessModuleResponse, error)`
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppForStaticSiteBuild` parameter(s) have been changed from `(context.Context, string, string, string, string, *StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildOptions)` to `(context.Context, string, string, string, string, *StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildOptions)`
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppForStaticSiteBuild` return value(s) have been changed from `(StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse, error)` to `(StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse, error)`
+- Function `*CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse` parameter(s) have been changed from `(context.Context, string, string, string, *CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions)` to `(context.Context, string, string, string, *CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions)`
+- Function `*CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse` return value(s) have been changed from `(CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse, error)` to `(CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse, error)`
+- Function `*WebAppsClient.ListDeployments` parameter(s) have been changed from `(string, string, *WebAppsListDeploymentsOptions)` to `(string, string, *WebAppsClientListDeploymentsOptions)`
+- Function `*WebAppsClient.ListDeployments` return value(s) have been changed from `(*WebAppsListDeploymentsPager)` to `(*WebAppsClientListDeploymentsPager)`
+- Function `*WebAppsClient.GetHybridConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsGetHybridConnectionSlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientGetHybridConnectionSlotOptions)`
+- Function `*WebAppsClient.GetHybridConnectionSlot` return value(s) have been changed from `(WebAppsGetHybridConnectionSlotResponse, error)` to `(WebAppsClientGetHybridConnectionSlotResponse, error)`
+- Function `*WebAppsClient.ListSiteExtensions` parameter(s) have been changed from `(string, string, *WebAppsListSiteExtensionsOptions)` to `(string, string, *WebAppsClientListSiteExtensionsOptions)`
+- Function `*WebAppsClient.ListSiteExtensions` return value(s) have been changed from `(*WebAppsListSiteExtensionsPager)` to `(*WebAppsClientListSiteExtensionsPager)`
+- Function `*WebAppsClient.SyncRepository` parameter(s) have been changed from `(context.Context, string, string, *WebAppsSyncRepositoryOptions)` to `(context.Context, string, string, *WebAppsClientSyncRepositoryOptions)`
+- Function `*WebAppsClient.SyncRepository` return value(s) have been changed from `(WebAppsSyncRepositoryResponse, error)` to `(WebAppsClientSyncRepositoryResponse, error)`
+- Function `*WebAppsClient.ListInstanceProcessThreadsSlot` parameter(s) have been changed from `(string, string, string, string, string, *WebAppsListInstanceProcessThreadsSlotOptions)` to `(string, string, string, string, string, *WebAppsClientListInstanceProcessThreadsSlotOptions)`
+- Function `*WebAppsClient.ListInstanceProcessThreadsSlot` return value(s) have been changed from `(*WebAppsListInstanceProcessThreadsSlotPager)` to `(*WebAppsClientListInstanceProcessThreadsSlotPager)`
+- Function `*StaticSitesClient.BeginDeleteStaticSiteCustomDomain` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesBeginDeleteStaticSiteCustomDomainOptions)` to `(context.Context, string, string, string, *StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions)`
+- Function `*StaticSitesClient.BeginDeleteStaticSiteCustomDomain` return value(s) have been changed from `(StaticSitesDeleteStaticSiteCustomDomainPollerResponse, error)` to `(StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse, error)`
+- Function `*WebAppsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Site, *WebAppsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Site, *WebAppsClientBeginCreateOrUpdateOptions)`
+- Function `*WebAppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(WebAppsCreateOrUpdatePollerResponse, error)` to `(WebAppsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ResourceHealthMetadataClient.List` parameter(s) have been changed from `(*ResourceHealthMetadataListOptions)` to `(*ResourceHealthMetadataClientListOptions)`
+- Function `*ResourceHealthMetadataClient.List` return value(s) have been changed from `(*ResourceHealthMetadataListPager)` to `(*ResourceHealthMetadataClientListPager)`
+- Function `*WebAppsClient.UpdateConfiguration` parameter(s) have been changed from `(context.Context, string, string, SiteConfigResource, *WebAppsUpdateConfigurationOptions)` to `(context.Context, string, string, SiteConfigResource, *WebAppsClientUpdateConfigurationOptions)`
+- Function `*WebAppsClient.UpdateConfiguration` return value(s) have been changed from `(WebAppsUpdateConfigurationResponse, error)` to `(WebAppsClientUpdateConfigurationResponse, error)`
+- Function `*WebAppsClient.ListSyncStatusSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListSyncStatusSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListSyncStatusSlotOptions)`
+- Function `*WebAppsClient.ListSyncStatusSlot` return value(s) have been changed from `(WebAppsListSyncStatusSlotResponse, error)` to `(WebAppsClientListSyncStatusSlotResponse, error)`
+- Function `*WebAppsClient.GetPublicCertificateSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetPublicCertificateSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetPublicCertificateSlotOptions)`
+- Function `*WebAppsClient.GetPublicCertificateSlot` return value(s) have been changed from `(WebAppsGetPublicCertificateSlotResponse, error)` to `(WebAppsClientGetPublicCertificateSlotResponse, error)`
+- Function `*WebAppsClient.GetInstanceFunctionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetInstanceFunctionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetInstanceFunctionSlotOptions)`
+- Function `*WebAppsClient.GetInstanceFunctionSlot` return value(s) have been changed from `(WebAppsGetInstanceFunctionSlotResponse, error)` to `(WebAppsClientGetInstanceFunctionSlotResponse, error)`
+- Function `*WebAppsClient.ListSiteBackups` parameter(s) have been changed from `(string, string, *WebAppsListSiteBackupsOptions)` to `(string, string, *WebAppsClientListSiteBackupsOptions)`
+- Function `*WebAppsClient.ListSiteBackups` return value(s) have been changed from `(*WebAppsListSiteBackupsPager)` to `(*WebAppsClientListSiteBackupsPager)`
+- Function `*WebAppsClient.ListSlots` parameter(s) have been changed from `(string, string, *WebAppsListSlotsOptions)` to `(string, string, *WebAppsClientListSlotsOptions)`
+- Function `*WebAppsClient.ListSlots` return value(s) have been changed from `(*WebAppsListSlotsPager)` to `(*WebAppsClientListSlotsPager)`
+- Function `*WebAppsClient.GetTriggeredWebJobSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetTriggeredWebJobSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetTriggeredWebJobSlotOptions)`
+- Function `*WebAppsClient.GetTriggeredWebJobSlot` return value(s) have been changed from `(WebAppsGetTriggeredWebJobSlotResponse, error)` to `(WebAppsClientGetTriggeredWebJobSlotResponse, error)`
+- Function `*WebAppsClient.UpdateSitePushSettingsSlot` parameter(s) have been changed from `(context.Context, string, string, string, PushSettings, *WebAppsUpdateSitePushSettingsSlotOptions)` to `(context.Context, string, string, string, PushSettings, *WebAppsClientUpdateSitePushSettingsSlotOptions)`
+- Function `*WebAppsClient.UpdateSitePushSettingsSlot` return value(s) have been changed from `(WebAppsUpdateSitePushSettingsSlotResponse, error)` to `(WebAppsClientUpdateSitePushSettingsSlotResponse, error)`
+- Function `*WebAppsClient.GetNetworkTraceOperation` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetNetworkTraceOperationOptions)` to `(context.Context, string, string, string, *WebAppsClientGetNetworkTraceOperationOptions)`
+- Function `*WebAppsClient.GetNetworkTraceOperation` return value(s) have been changed from `(WebAppsGetNetworkTraceOperationResponse, error)` to `(WebAppsClientGetNetworkTraceOperationResponse, error)`
+- Function `*RecommendationsClient.ResetAllFiltersForWebApp` parameter(s) have been changed from `(context.Context, string, string, *RecommendationsResetAllFiltersForWebAppOptions)` to `(context.Context, string, string, *RecommendationsClientResetAllFiltersForWebAppOptions)`
+- Function `*RecommendationsClient.ResetAllFiltersForWebApp` return value(s) have been changed from `(RecommendationsResetAllFiltersForWebAppResponse, error)` to `(RecommendationsClientResetAllFiltersForWebAppResponse, error)`
+- Function `*WebAppsClient.ListVnetConnections` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListVnetConnectionsOptions)` to `(context.Context, string, string, *WebAppsClientListVnetConnectionsOptions)`
+- Function `*WebAppsClient.ListVnetConnections` return value(s) have been changed from `(WebAppsListVnetConnectionsResponse, error)` to `(WebAppsClientListVnetConnectionsResponse, error)`
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReference` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetSiteConnectionStringKeyVaultReferenceOptions)` to `(context.Context, string, string, string, *WebAppsClientGetSiteConnectionStringKeyVaultReferenceOptions)`
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReference` return value(s) have been changed from `(WebAppsGetSiteConnectionStringKeyVaultReferenceResponse, error)` to `(WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse, error)`
+- Function `*WebAppsClient.GetAppSettingKeyVaultReferenceSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetAppSettingKeyVaultReferenceSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions)`
+- Function `*WebAppsClient.GetAppSettingKeyVaultReferenceSlot` return value(s) have been changed from `(WebAppsGetAppSettingKeyVaultReferenceSlotResponse, error)` to `(WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse, error)`
+- Function `*ProviderClient.GetWebAppStacks` parameter(s) have been changed from `(*ProviderGetWebAppStacksOptions)` to `(*ProviderClientGetWebAppStacksOptions)`
+- Function `*ProviderClient.GetWebAppStacks` return value(s) have been changed from `(*ProviderGetWebAppStacksPager)` to `(*ProviderClientGetWebAppStacksPager)`
+- Function `*WebAppsClient.ListDeploymentsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListDeploymentsSlotOptions)` to `(string, string, string, *WebAppsClientListDeploymentsSlotOptions)`
+- Function `*WebAppsClient.ListDeploymentsSlot` return value(s) have been changed from `(*WebAppsListDeploymentsSlotPager)` to `(*WebAppsClientListDeploymentsSlotPager)`
+- Function `*CertificatesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *CertificatesListByResourceGroupOptions)` to `(string, *CertificatesClientListByResourceGroupOptions)`
+- Function `*CertificatesClient.ListByResourceGroup` return value(s) have been changed from `(*CertificatesListByResourceGroupPager)` to `(*CertificatesClientListByResourceGroupPager)`
+- Function `*WebAppsClient.GetMSDeployLog` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetMSDeployLogOptions)` to `(context.Context, string, string, *WebAppsClientGetMSDeployLogOptions)`
+- Function `*WebAppsClient.GetMSDeployLog` return value(s) have been changed from `(WebAppsGetMSDeployLogResponse, error)` to `(WebAppsClientGetMSDeployLogResponse, error)`
+- Function `*WebAppsClient.ListSlotDifferencesFromProduction` parameter(s) have been changed from `(string, string, CsmSlotEntity, *WebAppsListSlotDifferencesFromProductionOptions)` to `(string, string, CsmSlotEntity, *WebAppsClientListSlotDifferencesFromProductionOptions)`
+- Function `*WebAppsClient.ListSlotDifferencesFromProduction` return value(s) have been changed from `(*WebAppsListSlotDifferencesFromProductionPager)` to `(*WebAppsClientListSlotDifferencesFromProductionPager)`
+- Function `*WebAppsClient.DeleteHostNameBindingSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteHostNameBindingSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteHostNameBindingSlotOptions)`
+- Function `*WebAppsClient.DeleteHostNameBindingSlot` return value(s) have been changed from `(WebAppsDeleteHostNameBindingSlotResponse, error)` to `(WebAppsClientDeleteHostNameBindingSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot` parameter(s) have been changed from `(context.Context, string, string, string, SwiftVirtualNetwork, *WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions)` to `(context.Context, string, string, string, SwiftVirtualNetwork, *WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error)` to `(WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error)`
+- Function `*StaticSitesClient.GetPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesGetPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, *StaticSitesClientGetPrivateEndpointConnectionOptions)`
+- Function `*StaticSitesClient.GetPrivateEndpointConnection` return value(s) have been changed from `(StaticSitesGetPrivateEndpointConnectionResponse, error)` to `(StaticSitesClientGetPrivateEndpointConnectionResponse, error)`
+- Function `*ResourceHealthMetadataClient.GetBySite` parameter(s) have been changed from `(context.Context, string, string, *ResourceHealthMetadataGetBySiteOptions)` to `(context.Context, string, string, *ResourceHealthMetadataClientGetBySiteOptions)`
+- Function `*ResourceHealthMetadataClient.GetBySite` return value(s) have been changed from `(ResourceHealthMetadataGetBySiteResponse, error)` to `(ResourceHealthMetadataClientGetBySiteResponse, error)`
+- Function `*WebAppsClient.ListBackupsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListBackupsSlotOptions)` to `(string, string, string, *WebAppsClientListBackupsSlotOptions)`
+- Function `*WebAppsClient.ListBackupsSlot` return value(s) have been changed from `(*WebAppsListBackupsSlotPager)` to `(*WebAppsClientListBackupsSlotPager)`
+- Function `*WebAppsClient.BeginMigrateStorage` parameter(s) have been changed from `(context.Context, string, string, string, StorageMigrationOptions, *WebAppsBeginMigrateStorageOptions)` to `(context.Context, string, string, string, StorageMigrationOptions, *WebAppsClientBeginMigrateStorageOptions)`
+- Function `*WebAppsClient.BeginMigrateStorage` return value(s) have been changed from `(WebAppsMigrateStoragePollerResponse, error)` to `(WebAppsClientMigrateStoragePollerResponse, error)`
+- Function `*CertificatesClient.List` parameter(s) have been changed from `(*CertificatesListOptions)` to `(*CertificatesClientListOptions)`
+- Function `*CertificatesClient.List` return value(s) have been changed from `(*CertificatesListPager)` to `(*CertificatesClientListPager)`
+- Function `*WebAppsClient.CreateOrUpdateHybridConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, HybridConnection, *WebAppsCreateOrUpdateHybridConnectionSlotOptions)` to `(context.Context, string, string, string, string, string, HybridConnection, *WebAppsClientCreateOrUpdateHybridConnectionSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateHybridConnectionSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateHybridConnectionSlotResponse, error)` to `(WebAppsClientCreateOrUpdateHybridConnectionSlotResponse, error)`
+- Function `*ProviderClient.GetWebAppStacksForLocation` parameter(s) have been changed from `(string, *ProviderGetWebAppStacksForLocationOptions)` to `(string, *ProviderClientGetWebAppStacksForLocationOptions)`
+- Function `*ProviderClient.GetWebAppStacksForLocation` return value(s) have been changed from `(*ProviderGetWebAppStacksForLocationPager)` to `(*ProviderClientGetWebAppStacksForLocationPager)`
+- Function `*DiagnosticsClient.GetSiteDiagnosticCategory` parameter(s) have been changed from `(context.Context, string, string, string, *DiagnosticsGetSiteDiagnosticCategoryOptions)` to `(context.Context, string, string, string, *DiagnosticsClientGetSiteDiagnosticCategoryOptions)`
+- Function `*DiagnosticsClient.GetSiteDiagnosticCategory` return value(s) have been changed from `(DiagnosticsGetSiteDiagnosticCategoryResponse, error)` to `(DiagnosticsClientGetSiteDiagnosticCategoryResponse, error)`
+- Function `*WebAppsClient.DeleteVnetConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteVnetConnectionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteVnetConnectionSlotOptions)`
+- Function `*WebAppsClient.DeleteVnetConnectionSlot` return value(s) have been changed from `(WebAppsDeleteVnetConnectionSlotResponse, error)` to `(WebAppsClientDeleteVnetConnectionSlotResponse, error)`
+- Function `*DomainsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DomainsDeleteOptions)` to `(context.Context, string, string, *DomainsClientDeleteOptions)`
+- Function `*DomainsClient.Delete` return value(s) have been changed from `(DomainsDeleteResponse, error)` to `(DomainsClientDeleteResponse, error)`
+- Function `*WebAppsClient.GetDiagnosticLogsConfiguration` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetDiagnosticLogsConfigurationOptions)` to `(context.Context, string, string, *WebAppsClientGetDiagnosticLogsConfigurationOptions)`
+- Function `*WebAppsClient.GetDiagnosticLogsConfiguration` return value(s) have been changed from `(WebAppsGetDiagnosticLogsConfigurationResponse, error)` to `(WebAppsClientGetDiagnosticLogsConfigurationResponse, error)`
+- Function `*GlobalClient.GetDeletedWebAppSnapshots` parameter(s) have been changed from `(context.Context, string, *GlobalGetDeletedWebAppSnapshotsOptions)` to `(context.Context, string, *GlobalClientGetDeletedWebAppSnapshotsOptions)`
+- Function `*GlobalClient.GetDeletedWebAppSnapshots` return value(s) have been changed from `(GlobalGetDeletedWebAppSnapshotsResponse, error)` to `(GlobalClientGetDeletedWebAppSnapshotsResponse, error)`
+- Function `*WebAppsClient.ListProcessModulesSlot` parameter(s) have been changed from `(string, string, string, string, *WebAppsListProcessModulesSlotOptions)` to `(string, string, string, string, *WebAppsClientListProcessModulesSlotOptions)`
+- Function `*WebAppsClient.ListProcessModulesSlot` return value(s) have been changed from `(*WebAppsListProcessModulesSlotPager)` to `(*WebAppsClientListProcessModulesSlotPager)`
+- Function `*WebAppsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *WebAppsDeleteOptions)` to `(context.Context, string, string, *WebAppsClientDeleteOptions)`
+- Function `*WebAppsClient.Delete` return value(s) have been changed from `(WebAppsDeleteResponse, error)` to `(WebAppsClientDeleteResponse, error)`
+- Function `*WebAppsClient.UpdateConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, SiteConfigResource, *WebAppsUpdateConfigurationSlotOptions)` to `(context.Context, string, string, string, SiteConfigResource, *WebAppsClientUpdateConfigurationSlotOptions)`
+- Function `*WebAppsClient.UpdateConfigurationSlot` return value(s) have been changed from `(WebAppsUpdateConfigurationSlotResponse, error)` to `(WebAppsClientUpdateConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateVnetConnection` parameter(s) have been changed from `(context.Context, string, string, string, VnetInfoResource, *WebAppsCreateOrUpdateVnetConnectionOptions)` to `(context.Context, string, string, string, VnetInfoResource, *WebAppsClientCreateOrUpdateVnetConnectionOptions)`
+- Function `*WebAppsClient.CreateOrUpdateVnetConnection` return value(s) have been changed from `(WebAppsCreateOrUpdateVnetConnectionResponse, error)` to `(WebAppsClientCreateOrUpdateVnetConnectionResponse, error)`
+- Function `*WebAppsClient.GetAppSettingsKeyVaultReferences` parameter(s) have been changed from `(string, string, *WebAppsGetAppSettingsKeyVaultReferencesOptions)` to `(string, string, *WebAppsClientGetAppSettingsKeyVaultReferencesOptions)`
+- Function `*WebAppsClient.GetAppSettingsKeyVaultReferences` return value(s) have been changed from `(*WebAppsGetAppSettingsKeyVaultReferencesPager)` to `(*WebAppsClientGetAppSettingsKeyVaultReferencesPager)`
+- Function `*WebAppsClient.Stop` parameter(s) have been changed from `(context.Context, string, string, *WebAppsStopOptions)` to `(context.Context, string, string, *WebAppsClientStopOptions)`
+- Function `*WebAppsClient.Stop` return value(s) have been changed from `(WebAppsStopResponse, error)` to `(WebAppsClientStopResponse, error)`
+- Function `*WebAppsClient.UpdateDiagnosticLogsConfigSlot` parameter(s) have been changed from `(context.Context, string, string, string, SiteLogsConfig, *WebAppsUpdateDiagnosticLogsConfigSlotOptions)` to `(context.Context, string, string, string, SiteLogsConfig, *WebAppsClientUpdateDiagnosticLogsConfigSlotOptions)`
+- Function `*WebAppsClient.UpdateDiagnosticLogsConfigSlot` return value(s) have been changed from `(WebAppsUpdateDiagnosticLogsConfigSlotResponse, error)` to `(WebAppsClientUpdateDiagnosticLogsConfigSlotResponse, error)`
+- Function `*DiagnosticsClient.ExecuteSiteAnalysis` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiagnosticsExecuteSiteAnalysisOptions)` to `(context.Context, string, string, string, string, *DiagnosticsClientExecuteSiteAnalysisOptions)`
+- Function `*DiagnosticsClient.ExecuteSiteAnalysis` return value(s) have been changed from `(DiagnosticsExecuteSiteAnalysisResponse, error)` to `(DiagnosticsClientExecuteSiteAnalysisResponse, error)`
+- Function `*StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild` parameter(s) have been changed from `(context.Context, string, string, string, string, StaticSiteUserProvidedFunctionAppARMResource, *StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions)` to `(context.Context, string, string, string, string, StaticSiteUserProvidedFunctionAppARMResource, *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions)`
+- Function `*StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild` return value(s) have been changed from `(StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse, error)` to `(StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse, error)`
+- Function `*StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite` parameter(s) have been changed from `(context.Context, string, string, string, StaticSiteUserProvidedFunctionAppARMResource, *StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions)` to `(context.Context, string, string, string, StaticSiteUserProvidedFunctionAppARMResource, *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions)`
+- Function `*StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite` return value(s) have been changed from `(StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse, error)` to `(StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse, error)`
+- Function `*WebAppsClient.GetInstanceInfo` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetInstanceInfoOptions)` to `(context.Context, string, string, string, *WebAppsClientGetInstanceInfoOptions)`
+- Function `*WebAppsClient.GetInstanceInfo` return value(s) have been changed from `(WebAppsGetInstanceInfoResponse, error)` to `(WebAppsClientGetInstanceInfoResponse, error)`
+- Function `*DomainsClient.ListOwnershipIdentifiers` parameter(s) have been changed from `(string, string, *DomainsListOwnershipIdentifiersOptions)` to `(string, string, *DomainsClientListOwnershipIdentifiersOptions)`
+- Function `*DomainsClient.ListOwnershipIdentifiers` return value(s) have been changed from `(*DomainsListOwnershipIdentifiersPager)` to `(*DomainsClientListOwnershipIdentifiersPager)`
+- Function `*WebAppsClient.ListFunctionKeys` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListFunctionKeysOptions)` to `(context.Context, string, string, string, *WebAppsClientListFunctionKeysOptions)`
+- Function `*WebAppsClient.ListFunctionKeys` return value(s) have been changed from `(WebAppsListFunctionKeysResponse, error)` to `(WebAppsClientListFunctionKeysResponse, error)`
+- Function `*GlobalClient.GetDeletedWebApp` parameter(s) have been changed from `(context.Context, string, *GlobalGetDeletedWebAppOptions)` to `(context.Context, string, *GlobalClientGetDeletedWebAppOptions)`
+- Function `*GlobalClient.GetDeletedWebApp` return value(s) have been changed from `(GlobalGetDeletedWebAppResponse, error)` to `(GlobalClientGetDeletedWebAppResponse, error)`
+- Function `*WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, PrivateLinkConnectionApprovalRequestResource, *WebAppsBeginApproveOrRejectPrivateEndpointConnectionSlotOptions)` to `(context.Context, string, string, string, string, PrivateLinkConnectionApprovalRequestResource, *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions)`
+- Function `*WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot` return value(s) have been changed from `(WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse, error)` to `(WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse, error)`
+- Function `*WebAppsClient.GetInstanceProcessSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsGetInstanceProcessSlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientGetInstanceProcessSlotOptions)`
+- Function `*WebAppsClient.GetInstanceProcessSlot` return value(s) have been changed from `(WebAppsGetInstanceProcessSlotResponse, error)` to `(WebAppsClientGetInstanceProcessSlotResponse, error)`
+- Function `*WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsBeginStartWebSiteNetworkTraceOperationSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions)`
+- Function `*WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot` return value(s) have been changed from `(WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse, error)` to `(WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse, error)`
+- Function `*WebAppsClient.ListAzureStorageAccounts` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListAzureStorageAccountsOptions)` to `(context.Context, string, string, *WebAppsClientListAzureStorageAccountsOptions)`
+- Function `*WebAppsClient.ListAzureStorageAccounts` return value(s) have been changed from `(WebAppsListAzureStorageAccountsResponse, error)` to `(WebAppsClientListAzureStorageAccountsResponse, error)`
+- Function `*WebAppsClient.ListInstanceIdentifiersSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListInstanceIdentifiersSlotOptions)` to `(string, string, string, *WebAppsClientListInstanceIdentifiersSlotOptions)`
+- Function `*WebAppsClient.ListInstanceIdentifiersSlot` return value(s) have been changed from `(*WebAppsListInstanceIdentifiersSlotPager)` to `(*WebAppsClientListInstanceIdentifiersSlotPager)`
+- Function `*WebAppsClient.GetPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, *WebAppsClientGetPrivateEndpointConnectionOptions)`
+- Function `*WebAppsClient.GetPrivateEndpointConnection` return value(s) have been changed from `(WebAppsGetPrivateEndpointConnectionResponse, error)` to `(WebAppsClientGetPrivateEndpointConnectionResponse, error)`
+- Function `*WebAppsClient.Update` parameter(s) have been changed from `(context.Context, string, string, SitePatchResource, *WebAppsUpdateOptions)` to `(context.Context, string, string, SitePatchResource, *WebAppsClientUpdateOptions)`
+- Function `*WebAppsClient.Update` return value(s) have been changed from `(WebAppsUpdateResponse, error)` to `(WebAppsClientUpdateResponse, error)`
+- Function `*WebAppsClient.StopWebSiteNetworkTrace` parameter(s) have been changed from `(context.Context, string, string, *WebAppsStopWebSiteNetworkTraceOptions)` to `(context.Context, string, string, *WebAppsClientStopWebSiteNetworkTraceOptions)`
+- Function `*WebAppsClient.StopWebSiteNetworkTrace` return value(s) have been changed from `(WebAppsStopWebSiteNetworkTraceResponse, error)` to `(WebAppsClientStopWebSiteNetworkTraceResponse, error)`
+- Function `*DiagnosticsClient.ListSiteDetectorResponses` parameter(s) have been changed from `(string, string, *DiagnosticsListSiteDetectorResponsesOptions)` to `(string, string, *DiagnosticsClientListSiteDetectorResponsesOptions)`
+- Function `*DiagnosticsClient.ListSiteDetectorResponses` return value(s) have been changed from `(*DiagnosticsListSiteDetectorResponsesPager)` to `(*DiagnosticsClientListSiteDetectorResponsesPager)`
+- Function `*DomainsClient.CreateOrUpdateOwnershipIdentifier` parameter(s) have been changed from `(context.Context, string, string, string, DomainOwnershipIdentifier, *DomainsCreateOrUpdateOwnershipIdentifierOptions)` to `(context.Context, string, string, string, DomainOwnershipIdentifier, *DomainsClientCreateOrUpdateOwnershipIdentifierOptions)`
+- Function `*DomainsClient.CreateOrUpdateOwnershipIdentifier` return value(s) have been changed from `(DomainsCreateOrUpdateOwnershipIdentifierResponse, error)` to `(DomainsClientCreateOrUpdateOwnershipIdentifierResponse, error)`
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppForStaticSite` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesGetUserProvidedFunctionAppForStaticSiteOptions)` to `(context.Context, string, string, string, *StaticSitesClientGetUserProvidedFunctionAppForStaticSiteOptions)`
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppForStaticSite` return value(s) have been changed from `(StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse, error)` to `(StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse, error)`
+- Function `*WebAppsClient.BeginCreateFunction` parameter(s) have been changed from `(context.Context, string, string, string, FunctionEnvelope, *WebAppsBeginCreateFunctionOptions)` to `(context.Context, string, string, string, FunctionEnvelope, *WebAppsClientBeginCreateFunctionOptions)`
+- Function `*WebAppsClient.BeginCreateFunction` return value(s) have been changed from `(WebAppsCreateFunctionPollerResponse, error)` to `(WebAppsClientCreateFunctionPollerResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateConfiguration` parameter(s) have been changed from `(context.Context, string, string, SiteConfigResource, *WebAppsCreateOrUpdateConfigurationOptions)` to `(context.Context, string, string, SiteConfigResource, *WebAppsClientCreateOrUpdateConfigurationOptions)`
+- Function `*WebAppsClient.CreateOrUpdateConfiguration` return value(s) have been changed from `(WebAppsCreateOrUpdateConfigurationResponse, error)` to `(WebAppsClientCreateOrUpdateConfigurationResponse, error)`
+- Function `*WebAppsClient.ListSiteBackupsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListSiteBackupsSlotOptions)` to `(string, string, string, *WebAppsClientListSiteBackupsSlotOptions)`
+- Function `*WebAppsClient.ListSiteBackupsSlot` return value(s) have been changed from `(*WebAppsListSiteBackupsSlotPager)` to `(*WebAppsClientListSiteBackupsSlotPager)`
+- Function `*DiagnosticsClient.ListSiteAnalyses` parameter(s) have been changed from `(string, string, string, *DiagnosticsListSiteAnalysesOptions)` to `(string, string, string, *DiagnosticsClientListSiteAnalysesOptions)`
+- Function `*DiagnosticsClient.ListSiteAnalyses` return value(s) have been changed from `(*DiagnosticsListSiteAnalysesPager)` to `(*DiagnosticsClientListSiteAnalysesPager)`
+- Function `*WebAppsClient.DeleteHybridConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsDeleteHybridConnectionSlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientDeleteHybridConnectionSlotOptions)`
+- Function `*WebAppsClient.DeleteHybridConnectionSlot` return value(s) have been changed from `(WebAppsDeleteHybridConnectionSlotResponse, error)` to `(WebAppsClientDeleteHybridConnectionSlotResponse, error)`
+- Function `*WebAppsClient.ResetSlotConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsResetSlotConfigurationSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientResetSlotConfigurationSlotOptions)`
+- Function `*WebAppsClient.ResetSlotConfigurationSlot` return value(s) have been changed from `(WebAppsResetSlotConfigurationSlotResponse, error)` to `(WebAppsClientResetSlotConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.GetSwiftVirtualNetworkConnection` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetSwiftVirtualNetworkConnectionOptions)` to `(context.Context, string, string, *WebAppsClientGetSwiftVirtualNetworkConnectionOptions)`
+- Function `*WebAppsClient.GetSwiftVirtualNetworkConnection` return value(s) have been changed from `(WebAppsGetSwiftVirtualNetworkConnectionResponse, error)` to `(WebAppsClientGetSwiftVirtualNetworkConnectionResponse, error)`
+- Function `*RecommendationsClient.List` parameter(s) have been changed from `(*RecommendationsListOptions)` to `(*RecommendationsClientListOptions)`
+- Function `*RecommendationsClient.List` return value(s) have been changed from `(*RecommendationsListPager)` to `(*RecommendationsClientListPager)`
+- Function `*WebAppsClient.GetFunctionsAdminToken` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetFunctionsAdminTokenOptions)` to `(context.Context, string, string, *WebAppsClientGetFunctionsAdminTokenOptions)`
+- Function `*WebAppsClient.GetFunctionsAdminToken` return value(s) have been changed from `(WebAppsGetFunctionsAdminTokenResponse, error)` to `(WebAppsClientGetFunctionsAdminTokenResponse, error)`
+- Function `*WebAppsClient.GetVnetConnection` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetVnetConnectionOptions)` to `(context.Context, string, string, string, *WebAppsClientGetVnetConnectionOptions)`
+- Function `*WebAppsClient.GetVnetConnection` return value(s) have been changed from `(WebAppsGetVnetConnectionResponse, error)` to `(WebAppsClientGetVnetConnectionResponse, error)`
+- Function `*WebAppsClient.ListSlotDifferencesSlot` parameter(s) have been changed from `(string, string, string, CsmSlotEntity, *WebAppsListSlotDifferencesSlotOptions)` to `(string, string, string, CsmSlotEntity, *WebAppsClientListSlotDifferencesSlotOptions)`
+- Function `*WebAppsClient.ListSlotDifferencesSlot` return value(s) have been changed from `(*WebAppsListSlotDifferencesSlotPager)` to `(*WebAppsClientListSlotDifferencesSlotPager)`
+- Function `*WebAppsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *WebAppsListByResourceGroupOptions)` to `(string, *WebAppsClientListByResourceGroupOptions)`
+- Function `*WebAppsClient.ListByResourceGroup` return value(s) have been changed from `(*WebAppsListByResourceGroupPager)` to `(*WebAppsClientListByResourceGroupPager)`
+- Function `*WebAppsClient.GetProcessModuleSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsGetProcessModuleSlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientGetProcessModuleSlotOptions)`
+- Function `*WebAppsClient.GetProcessModuleSlot` return value(s) have been changed from `(WebAppsGetProcessModuleSlotResponse, error)` to `(WebAppsClientGetProcessModuleSlotResponse, error)`
+- Function `*StaticSitesClient.GetPrivateLinkResources` parameter(s) have been changed from `(context.Context, string, string, *StaticSitesGetPrivateLinkResourcesOptions)` to `(context.Context, string, string, *StaticSitesClientGetPrivateLinkResourcesOptions)`
+- Function `*StaticSitesClient.GetPrivateLinkResources` return value(s) have been changed from `(StaticSitesGetPrivateLinkResourcesResponse, error)` to `(StaticSitesClientGetPrivateLinkResourcesResponse, error)`
+- Function `*WebAppsClient.GetWebSiteContainerLogs` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetWebSiteContainerLogsOptions)` to `(context.Context, string, string, *WebAppsClientGetWebSiteContainerLogsOptions)`
+- Function `*WebAppsClient.GetWebSiteContainerLogs` return value(s) have been changed from `(WebAppsGetWebSiteContainerLogsResponse, error)` to `(WebAppsClientGetWebSiteContainerLogsResponse, error)`
+- Function `*WebAppsClient.DeleteFunctionSecretSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsDeleteFunctionSecretSlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientDeleteFunctionSecretSlotOptions)`
+- Function `*WebAppsClient.DeleteFunctionSecretSlot` return value(s) have been changed from `(WebAppsDeleteFunctionSecretSlotResponse, error)` to `(WebAppsClientDeleteFunctionSecretSlotResponse, error)`
+- Function `*StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings` parameter(s) have been changed from `(context.Context, string, string, StringDictionary, *StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsOptions)` to `(context.Context, string, string, StringDictionary, *StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions)`
+- Function `*StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings` return value(s) have been changed from `(StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse, error)` to `(StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse, error)`
+- Function `*DomainRegistrationProviderClient.ListOperations` parameter(s) have been changed from `(*DomainRegistrationProviderListOperationsOptions)` to `(*DomainRegistrationProviderClientListOperationsOptions)`
+- Function `*DomainRegistrationProviderClient.ListOperations` return value(s) have been changed from `(*DomainRegistrationProviderListOperationsPager)` to `(*DomainRegistrationProviderClientListOperationsPager)`
+- Function `*DiagnosticsClient.ExecuteSiteAnalysisSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *DiagnosticsExecuteSiteAnalysisSlotOptions)` to `(context.Context, string, string, string, string, string, *DiagnosticsClientExecuteSiteAnalysisSlotOptions)`
+- Function `*DiagnosticsClient.ExecuteSiteAnalysisSlot` return value(s) have been changed from `(DiagnosticsExecuteSiteAnalysisSlotResponse, error)` to `(DiagnosticsClientExecuteSiteAnalysisSlotResponse, error)`
+- Function `*WebAppsClient.ListFunctionKeysSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsListFunctionKeysSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientListFunctionKeysSlotOptions)`
+- Function `*WebAppsClient.ListFunctionKeysSlot` return value(s) have been changed from `(WebAppsListFunctionKeysSlotResponse, error)` to `(WebAppsClientListFunctionKeysSlotResponse, error)`
+- Function `*WebAppsClient.PutPrivateAccessVnet` parameter(s) have been changed from `(context.Context, string, string, PrivateAccess, *WebAppsPutPrivateAccessVnetOptions)` to `(context.Context, string, string, PrivateAccess, *WebAppsClientPutPrivateAccessVnetOptions)`
+- Function `*WebAppsClient.PutPrivateAccessVnet` return value(s) have been changed from `(WebAppsPutPrivateAccessVnetResponse, error)` to `(WebAppsClientPutPrivateAccessVnetResponse, error)`
+- Function `*StaticSitesClient.BeginCreateOrUpdateStaticSiteCustomDomain` parameter(s) have been changed from `(context.Context, string, string, string, StaticSiteCustomDomainRequestPropertiesARMResource, *StaticSitesBeginCreateOrUpdateStaticSiteCustomDomainOptions)` to `(context.Context, string, string, string, StaticSiteCustomDomainRequestPropertiesARMResource, *StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions)`
+- Function `*StaticSitesClient.BeginCreateOrUpdateStaticSiteCustomDomain` return value(s) have been changed from `(StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse, error)` to `(StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse, error)`
+- Function `*WebAppsClient.GetSiteExtension` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetSiteExtensionOptions)` to `(context.Context, string, string, string, *WebAppsClientGetSiteExtensionOptions)`
+- Function `*WebAppsClient.GetSiteExtension` return value(s) have been changed from `(WebAppsGetSiteExtensionResponse, error)` to `(WebAppsClientGetSiteExtensionResponse, error)`
+- Function `*WebAppsClient.UpdateHybridConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, HybridConnection, *WebAppsUpdateHybridConnectionSlotOptions)` to `(context.Context, string, string, string, string, string, HybridConnection, *WebAppsClientUpdateHybridConnectionSlotOptions)`
+- Function `*WebAppsClient.UpdateHybridConnectionSlot` return value(s) have been changed from `(WebAppsUpdateHybridConnectionSlotResponse, error)` to `(WebAppsClientUpdateHybridConnectionSlotResponse, error)`
+- Function `*WebAppsClient.RunTriggeredWebJobSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsRunTriggeredWebJobSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientRunTriggeredWebJobSlotOptions)`
+- Function `*WebAppsClient.RunTriggeredWebJobSlot` return value(s) have been changed from `(WebAppsRunTriggeredWebJobSlotResponse, error)` to `(WebAppsClientRunTriggeredWebJobSlotResponse, error)`
+- Function `*DiagnosticsClient.ListSiteAnalysesSlot` parameter(s) have been changed from `(string, string, string, string, *DiagnosticsListSiteAnalysesSlotOptions)` to `(string, string, string, string, *DiagnosticsClientListSiteAnalysesSlotOptions)`
+- Function `*DiagnosticsClient.ListSiteAnalysesSlot` return value(s) have been changed from `(*DiagnosticsListSiteAnalysesSlotPager)` to `(*DiagnosticsClientListSiteAnalysesSlotPager)`
+- Function `*WebAppsClient.GetInstanceProcessModule` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsGetInstanceProcessModuleOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientGetInstanceProcessModuleOptions)`
+- Function `*WebAppsClient.GetInstanceProcessModule` return value(s) have been changed from `(WebAppsGetInstanceProcessModuleResponse, error)` to `(WebAppsClientGetInstanceProcessModuleResponse, error)`
+- Function `*WebAppsClient.GetNetworkTraceOperationV2` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetNetworkTraceOperationV2Options)` to `(context.Context, string, string, string, *WebAppsClientGetNetworkTraceOperationV2Options)`
+- Function `*WebAppsClient.GetNetworkTraceOperationV2` return value(s) have been changed from `(WebAppsGetNetworkTraceOperationV2Response, error)` to `(WebAppsClientGetNetworkTraceOperationV2Response, error)`
+- Function `*WebAppsClient.ListProcessModules` parameter(s) have been changed from `(string, string, string, *WebAppsListProcessModulesOptions)` to `(string, string, string, *WebAppsClientListProcessModulesOptions)`
+- Function `*WebAppsClient.ListProcessModules` return value(s) have been changed from `(*WebAppsListProcessModulesPager)` to `(*WebAppsClientListProcessModulesPager)`
+- Function `*WebAppsClient.SyncFunctionTriggers` parameter(s) have been changed from `(context.Context, string, string, *WebAppsSyncFunctionTriggersOptions)` to `(context.Context, string, string, *WebAppsClientSyncFunctionTriggersOptions)`
+- Function `*WebAppsClient.SyncFunctionTriggers` return value(s) have been changed from `(WebAppsSyncFunctionTriggersResponse, error)` to `(WebAppsClientSyncFunctionTriggersResponse, error)`
+- Function `*StaticSitesClient.ListStaticSiteBuildFunctions` parameter(s) have been changed from `(string, string, string, *StaticSitesListStaticSiteBuildFunctionsOptions)` to `(string, string, string, *StaticSitesClientListStaticSiteBuildFunctionsOptions)`
+- Function `*StaticSitesClient.ListStaticSiteBuildFunctions` return value(s) have been changed from `(*StaticSitesListStaticSiteBuildFunctionsPager)` to `(*StaticSitesClientListStaticSiteBuildFunctionsPager)`
+- Function `*WebAppsClient.GetHybridConnection` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetHybridConnectionOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetHybridConnectionOptions)`
+- Function `*WebAppsClient.GetHybridConnection` return value(s) have been changed from `(WebAppsGetHybridConnectionResponse, error)` to `(WebAppsClientGetHybridConnectionResponse, error)`
+- Function `*WebAppsClient.GetContinuousWebJobSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetContinuousWebJobSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetContinuousWebJobSlotOptions)`
+- Function `*WebAppsClient.GetContinuousWebJobSlot` return value(s) have been changed from `(WebAppsGetContinuousWebJobSlotResponse, error)` to `(WebAppsClientGetContinuousWebJobSlotResponse, error)`
+- Function `*WebAppsClient.GetDeployment` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetDeploymentOptions)` to `(context.Context, string, string, string, *WebAppsClientGetDeploymentOptions)`
+- Function `*WebAppsClient.GetDeployment` return value(s) have been changed from `(WebAppsGetDeploymentResponse, error)` to `(WebAppsClientGetDeploymentResponse, error)`
+- Function `*DiagnosticsClient.GetSiteDetectorResponse` parameter(s) have been changed from `(context.Context, string, string, string, *DiagnosticsGetSiteDetectorResponseOptions)` to `(context.Context, string, string, string, *DiagnosticsClientGetSiteDetectorResponseOptions)`
+- Function `*DiagnosticsClient.GetSiteDetectorResponse` return value(s) have been changed from `(DiagnosticsGetSiteDetectorResponseResponse, error)` to `(DiagnosticsClientGetSiteDetectorResponseResponse, error)`
+- Function `*WebAppsClient.BeginCreateInstanceMSDeployOperation` parameter(s) have been changed from `(context.Context, string, string, string, MSDeploy, *WebAppsBeginCreateInstanceMSDeployOperationOptions)` to `(context.Context, string, string, string, MSDeploy, *WebAppsClientBeginCreateInstanceMSDeployOperationOptions)`
+- Function `*WebAppsClient.BeginCreateInstanceMSDeployOperation` return value(s) have been changed from `(WebAppsCreateInstanceMSDeployOperationPollerResponse, error)` to `(WebAppsClientCreateInstanceMSDeployOperationPollerResponse, error)`
+- Function `*WebAppsClient.BeginDeletePrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsBeginDeletePrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, *WebAppsClientBeginDeletePrivateEndpointConnectionOptions)`
+- Function `*WebAppsClient.BeginDeletePrivateEndpointConnection` return value(s) have been changed from `(WebAppsDeletePrivateEndpointConnectionPollerResponse, error)` to `(WebAppsClientDeletePrivateEndpointConnectionPollerResponse, error)`
+- Function `*WebAppsClient.RecoverSiteConfigurationSnapshot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsRecoverSiteConfigurationSnapshotOptions)` to `(context.Context, string, string, string, *WebAppsClientRecoverSiteConfigurationSnapshotOptions)`
+- Function `*WebAppsClient.RecoverSiteConfigurationSnapshot` return value(s) have been changed from `(WebAppsRecoverSiteConfigurationSnapshotResponse, error)` to `(WebAppsClientRecoverSiteConfigurationSnapshotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateVnetConnectionGateway` parameter(s) have been changed from `(context.Context, string, string, string, string, VnetGateway, *WebAppsCreateOrUpdateVnetConnectionGatewayOptions)` to `(context.Context, string, string, string, string, VnetGateway, *WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions)`
+- Function `*WebAppsClient.CreateOrUpdateVnetConnectionGateway` return value(s) have been changed from `(WebAppsCreateOrUpdateVnetConnectionGatewayResponse, error)` to `(WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse, error)`
+- Function `*ProviderClient.ListOperations` parameter(s) have been changed from `(*ProviderListOperationsOptions)` to `(*ProviderClientListOperationsOptions)`
+- Function `*ProviderClient.ListOperations` return value(s) have been changed from `(*ProviderListOperationsPager)` to `(*ProviderClientListOperationsPager)`
+- Function `*WebAppsClient.ResetProductionSlotConfig` parameter(s) have been changed from `(context.Context, string, string, *WebAppsResetProductionSlotConfigOptions)` to `(context.Context, string, string, *WebAppsClientResetProductionSlotConfigOptions)`
+- Function `*WebAppsClient.ResetProductionSlotConfig` return value(s) have been changed from `(WebAppsResetProductionSlotConfigResponse, error)` to `(WebAppsClientResetProductionSlotConfigResponse, error)`
+- Function `*WebAppsClient.GetMigrateMySQLStatus` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetMigrateMySQLStatusOptions)` to `(context.Context, string, string, *WebAppsClientGetMigrateMySQLStatusOptions)`
+- Function `*WebAppsClient.GetMigrateMySQLStatus` return value(s) have been changed from `(WebAppsGetMigrateMySQLStatusResponse, error)` to `(WebAppsClientGetMigrateMySQLStatusResponse, error)`
+- Function `*WebAppsClient.ListHostKeysSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListHostKeysSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListHostKeysSlotOptions)`
+- Function `*WebAppsClient.ListHostKeysSlot` return value(s) have been changed from `(WebAppsListHostKeysSlotResponse, error)` to `(WebAppsClientListHostKeysSlotResponse, error)`
+- Function `*RecommendationsClient.DisableAllForWebApp` parameter(s) have been changed from `(context.Context, string, string, *RecommendationsDisableAllForWebAppOptions)` to `(context.Context, string, string, *RecommendationsClientDisableAllForWebAppOptions)`
+- Function `*RecommendationsClient.DisableAllForWebApp` return value(s) have been changed from `(RecommendationsDisableAllForWebAppResponse, error)` to `(RecommendationsClientDisableAllForWebAppResponse, error)`
+- Function `*WebAppsClient.ListBackupStatusSecrets` parameter(s) have been changed from `(context.Context, string, string, string, BackupRequest, *WebAppsListBackupStatusSecretsOptions)` to `(context.Context, string, string, string, BackupRequest, *WebAppsClientListBackupStatusSecretsOptions)`
+- Function `*WebAppsClient.ListBackupStatusSecrets` return value(s) have been changed from `(WebAppsListBackupStatusSecretsResponse, error)` to `(WebAppsClientListBackupStatusSecretsResponse, error)`
+- Function `*WebAppsClient.GetInstanceMSDeployLog` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetInstanceMSDeployLogOptions)` to `(context.Context, string, string, string, *WebAppsClientGetInstanceMSDeployLogOptions)`
+- Function `*WebAppsClient.GetInstanceMSDeployLog` return value(s) have been changed from `(WebAppsGetInstanceMSDeployLogResponse, error)` to `(WebAppsClientGetInstanceMSDeployLogResponse, error)`
+- Function `*StaticSitesClient.BeginDeleteStaticSiteBuild` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesBeginDeleteStaticSiteBuildOptions)` to `(context.Context, string, string, string, *StaticSitesClientBeginDeleteStaticSiteBuildOptions)`
+- Function `*StaticSitesClient.BeginDeleteStaticSiteBuild` return value(s) have been changed from `(StaticSitesDeleteStaticSiteBuildPollerResponse, error)` to `(StaticSitesClientDeleteStaticSiteBuildPollerResponse, error)`
+- Function `*WebAppsClient.BeginRestoreSnapshot` parameter(s) have been changed from `(context.Context, string, string, SnapshotRestoreRequest, *WebAppsBeginRestoreSnapshotOptions)` to `(context.Context, string, string, SnapshotRestoreRequest, *WebAppsClientBeginRestoreSnapshotOptions)`
+- Function `*WebAppsClient.BeginRestoreSnapshot` return value(s) have been changed from `(WebAppsRestoreSnapshotPollerResponse, error)` to `(WebAppsClientRestoreSnapshotPollerResponse, error)`
+- Function `*WebAppsClient.ListPublicCertificatesSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListPublicCertificatesSlotOptions)` to `(string, string, string, *WebAppsClientListPublicCertificatesSlotOptions)`
+- Function `*WebAppsClient.ListPublicCertificatesSlot` return value(s) have been changed from `(*WebAppsListPublicCertificatesSlotPager)` to `(*WebAppsClientListPublicCertificatesSlotPager)`
+- Function `*WebAppsClient.GetPrivateEndpointConnectionList` parameter(s) have been changed from `(string, string, *WebAppsGetPrivateEndpointConnectionListOptions)` to `(string, string, *WebAppsClientGetPrivateEndpointConnectionListOptions)`
+- Function `*WebAppsClient.GetPrivateEndpointConnectionList` return value(s) have been changed from `(*WebAppsGetPrivateEndpointConnectionListPager)` to `(*WebAppsClientGetPrivateEndpointConnectionListPager)`
+- Function `*CertificatesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *CertificatesDeleteOptions)` to `(context.Context, string, string, *CertificatesClientDeleteOptions)`
+- Function `*CertificatesClient.Delete` return value(s) have been changed from `(CertificatesDeleteResponse, error)` to `(CertificatesClientDeleteResponse, error)`
+- Function `*WebAppsClient.UpdateSlot` parameter(s) have been changed from `(context.Context, string, string, string, SitePatchResource, *WebAppsUpdateSlotOptions)` to `(context.Context, string, string, string, SitePatchResource, *WebAppsClientUpdateSlotOptions)`
+- Function `*WebAppsClient.UpdateSlot` return value(s) have been changed from `(WebAppsUpdateSlotResponse, error)` to `(WebAppsClientUpdateSlotResponse, error)`
+- Function `*WebAppsClient.ListSnapshotsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListSnapshotsSlotOptions)` to `(string, string, string, *WebAppsClientListSnapshotsSlotOptions)`
+- Function `*WebAppsClient.ListSnapshotsSlot` return value(s) have been changed from `(*WebAppsListSnapshotsSlotPager)` to `(*WebAppsClientListSnapshotsSlotPager)`
+- Function `*WebAppsClient.ListVnetConnectionsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListVnetConnectionsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListVnetConnectionsSlotOptions)`
+- Function `*WebAppsClient.ListVnetConnectionsSlot` return value(s) have been changed from `(WebAppsListVnetConnectionsSlotResponse, error)` to `(WebAppsClientListVnetConnectionsSlotResponse, error)`
+- Function `*CertificatesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CertificatesGetOptions)` to `(context.Context, string, string, *CertificatesClientGetOptions)`
+- Function `*CertificatesClient.Get` return value(s) have been changed from `(CertificatesGetResponse, error)` to `(CertificatesClientGetResponse, error)`
+- Function `*WebAppsClient.DeleteRelayServiceConnection` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteRelayServiceConnectionOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteRelayServiceConnectionOptions)`
+- Function `*WebAppsClient.DeleteRelayServiceConnection` return value(s) have been changed from `(WebAppsDeleteRelayServiceConnectionResponse, error)` to `(WebAppsClientDeleteRelayServiceConnectionResponse, error)`
+- Function `*WebAppsClient.BeginRestoreFromDeletedApp` parameter(s) have been changed from `(context.Context, string, string, DeletedAppRestoreRequest, *WebAppsBeginRestoreFromDeletedAppOptions)` to `(context.Context, string, string, DeletedAppRestoreRequest, *WebAppsClientBeginRestoreFromDeletedAppOptions)`
+- Function `*WebAppsClient.BeginRestoreFromDeletedApp` return value(s) have been changed from `(WebAppsRestoreFromDeletedAppPollerResponse, error)` to `(WebAppsClientRestoreFromDeletedAppPollerResponse, error)`
+- Function `*WebAppsClient.GetFunctionsAdminTokenSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetFunctionsAdminTokenSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetFunctionsAdminTokenSlotOptions)`
+- Function `*WebAppsClient.GetFunctionsAdminTokenSlot` return value(s) have been changed from `(WebAppsGetFunctionsAdminTokenSlotResponse, error)` to `(WebAppsClientGetFunctionsAdminTokenSlotResponse, error)`
+- Function `*WebAppsClient.List` parameter(s) have been changed from `(*WebAppsListOptions)` to `(*WebAppsClientListOptions)`
+- Function `*WebAppsClient.List` return value(s) have been changed from `(*WebAppsListPager)` to `(*WebAppsClientListPager)`
+- Function `*WebAppsClient.ListInstanceProcessesSlot` parameter(s) have been changed from `(string, string, string, string, *WebAppsListInstanceProcessesSlotOptions)` to `(string, string, string, string, *WebAppsClientListInstanceProcessesSlotOptions)`
+- Function `*WebAppsClient.ListInstanceProcessesSlot` return value(s) have been changed from `(*WebAppsListInstanceProcessesSlotPager)` to `(*WebAppsClientListInstanceProcessesSlotPager)`
+- Function `*WebAppsClient.ListMetadataSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListMetadataSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListMetadataSlotOptions)`
+- Function `*WebAppsClient.ListMetadataSlot` return value(s) have been changed from `(WebAppsListMetadataSlotResponse, error)` to `(WebAppsClientListMetadataSlotResponse, error)`
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReferenceSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetSiteConnectionStringKeyVaultReferenceSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions)`
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReferenceSlot` return value(s) have been changed from `(WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse, error)` to `(WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse, error)`
+- Function `*RecommendationsClient.DisableRecommendationForSite` parameter(s) have been changed from `(context.Context, string, string, string, *RecommendationsDisableRecommendationForSiteOptions)` to `(context.Context, string, string, string, *RecommendationsClientDisableRecommendationForSiteOptions)`
+- Function `*RecommendationsClient.DisableRecommendationForSite` return value(s) have been changed from `(RecommendationsDisableRecommendationForSiteResponse, error)` to `(RecommendationsClientDisableRecommendationForSiteResponse, error)`
+- Function `*WebAppsClient.GetSwiftVirtualNetworkConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetSwiftVirtualNetworkConnectionSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions)`
+- Function `*WebAppsClient.GetSwiftVirtualNetworkConnectionSlot` return value(s) have been changed from `(WebAppsGetSwiftVirtualNetworkConnectionSlotResponse, error)` to `(WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse, error)`
+- Function `*WebAppsClient.GetAuthSettingsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetAuthSettingsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetAuthSettingsSlotOptions)`
+- Function `*WebAppsClient.GetAuthSettingsSlot` return value(s) have been changed from `(WebAppsGetAuthSettingsSlotResponse, error)` to `(WebAppsClientGetAuthSettingsSlotResponse, error)`
+- Function `*WebAppsClient.GetDeploymentSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetDeploymentSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetDeploymentSlotOptions)`
+- Function `*WebAppsClient.GetDeploymentSlot` return value(s) have been changed from `(WebAppsGetDeploymentSlotResponse, error)` to `(WebAppsClientGetDeploymentSlotResponse, error)`
+- Function `*WebAppsClient.GetInstanceMsDeployStatus` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetInstanceMsDeployStatusOptions)` to `(context.Context, string, string, string, *WebAppsClientGetInstanceMsDeployStatusOptions)`
+- Function `*WebAppsClient.GetInstanceMsDeployStatus` return value(s) have been changed from `(WebAppsGetInstanceMsDeployStatusResponse, error)` to `(WebAppsClientGetInstanceMsDeployStatusResponse, error)`
+- Function `*WebAppsClient.DeleteDeploymentSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteDeploymentSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteDeploymentSlotOptions)`
+- Function `*WebAppsClient.DeleteDeploymentSlot` return value(s) have been changed from `(WebAppsDeleteDeploymentSlotResponse, error)` to `(WebAppsClientDeleteDeploymentSlotResponse, error)`
+- Function `*WebAppsClient.DeleteSwiftVirtualNetworkSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteSwiftVirtualNetworkSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteSwiftVirtualNetworkSlotOptions)`
+- Function `*WebAppsClient.DeleteSwiftVirtualNetworkSlot` return value(s) have been changed from `(WebAppsDeleteSwiftVirtualNetworkSlotResponse, error)` to `(WebAppsClientDeleteSwiftVirtualNetworkSlotResponse, error)`
+- Function `*WebAppsClient.GetHostNameBinding` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetHostNameBindingOptions)` to `(context.Context, string, string, string, *WebAppsClientGetHostNameBindingOptions)`
+- Function `*WebAppsClient.GetHostNameBinding` return value(s) have been changed from `(WebAppsGetHostNameBindingResponse, error)` to `(WebAppsClientGetHostNameBindingResponse, error)`
+- Function `*WebAppsClient.GenerateNewSitePublishingPassword` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGenerateNewSitePublishingPasswordOptions)` to `(context.Context, string, string, *WebAppsClientGenerateNewSitePublishingPasswordOptions)`
+- Function `*WebAppsClient.GenerateNewSitePublishingPassword` return value(s) have been changed from `(WebAppsGenerateNewSitePublishingPasswordResponse, error)` to `(WebAppsClientGenerateNewSitePublishingPasswordResponse, error)`
+- Function `*StaticSitesClient.GetStaticSite` parameter(s) have been changed from `(context.Context, string, string, *StaticSitesGetStaticSiteOptions)` to `(context.Context, string, string, *StaticSitesClientGetStaticSiteOptions)`
+- Function `*StaticSitesClient.GetStaticSite` return value(s) have been changed from `(StaticSitesGetStaticSiteResponse, error)` to `(StaticSitesClientGetStaticSiteResponse, error)`
+- Function `*StaticSitesClient.ListStaticSiteFunctions` parameter(s) have been changed from `(string, string, *StaticSitesListStaticSiteFunctionsOptions)` to `(string, string, *StaticSitesClientListStaticSiteFunctionsOptions)`
+- Function `*StaticSitesClient.ListStaticSiteFunctions` return value(s) have been changed from `(*StaticSitesListStaticSiteFunctionsPager)` to `(*StaticSitesClientListStaticSiteFunctionsPager)`
+- Function `*WebAppsClient.ListConnectionStringsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListConnectionStringsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListConnectionStringsSlotOptions)`
+- Function `*WebAppsClient.ListConnectionStringsSlot` return value(s) have been changed from `(WebAppsListConnectionStringsSlotResponse, error)` to `(WebAppsClientListConnectionStringsSlotResponse, error)`
+- Function `*WebAppsClient.UpdateScmAllowedSlot` parameter(s) have been changed from `(context.Context, string, string, string, CsmPublishingCredentialsPoliciesEntity, *WebAppsUpdateScmAllowedSlotOptions)` to `(context.Context, string, string, string, CsmPublishingCredentialsPoliciesEntity, *WebAppsClientUpdateScmAllowedSlotOptions)`
+- Function `*WebAppsClient.UpdateScmAllowedSlot` return value(s) have been changed from `(WebAppsUpdateScmAllowedSlotResponse, error)` to `(WebAppsClientUpdateScmAllowedSlotResponse, error)`
+- Function `*WebAppsClient.ListPublishingProfileXMLWithSecretsSlot` parameter(s) have been changed from `(context.Context, string, string, string, CsmPublishingProfileOptions, *WebAppsListPublishingProfileXMLWithSecretsSlotOptions)` to `(context.Context, string, string, string, CsmPublishingProfileOptions, *WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions)`
+- Function `*WebAppsClient.ListPublishingProfileXMLWithSecretsSlot` return value(s) have been changed from `(WebAppsListPublishingProfileXMLWithSecretsSlotResponse, error)` to `(WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse, error)`
+- Function `*WebAppsClient.DeleteProcess` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteProcessOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteProcessOptions)`
+- Function `*WebAppsClient.DeleteProcess` return value(s) have been changed from `(WebAppsDeleteProcessResponse, error)` to `(WebAppsClientDeleteProcessResponse, error)`
+- Function `*StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite` parameter(s) have been changed from `(context.Context, string, string, string, StaticSiteCustomDomainRequestPropertiesARMResource, *StaticSitesBeginValidateCustomDomainCanBeAddedToStaticSiteOptions)` to `(context.Context, string, string, string, StaticSiteCustomDomainRequestPropertiesARMResource, *StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions)`
+- Function `*StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite` return value(s) have been changed from `(StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse, error)` to `(StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateHostSecretSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, KeyInfo, *WebAppsCreateOrUpdateHostSecretSlotOptions)` to `(context.Context, string, string, string, string, string, KeyInfo, *WebAppsClientCreateOrUpdateHostSecretSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateHostSecretSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateHostSecretSlotResponse, error)` to `(WebAppsClientCreateOrUpdateHostSecretSlotResponse, error)`
+- Function `*WebAppsClient.GetPrivateAccess` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetPrivateAccessOptions)` to `(context.Context, string, string, *WebAppsClientGetPrivateAccessOptions)`
+- Function `*WebAppsClient.GetPrivateAccess` return value(s) have been changed from `(WebAppsGetPrivateAccessResponse, error)` to `(WebAppsClientGetPrivateAccessResponse, error)`
+- Function `*StaticSitesClient.ListStaticSiteAppSettings` parameter(s) have been changed from `(context.Context, string, string, *StaticSitesListStaticSiteAppSettingsOptions)` to `(context.Context, string, string, *StaticSitesClientListStaticSiteAppSettingsOptions)`
+- Function `*StaticSitesClient.ListStaticSiteAppSettings` return value(s) have been changed from `(StaticSitesListStaticSiteAppSettingsResponse, error)` to `(StaticSitesClientListStaticSiteAppSettingsResponse, error)`
+- Function `*WebAppsClient.DeleteFunction` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteFunctionOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteFunctionOptions)`
+- Function `*WebAppsClient.DeleteFunction` return value(s) have been changed from `(WebAppsDeleteFunctionResponse, error)` to `(WebAppsClientDeleteFunctionResponse, error)`
+- Function `*DiagnosticsClient.ListSiteDiagnosticCategories` parameter(s) have been changed from `(string, string, *DiagnosticsListSiteDiagnosticCategoriesOptions)` to `(string, string, *DiagnosticsClientListSiteDiagnosticCategoriesOptions)`
+- Function `*DiagnosticsClient.ListSiteDiagnosticCategories` return value(s) have been changed from `(*DiagnosticsListSiteDiagnosticCategoriesPager)` to `(*DiagnosticsClientListSiteDiagnosticCategoriesPager)`
+- Function `*WebAppsClient.StartContinuousWebJobSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsStartContinuousWebJobSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientStartContinuousWebJobSlotOptions)`
+- Function `*WebAppsClient.StartContinuousWebJobSlot` return value(s) have been changed from `(WebAppsStartContinuousWebJobSlotResponse, error)` to `(WebAppsClientStartContinuousWebJobSlotResponse, error)`
+- Function `*StaticSitesClient.ListStaticSiteBuildAppSettings` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesListStaticSiteBuildAppSettingsOptions)` to `(context.Context, string, string, string, *StaticSitesClientListStaticSiteBuildAppSettingsOptions)`
+- Function `*StaticSitesClient.ListStaticSiteBuildAppSettings` return value(s) have been changed from `(StaticSitesListStaticSiteBuildAppSettingsResponse, error)` to `(StaticSitesClientListStaticSiteBuildAppSettingsResponse, error)`
+- Function `*WebAppsClient.UpdateAuthSettingsV2` parameter(s) have been changed from `(context.Context, string, string, SiteAuthSettingsV2, *WebAppsUpdateAuthSettingsV2Options)` to `(context.Context, string, string, SiteAuthSettingsV2, *WebAppsClientUpdateAuthSettingsV2Options)`
+- Function `*WebAppsClient.UpdateAuthSettingsV2` return value(s) have been changed from `(WebAppsUpdateAuthSettingsV2Response, error)` to `(WebAppsClientUpdateAuthSettingsV2Response, error)`
+- Function `*WebAppsClient.ListProcessesSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListProcessesSlotOptions)` to `(string, string, string, *WebAppsClientListProcessesSlotOptions)`
+- Function `*WebAppsClient.ListProcessesSlot` return value(s) have been changed from `(*WebAppsListProcessesSlotPager)` to `(*WebAppsClientListProcessesSlotPager)`
+- Function `*WebAppsClient.GetPrivateAccessSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetPrivateAccessSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetPrivateAccessSlotOptions)`
+- Function `*WebAppsClient.GetPrivateAccessSlot` return value(s) have been changed from `(WebAppsGetPrivateAccessSlotResponse, error)` to `(WebAppsClientGetPrivateAccessSlotResponse, error)`
+- Function `*WebAppsClient.GetWebJobSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetWebJobSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetWebJobSlotOptions)`
+- Function `*WebAppsClient.GetWebJobSlot` return value(s) have been changed from `(WebAppsGetWebJobSlotResponse, error)` to `(WebAppsClientGetWebJobSlotResponse, error)`
+- Function `*WebAppsClient.GetWebJob` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetWebJobOptions)` to `(context.Context, string, string, string, *WebAppsClientGetWebJobOptions)`
+- Function `*WebAppsClient.GetWebJob` return value(s) have been changed from `(WebAppsGetWebJobResponse, error)` to `(WebAppsClientGetWebJobResponse, error)`
+- Function `*WebAppsClient.ListAzureStorageAccountsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListAzureStorageAccountsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListAzureStorageAccountsSlotOptions)`
+- Function `*WebAppsClient.ListAzureStorageAccountsSlot` return value(s) have been changed from `(WebAppsListAzureStorageAccountsSlotResponse, error)` to `(WebAppsClientListAzureStorageAccountsSlotResponse, error)`
+- Function `*WebAppsClient.GetVnetConnectionGatewaySlot` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *WebAppsGetVnetConnectionGatewaySlotOptions)` to `(context.Context, string, string, string, string, string, *WebAppsClientGetVnetConnectionGatewaySlotOptions)`
+- Function `*WebAppsClient.GetVnetConnectionGatewaySlot` return value(s) have been changed from `(WebAppsGetVnetConnectionGatewaySlotResponse, error)` to `(WebAppsClientGetVnetConnectionGatewaySlotResponse, error)`
+- Function `*WebAppsClient.GetHostNameBindingSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetHostNameBindingSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetHostNameBindingSlotOptions)`
+- Function `*WebAppsClient.GetHostNameBindingSlot` return value(s) have been changed from `(WebAppsGetHostNameBindingSlotResponse, error)` to `(WebAppsClientGetHostNameBindingSlotResponse, error)`
+- Function `*WebAppsClient.ListPerfMonCounters` parameter(s) have been changed from `(string, string, *WebAppsListPerfMonCountersOptions)` to `(string, string, *WebAppsClientListPerfMonCountersOptions)`
+- Function `*WebAppsClient.ListPerfMonCounters` return value(s) have been changed from `(*WebAppsListPerfMonCountersPager)` to `(*WebAppsClientListPerfMonCountersPager)`
+- Function `*WebAppsClient.GetSourceControlSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetSourceControlSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetSourceControlSlotOptions)`
+- Function `*WebAppsClient.GetSourceControlSlot` return value(s) have been changed from `(WebAppsGetSourceControlSlotResponse, error)` to `(WebAppsClientGetSourceControlSlotResponse, error)`
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReferences` parameter(s) have been changed from `(string, string, *WebAppsGetSiteConnectionStringKeyVaultReferencesOptions)` to `(string, string, *WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions)`
+- Function `*WebAppsClient.GetSiteConnectionStringKeyVaultReferences` return value(s) have been changed from `(*WebAppsGetSiteConnectionStringKeyVaultReferencesPager)` to `(*WebAppsClientGetSiteConnectionStringKeyVaultReferencesPager)`
+- Function `*WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *WebAppsBeginApproveOrRejectPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions)`
+- Function `*WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection` return value(s) have been changed from `(WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse, error)` to `(WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse, error)`
+- Function `*WebAppsClient.ListInstanceIdentifiers` parameter(s) have been changed from `(string, string, *WebAppsListInstanceIdentifiersOptions)` to `(string, string, *WebAppsClientListInstanceIdentifiersOptions)`
+- Function `*WebAppsClient.ListInstanceIdentifiers` return value(s) have been changed from `(*WebAppsListInstanceIdentifiersPager)` to `(*WebAppsClientListInstanceIdentifiersPager)`
+- Function `*RecommendationsClient.ResetAllFiltersForHostingEnvironment` parameter(s) have been changed from `(context.Context, string, string, string, *RecommendationsResetAllFiltersForHostingEnvironmentOptions)` to `(context.Context, string, string, string, *RecommendationsClientResetAllFiltersForHostingEnvironmentOptions)`
+- Function `*RecommendationsClient.ResetAllFiltersForHostingEnvironment` return value(s) have been changed from `(RecommendationsResetAllFiltersForHostingEnvironmentResponse, error)` to `(RecommendationsClientResetAllFiltersForHostingEnvironmentResponse, error)`
+- Function `*CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse` parameter(s) have been changed from `(string, string, *CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseOptions)` to `(string, string, *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions)`
+- Function `*CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse` return value(s) have been changed from `(*CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager)` to `(*CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponsePager)`
+- Function `*WebAppsClient.BeginStartWebSiteNetworkTraceOperation` parameter(s) have been changed from `(context.Context, string, string, *WebAppsBeginStartWebSiteNetworkTraceOperationOptions)` to `(context.Context, string, string, *WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions)`
+- Function `*WebAppsClient.BeginStartWebSiteNetworkTraceOperation` return value(s) have been changed from `(WebAppsStartWebSiteNetworkTraceOperationPollerResponse, error)` to `(WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse, error)`
+- Function `*WebAppsClient.BeginSwapSlot` parameter(s) have been changed from `(context.Context, string, string, string, CsmSlotEntity, *WebAppsBeginSwapSlotOptions)` to `(context.Context, string, string, string, CsmSlotEntity, *WebAppsClientBeginSwapSlotOptions)`
+- Function `*WebAppsClient.BeginSwapSlot` return value(s) have been changed from `(WebAppsSwapSlotPollerResponse, error)` to `(WebAppsClientSwapSlotPollerResponse, error)`
+- Function `*WebAppsClient.DeleteSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteSlotOptions)`
+- Function `*WebAppsClient.DeleteSlot` return value(s) have been changed from `(WebAppsDeleteSlotResponse, error)` to `(WebAppsClientDeleteSlotResponse, error)`
+- Function `*WebAppsClient.UpdateAuthSettingsSlot` parameter(s) have been changed from `(context.Context, string, string, string, SiteAuthSettings, *WebAppsUpdateAuthSettingsSlotOptions)` to `(context.Context, string, string, string, SiteAuthSettings, *WebAppsClientUpdateAuthSettingsSlotOptions)`
+- Function `*WebAppsClient.UpdateAuthSettingsSlot` return value(s) have been changed from `(WebAppsUpdateAuthSettingsSlotResponse, error)` to `(WebAppsClientUpdateAuthSettingsSlotResponse, error)`
+- Function `*WebAppsClient.ListDomainOwnershipIdentifiers` parameter(s) have been changed from `(string, string, *WebAppsListDomainOwnershipIdentifiersOptions)` to `(string, string, *WebAppsClientListDomainOwnershipIdentifiersOptions)`
+- Function `*WebAppsClient.ListDomainOwnershipIdentifiers` return value(s) have been changed from `(*WebAppsListDomainOwnershipIdentifiersPager)` to `(*WebAppsClientListDomainOwnershipIdentifiersPager)`
+- Function `*WebAppsClient.ListSiteExtensionsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListSiteExtensionsSlotOptions)` to `(string, string, string, *WebAppsClientListSiteExtensionsSlotOptions)`
+- Function `*WebAppsClient.ListSiteExtensionsSlot` return value(s) have been changed from `(*WebAppsListSiteExtensionsSlotPager)` to `(*WebAppsClientListSiteExtensionsSlotPager)`
+- Function `*ResourceHealthMetadataClient.ListBySite` parameter(s) have been changed from `(string, string, *ResourceHealthMetadataListBySiteOptions)` to `(string, string, *ResourceHealthMetadataClientListBySiteOptions)`
+- Function `*ResourceHealthMetadataClient.ListBySite` return value(s) have been changed from `(*ResourceHealthMetadataListBySitePager)` to `(*ResourceHealthMetadataClientListBySitePager)`
+- Function `*WebAppsClient.ListApplicationSettingsSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListApplicationSettingsSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientListApplicationSettingsSlotOptions)`
+- Function `*WebAppsClient.ListApplicationSettingsSlot` return value(s) have been changed from `(WebAppsListApplicationSettingsSlotResponse, error)` to `(WebAppsClientListApplicationSettingsSlotResponse, error)`
+- Function `*WebAppsClient.SyncFunctionTriggersSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsSyncFunctionTriggersSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientSyncFunctionTriggersSlotOptions)`
+- Function `*WebAppsClient.SyncFunctionTriggersSlot` return value(s) have been changed from `(WebAppsSyncFunctionTriggersSlotResponse, error)` to `(WebAppsClientSyncFunctionTriggersSlotResponse, error)`
+- Function `*WebAppsClient.ListBasicPublishingCredentialsPolicies` parameter(s) have been changed from `(string, string, *WebAppsListBasicPublishingCredentialsPoliciesOptions)` to `(string, string, *WebAppsClientListBasicPublishingCredentialsPoliciesOptions)`
+- Function `*WebAppsClient.ListBasicPublishingCredentialsPolicies` return value(s) have been changed from `(*WebAppsListBasicPublishingCredentialsPoliciesPager)` to `(*WebAppsClientListBasicPublishingCredentialsPoliciesPager)`
+- Function `*StaticSitesClient.ListStaticSiteConfiguredRoles` parameter(s) have been changed from `(context.Context, string, string, *StaticSitesListStaticSiteConfiguredRolesOptions)` to `(context.Context, string, string, *StaticSitesClientListStaticSiteConfiguredRolesOptions)`
+- Function `*StaticSitesClient.ListStaticSiteConfiguredRoles` return value(s) have been changed from `(StaticSitesListStaticSiteConfiguredRolesResponse, error)` to `(StaticSitesClientListStaticSiteConfiguredRolesResponse, error)`
+- Function `*RecommendationsClient.GetRuleDetailsByHostingEnvironment` parameter(s) have been changed from `(context.Context, string, string, string, *RecommendationsGetRuleDetailsByHostingEnvironmentOptions)` to `(context.Context, string, string, string, *RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions)`
+- Function `*RecommendationsClient.GetRuleDetailsByHostingEnvironment` return value(s) have been changed from `(RecommendationsGetRuleDetailsByHostingEnvironmentResponse, error)` to `(RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse, error)`
+- Function `*WebAppsClient.GetInstanceInfoSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetInstanceInfoSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetInstanceInfoSlotOptions)`
+- Function `*WebAppsClient.GetInstanceInfoSlot` return value(s) have been changed from `(WebAppsGetInstanceInfoSlotResponse, error)` to `(WebAppsClientGetInstanceInfoSlotResponse, error)`
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild` parameter(s) have been changed from `(string, string, string, *StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildOptions)` to `(string, string, string, *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions)`
+- Function `*StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild` return value(s) have been changed from `(*StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager)` to `(*StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildPager)`
+- Function `*WebAppsClient.GetDomainOwnershipIdentifierSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetDomainOwnershipIdentifierSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetDomainOwnershipIdentifierSlotOptions)`
+- Function `*WebAppsClient.GetDomainOwnershipIdentifierSlot` return value(s) have been changed from `(WebAppsGetDomainOwnershipIdentifierSlotResponse, error)` to `(WebAppsClientGetDomainOwnershipIdentifierSlotResponse, error)`
+- Function `*WebAppsClient.ListProcessThreadsSlot` parameter(s) have been changed from `(string, string, string, string, *WebAppsListProcessThreadsSlotOptions)` to `(string, string, string, string, *WebAppsClientListProcessThreadsSlotOptions)`
+- Function `*WebAppsClient.ListProcessThreadsSlot` return value(s) have been changed from `(*WebAppsListProcessThreadsSlotPager)` to `(*WebAppsClientListProcessThreadsSlotPager)`
+- Function `*WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheck` parameter(s) have been changed from `(context.Context, string, string, SwiftVirtualNetwork, *WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckOptions)` to `(context.Context, string, string, SwiftVirtualNetwork, *WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckOptions)`
+- Function `*WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheck` return value(s) have been changed from `(WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error)` to `(WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error)`
+- Function `*WebAppsClient.GetRelayServiceConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetRelayServiceConnectionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetRelayServiceConnectionSlotOptions)`
+- Function `*WebAppsClient.GetRelayServiceConnectionSlot` return value(s) have been changed from `(WebAppsGetRelayServiceConnectionSlotResponse, error)` to `(WebAppsClientGetRelayServiceConnectionSlotResponse, error)`
+- Function `*WebAppsClient.ListNetworkFeaturesSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsListNetworkFeaturesSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientListNetworkFeaturesSlotOptions)`
+- Function `*WebAppsClient.ListNetworkFeaturesSlot` return value(s) have been changed from `(WebAppsListNetworkFeaturesSlotResponse, error)` to `(WebAppsClientListNetworkFeaturesSlotResponse, error)`
+- Function `*WebAppsClient.UpdateMetadataSlot` parameter(s) have been changed from `(context.Context, string, string, string, StringDictionary, *WebAppsUpdateMetadataSlotOptions)` to `(context.Context, string, string, string, StringDictionary, *WebAppsClientUpdateMetadataSlotOptions)`
+- Function `*WebAppsClient.UpdateMetadataSlot` return value(s) have been changed from `(WebAppsUpdateMetadataSlotResponse, error)` to `(WebAppsClientUpdateMetadataSlotResponse, error)`
+- Function `*WebAppsClient.BeginInstallSiteExtensionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsBeginInstallSiteExtensionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientBeginInstallSiteExtensionSlotOptions)`
+- Function `*WebAppsClient.BeginInstallSiteExtensionSlot` return value(s) have been changed from `(WebAppsInstallSiteExtensionSlotPollerResponse, error)` to `(WebAppsClientInstallSiteExtensionSlotPollerResponse, error)`
+- Function `*RecommendationsClient.ListHistoryForHostingEnvironment` parameter(s) have been changed from `(string, string, *RecommendationsListHistoryForHostingEnvironmentOptions)` to `(string, string, *RecommendationsClientListHistoryForHostingEnvironmentOptions)`
+- Function `*RecommendationsClient.ListHistoryForHostingEnvironment` return value(s) have been changed from `(*RecommendationsListHistoryForHostingEnvironmentPager)` to `(*RecommendationsClientListHistoryForHostingEnvironmentPager)`
+- Function `*StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings` parameter(s) have been changed from `(context.Context, string, string, string, StringDictionary, *StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions)` to `(context.Context, string, string, string, StringDictionary, *StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions)`
+- Function `*StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings` return value(s) have been changed from `(StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse, error)` to `(StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse, error)`
+- Function `*WebAppsClient.GetTriggeredWebJob` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetTriggeredWebJobOptions)` to `(context.Context, string, string, string, *WebAppsClientGetTriggeredWebJobOptions)`
+- Function `*WebAppsClient.GetTriggeredWebJob` return value(s) have been changed from `(WebAppsGetTriggeredWebJobResponse, error)` to `(WebAppsClientGetTriggeredWebJobResponse, error)`
+- Function `*WebAppsClient.ApplySlotConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, CsmSlotEntity, *WebAppsApplySlotConfigurationSlotOptions)` to `(context.Context, string, string, string, CsmSlotEntity, *WebAppsClientApplySlotConfigurationSlotOptions)`
+- Function `*WebAppsClient.ApplySlotConfigurationSlot` return value(s) have been changed from `(WebAppsApplySlotConfigurationSlotResponse, error)` to `(WebAppsClientApplySlotConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.GetNetworkTraceOperationSlotV2` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetNetworkTraceOperationSlotV2Options)` to `(context.Context, string, string, string, string, *WebAppsClientGetNetworkTraceOperationSlotV2Options)`
+- Function `*WebAppsClient.GetNetworkTraceOperationSlotV2` return value(s) have been changed from `(WebAppsGetNetworkTraceOperationSlotV2Response, error)` to `(WebAppsClientGetNetworkTraceOperationSlotV2Response, error)`
+- Function `*WebAppsClient.DeleteProcessSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteProcessSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteProcessSlotOptions)`
+- Function `*WebAppsClient.DeleteProcessSlot` return value(s) have been changed from `(WebAppsDeleteProcessSlotResponse, error)` to `(WebAppsClientDeleteProcessSlotResponse, error)`
+- Function `*WebAppsClient.UpdateDomainOwnershipIdentifier` parameter(s) have been changed from `(context.Context, string, string, string, Identifier, *WebAppsUpdateDomainOwnershipIdentifierOptions)` to `(context.Context, string, string, string, Identifier, *WebAppsClientUpdateDomainOwnershipIdentifierOptions)`
+- Function `*WebAppsClient.UpdateDomainOwnershipIdentifier` return value(s) have been changed from `(WebAppsUpdateDomainOwnershipIdentifierResponse, error)` to `(WebAppsClientUpdateDomainOwnershipIdentifierResponse, error)`
+- Function `*WebAppsClient.BackupSlot` parameter(s) have been changed from `(context.Context, string, string, string, BackupRequest, *WebAppsBackupSlotOptions)` to `(context.Context, string, string, string, BackupRequest, *WebAppsClientBackupSlotOptions)`
+- Function `*WebAppsClient.BackupSlot` return value(s) have been changed from `(WebAppsBackupSlotResponse, error)` to `(WebAppsClientBackupSlotResponse, error)`
+- Function `*StaticSitesClient.CreateOrUpdateStaticSiteAppSettings` parameter(s) have been changed from `(context.Context, string, string, StringDictionary, *StaticSitesCreateOrUpdateStaticSiteAppSettingsOptions)` to `(context.Context, string, string, StringDictionary, *StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions)`
+- Function `*StaticSitesClient.CreateOrUpdateStaticSiteAppSettings` return value(s) have been changed from `(StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse, error)` to `(StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse, error)`
+- Function `*WebAppsClient.GetBackupConfiguration` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetBackupConfigurationOptions)` to `(context.Context, string, string, *WebAppsClientGetBackupConfigurationOptions)`
+- Function `*WebAppsClient.GetBackupConfiguration` return value(s) have been changed from `(WebAppsGetBackupConfigurationResponse, error)` to `(WebAppsClientGetBackupConfigurationResponse, error)`
+- Function `*WebAppsClient.ListTriggeredWebJobsSlot` parameter(s) have been changed from `(string, string, string, *WebAppsListTriggeredWebJobsSlotOptions)` to `(string, string, string, *WebAppsClientListTriggeredWebJobsSlotOptions)`
+- Function `*WebAppsClient.ListTriggeredWebJobsSlot` return value(s) have been changed from `(*WebAppsListTriggeredWebJobsSlotPager)` to `(*WebAppsClientListTriggeredWebJobsSlotPager)`
+- Function `*CertificatesClient.Update` parameter(s) have been changed from `(context.Context, string, string, CertificatePatchResource, *CertificatesUpdateOptions)` to `(context.Context, string, string, AppCertificatePatchResource, *CertificatesClientUpdateOptions)`
+- Function `*CertificatesClient.Update` return value(s) have been changed from `(CertificatesUpdateResponse, error)` to `(CertificatesClientUpdateResponse, error)`
+- Function `*StaticSitesClient.ListStaticSiteCustomDomains` parameter(s) have been changed from `(string, string, *StaticSitesListStaticSiteCustomDomainsOptions)` to `(string, string, *StaticSitesClientListStaticSiteCustomDomainsOptions)`
+- Function `*StaticSitesClient.ListStaticSiteCustomDomains` return value(s) have been changed from `(*StaticSitesListStaticSiteCustomDomainsPager)` to `(*StaticSitesClientListStaticSiteCustomDomainsPager)`
+- Function `*WebAppsClient.BeginCreateMSDeployOperationSlot` parameter(s) have been changed from `(context.Context, string, string, string, MSDeploy, *WebAppsBeginCreateMSDeployOperationSlotOptions)` to `(context.Context, string, string, string, MSDeploy, *WebAppsClientBeginCreateMSDeployOperationSlotOptions)`
+- Function `*WebAppsClient.BeginCreateMSDeployOperationSlot` return value(s) have been changed from `(WebAppsCreateMSDeployOperationSlotPollerResponse, error)` to `(WebAppsClientCreateMSDeployOperationSlotPollerResponse, error)`
+- Function `*ResourceHealthMetadataClient.GetBySiteSlot` parameter(s) have been changed from `(context.Context, string, string, string, *ResourceHealthMetadataGetBySiteSlotOptions)` to `(context.Context, string, string, string, *ResourceHealthMetadataClientGetBySiteSlotOptions)`
+- Function `*ResourceHealthMetadataClient.GetBySiteSlot` return value(s) have been changed from `(ResourceHealthMetadataGetBySiteSlotResponse, error)` to `(ResourceHealthMetadataClientGetBySiteSlotResponse, error)`
+- Function `*DiagnosticsClient.ListSiteDiagnosticCategoriesSlot` parameter(s) have been changed from `(string, string, string, *DiagnosticsListSiteDiagnosticCategoriesSlotOptions)` to `(string, string, string, *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions)`
+- Function `*DiagnosticsClient.ListSiteDiagnosticCategoriesSlot` return value(s) have been changed from `(*DiagnosticsListSiteDiagnosticCategoriesSlotPager)` to `(*DiagnosticsClientListSiteDiagnosticCategoriesSlotPager)`
+- Function `*StaticSitesClient.GetStaticSiteBuild` parameter(s) have been changed from `(context.Context, string, string, string, *StaticSitesGetStaticSiteBuildOptions)` to `(context.Context, string, string, string, *StaticSitesClientGetStaticSiteBuildOptions)`
+- Function `*StaticSitesClient.GetStaticSiteBuild` return value(s) have been changed from `(StaticSitesGetStaticSiteBuildResponse, error)` to `(StaticSitesClientGetStaticSiteBuildResponse, error)`
+- Function `*ProviderClient.GetAvailableStacksOnPrem` parameter(s) have been changed from `(*ProviderGetAvailableStacksOnPremOptions)` to `(*ProviderClientGetAvailableStacksOnPremOptions)`
+- Function `*ProviderClient.GetAvailableStacksOnPrem` return value(s) have been changed from `(*ProviderGetAvailableStacksOnPremPager)` to `(*ProviderClientGetAvailableStacksOnPremPager)`
+- Function `*WebAppsClient.UpdateBackupConfiguration` parameter(s) have been changed from `(context.Context, string, string, BackupRequest, *WebAppsUpdateBackupConfigurationOptions)` to `(context.Context, string, string, BackupRequest, *WebAppsClientUpdateBackupConfigurationOptions)`
+- Function `*WebAppsClient.UpdateBackupConfiguration` return value(s) have been changed from `(WebAppsUpdateBackupConfigurationResponse, error)` to `(WebAppsClientUpdateBackupConfigurationResponse, error)`
+- Function `*WebAppsClient.GetNetworkTracesV2` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetNetworkTracesV2Options)` to `(context.Context, string, string, string, *WebAppsClientGetNetworkTracesV2Options)`
+- Function `*WebAppsClient.GetNetworkTracesV2` return value(s) have been changed from `(WebAppsGetNetworkTracesV2Response, error)` to `(WebAppsClientGetNetworkTracesV2Response, error)`
+- Function `*WebAppsClient.UpdateConnectionStringsSlot` parameter(s) have been changed from `(context.Context, string, string, string, ConnectionStringDictionary, *WebAppsUpdateConnectionStringsSlotOptions)` to `(context.Context, string, string, string, ConnectionStringDictionary, *WebAppsClientUpdateConnectionStringsSlotOptions)`
+- Function `*WebAppsClient.UpdateConnectionStringsSlot` return value(s) have been changed from `(WebAppsUpdateConnectionStringsSlotResponse, error)` to `(WebAppsClientUpdateConnectionStringsSlotResponse, error)`
+- Function `*WebAppsClient.DeleteContinuousWebJobSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteContinuousWebJobSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteContinuousWebJobSlotOptions)`
+- Function `*WebAppsClient.DeleteContinuousWebJobSlot` return value(s) have been changed from `(WebAppsDeleteContinuousWebJobSlotResponse, error)` to `(WebAppsClientDeleteContinuousWebJobSlotResponse, error)`
+- Function `*WebAppsClient.DeleteRelayServiceConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteRelayServiceConnectionSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteRelayServiceConnectionSlotOptions)`
+- Function `*WebAppsClient.DeleteRelayServiceConnectionSlot` return value(s) have been changed from `(WebAppsDeleteRelayServiceConnectionSlotResponse, error)` to `(WebAppsClientDeleteRelayServiceConnectionSlotResponse, error)`
+- Function `*WebAppsClient.ListNetworkFeatures` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsListNetworkFeaturesOptions)` to `(context.Context, string, string, string, *WebAppsClientListNetworkFeaturesOptions)`
+- Function `*WebAppsClient.ListNetworkFeatures` return value(s) have been changed from `(WebAppsListNetworkFeaturesResponse, error)` to `(WebAppsClientListNetworkFeaturesResponse, error)`
+- Function `*StaticSitesClient.List` parameter(s) have been changed from `(*StaticSitesListOptions)` to `(*StaticSitesClientListOptions)`
+- Function `*StaticSitesClient.List` return value(s) have been changed from `(*StaticSitesListPager)` to `(*StaticSitesClientListPager)`
+- Function `*WebAppsClient.GetAuthSettingsV2` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetAuthSettingsV2Options)` to `(context.Context, string, string, *WebAppsClientGetAuthSettingsV2Options)`
+- Function `*WebAppsClient.GetAuthSettingsV2` return value(s) have been changed from `(WebAppsGetAuthSettingsV2Response, error)` to `(WebAppsClientGetAuthSettingsV2Response, error)`
+- Function `*WebAppsClient.AnalyzeCustomHostname` parameter(s) have been changed from `(context.Context, string, string, *WebAppsAnalyzeCustomHostnameOptions)` to `(context.Context, string, string, *WebAppsClientAnalyzeCustomHostnameOptions)`
+- Function `*WebAppsClient.AnalyzeCustomHostname` return value(s) have been changed from `(WebAppsAnalyzeCustomHostnameResponse, error)` to `(WebAppsClientAnalyzeCustomHostnameResponse, error)`
+- Function `*WebAppsClient.GetPrivateLinkResourcesSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetPrivateLinkResourcesSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetPrivateLinkResourcesSlotOptions)`
+- Function `*WebAppsClient.GetPrivateLinkResourcesSlot` return value(s) have been changed from `(WebAppsGetPrivateLinkResourcesSlotResponse, error)` to `(WebAppsClientGetPrivateLinkResourcesSlotResponse, error)`
+- Function `*WebAppsClient.DeleteBackupConfiguration` parameter(s) have been changed from `(context.Context, string, string, *WebAppsDeleteBackupConfigurationOptions)` to `(context.Context, string, string, *WebAppsClientDeleteBackupConfigurationOptions)`
+- Function `*WebAppsClient.DeleteBackupConfiguration` return value(s) have been changed from `(WebAppsDeleteBackupConfigurationResponse, error)` to `(WebAppsClientDeleteBackupConfigurationResponse, error)`
+- Function `*WebAppsClient.ListSyncStatus` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListSyncStatusOptions)` to `(context.Context, string, string, *WebAppsClientListSyncStatusOptions)`
+- Function `*WebAppsClient.ListSyncStatus` return value(s) have been changed from `(WebAppsListSyncStatusResponse, error)` to `(WebAppsClientListSyncStatusResponse, error)`
+- Function `*ResourceHealthMetadataClient.ListBySiteSlot` parameter(s) have been changed from `(string, string, string, *ResourceHealthMetadataListBySiteSlotOptions)` to `(string, string, string, *ResourceHealthMetadataClientListBySiteSlotOptions)`
+- Function `*ResourceHealthMetadataClient.ListBySiteSlot` return value(s) have been changed from `(*ResourceHealthMetadataListBySiteSlotPager)` to `(*ResourceHealthMetadataClientListBySiteSlotPager)`
+- Function `*WebAppsClient.IsCloneableSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsIsCloneableSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientIsCloneableSlotOptions)`
+- Function `*WebAppsClient.IsCloneableSlot` return value(s) have been changed from `(WebAppsIsCloneableSlotResponse, error)` to `(WebAppsClientIsCloneableSlotResponse, error)`
+- Function `*WebAppsClient.ListPremierAddOns` parameter(s) have been changed from `(context.Context, string, string, *WebAppsListPremierAddOnsOptions)` to `(context.Context, string, string, *WebAppsClientListPremierAddOnsOptions)`
+- Function `*WebAppsClient.ListPremierAddOns` return value(s) have been changed from `(WebAppsListPremierAddOnsResponse, error)` to `(WebAppsClientListPremierAddOnsResponse, error)`
+- Function `*WebAppsClient.UpdateRelayServiceConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, RelayServiceConnectionEntity, *WebAppsUpdateRelayServiceConnectionSlotOptions)` to `(context.Context, string, string, string, string, RelayServiceConnectionEntity, *WebAppsClientUpdateRelayServiceConnectionSlotOptions)`
+- Function `*WebAppsClient.UpdateRelayServiceConnectionSlot` return value(s) have been changed from `(WebAppsUpdateRelayServiceConnectionSlotResponse, error)` to `(WebAppsClientUpdateRelayServiceConnectionSlotResponse, error)`
+- Function `*WebAppsClient.ListSnapshots` parameter(s) have been changed from `(string, string, *WebAppsListSnapshotsOptions)` to `(string, string, *WebAppsClientListSnapshotsOptions)`
+- Function `*WebAppsClient.ListSnapshots` return value(s) have been changed from `(*WebAppsListSnapshotsPager)` to `(*WebAppsClientListSnapshotsPager)`
+- Function `*WebAppsClient.GetAuthSettings` parameter(s) have been changed from `(context.Context, string, string, *WebAppsGetAuthSettingsOptions)` to `(context.Context, string, string, *WebAppsClientGetAuthSettingsOptions)`
+- Function `*WebAppsClient.GetAuthSettings` return value(s) have been changed from `(WebAppsGetAuthSettingsResponse, error)` to `(WebAppsClientGetAuthSettingsResponse, error)`
+- Function `*WebAppsClient.DeleteDomainOwnershipIdentifierSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteDomainOwnershipIdentifierSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions)`
+- Function `*WebAppsClient.DeleteDomainOwnershipIdentifierSlot` return value(s) have been changed from `(WebAppsDeleteDomainOwnershipIdentifierSlotResponse, error)` to `(WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse, error)`
+- Function `*WebAppsClient.GetBackupStatusSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetBackupStatusSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetBackupStatusSlotOptions)`
+- Function `*WebAppsClient.GetBackupStatusSlot` return value(s) have been changed from `(WebAppsGetBackupStatusSlotResponse, error)` to `(WebAppsClientGetBackupStatusSlotResponse, error)`
+- Function `*WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, RelayServiceConnectionEntity, *WebAppsCreateOrUpdateRelayServiceConnectionSlotOptions)` to `(context.Context, string, string, string, string, RelayServiceConnectionEntity, *WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions)`
+- Function `*WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot` return value(s) have been changed from `(WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse, error)` to `(WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse, error)`
+- Function `*WebAppsClient.GetInstanceMSDeployLogSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetInstanceMSDeployLogSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetInstanceMSDeployLogSlotOptions)`
+- Function `*WebAppsClient.GetInstanceMSDeployLogSlot` return value(s) have been changed from `(WebAppsGetInstanceMSDeployLogSlotResponse, error)` to `(WebAppsClientGetInstanceMSDeployLogSlotResponse, error)`
+- Function `*StaticSitesClient.BeginDeleteStaticSite` parameter(s) have been changed from `(context.Context, string, string, *StaticSitesBeginDeleteStaticSiteOptions)` to `(context.Context, string, string, *StaticSitesClientBeginDeleteStaticSiteOptions)`
+- Function `*StaticSitesClient.BeginDeleteStaticSite` return value(s) have been changed from `(StaticSitesDeleteStaticSitePollerResponse, error)` to `(StaticSitesClientDeleteStaticSitePollerResponse, error)`
+- Function `*WebAppsClient.ListFunctions` parameter(s) have been changed from `(string, string, *WebAppsListFunctionsOptions)` to `(string, string, *WebAppsClientListFunctionsOptions)`
+- Function `*WebAppsClient.ListFunctions` return value(s) have been changed from `(*WebAppsListFunctionsPager)` to `(*WebAppsClientListFunctionsPager)`
+- Function `*WebAppsClient.DeleteVnetConnection` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteVnetConnectionOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteVnetConnectionOptions)`
+- Function `*WebAppsClient.DeleteVnetConnection` return value(s) have been changed from `(WebAppsDeleteVnetConnectionResponse, error)` to `(WebAppsClientDeleteVnetConnectionResponse, error)`
+- Function `*DeletedWebAppsClient.ListByLocation` parameter(s) have been changed from `(string, *DeletedWebAppsListByLocationOptions)` to `(string, *DeletedWebAppsClientListByLocationOptions)`
+- Function `*DeletedWebAppsClient.ListByLocation` return value(s) have been changed from `(*DeletedWebAppsListByLocationPager)` to `(*DeletedWebAppsClientListByLocationPager)`
+- Function `*KubeEnvironmentsClient.ListBySubscription` parameter(s) have been changed from `(*KubeEnvironmentsListBySubscriptionOptions)` to `(*KubeEnvironmentsClientListBySubscriptionOptions)`
+- Function `*KubeEnvironmentsClient.ListBySubscription` return value(s) have been changed from `(*KubeEnvironmentsListBySubscriptionPager)` to `(*KubeEnvironmentsClientListBySubscriptionPager)`
+- Function `*RecommendationsClient.DisableRecommendationForSubscription` parameter(s) have been changed from `(context.Context, string, *RecommendationsDisableRecommendationForSubscriptionOptions)` to `(context.Context, string, *RecommendationsClientDisableRecommendationForSubscriptionOptions)`
+- Function `*RecommendationsClient.DisableRecommendationForSubscription` return value(s) have been changed from `(RecommendationsDisableRecommendationForSubscriptionResponse, error)` to `(RecommendationsClientDisableRecommendationForSubscriptionResponse, error)`
+- Function `*WebAppsClient.GetProcessDumpSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetProcessDumpSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetProcessDumpSlotOptions)`
+- Function `*WebAppsClient.GetProcessDumpSlot` return value(s) have been changed from `(WebAppsGetProcessDumpSlotResponse, error)` to `(WebAppsClientGetProcessDumpSlotResponse, error)`
+- Function `*WebAppsClient.ListDeploymentLogSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsListDeploymentLogSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientListDeploymentLogSlotOptions)`
+- Function `*WebAppsClient.ListDeploymentLogSlot` return value(s) have been changed from `(WebAppsListDeploymentLogSlotResponse, error)` to `(WebAppsClientListDeploymentLogSlotResponse, error)`
+- Function `*RecommendationsClient.DisableAllForHostingEnvironment` parameter(s) have been changed from `(context.Context, string, string, string, *RecommendationsDisableAllForHostingEnvironmentOptions)` to `(context.Context, string, string, string, *RecommendationsClientDisableAllForHostingEnvironmentOptions)`
+- Function `*RecommendationsClient.DisableAllForHostingEnvironment` return value(s) have been changed from `(RecommendationsDisableAllForHostingEnvironmentResponse, error)` to `(RecommendationsClientDisableAllForHostingEnvironmentResponse, error)`
+- Function `*WebAppsClient.GetBackupConfigurationSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetBackupConfigurationSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetBackupConfigurationSlotOptions)`
+- Function `*WebAppsClient.GetBackupConfigurationSlot` return value(s) have been changed from `(WebAppsGetBackupConfigurationSlotResponse, error)` to `(WebAppsClientGetBackupConfigurationSlotResponse, error)`
+- Function `*WebAppsClient.GetInstanceProcess` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetInstanceProcessOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetInstanceProcessOptions)`
+- Function `*WebAppsClient.GetInstanceProcess` return value(s) have been changed from `(WebAppsGetInstanceProcessResponse, error)` to `(WebAppsClientGetInstanceProcessResponse, error)`
+- Function `*DomainsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Domain, *DomainsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Domain, *DomainsClientBeginCreateOrUpdateOptions)`
+- Function `*DomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DomainsCreateOrUpdatePollerResponse, error)` to `(DomainsClientCreateOrUpdatePollerResponse, error)`
+- Function `*WebAppsClient.GetNetworkTracesSlotV2` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetNetworkTracesSlotV2Options)` to `(context.Context, string, string, string, string, *WebAppsClientGetNetworkTracesSlotV2Options)`
+- Function `*WebAppsClient.GetNetworkTracesSlotV2` return value(s) have been changed from `(WebAppsGetNetworkTracesSlotV2Response, error)` to `(WebAppsClientGetNetworkTracesSlotV2Response, error)`
+- Function `*WebAppsClient.GetContainerLogsZipSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetContainerLogsZipSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientGetContainerLogsZipSlotOptions)`
+- Function `*WebAppsClient.GetContainerLogsZipSlot` return value(s) have been changed from `(WebAppsGetContainerLogsZipSlotResponse, error)` to `(WebAppsClientGetContainerLogsZipSlotResponse, error)`
+- Function `*WebAppsClient.GetRelayServiceConnection` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsGetRelayServiceConnectionOptions)` to `(context.Context, string, string, string, *WebAppsClientGetRelayServiceConnectionOptions)`
+- Function `*WebAppsClient.GetRelayServiceConnection` return value(s) have been changed from `(WebAppsGetRelayServiceConnectionResponse, error)` to `(WebAppsClientGetRelayServiceConnectionResponse, error)`
+- Function `*WebAppsClient.StopContinuousWebJobSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsStopContinuousWebJobSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientStopContinuousWebJobSlotOptions)`
+- Function `*WebAppsClient.StopContinuousWebJobSlot` return value(s) have been changed from `(WebAppsStopContinuousWebJobSlotResponse, error)` to `(WebAppsClientStopContinuousWebJobSlotResponse, error)`
+- Function `*WebAppsClient.DeleteFunctionSecret` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsDeleteFunctionSecretOptions)` to `(context.Context, string, string, string, string, *WebAppsClientDeleteFunctionSecretOptions)`
+- Function `*WebAppsClient.DeleteFunctionSecret` return value(s) have been changed from `(WebAppsDeleteFunctionSecretResponse, error)` to `(WebAppsClientDeleteFunctionSecretResponse, error)`
+- Function `*DiagnosticsClient.GetSiteAnalysis` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiagnosticsGetSiteAnalysisOptions)` to `(context.Context, string, string, string, string, *DiagnosticsClientGetSiteAnalysisOptions)`
+- Function `*DiagnosticsClient.GetSiteAnalysis` return value(s) have been changed from `(DiagnosticsGetSiteAnalysisResponse, error)` to `(DiagnosticsClientGetSiteAnalysisResponse, error)`
+- Function `*WebAppsClient.GetNetworkTracesSlot` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetNetworkTracesSlotOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetNetworkTracesSlotOptions)`
+- Function `*WebAppsClient.GetNetworkTracesSlot` return value(s) have been changed from `(WebAppsGetNetworkTracesSlotResponse, error)` to `(WebAppsClientGetNetworkTracesSlotResponse, error)`
+- Function `*DiagnosticsClient.ExecuteSiteDetector` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiagnosticsExecuteSiteDetectorOptions)` to `(context.Context, string, string, string, string, *DiagnosticsClientExecuteSiteDetectorOptions)`
+- Function `*DiagnosticsClient.ExecuteSiteDetector` return value(s) have been changed from `(DiagnosticsExecuteSiteDetectorResponse, error)` to `(DiagnosticsClientExecuteSiteDetectorResponse, error)`
+- Function `*WebAppsClient.ListBackups` parameter(s) have been changed from `(string, string, *WebAppsListBackupsOptions)` to `(string, string, *WebAppsClientListBackupsOptions)`
+- Function `*WebAppsClient.ListBackups` return value(s) have been changed from `(*WebAppsListBackupsPager)` to `(*WebAppsClientListBackupsPager)`
+- Function `*DiagnosticsClient.ListSiteDetectorsSlot` parameter(s) have been changed from `(string, string, string, string, *DiagnosticsListSiteDetectorsSlotOptions)` to `(string, string, string, string, *DiagnosticsClientListSiteDetectorsSlotOptions)`
+- Function `*DiagnosticsClient.ListSiteDetectorsSlot` return value(s) have been changed from `(*DiagnosticsListSiteDetectorsSlotPager)` to `(*DiagnosticsClientListSiteDetectorsSlotPager)`
+- Function `*WebAppsClient.UpdateMetadata` parameter(s) have been changed from `(context.Context, string, string, StringDictionary, *WebAppsUpdateMetadataOptions)` to `(context.Context, string, string, StringDictionary, *WebAppsClientUpdateMetadataOptions)`
+- Function `*WebAppsClient.UpdateMetadata` return value(s) have been changed from `(WebAppsUpdateMetadataResponse, error)` to `(WebAppsClientUpdateMetadataResponse, error)`
+- Function `*WebAppsClient.DeleteSwiftVirtualNetwork` parameter(s) have been changed from `(context.Context, string, string, *WebAppsDeleteSwiftVirtualNetworkOptions)` to `(context.Context, string, string, *WebAppsClientDeleteSwiftVirtualNetworkOptions)`
+- Function `*WebAppsClient.DeleteSwiftVirtualNetwork` return value(s) have been changed from `(WebAppsDeleteSwiftVirtualNetworkResponse, error)` to `(WebAppsClientDeleteSwiftVirtualNetworkResponse, error)`
+- Function `*WebAppsClient.UpdateVnetConnection` parameter(s) have been changed from `(context.Context, string, string, string, VnetInfoResource, *WebAppsUpdateVnetConnectionOptions)` to `(context.Context, string, string, string, VnetInfoResource, *WebAppsClientUpdateVnetConnectionOptions)`
+- Function `*WebAppsClient.UpdateVnetConnection` return value(s) have been changed from `(WebAppsUpdateVnetConnectionResponse, error)` to `(WebAppsClientUpdateVnetConnectionResponse, error)`
+- Function `*WebAppsClient.DeleteSourceControlSlot` parameter(s) have been changed from `(context.Context, string, string, string, *WebAppsDeleteSourceControlSlotOptions)` to `(context.Context, string, string, string, *WebAppsClientDeleteSourceControlSlotOptions)`
+- Function `*WebAppsClient.DeleteSourceControlSlot` return value(s) have been changed from `(WebAppsDeleteSourceControlSlotResponse, error)` to `(WebAppsClientDeleteSourceControlSlotResponse, error)`
+- Function `*WebAppsClient.GetTriggeredWebJobHistory` parameter(s) have been changed from `(context.Context, string, string, string, string, *WebAppsGetTriggeredWebJobHistoryOptions)` to `(context.Context, string, string, string, string, *WebAppsClientGetTriggeredWebJobHistoryOptions)`
+- Function `*WebAppsClient.GetTriggeredWebJobHistory` return value(s) have been changed from `(WebAppsGetTriggeredWebJobHistoryResponse, error)` to `(WebAppsClientGetTriggeredWebJobHistoryResponse, error)`
+- Function `*RecommendationsClient.GetRuleDetailsByWebApp` parameter(s) have been changed from `(context.Context, string, string, string, *RecommendationsGetRuleDetailsByWebAppOptions)` to `(context.Context, string, string, string, *RecommendationsClientGetRuleDetailsByWebAppOptions)`
+- Function `*RecommendationsClient.GetRuleDetailsByWebApp` return value(s) have been changed from `(RecommendationsGetRuleDetailsByWebAppResponse, error)` to `(RecommendationsClientGetRuleDetailsByWebAppResponse, error)`
+- Function `*WebAppsClient.UpdatePremierAddOn` parameter(s) have been changed from `(context.Context, string, string, string, PremierAddOnPatchResource, *WebAppsUpdatePremierAddOnOptions)` to `(context.Context, string, string, string, PremierAddOnPatchResource, *WebAppsClientUpdatePremierAddOnOptions)`
+- Function `*WebAppsClient.UpdatePremierAddOn` return value(s) have been changed from `(WebAppsUpdatePremierAddOnResponse, error)` to `(WebAppsClientUpdatePremierAddOnResponse, error)`
+- Function `*StaticSitesClient.BeginCreateZipDeploymentForStaticSite` parameter(s) have been changed from `(context.Context, string, string, StaticSiteZipDeploymentARMResource, *StaticSitesBeginCreateZipDeploymentForStaticSiteOptions)` to `(context.Context, string, string, StaticSiteZipDeploymentARMResource, *StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions)`
+- Function `*StaticSitesClient.BeginCreateZipDeploymentForStaticSite` return value(s) have been changed from `(StaticSitesCreateZipDeploymentForStaticSitePollerResponse, error)` to `(StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse, error)`
+- Type of `CertificateCollection.Value` has been changed from `[]*Certificate` to `[]*CertificateResource`
+- Type of `TriggeredWebJobProperties.Settings` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `WebJobProperties.Settings` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `StackMajorVersion.SiteConfigPropertiesDictionary` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `StackMajorVersion.AppSettingsDictionary` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `KeyValuePairStringObject.Value` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `FunctionEnvelopeProperties.Config` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DeploymentLocations.HostingEnvironments` has been changed from `[]*AppServiceEnvironment` to `[]*Environment`
+- Type of `ContinuousWebJobProperties.Settings` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `ValidateProperties.AppServiceEnvironment` has been changed from `*AppServiceEnvironment` to `*Environment`
+- Type of `CertificatePatchResource.Properties` has been changed from `*CertificatePatchResourceProperties` to `*Certificate`
+- Const `ProviderOsTypeSelectedLinuxFunctions` has been removed
+- Const `ProviderOsTypeSelectedWindowsFunctions` has been removed
+- Const `ProviderStackOsTypeLinux` has been removed
+- Const `ProviderStackOsTypeAll` has been removed
+- Const `ProviderOsTypeSelectedLinux` has been removed
+- Const `ProviderOsTypeSelectedAll` has been removed
+- Const `ProviderStackOsTypeWindows` has been removed
+- Const `ProviderOsTypeSelectedWindows` has been removed
+- Function `WebSiteInstanceStatus.MarshalJSON` has been removed
+- Function `*WebAppsStartNetworkTraceSlotPoller.Poll` has been removed
+- Function `WebAppsCreateOrUpdateSourceControlPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceCertificateOrdersClient.VerifyDomainOwnership` has been removed
+- Function `WebAppsRestoreSnapshotSlotPollerResponse.PollUntilDone` has been removed
+- Function `*DeletedWebAppsListPager.Err` has been removed
+- Function `*AppServiceCertificateOrdersClient.ResendEmail` has been removed
+- Function `*StaticSitesDeleteStaticSiteCustomDomainPoller.Done` has been removed
+- Function `*AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager.Err` has been removed
+- Function `*WebAppsGetSiteConnectionStringKeyVaultReferencesPager.PageResponse` has been removed
+- Function `WebAppsStartNetworkTracePollerResponse.PollUntilDone` has been removed
+- Function `StaticSiteFunctionOverviewARMResource.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*AppServiceEnvironmentsClient.ListWebWorkerUsages` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*AppServiceCertificateOrdersClient.ResendRequestEmails` has been removed
+- Function `*WebAppsListProcessesPager.NextPage` has been removed
+- Function `*StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller.Done` has been removed
+- Function `*WebAppsListContinuousWebJobsPager.NextPage` has been removed
+- Function `*CertificatePatchResourceProperties.UnmarshalJSON` has been removed
+- Function `*WebAppsSwapSlotWithProductionPoller.ResumeToken` has been removed
+- Function `*AppServiceCertificateOrdersListByResourceGroupPager.NextPage` has been removed
+- Function `*WebAppsListInstanceProcessModulesPager.Err` has been removed
+- Function `*WebAppsListDomainOwnershipIdentifiersPager.NextPage` has been removed
+- Function `*WebAppsListSiteBackupsPager.Err` has been removed
+- Function `Certificate.MarshalJSON` has been removed
+- Function `*ResourceHealthMetadataListBySitePager.Err` has been removed
+- Function `*DiagnosticsListSiteAnalysesPager.Err` has been removed
+- Function `*AppServiceCertificateOrdersClient.RetrieveCertificateEmailHistory` has been removed
+- Function `AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceCertificateOrdersClient.Get` has been removed
+- Function `*WebAppsListByResourceGroupPager.NextPage` has been removed
+- Function `*WebAppsListTriggeredWebJobsPager.NextPage` has been removed
+- Function `*AppServiceCertificateOrdersClient.RetrieveCertificateActions` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSitePoller.Poll` has been removed
+- Function `SlotDifference.MarshalJSON` has been removed
+- Function `*DomainsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*AppServicePlansListWebAppsByHybridConnectionPager.NextPage` has been removed
+- Function `*WebAppsListConfigurationsSlotPager.PageResponse` has been removed
+- Function `*WebAppsListSnapshotsFromDRSecondaryPager.PageResponse` has been removed
+- Function `*StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager.Err` has been removed
+- Function `*AppServiceEnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions` has been removed
+- Function `AnalysisDefinition.MarshalJSON` has been removed
+- Function `SiteExtensionInfo.MarshalJSON` has been removed
+- Function `AppServicePlanCollection.MarshalJSON` has been removed
+- Function `*WebAppsInstallSiteExtensionPoller.Done` has been removed
+- Function `KubeEnvironmentsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ProviderGetWebAppStacksForLocationPager.Err` has been removed
+- Function `*WebAppsListSnapshotsFromDRSecondarySlotPager.Err` has been removed
+- Function `*AppServiceCertificateOrdersClient.ValidatePurchaseInformation` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WebAppsListSlotDifferencesSlotPager.Err` has been removed
+- Function `*StaticSitesListStaticSiteFunctionsPager.NextPage` has been removed
+- Function `*WebAppsRestoreFromBackupBlobSlotPoller.Poll` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlSlotPoller.ResumeToken` has been removed
+- Function `*ResourceHealthMetadataListBySiteSlotPager.Err` has been removed
+- Function `*AppServiceEnvironmentsClient.ListMultiRolePoolSKUs` has been removed
+- Function `*StaticSitesDeletePrivateEndpointConnectionPoller.Done` has been removed
+- Function `*AppServiceCertificateOrdersListCertificatesPager.NextPage` has been removed
+- Function `*AppServicePlansListWebAppsByHybridConnectionPager.Err` has been removed
+- Function `*WebAppsListConfigurationsPager.Err` has been removed
+- Function `*WebAppsMigrateMySQLPoller.Done` has been removed
+- Function `*DomainsCreateOrUpdatePoller.Done` has been removed
+- Function `KubeEnvironmentsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceCertificateOrdersClient.Renew` has been removed
+- Function `*WebAppsListHostNameBindingsPager.Err` has been removed
+- Function `*WebAppsRestorePoller.Done` has been removed
+- Function `*CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager.PageResponse` has been removed
+- Function `*WebAppsMigrateStoragePoller.Done` has been removed
+- Function `*AppServicePlansCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DeletedWebAppsListByLocationPager.Err` has been removed
+- Function `*WebAppsListSiteExtensionsPager.PageResponse` has been removed
+- Function `*WebAppsListDeploymentsPager.NextPage` has been removed
+- Function `*AppServicePlansClient.ListHybridConnectionKeys` has been removed
+- Function `*WebAppsListConfigurationSnapshotInfoPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginCreateOrUpdateMultiRolePool` has been removed
+- Function `*WebAppsRestoreSnapshotSlotPoller.ResumeToken` has been removed
+- Function `*AppServicePlansListHybridConnectionsPager.NextPage` has been removed
+- Function `*AppServicePlansClient.DeleteHybridConnection` has been removed
+- Function `*WebAppsListTriggeredWebJobHistorySlotPager.PageResponse` has been removed
+- Function `*AppServicePlansListByResourceGroupPager.PageResponse` has been removed
+- Function `*StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*WebAppsListByResourceGroupPager.Err` has been removed
+- Function `*AppServiceEnvironmentsSuspendPoller.Done` has been removed
+- Function `*WebAppsRestoreFromDeletedAppSlotPoller.Done` has been removed
+- Function `StaticSiteCustomDomainRequestPropertiesARMResource.MarshalJSON` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlPoller.Poll` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolSKUsPager.Err` has been removed
+- Function `*RecommendationsListRecommendedRulesForWebAppPager.Err` has been removed
+- Function `*AppServiceCertificateOrdersListByResourceGroupPager.PageResponse` has been removed
+- Function `*DomainsListByResourceGroupPager.PageResponse` has been removed
+- Function `*AppServiceCertificateOrdersClient.DeleteCertificate` has been removed
+- Function `*AppServiceEnvironmentsClient.ListByResourceGroup` has been removed
+- Function `*StaticSitesGetStaticSitesByResourceGroupPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsListWebAppsPager.NextPage` has been removed
+- Function `WebAppsRestoreFromDeletedAppPollerResponse.PollUntilDone` has been removed
+- Function `WebAppsCreateFunctionPollerResponse.PollUntilDone` has been removed
+- Function `BackupItem.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsClient.List` has been removed
+- Function `*WebAppsListPublishingCredentialsSlotPoller.ResumeToken` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller.FinalResponse` has been removed
+- Function `*WebAppsCreateMSDeployOperationSlotPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsListMultiRoleUsagesPager.PageResponse` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationSlotPoller.FinalResponse` has been removed
+- Function `*ResourceHealthMetadataListPager.NextPage` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller.Poll` has been removed
+- Function `*AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager.PageResponse` has been removed
+- Function `*WebAppsRestoreFromDeletedAppSlotPoller.ResumeToken` has been removed
+- Function `AppServiceEnvironmentCollection.MarshalJSON` has been removed
+- Function `*StaticSitesListStaticSiteCustomDomainsPager.Err` has been removed
+- Function `RenewCertificateOrderRequest.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsClient.GetVipInfo` has been removed
+- Function `*WebAppsListSnapshotsPager.NextPage` has been removed
+- Function `*WebAppsListInstanceProcessThreadsPager.Err` has been removed
+- Function `StaticSiteUserProvidedFunctionApp.MarshalJSON` has been removed
+- Function `*AppServicePlansClient.Delete` has been removed
+- Function `*WebAppsListInstanceProcessThreadsPager.NextPage` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*WebAppsListProcessThreadsPager.Err` has been removed
+- Function `*RecommendationsListHistoryForWebAppPager.Err` has been removed
+- Function `*WebAppsListProcessesPager.Err` has been removed
+- Function `*AppServicePlansListUsagesPager.PageResponse` has been removed
+- Function `*WebAppsListInstanceProcessesPager.NextPage` has been removed
+- Function `*WebAppsStartNetworkTraceSlotPoller.FinalResponse` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse.Resume` has been removed
+- Function `*WebAppsListUsagesPager.PageResponse` has been removed
+- Function `*AppServicePlansListWebAppsPager.PageResponse` has been removed
+- Function `*AppServiceCertificateOrdersClient.UpdateCertificate` has been removed
+- Function `*WebAppsListSiteBackupsPager.NextPage` has been removed
+- Function `*WebAppsGetSiteConnectionStringKeyVaultReferencesPager.Err` has been removed
+- Function `*WebAppsListInstanceIdentifiersSlotPager.PageResponse` has been removed
+- Function `*WebAppsListDomainOwnershipIdentifiersSlotPager.NextPage` has been removed
+- Function `AppServiceCertificateOrderCollection.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsDeletePollerResponse.Resume` has been removed
+- Function `*WebAppsCreateFunctionPollerResponse.Resume` has been removed
+- Function `*StaticSitesGetStaticSiteBuildsPager.Err` has been removed
+- Function `*WebAppsRestoreFromDeletedAppPollerResponse.Resume` has been removed
+- Function `*WebAppsInstallSiteExtensionSlotPoller.FinalResponse` has been removed
+- Function `*WebAppsListPublicCertificatesSlotPager.Err` has been removed
+- Function `PushSettings.MarshalJSON` has been removed
+- Function `*WebAppsListSiteExtensionsSlotPager.Err` has been removed
+- Function `DomainsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AppServicePlansClient.ListHybridConnections` has been removed
+- Function `*WebAppsMigrateStoragePollerResponse.Resume` has been removed
+- Function `WebAppsCreateInstanceFunctionSlotPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListProcessThreadsSlotPager.NextPage` has been removed
+- Function `*WebAppsMigrateStoragePoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsClient.UpdateMultiRolePool` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSitePoller.FinalResponse` has been removed
+- Function `WebAppsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsCreateFunctionPoller.Done` has been removed
+- Function `*AppServiceEnvironmentsListPager.Err` has been removed
+- Function `*AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller.Done` has been removed
+- Function `*WebAppsRestoreSlotPollerResponse.Resume` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdateCertificatePoller.FinalResponse` has been removed
+- Function `*WebAppsRestoreFromBackupBlobPoller.ResumeToken` has been removed
+- Function `*WebAppsListProcessesPager.PageResponse` has been removed
+- Function `*StaticSitesListStaticSiteBuildFunctionsPager.PageResponse` has been removed
+- Function `*DeletedWebAppsListPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListPager.PageResponse` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller.FinalResponse` has been removed
+- Function `*WebAppsRestoreSnapshotSlotPoller.Poll` has been removed
+- Function `*StaticSitesGetUserProvidedFunctionAppsForStaticSitePager.PageResponse` has been removed
+- Function `*WebAppsListBackupsSlotPager.NextPage` has been removed
+- Function `*AppServiceCertificateOrdersListCertificatesPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager.Err` has been removed
+- Function `*AppServicePlansClient.BeginCreateOrUpdate` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionPoller.Done` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationSlotPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager.PageResponse` has been removed
+- Function `AppServiceCertificateOrder.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller.Poll` has been removed
+- Function `*WebAppsListContinuousWebJobsSlotPager.NextPage` has been removed
+- Function `*WebAppsListPublishingCredentialsPoller.FinalResponse` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller.Done` has been removed
+- Function `*DiagnosticsListSiteDiagnosticCategoriesSlotPager.PageResponse` has been removed
+- Function `*WebAppsListInstanceIdentifiersSlotPager.Err` has been removed
+- Function `*AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*DiagnosticsListSiteAnalysesPager.NextPage` has been removed
+- Function `AppServiceCertificateResource.MarshalJSON` has been removed
+- Function `*CertificateRegistrationProviderListOperationsPager.NextPage` has been removed
+- Function `*WebAppsListSlotDifferencesFromProductionPager.NextPage` has been removed
+- Function `*AppServicePlansClient.GetRouteForVnet` has been removed
+- Function `*WebAppsListTriggeredWebJobHistoryPager.Err` has been removed
+- Function `*DiagnosticsListSiteDiagnosticCategoriesSlotPager.Err` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller.Done` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationSlotPoller.ResumeToken` has been removed
+- Function `*AppServiceCertificateOrdersListPager.Err` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationPoller.FinalResponse` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller.ResumeToken` has been removed
+- Function `*RecommendationsListPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListByResourceGroupPager.PageResponse` has been removed
+- Function `WebAppsMigrateMySQLPollerResponse.PollUntilDone` has been removed
+- Function `WebAppsRestoreFromBackupBlobSlotPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsRestoreFromBackupBlobPoller.Poll` has been removed
+- Function `*WebAppsListProcessModulesSlotPager.PageResponse` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller.ResumeToken` has been removed
+- Function `*WebAppsListPublishingCredentialsSlotPollerResponse.Resume` has been removed
+- Function `*StaticSitesDetachStaticSitePoller.ResumeToken` has been removed
+- Function `*WebAppsGetPrivateEndpointConnectionListPager.NextPage` has been removed
+- Function `ReissueCertificateOrderRequest.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller.FinalResponse` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlPollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsResumePollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolSKUsPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsDeletePoller.Done` has been removed
+- Function `WebAppsInstallSiteExtensionPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsRestoreFromDeletedAppPoller.ResumeToken` has been removed
+- Function `*AppServicePlansListHybridConnectionsPager.Err` has been removed
+- Function `*KubeEnvironmentsDeletePoller.Poll` has been removed
+- Function `*WebAppsListHostNameBindingsPager.PageResponse` has been removed
+- Function `*ResourceHealthMetadataListPager.PageResponse` has been removed
+- Function `VnetValidationFailureDetails.MarshalJSON` has been removed
+- Function `*CertificatesListPager.NextPage` has been removed
+- Function `*WebAppsListPager.Err` has been removed
+- Function `*WebAppsRestoreFromDeletedAppSlotPollerResponse.Resume` has been removed
+- Function `*WebAppsListBackupsPager.PageResponse` has been removed
+- Function `VnetParameters.MarshalJSON` has been removed
+- Function `*AppServicePlansClient.Update` has been removed
+- Function `WebAppsCreateMSDeployOperationSlotPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceCertificateOrdersClient.ListCertificates` has been removed
+- Function `*AppServiceEnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions` has been removed
+- Function `*AppServicePlansClient.GetServerFarmSKUs` has been removed
+- Function `*RecommendationsListRecommendedRulesForHostingEnvironmentPager.Err` has been removed
+- Function `*ProviderGetFunctionAppStacksForLocationPager.PageResponse` has been removed
+- Function `*AppServicePlansListWebAppsPager.NextPage` has been removed
+- Function `*WebAppsGetPrivateEndpointConnectionListSlotPager.Err` has been removed
+- Function `*StaticSitesDeleteStaticSiteCustomDomainPoller.FinalResponse` has been removed
+- Function `HostNameBinding.MarshalJSON` has been removed
+- Function `*DiagnosticsListSiteAnalysesPager.PageResponse` has been removed
+- Function `AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListWebJobsSlotPager.PageResponse` has been removed
+- Function `*WebAppsRestoreSnapshotPoller.ResumeToken` has been removed
+- Function `*StaticSitesDeletePrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*WebAppsRestoreFromDeletedAppSlotPoller.Poll` has been removed
+- Function `*WebAppsListPublishingCredentialsPoller.Done` has been removed
+- Function `*DomainsListOwnershipIdentifiersPager.NextPage` has been removed
+- Function `StaticSitesWorkflowPreview.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsChangeVnetPager.NextPage` has been removed
+- Function `*WebAppsCreateFunctionPoller.ResumeToken` has been removed
+- Function `*StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller.ResumeToken` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionSlotPollerResponse.Resume` has been removed
+- Function `StaticSitesDeletePrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsRestoreSnapshotSlotPoller.Done` has been removed
+- Function `*AppServiceEnvironmentsClient.ListUsages` has been removed
+- Function `WebAppsRestoreFromDeletedAppSlotPollerResponse.PollUntilDone` has been removed
+- Function `*DiagnosticsListHostingEnvironmentDetectorResponsesPager.NextPage` has been removed
+- Function `*WebAppsCreateMSDeployOperationPoller.Poll` has been removed
+- Function `*RecommendationsListHistoryForWebAppPager.NextPage` has been removed
+- Function `MigrateMySQLRequest.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsSuspendPoller.FinalResponse` has been removed
+- Function `DetectorResponse.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsClient.Get` has been removed
+- Function `*WebAppsListConfigurationsSlotPager.NextPage` has been removed
+- Function `*AppServicePlansCreateOrUpdatePoller.Poll` has been removed
+- Function `*AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager.Err` has been removed
+- Function `*StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolSKUsPager.NextPage` has been removed
+- Function `*WebAppsListWebJobsSlotPager.NextPage` has been removed
+- Function `*DomainsListOwnershipIdentifiersPager.Err` has been removed
+- Function `*StaticSitesListStaticSiteBuildFunctionsPager.Err` has been removed
+- Function `AppServiceCertificateCollection.MarshalJSON` has been removed
+- Function `*WebAppsMigrateMySQLPoller.FinalResponse` has been removed
+- Function `*WebAppsListPublicCertificatesSlotPager.NextPage` has been removed
+- Function `NewAppServicePlansClient` has been removed
+- Function `*WebAppsMigrateStoragePoller.Poll` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlSlotPoller.FinalResponse` has been removed
+- Function `*WebAppsListTriggeredWebJobsSlotPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginDeletePrivateEndpointConnection` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionPoller.Poll` has been removed
+- Function `AppServiceEnvironmentsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AppServicePlansClient.ListVnets` has been removed
+- Function `*ProviderListOperationsPager.PageResponse` has been removed
+- Function `*WebAppsGetAppSettingsKeyVaultReferencesSlotPager.PageResponse` has been removed
+- Function `StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsChangeVnetPoller.FinalResponse` has been removed
+- Function `SitePhpErrorLogFlag.MarshalJSON` has been removed
+- Function `*WebAppsGetPrivateEndpointConnectionListPager.PageResponse` has been removed
+- Function `*WebAppsListUsagesPager.NextPage` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionSlotPoller.ResumeToken` has been removed
+- Function `AppServiceEnvironmentsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*KubeEnvironmentsCreateOrUpdatePoller.Poll` has been removed
+- Function `MSDeployStatus.MarshalJSON` has been removed
+- Function `*StaticSitesDeleteStaticSiteBuildPoller.ResumeToken` has been removed
+- Function `*DomainsListRecommendationsPager.PageResponse` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ProviderGetAvailableStacksOnPremPager.NextPage` has been removed
+- Function `*AppServiceCertificateOrdersClient.BeginCreateOrUpdate` has been removed
+- Function `WebAppsListPublishingCredentialsPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceCertificateOrdersClient.BeginCreateOrUpdateCertificate` has been removed
+- Function `*DiagnosticsListSiteDetectorsPager.Err` has been removed
+- Function `*DiagnosticsListSiteAnalysesSlotPager.PageResponse` has been removed
+- Function `*WebAppsListSlotDifferencesFromProductionPager.PageResponse` has been removed
+- Function `*CertificatesListPager.Err` has been removed
+- Function `*StaticSitesDeleteStaticSitePoller.Done` has been removed
+- Function `*AppServiceEnvironmentsClient.ListMultiRolePools` has been removed
+- Function `*WebAppsListWebJobsPager.NextPage` has been removed
+- Function `*WebAppsListConfigurationsPager.PageResponse` has been removed
+- Function `AppServicePlanPatchResource.MarshalJSON` has been removed
+- Function `*StaticSitesListPager.PageResponse` has been removed
+- Function `*WebAppsSwapSlotPoller.ResumeToken` has been removed
+- Function `*WebAppsListBasicPublishingCredentialsPoliciesPager.PageResponse` has been removed
+- Function `*WebAppsRestoreFromBackupBlobSlotPollerResponse.Resume` has been removed
+- Function `*WebAppsListSnapshotsPager.PageResponse` has been removed
+- Function `*ResourceHealthMetadataListBySitePager.PageResponse` has been removed
+- Function `*AppServicePlanPatchResourceProperties.UnmarshalJSON` has been removed
+- Function `StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse.PollUntilDone` has been removed
+- Function `*AppServicePlansClient.ListRoutesForVnet` has been removed
+- Function `*AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*AppServiceEnvironmentsSuspendPoller.Poll` has been removed
+- Function `*WebAppsStartNetworkTracePoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller.FinalResponse` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse.Resume` has been removed
+- Function `*AppServicePlansListHybridConnectionsPager.PageResponse` has been removed
+- Function `*StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller.FinalResponse` has been removed
+- Function `StaticSiteCustomDomainOverviewARMResource.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsChangeVnetPoller.Done` has been removed
+- Function `*AppServiceEnvironmentsClient.ListAppServicePlans` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WebAppsListSiteBackupsSlotPager.NextPage` has been removed
+- Function `DeletedSite.MarshalJSON` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsResumePager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListWebAppsPager.Err` has been removed
+- Function `*WebAppsListInstanceFunctionsSlotPager.PageResponse` has been removed
+- Function `*WebAppsRestoreFromBackupBlobPoller.Done` has been removed
+- Function `*RecommendationsListHistoryForWebAppPager.PageResponse` has been removed
+- Function `*WebAppsListConfigurationSnapshotInfoPager.Err` has been removed
+- Function `*WebAppsListInstanceFunctionsSlotPager.NextPage` has been removed
+- Function `ProxyOnlyResource.MarshalJSON` has been removed
+- Function `*WebAppsListPublishingCredentialsSlotPoller.Done` has been removed
+- Function `AppServiceCertificatePatchResource.MarshalJSON` has been removed
+- Function `*WebAppsListConfigurationSnapshotInfoSlotPager.Err` has been removed
+- Function `*StaticSitesListPager.Err` has been removed
+- Function `*WebAppsRestorePoller.ResumeToken` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionPoller.Done` has been removed
+- Function `*AppServiceEnvironmentsResumePoller.Poll` has been removed
+- Function `*StaticSitesGetPrivateEndpointConnectionListPager.PageResponse` has been removed
+- Function `*WebAppsListProcessesSlotPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsClient.GetAseV3NetworkingConfiguration` has been removed
+- Function `*WebAppsCreateFunctionPoller.Poll` has been removed
+- Function `*WebAppsCreateMSDeployOperationSlotPoller.Done` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationPoller.Poll` has been removed
+- Function `ResourceHealthMetadata.MarshalJSON` has been removed
+- Function `*WebAppsListPerfMonCountersSlotPager.NextPage` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationSlotPollerResponse.Resume` has been removed
+- Function `PossibleProviderStackOsTypeValues` has been removed
+- Function `*RecommendationsListPager.NextPage` has been removed
+- Function `*StaticSitesListStaticSiteBuildFunctionsPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager.NextPage` has been removed
+- Function `*WebAppsCreateMSDeployOperationSlotPoller.Poll` has been removed
+- Function `*WebAppsListBasicPublishingCredentialsPoliciesPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager.PageResponse` has been removed
+- Function `*WebAppsListByResourceGroupPager.PageResponse` has been removed
+- Function `WebJob.MarshalJSON` has been removed
+- Function `*WebAppsListSnapshotsSlotPager.Err` has been removed
+- Function `*WebAppsRestoreSnapshotPoller.Poll` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*StaticSitesApproveOrRejectPrivateEndpointConnectionPoller.Poll` has been removed
+- Function `AppServiceEnvironmentResource.MarshalJSON` has been removed
+- Function `HybridConnectionLimits.MarshalJSON` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse.Resume` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse.Resume` has been removed
+- Function `*StaticSitesGetStaticSiteBuildsPager.NextPage` has been removed
+- Function `*AppServiceCertificateOrdersClient.Update` has been removed
+- Function `*WebAppsRestoreFromBackupBlobPoller.FinalResponse` has been removed
+- Function `*AppServiceCertificateOrdersClient.ListByResourceGroup` has been removed
+- Function `*AppServiceEnvironmentsGetPrivateEndpointConnectionListPager.PageResponse` has been removed
+- Function `*ProviderGetFunctionAppStacksPager.NextPage` has been removed
+- Function `*StaticSitesDeleteStaticSitePollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsListCapacitiesPager.NextPage` has been removed
+- Function `*WebAppsListInstanceProcessesSlotPager.Err` has been removed
+- Function `*WebAppsListPerfMonCountersPager.PageResponse` has been removed
+- Function `*WebAppsRestoreSlotPoller.ResumeToken` has been removed
+- Function `*WebAppsListSnapshotsFromDRSecondaryPager.Err` has been removed
+- Function `SourceControl.MarshalJSON` has been removed
+- Function `*DiagnosticsListSiteDetectorResponsesSlotPager.Err` has been removed
+- Function `*WebAppsRestorePollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsListMultiRoleUsagesPager.Err` has been removed
+- Function `*ProviderGetWebAppStacksPager.PageResponse` has been removed
+- Function `*WebAppsListPerfMonCountersPager.Err` has been removed
+- Function `*ProviderGetAvailableStacksOnPremPager.Err` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller.Poll` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller.FinalResponse` has been removed
+- Function `*WebAppsGetSiteConnectionStringKeyVaultReferencesSlotPager.NextPage` has been removed
+- Function `*WebAppsListInstanceProcessThreadsPager.PageResponse` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsDeletePoller.FinalResponse` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlPoller.FinalResponse` has been removed
+- Function `*WebAppsListProcessThreadsPager.NextPage` has been removed
+- Function `*WebAppsCreateInstanceFunctionSlotPoller.FinalResponse` has been removed
+- Function `*WebAppsInstallSiteExtensionSlotPoller.ResumeToken` has been removed
+- Function `*WebAppsListDomainOwnershipIdentifiersSlotPager.Err` has been removed
+- Function `CertificateProperties.MarshalJSON` has been removed
+- Function `*ProviderGetAvailableStacksPager.PageResponse` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationSlotPoller.ResumeToken` has been removed
+- Function `FunctionAppStack.MarshalJSON` has been removed
+- Function `*WebAppsListConfigurationsSlotPager.Err` has been removed
+- Function `*ProviderGetWebAppStacksForLocationPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsListWebWorkerUsagesPager.NextPage` has been removed
+- Function `*WebAppsListHostNameBindingsSlotPager.Err` has been removed
+- Function `*DiagnosticsListHostingEnvironmentDetectorResponsesPager.PageResponse` has been removed
+- Function `*StaticSitesListStaticSiteFunctionsPager.Err` has been removed
+- Function `AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse.PollUntilDone` has been removed
+- Function `MSDeploy.MarshalJSON` has been removed
+- Function `*ProviderGetWebAppStacksForLocationPager.NextPage` has been removed
+- Function `*DiagnosticsListSiteDetectorsPager.PageResponse` has been removed
+- Function `*WebAppsStartNetworkTracePoller.Done` has been removed
+- Function `*AppServiceCertificateOrdersListCertificatesPager.PageResponse` has been removed
+- Function `*AppServicePlansListPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolsPager.Err` has been removed
+- Function `*WebAppsGetSiteConnectionStringKeyVaultReferencesSlotPager.PageResponse` has been removed
+- Function `*WebAppsListSnapshotsFromDRSecondaryPager.NextPage` has been removed
+- Function `*WebAppsListInstanceIdentifiersSlotPager.NextPage` has been removed
+- Function `*WebAppsListBackupsSlotPager.Err` has been removed
+- Function `*AppServiceEnvironmentsClient.ListMultiRoleUsages` has been removed
+- Function `*AppServiceEnvironmentsClient.GetPrivateEndpointConnectionList` has been removed
+- Function `*ProviderGetFunctionAppStacksForLocationPager.NextPage` has been removed
+- Function `*WebAppsSwapSlotWithProductionPoller.Done` has been removed
+- Function `*WebAppsListSnapshotsSlotPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsClient.GetWorkerPool` has been removed
+- Function `AppServicePlanPatchResourceProperties.MarshalJSON` has been removed
+- Function `*WebAppsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*KubeEnvironmentsListBySubscriptionPager.NextPage` has been removed
+- Function `*WebAppsCreateMSDeployOperationPoller.FinalResponse` has been removed
+- Function `NewAppServiceCertificateOrdersClient` has been removed
+- Function `*WebAppsListUsagesSlotPager.NextPage` has been removed
+- Function `*StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager.PageResponse` has been removed
+- Function `*StaticSitesGetStaticSitesByResourceGroupPager.NextPage` has been removed
+- Function `AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListContinuousWebJobsPager.Err` has been removed
+- Function `*AppServiceCertificateOrdersListByResourceGroupPager.Err` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginCreateOrUpdate` has been removed
+- Function `*AppServicePlansListUsagesPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager.Err` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSitePollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager.NextPage` has been removed
+- Function `*WebAppsListInstanceProcessModulesPager.PageResponse` has been removed
+- Function `*WebAppsGetAppSettingsKeyVaultReferencesSlotPager.NextPage` has been removed
+- Function `*WebAppsListSnapshotsPager.Err` has been removed
+- Function `*DomainsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller.Poll` has been removed
+- Function `*WebAppsGetSiteConnectionStringKeyVaultReferencesSlotPager.Err` has been removed
+- Function `SiteAuthSettingsV2.MarshalJSON` has been removed
+- Function `DefaultErrorResponseError.MarshalJSON` has been removed
+- Function `WebAppsSwapSlotPollerResponse.PollUntilDone` has been removed
+- Function `DefaultErrorResponse.Error` has been removed
+- Function `*DiagnosticsListSiteDetectorResponsesSlotPager.PageResponse` has been removed
+- Function `*StaticSitesDeleteStaticSiteBuildPoller.FinalResponse` has been removed
+- Function `*StaticSitesGetPrivateEndpointConnectionListPager.Err` has been removed
+- Function `*WebAppsGetPrivateEndpointConnectionListSlotPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsSuspendPager.NextPage` has been removed
+- Function `*WebAppsRestoreSnapshotSlotPollerResponse.Resume` has been removed
+- Function `StaticSitesDeleteStaticSitePollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceCertificateOrdersClient.GetCertificate` has been removed
+- Function `StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse.PollUntilDone` has been removed
+- Function `APIKVReference.MarshalJSON` has been removed
+- Function `*WebAppsListConfigurationSnapshotInfoSlotPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsClient.GetDiagnosticsItem` has been removed
+- Function `*AppServiceEnvironmentsChangeVnetPollerResponse.Resume` has been removed
+- Function `*WebAppsInstallSiteExtensionSlotPoller.Poll` has been removed
+- Function `*AppServiceEnvironmentsListWebWorkerUsagesPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DiagnosticsListSiteDetectorsSlotPager.PageResponse` has been removed
+- Function `*WebAppsListPerfMonCountersSlotPager.Err` has been removed
+- Function `*DiagnosticsListSiteDetectorsSlotPager.NextPage` has been removed
+- Function `*WebAppsListPublishingCredentialsSlotPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsResumePoller.FinalResponse` has been removed
+- Function `*WebAppsListDomainOwnershipIdentifiersSlotPager.PageResponse` has been removed
+- Function `*CertificatesListByResourceGroupPager.NextPage` has been removed
+- Function `SiteConfigurationSnapshotInfo.MarshalJSON` has been removed
+- Function `*DiagnosticsListHostingEnvironmentDetectorResponsesPager.Err` has been removed
+- Function `AppServicePlan.MarshalJSON` has been removed
+- Function `*AppServicePlansClient.ListUsages` has been removed
+- Function `*AppServiceEnvironmentsListAppServicePlansPager.NextPage` has been removed
+- Function `AppServiceCertificateOrderProperties.MarshalJSON` has been removed
+- Function `*WebAppsListInstanceProcessThreadsSlotPager.Err` has been removed
+- Function `StaticSitesDeleteStaticSiteBuildPollerResponse.PollUntilDone` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSitePoller.Done` has been removed
+- Function `*AppServiceEnvironmentsClient.Update` has been removed
+- Function `WebAppsDeletePrivateEndpointConnectionSlotPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsCreateOrUpdatePoller.Done` has been removed
+- Function `*WebAppsSwapSlotPollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsResumePager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsSuspendPollerResponse.Resume` has been removed
+- Function `*DomainsListPager.Err` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationPoller.Done` has been removed
+- Function `*WebAppsListInstanceProcessModulesSlotPager.NextPage` has been removed
+- Function `*StaticSitesListStaticSiteUsersPager.Err` has been removed
+- Function `*WebAppsListInstanceFunctionsSlotPager.Err` has been removed
+- Function `StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListPublicCertificatesPager.Err` has been removed
+- Function `WebAppsSwapSlotWithProductionPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*AppServiceCertificateOrdersClient.Delete` has been removed
+- Function `*WebAppsListTriggeredWebJobsSlotPager.Err` has been removed
+- Function `*WebAppsListInstanceIdentifiersPager.Err` has been removed
+- Function `DiagnosticCategory.MarshalJSON` has been removed
+- Function `*WebAppsCreateInstanceFunctionSlotPollerResponse.Resume` has been removed
+- Function `*WebAppsInstallSiteExtensionSlotPollerResponse.Resume` has been removed
+- Function `*AppServicePlansClient.GetHybridConnectionPlanLimit` has been removed
+- Function `*AppServicePlansClient.UpdateVnetRoute` has been removed
+- Function `*DomainRegistrationProviderListOperationsPager.PageResponse` has been removed
+- Function `*WebAppsListFunctionsPager.PageResponse` has been removed
+- Function `*WebAppsRestoreFromDeletedAppSlotPoller.FinalResponse` has been removed
+- Function `*AppServiceCertificateOrdersListPager.PageResponse` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlSlotPollerResponse.Resume` has been removed
+- Function `*WebAppsListInstanceProcessModulesPager.NextPage` has been removed
+- Function `*StaticSitesDetachStaticSitePoller.Done` has been removed
+- Function `TriggeredJobHistory.MarshalJSON` has been removed
+- Function `*WebAppsCreateOrUpdateSlotPoller.Poll` has been removed
+- Function `Usage.MarshalJSON` has been removed
+- Function `*DomainsListByResourceGroupPager.NextPage` has been removed
+- Function `*WebAppsListUsagesSlotPager.Err` has been removed
+- Function `*AppServicePlansListPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolsPager.PageResponse` has been removed
+- Function `*StaticSitesListStaticSiteCustomDomainsPager.NextPage` has been removed
+- Function `*WebAppsListDomainOwnershipIdentifiersPager.Err` has been removed
+- Function `*WebAppsListHostNameBindingsSlotPager.PageResponse` has been removed
+- Function `DeletedAppRestoreRequest.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsDeletePoller.ResumeToken` has been removed
+- Function `*WebAppsRestoreSnapshotPollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller.ResumeToken` has been removed
+- Function `*WebAppsSwapSlotPoller.Done` has been removed
+- Function `*DiagnosticsListSiteDetectorResponsesPager.PageResponse` has been removed
+- Function `DetectorDefinitionResource.MarshalJSON` has been removed
+- Function `*WebAppsListSiteExtensionsPager.NextPage` has been removed
+- Function `SiteLogsConfig.MarshalJSON` has been removed
+- Function `*DiagnosticsListSiteDiagnosticCategoriesPager.PageResponse` has been removed
+- Function `WebAppsMigrateStoragePollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListInstanceIdentifiersPager.PageResponse` has been removed
+- Function `*AppServicePlansClient.Get` has been removed
+- Function `*WebAppsInstallSiteExtensionPoller.FinalResponse` has been removed
+- Function `*StaticSitesGetUserProvidedFunctionAppsForStaticSitePager.Err` has been removed
+- Function `*StaticSitesApproveOrRejectPrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*AppServicePlansListByResourceGroupPager.Err` has been removed
+- Function `StorageMigrationOptions.MarshalJSON` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSitePoller.ResumeToken` has been removed
+- Function `*RecommendationsListHistoryForHostingEnvironmentPager.Err` has been removed
+- Function `*WebAppsListTriggeredWebJobHistorySlotPager.Err` has been removed
+- Function `*WebAppsGetAppSettingsKeyVaultReferencesPager.NextPage` has been removed
+- Function `*ProviderGetFunctionAppStacksPager.Err` has been removed
+- Function `*TopLevelDomainsListPager.Err` has been removed
+- Function `*DomainsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WebAppsListPublicCertificatesSlotPager.PageResponse` has been removed
+- Function `*AppServicePlansClient.UpdateVnetGateway` has been removed
+- Function `*WebAppsRestorePoller.FinalResponse` has been removed
+- Function `StaticSiteUserInvitationResponseResource.MarshalJSON` has been removed
+- Function `*WebAppsListPublishingCredentialsPoller.Poll` has been removed
+- Function `WebAppsCreateOrUpdateSourceControlSlotPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsClient.ListWorkerPoolSKUs` has been removed
+- Function `*AppServiceEnvironmentsResumePager.Err` has been removed
+- Function `*ResourceHealthMetadataListByResourceGroupPager.Err` has been removed
+- Function `CertificateEmail.MarshalJSON` has been removed
+- Function `*WebAppsCreateInstanceFunctionSlotPoller.ResumeToken` has been removed
+- Function `ApplicationStackResource.MarshalJSON` has been removed
+- Function `*KubeEnvironmentsListByResourceGroupPager.Err` has been removed
+- Function `*AppServicePlansListUsagesPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListWebWorkerUsagesPager.Err` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationSlotPoller.Poll` has been removed
+- Function `*WebAppsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WebAppsListSiteBackupsSlotPager.Err` has been removed
+- Function `*AppServiceEnvironmentsSuspendPager.Err` has been removed
+- Function `*WebAppsCreateOrUpdateSlotPollerResponse.Resume` has been removed
+- Function `RestoreRequest.MarshalJSON` has been removed
+- Function `*StaticSitesGetStaticSitesByResourceGroupPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolsPager.PageResponse` has been removed
+- Function `*WebAppsListTriggeredWebJobsPager.PageResponse` has been removed
+- Function `StaticSitesCreateOrUpdateStaticSitePollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsClient.ListWorkerPools` has been removed
+- Function `*AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager.PageResponse` has been removed
+- Function `WebAppsCreateInstanceMSDeployOperationSlotPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsChangeVnetPager.Err` has been removed
+- Function `*WebAppsListTriggeredWebJobsSlotPager.PageResponse` has been removed
+- Function `*StaticSitesDetachStaticSitePoller.Poll` has been removed
+- Function `*WebAppsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller.Poll` has been removed
+- Function `*ProviderGetWebAppStacksPager.Err` has been removed
+- Function `*CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager.Err` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager.PageResponse` has been removed
+- Function `AppServiceCertificateOrderPatchResource.MarshalJSON` has been removed
+- Function `*WebAppsListProcessesSlotPager.Err` has been removed
+- Function `*WebAppsListContinuousWebJobsPager.PageResponse` has been removed
+- Function `*StaticSitesDeletePrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlPoller.Done` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationPollerResponse.Resume` has been removed
+- Function `*WebAppsListDeploymentsPager.PageResponse` has been removed
+- Function `*StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller.Poll` has been removed
+- Function `*ResourceHealthMetadataListByResourceGroupPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsListCapacitiesPager.PageResponse` has been removed
+- Function `*CertificatesListByResourceGroupPager.Err` has been removed
+- Function `WebAppsRestoreSlotPollerResponse.PollUntilDone` has been removed
+- Function `ContinuousWebJob.MarshalJSON` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSitePoller.Done` has been removed
+- Function `*AppServiceCertificateOrderProperties.UnmarshalJSON` has been removed
+- Function `*WebAppsListSlotDifferencesSlotPager.PageResponse` has been removed
+- Function `*DeletedWebAppsListByLocationPager.PageResponse` has been removed
+- Function `*AppServiceCertificateOrderPatchResourceProperties.UnmarshalJSON` has been removed
+- Function `*AppServicePlansClient.ListWebAppsByHybridConnection` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `FunctionEnvelope.MarshalJSON` has been removed
+- Function `*WebAppsMigrateMySQLPoller.ResumeToken` has been removed
+- Function `*WebAppsRestoreSlotPoller.FinalResponse` has been removed
+- Function `*WebAppsListWebJobsPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsGetPrivateEndpointConnectionListPager.Err` has been removed
+- Function `BackupRequest.MarshalJSON` has been removed
+- Function `*DomainsListByResourceGroupPager.Err` has been removed
+- Function `WebAppsStartNetworkTraceSlotPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsCreateMSDeployOperationSlotPollerResponse.Resume` has been removed
+- Function `RecommendationRule.MarshalJSON` has been removed
+- Function `*WebAppsRestoreFromBackupBlobSlotPoller.ResumeToken` has been removed
+- Function `WebAppsInstallSiteExtensionSlotPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListBasicPublishingCredentialsPoliciesSlotPager.PageResponse` has been removed
+- Function `*CertificateProperties.UnmarshalJSON` has been removed
+- Function `Snapshot.MarshalJSON` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*DiagnosticsListSiteDiagnosticCategoriesSlotPager.NextPage` has been removed
+- Function `*DomainsCreateOrUpdatePoller.Poll` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationPollerResponse.Resume` has been removed
+- Function `StaticSiteUserProvidedFunctionAppARMResource.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolsPager.Err` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*AppServicePlansClient.GetHybridConnection` has been removed
+- Function `*WebAppsListSlotsPager.PageResponse` has been removed
+- Function `*StaticSitesDeleteStaticSiteCustomDomainPoller.ResumeToken` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller.ResumeToken` has been removed
+- Function `*WebAppsListSnapshotsSlotPager.PageResponse` has been removed
+- Function `StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `PublicCertificate.MarshalJSON` has been removed
+- Function `*WebAppsListBackupsPager.NextPage` has been removed
+- Function `SnapshotRestoreRequest.MarshalJSON` has been removed
+- Function `*KubeEnvironmentsDeletePoller.Done` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSiteBuildPoller.Poll` has been removed
+- Function `*StaticSitesGetStaticSiteBuildsPager.PageResponse` has been removed
+- Function `*WebAppsListDeploymentsPager.Err` has been removed
+- Function `ProcessModuleInfo.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection` has been removed
+- Function `*WebAppsListPublishingCredentialsPoller.ResumeToken` has been removed
+- Function `*RecommendationsListHistoryForHostingEnvironmentPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginDelete` has been removed
+- Function `*AppServicePlansListWebAppsPager.Err` has been removed
+- Function `*WebAppsSwapSlotPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginChangeVnet` has been removed
+- Function `WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse.PollUntilDone` has been removed
+- Function `*StaticSitesGetUserProvidedFunctionAppsForStaticSitePager.NextPage` has been removed
+- Function `*WebAppsListTriggeredWebJobHistorySlotPager.NextPage` has been removed
+- Function `*CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager.NextPage` has been removed
+- Function `*RecommendationsListRecommendedRulesForHostingEnvironmentPager.PageResponse` has been removed
+- Function `*RecommendationsListRecommendedRulesForHostingEnvironmentPager.NextPage` has been removed
+- Function `RemotePrivateEndpointConnectionARMResource.MarshalJSON` has been removed
+- Function `*WebAppsListTriggeredWebJobHistoryPager.PageResponse` has been removed
+- Function `GeoRegion.MarshalJSON` has been removed
+- Function `*ProviderGetFunctionAppStacksPager.PageResponse` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationPoller.Poll` has been removed
+- Function `*WebAppsListSlotsPager.Err` has been removed
+- Function `*WebAppsListInstanceIdentifiersPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsClient.GetPrivateLinkResources` has been removed
+- Function `VnetValidationTestFailure.MarshalJSON` has been removed
+- Function `*WebAppsSwapSlotWithProductionPollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller.Done` has been removed
+- Function `*WebAppsListFunctionsPager.NextPage` has been removed
+- Function `WebAppsCreateInstanceMSDeployOperationPollerResponse.PollUntilDone` has been removed
+- Function `*DomainsListOwnershipIdentifiersPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller.Done` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolsPager.NextPage` has been removed
+- Function `*WebAppsListSiteExtensionsSlotPager.PageResponse` has been removed
+- Function `*StaticSitesDeleteStaticSitePoller.ResumeToken` has been removed
+- Function `*AppServiceEnvironmentsClient.GetPrivateEndpointConnection` has been removed
+- Function `*WebAppsRestoreFromBackupBlobSlotPoller.Done` has been removed
+- Function `WebAppsRestorePollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolsPager.NextPage` has been removed
+- Function `*AppServicePlansListWebAppsByHybridConnectionPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsClient.GetInboundNetworkDependenciesEndpoints` has been removed
+- Function `*DomainsListPager.NextPage` has been removed
+- Function `*WebAppsRestoreSlotPoller.Poll` has been removed
+- Function `*WebAppsStartNetworkTracePollerResponse.Resume` has been removed
+- Function `*WebAppsCreateMSDeployOperationPoller.Done` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationPoller.ResumeToken` has been removed
+- Function `*AppServiceEnvironmentsListByResourceGroupPager.Err` has been removed
+- Function `*StaticSitesApproveOrRejectPrivateEndpointConnectionPoller.Done` has been removed
+- Function `*WebAppsCreateInstanceFunctionSlotPoller.Poll` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSitePoller.FinalResponse` has been removed
+- Function `SiteAuthSettings.MarshalJSON` has been removed
+- Function `*WebAppsRestoreFromBackupBlobSlotPoller.FinalResponse` has been removed
+- Function `*AppServicePlansClient.CreateOrUpdateVnetRoute` has been removed
+- Function `*WebAppsCreateFunctionPoller.FinalResponse` has been removed
+- Function `*CertificateRegistrationProviderListOperationsPager.Err` has been removed
+- Function `*WebAppsListSlotDifferencesSlotPager.NextPage` has been removed
+- Function `NewAppServiceEnvironmentsClient` has been removed
+- Function `*KubeEnvironmentsCreateOrUpdatePoller.Done` has been removed
+- Function `ProviderOsTypeSelected.ToPtr` has been removed
+- Function `*StaticSitesListStaticSiteFunctionsPager.PageResponse` has been removed
+- Function `*ProviderGetWebAppStacksPager.NextPage` has been removed
+- Function `*WebAppsInstallSiteExtensionPoller.ResumeToken` has been removed
+- Function `*AppServiceCertificateOrdersListPager.NextPage` has been removed
+- Function `AppServiceEnvironmentsChangeVnetPollerResponse.PollUntilDone` has been removed
+- Function `*RecommendationsListHistoryForHostingEnvironmentPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsSuspendPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsClient.Reboot` has been removed
+- Function `WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListProcessThreadsSlotPager.PageResponse` has been removed
+- Function `*KubeEnvironmentsListByResourceGroupPager.PageResponse` has been removed
+- Function `*StaticSitesDeleteStaticSitePoller.FinalResponse` has been removed
+- Function `*WebAppsGetPrivateEndpointConnectionListSlotPager.PageResponse` has been removed
+- Function `*AppServiceCertificateOrdersClient.RetrieveSiteSeal` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdatePoller.Done` has been removed
+- Function `*WebAppsCreateInstanceFunctionSlotPoller.Done` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSiteBuildPoller.ResumeToken` has been removed
+- Function `WebAppsCreateOrUpdateSlotPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsClient.ListWebWorkerMetricDefinitions` has been removed
+- Function `*TopLevelDomainsListAgreementsPager.Err` has been removed
+- Function `*DiagnosticsListSiteDiagnosticCategoriesPager.Err` has been removed
+- Function `ProcessInfo.MarshalJSON` has been removed
+- Function `*KubeEnvironmentsListBySubscriptionPager.Err` has been removed
+- Function `*AppServiceEnvironmentsClient.UpdateAseNetworkingConfiguration` has been removed
+- Function `*AppServiceEnvironmentsClient.ListCapacities` has been removed
+- Function `*AppServicePlansClient.GetVnetFromServerFarm` has been removed
+- Function `*AppServiceEnvironmentsClient.ListMultiRoleMetricDefinitions` has been removed
+- Function `*AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager.Err` has been removed
+- Function `*WebAppsRestoreFromBackupBlobPollerResponse.Resume` has been removed
+- Function `MSDeployLog.MarshalJSON` has been removed
+- Function `*AppServicePlansClient.GetVnetGateway` has been removed
+- Function `*WebAppsRestoreFromDeletedAppPoller.Done` has been removed
+- Function `WebAppsDeletePrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*DiagnosticsListSiteDiagnosticCategoriesPager.NextPage` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSiteBuildPoller.Done` has been removed
+- Function `*ProviderGetAvailableStacksPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager.NextPage` has been removed
+- Function `*WebAppsMigrateStoragePoller.ResumeToken` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdatePoller.Poll` has been removed
+- Function `AppServiceEnvironmentsResumePollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsCreateOrUpdateSlotPoller.Done` has been removed
+- Function `*WebAppsCreateOrUpdateSlotPoller.ResumeToken` has been removed
+- Function `StaticSiteUserInvitationRequestResource.MarshalJSON` has been removed
+- Function `WebAppsRestoreSnapshotPollerResponse.PollUntilDone` has been removed
+- Function `*DomainsListRecommendationsPager.NextPage` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlPoller.ResumeToken` has been removed
+- Function `*WebAppsListDeploymentsSlotPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListUsagesPager.PageResponse` has been removed
+- Function `StaticSitesDeleteStaticSiteCustomDomainPollerResponse.PollUntilDone` has been removed
+- Function `PrivateLinkConnectionApprovalRequestResource.MarshalJSON` has been removed
+- Function `*WebAppsRestoreSnapshotSlotPoller.FinalResponse` has been removed
+- Function `*StaticSitesDetachStaticSitePoller.FinalResponse` has been removed
+- Function `*CertificatesListPager.PageResponse` has been removed
+- Function `*WebAppsRestoreSnapshotPoller.FinalResponse` has been removed
+- Function `ProviderStackOsType.ToPtr` has been removed
+- Function `ResourceMetricDefinition.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsGetPrivateEndpointConnectionListPager.NextPage` has been removed
+- Function `*WebAppsListDeploymentsSlotPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListWebAppsPager.PageResponse` has been removed
+- Function `*StaticSitesDeleteStaticSitePoller.Poll` has been removed
+- Function `*WebAppsInstallSiteExtensionPoller.Poll` has been removed
+- Function `*TopLevelDomainsListAgreementsPager.PageResponse` has been removed
+- Function `*WebAppsListInstanceProcessesSlotPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolSKUsPager.NextPage` has been removed
+- Function `*WebAppsListSiteBackupsSlotPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsSuspendPoller.ResumeToken` has been removed
+- Function `*StaticSitesGetPrivateEndpointConnectionListPager.NextPage` has been removed
+- Function `*WebAppsListSnapshotsFromDRSecondarySlotPager.PageResponse` has been removed
+- Function `*DeletedWebAppsListByLocationPager.NextPage` has been removed
+- Function `*TopLevelDomainsListPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListMultiRoleUsagesPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListUsagesPager.NextPage` has been removed
+- Function `*AppServicePlansClient.List` has been removed
+- Function `BillingMeter.MarshalJSON` has been removed
+- Function `*StaticSitesListStaticSiteUsersPager.PageResponse` has been removed
+- Function `*DomainRegistrationProviderListOperationsPager.Err` has been removed
+- Function `Deployment.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsListUsagesPager.Err` has been removed
+- Function `*StaticSitesDeleteStaticSiteBuildPoller.Done` has been removed
+- Function `User.MarshalJSON` has been removed
+- Function `*AppServicePlansClient.RebootWorker` has been removed
+- Function `*DiagnosticsListSiteDetectorResponsesPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListPager.NextPage` has been removed
+- Function `AppServiceEnvironment.MarshalJSON` has been removed
+- Function `*WebAppsMigrateMySQLPoller.Poll` has been removed
+- Function `RemotePrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*WebAppsListPerfMonCountersSlotPager.PageResponse` has been removed
+- Function `AppServiceEnvironmentsSuspendPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListBackupsSlotPager.PageResponse` has been removed
+- Function `*AppServiceEnvironmentsClient.ListDiagnostics` has been removed
+- Function `*WebAppsListPublishingCredentialsPollerResponse.Resume` has been removed
+- Function `WebAppsCreateMSDeployOperationPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListInstanceProcessesPager.Err` has been removed
+- Function `*WebAppsGetAppSettingsKeyVaultReferencesPager.PageResponse` has been removed
+- Function `*AppServicePlansListPager.NextPage` has been removed
+- Function `*WebAppsListPager.PageResponse` has been removed
+- Function `WebAppsStartWebSiteNetworkTraceOperationPollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListProcessModulesSlotPager.Err` has been removed
+- Function `*ResourceHealthMetadataListBySitePager.NextPage` has been removed
+- Function `*WebAppsListSiteExtensionsPager.Err` has been removed
+- Function `AseV3NetworkingConfiguration.MarshalJSON` has been removed
+- Function `*WebAppsSwapSlotWithProductionPoller.Poll` has been removed
+- Function `*ResourceHealthMetadataListBySiteSlotPager.NextPage` has been removed
+- Function `*WebAppsStartNetworkTracePoller.Poll` has been removed
+- Function `*AppServicePlansCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WebAppsGetAppSettingsKeyVaultReferencesPager.Err` has been removed
+- Function `*WebAppsSwapSlotWithProductionPoller.FinalResponse` has been removed
+- Function `*StaticSitesApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*AppServicePlansListByResourceGroupPager.NextPage` has been removed
+- Function `*WebAppsListConfigurationsPager.NextPage` has been removed
+- Function `*KubeEnvironmentsDeletePoller.ResumeToken` has been removed
+- Function `*AppServiceEnvironmentsResumePoller.Done` has been removed
+- Function `*ProviderListOperationsPager.Err` has been removed
+- Function `*WebAppsListUsagesSlotPager.PageResponse` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdateCertificatePoller.Done` has been removed
+- Function `*AppServicePlansClient.ListWebApps` has been removed
+- Function `*AppServicePlansCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller.ResumeToken` has been removed
+- Function `*AppServiceEnvironmentsListAppServicePlansPager.PageResponse` has been removed
+- Function `*AppServicePlansClient.RestartWebApps` has been removed
+- Function `*WebAppsGetAppSettingsKeyVaultReferencesSlotPager.Err` has been removed
+- Function `*AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager.NextPage` has been removed
+- Function `*StaticSitesListStaticSiteCustomDomainsPager.PageResponse` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdatePoller.Done` has been removed
+- Function `*WebAppsListSlotsPager.NextPage` has been removed
+- Function `StaticSiteZipDeploymentARMResource.MarshalJSON` has been removed
+- Function `*WebAppsListConfigurationSnapshotInfoPager.PageResponse` has been removed
+- Function `*ResourceHealthMetadataListPager.Err` has been removed
+- Function `*AppServiceEnvironmentsClient.GetOutboundNetworkDependenciesEndpoints` has been removed
+- Function `ProcessThreadInfo.MarshalJSON` has been removed
+- Function `*WebAppsListInstanceProcessThreadsSlotPager.PageResponse` has been removed
+- Function `*WebAppsListProcessModulesPager.NextPage` has been removed
+- Function `AppServiceCertificateOrderPatchResourceProperties.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolSKUsPager.Err` has been removed
+- Function `*WebAppsListSiteBackupsPager.PageResponse` has been removed
+- Function `*WebAppsCreateOrUpdateSlotPoller.FinalResponse` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionSlotPoller.FinalResponse` has been removed
+- Function `*WebAppsGetPrivateEndpointConnectionListPager.Err` has been removed
+- Function `*WebAppsListWebJobsPager.Err` has been removed
+- Function `*DiagnosticsListSiteDetectorsSlotPager.Err` has been removed
+- Function `*WebAppsListWebJobsSlotPager.Err` has been removed
+- Function `*KubeEnvironmentsDeletePollerResponse.Resume` has been removed
+- Function `*StaticSitesDeletePrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `Recommendation.MarshalJSON` has been removed
+- Function `*KubeEnvironmentsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WebAppsListContinuousWebJobsSlotPager.PageResponse` has been removed
+- Function `*WebAppsInstallSiteExtensionPollerResponse.Resume` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSiteBuildPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsListAppServicePlansPager.Err` has been removed
+- Function `*StaticSitesDeleteStaticSiteBuildPoller.Poll` has been removed
+- Function `StaticSitesCreateZipDeploymentForStaticSitePollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdateCertificatePoller.Poll` has been removed
+- Function `*WebAppsListContinuousWebJobsSlotPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager.Err` has been removed
+- Function `*WebAppsStartNetworkTraceSlotPoller.ResumeToken` has been removed
+- Function `*WebAppsListPublishingCredentialsSlotPoller.Poll` has been removed
+- Function `*WebAppsCreateMSDeployOperationPollerResponse.Resume` has been removed
+- Function `*WebAppsListBasicPublishingCredentialsPoliciesSlotPager.Err` has been removed
+- Function `CertificateOrderAction.MarshalJSON` has been removed
+- Function `*StaticSitesDetachStaticSitePollerResponse.Resume` has been removed
+- Function `*CertificatesListByResourceGroupPager.PageResponse` has been removed
+- Function `WebAppsListPublishingCredentialsSlotPollerResponse.PollUntilDone` has been removed
+- Function `*DiagnosticsListSiteDetectorResponsesPager.Err` has been removed
+- Function `*AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller.Done` has been removed
+- Function `*AppServicePlansClient.ListByResourceGroup` has been removed
+- Function `*WebAppsListSlotDifferencesFromProductionPager.Err` has been removed
+- Function `*WebAppsListInstanceProcessesPager.PageResponse` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller.Done` has been removed
+- Function `*WebAppsRestoreSlotPoller.Done` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationPoller.ResumeToken` has been removed
+- Function `CertificatePatchResourceProperties.MarshalJSON` has been removed
+- Function `StorageMigrationResponse.MarshalJSON` has been removed
+- Function `*WebAppsListDomainOwnershipIdentifiersPager.PageResponse` has been removed
+- Function `*WebAppsListUsagesPager.Err` has been removed
+- Function `StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse.PollUntilDone` has been removed
+- Function `*StaticSitesListStaticSiteUsersPager.NextPage` has been removed
+- Function `*WebAppsListPager.NextPage` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationSlotPoller.Poll` has been removed
+- Function `*DeletedWebAppsListPager.PageResponse` has been removed
+- Function `*WebAppsListTriggeredWebJobHistoryPager.NextPage` has been removed
+- Function `*WebAppsStartNetworkTracePoller.ResumeToken` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse.Resume` has been removed
+- Function `*ProviderGetAvailableStacksOnPremPager.PageResponse` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSitePoller.Poll` has been removed
+- Function `*AppServicePlanProperties.UnmarshalJSON` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager.PageResponse` has been removed
+- Function `*WebAppsListSiteExtensionsSlotPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsClient.ListOperations` has been removed
+- Function `*WebAppsListBackupsPager.Err` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSitePollerResponse.Resume` has been removed
+- Function `*WebAppsListProcessThreadsSlotPager.Err` has been removed
+- Function `*TopLevelDomainsListAgreementsPager.NextPage` has been removed
+- Function `AppServicePlanProperties.MarshalJSON` has been removed
+- Function `AppServiceEnvironmentPatchResource.MarshalJSON` has been removed
+- Function `TriggeredWebJob.MarshalJSON` has been removed
+- Function `*AppServiceCertificateOrdersClient.Reissue` has been removed
+- Function `*AppServiceEnvironmentsChangeVnetPager.PageResponse` has been removed
+- Function `*WebAppsStartWebSiteNetworkTraceOperationSlotPoller.Done` has been removed
+- Function `SlotConfigNamesResource.MarshalJSON` has been removed
+- Function `*WebAppsListInstanceProcessModulesSlotPager.PageResponse` has been removed
+- Function `*StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller.Poll` has been removed
+- Function `AddressResponse.MarshalJSON` has been removed
+- Function `*WebAppsCreateMSDeployOperationPoller.ResumeToken` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionSlotPoller.Poll` has been removed
+- Function `*WebAppsListSnapshotsFromDRSecondarySlotPager.NextPage` has been removed
+- Function `*WebAppsGetSiteConnectionStringKeyVaultReferencesPager.NextPage` has been removed
+- Function `StaticSiteBuildARMResource.MarshalJSON` has been removed
+- Function `*ResourceHealthMetadataListByResourceGroupPager.NextPage` has been removed
+- Function `*StaticSitesDeleteStaticSiteCustomDomainPoller.Poll` has been removed
+- Function `*WebAppsListConfigurationSnapshotInfoSlotPager.PageResponse` has been removed
+- Function `*StaticSitesDeleteStaticSiteBuildPollerResponse.Resume` has been removed
+- Function `*RecommendationsListRecommendedRulesForWebAppPager.NextPage` has been removed
+- Function `*WebAppsListHostNameBindingsSlotPager.NextPage` has been removed
+- Function `*WebAppsListBasicPublishingCredentialsPoliciesSlotPager.NextPage` has been removed
+- Function `*ProviderGetFunctionAppStacksForLocationPager.Err` has been removed
+- Function `*AppServiceEnvironmentsClient.UpdateWorkerPool` has been removed
+- Function `WebAppsRestoreFromBackupBlobPollerResponse.PollUntilDone` has been removed
+- Function `*AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsListWorkerPoolSKUsPager.PageResponse` has been removed
+- Function `*RecommendationsListRecommendedRulesForWebAppPager.PageResponse` has been removed
+- Function `AppServicePlansCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*StaticSitesDeleteStaticSiteCustomDomainPollerResponse.Resume` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationPoller.Done` has been removed
+- Function `*KubeEnvironmentsListByResourceGroupPager.NextPage` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionSlotPoller.Done` has been removed
+- Function `*WebAppsListInstanceProcessThreadsSlotPager.NextPage` has been removed
+- Function `*KubeEnvironmentsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WebAppsListPublicCertificatesPager.NextPage` has been removed
+- Function `*WebAppsRestorePoller.Poll` has been removed
+- Function `*AppServiceEnvironmentsChangeVnetPoller.ResumeToken` has been removed
+- Function `*WebAppsMigrateMySQLPollerResponse.Resume` has been removed
+- Function `*WebAppsCreateInstanceMSDeployOperationSlotPoller.Done` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginSuspend` has been removed
+- Function `*AppServiceCertificateOrdersClient.List` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlSlotPoller.Done` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginCreateOrUpdateWorkerPool` has been removed
+- Function `StaticSitesWorkflowPreviewRequest.MarshalJSON` has been removed
+- Function `*WebAppsRestoreSnapshotPoller.Done` has been removed
+- Function `*WebAppsListProcessModulesPager.PageResponse` has been removed
+- Function `NetworkFeatures.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller.ResumeToken` has been removed
+- Function `*DiagnosticsListSiteAnalysesSlotPager.NextPage` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WebAppsStartNetworkTraceSlotPoller.Done` has been removed
+- Function `StaticSitesDetachStaticSitePollerResponse.PollUntilDone` has been removed
+- Function `PossibleProviderOsTypeSelectedValues` has been removed
+- Function `PrivateAccess.MarshalJSON` has been removed
+- Function `*DiagnosticsListSiteDetectorsPager.NextPage` has been removed
+- Function `*DomainsListRecommendationsPager.Err` has been removed
+- Function `*WebAppsSwapSlotPoller.Poll` has been removed
+- Function `*WebAppsListPublicCertificatesPager.PageResponse` has been removed
+- Function `CustomHostnameAnalysisResult.MarshalJSON` has been removed
+- Function `*AppServicePlansClient.DeleteVnetRoute` has been removed
+- Function `*ResourceHealthMetadataListBySiteSlotPager.PageResponse` has been removed
+- Function `*RecommendationsListPager.PageResponse` has been removed
+- Function `*KubeEnvironmentsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsDeletePoller.Poll` has been removed
+- Function `*WebAppsRestoreFromDeletedAppPoller.Poll` has been removed
+- Function `*WebAppsListBasicPublishingCredentialsPoliciesPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager.NextPage` has been removed
+- Function `*DiagnosticsListSiteDetectorResponsesSlotPager.NextPage` has been removed
+- Function `*DomainRegistrationProviderListOperationsPager.NextPage` has been removed
+- Function `*WebAppsListHostNameBindingsPager.NextPage` has been removed
+- Function `*TopLevelDomainsListPager.PageResponse` has been removed
+- Function `HybridConnectionKey.MarshalJSON` has been removed
+- Function `*WebAppsListInstanceProcessModulesSlotPager.Err` has been removed
+- Function `*WebAppsRestoreFromDeletedAppPoller.FinalResponse` has been removed
+- Function `DiagnosticAnalysis.MarshalJSON` has been removed
+- Function `PremierAddOnOffer.MarshalJSON` has been removed
+- Function `*WebAppsInstallSiteExtensionSlotPoller.Done` has been removed
+- Function `*StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller.Done` has been removed
+- Function `DiagnosticDetectorResponse.MarshalJSON` has been removed
+- Function `MigrateMySQLStatus.MarshalJSON` has been removed
+- Function `*AppServiceEnvironmentsClient.ListWebApps` has been removed
+- Function `*WebAppsCreateOrUpdatePoller.Poll` has been removed
+- Function `CsmPublishingCredentialsPoliciesEntity.MarshalJSON` has been removed
+- Function `*WebAppsCreateOrUpdateSourceControlSlotPoller.Poll` has been removed
+- Function `*AppServiceCertificateOrdersCreateOrUpdateCertificatePoller.ResumeToken` has been removed
+- Function `WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*ProviderListOperationsPager.NextPage` has been removed
+- Function `*DomainsListPager.PageResponse` has been removed
+- Function `*WebAppsListInstanceProcessesSlotPager.NextPage` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*StaticSitesCreateZipDeploymentForStaticSitePoller.ResumeToken` has been removed
+- Function `*WebAppsListFunctionsPager.Err` has been removed
+- Function `*StaticSitesListPager.NextPage` has been removed
+- Function `*KubeEnvironmentsListBySubscriptionPager.PageResponse` has been removed
+- Function `*WebAppsListProcessModulesSlotPager.NextPage` has been removed
+- Function `*WebAppsListPerfMonCountersPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsListCapacitiesPager.Err` has been removed
+- Function `StaticSiteResetPropertiesARMResource.MarshalJSON` has been removed
+- Function `*WebAppsCreateMSDeployOperationSlotPoller.ResumeToken` has been removed
+- Function `*AppServiceEnvironmentsCreateOrUpdatePoller.Poll` has been removed
+- Function `*ProviderGetAvailableStacksPager.Err` has been removed
+- Function `*AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager.NextPage` has been removed
+- Function `*AppServiceEnvironmentsChangeVnetPoller.Poll` has been removed
+- Function `*AppServiceEnvironmentsClient.BeginResume` has been removed
+- Function `*KubeEnvironmentsDeletePoller.FinalResponse` has been removed
+- Function `*WebAppsListTriggeredWebJobsPager.Err` has been removed
+- Function `*AppServicePlansCreateOrUpdatePoller.Done` has been removed
+- Function `*AppServiceEnvironmentsClient.GetMultiRolePool` has been removed
+- Function `*AppServiceEnvironmentsResumePoller.ResumeToken` has been removed
+- Function `*StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager.NextPage` has been removed
+- Function `AppServiceCertificateOrdersCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WebAppsListDeploymentsSlotPager.PageResponse` has been removed
+- Function `*DiagnosticsListSiteAnalysesSlotPager.Err` has been removed
+- Function `TopLevelDomain.MarshalJSON` has been removed
+- Function `*WebAppsStartNetworkTraceSlotPollerResponse.Resume` has been removed
+- Function `*WebAppsListProcessesSlotPager.NextPage` has been removed
+- Function `*AppServicePlansClient.ListCapabilities` has been removed
+- Function `*WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse.Resume` has been removed
+- Function `*StaticSitesDeletePrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*AppServiceEnvironmentsListByResourceGroupPager.NextPage` has been removed
+- Function `*WebAppsListProcessModulesPager.Err` has been removed
+- Function `*WebAppsDeletePrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `WebAppStack.MarshalJSON` has been removed
+- Function `*WebAppsListProcessThreadsPager.PageResponse` has been removed
+- Function `*CertificateRegistrationProviderListOperationsPager.PageResponse` has been removed
+- Struct `AppServiceCertificate` has been removed
+- Struct `AppServiceCertificateCollection` has been removed
+- Struct `AppServiceCertificateOrder` has been removed
+- Struct `AppServiceCertificateOrderCollection` has been removed
+- Struct `AppServiceCertificateOrderPatchResource` has been removed
+- Struct `AppServiceCertificateOrderPatchResourceProperties` has been removed
+- Struct `AppServiceCertificateOrderProperties` has been removed
+- Struct `AppServiceCertificateOrdersBeginCreateOrUpdateCertificateOptions` has been removed
+- Struct `AppServiceCertificateOrdersBeginCreateOrUpdateOptions` has been removed
+- Struct `AppServiceCertificateOrdersClient` has been removed
+- Struct `AppServiceCertificateOrdersCreateOrUpdateCertificatePoller` has been removed
+- Struct `AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse` has been removed
+- Struct `AppServiceCertificateOrdersCreateOrUpdateCertificateResponse` has been removed
+- Struct `AppServiceCertificateOrdersCreateOrUpdateCertificateResult` has been removed
+- Struct `AppServiceCertificateOrdersCreateOrUpdatePoller` has been removed
+- Struct `AppServiceCertificateOrdersCreateOrUpdatePollerResponse` has been removed
+- Struct `AppServiceCertificateOrdersCreateOrUpdateResponse` has been removed
+- Struct `AppServiceCertificateOrdersCreateOrUpdateResult` has been removed
+- Struct `AppServiceCertificateOrdersDeleteCertificateOptions` has been removed
+- Struct `AppServiceCertificateOrdersDeleteCertificateResponse` has been removed
+- Struct `AppServiceCertificateOrdersDeleteOptions` has been removed
+- Struct `AppServiceCertificateOrdersDeleteResponse` has been removed
+- Struct `AppServiceCertificateOrdersGetCertificateOptions` has been removed
+- Struct `AppServiceCertificateOrdersGetCertificateResponse` has been removed
+- Struct `AppServiceCertificateOrdersGetCertificateResult` has been removed
+- Struct `AppServiceCertificateOrdersGetOptions` has been removed
+- Struct `AppServiceCertificateOrdersGetResponse` has been removed
+- Struct `AppServiceCertificateOrdersGetResult` has been removed
+- Struct `AppServiceCertificateOrdersListByResourceGroupOptions` has been removed
+- Struct `AppServiceCertificateOrdersListByResourceGroupPager` has been removed
+- Struct `AppServiceCertificateOrdersListByResourceGroupResponse` has been removed
+- Struct `AppServiceCertificateOrdersListByResourceGroupResult` has been removed
+- Struct `AppServiceCertificateOrdersListCertificatesOptions` has been removed
+- Struct `AppServiceCertificateOrdersListCertificatesPager` has been removed
+- Struct `AppServiceCertificateOrdersListCertificatesResponse` has been removed
+- Struct `AppServiceCertificateOrdersListCertificatesResult` has been removed
+- Struct `AppServiceCertificateOrdersListOptions` has been removed
+- Struct `AppServiceCertificateOrdersListPager` has been removed
+- Struct `AppServiceCertificateOrdersListResponse` has been removed
+- Struct `AppServiceCertificateOrdersListResult` has been removed
+- Struct `AppServiceCertificateOrdersReissueOptions` has been removed
+- Struct `AppServiceCertificateOrdersReissueResponse` has been removed
+- Struct `AppServiceCertificateOrdersRenewOptions` has been removed
+- Struct `AppServiceCertificateOrdersRenewResponse` has been removed
+- Struct `AppServiceCertificateOrdersResendEmailOptions` has been removed
+- Struct `AppServiceCertificateOrdersResendEmailResponse` has been removed
+- Struct `AppServiceCertificateOrdersResendRequestEmailsOptions` has been removed
+- Struct `AppServiceCertificateOrdersResendRequestEmailsResponse` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveCertificateActionsOptions` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveCertificateActionsResponse` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveCertificateActionsResult` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveCertificateEmailHistoryOptions` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResult` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveSiteSealOptions` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveSiteSealResponse` has been removed
+- Struct `AppServiceCertificateOrdersRetrieveSiteSealResult` has been removed
+- Struct `AppServiceCertificateOrdersUpdateCertificateOptions` has been removed
+- Struct `AppServiceCertificateOrdersUpdateCertificateResponse` has been removed
+- Struct `AppServiceCertificateOrdersUpdateCertificateResult` has been removed
+- Struct `AppServiceCertificateOrdersUpdateOptions` has been removed
+- Struct `AppServiceCertificateOrdersUpdateResponse` has been removed
+- Struct `AppServiceCertificateOrdersUpdateResult` has been removed
+- Struct `AppServiceCertificateOrdersValidatePurchaseInformationOptions` has been removed
+- Struct `AppServiceCertificateOrdersValidatePurchaseInformationResponse` has been removed
+- Struct `AppServiceCertificateOrdersVerifyDomainOwnershipOptions` has been removed
+- Struct `AppServiceCertificateOrdersVerifyDomainOwnershipResponse` has been removed
+- Struct `AppServiceCertificatePatchResource` has been removed
+- Struct `AppServiceCertificateResource` has been removed
+- Struct `AppServiceEnvironment` has been removed
+- Struct `AppServiceEnvironmentCollection` has been removed
+- Struct `AppServiceEnvironmentPatchResource` has been removed
+- Struct `AppServiceEnvironmentResource` has been removed
+- Struct `AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller` has been removed
+- Struct `AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse` has been removed
+- Struct `AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse` has been removed
+- Struct `AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResult` has been removed
+- Struct `AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions` has been removed
+- Struct `AppServiceEnvironmentsBeginChangeVnetOptions` has been removed
+- Struct `AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions` has been removed
+- Struct `AppServiceEnvironmentsBeginCreateOrUpdateOptions` has been removed
+- Struct `AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions` has been removed
+- Struct `AppServiceEnvironmentsBeginDeleteOptions` has been removed
+- Struct `AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions` has been removed
+- Struct `AppServiceEnvironmentsBeginResumeOptions` has been removed
+- Struct `AppServiceEnvironmentsBeginSuspendOptions` has been removed
+- Struct `AppServiceEnvironmentsChangeVnetPager` has been removed
+- Struct `AppServiceEnvironmentsChangeVnetPoller` has been removed
+- Struct `AppServiceEnvironmentsChangeVnetPollerResponse` has been removed
+- Struct `AppServiceEnvironmentsChangeVnetResponse` has been removed
+- Struct `AppServiceEnvironmentsChangeVnetResult` has been removed
+- Struct `AppServiceEnvironmentsClient` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResult` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdatePoller` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdatePollerResponse` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateResponse` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateResult` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse` has been removed
+- Struct `AppServiceEnvironmentsCreateOrUpdateWorkerPoolResult` has been removed
+- Struct `AppServiceEnvironmentsDeletePoller` has been removed
+- Struct `AppServiceEnvironmentsDeletePollerResponse` has been removed
+- Struct `AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller` has been removed
+- Struct `AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse` has been removed
+- Struct `AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse` has been removed
+- Struct `AppServiceEnvironmentsDeletePrivateEndpointConnectionResult` has been removed
+- Struct `AppServiceEnvironmentsDeleteResponse` has been removed
+- Struct `AppServiceEnvironmentsGetAseV3NetworkingConfigurationOptions` has been removed
+- Struct `AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse` has been removed
+- Struct `AppServiceEnvironmentsGetAseV3NetworkingConfigurationResult` has been removed
+- Struct `AppServiceEnvironmentsGetDiagnosticsItemOptions` has been removed
+- Struct `AppServiceEnvironmentsGetDiagnosticsItemResponse` has been removed
+- Struct `AppServiceEnvironmentsGetDiagnosticsItemResult` has been removed
+- Struct `AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions` has been removed
+- Struct `AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager` has been removed
+- Struct `AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse` has been removed
+- Struct `AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `AppServiceEnvironmentsGetMultiRolePoolOptions` has been removed
+- Struct `AppServiceEnvironmentsGetMultiRolePoolResponse` has been removed
+- Struct `AppServiceEnvironmentsGetMultiRolePoolResult` has been removed
+- Struct `AppServiceEnvironmentsGetOptions` has been removed
+- Struct `AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions` has been removed
+- Struct `AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager` has been removed
+- Struct `AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Struct `AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateEndpointConnectionListPager` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateEndpointConnectionListResult` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateEndpointConnectionOptions` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateEndpointConnectionResponse` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateEndpointConnectionResult` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateLinkResourcesOptions` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateLinkResourcesResponse` has been removed
+- Struct `AppServiceEnvironmentsGetPrivateLinkResourcesResult` has been removed
+- Struct `AppServiceEnvironmentsGetResponse` has been removed
+- Struct `AppServiceEnvironmentsGetResult` has been removed
+- Struct `AppServiceEnvironmentsGetVipInfoOptions` has been removed
+- Struct `AppServiceEnvironmentsGetVipInfoResponse` has been removed
+- Struct `AppServiceEnvironmentsGetVipInfoResult` has been removed
+- Struct `AppServiceEnvironmentsGetWorkerPoolOptions` has been removed
+- Struct `AppServiceEnvironmentsGetWorkerPoolResponse` has been removed
+- Struct `AppServiceEnvironmentsGetWorkerPoolResult` has been removed
+- Struct `AppServiceEnvironmentsListAppServicePlansOptions` has been removed
+- Struct `AppServiceEnvironmentsListAppServicePlansPager` has been removed
+- Struct `AppServiceEnvironmentsListAppServicePlansResponse` has been removed
+- Struct `AppServiceEnvironmentsListAppServicePlansResult` has been removed
+- Struct `AppServiceEnvironmentsListByResourceGroupOptions` has been removed
+- Struct `AppServiceEnvironmentsListByResourceGroupPager` has been removed
+- Struct `AppServiceEnvironmentsListByResourceGroupResponse` has been removed
+- Struct `AppServiceEnvironmentsListByResourceGroupResult` has been removed
+- Struct `AppServiceEnvironmentsListCapacitiesOptions` has been removed
+- Struct `AppServiceEnvironmentsListCapacitiesPager` has been removed
+- Struct `AppServiceEnvironmentsListCapacitiesResponse` has been removed
+- Struct `AppServiceEnvironmentsListCapacitiesResult` has been removed
+- Struct `AppServiceEnvironmentsListDiagnosticsOptions` has been removed
+- Struct `AppServiceEnvironmentsListDiagnosticsResponse` has been removed
+- Struct `AppServiceEnvironmentsListDiagnosticsResult` has been removed
+- Struct `AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions` has been removed
+- Struct `AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager` has been removed
+- Struct `AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse` has been removed
+- Struct `AppServiceEnvironmentsListMultiRoleMetricDefinitionsResult` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResult` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolSKUsOptions` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolSKUsPager` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolSKUsResponse` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolSKUsResult` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolsOptions` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolsPager` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolsResponse` has been removed
+- Struct `AppServiceEnvironmentsListMultiRolePoolsResult` has been removed
+- Struct `AppServiceEnvironmentsListMultiRoleUsagesOptions` has been removed
+- Struct `AppServiceEnvironmentsListMultiRoleUsagesPager` has been removed
+- Struct `AppServiceEnvironmentsListMultiRoleUsagesResponse` has been removed
+- Struct `AppServiceEnvironmentsListMultiRoleUsagesResult` has been removed
+- Struct `AppServiceEnvironmentsListOperationsOptions` has been removed
+- Struct `AppServiceEnvironmentsListOperationsResponse` has been removed
+- Struct `AppServiceEnvironmentsListOperationsResult` has been removed
+- Struct `AppServiceEnvironmentsListOptions` has been removed
+- Struct `AppServiceEnvironmentsListPager` has been removed
+- Struct `AppServiceEnvironmentsListResponse` has been removed
+- Struct `AppServiceEnvironmentsListResult` has been removed
+- Struct `AppServiceEnvironmentsListUsagesOptions` has been removed
+- Struct `AppServiceEnvironmentsListUsagesPager` has been removed
+- Struct `AppServiceEnvironmentsListUsagesResponse` has been removed
+- Struct `AppServiceEnvironmentsListUsagesResult` has been removed
+- Struct `AppServiceEnvironmentsListWebAppsOptions` has been removed
+- Struct `AppServiceEnvironmentsListWebAppsPager` has been removed
+- Struct `AppServiceEnvironmentsListWebAppsResponse` has been removed
+- Struct `AppServiceEnvironmentsListWebAppsResult` has been removed
+- Struct `AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions` has been removed
+- Struct `AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager` has been removed
+- Struct `AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse` has been removed
+- Struct `AppServiceEnvironmentsListWebWorkerMetricDefinitionsResult` has been removed
+- Struct `AppServiceEnvironmentsListWebWorkerUsagesOptions` has been removed
+- Struct `AppServiceEnvironmentsListWebWorkerUsagesPager` has been removed
+- Struct `AppServiceEnvironmentsListWebWorkerUsagesResponse` has been removed
+- Struct `AppServiceEnvironmentsListWebWorkerUsagesResult` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResult` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolSKUsOptions` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolSKUsPager` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolSKUsResponse` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolSKUsResult` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolsOptions` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolsPager` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolsResponse` has been removed
+- Struct `AppServiceEnvironmentsListWorkerPoolsResult` has been removed
+- Struct `AppServiceEnvironmentsRebootOptions` has been removed
+- Struct `AppServiceEnvironmentsRebootResponse` has been removed
+- Struct `AppServiceEnvironmentsResumePager` has been removed
+- Struct `AppServiceEnvironmentsResumePoller` has been removed
+- Struct `AppServiceEnvironmentsResumePollerResponse` has been removed
+- Struct `AppServiceEnvironmentsResumeResponse` has been removed
+- Struct `AppServiceEnvironmentsResumeResult` has been removed
+- Struct `AppServiceEnvironmentsSuspendPager` has been removed
+- Struct `AppServiceEnvironmentsSuspendPoller` has been removed
+- Struct `AppServiceEnvironmentsSuspendPollerResponse` has been removed
+- Struct `AppServiceEnvironmentsSuspendResponse` has been removed
+- Struct `AppServiceEnvironmentsSuspendResult` has been removed
+- Struct `AppServiceEnvironmentsUpdateAseNetworkingConfigurationOptions` has been removed
+- Struct `AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse` has been removed
+- Struct `AppServiceEnvironmentsUpdateAseNetworkingConfigurationResult` has been removed
+- Struct `AppServiceEnvironmentsUpdateMultiRolePoolOptions` has been removed
+- Struct `AppServiceEnvironmentsUpdateMultiRolePoolResponse` has been removed
+- Struct `AppServiceEnvironmentsUpdateMultiRolePoolResult` has been removed
+- Struct `AppServiceEnvironmentsUpdateOptions` has been removed
+- Struct `AppServiceEnvironmentsUpdateResponse` has been removed
+- Struct `AppServiceEnvironmentsUpdateResult` has been removed
+- Struct `AppServiceEnvironmentsUpdateWorkerPoolOptions` has been removed
+- Struct `AppServiceEnvironmentsUpdateWorkerPoolResponse` has been removed
+- Struct `AppServiceEnvironmentsUpdateWorkerPoolResult` has been removed
+- Struct `AppServicePlan` has been removed
+- Struct `AppServicePlanCollection` has been removed
+- Struct `AppServicePlanPatchResource` has been removed
+- Struct `AppServicePlanPatchResourceProperties` has been removed
+- Struct `AppServicePlanProperties` has been removed
+- Struct `AppServicePlansBeginCreateOrUpdateOptions` has been removed
+- Struct `AppServicePlansClient` has been removed
+- Struct `AppServicePlansCreateOrUpdatePoller` has been removed
+- Struct `AppServicePlansCreateOrUpdatePollerResponse` has been removed
+- Struct `AppServicePlansCreateOrUpdateResponse` has been removed
+- Struct `AppServicePlansCreateOrUpdateResult` has been removed
+- Struct `AppServicePlansCreateOrUpdateVnetRouteOptions` has been removed
+- Struct `AppServicePlansCreateOrUpdateVnetRouteResponse` has been removed
+- Struct `AppServicePlansCreateOrUpdateVnetRouteResult` has been removed
+- Struct `AppServicePlansDeleteHybridConnectionOptions` has been removed
+- Struct `AppServicePlansDeleteHybridConnectionResponse` has been removed
+- Struct `AppServicePlansDeleteOptions` has been removed
+- Struct `AppServicePlansDeleteResponse` has been removed
+- Struct `AppServicePlansDeleteVnetRouteOptions` has been removed
+- Struct `AppServicePlansDeleteVnetRouteResponse` has been removed
+- Struct `AppServicePlansGetHybridConnectionOptions` has been removed
+- Struct `AppServicePlansGetHybridConnectionPlanLimitOptions` has been removed
+- Struct `AppServicePlansGetHybridConnectionPlanLimitResponse` has been removed
+- Struct `AppServicePlansGetHybridConnectionPlanLimitResult` has been removed
+- Struct `AppServicePlansGetHybridConnectionResponse` has been removed
+- Struct `AppServicePlansGetHybridConnectionResult` has been removed
+- Struct `AppServicePlansGetOptions` has been removed
+- Struct `AppServicePlansGetResponse` has been removed
+- Struct `AppServicePlansGetResult` has been removed
+- Struct `AppServicePlansGetRouteForVnetOptions` has been removed
+- Struct `AppServicePlansGetRouteForVnetResponse` has been removed
+- Struct `AppServicePlansGetRouteForVnetResult` has been removed
+- Struct `AppServicePlansGetServerFarmSKUsOptions` has been removed
+- Struct `AppServicePlansGetServerFarmSKUsResponse` has been removed
+- Struct `AppServicePlansGetServerFarmSKUsResult` has been removed
+- Struct `AppServicePlansGetVnetFromServerFarmOptions` has been removed
+- Struct `AppServicePlansGetVnetFromServerFarmResponse` has been removed
+- Struct `AppServicePlansGetVnetFromServerFarmResult` has been removed
+- Struct `AppServicePlansGetVnetGatewayOptions` has been removed
+- Struct `AppServicePlansGetVnetGatewayResponse` has been removed
+- Struct `AppServicePlansGetVnetGatewayResult` has been removed
+- Struct `AppServicePlansListByResourceGroupOptions` has been removed
+- Struct `AppServicePlansListByResourceGroupPager` has been removed
+- Struct `AppServicePlansListByResourceGroupResponse` has been removed
+- Struct `AppServicePlansListByResourceGroupResult` has been removed
+- Struct `AppServicePlansListCapabilitiesOptions` has been removed
+- Struct `AppServicePlansListCapabilitiesResponse` has been removed
+- Struct `AppServicePlansListCapabilitiesResult` has been removed
+- Struct `AppServicePlansListHybridConnectionKeysOptions` has been removed
+- Struct `AppServicePlansListHybridConnectionKeysResponse` has been removed
+- Struct `AppServicePlansListHybridConnectionKeysResult` has been removed
+- Struct `AppServicePlansListHybridConnectionsOptions` has been removed
+- Struct `AppServicePlansListHybridConnectionsPager` has been removed
+- Struct `AppServicePlansListHybridConnectionsResponse` has been removed
+- Struct `AppServicePlansListHybridConnectionsResult` has been removed
+- Struct `AppServicePlansListOptions` has been removed
+- Struct `AppServicePlansListPager` has been removed
+- Struct `AppServicePlansListResponse` has been removed
+- Struct `AppServicePlansListResult` has been removed
+- Struct `AppServicePlansListRoutesForVnetOptions` has been removed
+- Struct `AppServicePlansListRoutesForVnetResponse` has been removed
+- Struct `AppServicePlansListRoutesForVnetResult` has been removed
+- Struct `AppServicePlansListUsagesOptions` has been removed
+- Struct `AppServicePlansListUsagesPager` has been removed
+- Struct `AppServicePlansListUsagesResponse` has been removed
+- Struct `AppServicePlansListUsagesResult` has been removed
+- Struct `AppServicePlansListVnetsOptions` has been removed
+- Struct `AppServicePlansListVnetsResponse` has been removed
+- Struct `AppServicePlansListVnetsResult` has been removed
+- Struct `AppServicePlansListWebAppsByHybridConnectionOptions` has been removed
+- Struct `AppServicePlansListWebAppsByHybridConnectionPager` has been removed
+- Struct `AppServicePlansListWebAppsByHybridConnectionResponse` has been removed
+- Struct `AppServicePlansListWebAppsByHybridConnectionResult` has been removed
+- Struct `AppServicePlansListWebAppsOptions` has been removed
+- Struct `AppServicePlansListWebAppsPager` has been removed
+- Struct `AppServicePlansListWebAppsResponse` has been removed
+- Struct `AppServicePlansListWebAppsResult` has been removed
+- Struct `AppServicePlansRebootWorkerOptions` has been removed
+- Struct `AppServicePlansRebootWorkerResponse` has been removed
+- Struct `AppServicePlansRestartWebAppsOptions` has been removed
+- Struct `AppServicePlansRestartWebAppsResponse` has been removed
+- Struct `AppServicePlansUpdateOptions` has been removed
+- Struct `AppServicePlansUpdateResponse` has been removed
+- Struct `AppServicePlansUpdateResult` has been removed
+- Struct `AppServicePlansUpdateVnetGatewayOptions` has been removed
+- Struct `AppServicePlansUpdateVnetGatewayResponse` has been removed
+- Struct `AppServicePlansUpdateVnetGatewayResult` has been removed
+- Struct `AppServicePlansUpdateVnetRouteOptions` has been removed
+- Struct `AppServicePlansUpdateVnetRouteResponse` has been removed
+- Struct `AppServicePlansUpdateVnetRouteResult` has been removed
+- Struct `AppserviceGithubToken` has been removed
+- Struct `AppserviceGithubTokenRequest` has been removed
+- Struct `CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions` has been removed
+- Struct `CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse` has been removed
+- Struct `CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResult` has been removed
+- Struct `CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseOptions` has been removed
+- Struct `CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager` has been removed
+- Struct `CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse` has been removed
+- Struct `CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResult` has been removed
+- Struct `CertificatePatchResourceProperties` has been removed
+- Struct `CertificateProperties` has been removed
+- Struct `CertificateRegistrationProviderListOperationsOptions` has been removed
+- Struct `CertificateRegistrationProviderListOperationsPager` has been removed
+- Struct `CertificateRegistrationProviderListOperationsResponse` has been removed
+- Struct `CertificateRegistrationProviderListOperationsResult` has been removed
+- Struct `CertificatesCreateOrUpdateOptions` has been removed
+- Struct `CertificatesCreateOrUpdateResponse` has been removed
+- Struct `CertificatesCreateOrUpdateResult` has been removed
+- Struct `CertificatesDeleteOptions` has been removed
+- Struct `CertificatesDeleteResponse` has been removed
+- Struct `CertificatesGetOptions` has been removed
+- Struct `CertificatesGetResponse` has been removed
+- Struct `CertificatesGetResult` has been removed
+- Struct `CertificatesListByResourceGroupOptions` has been removed
+- Struct `CertificatesListByResourceGroupPager` has been removed
+- Struct `CertificatesListByResourceGroupResponse` has been removed
+- Struct `CertificatesListByResourceGroupResult` has been removed
+- Struct `CertificatesListOptions` has been removed
+- Struct `CertificatesListPager` has been removed
+- Struct `CertificatesListResponse` has been removed
+- Struct `CertificatesListResult` has been removed
+- Struct `CertificatesUpdateOptions` has been removed
+- Struct `CertificatesUpdateResponse` has been removed
+- Struct `CertificatesUpdateResult` has been removed
+- Struct `DefaultErrorResponse` has been removed
+- Struct `DefaultErrorResponseError` has been removed
+- Struct `DefaultErrorResponseErrorDetailsItem` has been removed
+- Struct `DeletedWebAppsGetDeletedWebAppByLocationOptions` has been removed
+- Struct `DeletedWebAppsGetDeletedWebAppByLocationResponse` has been removed
+- Struct `DeletedWebAppsGetDeletedWebAppByLocationResult` has been removed
+- Struct `DeletedWebAppsListByLocationOptions` has been removed
+- Struct `DeletedWebAppsListByLocationPager` has been removed
+- Struct `DeletedWebAppsListByLocationResponse` has been removed
+- Struct `DeletedWebAppsListByLocationResult` has been removed
+- Struct `DeletedWebAppsListOptions` has been removed
+- Struct `DeletedWebAppsListPager` has been removed
+- Struct `DeletedWebAppsListResponse` has been removed
+- Struct `DeletedWebAppsListResult` has been removed
+- Struct `DiagnosticsExecuteSiteAnalysisOptions` has been removed
+- Struct `DiagnosticsExecuteSiteAnalysisResponse` has been removed
+- Struct `DiagnosticsExecuteSiteAnalysisResult` has been removed
+- Struct `DiagnosticsExecuteSiteAnalysisSlotOptions` has been removed
+- Struct `DiagnosticsExecuteSiteAnalysisSlotResponse` has been removed
+- Struct `DiagnosticsExecuteSiteAnalysisSlotResult` has been removed
+- Struct `DiagnosticsExecuteSiteDetectorOptions` has been removed
+- Struct `DiagnosticsExecuteSiteDetectorResponse` has been removed
+- Struct `DiagnosticsExecuteSiteDetectorResult` has been removed
+- Struct `DiagnosticsExecuteSiteDetectorSlotOptions` has been removed
+- Struct `DiagnosticsExecuteSiteDetectorSlotResponse` has been removed
+- Struct `DiagnosticsExecuteSiteDetectorSlotResult` has been removed
+- Struct `DiagnosticsGetHostingEnvironmentDetectorResponseOptions` has been removed
+- Struct `DiagnosticsGetHostingEnvironmentDetectorResponseResponse` has been removed
+- Struct `DiagnosticsGetHostingEnvironmentDetectorResponseResult` has been removed
+- Struct `DiagnosticsGetSiteAnalysisOptions` has been removed
+- Struct `DiagnosticsGetSiteAnalysisResponse` has been removed
+- Struct `DiagnosticsGetSiteAnalysisResult` has been removed
+- Struct `DiagnosticsGetSiteAnalysisSlotOptions` has been removed
+- Struct `DiagnosticsGetSiteAnalysisSlotResponse` has been removed
+- Struct `DiagnosticsGetSiteAnalysisSlotResult` has been removed
+- Struct `DiagnosticsGetSiteDetectorOptions` has been removed
+- Struct `DiagnosticsGetSiteDetectorResponse` has been removed
+- Struct `DiagnosticsGetSiteDetectorResponseOptions` has been removed
+- Struct `DiagnosticsGetSiteDetectorResponseResponse` has been removed
+- Struct `DiagnosticsGetSiteDetectorResponseResult` has been removed
+- Struct `DiagnosticsGetSiteDetectorResponseSlotOptions` has been removed
+- Struct `DiagnosticsGetSiteDetectorResponseSlotResponse` has been removed
+- Struct `DiagnosticsGetSiteDetectorResponseSlotResult` has been removed
+- Struct `DiagnosticsGetSiteDetectorResult` has been removed
+- Struct `DiagnosticsGetSiteDetectorSlotOptions` has been removed
+- Struct `DiagnosticsGetSiteDetectorSlotResponse` has been removed
+- Struct `DiagnosticsGetSiteDetectorSlotResult` has been removed
+- Struct `DiagnosticsGetSiteDiagnosticCategoryOptions` has been removed
+- Struct `DiagnosticsGetSiteDiagnosticCategoryResponse` has been removed
+- Struct `DiagnosticsGetSiteDiagnosticCategoryResult` has been removed
+- Struct `DiagnosticsGetSiteDiagnosticCategorySlotOptions` has been removed
+- Struct `DiagnosticsGetSiteDiagnosticCategorySlotResponse` has been removed
+- Struct `DiagnosticsGetSiteDiagnosticCategorySlotResult` has been removed
+- Struct `DiagnosticsListHostingEnvironmentDetectorResponsesOptions` has been removed
+- Struct `DiagnosticsListHostingEnvironmentDetectorResponsesPager` has been removed
+- Struct `DiagnosticsListHostingEnvironmentDetectorResponsesResponse` has been removed
+- Struct `DiagnosticsListHostingEnvironmentDetectorResponsesResult` has been removed
+- Struct `DiagnosticsListSiteAnalysesOptions` has been removed
+- Struct `DiagnosticsListSiteAnalysesPager` has been removed
+- Struct `DiagnosticsListSiteAnalysesResponse` has been removed
+- Struct `DiagnosticsListSiteAnalysesResult` has been removed
+- Struct `DiagnosticsListSiteAnalysesSlotOptions` has been removed
+- Struct `DiagnosticsListSiteAnalysesSlotPager` has been removed
+- Struct `DiagnosticsListSiteAnalysesSlotResponse` has been removed
+- Struct `DiagnosticsListSiteAnalysesSlotResult` has been removed
+- Struct `DiagnosticsListSiteDetectorResponsesOptions` has been removed
+- Struct `DiagnosticsListSiteDetectorResponsesPager` has been removed
+- Struct `DiagnosticsListSiteDetectorResponsesResponse` has been removed
+- Struct `DiagnosticsListSiteDetectorResponsesResult` has been removed
+- Struct `DiagnosticsListSiteDetectorResponsesSlotOptions` has been removed
+- Struct `DiagnosticsListSiteDetectorResponsesSlotPager` has been removed
+- Struct `DiagnosticsListSiteDetectorResponsesSlotResponse` has been removed
+- Struct `DiagnosticsListSiteDetectorResponsesSlotResult` has been removed
+- Struct `DiagnosticsListSiteDetectorsOptions` has been removed
+- Struct `DiagnosticsListSiteDetectorsPager` has been removed
+- Struct `DiagnosticsListSiteDetectorsResponse` has been removed
+- Struct `DiagnosticsListSiteDetectorsResult` has been removed
+- Struct `DiagnosticsListSiteDetectorsSlotOptions` has been removed
+- Struct `DiagnosticsListSiteDetectorsSlotPager` has been removed
+- Struct `DiagnosticsListSiteDetectorsSlotResponse` has been removed
+- Struct `DiagnosticsListSiteDetectorsSlotResult` has been removed
+- Struct `DiagnosticsListSiteDiagnosticCategoriesOptions` has been removed
+- Struct `DiagnosticsListSiteDiagnosticCategoriesPager` has been removed
+- Struct `DiagnosticsListSiteDiagnosticCategoriesResponse` has been removed
+- Struct `DiagnosticsListSiteDiagnosticCategoriesResult` has been removed
+- Struct `DiagnosticsListSiteDiagnosticCategoriesSlotOptions` has been removed
+- Struct `DiagnosticsListSiteDiagnosticCategoriesSlotPager` has been removed
+- Struct `DiagnosticsListSiteDiagnosticCategoriesSlotResponse` has been removed
+- Struct `DiagnosticsListSiteDiagnosticCategoriesSlotResult` has been removed
+- Struct `DomainRegistrationProviderListOperationsOptions` has been removed
+- Struct `DomainRegistrationProviderListOperationsPager` has been removed
+- Struct `DomainRegistrationProviderListOperationsResponse` has been removed
+- Struct `DomainRegistrationProviderListOperationsResult` has been removed
+- Struct `DomainsBeginCreateOrUpdateOptions` has been removed
+- Struct `DomainsCheckAvailabilityOptions` has been removed
+- Struct `DomainsCheckAvailabilityResponse` has been removed
+- Struct `DomainsCheckAvailabilityResult` has been removed
+- Struct `DomainsCreateOrUpdateOwnershipIdentifierOptions` has been removed
+- Struct `DomainsCreateOrUpdateOwnershipIdentifierResponse` has been removed
+- Struct `DomainsCreateOrUpdateOwnershipIdentifierResult` has been removed
+- Struct `DomainsCreateOrUpdatePoller` has been removed
+- Struct `DomainsCreateOrUpdatePollerResponse` has been removed
+- Struct `DomainsCreateOrUpdateResponse` has been removed
+- Struct `DomainsCreateOrUpdateResult` has been removed
+- Struct `DomainsDeleteOptions` has been removed
+- Struct `DomainsDeleteOwnershipIdentifierOptions` has been removed
+- Struct `DomainsDeleteOwnershipIdentifierResponse` has been removed
+- Struct `DomainsDeleteResponse` has been removed
+- Struct `DomainsGetControlCenterSsoRequestOptions` has been removed
+- Struct `DomainsGetControlCenterSsoRequestResponse` has been removed
+- Struct `DomainsGetControlCenterSsoRequestResult` has been removed
+- Struct `DomainsGetOptions` has been removed
+- Struct `DomainsGetOwnershipIdentifierOptions` has been removed
+- Struct `DomainsGetOwnershipIdentifierResponse` has been removed
+- Struct `DomainsGetOwnershipIdentifierResult` has been removed
+- Struct `DomainsGetResponse` has been removed
+- Struct `DomainsGetResult` has been removed
+- Struct `DomainsListByResourceGroupOptions` has been removed
+- Struct `DomainsListByResourceGroupPager` has been removed
+- Struct `DomainsListByResourceGroupResponse` has been removed
+- Struct `DomainsListByResourceGroupResult` has been removed
+- Struct `DomainsListOptions` has been removed
+- Struct `DomainsListOwnershipIdentifiersOptions` has been removed
+- Struct `DomainsListOwnershipIdentifiersPager` has been removed
+- Struct `DomainsListOwnershipIdentifiersResponse` has been removed
+- Struct `DomainsListOwnershipIdentifiersResult` has been removed
+- Struct `DomainsListPager` has been removed
+- Struct `DomainsListRecommendationsOptions` has been removed
+- Struct `DomainsListRecommendationsPager` has been removed
+- Struct `DomainsListRecommendationsResponse` has been removed
+- Struct `DomainsListRecommendationsResult` has been removed
+- Struct `DomainsListResponse` has been removed
+- Struct `DomainsListResult` has been removed
+- Struct `DomainsRenewOptions` has been removed
+- Struct `DomainsRenewResponse` has been removed
+- Struct `DomainsUpdateOptions` has been removed
+- Struct `DomainsUpdateOwnershipIdentifierOptions` has been removed
+- Struct `DomainsUpdateOwnershipIdentifierResponse` has been removed
+- Struct `DomainsUpdateOwnershipIdentifierResult` has been removed
+- Struct `DomainsUpdateResponse` has been removed
+- Struct `DomainsUpdateResult` has been removed
+- Struct `GlobalGetDeletedWebAppOptions` has been removed
+- Struct `GlobalGetDeletedWebAppResponse` has been removed
+- Struct `GlobalGetDeletedWebAppResult` has been removed
+- Struct `GlobalGetDeletedWebAppSnapshotsOptions` has been removed
+- Struct `GlobalGetDeletedWebAppSnapshotsResponse` has been removed
+- Struct `GlobalGetDeletedWebAppSnapshotsResult` has been removed
+- Struct `GlobalGetSubscriptionOperationWithAsyncResponseOptions` has been removed
+- Struct `GlobalGetSubscriptionOperationWithAsyncResponseResponse` has been removed
+- Struct `KubeEnvironmentsBeginCreateOrUpdateOptions` has been removed
+- Struct `KubeEnvironmentsBeginDeleteOptions` has been removed
+- Struct `KubeEnvironmentsCreateOrUpdatePoller` has been removed
+- Struct `KubeEnvironmentsCreateOrUpdatePollerResponse` has been removed
+- Struct `KubeEnvironmentsCreateOrUpdateResponse` has been removed
+- Struct `KubeEnvironmentsCreateOrUpdateResult` has been removed
+- Struct `KubeEnvironmentsDeletePoller` has been removed
+- Struct `KubeEnvironmentsDeletePollerResponse` has been removed
+- Struct `KubeEnvironmentsDeleteResponse` has been removed
+- Struct `KubeEnvironmentsGetOptions` has been removed
+- Struct `KubeEnvironmentsGetResponse` has been removed
+- Struct `KubeEnvironmentsGetResult` has been removed
+- Struct `KubeEnvironmentsListByResourceGroupOptions` has been removed
+- Struct `KubeEnvironmentsListByResourceGroupPager` has been removed
+- Struct `KubeEnvironmentsListByResourceGroupResponse` has been removed
+- Struct `KubeEnvironmentsListByResourceGroupResult` has been removed
+- Struct `KubeEnvironmentsListBySubscriptionOptions` has been removed
+- Struct `KubeEnvironmentsListBySubscriptionPager` has been removed
+- Struct `KubeEnvironmentsListBySubscriptionResponse` has been removed
+- Struct `KubeEnvironmentsListBySubscriptionResult` has been removed
+- Struct `KubeEnvironmentsUpdateOptions` has been removed
+- Struct `KubeEnvironmentsUpdateResponse` has been removed
+- Struct `KubeEnvironmentsUpdateResult` has been removed
+- Struct `ProviderGetAvailableStacksOnPremOptions` has been removed
+- Struct `ProviderGetAvailableStacksOnPremPager` has been removed
+- Struct `ProviderGetAvailableStacksOnPremResponse` has been removed
+- Struct `ProviderGetAvailableStacksOnPremResult` has been removed
+- Struct `ProviderGetAvailableStacksOptions` has been removed
+- Struct `ProviderGetAvailableStacksPager` has been removed
+- Struct `ProviderGetAvailableStacksResponse` has been removed
+- Struct `ProviderGetAvailableStacksResult` has been removed
+- Struct `ProviderGetFunctionAppStacksForLocationOptions` has been removed
+- Struct `ProviderGetFunctionAppStacksForLocationPager` has been removed
+- Struct `ProviderGetFunctionAppStacksForLocationResponse` has been removed
+- Struct `ProviderGetFunctionAppStacksForLocationResult` has been removed
+- Struct `ProviderGetFunctionAppStacksOptions` has been removed
+- Struct `ProviderGetFunctionAppStacksPager` has been removed
+- Struct `ProviderGetFunctionAppStacksResponse` has been removed
+- Struct `ProviderGetFunctionAppStacksResult` has been removed
+- Struct `ProviderGetWebAppStacksForLocationOptions` has been removed
+- Struct `ProviderGetWebAppStacksForLocationPager` has been removed
+- Struct `ProviderGetWebAppStacksForLocationResponse` has been removed
+- Struct `ProviderGetWebAppStacksForLocationResult` has been removed
+- Struct `ProviderGetWebAppStacksOptions` has been removed
+- Struct `ProviderGetWebAppStacksPager` has been removed
+- Struct `ProviderGetWebAppStacksResponse` has been removed
+- Struct `ProviderGetWebAppStacksResult` has been removed
+- Struct `ProviderListOperationsOptions` has been removed
+- Struct `ProviderListOperationsPager` has been removed
+- Struct `ProviderListOperationsResponse` has been removed
+- Struct `ProviderListOperationsResult` has been removed
+- Struct `RecommendationsDisableAllForHostingEnvironmentOptions` has been removed
+- Struct `RecommendationsDisableAllForHostingEnvironmentResponse` has been removed
+- Struct `RecommendationsDisableAllForWebAppOptions` has been removed
+- Struct `RecommendationsDisableAllForWebAppResponse` has been removed
+- Struct `RecommendationsDisableRecommendationForHostingEnvironmentOptions` has been removed
+- Struct `RecommendationsDisableRecommendationForHostingEnvironmentResponse` has been removed
+- Struct `RecommendationsDisableRecommendationForSiteOptions` has been removed
+- Struct `RecommendationsDisableRecommendationForSiteResponse` has been removed
+- Struct `RecommendationsDisableRecommendationForSubscriptionOptions` has been removed
+- Struct `RecommendationsDisableRecommendationForSubscriptionResponse` has been removed
+- Struct `RecommendationsGetRuleDetailsByHostingEnvironmentOptions` has been removed
+- Struct `RecommendationsGetRuleDetailsByHostingEnvironmentResponse` has been removed
+- Struct `RecommendationsGetRuleDetailsByHostingEnvironmentResult` has been removed
+- Struct `RecommendationsGetRuleDetailsByWebAppOptions` has been removed
+- Struct `RecommendationsGetRuleDetailsByWebAppResponse` has been removed
+- Struct `RecommendationsGetRuleDetailsByWebAppResult` has been removed
+- Struct `RecommendationsListHistoryForHostingEnvironmentOptions` has been removed
+- Struct `RecommendationsListHistoryForHostingEnvironmentPager` has been removed
+- Struct `RecommendationsListHistoryForHostingEnvironmentResponse` has been removed
+- Struct `RecommendationsListHistoryForHostingEnvironmentResult` has been removed
+- Struct `RecommendationsListHistoryForWebAppOptions` has been removed
+- Struct `RecommendationsListHistoryForWebAppPager` has been removed
+- Struct `RecommendationsListHistoryForWebAppResponse` has been removed
+- Struct `RecommendationsListHistoryForWebAppResult` has been removed
+- Struct `RecommendationsListOptions` has been removed
+- Struct `RecommendationsListPager` has been removed
+- Struct `RecommendationsListRecommendedRulesForHostingEnvironmentOptions` has been removed
+- Struct `RecommendationsListRecommendedRulesForHostingEnvironmentPager` has been removed
+- Struct `RecommendationsListRecommendedRulesForHostingEnvironmentResponse` has been removed
+- Struct `RecommendationsListRecommendedRulesForHostingEnvironmentResult` has been removed
+- Struct `RecommendationsListRecommendedRulesForWebAppOptions` has been removed
+- Struct `RecommendationsListRecommendedRulesForWebAppPager` has been removed
+- Struct `RecommendationsListRecommendedRulesForWebAppResponse` has been removed
+- Struct `RecommendationsListRecommendedRulesForWebAppResult` has been removed
+- Struct `RecommendationsListResponse` has been removed
+- Struct `RecommendationsListResult` has been removed
+- Struct `RecommendationsResetAllFiltersForHostingEnvironmentOptions` has been removed
+- Struct `RecommendationsResetAllFiltersForHostingEnvironmentResponse` has been removed
+- Struct `RecommendationsResetAllFiltersForWebAppOptions` has been removed
+- Struct `RecommendationsResetAllFiltersForWebAppResponse` has been removed
+- Struct `RecommendationsResetAllFiltersOptions` has been removed
+- Struct `RecommendationsResetAllFiltersResponse` has been removed
+- Struct `ResourceHealthMetadataGetBySiteOptions` has been removed
+- Struct `ResourceHealthMetadataGetBySiteResponse` has been removed
+- Struct `ResourceHealthMetadataGetBySiteResult` has been removed
+- Struct `ResourceHealthMetadataGetBySiteSlotOptions` has been removed
+- Struct `ResourceHealthMetadataGetBySiteSlotResponse` has been removed
+- Struct `ResourceHealthMetadataGetBySiteSlotResult` has been removed
+- Struct `ResourceHealthMetadataListByResourceGroupOptions` has been removed
+- Struct `ResourceHealthMetadataListByResourceGroupPager` has been removed
+- Struct `ResourceHealthMetadataListByResourceGroupResponse` has been removed
+- Struct `ResourceHealthMetadataListByResourceGroupResult` has been removed
+- Struct `ResourceHealthMetadataListBySiteOptions` has been removed
+- Struct `ResourceHealthMetadataListBySitePager` has been removed
+- Struct `ResourceHealthMetadataListBySiteResponse` has been removed
+- Struct `ResourceHealthMetadataListBySiteResult` has been removed
+- Struct `ResourceHealthMetadataListBySiteSlotOptions` has been removed
+- Struct `ResourceHealthMetadataListBySiteSlotPager` has been removed
+- Struct `ResourceHealthMetadataListBySiteSlotResponse` has been removed
+- Struct `ResourceHealthMetadataListBySiteSlotResult` has been removed
+- Struct `ResourceHealthMetadataListOptions` has been removed
+- Struct `ResourceHealthMetadataListPager` has been removed
+- Struct `ResourceHealthMetadataListResponse` has been removed
+- Struct `ResourceHealthMetadataListResult` has been removed
+- Struct `StaticSitesApproveOrRejectPrivateEndpointConnectionPoller` has been removed
+- Struct `StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse` has been removed
+- Struct `StaticSitesApproveOrRejectPrivateEndpointConnectionResponse` has been removed
+- Struct `StaticSitesApproveOrRejectPrivateEndpointConnectionResult` has been removed
+- Struct `StaticSitesBeginApproveOrRejectPrivateEndpointConnectionOptions` has been removed
+- Struct `StaticSitesBeginCreateOrUpdateStaticSiteCustomDomainOptions` has been removed
+- Struct `StaticSitesBeginCreateOrUpdateStaticSiteOptions` has been removed
+- Struct `StaticSitesBeginCreateZipDeploymentForStaticSiteBuildOptions` has been removed
+- Struct `StaticSitesBeginCreateZipDeploymentForStaticSiteOptions` has been removed
+- Struct `StaticSitesBeginDeletePrivateEndpointConnectionOptions` has been removed
+- Struct `StaticSitesBeginDeleteStaticSiteBuildOptions` has been removed
+- Struct `StaticSitesBeginDeleteStaticSiteCustomDomainOptions` has been removed
+- Struct `StaticSitesBeginDeleteStaticSiteOptions` has been removed
+- Struct `StaticSitesBeginDetachStaticSiteOptions` has been removed
+- Struct `StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions` has been removed
+- Struct `StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions` has been removed
+- Struct `StaticSitesBeginValidateCustomDomainCanBeAddedToStaticSiteOptions` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteAppSettingsOptions` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteAppSettingsResult` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsOptions` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResult` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteCustomDomainResult` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsOptions` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResult` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSitePoller` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSitePollerResponse` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteResponse` has been removed
+- Struct `StaticSitesCreateOrUpdateStaticSiteResult` has been removed
+- Struct `StaticSitesCreateUserRolesInvitationLinkOptions` has been removed
+- Struct `StaticSitesCreateUserRolesInvitationLinkResponse` has been removed
+- Struct `StaticSitesCreateUserRolesInvitationLinkResult` has been removed
+- Struct `StaticSitesCreateZipDeploymentForStaticSiteBuildPoller` has been removed
+- Struct `StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse` has been removed
+- Struct `StaticSitesCreateZipDeploymentForStaticSiteBuildResponse` has been removed
+- Struct `StaticSitesCreateZipDeploymentForStaticSitePoller` has been removed
+- Struct `StaticSitesCreateZipDeploymentForStaticSitePollerResponse` has been removed
+- Struct `StaticSitesCreateZipDeploymentForStaticSiteResponse` has been removed
+- Struct `StaticSitesDeletePrivateEndpointConnectionPoller` has been removed
+- Struct `StaticSitesDeletePrivateEndpointConnectionPollerResponse` has been removed
+- Struct `StaticSitesDeletePrivateEndpointConnectionResponse` has been removed
+- Struct `StaticSitesDeletePrivateEndpointConnectionResult` has been removed
+- Struct `StaticSitesDeleteStaticSiteBuildPoller` has been removed
+- Struct `StaticSitesDeleteStaticSiteBuildPollerResponse` has been removed
+- Struct `StaticSitesDeleteStaticSiteBuildResponse` has been removed
+- Struct `StaticSitesDeleteStaticSiteCustomDomainPoller` has been removed
+- Struct `StaticSitesDeleteStaticSiteCustomDomainPollerResponse` has been removed
+- Struct `StaticSitesDeleteStaticSiteCustomDomainResponse` has been removed
+- Struct `StaticSitesDeleteStaticSitePoller` has been removed
+- Struct `StaticSitesDeleteStaticSitePollerResponse` has been removed
+- Struct `StaticSitesDeleteStaticSiteResponse` has been removed
+- Struct `StaticSitesDeleteStaticSiteUserOptions` has been removed
+- Struct `StaticSitesDeleteStaticSiteUserResponse` has been removed
+- Struct `StaticSitesDetachStaticSitePoller` has been removed
+- Struct `StaticSitesDetachStaticSitePollerResponse` has been removed
+- Struct `StaticSitesDetachStaticSiteResponse` has been removed
+- Struct `StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildOptions` has been removed
+- Struct `StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse` has been removed
+- Struct `StaticSitesDetachUserProvidedFunctionAppFromStaticSiteOptions` has been removed
+- Struct `StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse` has been removed
+- Struct `StaticSitesGetPrivateEndpointConnectionListOptions` has been removed
+- Struct `StaticSitesGetPrivateEndpointConnectionListPager` has been removed
+- Struct `StaticSitesGetPrivateEndpointConnectionListResponse` has been removed
+- Struct `StaticSitesGetPrivateEndpointConnectionListResult` has been removed
+- Struct `StaticSitesGetPrivateEndpointConnectionOptions` has been removed
+- Struct `StaticSitesGetPrivateEndpointConnectionResponse` has been removed
+- Struct `StaticSitesGetPrivateEndpointConnectionResult` has been removed
+- Struct `StaticSitesGetPrivateLinkResourcesOptions` has been removed
+- Struct `StaticSitesGetPrivateLinkResourcesResponse` has been removed
+- Struct `StaticSitesGetPrivateLinkResourcesResult` has been removed
+- Struct `StaticSitesGetStaticSiteBuildOptions` has been removed
+- Struct `StaticSitesGetStaticSiteBuildResponse` has been removed
+- Struct `StaticSitesGetStaticSiteBuildResult` has been removed
+- Struct `StaticSitesGetStaticSiteBuildsOptions` has been removed
+- Struct `StaticSitesGetStaticSiteBuildsPager` has been removed
+- Struct `StaticSitesGetStaticSiteBuildsResponse` has been removed
+- Struct `StaticSitesGetStaticSiteBuildsResult` has been removed
+- Struct `StaticSitesGetStaticSiteCustomDomainOptions` has been removed
+- Struct `StaticSitesGetStaticSiteCustomDomainResponse` has been removed
+- Struct `StaticSitesGetStaticSiteCustomDomainResult` has been removed
+- Struct `StaticSitesGetStaticSiteOptions` has been removed
+- Struct `StaticSitesGetStaticSiteResponse` has been removed
+- Struct `StaticSitesGetStaticSiteResult` has been removed
+- Struct `StaticSitesGetStaticSitesByResourceGroupOptions` has been removed
+- Struct `StaticSitesGetStaticSitesByResourceGroupPager` has been removed
+- Struct `StaticSitesGetStaticSitesByResourceGroupResponse` has been removed
+- Struct `StaticSitesGetStaticSitesByResourceGroupResult` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildOptions` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResult` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppForStaticSiteOptions` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppForStaticSiteResult` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildOptions` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResult` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppsForStaticSiteOptions` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppsForStaticSitePager` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse` has been removed
+- Struct `StaticSitesGetUserProvidedFunctionAppsForStaticSiteResult` has been removed
+- Struct `StaticSitesListOptions` has been removed
+- Struct `StaticSitesListPager` has been removed
+- Struct `StaticSitesListResponse` has been removed
+- Struct `StaticSitesListResult` has been removed
+- Struct `StaticSitesListStaticSiteAppSettingsOptions` has been removed
+- Struct `StaticSitesListStaticSiteAppSettingsResponse` has been removed
+- Struct `StaticSitesListStaticSiteAppSettingsResult` has been removed
+- Struct `StaticSitesListStaticSiteBuildAppSettingsOptions` has been removed
+- Struct `StaticSitesListStaticSiteBuildAppSettingsResponse` has been removed
+- Struct `StaticSitesListStaticSiteBuildAppSettingsResult` has been removed
+- Struct `StaticSitesListStaticSiteBuildFunctionAppSettingsOptions` has been removed
+- Struct `StaticSitesListStaticSiteBuildFunctionAppSettingsResponse` has been removed
+- Struct `StaticSitesListStaticSiteBuildFunctionAppSettingsResult` has been removed
+- Struct `StaticSitesListStaticSiteBuildFunctionsOptions` has been removed
+- Struct `StaticSitesListStaticSiteBuildFunctionsPager` has been removed
+- Struct `StaticSitesListStaticSiteBuildFunctionsResponse` has been removed
+- Struct `StaticSitesListStaticSiteBuildFunctionsResult` has been removed
+- Struct `StaticSitesListStaticSiteConfiguredRolesOptions` has been removed
+- Struct `StaticSitesListStaticSiteConfiguredRolesResponse` has been removed
+- Struct `StaticSitesListStaticSiteConfiguredRolesResult` has been removed
+- Struct `StaticSitesListStaticSiteCustomDomainsOptions` has been removed
+- Struct `StaticSitesListStaticSiteCustomDomainsPager` has been removed
+- Struct `StaticSitesListStaticSiteCustomDomainsResponse` has been removed
+- Struct `StaticSitesListStaticSiteCustomDomainsResult` has been removed
+- Struct `StaticSitesListStaticSiteFunctionAppSettingsOptions` has been removed
+- Struct `StaticSitesListStaticSiteFunctionAppSettingsResponse` has been removed
+- Struct `StaticSitesListStaticSiteFunctionAppSettingsResult` has been removed
+- Struct `StaticSitesListStaticSiteFunctionsOptions` has been removed
+- Struct `StaticSitesListStaticSiteFunctionsPager` has been removed
+- Struct `StaticSitesListStaticSiteFunctionsResponse` has been removed
+- Struct `StaticSitesListStaticSiteFunctionsResult` has been removed
+- Struct `StaticSitesListStaticSiteSecretsOptions` has been removed
+- Struct `StaticSitesListStaticSiteSecretsResponse` has been removed
+- Struct `StaticSitesListStaticSiteSecretsResult` has been removed
+- Struct `StaticSitesListStaticSiteUsersOptions` has been removed
+- Struct `StaticSitesListStaticSiteUsersPager` has been removed
+- Struct `StaticSitesListStaticSiteUsersResponse` has been removed
+- Struct `StaticSitesListStaticSiteUsersResult` has been removed
+- Struct `StaticSitesPreviewWorkflowOptions` has been removed
+- Struct `StaticSitesPreviewWorkflowResponse` has been removed
+- Struct `StaticSitesPreviewWorkflowResult` has been removed
+- Struct `StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller` has been removed
+- Struct `StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse` has been removed
+- Struct `StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse` has been removed
+- Struct `StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResult` has been removed
+- Struct `StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller` has been removed
+- Struct `StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse` has been removed
+- Struct `StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse` has been removed
+- Struct `StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResult` has been removed
+- Struct `StaticSitesResetStaticSiteAPIKeyOptions` has been removed
+- Struct `StaticSitesResetStaticSiteAPIKeyResponse` has been removed
+- Struct `StaticSitesUpdateStaticSiteOptions` has been removed
+- Struct `StaticSitesUpdateStaticSiteResponse` has been removed
+- Struct `StaticSitesUpdateStaticSiteResult` has been removed
+- Struct `StaticSitesUpdateStaticSiteUserOptions` has been removed
+- Struct `StaticSitesUpdateStaticSiteUserResponse` has been removed
+- Struct `StaticSitesUpdateStaticSiteUserResult` has been removed
+- Struct `StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller` has been removed
+- Struct `StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse` has been removed
+- Struct `StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse` has been removed
+- Struct `TopLevelDomainsGetOptions` has been removed
+- Struct `TopLevelDomainsGetResponse` has been removed
+- Struct `TopLevelDomainsGetResult` has been removed
+- Struct `TopLevelDomainsListAgreementsOptions` has been removed
+- Struct `TopLevelDomainsListAgreementsPager` has been removed
+- Struct `TopLevelDomainsListAgreementsResponse` has been removed
+- Struct `TopLevelDomainsListAgreementsResult` has been removed
+- Struct `TopLevelDomainsListOptions` has been removed
+- Struct `TopLevelDomainsListPager` has been removed
+- Struct `TopLevelDomainsListResponse` has been removed
+- Struct `TopLevelDomainsListResult` has been removed
+- Struct `WebAppsAddPremierAddOnOptions` has been removed
+- Struct `WebAppsAddPremierAddOnResponse` has been removed
+- Struct `WebAppsAddPremierAddOnResult` has been removed
+- Struct `WebAppsAddPremierAddOnSlotOptions` has been removed
+- Struct `WebAppsAddPremierAddOnSlotResponse` has been removed
+- Struct `WebAppsAddPremierAddOnSlotResult` has been removed
+- Struct `WebAppsAnalyzeCustomHostnameOptions` has been removed
+- Struct `WebAppsAnalyzeCustomHostnameResponse` has been removed
+- Struct `WebAppsAnalyzeCustomHostnameResult` has been removed
+- Struct `WebAppsAnalyzeCustomHostnameSlotOptions` has been removed
+- Struct `WebAppsAnalyzeCustomHostnameSlotResponse` has been removed
+- Struct `WebAppsAnalyzeCustomHostnameSlotResult` has been removed
+- Struct `WebAppsApplySlotConfigToProductionOptions` has been removed
+- Struct `WebAppsApplySlotConfigToProductionResponse` has been removed
+- Struct `WebAppsApplySlotConfigurationSlotOptions` has been removed
+- Struct `WebAppsApplySlotConfigurationSlotResponse` has been removed
+- Struct `WebAppsApproveOrRejectPrivateEndpointConnectionPoller` has been removed
+- Struct `WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse` has been removed
+- Struct `WebAppsApproveOrRejectPrivateEndpointConnectionResponse` has been removed
+- Struct `WebAppsApproveOrRejectPrivateEndpointConnectionResult` has been removed
+- Struct `WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller` has been removed
+- Struct `WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse` has been removed
+- Struct `WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse` has been removed
+- Struct `WebAppsApproveOrRejectPrivateEndpointConnectionSlotResult` has been removed
+- Struct `WebAppsBackupOptions` has been removed
+- Struct `WebAppsBackupResponse` has been removed
+- Struct `WebAppsBackupResult` has been removed
+- Struct `WebAppsBackupSlotOptions` has been removed
+- Struct `WebAppsBackupSlotResponse` has been removed
+- Struct `WebAppsBackupSlotResult` has been removed
+- Struct `WebAppsBeginApproveOrRejectPrivateEndpointConnectionOptions` has been removed
+- Struct `WebAppsBeginApproveOrRejectPrivateEndpointConnectionSlotOptions` has been removed
+- Struct `WebAppsBeginCreateFunctionOptions` has been removed
+- Struct `WebAppsBeginCreateInstanceFunctionSlotOptions` has been removed
+- Struct `WebAppsBeginCreateInstanceMSDeployOperationOptions` has been removed
+- Struct `WebAppsBeginCreateInstanceMSDeployOperationSlotOptions` has been removed
+- Struct `WebAppsBeginCreateMSDeployOperationOptions` has been removed
+- Struct `WebAppsBeginCreateMSDeployOperationSlotOptions` has been removed
+- Struct `WebAppsBeginCreateOrUpdateOptions` has been removed
+- Struct `WebAppsBeginCreateOrUpdateSlotOptions` has been removed
+- Struct `WebAppsBeginCreateOrUpdateSourceControlOptions` has been removed
+- Struct `WebAppsBeginCreateOrUpdateSourceControlSlotOptions` has been removed
+- Struct `WebAppsBeginDeletePrivateEndpointConnectionOptions` has been removed
+- Struct `WebAppsBeginDeletePrivateEndpointConnectionSlotOptions` has been removed
+- Struct `WebAppsBeginInstallSiteExtensionOptions` has been removed
+- Struct `WebAppsBeginInstallSiteExtensionSlotOptions` has been removed
+- Struct `WebAppsBeginListPublishingCredentialsOptions` has been removed
+- Struct `WebAppsBeginListPublishingCredentialsSlotOptions` has been removed
+- Struct `WebAppsBeginMigrateMySQLOptions` has been removed
+- Struct `WebAppsBeginMigrateStorageOptions` has been removed
+- Struct `WebAppsBeginRestoreFromBackupBlobOptions` has been removed
+- Struct `WebAppsBeginRestoreFromBackupBlobSlotOptions` has been removed
+- Struct `WebAppsBeginRestoreFromDeletedAppOptions` has been removed
+- Struct `WebAppsBeginRestoreFromDeletedAppSlotOptions` has been removed
+- Struct `WebAppsBeginRestoreOptions` has been removed
+- Struct `WebAppsBeginRestoreSlotOptions` has been removed
+- Struct `WebAppsBeginRestoreSnapshotOptions` has been removed
+- Struct `WebAppsBeginRestoreSnapshotSlotOptions` has been removed
+- Struct `WebAppsBeginStartNetworkTraceOptions` has been removed
+- Struct `WebAppsBeginStartNetworkTraceSlotOptions` has been removed
+- Struct `WebAppsBeginStartWebSiteNetworkTraceOperationOptions` has been removed
+- Struct `WebAppsBeginStartWebSiteNetworkTraceOperationSlotOptions` has been removed
+- Struct `WebAppsBeginSwapSlotOptions` has been removed
+- Struct `WebAppsBeginSwapSlotWithProductionOptions` has been removed
+- Struct `WebAppsCreateDeploymentOptions` has been removed
+- Struct `WebAppsCreateDeploymentResponse` has been removed
+- Struct `WebAppsCreateDeploymentResult` has been removed
+- Struct `WebAppsCreateDeploymentSlotOptions` has been removed
+- Struct `WebAppsCreateDeploymentSlotResponse` has been removed
+- Struct `WebAppsCreateDeploymentSlotResult` has been removed
+- Struct `WebAppsCreateFunctionPoller` has been removed
+- Struct `WebAppsCreateFunctionPollerResponse` has been removed
+- Struct `WebAppsCreateFunctionResponse` has been removed
+- Struct `WebAppsCreateFunctionResult` has been removed
+- Struct `WebAppsCreateInstanceFunctionSlotPoller` has been removed
+- Struct `WebAppsCreateInstanceFunctionSlotPollerResponse` has been removed
+- Struct `WebAppsCreateInstanceFunctionSlotResponse` has been removed
+- Struct `WebAppsCreateInstanceFunctionSlotResult` has been removed
+- Struct `WebAppsCreateInstanceMSDeployOperationPoller` has been removed
+- Struct `WebAppsCreateInstanceMSDeployOperationPollerResponse` has been removed
+- Struct `WebAppsCreateInstanceMSDeployOperationResponse` has been removed
+- Struct `WebAppsCreateInstanceMSDeployOperationResult` has been removed
+- Struct `WebAppsCreateInstanceMSDeployOperationSlotPoller` has been removed
+- Struct `WebAppsCreateInstanceMSDeployOperationSlotPollerResponse` has been removed
+- Struct `WebAppsCreateInstanceMSDeployOperationSlotResponse` has been removed
+- Struct `WebAppsCreateInstanceMSDeployOperationSlotResult` has been removed
+- Struct `WebAppsCreateMSDeployOperationPoller` has been removed
+- Struct `WebAppsCreateMSDeployOperationPollerResponse` has been removed
+- Struct `WebAppsCreateMSDeployOperationResponse` has been removed
+- Struct `WebAppsCreateMSDeployOperationResult` has been removed
+- Struct `WebAppsCreateMSDeployOperationSlotPoller` has been removed
+- Struct `WebAppsCreateMSDeployOperationSlotPollerResponse` has been removed
+- Struct `WebAppsCreateMSDeployOperationSlotResponse` has been removed
+- Struct `WebAppsCreateMSDeployOperationSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateConfigurationOptions` has been removed
+- Struct `WebAppsCreateOrUpdateConfigurationResponse` has been removed
+- Struct `WebAppsCreateOrUpdateConfigurationResult` has been removed
+- Struct `WebAppsCreateOrUpdateConfigurationSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateConfigurationSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateConfigurationSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateDomainOwnershipIdentifierOptions` has been removed
+- Struct `WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse` has been removed
+- Struct `WebAppsCreateOrUpdateDomainOwnershipIdentifierResult` has been removed
+- Struct `WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateFunctionSecretOptions` has been removed
+- Struct `WebAppsCreateOrUpdateFunctionSecretResponse` has been removed
+- Struct `WebAppsCreateOrUpdateFunctionSecretResult` has been removed
+- Struct `WebAppsCreateOrUpdateFunctionSecretSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateFunctionSecretSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateFunctionSecretSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateHostNameBindingOptions` has been removed
+- Struct `WebAppsCreateOrUpdateHostNameBindingResponse` has been removed
+- Struct `WebAppsCreateOrUpdateHostNameBindingResult` has been removed
+- Struct `WebAppsCreateOrUpdateHostNameBindingSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateHostNameBindingSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateHostNameBindingSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateHostSecretOptions` has been removed
+- Struct `WebAppsCreateOrUpdateHostSecretResponse` has been removed
+- Struct `WebAppsCreateOrUpdateHostSecretResult` has been removed
+- Struct `WebAppsCreateOrUpdateHostSecretSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateHostSecretSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateHostSecretSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateHybridConnectionOptions` has been removed
+- Struct `WebAppsCreateOrUpdateHybridConnectionResponse` has been removed
+- Struct `WebAppsCreateOrUpdateHybridConnectionResult` has been removed
+- Struct `WebAppsCreateOrUpdateHybridConnectionSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateHybridConnectionSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateHybridConnectionSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdatePoller` has been removed
+- Struct `WebAppsCreateOrUpdatePollerResponse` has been removed
+- Struct `WebAppsCreateOrUpdatePublicCertificateOptions` has been removed
+- Struct `WebAppsCreateOrUpdatePublicCertificateResponse` has been removed
+- Struct `WebAppsCreateOrUpdatePublicCertificateResult` has been removed
+- Struct `WebAppsCreateOrUpdatePublicCertificateSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdatePublicCertificateSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdatePublicCertificateSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateRelayServiceConnectionOptions` has been removed
+- Struct `WebAppsCreateOrUpdateRelayServiceConnectionResponse` has been removed
+- Struct `WebAppsCreateOrUpdateRelayServiceConnectionResult` has been removed
+- Struct `WebAppsCreateOrUpdateRelayServiceConnectionSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateRelayServiceConnectionSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateResponse` has been removed
+- Struct `WebAppsCreateOrUpdateResult` has been removed
+- Struct `WebAppsCreateOrUpdateSlotPoller` has been removed
+- Struct `WebAppsCreateOrUpdateSlotPollerResponse` has been removed
+- Struct `WebAppsCreateOrUpdateSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateSourceControlPoller` has been removed
+- Struct `WebAppsCreateOrUpdateSourceControlPollerResponse` has been removed
+- Struct `WebAppsCreateOrUpdateSourceControlResponse` has been removed
+- Struct `WebAppsCreateOrUpdateSourceControlResult` has been removed
+- Struct `WebAppsCreateOrUpdateSourceControlSlotPoller` has been removed
+- Struct `WebAppsCreateOrUpdateSourceControlSlotPollerResponse` has been removed
+- Struct `WebAppsCreateOrUpdateSourceControlSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateSourceControlSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions` has been removed
+- Struct `WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse` has been removed
+- Struct `WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResult` has been removed
+- Struct `WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionGatewayOptions` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionGatewayResponse` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionGatewayResult` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionGatewaySlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionGatewaySlotResult` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionOptions` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionResponse` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionResult` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionSlotOptions` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionSlotResponse` has been removed
+- Struct `WebAppsCreateOrUpdateVnetConnectionSlotResult` has been removed
+- Struct `WebAppsDeleteBackupConfigurationOptions` has been removed
+- Struct `WebAppsDeleteBackupConfigurationResponse` has been removed
+- Struct `WebAppsDeleteBackupConfigurationSlotOptions` has been removed
+- Struct `WebAppsDeleteBackupConfigurationSlotResponse` has been removed
+- Struct `WebAppsDeleteBackupOptions` has been removed
+- Struct `WebAppsDeleteBackupResponse` has been removed
+- Struct `WebAppsDeleteBackupSlotOptions` has been removed
+- Struct `WebAppsDeleteBackupSlotResponse` has been removed
+- Struct `WebAppsDeleteContinuousWebJobOptions` has been removed
+- Struct `WebAppsDeleteContinuousWebJobResponse` has been removed
+- Struct `WebAppsDeleteContinuousWebJobSlotOptions` has been removed
+- Struct `WebAppsDeleteContinuousWebJobSlotResponse` has been removed
+- Struct `WebAppsDeleteDeploymentOptions` has been removed
+- Struct `WebAppsDeleteDeploymentResponse` has been removed
+- Struct `WebAppsDeleteDeploymentSlotOptions` has been removed
+- Struct `WebAppsDeleteDeploymentSlotResponse` has been removed
+- Struct `WebAppsDeleteDomainOwnershipIdentifierOptions` has been removed
+- Struct `WebAppsDeleteDomainOwnershipIdentifierResponse` has been removed
+- Struct `WebAppsDeleteDomainOwnershipIdentifierSlotOptions` has been removed
+- Struct `WebAppsDeleteDomainOwnershipIdentifierSlotResponse` has been removed
+- Struct `WebAppsDeleteFunctionOptions` has been removed
+- Struct `WebAppsDeleteFunctionResponse` has been removed
+- Struct `WebAppsDeleteFunctionSecretOptions` has been removed
+- Struct `WebAppsDeleteFunctionSecretResponse` has been removed
+- Struct `WebAppsDeleteFunctionSecretSlotOptions` has been removed
+- Struct `WebAppsDeleteFunctionSecretSlotResponse` has been removed
+- Struct `WebAppsDeleteHostNameBindingOptions` has been removed
+- Struct `WebAppsDeleteHostNameBindingResponse` has been removed
+- Struct `WebAppsDeleteHostNameBindingSlotOptions` has been removed
+- Struct `WebAppsDeleteHostNameBindingSlotResponse` has been removed
+- Struct `WebAppsDeleteHostSecretOptions` has been removed
+- Struct `WebAppsDeleteHostSecretResponse` has been removed
+- Struct `WebAppsDeleteHostSecretSlotOptions` has been removed
+- Struct `WebAppsDeleteHostSecretSlotResponse` has been removed
+- Struct `WebAppsDeleteHybridConnectionOptions` has been removed
+- Struct `WebAppsDeleteHybridConnectionResponse` has been removed
+- Struct `WebAppsDeleteHybridConnectionSlotOptions` has been removed
+- Struct `WebAppsDeleteHybridConnectionSlotResponse` has been removed
+- Struct `WebAppsDeleteInstanceFunctionSlotOptions` has been removed
+- Struct `WebAppsDeleteInstanceFunctionSlotResponse` has been removed
+- Struct `WebAppsDeleteInstanceProcessOptions` has been removed
+- Struct `WebAppsDeleteInstanceProcessResponse` has been removed
+- Struct `WebAppsDeleteInstanceProcessSlotOptions` has been removed
+- Struct `WebAppsDeleteInstanceProcessSlotResponse` has been removed
+- Struct `WebAppsDeleteOptions` has been removed
+- Struct `WebAppsDeletePremierAddOnOptions` has been removed
+- Struct `WebAppsDeletePremierAddOnResponse` has been removed
+- Struct `WebAppsDeletePremierAddOnSlotOptions` has been removed
+- Struct `WebAppsDeletePremierAddOnSlotResponse` has been removed
+- Struct `WebAppsDeletePrivateEndpointConnectionPoller` has been removed
+- Struct `WebAppsDeletePrivateEndpointConnectionPollerResponse` has been removed
+- Struct `WebAppsDeletePrivateEndpointConnectionResponse` has been removed
+- Struct `WebAppsDeletePrivateEndpointConnectionResult` has been removed
+- Struct `WebAppsDeletePrivateEndpointConnectionSlotPoller` has been removed
+- Struct `WebAppsDeletePrivateEndpointConnectionSlotPollerResponse` has been removed
+- Struct `WebAppsDeletePrivateEndpointConnectionSlotResponse` has been removed
+- Struct `WebAppsDeletePrivateEndpointConnectionSlotResult` has been removed
+- Struct `WebAppsDeleteProcessOptions` has been removed
+- Struct `WebAppsDeleteProcessResponse` has been removed
+- Struct `WebAppsDeleteProcessSlotOptions` has been removed
+- Struct `WebAppsDeleteProcessSlotResponse` has been removed
+- Struct `WebAppsDeletePublicCertificateOptions` has been removed
+- Struct `WebAppsDeletePublicCertificateResponse` has been removed
+- Struct `WebAppsDeletePublicCertificateSlotOptions` has been removed
+- Struct `WebAppsDeletePublicCertificateSlotResponse` has been removed
+- Struct `WebAppsDeleteRelayServiceConnectionOptions` has been removed
+- Struct `WebAppsDeleteRelayServiceConnectionResponse` has been removed
+- Struct `WebAppsDeleteRelayServiceConnectionSlotOptions` has been removed
+- Struct `WebAppsDeleteRelayServiceConnectionSlotResponse` has been removed
+- Struct `WebAppsDeleteResponse` has been removed
+- Struct `WebAppsDeleteSiteExtensionOptions` has been removed
+- Struct `WebAppsDeleteSiteExtensionResponse` has been removed
+- Struct `WebAppsDeleteSiteExtensionSlotOptions` has been removed
+- Struct `WebAppsDeleteSiteExtensionSlotResponse` has been removed
+- Struct `WebAppsDeleteSlotOptions` has been removed
+- Struct `WebAppsDeleteSlotResponse` has been removed
+- Struct `WebAppsDeleteSourceControlOptions` has been removed
+- Struct `WebAppsDeleteSourceControlResponse` has been removed
+- Struct `WebAppsDeleteSourceControlSlotOptions` has been removed
+- Struct `WebAppsDeleteSourceControlSlotResponse` has been removed
+- Struct `WebAppsDeleteSwiftVirtualNetworkOptions` has been removed
+- Struct `WebAppsDeleteSwiftVirtualNetworkResponse` has been removed
+- Struct `WebAppsDeleteSwiftVirtualNetworkSlotOptions` has been removed
+- Struct `WebAppsDeleteSwiftVirtualNetworkSlotResponse` has been removed
+- Struct `WebAppsDeleteTriggeredWebJobOptions` has been removed
+- Struct `WebAppsDeleteTriggeredWebJobResponse` has been removed
+- Struct `WebAppsDeleteTriggeredWebJobSlotOptions` has been removed
+- Struct `WebAppsDeleteTriggeredWebJobSlotResponse` has been removed
+- Struct `WebAppsDeleteVnetConnectionOptions` has been removed
+- Struct `WebAppsDeleteVnetConnectionResponse` has been removed
+- Struct `WebAppsDeleteVnetConnectionSlotOptions` has been removed
+- Struct `WebAppsDeleteVnetConnectionSlotResponse` has been removed
+- Struct `WebAppsDiscoverBackupOptions` has been removed
+- Struct `WebAppsDiscoverBackupResponse` has been removed
+- Struct `WebAppsDiscoverBackupResult` has been removed
+- Struct `WebAppsDiscoverBackupSlotOptions` has been removed
+- Struct `WebAppsDiscoverBackupSlotResponse` has been removed
+- Struct `WebAppsDiscoverBackupSlotResult` has been removed
+- Struct `WebAppsGenerateNewSitePublishingPasswordOptions` has been removed
+- Struct `WebAppsGenerateNewSitePublishingPasswordResponse` has been removed
+- Struct `WebAppsGenerateNewSitePublishingPasswordSlotOptions` has been removed
+- Struct `WebAppsGenerateNewSitePublishingPasswordSlotResponse` has been removed
+- Struct `WebAppsGetAppSettingKeyVaultReferenceOptions` has been removed
+- Struct `WebAppsGetAppSettingKeyVaultReferenceResponse` has been removed
+- Struct `WebAppsGetAppSettingKeyVaultReferenceResult` has been removed
+- Struct `WebAppsGetAppSettingKeyVaultReferenceSlotOptions` has been removed
+- Struct `WebAppsGetAppSettingKeyVaultReferenceSlotResponse` has been removed
+- Struct `WebAppsGetAppSettingKeyVaultReferenceSlotResult` has been removed
+- Struct `WebAppsGetAppSettingsKeyVaultReferencesOptions` has been removed
+- Struct `WebAppsGetAppSettingsKeyVaultReferencesPager` has been removed
+- Struct `WebAppsGetAppSettingsKeyVaultReferencesResponse` has been removed
+- Struct `WebAppsGetAppSettingsKeyVaultReferencesResult` has been removed
+- Struct `WebAppsGetAppSettingsKeyVaultReferencesSlotOptions` has been removed
+- Struct `WebAppsGetAppSettingsKeyVaultReferencesSlotPager` has been removed
+- Struct `WebAppsGetAppSettingsKeyVaultReferencesSlotResponse` has been removed
+- Struct `WebAppsGetAppSettingsKeyVaultReferencesSlotResult` has been removed
+- Struct `WebAppsGetAuthSettingsOptions` has been removed
+- Struct `WebAppsGetAuthSettingsResponse` has been removed
+- Struct `WebAppsGetAuthSettingsResult` has been removed
+- Struct `WebAppsGetAuthSettingsSlotOptions` has been removed
+- Struct `WebAppsGetAuthSettingsSlotResponse` has been removed
+- Struct `WebAppsGetAuthSettingsSlotResult` has been removed
+- Struct `WebAppsGetAuthSettingsV2Options` has been removed
+- Struct `WebAppsGetAuthSettingsV2Response` has been removed
+- Struct `WebAppsGetAuthSettingsV2Result` has been removed
+- Struct `WebAppsGetAuthSettingsV2SlotOptions` has been removed
+- Struct `WebAppsGetAuthSettingsV2SlotResponse` has been removed
+- Struct `WebAppsGetAuthSettingsV2SlotResult` has been removed
+- Struct `WebAppsGetBackupConfigurationOptions` has been removed
+- Struct `WebAppsGetBackupConfigurationResponse` has been removed
+- Struct `WebAppsGetBackupConfigurationResult` has been removed
+- Struct `WebAppsGetBackupConfigurationSlotOptions` has been removed
+- Struct `WebAppsGetBackupConfigurationSlotResponse` has been removed
+- Struct `WebAppsGetBackupConfigurationSlotResult` has been removed
+- Struct `WebAppsGetBackupStatusOptions` has been removed
+- Struct `WebAppsGetBackupStatusResponse` has been removed
+- Struct `WebAppsGetBackupStatusResult` has been removed
+- Struct `WebAppsGetBackupStatusSlotOptions` has been removed
+- Struct `WebAppsGetBackupStatusSlotResponse` has been removed
+- Struct `WebAppsGetBackupStatusSlotResult` has been removed
+- Struct `WebAppsGetConfigurationOptions` has been removed
+- Struct `WebAppsGetConfigurationResponse` has been removed
+- Struct `WebAppsGetConfigurationResult` has been removed
+- Struct `WebAppsGetConfigurationSlotOptions` has been removed
+- Struct `WebAppsGetConfigurationSlotResponse` has been removed
+- Struct `WebAppsGetConfigurationSlotResult` has been removed
+- Struct `WebAppsGetConfigurationSnapshotOptions` has been removed
+- Struct `WebAppsGetConfigurationSnapshotResponse` has been removed
+- Struct `WebAppsGetConfigurationSnapshotResult` has been removed
+- Struct `WebAppsGetConfigurationSnapshotSlotOptions` has been removed
+- Struct `WebAppsGetConfigurationSnapshotSlotResponse` has been removed
+- Struct `WebAppsGetConfigurationSnapshotSlotResult` has been removed
+- Struct `WebAppsGetContainerLogsZipOptions` has been removed
+- Struct `WebAppsGetContainerLogsZipResponse` has been removed
+- Struct `WebAppsGetContainerLogsZipSlotOptions` has been removed
+- Struct `WebAppsGetContainerLogsZipSlotResponse` has been removed
+- Struct `WebAppsGetContinuousWebJobOptions` has been removed
+- Struct `WebAppsGetContinuousWebJobResponse` has been removed
+- Struct `WebAppsGetContinuousWebJobResult` has been removed
+- Struct `WebAppsGetContinuousWebJobSlotOptions` has been removed
+- Struct `WebAppsGetContinuousWebJobSlotResponse` has been removed
+- Struct `WebAppsGetContinuousWebJobSlotResult` has been removed
+- Struct `WebAppsGetDeploymentOptions` has been removed
+- Struct `WebAppsGetDeploymentResponse` has been removed
+- Struct `WebAppsGetDeploymentResult` has been removed
+- Struct `WebAppsGetDeploymentSlotOptions` has been removed
+- Struct `WebAppsGetDeploymentSlotResponse` has been removed
+- Struct `WebAppsGetDeploymentSlotResult` has been removed
+- Struct `WebAppsGetDiagnosticLogsConfigurationOptions` has been removed
+- Struct `WebAppsGetDiagnosticLogsConfigurationResponse` has been removed
+- Struct `WebAppsGetDiagnosticLogsConfigurationResult` has been removed
+- Struct `WebAppsGetDiagnosticLogsConfigurationSlotOptions` has been removed
+- Struct `WebAppsGetDiagnosticLogsConfigurationSlotResponse` has been removed
+- Struct `WebAppsGetDiagnosticLogsConfigurationSlotResult` has been removed
+- Struct `WebAppsGetDomainOwnershipIdentifierOptions` has been removed
+- Struct `WebAppsGetDomainOwnershipIdentifierResponse` has been removed
+- Struct `WebAppsGetDomainOwnershipIdentifierResult` has been removed
+- Struct `WebAppsGetDomainOwnershipIdentifierSlotOptions` has been removed
+- Struct `WebAppsGetDomainOwnershipIdentifierSlotResponse` has been removed
+- Struct `WebAppsGetDomainOwnershipIdentifierSlotResult` has been removed
+- Struct `WebAppsGetFtpAllowedOptions` has been removed
+- Struct `WebAppsGetFtpAllowedResponse` has been removed
+- Struct `WebAppsGetFtpAllowedResult` has been removed
+- Struct `WebAppsGetFtpAllowedSlotOptions` has been removed
+- Struct `WebAppsGetFtpAllowedSlotResponse` has been removed
+- Struct `WebAppsGetFtpAllowedSlotResult` has been removed
+- Struct `WebAppsGetFunctionOptions` has been removed
+- Struct `WebAppsGetFunctionResponse` has been removed
+- Struct `WebAppsGetFunctionResult` has been removed
+- Struct `WebAppsGetFunctionsAdminTokenOptions` has been removed
+- Struct `WebAppsGetFunctionsAdminTokenResponse` has been removed
+- Struct `WebAppsGetFunctionsAdminTokenResult` has been removed
+- Struct `WebAppsGetFunctionsAdminTokenSlotOptions` has been removed
+- Struct `WebAppsGetFunctionsAdminTokenSlotResponse` has been removed
+- Struct `WebAppsGetFunctionsAdminTokenSlotResult` has been removed
+- Struct `WebAppsGetHostNameBindingOptions` has been removed
+- Struct `WebAppsGetHostNameBindingResponse` has been removed
+- Struct `WebAppsGetHostNameBindingResult` has been removed
+- Struct `WebAppsGetHostNameBindingSlotOptions` has been removed
+- Struct `WebAppsGetHostNameBindingSlotResponse` has been removed
+- Struct `WebAppsGetHostNameBindingSlotResult` has been removed
+- Struct `WebAppsGetHybridConnectionOptions` has been removed
+- Struct `WebAppsGetHybridConnectionResponse` has been removed
+- Struct `WebAppsGetHybridConnectionResult` has been removed
+- Struct `WebAppsGetHybridConnectionSlotOptions` has been removed
+- Struct `WebAppsGetHybridConnectionSlotResponse` has been removed
+- Struct `WebAppsGetHybridConnectionSlotResult` has been removed
+- Struct `WebAppsGetInstanceFunctionSlotOptions` has been removed
+- Struct `WebAppsGetInstanceFunctionSlotResponse` has been removed
+- Struct `WebAppsGetInstanceFunctionSlotResult` has been removed
+- Struct `WebAppsGetInstanceInfoOptions` has been removed
+- Struct `WebAppsGetInstanceInfoResponse` has been removed
+- Struct `WebAppsGetInstanceInfoResult` has been removed
+- Struct `WebAppsGetInstanceInfoSlotOptions` has been removed
+- Struct `WebAppsGetInstanceInfoSlotResponse` has been removed
+- Struct `WebAppsGetInstanceInfoSlotResult` has been removed
+- Struct `WebAppsGetInstanceMSDeployLogOptions` has been removed
+- Struct `WebAppsGetInstanceMSDeployLogResponse` has been removed
+- Struct `WebAppsGetInstanceMSDeployLogResult` has been removed
+- Struct `WebAppsGetInstanceMSDeployLogSlotOptions` has been removed
+- Struct `WebAppsGetInstanceMSDeployLogSlotResponse` has been removed
+- Struct `WebAppsGetInstanceMSDeployLogSlotResult` has been removed
+- Struct `WebAppsGetInstanceMsDeployStatusOptions` has been removed
+- Struct `WebAppsGetInstanceMsDeployStatusResponse` has been removed
+- Struct `WebAppsGetInstanceMsDeployStatusResult` has been removed
+- Struct `WebAppsGetInstanceMsDeployStatusSlotOptions` has been removed
+- Struct `WebAppsGetInstanceMsDeployStatusSlotResponse` has been removed
+- Struct `WebAppsGetInstanceMsDeployStatusSlotResult` has been removed
+- Struct `WebAppsGetInstanceProcessDumpOptions` has been removed
+- Struct `WebAppsGetInstanceProcessDumpResponse` has been removed
+- Struct `WebAppsGetInstanceProcessDumpSlotOptions` has been removed
+- Struct `WebAppsGetInstanceProcessDumpSlotResponse` has been removed
+- Struct `WebAppsGetInstanceProcessModuleOptions` has been removed
+- Struct `WebAppsGetInstanceProcessModuleResponse` has been removed
+- Struct `WebAppsGetInstanceProcessModuleResult` has been removed
+- Struct `WebAppsGetInstanceProcessModuleSlotOptions` has been removed
+- Struct `WebAppsGetInstanceProcessModuleSlotResponse` has been removed
+- Struct `WebAppsGetInstanceProcessModuleSlotResult` has been removed
+- Struct `WebAppsGetInstanceProcessOptions` has been removed
+- Struct `WebAppsGetInstanceProcessResponse` has been removed
+- Struct `WebAppsGetInstanceProcessResult` has been removed
+- Struct `WebAppsGetInstanceProcessSlotOptions` has been removed
+- Struct `WebAppsGetInstanceProcessSlotResponse` has been removed
+- Struct `WebAppsGetInstanceProcessSlotResult` has been removed
+- Struct `WebAppsGetMSDeployLogOptions` has been removed
+- Struct `WebAppsGetMSDeployLogResponse` has been removed
+- Struct `WebAppsGetMSDeployLogResult` has been removed
+- Struct `WebAppsGetMSDeployLogSlotOptions` has been removed
+- Struct `WebAppsGetMSDeployLogSlotResponse` has been removed
+- Struct `WebAppsGetMSDeployLogSlotResult` has been removed
+- Struct `WebAppsGetMSDeployStatusOptions` has been removed
+- Struct `WebAppsGetMSDeployStatusResponse` has been removed
+- Struct `WebAppsGetMSDeployStatusResult` has been removed
+- Struct `WebAppsGetMSDeployStatusSlotOptions` has been removed
+- Struct `WebAppsGetMSDeployStatusSlotResponse` has been removed
+- Struct `WebAppsGetMSDeployStatusSlotResult` has been removed
+- Struct `WebAppsGetMigrateMySQLStatusOptions` has been removed
+- Struct `WebAppsGetMigrateMySQLStatusResponse` has been removed
+- Struct `WebAppsGetMigrateMySQLStatusResult` has been removed
+- Struct `WebAppsGetMigrateMySQLStatusSlotOptions` has been removed
+- Struct `WebAppsGetMigrateMySQLStatusSlotResponse` has been removed
+- Struct `WebAppsGetMigrateMySQLStatusSlotResult` has been removed
+- Struct `WebAppsGetNetworkTraceOperationOptions` has been removed
+- Struct `WebAppsGetNetworkTraceOperationResponse` has been removed
+- Struct `WebAppsGetNetworkTraceOperationResult` has been removed
+- Struct `WebAppsGetNetworkTraceOperationSlotOptions` has been removed
+- Struct `WebAppsGetNetworkTraceOperationSlotResponse` has been removed
+- Struct `WebAppsGetNetworkTraceOperationSlotResult` has been removed
+- Struct `WebAppsGetNetworkTraceOperationSlotV2Options` has been removed
+- Struct `WebAppsGetNetworkTraceOperationSlotV2Response` has been removed
+- Struct `WebAppsGetNetworkTraceOperationSlotV2Result` has been removed
+- Struct `WebAppsGetNetworkTraceOperationV2Options` has been removed
+- Struct `WebAppsGetNetworkTraceOperationV2Response` has been removed
+- Struct `WebAppsGetNetworkTraceOperationV2Result` has been removed
+- Struct `WebAppsGetNetworkTracesOptions` has been removed
+- Struct `WebAppsGetNetworkTracesResponse` has been removed
+- Struct `WebAppsGetNetworkTracesResult` has been removed
+- Struct `WebAppsGetNetworkTracesSlotOptions` has been removed
+- Struct `WebAppsGetNetworkTracesSlotResponse` has been removed
+- Struct `WebAppsGetNetworkTracesSlotResult` has been removed
+- Struct `WebAppsGetNetworkTracesSlotV2Options` has been removed
+- Struct `WebAppsGetNetworkTracesSlotV2Response` has been removed
+- Struct `WebAppsGetNetworkTracesSlotV2Result` has been removed
+- Struct `WebAppsGetNetworkTracesV2Options` has been removed
+- Struct `WebAppsGetNetworkTracesV2Response` has been removed
+- Struct `WebAppsGetNetworkTracesV2Result` has been removed
+- Struct `WebAppsGetOptions` has been removed
+- Struct `WebAppsGetPremierAddOnOptions` has been removed
+- Struct `WebAppsGetPremierAddOnResponse` has been removed
+- Struct `WebAppsGetPremierAddOnResult` has been removed
+- Struct `WebAppsGetPremierAddOnSlotOptions` has been removed
+- Struct `WebAppsGetPremierAddOnSlotResponse` has been removed
+- Struct `WebAppsGetPremierAddOnSlotResult` has been removed
+- Struct `WebAppsGetPrivateAccessOptions` has been removed
+- Struct `WebAppsGetPrivateAccessResponse` has been removed
+- Struct `WebAppsGetPrivateAccessResult` has been removed
+- Struct `WebAppsGetPrivateAccessSlotOptions` has been removed
+- Struct `WebAppsGetPrivateAccessSlotResponse` has been removed
+- Struct `WebAppsGetPrivateAccessSlotResult` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionListOptions` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionListPager` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionListResponse` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionListResult` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionListSlotOptions` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionListSlotPager` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionListSlotResponse` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionListSlotResult` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionOptions` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionResponse` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionResult` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionSlotOptions` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionSlotResponse` has been removed
+- Struct `WebAppsGetPrivateEndpointConnectionSlotResult` has been removed
+- Struct `WebAppsGetPrivateLinkResourcesOptions` has been removed
+- Struct `WebAppsGetPrivateLinkResourcesResponse` has been removed
+- Struct `WebAppsGetPrivateLinkResourcesResult` has been removed
+- Struct `WebAppsGetPrivateLinkResourcesSlotOptions` has been removed
+- Struct `WebAppsGetPrivateLinkResourcesSlotResponse` has been removed
+- Struct `WebAppsGetPrivateLinkResourcesSlotResult` has been removed
+- Struct `WebAppsGetProcessDumpOptions` has been removed
+- Struct `WebAppsGetProcessDumpResponse` has been removed
+- Struct `WebAppsGetProcessDumpSlotOptions` has been removed
+- Struct `WebAppsGetProcessDumpSlotResponse` has been removed
+- Struct `WebAppsGetProcessModuleOptions` has been removed
+- Struct `WebAppsGetProcessModuleResponse` has been removed
+- Struct `WebAppsGetProcessModuleResult` has been removed
+- Struct `WebAppsGetProcessModuleSlotOptions` has been removed
+- Struct `WebAppsGetProcessModuleSlotResponse` has been removed
+- Struct `WebAppsGetProcessModuleSlotResult` has been removed
+- Struct `WebAppsGetProcessOptions` has been removed
+- Struct `WebAppsGetProcessResponse` has been removed
+- Struct `WebAppsGetProcessResult` has been removed
+- Struct `WebAppsGetProcessSlotOptions` has been removed
+- Struct `WebAppsGetProcessSlotResponse` has been removed
+- Struct `WebAppsGetProcessSlotResult` has been removed
+- Struct `WebAppsGetPublicCertificateOptions` has been removed
+- Struct `WebAppsGetPublicCertificateResponse` has been removed
+- Struct `WebAppsGetPublicCertificateResult` has been removed
+- Struct `WebAppsGetPublicCertificateSlotOptions` has been removed
+- Struct `WebAppsGetPublicCertificateSlotResponse` has been removed
+- Struct `WebAppsGetPublicCertificateSlotResult` has been removed
+- Struct `WebAppsGetRelayServiceConnectionOptions` has been removed
+- Struct `WebAppsGetRelayServiceConnectionResponse` has been removed
+- Struct `WebAppsGetRelayServiceConnectionResult` has been removed
+- Struct `WebAppsGetRelayServiceConnectionSlotOptions` has been removed
+- Struct `WebAppsGetRelayServiceConnectionSlotResponse` has been removed
+- Struct `WebAppsGetRelayServiceConnectionSlotResult` has been removed
+- Struct `WebAppsGetResponse` has been removed
+- Struct `WebAppsGetResult` has been removed
+- Struct `WebAppsGetScmAllowedOptions` has been removed
+- Struct `WebAppsGetScmAllowedResponse` has been removed
+- Struct `WebAppsGetScmAllowedResult` has been removed
+- Struct `WebAppsGetScmAllowedSlotOptions` has been removed
+- Struct `WebAppsGetScmAllowedSlotResponse` has been removed
+- Struct `WebAppsGetScmAllowedSlotResult` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferenceOptions` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferenceResponse` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferenceResult` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferenceSlotOptions` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResult` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferencesOptions` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferencesPager` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferencesResponse` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferencesResult` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferencesSlotOptions` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferencesSlotPager` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse` has been removed
+- Struct `WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResult` has been removed
+- Struct `WebAppsGetSiteExtensionOptions` has been removed
+- Struct `WebAppsGetSiteExtensionResponse` has been removed
+- Struct `WebAppsGetSiteExtensionResult` has been removed
+- Struct `WebAppsGetSiteExtensionSlotOptions` has been removed
+- Struct `WebAppsGetSiteExtensionSlotResponse` has been removed
+- Struct `WebAppsGetSiteExtensionSlotResult` has been removed
+- Struct `WebAppsGetSitePhpErrorLogFlagOptions` has been removed
+- Struct `WebAppsGetSitePhpErrorLogFlagResponse` has been removed
+- Struct `WebAppsGetSitePhpErrorLogFlagResult` has been removed
+- Struct `WebAppsGetSitePhpErrorLogFlagSlotOptions` has been removed
+- Struct `WebAppsGetSitePhpErrorLogFlagSlotResponse` has been removed
+- Struct `WebAppsGetSitePhpErrorLogFlagSlotResult` has been removed
+- Struct `WebAppsGetSlotOptions` has been removed
+- Struct `WebAppsGetSlotResponse` has been removed
+- Struct `WebAppsGetSlotResult` has been removed
+- Struct `WebAppsGetSourceControlOptions` has been removed
+- Struct `WebAppsGetSourceControlResponse` has been removed
+- Struct `WebAppsGetSourceControlResult` has been removed
+- Struct `WebAppsGetSourceControlSlotOptions` has been removed
+- Struct `WebAppsGetSourceControlSlotResponse` has been removed
+- Struct `WebAppsGetSourceControlSlotResult` has been removed
+- Struct `WebAppsGetSwiftVirtualNetworkConnectionOptions` has been removed
+- Struct `WebAppsGetSwiftVirtualNetworkConnectionResponse` has been removed
+- Struct `WebAppsGetSwiftVirtualNetworkConnectionResult` has been removed
+- Struct `WebAppsGetSwiftVirtualNetworkConnectionSlotOptions` has been removed
+- Struct `WebAppsGetSwiftVirtualNetworkConnectionSlotResponse` has been removed
+- Struct `WebAppsGetSwiftVirtualNetworkConnectionSlotResult` has been removed
+- Struct `WebAppsGetTriggeredWebJobHistoryOptions` has been removed
+- Struct `WebAppsGetTriggeredWebJobHistoryResponse` has been removed
+- Struct `WebAppsGetTriggeredWebJobHistoryResult` has been removed
+- Struct `WebAppsGetTriggeredWebJobHistorySlotOptions` has been removed
+- Struct `WebAppsGetTriggeredWebJobHistorySlotResponse` has been removed
+- Struct `WebAppsGetTriggeredWebJobHistorySlotResult` has been removed
+- Struct `WebAppsGetTriggeredWebJobOptions` has been removed
+- Struct `WebAppsGetTriggeredWebJobResponse` has been removed
+- Struct `WebAppsGetTriggeredWebJobResult` has been removed
+- Struct `WebAppsGetTriggeredWebJobSlotOptions` has been removed
+- Struct `WebAppsGetTriggeredWebJobSlotResponse` has been removed
+- Struct `WebAppsGetTriggeredWebJobSlotResult` has been removed
+- Struct `WebAppsGetVnetConnectionGatewayOptions` has been removed
+- Struct `WebAppsGetVnetConnectionGatewayResponse` has been removed
+- Struct `WebAppsGetVnetConnectionGatewayResult` has been removed
+- Struct `WebAppsGetVnetConnectionGatewaySlotOptions` has been removed
+- Struct `WebAppsGetVnetConnectionGatewaySlotResponse` has been removed
+- Struct `WebAppsGetVnetConnectionGatewaySlotResult` has been removed
+- Struct `WebAppsGetVnetConnectionOptions` has been removed
+- Struct `WebAppsGetVnetConnectionResponse` has been removed
+- Struct `WebAppsGetVnetConnectionResult` has been removed
+- Struct `WebAppsGetVnetConnectionSlotOptions` has been removed
+- Struct `WebAppsGetVnetConnectionSlotResponse` has been removed
+- Struct `WebAppsGetVnetConnectionSlotResult` has been removed
+- Struct `WebAppsGetWebJobOptions` has been removed
+- Struct `WebAppsGetWebJobResponse` has been removed
+- Struct `WebAppsGetWebJobResult` has been removed
+- Struct `WebAppsGetWebJobSlotOptions` has been removed
+- Struct `WebAppsGetWebJobSlotResponse` has been removed
+- Struct `WebAppsGetWebJobSlotResult` has been removed
+- Struct `WebAppsGetWebSiteContainerLogsOptions` has been removed
+- Struct `WebAppsGetWebSiteContainerLogsResponse` has been removed
+- Struct `WebAppsGetWebSiteContainerLogsSlotOptions` has been removed
+- Struct `WebAppsGetWebSiteContainerLogsSlotResponse` has been removed
+- Struct `WebAppsInstallSiteExtensionPoller` has been removed
+- Struct `WebAppsInstallSiteExtensionPollerResponse` has been removed
+- Struct `WebAppsInstallSiteExtensionResponse` has been removed
+- Struct `WebAppsInstallSiteExtensionResult` has been removed
+- Struct `WebAppsInstallSiteExtensionSlotPoller` has been removed
+- Struct `WebAppsInstallSiteExtensionSlotPollerResponse` has been removed
+- Struct `WebAppsInstallSiteExtensionSlotResponse` has been removed
+- Struct `WebAppsInstallSiteExtensionSlotResult` has been removed
+- Struct `WebAppsIsCloneableOptions` has been removed
+- Struct `WebAppsIsCloneableResponse` has been removed
+- Struct `WebAppsIsCloneableResult` has been removed
+- Struct `WebAppsIsCloneableSlotOptions` has been removed
+- Struct `WebAppsIsCloneableSlotResponse` has been removed
+- Struct `WebAppsIsCloneableSlotResult` has been removed
+- Struct `WebAppsListApplicationSettingsOptions` has been removed
+- Struct `WebAppsListApplicationSettingsResponse` has been removed
+- Struct `WebAppsListApplicationSettingsResult` has been removed
+- Struct `WebAppsListApplicationSettingsSlotOptions` has been removed
+- Struct `WebAppsListApplicationSettingsSlotResponse` has been removed
+- Struct `WebAppsListApplicationSettingsSlotResult` has been removed
+- Struct `WebAppsListAzureStorageAccountsOptions` has been removed
+- Struct `WebAppsListAzureStorageAccountsResponse` has been removed
+- Struct `WebAppsListAzureStorageAccountsResult` has been removed
+- Struct `WebAppsListAzureStorageAccountsSlotOptions` has been removed
+- Struct `WebAppsListAzureStorageAccountsSlotResponse` has been removed
+- Struct `WebAppsListAzureStorageAccountsSlotResult` has been removed
+- Struct `WebAppsListBackupStatusSecretsOptions` has been removed
+- Struct `WebAppsListBackupStatusSecretsResponse` has been removed
+- Struct `WebAppsListBackupStatusSecretsResult` has been removed
+- Struct `WebAppsListBackupStatusSecretsSlotOptions` has been removed
+- Struct `WebAppsListBackupStatusSecretsSlotResponse` has been removed
+- Struct `WebAppsListBackupStatusSecretsSlotResult` has been removed
+- Struct `WebAppsListBackupsOptions` has been removed
+- Struct `WebAppsListBackupsPager` has been removed
+- Struct `WebAppsListBackupsResponse` has been removed
+- Struct `WebAppsListBackupsResult` has been removed
+- Struct `WebAppsListBackupsSlotOptions` has been removed
+- Struct `WebAppsListBackupsSlotPager` has been removed
+- Struct `WebAppsListBackupsSlotResponse` has been removed
+- Struct `WebAppsListBackupsSlotResult` has been removed
+- Struct `WebAppsListBasicPublishingCredentialsPoliciesOptions` has been removed
+- Struct `WebAppsListBasicPublishingCredentialsPoliciesPager` has been removed
+- Struct `WebAppsListBasicPublishingCredentialsPoliciesResponse` has been removed
+- Struct `WebAppsListBasicPublishingCredentialsPoliciesResult` has been removed
+- Struct `WebAppsListBasicPublishingCredentialsPoliciesSlotOptions` has been removed
+- Struct `WebAppsListBasicPublishingCredentialsPoliciesSlotPager` has been removed
+- Struct `WebAppsListBasicPublishingCredentialsPoliciesSlotResponse` has been removed
+- Struct `WebAppsListBasicPublishingCredentialsPoliciesSlotResult` has been removed
+- Struct `WebAppsListByResourceGroupOptions` has been removed
+- Struct `WebAppsListByResourceGroupPager` has been removed
+- Struct `WebAppsListByResourceGroupResponse` has been removed
+- Struct `WebAppsListByResourceGroupResult` has been removed
+- Struct `WebAppsListConfigurationSnapshotInfoOptions` has been removed
+- Struct `WebAppsListConfigurationSnapshotInfoPager` has been removed
+- Struct `WebAppsListConfigurationSnapshotInfoResponse` has been removed
+- Struct `WebAppsListConfigurationSnapshotInfoResult` has been removed
+- Struct `WebAppsListConfigurationSnapshotInfoSlotOptions` has been removed
+- Struct `WebAppsListConfigurationSnapshotInfoSlotPager` has been removed
+- Struct `WebAppsListConfigurationSnapshotInfoSlotResponse` has been removed
+- Struct `WebAppsListConfigurationSnapshotInfoSlotResult` has been removed
+- Struct `WebAppsListConfigurationsOptions` has been removed
+- Struct `WebAppsListConfigurationsPager` has been removed
+- Struct `WebAppsListConfigurationsResponse` has been removed
+- Struct `WebAppsListConfigurationsResult` has been removed
+- Struct `WebAppsListConfigurationsSlotOptions` has been removed
+- Struct `WebAppsListConfigurationsSlotPager` has been removed
+- Struct `WebAppsListConfigurationsSlotResponse` has been removed
+- Struct `WebAppsListConfigurationsSlotResult` has been removed
+- Struct `WebAppsListConnectionStringsOptions` has been removed
+- Struct `WebAppsListConnectionStringsResponse` has been removed
+- Struct `WebAppsListConnectionStringsResult` has been removed
+- Struct `WebAppsListConnectionStringsSlotOptions` has been removed
+- Struct `WebAppsListConnectionStringsSlotResponse` has been removed
+- Struct `WebAppsListConnectionStringsSlotResult` has been removed
+- Struct `WebAppsListContinuousWebJobsOptions` has been removed
+- Struct `WebAppsListContinuousWebJobsPager` has been removed
+- Struct `WebAppsListContinuousWebJobsResponse` has been removed
+- Struct `WebAppsListContinuousWebJobsResult` has been removed
+- Struct `WebAppsListContinuousWebJobsSlotOptions` has been removed
+- Struct `WebAppsListContinuousWebJobsSlotPager` has been removed
+- Struct `WebAppsListContinuousWebJobsSlotResponse` has been removed
+- Struct `WebAppsListContinuousWebJobsSlotResult` has been removed
+- Struct `WebAppsListDeploymentLogOptions` has been removed
+- Struct `WebAppsListDeploymentLogResponse` has been removed
+- Struct `WebAppsListDeploymentLogResult` has been removed
+- Struct `WebAppsListDeploymentLogSlotOptions` has been removed
+- Struct `WebAppsListDeploymentLogSlotResponse` has been removed
+- Struct `WebAppsListDeploymentLogSlotResult` has been removed
+- Struct `WebAppsListDeploymentsOptions` has been removed
+- Struct `WebAppsListDeploymentsPager` has been removed
+- Struct `WebAppsListDeploymentsResponse` has been removed
+- Struct `WebAppsListDeploymentsResult` has been removed
+- Struct `WebAppsListDeploymentsSlotOptions` has been removed
+- Struct `WebAppsListDeploymentsSlotPager` has been removed
+- Struct `WebAppsListDeploymentsSlotResponse` has been removed
+- Struct `WebAppsListDeploymentsSlotResult` has been removed
+- Struct `WebAppsListDomainOwnershipIdentifiersOptions` has been removed
+- Struct `WebAppsListDomainOwnershipIdentifiersPager` has been removed
+- Struct `WebAppsListDomainOwnershipIdentifiersResponse` has been removed
+- Struct `WebAppsListDomainOwnershipIdentifiersResult` has been removed
+- Struct `WebAppsListDomainOwnershipIdentifiersSlotOptions` has been removed
+- Struct `WebAppsListDomainOwnershipIdentifiersSlotPager` has been removed
+- Struct `WebAppsListDomainOwnershipIdentifiersSlotResponse` has been removed
+- Struct `WebAppsListDomainOwnershipIdentifiersSlotResult` has been removed
+- Struct `WebAppsListFunctionKeysOptions` has been removed
+- Struct `WebAppsListFunctionKeysResponse` has been removed
+- Struct `WebAppsListFunctionKeysResult` has been removed
+- Struct `WebAppsListFunctionKeysSlotOptions` has been removed
+- Struct `WebAppsListFunctionKeysSlotResponse` has been removed
+- Struct `WebAppsListFunctionKeysSlotResult` has been removed
+- Struct `WebAppsListFunctionSecretsOptions` has been removed
+- Struct `WebAppsListFunctionSecretsResponse` has been removed
+- Struct `WebAppsListFunctionSecretsResult` has been removed
+- Struct `WebAppsListFunctionSecretsSlotOptions` has been removed
+- Struct `WebAppsListFunctionSecretsSlotResponse` has been removed
+- Struct `WebAppsListFunctionSecretsSlotResult` has been removed
+- Struct `WebAppsListFunctionsOptions` has been removed
+- Struct `WebAppsListFunctionsPager` has been removed
+- Struct `WebAppsListFunctionsResponse` has been removed
+- Struct `WebAppsListFunctionsResult` has been removed
+- Struct `WebAppsListHostKeysOptions` has been removed
+- Struct `WebAppsListHostKeysResponse` has been removed
+- Struct `WebAppsListHostKeysResult` has been removed
+- Struct `WebAppsListHostKeysSlotOptions` has been removed
+- Struct `WebAppsListHostKeysSlotResponse` has been removed
+- Struct `WebAppsListHostKeysSlotResult` has been removed
+- Struct `WebAppsListHostNameBindingsOptions` has been removed
+- Struct `WebAppsListHostNameBindingsPager` has been removed
+- Struct `WebAppsListHostNameBindingsResponse` has been removed
+- Struct `WebAppsListHostNameBindingsResult` has been removed
+- Struct `WebAppsListHostNameBindingsSlotOptions` has been removed
+- Struct `WebAppsListHostNameBindingsSlotPager` has been removed
+- Struct `WebAppsListHostNameBindingsSlotResponse` has been removed
+- Struct `WebAppsListHostNameBindingsSlotResult` has been removed
+- Struct `WebAppsListHybridConnectionsOptions` has been removed
+- Struct `WebAppsListHybridConnectionsResponse` has been removed
+- Struct `WebAppsListHybridConnectionsResult` has been removed
+- Struct `WebAppsListHybridConnectionsSlotOptions` has been removed
+- Struct `WebAppsListHybridConnectionsSlotResponse` has been removed
+- Struct `WebAppsListHybridConnectionsSlotResult` has been removed
+- Struct `WebAppsListInstanceFunctionsSlotOptions` has been removed
+- Struct `WebAppsListInstanceFunctionsSlotPager` has been removed
+- Struct `WebAppsListInstanceFunctionsSlotResponse` has been removed
+- Struct `WebAppsListInstanceFunctionsSlotResult` has been removed
+- Struct `WebAppsListInstanceIdentifiersOptions` has been removed
+- Struct `WebAppsListInstanceIdentifiersPager` has been removed
+- Struct `WebAppsListInstanceIdentifiersResponse` has been removed
+- Struct `WebAppsListInstanceIdentifiersResult` has been removed
+- Struct `WebAppsListInstanceIdentifiersSlotOptions` has been removed
+- Struct `WebAppsListInstanceIdentifiersSlotPager` has been removed
+- Struct `WebAppsListInstanceIdentifiersSlotResponse` has been removed
+- Struct `WebAppsListInstanceIdentifiersSlotResult` has been removed
+- Struct `WebAppsListInstanceProcessModulesOptions` has been removed
+- Struct `WebAppsListInstanceProcessModulesPager` has been removed
+- Struct `WebAppsListInstanceProcessModulesResponse` has been removed
+- Struct `WebAppsListInstanceProcessModulesResult` has been removed
+- Struct `WebAppsListInstanceProcessModulesSlotOptions` has been removed
+- Struct `WebAppsListInstanceProcessModulesSlotPager` has been removed
+- Struct `WebAppsListInstanceProcessModulesSlotResponse` has been removed
+- Struct `WebAppsListInstanceProcessModulesSlotResult` has been removed
+- Struct `WebAppsListInstanceProcessThreadsOptions` has been removed
+- Struct `WebAppsListInstanceProcessThreadsPager` has been removed
+- Struct `WebAppsListInstanceProcessThreadsResponse` has been removed
+- Struct `WebAppsListInstanceProcessThreadsResult` has been removed
+- Struct `WebAppsListInstanceProcessThreadsSlotOptions` has been removed
+- Struct `WebAppsListInstanceProcessThreadsSlotPager` has been removed
+- Struct `WebAppsListInstanceProcessThreadsSlotResponse` has been removed
+- Struct `WebAppsListInstanceProcessThreadsSlotResult` has been removed
+- Struct `WebAppsListInstanceProcessesOptions` has been removed
+- Struct `WebAppsListInstanceProcessesPager` has been removed
+- Struct `WebAppsListInstanceProcessesResponse` has been removed
+- Struct `WebAppsListInstanceProcessesResult` has been removed
+- Struct `WebAppsListInstanceProcessesSlotOptions` has been removed
+- Struct `WebAppsListInstanceProcessesSlotPager` has been removed
+- Struct `WebAppsListInstanceProcessesSlotResponse` has been removed
+- Struct `WebAppsListInstanceProcessesSlotResult` has been removed
+- Struct `WebAppsListMetadataOptions` has been removed
+- Struct `WebAppsListMetadataResponse` has been removed
+- Struct `WebAppsListMetadataResult` has been removed
+- Struct `WebAppsListMetadataSlotOptions` has been removed
+- Struct `WebAppsListMetadataSlotResponse` has been removed
+- Struct `WebAppsListMetadataSlotResult` has been removed
+- Struct `WebAppsListNetworkFeaturesOptions` has been removed
+- Struct `WebAppsListNetworkFeaturesResponse` has been removed
+- Struct `WebAppsListNetworkFeaturesResult` has been removed
+- Struct `WebAppsListNetworkFeaturesSlotOptions` has been removed
+- Struct `WebAppsListNetworkFeaturesSlotResponse` has been removed
+- Struct `WebAppsListNetworkFeaturesSlotResult` has been removed
+- Struct `WebAppsListOptions` has been removed
+- Struct `WebAppsListPager` has been removed
+- Struct `WebAppsListPerfMonCountersOptions` has been removed
+- Struct `WebAppsListPerfMonCountersPager` has been removed
+- Struct `WebAppsListPerfMonCountersResponse` has been removed
+- Struct `WebAppsListPerfMonCountersResult` has been removed
+- Struct `WebAppsListPerfMonCountersSlotOptions` has been removed
+- Struct `WebAppsListPerfMonCountersSlotPager` has been removed
+- Struct `WebAppsListPerfMonCountersSlotResponse` has been removed
+- Struct `WebAppsListPerfMonCountersSlotResult` has been removed
+- Struct `WebAppsListPremierAddOnsOptions` has been removed
+- Struct `WebAppsListPremierAddOnsResponse` has been removed
+- Struct `WebAppsListPremierAddOnsResult` has been removed
+- Struct `WebAppsListPremierAddOnsSlotOptions` has been removed
+- Struct `WebAppsListPremierAddOnsSlotResponse` has been removed
+- Struct `WebAppsListPremierAddOnsSlotResult` has been removed
+- Struct `WebAppsListProcessModulesOptions` has been removed
+- Struct `WebAppsListProcessModulesPager` has been removed
+- Struct `WebAppsListProcessModulesResponse` has been removed
+- Struct `WebAppsListProcessModulesResult` has been removed
+- Struct `WebAppsListProcessModulesSlotOptions` has been removed
+- Struct `WebAppsListProcessModulesSlotPager` has been removed
+- Struct `WebAppsListProcessModulesSlotResponse` has been removed
+- Struct `WebAppsListProcessModulesSlotResult` has been removed
+- Struct `WebAppsListProcessThreadsOptions` has been removed
+- Struct `WebAppsListProcessThreadsPager` has been removed
+- Struct `WebAppsListProcessThreadsResponse` has been removed
+- Struct `WebAppsListProcessThreadsResult` has been removed
+- Struct `WebAppsListProcessThreadsSlotOptions` has been removed
+- Struct `WebAppsListProcessThreadsSlotPager` has been removed
+- Struct `WebAppsListProcessThreadsSlotResponse` has been removed
+- Struct `WebAppsListProcessThreadsSlotResult` has been removed
+- Struct `WebAppsListProcessesOptions` has been removed
+- Struct `WebAppsListProcessesPager` has been removed
+- Struct `WebAppsListProcessesResponse` has been removed
+- Struct `WebAppsListProcessesResult` has been removed
+- Struct `WebAppsListProcessesSlotOptions` has been removed
+- Struct `WebAppsListProcessesSlotPager` has been removed
+- Struct `WebAppsListProcessesSlotResponse` has been removed
+- Struct `WebAppsListProcessesSlotResult` has been removed
+- Struct `WebAppsListPublicCertificatesOptions` has been removed
+- Struct `WebAppsListPublicCertificatesPager` has been removed
+- Struct `WebAppsListPublicCertificatesResponse` has been removed
+- Struct `WebAppsListPublicCertificatesResult` has been removed
+- Struct `WebAppsListPublicCertificatesSlotOptions` has been removed
+- Struct `WebAppsListPublicCertificatesSlotPager` has been removed
+- Struct `WebAppsListPublicCertificatesSlotResponse` has been removed
+- Struct `WebAppsListPublicCertificatesSlotResult` has been removed
+- Struct `WebAppsListPublishingCredentialsPoller` has been removed
+- Struct `WebAppsListPublishingCredentialsPollerResponse` has been removed
+- Struct `WebAppsListPublishingCredentialsResponse` has been removed
+- Struct `WebAppsListPublishingCredentialsResult` has been removed
+- Struct `WebAppsListPublishingCredentialsSlotPoller` has been removed
+- Struct `WebAppsListPublishingCredentialsSlotPollerResponse` has been removed
+- Struct `WebAppsListPublishingCredentialsSlotResponse` has been removed
+- Struct `WebAppsListPublishingCredentialsSlotResult` has been removed
+- Struct `WebAppsListPublishingProfileXMLWithSecretsOptions` has been removed
+- Struct `WebAppsListPublishingProfileXMLWithSecretsResponse` has been removed
+- Struct `WebAppsListPublishingProfileXMLWithSecretsSlotOptions` has been removed
+- Struct `WebAppsListPublishingProfileXMLWithSecretsSlotResponse` has been removed
+- Struct `WebAppsListRelayServiceConnectionsOptions` has been removed
+- Struct `WebAppsListRelayServiceConnectionsResponse` has been removed
+- Struct `WebAppsListRelayServiceConnectionsResult` has been removed
+- Struct `WebAppsListRelayServiceConnectionsSlotOptions` has been removed
+- Struct `WebAppsListRelayServiceConnectionsSlotResponse` has been removed
+- Struct `WebAppsListRelayServiceConnectionsSlotResult` has been removed
+- Struct `WebAppsListResponse` has been removed
+- Struct `WebAppsListResult` has been removed
+- Struct `WebAppsListSiteBackupsOptions` has been removed
+- Struct `WebAppsListSiteBackupsPager` has been removed
+- Struct `WebAppsListSiteBackupsResponse` has been removed
+- Struct `WebAppsListSiteBackupsResult` has been removed
+- Struct `WebAppsListSiteBackupsSlotOptions` has been removed
+- Struct `WebAppsListSiteBackupsSlotPager` has been removed
+- Struct `WebAppsListSiteBackupsSlotResponse` has been removed
+- Struct `WebAppsListSiteBackupsSlotResult` has been removed
+- Struct `WebAppsListSiteExtensionsOptions` has been removed
+- Struct `WebAppsListSiteExtensionsPager` has been removed
+- Struct `WebAppsListSiteExtensionsResponse` has been removed
+- Struct `WebAppsListSiteExtensionsResult` has been removed
+- Struct `WebAppsListSiteExtensionsSlotOptions` has been removed
+- Struct `WebAppsListSiteExtensionsSlotPager` has been removed
+- Struct `WebAppsListSiteExtensionsSlotResponse` has been removed
+- Struct `WebAppsListSiteExtensionsSlotResult` has been removed
+- Struct `WebAppsListSitePushSettingsOptions` has been removed
+- Struct `WebAppsListSitePushSettingsResponse` has been removed
+- Struct `WebAppsListSitePushSettingsResult` has been removed
+- Struct `WebAppsListSitePushSettingsSlotOptions` has been removed
+- Struct `WebAppsListSitePushSettingsSlotResponse` has been removed
+- Struct `WebAppsListSitePushSettingsSlotResult` has been removed
+- Struct `WebAppsListSlotConfigurationNamesOptions` has been removed
+- Struct `WebAppsListSlotConfigurationNamesResponse` has been removed
+- Struct `WebAppsListSlotConfigurationNamesResult` has been removed
+- Struct `WebAppsListSlotDifferencesFromProductionOptions` has been removed
+- Struct `WebAppsListSlotDifferencesFromProductionPager` has been removed
+- Struct `WebAppsListSlotDifferencesFromProductionResponse` has been removed
+- Struct `WebAppsListSlotDifferencesFromProductionResult` has been removed
+- Struct `WebAppsListSlotDifferencesSlotOptions` has been removed
+- Struct `WebAppsListSlotDifferencesSlotPager` has been removed
+- Struct `WebAppsListSlotDifferencesSlotResponse` has been removed
+- Struct `WebAppsListSlotDifferencesSlotResult` has been removed
+- Struct `WebAppsListSlotsOptions` has been removed
+- Struct `WebAppsListSlotsPager` has been removed
+- Struct `WebAppsListSlotsResponse` has been removed
+- Struct `WebAppsListSlotsResult` has been removed
+- Struct `WebAppsListSnapshotsFromDRSecondaryOptions` has been removed
+- Struct `WebAppsListSnapshotsFromDRSecondaryPager` has been removed
+- Struct `WebAppsListSnapshotsFromDRSecondaryResponse` has been removed
+- Struct `WebAppsListSnapshotsFromDRSecondaryResult` has been removed
+- Struct `WebAppsListSnapshotsFromDRSecondarySlotOptions` has been removed
+- Struct `WebAppsListSnapshotsFromDRSecondarySlotPager` has been removed
+- Struct `WebAppsListSnapshotsFromDRSecondarySlotResponse` has been removed
+- Struct `WebAppsListSnapshotsFromDRSecondarySlotResult` has been removed
+- Struct `WebAppsListSnapshotsOptions` has been removed
+- Struct `WebAppsListSnapshotsPager` has been removed
+- Struct `WebAppsListSnapshotsResponse` has been removed
+- Struct `WebAppsListSnapshotsResult` has been removed
+- Struct `WebAppsListSnapshotsSlotOptions` has been removed
+- Struct `WebAppsListSnapshotsSlotPager` has been removed
+- Struct `WebAppsListSnapshotsSlotResponse` has been removed
+- Struct `WebAppsListSnapshotsSlotResult` has been removed
+- Struct `WebAppsListSyncFunctionTriggersOptions` has been removed
+- Struct `WebAppsListSyncFunctionTriggersResponse` has been removed
+- Struct `WebAppsListSyncFunctionTriggersResult` has been removed
+- Struct `WebAppsListSyncFunctionTriggersSlotOptions` has been removed
+- Struct `WebAppsListSyncFunctionTriggersSlotResponse` has been removed
+- Struct `WebAppsListSyncFunctionTriggersSlotResult` has been removed
+- Struct `WebAppsListSyncStatusOptions` has been removed
+- Struct `WebAppsListSyncStatusResponse` has been removed
+- Struct `WebAppsListSyncStatusSlotOptions` has been removed
+- Struct `WebAppsListSyncStatusSlotResponse` has been removed
+- Struct `WebAppsListTriggeredWebJobHistoryOptions` has been removed
+- Struct `WebAppsListTriggeredWebJobHistoryPager` has been removed
+- Struct `WebAppsListTriggeredWebJobHistoryResponse` has been removed
+- Struct `WebAppsListTriggeredWebJobHistoryResult` has been removed
+- Struct `WebAppsListTriggeredWebJobHistorySlotOptions` has been removed
+- Struct `WebAppsListTriggeredWebJobHistorySlotPager` has been removed
+- Struct `WebAppsListTriggeredWebJobHistorySlotResponse` has been removed
+- Struct `WebAppsListTriggeredWebJobHistorySlotResult` has been removed
+- Struct `WebAppsListTriggeredWebJobsOptions` has been removed
+- Struct `WebAppsListTriggeredWebJobsPager` has been removed
+- Struct `WebAppsListTriggeredWebJobsResponse` has been removed
+- Struct `WebAppsListTriggeredWebJobsResult` has been removed
+- Struct `WebAppsListTriggeredWebJobsSlotOptions` has been removed
+- Struct `WebAppsListTriggeredWebJobsSlotPager` has been removed
+- Struct `WebAppsListTriggeredWebJobsSlotResponse` has been removed
+- Struct `WebAppsListTriggeredWebJobsSlotResult` has been removed
+- Struct `WebAppsListUsagesOptions` has been removed
+- Struct `WebAppsListUsagesPager` has been removed
+- Struct `WebAppsListUsagesResponse` has been removed
+- Struct `WebAppsListUsagesResult` has been removed
+- Struct `WebAppsListUsagesSlotOptions` has been removed
+- Struct `WebAppsListUsagesSlotPager` has been removed
+- Struct `WebAppsListUsagesSlotResponse` has been removed
+- Struct `WebAppsListUsagesSlotResult` has been removed
+- Struct `WebAppsListVnetConnectionsOptions` has been removed
+- Struct `WebAppsListVnetConnectionsResponse` has been removed
+- Struct `WebAppsListVnetConnectionsResult` has been removed
+- Struct `WebAppsListVnetConnectionsSlotOptions` has been removed
+- Struct `WebAppsListVnetConnectionsSlotResponse` has been removed
+- Struct `WebAppsListVnetConnectionsSlotResult` has been removed
+- Struct `WebAppsListWebJobsOptions` has been removed
+- Struct `WebAppsListWebJobsPager` has been removed
+- Struct `WebAppsListWebJobsResponse` has been removed
+- Struct `WebAppsListWebJobsResult` has been removed
+- Struct `WebAppsListWebJobsSlotOptions` has been removed
+- Struct `WebAppsListWebJobsSlotPager` has been removed
+- Struct `WebAppsListWebJobsSlotResponse` has been removed
+- Struct `WebAppsListWebJobsSlotResult` has been removed
+- Struct `WebAppsMigrateMySQLPoller` has been removed
+- Struct `WebAppsMigrateMySQLPollerResponse` has been removed
+- Struct `WebAppsMigrateMySQLResponse` has been removed
+- Struct `WebAppsMigrateMySQLResult` has been removed
+- Struct `WebAppsMigrateStoragePoller` has been removed
+- Struct `WebAppsMigrateStoragePollerResponse` has been removed
+- Struct `WebAppsMigrateStorageResponse` has been removed
+- Struct `WebAppsMigrateStorageResult` has been removed
+- Struct `WebAppsPutPrivateAccessVnetOptions` has been removed
+- Struct `WebAppsPutPrivateAccessVnetResponse` has been removed
+- Struct `WebAppsPutPrivateAccessVnetResult` has been removed
+- Struct `WebAppsPutPrivateAccessVnetSlotOptions` has been removed
+- Struct `WebAppsPutPrivateAccessVnetSlotResponse` has been removed
+- Struct `WebAppsPutPrivateAccessVnetSlotResult` has been removed
+- Struct `WebAppsRecoverSiteConfigurationSnapshotOptions` has been removed
+- Struct `WebAppsRecoverSiteConfigurationSnapshotResponse` has been removed
+- Struct `WebAppsRecoverSiteConfigurationSnapshotSlotOptions` has been removed
+- Struct `WebAppsRecoverSiteConfigurationSnapshotSlotResponse` has been removed
+- Struct `WebAppsResetProductionSlotConfigOptions` has been removed
+- Struct `WebAppsResetProductionSlotConfigResponse` has been removed
+- Struct `WebAppsResetSlotConfigurationSlotOptions` has been removed
+- Struct `WebAppsResetSlotConfigurationSlotResponse` has been removed
+- Struct `WebAppsRestartOptions` has been removed
+- Struct `WebAppsRestartResponse` has been removed
+- Struct `WebAppsRestartSlotOptions` has been removed
+- Struct `WebAppsRestartSlotResponse` has been removed
+- Struct `WebAppsRestoreFromBackupBlobPoller` has been removed
+- Struct `WebAppsRestoreFromBackupBlobPollerResponse` has been removed
+- Struct `WebAppsRestoreFromBackupBlobResponse` has been removed
+- Struct `WebAppsRestoreFromBackupBlobSlotPoller` has been removed
+- Struct `WebAppsRestoreFromBackupBlobSlotPollerResponse` has been removed
+- Struct `WebAppsRestoreFromBackupBlobSlotResponse` has been removed
+- Struct `WebAppsRestoreFromDeletedAppPoller` has been removed
+- Struct `WebAppsRestoreFromDeletedAppPollerResponse` has been removed
+- Struct `WebAppsRestoreFromDeletedAppResponse` has been removed
+- Struct `WebAppsRestoreFromDeletedAppSlotPoller` has been removed
+- Struct `WebAppsRestoreFromDeletedAppSlotPollerResponse` has been removed
+- Struct `WebAppsRestoreFromDeletedAppSlotResponse` has been removed
+- Struct `WebAppsRestorePoller` has been removed
+- Struct `WebAppsRestorePollerResponse` has been removed
+- Struct `WebAppsRestoreResponse` has been removed
+- Struct `WebAppsRestoreSlotPoller` has been removed
+- Struct `WebAppsRestoreSlotPollerResponse` has been removed
+- Struct `WebAppsRestoreSlotResponse` has been removed
+- Struct `WebAppsRestoreSnapshotPoller` has been removed
+- Struct `WebAppsRestoreSnapshotPollerResponse` has been removed
+- Struct `WebAppsRestoreSnapshotResponse` has been removed
+- Struct `WebAppsRestoreSnapshotSlotPoller` has been removed
+- Struct `WebAppsRestoreSnapshotSlotPollerResponse` has been removed
+- Struct `WebAppsRestoreSnapshotSlotResponse` has been removed
+- Struct `WebAppsRunTriggeredWebJobOptions` has been removed
+- Struct `WebAppsRunTriggeredWebJobResponse` has been removed
+- Struct `WebAppsRunTriggeredWebJobSlotOptions` has been removed
+- Struct `WebAppsRunTriggeredWebJobSlotResponse` has been removed
+- Struct `WebAppsStartContinuousWebJobOptions` has been removed
+- Struct `WebAppsStartContinuousWebJobResponse` has been removed
+- Struct `WebAppsStartContinuousWebJobSlotOptions` has been removed
+- Struct `WebAppsStartContinuousWebJobSlotResponse` has been removed
+- Struct `WebAppsStartNetworkTracePoller` has been removed
+- Struct `WebAppsStartNetworkTracePollerResponse` has been removed
+- Struct `WebAppsStartNetworkTraceResponse` has been removed
+- Struct `WebAppsStartNetworkTraceResult` has been removed
+- Struct `WebAppsStartNetworkTraceSlotPoller` has been removed
+- Struct `WebAppsStartNetworkTraceSlotPollerResponse` has been removed
+- Struct `WebAppsStartNetworkTraceSlotResponse` has been removed
+- Struct `WebAppsStartNetworkTraceSlotResult` has been removed
+- Struct `WebAppsStartOptions` has been removed
+- Struct `WebAppsStartResponse` has been removed
+- Struct `WebAppsStartSlotOptions` has been removed
+- Struct `WebAppsStartSlotResponse` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOperationPoller` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOperationPollerResponse` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOperationResponse` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOperationResult` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOperationSlotPoller` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOperationSlotResponse` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOperationSlotResult` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceOptions` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceResponse` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceResult` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceSlotOptions` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceSlotResponse` has been removed
+- Struct `WebAppsStartWebSiteNetworkTraceSlotResult` has been removed
+- Struct `WebAppsStopContinuousWebJobOptions` has been removed
+- Struct `WebAppsStopContinuousWebJobResponse` has been removed
+- Struct `WebAppsStopContinuousWebJobSlotOptions` has been removed
+- Struct `WebAppsStopContinuousWebJobSlotResponse` has been removed
+- Struct `WebAppsStopNetworkTraceOptions` has been removed
+- Struct `WebAppsStopNetworkTraceResponse` has been removed
+- Struct `WebAppsStopNetworkTraceSlotOptions` has been removed
+- Struct `WebAppsStopNetworkTraceSlotResponse` has been removed
+- Struct `WebAppsStopOptions` has been removed
+- Struct `WebAppsStopResponse` has been removed
+- Struct `WebAppsStopSlotOptions` has been removed
+- Struct `WebAppsStopSlotResponse` has been removed
+- Struct `WebAppsStopWebSiteNetworkTraceOptions` has been removed
+- Struct `WebAppsStopWebSiteNetworkTraceResponse` has been removed
+- Struct `WebAppsStopWebSiteNetworkTraceSlotOptions` has been removed
+- Struct `WebAppsStopWebSiteNetworkTraceSlotResponse` has been removed
+- Struct `WebAppsSwapSlotPoller` has been removed
+- Struct `WebAppsSwapSlotPollerResponse` has been removed
+- Struct `WebAppsSwapSlotResponse` has been removed
+- Struct `WebAppsSwapSlotWithProductionPoller` has been removed
+- Struct `WebAppsSwapSlotWithProductionPollerResponse` has been removed
+- Struct `WebAppsSwapSlotWithProductionResponse` has been removed
+- Struct `WebAppsSyncFunctionTriggersOptions` has been removed
+- Struct `WebAppsSyncFunctionTriggersResponse` has been removed
+- Struct `WebAppsSyncFunctionTriggersSlotOptions` has been removed
+- Struct `WebAppsSyncFunctionTriggersSlotResponse` has been removed
+- Struct `WebAppsSyncFunctionsOptions` has been removed
+- Struct `WebAppsSyncFunctionsResponse` has been removed
+- Struct `WebAppsSyncFunctionsSlotOptions` has been removed
+- Struct `WebAppsSyncFunctionsSlotResponse` has been removed
+- Struct `WebAppsSyncRepositoryOptions` has been removed
+- Struct `WebAppsSyncRepositoryResponse` has been removed
+- Struct `WebAppsSyncRepositorySlotOptions` has been removed
+- Struct `WebAppsSyncRepositorySlotResponse` has been removed
+- Struct `WebAppsUpdateApplicationSettingsOptions` has been removed
+- Struct `WebAppsUpdateApplicationSettingsResponse` has been removed
+- Struct `WebAppsUpdateApplicationSettingsResult` has been removed
+- Struct `WebAppsUpdateApplicationSettingsSlotOptions` has been removed
+- Struct `WebAppsUpdateApplicationSettingsSlotResponse` has been removed
+- Struct `WebAppsUpdateApplicationSettingsSlotResult` has been removed
+- Struct `WebAppsUpdateAuthSettingsOptions` has been removed
+- Struct `WebAppsUpdateAuthSettingsResponse` has been removed
+- Struct `WebAppsUpdateAuthSettingsResult` has been removed
+- Struct `WebAppsUpdateAuthSettingsSlotOptions` has been removed
+- Struct `WebAppsUpdateAuthSettingsSlotResponse` has been removed
+- Struct `WebAppsUpdateAuthSettingsSlotResult` has been removed
+- Struct `WebAppsUpdateAuthSettingsV2Options` has been removed
+- Struct `WebAppsUpdateAuthSettingsV2Response` has been removed
+- Struct `WebAppsUpdateAuthSettingsV2Result` has been removed
+- Struct `WebAppsUpdateAuthSettingsV2SlotOptions` has been removed
+- Struct `WebAppsUpdateAuthSettingsV2SlotResponse` has been removed
+- Struct `WebAppsUpdateAuthSettingsV2SlotResult` has been removed
+- Struct `WebAppsUpdateAzureStorageAccountsOptions` has been removed
+- Struct `WebAppsUpdateAzureStorageAccountsResponse` has been removed
+- Struct `WebAppsUpdateAzureStorageAccountsResult` has been removed
+- Struct `WebAppsUpdateAzureStorageAccountsSlotOptions` has been removed
+- Struct `WebAppsUpdateAzureStorageAccountsSlotResponse` has been removed
+- Struct `WebAppsUpdateAzureStorageAccountsSlotResult` has been removed
+- Struct `WebAppsUpdateBackupConfigurationOptions` has been removed
+- Struct `WebAppsUpdateBackupConfigurationResponse` has been removed
+- Struct `WebAppsUpdateBackupConfigurationResult` has been removed
+- Struct `WebAppsUpdateBackupConfigurationSlotOptions` has been removed
+- Struct `WebAppsUpdateBackupConfigurationSlotResponse` has been removed
+- Struct `WebAppsUpdateBackupConfigurationSlotResult` has been removed
+- Struct `WebAppsUpdateConfigurationOptions` has been removed
+- Struct `WebAppsUpdateConfigurationResponse` has been removed
+- Struct `WebAppsUpdateConfigurationResult` has been removed
+- Struct `WebAppsUpdateConfigurationSlotOptions` has been removed
+- Struct `WebAppsUpdateConfigurationSlotResponse` has been removed
+- Struct `WebAppsUpdateConfigurationSlotResult` has been removed
+- Struct `WebAppsUpdateConnectionStringsOptions` has been removed
+- Struct `WebAppsUpdateConnectionStringsResponse` has been removed
+- Struct `WebAppsUpdateConnectionStringsResult` has been removed
+- Struct `WebAppsUpdateConnectionStringsSlotOptions` has been removed
+- Struct `WebAppsUpdateConnectionStringsSlotResponse` has been removed
+- Struct `WebAppsUpdateConnectionStringsSlotResult` has been removed
+- Struct `WebAppsUpdateDiagnosticLogsConfigOptions` has been removed
+- Struct `WebAppsUpdateDiagnosticLogsConfigResponse` has been removed
+- Struct `WebAppsUpdateDiagnosticLogsConfigResult` has been removed
+- Struct `WebAppsUpdateDiagnosticLogsConfigSlotOptions` has been removed
+- Struct `WebAppsUpdateDiagnosticLogsConfigSlotResponse` has been removed
+- Struct `WebAppsUpdateDiagnosticLogsConfigSlotResult` has been removed
+- Struct `WebAppsUpdateDomainOwnershipIdentifierOptions` has been removed
+- Struct `WebAppsUpdateDomainOwnershipIdentifierResponse` has been removed
+- Struct `WebAppsUpdateDomainOwnershipIdentifierResult` has been removed
+- Struct `WebAppsUpdateDomainOwnershipIdentifierSlotOptions` has been removed
+- Struct `WebAppsUpdateDomainOwnershipIdentifierSlotResponse` has been removed
+- Struct `WebAppsUpdateDomainOwnershipIdentifierSlotResult` has been removed
+- Struct `WebAppsUpdateFtpAllowedOptions` has been removed
+- Struct `WebAppsUpdateFtpAllowedResponse` has been removed
+- Struct `WebAppsUpdateFtpAllowedResult` has been removed
+- Struct `WebAppsUpdateFtpAllowedSlotOptions` has been removed
+- Struct `WebAppsUpdateFtpAllowedSlotResponse` has been removed
+- Struct `WebAppsUpdateFtpAllowedSlotResult` has been removed
+- Struct `WebAppsUpdateHybridConnectionOptions` has been removed
+- Struct `WebAppsUpdateHybridConnectionResponse` has been removed
+- Struct `WebAppsUpdateHybridConnectionResult` has been removed
+- Struct `WebAppsUpdateHybridConnectionSlotOptions` has been removed
+- Struct `WebAppsUpdateHybridConnectionSlotResponse` has been removed
+- Struct `WebAppsUpdateHybridConnectionSlotResult` has been removed
+- Struct `WebAppsUpdateMetadataOptions` has been removed
+- Struct `WebAppsUpdateMetadataResponse` has been removed
+- Struct `WebAppsUpdateMetadataResult` has been removed
+- Struct `WebAppsUpdateMetadataSlotOptions` has been removed
+- Struct `WebAppsUpdateMetadataSlotResponse` has been removed
+- Struct `WebAppsUpdateMetadataSlotResult` has been removed
+- Struct `WebAppsUpdateOptions` has been removed
+- Struct `WebAppsUpdatePremierAddOnOptions` has been removed
+- Struct `WebAppsUpdatePremierAddOnResponse` has been removed
+- Struct `WebAppsUpdatePremierAddOnResult` has been removed
+- Struct `WebAppsUpdatePremierAddOnSlotOptions` has been removed
+- Struct `WebAppsUpdatePremierAddOnSlotResponse` has been removed
+- Struct `WebAppsUpdatePremierAddOnSlotResult` has been removed
+- Struct `WebAppsUpdateRelayServiceConnectionOptions` has been removed
+- Struct `WebAppsUpdateRelayServiceConnectionResponse` has been removed
+- Struct `WebAppsUpdateRelayServiceConnectionResult` has been removed
+- Struct `WebAppsUpdateRelayServiceConnectionSlotOptions` has been removed
+- Struct `WebAppsUpdateRelayServiceConnectionSlotResponse` has been removed
+- Struct `WebAppsUpdateRelayServiceConnectionSlotResult` has been removed
+- Struct `WebAppsUpdateResponse` has been removed
+- Struct `WebAppsUpdateResult` has been removed
+- Struct `WebAppsUpdateScmAllowedOptions` has been removed
+- Struct `WebAppsUpdateScmAllowedResponse` has been removed
+- Struct `WebAppsUpdateScmAllowedResult` has been removed
+- Struct `WebAppsUpdateScmAllowedSlotOptions` has been removed
+- Struct `WebAppsUpdateScmAllowedSlotResponse` has been removed
+- Struct `WebAppsUpdateScmAllowedSlotResult` has been removed
+- Struct `WebAppsUpdateSitePushSettingsOptions` has been removed
+- Struct `WebAppsUpdateSitePushSettingsResponse` has been removed
+- Struct `WebAppsUpdateSitePushSettingsResult` has been removed
+- Struct `WebAppsUpdateSitePushSettingsSlotOptions` has been removed
+- Struct `WebAppsUpdateSitePushSettingsSlotResponse` has been removed
+- Struct `WebAppsUpdateSitePushSettingsSlotResult` has been removed
+- Struct `WebAppsUpdateSlotConfigurationNamesOptions` has been removed
+- Struct `WebAppsUpdateSlotConfigurationNamesResponse` has been removed
+- Struct `WebAppsUpdateSlotConfigurationNamesResult` has been removed
+- Struct `WebAppsUpdateSlotOptions` has been removed
+- Struct `WebAppsUpdateSlotResponse` has been removed
+- Struct `WebAppsUpdateSlotResult` has been removed
+- Struct `WebAppsUpdateSourceControlOptions` has been removed
+- Struct `WebAppsUpdateSourceControlResponse` has been removed
+- Struct `WebAppsUpdateSourceControlResult` has been removed
+- Struct `WebAppsUpdateSourceControlSlotOptions` has been removed
+- Struct `WebAppsUpdateSourceControlSlotResponse` has been removed
+- Struct `WebAppsUpdateSourceControlSlotResult` has been removed
+- Struct `WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckOptions` has been removed
+- Struct `WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse` has been removed
+- Struct `WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResult` has been removed
+- Struct `WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions` has been removed
+- Struct `WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse` has been removed
+- Struct `WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult` has been removed
+- Struct `WebAppsUpdateVnetConnectionGatewayOptions` has been removed
+- Struct `WebAppsUpdateVnetConnectionGatewayResponse` has been removed
+- Struct `WebAppsUpdateVnetConnectionGatewayResult` has been removed
+- Struct `WebAppsUpdateVnetConnectionGatewaySlotOptions` has been removed
+- Struct `WebAppsUpdateVnetConnectionGatewaySlotResponse` has been removed
+- Struct `WebAppsUpdateVnetConnectionGatewaySlotResult` has been removed
+- Struct `WebAppsUpdateVnetConnectionOptions` has been removed
+- Struct `WebAppsUpdateVnetConnectionResponse` has been removed
+- Struct `WebAppsUpdateVnetConnectionResult` has been removed
+- Struct `WebAppsUpdateVnetConnectionSlotOptions` has been removed
+- Struct `WebAppsUpdateVnetConnectionSlotResponse` has been removed
+- Struct `WebAppsUpdateVnetConnectionSlotResult` has been removed
+- Field `ProxyOnlyResource` of struct `PrivateAccess` has been removed
+- Field `ProxyOnlyResource` of struct `DiagnosticAnalysis` has been removed
+- Field `ProxyOnlyResource` of struct `AzureStoragePropertyDictionaryResource` has been removed
+- Field `ProxyOnlyResource` of struct `TriggeredJobHistory` has been removed
+- Field `ProxyOnlyResource` of struct `DiagnosticDetectorResponse` has been removed
+- Field `ProxyOnlyResource` of struct `CustomHostnameAnalysisResult` has been removed
+- Field `ProxyOnlyResource` of struct `DiagnosticCategory` has been removed
+- Field `ProxyOnlyResource` of struct `RestoreRequest` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSitesWorkflowPreview` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSitesWorkflowPreviewRequest` has been removed
+- Field `Resource` of struct `StaticSiteARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `PrivateLinkConnectionApprovalRequestResource` has been removed
+- Field `ProxyOnlyResource` of struct `PremierAddOnPatchResource` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteUserARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `AseV3NetworkingConfiguration` has been removed
+- Field `ProxyOnlyResource` of struct `SiteLogsConfig` has been removed
+- Field `ProxyOnlyResource` of struct `MigrateMySQLRequest` has been removed
+- Field `ProxyOnlyResource` of struct `DetectorResponse` has been removed
+- Field `ProxyOnlyResource` of struct `DeletedAppRestoreRequest` has been removed
+- Field `ProxyOnlyResource` of struct `SiteAuthSettingsV2` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteUserProvidedFunctionAppARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `AnalysisDefinition` has been removed
+- Field `ProxyOnlyResource` of struct `APIKVReference` has been removed
+- Field `ProxyOnlyResource` of struct `User` has been removed
+- Field `ProxyOnlyResource` of struct `PublicCertificate` has been removed
+- Field `ProxyOnlyResource` of struct `DomainPatchResource` has been removed
+- Field `ProxyOnlyResource` of struct `DomainOwnershipIdentifier` has been removed
+- Field `ProxyOnlyResource` of struct `ProcessInfo` has been removed
+- Field `ProxyOnlyResource` of struct `ConnectionStringDictionary` has been removed
+- Field `ProxyOnlyResource` of struct `DeletedSite` has been removed
+- Field `ProxyOnlyResource` of struct `BackupItem` has been removed
+- Field `ProxyOnlyResource` of struct `SnapshotRestoreRequest` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteCustomDomainRequestPropertiesARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteUserInvitationResponseResource` has been removed
+- Field `ProxyOnlyResource` of struct `VnetGateway` has been removed
+- Field `ProxyOnlyResource` of struct `SiteAuthSettings` has been removed
+- Field `Resource` of struct `PremierAddOn` has been removed
+- Field `ProxyOnlyResource` of struct `VnetInfoResource` has been removed
+- Field `ProxyOnlyResource` of struct `WebAppStack` has been removed
+- Field `ProxyOnlyResource` of struct `FunctionEnvelope` has been removed
+- Field `ProxyOnlyResource` of struct `SitePatchResource` has been removed
+- Field `Resource` of struct `Domain` has been removed
+- Field `ProxyOnlyResource` of struct `ResourceMetricDefinition` has been removed
+- Field `ProxyOnlyResource` of struct `SiteConfigurationSnapshotInfo` has been removed
+- Field `ProxyOnlyResource` of struct `BackupRequest` has been removed
+- Field `ProxyOnlyResource` of struct `HybridConnection` has been removed
+- Field `ProxyOnlyResource` of struct `Identifier` has been removed
+- Field `ProxyOnlyResource` of struct `SwiftVirtualNetwork` has been removed
+- Field `ProxyOnlyResource` of struct `VnetRoute` has been removed
+- Field `ProxyOnlyResource` of struct `SlotConfigNamesResource` has been removed
+- Field `ProxyOnlyResource` of struct `RelayServiceConnectionEntity` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteUserInvitationRequestResource` has been removed
+- Field `ProxyOnlyResource` of struct `CertificatePatchResource` has been removed
+- Field `ProxyOnlyResource` of struct `RemotePrivateEndpointConnection` has been removed
+- Field `ProxyOnlyResource` of struct `SitePhpErrorLogFlag` has been removed
+- Field `ProxyOnlyResource` of struct `Deployment` has been removed
+- Field `ProxyOnlyResource` of struct `Usage` has been removed
+- Field `ProxyOnlyResource` of struct `VnetParameters` has been removed
+- Field `ProxyOnlyResource` of struct `SlotDifference` has been removed
+- Field `ProxyOnlyResource` of struct `GeoRegion` has been removed
+- Field `ProxyOnlyResource` of struct `CertificateOrderAction` has been removed
+- Field `ProxyOnlyResource` of struct `WorkerPoolResource` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteFunctionOverviewARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `SiteSourceControl` has been removed
+- Field `ProxyOnlyResource` of struct `RenewCertificateOrderRequest` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSitePatchResource` has been removed
+- Field `ProxyOnlyResource` of struct `StorageMigrationResponse` has been removed
+- Field `ProxyOnlyResource` of struct `BillingMeter` has been removed
+- Field `ProxyOnlyResource` of struct `DetectorDefinitionResource` has been removed
+- Field `ProxyOnlyResource` of struct `MSDeployStatus` has been removed
+- Field `ProxyOnlyResource` of struct `StringDictionary` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteUserProvidedFunctionApp` has been removed
+- Field `ProxyOnlyResource` of struct `AddressResponse` has been removed
+- Field `ProxyOnlyResource` of struct `ResourceHealthMetadata` has been removed
+- Field `ProxyOnlyResource` of struct `TopLevelDomain` has been removed
+- Field `ProxyOnlyResource` of struct `SourceControl` has been removed
+- Field `ProxyOnlyResource` of struct `SiteExtensionInfo` has been removed
+- Field `ProxyOnlyResource` of struct `Recommendation` has been removed
+- Field `ProxyOnlyResource` of struct `MSDeploy` has been removed
+- Field `ProxyOnlyResource` of struct `VnetValidationFailureDetails` has been removed
+- Field `ProxyOnlyResource` of struct `ContinuousWebJob` has been removed
+- Field `ProxyOnlyResource` of struct `WebJob` has been removed
+- Field `ProxyOnlyResource` of struct `WebSiteInstanceStatus` has been removed
+- Field `ProxyOnlyResource` of struct `PremierAddOnOffer` has been removed
+- Field `ProxyOnlyResource` of struct `RecommendationRule` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteCustomDomainOverviewARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `VnetValidationTestFailure` has been removed
+- Field `ProxyOnlyResource` of struct `CsmPublishingCredentialsPoliciesEntity` has been removed
+- Field `ProxyOnlyResource` of struct `HostNameBinding` has been removed
+- Field `Resource` of struct `Certificate` has been removed
+- Field `Properties` of struct `Certificate` has been removed
+- Field `ProxyOnlyResource` of struct `MSDeployLog` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteBuildARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `ApplicationStackResource` has been removed
+- Field `Resource` of struct `Site` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteResetPropertiesARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `NetworkFeatures` has been removed
+- Field `ProxyOnlyResource` of struct `HybridConnectionKey` has been removed
+- Field `ProxyOnlyResource` of struct `FunctionAppStack` has been removed
+- Field `ProxyOnlyResource` of struct `StringList` has been removed
+- Field `ProxyOnlyResource` of struct `ReissueCertificateOrderRequest` has been removed
+- Field `ProxyOnlyResource` of struct `ProcessModuleInfo` has been removed
+- Field `ProxyOnlyResource` of struct `PushSettings` has been removed
+- Field `ProxyOnlyResource` of struct `Snapshot` has been removed
+- Field `ProxyOnlyResource` of struct `MigrateMySQLStatus` has been removed
+- Field `ProxyOnlyResource` of struct `KubeEnvironmentPatchResource` has been removed
+- Field `ProxyOnlyResource` of struct `StaticSiteZipDeploymentARMResource` has been removed
+- Field `ProxyOnlyResource` of struct `HybridConnectionLimits` has been removed
+- Field `ProxyOnlyResource` of struct `ProcessThreadInfo` has been removed
+- Field `ProxyOnlyResource` of struct `SiteConfigResource` has been removed
+- Field `ProxyOnlyResource` of struct `StorageMigrationOptions` has been removed
+- Field `ProxyOnlyResource` of struct `RemotePrivateEndpointConnectionARMResource` has been removed
+- Field `Resource` of struct `KubeEnvironment` has been removed
+- Field `ProxyOnlyResource` of struct `TriggeredWebJob` has been removed
+- Field `ProxyOnlyResource` of struct `CertificateEmail` has been removed
+
+### Features Added
+
+- New const `Enum20LinuxFunctions`
+- New const `Enum15WindowsFunctions`
+- New const `RevisionProvisioningStateProvisioned`
+- New const `Enum20Windows`
+- New const `EnterpriseGradeCdnStatusDisabled`
+- New const `RevisionProvisioningStateProvisioning`
+- New const `ActiveRevisionsModeMultiple`
+- New const `Enum16All`
+- New const `IngressTransportMethodHTTP`
+- New const `Enum15All`
+- New const `Enum18Windows`
+- New const `ContainerAppProvisioningStateInProgress`
+- New const `Enum15Linux`
+- New const `Enum17Linux`
+- New const `Enum20WindowsFunctions`
+- New const `ContainerAppProvisioningStateSucceeded`
+- New const `IngressTransportMethodAuto`
+- New const `Enum16Windows`
+- New const `Enum16Linux`
+- New const `ActiveRevisionsModeSingle`
+- New const `IngressTransportMethodHTTP2`
+- New const `Enum15Windows`
+- New const `RevisionHealthStateUnhealthy`
+- New const `RevisionProvisioningStateDeprovisioning`
+- New const `EnterpriseGradeCdnStatusEnabling`
+- New const `ContainerAppProvisioningStateFailed`
+- New const `Enum17Windows`
+- New const `RevisionHealthStateNone`
+- New const `EnterpriseGradeCdnStatusEnabled`
+- New const `ContainerAppProvisioningStateCanceled`
+- New const `Enum20All`
+- New const `EnterpriseGradeCdnStatusDisabling`
+- New const `Enum19Windows`
+- New const `Enum15LinuxFunctions`
+- New const `Enum20Linux`
+- New const `Enum17All`
+- New const `RevisionHealthStateHealthy`
+- New const `Enum19Linux`
+- New const `RevisionProvisioningStateFailed`
+- New const `Enum19All`
+- New const `RevisionProvisioningStateDeprovisioned`
+- New const `Enum18All`
+- New const `Enum18Linux`
+- New function `*EnvironmentsClientListWorkerPoolSKUsPager.PageResponse() EnvironmentsClientListWorkerPoolSKUsResponse`
+- New function `EnvironmentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (EnvironmentsClientCreateOrUpdateResponse, error)`
+- New function `*EnvironmentsClientSuspendPager.Err() error`
+- New function `*WebAppsClientSwapSlotWithProductionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentsClient.GetWorkerPool(context.Context, string, string, string, *EnvironmentsClientGetWorkerPoolOptions) (EnvironmentsClientGetWorkerPoolResponse, error)`
+- New function `*WebAppsClientListWebJobsPager.Err() error`
+- New function `*ProviderClientGetWebAppStacksPager.NextPage(context.Context) bool`
+- New function `StaticSitesClientDeleteStaticSitePollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientDeleteStaticSiteResponse, error)`
+- New function `*WebAppsClientSwapSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientRestorePoller.ResumeToken() (string, error)`
+- New function `*ContainerAppsClient.ListSecrets(context.Context, string, *ContainerAppsClientListSecretsOptions) (ContainerAppsClientListSecretsResponse, error)`
+- New function `Plan.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientListPublishingCredentialsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `EnvironmentCollection.MarshalJSON() ([]byte, error)`
+- New function `*EnvironmentsClientListWorkerPoolsPager.Err() error`
+- New function `*StaticSitesClientApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken() (string, error)`
+- New function `RevisionProperties.MarshalJSON() ([]byte, error)`
+- New function `WebAppsClientSwapSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientSwapSlotResponse, error)`
+- New function `PossibleActiveRevisionsModeValues() []ActiveRevisionsMode`
+- New function `*WebAppsClientRestoreFromDeletedAppSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*KubeEnvironmentsClientDeletePollerResponse.Resume(context.Context, *KubeEnvironmentsClient, string) error`
+- New function `*WebAppsClientRestoreFromDeletedAppSlotPoller.FinalResponse(context.Context) (WebAppsClientRestoreFromDeletedAppSlotResponse, error)`
+- New function `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse, error)`
+- New function `*WebAppsClientListConfigurationSnapshotInfoSlotPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientListPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientStartNetworkTracePoller.Done() bool`
+- New function `*WebAppsClientSwapSlotPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `*PlansClientListWebAppsByHybridConnectionPager.Err() error`
+- New function `*ContainerAppsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListSiteBackupsSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListDomainOwnershipIdentifiersSlotPager.Err() error`
+- New function `PossibleEnum20Values() []Enum20`
+- New function `*WebAppsClientListPublicCertificatesPager.Err() error`
+- New function `*EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `*EnvironmentsClientCreateOrUpdateWorkerPoolPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StaticSitesClientGetPrivateEndpointConnectionListPager.NextPage(context.Context) bool`
+- New function `WebAppsClientCreateOrUpdateSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateOrUpdateSlotResponse, error)`
+- New function `*WebAppsClientCreateMSDeployOperationSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*EnvironmentsClientCreateOrUpdateMultiRolePoolPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentsClientGetInboundNetworkDependenciesEndpointsPager.PageResponse() EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse`
+- New function `*WebAppsClientListInstanceFunctionsSlotPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPoller.Done() bool`
+- New function `*WebAppsClientListSlotDifferencesSlotPager.PageResponse() WebAppsClientListSlotDifferencesSlotResponse`
+- New function `WebAppsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateOrUpdateResponse, error)`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationSlotPoller.FinalResponse(context.Context) (WebAppsClientCreateInstanceMSDeployOperationSlotResponse, error)`
+- New function `*StaticSitesClientGetUserProvidedFunctionAppsForStaticSitePager.PageResponse() StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse`
+- New function `CertificateOrdersClientCreateOrUpdateCertificatePollerResponse.PollUntilDone(context.Context, time.Duration) (CertificateOrdersClientCreateOrUpdateCertificateResponse, error)`
+- New function `*WebAppsClientRestoreFromBackupBlobSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*EnvironmentsClientListWorkerPoolSKUsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientGetSiteConnectionStringKeyVaultReferencesPager.PageResponse() WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse`
+- New function `*EnvironmentsClientListMultiRolePoolSKUsPager.PageResponse() EnvironmentsClientListMultiRolePoolSKUsResponse`
+- New function `*PlansClient.Update(context.Context, string, string, PlanPatchResource, *PlansClientUpdateOptions) (PlansClientUpdateResponse, error)`
+- New function `*WebAppsClientListInstanceProcessesPager.PageResponse() WebAppsClientListInstanceProcessesResponse`
+- New function `*StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*WebAppsClientListInstanceProcessModulesPager.Err() error`
+- New function `*WebAppsClientMigrateStoragePoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientListMultiRoleMetricDefinitionsPager.Err() error`
+- New function `*RecommendationsClientListHistoryForWebAppPager.NextPage(context.Context) bool`
+- New function `*CertificateOrdersClientCreateOrUpdatePollerResponse.Resume(context.Context, *CertificateOrdersClient, string) error`
+- New function `*KubeEnvironmentsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientRestoreFromDeletedAppPoller.Done() bool`
+- New function `*ResourceHealthMetadataClientListBySitePager.Err() error`
+- New function `*EnvironmentsClient.GetMultiRolePool(context.Context, string, string, *EnvironmentsClientGetMultiRolePoolOptions) (EnvironmentsClientGetMultiRolePoolResponse, error)`
+- New function `*WebAppsClientListContinuousWebJobsSlotPager.Err() error`
+- New function `*WebAppsClientListHostNameBindingsSlotPager.PageResponse() WebAppsClientListHostNameBindingsSlotResponse`
+- New function `SecretsCollection.MarshalJSON() ([]byte, error)`
+- New function `*DiagnosticsClientListSiteDetectorResponsesSlotPager.PageResponse() DiagnosticsClientListSiteDetectorResponsesSlotResponse`
+- New function `WebAppsClientInstallSiteExtensionSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientInstallSiteExtensionSlotResponse, error)`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSiteBuildPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RecommendationsClientListRecommendedRulesForHostingEnvironmentPager.Err() error`
+- New function `*StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*DiagnosticsClientListSiteDiagnosticCategoriesPager.PageResponse() DiagnosticsClientListSiteDiagnosticCategoriesResponse`
+- New function `*CertificateOrdersClientListByResourceGroupPager.Err() error`
+- New function `*WebAppsClientListConfigurationsPager.Err() error`
+- New function `*DiagnosticsClientListSiteDiagnosticCategoriesSlotPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPoller.FinalResponse(context.Context) (StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse, error)`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationPoller.FinalResponse(context.Context) (WebAppsClientCreateInstanceMSDeployOperationResponse, error)`
+- New function `*ResourceHealthMetadataClientListByResourceGroupPager.PageResponse() ResourceHealthMetadataClientListByResourceGroupResponse`
+- New function `*ContainerAppsRevisionsClient.ListRevisions(string, string, *ContainerAppsRevisionsClientListRevisionsOptions) *ContainerAppsRevisionsClientListRevisionsPager`
+- New function `*WebAppsClientInstallSiteExtensionPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientCreateMSDeployOperationPoller.ResumeToken() (string, error)`
+- New function `*RevisionProperties.UnmarshalJSON([]byte) error`
+- New function `*WebAppsClientRestoreFromBackupBlobSlotPoller.Done() bool`
+- New function `WebAppsClientRestoreFromBackupBlobPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientRestoreFromBackupBlobResponse, error)`
+- New function `*ResourceHealthMetadataClientListBySiteSlotPager.Err() error`
+- New function `*EnvironmentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*CertificateOrdersClientListCertificatesPager.Err() error`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSiteBuildPoller.Done() bool`
+- New function `*EnvironmentsClientChangeVnetPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StaticSitesClientGetStaticSitesByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClient.BeginChangeVnet(context.Context, string, string, VirtualNetworkProfile, *EnvironmentsClientBeginChangeVnetOptions) (EnvironmentsClientChangeVnetPollerResponse, error)`
+- New function `*StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildPager.PageResponse() StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse`
+- New function `*StaticSitesClientGetUserProvidedFunctionAppsForStaticSitePager.NextPage(context.Context) bool`
+- New function `AppCertificatePatchResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `EnvironmentsClientSuspendPollerResponse.PollUntilDone(context.Context, time.Duration) (*EnvironmentsClientSuspendPager, error)`
+- New function `*CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponsePager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListPublishingCredentialsSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientGetAppSettingsKeyVaultReferencesPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientSwapSlotWithProductionPoller.FinalResponse(context.Context) (WebAppsClientSwapSlotWithProductionResponse, error)`
+- New function `AppCertificate.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientRestoreFromDeletedAppSlotPoller.Done() bool`
+- New function `*WebAppsClientListSlotsPager.Err() error`
+- New function `*WebAppsClientListPublishingCredentialsSlotPoller.ResumeToken() (string, error)`
+- New function `NewPlansClient(string, azcore.TokenCredential, *arm.ClientOptions) *PlansClient`
+- New function `*WebAppsClientMigrateMySQLPoller.Poll(context.Context) (*http.Response, error)`
+- New function `PossibleRevisionProvisioningStateValues() []RevisionProvisioningState`
+- New function `*EnvironmentsClient.ListOperations(context.Context, string, string, *EnvironmentsClientListOperationsOptions) (EnvironmentsClientListOperationsResponse, error)`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationSlotPoller.Done() bool`
+- New function `*WebAppsClientListProcessesPager.PageResponse() WebAppsClientListProcessesResponse`
+- New function `*WebAppsClientListPerfMonCountersSlotPager.NextPage(context.Context) bool`
+- New function `*PlansClient.RestartWebApps(context.Context, string, string, *PlansClientRestartWebAppsOptions) (PlansClientRestartWebAppsResponse, error)`
+- New function `*WebAppsClientRestoreSnapshotPoller.FinalResponse(context.Context) (WebAppsClientRestoreSnapshotResponse, error)`
+- New function `*CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponsePager.PageResponse() CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse`
+- New function `*WebAppsClientListConfigurationsPager.PageResponse() WebAppsClientListConfigurationsResponse`
+- New function `*StaticSitesClientDeletePrivateEndpointConnectionPoller.Done() bool`
+- New function `*WebAppsClientListProcessesSlotPager.PageResponse() WebAppsClientListProcessesSlotResponse`
+- New function `*EnvironmentsClientResumePager.NextPage(context.Context) bool`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientCreateOrUpdateSourceControlSlotPoller.FinalResponse(context.Context) (WebAppsClientCreateOrUpdateSourceControlSlotResponse, error)`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionSlotPoller.FinalResponse(context.Context) (WebAppsClientDeletePrivateEndpointConnectionSlotResponse, error)`
+- New function `*EnvironmentsClientGetInboundNetworkDependenciesEndpointsPager.NextPage(context.Context) bool`
+- New function `*ResourceHealthMetadataClientListBySitePager.PageResponse() ResourceHealthMetadataClientListBySiteResponse`
+- New function `*WebAppsClientRestoreFromDeletedAppPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiagnosticsClientListSiteDetectorsPager.Err() error`
+- New function `*WebAppsClientListHostNameBindingsSlotPager.Err() error`
+- New function `*WebAppsClientListConfigurationSnapshotInfoSlotPager.PageResponse() WebAppsClientListConfigurationSnapshotInfoSlotResponse`
+- New function `WebAppsClientCreateInstanceMSDeployOperationPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateInstanceMSDeployOperationResponse, error)`
+- New function `*EnvironmentsClientCreateOrUpdateMultiRolePoolPoller.Done() bool`
+- New function `*EnvironmentsClient.ListWebWorkerMetricDefinitions(string, string, string, *EnvironmentsClientListWebWorkerMetricDefinitionsOptions) *EnvironmentsClientListWebWorkerMetricDefinitionsPager`
+- New function `*WebAppsClientCreateOrUpdateSlotPoller.Done() bool`
+- New function `*EnvironmentsClientDeletePrivateEndpointConnectionPoller.FinalResponse(context.Context) (EnvironmentsClientDeletePrivateEndpointConnectionResponse, error)`
+- New function `RevisionProvisioningState.ToPtr() *RevisionProvisioningState`
+- New function `*WebAppsClientCreateInstanceFunctionSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ProviderClientGetFunctionAppStacksForLocationPager.NextPage(context.Context) bool`
+- New function `*CertificateOrdersClient.UpdateCertificate(context.Context, string, string, string, CertificatePatchResource, *CertificateOrdersClientUpdateCertificateOptions) (CertificateOrdersClientUpdateCertificateResponse, error)`
+- New function `*EnvironmentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (EnvironmentsClientCreateOrUpdateResponse, error)`
+- New function `*CertificateOrdersClient.RetrieveCertificateActions(context.Context, string, string, *CertificateOrdersClientRetrieveCertificateActionsOptions) (CertificateOrdersClientRetrieveCertificateActionsResponse, error)`
+- New function `*DomainsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClient.BeginSuspend(context.Context, string, string, *EnvironmentsClientBeginSuspendOptions) (EnvironmentsClientSuspendPollerResponse, error)`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationPoller.FinalResponse(context.Context) (WebAppsClientStartWebSiteNetworkTraceOperationResponse, error)`
+- New function `*EnvironmentsClientListUsagesPager.PageResponse() EnvironmentsClientListUsagesResponse`
+- New function `*EnvironmentsClientSuspendPollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `PossibleEnterpriseGradeCdnStatusValues() []EnterpriseGradeCdnStatus`
+- New function `*EnvironmentsClient.ListWorkerPools(string, string, *EnvironmentsClientListWorkerPoolsOptions) *EnvironmentsClientListWorkerPoolsPager`
+- New function `*RecommendationsClientListHistoryForHostingEnvironmentPager.Err() error`
+- New function `*WebAppsClientStartNetworkTraceSlotPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotPager.Err() error`
+- New function `*EnvironmentsClientDeletePrivateEndpointConnectionPoller.Done() bool`
+- New function `*RecommendationsClientListRecommendedRulesForWebAppPager.NextPage(context.Context) bool`
+- New function `CustomHostnameSitesProperties.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientListConfigurationSnapshotInfoSlotPager.Err() error`
+- New function `*WebAppsClientGetAppSettingsKeyVaultReferencesSlotPager.NextPage(context.Context) bool`
+- New function `AppCertificateCollection.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientRestoreSnapshotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientCreateOrUpdateSourceControlSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListUsagesPager.PageResponse() WebAppsClientListUsagesResponse`
+- New function `*EnvironmentsClientListMultiRolePoolsPager.NextPage(context.Context) bool`
+- New function `*ProviderClientListOperationsPager.PageResponse() ProviderClientListOperationsResponse`
+- New function `*CertificateOrdersClient.Reissue(context.Context, string, string, ReissueCertificateOrderRequest, *CertificateOrdersClientReissueOptions) (CertificateOrdersClientReissueResponse, error)`
+- New function `WebAppsClientListPublishingCredentialsPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientListPublishingCredentialsResponse, error)`
+- New function `*StaticSitesClientDeleteStaticSiteBuildPoller.FinalResponse(context.Context) (StaticSitesClientDeleteStaticSiteBuildResponse, error)`
+- New function `PlansClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PlansClientCreateOrUpdateResponse, error)`
+- New function `*ContainerAppsClient.BeginDelete(context.Context, string, string, *ContainerAppsClientBeginDeleteOptions) (ContainerAppsClientDeletePollerResponse, error)`
+- New function `*EnvironmentsClientListWebWorkerUsagesPager.PageResponse() EnvironmentsClientListWebWorkerUsagesResponse`
+- New function `*StaticSitesClientListStaticSiteCustomDomainsPager.PageResponse() StaticSitesClientListStaticSiteCustomDomainsResponse`
+- New function `*WebAppsClientListPublicCertificatesSlotPager.PageResponse() WebAppsClientListPublicCertificatesSlotResponse`
+- New function `*WebAppsClientListByResourceGroupPager.Err() error`
+- New function `*WebAppsClientListTriggeredWebJobHistoryPager.Err() error`
+- New function `*EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `*WebAppsClientListSnapshotsPager.Err() error`
+- New function `*EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `Enum20.ToPtr() *Enum20`
+- New function `*WebAppsClientCreateFunctionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListHostNameBindingsPager.PageResponse() WebAppsClientListHostNameBindingsResponse`
+- New function `*WebAppsClientRestoreFromDeletedAppPoller.ResumeToken() (string, error)`
+- New function `*DomainsClientListByResourceGroupPager.PageResponse() DomainsClientListByResourceGroupResponse`
+- New function `WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateOrUpdateSourceControlSlotResponse, error)`
+- New function `*WebAppsClientListProcessesPager.Err() error`
+- New function `*EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection(context.Context, string, string, string, PrivateLinkConnectionApprovalRequestResource, *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse, error)`
+- New function `*WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotPager.PageResponse() WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse`
+- New function `*EnvironmentsClientListCapacitiesPager.PageResponse() EnvironmentsClientListCapacitiesResponse`
+- New function `*KubeEnvironmentsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSitePoller.Done() bool`
+- New function `*WebAppsClientListSlotDifferencesFromProductionPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientListPublishingCredentialsSlotPoller.Done() bool`
+- New function `*WebAppsClientListInstanceProcessThreadsPager.PageResponse() WebAppsClientListInstanceProcessThreadsResponse`
+- New function `*EnvironmentsClient.ListMultiRolePools(string, string, *EnvironmentsClientListMultiRolePoolsOptions) *EnvironmentsClientListMultiRolePoolsPager`
+- New function `*CertificateOrdersClient.GetCertificate(context.Context, string, string, string, *CertificateOrdersClientGetCertificateOptions) (CertificateOrdersClientGetCertificateResponse, error)`
+- New function `*PlansClientListByResourceGroupPager.PageResponse() PlansClientListByResourceGroupResponse`
+- New function `*PlansClient.ListWebApps(string, string, *PlansClientListWebAppsOptions) *PlansClientListWebAppsPager`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentsClient.BeginDelete(context.Context, string, string, *EnvironmentsClientBeginDeleteOptions) (EnvironmentsClientDeletePollerResponse, error)`
+- New function `*StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*WebAppsClientGetPrivateEndpointConnectionListPager.NextPage(context.Context) bool`
+- New function `ContainerAppCollection.MarshalJSON() ([]byte, error)`
+- New function `*EnvironmentsClientCreateOrUpdateMultiRolePoolPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionPoller.Done() bool`
+- New function `*StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildPager.Err() error`
+- New function `*EnvironmentsClient.BeginCreateOrUpdateMultiRolePool(context.Context, string, string, WorkerPoolResource, *EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions) (EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse, error)`
+- New function `*StaticSitesClientDetachStaticSitePollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*WebAppsClientListSiteBackupsPager.PageResponse() WebAppsClientListSiteBackupsResponse`
+- New function `*WebAppsClientListInstanceProcessThreadsSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListInstanceFunctionsSlotPager.Err() error`
+- New function `*WebAppsClientRestoreSlotPoller.ResumeToken() (string, error)`
+- New function `*CertificateOrdersClientCreateOrUpdateCertificatePoller.Done() bool`
+- New function `*EnvironmentsClientDeletePrivateEndpointConnectionPoller.ResumeToken() (string, error)`
+- New function `PlanPatchResource.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientListSiteBackupsPager.Err() error`
+- New function `*WebAppsClientListPublishingCredentialsPoller.FinalResponse(context.Context) (WebAppsClientListPublishingCredentialsResponse, error)`
+- New function `*StaticSitesClientListPager.PageResponse() StaticSitesClientListResponse`
+- New function `*EnvironmentsClient.BeginResume(context.Context, string, string, *EnvironmentsClientBeginResumeOptions) (EnvironmentsClientResumePollerResponse, error)`
+- New function `PossibleEnum17Values() []Enum17`
+- New function `WebAppsClientCreateOrUpdateSourceControlPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateOrUpdateSourceControlResponse, error)`
+- New function `*PlansClient.ListHybridConnectionKeys(context.Context, string, string, string, string, *PlansClientListHybridConnectionKeysOptions) (PlansClientListHybridConnectionKeysResponse, error)`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationSlotPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClient.GetDiagnosticsItem(context.Context, string, string, string, *EnvironmentsClientGetDiagnosticsItemOptions) (EnvironmentsClientGetDiagnosticsItemResponse, error)`
+- New function `*WebAppsClientListWebJobsSlotPager.PageResponse() WebAppsClientListWebJobsSlotResponse`
+- New function `*RecommendationsClientListPager.NextPage(context.Context) bool`
+- New function `WebAppsClientRestoreSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientRestoreSlotResponse, error)`
+- New function `*WebAppsClientListInstanceProcessThreadsPager.Err() error`
+- New function `*WebAppsClientListPerfMonCountersPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListSiteExtensionsPager.PageResponse() WebAppsClientListSiteExtensionsResponse`
+- New function `*StaticSitesClientGetPrivateEndpointConnectionListPager.PageResponse() StaticSitesClientGetPrivateEndpointConnectionListResponse`
+- New function `Configuration.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientRestoreSnapshotSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*ProviderClientGetWebAppStacksPager.PageResponse() ProviderClientGetWebAppStacksResponse`
+- New function `*EnvironmentsClientDeletePrivateEndpointConnectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClient.GetOneDeployStatus(context.Context, string, string, *WebAppsClientGetOneDeployStatusOptions) (WebAppsClientGetOneDeployStatusResponse, error)`
+- New function `*StaticSitesClientDetachStaticSitePoller.Done() bool`
+- New function `*StaticSitesClientDeleteStaticSitePoller.FinalResponse(context.Context) (StaticSitesClientDeleteStaticSiteResponse, error)`
+- New function `WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientDeletePrivateEndpointConnectionSlotResponse, error)`
+- New function `*WebAppsClientListSnapshotsSlotPager.PageResponse() WebAppsClientListSnapshotsSlotResponse`
+- New function `*EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsPager.PageResponse() EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse`
+- New function `*CertificateOrdersClient.ValidatePurchaseInformation(context.Context, CertificateOrder, *CertificateOrdersClientValidatePurchaseInformationOptions) (CertificateOrdersClientValidatePurchaseInformationResponse, error)`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientListConfigurationSnapshotInfoPager.PageResponse() WebAppsClientListConfigurationSnapshotInfoResponse`
+- New function `EnvironmentsClientResumePollerResponse.PollUntilDone(context.Context, time.Duration) (*EnvironmentsClientResumePager, error)`
+- New function `*ContainerAppsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `AppCertificateProperties.MarshalJSON() ([]byte, error)`
+- New function `*DiagnosticsClientListSiteAnalysesPager.PageResponse() DiagnosticsClientListSiteAnalysesResponse`
+- New function `*WebAppsClientInstallSiteExtensionPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientSwapSlotWithProductionPoller.ResumeToken() (string, error)`
+- New function `*KubeEnvironmentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*DiagnosticsClientListSiteDetectorResponsesPager.PageResponse() DiagnosticsClientListSiteDetectorResponsesResponse`
+- New function `Enum15.ToPtr() *Enum15`
+- New function `*WebAppsClientGetPrivateEndpointConnectionListSlotPager.Err() error`
+- New function `*RecommendationsClientListRecommendedRulesForWebAppPager.PageResponse() RecommendationsClientListRecommendedRulesForWebAppResponse`
+- New function `*WebAppsClientCreateMSDeployOperationSlotPoller.FinalResponse(context.Context) (WebAppsClientCreateMSDeployOperationSlotResponse, error)`
+- New function `*WebAppsClientCreateOrUpdateSourceControlPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*StaticSitesClientListStaticSiteUsersPager.PageResponse() StaticSitesClientListStaticSiteUsersResponse`
+- New function `PlanProperties.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientCreateOrUpdateSourceControlSlotPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientListContinuousWebJobsSlotPager.PageResponse() WebAppsClientListContinuousWebJobsSlotResponse`
+- New function `*StaticSitesClientGetUserProvidedFunctionAppsForStaticSitePager.Err() error`
+- New function `*EnvironmentsClientGetOutboundNetworkDependenciesEndpointsPager.PageResponse() EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse`
+- New function `*EnvironmentsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DeletedWebAppsClientListByLocationPager.NextPage(context.Context) bool`
+- New function `*KubeEnvironmentsClientDeletePoller.Done() bool`
+- New function `*WebAppsClientGetSiteConnectionStringKeyVaultReferencesPager.Err() error`
+- New function `*WebAppsClientMigrateStoragePoller.Done() bool`
+- New function `*StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePoller.FinalResponse(context.Context) (StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse, error)`
+- New function `WebAppsClientRestoreSnapshotSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientRestoreSnapshotSlotResponse, error)`
+- New function `*WebAppsClientListInstanceProcessesPager.NextPage(context.Context) bool`
+- New function `*ProviderClientGetFunctionAppStacksPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListInstanceIdentifiersSlotPager.PageResponse() WebAppsClientListInstanceIdentifiersSlotResponse`
+- New function `*DiagnosticsClientListSiteDetectorsSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationPoller.Done() bool`
+- New function `*EnvironmentsClientChangeVnetPager.PageResponse() EnvironmentsClientChangeVnetResponse`
+- New function `*EnvironmentsClient.GetAseV3NetworkingConfiguration(context.Context, string, string, *EnvironmentsClientGetAseV3NetworkingConfigurationOptions) (EnvironmentsClientGetAseV3NetworkingConfigurationResponse, error)`
+- New function `*StaticSitesClientDeleteStaticSitePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ProviderClientGetAvailableStacksOnPremPager.Err() error`
+- New function `*WebAppsClientCreateOrUpdateSourceControlPoller.ResumeToken() (string, error)`
+- New function `*CertificateOrdersClient.Delete(context.Context, string, string, *CertificateOrdersClientDeleteOptions) (CertificateOrdersClientDeleteResponse, error)`
+- New function `*CertificateOrdersClientListPager.Err() error`
+- New function `*WebAppsClientListProcessesPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListBackupsPager.Err() error`
+- New function `*DeletedWebAppsClientListPager.PageResponse() DeletedWebAppsClientListResponse`
+- New function `Template.MarshalJSON() ([]byte, error)`
+- New function `*StaticSitesClientGetPrivateEndpointConnectionListPager.Err() error`
+- New function `*DomainsClientListRecommendationsPager.PageResponse() DomainsClientListRecommendationsResponse`
+- New function `*DiagnosticsClientListSiteDetectorsPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSiteBuildPoller.FinalResponse(context.Context) (StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse, error)`
+- New function `*WebAppsClientListHostNameBindingsSlotPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPoller.FinalResponse(context.Context) (EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse, error)`
+- New function `EnvironmentsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (EnvironmentsClientDeleteResponse, error)`
+- New function `*WebAppsClientListBackupsPager.NextPage(context.Context) bool`
+- New function `*ProviderClientGetWebAppStacksForLocationPager.Err() error`
+- New function `*WebAppsClientListSnapshotsFromDRSecondaryPager.Err() error`
+- New function `*WebAppsClientSwapSlotWithProductionPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*EnvironmentsClientSuspendPager.NextPage(context.Context) bool`
+- New function `*DeletedWebAppsClientListByLocationPager.PageResponse() DeletedWebAppsClientListByLocationResponse`
+- New function `*EnvironmentsClientListByResourceGroupPager.Err() error`
+- New function `EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse.PollUntilDone(context.Context, time.Duration) (EnvironmentsClientCreateOrUpdateMultiRolePoolResponse, error)`
+- New function `*CertificateOrdersClient.List(*CertificateOrdersClientListOptions) *CertificateOrdersClientListPager`
+- New function `*CertificatesClientListByResourceGroupPager.Err() error`
+- New function `PossibleEnum15Values() []Enum15`
+- New function `*WebAppsClientStartNetworkTracePoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions(string, string, string, string, *EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions) *EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsPager`
+- New function `EnvironmentResource.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientListProcessModulesPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListPublishingCredentialsSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientSwapSlotWithProductionPoller.Done() bool`
+- New function `*KubeEnvironmentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*StaticSitesClientDeleteStaticSiteBuildPoller.ResumeToken() (string, error)`
+- New function `WebAppsClientMigrateMySQLPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientMigrateMySQLResponse, error)`
+- New function `WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateInstanceMSDeployOperationSlotResponse, error)`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*WebAppsClientListSiteExtensionsSlotPager.Err() error`
+- New function `WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse, error)`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*ContainerAppsRevisionsClientListRevisionsPager.Err() error`
+- New function `WebAppsClientRestorePollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientRestoreResponse, error)`
+- New function `*WebAppsClientListByResourceGroupPager.PageResponse() WebAppsClientListByResourceGroupResponse`
+- New function `*StaticSitesClientDeleteStaticSiteCustomDomainPoller.FinalResponse(context.Context) (StaticSitesClientDeleteStaticSiteCustomDomainResponse, error)`
+- New function `*WebAppsClientListProcessModulesSlotPager.NextPage(context.Context) bool`
+- New function `EnterpriseGradeCdnStatus.ToPtr() *EnterpriseGradeCdnStatus`
+- New function `*WebAppsClientStartNetworkTraceSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientInstallSiteExtensionSlotPoller.ResumeToken() (string, error)`
+- New function `*TopLevelDomainsClientListPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientListStaticSiteFunctionsPager.Err() error`
+- New function `*WebAppsClientListSlotsPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse, error)`
+- New function `*DomainsClientListByResourceGroupPager.Err() error`
+- New function `*WebAppsClientListBasicPublishingCredentialsPoliciesPager.NextPage(context.Context) bool`
+- New function `*CertificateOrdersClient.RetrieveSiteSeal(context.Context, string, string, SiteSealRequest, *CertificateOrdersClientRetrieveSiteSealOptions) (CertificateOrdersClientRetrieveSiteSealResponse, error)`
+- New function `*WebAppsClientRestoreFromBackupBlobSlotPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientListMultiRolePoolSKUsPager.NextPage(context.Context) bool`
+- New function `*CertificateOrdersClientListPager.NextPage(context.Context) bool`
+- New function `*CertificatesClientListPager.Err() error`
+- New function `*PlansClientListWebAppsPager.Err() error`
+- New function `*WebAppsClientListBasicPublishingCredentialsPoliciesSlotPager.NextPage(context.Context) bool`
+- New function `*DiagnosticsClientListSiteDiagnosticCategoriesSlotPager.Err() error`
+- New function `CertificateOrdersClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CertificateOrdersClientCreateOrUpdateResponse, error)`
+- New function `*EnvironmentsClientListByResourceGroupPager.PageResponse() EnvironmentsClientListByResourceGroupResponse`
+- New function `*StaticSitesClientDeleteStaticSiteBuildPoller.Done() bool`
+- New function `*EnvironmentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StaticSitesClientListStaticSiteCustomDomainsPager.Err() error`
+- New function `*EnvironmentsClient.ListAppServicePlans(string, string, *EnvironmentsClientListAppServicePlansOptions) *EnvironmentsClientListAppServicePlansPager`
+- New function `*ProviderClientGetWebAppStacksPager.Err() error`
+- New function `WebAppsClientCreateMSDeployOperationPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateMSDeployOperationResponse, error)`
+- New function `*WebAppsClientListSnapshotsFromDRSecondaryPager.PageResponse() WebAppsClientListSnapshotsFromDRSecondaryResponse`
+- New function `*PlansClient.DeleteVnetRoute(context.Context, string, string, string, string, *PlansClientDeleteVnetRouteOptions) (PlansClientDeleteVnetRouteResponse, error)`
+- New function `*WebAppsClientListWebJobsPager.NextPage(context.Context) bool`
+- New function `*CertificateOrdersClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `PossibleRevisionHealthStateValues() []RevisionHealthState`
+- New function `*WebAppsClientListProcessModulesPager.Err() error`
+- New function `*ProviderClientListOperationsPager.Err() error`
+- New function `*WebAppsClientListSlotDifferencesFromProductionPager.PageResponse() WebAppsClientListSlotDifferencesFromProductionResponse`
+- New function `*ContainerAppsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientCreateMSDeployOperationPoller.FinalResponse(context.Context) (WebAppsClientCreateMSDeployOperationResponse, error)`
+- New function `*WebAppsClientCreateMSDeployOperationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListConfigurationsSlotPager.NextPage(context.Context) bool`
+- New function `*CertificateOrdersClient.DeleteCertificate(context.Context, string, string, string, *CertificateOrdersClientDeleteCertificateOptions) (CertificateOrdersClientDeleteCertificateResponse, error)`
+- New function `*CertificateOrdersClient.ListCertificates(string, string, *CertificateOrdersClientListCertificatesOptions) *CertificateOrdersClientListCertificatesPager`
+- New function `*WebAppsClientListPager.NextPage(context.Context) bool`
+- New function `*ContainerAppsClient.ListBySubscription(*ContainerAppsClientListBySubscriptionOptions) *ContainerAppsClientListBySubscriptionPager`
+- New function `*PlansClient.GetHybridConnectionPlanLimit(context.Context, string, string, *PlansClientGetHybridConnectionPlanLimitOptions) (PlansClientGetHybridConnectionPlanLimitResponse, error)`
+- New function `*WebAppsClientListInstanceProcessesSlotPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientListWebWorkerUsagesPager.NextPage(context.Context) bool`
+- New function `*DiagnosticsClientListSiteDiagnosticCategoriesSlotPager.PageResponse() DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse`
+- New function `*WebAppsClientListConfigurationsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListDomainOwnershipIdentifiersSlotPager.NextPage(context.Context) bool`
+- New function `*PlansClient.ListUsages(string, string, *PlansClientListUsagesOptions) *PlansClientListUsagesPager`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `CustomHostnameSitesCollection.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientListPublicCertificatesSlotPager.NextPage(context.Context) bool`
+- New function `*PlansClientListUsagesPager.NextPage(context.Context) bool`
+- New function `*KubeEnvironmentsClientListBySubscriptionPager.Err() error`
+- New function `*CertificateOrdersClientListPager.PageResponse() CertificateOrdersClientListResponse`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionPoller.Done() bool`
+- New function `*PlansClient.CreateOrUpdateVnetRoute(context.Context, string, string, string, string, VnetRoute, *PlansClientCreateOrUpdateVnetRouteOptions) (PlansClientCreateOrUpdateVnetRouteResponse, error)`
+- New function `*WebAppsClientListProcessThreadsSlotPager.Err() error`
+- New function `*EnvironmentsClient.Update(context.Context, string, string, EnvironmentPatchResource, *EnvironmentsClientUpdateOptions) (EnvironmentsClientUpdateResponse, error)`
+- New function `*WebAppsClientCreateInstanceFunctionSlotPoller.Done() bool`
+- New function `*StaticSitesClientListPager.Err() error`
+- New function `*EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsPager.Err() error`
+- New function `Enum19.ToPtr() *Enum19`
+- New function `CertificateOrderPatchResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*EnvironmentsClient.GetPrivateLinkResources(context.Context, string, string, *EnvironmentsClientGetPrivateLinkResourcesOptions) (EnvironmentsClientGetPrivateLinkResourcesResponse, error)`
+- New function `*EnvironmentsClientGetPrivateEndpointConnectionListPager.PageResponse() EnvironmentsClientGetPrivateEndpointConnectionListResponse`
+- New function `*WebAppsClientStartNetworkTracePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*EnvironmentsClientSuspendPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListFunctionsPager.PageResponse() WebAppsClientListFunctionsResponse`
+- New function `*ContainerAppsClientListByResourceGroupPager.PageResponse() ContainerAppsClientListByResourceGroupResponse`
+- New function `*DiagnosticsClientListHostingEnvironmentDetectorResponsesPager.Err() error`
+- New function `*EnvironmentsClientChangeVnetPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientListWebWorkerMetricDefinitionsPager.NextPage(context.Context) bool`
+- New function `*CertificatesClientListByResourceGroupPager.PageResponse() CertificatesClientListByResourceGroupResponse`
+- New function `*ContainerAppsClient.BeginCreateOrUpdate(context.Context, string, string, ContainerApp, *ContainerAppsClientBeginCreateOrUpdateOptions) (ContainerAppsClientCreateOrUpdatePollerResponse, error)`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationPoller.Done() bool`
+- New function `WebAppsClientRestoreFromBackupBlobSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientRestoreFromBackupBlobSlotResponse, error)`
+- New function `*ContainerAppsClientListBySubscriptionPager.Err() error`
+- New function `*WebAppsClientListProcessThreadsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListPager.Err() error`
+- New function `WebAppsClientRestoreFromDeletedAppPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientRestoreFromDeletedAppResponse, error)`
+- New function `*RecommendationsClientListRecommendedRulesForHostingEnvironmentPager.PageResponse() RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse`
+- New function `*WebAppsClientInstallSiteExtensionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StaticSitesClientDeleteStaticSiteBuildPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSitePoller.FinalResponse(context.Context) (StaticSitesClientCreateZipDeploymentForStaticSiteResponse, error)`
+- New function `*WebAppsClientCreateFunctionPoller.FinalResponse(context.Context) (WebAppsClientCreateFunctionResponse, error)`
+- New function `*PlansClientListWebAppsPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClient.ListMultiRoleMetricDefinitions(string, string, *EnvironmentsClientListMultiRoleMetricDefinitionsOptions) *EnvironmentsClientListMultiRoleMetricDefinitionsPager`
+- New function `*WebAppsClientGetAppSettingsKeyVaultReferencesSlotPager.Err() error`
+- New function `WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientStartWebSiteNetworkTraceOperationResponse, error)`
+- New function `CertificateOrder.MarshalJSON() ([]byte, error)`
+- New function `*EnvironmentsClientListUsagesPager.Err() error`
+- New function `*StaticSitesClientApproveOrRejectPrivateEndpointConnectionPoller.FinalResponse(context.Context) (StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse, error)`
+- New function `*PlansClientListWebAppsByHybridConnectionPager.PageResponse() PlansClientListWebAppsByHybridConnectionResponse`
+- New function `*EnvironmentsClientListWebAppsPager.NextPage(context.Context) bool`
+- New function `StaticSitesClientCreateOrUpdateStaticSitePollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientCreateOrUpdateStaticSiteResponse, error)`
+- New function `*WebAppsClientListContinuousWebJobsPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientListStaticSiteBuildFunctionsPager.Err() error`
+- New function `*PlansClientListPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListSnapshotsSlotPager.Err() error`
+- New function `*WebAppsClientGetPrivateEndpointConnectionListPager.Err() error`
+- New function `*WebAppsClientListUsagesSlotPager.Err() error`
+- New function `*WebAppsClientRestoreSnapshotSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentsClient.BeginDeletePrivateEndpointConnection(context.Context, string, string, string, *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse, error)`
+- New function `*WebAppsClientCreateOrUpdateSourceControlPoller.FinalResponse(context.Context) (WebAppsClientCreateOrUpdateSourceControlResponse, error)`
+- New function `*CertificateOrdersClientCreateOrUpdateCertificatePoller.ResumeToken() (string, error)`
+- New function `*DomainsClientListPager.PageResponse() DomainsClientListResponse`
+- New function `*StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientInstallSiteExtensionSlotPoller.FinalResponse(context.Context) (WebAppsClientInstallSiteExtensionSlotResponse, error)`
+- New function `*WebAppsClientMigrateMySQLPoller.FinalResponse(context.Context) (WebAppsClientMigrateMySQLResponse, error)`
+- New function `*EnvironmentsClientSuspendPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListInstanceProcessesPager.Err() error`
+- New function `*EnvironmentsClientDeletePoller.FinalResponse(context.Context) (EnvironmentsClientDeleteResponse, error)`
+- New function `*EnvironmentsClientChangeVnetPager.Err() error`
+- New function `*EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken() (string, error)`
+- New function `*ProviderClientGetAvailableStacksOnPremPager.NextPage(context.Context) bool`
+- New function `*CertificateOrderProperties.UnmarshalJSON([]byte) error`
+- New function `*DiagnosticsClientListSiteAnalysesPager.NextPage(context.Context) bool`
+- New function `*DomainsClientCreateOrUpdatePoller.Done() bool`
+- New function `PossibleEnum18Values() []Enum18`
+- New function `*WebAppsClientListProcessesSlotPager.Err() error`
+- New function `*DiagnosticsClientListSiteAnalysesSlotPager.Err() error`
+- New function `*EnvironmentsClientChangeVnetPoller.Done() bool`
+- New function `*PlansClientListHybridConnectionsPager.PageResponse() PlansClientListHybridConnectionsResponse`
+- New function `*WebAppsClientRestoreSnapshotSlotPoller.Done() bool`
+- New function `*KubeEnvironmentsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListPublishingCredentialsPoller.ResumeToken() (string, error)`
+- New function `*StaticSitesClientListStaticSiteFunctionsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListPublicCertificatesPager.PageResponse() WebAppsClientListPublicCertificatesResponse`
+- New function `*WebAppsClientMigrateMySQLPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientGetAppSettingsKeyVaultReferencesPager.Err() error`
+- New function `*WebAppsClientCreateInstanceFunctionSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*EnvironmentsClient.Get(context.Context, string, string, *EnvironmentsClientGetOptions) (EnvironmentsClientGetResponse, error)`
+- New function `*StaticSitesClientDetachStaticSitePoller.ResumeToken() (string, error)`
+- New function `*PlansClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListUsagesPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientCreateMSDeployOperationPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientListPager.NextPage(context.Context) bool`
+- New function `WebAppsClientMigrateStoragePollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientMigrateStorageResponse, error)`
+- New function `*EnvironmentsClientListMultiRolePoolsPager.Err() error`
+- New function `*DomainsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClient.List(*EnvironmentsClientListOptions) *EnvironmentsClientListPager`
+- New function `EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse.PollUntilDone(context.Context, time.Duration) (EnvironmentsClientDeletePrivateEndpointConnectionResponse, error)`
+- New function `*PlansClient.BeginCreateOrUpdate(context.Context, string, string, Plan, *PlansClientBeginCreateOrUpdateOptions) (PlansClientCreateOrUpdatePollerResponse, error)`
+- New function `PlanPatchResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientGetPrivateEndpointConnectionListSlotPager.NextPage(context.Context) bool`
+- New function `*DomainsClientCreateOrUpdatePollerResponse.Resume(context.Context, *DomainsClient, string) error`
+- New function `WebAppsClientCreateInstanceFunctionSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateInstanceFunctionSlotResponse, error)`
+- New function `*PlansClient.Get(context.Context, string, string, *PlansClientGetOptions) (PlansClientGetResponse, error)`
+- New function `*WebAppsClientListProcessThreadsSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientRestoreFromBackupBlobPoller.FinalResponse(context.Context) (WebAppsClientRestoreFromBackupBlobResponse, error)`
+- New function `*WebAppsClientSwapSlotPoller.FinalResponse(context.Context) (WebAppsClientSwapSlotResponse, error)`
+- New function `*WebAppsClientListSnapshotsFromDRSecondarySlotPager.PageResponse() WebAppsClientListSnapshotsFromDRSecondarySlotResponse`
+- New function `*PlansClient.GetServerFarmSKUs(context.Context, string, string, *PlansClientGetServerFarmSKUsOptions) (PlansClientGetServerFarmSKUsResponse, error)`
+- New function `*PlansClient.GetVnetGateway(context.Context, string, string, string, string, *PlansClientGetVnetGatewayOptions) (PlansClientGetVnetGatewayResponse, error)`
+- New function `*WebAppsClientListInstanceIdentifiersSlotPager.Err() error`
+- New function `*KubeEnvironmentsClientDeletePoller.FinalResponse(context.Context) (KubeEnvironmentsClientDeleteResponse, error)`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePoller.ResumeToken() (string, error)`
+- New function `PlanCollection.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientCreateOrUpdateSourceControlSlotPoller.Done() bool`
+- New function `*DiagnosticsClientListSiteDetectorsPager.PageResponse() DiagnosticsClientListSiteDetectorsResponse`
+- New function `EnvironmentsClientChangeVnetPollerResponse.PollUntilDone(context.Context, time.Duration) (*EnvironmentsClientChangeVnetPager, error)`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `RevisionHealthState.ToPtr() *RevisionHealthState`
+- New function `*WebAppsClientListConfigurationsSlotPager.Err() error`
+- New function `*EnvironmentsClientListWebWorkerUsagesPager.Err() error`
+- New function `*StaticSitesClientListStaticSiteBuildFunctionsPager.PageResponse() StaticSitesClientListStaticSiteBuildFunctionsResponse`
+- New function `*WebAppsClientListTriggeredWebJobsSlotPager.Err() error`
+- New function `*WebAppsClientListWebJobsSlotPager.Err() error`
+- New function `WebAppsClientRestoreSnapshotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientRestoreSnapshotResponse, error)`
+- New function `*PlansClientListPager.PageResponse() PlansClientListResponse`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PlansClient.DeleteHybridConnection(context.Context, string, string, string, string, *PlansClientDeleteHybridConnectionOptions) (PlansClientDeleteHybridConnectionResponse, error)`
+- New function `*PlansClientListUsagesPager.PageResponse() PlansClientListUsagesResponse`
+- New function `*WebAppsClientListSlotsPager.PageResponse() WebAppsClientListSlotsResponse`
+- New function `AppCertificatePatchResource.MarshalJSON() ([]byte, error)`
+- New function `*CertificateOrdersClient.Get(context.Context, string, string, *CertificateOrdersClientGetOptions) (CertificateOrdersClientGetResponse, error)`
+- New function `*WebAppsClientStartNetworkTraceSlotPoller.Done() bool`
+- New function `*PlansClient.ListByResourceGroup(string, *PlansClientListByResourceGroupOptions) *PlansClientListByResourceGroupPager`
+- New function `*StaticSitesClientListStaticSiteBuildFunctionsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientRestoreSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebSiteManagementClientListCustomHostNameSitesPager.Err() error`
+- New function `*EnvironmentsClientChangeVnetPager.NextPage(context.Context) bool`
+- New function `*TopLevelDomainsClientListPager.Err() error`
+- New function `*EnvironmentsClientCreateOrUpdateWorkerPoolPoller.FinalResponse(context.Context) (EnvironmentsClientCreateOrUpdateWorkerPoolResponse, error)`
+- New function `*EnvironmentsClientListPager.Err() error`
+- New function `*WebAppsClientListPerfMonCountersPager.Err() error`
+- New function `StaticSitesClientDetachStaticSitePollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientDetachStaticSiteResponse, error)`
+- New function `*ProviderClientGetWebAppStacksForLocationPager.PageResponse() ProviderClientGetWebAppStacksForLocationResponse`
+- New function `*EnvironmentsClientResumePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PlansClient.UpdateVnetRoute(context.Context, string, string, string, string, VnetRoute, *PlansClientUpdateVnetRouteOptions) (PlansClientUpdateVnetRouteResponse, error)`
+- New function `*WebAppsClientCreateMSDeployOperationSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListDomainOwnershipIdentifiersSlotPager.PageResponse() WebAppsClientListDomainOwnershipIdentifiersSlotResponse`
+- New function `*PlansClient.RebootWorker(context.Context, string, string, string, *PlansClientRebootWorkerOptions) (PlansClientRebootWorkerResponse, error)`
+- New function `*StaticSitesClientListStaticSiteUsersPager.NextPage(context.Context) bool`
+- New function `PossibleIngressTransportMethodValues() []IngressTransportMethod`
+- New function `*CertificateOrdersClientListCertificatesPager.PageResponse() CertificateOrdersClientListCertificatesResponse`
+- New function `*EnvironmentsClientListCapacitiesPager.Err() error`
+- New function `*ResourceHealthMetadataClientListByResourceGroupPager.Err() error`
+- New function `*StaticSitesClientDeleteStaticSiteCustomDomainPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientRestoreFromDeletedAppPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientMigrateStoragePoller.FinalResponse(context.Context) (WebAppsClientMigrateStorageResponse, error)`
+- New function `NewContainerAppsRevisionsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ContainerAppsRevisionsClient`
+- New function `*WebAppsClientListDeploymentsPager.PageResponse() WebAppsClientListDeploymentsResponse`
+- New function `*ContainerAppsClientCreateOrUpdatePoller.FinalResponse(context.Context) (ContainerAppsClientCreateOrUpdateResponse, error)`
+- New function `*RecommendationsClientListPager.PageResponse() RecommendationsClientListResponse`
+- New function `*EnvironmentsClient.UpdateMultiRolePool(context.Context, string, string, WorkerPoolResource, *EnvironmentsClientUpdateMultiRolePoolOptions) (EnvironmentsClientUpdateMultiRolePoolResponse, error)`
+- New function `*WebAppsClientListSiteBackupsSlotPager.Err() error`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionSlotPoller.Done() bool`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*ProviderClientGetFunctionAppStacksForLocationPager.PageResponse() ProviderClientGetFunctionAppStacksForLocationResponse`
+- New function `*StaticSitesClientDeleteStaticSiteBuildPollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*WebAppsClientListBackupsSlotPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller.Done() bool`
+- New function `*WebAppsClientListProcessModulesSlotPager.PageResponse() WebAppsClientListProcessModulesSlotResponse`
+- New function `*ProviderClientGetAvailableStacksPager.Err() error`
+- New function `*WebAppsClientListWebJobsPager.PageResponse() WebAppsClientListWebJobsResponse`
+- New function `*WebAppsClientListDomainOwnershipIdentifiersPager.NextPage(context.Context) bool`
+- New function `*PlansClientListWebAppsByHybridConnectionPager.NextPage(context.Context) bool`
+- New function `*DomainsClientListOwnershipIdentifiersPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListHostNameBindingsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListInstanceProcessThreadsSlotPager.PageResponse() WebAppsClientListInstanceProcessThreadsSlotResponse`
+- New function `*WebAppsClientListSiteExtensionsPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientResumePoller.Done() bool`
+- New function `*WebAppsClientInstallSiteExtensionSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceHealthMetadataClientListBySiteSlotPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientListAppServicePlansPager.PageResponse() EnvironmentsClientListAppServicePlansResponse`
+- New function `*EnvironmentsClientResumePoller.FinalResponse(context.Context) (*EnvironmentsClientResumePager, error)`
+- New function `*WebAppsClientCreateOrUpdateSourceControlPoller.Done() bool`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPoller.Done() bool`
+- New function `*WebAppsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClient.GetInboundNetworkDependenciesEndpoints(string, string, *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) *EnvironmentsClientGetInboundNetworkDependenciesEndpointsPager`
+- New function `*WebAppsClientSwapSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*EnvironmentsClientListMultiRoleUsagesPager.Err() error`
+- New function `*DiagnosticsClientListSiteDetectorResponsesPager.Err() error`
+- New function `*EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientGetStaticSitesByResourceGroupPager.Err() error`
+- New function `*WebAppsClientCreateFunctionPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientChangeVnetPoller.FinalResponse(context.Context) (*EnvironmentsClientChangeVnetPager, error)`
+- New function `*DomainsClient.TransferOut(context.Context, string, string, *DomainsClientTransferOutOptions) (DomainsClientTransferOutResponse, error)`
+- New function `EnvironmentPatchResource.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientGetSiteConnectionStringKeyVaultReferencesPager.NextPage(context.Context) bool`
+- New function `*PlansClient.UpdateVnetGateway(context.Context, string, string, string, string, VnetGateway, *PlansClientUpdateVnetGatewayOptions) (PlansClientUpdateVnetGatewayResponse, error)`
+- New function `*PlansClient.List(*PlansClientListOptions) *PlansClientListPager`
+- New function `*RecommendationsClientListHistoryForWebAppPager.PageResponse() RecommendationsClientListHistoryForWebAppResponse`
+- New function `*DiagnosticsClientListSiteDiagnosticCategoriesPager.Err() error`
+- New function `*WebAppsClientListProcessModulesPager.PageResponse() WebAppsClientListProcessModulesResponse`
+- New function `*ContainerAppsClientCreateOrUpdatePollerResponse.Resume(context.Context, *ContainerAppsClient, string) error`
+- New function `*WebAppsClientListBackupsSlotPager.Err() error`
+- New function `*ContainerAppsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientRestoreFromDeletedAppSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PlansClientListHybridConnectionsPager.Err() error`
+- New function `*StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*EnvironmentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `*CertificateOrdersClientCreateOrUpdateCertificatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CertificateRegistrationProviderClientListOperationsPager.PageResponse() CertificateRegistrationProviderClientListOperationsResponse`
+- New function `Enum16.ToPtr() *Enum16`
+- New function `*DomainRegistrationProviderClientListOperationsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPoller.FinalResponse(context.Context) (WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse, error)`
+- New function `StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientCreateZipDeploymentForStaticSiteResponse, error)`
+- New function `*DomainsClientListOwnershipIdentifiersPager.PageResponse() DomainsClientListOwnershipIdentifiersResponse`
+- New function `*DiagnosticsClientListSiteDiagnosticCategoriesPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientInstallSiteExtensionPoller.Done() bool`
+- New function `*WebAppsClientGetPrivateEndpointConnectionListPager.PageResponse() WebAppsClientGetPrivateEndpointConnectionListResponse`
+- New function `*WebAppsClientListInstanceProcessModulesSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientRestorePoller.Poll(context.Context) (*http.Response, error)`
+- New function `Revision.MarshalJSON() ([]byte, error)`
+- New function `*ContainerAppsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListPager.PageResponse() WebAppsClientListResponse`
+- New function `*StaticSitesClientApproveOrRejectPrivateEndpointConnectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListInstanceIdentifiersPager.PageResponse() WebAppsClientListInstanceIdentifiersResponse`
+- New function `*PlansClient.GetHybridConnection(context.Context, string, string, string, string, *PlansClientGetHybridConnectionOptions) (PlansClientGetHybridConnectionResponse, error)`
+- New function `*WebAppsClientListPerfMonCountersPager.PageResponse() WebAppsClientListPerfMonCountersResponse`
+- New function `*CertificateOrdersClient.VerifyDomainOwnership(context.Context, string, string, *CertificateOrdersClientVerifyDomainOwnershipOptions) (CertificateOrdersClientVerifyDomainOwnershipResponse, error)`
+- New function `*WebAppsClientListTriggeredWebJobsPager.Err() error`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePoller.FinalResponse(context.Context) (StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse, error)`
+- New function `*WebAppsClientListInstanceProcessModulesSlotPager.PageResponse() WebAppsClientListInstanceProcessModulesSlotResponse`
+- New function `*ContainerAppsClientListByResourceGroupPager.Err() error`
+- New function `WebAppsClientSwapSlotWithProductionPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientSwapSlotWithProductionResponse, error)`
+- New function `StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse, error)`
+- New function `*WebAppsClientRestorePoller.Done() bool`
+- New function `IngressTransportMethod.ToPtr() *IngressTransportMethod`
+- New function `*CertificateOrdersClient.Update(context.Context, string, string, CertificateOrderPatchResource, *CertificateOrdersClientUpdateOptions) (CertificateOrdersClientUpdateResponse, error)`
+- New function `KubeEnvironmentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KubeEnvironmentsClientCreateOrUpdateResponse, error)`
+- New function `*EnvironmentsClient.ListUsages(string, string, *EnvironmentsClientListUsagesOptions) *EnvironmentsClientListUsagesPager`
+- New function `*WebAppsClientStartNetworkTraceSlotPoller.FinalResponse(context.Context) (WebAppsClientStartNetworkTraceSlotResponse, error)`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*CertificateOrdersClientCreateOrUpdatePoller.Done() bool`
+- New function `HTTPScaleRule.MarshalJSON() ([]byte, error)`
+- New function `CustomScaleRule.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientListPerfMonCountersSlotPager.Err() error`
+- New function `*TopLevelDomainsClientListAgreementsPager.Err() error`
+- New function `*EnvironmentsClientListWebWorkerMetricDefinitionsPager.PageResponse() EnvironmentsClientListWebWorkerMetricDefinitionsResponse`
+- New function `*WebAppsClientListUsagesSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListConfigurationsSlotPager.PageResponse() WebAppsClientListConfigurationsSlotResponse`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPoller.ResumeToken() (string, error)`
+- New function `*StaticSitesClientDeletePrivateEndpointConnectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClient.GetAuthSettingsV2WithoutSecrets(context.Context, string, string, *WebAppsClientGetAuthSettingsV2WithoutSecretsOptions) (WebAppsClientGetAuthSettingsV2WithoutSecretsResponse, error)`
+- New function `*WebAppsClientListPublishingCredentialsPoller.Done() bool`
+- New function `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error)`
+- New function `*WebAppsClientCreateOrUpdateSlotPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClient.ListByResourceGroup(string, *EnvironmentsClientListByResourceGroupOptions) *EnvironmentsClientListByResourceGroupPager`
+- New function `*StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPoller.ResumeToken() (string, error)`
+- New function `*ContainerAppsClientDeletePoller.Done() bool`
+- New function `*EnvironmentsClientGetInboundNetworkDependenciesEndpointsPager.Err() error`
+- New function `*ProviderClientGetAvailableStacksOnPremPager.PageResponse() ProviderClientGetAvailableStacksOnPremResponse`
+- New function `*AppCertificatePatchResourceProperties.UnmarshalJSON([]byte) error`
+- New function `*WebAppsClientListInstanceIdentifiersPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientDeletePoller.Done() bool`
+- New function `*CertificateOrdersClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientListMultiRoleMetricDefinitionsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientCreateOrUpdateSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PlansClient.GetVnetFromServerFarm(context.Context, string, string, string, *PlansClientGetVnetFromServerFarmOptions) (PlansClientGetVnetFromServerFarmResponse, error)`
+- New function `*WebAppsClientListDeploymentsSlotPager.Err() error`
+- New function `StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse, error)`
+- New function `*WebAppsClientListTriggeredWebJobsPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePoller.Done() bool`
+- New function `*KubeEnvironmentsClientListBySubscriptionPager.PageResponse() KubeEnvironmentsClientListBySubscriptionResponse`
+- New function `*WebAppsClientStartNetworkTracePoller.FinalResponse(context.Context) (WebAppsClientStartNetworkTraceResponse, error)`
+- New function `DomainsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DomainsClientCreateOrUpdateResponse, error)`
+- New function `*WebAppsClientRestoreSlotPoller.Done() bool`
+- New function `*WebAppsClientGetPrivateEndpointConnectionListSlotPager.PageResponse() WebAppsClientGetPrivateEndpointConnectionListSlotResponse`
+- New function `*PlansClient.ListWebAppsByHybridConnection(string, string, string, string, *PlansClientListWebAppsByHybridConnectionOptions) *PlansClientListWebAppsByHybridConnectionPager`
+- New function `EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse.PollUntilDone(context.Context, time.Duration) (EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse, error)`
+- New function `CertificateOrderCollection.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListPublishingCredentialsPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `WebAppsClientStartNetworkTracePollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientStartNetworkTraceResponse, error)`
+- New function `*ResourceHealthMetadataClientListBySiteSlotPager.PageResponse() ResourceHealthMetadataClientListBySiteSlotResponse`
+- New function `*StaticSitesClientDetachStaticSitePoller.FinalResponse(context.Context) (StaticSitesClientDetachStaticSiteResponse, error)`
+- New function `*CertificateOrdersClient.BeginCreateOrUpdate(context.Context, string, string, CertificateOrder, *CertificateOrdersClientBeginCreateOrUpdateOptions) (CertificateOrdersClientCreateOrUpdatePollerResponse, error)`
+- New function `*CertificateOrdersClientCreateOrUpdateCertificatePollerResponse.Resume(context.Context, *CertificateOrdersClient, string) error`
+- New function `*WebAppsClientListPublicCertificatesSlotPager.Err() error`
+- New function `*WebAppsClientListInstanceProcessThreadsSlotPager.Err() error`
+- New function `*RecommendationsClientListHistoryForHostingEnvironmentPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientGetStaticSitesByResourceGroupPager.PageResponse() StaticSitesClientGetStaticSitesByResourceGroupResponse`
+- New function `*DiagnosticsClientListSiteDetectorsSlotPager.PageResponse() DiagnosticsClientListSiteDetectorsSlotResponse`
+- New function `*EnvironmentsClientListMultiRoleUsagesPager.PageResponse() EnvironmentsClientListMultiRoleUsagesResponse`
+- New function `*CertificateOrdersClientListCertificatesPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientRestoreFromBackupBlobPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientListProcessesSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientCreateOrUpdateSourceControlPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentsClientListWebWorkerMetricDefinitionsPager.Err() error`
+- New function `StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientDeleteStaticSiteCustomDomainResponse, error)`
+- New function `*WebSiteManagementClient.ListCustomHostNameSites(*WebSiteManagementClientListCustomHostNameSitesOptions) *WebSiteManagementClientListCustomHostNameSitesPager`
+- New function `*WebAppsClientListInstanceProcessesSlotPager.PageResponse() WebAppsClientListInstanceProcessesSlotResponse`
+- New function `*EnvironmentsClientCreateOrUpdateWorkerPoolPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientGetAppSettingsKeyVaultReferencesSlotPager.PageResponse() WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse`
+- New function `*WebAppsClientListProcessModulesSlotPager.Err() error`
+- New function `*EnvironmentsClient.UpdateAseNetworkingConfiguration(context.Context, string, string, AseV3NetworkingConfiguration, *EnvironmentsClientUpdateAseNetworkingConfigurationOptions) (EnvironmentsClientUpdateAseNetworkingConfigurationResponse, error)`
+- New function `*WebAppsClientListInstanceProcessesSlotPager.Err() error`
+- New function `*WebAppsClientListBasicPublishingCredentialsPoliciesPager.Err() error`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePoller.Done() bool`
+- New function `*EnvironmentsClient.BeginCreateOrUpdateWorkerPool(context.Context, string, string, string, WorkerPoolResource, *EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions) (EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse, error)`
+- New function `*CertificateOrdersClient.ResendEmail(context.Context, string, string, *CertificateOrdersClientResendEmailOptions) (CertificateOrdersClientResendEmailResponse, error)`
+- New function `*StaticSitesClientCreateOrUpdateStaticSitePoller.Done() bool`
+- New function `*DeletedWebAppsClientListPager.Err() error`
+- New function `*PlansClientCreateOrUpdatePoller.Done() bool`
+- New function `*StaticSitesClientDeletePrivateEndpointConnectionPollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `CertificateResource.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientListInstanceIdentifiersPager.Err() error`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientListContinuousWebJobsPager.PageResponse() WebAppsClientListContinuousWebJobsResponse`
+- New function `*CertificatesClientListPager.NextPage(context.Context) bool`
+- New function `*CertificateOrderPatchResourceProperties.UnmarshalJSON([]byte) error`
+- New function `*WebAppsClientSwapSlotPoller.Done() bool`
+- New function `*EnvironmentsClientChangeVnetPollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `*WebAppsClientListInstanceFunctionsSlotPager.PageResponse() WebAppsClientListInstanceFunctionsSlotResponse`
+- New function `*EnvironmentsClient.GetPrivateEndpointConnection(context.Context, string, string, string, *EnvironmentsClientGetPrivateEndpointConnectionOptions) (EnvironmentsClientGetPrivateEndpointConnectionResponse, error)`
+- New function `WebAppsClientDeletePrivateEndpointConnectionPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientDeletePrivateEndpointConnectionResponse, error)`
+- New function `*StaticSitesClientCreateOrUpdateStaticSitePoller.ResumeToken() (string, error)`
+- New function `PossibleEnum19Values() []Enum19`
+- New function `*WebAppsClientListTriggeredWebJobHistoryPager.PageResponse() WebAppsClientListTriggeredWebJobHistoryResponse`
+- New function `*WebAppsClientListTriggeredWebJobHistorySlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientRestoreFromDeletedAppPoller.FinalResponse(context.Context) (WebAppsClientRestoreFromDeletedAppResponse, error)`
+- New function `*PlansClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*WebSiteManagementClientListCustomHostNameSitesPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientListStaticSiteFunctionsPager.PageResponse() StaticSitesClientListStaticSiteFunctionsResponse`
+- New function `*CertificatesClientListPager.PageResponse() CertificatesClientListResponse`
+- New function `*EnvironmentsClientListWorkerPoolSKUsPager.Err() error`
+- New function `NewCertificateOrdersClient(string, azcore.TokenCredential, *arm.ClientOptions) *CertificateOrdersClient`
+- New function `*EnvironmentsClientResumePollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `*PlansClientListByResourceGroupPager.Err() error`
+- New function `*EnvironmentsClient.ListWorkerPoolSKUs(string, string, string, *EnvironmentsClientListWorkerPoolSKUsOptions) *EnvironmentsClientListWorkerPoolSKUsPager`
+- New function `*EnvironmentsClientGetPrivateEndpointConnectionListPager.NextPage(context.Context) bool`
+- New function `*DiagnosticsClientListSiteDetectorResponsesSlotPager.Err() error`
+- New function `*ContainerAppsClient.Get(context.Context, string, string, *ContainerAppsClientGetOptions) (ContainerAppsClientGetResponse, error)`
+- New function `*WebAppsClientRestoreFromBackupBlobSlotPoller.FinalResponse(context.Context) (WebAppsClientRestoreFromBackupBlobSlotResponse, error)`
+- New function `*ContainerAppsRevisionsClientListRevisionsPager.PageResponse() ContainerAppsRevisionsClientListRevisionsResponse`
+- New function `*WebAppsClientRestoreSnapshotPoller.Done() bool`
+- New function `*EnvironmentsClientListWorkerPoolsPager.PageResponse() EnvironmentsClientListWorkerPoolsResponse`
+- New function `*RecommendationsClientListPager.Err() error`
+- New function `*EnvironmentsClientListMultiRoleMetricDefinitionsPager.PageResponse() EnvironmentsClientListMultiRoleMetricDefinitionsResponse`
+- New function `*WebAppsClientListWebJobsSlotPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClient.UpdateWorkerPool(context.Context, string, string, string, WorkerPoolResource, *EnvironmentsClientUpdateWorkerPoolOptions) (EnvironmentsClientUpdateWorkerPoolResponse, error)`
+- New function `*WebAppsClientListSiteExtensionsPager.Err() error`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationSlotPoller.ResumeToken() (string, error)`
+- New function `*DiagnosticsClientListSiteAnalysesPager.Err() error`
+- New function `Enum18.ToPtr() *Enum18`
+- New function `*WebAppsClientListBasicPublishingCredentialsPoliciesPager.PageResponse() WebAppsClientListBasicPublishingCredentialsPoliciesResponse`
+- New function `*RecommendationsClientListRecommendedRulesForWebAppPager.Err() error`
+- New function `*DomainsClientListPager.Err() error`
+- New function `*EnvironmentsClientListPager.PageResponse() EnvironmentsClientListResponse`
+- New function `*EnvironmentsClient.ListWebWorkerUsages(string, string, string, *EnvironmentsClientListWebWorkerUsagesOptions) *EnvironmentsClientListWebWorkerUsagesPager`
+- New function `*CertificateOrdersClient.ResendRequestEmails(context.Context, string, string, NameIdentifier, *CertificateOrdersClientResendRequestEmailsOptions) (CertificateOrdersClientResendRequestEmailsResponse, error)`
+- New function `*ProviderClientGetFunctionAppStacksForLocationPager.Err() error`
+- New function `*WebAppsClientRestoreSlotPoller.FinalResponse(context.Context) (WebAppsClientRestoreSlotResponse, error)`
+- New function `*WebAppsClientListTriggeredWebJobsPager.PageResponse() WebAppsClientListTriggeredWebJobsResponse`
+- New function `*WebAppsClientCreateMSDeployOperationPoller.Done() bool`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSiteBuildPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClient.GetPrivateEndpointConnectionList(string, string, *EnvironmentsClientGetPrivateEndpointConnectionListOptions) *EnvironmentsClientGetPrivateEndpointConnectionListPager`
+- New function `*ContainerAppsRevisionsClient.DeactivateRevision(context.Context, string, string, string, *ContainerAppsRevisionsClientDeactivateRevisionOptions) (ContainerAppsRevisionsClientDeactivateRevisionResponse, error)`
+- New function `*EnvironmentsClientGetOutboundNetworkDependenciesEndpointsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KubeEnvironmentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (KubeEnvironmentsClientCreateOrUpdateResponse, error)`
+- New function `*WebAppsClientListDomainOwnershipIdentifiersPager.Err() error`
+- New function `*WebAppsClientListTriggeredWebJobHistorySlotPager.Err() error`
+- New function `*WebAppsClientCreateInstanceFunctionSlotPoller.FinalResponse(context.Context) (WebAppsClientCreateInstanceFunctionSlotResponse, error)`
+- New function `*DeletedWebAppsClientListByLocationPager.Err() error`
+- New function `*DiagnosticsClientListSiteDetectorsSlotPager.Err() error`
+- New function `*WebAppsClientListSnapshotsFromDRSecondarySlotPager.Err() error`
+- New function `*DomainsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsPager.PageResponse() EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse`
+- New function `*DiagnosticsClientListSiteDetectorResponsesPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClient.ListWebApps(string, string, *EnvironmentsClientListWebAppsOptions) *EnvironmentsClientListWebAppsPager`
+- New function `*WebAppsClientListProcessThreadsPager.PageResponse() WebAppsClientListProcessThreadsResponse`
+- New function `*EnvironmentsClientListWebAppsPager.PageResponse() EnvironmentsClientListWebAppsResponse`
+- New function `*AppCertificateProperties.UnmarshalJSON([]byte) error`
+- New function `*EnvironmentsClientListMultiRoleUsagesPager.NextPage(context.Context) bool`
+- New function `CertificateOrderProperties.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientInstallSiteExtensionPoller.FinalResponse(context.Context) (WebAppsClientInstallSiteExtensionResponse, error)`
+- New function `*ProviderClientGetAvailableStacksPager.PageResponse() ProviderClientGetAvailableStacksResponse`
+- New function `*EnvironmentsClient.Reboot(context.Context, string, string, *EnvironmentsClientRebootOptions) (EnvironmentsClientRebootResponse, error)`
+- New function `*ContainerAppsRevisionsClient.GetRevision(context.Context, string, string, string, *ContainerAppsRevisionsClientGetRevisionOptions) (ContainerAppsRevisionsClientGetRevisionResponse, error)`
+- New function `StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse, error)`
+- New function `*EnvironmentsClientCreateOrUpdateMultiRolePoolPoller.FinalResponse(context.Context) (EnvironmentsClientCreateOrUpdateMultiRolePoolResponse, error)`
+- New function `*WebAppsClientRestoreSnapshotSlotPoller.FinalResponse(context.Context) (WebAppsClientRestoreSnapshotSlotResponse, error)`
+- New function `*WebAppsClientListSlotDifferencesSlotPager.Err() error`
+- New function `*DomainsClientListRecommendationsPager.NextPage(context.Context) bool`
+- New function `*ContainerAppsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientResumePoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientListInstanceProcessModulesSlotPager.Err() error`
+- New function `*CertificateRegistrationProviderClientListOperationsPager.NextPage(context.Context) bool`
+- New function `WebAppsClientCreateFunctionPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateFunctionResponse, error)`
+- New function `*WebAppsClientListBackupsPager.PageResponse() WebAppsClientListBackupsResponse`
+- New function `*WebAppsClientListPerfMonCountersSlotPager.PageResponse() WebAppsClientListPerfMonCountersSlotResponse`
+- New function `*DiagnosticsClientListSiteDetectorResponsesSlotPager.NextPage(context.Context) bool`
+- New function `*KubeEnvironmentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *KubeEnvironmentsClient, string) error`
+- New function `*EnvironmentsClientResumePager.PageResponse() EnvironmentsClientResumeResponse`
+- New function `*ContainerAppsClientCreateOrUpdatePoller.Done() bool`
+- New function `*WebAppsClientListPublishingCredentialsSlotPoller.FinalResponse(context.Context) (WebAppsClientListPublishingCredentialsSlotResponse, error)`
+- New function `*WebAppsClientRestoreSnapshotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*EnvironmentsClientListMultiRolePoolsPager.PageResponse() EnvironmentsClientListMultiRolePoolsResponse`
+- New function `*EnvironmentsClient.ListMultiRolePoolSKUs(string, string, *EnvironmentsClientListMultiRolePoolSKUsOptions) *EnvironmentsClientListMultiRolePoolSKUsPager`
+- New function `ContainerApp.MarshalJSON() ([]byte, error)`
+- New function `*PlansClient.Delete(context.Context, string, string, *PlansClientDeleteOptions) (PlansClientDeleteResponse, error)`
+- New function `*EnvironmentsClientListMultiRolePoolSKUsPager.Err() error`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientInstallSiteExtensionSlotPoller.Done() bool`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSitePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListTriggeredWebJobHistorySlotPager.PageResponse() WebAppsClientListTriggeredWebJobHistorySlotResponse`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionSlotPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientListFunctionsPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientDeleteStaticSiteCustomDomainPoller.Done() bool`
+- New function `*PlansClientListPager.Err() error`
+- New function `*ResourceHealthMetadataClientListPager.Err() error`
+- New function `*CertificateOrdersClient.BeginCreateOrUpdateCertificate(context.Context, string, string, string, CertificateResource, *CertificateOrdersClientBeginCreateOrUpdateCertificateOptions) (CertificateOrdersClientCreateOrUpdateCertificatePollerResponse, error)`
+- New function `*WebAppsClientStartNetworkTraceSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*DomainsClientListPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListFunctionsPager.Err() error`
+- New function `*WebAppsClientListUsagesSlotPager.PageResponse() WebAppsClientListUsagesSlotResponse`
+- New function `*PlansClient.GetRouteForVnet(context.Context, string, string, string, string, *PlansClientGetRouteForVnetOptions) (PlansClientGetRouteForVnetResponse, error)`
+- New function `*WebAppsClientStartNetworkTracePollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*RecommendationsClientListRecommendedRulesForHostingEnvironmentPager.NextPage(context.Context) bool`
+- New function `*DiagnosticsClientListSiteAnalysesSlotPager.NextPage(context.Context) bool`
+- New function `*PlansClient.ListVnets(context.Context, string, string, *PlansClientListVnetsOptions) (PlansClientListVnetsResponse, error)`
+- New function `*KubeEnvironmentsClientListByResourceGroupPager.PageResponse() KubeEnvironmentsClientListByResourceGroupResponse`
+- New function `*PlansClientListUsagesPager.Err() error`
+- New function `*WebAppsClientListTriggeredWebJobsSlotPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientListAppServicePlansPager.NextPage(context.Context) bool`
+- New function `ContainerAppProvisioningState.ToPtr() *ContainerAppProvisioningState`
+- New function `*StaticSitesClientListStaticSiteCustomDomainsPager.NextPage(context.Context) bool`
+- New function `Container.MarshalJSON() ([]byte, error)`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CertificateOrdersClientCreateOrUpdateCertificatePoller.FinalResponse(context.Context) (CertificateOrdersClientCreateOrUpdateCertificateResponse, error)`
+- New function `*PlansClient.ListCapabilities(context.Context, string, string, *PlansClientListCapabilitiesOptions) (PlansClientListCapabilitiesResponse, error)`
+- New function `*WebAppsClientInstallSiteExtensionSlotPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*PlansClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientListUsagesPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListInstanceProcessModulesPager.PageResponse() WebAppsClientListInstanceProcessModulesResponse`
+- New function `*ContainerAppsClient.ListByResourceGroup(string, *ContainerAppsClientListByResourceGroupOptions) *ContainerAppsClientListByResourceGroupPager`
+- New function `*CertificateRegistrationProviderClientListOperationsPager.Err() error`
+- New function `*WebAppsClient.CreateOneDeployOperation(context.Context, string, string, *WebAppsClientCreateOneDeployOperationOptions) (WebAppsClientCreateOneDeployOperationResponse, error)`
+- New function `*WebAppsClientListTriggeredWebJobsSlotPager.PageResponse() WebAppsClientListTriggeredWebJobsSlotResponse`
+- New function `*WebAppsClientRestoreFromBackupBlobPoller.Done() bool`
+- New function `*ResourceHealthMetadataClientListPager.PageResponse() ResourceHealthMetadataClientListResponse`
+- New function `*WebAppsClientCreateOrUpdateSlotPoller.FinalResponse(context.Context) (WebAppsClientCreateOrUpdateSlotResponse, error)`
+- New function `*WebAppsClientCreateOrUpdatePoller.FinalResponse(context.Context) (WebAppsClientCreateOrUpdateResponse, error)`
+- New function `*EnvironmentsClientDeletePollerResponse.Resume(context.Context, *EnvironmentsClient, string) error`
+- New function `*EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListConfigurationSnapshotInfoPager.NextPage(context.Context) bool`
+- New function `*DomainRegistrationProviderClientListOperationsPager.PageResponse() DomainRegistrationProviderClientListOperationsResponse`
+- New function `*EnvironmentsClientListWebAppsPager.Err() error`
+- New function `*StaticSitesClientGetStaticSiteBuildsPager.Err() error`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller.FinalResponse(context.Context) (StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error)`
+- New function `*WebAppsClientCreateOrUpdatePoller.Done() bool`
+- New function `*EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPoller.Done() bool`
+- New function `WebAppsClientListPublishingCredentialsSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientListPublishingCredentialsSlotResponse, error)`
+- New function `*ProviderClientListOperationsPager.NextPage(context.Context) bool`
+- New function `Environment.MarshalJSON() ([]byte, error)`
+- New function `*CertificateOrdersClient.RetrieveCertificateEmailHistory(context.Context, string, string, *CertificateOrdersClientRetrieveCertificateEmailHistoryOptions) (CertificateOrdersClientRetrieveCertificateEmailHistoryResponse, error)`
+- New function `*EnvironmentsClientGetOutboundNetworkDependenciesEndpointsPager.Err() error`
+- New function `*PlanProperties.UnmarshalJSON([]byte) error`
+- New function `*EnvironmentsClientListAppServicePlansPager.Err() error`
+- New function `ContainerAppsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ContainerAppsClientCreateOrUpdateResponse, error)`
+- New function `*TopLevelDomainsClientListAgreementsPager.NextPage(context.Context) bool`
+- New function `WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse, error)`
+- New function `RevisionCollection.MarshalJSON() ([]byte, error)`
+- New function `*DomainsClientCreateOrUpdatePoller.FinalResponse(context.Context) (DomainsClientCreateOrUpdateResponse, error)`
+- New function `WebAppsClientCreateMSDeployOperationSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientCreateMSDeployOperationSlotResponse, error)`
+- New function `*WebAppsClientListSnapshotsPager.PageResponse() WebAppsClientListSnapshotsResponse`
+- New function `ActiveRevisionsMode.ToPtr() *ActiveRevisionsMode`
+- New function `*WebAppsClientCreateInstanceMSDeployOperationPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*ContainerAppsRevisionsClient.RestartRevision(context.Context, string, string, string, *ContainerAppsRevisionsClientRestartRevisionOptions) (ContainerAppsRevisionsClientRestartRevisionResponse, error)`
+- New function `*ProviderClientGetFunctionAppStacksPager.PageResponse() ProviderClientGetFunctionAppStacksResponse`
+- New function `*DiagnosticsClientListHostingEnvironmentDetectorResponsesPager.PageResponse() DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse`
+- New function `*WebAppsClientRestoreFromBackupBlobPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*ResourceHealthMetadataClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `ContainerAppsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ContainerAppsClientDeleteResponse, error)`
+- New function `*EnvironmentsClient.ListDiagnostics(context.Context, string, string, *EnvironmentsClientListDiagnosticsOptions) (EnvironmentsClientListDiagnosticsResponse, error)`
+- New function `*CertificateOrdersClientListByResourceGroupPager.PageResponse() CertificateOrdersClientListByResourceGroupResponse`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller.ResumeToken() (string, error)`
+- New function `NewContainerAppsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ContainerAppsClient`
+- New function `EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse.PollUntilDone(context.Context, time.Duration) (EnvironmentsClientCreateOrUpdateWorkerPoolResponse, error)`
+- New function `*WebAppsClientCreateOrUpdatePollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*EnvironmentsClient.GetOutboundNetworkDependenciesEndpoints(string, string, *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsPager`
+- New function `*TopLevelDomainsClientListAgreementsPager.PageResponse() TopLevelDomainsClientListAgreementsResponse`
+- New function `*PlansClientListHybridConnectionsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListSiteBackupsSlotPager.PageResponse() WebAppsClientListSiteBackupsSlotResponse`
+- New function `*EnvironmentsClient.BeginCreateOrUpdate(context.Context, string, string, EnvironmentResource, *EnvironmentsClientBeginCreateOrUpdateOptions) (EnvironmentsClientCreateOrUpdatePollerResponse, error)`
+- New function `*WebAppsClientRestoreSnapshotSlotPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientListSnapshotsFromDRSecondarySlotPager.NextPage(context.Context) bool`
+- New function `*CertificatesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*CertificateOrdersClientCreateOrUpdatePoller.FinalResponse(context.Context) (CertificateOrdersClientCreateOrUpdateResponse, error)`
+- New function `*DomainsClientListRecommendationsPager.Err() error`
+- New function `*EnvironmentsClientCreateOrUpdateWorkerPoolPoller.Done() bool`
+- New function `*StaticSitesClientGetStaticSiteBuildsPager.PageResponse() StaticSitesClientGetStaticSiteBuildsResponse`
+- New function `*EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsPager.Err() error`
+- New function `*EnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions(string, string, string, *EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions) *EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsPager`
+- New function `*WebAppsClientListContinuousWebJobsSlotPager.NextPage(context.Context) bool`
+- New function `WebAppsClientStartNetworkTraceSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientStartNetworkTraceSlotResponse, error)`
+- New function `*TopLevelDomainsClientListPager.PageResponse() TopLevelDomainsClientListResponse`
+- New function `*EnvironmentsClientSuspendPoller.Done() bool`
+- New function `*WebAppsClientListSiteExtensionsSlotPager.PageResponse() WebAppsClientListSiteExtensionsSlotResponse`
+- New function `*WebAppsClientListSnapshotsFromDRSecondaryPager.NextPage(context.Context) bool`
+- New function `*PlansClientListWebAppsPager.PageResponse() PlansClientListWebAppsResponse`
+- New function `*WebAppsClientCreateMSDeployOperationSlotPoller.Done() bool`
+- New function `*WebAppsClientListBasicPublishingCredentialsPoliciesSlotPager.PageResponse() WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse`
+- New function `*WebAppsClientMigrateStoragePollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*WebAppsClientRestoreSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KubeEnvironmentsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClient.GetVipInfo(context.Context, string, string, *EnvironmentsClientGetVipInfoOptions) (EnvironmentsClientGetVipInfoResponse, error)`
+- New function `*DiagnosticsClientListSiteAnalysesSlotPager.PageResponse() DiagnosticsClientListSiteAnalysesSlotResponse`
+- New function `*EnvironmentsClientSuspendPoller.FinalResponse(context.Context) (*EnvironmentsClientSuspendPager, error)`
+- New function `*PlansClientCreateOrUpdatePollerResponse.Resume(context.Context, *PlansClient, string) error`
+- New function `*ResourceHealthMetadataClientListBySitePager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientCreateOrUpdateStaticSitePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientRestoreFromBackupBlobPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientRestoreFromDeletedAppSlotPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientRestorePollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `Scale.MarshalJSON() ([]byte, error)`
+- New function `*EnvironmentsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientMigrateStoragePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StaticSitesClientDeletePrivateEndpointConnectionPoller.FinalResponse(context.Context) (StaticSitesClientDeletePrivateEndpointConnectionResponse, error)`
+- New function `*WebAppsClientCreateMSDeployOperationSlotPoller.ResumeToken() (string, error)`
+- New function `*PlansClientCreateOrUpdatePoller.FinalResponse(context.Context) (PlansClientCreateOrUpdateResponse, error)`
+- New function `*StaticSitesClientDeletePrivateEndpointConnectionPoller.ResumeToken() (string, error)`
+- New function `StaticSitesClientDeletePrivateEndpointConnectionPollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientDeletePrivateEndpointConnectionResponse, error)`
+- New function `*DomainsClientListOwnershipIdentifiersPager.Err() error`
+- New function `*StaticSitesClientGetStaticSiteBuildsPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientResumePager.Err() error`
+- New function `*EnvironmentsClient.ListMultiRoleUsages(string, string, *EnvironmentsClientListMultiRoleUsagesOptions) *EnvironmentsClientListMultiRoleUsagesPager`
+- New function `*WebAppsClientListDeploymentsSlotPager.NextPage(context.Context) bool`
+- New function `*KubeEnvironmentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListInstanceIdentifiersSlotPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientDeleteStaticSitePollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*WebAppsClientMigrateMySQLPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientListDomainOwnershipIdentifiersPager.PageResponse() WebAppsClientListDomainOwnershipIdentifiersResponse`
+- New function `*WebAppsClientListSnapshotsPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClient.ListCapacities(string, string, *EnvironmentsClientListCapacitiesOptions) *EnvironmentsClientListCapacitiesPager`
+- New function `Enum17.ToPtr() *Enum17`
+- New function `*WebAppsClientListTriggeredWebJobHistoryPager.NextPage(context.Context) bool`
+- New function `StaticSitesClientDeleteStaticSiteBuildPollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientDeleteStaticSiteBuildResponse, error)`
+- New function `CertificateOrderPatchResource.MarshalJSON() ([]byte, error)`
+- New function `StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse.PollUntilDone(context.Context, time.Duration) (StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse, error)`
+- New function `*WebAppsClientListSlotDifferencesFromProductionPager.Err() error`
+- New function `*ProviderClientGetFunctionAppStacksPager.Err() error`
+- New function `DaprComponent.MarshalJSON() ([]byte, error)`
+- New function `*PlanPatchResourceProperties.UnmarshalJSON([]byte) error`
+- New function `*WebAppsClientRestoreSnapshotPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationSlotPoller.Done() bool`
+- New function `*WebAppsClientMigrateMySQLPoller.Done() bool`
+- New function `*WebAppsClientRestoreFromBackupBlobSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ProviderClientGetWebAppStacksForLocationPager.NextPage(context.Context) bool`
+- New function `*ContainerAppsClientListBySubscriptionPager.PageResponse() ContainerAppsClientListBySubscriptionResponse`
+- New function `*WebAppsClientCreateOrUpdateSlotPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RecommendationsClientListHistoryForWebAppPager.Err() error`
+- New function `*StaticSitesClientCreateOrUpdateStaticSitePollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `*WebAppsClientListSlotDifferencesSlotPager.NextPage(context.Context) bool`
+- New function `PossibleContainerAppProvisioningStateValues() []ContainerAppProvisioningState`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionPoller.FinalResponse(context.Context) (WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse, error)`
+- New function `Ingress.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientGetAppSettingsKeyVaultReferencesPager.PageResponse() WebAppsClientGetAppSettingsKeyVaultReferencesResponse`
+- New function `*DeletedWebAppsClientListPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListSiteBackupsPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientDetachStaticSitePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientStartWebSiteNetworkTraceOperationSlotPoller.FinalResponse(context.Context) (WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse, error)`
+- New function `*EnvironmentsClientListCapacitiesPager.NextPage(context.Context) bool`
+- New function `*ResourceHealthMetadataClientListPager.NextPage(context.Context) bool`
+- New function `*PlansClient.ListHybridConnections(string, string, *PlansClientListHybridConnectionsOptions) *PlansClientListHybridConnectionsPager`
+- New function `*WebAppsClientApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken() (string, error)`
+- New function `*EnvironmentsClientGetPrivateEndpointConnectionListPager.Err() error`
+- New function `*StaticSitesClientListStaticSiteUsersPager.Err() error`
+- New function `*WebAppsClientListDeploymentsSlotPager.PageResponse() WebAppsClientListDeploymentsSlotResponse`
+- New function `*WebAppsClientDeletePrivateEndpointConnectionPoller.FinalResponse(context.Context) (WebAppsClientDeletePrivateEndpointConnectionResponse, error)`
+- New function `*StaticSitesClientDeleteStaticSitePoller.ResumeToken() (string, error)`
+- New function `*CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponsePager.Err() error`
+- New function `*WebAppsClientListProcessThreadsSlotPager.PageResponse() WebAppsClientListProcessThreadsSlotResponse`
+- New function `*StaticSitesClientApproveOrRejectPrivateEndpointConnectionPoller.Done() bool`
+- New function `*WebAppsClientListPublicCertificatesPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListDeploymentsPager.NextPage(context.Context) bool`
+- New function `*DiagnosticsClientListHostingEnvironmentDetectorResponsesPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientSuspendPager.PageResponse() EnvironmentsClientSuspendResponse`
+- New function `*ContainerAppsClientDeletePoller.FinalResponse(context.Context) (ContainerAppsClientDeleteResponse, error)`
+- New function `*WebAppsClientListProcessThreadsPager.Err() error`
+- New function `Dapr.MarshalJSON() ([]byte, error)`
+- New function `*WebAppsClientListBasicPublishingCredentialsPoliciesSlotPager.Err() error`
+- New function `*WebAppsClientListInstanceProcessModulesPager.NextPage(context.Context) bool`
+- New function `*StaticSitesClientDeleteStaticSiteCustomDomainPoller.ResumeToken() (string, error)`
+- New function `*WebAppsClientCreateInstanceFunctionSlotPoller.ResumeToken() (string, error)`
+- New function `*StaticSitesClientCreateZipDeploymentForStaticSitePoller.ResumeToken() (string, error)`
+- New function `*StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildPager.NextPage(context.Context) bool`
+- New function `*EnvironmentsClientListWorkerPoolsPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListDeploymentsPager.Err() error`
+- New function `*WebAppsClientListSiteExtensionsSlotPager.NextPage(context.Context) bool`
+- New function `*WebAppsClientListHostNameBindingsPager.Err() error`
+- New function `NewEnvironmentsClient(string, azcore.TokenCredential, *arm.ClientOptions) *EnvironmentsClient`
+- New function `*WebAppsClientListSnapshotsSlotPager.NextPage(context.Context) bool`
+- New function `*ProviderClientGetAvailableStacksPager.NextPage(context.Context) bool`
+- New function `*DomainRegistrationProviderClientListOperationsPager.Err() error`
+- New function `*ContainerAppsRevisionsClientListRevisionsPager.NextPage(context.Context) bool`
+- New function `WebAppsClientInstallSiteExtensionPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientInstallSiteExtensionResponse, error)`
+- New function `*WebAppsClientListContinuousWebJobsPager.Err() error`
+- New function `*CertificateOrdersClient.ListByResourceGroup(string, *CertificateOrdersClientListByResourceGroupOptions) *CertificateOrdersClientListByResourceGroupPager`
+- New function `*ContainerAppsRevisionsClient.ActivateRevision(context.Context, string, string, string, *ContainerAppsRevisionsClientActivateRevisionOptions) (ContainerAppsRevisionsClientActivateRevisionResponse, error)`
+- New function `*WebAppsClientListUsagesPager.Err() error`
+- New function `*CertificateOrdersClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WebAppsClientListConfigurationSnapshotInfoPager.Err() error`
+- New function `*WebAppsClientCreateFunctionPollerResponse.Resume(context.Context, *WebAppsClient, string) error`
+- New function `*KubeEnvironmentsClientListByResourceGroupPager.Err() error`
+- New function `*WebAppsClientListInstanceProcessThreadsPager.NextPage(context.Context) bool`
+- New function `*ContainerAppsClientDeletePollerResponse.Resume(context.Context, *ContainerAppsClient, string) error`
+- New function `*PlansClient.ListRoutesForVnet(context.Context, string, string, string, *PlansClientListRoutesForVnetOptions) (PlansClientListRoutesForVnetResponse, error)`
+- New function `KubeEnvironmentsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (KubeEnvironmentsClientDeleteResponse, error)`
+- New function `*StaticSitesClientDeleteStaticSitePoller.Done() bool`
+- New function `*WebAppsClientCreateFunctionPoller.Done() bool`
+- New function `*RecommendationsClientListHistoryForHostingEnvironmentPager.PageResponse() RecommendationsClientListHistoryForHostingEnvironmentResponse`
+- New function `PossibleEnum16Values() []Enum16`
+- New function `*StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse.Resume(context.Context, *StaticSitesClient, string) error`
+- New function `QueueScaleRule.MarshalJSON() ([]byte, error)`
+- New function `*CertificateOrdersClient.Renew(context.Context, string, string, RenewCertificateOrderRequest, *CertificateOrdersClientRenewOptions) (CertificateOrdersClientRenewResponse, error)`
+- New function `WebAppsClientRestoreFromDeletedAppSlotPollerResponse.PollUntilDone(context.Context, time.Duration) (WebAppsClientRestoreFromDeletedAppSlotResponse, error)`
+- New function `*WebAppsClientRestorePoller.FinalResponse(context.Context) (WebAppsClientRestoreResponse, error)`
+- New function `*WebSiteManagementClientListCustomHostNameSitesPager.PageResponse() WebSiteManagementClientListCustomHostNameSitesResponse`
+- New function `*WebAppsClientListBackupsSlotPager.PageResponse() WebAppsClientListBackupsSlotResponse`
+- New function `*StaticSitesClientCreateOrUpdateStaticSitePoller.FinalResponse(context.Context) (StaticSitesClientCreateOrUpdateStaticSiteResponse, error)`
+- New struct `AppCertificate`
+- New struct `AppCertificateCollection`
+- New struct `AppCertificatePatchResource`
+- New struct `AppCertificatePatchResourceProperties`
+- New struct `AppCertificateProperties`
+- New struct `CertificateOrder`
+- New struct `CertificateOrderCollection`
+- New struct `CertificateOrderPatchResource`
+- New struct `CertificateOrderPatchResourceProperties`
+- New struct `CertificateOrderProperties`
+- New struct `CertificateOrdersClient`
+- New struct `CertificateOrdersClientBeginCreateOrUpdateCertificateOptions`
+- New struct `CertificateOrdersClientBeginCreateOrUpdateOptions`
+- New struct `CertificateOrdersClientCreateOrUpdateCertificatePoller`
+- New struct `CertificateOrdersClientCreateOrUpdateCertificatePollerResponse`
+- New struct `CertificateOrdersClientCreateOrUpdateCertificateResponse`
+- New struct `CertificateOrdersClientCreateOrUpdateCertificateResult`
+- New struct `CertificateOrdersClientCreateOrUpdatePoller`
+- New struct `CertificateOrdersClientCreateOrUpdatePollerResponse`
+- New struct `CertificateOrdersClientCreateOrUpdateResponse`
+- New struct `CertificateOrdersClientCreateOrUpdateResult`
+- New struct `CertificateOrdersClientDeleteCertificateOptions`
+- New struct `CertificateOrdersClientDeleteCertificateResponse`
+- New struct `CertificateOrdersClientDeleteOptions`
+- New struct `CertificateOrdersClientDeleteResponse`
+- New struct `CertificateOrdersClientGetCertificateOptions`
+- New struct `CertificateOrdersClientGetCertificateResponse`
+- New struct `CertificateOrdersClientGetCertificateResult`
+- New struct `CertificateOrdersClientGetOptions`
+- New struct `CertificateOrdersClientGetResponse`
+- New struct `CertificateOrdersClientGetResult`
+- New struct `CertificateOrdersClientListByResourceGroupOptions`
+- New struct `CertificateOrdersClientListByResourceGroupPager`
+- New struct `CertificateOrdersClientListByResourceGroupResponse`
+- New struct `CertificateOrdersClientListByResourceGroupResult`
+- New struct `CertificateOrdersClientListCertificatesOptions`
+- New struct `CertificateOrdersClientListCertificatesPager`
+- New struct `CertificateOrdersClientListCertificatesResponse`
+- New struct `CertificateOrdersClientListCertificatesResult`
+- New struct `CertificateOrdersClientListOptions`
+- New struct `CertificateOrdersClientListPager`
+- New struct `CertificateOrdersClientListResponse`
+- New struct `CertificateOrdersClientListResult`
+- New struct `CertificateOrdersClientReissueOptions`
+- New struct `CertificateOrdersClientReissueResponse`
+- New struct `CertificateOrdersClientRenewOptions`
+- New struct `CertificateOrdersClientRenewResponse`
+- New struct `CertificateOrdersClientResendEmailOptions`
+- New struct `CertificateOrdersClientResendEmailResponse`
+- New struct `CertificateOrdersClientResendRequestEmailsOptions`
+- New struct `CertificateOrdersClientResendRequestEmailsResponse`
+- New struct `CertificateOrdersClientRetrieveCertificateActionsOptions`
+- New struct `CertificateOrdersClientRetrieveCertificateActionsResponse`
+- New struct `CertificateOrdersClientRetrieveCertificateActionsResult`
+- New struct `CertificateOrdersClientRetrieveCertificateEmailHistoryOptions`
+- New struct `CertificateOrdersClientRetrieveCertificateEmailHistoryResponse`
+- New struct `CertificateOrdersClientRetrieveCertificateEmailHistoryResult`
+- New struct `CertificateOrdersClientRetrieveSiteSealOptions`
+- New struct `CertificateOrdersClientRetrieveSiteSealResponse`
+- New struct `CertificateOrdersClientRetrieveSiteSealResult`
+- New struct `CertificateOrdersClientUpdateCertificateOptions`
+- New struct `CertificateOrdersClientUpdateCertificateResponse`
+- New struct `CertificateOrdersClientUpdateCertificateResult`
+- New struct `CertificateOrdersClientUpdateOptions`
+- New struct `CertificateOrdersClientUpdateResponse`
+- New struct `CertificateOrdersClientUpdateResult`
+- New struct `CertificateOrdersClientValidatePurchaseInformationOptions`
+- New struct `CertificateOrdersClientValidatePurchaseInformationResponse`
+- New struct `CertificateOrdersClientVerifyDomainOwnershipOptions`
+- New struct `CertificateOrdersClientVerifyDomainOwnershipResponse`
+- New struct `CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions`
+- New struct `CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse`
+- New struct `CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResult`
+- New struct `CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions`
+- New struct `CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponsePager`
+- New struct `CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse`
+- New struct `CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResult`
+- New struct `CertificateRegistrationProviderClientListOperationsOptions`
+- New struct `CertificateRegistrationProviderClientListOperationsPager`
+- New struct `CertificateRegistrationProviderClientListOperationsResponse`
+- New struct `CertificateRegistrationProviderClientListOperationsResult`
+- New struct `CertificateResource`
+- New struct `CertificatesClientCreateOrUpdateOptions`
+- New struct `CertificatesClientCreateOrUpdateResponse`
+- New struct `CertificatesClientCreateOrUpdateResult`
+- New struct `CertificatesClientDeleteOptions`
+- New struct `CertificatesClientDeleteResponse`
+- New struct `CertificatesClientGetOptions`
+- New struct `CertificatesClientGetResponse`
+- New struct `CertificatesClientGetResult`
+- New struct `CertificatesClientListByResourceGroupOptions`
+- New struct `CertificatesClientListByResourceGroupPager`
+- New struct `CertificatesClientListByResourceGroupResponse`
+- New struct `CertificatesClientListByResourceGroupResult`
+- New struct `CertificatesClientListOptions`
+- New struct `CertificatesClientListPager`
+- New struct `CertificatesClientListResponse`
+- New struct `CertificatesClientListResult`
+- New struct `CertificatesClientUpdateOptions`
+- New struct `CertificatesClientUpdateResponse`
+- New struct `CertificatesClientUpdateResult`
+- New struct `Configuration`
+- New struct `Container`
+- New struct `ContainerApp`
+- New struct `ContainerAppCollection`
+- New struct `ContainerAppProperties`
+- New struct `ContainerAppSecret`
+- New struct `ContainerAppsClient`
+- New struct `ContainerAppsClientBeginCreateOrUpdateOptions`
+- New struct `ContainerAppsClientBeginDeleteOptions`
+- New struct `ContainerAppsClientCreateOrUpdatePoller`
+- New struct `ContainerAppsClientCreateOrUpdatePollerResponse`
+- New struct `ContainerAppsClientCreateOrUpdateResponse`
+- New struct `ContainerAppsClientCreateOrUpdateResult`
+- New struct `ContainerAppsClientDeletePoller`
+- New struct `ContainerAppsClientDeletePollerResponse`
+- New struct `ContainerAppsClientDeleteResponse`
+- New struct `ContainerAppsClientGetOptions`
+- New struct `ContainerAppsClientGetResponse`
+- New struct `ContainerAppsClientGetResult`
+- New struct `ContainerAppsClientListByResourceGroupOptions`
+- New struct `ContainerAppsClientListByResourceGroupPager`
+- New struct `ContainerAppsClientListByResourceGroupResponse`
+- New struct `ContainerAppsClientListByResourceGroupResult`
+- New struct `ContainerAppsClientListBySubscriptionOptions`
+- New struct `ContainerAppsClientListBySubscriptionPager`
+- New struct `ContainerAppsClientListBySubscriptionResponse`
+- New struct `ContainerAppsClientListBySubscriptionResult`
+- New struct `ContainerAppsClientListSecretsOptions`
+- New struct `ContainerAppsClientListSecretsResponse`
+- New struct `ContainerAppsClientListSecretsResult`
+- New struct `ContainerAppsConfiguration`
+- New struct `ContainerAppsRevisionsClient`
+- New struct `ContainerAppsRevisionsClientActivateRevisionOptions`
+- New struct `ContainerAppsRevisionsClientActivateRevisionResponse`
+- New struct `ContainerAppsRevisionsClientDeactivateRevisionOptions`
+- New struct `ContainerAppsRevisionsClientDeactivateRevisionResponse`
+- New struct `ContainerAppsRevisionsClientGetRevisionOptions`
+- New struct `ContainerAppsRevisionsClientGetRevisionResponse`
+- New struct `ContainerAppsRevisionsClientGetRevisionResult`
+- New struct `ContainerAppsRevisionsClientListRevisionsOptions`
+- New struct `ContainerAppsRevisionsClientListRevisionsPager`
+- New struct `ContainerAppsRevisionsClientListRevisionsResponse`
+- New struct `ContainerAppsRevisionsClientListRevisionsResult`
+- New struct `ContainerAppsRevisionsClientRestartRevisionOptions`
+- New struct `ContainerAppsRevisionsClientRestartRevisionResponse`
+- New struct `ContainerResources`
+- New struct `CustomHostnameSites`
+- New struct `CustomHostnameSitesCollection`
+- New struct `CustomHostnameSitesProperties`
+- New struct `CustomScaleRule`
+- New struct `Dapr`
+- New struct `DaprComponent`
+- New struct `DaprMetadata`
+- New struct `DeletedWebAppsClientGetDeletedWebAppByLocationOptions`
+- New struct `DeletedWebAppsClientGetDeletedWebAppByLocationResponse`
+- New struct `DeletedWebAppsClientGetDeletedWebAppByLocationResult`
+- New struct `DeletedWebAppsClientListByLocationOptions`
+- New struct `DeletedWebAppsClientListByLocationPager`
+- New struct `DeletedWebAppsClientListByLocationResponse`
+- New struct `DeletedWebAppsClientListByLocationResult`
+- New struct `DeletedWebAppsClientListOptions`
+- New struct `DeletedWebAppsClientListPager`
+- New struct `DeletedWebAppsClientListResponse`
+- New struct `DeletedWebAppsClientListResult`
+- New struct `DiagnosticsClientExecuteSiteAnalysisOptions`
+- New struct `DiagnosticsClientExecuteSiteAnalysisResponse`
+- New struct `DiagnosticsClientExecuteSiteAnalysisResult`
+- New struct `DiagnosticsClientExecuteSiteAnalysisSlotOptions`
+- New struct `DiagnosticsClientExecuteSiteAnalysisSlotResponse`
+- New struct `DiagnosticsClientExecuteSiteAnalysisSlotResult`
+- New struct `DiagnosticsClientExecuteSiteDetectorOptions`
+- New struct `DiagnosticsClientExecuteSiteDetectorResponse`
+- New struct `DiagnosticsClientExecuteSiteDetectorResult`
+- New struct `DiagnosticsClientExecuteSiteDetectorSlotOptions`
+- New struct `DiagnosticsClientExecuteSiteDetectorSlotResponse`
+- New struct `DiagnosticsClientExecuteSiteDetectorSlotResult`
+- New struct `DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions`
+- New struct `DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse`
+- New struct `DiagnosticsClientGetHostingEnvironmentDetectorResponseResult`
+- New struct `DiagnosticsClientGetSiteAnalysisOptions`
+- New struct `DiagnosticsClientGetSiteAnalysisResponse`
+- New struct `DiagnosticsClientGetSiteAnalysisResult`
+- New struct `DiagnosticsClientGetSiteAnalysisSlotOptions`
+- New struct `DiagnosticsClientGetSiteAnalysisSlotResponse`
+- New struct `DiagnosticsClientGetSiteAnalysisSlotResult`
+- New struct `DiagnosticsClientGetSiteDetectorOptions`
+- New struct `DiagnosticsClientGetSiteDetectorResponse`
+- New struct `DiagnosticsClientGetSiteDetectorResponseOptions`
+- New struct `DiagnosticsClientGetSiteDetectorResponseResponse`
+- New struct `DiagnosticsClientGetSiteDetectorResponseResult`
+- New struct `DiagnosticsClientGetSiteDetectorResponseSlotOptions`
+- New struct `DiagnosticsClientGetSiteDetectorResponseSlotResponse`
+- New struct `DiagnosticsClientGetSiteDetectorResponseSlotResult`
+- New struct `DiagnosticsClientGetSiteDetectorResult`
+- New struct `DiagnosticsClientGetSiteDetectorSlotOptions`
+- New struct `DiagnosticsClientGetSiteDetectorSlotResponse`
+- New struct `DiagnosticsClientGetSiteDetectorSlotResult`
+- New struct `DiagnosticsClientGetSiteDiagnosticCategoryOptions`
+- New struct `DiagnosticsClientGetSiteDiagnosticCategoryResponse`
+- New struct `DiagnosticsClientGetSiteDiagnosticCategoryResult`
+- New struct `DiagnosticsClientGetSiteDiagnosticCategorySlotOptions`
+- New struct `DiagnosticsClientGetSiteDiagnosticCategorySlotResponse`
+- New struct `DiagnosticsClientGetSiteDiagnosticCategorySlotResult`
+- New struct `DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions`
+- New struct `DiagnosticsClientListHostingEnvironmentDetectorResponsesPager`
+- New struct `DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse`
+- New struct `DiagnosticsClientListHostingEnvironmentDetectorResponsesResult`
+- New struct `DiagnosticsClientListSiteAnalysesOptions`
+- New struct `DiagnosticsClientListSiteAnalysesPager`
+- New struct `DiagnosticsClientListSiteAnalysesResponse`
+- New struct `DiagnosticsClientListSiteAnalysesResult`
+- New struct `DiagnosticsClientListSiteAnalysesSlotOptions`
+- New struct `DiagnosticsClientListSiteAnalysesSlotPager`
+- New struct `DiagnosticsClientListSiteAnalysesSlotResponse`
+- New struct `DiagnosticsClientListSiteAnalysesSlotResult`
+- New struct `DiagnosticsClientListSiteDetectorResponsesOptions`
+- New struct `DiagnosticsClientListSiteDetectorResponsesPager`
+- New struct `DiagnosticsClientListSiteDetectorResponsesResponse`
+- New struct `DiagnosticsClientListSiteDetectorResponsesResult`
+- New struct `DiagnosticsClientListSiteDetectorResponsesSlotOptions`
+- New struct `DiagnosticsClientListSiteDetectorResponsesSlotPager`
+- New struct `DiagnosticsClientListSiteDetectorResponsesSlotResponse`
+- New struct `DiagnosticsClientListSiteDetectorResponsesSlotResult`
+- New struct `DiagnosticsClientListSiteDetectorsOptions`
+- New struct `DiagnosticsClientListSiteDetectorsPager`
+- New struct `DiagnosticsClientListSiteDetectorsResponse`
+- New struct `DiagnosticsClientListSiteDetectorsResult`
+- New struct `DiagnosticsClientListSiteDetectorsSlotOptions`
+- New struct `DiagnosticsClientListSiteDetectorsSlotPager`
+- New struct `DiagnosticsClientListSiteDetectorsSlotResponse`
+- New struct `DiagnosticsClientListSiteDetectorsSlotResult`
+- New struct `DiagnosticsClientListSiteDiagnosticCategoriesOptions`
+- New struct `DiagnosticsClientListSiteDiagnosticCategoriesPager`
+- New struct `DiagnosticsClientListSiteDiagnosticCategoriesResponse`
+- New struct `DiagnosticsClientListSiteDiagnosticCategoriesResult`
+- New struct `DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions`
+- New struct `DiagnosticsClientListSiteDiagnosticCategoriesSlotPager`
+- New struct `DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse`
+- New struct `DiagnosticsClientListSiteDiagnosticCategoriesSlotResult`
+- New struct `DomainRegistrationProviderClientListOperationsOptions`
+- New struct `DomainRegistrationProviderClientListOperationsPager`
+- New struct `DomainRegistrationProviderClientListOperationsResponse`
+- New struct `DomainRegistrationProviderClientListOperationsResult`
+- New struct `DomainsClientBeginCreateOrUpdateOptions`
+- New struct `DomainsClientCheckAvailabilityOptions`
+- New struct `DomainsClientCheckAvailabilityResponse`
+- New struct `DomainsClientCheckAvailabilityResult`
+- New struct `DomainsClientCreateOrUpdateOwnershipIdentifierOptions`
+- New struct `DomainsClientCreateOrUpdateOwnershipIdentifierResponse`
+- New struct `DomainsClientCreateOrUpdateOwnershipIdentifierResult`
+- New struct `DomainsClientCreateOrUpdatePoller`
+- New struct `DomainsClientCreateOrUpdatePollerResponse`
+- New struct `DomainsClientCreateOrUpdateResponse`
+- New struct `DomainsClientCreateOrUpdateResult`
+- New struct `DomainsClientDeleteOptions`
+- New struct `DomainsClientDeleteOwnershipIdentifierOptions`
+- New struct `DomainsClientDeleteOwnershipIdentifierResponse`
+- New struct `DomainsClientDeleteResponse`
+- New struct `DomainsClientGetControlCenterSsoRequestOptions`
+- New struct `DomainsClientGetControlCenterSsoRequestResponse`
+- New struct `DomainsClientGetControlCenterSsoRequestResult`
+- New struct `DomainsClientGetOptions`
+- New struct `DomainsClientGetOwnershipIdentifierOptions`
+- New struct `DomainsClientGetOwnershipIdentifierResponse`
+- New struct `DomainsClientGetOwnershipIdentifierResult`
+- New struct `DomainsClientGetResponse`
+- New struct `DomainsClientGetResult`
+- New struct `DomainsClientListByResourceGroupOptions`
+- New struct `DomainsClientListByResourceGroupPager`
+- New struct `DomainsClientListByResourceGroupResponse`
+- New struct `DomainsClientListByResourceGroupResult`
+- New struct `DomainsClientListOptions`
+- New struct `DomainsClientListOwnershipIdentifiersOptions`
+- New struct `DomainsClientListOwnershipIdentifiersPager`
+- New struct `DomainsClientListOwnershipIdentifiersResponse`
+- New struct `DomainsClientListOwnershipIdentifiersResult`
+- New struct `DomainsClientListPager`
+- New struct `DomainsClientListRecommendationsOptions`
+- New struct `DomainsClientListRecommendationsPager`
+- New struct `DomainsClientListRecommendationsResponse`
+- New struct `DomainsClientListRecommendationsResult`
+- New struct `DomainsClientListResponse`
+- New struct `DomainsClientListResult`
+- New struct `DomainsClientRenewOptions`
+- New struct `DomainsClientRenewResponse`
+- New struct `DomainsClientTransferOutOptions`
+- New struct `DomainsClientTransferOutResponse`
+- New struct `DomainsClientTransferOutResult`
+- New struct `DomainsClientUpdateOptions`
+- New struct `DomainsClientUpdateOwnershipIdentifierOptions`
+- New struct `DomainsClientUpdateOwnershipIdentifierResponse`
+- New struct `DomainsClientUpdateOwnershipIdentifierResult`
+- New struct `DomainsClientUpdateResponse`
+- New struct `DomainsClientUpdateResult`
+- New struct `Environment`
+- New struct `EnvironmentCollection`
+- New struct `EnvironmentPatchResource`
+- New struct `EnvironmentResource`
+- New struct `EnvironmentVar`
+- New struct `EnvironmentsClient`
+- New struct `EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPoller`
+- New struct `EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse`
+- New struct `EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse`
+- New struct `EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResult`
+- New struct `EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions`
+- New struct `EnvironmentsClientBeginChangeVnetOptions`
+- New struct `EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions`
+- New struct `EnvironmentsClientBeginCreateOrUpdateOptions`
+- New struct `EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions`
+- New struct `EnvironmentsClientBeginDeleteOptions`
+- New struct `EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions`
+- New struct `EnvironmentsClientBeginResumeOptions`
+- New struct `EnvironmentsClientBeginSuspendOptions`
+- New struct `EnvironmentsClientChangeVnetPager`
+- New struct `EnvironmentsClientChangeVnetPoller`
+- New struct `EnvironmentsClientChangeVnetPollerResponse`
+- New struct `EnvironmentsClientChangeVnetResponse`
+- New struct `EnvironmentsClientChangeVnetResult`
+- New struct `EnvironmentsClientCreateOrUpdateMultiRolePoolPoller`
+- New struct `EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse`
+- New struct `EnvironmentsClientCreateOrUpdateMultiRolePoolResponse`
+- New struct `EnvironmentsClientCreateOrUpdateMultiRolePoolResult`
+- New struct `EnvironmentsClientCreateOrUpdatePoller`
+- New struct `EnvironmentsClientCreateOrUpdatePollerResponse`
+- New struct `EnvironmentsClientCreateOrUpdateResponse`
+- New struct `EnvironmentsClientCreateOrUpdateResult`
+- New struct `EnvironmentsClientCreateOrUpdateWorkerPoolPoller`
+- New struct `EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse`
+- New struct `EnvironmentsClientCreateOrUpdateWorkerPoolResponse`
+- New struct `EnvironmentsClientCreateOrUpdateWorkerPoolResult`
+- New struct `EnvironmentsClientDeletePoller`
+- New struct `EnvironmentsClientDeletePollerResponse`
+- New struct `EnvironmentsClientDeletePrivateEndpointConnectionPoller`
+- New struct `EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse`
+- New struct `EnvironmentsClientDeletePrivateEndpointConnectionResponse`
+- New struct `EnvironmentsClientDeletePrivateEndpointConnectionResult`
+- New struct `EnvironmentsClientDeleteResponse`
+- New struct `EnvironmentsClientGetAseV3NetworkingConfigurationOptions`
+- New struct `EnvironmentsClientGetAseV3NetworkingConfigurationResponse`
+- New struct `EnvironmentsClientGetAseV3NetworkingConfigurationResult`
+- New struct `EnvironmentsClientGetDiagnosticsItemOptions`
+- New struct `EnvironmentsClientGetDiagnosticsItemResponse`
+- New struct `EnvironmentsClientGetDiagnosticsItemResult`
+- New struct `EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions`
+- New struct `EnvironmentsClientGetInboundNetworkDependenciesEndpointsPager`
+- New struct `EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse`
+- New struct `EnvironmentsClientGetInboundNetworkDependenciesEndpointsResult`
+- New struct `EnvironmentsClientGetMultiRolePoolOptions`
+- New struct `EnvironmentsClientGetMultiRolePoolResponse`
+- New struct `EnvironmentsClientGetMultiRolePoolResult`
+- New struct `EnvironmentsClientGetOptions`
+- New struct `EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions`
+- New struct `EnvironmentsClientGetOutboundNetworkDependenciesEndpointsPager`
+- New struct `EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse`
+- New struct `EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResult`
+- New struct `EnvironmentsClientGetPrivateEndpointConnectionListOptions`
+- New struct `EnvironmentsClientGetPrivateEndpointConnectionListPager`
+- New struct `EnvironmentsClientGetPrivateEndpointConnectionListResponse`
+- New struct `EnvironmentsClientGetPrivateEndpointConnectionListResult`
+- New struct `EnvironmentsClientGetPrivateEndpointConnectionOptions`
+- New struct `EnvironmentsClientGetPrivateEndpointConnectionResponse`
+- New struct `EnvironmentsClientGetPrivateEndpointConnectionResult`
+- New struct `EnvironmentsClientGetPrivateLinkResourcesOptions`
+- New struct `EnvironmentsClientGetPrivateLinkResourcesResponse`
+- New struct `EnvironmentsClientGetPrivateLinkResourcesResult`
+- New struct `EnvironmentsClientGetResponse`
+- New struct `EnvironmentsClientGetResult`
+- New struct `EnvironmentsClientGetVipInfoOptions`
+- New struct `EnvironmentsClientGetVipInfoResponse`
+- New struct `EnvironmentsClientGetVipInfoResult`
+- New struct `EnvironmentsClientGetWorkerPoolOptions`
+- New struct `EnvironmentsClientGetWorkerPoolResponse`
+- New struct `EnvironmentsClientGetWorkerPoolResult`
+- New struct `EnvironmentsClientListAppServicePlansOptions`
+- New struct `EnvironmentsClientListAppServicePlansPager`
+- New struct `EnvironmentsClientListAppServicePlansResponse`
+- New struct `EnvironmentsClientListAppServicePlansResult`
+- New struct `EnvironmentsClientListByResourceGroupOptions`
+- New struct `EnvironmentsClientListByResourceGroupPager`
+- New struct `EnvironmentsClientListByResourceGroupResponse`
+- New struct `EnvironmentsClientListByResourceGroupResult`
+- New struct `EnvironmentsClientListCapacitiesOptions`
+- New struct `EnvironmentsClientListCapacitiesPager`
+- New struct `EnvironmentsClientListCapacitiesResponse`
+- New struct `EnvironmentsClientListCapacitiesResult`
+- New struct `EnvironmentsClientListDiagnosticsOptions`
+- New struct `EnvironmentsClientListDiagnosticsResponse`
+- New struct `EnvironmentsClientListDiagnosticsResult`
+- New struct `EnvironmentsClientListMultiRoleMetricDefinitionsOptions`
+- New struct `EnvironmentsClientListMultiRoleMetricDefinitionsPager`
+- New struct `EnvironmentsClientListMultiRoleMetricDefinitionsResponse`
+- New struct `EnvironmentsClientListMultiRoleMetricDefinitionsResult`
+- New struct `EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions`
+- New struct `EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsPager`
+- New struct `EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse`
+- New struct `EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResult`
+- New struct `EnvironmentsClientListMultiRolePoolSKUsOptions`
+- New struct `EnvironmentsClientListMultiRolePoolSKUsPager`
+- New struct `EnvironmentsClientListMultiRolePoolSKUsResponse`
+- New struct `EnvironmentsClientListMultiRolePoolSKUsResult`
+- New struct `EnvironmentsClientListMultiRolePoolsOptions`
+- New struct `EnvironmentsClientListMultiRolePoolsPager`
+- New struct `EnvironmentsClientListMultiRolePoolsResponse`
+- New struct `EnvironmentsClientListMultiRolePoolsResult`
+- New struct `EnvironmentsClientListMultiRoleUsagesOptions`
+- New struct `EnvironmentsClientListMultiRoleUsagesPager`
+- New struct `EnvironmentsClientListMultiRoleUsagesResponse`
+- New struct `EnvironmentsClientListMultiRoleUsagesResult`
+- New struct `EnvironmentsClientListOperationsOptions`
+- New struct `EnvironmentsClientListOperationsResponse`
+- New struct `EnvironmentsClientListOperationsResult`
+- New struct `EnvironmentsClientListOptions`
+- New struct `EnvironmentsClientListPager`
+- New struct `EnvironmentsClientListResponse`
+- New struct `EnvironmentsClientListResult`
+- New struct `EnvironmentsClientListUsagesOptions`
+- New struct `EnvironmentsClientListUsagesPager`
+- New struct `EnvironmentsClientListUsagesResponse`
+- New struct `EnvironmentsClientListUsagesResult`
+- New struct `EnvironmentsClientListWebAppsOptions`
+- New struct `EnvironmentsClientListWebAppsPager`
+- New struct `EnvironmentsClientListWebAppsResponse`
+- New struct `EnvironmentsClientListWebAppsResult`
+- New struct `EnvironmentsClientListWebWorkerMetricDefinitionsOptions`
+- New struct `EnvironmentsClientListWebWorkerMetricDefinitionsPager`
+- New struct `EnvironmentsClientListWebWorkerMetricDefinitionsResponse`
+- New struct `EnvironmentsClientListWebWorkerMetricDefinitionsResult`
+- New struct `EnvironmentsClientListWebWorkerUsagesOptions`
+- New struct `EnvironmentsClientListWebWorkerUsagesPager`
+- New struct `EnvironmentsClientListWebWorkerUsagesResponse`
+- New struct `EnvironmentsClientListWebWorkerUsagesResult`
+- New struct `EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions`
+- New struct `EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsPager`
+- New struct `EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse`
+- New struct `EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResult`
+- New struct `EnvironmentsClientListWorkerPoolSKUsOptions`
+- New struct `EnvironmentsClientListWorkerPoolSKUsPager`
+- New struct `EnvironmentsClientListWorkerPoolSKUsResponse`
+- New struct `EnvironmentsClientListWorkerPoolSKUsResult`
+- New struct `EnvironmentsClientListWorkerPoolsOptions`
+- New struct `EnvironmentsClientListWorkerPoolsPager`
+- New struct `EnvironmentsClientListWorkerPoolsResponse`
+- New struct `EnvironmentsClientListWorkerPoolsResult`
+- New struct `EnvironmentsClientRebootOptions`
+- New struct `EnvironmentsClientRebootResponse`
+- New struct `EnvironmentsClientResumePager`
+- New struct `EnvironmentsClientResumePoller`
+- New struct `EnvironmentsClientResumePollerResponse`
+- New struct `EnvironmentsClientResumeResponse`
+- New struct `EnvironmentsClientResumeResult`
+- New struct `EnvironmentsClientSuspendPager`
+- New struct `EnvironmentsClientSuspendPoller`
+- New struct `EnvironmentsClientSuspendPollerResponse`
+- New struct `EnvironmentsClientSuspendResponse`
+- New struct `EnvironmentsClientSuspendResult`
+- New struct `EnvironmentsClientUpdateAseNetworkingConfigurationOptions`
+- New struct `EnvironmentsClientUpdateAseNetworkingConfigurationResponse`
+- New struct `EnvironmentsClientUpdateAseNetworkingConfigurationResult`
+- New struct `EnvironmentsClientUpdateMultiRolePoolOptions`
+- New struct `EnvironmentsClientUpdateMultiRolePoolResponse`
+- New struct `EnvironmentsClientUpdateMultiRolePoolResult`
+- New struct `EnvironmentsClientUpdateOptions`
+- New struct `EnvironmentsClientUpdateResponse`
+- New struct `EnvironmentsClientUpdateResult`
+- New struct `EnvironmentsClientUpdateWorkerPoolOptions`
+- New struct `EnvironmentsClientUpdateWorkerPoolResponse`
+- New struct `EnvironmentsClientUpdateWorkerPoolResult`
+- New struct `GlobalClientGetDeletedWebAppOptions`
+- New struct `GlobalClientGetDeletedWebAppResponse`
+- New struct `GlobalClientGetDeletedWebAppResult`
+- New struct `GlobalClientGetDeletedWebAppSnapshotsOptions`
+- New struct `GlobalClientGetDeletedWebAppSnapshotsResponse`
+- New struct `GlobalClientGetDeletedWebAppSnapshotsResult`
+- New struct `GlobalClientGetSubscriptionOperationWithAsyncResponseOptions`
+- New struct `GlobalClientGetSubscriptionOperationWithAsyncResponseResponse`
+- New struct `HTTPScaleRule`
+- New struct `Ingress`
+- New struct `KubeEnvironmentsClientBeginCreateOrUpdateOptions`
+- New struct `KubeEnvironmentsClientBeginDeleteOptions`
+- New struct `KubeEnvironmentsClientCreateOrUpdatePoller`
+- New struct `KubeEnvironmentsClientCreateOrUpdatePollerResponse`
+- New struct `KubeEnvironmentsClientCreateOrUpdateResponse`
+- New struct `KubeEnvironmentsClientCreateOrUpdateResult`
+- New struct `KubeEnvironmentsClientDeletePoller`
+- New struct `KubeEnvironmentsClientDeletePollerResponse`
+- New struct `KubeEnvironmentsClientDeleteResponse`
+- New struct `KubeEnvironmentsClientGetOptions`
+- New struct `KubeEnvironmentsClientGetResponse`
+- New struct `KubeEnvironmentsClientGetResult`
+- New struct `KubeEnvironmentsClientListByResourceGroupOptions`
+- New struct `KubeEnvironmentsClientListByResourceGroupPager`
+- New struct `KubeEnvironmentsClientListByResourceGroupResponse`
+- New struct `KubeEnvironmentsClientListByResourceGroupResult`
+- New struct `KubeEnvironmentsClientListBySubscriptionOptions`
+- New struct `KubeEnvironmentsClientListBySubscriptionPager`
+- New struct `KubeEnvironmentsClientListBySubscriptionResponse`
+- New struct `KubeEnvironmentsClientListBySubscriptionResult`
+- New struct `KubeEnvironmentsClientUpdateOptions`
+- New struct `KubeEnvironmentsClientUpdateResponse`
+- New struct `KubeEnvironmentsClientUpdateResult`
+- New struct `Plan`
+- New struct `PlanCollection`
+- New struct `PlanPatchResource`
+- New struct `PlanPatchResourceProperties`
+- New struct `PlanProperties`
+- New struct `PlansClient`
+- New struct `PlansClientBeginCreateOrUpdateOptions`
+- New struct `PlansClientCreateOrUpdatePoller`
+- New struct `PlansClientCreateOrUpdatePollerResponse`
+- New struct `PlansClientCreateOrUpdateResponse`
+- New struct `PlansClientCreateOrUpdateResult`
+- New struct `PlansClientCreateOrUpdateVnetRouteOptions`
+- New struct `PlansClientCreateOrUpdateVnetRouteResponse`
+- New struct `PlansClientCreateOrUpdateVnetRouteResult`
+- New struct `PlansClientDeleteHybridConnectionOptions`
+- New struct `PlansClientDeleteHybridConnectionResponse`
+- New struct `PlansClientDeleteOptions`
+- New struct `PlansClientDeleteResponse`
+- New struct `PlansClientDeleteVnetRouteOptions`
+- New struct `PlansClientDeleteVnetRouteResponse`
+- New struct `PlansClientGetHybridConnectionOptions`
+- New struct `PlansClientGetHybridConnectionPlanLimitOptions`
+- New struct `PlansClientGetHybridConnectionPlanLimitResponse`
+- New struct `PlansClientGetHybridConnectionPlanLimitResult`
+- New struct `PlansClientGetHybridConnectionResponse`
+- New struct `PlansClientGetHybridConnectionResult`
+- New struct `PlansClientGetOptions`
+- New struct `PlansClientGetResponse`
+- New struct `PlansClientGetResult`
+- New struct `PlansClientGetRouteForVnetOptions`
+- New struct `PlansClientGetRouteForVnetResponse`
+- New struct `PlansClientGetRouteForVnetResult`
+- New struct `PlansClientGetServerFarmSKUsOptions`
+- New struct `PlansClientGetServerFarmSKUsResponse`
+- New struct `PlansClientGetServerFarmSKUsResult`
+- New struct `PlansClientGetVnetFromServerFarmOptions`
+- New struct `PlansClientGetVnetFromServerFarmResponse`
+- New struct `PlansClientGetVnetFromServerFarmResult`
+- New struct `PlansClientGetVnetGatewayOptions`
+- New struct `PlansClientGetVnetGatewayResponse`
+- New struct `PlansClientGetVnetGatewayResult`
+- New struct `PlansClientListByResourceGroupOptions`
+- New struct `PlansClientListByResourceGroupPager`
+- New struct `PlansClientListByResourceGroupResponse`
+- New struct `PlansClientListByResourceGroupResult`
+- New struct `PlansClientListCapabilitiesOptions`
+- New struct `PlansClientListCapabilitiesResponse`
+- New struct `PlansClientListCapabilitiesResult`
+- New struct `PlansClientListHybridConnectionKeysOptions`
+- New struct `PlansClientListHybridConnectionKeysResponse`
+- New struct `PlansClientListHybridConnectionKeysResult`
+- New struct `PlansClientListHybridConnectionsOptions`
+- New struct `PlansClientListHybridConnectionsPager`
+- New struct `PlansClientListHybridConnectionsResponse`
+- New struct `PlansClientListHybridConnectionsResult`
+- New struct `PlansClientListOptions`
+- New struct `PlansClientListPager`
+- New struct `PlansClientListResponse`
+- New struct `PlansClientListResult`
+- New struct `PlansClientListRoutesForVnetOptions`
+- New struct `PlansClientListRoutesForVnetResponse`
+- New struct `PlansClientListRoutesForVnetResult`
+- New struct `PlansClientListUsagesOptions`
+- New struct `PlansClientListUsagesPager`
+- New struct `PlansClientListUsagesResponse`
+- New struct `PlansClientListUsagesResult`
+- New struct `PlansClientListVnetsOptions`
+- New struct `PlansClientListVnetsResponse`
+- New struct `PlansClientListVnetsResult`
+- New struct `PlansClientListWebAppsByHybridConnectionOptions`
+- New struct `PlansClientListWebAppsByHybridConnectionPager`
+- New struct `PlansClientListWebAppsByHybridConnectionResponse`
+- New struct `PlansClientListWebAppsByHybridConnectionResult`
+- New struct `PlansClientListWebAppsOptions`
+- New struct `PlansClientListWebAppsPager`
+- New struct `PlansClientListWebAppsResponse`
+- New struct `PlansClientListWebAppsResult`
+- New struct `PlansClientRebootWorkerOptions`
+- New struct `PlansClientRebootWorkerResponse`
+- New struct `PlansClientRestartWebAppsOptions`
+- New struct `PlansClientRestartWebAppsResponse`
+- New struct `PlansClientUpdateOptions`
+- New struct `PlansClientUpdateResponse`
+- New struct `PlansClientUpdateResult`
+- New struct `PlansClientUpdateVnetGatewayOptions`
+- New struct `PlansClientUpdateVnetGatewayResponse`
+- New struct `PlansClientUpdateVnetGatewayResult`
+- New struct `PlansClientUpdateVnetRouteOptions`
+- New struct `PlansClientUpdateVnetRouteResponse`
+- New struct `PlansClientUpdateVnetRouteResult`
+- New struct `ProviderClientGetAvailableStacksOnPremOptions`
+- New struct `ProviderClientGetAvailableStacksOnPremPager`
+- New struct `ProviderClientGetAvailableStacksOnPremResponse`
+- New struct `ProviderClientGetAvailableStacksOnPremResult`
+- New struct `ProviderClientGetAvailableStacksOptions`
+- New struct `ProviderClientGetAvailableStacksPager`
+- New struct `ProviderClientGetAvailableStacksResponse`
+- New struct `ProviderClientGetAvailableStacksResult`
+- New struct `ProviderClientGetFunctionAppStacksForLocationOptions`
+- New struct `ProviderClientGetFunctionAppStacksForLocationPager`
+- New struct `ProviderClientGetFunctionAppStacksForLocationResponse`
+- New struct `ProviderClientGetFunctionAppStacksForLocationResult`
+- New struct `ProviderClientGetFunctionAppStacksOptions`
+- New struct `ProviderClientGetFunctionAppStacksPager`
+- New struct `ProviderClientGetFunctionAppStacksResponse`
+- New struct `ProviderClientGetFunctionAppStacksResult`
+- New struct `ProviderClientGetWebAppStacksForLocationOptions`
+- New struct `ProviderClientGetWebAppStacksForLocationPager`
+- New struct `ProviderClientGetWebAppStacksForLocationResponse`
+- New struct `ProviderClientGetWebAppStacksForLocationResult`
+- New struct `ProviderClientGetWebAppStacksOptions`
+- New struct `ProviderClientGetWebAppStacksPager`
+- New struct `ProviderClientGetWebAppStacksResponse`
+- New struct `ProviderClientGetWebAppStacksResult`
+- New struct `ProviderClientListOperationsOptions`
+- New struct `ProviderClientListOperationsPager`
+- New struct `ProviderClientListOperationsResponse`
+- New struct `ProviderClientListOperationsResult`
+- New struct `QueueScaleRule`
+- New struct `RecommendationsClientDisableAllForHostingEnvironmentOptions`
+- New struct `RecommendationsClientDisableAllForHostingEnvironmentResponse`
+- New struct `RecommendationsClientDisableAllForWebAppOptions`
+- New struct `RecommendationsClientDisableAllForWebAppResponse`
+- New struct `RecommendationsClientDisableRecommendationForHostingEnvironmentOptions`
+- New struct `RecommendationsClientDisableRecommendationForHostingEnvironmentResponse`
+- New struct `RecommendationsClientDisableRecommendationForSiteOptions`
+- New struct `RecommendationsClientDisableRecommendationForSiteResponse`
+- New struct `RecommendationsClientDisableRecommendationForSubscriptionOptions`
+- New struct `RecommendationsClientDisableRecommendationForSubscriptionResponse`
+- New struct `RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions`
+- New struct `RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse`
+- New struct `RecommendationsClientGetRuleDetailsByHostingEnvironmentResult`
+- New struct `RecommendationsClientGetRuleDetailsByWebAppOptions`
+- New struct `RecommendationsClientGetRuleDetailsByWebAppResponse`
+- New struct `RecommendationsClientGetRuleDetailsByWebAppResult`
+- New struct `RecommendationsClientListHistoryForHostingEnvironmentOptions`
+- New struct `RecommendationsClientListHistoryForHostingEnvironmentPager`
+- New struct `RecommendationsClientListHistoryForHostingEnvironmentResponse`
+- New struct `RecommendationsClientListHistoryForHostingEnvironmentResult`
+- New struct `RecommendationsClientListHistoryForWebAppOptions`
+- New struct `RecommendationsClientListHistoryForWebAppPager`
+- New struct `RecommendationsClientListHistoryForWebAppResponse`
+- New struct `RecommendationsClientListHistoryForWebAppResult`
+- New struct `RecommendationsClientListOptions`
+- New struct `RecommendationsClientListPager`
+- New struct `RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions`
+- New struct `RecommendationsClientListRecommendedRulesForHostingEnvironmentPager`
+- New struct `RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse`
+- New struct `RecommendationsClientListRecommendedRulesForHostingEnvironmentResult`
+- New struct `RecommendationsClientListRecommendedRulesForWebAppOptions`
+- New struct `RecommendationsClientListRecommendedRulesForWebAppPager`
+- New struct `RecommendationsClientListRecommendedRulesForWebAppResponse`
+- New struct `RecommendationsClientListRecommendedRulesForWebAppResult`
+- New struct `RecommendationsClientListResponse`
+- New struct `RecommendationsClientListResult`
+- New struct `RecommendationsClientResetAllFiltersForHostingEnvironmentOptions`
+- New struct `RecommendationsClientResetAllFiltersForHostingEnvironmentResponse`
+- New struct `RecommendationsClientResetAllFiltersForWebAppOptions`
+- New struct `RecommendationsClientResetAllFiltersForWebAppResponse`
+- New struct `RecommendationsClientResetAllFiltersOptions`
+- New struct `RecommendationsClientResetAllFiltersResponse`
+- New struct `RegistryCredentials`
+- New struct `ResourceHealthMetadataClientGetBySiteOptions`
+- New struct `ResourceHealthMetadataClientGetBySiteResponse`
+- New struct `ResourceHealthMetadataClientGetBySiteResult`
+- New struct `ResourceHealthMetadataClientGetBySiteSlotOptions`
+- New struct `ResourceHealthMetadataClientGetBySiteSlotResponse`
+- New struct `ResourceHealthMetadataClientGetBySiteSlotResult`
+- New struct `ResourceHealthMetadataClientListByResourceGroupOptions`
+- New struct `ResourceHealthMetadataClientListByResourceGroupPager`
+- New struct `ResourceHealthMetadataClientListByResourceGroupResponse`
+- New struct `ResourceHealthMetadataClientListByResourceGroupResult`
+- New struct `ResourceHealthMetadataClientListBySiteOptions`
+- New struct `ResourceHealthMetadataClientListBySitePager`
+- New struct `ResourceHealthMetadataClientListBySiteResponse`
+- New struct `ResourceHealthMetadataClientListBySiteResult`
+- New struct `ResourceHealthMetadataClientListBySiteSlotOptions`
+- New struct `ResourceHealthMetadataClientListBySiteSlotPager`
+- New struct `ResourceHealthMetadataClientListBySiteSlotResponse`
+- New struct `ResourceHealthMetadataClientListBySiteSlotResult`
+- New struct `ResourceHealthMetadataClientListOptions`
+- New struct `ResourceHealthMetadataClientListPager`
+- New struct `ResourceHealthMetadataClientListResponse`
+- New struct `ResourceHealthMetadataClientListResult`
+- New struct `Revision`
+- New struct `RevisionCollection`
+- New struct `RevisionProperties`
+- New struct `Scale`
+- New struct `ScaleRule`
+- New struct `ScaleRuleAuth`
+- New struct `Secret`
+- New struct `SecretsCollection`
+- New struct `StaticSitesClientApproveOrRejectPrivateEndpointConnectionPoller`
+- New struct `StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse`
+- New struct `StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse`
+- New struct `StaticSitesClientApproveOrRejectPrivateEndpointConnectionResult`
+- New struct `StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions`
+- New struct `StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions`
+- New struct `StaticSitesClientBeginCreateOrUpdateStaticSiteOptions`
+- New struct `StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions`
+- New struct `StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions`
+- New struct `StaticSitesClientBeginDeletePrivateEndpointConnectionOptions`
+- New struct `StaticSitesClientBeginDeleteStaticSiteBuildOptions`
+- New struct `StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions`
+- New struct `StaticSitesClientBeginDeleteStaticSiteOptions`
+- New struct `StaticSitesClientBeginDetachStaticSiteOptions`
+- New struct `StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions`
+- New struct `StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions`
+- New struct `StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResult`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResult`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPoller`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResult`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResult`
+- New struct `StaticSitesClientCreateOrUpdateStaticSitePoller`
+- New struct `StaticSitesClientCreateOrUpdateStaticSitePollerResponse`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteResponse`
+- New struct `StaticSitesClientCreateOrUpdateStaticSiteResult`
+- New struct `StaticSitesClientCreateUserRolesInvitationLinkOptions`
+- New struct `StaticSitesClientCreateUserRolesInvitationLinkResponse`
+- New struct `StaticSitesClientCreateUserRolesInvitationLinkResult`
+- New struct `StaticSitesClientCreateZipDeploymentForStaticSiteBuildPoller`
+- New struct `StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse`
+- New struct `StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse`
+- New struct `StaticSitesClientCreateZipDeploymentForStaticSitePoller`
+- New struct `StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse`
+- New struct `StaticSitesClientCreateZipDeploymentForStaticSiteResponse`
+- New struct `StaticSitesClientDeletePrivateEndpointConnectionPoller`
+- New struct `StaticSitesClientDeletePrivateEndpointConnectionPollerResponse`
+- New struct `StaticSitesClientDeletePrivateEndpointConnectionResponse`
+- New struct `StaticSitesClientDeletePrivateEndpointConnectionResult`
+- New struct `StaticSitesClientDeleteStaticSiteBuildPoller`
+- New struct `StaticSitesClientDeleteStaticSiteBuildPollerResponse`
+- New struct `StaticSitesClientDeleteStaticSiteBuildResponse`
+- New struct `StaticSitesClientDeleteStaticSiteCustomDomainPoller`
+- New struct `StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse`
+- New struct `StaticSitesClientDeleteStaticSiteCustomDomainResponse`
+- New struct `StaticSitesClientDeleteStaticSitePoller`
+- New struct `StaticSitesClientDeleteStaticSitePollerResponse`
+- New struct `StaticSitesClientDeleteStaticSiteResponse`
+- New struct `StaticSitesClientDeleteStaticSiteUserOptions`
+- New struct `StaticSitesClientDeleteStaticSiteUserResponse`
+- New struct `StaticSitesClientDetachStaticSitePoller`
+- New struct `StaticSitesClientDetachStaticSitePollerResponse`
+- New struct `StaticSitesClientDetachStaticSiteResponse`
+- New struct `StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildOptions`
+- New struct `StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse`
+- New struct `StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteOptions`
+- New struct `StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse`
+- New struct `StaticSitesClientGetPrivateEndpointConnectionListOptions`
+- New struct `StaticSitesClientGetPrivateEndpointConnectionListPager`
+- New struct `StaticSitesClientGetPrivateEndpointConnectionListResponse`
+- New struct `StaticSitesClientGetPrivateEndpointConnectionListResult`
+- New struct `StaticSitesClientGetPrivateEndpointConnectionOptions`
+- New struct `StaticSitesClientGetPrivateEndpointConnectionResponse`
+- New struct `StaticSitesClientGetPrivateEndpointConnectionResult`
+- New struct `StaticSitesClientGetPrivateLinkResourcesOptions`
+- New struct `StaticSitesClientGetPrivateLinkResourcesResponse`
+- New struct `StaticSitesClientGetPrivateLinkResourcesResult`
+- New struct `StaticSitesClientGetStaticSiteBuildOptions`
+- New struct `StaticSitesClientGetStaticSiteBuildResponse`
+- New struct `StaticSitesClientGetStaticSiteBuildResult`
+- New struct `StaticSitesClientGetStaticSiteBuildsOptions`
+- New struct `StaticSitesClientGetStaticSiteBuildsPager`
+- New struct `StaticSitesClientGetStaticSiteBuildsResponse`
+- New struct `StaticSitesClientGetStaticSiteBuildsResult`
+- New struct `StaticSitesClientGetStaticSiteCustomDomainOptions`
+- New struct `StaticSitesClientGetStaticSiteCustomDomainResponse`
+- New struct `StaticSitesClientGetStaticSiteCustomDomainResult`
+- New struct `StaticSitesClientGetStaticSiteOptions`
+- New struct `StaticSitesClientGetStaticSiteResponse`
+- New struct `StaticSitesClientGetStaticSiteResult`
+- New struct `StaticSitesClientGetStaticSitesByResourceGroupOptions`
+- New struct `StaticSitesClientGetStaticSitesByResourceGroupPager`
+- New struct `StaticSitesClientGetStaticSitesByResourceGroupResponse`
+- New struct `StaticSitesClientGetStaticSitesByResourceGroupResult`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildOptions`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResult`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppForStaticSiteOptions`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResult`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildPager`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResult`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppsForStaticSitePager`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse`
+- New struct `StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResult`
+- New struct `StaticSitesClientListOptions`
+- New struct `StaticSitesClientListPager`
+- New struct `StaticSitesClientListResponse`
+- New struct `StaticSitesClientListResult`
+- New struct `StaticSitesClientListStaticSiteAppSettingsOptions`
+- New struct `StaticSitesClientListStaticSiteAppSettingsResponse`
+- New struct `StaticSitesClientListStaticSiteAppSettingsResult`
+- New struct `StaticSitesClientListStaticSiteBuildAppSettingsOptions`
+- New struct `StaticSitesClientListStaticSiteBuildAppSettingsResponse`
+- New struct `StaticSitesClientListStaticSiteBuildAppSettingsResult`
+- New struct `StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions`
+- New struct `StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse`
+- New struct `StaticSitesClientListStaticSiteBuildFunctionAppSettingsResult`
+- New struct `StaticSitesClientListStaticSiteBuildFunctionsOptions`
+- New struct `StaticSitesClientListStaticSiteBuildFunctionsPager`
+- New struct `StaticSitesClientListStaticSiteBuildFunctionsResponse`
+- New struct `StaticSitesClientListStaticSiteBuildFunctionsResult`
+- New struct `StaticSitesClientListStaticSiteConfiguredRolesOptions`
+- New struct `StaticSitesClientListStaticSiteConfiguredRolesResponse`
+- New struct `StaticSitesClientListStaticSiteConfiguredRolesResult`
+- New struct `StaticSitesClientListStaticSiteCustomDomainsOptions`
+- New struct `StaticSitesClientListStaticSiteCustomDomainsPager`
+- New struct `StaticSitesClientListStaticSiteCustomDomainsResponse`
+- New struct `StaticSitesClientListStaticSiteCustomDomainsResult`
+- New struct `StaticSitesClientListStaticSiteFunctionAppSettingsOptions`
+- New struct `StaticSitesClientListStaticSiteFunctionAppSettingsResponse`
+- New struct `StaticSitesClientListStaticSiteFunctionAppSettingsResult`
+- New struct `StaticSitesClientListStaticSiteFunctionsOptions`
+- New struct `StaticSitesClientListStaticSiteFunctionsPager`
+- New struct `StaticSitesClientListStaticSiteFunctionsResponse`
+- New struct `StaticSitesClientListStaticSiteFunctionsResult`
+- New struct `StaticSitesClientListStaticSiteSecretsOptions`
+- New struct `StaticSitesClientListStaticSiteSecretsResponse`
+- New struct `StaticSitesClientListStaticSiteSecretsResult`
+- New struct `StaticSitesClientListStaticSiteUsersOptions`
+- New struct `StaticSitesClientListStaticSiteUsersPager`
+- New struct `StaticSitesClientListStaticSiteUsersResponse`
+- New struct `StaticSitesClientListStaticSiteUsersResult`
+- New struct `StaticSitesClientPreviewWorkflowOptions`
+- New struct `StaticSitesClientPreviewWorkflowResponse`
+- New struct `StaticSitesClientPreviewWorkflowResult`
+- New struct `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller`
+- New struct `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse`
+- New struct `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse`
+- New struct `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResult`
+- New struct `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePoller`
+- New struct `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse`
+- New struct `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse`
+- New struct `StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResult`
+- New struct `StaticSitesClientResetStaticSiteAPIKeyOptions`
+- New struct `StaticSitesClientResetStaticSiteAPIKeyResponse`
+- New struct `StaticSitesClientUpdateStaticSiteOptions`
+- New struct `StaticSitesClientUpdateStaticSiteResponse`
+- New struct `StaticSitesClientUpdateStaticSiteResult`
+- New struct `StaticSitesClientUpdateStaticSiteUserOptions`
+- New struct `StaticSitesClientUpdateStaticSiteUserResponse`
+- New struct `StaticSitesClientUpdateStaticSiteUserResult`
+- New struct `StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePoller`
+- New struct `StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse`
+- New struct `StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse`
+- New struct `Template`
+- New struct `TopLevelDomainsClientGetOptions`
+- New struct `TopLevelDomainsClientGetResponse`
+- New struct `TopLevelDomainsClientGetResult`
+- New struct `TopLevelDomainsClientListAgreementsOptions`
+- New struct `TopLevelDomainsClientListAgreementsPager`
+- New struct `TopLevelDomainsClientListAgreementsResponse`
+- New struct `TopLevelDomainsClientListAgreementsResult`
+- New struct `TopLevelDomainsClientListOptions`
+- New struct `TopLevelDomainsClientListPager`
+- New struct `TopLevelDomainsClientListResponse`
+- New struct `TopLevelDomainsClientListResult`
+- New struct `TrafficWeight`
+- New struct `WebAppsClientAddPremierAddOnOptions`
+- New struct `WebAppsClientAddPremierAddOnResponse`
+- New struct `WebAppsClientAddPremierAddOnResult`
+- New struct `WebAppsClientAddPremierAddOnSlotOptions`
+- New struct `WebAppsClientAddPremierAddOnSlotResponse`
+- New struct `WebAppsClientAddPremierAddOnSlotResult`
+- New struct `WebAppsClientAnalyzeCustomHostnameOptions`
+- New struct `WebAppsClientAnalyzeCustomHostnameResponse`
+- New struct `WebAppsClientAnalyzeCustomHostnameResult`
+- New struct `WebAppsClientAnalyzeCustomHostnameSlotOptions`
+- New struct `WebAppsClientAnalyzeCustomHostnameSlotResponse`
+- New struct `WebAppsClientAnalyzeCustomHostnameSlotResult`
+- New struct `WebAppsClientApplySlotConfigToProductionOptions`
+- New struct `WebAppsClientApplySlotConfigToProductionResponse`
+- New struct `WebAppsClientApplySlotConfigurationSlotOptions`
+- New struct `WebAppsClientApplySlotConfigurationSlotResponse`
+- New struct `WebAppsClientApproveOrRejectPrivateEndpointConnectionPoller`
+- New struct `WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse`
+- New struct `WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse`
+- New struct `WebAppsClientApproveOrRejectPrivateEndpointConnectionResult`
+- New struct `WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPoller`
+- New struct `WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse`
+- New struct `WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse`
+- New struct `WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResult`
+- New struct `WebAppsClientBackupOptions`
+- New struct `WebAppsClientBackupResponse`
+- New struct `WebAppsClientBackupResult`
+- New struct `WebAppsClientBackupSlotOptions`
+- New struct `WebAppsClientBackupSlotResponse`
+- New struct `WebAppsClientBackupSlotResult`
+- New struct `WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions`
+- New struct `WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions`
+- New struct `WebAppsClientBeginCreateFunctionOptions`
+- New struct `WebAppsClientBeginCreateInstanceFunctionSlotOptions`
+- New struct `WebAppsClientBeginCreateInstanceMSDeployOperationOptions`
+- New struct `WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions`
+- New struct `WebAppsClientBeginCreateMSDeployOperationOptions`
+- New struct `WebAppsClientBeginCreateMSDeployOperationSlotOptions`
+- New struct `WebAppsClientBeginCreateOrUpdateOptions`
+- New struct `WebAppsClientBeginCreateOrUpdateSlotOptions`
+- New struct `WebAppsClientBeginCreateOrUpdateSourceControlOptions`
+- New struct `WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions`
+- New struct `WebAppsClientBeginDeletePrivateEndpointConnectionOptions`
+- New struct `WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions`
+- New struct `WebAppsClientBeginInstallSiteExtensionOptions`
+- New struct `WebAppsClientBeginInstallSiteExtensionSlotOptions`
+- New struct `WebAppsClientBeginListPublishingCredentialsOptions`
+- New struct `WebAppsClientBeginListPublishingCredentialsSlotOptions`
+- New struct `WebAppsClientBeginMigrateMySQLOptions`
+- New struct `WebAppsClientBeginMigrateStorageOptions`
+- New struct `WebAppsClientBeginRestoreFromBackupBlobOptions`
+- New struct `WebAppsClientBeginRestoreFromBackupBlobSlotOptions`
+- New struct `WebAppsClientBeginRestoreFromDeletedAppOptions`
+- New struct `WebAppsClientBeginRestoreFromDeletedAppSlotOptions`
+- New struct `WebAppsClientBeginRestoreOptions`
+- New struct `WebAppsClientBeginRestoreSlotOptions`
+- New struct `WebAppsClientBeginRestoreSnapshotOptions`
+- New struct `WebAppsClientBeginRestoreSnapshotSlotOptions`
+- New struct `WebAppsClientBeginStartNetworkTraceOptions`
+- New struct `WebAppsClientBeginStartNetworkTraceSlotOptions`
+- New struct `WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions`
+- New struct `WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions`
+- New struct `WebAppsClientBeginSwapSlotOptions`
+- New struct `WebAppsClientBeginSwapSlotWithProductionOptions`
+- New struct `WebAppsClientCreateDeploymentOptions`
+- New struct `WebAppsClientCreateDeploymentResponse`
+- New struct `WebAppsClientCreateDeploymentResult`
+- New struct `WebAppsClientCreateDeploymentSlotOptions`
+- New struct `WebAppsClientCreateDeploymentSlotResponse`
+- New struct `WebAppsClientCreateDeploymentSlotResult`
+- New struct `WebAppsClientCreateFunctionPoller`
+- New struct `WebAppsClientCreateFunctionPollerResponse`
+- New struct `WebAppsClientCreateFunctionResponse`
+- New struct `WebAppsClientCreateFunctionResult`
+- New struct `WebAppsClientCreateInstanceFunctionSlotPoller`
+- New struct `WebAppsClientCreateInstanceFunctionSlotPollerResponse`
+- New struct `WebAppsClientCreateInstanceFunctionSlotResponse`
+- New struct `WebAppsClientCreateInstanceFunctionSlotResult`
+- New struct `WebAppsClientCreateInstanceMSDeployOperationPoller`
+- New struct `WebAppsClientCreateInstanceMSDeployOperationPollerResponse`
+- New struct `WebAppsClientCreateInstanceMSDeployOperationResponse`
+- New struct `WebAppsClientCreateInstanceMSDeployOperationResult`
+- New struct `WebAppsClientCreateInstanceMSDeployOperationSlotPoller`
+- New struct `WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse`
+- New struct `WebAppsClientCreateInstanceMSDeployOperationSlotResponse`
+- New struct `WebAppsClientCreateInstanceMSDeployOperationSlotResult`
+- New struct `WebAppsClientCreateMSDeployOperationPoller`
+- New struct `WebAppsClientCreateMSDeployOperationPollerResponse`
+- New struct `WebAppsClientCreateMSDeployOperationResponse`
+- New struct `WebAppsClientCreateMSDeployOperationResult`
+- New struct `WebAppsClientCreateMSDeployOperationSlotPoller`
+- New struct `WebAppsClientCreateMSDeployOperationSlotPollerResponse`
+- New struct `WebAppsClientCreateMSDeployOperationSlotResponse`
+- New struct `WebAppsClientCreateMSDeployOperationSlotResult`
+- New struct `WebAppsClientCreateOneDeployOperationOptions`
+- New struct `WebAppsClientCreateOneDeployOperationResponse`
+- New struct `WebAppsClientCreateOneDeployOperationResult`
+- New struct `WebAppsClientCreateOrUpdateConfigurationOptions`
+- New struct `WebAppsClientCreateOrUpdateConfigurationResponse`
+- New struct `WebAppsClientCreateOrUpdateConfigurationResult`
+- New struct `WebAppsClientCreateOrUpdateConfigurationSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateConfigurationSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateConfigurationSlotResult`
+- New struct `WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions`
+- New struct `WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse`
+- New struct `WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResult`
+- New struct `WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResult`
+- New struct `WebAppsClientCreateOrUpdateFunctionSecretOptions`
+- New struct `WebAppsClientCreateOrUpdateFunctionSecretResponse`
+- New struct `WebAppsClientCreateOrUpdateFunctionSecretResult`
+- New struct `WebAppsClientCreateOrUpdateFunctionSecretSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateFunctionSecretSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateFunctionSecretSlotResult`
+- New struct `WebAppsClientCreateOrUpdateHostNameBindingOptions`
+- New struct `WebAppsClientCreateOrUpdateHostNameBindingResponse`
+- New struct `WebAppsClientCreateOrUpdateHostNameBindingResult`
+- New struct `WebAppsClientCreateOrUpdateHostNameBindingSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateHostNameBindingSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateHostNameBindingSlotResult`
+- New struct `WebAppsClientCreateOrUpdateHostSecretOptions`
+- New struct `WebAppsClientCreateOrUpdateHostSecretResponse`
+- New struct `WebAppsClientCreateOrUpdateHostSecretResult`
+- New struct `WebAppsClientCreateOrUpdateHostSecretSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateHostSecretSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateHostSecretSlotResult`
+- New struct `WebAppsClientCreateOrUpdateHybridConnectionOptions`
+- New struct `WebAppsClientCreateOrUpdateHybridConnectionResponse`
+- New struct `WebAppsClientCreateOrUpdateHybridConnectionResult`
+- New struct `WebAppsClientCreateOrUpdateHybridConnectionSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateHybridConnectionSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateHybridConnectionSlotResult`
+- New struct `WebAppsClientCreateOrUpdatePoller`
+- New struct `WebAppsClientCreateOrUpdatePollerResponse`
+- New struct `WebAppsClientCreateOrUpdatePublicCertificateOptions`
+- New struct `WebAppsClientCreateOrUpdatePublicCertificateResponse`
+- New struct `WebAppsClientCreateOrUpdatePublicCertificateResult`
+- New struct `WebAppsClientCreateOrUpdatePublicCertificateSlotOptions`
+- New struct `WebAppsClientCreateOrUpdatePublicCertificateSlotResponse`
+- New struct `WebAppsClientCreateOrUpdatePublicCertificateSlotResult`
+- New struct `WebAppsClientCreateOrUpdateRelayServiceConnectionOptions`
+- New struct `WebAppsClientCreateOrUpdateRelayServiceConnectionResponse`
+- New struct `WebAppsClientCreateOrUpdateRelayServiceConnectionResult`
+- New struct `WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResult`
+- New struct `WebAppsClientCreateOrUpdateResponse`
+- New struct `WebAppsClientCreateOrUpdateResult`
+- New struct `WebAppsClientCreateOrUpdateSlotPoller`
+- New struct `WebAppsClientCreateOrUpdateSlotPollerResponse`
+- New struct `WebAppsClientCreateOrUpdateSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateSlotResult`
+- New struct `WebAppsClientCreateOrUpdateSourceControlPoller`
+- New struct `WebAppsClientCreateOrUpdateSourceControlPollerResponse`
+- New struct `WebAppsClientCreateOrUpdateSourceControlResponse`
+- New struct `WebAppsClientCreateOrUpdateSourceControlResult`
+- New struct `WebAppsClientCreateOrUpdateSourceControlSlotPoller`
+- New struct `WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse`
+- New struct `WebAppsClientCreateOrUpdateSourceControlSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateSourceControlSlotResult`
+- New struct `WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions`
+- New struct `WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse`
+- New struct `WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResult`
+- New struct `WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionGatewayResult`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResult`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionOptions`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionResponse`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionResult`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionSlotOptions`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionSlotResponse`
+- New struct `WebAppsClientCreateOrUpdateVnetConnectionSlotResult`
+- New struct `WebAppsClientDeleteBackupConfigurationOptions`
+- New struct `WebAppsClientDeleteBackupConfigurationResponse`
+- New struct `WebAppsClientDeleteBackupConfigurationSlotOptions`
+- New struct `WebAppsClientDeleteBackupConfigurationSlotResponse`
+- New struct `WebAppsClientDeleteBackupOptions`
+- New struct `WebAppsClientDeleteBackupResponse`
+- New struct `WebAppsClientDeleteBackupSlotOptions`
+- New struct `WebAppsClientDeleteBackupSlotResponse`
+- New struct `WebAppsClientDeleteContinuousWebJobOptions`
+- New struct `WebAppsClientDeleteContinuousWebJobResponse`
+- New struct `WebAppsClientDeleteContinuousWebJobSlotOptions`
+- New struct `WebAppsClientDeleteContinuousWebJobSlotResponse`
+- New struct `WebAppsClientDeleteDeploymentOptions`
+- New struct `WebAppsClientDeleteDeploymentResponse`
+- New struct `WebAppsClientDeleteDeploymentSlotOptions`
+- New struct `WebAppsClientDeleteDeploymentSlotResponse`
+- New struct `WebAppsClientDeleteDomainOwnershipIdentifierOptions`
+- New struct `WebAppsClientDeleteDomainOwnershipIdentifierResponse`
+- New struct `WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions`
+- New struct `WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse`
+- New struct `WebAppsClientDeleteFunctionOptions`
+- New struct `WebAppsClientDeleteFunctionResponse`
+- New struct `WebAppsClientDeleteFunctionSecretOptions`
+- New struct `WebAppsClientDeleteFunctionSecretResponse`
+- New struct `WebAppsClientDeleteFunctionSecretSlotOptions`
+- New struct `WebAppsClientDeleteFunctionSecretSlotResponse`
+- New struct `WebAppsClientDeleteHostNameBindingOptions`
+- New struct `WebAppsClientDeleteHostNameBindingResponse`
+- New struct `WebAppsClientDeleteHostNameBindingSlotOptions`
+- New struct `WebAppsClientDeleteHostNameBindingSlotResponse`
+- New struct `WebAppsClientDeleteHostSecretOptions`
+- New struct `WebAppsClientDeleteHostSecretResponse`
+- New struct `WebAppsClientDeleteHostSecretSlotOptions`
+- New struct `WebAppsClientDeleteHostSecretSlotResponse`
+- New struct `WebAppsClientDeleteHybridConnectionOptions`
+- New struct `WebAppsClientDeleteHybridConnectionResponse`
+- New struct `WebAppsClientDeleteHybridConnectionSlotOptions`
+- New struct `WebAppsClientDeleteHybridConnectionSlotResponse`
+- New struct `WebAppsClientDeleteInstanceFunctionSlotOptions`
+- New struct `WebAppsClientDeleteInstanceFunctionSlotResponse`
+- New struct `WebAppsClientDeleteInstanceProcessOptions`
+- New struct `WebAppsClientDeleteInstanceProcessResponse`
+- New struct `WebAppsClientDeleteInstanceProcessSlotOptions`
+- New struct `WebAppsClientDeleteInstanceProcessSlotResponse`
+- New struct `WebAppsClientDeleteOptions`
+- New struct `WebAppsClientDeletePremierAddOnOptions`
+- New struct `WebAppsClientDeletePremierAddOnResponse`
+- New struct `WebAppsClientDeletePremierAddOnSlotOptions`
+- New struct `WebAppsClientDeletePremierAddOnSlotResponse`
+- New struct `WebAppsClientDeletePrivateEndpointConnectionPoller`
+- New struct `WebAppsClientDeletePrivateEndpointConnectionPollerResponse`
+- New struct `WebAppsClientDeletePrivateEndpointConnectionResponse`
+- New struct `WebAppsClientDeletePrivateEndpointConnectionResult`
+- New struct `WebAppsClientDeletePrivateEndpointConnectionSlotPoller`
+- New struct `WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse`
+- New struct `WebAppsClientDeletePrivateEndpointConnectionSlotResponse`
+- New struct `WebAppsClientDeletePrivateEndpointConnectionSlotResult`
+- New struct `WebAppsClientDeleteProcessOptions`
+- New struct `WebAppsClientDeleteProcessResponse`
+- New struct `WebAppsClientDeleteProcessSlotOptions`
+- New struct `WebAppsClientDeleteProcessSlotResponse`
+- New struct `WebAppsClientDeletePublicCertificateOptions`
+- New struct `WebAppsClientDeletePublicCertificateResponse`
+- New struct `WebAppsClientDeletePublicCertificateSlotOptions`
+- New struct `WebAppsClientDeletePublicCertificateSlotResponse`
+- New struct `WebAppsClientDeleteRelayServiceConnectionOptions`
+- New struct `WebAppsClientDeleteRelayServiceConnectionResponse`
+- New struct `WebAppsClientDeleteRelayServiceConnectionSlotOptions`
+- New struct `WebAppsClientDeleteRelayServiceConnectionSlotResponse`
+- New struct `WebAppsClientDeleteResponse`
+- New struct `WebAppsClientDeleteSiteExtensionOptions`
+- New struct `WebAppsClientDeleteSiteExtensionResponse`
+- New struct `WebAppsClientDeleteSiteExtensionSlotOptions`
+- New struct `WebAppsClientDeleteSiteExtensionSlotResponse`
+- New struct `WebAppsClientDeleteSlotOptions`
+- New struct `WebAppsClientDeleteSlotResponse`
+- New struct `WebAppsClientDeleteSourceControlOptions`
+- New struct `WebAppsClientDeleteSourceControlResponse`
+- New struct `WebAppsClientDeleteSourceControlSlotOptions`
+- New struct `WebAppsClientDeleteSourceControlSlotResponse`
+- New struct `WebAppsClientDeleteSwiftVirtualNetworkOptions`
+- New struct `WebAppsClientDeleteSwiftVirtualNetworkResponse`
+- New struct `WebAppsClientDeleteSwiftVirtualNetworkSlotOptions`
+- New struct `WebAppsClientDeleteSwiftVirtualNetworkSlotResponse`
+- New struct `WebAppsClientDeleteTriggeredWebJobOptions`
+- New struct `WebAppsClientDeleteTriggeredWebJobResponse`
+- New struct `WebAppsClientDeleteTriggeredWebJobSlotOptions`
+- New struct `WebAppsClientDeleteTriggeredWebJobSlotResponse`
+- New struct `WebAppsClientDeleteVnetConnectionOptions`
+- New struct `WebAppsClientDeleteVnetConnectionResponse`
+- New struct `WebAppsClientDeleteVnetConnectionSlotOptions`
+- New struct `WebAppsClientDeleteVnetConnectionSlotResponse`
+- New struct `WebAppsClientDiscoverBackupOptions`
+- New struct `WebAppsClientDiscoverBackupResponse`
+- New struct `WebAppsClientDiscoverBackupResult`
+- New struct `WebAppsClientDiscoverBackupSlotOptions`
+- New struct `WebAppsClientDiscoverBackupSlotResponse`
+- New struct `WebAppsClientDiscoverBackupSlotResult`
+- New struct `WebAppsClientGenerateNewSitePublishingPasswordOptions`
+- New struct `WebAppsClientGenerateNewSitePublishingPasswordResponse`
+- New struct `WebAppsClientGenerateNewSitePublishingPasswordSlotOptions`
+- New struct `WebAppsClientGenerateNewSitePublishingPasswordSlotResponse`
+- New struct `WebAppsClientGetAppSettingKeyVaultReferenceOptions`
+- New struct `WebAppsClientGetAppSettingKeyVaultReferenceResponse`
+- New struct `WebAppsClientGetAppSettingKeyVaultReferenceResult`
+- New struct `WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions`
+- New struct `WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse`
+- New struct `WebAppsClientGetAppSettingKeyVaultReferenceSlotResult`
+- New struct `WebAppsClientGetAppSettingsKeyVaultReferencesOptions`
+- New struct `WebAppsClientGetAppSettingsKeyVaultReferencesPager`
+- New struct `WebAppsClientGetAppSettingsKeyVaultReferencesResponse`
+- New struct `WebAppsClientGetAppSettingsKeyVaultReferencesResult`
+- New struct `WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions`
+- New struct `WebAppsClientGetAppSettingsKeyVaultReferencesSlotPager`
+- New struct `WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse`
+- New struct `WebAppsClientGetAppSettingsKeyVaultReferencesSlotResult`
+- New struct `WebAppsClientGetAuthSettingsOptions`
+- New struct `WebAppsClientGetAuthSettingsResponse`
+- New struct `WebAppsClientGetAuthSettingsResult`
+- New struct `WebAppsClientGetAuthSettingsSlotOptions`
+- New struct `WebAppsClientGetAuthSettingsSlotResponse`
+- New struct `WebAppsClientGetAuthSettingsSlotResult`
+- New struct `WebAppsClientGetAuthSettingsV2Options`
+- New struct `WebAppsClientGetAuthSettingsV2Response`
+- New struct `WebAppsClientGetAuthSettingsV2Result`
+- New struct `WebAppsClientGetAuthSettingsV2SlotOptions`
+- New struct `WebAppsClientGetAuthSettingsV2SlotResponse`
+- New struct `WebAppsClientGetAuthSettingsV2SlotResult`
+- New struct `WebAppsClientGetAuthSettingsV2WithoutSecretsOptions`
+- New struct `WebAppsClientGetAuthSettingsV2WithoutSecretsResponse`
+- New struct `WebAppsClientGetAuthSettingsV2WithoutSecretsResult`
+- New struct `WebAppsClientGetBackupConfigurationOptions`
+- New struct `WebAppsClientGetBackupConfigurationResponse`
+- New struct `WebAppsClientGetBackupConfigurationResult`
+- New struct `WebAppsClientGetBackupConfigurationSlotOptions`
+- New struct `WebAppsClientGetBackupConfigurationSlotResponse`
+- New struct `WebAppsClientGetBackupConfigurationSlotResult`
+- New struct `WebAppsClientGetBackupStatusOptions`
+- New struct `WebAppsClientGetBackupStatusResponse`
+- New struct `WebAppsClientGetBackupStatusResult`
+- New struct `WebAppsClientGetBackupStatusSlotOptions`
+- New struct `WebAppsClientGetBackupStatusSlotResponse`
+- New struct `WebAppsClientGetBackupStatusSlotResult`
+- New struct `WebAppsClientGetConfigurationOptions`
+- New struct `WebAppsClientGetConfigurationResponse`
+- New struct `WebAppsClientGetConfigurationResult`
+- New struct `WebAppsClientGetConfigurationSlotOptions`
+- New struct `WebAppsClientGetConfigurationSlotResponse`
+- New struct `WebAppsClientGetConfigurationSlotResult`
+- New struct `WebAppsClientGetConfigurationSnapshotOptions`
+- New struct `WebAppsClientGetConfigurationSnapshotResponse`
+- New struct `WebAppsClientGetConfigurationSnapshotResult`
+- New struct `WebAppsClientGetConfigurationSnapshotSlotOptions`
+- New struct `WebAppsClientGetConfigurationSnapshotSlotResponse`
+- New struct `WebAppsClientGetConfigurationSnapshotSlotResult`
+- New struct `WebAppsClientGetContainerLogsZipOptions`
+- New struct `WebAppsClientGetContainerLogsZipResponse`
+- New struct `WebAppsClientGetContainerLogsZipSlotOptions`
+- New struct `WebAppsClientGetContainerLogsZipSlotResponse`
+- New struct `WebAppsClientGetContinuousWebJobOptions`
+- New struct `WebAppsClientGetContinuousWebJobResponse`
+- New struct `WebAppsClientGetContinuousWebJobResult`
+- New struct `WebAppsClientGetContinuousWebJobSlotOptions`
+- New struct `WebAppsClientGetContinuousWebJobSlotResponse`
+- New struct `WebAppsClientGetContinuousWebJobSlotResult`
+- New struct `WebAppsClientGetDeploymentOptions`
+- New struct `WebAppsClientGetDeploymentResponse`
+- New struct `WebAppsClientGetDeploymentResult`
+- New struct `WebAppsClientGetDeploymentSlotOptions`
+- New struct `WebAppsClientGetDeploymentSlotResponse`
+- New struct `WebAppsClientGetDeploymentSlotResult`
+- New struct `WebAppsClientGetDiagnosticLogsConfigurationOptions`
+- New struct `WebAppsClientGetDiagnosticLogsConfigurationResponse`
+- New struct `WebAppsClientGetDiagnosticLogsConfigurationResult`
+- New struct `WebAppsClientGetDiagnosticLogsConfigurationSlotOptions`
+- New struct `WebAppsClientGetDiagnosticLogsConfigurationSlotResponse`
+- New struct `WebAppsClientGetDiagnosticLogsConfigurationSlotResult`
+- New struct `WebAppsClientGetDomainOwnershipIdentifierOptions`
+- New struct `WebAppsClientGetDomainOwnershipIdentifierResponse`
+- New struct `WebAppsClientGetDomainOwnershipIdentifierResult`
+- New struct `WebAppsClientGetDomainOwnershipIdentifierSlotOptions`
+- New struct `WebAppsClientGetDomainOwnershipIdentifierSlotResponse`
+- New struct `WebAppsClientGetDomainOwnershipIdentifierSlotResult`
+- New struct `WebAppsClientGetFtpAllowedOptions`
+- New struct `WebAppsClientGetFtpAllowedResponse`
+- New struct `WebAppsClientGetFtpAllowedResult`
+- New struct `WebAppsClientGetFtpAllowedSlotOptions`
+- New struct `WebAppsClientGetFtpAllowedSlotResponse`
+- New struct `WebAppsClientGetFtpAllowedSlotResult`
+- New struct `WebAppsClientGetFunctionOptions`
+- New struct `WebAppsClientGetFunctionResponse`
+- New struct `WebAppsClientGetFunctionResult`
+- New struct `WebAppsClientGetFunctionsAdminTokenOptions`
+- New struct `WebAppsClientGetFunctionsAdminTokenResponse`
+- New struct `WebAppsClientGetFunctionsAdminTokenResult`
+- New struct `WebAppsClientGetFunctionsAdminTokenSlotOptions`
+- New struct `WebAppsClientGetFunctionsAdminTokenSlotResponse`
+- New struct `WebAppsClientGetFunctionsAdminTokenSlotResult`
+- New struct `WebAppsClientGetHostNameBindingOptions`
+- New struct `WebAppsClientGetHostNameBindingResponse`
+- New struct `WebAppsClientGetHostNameBindingResult`
+- New struct `WebAppsClientGetHostNameBindingSlotOptions`
+- New struct `WebAppsClientGetHostNameBindingSlotResponse`
+- New struct `WebAppsClientGetHostNameBindingSlotResult`
+- New struct `WebAppsClientGetHybridConnectionOptions`
+- New struct `WebAppsClientGetHybridConnectionResponse`
+- New struct `WebAppsClientGetHybridConnectionResult`
+- New struct `WebAppsClientGetHybridConnectionSlotOptions`
+- New struct `WebAppsClientGetHybridConnectionSlotResponse`
+- New struct `WebAppsClientGetHybridConnectionSlotResult`
+- New struct `WebAppsClientGetInstanceFunctionSlotOptions`
+- New struct `WebAppsClientGetInstanceFunctionSlotResponse`
+- New struct `WebAppsClientGetInstanceFunctionSlotResult`
+- New struct `WebAppsClientGetInstanceInfoOptions`
+- New struct `WebAppsClientGetInstanceInfoResponse`
+- New struct `WebAppsClientGetInstanceInfoResult`
+- New struct `WebAppsClientGetInstanceInfoSlotOptions`
+- New struct `WebAppsClientGetInstanceInfoSlotResponse`
+- New struct `WebAppsClientGetInstanceInfoSlotResult`
+- New struct `WebAppsClientGetInstanceMSDeployLogOptions`
+- New struct `WebAppsClientGetInstanceMSDeployLogResponse`
+- New struct `WebAppsClientGetInstanceMSDeployLogResult`
+- New struct `WebAppsClientGetInstanceMSDeployLogSlotOptions`
+- New struct `WebAppsClientGetInstanceMSDeployLogSlotResponse`
+- New struct `WebAppsClientGetInstanceMSDeployLogSlotResult`
+- New struct `WebAppsClientGetInstanceMsDeployStatusOptions`
+- New struct `WebAppsClientGetInstanceMsDeployStatusResponse`
+- New struct `WebAppsClientGetInstanceMsDeployStatusResult`
+- New struct `WebAppsClientGetInstanceMsDeployStatusSlotOptions`
+- New struct `WebAppsClientGetInstanceMsDeployStatusSlotResponse`
+- New struct `WebAppsClientGetInstanceMsDeployStatusSlotResult`
+- New struct `WebAppsClientGetInstanceProcessDumpOptions`
+- New struct `WebAppsClientGetInstanceProcessDumpResponse`
+- New struct `WebAppsClientGetInstanceProcessDumpSlotOptions`
+- New struct `WebAppsClientGetInstanceProcessDumpSlotResponse`
+- New struct `WebAppsClientGetInstanceProcessModuleOptions`
+- New struct `WebAppsClientGetInstanceProcessModuleResponse`
+- New struct `WebAppsClientGetInstanceProcessModuleResult`
+- New struct `WebAppsClientGetInstanceProcessModuleSlotOptions`
+- New struct `WebAppsClientGetInstanceProcessModuleSlotResponse`
+- New struct `WebAppsClientGetInstanceProcessModuleSlotResult`
+- New struct `WebAppsClientGetInstanceProcessOptions`
+- New struct `WebAppsClientGetInstanceProcessResponse`
+- New struct `WebAppsClientGetInstanceProcessResult`
+- New struct `WebAppsClientGetInstanceProcessSlotOptions`
+- New struct `WebAppsClientGetInstanceProcessSlotResponse`
+- New struct `WebAppsClientGetInstanceProcessSlotResult`
+- New struct `WebAppsClientGetMSDeployLogOptions`
+- New struct `WebAppsClientGetMSDeployLogResponse`
+- New struct `WebAppsClientGetMSDeployLogResult`
+- New struct `WebAppsClientGetMSDeployLogSlotOptions`
+- New struct `WebAppsClientGetMSDeployLogSlotResponse`
+- New struct `WebAppsClientGetMSDeployLogSlotResult`
+- New struct `WebAppsClientGetMSDeployStatusOptions`
+- New struct `WebAppsClientGetMSDeployStatusResponse`
+- New struct `WebAppsClientGetMSDeployStatusResult`
+- New struct `WebAppsClientGetMSDeployStatusSlotOptions`
+- New struct `WebAppsClientGetMSDeployStatusSlotResponse`
+- New struct `WebAppsClientGetMSDeployStatusSlotResult`
+- New struct `WebAppsClientGetMigrateMySQLStatusOptions`
+- New struct `WebAppsClientGetMigrateMySQLStatusResponse`
+- New struct `WebAppsClientGetMigrateMySQLStatusResult`
+- New struct `WebAppsClientGetMigrateMySQLStatusSlotOptions`
+- New struct `WebAppsClientGetMigrateMySQLStatusSlotResponse`
+- New struct `WebAppsClientGetMigrateMySQLStatusSlotResult`
+- New struct `WebAppsClientGetNetworkTraceOperationOptions`
+- New struct `WebAppsClientGetNetworkTraceOperationResponse`
+- New struct `WebAppsClientGetNetworkTraceOperationResult`
+- New struct `WebAppsClientGetNetworkTraceOperationSlotOptions`
+- New struct `WebAppsClientGetNetworkTraceOperationSlotResponse`
+- New struct `WebAppsClientGetNetworkTraceOperationSlotResult`
+- New struct `WebAppsClientGetNetworkTraceOperationSlotV2Options`
+- New struct `WebAppsClientGetNetworkTraceOperationSlotV2Response`
+- New struct `WebAppsClientGetNetworkTraceOperationSlotV2Result`
+- New struct `WebAppsClientGetNetworkTraceOperationV2Options`
+- New struct `WebAppsClientGetNetworkTraceOperationV2Response`
+- New struct `WebAppsClientGetNetworkTraceOperationV2Result`
+- New struct `WebAppsClientGetNetworkTracesOptions`
+- New struct `WebAppsClientGetNetworkTracesResponse`
+- New struct `WebAppsClientGetNetworkTracesResult`
+- New struct `WebAppsClientGetNetworkTracesSlotOptions`
+- New struct `WebAppsClientGetNetworkTracesSlotResponse`
+- New struct `WebAppsClientGetNetworkTracesSlotResult`
+- New struct `WebAppsClientGetNetworkTracesSlotV2Options`
+- New struct `WebAppsClientGetNetworkTracesSlotV2Response`
+- New struct `WebAppsClientGetNetworkTracesSlotV2Result`
+- New struct `WebAppsClientGetNetworkTracesV2Options`
+- New struct `WebAppsClientGetNetworkTracesV2Response`
+- New struct `WebAppsClientGetNetworkTracesV2Result`
+- New struct `WebAppsClientGetOneDeployStatusOptions`
+- New struct `WebAppsClientGetOneDeployStatusResponse`
+- New struct `WebAppsClientGetOneDeployStatusResult`
+- New struct `WebAppsClientGetOptions`
+- New struct `WebAppsClientGetPremierAddOnOptions`
+- New struct `WebAppsClientGetPremierAddOnResponse`
+- New struct `WebAppsClientGetPremierAddOnResult`
+- New struct `WebAppsClientGetPremierAddOnSlotOptions`
+- New struct `WebAppsClientGetPremierAddOnSlotResponse`
+- New struct `WebAppsClientGetPremierAddOnSlotResult`
+- New struct `WebAppsClientGetPrivateAccessOptions`
+- New struct `WebAppsClientGetPrivateAccessResponse`
+- New struct `WebAppsClientGetPrivateAccessResult`
+- New struct `WebAppsClientGetPrivateAccessSlotOptions`
+- New struct `WebAppsClientGetPrivateAccessSlotResponse`
+- New struct `WebAppsClientGetPrivateAccessSlotResult`
+- New struct `WebAppsClientGetPrivateEndpointConnectionListOptions`
+- New struct `WebAppsClientGetPrivateEndpointConnectionListPager`
+- New struct `WebAppsClientGetPrivateEndpointConnectionListResponse`
+- New struct `WebAppsClientGetPrivateEndpointConnectionListResult`
+- New struct `WebAppsClientGetPrivateEndpointConnectionListSlotOptions`
+- New struct `WebAppsClientGetPrivateEndpointConnectionListSlotPager`
+- New struct `WebAppsClientGetPrivateEndpointConnectionListSlotResponse`
+- New struct `WebAppsClientGetPrivateEndpointConnectionListSlotResult`
+- New struct `WebAppsClientGetPrivateEndpointConnectionOptions`
+- New struct `WebAppsClientGetPrivateEndpointConnectionResponse`
+- New struct `WebAppsClientGetPrivateEndpointConnectionResult`
+- New struct `WebAppsClientGetPrivateEndpointConnectionSlotOptions`
+- New struct `WebAppsClientGetPrivateEndpointConnectionSlotResponse`
+- New struct `WebAppsClientGetPrivateEndpointConnectionSlotResult`
+- New struct `WebAppsClientGetPrivateLinkResourcesOptions`
+- New struct `WebAppsClientGetPrivateLinkResourcesResponse`
+- New struct `WebAppsClientGetPrivateLinkResourcesResult`
+- New struct `WebAppsClientGetPrivateLinkResourcesSlotOptions`
+- New struct `WebAppsClientGetPrivateLinkResourcesSlotResponse`
+- New struct `WebAppsClientGetPrivateLinkResourcesSlotResult`
+- New struct `WebAppsClientGetProcessDumpOptions`
+- New struct `WebAppsClientGetProcessDumpResponse`
+- New struct `WebAppsClientGetProcessDumpSlotOptions`
+- New struct `WebAppsClientGetProcessDumpSlotResponse`
+- New struct `WebAppsClientGetProcessModuleOptions`
+- New struct `WebAppsClientGetProcessModuleResponse`
+- New struct `WebAppsClientGetProcessModuleResult`
+- New struct `WebAppsClientGetProcessModuleSlotOptions`
+- New struct `WebAppsClientGetProcessModuleSlotResponse`
+- New struct `WebAppsClientGetProcessModuleSlotResult`
+- New struct `WebAppsClientGetProcessOptions`
+- New struct `WebAppsClientGetProcessResponse`
+- New struct `WebAppsClientGetProcessResult`
+- New struct `WebAppsClientGetProcessSlotOptions`
+- New struct `WebAppsClientGetProcessSlotResponse`
+- New struct `WebAppsClientGetProcessSlotResult`
+- New struct `WebAppsClientGetPublicCertificateOptions`
+- New struct `WebAppsClientGetPublicCertificateResponse`
+- New struct `WebAppsClientGetPublicCertificateResult`
+- New struct `WebAppsClientGetPublicCertificateSlotOptions`
+- New struct `WebAppsClientGetPublicCertificateSlotResponse`
+- New struct `WebAppsClientGetPublicCertificateSlotResult`
+- New struct `WebAppsClientGetRelayServiceConnectionOptions`
+- New struct `WebAppsClientGetRelayServiceConnectionResponse`
+- New struct `WebAppsClientGetRelayServiceConnectionResult`
+- New struct `WebAppsClientGetRelayServiceConnectionSlotOptions`
+- New struct `WebAppsClientGetRelayServiceConnectionSlotResponse`
+- New struct `WebAppsClientGetRelayServiceConnectionSlotResult`
+- New struct `WebAppsClientGetResponse`
+- New struct `WebAppsClientGetResult`
+- New struct `WebAppsClientGetScmAllowedOptions`
+- New struct `WebAppsClientGetScmAllowedResponse`
+- New struct `WebAppsClientGetScmAllowedResult`
+- New struct `WebAppsClientGetScmAllowedSlotOptions`
+- New struct `WebAppsClientGetScmAllowedSlotResponse`
+- New struct `WebAppsClientGetScmAllowedSlotResult`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferenceOptions`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferenceResult`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResult`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferencesPager`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferencesResult`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotPager`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse`
+- New struct `WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResult`
+- New struct `WebAppsClientGetSiteExtensionOptions`
+- New struct `WebAppsClientGetSiteExtensionResponse`
+- New struct `WebAppsClientGetSiteExtensionResult`
+- New struct `WebAppsClientGetSiteExtensionSlotOptions`
+- New struct `WebAppsClientGetSiteExtensionSlotResponse`
+- New struct `WebAppsClientGetSiteExtensionSlotResult`
+- New struct `WebAppsClientGetSitePhpErrorLogFlagOptions`
+- New struct `WebAppsClientGetSitePhpErrorLogFlagResponse`
+- New struct `WebAppsClientGetSitePhpErrorLogFlagResult`
+- New struct `WebAppsClientGetSitePhpErrorLogFlagSlotOptions`
+- New struct `WebAppsClientGetSitePhpErrorLogFlagSlotResponse`
+- New struct `WebAppsClientGetSitePhpErrorLogFlagSlotResult`
+- New struct `WebAppsClientGetSlotOptions`
+- New struct `WebAppsClientGetSlotResponse`
+- New struct `WebAppsClientGetSlotResult`
+- New struct `WebAppsClientGetSourceControlOptions`
+- New struct `WebAppsClientGetSourceControlResponse`
+- New struct `WebAppsClientGetSourceControlResult`
+- New struct `WebAppsClientGetSourceControlSlotOptions`
+- New struct `WebAppsClientGetSourceControlSlotResponse`
+- New struct `WebAppsClientGetSourceControlSlotResult`
+- New struct `WebAppsClientGetSwiftVirtualNetworkConnectionOptions`
+- New struct `WebAppsClientGetSwiftVirtualNetworkConnectionResponse`
+- New struct `WebAppsClientGetSwiftVirtualNetworkConnectionResult`
+- New struct `WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions`
+- New struct `WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse`
+- New struct `WebAppsClientGetSwiftVirtualNetworkConnectionSlotResult`
+- New struct `WebAppsClientGetTriggeredWebJobHistoryOptions`
+- New struct `WebAppsClientGetTriggeredWebJobHistoryResponse`
+- New struct `WebAppsClientGetTriggeredWebJobHistoryResult`
+- New struct `WebAppsClientGetTriggeredWebJobHistorySlotOptions`
+- New struct `WebAppsClientGetTriggeredWebJobHistorySlotResponse`
+- New struct `WebAppsClientGetTriggeredWebJobHistorySlotResult`
+- New struct `WebAppsClientGetTriggeredWebJobOptions`
+- New struct `WebAppsClientGetTriggeredWebJobResponse`
+- New struct `WebAppsClientGetTriggeredWebJobResult`
+- New struct `WebAppsClientGetTriggeredWebJobSlotOptions`
+- New struct `WebAppsClientGetTriggeredWebJobSlotResponse`
+- New struct `WebAppsClientGetTriggeredWebJobSlotResult`
+- New struct `WebAppsClientGetVnetConnectionGatewayOptions`
+- New struct `WebAppsClientGetVnetConnectionGatewayResponse`
+- New struct `WebAppsClientGetVnetConnectionGatewayResult`
+- New struct `WebAppsClientGetVnetConnectionGatewaySlotOptions`
+- New struct `WebAppsClientGetVnetConnectionGatewaySlotResponse`
+- New struct `WebAppsClientGetVnetConnectionGatewaySlotResult`
+- New struct `WebAppsClientGetVnetConnectionOptions`
+- New struct `WebAppsClientGetVnetConnectionResponse`
+- New struct `WebAppsClientGetVnetConnectionResult`
+- New struct `WebAppsClientGetVnetConnectionSlotOptions`
+- New struct `WebAppsClientGetVnetConnectionSlotResponse`
+- New struct `WebAppsClientGetVnetConnectionSlotResult`
+- New struct `WebAppsClientGetWebJobOptions`
+- New struct `WebAppsClientGetWebJobResponse`
+- New struct `WebAppsClientGetWebJobResult`
+- New struct `WebAppsClientGetWebJobSlotOptions`
+- New struct `WebAppsClientGetWebJobSlotResponse`
+- New struct `WebAppsClientGetWebJobSlotResult`
+- New struct `WebAppsClientGetWebSiteContainerLogsOptions`
+- New struct `WebAppsClientGetWebSiteContainerLogsResponse`
+- New struct `WebAppsClientGetWebSiteContainerLogsSlotOptions`
+- New struct `WebAppsClientGetWebSiteContainerLogsSlotResponse`
+- New struct `WebAppsClientInstallSiteExtensionPoller`
+- New struct `WebAppsClientInstallSiteExtensionPollerResponse`
+- New struct `WebAppsClientInstallSiteExtensionResponse`
+- New struct `WebAppsClientInstallSiteExtensionResult`
+- New struct `WebAppsClientInstallSiteExtensionSlotPoller`
+- New struct `WebAppsClientInstallSiteExtensionSlotPollerResponse`
+- New struct `WebAppsClientInstallSiteExtensionSlotResponse`
+- New struct `WebAppsClientInstallSiteExtensionSlotResult`
+- New struct `WebAppsClientIsCloneableOptions`
+- New struct `WebAppsClientIsCloneableResponse`
+- New struct `WebAppsClientIsCloneableResult`
+- New struct `WebAppsClientIsCloneableSlotOptions`
+- New struct `WebAppsClientIsCloneableSlotResponse`
+- New struct `WebAppsClientIsCloneableSlotResult`
+- New struct `WebAppsClientListApplicationSettingsOptions`
+- New struct `WebAppsClientListApplicationSettingsResponse`
+- New struct `WebAppsClientListApplicationSettingsResult`
+- New struct `WebAppsClientListApplicationSettingsSlotOptions`
+- New struct `WebAppsClientListApplicationSettingsSlotResponse`
+- New struct `WebAppsClientListApplicationSettingsSlotResult`
+- New struct `WebAppsClientListAzureStorageAccountsOptions`
+- New struct `WebAppsClientListAzureStorageAccountsResponse`
+- New struct `WebAppsClientListAzureStorageAccountsResult`
+- New struct `WebAppsClientListAzureStorageAccountsSlotOptions`
+- New struct `WebAppsClientListAzureStorageAccountsSlotResponse`
+- New struct `WebAppsClientListAzureStorageAccountsSlotResult`
+- New struct `WebAppsClientListBackupStatusSecretsOptions`
+- New struct `WebAppsClientListBackupStatusSecretsResponse`
+- New struct `WebAppsClientListBackupStatusSecretsResult`
+- New struct `WebAppsClientListBackupStatusSecretsSlotOptions`
+- New struct `WebAppsClientListBackupStatusSecretsSlotResponse`
+- New struct `WebAppsClientListBackupStatusSecretsSlotResult`
+- New struct `WebAppsClientListBackupsOptions`
+- New struct `WebAppsClientListBackupsPager`
+- New struct `WebAppsClientListBackupsResponse`
+- New struct `WebAppsClientListBackupsResult`
+- New struct `WebAppsClientListBackupsSlotOptions`
+- New struct `WebAppsClientListBackupsSlotPager`
+- New struct `WebAppsClientListBackupsSlotResponse`
+- New struct `WebAppsClientListBackupsSlotResult`
+- New struct `WebAppsClientListBasicPublishingCredentialsPoliciesOptions`
+- New struct `WebAppsClientListBasicPublishingCredentialsPoliciesPager`
+- New struct `WebAppsClientListBasicPublishingCredentialsPoliciesResponse`
+- New struct `WebAppsClientListBasicPublishingCredentialsPoliciesResult`
+- New struct `WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions`
+- New struct `WebAppsClientListBasicPublishingCredentialsPoliciesSlotPager`
+- New struct `WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse`
+- New struct `WebAppsClientListBasicPublishingCredentialsPoliciesSlotResult`
+- New struct `WebAppsClientListByResourceGroupOptions`
+- New struct `WebAppsClientListByResourceGroupPager`
+- New struct `WebAppsClientListByResourceGroupResponse`
+- New struct `WebAppsClientListByResourceGroupResult`
+- New struct `WebAppsClientListConfigurationSnapshotInfoOptions`
+- New struct `WebAppsClientListConfigurationSnapshotInfoPager`
+- New struct `WebAppsClientListConfigurationSnapshotInfoResponse`
+- New struct `WebAppsClientListConfigurationSnapshotInfoResult`
+- New struct `WebAppsClientListConfigurationSnapshotInfoSlotOptions`
+- New struct `WebAppsClientListConfigurationSnapshotInfoSlotPager`
+- New struct `WebAppsClientListConfigurationSnapshotInfoSlotResponse`
+- New struct `WebAppsClientListConfigurationSnapshotInfoSlotResult`
+- New struct `WebAppsClientListConfigurationsOptions`
+- New struct `WebAppsClientListConfigurationsPager`
+- New struct `WebAppsClientListConfigurationsResponse`
+- New struct `WebAppsClientListConfigurationsResult`
+- New struct `WebAppsClientListConfigurationsSlotOptions`
+- New struct `WebAppsClientListConfigurationsSlotPager`
+- New struct `WebAppsClientListConfigurationsSlotResponse`
+- New struct `WebAppsClientListConfigurationsSlotResult`
+- New struct `WebAppsClientListConnectionStringsOptions`
+- New struct `WebAppsClientListConnectionStringsResponse`
+- New struct `WebAppsClientListConnectionStringsResult`
+- New struct `WebAppsClientListConnectionStringsSlotOptions`
+- New struct `WebAppsClientListConnectionStringsSlotResponse`
+- New struct `WebAppsClientListConnectionStringsSlotResult`
+- New struct `WebAppsClientListContinuousWebJobsOptions`
+- New struct `WebAppsClientListContinuousWebJobsPager`
+- New struct `WebAppsClientListContinuousWebJobsResponse`
+- New struct `WebAppsClientListContinuousWebJobsResult`
+- New struct `WebAppsClientListContinuousWebJobsSlotOptions`
+- New struct `WebAppsClientListContinuousWebJobsSlotPager`
+- New struct `WebAppsClientListContinuousWebJobsSlotResponse`
+- New struct `WebAppsClientListContinuousWebJobsSlotResult`
+- New struct `WebAppsClientListDeploymentLogOptions`
+- New struct `WebAppsClientListDeploymentLogResponse`
+- New struct `WebAppsClientListDeploymentLogResult`
+- New struct `WebAppsClientListDeploymentLogSlotOptions`
+- New struct `WebAppsClientListDeploymentLogSlotResponse`
+- New struct `WebAppsClientListDeploymentLogSlotResult`
+- New struct `WebAppsClientListDeploymentsOptions`
+- New struct `WebAppsClientListDeploymentsPager`
+- New struct `WebAppsClientListDeploymentsResponse`
+- New struct `WebAppsClientListDeploymentsResult`
+- New struct `WebAppsClientListDeploymentsSlotOptions`
+- New struct `WebAppsClientListDeploymentsSlotPager`
+- New struct `WebAppsClientListDeploymentsSlotResponse`
+- New struct `WebAppsClientListDeploymentsSlotResult`
+- New struct `WebAppsClientListDomainOwnershipIdentifiersOptions`
+- New struct `WebAppsClientListDomainOwnershipIdentifiersPager`
+- New struct `WebAppsClientListDomainOwnershipIdentifiersResponse`
+- New struct `WebAppsClientListDomainOwnershipIdentifiersResult`
+- New struct `WebAppsClientListDomainOwnershipIdentifiersSlotOptions`
+- New struct `WebAppsClientListDomainOwnershipIdentifiersSlotPager`
+- New struct `WebAppsClientListDomainOwnershipIdentifiersSlotResponse`
+- New struct `WebAppsClientListDomainOwnershipIdentifiersSlotResult`
+- New struct `WebAppsClientListFunctionKeysOptions`
+- New struct `WebAppsClientListFunctionKeysResponse`
+- New struct `WebAppsClientListFunctionKeysResult`
+- New struct `WebAppsClientListFunctionKeysSlotOptions`
+- New struct `WebAppsClientListFunctionKeysSlotResponse`
+- New struct `WebAppsClientListFunctionKeysSlotResult`
+- New struct `WebAppsClientListFunctionSecretsOptions`
+- New struct `WebAppsClientListFunctionSecretsResponse`
+- New struct `WebAppsClientListFunctionSecretsResult`
+- New struct `WebAppsClientListFunctionSecretsSlotOptions`
+- New struct `WebAppsClientListFunctionSecretsSlotResponse`
+- New struct `WebAppsClientListFunctionSecretsSlotResult`
+- New struct `WebAppsClientListFunctionsOptions`
+- New struct `WebAppsClientListFunctionsPager`
+- New struct `WebAppsClientListFunctionsResponse`
+- New struct `WebAppsClientListFunctionsResult`
+- New struct `WebAppsClientListHostKeysOptions`
+- New struct `WebAppsClientListHostKeysResponse`
+- New struct `WebAppsClientListHostKeysResult`
+- New struct `WebAppsClientListHostKeysSlotOptions`
+- New struct `WebAppsClientListHostKeysSlotResponse`
+- New struct `WebAppsClientListHostKeysSlotResult`
+- New struct `WebAppsClientListHostNameBindingsOptions`
+- New struct `WebAppsClientListHostNameBindingsPager`
+- New struct `WebAppsClientListHostNameBindingsResponse`
+- New struct `WebAppsClientListHostNameBindingsResult`
+- New struct `WebAppsClientListHostNameBindingsSlotOptions`
+- New struct `WebAppsClientListHostNameBindingsSlotPager`
+- New struct `WebAppsClientListHostNameBindingsSlotResponse`
+- New struct `WebAppsClientListHostNameBindingsSlotResult`
+- New struct `WebAppsClientListHybridConnectionsOptions`
+- New struct `WebAppsClientListHybridConnectionsResponse`
+- New struct `WebAppsClientListHybridConnectionsResult`
+- New struct `WebAppsClientListHybridConnectionsSlotOptions`
+- New struct `WebAppsClientListHybridConnectionsSlotResponse`
+- New struct `WebAppsClientListHybridConnectionsSlotResult`
+- New struct `WebAppsClientListInstanceFunctionsSlotOptions`
+- New struct `WebAppsClientListInstanceFunctionsSlotPager`
+- New struct `WebAppsClientListInstanceFunctionsSlotResponse`
+- New struct `WebAppsClientListInstanceFunctionsSlotResult`
+- New struct `WebAppsClientListInstanceIdentifiersOptions`
+- New struct `WebAppsClientListInstanceIdentifiersPager`
+- New struct `WebAppsClientListInstanceIdentifiersResponse`
+- New struct `WebAppsClientListInstanceIdentifiersResult`
+- New struct `WebAppsClientListInstanceIdentifiersSlotOptions`
+- New struct `WebAppsClientListInstanceIdentifiersSlotPager`
+- New struct `WebAppsClientListInstanceIdentifiersSlotResponse`
+- New struct `WebAppsClientListInstanceIdentifiersSlotResult`
+- New struct `WebAppsClientListInstanceProcessModulesOptions`
+- New struct `WebAppsClientListInstanceProcessModulesPager`
+- New struct `WebAppsClientListInstanceProcessModulesResponse`
+- New struct `WebAppsClientListInstanceProcessModulesResult`
+- New struct `WebAppsClientListInstanceProcessModulesSlotOptions`
+- New struct `WebAppsClientListInstanceProcessModulesSlotPager`
+- New struct `WebAppsClientListInstanceProcessModulesSlotResponse`
+- New struct `WebAppsClientListInstanceProcessModulesSlotResult`
+- New struct `WebAppsClientListInstanceProcessThreadsOptions`
+- New struct `WebAppsClientListInstanceProcessThreadsPager`
+- New struct `WebAppsClientListInstanceProcessThreadsResponse`
+- New struct `WebAppsClientListInstanceProcessThreadsResult`
+- New struct `WebAppsClientListInstanceProcessThreadsSlotOptions`
+- New struct `WebAppsClientListInstanceProcessThreadsSlotPager`
+- New struct `WebAppsClientListInstanceProcessThreadsSlotResponse`
+- New struct `WebAppsClientListInstanceProcessThreadsSlotResult`
+- New struct `WebAppsClientListInstanceProcessesOptions`
+- New struct `WebAppsClientListInstanceProcessesPager`
+- New struct `WebAppsClientListInstanceProcessesResponse`
+- New struct `WebAppsClientListInstanceProcessesResult`
+- New struct `WebAppsClientListInstanceProcessesSlotOptions`
+- New struct `WebAppsClientListInstanceProcessesSlotPager`
+- New struct `WebAppsClientListInstanceProcessesSlotResponse`
+- New struct `WebAppsClientListInstanceProcessesSlotResult`
+- New struct `WebAppsClientListMetadataOptions`
+- New struct `WebAppsClientListMetadataResponse`
+- New struct `WebAppsClientListMetadataResult`
+- New struct `WebAppsClientListMetadataSlotOptions`
+- New struct `WebAppsClientListMetadataSlotResponse`
+- New struct `WebAppsClientListMetadataSlotResult`
+- New struct `WebAppsClientListNetworkFeaturesOptions`
+- New struct `WebAppsClientListNetworkFeaturesResponse`
+- New struct `WebAppsClientListNetworkFeaturesResult`
+- New struct `WebAppsClientListNetworkFeaturesSlotOptions`
+- New struct `WebAppsClientListNetworkFeaturesSlotResponse`
+- New struct `WebAppsClientListNetworkFeaturesSlotResult`
+- New struct `WebAppsClientListOptions`
+- New struct `WebAppsClientListPager`
+- New struct `WebAppsClientListPerfMonCountersOptions`
+- New struct `WebAppsClientListPerfMonCountersPager`
+- New struct `WebAppsClientListPerfMonCountersResponse`
+- New struct `WebAppsClientListPerfMonCountersResult`
+- New struct `WebAppsClientListPerfMonCountersSlotOptions`
+- New struct `WebAppsClientListPerfMonCountersSlotPager`
+- New struct `WebAppsClientListPerfMonCountersSlotResponse`
+- New struct `WebAppsClientListPerfMonCountersSlotResult`
+- New struct `WebAppsClientListPremierAddOnsOptions`
+- New struct `WebAppsClientListPremierAddOnsResponse`
+- New struct `WebAppsClientListPremierAddOnsResult`
+- New struct `WebAppsClientListPremierAddOnsSlotOptions`
+- New struct `WebAppsClientListPremierAddOnsSlotResponse`
+- New struct `WebAppsClientListPremierAddOnsSlotResult`
+- New struct `WebAppsClientListProcessModulesOptions`
+- New struct `WebAppsClientListProcessModulesPager`
+- New struct `WebAppsClientListProcessModulesResponse`
+- New struct `WebAppsClientListProcessModulesResult`
+- New struct `WebAppsClientListProcessModulesSlotOptions`
+- New struct `WebAppsClientListProcessModulesSlotPager`
+- New struct `WebAppsClientListProcessModulesSlotResponse`
+- New struct `WebAppsClientListProcessModulesSlotResult`
+- New struct `WebAppsClientListProcessThreadsOptions`
+- New struct `WebAppsClientListProcessThreadsPager`
+- New struct `WebAppsClientListProcessThreadsResponse`
+- New struct `WebAppsClientListProcessThreadsResult`
+- New struct `WebAppsClientListProcessThreadsSlotOptions`
+- New struct `WebAppsClientListProcessThreadsSlotPager`
+- New struct `WebAppsClientListProcessThreadsSlotResponse`
+- New struct `WebAppsClientListProcessThreadsSlotResult`
+- New struct `WebAppsClientListProcessesOptions`
+- New struct `WebAppsClientListProcessesPager`
+- New struct `WebAppsClientListProcessesResponse`
+- New struct `WebAppsClientListProcessesResult`
+- New struct `WebAppsClientListProcessesSlotOptions`
+- New struct `WebAppsClientListProcessesSlotPager`
+- New struct `WebAppsClientListProcessesSlotResponse`
+- New struct `WebAppsClientListProcessesSlotResult`
+- New struct `WebAppsClientListPublicCertificatesOptions`
+- New struct `WebAppsClientListPublicCertificatesPager`
+- New struct `WebAppsClientListPublicCertificatesResponse`
+- New struct `WebAppsClientListPublicCertificatesResult`
+- New struct `WebAppsClientListPublicCertificatesSlotOptions`
+- New struct `WebAppsClientListPublicCertificatesSlotPager`
+- New struct `WebAppsClientListPublicCertificatesSlotResponse`
+- New struct `WebAppsClientListPublicCertificatesSlotResult`
+- New struct `WebAppsClientListPublishingCredentialsPoller`
+- New struct `WebAppsClientListPublishingCredentialsPollerResponse`
+- New struct `WebAppsClientListPublishingCredentialsResponse`
+- New struct `WebAppsClientListPublishingCredentialsResult`
+- New struct `WebAppsClientListPublishingCredentialsSlotPoller`
+- New struct `WebAppsClientListPublishingCredentialsSlotPollerResponse`
+- New struct `WebAppsClientListPublishingCredentialsSlotResponse`
+- New struct `WebAppsClientListPublishingCredentialsSlotResult`
+- New struct `WebAppsClientListPublishingProfileXMLWithSecretsOptions`
+- New struct `WebAppsClientListPublishingProfileXMLWithSecretsResponse`
+- New struct `WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions`
+- New struct `WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse`
+- New struct `WebAppsClientListRelayServiceConnectionsOptions`
+- New struct `WebAppsClientListRelayServiceConnectionsResponse`
+- New struct `WebAppsClientListRelayServiceConnectionsResult`
+- New struct `WebAppsClientListRelayServiceConnectionsSlotOptions`
+- New struct `WebAppsClientListRelayServiceConnectionsSlotResponse`
+- New struct `WebAppsClientListRelayServiceConnectionsSlotResult`
+- New struct `WebAppsClientListResponse`
+- New struct `WebAppsClientListResult`
+- New struct `WebAppsClientListSiteBackupsOptions`
+- New struct `WebAppsClientListSiteBackupsPager`
+- New struct `WebAppsClientListSiteBackupsResponse`
+- New struct `WebAppsClientListSiteBackupsResult`
+- New struct `WebAppsClientListSiteBackupsSlotOptions`
+- New struct `WebAppsClientListSiteBackupsSlotPager`
+- New struct `WebAppsClientListSiteBackupsSlotResponse`
+- New struct `WebAppsClientListSiteBackupsSlotResult`
+- New struct `WebAppsClientListSiteExtensionsOptions`
+- New struct `WebAppsClientListSiteExtensionsPager`
+- New struct `WebAppsClientListSiteExtensionsResponse`
+- New struct `WebAppsClientListSiteExtensionsResult`
+- New struct `WebAppsClientListSiteExtensionsSlotOptions`
+- New struct `WebAppsClientListSiteExtensionsSlotPager`
+- New struct `WebAppsClientListSiteExtensionsSlotResponse`
+- New struct `WebAppsClientListSiteExtensionsSlotResult`
+- New struct `WebAppsClientListSitePushSettingsOptions`
+- New struct `WebAppsClientListSitePushSettingsResponse`
+- New struct `WebAppsClientListSitePushSettingsResult`
+- New struct `WebAppsClientListSitePushSettingsSlotOptions`
+- New struct `WebAppsClientListSitePushSettingsSlotResponse`
+- New struct `WebAppsClientListSitePushSettingsSlotResult`
+- New struct `WebAppsClientListSlotConfigurationNamesOptions`
+- New struct `WebAppsClientListSlotConfigurationNamesResponse`
+- New struct `WebAppsClientListSlotConfigurationNamesResult`
+- New struct `WebAppsClientListSlotDifferencesFromProductionOptions`
+- New struct `WebAppsClientListSlotDifferencesFromProductionPager`
+- New struct `WebAppsClientListSlotDifferencesFromProductionResponse`
+- New struct `WebAppsClientListSlotDifferencesFromProductionResult`
+- New struct `WebAppsClientListSlotDifferencesSlotOptions`
+- New struct `WebAppsClientListSlotDifferencesSlotPager`
+- New struct `WebAppsClientListSlotDifferencesSlotResponse`
+- New struct `WebAppsClientListSlotDifferencesSlotResult`
+- New struct `WebAppsClientListSlotsOptions`
+- New struct `WebAppsClientListSlotsPager`
+- New struct `WebAppsClientListSlotsResponse`
+- New struct `WebAppsClientListSlotsResult`
+- New struct `WebAppsClientListSnapshotsFromDRSecondaryOptions`
+- New struct `WebAppsClientListSnapshotsFromDRSecondaryPager`
+- New struct `WebAppsClientListSnapshotsFromDRSecondaryResponse`
+- New struct `WebAppsClientListSnapshotsFromDRSecondaryResult`
+- New struct `WebAppsClientListSnapshotsFromDRSecondarySlotOptions`
+- New struct `WebAppsClientListSnapshotsFromDRSecondarySlotPager`
+- New struct `WebAppsClientListSnapshotsFromDRSecondarySlotResponse`
+- New struct `WebAppsClientListSnapshotsFromDRSecondarySlotResult`
+- New struct `WebAppsClientListSnapshotsOptions`
+- New struct `WebAppsClientListSnapshotsPager`
+- New struct `WebAppsClientListSnapshotsResponse`
+- New struct `WebAppsClientListSnapshotsResult`
+- New struct `WebAppsClientListSnapshotsSlotOptions`
+- New struct `WebAppsClientListSnapshotsSlotPager`
+- New struct `WebAppsClientListSnapshotsSlotResponse`
+- New struct `WebAppsClientListSnapshotsSlotResult`
+- New struct `WebAppsClientListSyncFunctionTriggersOptions`
+- New struct `WebAppsClientListSyncFunctionTriggersResponse`
+- New struct `WebAppsClientListSyncFunctionTriggersResult`
+- New struct `WebAppsClientListSyncFunctionTriggersSlotOptions`
+- New struct `WebAppsClientListSyncFunctionTriggersSlotResponse`
+- New struct `WebAppsClientListSyncFunctionTriggersSlotResult`
+- New struct `WebAppsClientListSyncStatusOptions`
+- New struct `WebAppsClientListSyncStatusResponse`
+- New struct `WebAppsClientListSyncStatusSlotOptions`
+- New struct `WebAppsClientListSyncStatusSlotResponse`
+- New struct `WebAppsClientListTriggeredWebJobHistoryOptions`
+- New struct `WebAppsClientListTriggeredWebJobHistoryPager`
+- New struct `WebAppsClientListTriggeredWebJobHistoryResponse`
+- New struct `WebAppsClientListTriggeredWebJobHistoryResult`
+- New struct `WebAppsClientListTriggeredWebJobHistorySlotOptions`
+- New struct `WebAppsClientListTriggeredWebJobHistorySlotPager`
+- New struct `WebAppsClientListTriggeredWebJobHistorySlotResponse`
+- New struct `WebAppsClientListTriggeredWebJobHistorySlotResult`
+- New struct `WebAppsClientListTriggeredWebJobsOptions`
+- New struct `WebAppsClientListTriggeredWebJobsPager`
+- New struct `WebAppsClientListTriggeredWebJobsResponse`
+- New struct `WebAppsClientListTriggeredWebJobsResult`
+- New struct `WebAppsClientListTriggeredWebJobsSlotOptions`
+- New struct `WebAppsClientListTriggeredWebJobsSlotPager`
+- New struct `WebAppsClientListTriggeredWebJobsSlotResponse`
+- New struct `WebAppsClientListTriggeredWebJobsSlotResult`
+- New struct `WebAppsClientListUsagesOptions`
+- New struct `WebAppsClientListUsagesPager`
+- New struct `WebAppsClientListUsagesResponse`
+- New struct `WebAppsClientListUsagesResult`
+- New struct `WebAppsClientListUsagesSlotOptions`
+- New struct `WebAppsClientListUsagesSlotPager`
+- New struct `WebAppsClientListUsagesSlotResponse`
+- New struct `WebAppsClientListUsagesSlotResult`
+- New struct `WebAppsClientListVnetConnectionsOptions`
+- New struct `WebAppsClientListVnetConnectionsResponse`
+- New struct `WebAppsClientListVnetConnectionsResult`
+- New struct `WebAppsClientListVnetConnectionsSlotOptions`
+- New struct `WebAppsClientListVnetConnectionsSlotResponse`
+- New struct `WebAppsClientListVnetConnectionsSlotResult`
+- New struct `WebAppsClientListWebJobsOptions`
+- New struct `WebAppsClientListWebJobsPager`
+- New struct `WebAppsClientListWebJobsResponse`
+- New struct `WebAppsClientListWebJobsResult`
+- New struct `WebAppsClientListWebJobsSlotOptions`
+- New struct `WebAppsClientListWebJobsSlotPager`
+- New struct `WebAppsClientListWebJobsSlotResponse`
+- New struct `WebAppsClientListWebJobsSlotResult`
+- New struct `WebAppsClientMigrateMySQLPoller`
+- New struct `WebAppsClientMigrateMySQLPollerResponse`
+- New struct `WebAppsClientMigrateMySQLResponse`
+- New struct `WebAppsClientMigrateMySQLResult`
+- New struct `WebAppsClientMigrateStoragePoller`
+- New struct `WebAppsClientMigrateStoragePollerResponse`
+- New struct `WebAppsClientMigrateStorageResponse`
+- New struct `WebAppsClientMigrateStorageResult`
+- New struct `WebAppsClientPutPrivateAccessVnetOptions`
+- New struct `WebAppsClientPutPrivateAccessVnetResponse`
+- New struct `WebAppsClientPutPrivateAccessVnetResult`
+- New struct `WebAppsClientPutPrivateAccessVnetSlotOptions`
+- New struct `WebAppsClientPutPrivateAccessVnetSlotResponse`
+- New struct `WebAppsClientPutPrivateAccessVnetSlotResult`
+- New struct `WebAppsClientRecoverSiteConfigurationSnapshotOptions`
+- New struct `WebAppsClientRecoverSiteConfigurationSnapshotResponse`
+- New struct `WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions`
+- New struct `WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse`
+- New struct `WebAppsClientResetProductionSlotConfigOptions`
+- New struct `WebAppsClientResetProductionSlotConfigResponse`
+- New struct `WebAppsClientResetSlotConfigurationSlotOptions`
+- New struct `WebAppsClientResetSlotConfigurationSlotResponse`
+- New struct `WebAppsClientRestartOptions`
+- New struct `WebAppsClientRestartResponse`
+- New struct `WebAppsClientRestartSlotOptions`
+- New struct `WebAppsClientRestartSlotResponse`
+- New struct `WebAppsClientRestoreFromBackupBlobPoller`
+- New struct `WebAppsClientRestoreFromBackupBlobPollerResponse`
+- New struct `WebAppsClientRestoreFromBackupBlobResponse`
+- New struct `WebAppsClientRestoreFromBackupBlobSlotPoller`
+- New struct `WebAppsClientRestoreFromBackupBlobSlotPollerResponse`
+- New struct `WebAppsClientRestoreFromBackupBlobSlotResponse`
+- New struct `WebAppsClientRestoreFromDeletedAppPoller`
+- New struct `WebAppsClientRestoreFromDeletedAppPollerResponse`
+- New struct `WebAppsClientRestoreFromDeletedAppResponse`
+- New struct `WebAppsClientRestoreFromDeletedAppSlotPoller`
+- New struct `WebAppsClientRestoreFromDeletedAppSlotPollerResponse`
+- New struct `WebAppsClientRestoreFromDeletedAppSlotResponse`
+- New struct `WebAppsClientRestorePoller`
+- New struct `WebAppsClientRestorePollerResponse`
+- New struct `WebAppsClientRestoreResponse`
+- New struct `WebAppsClientRestoreSlotPoller`
+- New struct `WebAppsClientRestoreSlotPollerResponse`
+- New struct `WebAppsClientRestoreSlotResponse`
+- New struct `WebAppsClientRestoreSnapshotPoller`
+- New struct `WebAppsClientRestoreSnapshotPollerResponse`
+- New struct `WebAppsClientRestoreSnapshotResponse`
+- New struct `WebAppsClientRestoreSnapshotSlotPoller`
+- New struct `WebAppsClientRestoreSnapshotSlotPollerResponse`
+- New struct `WebAppsClientRestoreSnapshotSlotResponse`
+- New struct `WebAppsClientRunTriggeredWebJobOptions`
+- New struct `WebAppsClientRunTriggeredWebJobResponse`
+- New struct `WebAppsClientRunTriggeredWebJobSlotOptions`
+- New struct `WebAppsClientRunTriggeredWebJobSlotResponse`
+- New struct `WebAppsClientStartContinuousWebJobOptions`
+- New struct `WebAppsClientStartContinuousWebJobResponse`
+- New struct `WebAppsClientStartContinuousWebJobSlotOptions`
+- New struct `WebAppsClientStartContinuousWebJobSlotResponse`
+- New struct `WebAppsClientStartNetworkTracePoller`
+- New struct `WebAppsClientStartNetworkTracePollerResponse`
+- New struct `WebAppsClientStartNetworkTraceResponse`
+- New struct `WebAppsClientStartNetworkTraceResult`
+- New struct `WebAppsClientStartNetworkTraceSlotPoller`
+- New struct `WebAppsClientStartNetworkTraceSlotPollerResponse`
+- New struct `WebAppsClientStartNetworkTraceSlotResponse`
+- New struct `WebAppsClientStartNetworkTraceSlotResult`
+- New struct `WebAppsClientStartOptions`
+- New struct `WebAppsClientStartResponse`
+- New struct `WebAppsClientStartSlotOptions`
+- New struct `WebAppsClientStartSlotResponse`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOperationPoller`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOperationResponse`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOperationResult`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOperationSlotPoller`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOperationSlotResult`
+- New struct `WebAppsClientStartWebSiteNetworkTraceOptions`
+- New struct `WebAppsClientStartWebSiteNetworkTraceResponse`
+- New struct `WebAppsClientStartWebSiteNetworkTraceResult`
+- New struct `WebAppsClientStartWebSiteNetworkTraceSlotOptions`
+- New struct `WebAppsClientStartWebSiteNetworkTraceSlotResponse`
+- New struct `WebAppsClientStartWebSiteNetworkTraceSlotResult`
+- New struct `WebAppsClientStopContinuousWebJobOptions`
+- New struct `WebAppsClientStopContinuousWebJobResponse`
+- New struct `WebAppsClientStopContinuousWebJobSlotOptions`
+- New struct `WebAppsClientStopContinuousWebJobSlotResponse`
+- New struct `WebAppsClientStopNetworkTraceOptions`
+- New struct `WebAppsClientStopNetworkTraceResponse`
+- New struct `WebAppsClientStopNetworkTraceSlotOptions`
+- New struct `WebAppsClientStopNetworkTraceSlotResponse`
+- New struct `WebAppsClientStopOptions`
+- New struct `WebAppsClientStopResponse`
+- New struct `WebAppsClientStopSlotOptions`
+- New struct `WebAppsClientStopSlotResponse`
+- New struct `WebAppsClientStopWebSiteNetworkTraceOptions`
+- New struct `WebAppsClientStopWebSiteNetworkTraceResponse`
+- New struct `WebAppsClientStopWebSiteNetworkTraceSlotOptions`
+- New struct `WebAppsClientStopWebSiteNetworkTraceSlotResponse`
+- New struct `WebAppsClientSwapSlotPoller`
+- New struct `WebAppsClientSwapSlotPollerResponse`
+- New struct `WebAppsClientSwapSlotResponse`
+- New struct `WebAppsClientSwapSlotWithProductionPoller`
+- New struct `WebAppsClientSwapSlotWithProductionPollerResponse`
+- New struct `WebAppsClientSwapSlotWithProductionResponse`
+- New struct `WebAppsClientSyncFunctionTriggersOptions`
+- New struct `WebAppsClientSyncFunctionTriggersResponse`
+- New struct `WebAppsClientSyncFunctionTriggersSlotOptions`
+- New struct `WebAppsClientSyncFunctionTriggersSlotResponse`
+- New struct `WebAppsClientSyncFunctionsOptions`
+- New struct `WebAppsClientSyncFunctionsResponse`
+- New struct `WebAppsClientSyncFunctionsSlotOptions`
+- New struct `WebAppsClientSyncFunctionsSlotResponse`
+- New struct `WebAppsClientSyncRepositoryOptions`
+- New struct `WebAppsClientSyncRepositoryResponse`
+- New struct `WebAppsClientSyncRepositorySlotOptions`
+- New struct `WebAppsClientSyncRepositorySlotResponse`
+- New struct `WebAppsClientUpdateApplicationSettingsOptions`
+- New struct `WebAppsClientUpdateApplicationSettingsResponse`
+- New struct `WebAppsClientUpdateApplicationSettingsResult`
+- New struct `WebAppsClientUpdateApplicationSettingsSlotOptions`
+- New struct `WebAppsClientUpdateApplicationSettingsSlotResponse`
+- New struct `WebAppsClientUpdateApplicationSettingsSlotResult`
+- New struct `WebAppsClientUpdateAuthSettingsOptions`
+- New struct `WebAppsClientUpdateAuthSettingsResponse`
+- New struct `WebAppsClientUpdateAuthSettingsResult`
+- New struct `WebAppsClientUpdateAuthSettingsSlotOptions`
+- New struct `WebAppsClientUpdateAuthSettingsSlotResponse`
+- New struct `WebAppsClientUpdateAuthSettingsSlotResult`
+- New struct `WebAppsClientUpdateAuthSettingsV2Options`
+- New struct `WebAppsClientUpdateAuthSettingsV2Response`
+- New struct `WebAppsClientUpdateAuthSettingsV2Result`
+- New struct `WebAppsClientUpdateAuthSettingsV2SlotOptions`
+- New struct `WebAppsClientUpdateAuthSettingsV2SlotResponse`
+- New struct `WebAppsClientUpdateAuthSettingsV2SlotResult`
+- New struct `WebAppsClientUpdateAzureStorageAccountsOptions`
+- New struct `WebAppsClientUpdateAzureStorageAccountsResponse`
+- New struct `WebAppsClientUpdateAzureStorageAccountsResult`
+- New struct `WebAppsClientUpdateAzureStorageAccountsSlotOptions`
+- New struct `WebAppsClientUpdateAzureStorageAccountsSlotResponse`
+- New struct `WebAppsClientUpdateAzureStorageAccountsSlotResult`
+- New struct `WebAppsClientUpdateBackupConfigurationOptions`
+- New struct `WebAppsClientUpdateBackupConfigurationResponse`
+- New struct `WebAppsClientUpdateBackupConfigurationResult`
+- New struct `WebAppsClientUpdateBackupConfigurationSlotOptions`
+- New struct `WebAppsClientUpdateBackupConfigurationSlotResponse`
+- New struct `WebAppsClientUpdateBackupConfigurationSlotResult`
+- New struct `WebAppsClientUpdateConfigurationOptions`
+- New struct `WebAppsClientUpdateConfigurationResponse`
+- New struct `WebAppsClientUpdateConfigurationResult`
+- New struct `WebAppsClientUpdateConfigurationSlotOptions`
+- New struct `WebAppsClientUpdateConfigurationSlotResponse`
+- New struct `WebAppsClientUpdateConfigurationSlotResult`
+- New struct `WebAppsClientUpdateConnectionStringsOptions`
+- New struct `WebAppsClientUpdateConnectionStringsResponse`
+- New struct `WebAppsClientUpdateConnectionStringsResult`
+- New struct `WebAppsClientUpdateConnectionStringsSlotOptions`
+- New struct `WebAppsClientUpdateConnectionStringsSlotResponse`
+- New struct `WebAppsClientUpdateConnectionStringsSlotResult`
+- New struct `WebAppsClientUpdateDiagnosticLogsConfigOptions`
+- New struct `WebAppsClientUpdateDiagnosticLogsConfigResponse`
+- New struct `WebAppsClientUpdateDiagnosticLogsConfigResult`
+- New struct `WebAppsClientUpdateDiagnosticLogsConfigSlotOptions`
+- New struct `WebAppsClientUpdateDiagnosticLogsConfigSlotResponse`
+- New struct `WebAppsClientUpdateDiagnosticLogsConfigSlotResult`
+- New struct `WebAppsClientUpdateDomainOwnershipIdentifierOptions`
+- New struct `WebAppsClientUpdateDomainOwnershipIdentifierResponse`
+- New struct `WebAppsClientUpdateDomainOwnershipIdentifierResult`
+- New struct `WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions`
+- New struct `WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse`
+- New struct `WebAppsClientUpdateDomainOwnershipIdentifierSlotResult`
+- New struct `WebAppsClientUpdateFtpAllowedOptions`
+- New struct `WebAppsClientUpdateFtpAllowedResponse`
+- New struct `WebAppsClientUpdateFtpAllowedResult`
+- New struct `WebAppsClientUpdateFtpAllowedSlotOptions`
+- New struct `WebAppsClientUpdateFtpAllowedSlotResponse`
+- New struct `WebAppsClientUpdateFtpAllowedSlotResult`
+- New struct `WebAppsClientUpdateHybridConnectionOptions`
+- New struct `WebAppsClientUpdateHybridConnectionResponse`
+- New struct `WebAppsClientUpdateHybridConnectionResult`
+- New struct `WebAppsClientUpdateHybridConnectionSlotOptions`
+- New struct `WebAppsClientUpdateHybridConnectionSlotResponse`
+- New struct `WebAppsClientUpdateHybridConnectionSlotResult`
+- New struct `WebAppsClientUpdateMetadataOptions`
+- New struct `WebAppsClientUpdateMetadataResponse`
+- New struct `WebAppsClientUpdateMetadataResult`
+- New struct `WebAppsClientUpdateMetadataSlotOptions`
+- New struct `WebAppsClientUpdateMetadataSlotResponse`
+- New struct `WebAppsClientUpdateMetadataSlotResult`
+- New struct `WebAppsClientUpdateOptions`
+- New struct `WebAppsClientUpdatePremierAddOnOptions`
+- New struct `WebAppsClientUpdatePremierAddOnResponse`
+- New struct `WebAppsClientUpdatePremierAddOnResult`
+- New struct `WebAppsClientUpdatePremierAddOnSlotOptions`
+- New struct `WebAppsClientUpdatePremierAddOnSlotResponse`
+- New struct `WebAppsClientUpdatePremierAddOnSlotResult`
+- New struct `WebAppsClientUpdateRelayServiceConnectionOptions`
+- New struct `WebAppsClientUpdateRelayServiceConnectionResponse`
+- New struct `WebAppsClientUpdateRelayServiceConnectionResult`
+- New struct `WebAppsClientUpdateRelayServiceConnectionSlotOptions`
+- New struct `WebAppsClientUpdateRelayServiceConnectionSlotResponse`
+- New struct `WebAppsClientUpdateRelayServiceConnectionSlotResult`
+- New struct `WebAppsClientUpdateResponse`
+- New struct `WebAppsClientUpdateResult`
+- New struct `WebAppsClientUpdateScmAllowedOptions`
+- New struct `WebAppsClientUpdateScmAllowedResponse`
+- New struct `WebAppsClientUpdateScmAllowedResult`
+- New struct `WebAppsClientUpdateScmAllowedSlotOptions`
+- New struct `WebAppsClientUpdateScmAllowedSlotResponse`
+- New struct `WebAppsClientUpdateScmAllowedSlotResult`
+- New struct `WebAppsClientUpdateSitePushSettingsOptions`
+- New struct `WebAppsClientUpdateSitePushSettingsResponse`
+- New struct `WebAppsClientUpdateSitePushSettingsResult`
+- New struct `WebAppsClientUpdateSitePushSettingsSlotOptions`
+- New struct `WebAppsClientUpdateSitePushSettingsSlotResponse`
+- New struct `WebAppsClientUpdateSitePushSettingsSlotResult`
+- New struct `WebAppsClientUpdateSlotConfigurationNamesOptions`
+- New struct `WebAppsClientUpdateSlotConfigurationNamesResponse`
+- New struct `WebAppsClientUpdateSlotConfigurationNamesResult`
+- New struct `WebAppsClientUpdateSlotOptions`
+- New struct `WebAppsClientUpdateSlotResponse`
+- New struct `WebAppsClientUpdateSlotResult`
+- New struct `WebAppsClientUpdateSourceControlOptions`
+- New struct `WebAppsClientUpdateSourceControlResponse`
+- New struct `WebAppsClientUpdateSourceControlResult`
+- New struct `WebAppsClientUpdateSourceControlSlotOptions`
+- New struct `WebAppsClientUpdateSourceControlSlotResponse`
+- New struct `WebAppsClientUpdateSourceControlSlotResult`
+- New struct `WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckOptions`
+- New struct `WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse`
+- New struct `WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResult`
+- New struct `WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions`
+- New struct `WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse`
+- New struct `WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult`
+- New struct `WebAppsClientUpdateVnetConnectionGatewayOptions`
+- New struct `WebAppsClientUpdateVnetConnectionGatewayResponse`
+- New struct `WebAppsClientUpdateVnetConnectionGatewayResult`
+- New struct `WebAppsClientUpdateVnetConnectionGatewaySlotOptions`
+- New struct `WebAppsClientUpdateVnetConnectionGatewaySlotResponse`
+- New struct `WebAppsClientUpdateVnetConnectionGatewaySlotResult`
+- New struct `WebAppsClientUpdateVnetConnectionOptions`
+- New struct `WebAppsClientUpdateVnetConnectionResponse`
+- New struct `WebAppsClientUpdateVnetConnectionResult`
+- New struct `WebAppsClientUpdateVnetConnectionSlotOptions`
+- New struct `WebAppsClientUpdateVnetConnectionSlotResponse`
+- New struct `WebAppsClientUpdateVnetConnectionSlotResult`
+- New struct `WebSiteManagementClientListCustomHostNameSitesOptions`
+- New struct `WebSiteManagementClientListCustomHostNameSitesPager`
+- New struct `WebSiteManagementClientListCustomHostNameSitesResponse`
+- New struct `WebSiteManagementClientListCustomHostNameSitesResult`
+- New field `ID` in struct `SiteLogsConfig`
+- New field `Name` in struct `SiteLogsConfig`
+- New field `Type` in struct `SiteLogsConfig`
+- New field `Kind` in struct `SiteLogsConfig`
+- New field `ID` in struct `PremierAddOn`
+- New field `Name` in struct `PremierAddOn`
+- New field `Type` in struct `PremierAddOn`
+- New field `Location` in struct `PremierAddOn`
+- New field `Kind` in struct `PremierAddOn`
+- New field `Tags` in struct `PremierAddOn`
+- New field `Type` in struct `HybridConnectionLimits`
+- New field `Kind` in struct `HybridConnectionLimits`
+- New field `ID` in struct `HybridConnectionLimits`
+- New field `Name` in struct `HybridConnectionLimits`
+- New field `ID` in struct `RelayServiceConnectionEntity`
+- New field `Name` in struct `RelayServiceConnectionEntity`
+- New field `Type` in struct `RelayServiceConnectionEntity`
+- New field `Kind` in struct `RelayServiceConnectionEntity`
+- New field `Kind` in struct `SitePhpErrorLogFlag`
+- New field `ID` in struct `SitePhpErrorLogFlag`
+- New field `Name` in struct `SitePhpErrorLogFlag`
+- New field `Type` in struct `SitePhpErrorLogFlag`
+- New field `Tags` in struct `Domain`
+- New field `ID` in struct `Domain`
+- New field `Name` in struct `Domain`
+- New field `Type` in struct `Domain`
+- New field `Location` in struct `Domain`
+- New field `Kind` in struct `Domain`
+- New field `Kind` in struct `StorageMigrationOptions`
+- New field `ID` in struct `StorageMigrationOptions`
+- New field `Name` in struct `StorageMigrationOptions`
+- New field `Type` in struct `StorageMigrationOptions`
+- New field `Name` in struct `AddressResponse`
+- New field `Type` in struct `AddressResponse`
+- New field `Kind` in struct `AddressResponse`
+- New field `ID` in struct `AddressResponse`
+- New field `Type` in struct `CertificateOrderAction`
+- New field `Kind` in struct `CertificateOrderAction`
+- New field `ID` in struct `CertificateOrderAction`
+- New field `Name` in struct `CertificateOrderAction`
+- New field `Kind` in struct `PrivateLinkConnectionApprovalRequestResource`
+- New field `ID` in struct `PrivateLinkConnectionApprovalRequestResource`
+- New field `Name` in struct `PrivateLinkConnectionApprovalRequestResource`
+- New field `Type` in struct `PrivateLinkConnectionApprovalRequestResource`
+- New field `Type` in struct `TopLevelDomain`
+- New field `Kind` in struct `TopLevelDomain`
+- New field `ID` in struct `TopLevelDomain`
+- New field `Name` in struct `TopLevelDomain`
+- New field `Kind` in struct `TriggeredJobHistory`
+- New field `ID` in struct `TriggeredJobHistory`
+- New field `Name` in struct `TriggeredJobHistory`
+- New field `Type` in struct `TriggeredJobHistory`
+- New field `Name` in struct `ResourceHealthMetadata`
+- New field `Type` in struct `ResourceHealthMetadata`
+- New field `Kind` in struct `ResourceHealthMetadata`
+- New field `ID` in struct `ResourceHealthMetadata`
+- New field `Kind` in struct `VnetRoute`
+- New field `ID` in struct `VnetRoute`
+- New field `Name` in struct `VnetRoute`
+- New field `Type` in struct `VnetRoute`
+- New field `ProvisioningState` in struct `Certificate`
+- New field `KeyVaultID` in struct `Certificate`
+- New field `KeyVaultSecretName` in struct `Certificate`
+- New field `Kind` in struct `DiagnosticCategory`
+- New field `ID` in struct `DiagnosticCategory`
+- New field `Name` in struct `DiagnosticCategory`
+- New field `Type` in struct `DiagnosticCategory`
+- New field `ID` in struct `StaticSiteBuildARMResource`
+- New field `Name` in struct `StaticSiteBuildARMResource`
+- New field `Type` in struct `StaticSiteBuildARMResource`
+- New field `Kind` in struct `StaticSiteBuildARMResource`
+- New field `Type` in struct `MSDeployLog`
+- New field `Kind` in struct `MSDeployLog`
+- New field `ID` in struct `MSDeployLog`
+- New field `Name` in struct `MSDeployLog`
+- New field `Kind` in struct `DetectorDefinitionResource`
+- New field `ID` in struct `DetectorDefinitionResource`
+- New field `Name` in struct `DetectorDefinitionResource`
+- New field `Type` in struct `DetectorDefinitionResource`
+- New field `Kind` in struct `StaticSiteResetPropertiesARMResource`
+- New field `ID` in struct `StaticSiteResetPropertiesARMResource`
+- New field `Name` in struct `StaticSiteResetPropertiesARMResource`
+- New field `Type` in struct `StaticSiteResetPropertiesARMResource`
+- New field `ContainerAppsConfiguration` in struct `KubeEnvironmentPatchResourceProperties`
+- New field `Kind` in struct `StaticSiteUserInvitationResponseResource`
+- New field `ID` in struct `StaticSiteUserInvitationResponseResource`
+- New field `Name` in struct `StaticSiteUserInvitationResponseResource`
+- New field `Type` in struct `StaticSiteUserInvitationResponseResource`
+- New field `Name` in struct `StaticSiteUserProvidedFunctionAppARMResource`
+- New field `Type` in struct `StaticSiteUserProvidedFunctionAppARMResource`
+- New field `Kind` in struct `StaticSiteUserProvidedFunctionAppARMResource`
+- New field `ID` in struct `StaticSiteUserProvidedFunctionAppARMResource`
+- New field `Name` in struct `KubeEnvironmentPatchResource`
+- New field `Type` in struct `KubeEnvironmentPatchResource`
+- New field `Kind` in struct `KubeEnvironmentPatchResource`
+- New field `ID` in struct `KubeEnvironmentPatchResource`
+- New field `Name` in struct `StaticSiteZipDeploymentARMResource`
+- New field `Type` in struct `StaticSiteZipDeploymentARMResource`
+- New field `Kind` in struct `StaticSiteZipDeploymentARMResource`
+- New field `ID` in struct `StaticSiteZipDeploymentARMResource`
+- New field `Kind` in struct `RecommendationRule`
+- New field `ID` in struct `RecommendationRule`
+- New field `Name` in struct `RecommendationRule`
+- New field `Type` in struct `RecommendationRule`
+- New field `Name` in struct `BackupItem`
+- New field `Type` in struct `BackupItem`
+- New field `Kind` in struct `BackupItem`
+- New field `ID` in struct `BackupItem`
+- New field `ID` in struct `ProcessInfo`
+- New field `Name` in struct `ProcessInfo`
+- New field `Type` in struct `ProcessInfo`
+- New field `Kind` in struct `ProcessInfo`
+- New field `Name` in struct `SourceControl`
+- New field `Type` in struct `SourceControl`
+- New field `Kind` in struct `SourceControl`
+- New field `ID` in struct `SourceControl`
+- New field `Kind` in struct `StaticSiteFunctionOverviewARMResource`
+- New field `ID` in struct `StaticSiteFunctionOverviewARMResource`
+- New field `Name` in struct `StaticSiteFunctionOverviewARMResource`
+- New field `Type` in struct `StaticSiteFunctionOverviewARMResource`
+- New field `Name` in struct `Recommendation`
+- New field `Type` in struct `Recommendation`
+- New field `Kind` in struct `Recommendation`
+- New field `ID` in struct `Recommendation`
+- New field `Type` in struct `StaticSiteCustomDomainOverviewARMResource`
+- New field `Kind` in struct `StaticSiteCustomDomainOverviewARMResource`
+- New field `ID` in struct `StaticSiteCustomDomainOverviewARMResource`
+- New field `Name` in struct `StaticSiteCustomDomainOverviewARMResource`
+- New field `EnterpriseGradeCdnStatus` in struct `StaticSite`
+- New field `Kind` in struct `DiagnosticAnalysis`
+- New field `ID` in struct `DiagnosticAnalysis`
+- New field `Name` in struct `DiagnosticAnalysis`
+- New field `Type` in struct `DiagnosticAnalysis`
+- New field `ID` in struct `StaticSiteUserInvitationRequestResource`
+- New field `Name` in struct `StaticSiteUserInvitationRequestResource`
+- New field `Type` in struct `StaticSiteUserInvitationRequestResource`
+- New field `Kind` in struct `StaticSiteUserInvitationRequestResource`
+- New field `Type` in struct `MigrateMySQLStatus`
+- New field `Kind` in struct `MigrateMySQLStatus`
+- New field `ID` in struct `MigrateMySQLStatus`
+- New field `Name` in struct `MigrateMySQLStatus`
+- New field `Name` in struct `VnetGateway`
+- New field `Type` in struct `VnetGateway`
+- New field `Kind` in struct `VnetGateway`
+- New field `ID` in struct `VnetGateway`
+- New field `Name` in struct `NetworkFeatures`
+- New field `Type` in struct `NetworkFeatures`
+- New field `Kind` in struct `NetworkFeatures`
+- New field `ID` in struct `NetworkFeatures`
+- New field `Type` in struct `CertificatePatchResource`
+- New field `Kind` in struct `CertificatePatchResource`
+- New field `ID` in struct `CertificatePatchResource`
+- New field `Name` in struct `CertificatePatchResource`
+- New field `Kind` in struct `Deployment`
+- New field `ID` in struct `Deployment`
+- New field `Name` in struct `Deployment`
+- New field `Type` in struct `Deployment`
+- New field `Type` in struct `BackupRequest`
+- New field `Kind` in struct `BackupRequest`
+- New field `ID` in struct `BackupRequest`
+- New field `Name` in struct `BackupRequest`
+- New field `ID` in struct `PremierAddOnPatchResource`
+- New field `Name` in struct `PremierAddOnPatchResource`
+- New field `Type` in struct `PremierAddOnPatchResource`
+- New field `Kind` in struct `PremierAddOnPatchResource`
+- New field `Kind` in struct `PrivateAccess`
+- New field `ID` in struct `PrivateAccess`
+- New field `Name` in struct `PrivateAccess`
+- New field `Type` in struct `PrivateAccess`
+- New field `Kind` in struct `DeletedSite`
+- New field `ID` in struct `DeletedSite`
+- New field `Name` in struct `DeletedSite`
+- New field `Type` in struct `DeletedSite`
+- New field `Kind` in struct `SnapshotRestoreRequest`
+- New field `ID` in struct `SnapshotRestoreRequest`
+- New field `Name` in struct `SnapshotRestoreRequest`
+- New field `Type` in struct `SnapshotRestoreRequest`
+- New field `Kind` in struct `WebAppStack`
+- New field `ID` in struct `WebAppStack`
+- New field `Name` in struct `WebAppStack`
+- New field `Type` in struct `WebAppStack`
+- New field `Kind` in struct `GeoRegion`
+- New field `ID` in struct `GeoRegion`
+- New field `Name` in struct `GeoRegion`
+- New field `Type` in struct `GeoRegion`
+- New field `Kind` in struct `SiteSourceControl`
+- New field `ID` in struct `SiteSourceControl`
+- New field `Name` in struct `SiteSourceControl`
+- New field `Type` in struct `SiteSourceControl`
+- New field `Kind` in struct `HybridConnection`
+- New field `ID` in struct `HybridConnection`
+- New field `Name` in struct `HybridConnection`
+- New field `Type` in struct `HybridConnection`
+- New field `Kind` in struct `ReissueCertificateOrderRequest`
+- New field `ID` in struct `ReissueCertificateOrderRequest`
+- New field `Name` in struct `ReissueCertificateOrderRequest`
+- New field `Type` in struct `ReissueCertificateOrderRequest`
+- New field `Kind` in struct `SlotDifference`
+- New field `ID` in struct `SlotDifference`
+- New field `Name` in struct `SlotDifference`
+- New field `Type` in struct `SlotDifference`
+- New field `Kind` in struct `VnetParameters`
+- New field `ID` in struct `VnetParameters`
+- New field `Name` in struct `VnetParameters`
+- New field `Type` in struct `VnetParameters`
+- New field `Type` in struct `AseV3NetworkingConfiguration`
+- New field `Kind` in struct `AseV3NetworkingConfiguration`
+- New field `ID` in struct `AseV3NetworkingConfiguration`
+- New field `Name` in struct `AseV3NetworkingConfiguration`
+- New field `ID` in struct `MigrateMySQLRequest`
+- New field `Name` in struct `MigrateMySQLRequest`
+- New field `Type` in struct `MigrateMySQLRequest`
+- New field `Kind` in struct `MigrateMySQLRequest`
+- New field `ID` in struct `SlotConfigNamesResource`
+- New field `Name` in struct `SlotConfigNamesResource`
+- New field `Type` in struct `SlotConfigNamesResource`
+- New field `Kind` in struct `SlotConfigNamesResource`
+- New field `Name` in struct `SiteAuthSettings`
+- New field `Type` in struct `SiteAuthSettings`
+- New field `Kind` in struct `SiteAuthSettings`
+- New field `ID` in struct `SiteAuthSettings`
+- New field `Kind` in struct `RemotePrivateEndpointConnectionARMResource`
+- New field `ID` in struct `RemotePrivateEndpointConnectionARMResource`
+- New field `Name` in struct `RemotePrivateEndpointConnectionARMResource`
+- New field `Type` in struct `RemotePrivateEndpointConnectionARMResource`
+- New field `ID` in struct `AzureStoragePropertyDictionaryResource`
+- New field `Name` in struct `AzureStoragePropertyDictionaryResource`
+- New field `Type` in struct `AzureStoragePropertyDictionaryResource`
+- New field `Kind` in struct `AzureStoragePropertyDictionaryResource`
+- New field `Type` in struct `VnetValidationFailureDetails`
+- New field `Kind` in struct `VnetValidationFailureDetails`
+- New field `ID` in struct `VnetValidationFailureDetails`
+- New field `Name` in struct `VnetValidationFailureDetails`
+- New field `ID` in struct `ProcessThreadInfo`
+- New field `Name` in struct `ProcessThreadInfo`
+- New field `Type` in struct `ProcessThreadInfo`
+- New field `Kind` in struct `ProcessThreadInfo`
+- New field `ID` in struct `MSDeploy`
+- New field `Name` in struct `MSDeploy`
+- New field `Type` in struct `MSDeploy`
+- New field `Kind` in struct `MSDeploy`
+- New field `ID` in struct `DiagnosticDetectorResponse`
+- New field `Name` in struct `DiagnosticDetectorResponse`
+- New field `Type` in struct `DiagnosticDetectorResponse`
+- New field `Kind` in struct `DiagnosticDetectorResponse`
+- New field `Name` in struct `HostNameBinding`
+- New field `Type` in struct `HostNameBinding`
+- New field `Kind` in struct `HostNameBinding`
+- New field `ID` in struct `HostNameBinding`
+- New field `Name` in struct `StaticSiteUserProvidedFunctionApp`
+- New field `Type` in struct `StaticSiteUserProvidedFunctionApp`
+- New field `Kind` in struct `StaticSiteUserProvidedFunctionApp`
+- New field `ID` in struct `StaticSiteUserProvidedFunctionApp`
+- New field `Type` in struct `CustomHostnameAnalysisResult`
+- New field `Kind` in struct `CustomHostnameAnalysisResult`
+- New field `ID` in struct `CustomHostnameAnalysisResult`
+- New field `Name` in struct `CustomHostnameAnalysisResult`
+- New field `Kind` in struct `PushSettings`
+- New field `ID` in struct `PushSettings`
+- New field `Name` in struct `PushSettings`
+- New field `Type` in struct `PushSettings`
+- New field `Kind` in struct `PremierAddOnOffer`
+- New field `ID` in struct `PremierAddOnOffer`
+- New field `Name` in struct `PremierAddOnOffer`
+- New field `Type` in struct `PremierAddOnOffer`
+- New field `ID` in struct `TriggeredWebJob`
+- New field `Name` in struct `TriggeredWebJob`
+- New field `Type` in struct `TriggeredWebJob`
+- New field `Kind` in struct `TriggeredWebJob`
+- New field `Name` in struct `User`
+- New field `Type` in struct `User`
+- New field `Kind` in struct `User`
+- New field `ID` in struct `User`
+- New field `Kind` in struct `StaticSiteCustomDomainRequestPropertiesARMResource`
+- New field `ID` in struct `StaticSiteCustomDomainRequestPropertiesARMResource`
+- New field `Name` in struct `StaticSiteCustomDomainRequestPropertiesARMResource`
+- New field `Type` in struct `StaticSiteCustomDomainRequestPropertiesARMResource`
+- New field `ID` in struct `DomainOwnershipIdentifier`
+- New field `Name` in struct `DomainOwnershipIdentifier`
+- New field `Type` in struct `DomainOwnershipIdentifier`
+- New field `Kind` in struct `DomainOwnershipIdentifier`
+- New field `Kind` in struct `Usage`
+- New field `ID` in struct `Usage`
+- New field `Name` in struct `Usage`
+- New field `Type` in struct `Usage`
+- New field `Name` in struct `ApplicationStackResource`
+- New field `Type` in struct `ApplicationStackResource`
+- New field `Kind` in struct `ApplicationStackResource`
+- New field `ID` in struct `ApplicationStackResource`
+- New field `Kind` in struct `AnalysisDefinition`
+- New field `ID` in struct `AnalysisDefinition`
+- New field `Name` in struct `AnalysisDefinition`
+- New field `Type` in struct `AnalysisDefinition`
+- New field `Type` in struct `HybridConnectionKey`
+- New field `Kind` in struct `HybridConnectionKey`
+- New field `ID` in struct `HybridConnectionKey`
+- New field `Name` in struct `HybridConnectionKey`
+- New field `ID` in struct `VnetValidationTestFailure`
+- New field `Name` in struct `VnetValidationTestFailure`
+- New field `Type` in struct `VnetValidationTestFailure`
+- New field `Kind` in struct `VnetValidationTestFailure`
+- New field `ID` in struct `Snapshot`
+- New field `Name` in struct `Snapshot`
+- New field `Type` in struct `Snapshot`
+- New field `Kind` in struct `Snapshot`
+- New field `ID` in struct `StaticSitesWorkflowPreview`
+- New field `Name` in struct `StaticSitesWorkflowPreview`
+- New field `Type` in struct `StaticSitesWorkflowPreview`
+- New field `Kind` in struct `StaticSitesWorkflowPreview`
+- New field `Type` in struct `Site`
+- New field `Name` in struct `Site`
+- New field `Location` in struct `Site`
+- New field `Kind` in struct `Site`
+- New field `Tags` in struct `Site`
+- New field `ID` in struct `Site`
+- New field `Type` in struct `ContinuousWebJob`
+- New field `Kind` in struct `ContinuousWebJob`
+- New field `ID` in struct `ContinuousWebJob`
+- New field `Name` in struct `ContinuousWebJob`
+- New field `Kind` in struct `DetectorResponse`
+- New field `ID` in struct `DetectorResponse`
+- New field `Name` in struct `DetectorResponse`
+- New field `Type` in struct `DetectorResponse`
+- New field `Type` in struct `Identifier`
+- New field `Kind` in struct `Identifier`
+- New field `ID` in struct `Identifier`
+- New field `Name` in struct `Identifier`
+- New field `Kind` in struct `SwiftVirtualNetwork`
+- New field `ID` in struct `SwiftVirtualNetwork`
+- New field `Name` in struct `SwiftVirtualNetwork`
+- New field `Type` in struct `SwiftVirtualNetwork`
+- New field `Kind` in struct `DeletedAppRestoreRequest`
+- New field `ID` in struct `DeletedAppRestoreRequest`
+- New field `Name` in struct `DeletedAppRestoreRequest`
+- New field `Type` in struct `DeletedAppRestoreRequest`
+- New field `Kind` in struct `BillingMeter`
+- New field `ID` in struct `BillingMeter`
+- New field `Name` in struct `BillingMeter`
+- New field `Type` in struct `BillingMeter`
+- New field `Name` in struct `WebJob`
+- New field `Type` in struct `WebJob`
+- New field `Kind` in struct `WebJob`
+- New field `ID` in struct `WebJob`
+- New field `Type` in struct `ResourceMetricDefinition`
+- New field `Kind` in struct `ResourceMetricDefinition`
+- New field `ID` in struct `ResourceMetricDefinition`
+- New field `Name` in struct `ResourceMetricDefinition`
+- New field `Type` in struct `StringList`
+- New field `Kind` in struct `StringList`
+- New field `ID` in struct `StringList`
+- New field `Name` in struct `StringList`
+- New field `Name` in struct `WorkerPoolResource`
+- New field `Type` in struct `WorkerPoolResource`
+- New field `Kind` in struct `WorkerPoolResource`
+- New field `ID` in struct `WorkerPoolResource`
+- New field `Tags` in struct `KubeEnvironment`
+- New field `ID` in struct `KubeEnvironment`
+- New field `Name` in struct `KubeEnvironment`
+- New field `Type` in struct `KubeEnvironment`
+- New field `Location` in struct `KubeEnvironment`
+- New field `Kind` in struct `KubeEnvironment`
+- New field `Type` in struct `FunctionEnvelope`
+- New field `Kind` in struct `FunctionEnvelope`
+- New field `ID` in struct `FunctionEnvelope`
+- New field `Name` in struct `FunctionEnvelope`
+- New field `ID` in struct `SiteConfigResource`
+- New field `Name` in struct `SiteConfigResource`
+- New field `Type` in struct `SiteConfigResource`
+- New field `Kind` in struct `SiteConfigResource`
+- New field `Kind` in struct `StringDictionary`
+- New field `ID` in struct `StringDictionary`
+- New field `Name` in struct `StringDictionary`
+- New field `Type` in struct `StringDictionary`
+- New field `Kind` in struct `RestoreRequest`
+- New field `ID` in struct `RestoreRequest`
+- New field `Name` in struct `RestoreRequest`
+- New field `Type` in struct `RestoreRequest`
+- New field `Name` in struct `SiteConfigurationSnapshotInfo`
+- New field `Type` in struct `SiteConfigurationSnapshotInfo`
+- New field `Kind` in struct `SiteConfigurationSnapshotInfo`
+- New field `ID` in struct `SiteConfigurationSnapshotInfo`
+- New field `ID` in struct `WebSiteInstanceStatus`
+- New field `Name` in struct `WebSiteInstanceStatus`
+- New field `Type` in struct `WebSiteInstanceStatus`
+- New field `Kind` in struct `WebSiteInstanceStatus`
+- New field `Kind` in struct `RenewCertificateOrderRequest`
+- New field `ID` in struct `RenewCertificateOrderRequest`
+- New field `Name` in struct `RenewCertificateOrderRequest`
+- New field `Type` in struct `RenewCertificateOrderRequest`
+- New field `ID` in struct `SiteAuthSettingsV2`
+- New field `Name` in struct `SiteAuthSettingsV2`
+- New field `Type` in struct `SiteAuthSettingsV2`
+- New field `Kind` in struct `SiteAuthSettingsV2`
+- New field `Type` in struct `CsmPublishingCredentialsPoliciesEntity`
+- New field `Kind` in struct `CsmPublishingCredentialsPoliciesEntity`
+- New field `ID` in struct `CsmPublishingCredentialsPoliciesEntity`
+- New field `Name` in struct `CsmPublishingCredentialsPoliciesEntity`
+- New field `Type` in struct `StaticSitesWorkflowPreviewRequest`
+- New field `Kind` in struct `StaticSitesWorkflowPreviewRequest`
+- New field `ID` in struct `StaticSitesWorkflowPreviewRequest`
+- New field `Name` in struct `StaticSitesWorkflowPreviewRequest`
+- New field `Kind` in struct `StorageMigrationResponse`
+- New field `ID` in struct `StorageMigrationResponse`
+- New field `Name` in struct `StorageMigrationResponse`
+- New field `Type` in struct `StorageMigrationResponse`
+- New field `ID` in struct `StaticSitePatchResource`
+- New field `Name` in struct `StaticSitePatchResource`
+- New field `Type` in struct `StaticSitePatchResource`
+- New field `Kind` in struct `StaticSitePatchResource`
+- New field `Kind` in struct `PublicCertificate`
+- New field `ID` in struct `PublicCertificate`
+- New field `Name` in struct `PublicCertificate`
+- New field `Type` in struct `PublicCertificate`
+- New field `Kind` in struct `SiteExtensionInfo`
+- New field `ID` in struct `SiteExtensionInfo`
+- New field `Name` in struct `SiteExtensionInfo`
+- New field `Type` in struct `SiteExtensionInfo`
+- New field `Kind` in struct `APIKVReference`
+- New field `ID` in struct `APIKVReference`
+- New field `Name` in struct `APIKVReference`
+- New field `Type` in struct `APIKVReference`
+- New field `ID` in struct `StaticSiteARMResource`
+- New field `Name` in struct `StaticSiteARMResource`
+- New field `Type` in struct `StaticSiteARMResource`
+- New field `Tags` in struct `StaticSiteARMResource`
+- New field `Location` in struct `StaticSiteARMResource`
+- New field `Kind` in struct `StaticSiteARMResource`
+- New field `Kind` in struct `ConnectionStringDictionary`
+- New field `ID` in struct `ConnectionStringDictionary`
+- New field `Name` in struct `ConnectionStringDictionary`
+- New field `Type` in struct `ConnectionStringDictionary`
+- New field `Type` in struct `RemotePrivateEndpointConnection`
+- New field `Kind` in struct `RemotePrivateEndpointConnection`
+- New field `ID` in struct `RemotePrivateEndpointConnection`
+- New field `Name` in struct `RemotePrivateEndpointConnection`
+- New field `Kind` in struct `FunctionAppStack`
+- New field `ID` in struct `FunctionAppStack`
+- New field `Name` in struct `FunctionAppStack`
+- New field `Type` in struct `FunctionAppStack`
+- New field `Type` in struct `MSDeployStatus`
+- New field `Kind` in struct `MSDeployStatus`
+- New field `ID` in struct `MSDeployStatus`
+- New field `Name` in struct `MSDeployStatus`
+- New field `Name` in struct `StaticSiteUserARMResource`
+- New field `Type` in struct `StaticSiteUserARMResource`
+- New field `Kind` in struct `StaticSiteUserARMResource`
+- New field `ID` in struct `StaticSiteUserARMResource`
+- New field `ContainerAppsConfiguration` in struct `KubeEnvironmentProperties`
+- New field `EnvironmentType` in struct `KubeEnvironmentProperties`
+- New field `Kind` in struct `VnetInfoResource`
+- New field `ID` in struct `VnetInfoResource`
+- New field `Name` in struct `VnetInfoResource`
+- New field `Type` in struct `VnetInfoResource`
+- New field `ID` in struct `DomainPatchResource`
+- New field `Name` in struct `DomainPatchResource`
+- New field `Type` in struct `DomainPatchResource`
+- New field `Kind` in struct `DomainPatchResource`
+- New field `Kind` in struct `SitePatchResource`
+- New field `ID` in struct `SitePatchResource`
+- New field `Name` in struct `SitePatchResource`
+- New field `Type` in struct `SitePatchResource`
+- New field `ID` in struct `ProcessModuleInfo`
+- New field `Name` in struct `ProcessModuleInfo`
+- New field `Type` in struct `ProcessModuleInfo`
+- New field `Kind` in struct `ProcessModuleInfo`
+- New field `Kind` in struct `CertificateEmail`
+- New field `ID` in struct `CertificateEmail`
+- New field `Name` in struct `CertificateEmail`
+- New field `Type` in struct `CertificateEmail`
+
+
+## 0.1.0 (2021-12-24)
+
+- Init release.

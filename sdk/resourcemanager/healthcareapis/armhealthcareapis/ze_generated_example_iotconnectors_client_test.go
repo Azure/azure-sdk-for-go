@@ -30,12 +30,16 @@ func ExampleIotConnectorsClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("IotConnector.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleIotConnectorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IotConnector.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotConnectorsClientGetResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/iotconnectors/iotconnector_Create.json
@@ -72,22 +76,14 @@ func ExampleIotConnectorsClient_BeginCreateOrUpdate() {
 		"<workspace-name>",
 		"<iot-connector-name>",
 		armhealthcareapis.IotConnector{
-			ServiceManagedIdentity: armhealthcareapis.ServiceManagedIdentity{
-				Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
-					Type: armhealthcareapis.ManagedServiceIdentityTypeSystemAssigned.ToPtr(),
-				},
+			Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+				Type: armhealthcareapis.ManagedServiceIdentityType("SystemAssigned").ToPtr(),
 			},
-			TaggedResource: armhealthcareapis.TaggedResource{
-				LocationBasedResource: armhealthcareapis.LocationBasedResource{
-					Location: to.StringPtr("<location>"),
-				},
-				ResourceTags: armhealthcareapis.ResourceTags{
-					Tags: map[string]*string{
-						"additionalProp1": to.StringPtr("string"),
-						"additionalProp2": to.StringPtr("string"),
-						"additionalProp3": to.StringPtr("string"),
-					},
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"additionalProp1": to.StringPtr("string"),
+				"additionalProp2": to.StringPtr("string"),
+				"additionalProp3": to.StringPtr("string"),
 			},
 			Properties: &armhealthcareapis.IotConnectorProperties{
 				DeviceMapping: &armhealthcareapis.IotMappingProperties{
@@ -128,7 +124,7 @@ func ExampleIotConnectorsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IotConnector.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotConnectorsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/iotconnectors/iotconnector_Patch.json
@@ -144,17 +140,13 @@ func ExampleIotConnectorsClient_BeginUpdate() {
 		"<iot-connector-name>",
 		"<workspace-name>",
 		armhealthcareapis.IotConnectorPatchResource{
-			ResourceTags: armhealthcareapis.ResourceTags{
-				Tags: map[string]*string{
-					"additionalProp1": to.StringPtr("string"),
-					"additionalProp2": to.StringPtr("string"),
-					"additionalProp3": to.StringPtr("string"),
-				},
+			Tags: map[string]*string{
+				"additionalProp1": to.StringPtr("string"),
+				"additionalProp2": to.StringPtr("string"),
+				"additionalProp3": to.StringPtr("string"),
 			},
-			ServiceManagedIdentity: armhealthcareapis.ServiceManagedIdentity{
-				Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
-					Type: armhealthcareapis.ManagedServiceIdentityTypeSystemAssigned.ToPtr(),
-				},
+			Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+				Type: armhealthcareapis.ManagedServiceIdentityType("SystemAssigned").ToPtr(),
 			},
 		},
 		nil)
@@ -165,7 +157,7 @@ func ExampleIotConnectorsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IotConnector.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotConnectorsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/iotconnectors/iotconnector_Delete.json

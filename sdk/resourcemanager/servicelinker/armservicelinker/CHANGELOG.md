@@ -1,0 +1,183 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*LinkerClient.BeginValidate` parameter(s) have been changed from `(context.Context, string, string, *LinkerBeginValidateOptions)` to `(context.Context, string, string, *LinkerClientBeginValidateOptions)`
+- Function `*LinkerClient.BeginValidate` return value(s) have been changed from `(LinkerValidatePollerResponse, error)` to `(LinkerClientValidatePollerResponse, error)`
+- Function `*LinkerClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, LinkerPatch, *LinkerBeginUpdateOptions)` to `(context.Context, string, string, LinkerPatch, *LinkerClientBeginUpdateOptions)`
+- Function `*LinkerClient.BeginUpdate` return value(s) have been changed from `(LinkerUpdatePollerResponse, error)` to `(LinkerClientUpdatePollerResponse, error)`
+- Function `*LinkerClient.List` parameter(s) have been changed from `(string, *LinkerListOptions)` to `(string, *LinkerClientListOptions)`
+- Function `*LinkerClient.List` return value(s) have been changed from `(*LinkerListPager)` to `(*LinkerClientListPager)`
+- Function `*LinkerClient.Get` parameter(s) have been changed from `(context.Context, string, string, *LinkerGetOptions)` to `(context.Context, string, string, *LinkerClientGetOptions)`
+- Function `*LinkerClient.Get` return value(s) have been changed from `(LinkerGetResponse, error)` to `(LinkerClientGetResponse, error)`
+- Function `*LinkerClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, LinkerResource, *LinkerBeginCreateOrUpdateOptions)` to `(context.Context, string, string, LinkerResource, *LinkerClientBeginCreateOrUpdateOptions)`
+- Function `*LinkerClient.BeginCreateOrUpdate` return value(s) have been changed from `(LinkerCreateOrUpdatePollerResponse, error)` to `(LinkerClientCreateOrUpdatePollerResponse, error)`
+- Function `*LinkerClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *LinkerBeginDeleteOptions)` to `(context.Context, string, string, *LinkerClientBeginDeleteOptions)`
+- Function `*LinkerClient.BeginDelete` return value(s) have been changed from `(LinkerDeletePollerResponse, error)` to `(LinkerClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*LinkerClient.ListConfigurations` parameter(s) have been changed from `(context.Context, string, string, *LinkerListConfigurationsOptions)` to `(context.Context, string, string, *LinkerClientListConfigurationsOptions)`
+- Function `*LinkerClient.ListConfigurations` return value(s) have been changed from `(LinkerListConfigurationsResponse, error)` to `(LinkerClientListConfigurationsResponse, error)`
+- Function `*LinkerDeletePollerResponse.Resume` has been removed
+- Function `*LinkerValidatePoller.Done` has been removed
+- Function `LinkerCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LinkerCreateOrUpdatePoller.Poll` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `LinkerDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LinkerDeletePoller.Poll` has been removed
+- Function `LinkerValidatePollerResponse.PollUntilDone` has been removed
+- Function `*AuthInfoBase.UnmarshalJSON` has been removed
+- Function `*LinkerUpdatePoller.ResumeToken` has been removed
+- Function `LinkerUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LinkerUpdatePoller.Poll` has been removed
+- Function `*LinkerValidatePoller.Poll` has been removed
+- Function `*LinkerCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LinkerUpdatePoller.Done` has been removed
+- Function `*LinkerCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LinkerUpdatePollerResponse.Resume` has been removed
+- Function `*LinkerListPager.Err` has been removed
+- Function `*LinkerListPager.PageResponse` has been removed
+- Function `*LinkerDeletePoller.FinalResponse` has been removed
+- Function `*LinkerValidatePoller.ResumeToken` has been removed
+- Function `*LinkerListPager.NextPage` has been removed
+- Function `*LinkerDeletePoller.ResumeToken` has been removed
+- Function `*LinkerCreateOrUpdatePoller.Done` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*LinkerUpdatePoller.FinalResponse` has been removed
+- Function `*LinkerDeletePoller.Done` has been removed
+- Function `*LinkerValidatePoller.FinalResponse` has been removed
+- Function `*LinkerCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*LinkerValidatePollerResponse.Resume` has been removed
+- Struct `LinkerBeginCreateOrUpdateOptions` has been removed
+- Struct `LinkerBeginDeleteOptions` has been removed
+- Struct `LinkerBeginUpdateOptions` has been removed
+- Struct `LinkerBeginValidateOptions` has been removed
+- Struct `LinkerCreateOrUpdatePoller` has been removed
+- Struct `LinkerCreateOrUpdatePollerResponse` has been removed
+- Struct `LinkerCreateOrUpdateResponse` has been removed
+- Struct `LinkerCreateOrUpdateResult` has been removed
+- Struct `LinkerDeletePoller` has been removed
+- Struct `LinkerDeletePollerResponse` has been removed
+- Struct `LinkerDeleteResponse` has been removed
+- Struct `LinkerGetOptions` has been removed
+- Struct `LinkerGetResponse` has been removed
+- Struct `LinkerGetResult` has been removed
+- Struct `LinkerListConfigurationsOptions` has been removed
+- Struct `LinkerListConfigurationsResponse` has been removed
+- Struct `LinkerListConfigurationsResult` has been removed
+- Struct `LinkerListOptions` has been removed
+- Struct `LinkerListPager` has been removed
+- Struct `LinkerListResponse` has been removed
+- Struct `LinkerListResult` has been removed
+- Struct `LinkerUpdatePoller` has been removed
+- Struct `LinkerUpdatePollerResponse` has been removed
+- Struct `LinkerUpdateResponse` has been removed
+- Struct `LinkerUpdateResult` has been removed
+- Struct `LinkerValidatePoller` has been removed
+- Struct `LinkerValidatePollerResponse` has been removed
+- Struct `LinkerValidateResponse` has been removed
+- Struct `LinkerValidateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Field `AuthInfoBase` of struct `UserAssignedIdentityAuthInfo` has been removed
+- Field `AuthInfoBase` of struct `ServicePrincipalSecretAuthInfo` has been removed
+- Field `AuthInfoBase` of struct `ServicePrincipalCertificateAuthInfo` has been removed
+- Field `AuthInfoBase` of struct `SystemAssignedIdentityAuthInfo` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `AuthInfoBase` of struct `SecretAuthInfo` has been removed
+- Field `ProxyResource` of struct `LinkerResource` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+
+### Features Added
+
+- New function `*LinkerClientUpdatePoller.FinalResponse(context.Context) (LinkerClientUpdateResponse, error)`
+- New function `*LinkerClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LinkerClientDeletePollerResponse.Resume(context.Context, *LinkerClient, string) error`
+- New function `*ServicePrincipalSecretAuthInfo.GetAuthInfoBase() *AuthInfoBase`
+- New function `*SystemAssignedIdentityAuthInfo.UnmarshalJSON([]byte) error`
+- New function `*LinkerClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LinkerClientDeletePoller.FinalResponse(context.Context) (LinkerClientDeleteResponse, error)`
+- New function `*LinkerClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*UserAssignedIdentityAuthInfo.GetAuthInfoBase() *AuthInfoBase`
+- New function `*LinkerClientCreateOrUpdatePoller.FinalResponse(context.Context) (LinkerClientCreateOrUpdateResponse, error)`
+- New function `*SecretAuthInfo.GetAuthInfoBase() *AuthInfoBase`
+- New function `LinkerClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LinkerClientCreateOrUpdateResponse, error)`
+- New function `*LinkerClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*LinkerClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LinkerClientListPager.NextPage(context.Context) bool`
+- New function `*LinkerClientListPager.Err() error`
+- New function `*LinkerClientValidatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `LinkerClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LinkerClientUpdateResponse, error)`
+- New function `*ServicePrincipalCertificateAuthInfo.GetAuthInfoBase() *AuthInfoBase`
+- New function `*LinkerClientDeletePoller.ResumeToken() (string, error)`
+- New function `*LinkerClientValidatePoller.FinalResponse(context.Context) (LinkerClientValidateResponse, error)`
+- New function `*LinkerClientDeletePoller.Done() bool`
+- New function `*LinkerClientListPager.PageResponse() LinkerClientListResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `LinkerClientValidatePollerResponse.PollUntilDone(context.Context, time.Duration) (LinkerClientValidateResponse, error)`
+- New function `*LinkerClientCreateOrUpdatePollerResponse.Resume(context.Context, *LinkerClient, string) error`
+- New function `*SystemAssignedIdentityAuthInfo.GetAuthInfoBase() *AuthInfoBase`
+- New function `*LinkerClientUpdatePoller.Done() bool`
+- New function `*LinkerClientValidatePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*LinkerClientCreateOrUpdatePoller.Done() bool`
+- New function `*LinkerClientValidatePollerResponse.Resume(context.Context, *LinkerClient, string) error`
+- New function `*LinkerClientValidatePoller.Done() bool`
+- New function `LinkerClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (LinkerClientDeleteResponse, error)`
+- New function `*LinkerClientUpdatePollerResponse.Resume(context.Context, *LinkerClient, string) error`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New struct `LinkerClientBeginCreateOrUpdateOptions`
+- New struct `LinkerClientBeginDeleteOptions`
+- New struct `LinkerClientBeginUpdateOptions`
+- New struct `LinkerClientBeginValidateOptions`
+- New struct `LinkerClientCreateOrUpdatePoller`
+- New struct `LinkerClientCreateOrUpdatePollerResponse`
+- New struct `LinkerClientCreateOrUpdateResponse`
+- New struct `LinkerClientCreateOrUpdateResult`
+- New struct `LinkerClientDeletePoller`
+- New struct `LinkerClientDeletePollerResponse`
+- New struct `LinkerClientDeleteResponse`
+- New struct `LinkerClientGetOptions`
+- New struct `LinkerClientGetResponse`
+- New struct `LinkerClientGetResult`
+- New struct `LinkerClientListConfigurationsOptions`
+- New struct `LinkerClientListConfigurationsResponse`
+- New struct `LinkerClientListConfigurationsResult`
+- New struct `LinkerClientListOptions`
+- New struct `LinkerClientListPager`
+- New struct `LinkerClientListResponse`
+- New struct `LinkerClientListResult`
+- New struct `LinkerClientUpdatePoller`
+- New struct `LinkerClientUpdatePollerResponse`
+- New struct `LinkerClientUpdateResponse`
+- New struct `LinkerClientUpdateResult`
+- New struct `LinkerClientValidatePoller`
+- New struct `LinkerClientValidatePollerResponse`
+- New struct `LinkerClientValidateResponse`
+- New struct `LinkerClientValidateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `Error` in struct `ErrorResponse`
+- New field `AuthType` in struct `SecretAuthInfo`
+- New field `AuthType` in struct `ServicePrincipalCertificateAuthInfo`
+- New field `AuthType` in struct `UserAssignedIdentityAuthInfo`
+- New field `AuthType` in struct `ServicePrincipalSecretAuthInfo`
+- New field `AuthType` in struct `SystemAssignedIdentityAuthInfo`
+- New field `ID` in struct `LinkerResource`
+- New field `Name` in struct `LinkerResource`
+- New field `Type` in struct `LinkerResource`
+
+
+## 0.1.0 (2021-12-09)
+
+- Init release.

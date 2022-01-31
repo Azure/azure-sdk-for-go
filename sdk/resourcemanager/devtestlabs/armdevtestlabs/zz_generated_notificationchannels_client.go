@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // NotificationChannelsClient contains the methods for the NotificationChannels group.
 // Don't use this type directly, use NewNotificationChannelsClient() instead.
 type NotificationChannelsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewNotificationChannelsClient creates a new instance of NotificationChannelsClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewNotificationChannelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationChannelsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &NotificationChannelsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &NotificationChannelsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or replace an existing notification channel.
-// If the operation fails it returns the *CloudError error type.
-func (client *NotificationChannelsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannel, options *NotificationChannelsCreateOrUpdateOptions) (NotificationChannelsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the notification channel.
+// notificationChannel - A notification.
+// options - NotificationChannelsClientCreateOrUpdateOptions contains the optional parameters for the NotificationChannelsClient.CreateOrUpdate
+// method.
+func (client *NotificationChannelsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannel, options *NotificationChannelsClientCreateOrUpdateOptions) (NotificationChannelsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, name, notificationChannel, options)
 	if err != nil {
-		return NotificationChannelsCreateOrUpdateResponse{}, err
+		return NotificationChannelsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationChannelsCreateOrUpdateResponse{}, err
+		return NotificationChannelsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return NotificationChannelsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return NotificationChannelsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NotificationChannelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannel, options *NotificationChannelsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *NotificationChannelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannel, options *NotificationChannelsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *NotificationChannelsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,38 @@ func (client *NotificationChannelsClient) createOrUpdateCreateRequest(ctx contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NotificationChannelsClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationChannelsCreateOrUpdateResponse, error) {
-	result := NotificationChannelsCreateOrUpdateResponse{RawResponse: resp}
+func (client *NotificationChannelsClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationChannelsClientCreateOrUpdateResponse, error) {
+	result := NotificationChannelsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationChannel); err != nil {
-		return NotificationChannelsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationChannelsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *NotificationChannelsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete notification channel.
-// If the operation fails it returns the *CloudError error type.
-func (client *NotificationChannelsClient) Delete(ctx context.Context, resourceGroupName string, labName string, name string, options *NotificationChannelsDeleteOptions) (NotificationChannelsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the notification channel.
+// options - NotificationChannelsClientDeleteOptions contains the optional parameters for the NotificationChannelsClient.Delete
+// method.
+func (client *NotificationChannelsClient) Delete(ctx context.Context, resourceGroupName string, labName string, name string, options *NotificationChannelsClientDeleteOptions) (NotificationChannelsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
-		return NotificationChannelsDeleteResponse{}, err
+		return NotificationChannelsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationChannelsDeleteResponse{}, err
+		return NotificationChannelsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return NotificationChannelsDeleteResponse{}, client.deleteHandleError(resp)
+		return NotificationChannelsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return NotificationChannelsDeleteResponse{RawResponse: resp}, nil
+	return NotificationChannelsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NotificationChannelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *NotificationChannelsDeleteOptions) (*policy.Request, error) {
+func (client *NotificationChannelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *NotificationChannelsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +153,7 @@ func (client *NotificationChannelsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +164,30 @@ func (client *NotificationChannelsClient) deleteCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *NotificationChannelsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get notification channel.
-// If the operation fails it returns the *CloudError error type.
-func (client *NotificationChannelsClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *NotificationChannelsGetOptions) (NotificationChannelsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the notification channel.
+// options - NotificationChannelsClientGetOptions contains the optional parameters for the NotificationChannelsClient.Get
+// method.
+func (client *NotificationChannelsClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *NotificationChannelsClientGetOptions) (NotificationChannelsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
-		return NotificationChannelsGetResponse{}, err
+		return NotificationChannelsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationChannelsGetResponse{}, err
+		return NotificationChannelsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NotificationChannelsGetResponse{}, client.getHandleError(resp)
+		return NotificationChannelsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *NotificationChannelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *NotificationChannelsGetOptions) (*policy.Request, error) {
+func (client *NotificationChannelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *NotificationChannelsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +205,7 @@ func (client *NotificationChannelsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -223,43 +220,34 @@ func (client *NotificationChannelsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *NotificationChannelsClient) getHandleResponse(resp *http.Response) (NotificationChannelsGetResponse, error) {
-	result := NotificationChannelsGetResponse{RawResponse: resp}
+func (client *NotificationChannelsClient) getHandleResponse(resp *http.Response) (NotificationChannelsClientGetResponse, error) {
+	result := NotificationChannelsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationChannel); err != nil {
-		return NotificationChannelsGetResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationChannelsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *NotificationChannelsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List notification channels in a given lab.
-// If the operation fails it returns the *CloudError error type.
-func (client *NotificationChannelsClient) List(resourceGroupName string, labName string, options *NotificationChannelsListOptions) *NotificationChannelsListPager {
-	return &NotificationChannelsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// options - NotificationChannelsClientListOptions contains the optional parameters for the NotificationChannelsClient.List
+// method.
+func (client *NotificationChannelsClient) List(resourceGroupName string, labName string, options *NotificationChannelsClientListOptions) *NotificationChannelsClientListPager {
+	return &NotificationChannelsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, labName, options)
 		},
-		advancer: func(ctx context.Context, resp NotificationChannelsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp NotificationChannelsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.NotificationChannelList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *NotificationChannelsClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *NotificationChannelsListOptions) (*policy.Request, error) {
+func (client *NotificationChannelsClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *NotificationChannelsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -273,7 +261,7 @@ func (client *NotificationChannelsClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -297,46 +285,39 @@ func (client *NotificationChannelsClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client *NotificationChannelsClient) listHandleResponse(resp *http.Response) (NotificationChannelsListResponse, error) {
-	result := NotificationChannelsListResponse{RawResponse: resp}
+func (client *NotificationChannelsClient) listHandleResponse(resp *http.Response) (NotificationChannelsClientListResponse, error) {
+	result := NotificationChannelsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationChannelList); err != nil {
-		return NotificationChannelsListResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationChannelsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *NotificationChannelsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Notify - Send notification to provided channel.
-// If the operation fails it returns the *CloudError error type.
-func (client *NotificationChannelsClient) Notify(ctx context.Context, resourceGroupName string, labName string, name string, notifyParameters NotifyParameters, options *NotificationChannelsNotifyOptions) (NotificationChannelsNotifyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the notification channel.
+// notifyParameters - Properties for generating a Notification.
+// options - NotificationChannelsClientNotifyOptions contains the optional parameters for the NotificationChannelsClient.Notify
+// method.
+func (client *NotificationChannelsClient) Notify(ctx context.Context, resourceGroupName string, labName string, name string, notifyParameters NotifyParameters, options *NotificationChannelsClientNotifyOptions) (NotificationChannelsClientNotifyResponse, error) {
 	req, err := client.notifyCreateRequest(ctx, resourceGroupName, labName, name, notifyParameters, options)
 	if err != nil {
-		return NotificationChannelsNotifyResponse{}, err
+		return NotificationChannelsClientNotifyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationChannelsNotifyResponse{}, err
+		return NotificationChannelsClientNotifyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NotificationChannelsNotifyResponse{}, client.notifyHandleError(resp)
+		return NotificationChannelsClientNotifyResponse{}, runtime.NewResponseError(resp)
 	}
-	return NotificationChannelsNotifyResponse{RawResponse: resp}, nil
+	return NotificationChannelsClientNotifyResponse{RawResponse: resp}, nil
 }
 
 // notifyCreateRequest creates the Notify request.
-func (client *NotificationChannelsClient) notifyCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, notifyParameters NotifyParameters, options *NotificationChannelsNotifyOptions) (*policy.Request, error) {
+func (client *NotificationChannelsClient) notifyCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, notifyParameters NotifyParameters, options *NotificationChannelsClientNotifyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels/{name}/notify"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -354,7 +335,7 @@ func (client *NotificationChannelsClient) notifyCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -365,38 +346,31 @@ func (client *NotificationChannelsClient) notifyCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, notifyParameters)
 }
 
-// notifyHandleError handles the Notify error response.
-func (client *NotificationChannelsClient) notifyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of notification channels. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *NotificationChannelsClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannelFragment, options *NotificationChannelsUpdateOptions) (NotificationChannelsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the notification channel.
+// notificationChannel - A notification.
+// options - NotificationChannelsClientUpdateOptions contains the optional parameters for the NotificationChannelsClient.Update
+// method.
+func (client *NotificationChannelsClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannelFragment, options *NotificationChannelsClientUpdateOptions) (NotificationChannelsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, name, notificationChannel, options)
 	if err != nil {
-		return NotificationChannelsUpdateResponse{}, err
+		return NotificationChannelsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationChannelsUpdateResponse{}, err
+		return NotificationChannelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NotificationChannelsUpdateResponse{}, client.updateHandleError(resp)
+		return NotificationChannelsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *NotificationChannelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannelFragment, options *NotificationChannelsUpdateOptions) (*policy.Request, error) {
+func (client *NotificationChannelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannelFragment, options *NotificationChannelsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -414,7 +388,7 @@ func (client *NotificationChannelsClient) updateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -426,23 +400,10 @@ func (client *NotificationChannelsClient) updateCreateRequest(ctx context.Contex
 }
 
 // updateHandleResponse handles the Update response.
-func (client *NotificationChannelsClient) updateHandleResponse(resp *http.Response) (NotificationChannelsUpdateResponse, error) {
-	result := NotificationChannelsUpdateResponse{RawResponse: resp}
+func (client *NotificationChannelsClient) updateHandleResponse(resp *http.Response) (NotificationChannelsClientUpdateResponse, error) {
+	result := NotificationChannelsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationChannel); err != nil {
-		return NotificationChannelsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationChannelsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *NotificationChannelsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

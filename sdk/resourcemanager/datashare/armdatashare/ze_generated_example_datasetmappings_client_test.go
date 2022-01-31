@@ -34,7 +34,7 @@ func ExampleDataSetMappingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataSetMappingClassification.GetDataSetMapping().ID: %s\n", *res.GetDataSetMapping().ID)
+	log.Printf("Response result: %#v\n", res.DataSetMappingsClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_Create.json
@@ -51,9 +51,7 @@ func ExampleDataSetMappingsClient_Create() {
 		"<share-subscription-name>",
 		"<data-set-mapping-name>",
 		&armdatashare.BlobDataSetMapping{
-			DataSetMapping: armdatashare.DataSetMapping{
-				Kind: armdatashare.DataSetMappingKindBlob.ToPtr(),
-			},
+			Kind: armdatashare.DataSetMappingKind("Blob").ToPtr(),
 			Properties: &armdatashare.BlobMappingProperties{
 				ContainerName:      to.StringPtr("<container-name>"),
 				DataSetID:          to.StringPtr("<data-set-id>"),
@@ -67,7 +65,7 @@ func ExampleDataSetMappingsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataSetMappingClassification.GetDataSetMapping().ID: %s\n", *res.GetDataSetMapping().ID)
+	log.Printf("Response result: %#v\n", res.DataSetMappingsClientCreateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/DataSetMappings_Delete.json
@@ -100,16 +98,20 @@ func ExampleDataSetMappingsClient_ListByShareSubscription() {
 	pager := client.ListByShareSubscription("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
-		&armdatashare.DataSetMappingsListByShareSubscriptionOptions{SkipToken: nil,
+		&armdatashare.DataSetMappingsClientListByShareSubscriptionOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataSetMappingClassification.GetDataSetMapping().ID: %s\n", *v.GetDataSetMapping().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

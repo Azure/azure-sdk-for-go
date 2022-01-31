@@ -11,7 +11,7 @@ The `armapimanagement` module provides operations for working with Azure API Man
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,22 @@ options = arm.ClientOptions{
 }
 client := armapimanagement.NewTagClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [API Management Service](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apimanagement_service)
+- [API Operation](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apioperation)
+- [API Operation Policy](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apioperationpolicy)
+- [API Policy](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apipolicy)
+- [API Release](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apirelease)
+- [API Schema](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apischema)
+- [API Tag Description](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apitagdescription)
+- [API Version Set](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apiversionset)
+- [Deleted Service](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/deleted_service)
+- [Logger](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/logger)
+- [Sign In Setting](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/signin_setting)
+- [Sign up Setting](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/signup_setting)
+- [User](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/user)
 
 ## Provide Feedback
 

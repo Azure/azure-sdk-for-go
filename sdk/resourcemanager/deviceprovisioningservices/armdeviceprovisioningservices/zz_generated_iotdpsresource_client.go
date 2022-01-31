@@ -11,7 +11,6 @@ package armdeviceprovisioningservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,49 +24,60 @@ import (
 // IotDpsResourceClient contains the methods for the IotDpsResource group.
 // Don't use this type directly, use NewIotDpsResourceClient() instead.
 type IotDpsResourceClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIotDpsResourceClient creates a new instance of IotDpsResourceClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIotDpsResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotDpsResourceClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IotDpsResourceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IotDpsResourceClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CheckProvisioningServiceNameAvailability - Check if a provisioning service name is available. This will validate if the name is syntactically valid and
-// if the name is usable
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) CheckProvisioningServiceNameAvailability(ctx context.Context, arguments OperationInputs, options *IotDpsResourceCheckProvisioningServiceNameAvailabilityOptions) (IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse, error) {
+// CheckProvisioningServiceNameAvailability - Check if a provisioning service name is available. This will validate if the
+// name is syntactically valid and if the name is usable
+// If the operation fails it returns an *azcore.ResponseError type.
+// arguments - Set the name parameter in the OperationInputs structure to the name of the provisioning service to check.
+// options - IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions contains the optional parameters for the
+// IotDpsResourceClient.CheckProvisioningServiceNameAvailability method.
+func (client *IotDpsResourceClient) CheckProvisioningServiceNameAvailability(ctx context.Context, arguments OperationInputs, options *IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions) (IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse, error) {
 	req, err := client.checkProvisioningServiceNameAvailabilityCreateRequest(ctx, arguments, options)
 	if err != nil {
-		return IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse{}, err
+		return IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse{}, err
+		return IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse{}, client.checkProvisioningServiceNameAvailabilityHandleError(resp)
+		return IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkProvisioningServiceNameAvailabilityHandleResponse(resp)
 }
 
 // checkProvisioningServiceNameAvailabilityCreateRequest creates the CheckProvisioningServiceNameAvailability request.
-func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCreateRequest(ctx context.Context, arguments OperationInputs, options *IotDpsResourceCheckProvisioningServiceNameAvailabilityOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCreateRequest(ctx context.Context, arguments OperationInputs, options *IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/checkProvisioningServiceNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,54 +89,46 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCrea
 }
 
 // checkProvisioningServiceNameAvailabilityHandleResponse handles the CheckProvisioningServiceNameAvailability response.
-func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityHandleResponse(resp *http.Response) (IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse, error) {
-	result := IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityHandleResponse(resp *http.Response) (IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse, error) {
+	result := IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityInfo); err != nil {
-		return IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkProvisioningServiceNameAvailabilityHandleError handles the CheckProvisioningServiceNameAvailability error response.
-func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginCreateOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property is to retrieve the provisioning
-// service metadata and security metadata, and then combine them with the
+// BeginCreateOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property
+// is to retrieve the provisioning service metadata and security metadata, and then combine them with the
 // modified values in a new body to update the provisioning service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceBeginCreateOrUpdateOptions) (IotDpsResourceCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group identifier.
+// provisioningServiceName - Name of provisioning service to create or update.
+// iotDpsDescription - Description of the provisioning service to create or update.
+// options - IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
+// method.
+func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (IotDpsResourceClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
 	if err != nil {
-		return IotDpsResourceCreateOrUpdatePollerResponse{}, err
+		return IotDpsResourceClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := IotDpsResourceCreateOrUpdatePollerResponse{
+	result := IotDpsResourceClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("IotDpsResourceClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return IotDpsResourceCreateOrUpdatePollerResponse{}, err
+		return IotDpsResourceClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &IotDpsResourceCreateOrUpdatePoller{
+	result.Poller = &IotDpsResourceClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property is to retrieve the provisioning service
-// metadata and security metadata, and then combine them with the
+// CreateOrUpdate - Create or update the metadata of the provisioning service. The usual pattern to modify a property is to
+// retrieve the provisioning service metadata and security metadata, and then combine them with the
 // modified values in a new body to update the provisioning service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
 	if err != nil {
 		return nil, err
@@ -136,13 +138,13 @@ func (client *IotDpsResourceClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,7 +158,7 @@ func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,42 +169,37 @@ func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, iotDpsDescription)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IotDpsResourceClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginCreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified name
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceBeginCreateOrUpdatePrivateEndpointConnectionOptions) (IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse, error) {
+// BeginCreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
+// name
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the provisioning service.
+// resourceName - The name of the provisioning service.
+// privateEndpointConnectionName - The name of the private endpoint connection
+// privateEndpointConnection - The private endpoint connection with updated properties
+// options - IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for
+// the IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection method.
+func (client *IotDpsResourceClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.createOrUpdatePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
-		return IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse{}, err
+		return IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse{
+	result := IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.CreateOrUpdatePrivateEndpointConnection", "", resp, client.pl, client.createOrUpdatePrivateEndpointConnectionHandleError)
+	pt, err := armruntime.NewPoller("IotDpsResourceClient.CreateOrUpdatePrivateEndpointConnection", "", resp, client.pl)
 	if err != nil {
-		return IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse{}, err
+		return IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result.Poller = &IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller{
+	result.Poller = &IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified name
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
+// CreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
+// name
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.createOrUpdatePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
 		return nil, err
@@ -212,13 +209,13 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnection(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdatePrivateEndpointConnectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdatePrivateEndpointConnectionCreateRequest creates the CreateOrUpdatePrivateEndpointConnection request.
-func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -236,7 +233,7 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -247,42 +244,33 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnection)
 }
 
-// createOrUpdatePrivateEndpointConnectionHandleError handles the CreateOrUpdatePrivateEndpointConnection error response.
-func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the Provisioning Service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceBeginDeleteOptions) (IotDpsResourceDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// provisioningServiceName - Name of provisioning service to delete.
+// resourceGroupName - Resource group identifier.
+// options - IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete
+// method.
+func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (IotDpsResourceClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, provisioningServiceName, resourceGroupName, options)
 	if err != nil {
-		return IotDpsResourceDeletePollerResponse{}, err
+		return IotDpsResourceClientDeletePollerResponse{}, err
 	}
-	result := IotDpsResourceDeletePollerResponse{
+	result := IotDpsResourceClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("IotDpsResourceClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return IotDpsResourceDeletePollerResponse{}, err
+		return IotDpsResourceClientDeletePollerResponse{}, err
 	}
-	result.Poller = &IotDpsResourceDeletePoller{
+	result.Poller = &IotDpsResourceClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the Provisioning Service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -292,13 +280,13 @@ func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisi
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceBeginDeleteOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
@@ -312,7 +300,7 @@ func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, pro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,42 +311,34 @@ func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, pro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IotDpsResourceClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeletePrivateEndpointConnection - Delete private endpoint connection with the specified name
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceBeginDeletePrivateEndpointConnectionOptions) (IotDpsResourceDeletePrivateEndpointConnectionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the provisioning service.
+// resourceName - The name of the provisioning service.
+// privateEndpointConnectionName - The name of the private endpoint connection
+// options - IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginDeletePrivateEndpointConnection
+// method.
+func (client *IotDpsResourceClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
-		return IotDpsResourceDeletePrivateEndpointConnectionPollerResponse{}, err
+		return IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := IotDpsResourceDeletePrivateEndpointConnectionPollerResponse{
+	result := IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.DeletePrivateEndpointConnection", "", resp, client.pl, client.deletePrivateEndpointConnectionHandleError)
+	pt, err := armruntime.NewPoller("IotDpsResourceClient.DeletePrivateEndpointConnection", "", resp, client.pl)
 	if err != nil {
-		return IotDpsResourceDeletePrivateEndpointConnectionPollerResponse{}, err
+		return IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result.Poller = &IotDpsResourceDeletePrivateEndpointConnectionPoller{
+	result.Poller = &IotDpsResourceClientDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeletePrivateEndpointConnection - Delete private endpoint connection with the specified name
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -368,13 +348,13 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnection(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deletePrivateEndpointConnectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deletePrivateEndpointConnectionCreateRequest creates the DeletePrivateEndpointConnection request.
-func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -392,7 +372,7 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -403,38 +383,28 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest
 	return req, nil
 }
 
-// deletePrivateEndpointConnectionHandleError handles the DeletePrivateEndpointConnection error response.
-func (client *IotDpsResourceClient) deletePrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the metadata of the provisioning service without SAS keys.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) Get(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceGetOptions) (IotDpsResourceGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// provisioningServiceName - Name of the provisioning service to retrieve.
+// resourceGroupName - Resource group name.
+// options - IotDpsResourceClientGetOptions contains the optional parameters for the IotDpsResourceClient.Get method.
+func (client *IotDpsResourceClient) Get(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientGetOptions) (IotDpsResourceClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 	if err != nil {
-		return IotDpsResourceGetResponse{}, err
+		return IotDpsResourceClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotDpsResourceGetResponse{}, err
+		return IotDpsResourceClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotDpsResourceGetResponse{}, client.getHandleError(resp)
+		return IotDpsResourceClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceGetOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
@@ -448,7 +418,7 @@ func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provis
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -460,46 +430,39 @@ func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provis
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotDpsResourceClient) getHandleResponse(resp *http.Response) (IotDpsResourceGetResponse, error) {
-	result := IotDpsResourceGetResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) getHandleResponse(resp *http.Response) (IotDpsResourceClientGetResponse, error) {
+	result := IotDpsResourceClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisioningServiceDescription); err != nil {
-		return IotDpsResourceGetResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IotDpsResourceClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetOperationResult - Gets the status of a long running operation, such as create, update or delete a provisioning service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) GetOperationResult(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string, options *IotDpsResourceGetOperationResultOptions) (IotDpsResourceGetOperationResultResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// operationID - Operation id corresponding to long running operation. Use this to poll for the status.
+// resourceGroupName - Resource group identifier.
+// provisioningServiceName - Name of provisioning service that the operation is running on.
+// asyncinfo - Async header used to poll on the status of the operation, obtained while creating the long running operation.
+// options - IotDpsResourceClientGetOperationResultOptions contains the optional parameters for the IotDpsResourceClient.GetOperationResult
+// method.
+func (client *IotDpsResourceClient) GetOperationResult(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string, options *IotDpsResourceClientGetOperationResultOptions) (IotDpsResourceClientGetOperationResultResponse, error) {
 	req, err := client.getOperationResultCreateRequest(ctx, operationID, resourceGroupName, provisioningServiceName, asyncinfo, options)
 	if err != nil {
-		return IotDpsResourceGetOperationResultResponse{}, err
+		return IotDpsResourceClientGetOperationResultResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotDpsResourceGetOperationResultResponse{}, err
+		return IotDpsResourceClientGetOperationResultResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotDpsResourceGetOperationResultResponse{}, client.getOperationResultHandleError(resp)
+		return IotDpsResourceClientGetOperationResultResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getOperationResultHandleResponse(resp)
 }
 
 // getOperationResultCreateRequest creates the GetOperationResult request.
-func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string, options *IotDpsResourceGetOperationResultOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string, options *IotDpsResourceClientGetOperationResultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/operationresults/{operationId}"
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
@@ -517,7 +480,7 @@ func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -530,46 +493,38 @@ func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.
 }
 
 // getOperationResultHandleResponse handles the GetOperationResult response.
-func (client *IotDpsResourceClient) getOperationResultHandleResponse(resp *http.Response) (IotDpsResourceGetOperationResultResponse, error) {
-	result := IotDpsResourceGetOperationResultResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) getOperationResultHandleResponse(resp *http.Response) (IotDpsResourceClientGetOperationResultResponse, error) {
+	result := IotDpsResourceClientGetOperationResultResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
-		return IotDpsResourceGetOperationResultResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientGetOperationResultResponse{}, err
 	}
 	return result, nil
 }
 
-// getOperationResultHandleError handles the GetOperationResult error response.
-func (client *IotDpsResourceClient) getOperationResultHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetPrivateEndpointConnection - Get private endpoint connection properties
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceGetPrivateEndpointConnectionOptions) (IotDpsResourceGetPrivateEndpointConnectionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the provisioning service.
+// resourceName - The name of the provisioning service.
+// privateEndpointConnectionName - The name of the private endpoint connection
+// options - IotDpsResourceClientGetPrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.GetPrivateEndpointConnection
+// method.
+func (client *IotDpsResourceClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientGetPrivateEndpointConnectionOptions) (IotDpsResourceClientGetPrivateEndpointConnectionResponse, error) {
 	req, err := client.getPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
-		return IotDpsResourceGetPrivateEndpointConnectionResponse{}, err
+		return IotDpsResourceClientGetPrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotDpsResourceGetPrivateEndpointConnectionResponse{}, err
+		return IotDpsResourceClientGetPrivateEndpointConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotDpsResourceGetPrivateEndpointConnectionResponse{}, client.getPrivateEndpointConnectionHandleError(resp)
+		return IotDpsResourceClientGetPrivateEndpointConnectionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPrivateEndpointConnectionHandleResponse(resp)
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
-func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceGetPrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientGetPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -587,7 +542,7 @@ func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ct
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -599,46 +554,38 @@ func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ct
 }
 
 // getPrivateEndpointConnectionHandleResponse handles the GetPrivateEndpointConnection response.
-func (client *IotDpsResourceClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (IotDpsResourceGetPrivateEndpointConnectionResponse, error) {
-	result := IotDpsResourceGetPrivateEndpointConnectionResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (IotDpsResourceClientGetPrivateEndpointConnectionResponse, error) {
+	result := IotDpsResourceClientGetPrivateEndpointConnectionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
-		return IotDpsResourceGetPrivateEndpointConnectionResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientGetPrivateEndpointConnectionResponse{}, err
 	}
 	return result, nil
 }
 
-// getPrivateEndpointConnectionHandleError handles the GetPrivateEndpointConnection error response.
-func (client *IotDpsResourceClient) getPrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetPrivateLinkResources - Get the specified private link resource for the given provisioning service
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, resourceName string, groupID string, options *IotDpsResourceGetPrivateLinkResourcesOptions) (IotDpsResourceGetPrivateLinkResourcesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the provisioning service.
+// resourceName - The name of the provisioning service.
+// groupID - The name of the private link resource
+// options - IotDpsResourceClientGetPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.GetPrivateLinkResources
+// method.
+func (client *IotDpsResourceClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, resourceName string, groupID string, options *IotDpsResourceClientGetPrivateLinkResourcesOptions) (IotDpsResourceClientGetPrivateLinkResourcesResponse, error) {
 	req, err := client.getPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, resourceName, groupID, options)
 	if err != nil {
-		return IotDpsResourceGetPrivateLinkResourcesResponse{}, err
+		return IotDpsResourceClientGetPrivateLinkResourcesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotDpsResourceGetPrivateLinkResourcesResponse{}, err
+		return IotDpsResourceClientGetPrivateLinkResourcesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotDpsResourceGetPrivateLinkResourcesResponse{}, client.getPrivateLinkResourcesHandleError(resp)
+		return IotDpsResourceClientGetPrivateLinkResourcesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPrivateLinkResourcesHandleResponse(resp)
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
-func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupID string, options *IotDpsResourceGetPrivateLinkResourcesOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupID string, options *IotDpsResourceClientGetPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateLinkResources/{groupId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -656,7 +603,7 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx con
 		return nil, errors.New("parameter groupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -668,43 +615,33 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx con
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *IotDpsResourceClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (IotDpsResourceGetPrivateLinkResourcesResponse, error) {
-	result := IotDpsResourceGetPrivateLinkResourcesResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (IotDpsResourceClientGetPrivateLinkResourcesResponse, error) {
+	result := IotDpsResourceClientGetPrivateLinkResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupIDInformation); err != nil {
-		return IotDpsResourceGetPrivateLinkResourcesResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientGetPrivateLinkResourcesResponse{}, err
 	}
 	return result, nil
 }
 
-// getPrivateLinkResourcesHandleError handles the GetPrivateLinkResources error response.
-func (client *IotDpsResourceClient) getPrivateLinkResourcesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Get a list of all provisioning services in the given resource group.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) ListByResourceGroup(resourceGroupName string, options *IotDpsResourceListByResourceGroupOptions) *IotDpsResourceListByResourceGroupPager {
-	return &IotDpsResourceListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group identifier.
+// options - IotDpsResourceClientListByResourceGroupOptions contains the optional parameters for the IotDpsResourceClient.ListByResourceGroup
+// method.
+func (client *IotDpsResourceClient) ListByResourceGroup(resourceGroupName string, options *IotDpsResourceClientListByResourceGroupOptions) *IotDpsResourceClientListByResourceGroupPager {
+	return &IotDpsResourceClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp IotDpsResourceListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IotDpsResourceClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProvisioningServiceDescriptionListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IotDpsResourceListByResourceGroupOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IotDpsResourceClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -714,7 +651,7 @@ func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -726,49 +663,38 @@ func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *IotDpsResourceClient) listByResourceGroupHandleResponse(resp *http.Response) (IotDpsResourceListByResourceGroupResponse, error) {
-	result := IotDpsResourceListByResourceGroupResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) listByResourceGroupHandleResponse(resp *http.Response) (IotDpsResourceClientListByResourceGroupResponse, error) {
+	result := IotDpsResourceClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisioningServiceDescriptionListResult); err != nil {
-		return IotDpsResourceListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *IotDpsResourceClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - List all the provisioning services for a given subscription id.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) ListBySubscription(options *IotDpsResourceListBySubscriptionOptions) *IotDpsResourceListBySubscriptionPager {
-	return &IotDpsResourceListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - IotDpsResourceClientListBySubscriptionOptions contains the optional parameters for the IotDpsResourceClient.ListBySubscription
+// method.
+func (client *IotDpsResourceClient) ListBySubscription(options *IotDpsResourceClientListBySubscriptionOptions) *IotDpsResourceClientListBySubscriptionPager {
+	return &IotDpsResourceClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp IotDpsResourceListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IotDpsResourceClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProvisioningServiceDescriptionListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.Context, options *IotDpsResourceListBySubscriptionOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.Context, options *IotDpsResourceClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/provisioningServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -780,43 +706,33 @@ func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *IotDpsResourceClient) listBySubscriptionHandleResponse(resp *http.Response) (IotDpsResourceListBySubscriptionResponse, error) {
-	result := IotDpsResourceListBySubscriptionResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) listBySubscriptionHandleResponse(resp *http.Response) (IotDpsResourceClientListBySubscriptionResponse, error) {
+	result := IotDpsResourceClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisioningServiceDescriptionListResult); err != nil {
-		return IotDpsResourceListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *IotDpsResourceClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListKeys - List the primary and secondary keys for a provisioning service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) ListKeys(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceListKeysOptions) *IotDpsResourceListKeysPager {
-	return &IotDpsResourceListKeysPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// provisioningServiceName - The provisioning service name to get the shared access keys for.
+// resourceGroupName - resource group name
+// options - IotDpsResourceClientListKeysOptions contains the optional parameters for the IotDpsResourceClient.ListKeys method.
+func (client *IotDpsResourceClient) ListKeys(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListKeysOptions) *IotDpsResourceClientListKeysPager {
+	return &IotDpsResourceClientListKeysPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listKeysCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp IotDpsResourceListKeysResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IotDpsResourceClientListKeysResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SharedAccessSignatureAuthorizationRuleListResult.NextLink)
 		},
 	}
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceListKeysOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/listkeys"
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
@@ -830,7 +746,7 @@ func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, p
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -842,46 +758,38 @@ func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, p
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *IotDpsResourceClient) listKeysHandleResponse(resp *http.Response) (IotDpsResourceListKeysResponse, error) {
-	result := IotDpsResourceListKeysResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) listKeysHandleResponse(resp *http.Response) (IotDpsResourceClientListKeysResponse, error) {
+	result := IotDpsResourceClientListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleListResult); err != nil {
-		return IotDpsResourceListKeysResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientListKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listKeysHandleError handles the ListKeys error response.
-func (client *IotDpsResourceClient) listKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListKeysForKeyName - List primary and secondary keys for a specific key name
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *IotDpsResourceListKeysForKeyNameOptions) (IotDpsResourceListKeysForKeyNameResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// provisioningServiceName - Name of the provisioning service.
+// keyName - Logical key name to get key-values for.
+// resourceGroupName - The name of the resource group that contains the provisioning service.
+// options - IotDpsResourceClientListKeysForKeyNameOptions contains the optional parameters for the IotDpsResourceClient.ListKeysForKeyName
+// method.
+func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *IotDpsResourceClientListKeysForKeyNameOptions) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
 	req, err := client.listKeysForKeyNameCreateRequest(ctx, provisioningServiceName, keyName, resourceGroupName, options)
 	if err != nil {
-		return IotDpsResourceListKeysForKeyNameResponse{}, err
+		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotDpsResourceListKeysForKeyNameResponse{}, err
+		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotDpsResourceListKeysForKeyNameResponse{}, client.listKeysForKeyNameHandleError(resp)
+		return IotDpsResourceClientListKeysForKeyNameResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listKeysForKeyNameHandleResponse(resp)
 }
 
 // listKeysForKeyNameCreateRequest creates the ListKeysForKeyName request.
-func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *IotDpsResourceListKeysForKeyNameOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *IotDpsResourceClientListKeysForKeyNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/keys/{keyName}/listkeys"
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
@@ -899,7 +807,7 @@ func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -911,46 +819,37 @@ func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.
 }
 
 // listKeysForKeyNameHandleResponse handles the ListKeysForKeyName response.
-func (client *IotDpsResourceClient) listKeysForKeyNameHandleResponse(resp *http.Response) (IotDpsResourceListKeysForKeyNameResponse, error) {
-	result := IotDpsResourceListKeysForKeyNameResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) listKeysForKeyNameHandleResponse(resp *http.Response) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
+	result := IotDpsResourceClientListKeysForKeyNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleAccessRightsDescription); err != nil {
-		return IotDpsResourceListKeysForKeyNameResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
 	}
 	return result, nil
 }
 
-// listKeysForKeyNameHandleError handles the ListKeysForKeyName error response.
-func (client *IotDpsResourceClient) listKeysForKeyNameHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListPrivateEndpointConnections - List private endpoint connection properties
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) ListPrivateEndpointConnections(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceListPrivateEndpointConnectionsOptions) (IotDpsResourceListPrivateEndpointConnectionsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the provisioning service.
+// resourceName - The name of the provisioning service.
+// options - IotDpsResourceClientListPrivateEndpointConnectionsOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateEndpointConnections
+// method.
+func (client *IotDpsResourceClient) ListPrivateEndpointConnections(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateEndpointConnectionsOptions) (IotDpsResourceClientListPrivateEndpointConnectionsResponse, error) {
 	req, err := client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return IotDpsResourceListPrivateEndpointConnectionsResponse{}, err
+		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotDpsResourceListPrivateEndpointConnectionsResponse{}, err
+		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotDpsResourceListPrivateEndpointConnectionsResponse{}, client.listPrivateEndpointConnectionsHandleError(resp)
+		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listPrivateEndpointConnectionsHandleResponse(resp)
 }
 
 // listPrivateEndpointConnectionsCreateRequest creates the ListPrivateEndpointConnections request.
-func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -964,7 +863,7 @@ func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -976,46 +875,37 @@ func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(
 }
 
 // listPrivateEndpointConnectionsHandleResponse handles the ListPrivateEndpointConnections response.
-func (client *IotDpsResourceClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response) (IotDpsResourceListPrivateEndpointConnectionsResponse, error) {
-	result := IotDpsResourceListPrivateEndpointConnectionsResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response) (IotDpsResourceClientListPrivateEndpointConnectionsResponse, error) {
+	result := IotDpsResourceClientListPrivateEndpointConnectionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionArray); err != nil {
-		return IotDpsResourceListPrivateEndpointConnectionsResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listPrivateEndpointConnectionsHandleError handles the ListPrivateEndpointConnections error response.
-func (client *IotDpsResourceClient) listPrivateEndpointConnectionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListPrivateLinkResources - List private link resources for the given provisioning service
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) ListPrivateLinkResources(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceListPrivateLinkResourcesOptions) (IotDpsResourceListPrivateLinkResourcesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the provisioning service.
+// resourceName - The name of the provisioning service.
+// options - IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateLinkResources
+// method.
+func (client *IotDpsResourceClient) ListPrivateLinkResources(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateLinkResourcesOptions) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
 	req, err := client.listPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return IotDpsResourceListPrivateLinkResourcesResponse{}, err
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotDpsResourceListPrivateLinkResourcesResponse{}, err
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotDpsResourceListPrivateLinkResourcesResponse{}, client.listPrivateLinkResourcesHandleError(resp)
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listPrivateLinkResourcesHandleResponse(resp)
 }
 
 // listPrivateLinkResourcesCreateRequest creates the ListPrivateLinkResources request.
-func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceListPrivateLinkResourcesOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1029,7 +919,7 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx co
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1041,43 +931,34 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx co
 }
 
 // listPrivateLinkResourcesHandleResponse handles the ListPrivateLinkResources response.
-func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp *http.Response) (IotDpsResourceListPrivateLinkResourcesResponse, error) {
-	result := IotDpsResourceListPrivateLinkResourcesResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp *http.Response) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
+	result := IotDpsResourceClientListPrivateLinkResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResources); err != nil {
-		return IotDpsResourceListPrivateLinkResourcesResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
 	}
 	return result, nil
 }
 
-// listPrivateLinkResourcesHandleError handles the ListPrivateLinkResources error response.
-func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListValidSKUs - Gets the list of valid SKUs and tiers for a provisioning service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotDpsResourceClient) ListValidSKUs(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceListValidSKUsOptions) *IotDpsResourceListValidSKUsPager {
-	return &IotDpsResourceListValidSKUsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// provisioningServiceName - Name of provisioning service.
+// resourceGroupName - Name of resource group.
+// options - IotDpsResourceClientListValidSKUsOptions contains the optional parameters for the IotDpsResourceClient.ListValidSKUs
+// method.
+func (client *IotDpsResourceClient) ListValidSKUs(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListValidSKUsOptions) *IotDpsResourceClientListValidSKUsPager {
+	return &IotDpsResourceClientListValidSKUsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listValidSKUsCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp IotDpsResourceListValidSKUsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IotDpsResourceClientListValidSKUsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IotDpsSKUDefinitionListResult.NextLink)
 		},
 	}
 }
 
 // listValidSKUsCreateRequest creates the ListValidSKUs request.
-func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceListValidSKUsOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListValidSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/skus"
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
@@ -1091,7 +972,7 @@ func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1103,50 +984,42 @@ func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Conte
 }
 
 // listValidSKUsHandleResponse handles the ListValidSKUs response.
-func (client *IotDpsResourceClient) listValidSKUsHandleResponse(resp *http.Response) (IotDpsResourceListValidSKUsResponse, error) {
-	result := IotDpsResourceListValidSKUsResponse{RawResponse: resp}
+func (client *IotDpsResourceClient) listValidSKUsHandleResponse(resp *http.Response) (IotDpsResourceClientListValidSKUsResponse, error) {
+	result := IotDpsResourceClientListValidSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotDpsSKUDefinitionListResult); err != nil {
-		return IotDpsResourceListValidSKUsResponse{}, runtime.NewResponseError(err, resp)
+		return IotDpsResourceClientListValidSKUsResponse{}, err
 	}
 	return result, nil
 }
 
-// listValidSKUsHandleError handles the ListValidSKUs error response.
-func (client *IotDpsResourceClient) listValidSKUsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
-// If the operation fails it returns a generic error.
-func (client *IotDpsResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceBeginUpdateOptions) (IotDpsResourceUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group identifier.
+// provisioningServiceName - Name of provisioning service to create or update.
+// provisioningServiceTags - Updated tag information to set into the provisioning service instance.
+// options - IotDpsResourceClientBeginUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginUpdate
+// method.
+func (client *IotDpsResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (IotDpsResourceClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
 	if err != nil {
-		return IotDpsResourceUpdatePollerResponse{}, err
+		return IotDpsResourceClientUpdatePollerResponse{}, err
 	}
-	result := IotDpsResourceUpdatePollerResponse{
+	result := IotDpsResourceClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IotDpsResourceClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("IotDpsResourceClient.Update", "", resp, client.pl)
 	if err != nil {
-		return IotDpsResourceUpdatePollerResponse{}, err
+		return IotDpsResourceClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &IotDpsResourceUpdatePoller{
+	result.Poller = &IotDpsResourceClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
-// If the operation fails it returns a generic error.
-func (client *IotDpsResourceClient) update(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IotDpsResourceClient) update(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
 	if err != nil {
 		return nil, err
@@ -1156,13 +1029,13 @@ func (client *IotDpsResourceClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceBeginUpdateOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1176,7 +1049,7 @@ func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1185,16 +1058,4 @@ func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, provisioningServiceTags)
-}
-
-// updateHandleError handles the Update error response.
-func (client *IotDpsResourceClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

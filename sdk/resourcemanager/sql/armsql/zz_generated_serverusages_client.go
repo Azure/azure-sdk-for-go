@@ -24,42 +24,55 @@ import (
 // ServerUsagesClient contains the methods for the ServerUsages group.
 // Don't use this type directly, use NewServerUsagesClient() instead.
 type ServerUsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerUsagesClient creates a new instance of ServerUsagesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerUsagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerUsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerUsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByServer - Returns server usages.
-// If the operation fails it returns a generic error.
-func (client *ServerUsagesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerUsagesListByServerOptions) (ServerUsagesListByServerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServerUsagesClientListByServerOptions contains the optional parameters for the ServerUsagesClient.ListByServer
+// method.
+func (client *ServerUsagesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerUsagesClientListByServerOptions) (ServerUsagesClientListByServerResponse, error) {
 	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServerUsagesListByServerResponse{}, err
+		return ServerUsagesClientListByServerResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerUsagesListByServerResponse{}, err
+		return ServerUsagesClientListByServerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerUsagesListByServerResponse{}, client.listByServerHandleError(resp)
+		return ServerUsagesClientListByServerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServerHandleResponse(resp)
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerUsagesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerUsagesListByServerOptions) (*policy.Request, error) {
+func (client *ServerUsagesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerUsagesClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -73,7 +86,7 @@ func (client *ServerUsagesClient) listByServerCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,22 +98,10 @@ func (client *ServerUsagesClient) listByServerCreateRequest(ctx context.Context,
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerUsagesClient) listByServerHandleResponse(resp *http.Response) (ServerUsagesListByServerResponse, error) {
-	result := ServerUsagesListByServerResponse{RawResponse: resp}
+func (client *ServerUsagesClient) listByServerHandleResponse(resp *http.Response) (ServerUsagesClientListByServerResponse, error) {
+	result := ServerUsagesClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerUsageListResult); err != nil {
-		return ServerUsagesListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ServerUsagesClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *ServerUsagesClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

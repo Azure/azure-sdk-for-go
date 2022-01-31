@@ -11,7 +11,7 @@ The `armstorage` module provides operations for working with Azure Storage.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,15 @@ options = arm.ClientOptions{
 }
 client := armstorage.NewFileSharesClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Blob](https://aka.ms/azsdk/go/mgmt/samples?path=storage/blob)
+- [File](https://aka.ms/azsdk/go/mgmt/samples?path=storage/file)
+- [Management Policy](https://aka.ms/azsdk/go/mgmt/samples?path=storage/managementpolicy)
+- [Queue](https://aka.ms/azsdk/go/mgmt/samples?path=storage/queue)
+- [Storage Account](https://aka.ms/azsdk/go/mgmt/samples?path=storage/storageaccount)
+- [Table](https://aka.ms/azsdk/go/mgmt/samples?path=storage/table)
 
 ## Provide Feedback
 

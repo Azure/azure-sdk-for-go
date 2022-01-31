@@ -1,6 +1,6 @@
 # Release History
 
-## 0.12.1 (Unreleased)
+## 0.13.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+* Improved the diagnosability of the `DefaultAzureCredential` by logging failures by credentials when at least one credential succeeded at initialization.
+* Improved the diagnosability of the `DefaultAzureCredential` and `ChainedTokenCredential` aggregating all the errors that might have occurred on the credential chain during `GetToken` calls into a single message provided via logs and errors if the chain is finally unable to retrieve a token.
+
+## 0.13.0 (2022-01-11)
+
+### Breaking Changes
+* Replaced `AuthenticationFailedError.RawResponse()` with a field having the same name
+* Unexported `CredentialUnavailableError`
+* Instances of `ChainedTokenCredential` will now skip looping through the list of source credentials and re-use the first successful credential on subsequent calls to `GetToken`.
+  * If `ChainedTokenCredentialOptions.RetrySources` is true, `ChainedTokenCredential` will continue to try all of the originally provided credentials each time the `GetToken` method is called.
+  * `ChainedTokenCredential.successfulCredential` will contain a reference to the last successful credential.
+  * `DefaultAzureCredenial` will also re-use the first successful credential on subsequent calls to `GetToken`.
+  * `DefaultAzureCredential.chain.successfulCredential` will also contain a reference to the last successful credential.
+
+### Other Changes
+* `ManagedIdentityCredential` no longer probes IMDS before requesting a token
+  from it. Also, an error response from IMDS no longer disables a credential
+  instance. Following an error, a credential instance will continue to send
+  requests to IMDS as necessary.
+* Adopted MSAL for user and service principal authentication
+* Updated `azcore` requirement to 0.21.0
 
 ## 0.12.0 (2021-11-02)
 ### Breaking Changes

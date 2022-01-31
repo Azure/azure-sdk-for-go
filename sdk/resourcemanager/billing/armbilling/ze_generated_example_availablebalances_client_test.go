@@ -31,5 +31,5 @@ func ExampleAvailableBalancesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AvailableBalance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AvailableBalancesClientGetResult)
 }

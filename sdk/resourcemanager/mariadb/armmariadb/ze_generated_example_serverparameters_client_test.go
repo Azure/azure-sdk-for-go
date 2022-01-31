@@ -34,8 +34,9 @@ func ExampleServerParametersClient_BeginListUpdateConfigurations() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServerParametersClientListUpdateConfigurationsResult)
 }

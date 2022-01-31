@@ -57,10 +57,8 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
 
-	conn := internal.NewConnection(conOptions)
-
 	return &Client{
-		kvClient: internal.NewKeyVaultClient(conn),
+		kvClient: internal.NewKeyVaultClient(conOptions),
 		vaultUrl: vaultUrl,
 	}, nil
 }
@@ -271,11 +269,15 @@ func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, err
 		// Service recognizes DeletedSecret, operation is done
 		s.lastResponse = resp
 		return resp.RawResponse, nil
-	} else if err != nil {
-		return s.deleteResponse.RawResponse, nil
 	}
-	s.lastResponse = resp
-	return resp.RawResponse, nil
+	var httpErr *azcore.ResponseError
+	if errors.As(err, &httpErr) {
+		if httpErr.StatusCode == http.StatusNotFound {
+			// This is the expected result
+			return s.deleteResponse.RawResponse, nil
+		}
+	}
+	return s.deleteResponse.RawResponse, err
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -325,9 +327,9 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, optio
 	}
 
 	getResp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, secretName, nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return DeleteSecretPollerResponse{}, err
 		}
 	}
@@ -377,7 +379,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Secret:             secretFromGenerated(i.SecretBundle),
+		Secret:             secretFromGenerated(i.DeletedSecretBundle),
 	}
 }
 
@@ -437,14 +439,10 @@ type Properties struct {
 
 // convert the publicly exposed version to the generated version
 func (s Properties) toGenerated() internal.SecretUpdateParameters {
-	var secAttribs *internal.SecretAttributes
-	if s.SecretAttributes != nil {
-		secAttribs = s.SecretAttributes.toGenerated()
-	}
 	return internal.SecretUpdateParameters{
 		ContentType:      s.ContentType,
 		Tags:             createPtrMap(s.Tags),
-		SecretAttributes: secAttribs,
+		SecretAttributes: s.SecretAttributes.toGenerated(),
 	}
 }
 
@@ -622,9 +620,9 @@ func (b *beginRecoverPoller) Done() bool {
 func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetSecret(ctx, b.vaultUrl, b.secretName, "", nil)
 	b.lastResponse = resp
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		return httpErr.RawResponse(), err
+		return httpErr.RawResponse, err
 	}
 	return resp.RawResponse, nil
 }
@@ -716,9 +714,9 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 	}
 
 	getResp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, secretName, "", nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return RecoverDeletedSecretPollerResponse{}, err
 		}
 	}

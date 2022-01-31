@@ -11,7 +11,6 @@ package armkusto
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // AttachedDatabaseConfigurationsClient contains the methods for the AttachedDatabaseConfigurations group.
 // Don't use this type directly, use NewAttachedDatabaseConfigurationsClient() instead.
 type AttachedDatabaseConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAttachedDatabaseConfigurationsClient creates a new instance of AttachedDatabaseConfigurationsClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AttachedDatabaseConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AttachedDatabaseConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AttachedDatabaseConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Checks that the attached database configuration resource name is valid and is not already in use.
-// If the operation fails it returns the *CloudError error type.
-func (client *AttachedDatabaseConfigurationsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, options *AttachedDatabaseConfigurationsCheckNameAvailabilityOptions) (AttachedDatabaseConfigurationsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// resourceName - The name of the resource.
+// options - AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.CheckNameAvailability
+// method.
+func (client *AttachedDatabaseConfigurationsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, options *AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions) (AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, resourceName, options)
 	if err != nil {
-		return AttachedDatabaseConfigurationsCheckNameAvailabilityResponse{}, err
+		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AttachedDatabaseConfigurationsCheckNameAvailabilityResponse{}, err
+		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AttachedDatabaseConfigurationsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, options *AttachedDatabaseConfigurationsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, options *AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurationCheckNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +87,7 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,50 +99,43 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateR
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsCheckNameAvailabilityResponse, error) {
-	result := AttachedDatabaseConfigurationsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse, error) {
+	result := AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
-		return AttachedDatabaseConfigurationsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Creates or updates an attached database configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsBeginCreateOrUpdateOptions) (AttachedDatabaseConfigurationsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// attachedDatabaseConfigurationName - The name of the attached database configuration.
+// parameters - The database parameters supplied to the CreateOrUpdate operation.
+// options - AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate
+// method.
+func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (AttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, options)
 	if err != nil {
-		return AttachedDatabaseConfigurationsCreateOrUpdatePollerResponse{}, err
+		return AttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := AttachedDatabaseConfigurationsCreateOrUpdatePollerResponse{
+	result := AttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AttachedDatabaseConfigurationsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("AttachedDatabaseConfigurationsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return AttachedDatabaseConfigurationsCreateOrUpdatePollerResponse{}, err
+		return AttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &AttachedDatabaseConfigurationsCreateOrUpdatePoller{
+	result.Poller = &AttachedDatabaseConfigurationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an attached database configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -139,13 +145,13 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -163,7 +169,7 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,42 +180,34 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AttachedDatabaseConfigurationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the attached database configuration with the given name.
-// If the operation fails it returns the *CloudError error type.
-func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsBeginDeleteOptions) (AttachedDatabaseConfigurationsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// attachedDatabaseConfigurationName - The name of the attached database configuration.
+// options - AttachedDatabaseConfigurationsClientBeginDeleteOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginDelete
+// method.
+func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (AttachedDatabaseConfigurationsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 	if err != nil {
-		return AttachedDatabaseConfigurationsDeletePollerResponse{}, err
+		return AttachedDatabaseConfigurationsClientDeletePollerResponse{}, err
 	}
-	result := AttachedDatabaseConfigurationsDeletePollerResponse{
+	result := AttachedDatabaseConfigurationsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AttachedDatabaseConfigurationsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AttachedDatabaseConfigurationsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return AttachedDatabaseConfigurationsDeletePollerResponse{}, err
+		return AttachedDatabaseConfigurationsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AttachedDatabaseConfigurationsDeletePoller{
+	result.Poller = &AttachedDatabaseConfigurationsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the attached database configuration with the given name.
-// If the operation fails it returns the *CloudError error type.
-func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 	if err != nil {
 		return nil, err
@@ -219,13 +217,13 @@ func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -243,7 +241,7 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -254,38 +252,30 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AttachedDatabaseConfigurationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns an attached database configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *AttachedDatabaseConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsGetOptions) (AttachedDatabaseConfigurationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// attachedDatabaseConfigurationName - The name of the attached database configuration.
+// options - AttachedDatabaseConfigurationsClientGetOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.Get
+// method.
+func (client *AttachedDatabaseConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientGetOptions) (AttachedDatabaseConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 	if err != nil {
-		return AttachedDatabaseConfigurationsGetResponse{}, err
+		return AttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AttachedDatabaseConfigurationsGetResponse{}, err
+		return AttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AttachedDatabaseConfigurationsGetResponse{}, client.getHandleError(resp)
+		return AttachedDatabaseConfigurationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsGetOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -303,7 +293,7 @@ func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -315,46 +305,37 @@ func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context
 }
 
 // getHandleResponse handles the Get response.
-func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsGetResponse, error) {
-	result := AttachedDatabaseConfigurationsGetResponse{RawResponse: resp}
+func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientGetResponse, error) {
+	result := AttachedDatabaseConfigurationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDatabaseConfiguration); err != nil {
-		return AttachedDatabaseConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AttachedDatabaseConfigurationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByCluster - Returns the list of attached database configurations of the given Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *AttachedDatabaseConfigurationsClient) ListByCluster(ctx context.Context, resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsListByClusterOptions) (AttachedDatabaseConfigurationsListByClusterResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - AttachedDatabaseConfigurationsClientListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.ListByCluster
+// method.
+func (client *AttachedDatabaseConfigurationsClient) ListByCluster(ctx context.Context, resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsClientListByClusterOptions) (AttachedDatabaseConfigurationsClientListByClusterResponse, error) {
 	req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
-		return AttachedDatabaseConfigurationsListByClusterResponse{}, err
+		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AttachedDatabaseConfigurationsListByClusterResponse{}, err
+		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AttachedDatabaseConfigurationsListByClusterResponse{}, client.listByClusterHandleError(resp)
+		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByClusterHandleResponse(resp)
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsListByClusterOptions) (*policy.Request, error) {
+func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsClientListByClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -368,7 +349,7 @@ func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -380,23 +361,10 @@ func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(c
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *AttachedDatabaseConfigurationsClient) listByClusterHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsListByClusterResponse, error) {
-	result := AttachedDatabaseConfigurationsListByClusterResponse{RawResponse: resp}
+func (client *AttachedDatabaseConfigurationsClient) listByClusterHandleResponse(resp *http.Response) (AttachedDatabaseConfigurationsClientListByClusterResponse, error) {
+	result := AttachedDatabaseConfigurationsClientListByClusterResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDatabaseConfigurationListResult); err != nil {
-		return AttachedDatabaseConfigurationsListByClusterResponse{}, runtime.NewResponseError(err, resp)
+		return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// listByClusterHandleError handles the ListByCluster error response.
-func (client *AttachedDatabaseConfigurationsClient) listByClusterHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

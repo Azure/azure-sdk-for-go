@@ -27,13 +27,17 @@ func ExampleLabsClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armlabservices.LabsListBySubscriptionOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListBySubscription(&armlabservices.LabsClientListBySubscriptionOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Lab.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleLabsClient_ListByResourceGroup() {
 	client := armlabservices.NewLabsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Lab.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleLabsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Lab.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LabsClientGetResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/putLab.json
@@ -88,51 +96,47 @@ func ExampleLabsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<lab-name>",
 		armlabservices.Lab{
-			TrackedResource: armlabservices.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armlabservices.LabProperties{
-				LabUpdateProperties: armlabservices.LabUpdateProperties{
-					Description: to.StringPtr("<description>"),
-					AutoShutdownProfile: &armlabservices.AutoShutdownProfile{
-						DisconnectDelay:          to.StringPtr("<disconnect-delay>"),
-						IdleDelay:                to.StringPtr("<idle-delay>"),
-						NoConnectDelay:           to.StringPtr("<no-connect-delay>"),
-						ShutdownOnDisconnect:     armlabservices.EnableStateEnabled.ToPtr(),
-						ShutdownOnIdle:           armlabservices.ShutdownOnIdleModeUserAbsence.ToPtr(),
-						ShutdownWhenNotConnected: armlabservices.EnableStateEnabled.ToPtr(),
+				Description: to.StringPtr("<description>"),
+				AutoShutdownProfile: &armlabservices.AutoShutdownProfile{
+					DisconnectDelay:          to.StringPtr("<disconnect-delay>"),
+					IdleDelay:                to.StringPtr("<idle-delay>"),
+					NoConnectDelay:           to.StringPtr("<no-connect-delay>"),
+					ShutdownOnDisconnect:     armlabservices.EnableStateEnabled.ToPtr(),
+					ShutdownOnIdle:           armlabservices.ShutdownOnIdleModeUserAbsence.ToPtr(),
+					ShutdownWhenNotConnected: armlabservices.EnableStateEnabled.ToPtr(),
+				},
+				ConnectionProfile: &armlabservices.ConnectionProfile{
+					ClientRdpAccess: armlabservices.ConnectionTypePublic.ToPtr(),
+					ClientSSHAccess: armlabservices.ConnectionTypePublic.ToPtr(),
+					WebRdpAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
+					WebSSHAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
+				},
+				LabPlanID: to.StringPtr("<lab-plan-id>"),
+				SecurityProfile: &armlabservices.SecurityProfile{
+					OpenAccess: armlabservices.EnableStateDisabled.ToPtr(),
+				},
+				Title: to.StringPtr("<title>"),
+				VirtualMachineProfile: &armlabservices.VirtualMachineProfile{
+					AdditionalCapabilities: &armlabservices.VirtualMachineAdditionalCapabilities{
+						InstallGpuDrivers: armlabservices.EnableStateDisabled.ToPtr(),
 					},
-					ConnectionProfile: &armlabservices.ConnectionProfile{
-						ClientRdpAccess: armlabservices.ConnectionTypePublic.ToPtr(),
-						ClientSSHAccess: armlabservices.ConnectionTypePublic.ToPtr(),
-						WebRdpAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
-						WebSSHAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
+					AdminUser: &armlabservices.Credentials{
+						Username: to.StringPtr("<username>"),
 					},
-					LabPlanID: to.StringPtr("<lab-plan-id>"),
-					SecurityProfile: &armlabservices.SecurityProfile{
-						OpenAccess: armlabservices.EnableStateDisabled.ToPtr(),
+					CreateOption: armlabservices.CreateOptionTemplateVM.ToPtr(),
+					ImageReference: &armlabservices.ImageReference{
+						Offer:     to.StringPtr("<offer>"),
+						Publisher: to.StringPtr("<publisher>"),
+						SKU:       to.StringPtr("<sku>"),
+						Version:   to.StringPtr("<version>"),
 					},
-					Title: to.StringPtr("<title>"),
-					VirtualMachineProfile: &armlabservices.VirtualMachineProfile{
-						AdditionalCapabilities: &armlabservices.VirtualMachineAdditionalCapabilities{
-							InstallGpuDrivers: armlabservices.EnableStateDisabled.ToPtr(),
-						},
-						AdminUser: &armlabservices.Credentials{
-							Username: to.StringPtr("<username>"),
-						},
-						CreateOption: armlabservices.CreateOptionTemplateVM.ToPtr(),
-						ImageReference: &armlabservices.ImageReference{
-							Offer:     to.StringPtr("<offer>"),
-							Publisher: to.StringPtr("<publisher>"),
-							SKU:       to.StringPtr("<sku>"),
-							Version:   to.StringPtr("<version>"),
-						},
-						SKU: &armlabservices.SKU{
-							Name: to.StringPtr("<name>"),
-						},
-						UsageQuota:        to.StringPtr("<usage-quota>"),
-						UseSharedPassword: armlabservices.EnableStateDisabled.ToPtr(),
+					SKU: &armlabservices.SKU{
+						Name: to.StringPtr("<name>"),
 					},
+					UsageQuota:        to.StringPtr("<usage-quota>"),
+					UseSharedPassword: armlabservices.EnableStateDisabled.ToPtr(),
 				},
 				NetworkProfile: &armlabservices.LabNetworkProfile{
 					SubnetID: to.StringPtr("<subnet-id>"),
@@ -148,7 +152,7 @@ func ExampleLabsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Lab.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LabsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/patchLab.json
@@ -177,7 +181,7 @@ func ExampleLabsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Lab.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LabsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/deleteLab.json

@@ -23,34 +23,34 @@ type AvailableProviderOperation struct {
 	// Gets or sets Display information Contains the localized display information for this particular operation/action
 	Display *AvailableProviderOperationDisplay `json:"display,omitempty"`
 
-	// Gets or sets Origin The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value
-	// is “user,system”
+	// Gets or sets Origin The intended executor of the operation; governs the display of the operation in the RBAC UX and the
+	// audit logs UX. Default value is “user,system”
 	Origin *string `json:"origin,omitempty"`
 
 	// Gets or sets Properties Reserved for future use
 	Properties map[string]interface{} `json:"properties,omitempty"`
 }
 
-// AvailableProviderOperationDisplay - Contains the localized display information for this particular operation / action. These value will be used by several
-// clients for (1) custom role definitions for RBAC; (2) complex query filters for
+// AvailableProviderOperationDisplay - Contains the localized display information for this particular operation / action.
+// These value will be used by several clients for (1) custom role definitions for RBAC; (2) complex query filters for
 // the event service; and (3) audit history / records for management operations.
 type AvailableProviderOperationDisplay struct {
-	// Gets or sets Description The localized friendly description for the operation, as it should be shown to the user. It should be thorough, yet concise
-	// – it will be used in tool tips and detailed views.
+	// Gets or sets Description The localized friendly description for the operation, as it should be shown to the user. It should
+	// be thorough, yet concise – it will be used in tool tips and detailed views.
 	Description *string `json:"description,omitempty"`
 
-	// Gets or sets Operation The localized friendly name for the operation, as it should be shown to the user. It should be concise (to fit in drop downs)
-	// but clear (i.e. self-documenting). It should use
+	// Gets or sets Operation The localized friendly name for the operation, as it should be shown to the user. It should be concise
+	// (to fit in drop downs) but clear (i.e. self-documenting). It should use
 	// Title Casing and include the entity/resource to which it applies.
 	Operation *string `json:"operation,omitempty"`
 
-	// Gets or sets Provider The localized friendly form of the resource provider name – it is expected to also include the publisher/company responsible. It
-	// should use Title Casing and begin with
+	// Gets or sets Provider The localized friendly form of the resource provider name – it is expected to also include the publisher/company
+	// responsible. It should use Title Casing and begin with
 	// “Microsoft” for 1st party services.
 	Provider *string `json:"provider,omitempty"`
 
-	// Gets or sets Resource The localized friendly form of the resource type related to this action/operation – it should match the public documentation for
-	// the resource provider. It should use Title Casing
+	// Gets or sets Resource The localized friendly form of the resource type related to this action/operation – it should match
+	// the public documentation for the resource provider. It should use Title Casing
 	// – for examples, please refer to the “name” section.
 	Resource *string `json:"resource,omitempty"`
 }
@@ -86,16 +86,41 @@ type CustomerSecret struct {
 
 // DataManager - The DataManager resource.
 type DataManager struct {
-	Resource
+	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US,
+	// East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it
+	// is created, but if an identical geo region is specified on update the request will succeed.
+	Location *string `json:"location,omitempty"`
+
 	// Etag of the Resource.
 	Etag *string `json:"etag,omitempty"`
+
+	// The sku type.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
+	// resource groups).
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DataManager.
 func (d DataManager) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
 	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
+	populate(objectMap, "sku", d.SKU)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -121,7 +146,8 @@ type DataManagerUpdateParameter struct {
 	// The sku type.
 	SKU *SKU `json:"sku,omitempty"`
 
-	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
+	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
+	// resource groups).
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
@@ -133,73 +159,52 @@ func (d DataManagerUpdateParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DataManagersBeginCreateOptions contains the optional parameters for the DataManagers.BeginCreate method.
-type DataManagersBeginCreateOptions struct {
+// DataManagersClientBeginCreateOptions contains the optional parameters for the DataManagersClient.BeginCreate method.
+type DataManagersClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataManagersBeginDeleteOptions contains the optional parameters for the DataManagers.BeginDelete method.
-type DataManagersBeginDeleteOptions struct {
+// DataManagersClientBeginDeleteOptions contains the optional parameters for the DataManagersClient.BeginDelete method.
+type DataManagersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataManagersBeginUpdateOptions contains the optional parameters for the DataManagers.BeginUpdate method.
-type DataManagersBeginUpdateOptions struct {
-	// Defines the If-Match condition. The patch will be performed only if the ETag of the data manager resource on the server matches this value.
+// DataManagersClientBeginUpdateOptions contains the optional parameters for the DataManagersClient.BeginUpdate method.
+type DataManagersClientBeginUpdateOptions struct {
+	// Defines the If-Match condition. The patch will be performed only if the ETag of the data manager resource on the server
+	// matches this value.
 	IfMatch *string
 }
 
-// DataManagersGetOptions contains the optional parameters for the DataManagers.Get method.
-type DataManagersGetOptions struct {
+// DataManagersClientGetOptions contains the optional parameters for the DataManagersClient.Get method.
+type DataManagersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataManagersListByResourceGroupOptions contains the optional parameters for the DataManagers.ListByResourceGroup method.
-type DataManagersListByResourceGroupOptions struct {
+// DataManagersClientListByResourceGroupOptions contains the optional parameters for the DataManagersClient.ListByResourceGroup
+// method.
+type DataManagersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataManagersListOptions contains the optional parameters for the DataManagers.List method.
-type DataManagersListOptions struct {
+// DataManagersClientListOptions contains the optional parameters for the DataManagersClient.List method.
+type DataManagersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DataService - Data Service.
 type DataService struct {
-	DmsBaseObject
 	// REQUIRED; DataService properties.
 	Properties *DataServiceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DataService.
-func (d DataService) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.DmsBaseObject.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Id of the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataService.
-func (d *DataService) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.DmsBaseObject.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Name of the object.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DataServiceList - Data Service Collection.
@@ -240,52 +245,30 @@ func (d DataServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DataServicesGetOptions contains the optional parameters for the DataServices.Get method.
-type DataServicesGetOptions struct {
+// DataServicesClientGetOptions contains the optional parameters for the DataServicesClient.Get method.
+type DataServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataServicesListByDataManagerOptions contains the optional parameters for the DataServices.ListByDataManager method.
-type DataServicesListByDataManagerOptions struct {
+// DataServicesClientListByDataManagerOptions contains the optional parameters for the DataServicesClient.ListByDataManager
+// method.
+type DataServicesClientListByDataManagerOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DataStore - Data store.
 type DataStore struct {
-	DmsBaseObject
 	// REQUIRED; DataStore properties.
 	Properties *DataStoreProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DataStore.
-func (d DataStore) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.DmsBaseObject.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Id of the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataStore.
-func (d *DataStore) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.DmsBaseObject.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Name of the object.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DataStoreFilter - Contains the information about the filters for the DataStore.
@@ -319,8 +302,8 @@ type DataStoreProperties struct {
 	// REQUIRED; State of the data source.
 	State *State `json:"state,omitempty"`
 
-	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source to understand the key. Value
-	// contains customer secret encrypted by the
+	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source
+	// to understand the key. Value contains customer secret encrypted by the
 	// encryptionKeys.
 	CustomerSecrets []*CustomerSecret `json:"customerSecrets,omitempty"`
 
@@ -344,40 +327,17 @@ func (d DataStoreProperties) MarshalJSON() ([]byte, error) {
 
 // DataStoreType - Data Store Type.
 type DataStoreType struct {
-	DmsBaseObject
 	// REQUIRED; DataStoreType properties.
 	Properties *DataStoreTypeProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DataStoreType.
-func (d DataStoreType) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.DmsBaseObject.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Id of the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataStoreType.
-func (d *DataStoreType) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.DmsBaseObject.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Name of the object.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DataStoreTypeList - Data Store Type Collection.
@@ -422,33 +382,35 @@ func (d DataStoreTypeProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DataStoreTypesGetOptions contains the optional parameters for the DataStoreTypes.Get method.
-type DataStoreTypesGetOptions struct {
+// DataStoreTypesClientGetOptions contains the optional parameters for the DataStoreTypesClient.Get method.
+type DataStoreTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataStoreTypesListByDataManagerOptions contains the optional parameters for the DataStoreTypes.ListByDataManager method.
-type DataStoreTypesListByDataManagerOptions struct {
+// DataStoreTypesClientListByDataManagerOptions contains the optional parameters for the DataStoreTypesClient.ListByDataManager
+// method.
+type DataStoreTypesClientListByDataManagerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataStoresBeginCreateOrUpdateOptions contains the optional parameters for the DataStores.BeginCreateOrUpdate method.
-type DataStoresBeginCreateOrUpdateOptions struct {
+// DataStoresClientBeginCreateOrUpdateOptions contains the optional parameters for the DataStoresClient.BeginCreateOrUpdate
+// method.
+type DataStoresClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataStoresBeginDeleteOptions contains the optional parameters for the DataStores.BeginDelete method.
-type DataStoresBeginDeleteOptions struct {
+// DataStoresClientBeginDeleteOptions contains the optional parameters for the DataStoresClient.BeginDelete method.
+type DataStoresClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataStoresGetOptions contains the optional parameters for the DataStores.Get method.
-type DataStoresGetOptions struct {
+// DataStoresClientGetOptions contains the optional parameters for the DataStoresClient.Get method.
+type DataStoresClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataStoresListByDataManagerOptions contains the optional parameters for the DataStores.ListByDataManager method.
-type DataStoresListByDataManagerOptions struct {
+// DataStoresClientListByDataManagerOptions contains the optional parameters for the DataStoresClient.ListByDataManager method.
+type DataStoresClientListByDataManagerOptions struct {
 	// OData Filter options
 	Filter *string
 }
@@ -463,49 +425,6 @@ type DmsBaseObject struct {
 
 	// READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DmsBaseObject.
-func (d DmsBaseObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DmsBaseObject.
-func (d *DmsBaseObject) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DmsBaseObject) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "type", d.Type)
-}
-
-func (d *DmsBaseObject) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &d.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &d.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Error - Top level error for the job.
@@ -534,7 +453,6 @@ type ErrorDetails struct {
 
 // Job - Data service job.
 type Job struct {
-	DmsBaseObject
 	// REQUIRED; Job properties.
 	Properties *JobProperties `json:"properties,omitempty"`
 
@@ -549,17 +467,28 @@ type Job struct {
 
 	// Top level error for the job.
 	Error *Error `json:"error,omitempty"`
+
+	// READ-ONLY; Id of the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the object.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Job.
 func (j Job) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.DmsBaseObject.marshalInternal(objectMap)
 	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
 	populate(objectMap, "error", j.Error)
+	populate(objectMap, "id", j.ID)
+	populate(objectMap, "name", j.Name)
 	populate(objectMap, "properties", j.Properties)
 	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
 	populate(objectMap, "status", j.Status)
+	populate(objectMap, "type", j.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -578,6 +507,12 @@ func (j *Job) UnmarshalJSON(data []byte) error {
 		case "error":
 			err = unpopulate(val, &j.Error)
 			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &j.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &j.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &j.Properties)
 			delete(rawMsg, key)
@@ -587,53 +522,30 @@ func (j *Job) UnmarshalJSON(data []byte) error {
 		case "status":
 			err = unpopulate(val, &j.Status)
 			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := j.DmsBaseObject.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// JobDefinition - Job Definition.
-type JobDefinition struct {
-	DmsBaseObject
-	// REQUIRED; JobDefinition properties.
-	Properties *JobDefinitionProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JobDefinition.
-func (j JobDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	j.DmsBaseObject.marshalInternal(objectMap)
-	populate(objectMap, "properties", j.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JobDefinition.
-func (j *JobDefinition) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &j.Properties)
+		case "type":
+			err = unpopulate(val, &j.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := j.DmsBaseObject.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
+}
+
+// JobDefinition - Job Definition.
+type JobDefinition struct {
+	// REQUIRED; JobDefinition properties.
+	Properties *JobDefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Id of the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the object.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // JobDefinitionFilter - Contains the supported job definition filters.
@@ -711,8 +623,8 @@ type JobDefinitionProperties struct {
 	// REQUIRED; State of the job definition.
 	State *State `json:"state,omitempty"`
 
-	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source to understand the key. Value
-	// contains customer secret encrypted by the
+	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source
+	// to understand the key. Value contains customer secret encrypted by the
 	// encryptionKeys.
 	CustomerSecrets []*CustomerSecret `json:"customerSecrets,omitempty"`
 
@@ -791,34 +703,37 @@ func (j *JobDefinitionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JobDefinitionsBeginCreateOrUpdateOptions contains the optional parameters for the JobDefinitions.BeginCreateOrUpdate method.
-type JobDefinitionsBeginCreateOrUpdateOptions struct {
+// JobDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobDefinitionsClient.BeginCreateOrUpdate
+// method.
+type JobDefinitionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobDefinitionsBeginDeleteOptions contains the optional parameters for the JobDefinitions.BeginDelete method.
-type JobDefinitionsBeginDeleteOptions struct {
+// JobDefinitionsClientBeginDeleteOptions contains the optional parameters for the JobDefinitionsClient.BeginDelete method.
+type JobDefinitionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobDefinitionsBeginRunOptions contains the optional parameters for the JobDefinitions.BeginRun method.
-type JobDefinitionsBeginRunOptions struct {
+// JobDefinitionsClientBeginRunOptions contains the optional parameters for the JobDefinitionsClient.BeginRun method.
+type JobDefinitionsClientBeginRunOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobDefinitionsGetOptions contains the optional parameters for the JobDefinitions.Get method.
-type JobDefinitionsGetOptions struct {
+// JobDefinitionsClientGetOptions contains the optional parameters for the JobDefinitionsClient.Get method.
+type JobDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobDefinitionsListByDataManagerOptions contains the optional parameters for the JobDefinitions.ListByDataManager method.
-type JobDefinitionsListByDataManagerOptions struct {
+// JobDefinitionsClientListByDataManagerOptions contains the optional parameters for the JobDefinitionsClient.ListByDataManager
+// method.
+type JobDefinitionsClientListByDataManagerOptions struct {
 	// OData Filter options
 	Filter *string
 }
 
-// JobDefinitionsListByDataServiceOptions contains the optional parameters for the JobDefinitions.ListByDataService method.
-type JobDefinitionsListByDataServiceOptions struct {
+// JobDefinitionsClientListByDataServiceOptions contains the optional parameters for the JobDefinitionsClient.ListByDataService
+// method.
+type JobDefinitionsClientListByDataServiceOptions struct {
 	// OData Filter options
 	Filter *string
 }
@@ -957,44 +872,44 @@ func (j JobStages) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// JobsBeginCancelOptions contains the optional parameters for the Jobs.BeginCancel method.
-type JobsBeginCancelOptions struct {
+// JobsClientBeginCancelOptions contains the optional parameters for the JobsClient.BeginCancel method.
+type JobsClientBeginCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsBeginResumeOptions contains the optional parameters for the Jobs.BeginResume method.
-type JobsBeginResumeOptions struct {
+// JobsClientBeginResumeOptions contains the optional parameters for the JobsClient.BeginResume method.
+type JobsClientBeginResumeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsGetOptions contains the optional parameters for the Jobs.Get method.
-type JobsGetOptions struct {
+// JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+type JobsClientGetOptions struct {
 	// $expand is supported on details parameter for job, which provides details on the job stages.
 	Expand *string
 }
 
-// JobsListByDataManagerOptions contains the optional parameters for the Jobs.ListByDataManager method.
-type JobsListByDataManagerOptions struct {
+// JobsClientListByDataManagerOptions contains the optional parameters for the JobsClient.ListByDataManager method.
+type JobsClientListByDataManagerOptions struct {
 	// OData Filter options
 	Filter *string
 }
 
-// JobsListByDataServiceOptions contains the optional parameters for the Jobs.ListByDataService method.
-type JobsListByDataServiceOptions struct {
+// JobsClientListByDataServiceOptions contains the optional parameters for the JobsClient.ListByDataService method.
+type JobsClientListByDataServiceOptions struct {
 	// OData Filter options
 	Filter *string
 }
 
-// JobsListByJobDefinitionOptions contains the optional parameters for the Jobs.ListByJobDefinition method.
-type JobsListByJobDefinitionOptions struct {
+// JobsClientListByJobDefinitionOptions contains the optional parameters for the JobsClient.ListByJobDefinition method.
+type JobsClientListByJobDefinitionOptions struct {
 	// OData Filter options
 	Filter *string
 }
 
 // Key - Encryption Key.
 type Key struct {
-	// REQUIRED; The maximum byte size that can be encrypted by the key. For a key size larger than the size, break into chunks and encrypt each chunk, append
-	// each encrypted chunk with : to mark the end of the chunk.
+	// REQUIRED; The maximum byte size that can be encrypted by the key. For a key size larger than the size, break into chunks
+	// and encrypt each chunk, append each encrypted chunk with : to mark the end of the chunk.
 	EncryptionChunkSizeInBytes *int32 `json:"encryptionChunkSizeInBytes,omitempty"`
 
 	// REQUIRED; Exponent of the encryption key.
@@ -1004,47 +919,24 @@ type Key struct {
 	KeyModulus *string `json:"keyModulus,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PublicKey - Public key
 type PublicKey struct {
-	DmsBaseObject
 	// REQUIRED; Public key property.
 	Properties *PublicKeyProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PublicKey.
-func (p PublicKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.DmsBaseObject.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Id of the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type PublicKey.
-func (p *PublicKey) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.DmsBaseObject.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Name of the object.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PublicKeyList - PublicKey Collection
@@ -1073,27 +965,28 @@ type PublicKeyProperties struct {
 	DataServiceLevel2Key *Key `json:"dataServiceLevel2Key,omitempty"`
 }
 
-// PublicKeysGetOptions contains the optional parameters for the PublicKeys.Get method.
-type PublicKeysGetOptions struct {
+// PublicKeysClientGetOptions contains the optional parameters for the PublicKeysClient.Get method.
+type PublicKeysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicKeysListByDataManagerOptions contains the optional parameters for the PublicKeys.ListByDataManager method.
-type PublicKeysListByDataManagerOptions struct {
+// PublicKeysClientListByDataManagerOptions contains the optional parameters for the PublicKeysClient.ListByDataManager method.
+type PublicKeysClientListByDataManagerOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Resource - Model of the Resource.
 type Resource struct {
-	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
-	// The geo region of a resource cannot be changed once it
+	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US,
+	// East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it
 	// is created, but if an identical geo region is specified on update the request will succeed.
 	Location *string `json:"location,omitempty"`
 
 	// The sku type.
 	SKU *SKU `json:"sku,omitempty"`
 
-	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
+	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
+	// resource groups).
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; The Resource Id.
@@ -1109,23 +1002,19 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "sku", r.SKU)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // RunParameters - Run parameters for a job.
 type RunParameters struct {
-	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source to understand the key. Value
-	// contains customer secret encrypted by the
+	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source
+	// to understand the key. Value contains customer secret encrypted by the
 	// encryptionKeys.
 	CustomerSecrets []*CustomerSecret `json:"customerSecrets,omitempty"`
 

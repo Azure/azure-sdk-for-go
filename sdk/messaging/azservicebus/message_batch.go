@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"errors"
+	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/go-amqp"
@@ -16,6 +17,8 @@ var ErrMessageTooLarge = errors.New("the message could not be added because it i
 type (
 	// MessageBatch represents a batch of messages to send to Service Bus in a single message
 	MessageBatch struct {
+		mu sync.RWMutex
+
 		marshaledMessages [][]byte
 		batchEnvelope     *amqp.Message
 		maxBytes          uint64
@@ -39,7 +42,7 @@ func newMessageBatch(maxBytes uint64) *MessageBatch {
 	return mb
 }
 
-// Add adds a message to the batch if the message will not exceed the max size of the batch
+// AddMessage adds a message to the batch if the message will not exceed the max size of the batch
 // Returns:
 // - ErrMessageTooLarge if the message cannot fit
 // - a non-nil error for other failures
@@ -50,18 +53,31 @@ func (mb *MessageBatch) AddMessage(m *Message) error {
 
 // NumBytes is the number of bytes in the message batch
 func (mb *MessageBatch) NumBytes() uint64 {
+	mb.mu.RLock()
+	defer mb.mu.RUnlock()
+
 	// calculated data size + batch message wrapper + data wrapper portions of the message
+	return mb.numBytesNoLock()
+}
+
+func (mb *MessageBatch) numBytesNoLock() uint64 {
 	return mb.size + batchMessageWrapperSize + (uint64(len(mb.marshaledMessages)) * 5)
 }
 
 // NumMessages returns the # of messages in the batch.
 func (mb *MessageBatch) NumMessages() int32 {
+	mb.mu.RLock()
+	defer mb.mu.RUnlock()
+
 	return int32(len(mb.marshaledMessages))
 }
 
 // toAMQPMessage converts this batch into a sendable *amqp.Message
 // NOTE: not idempotent!
 func (mb *MessageBatch) toAMQPMessage() *amqp.Message {
+	mb.mu.Lock()
+	defer mb.mu.Unlock()
+
 	mb.batchEnvelope.Data = make([][]byte, len(mb.marshaledMessages))
 	mb.batchEnvelope.Format = batchMessageFormat
 
@@ -79,16 +95,15 @@ func (mb *MessageBatch) addAMQPMessage(msg *amqp.Message) error {
 		msg.Properties.MessageID = uid.String()
 	}
 
-	// if mb.SessionID != nil {
-	// 	msg.Properties.GroupID = *mb.SessionID
-	// }
-
 	bin, err := msg.MarshalBinary()
 	if err != nil {
 		return err
 	}
 
-	if int(mb.NumBytes())+len(bin) > int(mb.maxBytes) {
+	mb.mu.Lock()
+	defer mb.mu.Unlock()
+
+	if int(mb.numBytesNoLock())+len(bin) > int(mb.maxBytes) {
 		return ErrMessageTooLarge
 	}
 

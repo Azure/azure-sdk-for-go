@@ -11,7 +11,7 @@ The `armauthorization` module provides operations for working with Azure Authori
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,12 @@ options = arm.ClientOptions{
 }
 client := armauthorization.NewPermissionsClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Permissions](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/permissions)
+- [Role Assignment](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/role_assignment)
+- [Role Definition](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/role_definition)
 
 ## Provide Feedback
 

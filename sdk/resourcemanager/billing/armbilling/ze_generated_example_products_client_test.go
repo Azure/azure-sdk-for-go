@@ -28,12 +28,16 @@ func ExampleProductsClient_ListByCustomer() {
 	pager := client.ListByCustomer("<billing-account-name>",
 		"<customer-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Product.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -47,13 +51,17 @@ func ExampleProductsClient_ListByBillingAccount() {
 	ctx := context.Background()
 	client := armbilling.NewProductsClient(cred, nil)
 	pager := client.ListByBillingAccount("<billing-account-name>",
-		&armbilling.ProductsListByBillingAccountOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armbilling.ProductsClientListByBillingAccountOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Product.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -68,13 +76,17 @@ func ExampleProductsClient_ListByBillingProfile() {
 	client := armbilling.NewProductsClient(cred, nil)
 	pager := client.ListByBillingProfile("<billing-account-name>",
 		"<billing-profile-name>",
-		&armbilling.ProductsListByBillingProfileOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armbilling.ProductsClientListByBillingProfileOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Product.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -90,13 +102,17 @@ func ExampleProductsClient_ListByInvoiceSection() {
 	pager := client.ListByInvoiceSection("<billing-account-name>",
 		"<billing-profile-name>",
 		"<invoice-section-name>",
-		&armbilling.ProductsListByInvoiceSectionOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armbilling.ProductsClientListByInvoiceSectionOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Product.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -116,7 +132,7 @@ func ExampleProductsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Product.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProductsClientGetResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateProduct.json
@@ -132,14 +148,14 @@ func ExampleProductsClient_Update() {
 		"<product-name>",
 		armbilling.Product{
 			Properties: &armbilling.ProductProperties{
-				AutoRenew: armbilling.AutoRenewOff.ToPtr(),
+				AutoRenew: armbilling.AutoRenew("Off").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Product.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProductsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/MoveProduct.json
@@ -160,7 +176,7 @@ func ExampleProductsClient_Move() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Product.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProductsClientMoveResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ValidateProductMoveFailure.json
@@ -171,7 +187,7 @@ func ExampleProductsClient_ValidateMove() {
 	}
 	ctx := context.Background()
 	client := armbilling.NewProductsClient(cred, nil)
-	_, err = client.ValidateMove(ctx,
+	res, err := client.ValidateMove(ctx,
 		"<billing-account-name>",
 		"<product-name>",
 		armbilling.TransferProductRequestProperties{
@@ -181,4 +197,5 @@ func ExampleProductsClient_ValidateMove() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProductsClientValidateMoveResult)
 }

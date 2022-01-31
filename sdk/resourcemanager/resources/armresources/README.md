@@ -11,7 +11,7 @@ The `armresources` module provides operations for working with Azure Resources.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,13 @@ options = arm.ClientOptions{
 }
 client := armresources.NewResourcesClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Deployment](https://aka.ms/azsdk/go/mgmt/samples?path=resource/deployment)
+- [Provider](https://aka.ms/azsdk/go/mgmt/samples?path=resource/provider)
+- [Resource Group](https://aka.ms/azsdk/go/mgmt/samples?path=resource/resourcegroups)
+- [Resource](https://aka.ms/azsdk/go/mgmt/samples?path=resource/resources)
 
 ## Provide Feedback
 

@@ -10,7 +10,6 @@ package armcdn
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,68 +21,62 @@ import (
 // EdgeNodesClient contains the methods for the EdgeNodes group.
 // Don't use this type directly, use NewEdgeNodesClient() instead.
 type EdgeNodesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEdgeNodesClient creates a new instance of EdgeNodesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EdgeNodesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &EdgeNodesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EdgeNodesClient{
+		host: string(ep),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // List - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EdgeNodesClient) List(options *EdgeNodesListOptions) *EdgeNodesListPager {
-	return &EdgeNodesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.List method.
+func (client *EdgeNodesClient) List(options *EdgeNodesClientListOptions) *EdgeNodesClientListPager {
+	return &EdgeNodesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp EdgeNodesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp EdgeNodesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EdgenodeResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, options *EdgeNodesListOptions) (*policy.Request, error) {
+func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, options *EdgeNodesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Cdn/edgenodes"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *EdgeNodesClient) listHandleResponse(resp *http.Response) (EdgeNodesListResponse, error) {
-	result := EdgeNodesListResponse{RawResponse: resp}
+func (client *EdgeNodesClient) listHandleResponse(resp *http.Response) (EdgeNodesClientListResponse, error) {
+	result := EdgeNodesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EdgenodeResult); err != nil {
-		return EdgeNodesListResponse{}, runtime.NewResponseError(err, resp)
+		return EdgeNodesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *EdgeNodesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

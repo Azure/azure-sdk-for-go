@@ -11,7 +11,6 @@ package armconsumption
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,57 @@ import (
 // AggregatedCostClient contains the methods for the AggregatedCost group.
 // Don't use this type directly, use NewAggregatedCostClient() instead.
 type AggregatedCostClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAggregatedCostClient creates a new instance of AggregatedCostClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAggregatedCostClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AggregatedCostClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AggregatedCostClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AggregatedCostClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// GetByManagementGroup - Provides the aggregate cost of a management group and all child management groups by current billing period.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AggregatedCostClient) GetByManagementGroup(ctx context.Context, managementGroupID string, options *AggregatedCostGetByManagementGroupOptions) (AggregatedCostGetByManagementGroupResponse, error) {
+// GetByManagementGroup - Provides the aggregate cost of a management group and all child management groups by current billing
+// period.
+// If the operation fails it returns an *azcore.ResponseError type.
+// managementGroupID - Azure Management Group ID.
+// options - AggregatedCostClientGetByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetByManagementGroup
+// method.
+func (client *AggregatedCostClient) GetByManagementGroup(ctx context.Context, managementGroupID string, options *AggregatedCostClientGetByManagementGroupOptions) (AggregatedCostClientGetByManagementGroupResponse, error) {
 	req, err := client.getByManagementGroupCreateRequest(ctx, managementGroupID, options)
 	if err != nil {
-		return AggregatedCostGetByManagementGroupResponse{}, err
+		return AggregatedCostClientGetByManagementGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AggregatedCostGetByManagementGroupResponse{}, err
+		return AggregatedCostClientGetByManagementGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AggregatedCostGetByManagementGroupResponse{}, client.getByManagementGroupHandleError(resp)
+		return AggregatedCostClientGetByManagementGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByManagementGroupHandleResponse(resp)
 }
 
 // getByManagementGroupCreateRequest creates the GetByManagementGroup request.
-func (client *AggregatedCostClient) getByManagementGroupCreateRequest(ctx context.Context, managementGroupID string, options *AggregatedCostGetByManagementGroupOptions) (*policy.Request, error) {
+func (client *AggregatedCostClient) getByManagementGroupCreateRequest(ctx context.Context, managementGroupID string, options *AggregatedCostClientGetByManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Consumption/aggregatedcost"
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -80,46 +89,38 @@ func (client *AggregatedCostClient) getByManagementGroupCreateRequest(ctx contex
 }
 
 // getByManagementGroupHandleResponse handles the GetByManagementGroup response.
-func (client *AggregatedCostClient) getByManagementGroupHandleResponse(resp *http.Response) (AggregatedCostGetByManagementGroupResponse, error) {
-	result := AggregatedCostGetByManagementGroupResponse{RawResponse: resp}
+func (client *AggregatedCostClient) getByManagementGroupHandleResponse(resp *http.Response) (AggregatedCostClientGetByManagementGroupResponse, error) {
+	result := AggregatedCostClientGetByManagementGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroupAggregatedCostResult); err != nil {
-		return AggregatedCostGetByManagementGroupResponse{}, runtime.NewResponseError(err, resp)
+		return AggregatedCostClientGetByManagementGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// getByManagementGroupHandleError handles the GetByManagementGroup error response.
-func (client *AggregatedCostClient) getByManagementGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetForBillingPeriodByManagementGroup - Provides the aggregate cost of a management group and all child management groups by specified billing period
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AggregatedCostClient) GetForBillingPeriodByManagementGroup(ctx context.Context, managementGroupID string, billingPeriodName string, options *AggregatedCostGetForBillingPeriodByManagementGroupOptions) (AggregatedCostGetForBillingPeriodByManagementGroupResponse, error) {
+// GetForBillingPeriodByManagementGroup - Provides the aggregate cost of a management group and all child management groups
+// by specified billing period
+// If the operation fails it returns an *azcore.ResponseError type.
+// managementGroupID - Azure Management Group ID.
+// billingPeriodName - Billing Period Name.
+// options - AggregatedCostClientGetForBillingPeriodByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetForBillingPeriodByManagementGroup
+// method.
+func (client *AggregatedCostClient) GetForBillingPeriodByManagementGroup(ctx context.Context, managementGroupID string, billingPeriodName string, options *AggregatedCostClientGetForBillingPeriodByManagementGroupOptions) (AggregatedCostClientGetForBillingPeriodByManagementGroupResponse, error) {
 	req, err := client.getForBillingPeriodByManagementGroupCreateRequest(ctx, managementGroupID, billingPeriodName, options)
 	if err != nil {
-		return AggregatedCostGetForBillingPeriodByManagementGroupResponse{}, err
+		return AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AggregatedCostGetForBillingPeriodByManagementGroupResponse{}, err
+		return AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AggregatedCostGetForBillingPeriodByManagementGroupResponse{}, client.getForBillingPeriodByManagementGroupHandleError(resp)
+		return AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getForBillingPeriodByManagementGroupHandleResponse(resp)
 }
 
 // getForBillingPeriodByManagementGroupCreateRequest creates the GetForBillingPeriodByManagementGroup request.
-func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRequest(ctx context.Context, managementGroupID string, billingPeriodName string, options *AggregatedCostGetForBillingPeriodByManagementGroupOptions) (*policy.Request, error) {
+func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRequest(ctx context.Context, managementGroupID string, billingPeriodName string, options *AggregatedCostClientGetForBillingPeriodByManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/aggregatedCost"
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
@@ -129,7 +130,7 @@ func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRe
 		return nil, errors.New("parameter billingPeriodName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingPeriodName}", url.PathEscape(billingPeriodName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -141,23 +142,10 @@ func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRe
 }
 
 // getForBillingPeriodByManagementGroupHandleResponse handles the GetForBillingPeriodByManagementGroup response.
-func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupHandleResponse(resp *http.Response) (AggregatedCostGetForBillingPeriodByManagementGroupResponse, error) {
-	result := AggregatedCostGetForBillingPeriodByManagementGroupResponse{RawResponse: resp}
+func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupHandleResponse(resp *http.Response) (AggregatedCostClientGetForBillingPeriodByManagementGroupResponse, error) {
+	result := AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroupAggregatedCostResult); err != nil {
-		return AggregatedCostGetForBillingPeriodByManagementGroupResponse{}, runtime.NewResponseError(err, resp)
+		return AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// getForBillingPeriodByManagementGroupHandleError handles the GetForBillingPeriodByManagementGroup error response.
-func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

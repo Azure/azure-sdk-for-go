@@ -28,6 +28,8 @@ func CreateTempQueue(remainingArgs []string) int {
 		return 1
 	}
 
+	_ = shared.LoadEnvironment()
+
 	_, adminClient, err := clientCreator()
 
 	if err != nil {

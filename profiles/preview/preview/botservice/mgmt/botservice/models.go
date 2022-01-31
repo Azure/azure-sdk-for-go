@@ -108,6 +108,13 @@ const (
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
 type RegenerateKeysChannelName = original.RegenerateKeysChannelName
 
 const (
@@ -145,6 +152,7 @@ type Channel = original.Channel
 type ChannelResponseList = original.ChannelResponseList
 type ChannelResponseListIterator = original.ChannelResponseListIterator
 type ChannelResponseListPage = original.ChannelResponseListPage
+type ChannelSettings = original.ChannelSettings
 type ChannelsClient = original.ChannelsClient
 type CheckNameAvailabilityRequestBody = original.CheckNameAvailabilityRequestBody
 type CheckNameAvailabilityResponseBody = original.CheckNameAvailabilityResponseBody
@@ -175,6 +183,7 @@ type KikChannelProperties = original.KikChannelProperties
 type LineChannel = original.LineChannel
 type LineChannelProperties = original.LineChannelProperties
 type LineRegistration = original.LineRegistration
+type ListChannelWithKeysResponse = original.ListChannelWithKeysResponse
 type MsTeamsChannel = original.MsTeamsChannel
 type MsTeamsChannelProperties = original.MsTeamsChannelProperties
 type OperationDisplayInfo = original.OperationDisplayInfo
@@ -200,8 +209,11 @@ type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionSt
 type Resource = original.Resource
 type ServiceProvider = original.ServiceProvider
 type ServiceProviderParameter = original.ServiceProviderParameter
+type ServiceProviderParameterMetadata = original.ServiceProviderParameterMetadata
+type ServiceProviderParameterMetadataConstraints = original.ServiceProviderParameterMetadataConstraints
 type ServiceProviderProperties = original.ServiceProviderProperties
 type ServiceProviderResponseList = original.ServiceProviderResponseList
+type Site = original.Site
 type SiteInfo = original.SiteInfo
 type Sku = original.Sku
 type SkypeChannel = original.SkypeChannel
@@ -323,6 +335,9 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 }
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
 	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleRegenerateKeysChannelNameValues() []RegenerateKeysChannelName {
 	return original.PossibleRegenerateKeysChannelNameValues()

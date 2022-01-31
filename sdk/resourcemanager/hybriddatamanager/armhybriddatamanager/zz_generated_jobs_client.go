@@ -24,46 +24,61 @@ import (
 // JobsClient contains the methods for the Jobs group.
 // Don't use this type directly, use NewJobsClient() instead.
 type JobsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobsClient creates a new instance of JobsClient with the specified values.
+// subscriptionID - The Subscription Id
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JobsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JobsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCancel - Cancels the given job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) BeginCancel(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsBeginCancelOptions) (JobsCancelPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// dataServiceName - The name of the data service of the job definition.
+// jobDefinitionName - The name of the job definition of the job.
+// jobID - The job id of the job queried.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - JobsClientBeginCancelOptions contains the optional parameters for the JobsClient.BeginCancel method.
+func (client *JobsClient) BeginCancel(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginCancelOptions) (JobsClientCancelPollerResponse, error) {
 	resp, err := client.cancel(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
 	if err != nil {
-		return JobsCancelPollerResponse{}, err
+		return JobsClientCancelPollerResponse{}, err
 	}
-	result := JobsCancelPollerResponse{
+	result := JobsClientCancelPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("JobsClient.Cancel", "", resp, client.pl, client.cancelHandleError)
+	pt, err := armruntime.NewPoller("JobsClient.Cancel", "", resp, client.pl)
 	if err != nil {
-		return JobsCancelPollerResponse{}, err
+		return JobsClientCancelPollerResponse{}, err
 	}
-	result.Poller = &JobsCancelPoller{
+	result.Poller = &JobsClientCancelPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Cancel - Cancels the given job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) cancel(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsBeginCancelOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JobsClient) cancel(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginCancelOptions) (*http.Response, error) {
 	req, err := client.cancelCreateRequest(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *JobsClient) cancel(ctx context.Context, dataServiceName string, jo
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.cancelHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *JobsClient) cancelCreateRequest(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsBeginCancelOptions) (*policy.Request, error) {
+func (client *JobsClient) cancelCreateRequest(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/dataServices/{dataServiceName}/jobDefinitions/{jobDefinitionName}/jobs/{jobId}/cancel"
 	if dataServiceName == "" {
 		return nil, errors.New("parameter dataServiceName cannot be empty")
@@ -105,7 +120,7 @@ func (client *JobsClient) cancelCreateRequest(ctx context.Context, dataServiceNa
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,37 +130,32 @@ func (client *JobsClient) cancelCreateRequest(ctx context.Context, dataServiceNa
 	return req, nil
 }
 
-// cancelHandleError handles the Cancel error response.
-func (client *JobsClient) cancelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - This method gets a data manager job given the jobId.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) Get(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsGetOptions) (JobsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// dataServiceName - The name of the data service of the job definition.
+// jobDefinitionName - The name of the job definition of the job.
+// jobID - The job id of the job queried.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+func (client *JobsClient) Get(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientGetOptions) (JobsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
 	if err != nil {
-		return JobsGetResponse{}, err
+		return JobsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsGetResponse{}, err
+		return JobsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsGetResponse{}, client.getHandleError(resp)
+		return JobsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobsClient) getCreateRequest(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsGetOptions) (*policy.Request, error) {
+func (client *JobsClient) getCreateRequest(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/dataServices/{dataServiceName}/jobDefinitions/{jobDefinitionName}/jobs/{jobId}"
 	if dataServiceName == "" {
 		return nil, errors.New("parameter dataServiceName cannot be empty")
@@ -171,7 +181,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, dataServiceName 
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,42 +196,34 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, dataServiceName 
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsGetResponse, error) {
-	result := JobsGetResponse{RawResponse: resp}
+func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetResponse, error) {
+	result := JobsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
-		return JobsGetResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JobsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDataManager - This method gets all the jobs at the data manager resource level.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *JobsListByDataManagerOptions) *JobsListByDataManagerPager {
-	return &JobsListByDataManagerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - JobsClientListByDataManagerOptions contains the optional parameters for the JobsClient.ListByDataManager method.
+func (client *JobsClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *JobsClientListByDataManagerOptions) *JobsClientListByDataManagerPager {
+	return &JobsClientListByDataManagerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDataManagerCreateRequest(ctx, resourceGroupName, dataManagerName, options)
 		},
-		advancer: func(ctx context.Context, resp JobsListByDataManagerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobsClientListByDataManagerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobList.NextLink)
 		},
 	}
 }
 
 // listByDataManagerCreateRequest creates the ListByDataManager request.
-func (client *JobsClient) listByDataManagerCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *JobsListByDataManagerOptions) (*policy.Request, error) {
+func (client *JobsClient) listByDataManagerCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *JobsClientListByDataManagerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/jobs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -235,7 +237,7 @@ func (client *JobsClient) listByDataManagerCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,42 +252,35 @@ func (client *JobsClient) listByDataManagerCreateRequest(ctx context.Context, re
 }
 
 // listByDataManagerHandleResponse handles the ListByDataManager response.
-func (client *JobsClient) listByDataManagerHandleResponse(resp *http.Response) (JobsListByDataManagerResponse, error) {
-	result := JobsListByDataManagerResponse{RawResponse: resp}
+func (client *JobsClient) listByDataManagerHandleResponse(resp *http.Response) (JobsClientListByDataManagerResponse, error) {
+	result := JobsClientListByDataManagerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobList); err != nil {
-		return JobsListByDataManagerResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientListByDataManagerResponse{}, err
 	}
 	return result, nil
 }
 
-// listByDataManagerHandleError handles the ListByDataManager error response.
-func (client *JobsClient) listByDataManagerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDataService - This method gets all the jobs of a data service type in a given resource.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) ListByDataService(dataServiceName string, resourceGroupName string, dataManagerName string, options *JobsListByDataServiceOptions) *JobsListByDataServicePager {
-	return &JobsListByDataServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// dataServiceName - The name of the data service of interest.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - JobsClientListByDataServiceOptions contains the optional parameters for the JobsClient.ListByDataService method.
+func (client *JobsClient) ListByDataService(dataServiceName string, resourceGroupName string, dataManagerName string, options *JobsClientListByDataServiceOptions) *JobsClientListByDataServicePager {
+	return &JobsClientListByDataServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDataServiceCreateRequest(ctx, dataServiceName, resourceGroupName, dataManagerName, options)
 		},
-		advancer: func(ctx context.Context, resp JobsListByDataServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobsClientListByDataServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobList.NextLink)
 		},
 	}
 }
 
 // listByDataServiceCreateRequest creates the ListByDataService request.
-func (client *JobsClient) listByDataServiceCreateRequest(ctx context.Context, dataServiceName string, resourceGroupName string, dataManagerName string, options *JobsListByDataServiceOptions) (*policy.Request, error) {
+func (client *JobsClient) listByDataServiceCreateRequest(ctx context.Context, dataServiceName string, resourceGroupName string, dataManagerName string, options *JobsClientListByDataServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/dataServices/{dataServiceName}/jobs"
 	if dataServiceName == "" {
 		return nil, errors.New("parameter dataServiceName cannot be empty")
@@ -303,7 +298,7 @@ func (client *JobsClient) listByDataServiceCreateRequest(ctx context.Context, da
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -318,42 +313,37 @@ func (client *JobsClient) listByDataServiceCreateRequest(ctx context.Context, da
 }
 
 // listByDataServiceHandleResponse handles the ListByDataService response.
-func (client *JobsClient) listByDataServiceHandleResponse(resp *http.Response) (JobsListByDataServiceResponse, error) {
-	result := JobsListByDataServiceResponse{RawResponse: resp}
+func (client *JobsClient) listByDataServiceHandleResponse(resp *http.Response) (JobsClientListByDataServiceResponse, error) {
+	result := JobsClientListByDataServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobList); err != nil {
-		return JobsListByDataServiceResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientListByDataServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByDataServiceHandleError handles the ListByDataService error response.
-func (client *JobsClient) listByDataServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByJobDefinition - This method gets all the jobs of a given job definition.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) ListByJobDefinition(dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobsListByJobDefinitionOptions) *JobsListByJobDefinitionPager {
-	return &JobsListByJobDefinitionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// dataServiceName - The name of the data service of the job definition.
+// jobDefinitionName - The name of the job definition for which jobs are needed.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - JobsClientListByJobDefinitionOptions contains the optional parameters for the JobsClient.ListByJobDefinition
+// method.
+func (client *JobsClient) ListByJobDefinition(dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobsClientListByJobDefinitionOptions) *JobsClientListByJobDefinitionPager {
+	return &JobsClientListByJobDefinitionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByJobDefinitionCreateRequest(ctx, dataServiceName, jobDefinitionName, resourceGroupName, dataManagerName, options)
 		},
-		advancer: func(ctx context.Context, resp JobsListByJobDefinitionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobsClientListByJobDefinitionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobList.NextLink)
 		},
 	}
 }
 
 // listByJobDefinitionCreateRequest creates the ListByJobDefinition request.
-func (client *JobsClient) listByJobDefinitionCreateRequest(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobsListByJobDefinitionOptions) (*policy.Request, error) {
+func (client *JobsClient) listByJobDefinitionCreateRequest(ctx context.Context, dataServiceName string, jobDefinitionName string, resourceGroupName string, dataManagerName string, options *JobsClientListByJobDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/dataServices/{dataServiceName}/jobDefinitions/{jobDefinitionName}/jobs"
 	if dataServiceName == "" {
 		return nil, errors.New("parameter dataServiceName cannot be empty")
@@ -375,7 +365,7 @@ func (client *JobsClient) listByJobDefinitionCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -390,49 +380,44 @@ func (client *JobsClient) listByJobDefinitionCreateRequest(ctx context.Context, 
 }
 
 // listByJobDefinitionHandleResponse handles the ListByJobDefinition response.
-func (client *JobsClient) listByJobDefinitionHandleResponse(resp *http.Response) (JobsListByJobDefinitionResponse, error) {
-	result := JobsListByJobDefinitionResponse{RawResponse: resp}
+func (client *JobsClient) listByJobDefinitionHandleResponse(resp *http.Response) (JobsClientListByJobDefinitionResponse, error) {
+	result := JobsClientListByJobDefinitionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobList); err != nil {
-		return JobsListByJobDefinitionResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientListByJobDefinitionResponse{}, err
 	}
 	return result, nil
 }
 
-// listByJobDefinitionHandleError handles the ListByJobDefinition error response.
-func (client *JobsClient) listByJobDefinitionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginResume - Resumes the given job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) BeginResume(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsBeginResumeOptions) (JobsResumePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// dataServiceName - The name of the data service of the job definition.
+// jobDefinitionName - The name of the job definition of the job.
+// jobID - The job id of the job queried.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - JobsClientBeginResumeOptions contains the optional parameters for the JobsClient.BeginResume method.
+func (client *JobsClient) BeginResume(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginResumeOptions) (JobsClientResumePollerResponse, error) {
 	resp, err := client.resume(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
 	if err != nil {
-		return JobsResumePollerResponse{}, err
+		return JobsClientResumePollerResponse{}, err
 	}
-	result := JobsResumePollerResponse{
+	result := JobsClientResumePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("JobsClient.Resume", "", resp, client.pl, client.resumeHandleError)
+	pt, err := armruntime.NewPoller("JobsClient.Resume", "", resp, client.pl)
 	if err != nil {
-		return JobsResumePollerResponse{}, err
+		return JobsClientResumePollerResponse{}, err
 	}
-	result.Poller = &JobsResumePoller{
+	result.Poller = &JobsClientResumePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Resume - Resumes the given job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) resume(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsBeginResumeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JobsClient) resume(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, dataServiceName, jobDefinitionName, jobID, resourceGroupName, dataManagerName, options)
 	if err != nil {
 		return nil, err
@@ -442,13 +427,13 @@ func (client *JobsClient) resume(ctx context.Context, dataServiceName string, jo
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.resumeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *JobsClient) resumeCreateRequest(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsBeginResumeOptions) (*policy.Request, error) {
+func (client *JobsClient) resumeCreateRequest(ctx context.Context, dataServiceName string, jobDefinitionName string, jobID string, resourceGroupName string, dataManagerName string, options *JobsClientBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/dataServices/{dataServiceName}/jobDefinitions/{jobDefinitionName}/jobs/{jobId}/resume"
 	if dataServiceName == "" {
 		return nil, errors.New("parameter dataServiceName cannot be empty")
@@ -474,7 +459,7 @@ func (client *JobsClient) resumeCreateRequest(ctx context.Context, dataServiceNa
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -482,16 +467,4 @@ func (client *JobsClient) resumeCreateRequest(ctx context.Context, dataServiceNa
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
-}
-
-// resumeHandleError handles the Resume error response.
-func (client *JobsClient) resumeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

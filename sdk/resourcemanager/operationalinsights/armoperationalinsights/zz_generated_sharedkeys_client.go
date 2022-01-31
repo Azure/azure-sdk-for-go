@@ -24,42 +24,54 @@ import (
 // SharedKeysClient contains the methods for the SharedKeys group.
 // Don't use this type directly, use NewSharedKeysClient() instead.
 type SharedKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSharedKeysClient creates a new instance of SharedKeysClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSharedKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SharedKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SharedKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SharedKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetSharedKeys - Gets the shared keys for a workspace.
-// If the operation fails it returns a generic error.
-func (client *SharedKeysClient) GetSharedKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysGetSharedKeysOptions) (SharedKeysGetSharedKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - SharedKeysClientGetSharedKeysOptions contains the optional parameters for the SharedKeysClient.GetSharedKeys
+// method.
+func (client *SharedKeysClient) GetSharedKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysClientGetSharedKeysOptions) (SharedKeysClientGetSharedKeysResponse, error) {
 	req, err := client.getSharedKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return SharedKeysGetSharedKeysResponse{}, err
+		return SharedKeysClientGetSharedKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SharedKeysGetSharedKeysResponse{}, err
+		return SharedKeysClientGetSharedKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SharedKeysGetSharedKeysResponse{}, client.getSharedKeysHandleError(resp)
+		return SharedKeysClientGetSharedKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSharedKeysHandleResponse(resp)
 }
 
 // getSharedKeysCreateRequest creates the GetSharedKeys request.
-func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysGetSharedKeysOptions) (*policy.Request, error) {
+func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysClientGetSharedKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/sharedKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +85,7 @@ func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,45 +97,37 @@ func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, 
 }
 
 // getSharedKeysHandleResponse handles the GetSharedKeys response.
-func (client *SharedKeysClient) getSharedKeysHandleResponse(resp *http.Response) (SharedKeysGetSharedKeysResponse, error) {
-	result := SharedKeysGetSharedKeysResponse{RawResponse: resp}
+func (client *SharedKeysClient) getSharedKeysHandleResponse(resp *http.Response) (SharedKeysClientGetSharedKeysResponse, error) {
+	result := SharedKeysClientGetSharedKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedKeys); err != nil {
-		return SharedKeysGetSharedKeysResponse{}, runtime.NewResponseError(err, resp)
+		return SharedKeysClientGetSharedKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// getSharedKeysHandleError handles the GetSharedKeys error response.
-func (client *SharedKeysClient) getSharedKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// Regenerate - Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational Insights agents to the workspace.
-// If the operation fails it returns a generic error.
-func (client *SharedKeysClient) Regenerate(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysRegenerateOptions) (SharedKeysRegenerateResponse, error) {
+// Regenerate - Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
+// Insights agents to the workspace.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - SharedKeysClientRegenerateOptions contains the optional parameters for the SharedKeysClient.Regenerate method.
+func (client *SharedKeysClient) Regenerate(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysClientRegenerateOptions) (SharedKeysClientRegenerateResponse, error) {
 	req, err := client.regenerateCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return SharedKeysRegenerateResponse{}, err
+		return SharedKeysClientRegenerateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SharedKeysRegenerateResponse{}, err
+		return SharedKeysClientRegenerateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SharedKeysRegenerateResponse{}, client.regenerateHandleError(resp)
+		return SharedKeysClientRegenerateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateHandleResponse(resp)
 }
 
 // regenerateCreateRequest creates the Regenerate request.
-func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysRegenerateOptions) (*policy.Request, error) {
+func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysClientRegenerateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/regenerateSharedKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -137,7 +141,7 @@ func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -149,22 +153,10 @@ func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, res
 }
 
 // regenerateHandleResponse handles the Regenerate response.
-func (client *SharedKeysClient) regenerateHandleResponse(resp *http.Response) (SharedKeysRegenerateResponse, error) {
-	result := SharedKeysRegenerateResponse{RawResponse: resp}
+func (client *SharedKeysClient) regenerateHandleResponse(resp *http.Response) (SharedKeysClientRegenerateResponse, error) {
+	result := SharedKeysClientRegenerateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedKeys); err != nil {
-		return SharedKeysRegenerateResponse{}, runtime.NewResponseError(err, resp)
+		return SharedKeysClientRegenerateResponse{}, err
 	}
 	return result, nil
-}
-
-// regenerateHandleError handles the Regenerate error response.
-func (client *SharedKeysClient) regenerateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

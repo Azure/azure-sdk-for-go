@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // SourceControlClient contains the methods for the SourceControl group.
 // Don't use this type directly, use NewSourceControlClient() instead.
 type SourceControlClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSourceControlClient creates a new instance of SourceControlClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SourceControlClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SourceControlClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create a source control.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SourceControlClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters, options *SourceControlCreateOrUpdateOptions) (SourceControlCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// sourceControlName - The source control name.
+// parameters - The parameters supplied to the create or update source control operation.
+// options - SourceControlClientCreateOrUpdateOptions contains the optional parameters for the SourceControlClient.CreateOrUpdate
+// method.
+func (client *SourceControlClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters, options *SourceControlClientCreateOrUpdateOptions) (SourceControlClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, parameters, options)
 	if err != nil {
-		return SourceControlCreateOrUpdateResponse{}, err
+		return SourceControlClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SourceControlCreateOrUpdateResponse{}, err
+		return SourceControlClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SourceControlCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SourceControlClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters, options *SourceControlCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters, options *SourceControlClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +92,7 @@ func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +104,37 @@ func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SourceControlClient) createOrUpdateHandleResponse(resp *http.Response) (SourceControlCreateOrUpdateResponse, error) {
-	result := SourceControlCreateOrUpdateResponse{RawResponse: resp}
+func (client *SourceControlClient) createOrUpdateHandleResponse(resp *http.Response) (SourceControlClientCreateOrUpdateResponse, error) {
+	result := SourceControlClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return SourceControlCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SourceControlClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SourceControlClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the source control.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SourceControlClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlDeleteOptions) (SourceControlDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// sourceControlName - The name of source control.
+// options - SourceControlClientDeleteOptions contains the optional parameters for the SourceControlClient.Delete method.
+func (client *SourceControlClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlClientDeleteOptions) (SourceControlClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
 	if err != nil {
-		return SourceControlDeleteResponse{}, err
+		return SourceControlClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SourceControlDeleteResponse{}, err
+		return SourceControlClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SourceControlDeleteResponse{}, client.deleteHandleError(resp)
+		return SourceControlClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SourceControlDeleteResponse{RawResponse: resp}, nil
+	return SourceControlClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlDeleteOptions) (*policy.Request, error) {
+func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,7 +152,7 @@ func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +163,29 @@ func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SourceControlClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the source control identified by source control name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SourceControlClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlGetOptions) (SourceControlGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// sourceControlName - The name of source control.
+// options - SourceControlClientGetOptions contains the optional parameters for the SourceControlClient.Get method.
+func (client *SourceControlClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlClientGetOptions) (SourceControlClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
 	if err != nil {
-		return SourceControlGetResponse{}, err
+		return SourceControlClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SourceControlGetResponse{}, err
+		return SourceControlClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SourceControlGetResponse{}, client.getHandleError(resp)
+		return SourceControlClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlGetOptions) (*policy.Request, error) {
+func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +203,7 @@ func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +215,34 @@ func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *SourceControlClient) getHandleResponse(resp *http.Response) (SourceControlGetResponse, error) {
-	result := SourceControlGetResponse{RawResponse: resp}
+func (client *SourceControlClient) getHandleResponse(resp *http.Response) (SourceControlClientGetResponse, error) {
+	result := SourceControlClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return SourceControlGetResponse{}, runtime.NewResponseError(err, resp)
+		return SourceControlClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SourceControlClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of source controls.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SourceControlClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *SourceControlListByAutomationAccountOptions) *SourceControlListByAutomationAccountPager {
-	return &SourceControlListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.ListByAutomationAccount
+// method.
+func (client *SourceControlClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) *SourceControlClientListByAutomationAccountPager {
+	return &SourceControlClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp SourceControlListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SourceControlClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SourceControlListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *SourceControlListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,7 +256,7 @@ func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -284,46 +271,38 @@ func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx cont
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *SourceControlClient) listByAutomationAccountHandleResponse(resp *http.Response) (SourceControlListByAutomationAccountResponse, error) {
-	result := SourceControlListByAutomationAccountResponse{RawResponse: resp}
+func (client *SourceControlClient) listByAutomationAccountHandleResponse(resp *http.Response) (SourceControlClientListByAutomationAccountResponse, error) {
+	result := SourceControlClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlListResult); err != nil {
-		return SourceControlListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return SourceControlClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *SourceControlClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a source control.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SourceControlClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters, options *SourceControlUpdateOptions) (SourceControlUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// sourceControlName - The source control name.
+// parameters - The parameters supplied to the update source control operation.
+// options - SourceControlClientUpdateOptions contains the optional parameters for the SourceControlClient.Update method.
+func (client *SourceControlClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters, options *SourceControlClientUpdateOptions) (SourceControlClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, parameters, options)
 	if err != nil {
-		return SourceControlUpdateResponse{}, err
+		return SourceControlClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SourceControlUpdateResponse{}, err
+		return SourceControlClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SourceControlUpdateResponse{}, client.updateHandleError(resp)
+		return SourceControlClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SourceControlClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters, options *SourceControlUpdateOptions) (*policy.Request, error) {
+func (client *SourceControlClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters, options *SourceControlClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -341,7 +320,7 @@ func (client *SourceControlClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -353,23 +332,10 @@ func (client *SourceControlClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SourceControlClient) updateHandleResponse(resp *http.Response) (SourceControlUpdateResponse, error) {
-	result := SourceControlUpdateResponse{RawResponse: resp}
+func (client *SourceControlClient) updateHandleResponse(resp *http.Response) (SourceControlClientUpdateResponse, error) {
+	result := SourceControlClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return SourceControlUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SourceControlClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *SourceControlClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,54 @@ import (
 // PermissionsClient contains the methods for the Permissions group.
 // Don't use this type directly, use NewPermissionsClient() instead.
 type PermissionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPermissionsClient creates a new instance of PermissionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PermissionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PermissionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PermissionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListForResource - Gets all permissions the caller has for a resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PermissionsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsListForResourceOptions) *PermissionsListForResourcePager {
-	return &PermissionsListForResourcePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourcePath - The parent resource identity.
+// resourceType - The resource type of the resource.
+// resourceName - The name of the resource to get the permissions for.
+// options - PermissionsClientListForResourceOptions contains the optional parameters for the PermissionsClient.ListForResource
+// method.
+func (client *PermissionsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsClientListForResourceOptions) *PermissionsClientListForResourcePager {
+	return &PermissionsClientListForResourcePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
 		},
-		advancer: func(ctx context.Context, resp PermissionsListForResourceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PermissionsClientListForResourceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PermissionGetResult.NextLink)
 		},
 	}
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
-func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsListForResourceOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsClientListForResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +88,7 @@ func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,43 +100,33 @@ func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Contex
 }
 
 // listForResourceHandleResponse handles the ListForResource response.
-func (client *PermissionsClient) listForResourceHandleResponse(resp *http.Response) (PermissionsListForResourceResponse, error) {
-	result := PermissionsListForResourceResponse{RawResponse: resp}
+func (client *PermissionsClient) listForResourceHandleResponse(resp *http.Response) (PermissionsClientListForResourceResponse, error) {
+	result := PermissionsClientListForResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionGetResult); err != nil {
-		return PermissionsListForResourceResponse{}, runtime.NewResponseError(err, resp)
+		return PermissionsClientListForResourceResponse{}, err
 	}
 	return result, nil
 }
 
-// listForResourceHandleError handles the ListForResource error response.
-func (client *PermissionsClient) listForResourceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForResourceGroup - Gets all permissions the caller has for a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PermissionsClient) ListForResourceGroup(resourceGroupName string, options *PermissionsListForResourceGroupOptions) *PermissionsListForResourceGroupPager {
-	return &PermissionsListForResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.ListForResourceGroup
+// method.
+func (client *PermissionsClient) ListForResourceGroup(resourceGroupName string, options *PermissionsClientListForResourceGroupOptions) *PermissionsClientListForResourceGroupPager {
+	return &PermissionsClientListForResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp PermissionsListForResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PermissionsClientListForResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PermissionGetResult.NextLink)
 		},
 	}
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
-func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PermissionsListForResourceGroupOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PermissionsClientListForResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization/permissions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -132,7 +136,7 @@ func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,23 +148,10 @@ func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.C
 }
 
 // listForResourceGroupHandleResponse handles the ListForResourceGroup response.
-func (client *PermissionsClient) listForResourceGroupHandleResponse(resp *http.Response) (PermissionsListForResourceGroupResponse, error) {
-	result := PermissionsListForResourceGroupResponse{RawResponse: resp}
+func (client *PermissionsClient) listForResourceGroupHandleResponse(resp *http.Response) (PermissionsClientListForResourceGroupResponse, error) {
+	result := PermissionsClientListForResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionGetResult); err != nil {
-		return PermissionsListForResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return PermissionsClientListForResourceGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// listForResourceGroupHandleError handles the ListForResourceGroup error response.
-func (client *PermissionsClient) listForResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

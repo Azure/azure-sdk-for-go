@@ -11,7 +11,7 @@ The `armservicebus` module provides operations for working with Azure Service Bu
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,15 @@ options = arm.ClientOptions{
 }
 client := armservicebus.NewSubscriptionsClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Disaster Recovery Config](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/disaster_recovery_config)
+- [Namespace](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/namespace)
+- [Queue](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/queue)
+- [Rules](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/rules)
+- [Subscription](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/subscriptions)
+- [Topic](https://aka.ms/azsdk/go/mgmt/samples?path=servicebus/topic)
 
 ## Provide Feedback
 

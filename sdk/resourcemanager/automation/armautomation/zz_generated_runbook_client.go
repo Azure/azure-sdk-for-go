@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // RunbookClient contains the methods for the Runbook group.
 // Don't use this type directly, use NewRunbookClient() instead.
 type RunbookClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRunbookClient creates a new instance of RunbookClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRunbookClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RunbookClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RunbookClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RunbookClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create the runbook identified by runbook name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RunbookClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookCreateOrUpdateParameters, options *RunbookCreateOrUpdateOptions) (RunbookCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// parameters - The create or update parameters for runbook. Provide either content link for a published runbook or draft,
+// not both.
+// options - RunbookClientCreateOrUpdateOptions contains the optional parameters for the RunbookClient.CreateOrUpdate method.
+func (client *RunbookClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookCreateOrUpdateParameters, options *RunbookClientCreateOrUpdateOptions) (RunbookClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, parameters, options)
 	if err != nil {
-		return RunbookCreateOrUpdateResponse{}, err
+		return RunbookClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RunbookCreateOrUpdateResponse{}, err
+		return RunbookClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return RunbookCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return RunbookClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RunbookClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookCreateOrUpdateParameters, options *RunbookCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RunbookClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookCreateOrUpdateParameters, options *RunbookClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +92,7 @@ func (client *RunbookClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +104,37 @@ func (client *RunbookClient) createOrUpdateCreateRequest(ctx context.Context, re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RunbookClient) createOrUpdateHandleResponse(resp *http.Response) (RunbookCreateOrUpdateResponse, error) {
-	result := RunbookCreateOrUpdateResponse{RawResponse: resp}
+func (client *RunbookClient) createOrUpdateHandleResponse(resp *http.Response) (RunbookClientCreateOrUpdateResponse, error) {
+	result := RunbookClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
-		return RunbookCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return RunbookClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *RunbookClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the runbook by name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RunbookClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookDeleteOptions) (RunbookDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// options - RunbookClientDeleteOptions contains the optional parameters for the RunbookClient.Delete method.
+func (client *RunbookClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientDeleteOptions) (RunbookClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
-		return RunbookDeleteResponse{}, err
+		return RunbookClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RunbookDeleteResponse{}, err
+		return RunbookClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return RunbookDeleteResponse{}, client.deleteHandleError(resp)
+		return RunbookClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RunbookDeleteResponse{RawResponse: resp}, nil
+	return RunbookClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RunbookClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookDeleteOptions) (*policy.Request, error) {
+func (client *RunbookClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +152,7 @@ func (client *RunbookClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +163,29 @@ func (client *RunbookClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RunbookClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the runbook identified by runbook name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RunbookClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookGetOptions) (RunbookGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// options - RunbookClientGetOptions contains the optional parameters for the RunbookClient.Get method.
+func (client *RunbookClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientGetOptions) (RunbookClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
-		return RunbookGetResponse{}, err
+		return RunbookClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RunbookGetResponse{}, err
+		return RunbookClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RunbookGetResponse{}, client.getHandleError(resp)
+		return RunbookClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RunbookClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookGetOptions) (*policy.Request, error) {
+func (client *RunbookClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,7 +203,7 @@ func (client *RunbookClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,46 +215,37 @@ func (client *RunbookClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *RunbookClient) getHandleResponse(resp *http.Response) (RunbookGetResponse, error) {
-	result := RunbookGetResponse{RawResponse: resp}
+func (client *RunbookClient) getHandleResponse(resp *http.Response) (RunbookClientGetResponse, error) {
+	result := RunbookClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
-		return RunbookGetResponse{}, runtime.NewResponseError(err, resp)
+		return RunbookClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RunbookClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetContent - Retrieve the content of runbook identified by runbook name.
-// If the operation fails it returns a generic error.
-func (client *RunbookClient) GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookGetContentOptions) (RunbookGetContentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// options - RunbookClientGetContentOptions contains the optional parameters for the RunbookClient.GetContent method.
+func (client *RunbookClient) GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientGetContentOptions) (RunbookClientGetContentResponse, error) {
 	req, err := client.getContentCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
-		return RunbookGetContentResponse{}, err
+		return RunbookClientGetContentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RunbookGetContentResponse{}, err
+		return RunbookClientGetContentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
-		return RunbookGetContentResponse{}, client.getContentHandleError(resp)
+		return RunbookClientGetContentResponse{}, runtime.NewResponseError(resp)
 	}
-	return RunbookGetContentResponse{RawResponse: resp}, nil
+	return RunbookClientGetContentResponse{RawResponse: resp}, nil
 }
 
 // getContentCreateRequest creates the GetContent request.
-func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookGetContentOptions) (*policy.Request, error) {
+func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientGetContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/content"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -276,7 +263,7 @@ func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,34 +274,26 @@ func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// getContentHandleError handles the GetContent error response.
-func (client *RunbookClient) getContentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of runbooks.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RunbookClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *RunbookListByAutomationAccountOptions) *RunbookListByAutomationAccountPager {
-	return &RunbookListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.ListByAutomationAccount
+// method.
+func (client *RunbookClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *RunbookClientListByAutomationAccountOptions) *RunbookClientListByAutomationAccountPager {
+	return &RunbookClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp RunbookListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RunbookClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RunbookListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *RunbookClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *RunbookListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *RunbookClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *RunbookClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -328,7 +307,7 @@ func (client *RunbookClient) listByAutomationAccountCreateRequest(ctx context.Co
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -340,50 +319,41 @@ func (client *RunbookClient) listByAutomationAccountCreateRequest(ctx context.Co
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *RunbookClient) listByAutomationAccountHandleResponse(resp *http.Response) (RunbookListByAutomationAccountResponse, error) {
-	result := RunbookListByAutomationAccountResponse{RawResponse: resp}
+func (client *RunbookClient) listByAutomationAccountHandleResponse(resp *http.Response) (RunbookClientListByAutomationAccountResponse, error) {
+	result := RunbookClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunbookListResult); err != nil {
-		return RunbookListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return RunbookClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *RunbookClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginPublish - Publish runbook draft.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RunbookClient) BeginPublish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookBeginPublishOptions) (RunbookPublishPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The parameters supplied to the publish runbook operation.
+// options - RunbookClientBeginPublishOptions contains the optional parameters for the RunbookClient.BeginPublish method.
+func (client *RunbookClient) BeginPublish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientBeginPublishOptions) (RunbookClientPublishPollerResponse, error) {
 	resp, err := client.publish(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
-		return RunbookPublishPollerResponse{}, err
+		return RunbookClientPublishPollerResponse{}, err
 	}
-	result := RunbookPublishPollerResponse{
+	result := RunbookClientPublishPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RunbookClient.Publish", "", resp, client.pl, client.publishHandleError)
+	pt, err := armruntime.NewPoller("RunbookClient.Publish", "", resp, client.pl)
 	if err != nil {
-		return RunbookPublishPollerResponse{}, err
+		return RunbookClientPublishPollerResponse{}, err
 	}
-	result.Poller = &RunbookPublishPoller{
+	result.Poller = &RunbookClientPublishPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Publish - Publish runbook draft.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RunbookClient) publish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookBeginPublishOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RunbookClient) publish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientBeginPublishOptions) (*http.Response, error) {
 	req, err := client.publishCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
 		return nil, err
@@ -393,13 +363,13 @@ func (client *RunbookClient) publish(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.publishHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // publishCreateRequest creates the Publish request.
-func (client *RunbookClient) publishCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookBeginPublishOptions) (*policy.Request, error) {
+func (client *RunbookClient) publishCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookClientBeginPublishOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/publish"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -417,7 +387,7 @@ func (client *RunbookClient) publishCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -428,38 +398,30 @@ func (client *RunbookClient) publishCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// publishHandleError handles the Publish error response.
-func (client *RunbookClient) publishHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update the runbook identified by runbook name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RunbookClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookUpdateParameters, options *RunbookUpdateOptions) (RunbookUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// parameters - The update parameters for runbook.
+// options - RunbookClientUpdateOptions contains the optional parameters for the RunbookClient.Update method.
+func (client *RunbookClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookUpdateParameters, options *RunbookClientUpdateOptions) (RunbookClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, parameters, options)
 	if err != nil {
-		return RunbookUpdateResponse{}, err
+		return RunbookClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RunbookUpdateResponse{}, err
+		return RunbookClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RunbookUpdateResponse{}, client.updateHandleError(resp)
+		return RunbookClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RunbookClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookUpdateParameters, options *RunbookUpdateOptions) (*policy.Request, error) {
+func (client *RunbookClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters RunbookUpdateParameters, options *RunbookClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -477,7 +439,7 @@ func (client *RunbookClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -489,23 +451,10 @@ func (client *RunbookClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *RunbookClient) updateHandleResponse(resp *http.Response) (RunbookUpdateResponse, error) {
-	result := RunbookUpdateResponse{RawResponse: resp}
+func (client *RunbookClient) updateHandleResponse(resp *http.Response) (RunbookClientUpdateResponse, error) {
+	result := RunbookClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
-		return RunbookUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return RunbookClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *RunbookClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

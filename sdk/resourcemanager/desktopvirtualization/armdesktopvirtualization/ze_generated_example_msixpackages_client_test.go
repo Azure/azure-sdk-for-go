@@ -35,7 +35,7 @@ func ExampleMSIXPackagesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MSIXPackage.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MSIXPackagesClientGetResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Create.json
@@ -83,7 +83,7 @@ func ExampleMSIXPackagesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MSIXPackage.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MSIXPackagesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Delete.json
@@ -116,7 +116,7 @@ func ExampleMSIXPackagesClient_Update() {
 		"<resource-group-name>",
 		"<host-pool-name>",
 		"<msix-package-full-name>",
-		&armdesktopvirtualization.MSIXPackagesUpdateOptions{MsixPackage: &armdesktopvirtualization.MSIXPackagePatch{
+		&armdesktopvirtualization.MSIXPackagesClientUpdateOptions{MsixPackage: &armdesktopvirtualization.MSIXPackagePatch{
 			Properties: &armdesktopvirtualization.MSIXPackagePatchProperties{
 				DisplayName:           to.StringPtr("<display-name>"),
 				IsActive:              to.BoolPtr(true),
@@ -127,7 +127,7 @@ func ExampleMSIXPackagesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MSIXPackage.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MSIXPackagesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_List.json
@@ -141,12 +141,16 @@ func ExampleMSIXPackagesClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<host-pool-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MSIXPackage.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

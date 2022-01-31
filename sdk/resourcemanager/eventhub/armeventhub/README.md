@@ -11,7 +11,7 @@ The `armeventhub` module provides operations for working with Azure Event Hubs.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,13 @@ options = arm.ClientOptions{
 }
 client := armeventhub.NewPrivateEndpointConnectionsClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/clusters)
+- [Disaster Recovery Config](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/disaster_recovery_config)
+- [Event Hub](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/eventhub)
+- [Namespace](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/namespace)
 
 ## Provide Feedback
 

@@ -11,7 +11,6 @@ package armresources
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,54 @@ import (
 // TagsClient contains the methods for the Tags group.
 // Don't use this type directly, use NewTagsClient() instead.
 type TagsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTagsClient creates a new instance of TagsClient with the specified values.
+// subscriptionID - The Microsoft Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TagsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TagsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TagsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of
-// 512 characters and is case-insensitive. Tag names cannot have the
+// CreateOrUpdate - This operation allows adding a name to the list of predefined tag names for the given subscription. A
+// tag name can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the
 // following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (TagsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// tagName - The name of the tag to create.
+// options - TagsClientCreateOrUpdateOptions contains the optional parameters for the TagsClient.CreateOrUpdate method.
+func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsClientCreateOrUpdateOptions) (TagsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, tagName, options)
 	if err != nil {
-		return TagsCreateOrUpdateResponse{}, err
+		return TagsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagsCreateOrUpdateResponse{}, err
+		return TagsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TagsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return TagsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagName string, options *TagsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	if tagName == "" {
 		return nil, errors.New("parameter tagName cannot be empty")
@@ -72,7 +81,7 @@ func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -84,50 +93,40 @@ func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagNa
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TagsClient) createOrUpdateHandleResponse(resp *http.Response) (TagsCreateOrUpdateResponse, error) {
-	result := TagsCreateOrUpdateResponse{RawResponse: resp}
+func (client *TagsClient) createOrUpdateHandleResponse(resp *http.Response) (TagsClientCreateOrUpdateResponse, error) {
+	result := TagsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagDetails); err != nil {
-		return TagsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TagsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TagsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateOrUpdateAtScope - This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity
-// can have a maximum of 50 tags.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (TagsCreateOrUpdateAtScopeResponse, error) {
+// CreateOrUpdateAtScope - This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+// The specified entity can have a maximum of 50 tags.
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The resource scope.
+// options - TagsClientCreateOrUpdateAtScopeOptions contains the optional parameters for the TagsClient.CreateOrUpdateAtScope
+// method.
+func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsClientCreateOrUpdateAtScopeOptions) (TagsClientCreateOrUpdateAtScopeResponse, error) {
 	req, err := client.createOrUpdateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
-		return TagsCreateOrUpdateAtScopeResponse{}, err
+		return TagsClientCreateOrUpdateAtScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagsCreateOrUpdateAtScopeResponse{}, err
+		return TagsClientCreateOrUpdateAtScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagsCreateOrUpdateAtScopeResponse{}, client.createOrUpdateAtScopeHandleError(resp)
+		return TagsClientCreateOrUpdateAtScopeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateAtScopeHandleResponse(resp)
 }
 
 // createOrUpdateAtScopeCreateRequest creates the CreateOrUpdateAtScope request.
-func (client *TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*policy.Request, error) {
+func (client *TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsResource, options *TagsClientCreateOrUpdateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,47 +138,38 @@ func (client *TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context
 }
 
 // createOrUpdateAtScopeHandleResponse handles the CreateOrUpdateAtScope response.
-func (client *TagsClient) createOrUpdateAtScopeHandleResponse(resp *http.Response) (TagsCreateOrUpdateAtScopeResponse, error) {
-	result := TagsCreateOrUpdateAtScopeResponse{RawResponse: resp}
+func (client *TagsClient) createOrUpdateAtScopeHandleResponse(resp *http.Response) (TagsClientCreateOrUpdateAtScopeResponse, error) {
+	result := TagsClientCreateOrUpdateAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResource); err != nil {
-		return TagsCreateOrUpdateAtScopeResponse{}, runtime.NewResponseError(err, resp)
+		return TagsClientCreateOrUpdateAtScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateAtScopeHandleError handles the CreateOrUpdateAtScope error response.
-func (client *TagsClient) createOrUpdateAtScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateOrUpdateValue - This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have
-// a maximum of 256 characters.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (TagsCreateOrUpdateValueResponse, error) {
+// CreateOrUpdateValue - This operation allows adding a value to the list of predefined values for an existing predefined
+// tag name. A tag value can have a maximum of 256 characters.
+// If the operation fails it returns an *azcore.ResponseError type.
+// tagName - The name of the tag.
+// tagValue - The value of the tag to create.
+// options - TagsClientCreateOrUpdateValueOptions contains the optional parameters for the TagsClient.CreateOrUpdateValue
+// method.
+func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsClientCreateOrUpdateValueOptions) (TagsClientCreateOrUpdateValueResponse, error) {
 	req, err := client.createOrUpdateValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
-		return TagsCreateOrUpdateValueResponse{}, err
+		return TagsClientCreateOrUpdateValueResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagsCreateOrUpdateValueResponse{}, err
+		return TagsClientCreateOrUpdateValueResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TagsCreateOrUpdateValueResponse{}, client.createOrUpdateValueHandleError(resp)
+		return TagsClientCreateOrUpdateValueResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateValueHandleResponse(resp)
 }
 
 // createOrUpdateValueCreateRequest creates the CreateOrUpdateValue request.
-func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*policy.Request, error) {
+func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsClientCreateOrUpdateValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
 	if tagName == "" {
 		return nil, errors.New("parameter tagName cannot be empty")
@@ -193,7 +183,7 @@ func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -205,48 +195,37 @@ func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateValueHandleResponse handles the CreateOrUpdateValue response.
-func (client *TagsClient) createOrUpdateValueHandleResponse(resp *http.Response) (TagsCreateOrUpdateValueResponse, error) {
-	result := TagsCreateOrUpdateValueResponse{RawResponse: resp}
+func (client *TagsClient) createOrUpdateValueHandleResponse(resp *http.Response) (TagsClientCreateOrUpdateValueResponse, error) {
+	result := TagsClientCreateOrUpdateValueResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagValue); err != nil {
-		return TagsCreateOrUpdateValueResponse{}, runtime.NewResponseError(err, resp)
+		return TagsClientCreateOrUpdateValueResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateValueHandleError handles the CreateOrUpdateValue error response.
-func (client *TagsClient) createOrUpdateValueHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in
-// use as a tag name for any resource. All predefined values
+// Delete - This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
+// being deleted must not be in use as a tag name for any resource. All predefined values
 // for the given name must have already been deleted.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) Delete(ctx context.Context, tagName string, options *TagsDeleteOptions) (TagsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// tagName - The name of the tag.
+// options - TagsClientDeleteOptions contains the optional parameters for the TagsClient.Delete method.
+func (client *TagsClient) Delete(ctx context.Context, tagName string, options *TagsClientDeleteOptions) (TagsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, tagName, options)
 	if err != nil {
-		return TagsDeleteResponse{}, err
+		return TagsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagsDeleteResponse{}, err
+		return TagsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TagsDeleteResponse{}, client.deleteHandleError(resp)
+		return TagsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagsDeleteResponse{RawResponse: resp}, nil
+	return TagsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName string, options *TagsDeleteOptions) (*policy.Request, error) {
+func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName string, options *TagsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	if tagName == "" {
 		return nil, errors.New("parameter tagName cannot be empty")
@@ -256,7 +235,7 @@ func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName strin
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,43 +244,32 @@ func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName strin
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// deleteHandleError handles the Delete error response.
-func (client *TagsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // DeleteAtScope - Deletes the entire set of tags on a resource or subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (TagsDeleteAtScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The resource scope.
+// options - TagsClientDeleteAtScopeOptions contains the optional parameters for the TagsClient.DeleteAtScope method.
+func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, options *TagsClientDeleteAtScopeOptions) (TagsClientDeleteAtScopeResponse, error) {
 	req, err := client.deleteAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
-		return TagsDeleteAtScopeResponse{}, err
+		return TagsClientDeleteAtScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagsDeleteAtScopeResponse{}, err
+		return TagsClientDeleteAtScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagsDeleteAtScopeResponse{}, client.deleteAtScopeHandleError(resp)
+		return TagsClientDeleteAtScopeResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagsDeleteAtScopeResponse{RawResponse: resp}, nil
+	return TagsClientDeleteAtScopeResponse{RawResponse: resp}, nil
 }
 
 // deleteAtScopeCreateRequest creates the DeleteAtScope request.
-func (client *TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*policy.Request, error) {
+func (client *TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, options *TagsClientDeleteAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,40 +280,30 @@ func (client *TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope 
 	return req, nil
 }
 
-// deleteAtScopeHandleError handles the DeleteAtScope error response.
-func (client *TagsClient) deleteAtScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteValue - This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted
-// must not be in use as a tag value for the given tag name for any
+// DeleteValue - This operation allows deleting a value from the list of predefined values for an existing predefined tag
+// name. The value being deleted must not be in use as a tag value for the given tag name for any
 // resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (TagsDeleteValueResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// tagName - The name of the tag.
+// tagValue - The value of the tag to delete.
+// options - TagsClientDeleteValueOptions contains the optional parameters for the TagsClient.DeleteValue method.
+func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsClientDeleteValueOptions) (TagsClientDeleteValueResponse, error) {
 	req, err := client.deleteValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
-		return TagsDeleteValueResponse{}, err
+		return TagsClientDeleteValueResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagsDeleteValueResponse{}, err
+		return TagsClientDeleteValueResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TagsDeleteValueResponse{}, client.deleteValueHandleError(resp)
+		return TagsClientDeleteValueResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagsDeleteValueResponse{RawResponse: resp}, nil
+	return TagsClientDeleteValueResponse{RawResponse: resp}, nil
 }
 
 // deleteValueCreateRequest creates the DeleteValue request.
-func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*policy.Request, error) {
+func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsClientDeleteValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
 	if tagName == "" {
 		return nil, errors.New("parameter tagName cannot be empty")
@@ -359,7 +317,7 @@ func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -370,41 +328,30 @@ func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName 
 	return req, nil
 }
 
-// deleteValueHandleError handles the DeleteValue error response.
-func (client *TagsClient) deleteValueHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAtScope - Gets the entire set of tags on a resource or subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (TagsGetAtScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The resource scope.
+// options - TagsClientGetAtScopeOptions contains the optional parameters for the TagsClient.GetAtScope method.
+func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options *TagsClientGetAtScopeOptions) (TagsClientGetAtScopeResponse, error) {
 	req, err := client.getAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
-		return TagsGetAtScopeResponse{}, err
+		return TagsClientGetAtScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagsGetAtScopeResponse{}, err
+		return TagsClientGetAtScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagsGetAtScopeResponse{}, client.getAtScopeHandleError(resp)
+		return TagsClientGetAtScopeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAtScopeHandleResponse(resp)
 }
 
 // getAtScopeCreateRequest creates the GetAtScope request.
-func (client *TagsClient) getAtScopeCreateRequest(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*policy.Request, error) {
+func (client *TagsClient) getAtScopeCreateRequest(ctx context.Context, scope string, options *TagsClientGetAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -416,51 +363,39 @@ func (client *TagsClient) getAtScopeCreateRequest(ctx context.Context, scope str
 }
 
 // getAtScopeHandleResponse handles the GetAtScope response.
-func (client *TagsClient) getAtScopeHandleResponse(resp *http.Response) (TagsGetAtScopeResponse, error) {
-	result := TagsGetAtScopeResponse{RawResponse: resp}
+func (client *TagsClient) getAtScopeHandleResponse(resp *http.Response) (TagsClientGetAtScopeResponse, error) {
+	result := TagsClientGetAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResource); err != nil {
-		return TagsGetAtScopeResponse{}, runtime.NewResponseError(err, resp)
+		return TagsClientGetAtScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// getAtScopeHandleError handles the GetAtScope error response.
-func (client *TagsClient) getAtScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for
-// each tag name and value under the given subscription.
+// List - This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
+// returns a summary of usage for each tag name and value under the given subscription.
 // In case of a large number of tags, this operation may return a previously cached result.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) List(options *TagsListOptions) *TagsListPager {
-	return &TagsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - TagsClientListOptions contains the optional parameters for the TagsClient.List method.
+func (client *TagsClient) List(options *TagsClientListOptions) *TagsClientListPager {
+	return &TagsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp TagsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TagsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagsListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TagsClient) listCreateRequest(ctx context.Context, options *TagsListOptions) (*policy.Request, error) {
+func (client *TagsClient) listCreateRequest(ctx context.Context, options *TagsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -472,53 +407,42 @@ func (client *TagsClient) listCreateRequest(ctx context.Context, options *TagsLi
 }
 
 // listHandleResponse handles the List response.
-func (client *TagsClient) listHandleResponse(resp *http.Response) (TagsListResponse, error) {
-	result := TagsListResponse{RawResponse: resp}
+func (client *TagsClient) listHandleResponse(resp *http.Response) (TagsClientListResponse, error) {
+	result := TagsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsListResult); err != nil {
-		return TagsListResponse{}, runtime.NewResponseError(err, resp)
+		return TagsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *TagsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// UpdateAtScope - This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription. The specified entity
-// can have a maximum of 50 tags at the end of the operation. The
-// 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values
-// of tags with existing names. The 'delete' option
+// UpdateAtScope - This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
+// The specified entity can have a maximum of 50 tags at the end of the operation. The
+// 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+// names and updating the values of tags with existing names. The 'delete' option
 // allows selectively deleting tags based on given names or name/value pairs.
-// If the operation fails it returns the *CloudError error type.
-func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (TagsUpdateAtScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The resource scope.
+// options - TagsClientUpdateAtScopeOptions contains the optional parameters for the TagsClient.UpdateAtScope method.
+func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsClientUpdateAtScopeOptions) (TagsClientUpdateAtScopeResponse, error) {
 	req, err := client.updateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
-		return TagsUpdateAtScopeResponse{}, err
+		return TagsClientUpdateAtScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagsUpdateAtScopeResponse{}, err
+		return TagsClientUpdateAtScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagsUpdateAtScopeResponse{}, client.updateAtScopeHandleError(resp)
+		return TagsClientUpdateAtScopeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateAtScopeHandleResponse(resp)
 }
 
 // updateAtScopeCreateRequest creates the UpdateAtScope request.
-func (client *TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*policy.Request, error) {
+func (client *TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsClientUpdateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -530,23 +454,10 @@ func (client *TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope 
 }
 
 // updateAtScopeHandleResponse handles the UpdateAtScope response.
-func (client *TagsClient) updateAtScopeHandleResponse(resp *http.Response) (TagsUpdateAtScopeResponse, error) {
-	result := TagsUpdateAtScopeResponse{RawResponse: resp}
+func (client *TagsClient) updateAtScopeHandleResponse(resp *http.Response) (TagsClientUpdateAtScopeResponse, error) {
+	result := TagsClientUpdateAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResource); err != nil {
-		return TagsUpdateAtScopeResponse{}, runtime.NewResponseError(err, resp)
+		return TagsClientUpdateAtScopeResponse{}, err
 	}
 	return result, nil
-}
-
-// updateAtScopeHandleError handles the UpdateAtScope error response.
-func (client *TagsClient) updateAtScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

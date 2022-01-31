@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// ExtensionsListByFarmBeatsPager provides operations for iterating over paged responses.
-type ExtensionsListByFarmBeatsPager struct {
+// ExtensionsClientListByFarmBeatsPager provides operations for iterating over paged responses.
+type ExtensionsClientListByFarmBeatsPager struct {
 	client    *ExtensionsClient
-	current   ExtensionsListByFarmBeatsResponse
+	current   ExtensionsClientListByFarmBeatsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ExtensionsListByFarmBeatsResponse) (*policy.Request, error)
+	advancer  func(context.Context, ExtensionsClientListByFarmBeatsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ExtensionsListByFarmBeatsPager) Err() error {
+func (p *ExtensionsClientListByFarmBeatsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ExtensionsListByFarmBeatsPager) NextPage(ctx context.Context) bool {
+func (p *ExtensionsClientListByFarmBeatsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *ExtensionsListByFarmBeatsPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByFarmBeatsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByFarmBeatsHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *ExtensionsListByFarmBeatsPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ExtensionsListByFarmBeatsResponse page.
-func (p *ExtensionsListByFarmBeatsPager) PageResponse() ExtensionsListByFarmBeatsResponse {
+// PageResponse returns the current ExtensionsClientListByFarmBeatsResponse page.
+func (p *ExtensionsClientListByFarmBeatsPager) PageResponse() ExtensionsClientListByFarmBeatsResponse {
 	return p.current
 }
 
-// FarmBeatsExtensionsListPager provides operations for iterating over paged responses.
-type FarmBeatsExtensionsListPager struct {
+// FarmBeatsExtensionsClientListPager provides operations for iterating over paged responses.
+type FarmBeatsExtensionsClientListPager struct {
 	client    *FarmBeatsExtensionsClient
-	current   FarmBeatsExtensionsListResponse
+	current   FarmBeatsExtensionsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, FarmBeatsExtensionsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, FarmBeatsExtensionsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *FarmBeatsExtensionsListPager) Err() error {
+func (p *FarmBeatsExtensionsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *FarmBeatsExtensionsListPager) NextPage(ctx context.Context) bool {
+func (p *FarmBeatsExtensionsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *FarmBeatsExtensionsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *FarmBeatsExtensionsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current FarmBeatsExtensionsListResponse page.
-func (p *FarmBeatsExtensionsListPager) PageResponse() FarmBeatsExtensionsListResponse {
+// PageResponse returns the current FarmBeatsExtensionsClientListResponse page.
+func (p *FarmBeatsExtensionsClientListPager) PageResponse() FarmBeatsExtensionsClientListResponse {
 	return p.current
 }
 
-// FarmBeatsModelsListByResourceGroupPager provides operations for iterating over paged responses.
-type FarmBeatsModelsListByResourceGroupPager struct {
+// FarmBeatsModelsClientListByResourceGroupPager provides operations for iterating over paged responses.
+type FarmBeatsModelsClientListByResourceGroupPager struct {
 	client    *FarmBeatsModelsClient
-	current   FarmBeatsModelsListByResourceGroupResponse
+	current   FarmBeatsModelsClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, FarmBeatsModelsListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, FarmBeatsModelsClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *FarmBeatsModelsListByResourceGroupPager) Err() error {
+func (p *FarmBeatsModelsClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *FarmBeatsModelsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *FarmBeatsModelsClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *FarmBeatsModelsListByResourceGroupPager) NextPage(ctx context.Context) 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *FarmBeatsModelsListByResourceGroupPager) NextPage(ctx context.Context) 
 	return true
 }
 
-// PageResponse returns the current FarmBeatsModelsListByResourceGroupResponse page.
-func (p *FarmBeatsModelsListByResourceGroupPager) PageResponse() FarmBeatsModelsListByResourceGroupResponse {
+// PageResponse returns the current FarmBeatsModelsClientListByResourceGroupResponse page.
+func (p *FarmBeatsModelsClientListByResourceGroupPager) PageResponse() FarmBeatsModelsClientListByResourceGroupResponse {
 	return p.current
 }
 
-// FarmBeatsModelsListBySubscriptionPager provides operations for iterating over paged responses.
-type FarmBeatsModelsListBySubscriptionPager struct {
+// FarmBeatsModelsClientListBySubscriptionPager provides operations for iterating over paged responses.
+type FarmBeatsModelsClientListBySubscriptionPager struct {
 	client    *FarmBeatsModelsClient
-	current   FarmBeatsModelsListBySubscriptionResponse
+	current   FarmBeatsModelsClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, FarmBeatsModelsListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, FarmBeatsModelsClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *FarmBeatsModelsListBySubscriptionPager) Err() error {
+func (p *FarmBeatsModelsClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *FarmBeatsModelsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *FarmBeatsModelsClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *FarmBeatsModelsListBySubscriptionPager) NextPage(ctx context.Context) b
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *FarmBeatsModelsListBySubscriptionPager) NextPage(ctx context.Context) b
 	return true
 }
 
-// PageResponse returns the current FarmBeatsModelsListBySubscriptionResponse page.
-func (p *FarmBeatsModelsListBySubscriptionPager) PageResponse() FarmBeatsModelsListBySubscriptionResponse {
+// PageResponse returns the current FarmBeatsModelsClientListBySubscriptionResponse page.
+func (p *FarmBeatsModelsClientListBySubscriptionPager) PageResponse() FarmBeatsModelsClientListBySubscriptionResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -281,7 +281,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }

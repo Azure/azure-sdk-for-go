@@ -25,13 +25,14 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	}
 	ctx := context.Background()
 	client := armattestation.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientListResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/AttestationProviderGetPrivateEndpointConnection.json
@@ -50,7 +51,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/AttestationProviderPutPrivateEndpointConnection.json
@@ -69,7 +70,7 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 			Properties: &armattestation.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armattestation.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armattestation.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Status:      armattestation.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -77,7 +78,7 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/AttestationProviderDeletePrivateEndpointConnection.json

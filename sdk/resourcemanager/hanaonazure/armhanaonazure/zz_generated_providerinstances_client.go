@@ -11,7 +11,6 @@ package armhanaonazure
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,62 @@ import (
 // ProviderInstancesClient contains the methods for the ProviderInstances group.
 // Don't use this type directly, use NewProviderInstancesClient() instead.
 type ProviderInstancesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProviderInstancesClient creates a new instance of ProviderInstancesClient with the specified values.
+// subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
+// the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProviderInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProviderInstancesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProviderInstancesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProviderInstancesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreate - Creates a provider instance for the specified subscription, resource group, SapMonitor name, and resource name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProviderInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesBeginCreateOptions) (ProviderInstancesCreatePollerResponse, error) {
+// BeginCreate - Creates a provider instance for the specified subscription, resource group, SapMonitor name, and resource
+// name.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// sapMonitorName - Name of the SAP monitor resource.
+// providerInstanceName - Name of the provider instance.
+// providerInstanceParameter - Request body representing a provider instance
+// options - ProviderInstancesClientBeginCreateOptions contains the optional parameters for the ProviderInstancesClient.BeginCreate
+// method.
+func (client *ProviderInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesClientBeginCreateOptions) (ProviderInstancesClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, sapMonitorName, providerInstanceName, providerInstanceParameter, options)
 	if err != nil {
-		return ProviderInstancesCreatePollerResponse{}, err
+		return ProviderInstancesClientCreatePollerResponse{}, err
 	}
-	result := ProviderInstancesCreatePollerResponse{
+	result := ProviderInstancesClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ProviderInstancesClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ProviderInstancesClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ProviderInstancesCreatePollerResponse{}, err
+		return ProviderInstancesClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ProviderInstancesCreatePoller{
+	result.Poller = &ProviderInstancesClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a provider instance for the specified subscription, resource group, SapMonitor name, and resource name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProviderInstancesClient) create(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProviderInstancesClient) create(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, sapMonitorName, providerInstanceName, providerInstanceParameter, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +89,13 @@ func (client *ProviderInstancesClient) create(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesBeginCreateOptions) (*policy.Request, error) {
+func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances/{providerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +113,7 @@ func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter providerInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerInstanceName}", url.PathEscape(providerInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +124,35 @@ func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, 
 	return req, runtime.MarshalAsJSON(req, providerInstanceParameter)
 }
 
-// createHandleError handles the Create error response.
-func (client *ProviderInstancesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDelete - Deletes a provider instance for the specified subscription, resource group, SapMonitor name, and resource name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProviderInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesBeginDeleteOptions) (ProviderInstancesDeletePollerResponse, error) {
+// BeginDelete - Deletes a provider instance for the specified subscription, resource group, SapMonitor name, and resource
+// name.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// sapMonitorName - Name of the SAP monitor resource.
+// providerInstanceName - Name of the provider instance.
+// options - ProviderInstancesClientBeginDeleteOptions contains the optional parameters for the ProviderInstancesClient.BeginDelete
+// method.
+func (client *ProviderInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesClientBeginDeleteOptions) (ProviderInstancesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, sapMonitorName, providerInstanceName, options)
 	if err != nil {
-		return ProviderInstancesDeletePollerResponse{}, err
+		return ProviderInstancesClientDeletePollerResponse{}, err
 	}
-	result := ProviderInstancesDeletePollerResponse{
+	result := ProviderInstancesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ProviderInstancesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ProviderInstancesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ProviderInstancesDeletePollerResponse{}, err
+		return ProviderInstancesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ProviderInstancesDeletePoller{
+	result.Poller = &ProviderInstancesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a provider instance for the specified subscription, resource group, SapMonitor name, and resource name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProviderInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProviderInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sapMonitorName, providerInstanceName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +162,13 @@ func (client *ProviderInstancesClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesBeginDeleteOptions) (*policy.Request, error) {
+func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances/{providerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +186,7 @@ func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter providerInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerInstanceName}", url.PathEscape(providerInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +197,30 @@ func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ProviderInstancesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Gets properties of a provider instance for the specified subscription, resource group, SapMonitor name, and resource name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProviderInstancesClient) Get(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesGetOptions) (ProviderInstancesGetResponse, error) {
+// Get - Gets properties of a provider instance for the specified subscription, resource group, SapMonitor name, and resource
+// name.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// sapMonitorName - Name of the SAP monitor resource.
+// providerInstanceName - Name of the provider instance.
+// options - ProviderInstancesClientGetOptions contains the optional parameters for the ProviderInstancesClient.Get method.
+func (client *ProviderInstancesClient) Get(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesClientGetOptions) (ProviderInstancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, sapMonitorName, providerInstanceName, options)
 	if err != nil {
-		return ProviderInstancesGetResponse{}, err
+		return ProviderInstancesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProviderInstancesGetResponse{}, err
+		return ProviderInstancesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProviderInstancesGetResponse{}, client.getHandleError(resp)
+		return ProviderInstancesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProviderInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesGetOptions) (*policy.Request, error) {
+func (client *ProviderInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances/{providerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +238,7 @@ func (client *ProviderInstancesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter providerInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerInstanceName}", url.PathEscape(providerInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +250,34 @@ func (client *ProviderInstancesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProviderInstancesClient) getHandleResponse(resp *http.Response) (ProviderInstancesGetResponse, error) {
-	result := ProviderInstancesGetResponse{RawResponse: resp}
+func (client *ProviderInstancesClient) getHandleResponse(resp *http.Response) (ProviderInstancesClientGetResponse, error) {
+	result := ProviderInstancesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderInstance); err != nil {
-		return ProviderInstancesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProviderInstancesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProviderInstancesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProviderInstancesClient) List(resourceGroupName string, sapMonitorName string, options *ProviderInstancesListOptions) *ProviderInstancesListPager {
-	return &ProviderInstancesListPager{
+// List - Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each
+// provider instances.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// sapMonitorName - Name of the SAP monitor resource.
+// options - ProviderInstancesClientListOptions contains the optional parameters for the ProviderInstancesClient.List method.
+func (client *ProviderInstancesClient) List(resourceGroupName string, sapMonitorName string, options *ProviderInstancesClientListOptions) *ProviderInstancesClientListPager {
+	return &ProviderInstancesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, sapMonitorName, options)
 		},
-		advancer: func(ctx context.Context, resp ProviderInstancesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderInstancesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProviderInstanceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ProviderInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, options *ProviderInstancesListOptions) (*policy.Request, error) {
+func (client *ProviderInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, options *ProviderInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +291,7 @@ func (client *ProviderInstancesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter sapMonitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sapMonitorName}", url.PathEscape(sapMonitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,23 +303,10 @@ func (client *ProviderInstancesClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *ProviderInstancesClient) listHandleResponse(resp *http.Response) (ProviderInstancesListResponse, error) {
-	result := ProviderInstancesListResponse{RawResponse: resp}
+func (client *ProviderInstancesClient) listHandleResponse(resp *http.Response) (ProviderInstancesClientListResponse, error) {
+	result := ProviderInstancesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderInstanceListResult); err != nil {
-		return ProviderInstancesListResponse{}, runtime.NewResponseError(err, resp)
+		return ProviderInstancesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ProviderInstancesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

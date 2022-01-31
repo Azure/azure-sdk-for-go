@@ -1,0 +1,274 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*VirtualMachineImageTemplatesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *VirtualMachineImageTemplatesListByResourceGroupOptions)` to `(string, *VirtualMachineImageTemplatesClientListByResourceGroupOptions)`
+- Function `*VirtualMachineImageTemplatesClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualMachineImageTemplatesListByResourceGroupPager)` to `(*VirtualMachineImageTemplatesClientListByResourceGroupPager)`
+- Function `*VirtualMachineImageTemplatesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineImageTemplatesBeginDeleteOptions)` to `(context.Context, string, string, *VirtualMachineImageTemplatesClientBeginDeleteOptions)`
+- Function `*VirtualMachineImageTemplatesClient.BeginDelete` return value(s) have been changed from `(VirtualMachineImageTemplatesDeletePollerResponse, error)` to `(VirtualMachineImageTemplatesClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*VirtualMachineImageTemplatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ImageTemplate, *VirtualMachineImageTemplatesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, ImageTemplate, *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachineImageTemplatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineImageTemplatesCreateOrUpdatePollerResponse, error)` to `(VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse, error)`
+- Function `*VirtualMachineImageTemplatesClient.GetRunOutput` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineImageTemplatesGetRunOutputOptions)` to `(context.Context, string, string, string, *VirtualMachineImageTemplatesClientGetRunOutputOptions)`
+- Function `*VirtualMachineImageTemplatesClient.GetRunOutput` return value(s) have been changed from `(VirtualMachineImageTemplatesGetRunOutputResponse, error)` to `(VirtualMachineImageTemplatesClientGetRunOutputResponse, error)`
+- Function `*VirtualMachineImageTemplatesClient.List` parameter(s) have been changed from `(*VirtualMachineImageTemplatesListOptions)` to `(*VirtualMachineImageTemplatesClientListOptions)`
+- Function `*VirtualMachineImageTemplatesClient.List` return value(s) have been changed from `(*VirtualMachineImageTemplatesListPager)` to `(*VirtualMachineImageTemplatesClientListPager)`
+- Function `*VirtualMachineImageTemplatesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineImageTemplatesGetOptions)` to `(context.Context, string, string, *VirtualMachineImageTemplatesClientGetOptions)`
+- Function `*VirtualMachineImageTemplatesClient.Get` return value(s) have been changed from `(VirtualMachineImageTemplatesGetResponse, error)` to `(VirtualMachineImageTemplatesClientGetResponse, error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginCancel` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineImageTemplatesBeginCancelOptions)` to `(context.Context, string, string, *VirtualMachineImageTemplatesClientBeginCancelOptions)`
+- Function `*VirtualMachineImageTemplatesClient.BeginCancel` return value(s) have been changed from `(VirtualMachineImageTemplatesCancelPollerResponse, error)` to `(VirtualMachineImageTemplatesClientCancelPollerResponse, error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginRun` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineImageTemplatesBeginRunOptions)` to `(context.Context, string, string, *VirtualMachineImageTemplatesClientBeginRunOptions)`
+- Function `*VirtualMachineImageTemplatesClient.BeginRun` return value(s) have been changed from `(VirtualMachineImageTemplatesRunPollerResponse, error)` to `(VirtualMachineImageTemplatesClientRunPollerResponse, error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ImageTemplateUpdateParameters, *VirtualMachineImageTemplatesBeginUpdateOptions)` to `(context.Context, string, string, ImageTemplateUpdateParameters, *VirtualMachineImageTemplatesClientBeginUpdateOptions)`
+- Function `*VirtualMachineImageTemplatesClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineImageTemplatesUpdatePollerResponse, error)` to `(VirtualMachineImageTemplatesClientUpdatePollerResponse, error)`
+- Function `*VirtualMachineImageTemplatesClient.ListRunOutputs` parameter(s) have been changed from `(string, string, *VirtualMachineImageTemplatesListRunOutputsOptions)` to `(string, string, *VirtualMachineImageTemplatesClientListRunOutputsOptions)`
+- Function `*VirtualMachineImageTemplatesClient.ListRunOutputs` return value(s) have been changed from `(*VirtualMachineImageTemplatesListRunOutputsPager)` to `(*VirtualMachineImageTemplatesClientListRunOutputsPager)`
+- Function `*VirtualMachineImageTemplatesCancelPoller.Done` has been removed
+- Function `*VirtualMachineImageTemplatesListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualMachineImageTemplatesRunPoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesListPager.NextPage` has been removed
+- Function `*VirtualMachineImageTemplatesListRunOutputsPager.Err` has been removed
+- Function `VirtualMachineImageTemplatesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineImageTemplatesDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineImageTemplatesListRunOutputsPager.NextPage` has been removed
+- Function `*VirtualMachineImageTemplatesListPager.PageResponse` has been removed
+- Function `*ImageTemplateDistributor.UnmarshalJSON` has been removed
+- Function `*VirtualMachineImageTemplatesDeletePoller.Poll` has been removed
+- Function `*VirtualMachineImageTemplatesListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachineImageTemplatesDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesRunPoller.FinalResponse` has been removed
+- Function `*VirtualMachineImageTemplatesUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineImageTemplatesCreateOrUpdatePoller.Done` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*VirtualMachineImageTemplatesListRunOutputsPager.PageResponse` has been removed
+- Function `*VirtualMachineImageTemplatesCancelPoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesCreateOrUpdatePoller.Poll` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*VirtualMachineImageTemplatesUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineImageTemplatesCancelPoller.Poll` has been removed
+- Function `*ImageTemplateSource.UnmarshalJSON` has been removed
+- Function `*VirtualMachineImageTemplatesRunPollerResponse.Resume` has been removed
+- Function `*VirtualMachineImageTemplatesRunPoller.Done` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*VirtualMachineImageTemplatesListPager.Err` has been removed
+- Function `VirtualMachineImageTemplatesRunPollerResponse.PollUntilDone` has been removed
+- Function `*ImageTemplateCustomizer.UnmarshalJSON` has been removed
+- Function `*VirtualMachineImageTemplatesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineImageTemplatesListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachineImageTemplatesDeletePoller.Done` has been removed
+- Function `*VirtualMachineImageTemplatesRunPoller.Poll` has been removed
+- Function `*VirtualMachineImageTemplatesUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachineImageTemplatesCancelPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineImageTemplatesDeletePollerResponse.Resume` has been removed
+- Function `VirtualMachineImageTemplatesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineImageTemplatesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineImageTemplatesCancelPollerResponse.Resume` has been removed
+- Function `*VirtualMachineImageTemplatesUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineImageTemplatesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineImageTemplatesUpdatePoller.Done` has been removed
+- Function `VirtualMachineImageTemplatesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineImageTemplatesCancelPoller.FinalResponse` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `VirtualMachineImageTemplatesBeginCancelOptions` has been removed
+- Struct `VirtualMachineImageTemplatesBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachineImageTemplatesBeginDeleteOptions` has been removed
+- Struct `VirtualMachineImageTemplatesBeginRunOptions` has been removed
+- Struct `VirtualMachineImageTemplatesBeginUpdateOptions` has been removed
+- Struct `VirtualMachineImageTemplatesCancelPoller` has been removed
+- Struct `VirtualMachineImageTemplatesCancelPollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesCancelResponse` has been removed
+- Struct `VirtualMachineImageTemplatesCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineImageTemplatesCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachineImageTemplatesCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineImageTemplatesDeletePoller` has been removed
+- Struct `VirtualMachineImageTemplatesDeletePollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesDeleteResponse` has been removed
+- Struct `VirtualMachineImageTemplatesGetOptions` has been removed
+- Struct `VirtualMachineImageTemplatesGetResponse` has been removed
+- Struct `VirtualMachineImageTemplatesGetResult` has been removed
+- Struct `VirtualMachineImageTemplatesGetRunOutputOptions` has been removed
+- Struct `VirtualMachineImageTemplatesGetRunOutputResponse` has been removed
+- Struct `VirtualMachineImageTemplatesGetRunOutputResult` has been removed
+- Struct `VirtualMachineImageTemplatesListByResourceGroupOptions` has been removed
+- Struct `VirtualMachineImageTemplatesListByResourceGroupPager` has been removed
+- Struct `VirtualMachineImageTemplatesListByResourceGroupResponse` has been removed
+- Struct `VirtualMachineImageTemplatesListByResourceGroupResult` has been removed
+- Struct `VirtualMachineImageTemplatesListOptions` has been removed
+- Struct `VirtualMachineImageTemplatesListPager` has been removed
+- Struct `VirtualMachineImageTemplatesListResponse` has been removed
+- Struct `VirtualMachineImageTemplatesListResult` has been removed
+- Struct `VirtualMachineImageTemplatesListRunOutputsOptions` has been removed
+- Struct `VirtualMachineImageTemplatesListRunOutputsPager` has been removed
+- Struct `VirtualMachineImageTemplatesListRunOutputsResponse` has been removed
+- Struct `VirtualMachineImageTemplatesListRunOutputsResult` has been removed
+- Struct `VirtualMachineImageTemplatesRunPoller` has been removed
+- Struct `VirtualMachineImageTemplatesRunPollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesRunResponse` has been removed
+- Struct `VirtualMachineImageTemplatesUpdatePoller` has been removed
+- Struct `VirtualMachineImageTemplatesUpdatePollerResponse` has been removed
+- Struct `VirtualMachineImageTemplatesUpdateResponse` has been removed
+- Struct `VirtualMachineImageTemplatesUpdateResult` has been removed
+- Field `ImageTemplateDistributor` of struct `ImageTemplateSharedImageDistributor` has been removed
+- Field `ImageTemplateCustomizer` of struct `ImageTemplateWindowsUpdateCustomizer` has been removed
+- Field `ImageTemplateSource` of struct `ImageTemplatePlatformImageSource` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `ImageTemplateSource` of struct `ImageTemplateSharedImageVersionSource` has been removed
+- Field `ImageTemplateDistributor` of struct `ImageTemplateVhdDistributor` has been removed
+- Field `ImageTemplateCustomizer` of struct `ImageTemplateFileCustomizer` has been removed
+- Field `ImageTemplateDistributor` of struct `ImageTemplateManagedImageDistributor` has been removed
+- Field `SubResource` of struct `RunOutput` has been removed
+- Field `ImageTemplateCustomizer` of struct `ImageTemplateShellCustomizer` has been removed
+- Field `ImageTemplateCustomizer` of struct `ImageTemplateRestartCustomizer` has been removed
+- Field `TrackedResource` of struct `ImageTemplate` has been removed
+- Field `ImageTemplateCustomizer` of struct `ImageTemplatePowerShellCustomizer` has been removed
+- Field `ImageTemplateSource` of struct `ImageTemplateManagedImageSource` has been removed
+
+### Features Added
+
+- New function `*ImageTemplateFileCustomizer.GetImageTemplateCustomizer() *ImageTemplateCustomizer`
+- New function `*VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachineImageTemplatesClient, string) error`
+- New function `*VirtualMachineImageTemplatesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `VirtualMachineImageTemplatesClientCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineImageTemplatesClientCancelResponse, error)`
+- New function `ImageTemplateDistributor.MarshalJSON() ([]byte, error)`
+- New function `*VirtualMachineImageTemplatesClientDeletePoller.Done() bool`
+- New function `*VirtualMachineImageTemplatesClientListByResourceGroupPager.Err() error`
+- New function `*VirtualMachineImageTemplatesClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachineImageTemplatesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineImageTemplatesClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachineImageTemplatesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineImageTemplatesClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineImageTemplatesClientCancelPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineImageTemplatesClientCancelPoller.Done() bool`
+- New function `*VirtualMachineImageTemplatesClientRunPoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineImageTemplatesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineImageTemplatesClientDeletePollerResponse.Resume(context.Context, *VirtualMachineImageTemplatesClient, string) error`
+- New function `*ImageTemplateRestartCustomizer.GetImageTemplateCustomizer() *ImageTemplateCustomizer`
+- New function `*VirtualMachineImageTemplatesClientListRunOutputsPager.PageResponse() VirtualMachineImageTemplatesClientListRunOutputsResponse`
+- New function `*VirtualMachineImageTemplatesClientDeletePoller.FinalResponse(context.Context) (VirtualMachineImageTemplatesClientDeleteResponse, error)`
+- New function `*VirtualMachineImageTemplatesClientRunPollerResponse.Resume(context.Context, *VirtualMachineImageTemplatesClient, string) error`
+- New function `*ImageTemplatePowerShellCustomizer.GetImageTemplateCustomizer() *ImageTemplateCustomizer`
+- New function `*VirtualMachineImageTemplatesClientCancelPollerResponse.Resume(context.Context, *VirtualMachineImageTemplatesClient, string) error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*VirtualMachineImageTemplatesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ImageTemplateSharedImageDistributor.GetImageTemplateDistributor() *ImageTemplateDistributor`
+- New function `*ImageTemplateShellCustomizer.GetImageTemplateCustomizer() *ImageTemplateCustomizer`
+- New function `VirtualMachineImageTemplatesClientRunPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineImageTemplatesClientRunResponse, error)`
+- New function `*VirtualMachineImageTemplatesClientRunPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineImageTemplatesClientRunPoller.Done() bool`
+- New function `*VirtualMachineImageTemplatesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineImageTemplatesClientCancelPoller.FinalResponse(context.Context) (VirtualMachineImageTemplatesClientCancelResponse, error)`
+- New function `*VirtualMachineImageTemplatesClientCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*ImageTemplateSharedImageVersionSource.GetImageTemplateSource() *ImageTemplateSource`
+- New function `*VirtualMachineImageTemplatesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `VirtualMachineImageTemplatesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineImageTemplatesClientDeleteResponse, error)`
+- New function `*VirtualMachineImageTemplatesClientListByResourceGroupPager.PageResponse() VirtualMachineImageTemplatesClientListByResourceGroupResponse`
+- New function `*VirtualMachineImageTemplatesClientUpdatePoller.FinalResponse(context.Context) (VirtualMachineImageTemplatesClientUpdateResponse, error)`
+- New function `*VirtualMachineImageTemplatesClientListPager.Err() error`
+- New function `*ImageTemplateManagedImageSource.GetImageTemplateSource() *ImageTemplateSource`
+- New function `*VirtualMachineImageTemplatesClientListRunOutputsPager.NextPage(context.Context) bool`
+- New function `*ImageTemplateVhdDistributor.UnmarshalJSON([]byte) error`
+- New function `*ImageTemplateManagedImageDistributor.GetImageTemplateDistributor() *ImageTemplateDistributor`
+- New function `*VirtualMachineImageTemplatesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineImageTemplatesClientUpdatePoller.Done() bool`
+- New function `*VirtualMachineImageTemplatesClientListRunOutputsPager.Err() error`
+- New function `*VirtualMachineImageTemplatesClientListPager.PageResponse() VirtualMachineImageTemplatesClientListResponse`
+- New function `*VirtualMachineImageTemplatesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ImageTemplateWindowsUpdateCustomizer.GetImageTemplateCustomizer() *ImageTemplateCustomizer`
+- New function `*ImageTemplatePlatformImageSource.GetImageTemplateSource() *ImageTemplateSource`
+- New function `*VirtualMachineImageTemplatesClientRunPoller.FinalResponse(context.Context) (VirtualMachineImageTemplatesClientRunResponse, error)`
+- New function `VirtualMachineImageTemplatesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineImageTemplatesClientUpdateResponse, error)`
+- New function `*ImageTemplateVhdDistributor.GetImageTemplateDistributor() *ImageTemplateDistributor`
+- New function `*VirtualMachineImageTemplatesClientUpdatePollerResponse.Resume(context.Context, *VirtualMachineImageTemplatesClient, string) error`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `VirtualMachineImageTemplatesClientBeginCancelOptions`
+- New struct `VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachineImageTemplatesClientBeginDeleteOptions`
+- New struct `VirtualMachineImageTemplatesClientBeginRunOptions`
+- New struct `VirtualMachineImageTemplatesClientBeginUpdateOptions`
+- New struct `VirtualMachineImageTemplatesClientCancelPoller`
+- New struct `VirtualMachineImageTemplatesClientCancelPollerResponse`
+- New struct `VirtualMachineImageTemplatesClientCancelResponse`
+- New struct `VirtualMachineImageTemplatesClientCreateOrUpdatePoller`
+- New struct `VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachineImageTemplatesClientCreateOrUpdateResponse`
+- New struct `VirtualMachineImageTemplatesClientCreateOrUpdateResult`
+- New struct `VirtualMachineImageTemplatesClientDeletePoller`
+- New struct `VirtualMachineImageTemplatesClientDeletePollerResponse`
+- New struct `VirtualMachineImageTemplatesClientDeleteResponse`
+- New struct `VirtualMachineImageTemplatesClientGetOptions`
+- New struct `VirtualMachineImageTemplatesClientGetResponse`
+- New struct `VirtualMachineImageTemplatesClientGetResult`
+- New struct `VirtualMachineImageTemplatesClientGetRunOutputOptions`
+- New struct `VirtualMachineImageTemplatesClientGetRunOutputResponse`
+- New struct `VirtualMachineImageTemplatesClientGetRunOutputResult`
+- New struct `VirtualMachineImageTemplatesClientListByResourceGroupOptions`
+- New struct `VirtualMachineImageTemplatesClientListByResourceGroupPager`
+- New struct `VirtualMachineImageTemplatesClientListByResourceGroupResponse`
+- New struct `VirtualMachineImageTemplatesClientListByResourceGroupResult`
+- New struct `VirtualMachineImageTemplatesClientListOptions`
+- New struct `VirtualMachineImageTemplatesClientListPager`
+- New struct `VirtualMachineImageTemplatesClientListResponse`
+- New struct `VirtualMachineImageTemplatesClientListResult`
+- New struct `VirtualMachineImageTemplatesClientListRunOutputsOptions`
+- New struct `VirtualMachineImageTemplatesClientListRunOutputsPager`
+- New struct `VirtualMachineImageTemplatesClientListRunOutputsResponse`
+- New struct `VirtualMachineImageTemplatesClientListRunOutputsResult`
+- New struct `VirtualMachineImageTemplatesClientRunPoller`
+- New struct `VirtualMachineImageTemplatesClientRunPollerResponse`
+- New struct `VirtualMachineImageTemplatesClientRunResponse`
+- New struct `VirtualMachineImageTemplatesClientUpdatePoller`
+- New struct `VirtualMachineImageTemplatesClientUpdatePollerResponse`
+- New struct `VirtualMachineImageTemplatesClientUpdateResponse`
+- New struct `VirtualMachineImageTemplatesClientUpdateResult`
+- New field `Type` in struct `ImageTemplateManagedImageSource`
+- New field `Type` in struct `ImageTemplatePlatformImageSource`
+- New field `RunOutputName` in struct `ImageTemplateManagedImageDistributor`
+- New field `Type` in struct `ImageTemplateManagedImageDistributor`
+- New field `ArtifactTags` in struct `ImageTemplateManagedImageDistributor`
+- New field `RunOutputName` in struct `ImageTemplateSharedImageDistributor`
+- New field `Type` in struct `ImageTemplateSharedImageDistributor`
+- New field `ArtifactTags` in struct `ImageTemplateSharedImageDistributor`
+- New field `Type` in struct `ImageTemplateSharedImageVersionSource`
+- New field `Type` in struct `ImageTemplatePowerShellCustomizer`
+- New field `Name` in struct `ImageTemplatePowerShellCustomizer`
+- New field `ID` in struct `ImageTemplate`
+- New field `Name` in struct `ImageTemplate`
+- New field `Type` in struct `ImageTemplate`
+- New field `Location` in struct `ImageTemplate`
+- New field `Tags` in struct `ImageTemplate`
+- New field `Type` in struct `ImageTemplateFileCustomizer`
+- New field `Name` in struct `ImageTemplateFileCustomizer`
+- New field `RunOutputName` in struct `ImageTemplateVhdDistributor`
+- New field `Type` in struct `ImageTemplateVhdDistributor`
+- New field `ArtifactTags` in struct `ImageTemplateVhdDistributor`
+- New field `Error` in struct `CloudError`
+- New field `Type` in struct `ImageTemplateWindowsUpdateCustomizer`
+- New field `Name` in struct `ImageTemplateWindowsUpdateCustomizer`
+- New field `Type` in struct `ImageTemplateRestartCustomizer`
+- New field `Name` in struct `ImageTemplateRestartCustomizer`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Name` in struct `ImageTemplateShellCustomizer`
+- New field `Type` in struct `ImageTemplateShellCustomizer`
+- New field `Name` in struct `RunOutput`
+- New field `ID` in struct `RunOutput`
+- New field `Type` in struct `RunOutput`
+
+
+## 0.1.0 (2021-12-24)
+
+- Init release.

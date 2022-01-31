@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
@@ -17,7 +16,7 @@ type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
 	mainResource *shared.ExpiringResource
 	// the following fields are read-only
-	cred   azcore.TokenCredential
+	cred   shared.TokenCredential
 	scopes []string
 }
 
@@ -30,7 +29,7 @@ type acquiringResourceState struct {
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), policy.TokenRequestOptions{Scopes: s.p.scopes})
+	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), shared.TokenRequestOptions{Scopes: s.p.scopes})
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -41,7 +40,7 @@ func acquire(state interface{}) (newResource interface{}, newExpiration time.Tim
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
 // scopes: the list of permission scopes required for the token.
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
-func NewBearerTokenPolicy(cred azcore.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
+func NewBearerTokenPolicy(cred shared.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
 	return &BearerTokenPolicy{
 		cred:         cred,
 		scopes:       scopes,
@@ -59,7 +58,7 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	if token, ok := tk.(*azcore.AccessToken); ok {
+	if token, ok := tk.(*shared.AccessToken); ok {
 		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+token.Token)
 	}
 	return req.Next()

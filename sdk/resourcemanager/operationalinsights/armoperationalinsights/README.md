@@ -11,7 +11,7 @@ The `armoperationalinsights` module provides operations for working with Azure O
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,12 @@ options = arm.ClientOptions{
 }
 client := armoperationalinsights.NewStorageInsightConfigsClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Data Source](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/datasource)
+- [Workspace Purge](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/workspace_purge)
+- [Workspace](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/workspaces)
 
 ## Provide Feedback
 

@@ -1,0 +1,424 @@
+# Release History
+
+## 0.2.0 (2022-01-14)
+### Breaking Changes
+
+- Function `*MoveResourcesClient.List` parameter(s) have been changed from `(string, string, *MoveResourcesListOptions)` to `(string, string, *MoveResourcesClientListOptions)`
+- Function `*MoveResourcesClient.List` return value(s) have been changed from `(*MoveResourcesListPager)` to `(*MoveResourcesClientListPager)`
+- Function `*MoveCollectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsGetOptions)` to `(context.Context, string, string, *MoveCollectionsClientGetOptions)`
+- Function `*MoveCollectionsClient.Get` return value(s) have been changed from `(MoveCollectionsGetResponse, error)` to `(MoveCollectionsClientGetResponse, error)`
+- Function `*MoveCollectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsBeginDeleteOptions)` to `(context.Context, string, string, *MoveCollectionsClientBeginDeleteOptions)`
+- Function `*MoveCollectionsClient.BeginDelete` return value(s) have been changed from `(MoveCollectionsDeletePollerResponse, error)` to `(MoveCollectionsClientDeletePollerResponse, error)`
+- Function `*MoveCollectionsClient.BeginPrepare` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsBeginPrepareOptions)` to `(context.Context, string, string, *MoveCollectionsClientBeginPrepareOptions)`
+- Function `*MoveCollectionsClient.BeginPrepare` return value(s) have been changed from `(MoveCollectionsPreparePollerResponse, error)` to `(MoveCollectionsClientPreparePollerResponse, error)`
+- Function `*MoveCollectionsClient.ListRequiredFor` parameter(s) have been changed from `(context.Context, string, string, string, *MoveCollectionsListRequiredForOptions)` to `(context.Context, string, string, string, *MoveCollectionsClientListRequiredForOptions)`
+- Function `*MoveCollectionsClient.ListRequiredFor` return value(s) have been changed from `(MoveCollectionsListRequiredForResponse, error)` to `(MoveCollectionsClientListRequiredForResponse, error)`
+- Function `*OperationsDiscoveryClient.Get` parameter(s) have been changed from `(context.Context, *OperationsDiscoveryGetOptions)` to `(context.Context, *OperationsDiscoveryClientGetOptions)`
+- Function `*OperationsDiscoveryClient.Get` return value(s) have been changed from `(OperationsDiscoveryGetResponse, error)` to `(OperationsDiscoveryClientGetResponse, error)`
+- Function `*MoveCollectionsClient.Update` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsUpdateOptions)` to `(context.Context, string, string, *MoveCollectionsClientUpdateOptions)`
+- Function `*MoveCollectionsClient.Update` return value(s) have been changed from `(MoveCollectionsUpdateResponse, error)` to `(MoveCollectionsClientUpdateResponse, error)`
+- Function `*MoveCollectionsClient.BeginBulkRemove` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsBeginBulkRemoveOptions)` to `(context.Context, string, string, *MoveCollectionsClientBeginBulkRemoveOptions)`
+- Function `*MoveCollectionsClient.BeginBulkRemove` return value(s) have been changed from `(MoveCollectionsBulkRemovePollerResponse, error)` to `(MoveCollectionsClientBulkRemovePollerResponse, error)`
+- Function `*MoveResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *MoveResourcesGetOptions)` to `(context.Context, string, string, string, *MoveResourcesClientGetOptions)`
+- Function `*MoveResourcesClient.Get` return value(s) have been changed from `(MoveResourcesGetResponse, error)` to `(MoveResourcesClientGetResponse, error)`
+- Function `*MoveResourcesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *MoveResourcesBeginDeleteOptions)` to `(context.Context, string, string, string, *MoveResourcesClientBeginDeleteOptions)`
+- Function `*MoveResourcesClient.BeginDelete` return value(s) have been changed from `(MoveResourcesDeletePollerResponse, error)` to `(MoveResourcesClientDeletePollerResponse, error)`
+- Function `*MoveCollectionsClient.ListMoveCollectionsByResourceGroup` parameter(s) have been changed from `(string, *MoveCollectionsListMoveCollectionsByResourceGroupOptions)` to `(string, *MoveCollectionsClientListMoveCollectionsByResourceGroupOptions)`
+- Function `*MoveCollectionsClient.ListMoveCollectionsByResourceGroup` return value(s) have been changed from `(*MoveCollectionsListMoveCollectionsByResourceGroupPager)` to `(*MoveCollectionsClientListMoveCollectionsByResourceGroupPager)`
+- Function `*MoveCollectionsClient.Create` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsCreateOptions)` to `(context.Context, string, string, *MoveCollectionsClientCreateOptions)`
+- Function `*MoveCollectionsClient.Create` return value(s) have been changed from `(MoveCollectionsCreateResponse, error)` to `(MoveCollectionsClientCreateResponse, error)`
+- Function `*MoveCollectionsClient.BeginInitiateMove` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsBeginInitiateMoveOptions)` to `(context.Context, string, string, *MoveCollectionsClientBeginInitiateMoveOptions)`
+- Function `*MoveCollectionsClient.BeginInitiateMove` return value(s) have been changed from `(MoveCollectionsInitiateMovePollerResponse, error)` to `(MoveCollectionsClientInitiateMovePollerResponse, error)`
+- Function `*MoveCollectionsClient.ListMoveCollectionsBySubscription` parameter(s) have been changed from `(*MoveCollectionsListMoveCollectionsBySubscriptionOptions)` to `(*MoveCollectionsClientListMoveCollectionsBySubscriptionOptions)`
+- Function `*MoveCollectionsClient.ListMoveCollectionsBySubscription` return value(s) have been changed from `(*MoveCollectionsListMoveCollectionsBySubscriptionPager)` to `(*MoveCollectionsClientListMoveCollectionsBySubscriptionPager)`
+- Function `*MoveCollectionsClient.BeginResolveDependencies` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsBeginResolveDependenciesOptions)` to `(context.Context, string, string, *MoveCollectionsClientBeginResolveDependenciesOptions)`
+- Function `*MoveCollectionsClient.BeginResolveDependencies` return value(s) have been changed from `(MoveCollectionsResolveDependenciesPollerResponse, error)` to `(MoveCollectionsClientResolveDependenciesPollerResponse, error)`
+- Function `*MoveCollectionsClient.BeginDiscard` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsBeginDiscardOptions)` to `(context.Context, string, string, *MoveCollectionsClientBeginDiscardOptions)`
+- Function `*MoveCollectionsClient.BeginDiscard` return value(s) have been changed from `(MoveCollectionsDiscardPollerResponse, error)` to `(MoveCollectionsClientDiscardPollerResponse, error)`
+- Function `*MoveResourcesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, *MoveResourcesBeginCreateOptions)` to `(context.Context, string, string, string, *MoveResourcesClientBeginCreateOptions)`
+- Function `*MoveResourcesClient.BeginCreate` return value(s) have been changed from `(MoveResourcesCreatePollerResponse, error)` to `(MoveResourcesClientCreatePollerResponse, error)`
+- Function `*MoveCollectionsClient.BeginCommit` parameter(s) have been changed from `(context.Context, string, string, *MoveCollectionsBeginCommitOptions)` to `(context.Context, string, string, *MoveCollectionsClientBeginCommitOptions)`
+- Function `*MoveCollectionsClient.BeginCommit` return value(s) have been changed from `(MoveCollectionsCommitPollerResponse, error)` to `(MoveCollectionsClientCommitPollerResponse, error)`
+- Function `*UnresolvedDependenciesClient.Get` parameter(s) have been changed from `(string, string, *UnresolvedDependenciesGetOptions)` to `(string, string, *UnresolvedDependenciesClientGetOptions)`
+- Function `*UnresolvedDependenciesClient.Get` return value(s) have been changed from `(*UnresolvedDependenciesGetPager)` to `(*UnresolvedDependenciesClientGetPager)`
+- Function `*MoveResourcesDeletePoller.FinalResponse` has been removed
+- Function `*MoveCollectionsListMoveCollectionsBySubscriptionPager.PageResponse` has been removed
+- Function `*MoveCollectionsDeletePoller.ResumeToken` has been removed
+- Function `*MoveCollectionsResolveDependenciesPoller.Poll` has been removed
+- Function `*MoveResourcesCreatePoller.Poll` has been removed
+- Function `*MoveCollectionsInitiateMovePoller.Done` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*MoveCollectionsListMoveCollectionsByResourceGroupPager.PageResponse` has been removed
+- Function `*MoveResourcesDeletePollerResponse.Resume` has been removed
+- Function `MoveCollectionsBulkRemovePollerResponse.PollUntilDone` has been removed
+- Function `*MoveResourcesListPager.PageResponse` has been removed
+- Function `*MoveCollectionsDiscardPoller.Done` has been removed
+- Function `*MoveCollectionsDiscardPoller.ResumeToken` has been removed
+- Function `*MoveResourcesDeletePoller.Poll` has been removed
+- Function `*MoveCollectionsPreparePollerResponse.Resume` has been removed
+- Function `*UnresolvedDependenciesGetPager.Err` has been removed
+- Function `*MoveResourcesCreatePoller.Done` has been removed
+- Function `*MoveCollectionsBulkRemovePoller.FinalResponse` has been removed
+- Function `MoveCollectionsDiscardPollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsListMoveCollectionsBySubscriptionPager.NextPage` has been removed
+- Function `*MoveCollectionsListMoveCollectionsBySubscriptionPager.Err` has been removed
+- Function `*MoveCollectionsListMoveCollectionsByResourceGroupPager.Err` has been removed
+- Function `*MoveResourcesCreatePoller.FinalResponse` has been removed
+- Function `*MoveCollectionsDeletePoller.FinalResponse` has been removed
+- Function `MoveCollectionsResolveDependenciesPollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsBulkRemovePoller.Poll` has been removed
+- Function `*MoveCollectionsPreparePoller.Done` has been removed
+- Function `*MoveCollectionsBulkRemovePoller.ResumeToken` has been removed
+- Function `*MoveCollectionsDeletePollerResponse.Resume` has been removed
+- Function `*MoveCollectionsPreparePoller.FinalResponse` has been removed
+- Function `*MoveCollectionsPreparePoller.ResumeToken` has been removed
+- Function `*MoveCollectionsResolveDependenciesPoller.FinalResponse` has been removed
+- Function `MoveCollectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsCommitPoller.ResumeToken` has been removed
+- Function `*MoveCollectionsDiscardPoller.Poll` has been removed
+- Function `*MoveCollectionsPreparePoller.Poll` has been removed
+- Function `MoveResourcesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsResolveDependenciesPoller.Done` has been removed
+- Function `MoveResourcesCreatePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsInitiateMovePollerResponse.Resume` has been removed
+- Function `*MoveResourcesDeletePoller.ResumeToken` has been removed
+- Function `*MoveCollectionsBulkRemovePollerResponse.Resume` has been removed
+- Function `*MoveResourcesListPager.NextPage` has been removed
+- Function `*MoveCollectionsListMoveCollectionsByResourceGroupPager.NextPage` has been removed
+- Function `*UnresolvedDependenciesGetPager.NextPage` has been removed
+- Function `MoveCollectionsInitiateMovePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsDiscardPollerResponse.Resume` has been removed
+- Function `*MoveCollectionsCommitPoller.FinalResponse` has been removed
+- Function `MoveCollectionsCommitPollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsInitiateMovePoller.Poll` has been removed
+- Function `*MoveCollectionsInitiateMovePoller.ResumeToken` has been removed
+- Function `*MoveCollectionsDeletePoller.Done` has been removed
+- Function `MoveCollectionsPreparePollerResponse.PollUntilDone` has been removed
+- Function `*MoveCollectionsBulkRemovePoller.Done` has been removed
+- Function `*MoveResourcesCreatePollerResponse.Resume` has been removed
+- Function `*MoveCollectionsCommitPollerResponse.Resume` has been removed
+- Function `*ResourceSettings.UnmarshalJSON` has been removed
+- Function `*MoveResourcesCreatePoller.ResumeToken` has been removed
+- Function `*MoveResourcesDeletePoller.Done` has been removed
+- Function `*MoveCollectionsDiscardPoller.FinalResponse` has been removed
+- Function `*MoveCollectionsCommitPoller.Done` has been removed
+- Function `*MoveCollectionsResolveDependenciesPollerResponse.Resume` has been removed
+- Function `*UnresolvedDependenciesGetPager.PageResponse` has been removed
+- Function `*MoveResourcesListPager.Err` has been removed
+- Function `*MoveCollectionsCommitPoller.Poll` has been removed
+- Function `*MoveCollectionsResolveDependenciesPoller.ResumeToken` has been removed
+- Function `*MoveCollectionsInitiateMovePoller.FinalResponse` has been removed
+- Function `*MoveCollectionsDeletePoller.Poll` has been removed
+- Struct `MoveCollectionsBeginBulkRemoveOptions` has been removed
+- Struct `MoveCollectionsBeginCommitOptions` has been removed
+- Struct `MoveCollectionsBeginDeleteOptions` has been removed
+- Struct `MoveCollectionsBeginDiscardOptions` has been removed
+- Struct `MoveCollectionsBeginInitiateMoveOptions` has been removed
+- Struct `MoveCollectionsBeginPrepareOptions` has been removed
+- Struct `MoveCollectionsBeginResolveDependenciesOptions` has been removed
+- Struct `MoveCollectionsBulkRemovePoller` has been removed
+- Struct `MoveCollectionsBulkRemovePollerResponse` has been removed
+- Struct `MoveCollectionsBulkRemoveResponse` has been removed
+- Struct `MoveCollectionsBulkRemoveResult` has been removed
+- Struct `MoveCollectionsCommitPoller` has been removed
+- Struct `MoveCollectionsCommitPollerResponse` has been removed
+- Struct `MoveCollectionsCommitResponse` has been removed
+- Struct `MoveCollectionsCommitResult` has been removed
+- Struct `MoveCollectionsCreateOptions` has been removed
+- Struct `MoveCollectionsCreateResponse` has been removed
+- Struct `MoveCollectionsCreateResult` has been removed
+- Struct `MoveCollectionsDeletePoller` has been removed
+- Struct `MoveCollectionsDeletePollerResponse` has been removed
+- Struct `MoveCollectionsDeleteResponse` has been removed
+- Struct `MoveCollectionsDeleteResult` has been removed
+- Struct `MoveCollectionsDiscardPoller` has been removed
+- Struct `MoveCollectionsDiscardPollerResponse` has been removed
+- Struct `MoveCollectionsDiscardResponse` has been removed
+- Struct `MoveCollectionsDiscardResult` has been removed
+- Struct `MoveCollectionsGetOptions` has been removed
+- Struct `MoveCollectionsGetResponse` has been removed
+- Struct `MoveCollectionsGetResult` has been removed
+- Struct `MoveCollectionsInitiateMovePoller` has been removed
+- Struct `MoveCollectionsInitiateMovePollerResponse` has been removed
+- Struct `MoveCollectionsInitiateMoveResponse` has been removed
+- Struct `MoveCollectionsInitiateMoveResult` has been removed
+- Struct `MoveCollectionsListMoveCollectionsByResourceGroupOptions` has been removed
+- Struct `MoveCollectionsListMoveCollectionsByResourceGroupPager` has been removed
+- Struct `MoveCollectionsListMoveCollectionsByResourceGroupResponse` has been removed
+- Struct `MoveCollectionsListMoveCollectionsByResourceGroupResult` has been removed
+- Struct `MoveCollectionsListMoveCollectionsBySubscriptionOptions` has been removed
+- Struct `MoveCollectionsListMoveCollectionsBySubscriptionPager` has been removed
+- Struct `MoveCollectionsListMoveCollectionsBySubscriptionResponse` has been removed
+- Struct `MoveCollectionsListMoveCollectionsBySubscriptionResult` has been removed
+- Struct `MoveCollectionsListRequiredForOptions` has been removed
+- Struct `MoveCollectionsListRequiredForResponse` has been removed
+- Struct `MoveCollectionsListRequiredForResult` has been removed
+- Struct `MoveCollectionsPreparePoller` has been removed
+- Struct `MoveCollectionsPreparePollerResponse` has been removed
+- Struct `MoveCollectionsPrepareResponse` has been removed
+- Struct `MoveCollectionsPrepareResult` has been removed
+- Struct `MoveCollectionsResolveDependenciesPoller` has been removed
+- Struct `MoveCollectionsResolveDependenciesPollerResponse` has been removed
+- Struct `MoveCollectionsResolveDependenciesResponse` has been removed
+- Struct `MoveCollectionsResolveDependenciesResult` has been removed
+- Struct `MoveCollectionsUpdateOptions` has been removed
+- Struct `MoveCollectionsUpdateResponse` has been removed
+- Struct `MoveCollectionsUpdateResult` has been removed
+- Struct `MoveResourcesBeginCreateOptions` has been removed
+- Struct `MoveResourcesBeginDeleteOptions` has been removed
+- Struct `MoveResourcesCreatePoller` has been removed
+- Struct `MoveResourcesCreatePollerResponse` has been removed
+- Struct `MoveResourcesCreateResponse` has been removed
+- Struct `MoveResourcesCreateResult` has been removed
+- Struct `MoveResourcesDeletePoller` has been removed
+- Struct `MoveResourcesDeletePollerResponse` has been removed
+- Struct `MoveResourcesDeleteResponse` has been removed
+- Struct `MoveResourcesDeleteResult` has been removed
+- Struct `MoveResourcesGetOptions` has been removed
+- Struct `MoveResourcesGetResponse` has been removed
+- Struct `MoveResourcesGetResult` has been removed
+- Struct `MoveResourcesListOptions` has been removed
+- Struct `MoveResourcesListPager` has been removed
+- Struct `MoveResourcesListResponse` has been removed
+- Struct `MoveResourcesListResult` has been removed
+- Struct `OperationsDiscoveryGetOptions` has been removed
+- Struct `OperationsDiscoveryGetResponse` has been removed
+- Struct `OperationsDiscoveryGetResult` has been removed
+- Struct `UnresolvedDependenciesGetOptions` has been removed
+- Struct `UnresolvedDependenciesGetPager` has been removed
+- Struct `UnresolvedDependenciesGetResponse` has been removed
+- Struct `UnresolvedDependenciesGetResult` has been removed
+- Field `ProxyResourceReference` of struct `LoadBalancerNatRuleReference` has been removed
+- Field `ResourceSettings` of struct `SQLDatabaseResourceSettings` has been removed
+- Field `ResourceSettings` of struct `NetworkSecurityGroupResourceSettings` has been removed
+- Field `ProxyResourceReference` of struct `LoadBalancerBackendAddressPoolReference` has been removed
+- Field `MoveResourceStatus` of struct `MoveResourcePropertiesMoveStatus` has been removed
+- Field `ResourceSettings` of struct `AvailabilitySetResourceSettings` has been removed
+- Field `ResourceSettings` of struct `KeyVaultResourceSettings` has been removed
+- Field `ResourceSettings` of struct `ResourceGroupResourceSettings` has been removed
+- Field `AzureResourceReference` of struct `PublicIPReference` has been removed
+- Field `AzureResourceReference` of struct `NsgReference` has been removed
+- Field `ResourceSettings` of struct `SQLServerResourceSettings` has been removed
+- Field `MoveResourceError` of struct `MoveCollectionPropertiesErrors` has been removed
+- Field `ProxyResourceReference` of struct `SubnetReference` has been removed
+- Field `ResourceSettings` of struct `SQLElasticPoolResourceSettings` has been removed
+- Field `MoveResourceError` of struct `MoveResourcePropertiesErrors` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `ResourceSettings` of struct `LoadBalancerResourceSettings` has been removed
+- Field `ResourceSettings` of struct `VirtualMachineResourceSettings` has been removed
+- Field `ResourceSettings` of struct `VirtualNetworkResourceSettings` has been removed
+- Field `ResourceSettings` of struct `NetworkInterfaceResourceSettings` has been removed
+- Field `ResourceSettings` of struct `PublicIPAddressResourceSettings` has been removed
+- Field `AzureResourceReference` of struct `ProxyResourceReference` has been removed
+- Field `ResourceSettings` of struct `DiskEncryptionSetResourceSettings` has been removed
+
+### Features Added
+
+- New function `*MoveResourcesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `MoveCollectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (MoveCollectionsClientDeleteResponse, error)`
+- New function `*MoveCollectionsClientCommitPollerResponse.Resume(context.Context, *MoveCollectionsClient, string) error`
+- New function `*MoveResourcesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*MoveCollectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MoveCollectionsClientInitiateMovePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MoveCollectionsClientListMoveCollectionsBySubscriptionPager.PageResponse() MoveCollectionsClientListMoveCollectionsBySubscriptionResponse`
+- New function `*VirtualMachineResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientResolveDependenciesPollerResponse.Resume(context.Context, *MoveCollectionsClient, string) error`
+- New function `*SQLServerResourceSettings.UnmarshalJSON([]byte) error`
+- New function `*MoveCollectionsClientResolveDependenciesPoller.Done() bool`
+- New function `*MoveCollectionsClientListMoveCollectionsBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*MoveCollectionsClientCommitPoller.Done() bool`
+- New function `*MoveCollectionsClientPreparePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MoveResourcesClientListPager.NextPage(context.Context) bool`
+- New function `*MoveCollectionsClientDiscardPollerResponse.Resume(context.Context, *MoveCollectionsClient, string) error`
+- New function `*ResourceGroupResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientListMoveCollectionsBySubscriptionPager.Err() error`
+- New function `*MoveCollectionsClientDeletePollerResponse.Resume(context.Context, *MoveCollectionsClient, string) error`
+- New function `MoveCollectionsClientDiscardPollerResponse.PollUntilDone(context.Context, time.Duration) (MoveCollectionsClientDiscardResponse, error)`
+- New function `*MoveCollectionsClientInitiateMovePoller.ResumeToken() (string, error)`
+- New function `*MoveCollectionsClientListMoveCollectionsByResourceGroupPager.PageResponse() MoveCollectionsClientListMoveCollectionsByResourceGroupResponse`
+- New function `*MoveResourcesClientListPager.PageResponse() MoveResourcesClientListResponse`
+- New function `*MoveCollectionsClientBulkRemovePoller.FinalResponse(context.Context) (MoveCollectionsClientBulkRemoveResponse, error)`
+- New function `*MoveResourcesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MoveCollectionsClientInitiateMovePollerResponse.Resume(context.Context, *MoveCollectionsClient, string) error`
+- New function `*MoveCollectionsClientListMoveCollectionsByResourceGroupPager.Err() error`
+- New function `*ResourceGroupResourceSettings.UnmarshalJSON([]byte) error`
+- New function `*UnresolvedDependenciesClientGetPager.NextPage(context.Context) bool`
+- New function `MoveCollectionsClientResolveDependenciesPollerResponse.PollUntilDone(context.Context, time.Duration) (MoveCollectionsClientResolveDependenciesResponse, error)`
+- New function `*UnresolvedDependenciesClientGetPager.PageResponse() UnresolvedDependenciesClientGetResponse`
+- New function `*MoveCollectionsClientPreparePoller.Done() bool`
+- New function `MoveResourcesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (MoveResourcesClientDeleteResponse, error)`
+- New function `MoveCollectionsClientPreparePollerResponse.PollUntilDone(context.Context, time.Duration) (MoveCollectionsClientPrepareResponse, error)`
+- New function `MoveCollectionsClientCommitPollerResponse.PollUntilDone(context.Context, time.Duration) (MoveCollectionsClientCommitResponse, error)`
+- New function `*MoveCollectionsClientDeletePoller.Done() bool`
+- New function `*MoveCollectionsClientBulkRemovePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MoveCollectionsClientBulkRemovePoller.Done() bool`
+- New function `*MoveResourcesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*KeyVaultResourceSettings.UnmarshalJSON([]byte) error`
+- New function `*MoveResourcesClientDeletePollerResponse.Resume(context.Context, *MoveResourcesClient, string) error`
+- New function `MoveCollectionsClientInitiateMovePollerResponse.PollUntilDone(context.Context, time.Duration) (MoveCollectionsClientInitiateMoveResponse, error)`
+- New function `*LoadBalancerResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientDiscardPoller.FinalResponse(context.Context) (MoveCollectionsClientDiscardResponse, error)`
+- New function `*MoveCollectionsClientResolveDependenciesPoller.FinalResponse(context.Context) (MoveCollectionsClientResolveDependenciesResponse, error)`
+- New function `*MoveCollectionsClientBulkRemovePollerResponse.Resume(context.Context, *MoveCollectionsClient, string) error`
+- New function `*MoveResourcesClientCreatePoller.FinalResponse(context.Context) (MoveResourcesClientCreateResponse, error)`
+- New function `*MoveCollectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*MoveCollectionsClientDiscardPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualNetworkResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientResolveDependenciesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MoveCollectionsClientPreparePoller.ResumeToken() (string, error)`
+- New function `*PublicIPAddressResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientPreparePoller.FinalResponse(context.Context) (MoveCollectionsClientPrepareResponse, error)`
+- New function `MoveResourcesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (MoveResourcesClientCreateResponse, error)`
+- New function `*MoveCollectionsClientDiscardPoller.Done() bool`
+- New function `*MoveCollectionsClientInitiateMovePoller.FinalResponse(context.Context) (MoveCollectionsClientInitiateMoveResponse, error)`
+- New function `*NetworkSecurityGroupResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*DiskEncryptionSetResourceSettings.UnmarshalJSON([]byte) error`
+- New function `*MoveCollectionsClientCommitPoller.FinalResponse(context.Context) (MoveCollectionsClientCommitResponse, error)`
+- New function `*DiskEncryptionSetResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*SQLElasticPoolResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientPreparePollerResponse.Resume(context.Context, *MoveCollectionsClient, string) error`
+- New function `*MoveResourcesClientCreatePoller.Done() bool`
+- New function `MoveCollectionsClientBulkRemovePollerResponse.PollUntilDone(context.Context, time.Duration) (MoveCollectionsClientBulkRemoveResponse, error)`
+- New function `*MoveCollectionsClientCommitPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KeyVaultResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientBulkRemovePoller.ResumeToken() (string, error)`
+- New function `*NetworkInterfaceResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientInitiateMovePoller.Done() bool`
+- New function `*MoveCollectionsClientListMoveCollectionsByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SQLServerResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*AvailabilitySetResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveCollectionsClientDeletePoller.FinalResponse(context.Context) (MoveCollectionsClientDeleteResponse, error)`
+- New function `*MoveCollectionsClientDiscardPoller.ResumeToken() (string, error)`
+- New function `*MoveCollectionsClientResolveDependenciesPoller.ResumeToken() (string, error)`
+- New function `*UnresolvedDependenciesClientGetPager.Err() error`
+- New function `*SQLDatabaseResourceSettings.GetResourceSettings() *ResourceSettings`
+- New function `*MoveResourcesClientCreatePollerResponse.Resume(context.Context, *MoveResourcesClient, string) error`
+- New function `*MoveCollectionsClientCommitPoller.ResumeToken() (string, error)`
+- New function `*MoveResourcesClientDeletePoller.Done() bool`
+- New function `*MoveResourcesClientDeletePoller.FinalResponse(context.Context) (MoveResourcesClientDeleteResponse, error)`
+- New function `*MoveResourcesClientListPager.Err() error`
+- New struct `MoveCollectionsClientBeginBulkRemoveOptions`
+- New struct `MoveCollectionsClientBeginCommitOptions`
+- New struct `MoveCollectionsClientBeginDeleteOptions`
+- New struct `MoveCollectionsClientBeginDiscardOptions`
+- New struct `MoveCollectionsClientBeginInitiateMoveOptions`
+- New struct `MoveCollectionsClientBeginPrepareOptions`
+- New struct `MoveCollectionsClientBeginResolveDependenciesOptions`
+- New struct `MoveCollectionsClientBulkRemovePoller`
+- New struct `MoveCollectionsClientBulkRemovePollerResponse`
+- New struct `MoveCollectionsClientBulkRemoveResponse`
+- New struct `MoveCollectionsClientBulkRemoveResult`
+- New struct `MoveCollectionsClientCommitPoller`
+- New struct `MoveCollectionsClientCommitPollerResponse`
+- New struct `MoveCollectionsClientCommitResponse`
+- New struct `MoveCollectionsClientCommitResult`
+- New struct `MoveCollectionsClientCreateOptions`
+- New struct `MoveCollectionsClientCreateResponse`
+- New struct `MoveCollectionsClientCreateResult`
+- New struct `MoveCollectionsClientDeletePoller`
+- New struct `MoveCollectionsClientDeletePollerResponse`
+- New struct `MoveCollectionsClientDeleteResponse`
+- New struct `MoveCollectionsClientDeleteResult`
+- New struct `MoveCollectionsClientDiscardPoller`
+- New struct `MoveCollectionsClientDiscardPollerResponse`
+- New struct `MoveCollectionsClientDiscardResponse`
+- New struct `MoveCollectionsClientDiscardResult`
+- New struct `MoveCollectionsClientGetOptions`
+- New struct `MoveCollectionsClientGetResponse`
+- New struct `MoveCollectionsClientGetResult`
+- New struct `MoveCollectionsClientInitiateMovePoller`
+- New struct `MoveCollectionsClientInitiateMovePollerResponse`
+- New struct `MoveCollectionsClientInitiateMoveResponse`
+- New struct `MoveCollectionsClientInitiateMoveResult`
+- New struct `MoveCollectionsClientListMoveCollectionsByResourceGroupOptions`
+- New struct `MoveCollectionsClientListMoveCollectionsByResourceGroupPager`
+- New struct `MoveCollectionsClientListMoveCollectionsByResourceGroupResponse`
+- New struct `MoveCollectionsClientListMoveCollectionsByResourceGroupResult`
+- New struct `MoveCollectionsClientListMoveCollectionsBySubscriptionOptions`
+- New struct `MoveCollectionsClientListMoveCollectionsBySubscriptionPager`
+- New struct `MoveCollectionsClientListMoveCollectionsBySubscriptionResponse`
+- New struct `MoveCollectionsClientListMoveCollectionsBySubscriptionResult`
+- New struct `MoveCollectionsClientListRequiredForOptions`
+- New struct `MoveCollectionsClientListRequiredForResponse`
+- New struct `MoveCollectionsClientListRequiredForResult`
+- New struct `MoveCollectionsClientPreparePoller`
+- New struct `MoveCollectionsClientPreparePollerResponse`
+- New struct `MoveCollectionsClientPrepareResponse`
+- New struct `MoveCollectionsClientPrepareResult`
+- New struct `MoveCollectionsClientResolveDependenciesPoller`
+- New struct `MoveCollectionsClientResolveDependenciesPollerResponse`
+- New struct `MoveCollectionsClientResolveDependenciesResponse`
+- New struct `MoveCollectionsClientResolveDependenciesResult`
+- New struct `MoveCollectionsClientUpdateOptions`
+- New struct `MoveCollectionsClientUpdateResponse`
+- New struct `MoveCollectionsClientUpdateResult`
+- New struct `MoveResourcesClientBeginCreateOptions`
+- New struct `MoveResourcesClientBeginDeleteOptions`
+- New struct `MoveResourcesClientCreatePoller`
+- New struct `MoveResourcesClientCreatePollerResponse`
+- New struct `MoveResourcesClientCreateResponse`
+- New struct `MoveResourcesClientCreateResult`
+- New struct `MoveResourcesClientDeletePoller`
+- New struct `MoveResourcesClientDeletePollerResponse`
+- New struct `MoveResourcesClientDeleteResponse`
+- New struct `MoveResourcesClientDeleteResult`
+- New struct `MoveResourcesClientGetOptions`
+- New struct `MoveResourcesClientGetResponse`
+- New struct `MoveResourcesClientGetResult`
+- New struct `MoveResourcesClientListOptions`
+- New struct `MoveResourcesClientListPager`
+- New struct `MoveResourcesClientListResponse`
+- New struct `MoveResourcesClientListResult`
+- New struct `OperationsDiscoveryClientGetOptions`
+- New struct `OperationsDiscoveryClientGetResponse`
+- New struct `OperationsDiscoveryClientGetResult`
+- New struct `UnresolvedDependenciesClientGetOptions`
+- New struct `UnresolvedDependenciesClientGetPager`
+- New struct `UnresolvedDependenciesClientGetResponse`
+- New struct `UnresolvedDependenciesClientGetResult`
+- New field `JobStatus` in struct `MoveResourcePropertiesMoveStatus`
+- New field `MoveState` in struct `MoveResourcePropertiesMoveStatus`
+- New field `Errors` in struct `MoveResourcePropertiesMoveStatus`
+- New field `SourceArmResourceID` in struct `NsgReference`
+- New field `TargetResourceName` in struct `VirtualMachineResourceSettings`
+- New field `ResourceType` in struct `VirtualMachineResourceSettings`
+- New field `SourceArmResourceID` in struct `ProxyResourceReference`
+- New field `ResourceType` in struct `ResourceGroupResourceSettings`
+- New field `TargetResourceName` in struct `ResourceGroupResourceSettings`
+- New field `ResourceType` in struct `SQLElasticPoolResourceSettings`
+- New field `TargetResourceName` in struct `SQLElasticPoolResourceSettings`
+- New field `Properties` in struct `MoveCollectionPropertiesErrors`
+- New field `SourceArmResourceID` in struct `PublicIPReference`
+- New field `Properties` in struct `MoveResourcePropertiesErrors`
+- New field `ResourceType` in struct `LoadBalancerResourceSettings`
+- New field `TargetResourceName` in struct `LoadBalancerResourceSettings`
+- New field `TargetResourceName` in struct `NetworkSecurityGroupResourceSettings`
+- New field `ResourceType` in struct `NetworkSecurityGroupResourceSettings`
+- New field `TargetResourceName` in struct `NetworkInterfaceResourceSettings`
+- New field `ResourceType` in struct `NetworkInterfaceResourceSettings`
+- New field `ResourceType` in struct `VirtualNetworkResourceSettings`
+- New field `TargetResourceName` in struct `VirtualNetworkResourceSettings`
+- New field `SourceArmResourceID` in struct `LoadBalancerNatRuleReference`
+- New field `Name` in struct `LoadBalancerNatRuleReference`
+- New field `TargetResourceName` in struct `PublicIPAddressResourceSettings`
+- New field `ResourceType` in struct `PublicIPAddressResourceSettings`
+- New field `ResourceType` in struct `SQLDatabaseResourceSettings`
+- New field `TargetResourceName` in struct `SQLDatabaseResourceSettings`
+- New field `Name` in struct `SubnetReference`
+- New field `SourceArmResourceID` in struct `SubnetReference`
+- New field `Name` in struct `LoadBalancerBackendAddressPoolReference`
+- New field `SourceArmResourceID` in struct `LoadBalancerBackendAddressPoolReference`
+- New field `Error` in struct `CloudError`
+- New field `ResourceType` in struct `SQLServerResourceSettings`
+- New field `TargetResourceName` in struct `SQLServerResourceSettings`
+- New field `TargetResourceName` in struct `KeyVaultResourceSettings`
+- New field `ResourceType` in struct `KeyVaultResourceSettings`
+- New field `ResourceType` in struct `AvailabilitySetResourceSettings`
+- New field `TargetResourceName` in struct `AvailabilitySetResourceSettings`
+- New field `ResourceType` in struct `DiskEncryptionSetResourceSettings`
+- New field `TargetResourceName` in struct `DiskEncryptionSetResourceSettings`
+
+
+## 0.1.0 (2021-12-23)
+
+- Init release.

@@ -11,7 +11,6 @@ package armoperationsmanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ManagementConfigurationsClient contains the methods for the ManagementConfigurations group.
 // Don't use this type directly, use NewManagementConfigurationsClient() instead.
 type ManagementConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagementConfigurationsClient creates a new instance of ManagementConfigurationsClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagementConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagementConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagementConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates the ManagementConfiguration.
-// If the operation fails it returns the *CodeMessageError error type.
-func (client *ManagementConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managementConfigurationName string, parameters ManagementConfiguration, options *ManagementConfigurationsCreateOrUpdateOptions) (ManagementConfigurationsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to get. The name is case insensitive.
+// managementConfigurationName - User Management Configuration Name.
+// parameters - The parameters required to create OMS Solution.
+// options - ManagementConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ManagementConfigurationsClient.CreateOrUpdate
+// method.
+func (client *ManagementConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managementConfigurationName string, parameters ManagementConfiguration, options *ManagementConfigurationsClientCreateOrUpdateOptions) (ManagementConfigurationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managementConfigurationName, parameters, options)
 	if err != nil {
-		return ManagementConfigurationsCreateOrUpdateResponse{}, err
+		return ManagementConfigurationsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementConfigurationsCreateOrUpdateResponse{}, err
+		return ManagementConfigurationsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementConfigurationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ManagementConfigurationsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagementConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managementConfigurationName string, parameters ManagementConfiguration, options *ManagementConfigurationsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagementConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managementConfigurationName string, parameters ManagementConfiguration, options *ManagementConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +87,7 @@ func (client *ManagementConfigurationsClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter managementConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementConfigurationName}", url.PathEscape(managementConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +99,37 @@ func (client *ManagementConfigurationsClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagementConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagementConfigurationsCreateOrUpdateResponse, error) {
-	result := ManagementConfigurationsCreateOrUpdateResponse{RawResponse: resp}
+func (client *ManagementConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagementConfigurationsClientCreateOrUpdateResponse, error) {
+	result := ManagementConfigurationsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementConfiguration); err != nil {
-		return ManagementConfigurationsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementConfigurationsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagementConfigurationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CodeMessageError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the ManagementConfiguration in the subscription.
-// If the operation fails it returns the *CodeMessageError error type.
-func (client *ManagementConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, managementConfigurationName string, options *ManagementConfigurationsDeleteOptions) (ManagementConfigurationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to get. The name is case insensitive.
+// managementConfigurationName - User Management Configuration Name.
+// options - ManagementConfigurationsClientDeleteOptions contains the optional parameters for the ManagementConfigurationsClient.Delete
+// method.
+func (client *ManagementConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, managementConfigurationName string, options *ManagementConfigurationsClientDeleteOptions) (ManagementConfigurationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managementConfigurationName, options)
 	if err != nil {
-		return ManagementConfigurationsDeleteResponse{}, err
+		return ManagementConfigurationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementConfigurationsDeleteResponse{}, err
+		return ManagementConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementConfigurationsDeleteResponse{}, client.deleteHandleError(resp)
+		return ManagementConfigurationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagementConfigurationsDeleteResponse{RawResponse: resp}, nil
+	return ManagementConfigurationsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ManagementConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managementConfigurationName string, options *ManagementConfigurationsDeleteOptions) (*policy.Request, error) {
+func (client *ManagementConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managementConfigurationName string, options *ManagementConfigurationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +143,7 @@ func (client *ManagementConfigurationsClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter managementConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementConfigurationName}", url.PathEscape(managementConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +154,29 @@ func (client *ManagementConfigurationsClient) deleteCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ManagementConfigurationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CodeMessageError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves the user ManagementConfiguration.
-// If the operation fails it returns the *CodeMessageError error type.
-func (client *ManagementConfigurationsClient) Get(ctx context.Context, resourceGroupName string, managementConfigurationName string, options *ManagementConfigurationsGetOptions) (ManagementConfigurationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to get. The name is case insensitive.
+// managementConfigurationName - User Management Configuration Name.
+// options - ManagementConfigurationsClientGetOptions contains the optional parameters for the ManagementConfigurationsClient.Get
+// method.
+func (client *ManagementConfigurationsClient) Get(ctx context.Context, resourceGroupName string, managementConfigurationName string, options *ManagementConfigurationsClientGetOptions) (ManagementConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managementConfigurationName, options)
 	if err != nil {
-		return ManagementConfigurationsGetResponse{}, err
+		return ManagementConfigurationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementConfigurationsGetResponse{}, err
+		return ManagementConfigurationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementConfigurationsGetResponse{}, client.getHandleError(resp)
+		return ManagementConfigurationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagementConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managementConfigurationName string, options *ManagementConfigurationsGetOptions) (*policy.Request, error) {
+func (client *ManagementConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managementConfigurationName string, options *ManagementConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +190,7 @@ func (client *ManagementConfigurationsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter managementConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementConfigurationName}", url.PathEscape(managementConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,52 +202,41 @@ func (client *ManagementConfigurationsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagementConfigurationsClient) getHandleResponse(resp *http.Response) (ManagementConfigurationsGetResponse, error) {
-	result := ManagementConfigurationsGetResponse{RawResponse: resp}
+func (client *ManagementConfigurationsClient) getHandleResponse(resp *http.Response) (ManagementConfigurationsClientGetResponse, error) {
+	result := ManagementConfigurationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementConfiguration); err != nil {
-		return ManagementConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementConfigurationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagementConfigurationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CodeMessageError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Retrieves the ManagementConfigurations list.
-// If the operation fails it returns the *CodeMessageError error type.
-func (client *ManagementConfigurationsClient) ListBySubscription(ctx context.Context, options *ManagementConfigurationsListBySubscriptionOptions) (ManagementConfigurationsListBySubscriptionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ManagementConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ManagementConfigurationsClient.ListBySubscription
+// method.
+func (client *ManagementConfigurationsClient) ListBySubscription(ctx context.Context, options *ManagementConfigurationsClientListBySubscriptionOptions) (ManagementConfigurationsClientListBySubscriptionResponse, error) {
 	req, err := client.listBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
-		return ManagementConfigurationsListBySubscriptionResponse{}, err
+		return ManagementConfigurationsClientListBySubscriptionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementConfigurationsListBySubscriptionResponse{}, err
+		return ManagementConfigurationsClientListBySubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementConfigurationsListBySubscriptionResponse{}, client.listBySubscriptionHandleError(resp)
+		return ManagementConfigurationsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBySubscriptionHandleResponse(resp)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ManagementConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ManagementConfigurationsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ManagementConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ManagementConfigurationsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationsManagement/ManagementConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,23 +248,10 @@ func (client *ManagementConfigurationsClient) listBySubscriptionCreateRequest(ct
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ManagementConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ManagementConfigurationsListBySubscriptionResponse, error) {
-	result := ManagementConfigurationsListBySubscriptionResponse{RawResponse: resp}
+func (client *ManagementConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ManagementConfigurationsClientListBySubscriptionResponse, error) {
+	result := ManagementConfigurationsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementConfigurationPropertiesList); err != nil {
-		return ManagementConfigurationsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementConfigurationsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ManagementConfigurationsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CodeMessageError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

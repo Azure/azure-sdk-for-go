@@ -5,9 +5,7 @@ package internal
 
 import (
 	"context"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
 	"github.com/Azure/go-amqp"
 )
 
@@ -61,7 +59,7 @@ type AMQPSenderCloser interface {
 // RPCLink is implemented by *rpc.Link
 type RPCLink interface {
 	Close(ctx context.Context) error
-	RetryableRPC(ctx context.Context, times int, delay time.Duration, msg *amqp.Message) (*rpc.Response, error)
+	RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, error)
 }
 
 // Closeable is implemented by pretty much any AMQP link/client

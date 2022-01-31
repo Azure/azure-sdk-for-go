@@ -11,7 +11,6 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // DiskRestorePointClient contains the methods for the DiskRestorePoint group.
 // Don't use this type directly, use NewDiskRestorePointClient() instead.
 type DiskRestorePointClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDiskRestorePointClient creates a new instance of DiskRestorePointClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDiskRestorePointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskRestorePointClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DiskRestorePointClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DiskRestorePointClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get disk restorePoint resource
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskRestorePointClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointGetOptions) (DiskRestorePointGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - The name of the disk restore point created.
+// options - DiskRestorePointClientGetOptions contains the optional parameters for the DiskRestorePointClient.Get method.
+func (client *DiskRestorePointClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientGetOptions) (DiskRestorePointClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
 	if err != nil {
-		return DiskRestorePointGetResponse{}, err
+		return DiskRestorePointClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiskRestorePointGetResponse{}, err
+		return DiskRestorePointClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiskRestorePointGetResponse{}, client.getHandleError(resp)
+		return DiskRestorePointClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DiskRestorePointClient) getCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointGetOptions) (*policy.Request, error) {
+func (client *DiskRestorePointClient) getCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,62 +95,56 @@ func (client *DiskRestorePointClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter diskRestorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskRestorePointName}", url.PathEscape(diskRestorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiskRestorePointClient) getHandleResponse(resp *http.Response) (DiskRestorePointGetResponse, error) {
-	result := DiskRestorePointGetResponse{RawResponse: resp}
+func (client *DiskRestorePointClient) getHandleResponse(resp *http.Response) (DiskRestorePointClientGetResponse, error) {
+	result := DiskRestorePointClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskRestorePoint); err != nil {
-		return DiskRestorePointGetResponse{}, runtime.NewResponseError(err, resp)
+		return DiskRestorePointClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DiskRestorePointClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginGrantAccess - Grants access to a diskRestorePoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskRestorePointClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointBeginGrantAccessOptions) (DiskRestorePointGrantAccessPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - The name of the disk restore point created.
+// grantAccessData - Access data object supplied in the body of the get disk access operation.
+// options - DiskRestorePointClientBeginGrantAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginGrantAccess
+// method.
+func (client *DiskRestorePointClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointClientBeginGrantAccessOptions) (DiskRestorePointClientGrantAccessPollerResponse, error) {
 	resp, err := client.grantAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData, options)
 	if err != nil {
-		return DiskRestorePointGrantAccessPollerResponse{}, err
+		return DiskRestorePointClientGrantAccessPollerResponse{}, err
 	}
-	result := DiskRestorePointGrantAccessPollerResponse{
+	result := DiskRestorePointClientGrantAccessPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskRestorePointClient.GrantAccess", "location", resp, client.pl, client.grantAccessHandleError)
+	pt, err := armruntime.NewPoller("DiskRestorePointClient.GrantAccess", "location", resp, client.pl)
 	if err != nil {
-		return DiskRestorePointGrantAccessPollerResponse{}, err
+		return DiskRestorePointClientGrantAccessPollerResponse{}, err
 	}
-	result.Poller = &DiskRestorePointGrantAccessPoller{
+	result.Poller = &DiskRestorePointClientGrantAccessPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // GrantAccess - Grants access to a diskRestorePoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskRestorePointClient) grantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointBeginGrantAccessOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskRestorePointClient) grantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointClientBeginGrantAccessOptions) (*http.Response, error) {
 	req, err := client.grantAccessCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData, options)
 	if err != nil {
 		return nil, err
@@ -147,13 +154,13 @@ func (client *DiskRestorePointClient) grantAccess(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.grantAccessHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // grantAccessCreateRequest creates the GrantAccess request.
-func (client *DiskRestorePointClient) grantAccessCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointBeginGrantAccessOptions) (*policy.Request, error) {
+func (client *DiskRestorePointClient) grantAccessCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointClientBeginGrantAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/beginGetAccess"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -175,46 +182,38 @@ func (client *DiskRestorePointClient) grantAccessCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter diskRestorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskRestorePointName}", url.PathEscape(diskRestorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, grantAccessData)
 }
 
-// grantAccessHandleError handles the GrantAccess error response.
-func (client *DiskRestorePointClient) grantAccessHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByRestorePoint - Lists diskRestorePoints under a vmRestorePoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskRestorePointClient) ListByRestorePoint(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointListByRestorePointOptions) *DiskRestorePointListByRestorePointPager {
-	return &DiskRestorePointListByRestorePointPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+// options - DiskRestorePointClientListByRestorePointOptions contains the optional parameters for the DiskRestorePointClient.ListByRestorePoint
+// method.
+func (client *DiskRestorePointClient) ListByRestorePoint(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointClientListByRestorePointOptions) *DiskRestorePointClientListByRestorePointPager {
+	return &DiskRestorePointClientListByRestorePointPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByRestorePointCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, options)
 		},
-		advancer: func(ctx context.Context, resp DiskRestorePointListByRestorePointResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiskRestorePointClientListByRestorePointResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskRestorePointList.NextLink)
 		},
 	}
 }
 
 // listByRestorePointCreateRequest creates the ListByRestorePoint request.
-func (client *DiskRestorePointClient) listByRestorePointCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointListByRestorePointOptions) (*policy.Request, error) {
+func (client *DiskRestorePointClient) listByRestorePointCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointClientListByRestorePointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -232,62 +231,55 @@ func (client *DiskRestorePointClient) listByRestorePointCreateRequest(ctx contex
 		return nil, errors.New("parameter vmRestorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmRestorePointName}", url.PathEscape(vmRestorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByRestorePointHandleResponse handles the ListByRestorePoint response.
-func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *http.Response) (DiskRestorePointListByRestorePointResponse, error) {
-	result := DiskRestorePointListByRestorePointResponse{RawResponse: resp}
+func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *http.Response) (DiskRestorePointClientListByRestorePointResponse, error) {
+	result := DiskRestorePointClientListByRestorePointResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskRestorePointList); err != nil {
-		return DiskRestorePointListByRestorePointResponse{}, runtime.NewResponseError(err, resp)
+		return DiskRestorePointClientListByRestorePointResponse{}, err
 	}
 	return result, nil
 }
 
-// listByRestorePointHandleError handles the ListByRestorePoint error response.
-func (client *DiskRestorePointClient) listByRestorePointHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRevokeAccess - Revokes access to a diskRestorePoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskRestorePointClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointBeginRevokeAccessOptions) (DiskRestorePointRevokeAccessPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - The name of the disk restore point created.
+// options - DiskRestorePointClientBeginRevokeAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginRevokeAccess
+// method.
+func (client *DiskRestorePointClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientBeginRevokeAccessOptions) (DiskRestorePointClientRevokeAccessPollerResponse, error) {
 	resp, err := client.revokeAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
 	if err != nil {
-		return DiskRestorePointRevokeAccessPollerResponse{}, err
+		return DiskRestorePointClientRevokeAccessPollerResponse{}, err
 	}
-	result := DiskRestorePointRevokeAccessPollerResponse{
+	result := DiskRestorePointClientRevokeAccessPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskRestorePointClient.RevokeAccess", "location", resp, client.pl, client.revokeAccessHandleError)
+	pt, err := armruntime.NewPoller("DiskRestorePointClient.RevokeAccess", "location", resp, client.pl)
 	if err != nil {
-		return DiskRestorePointRevokeAccessPollerResponse{}, err
+		return DiskRestorePointClientRevokeAccessPollerResponse{}, err
 	}
-	result.Poller = &DiskRestorePointRevokeAccessPoller{
+	result.Poller = &DiskRestorePointClientRevokeAccessPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RevokeAccess - Revokes access to a diskRestorePoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskRestorePointClient) revokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointBeginRevokeAccessOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskRestorePointClient) revokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientBeginRevokeAccessOptions) (*http.Response, error) {
 	req, err := client.revokeAccessCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
 	if err != nil {
 		return nil, err
@@ -297,13 +289,13 @@ func (client *DiskRestorePointClient) revokeAccess(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.revokeAccessHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // revokeAccessCreateRequest creates the RevokeAccess request.
-func (client *DiskRestorePointClient) revokeAccessCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointBeginRevokeAccessOptions) (*policy.Request, error) {
+func (client *DiskRestorePointClient) revokeAccessCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientBeginRevokeAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/endGetAccess"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -325,26 +317,13 @@ func (client *DiskRestorePointClient) revokeAccessCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter diskRestorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskRestorePointName}", url.PathEscape(diskRestorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// revokeAccessHandleError handles the RevokeAccess error response.
-func (client *DiskRestorePointClient) revokeAccessHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

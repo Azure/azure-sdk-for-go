@@ -1,0 +1,750 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*CloudEndpointsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *CloudEndpointsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *CloudEndpointsClientBeginDeleteOptions)`
+- Function `*CloudEndpointsClient.BeginDelete` return value(s) have been changed from `(CloudEndpointsDeletePollerResponse, error)` to `(CloudEndpointsClientDeletePollerResponse, error)`
+- Function `*RegisteredServersClient.ListByStorageSyncService` parameter(s) have been changed from `(context.Context, string, string, *RegisteredServersListByStorageSyncServiceOptions)` to `(context.Context, string, string, *RegisteredServersClientListByStorageSyncServiceOptions)`
+- Function `*RegisteredServersClient.ListByStorageSyncService` return value(s) have been changed from `(RegisteredServersListByStorageSyncServiceResponse, error)` to `(RegisteredServersClientListByStorageSyncServiceResponse, error)`
+- Function `*CloudEndpointsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, string, CloudEndpointCreateParameters, *CloudEndpointsBeginCreateOptions)` to `(context.Context, string, string, string, string, CloudEndpointCreateParameters, *CloudEndpointsClientBeginCreateOptions)`
+- Function `*CloudEndpointsClient.BeginCreate` return value(s) have been changed from `(CloudEndpointsCreatePollerResponse, error)` to `(CloudEndpointsClientCreatePollerResponse, error)`
+- Function `*ServerEndpointsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ServerEndpointsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *ServerEndpointsClientBeginDeleteOptions)`
+- Function `*ServerEndpointsClient.BeginDelete` return value(s) have been changed from `(ServerEndpointsDeletePollerResponse, error)` to `(ServerEndpointsClientDeletePollerResponse, error)`
+- Function `*CloudEndpointsClient.BeginTriggerChangeDetection` parameter(s) have been changed from `(context.Context, string, string, string, string, TriggerChangeDetectionParameters, *CloudEndpointsBeginTriggerChangeDetectionOptions)` to `(context.Context, string, string, string, string, TriggerChangeDetectionParameters, *CloudEndpointsClientBeginTriggerChangeDetectionOptions)`
+- Function `*CloudEndpointsClient.BeginTriggerChangeDetection` return value(s) have been changed from `(CloudEndpointsTriggerChangeDetectionPollerResponse, error)` to `(CloudEndpointsClientTriggerChangeDetectionPollerResponse, error)`
+- Function `*CloudEndpointsClient.BeginPreBackup` parameter(s) have been changed from `(context.Context, string, string, string, string, BackupRequest, *CloudEndpointsBeginPreBackupOptions)` to `(context.Context, string, string, string, string, BackupRequest, *CloudEndpointsClientBeginPreBackupOptions)`
+- Function `*CloudEndpointsClient.BeginPreBackup` return value(s) have been changed from `(CloudEndpointsPreBackupPollerResponse, error)` to `(CloudEndpointsClientPreBackupPollerResponse, error)`
+- Function `*ServerEndpointsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, *ServerEndpointsBeginUpdateOptions)` to `(context.Context, string, string, string, string, *ServerEndpointsClientBeginUpdateOptions)`
+- Function `*ServerEndpointsClient.BeginUpdate` return value(s) have been changed from `(ServerEndpointsUpdatePollerResponse, error)` to `(ServerEndpointsClientUpdatePollerResponse, error)`
+- Function `*SyncGroupsClient.ListByStorageSyncService` parameter(s) have been changed from `(context.Context, string, string, *SyncGroupsListByStorageSyncServiceOptions)` to `(context.Context, string, string, *SyncGroupsClientListByStorageSyncServiceOptions)`
+- Function `*SyncGroupsClient.ListByStorageSyncService` return value(s) have been changed from `(SyncGroupsListByStorageSyncServiceResponse, error)` to `(SyncGroupsClientListByStorageSyncServiceResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginCreateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` return value(s) have been changed from `(PrivateEndpointConnectionsCreatePollerResponse, error)` to `(PrivateEndpointConnectionsClientCreatePollerResponse, error)`
+- Function `*SyncGroupsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *SyncGroupsDeleteOptions)` to `(context.Context, string, string, string, *SyncGroupsClientDeleteOptions)`
+- Function `*SyncGroupsClient.Delete` return value(s) have been changed from `(SyncGroupsDeleteResponse, error)` to `(SyncGroupsClientDeleteResponse, error)`
+- Function `*CloudEndpointsClient.BeginPostBackup` parameter(s) have been changed from `(context.Context, string, string, string, string, BackupRequest, *CloudEndpointsBeginPostBackupOptions)` to `(context.Context, string, string, string, string, BackupRequest, *CloudEndpointsClientBeginPostBackupOptions)`
+- Function `*CloudEndpointsClient.BeginPostBackup` return value(s) have been changed from `(CloudEndpointsPostBackupPollerResponse, error)` to `(CloudEndpointsClientPostBackupPollerResponse, error)`
+- Function `*WorkflowsClient.ListByStorageSyncService` parameter(s) have been changed from `(context.Context, string, string, *WorkflowsListByStorageSyncServiceOptions)` to `(context.Context, string, string, *WorkflowsClientListByStorageSyncServiceOptions)`
+- Function `*WorkflowsClient.ListByStorageSyncService` return value(s) have been changed from `(WorkflowsListByStorageSyncServiceResponse, error)` to `(WorkflowsClientListByStorageSyncServiceResponse, error)`
+- Function `*MicrosoftStorageSyncClient.LocationOperationStatus` parameter(s) have been changed from `(context.Context, string, string, *MicrosoftStorageSyncLocationOperationStatusOptions)` to `(context.Context, string, string, *MicrosoftStorageSyncClientLocationOperationStatusOptions)`
+- Function `*MicrosoftStorageSyncClient.LocationOperationStatus` return value(s) have been changed from `(MicrosoftStorageSyncLocationOperationStatusResponse, error)` to `(MicrosoftStorageSyncClientLocationOperationStatusResponse, error)`
+- Function `*RegisteredServersClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *RegisteredServersGetOptions)` to `(context.Context, string, string, string, *RegisteredServersClientGetOptions)`
+- Function `*RegisteredServersClient.Get` return value(s) have been changed from `(RegisteredServersGetResponse, error)` to `(RegisteredServersClientGetResponse, error)`
+- Function `*ServerEndpointsClient.ListBySyncGroup` parameter(s) have been changed from `(context.Context, string, string, string, *ServerEndpointsListBySyncGroupOptions)` to `(context.Context, string, string, string, *ServerEndpointsClientListBySyncGroupOptions)`
+- Function `*ServerEndpointsClient.ListBySyncGroup` return value(s) have been changed from `(ServerEndpointsListBySyncGroupResponse, error)` to `(ServerEndpointsClientListBySyncGroupResponse, error)`
+- Function `*OperationStatusClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *OperationStatusGetOptions)` to `(context.Context, string, string, string, string, *OperationStatusClientGetOptions)`
+- Function `*OperationStatusClient.Get` return value(s) have been changed from `(OperationStatusGetResponse, error)` to `(OperationStatusClientGetResponse, error)`
+- Function `*CloudEndpointsClient.BeginPostRestore` parameter(s) have been changed from `(context.Context, string, string, string, string, PostRestoreRequest, *CloudEndpointsBeginPostRestoreOptions)` to `(context.Context, string, string, string, string, PostRestoreRequest, *CloudEndpointsClientBeginPostRestoreOptions)`
+- Function `*CloudEndpointsClient.BeginPostRestore` return value(s) have been changed from `(CloudEndpointsPostRestorePollerResponse, error)` to `(CloudEndpointsClientPostRestorePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*CloudEndpointsClient.ListBySyncGroup` parameter(s) have been changed from `(context.Context, string, string, string, *CloudEndpointsListBySyncGroupOptions)` to `(context.Context, string, string, string, *CloudEndpointsClientListBySyncGroupOptions)`
+- Function `*CloudEndpointsClient.ListBySyncGroup` return value(s) have been changed from `(CloudEndpointsListBySyncGroupResponse, error)` to `(CloudEndpointsClientListBySyncGroupResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*CloudEndpointsClient.BeginPreRestore` parameter(s) have been changed from `(context.Context, string, string, string, string, PreRestoreRequest, *CloudEndpointsBeginPreRestoreOptions)` to `(context.Context, string, string, string, string, PreRestoreRequest, *CloudEndpointsClientBeginPreRestoreOptions)`
+- Function `*CloudEndpointsClient.BeginPreRestore` return value(s) have been changed from `(CloudEndpointsPreRestorePollerResponse, error)` to `(CloudEndpointsClientPreRestorePollerResponse, error)`
+- Function `*RegisteredServersClient.BeginTriggerRollover` parameter(s) have been changed from `(context.Context, string, string, string, TriggerRolloverRequest, *RegisteredServersBeginTriggerRolloverOptions)` to `(context.Context, string, string, string, TriggerRolloverRequest, *RegisteredServersClientBeginTriggerRolloverOptions)`
+- Function `*RegisteredServersClient.BeginTriggerRollover` return value(s) have been changed from `(RegisteredServersTriggerRolloverPollerResponse, error)` to `(RegisteredServersClientTriggerRolloverPollerResponse, error)`
+- Function `*SyncGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SyncGroupsGetOptions)` to `(context.Context, string, string, string, *SyncGroupsClientGetOptions)`
+- Function `*SyncGroupsClient.Get` return value(s) have been changed from `(SyncGroupsGetResponse, error)` to `(SyncGroupsClientGetResponse, error)`
+- Function `*ServerEndpointsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, string, ServerEndpointCreateParameters, *ServerEndpointsBeginCreateOptions)` to `(context.Context, string, string, string, string, ServerEndpointCreateParameters, *ServerEndpointsClientBeginCreateOptions)`
+- Function `*ServerEndpointsClient.BeginCreate` return value(s) have been changed from `(ServerEndpointsCreatePollerResponse, error)` to `(ServerEndpointsClientCreatePollerResponse, error)`
+- Function `*CloudEndpointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *CloudEndpointsGetOptions)` to `(context.Context, string, string, string, string, *CloudEndpointsClientGetOptions)`
+- Function `*CloudEndpointsClient.Get` return value(s) have been changed from `(CloudEndpointsGetResponse, error)` to `(CloudEndpointsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByStorageSyncService` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListByStorageSyncServiceOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListByStorageSyncServiceOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByStorageSyncService` return value(s) have been changed from `(PrivateEndpointConnectionsListByStorageSyncServiceResponse, error)` to `(PrivateEndpointConnectionsClientListByStorageSyncServiceResponse, error)`
+- Function `*WorkflowsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *WorkflowsGetOptions)` to `(context.Context, string, string, string, *WorkflowsClientGetOptions)`
+- Function `*WorkflowsClient.Get` return value(s) have been changed from `(WorkflowsGetResponse, error)` to `(WorkflowsClientGetResponse, error)`
+- Function `*ServerEndpointsClient.BeginRecallAction` parameter(s) have been changed from `(context.Context, string, string, string, string, RecallActionParameters, *ServerEndpointsBeginRecallActionOptions)` to `(context.Context, string, string, string, string, RecallActionParameters, *ServerEndpointsClientBeginRecallActionOptions)`
+- Function `*ServerEndpointsClient.BeginRecallAction` return value(s) have been changed from `(ServerEndpointsRecallActionPollerResponse, error)` to `(ServerEndpointsClientRecallActionPollerResponse, error)`
+- Function `*CloudEndpointsClient.Restoreheartbeat` parameter(s) have been changed from `(context.Context, string, string, string, string, *CloudEndpointsRestoreheartbeatOptions)` to `(context.Context, string, string, string, string, *CloudEndpointsClientRestoreheartbeatOptions)`
+- Function `*CloudEndpointsClient.Restoreheartbeat` return value(s) have been changed from `(CloudEndpointsRestoreheartbeatResponse, error)` to `(CloudEndpointsClientRestoreheartbeatResponse, error)`
+- Function `*RegisteredServersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *RegisteredServersBeginDeleteOptions)` to `(context.Context, string, string, string, *RegisteredServersClientBeginDeleteOptions)`
+- Function `*RegisteredServersClient.BeginDelete` return value(s) have been changed from `(RegisteredServersDeletePollerResponse, error)` to `(RegisteredServersClientDeletePollerResponse, error)`
+- Function `*SyncGroupsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, SyncGroupCreateParameters, *SyncGroupsCreateOptions)` to `(context.Context, string, string, string, SyncGroupCreateParameters, *SyncGroupsClientCreateOptions)`
+- Function `*SyncGroupsClient.Create` return value(s) have been changed from `(SyncGroupsCreateResponse, error)` to `(SyncGroupsClientCreateResponse, error)`
+- Function `*WorkflowsClient.Abort` parameter(s) have been changed from `(context.Context, string, string, string, *WorkflowsAbortOptions)` to `(context.Context, string, string, string, *WorkflowsClientAbortOptions)`
+- Function `*WorkflowsClient.Abort` return value(s) have been changed from `(WorkflowsAbortResponse, error)` to `(WorkflowsClientAbortResponse, error)`
+- Function `*RegisteredServersClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, RegisteredServerCreateParameters, *RegisteredServersBeginCreateOptions)` to `(context.Context, string, string, string, RegisteredServerCreateParameters, *RegisteredServersClientBeginCreateOptions)`
+- Function `*RegisteredServersClient.BeginCreate` return value(s) have been changed from `(RegisteredServersCreatePollerResponse, error)` to `(RegisteredServersClientCreatePollerResponse, error)`
+- Function `*ServerEndpointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *ServerEndpointsGetOptions)` to `(context.Context, string, string, string, string, *ServerEndpointsClientGetOptions)`
+- Function `*ServerEndpointsClient.Get` return value(s) have been changed from `(ServerEndpointsGetResponse, error)` to `(ServerEndpointsClientGetResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByStorageSyncService` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListByStorageSyncServiceOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListByStorageSyncServiceOptions)`
+- Function `*PrivateLinkResourcesClient.ListByStorageSyncService` return value(s) have been changed from `(PrivateLinkResourcesListByStorageSyncServiceResponse, error)` to `(PrivateLinkResourcesClientListByStorageSyncServiceResponse, error)`
+- Type of `LocationOperationStatus.Error` has been changed from `*StorageSyncAPIError` to `*APIError`
+- Type of `OperationStatus.Error` has been changed from `*StorageSyncAPIError` to `*APIError`
+- Function `RegisteredServersCreatePollerResponse.PollUntilDone` has been removed
+- Function `RegisteredServersDeletePollerResponse.PollUntilDone` has been removed
+- Function `ServerEndpoint.MarshalJSON` has been removed
+- Function `*StorageSyncServicesCreatePoller.Done` has been removed
+- Function `*StorageSyncServicesCreatePoller.Poll` has been removed
+- Function `*ServerEndpointsDeletePoller.Done` has been removed
+- Function `ServerEndpointsCreatePollerResponse.PollUntilDone` has been removed
+- Function `CloudEndpointsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*StorageSyncServicesDeletePoller.FinalResponse` has been removed
+- Function `NewStorageSyncServicesClient` has been removed
+- Function `*StorageSyncServicesClient.ListBySubscription` has been removed
+- Function `*RegisteredServersDeletePoller.ResumeToken` has been removed
+- Function `*CloudEndpointsPreBackupPoller.FinalResponse` has been removed
+- Function `*CloudEndpointsPreBackupPoller.ResumeToken` has been removed
+- Function `*StorageSyncServicesUpdatePoller.ResumeToken` has been removed
+- Function `*RegisteredServersCreatePoller.ResumeToken` has been removed
+- Function `*StorageSyncServicesUpdatePoller.Poll` has been removed
+- Function `*ServerEndpointsRecallActionPoller.ResumeToken` has been removed
+- Function `*StorageSyncServicesClient.BeginDelete` has been removed
+- Function `*ServerEndpointsCreatePoller.FinalResponse` has been removed
+- Function `*RegisteredServersCreatePoller.Done` has been removed
+- Function `*StorageSyncServicesClient.BeginUpdate` has been removed
+- Function `*ServerEndpointsRecallActionPollerResponse.Resume` has been removed
+- Function `*StorageSyncServicesCreatePoller.ResumeToken` has been removed
+- Function `*ServerEndpointsUpdatePoller.FinalResponse` has been removed
+- Function `Workflow.MarshalJSON` has been removed
+- Function `StorageSyncError.Error` has been removed
+- Function `*ServerEndpointsRecallActionPoller.Poll` has been removed
+- Function `StorageSyncServiceCreateParameters.MarshalJSON` has been removed
+- Function `*ServerEndpointsCreatePoller.ResumeToken` has been removed
+- Function `*CloudEndpointsPostBackupPoller.ResumeToken` has been removed
+- Function `*StorageSyncServicesDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsCreatePoller.FinalResponse` has been removed
+- Function `*RegisteredServersDeletePoller.FinalResponse` has been removed
+- Function `*RegisteredServersCreatePoller.Poll` has been removed
+- Function `*RegisteredServersDeletePoller.Done` has been removed
+- Function `SyncGroup.MarshalJSON` has been removed
+- Function `RegisteredServer.MarshalJSON` has been removed
+- Function `*StorageSyncServicesClient.CheckNameAvailability` has been removed
+- Function `CloudEndpointsDeletePollerResponse.PollUntilDone` has been removed
+- Function `StorageSyncServicesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*StorageSyncServicesDeletePollerResponse.Resume` has been removed
+- Function `*ServerEndpointsCreatePoller.Poll` has been removed
+- Function `*ServerEndpointsRecallActionPoller.Done` has been removed
+- Function `*StorageSyncServicesDeletePoller.Done` has been removed
+- Function `*RegisteredServersCreatePoller.FinalResponse` has been removed
+- Function `*RegisteredServersTriggerRolloverPoller.Poll` has been removed
+- Function `CloudEndpointsPreBackupPollerResponse.PollUntilDone` has been removed
+- Function `CloudEndpointCreateParameters.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsCreatePoller.ResumeToken` has been removed
+- Function `*CloudEndpointsPostRestorePoller.Poll` has been removed
+- Function `*RegisteredServersTriggerRolloverPoller.Done` has been removed
+- Function `*CloudEndpointsPostRestorePoller.FinalResponse` has been removed
+- Function `*CloudEndpointsPostBackupPoller.Poll` has been removed
+- Function `*StorageSyncServicesClient.BeginCreate` has been removed
+- Function `*CloudEndpointsPostRestorePoller.Done` has been removed
+- Function `*CloudEndpointsCreatePoller.Done` has been removed
+- Function `*CloudEndpointsCreatePollerResponse.Resume` has been removed
+- Function `*StorageSyncServicesDeletePoller.ResumeToken` has been removed
+- Function `StorageSyncServiceUpdateParameters.MarshalJSON` has been removed
+- Function `StorageSyncService.MarshalJSON` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*ServerEndpointsDeletePoller.FinalResponse` has been removed
+- Function `*CloudEndpointsCreatePoller.ResumeToken` has been removed
+- Function `*StorageSyncServicesUpdatePoller.FinalResponse` has been removed
+- Function `StorageSyncServiceProperties.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsCreatePoller.Poll` has been removed
+- Function `*CloudEndpointsPreRestorePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsCreatePoller.Done` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `CloudEndpointsPostRestorePollerResponse.PollUntilDone` has been removed
+- Function `*CloudEndpointsPreRestorePoller.Poll` has been removed
+- Function `*StorageSyncServicesCreatePoller.FinalResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `CloudEndpoint.MarshalJSON` has been removed
+- Function `*CloudEndpointsTriggerChangeDetectionPoller.FinalResponse` has been removed
+- Function `ServerEndpointsRecallActionPollerResponse.PollUntilDone` has been removed
+- Function `*ServerEndpointsUpdatePoller.Done` has been removed
+- Function `*StorageSyncServicesClient.Get` has been removed
+- Function `*ServerEndpointsUpdatePoller.Poll` has been removed
+- Function `StorageSyncServicesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*StorageSyncServicesCreatePollerResponse.Resume` has been removed
+- Function `ServerEndpointsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServerEndpointsUpdatePollerResponse.Resume` has been removed
+- Function `*RegisteredServersDeletePoller.Poll` has been removed
+- Function `*RegisteredServersTriggerRolloverPoller.FinalResponse` has been removed
+- Function `*CloudEndpointsPreBackupPoller.Poll` has been removed
+- Function `*CloudEndpointsCreatePoller.FinalResponse` has been removed
+- Function `CloudEndpointsPreRestorePollerResponse.PollUntilDone` has been removed
+- Function `*StorageSyncServicesUpdatePollerResponse.Resume` has been removed
+- Function `*CloudEndpointsPreBackupPoller.Done` has been removed
+- Function `*ServerEndpointsRecallActionPoller.FinalResponse` has been removed
+- Function `*ServerEndpointsUpdatePoller.ResumeToken` has been removed
+- Function `*CloudEndpointsDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*StorageSyncServicesClient.ListByResourceGroup` has been removed
+- Function `RegisteredServerCreateParameters.MarshalJSON` has been removed
+- Function `*RegisteredServersDeletePollerResponse.Resume` has been removed
+- Function `ServerEndpointsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudEndpointsPreBackupPollerResponse.Resume` has been removed
+- Function `StorageSyncServicesCreatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RegisteredServersCreatePollerResponse.Resume` has been removed
+- Function `*CloudEndpointsPreRestorePoller.Done` has been removed
+- Function `*CloudEndpointsTriggerChangeDetectionPoller.Poll` has been removed
+- Function `*CloudEndpointsCreatePoller.Poll` has been removed
+- Function `*CloudEndpointsTriggerChangeDetectionPoller.ResumeToken` has been removed
+- Function `*CloudEndpointsPostBackupPoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsCreatePollerResponse.Resume` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*ServerEndpointsCreatePoller.Done` has been removed
+- Function `*ServerEndpointsDeletePoller.ResumeToken` has been removed
+- Function `ServerEndpointCreateParameters.MarshalJSON` has been removed
+- Function `CloudEndpointsTriggerChangeDetectionPollerResponse.PollUntilDone` has been removed
+- Function `*CloudEndpointsPostBackupPollerResponse.Resume` has been removed
+- Function `RegisteredServersTriggerRolloverPollerResponse.PollUntilDone` has been removed
+- Function `*CloudEndpointsDeletePollerResponse.Resume` has been removed
+- Function `*ServerEndpointsDeletePollerResponse.Resume` has been removed
+- Function `*CloudEndpointsDeletePoller.Done` has been removed
+- Function `*CloudEndpointsPreRestorePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*CloudEndpointsDeletePoller.ResumeToken` has been removed
+- Function `*CloudEndpointsPostRestorePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*CloudEndpointsPostRestorePoller.ResumeToken` has been removed
+- Function `*CloudEndpointsPreRestorePoller.FinalResponse` has been removed
+- Function `*RegisteredServersTriggerRolloverPollerResponse.Resume` has been removed
+- Function `*ServerEndpointsDeletePoller.Poll` has been removed
+- Function `CloudEndpointsPostBackupPollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*CloudEndpointsPostBackupPoller.FinalResponse` has been removed
+- Function `*StorageSyncServicesUpdatePoller.Done` has been removed
+- Function `*CloudEndpointsTriggerChangeDetectionPollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*RegisteredServersTriggerRolloverPoller.ResumeToken` has been removed
+- Function `*ServerEndpointsCreatePollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*CloudEndpointsTriggerChangeDetectionPoller.Done` has been removed
+- Function `StorageSyncServiceArray.MarshalJSON` has been removed
+- Function `SyncGroupCreateParameters.MarshalJSON` has been removed
+- Function `*CloudEndpointsDeletePoller.FinalResponse` has been removed
+- Struct `CloudEndpointsBeginCreateOptions` has been removed
+- Struct `CloudEndpointsBeginDeleteOptions` has been removed
+- Struct `CloudEndpointsBeginPostBackupOptions` has been removed
+- Struct `CloudEndpointsBeginPostRestoreOptions` has been removed
+- Struct `CloudEndpointsBeginPreBackupOptions` has been removed
+- Struct `CloudEndpointsBeginPreRestoreOptions` has been removed
+- Struct `CloudEndpointsBeginTriggerChangeDetectionOptions` has been removed
+- Struct `CloudEndpointsCreatePoller` has been removed
+- Struct `CloudEndpointsCreatePollerResponse` has been removed
+- Struct `CloudEndpointsCreateResponse` has been removed
+- Struct `CloudEndpointsCreateResult` has been removed
+- Struct `CloudEndpointsDeletePoller` has been removed
+- Struct `CloudEndpointsDeletePollerResponse` has been removed
+- Struct `CloudEndpointsDeleteResponse` has been removed
+- Struct `CloudEndpointsGetOptions` has been removed
+- Struct `CloudEndpointsGetResponse` has been removed
+- Struct `CloudEndpointsGetResult` has been removed
+- Struct `CloudEndpointsListBySyncGroupOptions` has been removed
+- Struct `CloudEndpointsListBySyncGroupResponse` has been removed
+- Struct `CloudEndpointsListBySyncGroupResult` has been removed
+- Struct `CloudEndpointsPostBackupPoller` has been removed
+- Struct `CloudEndpointsPostBackupPollerResponse` has been removed
+- Struct `CloudEndpointsPostBackupResponse` has been removed
+- Struct `CloudEndpointsPostBackupResult` has been removed
+- Struct `CloudEndpointsPostRestorePoller` has been removed
+- Struct `CloudEndpointsPostRestorePollerResponse` has been removed
+- Struct `CloudEndpointsPostRestoreResponse` has been removed
+- Struct `CloudEndpointsPreBackupPoller` has been removed
+- Struct `CloudEndpointsPreBackupPollerResponse` has been removed
+- Struct `CloudEndpointsPreBackupResponse` has been removed
+- Struct `CloudEndpointsPreRestorePoller` has been removed
+- Struct `CloudEndpointsPreRestorePollerResponse` has been removed
+- Struct `CloudEndpointsPreRestoreResponse` has been removed
+- Struct `CloudEndpointsRestoreheartbeatOptions` has been removed
+- Struct `CloudEndpointsRestoreheartbeatResponse` has been removed
+- Struct `CloudEndpointsRestoreheartbeatResult` has been removed
+- Struct `CloudEndpointsTriggerChangeDetectionPoller` has been removed
+- Struct `CloudEndpointsTriggerChangeDetectionPollerResponse` has been removed
+- Struct `CloudEndpointsTriggerChangeDetectionResponse` has been removed
+- Struct `MicrosoftStorageSyncLocationOperationStatusOptions` has been removed
+- Struct `MicrosoftStorageSyncLocationOperationStatusResponse` has been removed
+- Struct `MicrosoftStorageSyncLocationOperationStatusResult` has been removed
+- Struct `OperationStatusGetOptions` has been removed
+- Struct `OperationStatusGetResponse` has been removed
+- Struct `OperationStatusGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginCreateOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCreatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListByStorageSyncServiceOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByStorageSyncServiceResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByStorageSyncServiceResult` has been removed
+- Struct `PrivateLinkResourcesListByStorageSyncServiceOptions` has been removed
+- Struct `PrivateLinkResourcesListByStorageSyncServiceResponse` has been removed
+- Struct `PrivateLinkResourcesListByStorageSyncServiceResult` has been removed
+- Struct `RegisteredServersBeginCreateOptions` has been removed
+- Struct `RegisteredServersBeginDeleteOptions` has been removed
+- Struct `RegisteredServersBeginTriggerRolloverOptions` has been removed
+- Struct `RegisteredServersCreatePoller` has been removed
+- Struct `RegisteredServersCreatePollerResponse` has been removed
+- Struct `RegisteredServersCreateResponse` has been removed
+- Struct `RegisteredServersCreateResult` has been removed
+- Struct `RegisteredServersDeletePoller` has been removed
+- Struct `RegisteredServersDeletePollerResponse` has been removed
+- Struct `RegisteredServersDeleteResponse` has been removed
+- Struct `RegisteredServersGetOptions` has been removed
+- Struct `RegisteredServersGetResponse` has been removed
+- Struct `RegisteredServersGetResult` has been removed
+- Struct `RegisteredServersListByStorageSyncServiceOptions` has been removed
+- Struct `RegisteredServersListByStorageSyncServiceResponse` has been removed
+- Struct `RegisteredServersListByStorageSyncServiceResult` has been removed
+- Struct `RegisteredServersTriggerRolloverPoller` has been removed
+- Struct `RegisteredServersTriggerRolloverPollerResponse` has been removed
+- Struct `RegisteredServersTriggerRolloverResponse` has been removed
+- Struct `ServerEndpointsBeginCreateOptions` has been removed
+- Struct `ServerEndpointsBeginDeleteOptions` has been removed
+- Struct `ServerEndpointsBeginRecallActionOptions` has been removed
+- Struct `ServerEndpointsBeginUpdateOptions` has been removed
+- Struct `ServerEndpointsCreatePoller` has been removed
+- Struct `ServerEndpointsCreatePollerResponse` has been removed
+- Struct `ServerEndpointsCreateResponse` has been removed
+- Struct `ServerEndpointsCreateResult` has been removed
+- Struct `ServerEndpointsDeletePoller` has been removed
+- Struct `ServerEndpointsDeletePollerResponse` has been removed
+- Struct `ServerEndpointsDeleteResponse` has been removed
+- Struct `ServerEndpointsGetOptions` has been removed
+- Struct `ServerEndpointsGetResponse` has been removed
+- Struct `ServerEndpointsGetResult` has been removed
+- Struct `ServerEndpointsListBySyncGroupOptions` has been removed
+- Struct `ServerEndpointsListBySyncGroupResponse` has been removed
+- Struct `ServerEndpointsListBySyncGroupResult` has been removed
+- Struct `ServerEndpointsRecallActionPoller` has been removed
+- Struct `ServerEndpointsRecallActionPollerResponse` has been removed
+- Struct `ServerEndpointsRecallActionResponse` has been removed
+- Struct `ServerEndpointsUpdatePoller` has been removed
+- Struct `ServerEndpointsUpdatePollerResponse` has been removed
+- Struct `ServerEndpointsUpdateResponse` has been removed
+- Struct `ServerEndpointsUpdateResult` has been removed
+- Struct `StorageSyncAPIError` has been removed
+- Struct `StorageSyncError` has been removed
+- Struct `StorageSyncErrorDetails` has been removed
+- Struct `StorageSyncInnerErrorDetails` has been removed
+- Struct `StorageSyncService` has been removed
+- Struct `StorageSyncServiceArray` has been removed
+- Struct `StorageSyncServiceCreateParameters` has been removed
+- Struct `StorageSyncServiceCreateParametersProperties` has been removed
+- Struct `StorageSyncServiceProperties` has been removed
+- Struct `StorageSyncServiceUpdateParameters` has been removed
+- Struct `StorageSyncServiceUpdateProperties` has been removed
+- Struct `StorageSyncServicesBeginCreateOptions` has been removed
+- Struct `StorageSyncServicesBeginDeleteOptions` has been removed
+- Struct `StorageSyncServicesBeginUpdateOptions` has been removed
+- Struct `StorageSyncServicesCheckNameAvailabilityOptions` has been removed
+- Struct `StorageSyncServicesCheckNameAvailabilityResponse` has been removed
+- Struct `StorageSyncServicesCheckNameAvailabilityResult` has been removed
+- Struct `StorageSyncServicesClient` has been removed
+- Struct `StorageSyncServicesCreatePoller` has been removed
+- Struct `StorageSyncServicesCreatePollerResponse` has been removed
+- Struct `StorageSyncServicesCreateResponse` has been removed
+- Struct `StorageSyncServicesCreateResult` has been removed
+- Struct `StorageSyncServicesDeletePoller` has been removed
+- Struct `StorageSyncServicesDeletePollerResponse` has been removed
+- Struct `StorageSyncServicesDeleteResponse` has been removed
+- Struct `StorageSyncServicesGetOptions` has been removed
+- Struct `StorageSyncServicesGetResponse` has been removed
+- Struct `StorageSyncServicesGetResult` has been removed
+- Struct `StorageSyncServicesListByResourceGroupOptions` has been removed
+- Struct `StorageSyncServicesListByResourceGroupResponse` has been removed
+- Struct `StorageSyncServicesListByResourceGroupResult` has been removed
+- Struct `StorageSyncServicesListBySubscriptionOptions` has been removed
+- Struct `StorageSyncServicesListBySubscriptionResponse` has been removed
+- Struct `StorageSyncServicesListBySubscriptionResult` has been removed
+- Struct `StorageSyncServicesUpdatePoller` has been removed
+- Struct `StorageSyncServicesUpdatePollerResponse` has been removed
+- Struct `StorageSyncServicesUpdateResponse` has been removed
+- Struct `StorageSyncServicesUpdateResult` has been removed
+- Struct `SyncGroupsCreateOptions` has been removed
+- Struct `SyncGroupsCreateResponse` has been removed
+- Struct `SyncGroupsCreateResult` has been removed
+- Struct `SyncGroupsDeleteOptions` has been removed
+- Struct `SyncGroupsDeleteResponse` has been removed
+- Struct `SyncGroupsDeleteResult` has been removed
+- Struct `SyncGroupsGetOptions` has been removed
+- Struct `SyncGroupsGetResponse` has been removed
+- Struct `SyncGroupsGetResult` has been removed
+- Struct `SyncGroupsListByStorageSyncServiceOptions` has been removed
+- Struct `SyncGroupsListByStorageSyncServiceResponse` has been removed
+- Struct `SyncGroupsListByStorageSyncServiceResult` has been removed
+- Struct `WorkflowsAbortOptions` has been removed
+- Struct `WorkflowsAbortResponse` has been removed
+- Struct `WorkflowsAbortResult` has been removed
+- Struct `WorkflowsGetOptions` has been removed
+- Struct `WorkflowsGetResponse` has been removed
+- Struct `WorkflowsGetResult` has been removed
+- Struct `WorkflowsListByStorageSyncServiceOptions` has been removed
+- Struct `WorkflowsListByStorageSyncServiceResponse` has been removed
+- Struct `WorkflowsListByStorageSyncServiceResult` has been removed
+- Field `ProxyResource` of struct `CloudEndpointCreateParameters` has been removed
+- Field `ProxyResource` of struct `RegisteredServerCreateParameters` has been removed
+- Field `ProxyResource` of struct `ServerEndpoint` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `ProxyResource` of struct `SyncGroupCreateParameters` has been removed
+- Field `ProxyResource` of struct `CloudEndpoint` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ProxyResource` of struct `ServerEndpointCreateParameters` has been removed
+- Field `ProxyResource` of struct `SyncGroup` has been removed
+- Field `ProxyResource` of struct `RegisteredServer` has been removed
+- Field `ProxyResource` of struct `Workflow` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+
+### Features Added
+
+- New function `*CloudEndpointsClientPreBackupPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServicesClientUpdatePoller.FinalResponse(context.Context) (ServicesClientUpdateResponse, error)`
+- New function `*CloudEndpointsClientCreatePollerResponse.Resume(context.Context, *CloudEndpointsClient, string) error`
+- New function `*CloudEndpointsClientPostRestorePoller.ResumeToken() (string, error)`
+- New function `*CloudEndpointsClientPreBackupPoller.Done() bool`
+- New function `*CloudEndpointsClientPreRestorePoller.Done() bool`
+- New function `*ServicesClientCreatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientCreatePoller.Done() bool`
+- New function `*ServerEndpointsClientRecallActionPoller.FinalResponse(context.Context) (ServerEndpointsClientRecallActionResponse, error)`
+- New function `*ServerEndpointsClientCreatePoller.FinalResponse(context.Context) (ServerEndpointsClientCreateResponse, error)`
+- New function `*ServicesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegisteredServersClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServicesClientCreatePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `CloudEndpointsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudEndpointsClientCreateResponse, error)`
+- New function `*CloudEndpointsClientTriggerChangeDetectionPollerResponse.Resume(context.Context, *CloudEndpointsClient, string) error`
+- New function `ServerEndpointsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServerEndpointsClientCreateResponse, error)`
+- New function `*ServerEndpointsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegisteredServersClientTriggerRolloverPoller.ResumeToken() (string, error)`
+- New function `*ServerEndpointsClientRecallActionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudEndpointsClientPostRestorePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegisteredServersClientDeletePoller.FinalResponse(context.Context) (RegisteredServersClientDeleteResponse, error)`
+- New function `ServiceUpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClient.BeginDelete(context.Context, string, string, *ServicesClientBeginDeleteOptions) (ServicesClientDeletePollerResponse, error)`
+- New function `*ServicesClient.ListBySubscription(context.Context, *ServicesClientListBySubscriptionOptions) (ServicesClientListBySubscriptionResponse, error)`
+- New function `PrivateEndpointConnectionsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientCreateResponse, error)`
+- New function `*CloudEndpointsClientPostRestorePoller.Done() bool`
+- New function `*CloudEndpointsClientPostRestorePoller.FinalResponse(context.Context) (CloudEndpointsClientPostRestoreResponse, error)`
+- New function `*CloudEndpointsClientPreRestorePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudEndpointsClientDeletePollerResponse.Resume(context.Context, *CloudEndpointsClient, string) error`
+- New function `*CloudEndpointsClientPreBackupPoller.ResumeToken() (string, error)`
+- New function `CloudEndpointsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudEndpointsClientDeleteResponse, error)`
+- New function `*CloudEndpointsClientPreRestorePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*CloudEndpointsClientTriggerChangeDetectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServerEndpointsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ServicesClient.BeginCreate(context.Context, string, string, ServiceCreateParameters, *ServicesClientBeginCreateOptions) (ServicesClientCreatePollerResponse, error)`
+- New function `ServerEndpointsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServerEndpointsClientUpdateResponse, error)`
+- New function `*RegisteredServersClientCreatePoller.ResumeToken() (string, error)`
+- New function `*CloudEndpointsClientPostBackupPoller.FinalResponse(context.Context) (CloudEndpointsClientPostBackupResponse, error)`
+- New function `*RegisteredServersClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientCreatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `ServerEndpointsClientRecallActionPollerResponse.PollUntilDone(context.Context, time.Duration) (ServerEndpointsClientRecallActionResponse, error)`
+- New function `*ServicesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*CloudEndpointsClientPreRestorePoller.FinalResponse(context.Context) (CloudEndpointsClientPreRestoreResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientCreateResponse, error)`
+- New function `*CloudEndpointsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*ServerEndpointsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegisteredServersClientTriggerRolloverPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServicesClient.CheckNameAvailability(context.Context, string, CheckNameAvailabilityParameters, *ServicesClientCheckNameAvailabilityOptions) (ServicesClientCheckNameAvailabilityResponse, error)`
+- New function `NewServicesClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServicesClient`
+- New function `*CloudEndpointsClientTriggerChangeDetectionPoller.FinalResponse(context.Context) (CloudEndpointsClientTriggerChangeDetectionResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ServicesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientCreateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*ServerEndpointsClientUpdatePoller.FinalResponse(context.Context) (ServerEndpointsClientUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `CloudEndpointsClientTriggerChangeDetectionPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudEndpointsClientTriggerChangeDetectionResponse, error)`
+- New function `*ServerEndpointsClientCreatePoller.Done() bool`
+- New function `*CloudEndpointsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ServerEndpointsClientDeletePoller.Done() bool`
+- New function `ServiceCreateParameters.MarshalJSON() ([]byte, error)`
+- New function `*RegisteredServersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudEndpointsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegisteredServersClientCreatePollerResponse.Resume(context.Context, *RegisteredServersClient, string) error`
+- New function `*CloudEndpointsClientCreatePoller.Done() bool`
+- New function `*RegisteredServersClientCreatePoller.FinalResponse(context.Context) (RegisteredServersClientCreateResponse, error)`
+- New function `*ServicesClientDeletePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*CloudEndpointsClientTriggerChangeDetectionPoller.Done() bool`
+- New function `RegisteredServersClientTriggerRolloverPollerResponse.PollUntilDone(context.Context, time.Duration) (RegisteredServersClientTriggerRolloverResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*ServerEndpointsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ServicesClient.ListByResourceGroup(context.Context, string, *ServicesClientListByResourceGroupOptions) (ServicesClientListByResourceGroupResponse, error)`
+- New function `ServiceProperties.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClient.Get(context.Context, string, string, *ServicesClientGetOptions) (ServicesClientGetResponse, error)`
+- New function `*RegisteredServersClientCreatePoller.Done() bool`
+- New function `CloudEndpointsClientPostBackupPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudEndpointsClientPostBackupResponse, error)`
+- New function `*ServicesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `CloudEndpointsClientPreBackupPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudEndpointsClientPreBackupResponse, error)`
+- New function `ServicesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientUpdateResponse, error)`
+- New function `*ServerEndpointsClientRecallActionPoller.Done() bool`
+- New function `*ServicesClientDeletePoller.FinalResponse(context.Context) (ServicesClientDeleteResponse, error)`
+- New function `*CloudEndpointsClientPostBackupPoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*CloudEndpointsClientDeletePoller.FinalResponse(context.Context) (CloudEndpointsClientDeleteResponse, error)`
+- New function `RegisteredServersClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (RegisteredServersClientCreateResponse, error)`
+- New function `ServiceArray.MarshalJSON() ([]byte, error)`
+- New function `*ServerEndpointsClientDeletePollerResponse.Resume(context.Context, *ServerEndpointsClient, string) error`
+- New function `Service.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `RegisteredServersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (RegisteredServersClientDeleteResponse, error)`
+- New function `*ServerEndpointsClientUpdatePoller.Done() bool`
+- New function `*ServicesClient.BeginUpdate(context.Context, string, string, *ServicesClientBeginUpdateOptions) (ServicesClientUpdatePollerResponse, error)`
+- New function `*RegisteredServersClientDeletePollerResponse.Resume(context.Context, *RegisteredServersClient, string) error`
+- New function `*ServerEndpointsClientCreatePollerResponse.Resume(context.Context, *ServerEndpointsClient, string) error`
+- New function `*CloudEndpointsClientTriggerChangeDetectionPoller.ResumeToken() (string, error)`
+- New function `*ServicesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*CloudEndpointsClientPreBackupPollerResponse.Resume(context.Context, *CloudEndpointsClient, string) error`
+- New function `*ServerEndpointsClientDeletePoller.FinalResponse(context.Context) (ServerEndpointsClientDeleteResponse, error)`
+- New function `*ServicesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudEndpointsClientPostBackupPoller.Done() bool`
+- New function `*CloudEndpointsClientCreatePoller.FinalResponse(context.Context) (CloudEndpointsClientCreateResponse, error)`
+- New function `*CloudEndpointsClientPostBackupPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServerEndpointsClientRecallActionPollerResponse.Resume(context.Context, *ServerEndpointsClient, string) error`
+- New function `CloudEndpointsClientPreRestorePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudEndpointsClientPreRestoreResponse, error)`
+- New function `*CloudEndpointsClientPreBackupPoller.FinalResponse(context.Context) (CloudEndpointsClientPreBackupResponse, error)`
+- New function `ServicesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientDeleteResponse, error)`
+- New function `*RegisteredServersClientTriggerRolloverPollerResponse.Resume(context.Context, *RegisteredServersClient, string) error`
+- New function `ServerEndpointsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServerEndpointsClientDeleteResponse, error)`
+- New function `*ServerEndpointsClientRecallActionPoller.ResumeToken() (string, error)`
+- New function `*CloudEndpointsClientPostBackupPollerResponse.Resume(context.Context, *CloudEndpointsClient, string) error`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*CloudEndpointsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudEndpointsClientDeletePoller.Done() bool`
+- New function `CloudEndpointsClientPostRestorePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudEndpointsClientPostRestoreResponse, error)`
+- New function `*ServerEndpointsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*RegisteredServersClientTriggerRolloverPoller.FinalResponse(context.Context) (RegisteredServersClientTriggerRolloverResponse, error)`
+- New function `*ServicesClientCreatePoller.FinalResponse(context.Context) (ServicesClientCreateResponse, error)`
+- New function `*ServicesClientDeletePoller.Done() bool`
+- New function `*RegisteredServersClientTriggerRolloverPoller.Done() bool`
+- New function `*CloudEndpointsClientPreRestorePollerResponse.Resume(context.Context, *CloudEndpointsClient, string) error`
+- New function `*ServerEndpointsClientUpdatePollerResponse.Resume(context.Context, *ServerEndpointsClient, string) error`
+- New function `*PrivateEndpointConnectionsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ServicesClientUpdatePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*RegisteredServersClientDeletePoller.Done() bool`
+- New function `*ServicesClientUpdatePoller.Done() bool`
+- New function `*CloudEndpointsClientPostRestorePollerResponse.Resume(context.Context, *CloudEndpointsClient, string) error`
+- New function `*ServerEndpointsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New struct `APIError`
+- New struct `CloudEndpointsClientBeginCreateOptions`
+- New struct `CloudEndpointsClientBeginDeleteOptions`
+- New struct `CloudEndpointsClientBeginPostBackupOptions`
+- New struct `CloudEndpointsClientBeginPostRestoreOptions`
+- New struct `CloudEndpointsClientBeginPreBackupOptions`
+- New struct `CloudEndpointsClientBeginPreRestoreOptions`
+- New struct `CloudEndpointsClientBeginTriggerChangeDetectionOptions`
+- New struct `CloudEndpointsClientCreatePoller`
+- New struct `CloudEndpointsClientCreatePollerResponse`
+- New struct `CloudEndpointsClientCreateResponse`
+- New struct `CloudEndpointsClientCreateResult`
+- New struct `CloudEndpointsClientDeletePoller`
+- New struct `CloudEndpointsClientDeletePollerResponse`
+- New struct `CloudEndpointsClientDeleteResponse`
+- New struct `CloudEndpointsClientGetOptions`
+- New struct `CloudEndpointsClientGetResponse`
+- New struct `CloudEndpointsClientGetResult`
+- New struct `CloudEndpointsClientListBySyncGroupOptions`
+- New struct `CloudEndpointsClientListBySyncGroupResponse`
+- New struct `CloudEndpointsClientListBySyncGroupResult`
+- New struct `CloudEndpointsClientPostBackupPoller`
+- New struct `CloudEndpointsClientPostBackupPollerResponse`
+- New struct `CloudEndpointsClientPostBackupResponse`
+- New struct `CloudEndpointsClientPostBackupResult`
+- New struct `CloudEndpointsClientPostRestorePoller`
+- New struct `CloudEndpointsClientPostRestorePollerResponse`
+- New struct `CloudEndpointsClientPostRestoreResponse`
+- New struct `CloudEndpointsClientPreBackupPoller`
+- New struct `CloudEndpointsClientPreBackupPollerResponse`
+- New struct `CloudEndpointsClientPreBackupResponse`
+- New struct `CloudEndpointsClientPreRestorePoller`
+- New struct `CloudEndpointsClientPreRestorePollerResponse`
+- New struct `CloudEndpointsClientPreRestoreResponse`
+- New struct `CloudEndpointsClientRestoreheartbeatOptions`
+- New struct `CloudEndpointsClientRestoreheartbeatResponse`
+- New struct `CloudEndpointsClientRestoreheartbeatResult`
+- New struct `CloudEndpointsClientTriggerChangeDetectionPoller`
+- New struct `CloudEndpointsClientTriggerChangeDetectionPollerResponse`
+- New struct `CloudEndpointsClientTriggerChangeDetectionResponse`
+- New struct `Error`
+- New struct `ErrorDetails`
+- New struct `InnerErrorDetails`
+- New struct `MicrosoftStorageSyncClientLocationOperationStatusOptions`
+- New struct `MicrosoftStorageSyncClientLocationOperationStatusResponse`
+- New struct `MicrosoftStorageSyncClientLocationOperationStatusResult`
+- New struct `OperationStatusClientGetOptions`
+- New struct `OperationStatusClientGetResponse`
+- New struct `OperationStatusClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreatePoller`
+- New struct `PrivateEndpointConnectionsClientCreatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientCreateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListByStorageSyncServiceOptions`
+- New struct `PrivateEndpointConnectionsClientListByStorageSyncServiceResponse`
+- New struct `PrivateEndpointConnectionsClientListByStorageSyncServiceResult`
+- New struct `PrivateLinkResourcesClientListByStorageSyncServiceOptions`
+- New struct `PrivateLinkResourcesClientListByStorageSyncServiceResponse`
+- New struct `PrivateLinkResourcesClientListByStorageSyncServiceResult`
+- New struct `RegisteredServersClientBeginCreateOptions`
+- New struct `RegisteredServersClientBeginDeleteOptions`
+- New struct `RegisteredServersClientBeginTriggerRolloverOptions`
+- New struct `RegisteredServersClientCreatePoller`
+- New struct `RegisteredServersClientCreatePollerResponse`
+- New struct `RegisteredServersClientCreateResponse`
+- New struct `RegisteredServersClientCreateResult`
+- New struct `RegisteredServersClientDeletePoller`
+- New struct `RegisteredServersClientDeletePollerResponse`
+- New struct `RegisteredServersClientDeleteResponse`
+- New struct `RegisteredServersClientGetOptions`
+- New struct `RegisteredServersClientGetResponse`
+- New struct `RegisteredServersClientGetResult`
+- New struct `RegisteredServersClientListByStorageSyncServiceOptions`
+- New struct `RegisteredServersClientListByStorageSyncServiceResponse`
+- New struct `RegisteredServersClientListByStorageSyncServiceResult`
+- New struct `RegisteredServersClientTriggerRolloverPoller`
+- New struct `RegisteredServersClientTriggerRolloverPollerResponse`
+- New struct `RegisteredServersClientTriggerRolloverResponse`
+- New struct `ServerEndpointsClientBeginCreateOptions`
+- New struct `ServerEndpointsClientBeginDeleteOptions`
+- New struct `ServerEndpointsClientBeginRecallActionOptions`
+- New struct `ServerEndpointsClientBeginUpdateOptions`
+- New struct `ServerEndpointsClientCreatePoller`
+- New struct `ServerEndpointsClientCreatePollerResponse`
+- New struct `ServerEndpointsClientCreateResponse`
+- New struct `ServerEndpointsClientCreateResult`
+- New struct `ServerEndpointsClientDeletePoller`
+- New struct `ServerEndpointsClientDeletePollerResponse`
+- New struct `ServerEndpointsClientDeleteResponse`
+- New struct `ServerEndpointsClientGetOptions`
+- New struct `ServerEndpointsClientGetResponse`
+- New struct `ServerEndpointsClientGetResult`
+- New struct `ServerEndpointsClientListBySyncGroupOptions`
+- New struct `ServerEndpointsClientListBySyncGroupResponse`
+- New struct `ServerEndpointsClientListBySyncGroupResult`
+- New struct `ServerEndpointsClientRecallActionPoller`
+- New struct `ServerEndpointsClientRecallActionPollerResponse`
+- New struct `ServerEndpointsClientRecallActionResponse`
+- New struct `ServerEndpointsClientUpdatePoller`
+- New struct `ServerEndpointsClientUpdatePollerResponse`
+- New struct `ServerEndpointsClientUpdateResponse`
+- New struct `ServerEndpointsClientUpdateResult`
+- New struct `Service`
+- New struct `ServiceArray`
+- New struct `ServiceCreateParameters`
+- New struct `ServiceCreateParametersProperties`
+- New struct `ServiceProperties`
+- New struct `ServiceUpdateParameters`
+- New struct `ServiceUpdateProperties`
+- New struct `ServicesClient`
+- New struct `ServicesClientBeginCreateOptions`
+- New struct `ServicesClientBeginDeleteOptions`
+- New struct `ServicesClientBeginUpdateOptions`
+- New struct `ServicesClientCheckNameAvailabilityOptions`
+- New struct `ServicesClientCheckNameAvailabilityResponse`
+- New struct `ServicesClientCheckNameAvailabilityResult`
+- New struct `ServicesClientCreatePoller`
+- New struct `ServicesClientCreatePollerResponse`
+- New struct `ServicesClientCreateResponse`
+- New struct `ServicesClientCreateResult`
+- New struct `ServicesClientDeletePoller`
+- New struct `ServicesClientDeletePollerResponse`
+- New struct `ServicesClientDeleteResponse`
+- New struct `ServicesClientGetOptions`
+- New struct `ServicesClientGetResponse`
+- New struct `ServicesClientGetResult`
+- New struct `ServicesClientListByResourceGroupOptions`
+- New struct `ServicesClientListByResourceGroupResponse`
+- New struct `ServicesClientListByResourceGroupResult`
+- New struct `ServicesClientListBySubscriptionOptions`
+- New struct `ServicesClientListBySubscriptionResponse`
+- New struct `ServicesClientListBySubscriptionResult`
+- New struct `ServicesClientUpdatePoller`
+- New struct `ServicesClientUpdatePollerResponse`
+- New struct `ServicesClientUpdateResponse`
+- New struct `ServicesClientUpdateResult`
+- New struct `SyncGroupsClientCreateOptions`
+- New struct `SyncGroupsClientCreateResponse`
+- New struct `SyncGroupsClientCreateResult`
+- New struct `SyncGroupsClientDeleteOptions`
+- New struct `SyncGroupsClientDeleteResponse`
+- New struct `SyncGroupsClientDeleteResult`
+- New struct `SyncGroupsClientGetOptions`
+- New struct `SyncGroupsClientGetResponse`
+- New struct `SyncGroupsClientGetResult`
+- New struct `SyncGroupsClientListByStorageSyncServiceOptions`
+- New struct `SyncGroupsClientListByStorageSyncServiceResponse`
+- New struct `SyncGroupsClientListByStorageSyncServiceResult`
+- New struct `WorkflowsClientAbortOptions`
+- New struct `WorkflowsClientAbortResponse`
+- New struct `WorkflowsClientAbortResult`
+- New struct `WorkflowsClientGetOptions`
+- New struct `WorkflowsClientGetResponse`
+- New struct `WorkflowsClientGetResult`
+- New struct `WorkflowsClientListByStorageSyncServiceOptions`
+- New struct `WorkflowsClientListByStorageSyncServiceResponse`
+- New struct `WorkflowsClientListByStorageSyncServiceResult`
+- New field `ID` in struct `ServerEndpointCreateParameters`
+- New field `Name` in struct `ServerEndpointCreateParameters`
+- New field `Type` in struct `ServerEndpointCreateParameters`
+- New field `Type` in struct `CloudEndpoint`
+- New field `ID` in struct `CloudEndpoint`
+- New field `Name` in struct `CloudEndpoint`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ID` in struct `CloudEndpointCreateParameters`
+- New field `Name` in struct `CloudEndpointCreateParameters`
+- New field `Type` in struct `CloudEndpointCreateParameters`
+- New field `Name` in struct `SyncGroup`
+- New field `Type` in struct `SyncGroup`
+- New field `ID` in struct `SyncGroup`
+- New field `ID` in struct `SyncGroupCreateParameters`
+- New field `Name` in struct `SyncGroupCreateParameters`
+- New field `Type` in struct `SyncGroupCreateParameters`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `ServerEndpoint`
+- New field `Name` in struct `ServerEndpoint`
+- New field `Type` in struct `ServerEndpoint`
+- New field `ID` in struct `RegisteredServer`
+- New field `Name` in struct `RegisteredServer`
+- New field `Type` in struct `RegisteredServer`
+- New field `ID` in struct `RegisteredServerCreateParameters`
+- New field `Name` in struct `RegisteredServerCreateParameters`
+- New field `Type` in struct `RegisteredServerCreateParameters`
+- New field `Name` in struct `Workflow`
+- New field `Type` in struct `Workflow`
+- New field `ID` in struct `Workflow`
+
+
+## 0.1.0 (2021-12-16)
+
+- Init release.

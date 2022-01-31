@@ -15,6 +15,289 @@ import (
 	"time"
 )
 
+// Account - Definition of the automation account type.
+type Account struct {
+	// Gets or sets the etag of the resource.
+	Etag *string `json:"etag,omitempty"`
+
+	// Identity for the resource.
+	Identity *Identity `json:"identity,omitempty"`
+
+	// The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Gets or sets the automation account properties.
+	Properties *AccountProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource system metadata.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Account.
+func (a Account) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", a.Etag)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AccountClientCreateOrUpdateOptions contains the optional parameters for the AccountClient.CreateOrUpdate method.
+type AccountClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientDeleteOptions contains the optional parameters for the AccountClient.Delete method.
+type AccountClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
+type AccountClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup method.
+type AccountClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientListOptions contains the optional parameters for the AccountClient.List method.
+type AccountClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientUpdateOptions contains the optional parameters for the AccountClient.Update method.
+type AccountClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountCreateOrUpdateParameters - The parameters supplied to the create or update automation account operation.
+type AccountCreateOrUpdateParameters struct {
+	// Sets the identity property for automation account
+	Identity *Identity `json:"identity,omitempty"`
+
+	// Gets or sets the location of the resource.
+	Location *string `json:"location,omitempty"`
+
+	// Gets or sets name of the resource.
+	Name *string `json:"name,omitempty"`
+
+	// Gets or sets account create or update properties.
+	Properties *AccountCreateOrUpdateProperties `json:"properties,omitempty"`
+
+	// Gets or sets the tags attached to the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountCreateOrUpdateParameters.
+func (a AccountCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	return json.Marshal(objectMap)
+}
+
+// AccountCreateOrUpdateProperties - The parameters supplied to the create or update account properties.
+type AccountCreateOrUpdateProperties struct {
+	// Indicates whether requests using non-AAD authentication are blocked
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// Set the encryption properties for the automation account
+	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+
+	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
+	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
+
+	// Gets or sets account SKU.
+	SKU *SKU `json:"sku,omitempty"`
+}
+
+// AccountListResult - The response model for the list account operation.
+type AccountListResult struct {
+	// Gets or sets the next link.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Gets or sets list of accounts.
+	Value []*Account `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
+func (a AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountProperties - Definition of the account property.
+type AccountProperties struct {
+	// URL of automation hybrid service which is used for hybrid worker on-boarding.
+	AutomationHybridServiceURL *string `json:"automationHybridServiceUrl,omitempty"`
+
+	// Gets or sets the description.
+	Description *string `json:"description,omitempty"`
+
+	// Indicates whether requests using non-AAD authentication are blocked
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// Encryption properties for the automation account
+	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+
+	// Gets or sets the last modified by.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// List of Automation operations supported by the Automation resource provider.
+	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+
+	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
+	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
+
+	// Gets or sets the SKU of account.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// READ-ONLY; Gets the creation time.
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the last modified time.
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets status of account.
+	State *AutomationAccountState `json:"state,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
+func (a AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "automationHybridServiceUrl", a.AutomationHybridServiceURL)
+	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "disableLocalAuth", a.DisableLocalAuth)
+	populate(objectMap, "encryption", a.Encryption)
+	populate(objectMap, "lastModifiedBy", a.LastModifiedBy)
+	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
+	populate(objectMap, "privateEndpointConnections", a.PrivateEndpointConnections)
+	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
+	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "state", a.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccountProperties.
+func (a *AccountProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "automationHybridServiceUrl":
+			err = unpopulate(val, &a.AutomationHybridServiceURL)
+			delete(rawMsg, key)
+		case "creationTime":
+			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, &a.Description)
+			delete(rawMsg, key)
+		case "disableLocalAuth":
+			err = unpopulate(val, &a.DisableLocalAuth)
+			delete(rawMsg, key)
+		case "encryption":
+			err = unpopulate(val, &a.Encryption)
+			delete(rawMsg, key)
+		case "lastModifiedBy":
+			err = unpopulate(val, &a.LastModifiedBy)
+			delete(rawMsg, key)
+		case "lastModifiedTime":
+			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
+			delete(rawMsg, key)
+		case "privateEndpointConnections":
+			err = unpopulate(val, &a.PrivateEndpointConnections)
+			delete(rawMsg, key)
+		case "publicNetworkAccess":
+			err = unpopulate(val, &a.PublicNetworkAccess)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, &a.SKU)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, &a.State)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AccountUpdateParameters - The parameters supplied to the update automation account operation.
+type AccountUpdateParameters struct {
+	// Sets the identity property for automation account
+	Identity *Identity `json:"identity,omitempty"`
+
+	// Gets or sets the location of the resource.
+	Location *string `json:"location,omitempty"`
+
+	// Gets or sets the name of the resource.
+	Name *string `json:"name,omitempty"`
+
+	// Gets or sets account update properties.
+	Properties *AccountUpdateProperties `json:"properties,omitempty"`
+
+	// Gets or sets the tags attached to the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountUpdateParameters.
+func (a AccountUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	return json.Marshal(objectMap)
+}
+
+// AccountUpdateProperties - The parameters supplied to the update account properties.
+type AccountUpdateProperties struct {
+	// Indicates whether requests using non-AAD authentication are blocked
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// Set the encryption properties for the automation account
+	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+
+	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
+	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
+
+	// Gets or sets account SKU.
+	SKU *SKU `json:"sku,omitempty"`
+}
+
 // Activity - Definition of the activity.
 type Activity struct {
 	// Gets or sets the id of the resource.
@@ -27,13 +310,13 @@ type Activity struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
-// ActivityGetOptions contains the optional parameters for the Activity.Get method.
-type ActivityGetOptions struct {
+// ActivityClientGetOptions contains the optional parameters for the ActivityClient.Get method.
+type ActivityClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ActivityListByModuleOptions contains the optional parameters for the Activity.ListByModule method.
-type ActivityListByModuleOptions struct {
+// ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.ListByModule method.
+type ActivityClientListByModuleOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -71,7 +354,8 @@ type ActivityParameter struct {
 	// Gets or sets a Boolean value that indicates true if the parameter is dynamic.
 	IsDynamic *bool `json:"isDynamic,omitempty"`
 
-	// Gets or sets a Boolean value that indicates true if the parameter is required. If the value is false, the parameter is optional.
+	// Gets or sets a Boolean value that indicates true if the parameter is required. If the value is false, the parameter is
+	// optional.
 	IsMandatory *bool `json:"isMandatory,omitempty"`
 
 	// Gets or sets the name of the activity parameter.
@@ -86,18 +370,18 @@ type ActivityParameter struct {
 	// Gets or sets the validation set of activity parameter.
 	ValidationSet []*ActivityParameterValidationSet `json:"validationSet,omitempty"`
 
-	// Gets or sets a Boolean value that indicates true if the parameter can take values from the incoming pipeline objects. This setting is used if the cmdlet
-	// must access the complete input object. false
+	// Gets or sets a Boolean value that indicates true if the parameter can take values from the incoming pipeline objects. This
+	// setting is used if the cmdlet must access the complete input object. false
 	// indicates that the parameter cannot take values from the complete input object.
 	ValueFromPipeline *bool `json:"valueFromPipeline,omitempty"`
 
-	// Gets or sets a Boolean value that indicates true if the parameter can be filled from a property of the incoming pipeline object that has the same name
-	// as this parameter. false indicates that the
+	// Gets or sets a Boolean value that indicates true if the parameter can be filled from a property of the incoming pipeline
+	// object that has the same name as this parameter. false indicates that the
 	// parameter cannot be filled from the incoming pipeline object property with the same name.
 	ValueFromPipelineByPropertyName *bool `json:"valueFromPipelineByPropertyName,omitempty"`
 
-	// Gets or sets a Boolean value that indicates true if the cmdlet parameter accepts all the remaining command-line arguments that are associated with this
-	// parameter in the form of an array. false if the
+	// Gets or sets a Boolean value that indicates true if the cmdlet parameter accepts all the remaining command-line arguments
+	// that are associated with this parameter in the form of an array. false if the
 	// cmdlet parameter does not accept all the remaining argument values.
 	ValueFromRemainingArguments *bool `json:"valueFromRemainingArguments,omitempty"`
 }
@@ -254,13 +538,15 @@ type AgentRegistration struct {
 	Keys *AgentRegistrationKeys `json:"keys,omitempty"`
 }
 
-// AgentRegistrationInformationGetOptions contains the optional parameters for the AgentRegistrationInformation.Get method.
-type AgentRegistrationInformationGetOptions struct {
+// AgentRegistrationInformationClientGetOptions contains the optional parameters for the AgentRegistrationInformationClient.Get
+// method.
+type AgentRegistrationInformationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AgentRegistrationInformationRegenerateKeyOptions contains the optional parameters for the AgentRegistrationInformation.RegenerateKey method.
-type AgentRegistrationInformationRegenerateKeyOptions struct {
+// AgentRegistrationInformationClientRegenerateKeyOptions contains the optional parameters for the AgentRegistrationInformationClient.RegenerateKey
+// method.
+type AgentRegistrationInformationClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -277,276 +563,6 @@ type AgentRegistrationKeys struct {
 type AgentRegistrationRegenerateKeyParameter struct {
 	// REQUIRED; Gets or sets the agent registration key name - primary or secondary.
 	KeyName *AgentRegistrationKeyName `json:"keyName,omitempty"`
-}
-
-// AutomationAccount - Definition of the automation account type.
-type AutomationAccount struct {
-	TrackedResource
-	// Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
-
-	// Identity for the resource.
-	Identity *Identity `json:"identity,omitempty"`
-
-	// Gets or sets the automation account properties.
-	Properties *AutomationAccountProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationAccount.
-func (a AutomationAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// AutomationAccountCreateOrUpdateOptions contains the optional parameters for the AutomationAccount.CreateOrUpdate method.
-type AutomationAccountCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AutomationAccountCreateOrUpdateParameters - The parameters supplied to the create or update automation account operation.
-type AutomationAccountCreateOrUpdateParameters struct {
-	// Sets the identity property for automation account
-	Identity *Identity `json:"identity,omitempty"`
-
-	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
-
-	// Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
-
-	// Gets or sets account create or update properties.
-	Properties *AutomationAccountCreateOrUpdateProperties `json:"properties,omitempty"`
-
-	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationAccountCreateOrUpdateParameters.
-func (a AutomationAccountCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
-// AutomationAccountCreateOrUpdateProperties - The parameters supplied to the create or update account properties.
-type AutomationAccountCreateOrUpdateProperties struct {
-	// Indicates whether requests using non-AAD authentication are blocked
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// Set the encryption properties for the automation account
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
-
-	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
-	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
-
-	// Gets or sets account SKU.
-	SKU *SKU `json:"sku,omitempty"`
-}
-
-// AutomationAccountDeleteOptions contains the optional parameters for the AutomationAccount.Delete method.
-type AutomationAccountDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AutomationAccountGetOptions contains the optional parameters for the AutomationAccount.Get method.
-type AutomationAccountGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AutomationAccountListByResourceGroupOptions contains the optional parameters for the AutomationAccount.ListByResourceGroup method.
-type AutomationAccountListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AutomationAccountListOptions contains the optional parameters for the AutomationAccount.List method.
-type AutomationAccountListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AutomationAccountListResult - The response model for the list account operation.
-type AutomationAccountListResult struct {
-	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Gets or sets list of accounts.
-	Value []*AutomationAccount `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationAccountListResult.
-func (a AutomationAccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// AutomationAccountProperties - Definition of the account property.
-type AutomationAccountProperties struct {
-	// URL of automation hybrid service which is used for hybrid worker on-boarding.
-	AutomationHybridServiceURL *string `json:"automationHybridServiceUrl,omitempty"`
-
-	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
-
-	// Indicates whether requests using non-AAD authentication are blocked
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// Encryption properties for the automation account
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
-
-	// Gets or sets the last modified by.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-
-	// List of Automation operations supported by the Automation resource provider.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
-
-	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
-	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
-
-	// Gets or sets the SKU of account.
-	SKU *SKU `json:"sku,omitempty"`
-
-	// READ-ONLY; Gets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets status of account.
-	State *AutomationAccountState `json:"state,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationAccountProperties.
-func (a AutomationAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "automationHybridServiceUrl", a.AutomationHybridServiceURL)
-	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "disableLocalAuth", a.DisableLocalAuth)
-	populate(objectMap, "encryption", a.Encryption)
-	populate(objectMap, "lastModifiedBy", a.LastModifiedBy)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
-	populate(objectMap, "privateEndpointConnections", a.PrivateEndpointConnections)
-	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
-	populate(objectMap, "sku", a.SKU)
-	populate(objectMap, "state", a.State)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutomationAccountProperties.
-func (a *AutomationAccountProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "automationHybridServiceUrl":
-			err = unpopulate(val, &a.AutomationHybridServiceURL)
-			delete(rawMsg, key)
-		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &a.Description)
-			delete(rawMsg, key)
-		case "disableLocalAuth":
-			err = unpopulate(val, &a.DisableLocalAuth)
-			delete(rawMsg, key)
-		case "encryption":
-			err = unpopulate(val, &a.Encryption)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &a.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
-			delete(rawMsg, key)
-		case "privateEndpointConnections":
-			err = unpopulate(val, &a.PrivateEndpointConnections)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &a.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &a.SKU)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &a.State)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AutomationAccountUpdateOptions contains the optional parameters for the AutomationAccount.Update method.
-type AutomationAccountUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AutomationAccountUpdateParameters - The parameters supplied to the update automation account operation.
-type AutomationAccountUpdateParameters struct {
-	// Sets the identity property for automation account
-	Identity *Identity `json:"identity,omitempty"`
-
-	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
-
-	// Gets or sets the name of the resource.
-	Name *string `json:"name,omitempty"`
-
-	// Gets or sets account update properties.
-	Properties *AutomationAccountUpdateProperties `json:"properties,omitempty"`
-
-	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationAccountUpdateParameters.
-func (a AutomationAccountUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
-// AutomationAccountUpdateProperties - The parameters supplied to the update account properties.
-type AutomationAccountUpdateProperties struct {
-	// Indicates whether requests using non-AAD authentication are blocked
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// Set the encryption properties for the automation account
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
-
-	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
-	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
-
-	// Gets or sets account SKU.
-	SKU *SKU `json:"sku,omitempty"`
-}
-
-// AutomationClientConvertGraphRunbookContentOptions contains the optional parameters for the AutomationClient.ConvertGraphRunbookContent method.
-type AutomationClientConvertGraphRunbookContentOptions struct {
-	// placeholder for future optional parameters
 }
 
 // AzureQueryProperties - Azure query for the update configuration.
@@ -572,21 +588,42 @@ func (a AzureQueryProperties) MarshalJSON() ([]byte, error) {
 
 // Certificate - Definition of the certificate.
 type Certificate struct {
-	ProxyResource
 	// Gets or sets the properties of the certificate.
 	Properties *CertificateProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Certificate.
-func (c Certificate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+// CertificateClientCreateOrUpdateOptions contains the optional parameters for the CertificateClient.CreateOrUpdate method.
+type CertificateClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// CertificateCreateOrUpdateOptions contains the optional parameters for the Certificate.CreateOrUpdate method.
-type CertificateCreateOrUpdateOptions struct {
+// CertificateClientDeleteOptions contains the optional parameters for the CertificateClient.Delete method.
+type CertificateClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
+type CertificateClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.ListByAutomationAccount
+// method.
+type CertificateClientListByAutomationAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateClientUpdateOptions contains the optional parameters for the CertificateClient.Update method.
+type CertificateClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -612,21 +649,6 @@ type CertificateCreateOrUpdateProperties struct {
 
 	// Gets or sets the thumbprint of the certificate.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-}
-
-// CertificateDeleteOptions contains the optional parameters for the Certificate.Delete method.
-type CertificateDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CertificateGetOptions contains the optional parameters for the Certificate.Get method.
-type CertificateGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CertificateListByAutomationAccountOptions contains the optional parameters for the Certificate.ListByAutomationAccount method.
-type CertificateListByAutomationAccountOptions struct {
-	// placeholder for future optional parameters
 }
 
 // CertificateListResult - The response model for the list certificate operation.
@@ -714,11 +736,6 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CertificateUpdateOptions contains the optional parameters for the Certificate.Update method.
-type CertificateUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CertificateUpdateParameters - The parameters supplied to the update certificate operation.
 type CertificateUpdateParameters struct {
 	// Gets or sets the name of the certificate.
@@ -742,6 +759,11 @@ type CertificateUpdateProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// ClientConvertGraphRunbookContentOptions contains the optional parameters for the Client.ConvertGraphRunbookContent method.
+type ClientConvertGraphRunbookContentOptions struct {
+	// placeholder for future optional parameters
+}
+
 type ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties struct {
 	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
@@ -752,21 +774,42 @@ type ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalpr
 
 // Connection - Definition of the connection.
 type Connection struct {
-	ProxyResource
 	// Gets or sets the properties of the connection.
 	Properties *ConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Connection.
-func (c Connection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+// ConnectionClientCreateOrUpdateOptions contains the optional parameters for the ConnectionClient.CreateOrUpdate method.
+type ConnectionClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// ConnectionCreateOrUpdateOptions contains the optional parameters for the Connection.CreateOrUpdate method.
-type ConnectionCreateOrUpdateOptions struct {
+// ConnectionClientDeleteOptions contains the optional parameters for the ConnectionClient.Delete method.
+type ConnectionClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionClientGetOptions contains the optional parameters for the ConnectionClient.Get method.
+type ConnectionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.ListByAutomationAccount
+// method.
+type ConnectionClientListByAutomationAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionClientUpdateOptions contains the optional parameters for the ConnectionClient.Update method.
+type ConnectionClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -798,21 +841,6 @@ func (c ConnectionCreateOrUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "fieldDefinitionValues", c.FieldDefinitionValues)
 	return json.Marshal(objectMap)
-}
-
-// ConnectionDeleteOptions contains the optional parameters for the Connection.Delete method.
-type ConnectionDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionGetOptions contains the optional parameters for the Connection.Get method.
-type ConnectionGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionListByAutomationAccountOptions contains the optional parameters for the Connection.ListByAutomationAccount method.
-type ConnectionListByAutomationAccountOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ConnectionListResult - The response model for the list connection operation.
@@ -914,8 +942,25 @@ type ConnectionTypeAssociationProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ConnectionTypeCreateOrUpdateOptions contains the optional parameters for the ConnectionType.CreateOrUpdate method.
-type ConnectionTypeCreateOrUpdateOptions struct {
+// ConnectionTypeClientCreateOrUpdateOptions contains the optional parameters for the ConnectionTypeClient.CreateOrUpdate
+// method.
+type ConnectionTypeClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionTypeClientDeleteOptions contains the optional parameters for the ConnectionTypeClient.Delete method.
+type ConnectionTypeClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionTypeClientGetOptions contains the optional parameters for the ConnectionTypeClient.Get method.
+type ConnectionTypeClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionTypeClientListByAutomationAccountOptions contains the optional parameters for the ConnectionTypeClient.ListByAutomationAccount
+// method.
+type ConnectionTypeClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -943,21 +988,6 @@ func (c ConnectionTypeCreateOrUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "fieldDefinitions", c.FieldDefinitions)
 	populate(objectMap, "isGlobal", c.IsGlobal)
 	return json.Marshal(objectMap)
-}
-
-// ConnectionTypeDeleteOptions contains the optional parameters for the ConnectionType.Delete method.
-type ConnectionTypeDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionTypeGetOptions contains the optional parameters for the ConnectionType.Get method.
-type ConnectionTypeGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionTypeListByAutomationAccountOptions contains the optional parameters for the ConnectionType.ListByAutomationAccount method.
-type ConnectionTypeListByAutomationAccountOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ConnectionTypeListResult - The response model for the list connection type operation.
@@ -1038,11 +1068,6 @@ func (c *ConnectionTypeProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ConnectionUpdateOptions contains the optional parameters for the Connection.Update method.
-type ConnectionUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ConnectionUpdateParameters - The parameters supplied to the update connection operation.
 type ConnectionUpdateParameters struct {
 	// Gets or sets the name of the connection.
@@ -1115,21 +1140,42 @@ type ContentSource struct {
 
 // Credential - Definition of the credential.
 type Credential struct {
-	ProxyResource
 	// Gets or sets the properties of the credential.
 	Properties *CredentialProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Credential.
-func (c Credential) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+// CredentialClientCreateOrUpdateOptions contains the optional parameters for the CredentialClient.CreateOrUpdate method.
+type CredentialClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// CredentialCreateOrUpdateOptions contains the optional parameters for the Credential.CreateOrUpdate method.
-type CredentialCreateOrUpdateOptions struct {
+// CredentialClientDeleteOptions contains the optional parameters for the CredentialClient.Delete method.
+type CredentialClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CredentialClientGetOptions contains the optional parameters for the CredentialClient.Get method.
+type CredentialClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.ListByAutomationAccount
+// method.
+type CredentialClientListByAutomationAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CredentialClientUpdateOptions contains the optional parameters for the CredentialClient.Update method.
+type CredentialClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1152,21 +1198,6 @@ type CredentialCreateOrUpdateProperties struct {
 
 	// Gets or sets the description of the credential.
 	Description *string `json:"description,omitempty"`
-}
-
-// CredentialDeleteOptions contains the optional parameters for the Credential.Delete method.
-type CredentialDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CredentialGetOptions contains the optional parameters for the Credential.Get method.
-type CredentialGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CredentialListByAutomationAccountOptions contains the optional parameters for the Credential.ListByAutomationAccount method.
-type CredentialListByAutomationAccountOptions struct {
-	// placeholder for future optional parameters
 }
 
 // CredentialListResult - The response model for the list credential operation.
@@ -1240,11 +1271,6 @@ func (c *CredentialProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CredentialUpdateOptions contains the optional parameters for the Credential.Update method.
-type CredentialUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CredentialUpdateParameters - The parameters supplied to the Update credential operation.
 type CredentialUpdateParameters struct {
 	// Gets or sets the name of the credential.
@@ -1276,22 +1302,40 @@ type CredentialUpdateProperties struct {
 
 // DscCompilationJob - Definition of the Dsc Compilation job.
 type DscCompilationJob struct {
-	ProxyResource
 	// Gets or sets the properties of the Dsc Compilation job.
 	Properties *DscCompilationJobProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DscCompilationJob.
-func (d DscCompilationJob) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
-// DscCompilationJobBeginCreateOptions contains the optional parameters for the DscCompilationJob.BeginCreate method.
-type DscCompilationJobBeginCreateOptions struct {
+// DscCompilationJobClientBeginCreateOptions contains the optional parameters for the DscCompilationJobClient.BeginCreate
+// method.
+type DscCompilationJobClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// DscCompilationJobClientGetOptions contains the optional parameters for the DscCompilationJobClient.Get method.
+type DscCompilationJobClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscCompilationJobClientGetStreamOptions contains the optional parameters for the DscCompilationJobClient.GetStream method.
+type DscCompilationJobClientGetStreamOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.ListByAutomationAccount
+// method.
+type DscCompilationJobClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
 }
 
 // DscCompilationJobCreateParameters - The parameters supplied to the create compilation job operation.
@@ -1338,22 +1382,6 @@ func (d DscCompilationJobCreateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "incrementNodeConfigurationBuild", d.IncrementNodeConfigurationBuild)
 	populate(objectMap, "parameters", d.Parameters)
 	return json.Marshal(objectMap)
-}
-
-// DscCompilationJobGetOptions contains the optional parameters for the DscCompilationJob.Get method.
-type DscCompilationJobGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscCompilationJobGetStreamOptions contains the optional parameters for the DscCompilationJob.GetStream method.
-type DscCompilationJobGetStreamOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscCompilationJobListByAutomationAccountOptions contains the optional parameters for the DscCompilationJob.ListByAutomationAccount method.
-type DscCompilationJobListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
 }
 
 // DscCompilationJobListResult - The response model for the list job operation.
@@ -1497,27 +1525,46 @@ func (d *DscCompilationJobProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DscCompilationJobStreamListByJobOptions contains the optional parameters for the DscCompilationJobStream.ListByJob method.
-type DscCompilationJobStreamListByJobOptions struct {
+// DscCompilationJobStreamClientListByJobOptions contains the optional parameters for the DscCompilationJobStreamClient.ListByJob
+// method.
+type DscCompilationJobStreamClientListByJobOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DscConfiguration - Definition of the configuration type.
 type DscConfiguration struct {
-	TrackedResource
 	// Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 
+	// The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Gets or sets the configuration properties.
 	Properties *DscConfigurationProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DscConfiguration.
 func (d DscConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1527,9 +1574,58 @@ type DscConfigurationAssociationProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// DscConfigurationCreateOrUpdateOptions contains the optional parameters for the DscConfiguration.CreateOrUpdate method.
-type DscConfigurationCreateOrUpdateOptions struct {
+// DscConfigurationClientCreateOrUpdateWithJSONOptions contains the optional parameters for the DscConfigurationClient.CreateOrUpdateWithJSON
+// method.
+type DscConfigurationClientCreateOrUpdateWithJSONOptions struct {
 	// placeholder for future optional parameters
+}
+
+// DscConfigurationClientCreateOrUpdateWithTextOptions contains the optional parameters for the DscConfigurationClient.CreateOrUpdateWithText
+// method.
+type DscConfigurationClientCreateOrUpdateWithTextOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscConfigurationClientDeleteOptions contains the optional parameters for the DscConfigurationClient.Delete method.
+type DscConfigurationClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscConfigurationClientGetContentOptions contains the optional parameters for the DscConfigurationClient.GetContent method.
+type DscConfigurationClientGetContentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscConfigurationClientGetOptions contains the optional parameters for the DscConfigurationClient.Get method.
+type DscConfigurationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscConfigurationClient.ListByAutomationAccount
+// method.
+type DscConfigurationClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+	// Return total rows.
+	Inlinecount *string
+	// The number of rows to skip.
+	Skip *int32
+	// The number of rows to take.
+	Top *int32
+}
+
+// DscConfigurationClientUpdateWithJSONOptions contains the optional parameters for the DscConfigurationClient.UpdateWithJSON
+// method.
+type DscConfigurationClientUpdateWithJSONOptions struct {
+	// The create or update parameters for configuration.
+	Parameters *DscConfigurationUpdateParameters
+}
+
+// DscConfigurationClientUpdateWithTextOptions contains the optional parameters for the DscConfigurationClient.UpdateWithText
+// method.
+type DscConfigurationClientUpdateWithTextOptions struct {
+	// The create or update parameters for configuration.
+	Parameters *string
 }
 
 // DscConfigurationCreateOrUpdateParameters - The parameters supplied to the create or update configuration operation.
@@ -1584,39 +1680,6 @@ func (d DscConfigurationCreateOrUpdateProperties) MarshalJSON() ([]byte, error) 
 	populate(objectMap, "parameters", d.Parameters)
 	populate(objectMap, "source", d.Source)
 	return json.Marshal(objectMap)
-}
-
-// DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersOptions contains the optional parameters for the DscConfiguration.CreateOrUpdateWithDscConfigurationCreateOrUpdateParameters
-// method.
-type DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscConfigurationDeleteOptions contains the optional parameters for the DscConfiguration.Delete method.
-type DscConfigurationDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscConfigurationGetContentOptions contains the optional parameters for the DscConfiguration.GetContent method.
-type DscConfigurationGetContentOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscConfigurationGetOptions contains the optional parameters for the DscConfiguration.Get method.
-type DscConfigurationGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscConfigurationListByAutomationAccountOptions contains the optional parameters for the DscConfiguration.ListByAutomationAccount method.
-type DscConfigurationListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
-	// Return total rows.
-	Inlinecount *string
-	// The number of rows to skip.
-	Skip *int32
-	// The number of rows to take.
-	Top *int32
 }
 
 // DscConfigurationListResult - The response model for the list configuration operation.
@@ -1751,12 +1814,6 @@ func (d *DscConfigurationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DscConfigurationUpdateOptions contains the optional parameters for the DscConfiguration.Update method.
-type DscConfigurationUpdateOptions struct {
-	// The create or update parameters for configuration.
-	Parameters *string
-}
-
 // DscConfigurationUpdateParameters - The parameters supplied to the create or update configuration operation.
 type DscConfigurationUpdateParameters struct {
 	// Gets or sets name of the resource.
@@ -1776,13 +1833,6 @@ func (d DscConfigurationUpdateParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "tags", d.Tags)
 	return json.Marshal(objectMap)
-}
-
-// DscConfigurationUpdateWithDscConfigurationUpdateParametersOptions contains the optional parameters for the DscConfiguration.UpdateWithDscConfigurationUpdateParameters
-// method.
-type DscConfigurationUpdateWithDscConfigurationUpdateParametersOptions struct {
-	// The create or update parameters for configuration.
-	Parameters *DscConfigurationUpdateParameters
 }
 
 // DscMetaConfiguration - Definition of the DSC Meta Configuration.
@@ -1811,32 +1861,60 @@ type DscMetaConfiguration struct {
 
 // DscNode - Definition of a DscNode
 type DscNode struct {
-	ProxyResource
 	// The properties of a DscNode.
 	Properties *DscNodeProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DscNode.
-func (d DscNode) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+// DscNodeClientDeleteOptions contains the optional parameters for the DscNodeClient.Delete method.
+type DscNodeClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscNodeClientGetOptions contains the optional parameters for the DscNodeClient.Get method.
+type DscNodeClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.ListByAutomationAccount
+// method.
+type DscNodeClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+	// Return total rows.
+	Inlinecount *string
+	// The number of rows to skip.
+	Skip *int32
+	// The number of rows to take.
+	Top *int32
+}
+
+// DscNodeClientUpdateOptions contains the optional parameters for the DscNodeClient.Update method.
+type DscNodeClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // DscNodeConfiguration - Definition of the dsc node configuration.
 type DscNodeConfiguration struct {
-	ProxyResource
 	// Gets or sets the configuration properties.
 	Properties *DscNodeConfigurationProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DscNodeConfiguration.
-func (d DscNodeConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DscNodeConfigurationAssociationProperty - The dsc node configuration property associated with the entity.
@@ -1845,9 +1923,33 @@ type DscNodeConfigurationAssociationProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// DscNodeConfigurationBeginCreateOrUpdateOptions contains the optional parameters for the DscNodeConfiguration.BeginCreateOrUpdate method.
-type DscNodeConfigurationBeginCreateOrUpdateOptions struct {
+// DscNodeConfigurationClientBeginCreateOrUpdateOptions contains the optional parameters for the DscNodeConfigurationClient.BeginCreateOrUpdate
+// method.
+type DscNodeConfigurationClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// DscNodeConfigurationClientDeleteOptions contains the optional parameters for the DscNodeConfigurationClient.Delete method.
+type DscNodeConfigurationClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscNodeConfigurationClientGetOptions contains the optional parameters for the DscNodeConfigurationClient.Get method.
+type DscNodeConfigurationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DscNodeConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscNodeConfigurationClient.ListByAutomationAccount
+// method.
+type DscNodeConfigurationClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+	// Return total rows.
+	Inlinecount *string
+	// The number of rows to skip.
+	Skip *int32
+	// The number of rows to take.
+	Top *int32
 }
 
 // DscNodeConfigurationCreateOrUpdateParameters - The parameters supplied to the create or update node configuration operation.
@@ -1871,7 +1973,8 @@ func (d DscNodeConfigurationCreateOrUpdateParameters) MarshalJSON() ([]byte, err
 	return json.Marshal(objectMap)
 }
 
-// DscNodeConfigurationCreateOrUpdateParametersProperties - The parameter properties supplied to the create or update node configuration operation.
+// DscNodeConfigurationCreateOrUpdateParametersProperties - The parameter properties supplied to the create or update node
+// configuration operation.
 type DscNodeConfigurationCreateOrUpdateParametersProperties struct {
 	// REQUIRED; Gets or sets the configuration of the node.
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
@@ -1881,28 +1984,6 @@ type DscNodeConfigurationCreateOrUpdateParametersProperties struct {
 
 	// If a new build version of NodeConfiguration is required.
 	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
-}
-
-// DscNodeConfigurationDeleteOptions contains the optional parameters for the DscNodeConfiguration.Delete method.
-type DscNodeConfigurationDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscNodeConfigurationGetOptions contains the optional parameters for the DscNodeConfiguration.Get method.
-type DscNodeConfigurationGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscNodeConfigurationListByAutomationAccountOptions contains the optional parameters for the DscNodeConfiguration.ListByAutomationAccount method.
-type DscNodeConfigurationListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
-	// Return total rows.
-	Inlinecount *string
-	// The number of rows to skip.
-	Skip *int32
-	// The number of rows to take.
-	Top *int32
 }
 
 // DscNodeConfigurationListResult - The response model for the list job operation.
@@ -1994,11 +2075,6 @@ func (d *DscNodeConfigurationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DscNodeDeleteOptions contains the optional parameters for the DscNode.Delete method.
-type DscNodeDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
 // DscNodeExtensionHandlerAssociationProperty - The dsc extensionHandler property associated with the node
 type DscNodeExtensionHandlerAssociationProperty struct {
 	// Gets or sets the name of the extension handler.
@@ -2006,23 +2082,6 @@ type DscNodeExtensionHandlerAssociationProperty struct {
 
 	// Gets or sets the version of the extension handler.
 	Version *string `json:"version,omitempty"`
-}
-
-// DscNodeGetOptions contains the optional parameters for the DscNode.Get method.
-type DscNodeGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DscNodeListByAutomationAccountOptions contains the optional parameters for the DscNode.ListByAutomationAccount method.
-type DscNodeListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
-	// Return total rows.
-	Inlinecount *string
-	// The number of rows to skip.
-	Skip *int32
-	// The number of rows to take.
-	Top *int32
 }
 
 // DscNodeListResult - The response model for the list dsc nodes operation.
@@ -2318,11 +2377,6 @@ func (d DscNodeReportListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DscNodeUpdateOptions contains the optional parameters for the DscNode.Update method.
-type DscNodeUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // DscNodeUpdateParameters - The parameters supplied to the update dsc node operation.
 type DscNodeUpdateParameters struct {
 	// Gets or sets the id of the dsc node.
@@ -2486,20 +2540,12 @@ type EncryptionPropertiesIdentity struct {
 }
 
 // ErrorResponse - Error response of an operation failure
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// Error code
 	Code *string `json:"code,omitempty"`
 
 	// Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
 }
 
 // FieldDefinition - Definition of the connection fields.
@@ -2514,8 +2560,8 @@ type FieldDefinition struct {
 	IsOptional *bool `json:"isOptional,omitempty"`
 }
 
-// FieldsListByTypeOptions contains the optional parameters for the Fields.ListByType method.
-type FieldsListByTypeOptions struct {
+// FieldsClientListByTypeOptions contains the optional parameters for the FieldsClient.ListByType method.
+type FieldsClientListByTypeOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2530,21 +2576,20 @@ type GraphicalRunbookContent struct {
 
 // HybridRunbookWorker - Definition of hybrid runbook worker.
 type HybridRunbookWorker struct {
-	Resource
 	// Gets or sets the hybrid worker group properties.
 	Properties *HybridRunbookWorkerProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Resource system metadata.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type HybridRunbookWorker.
-func (h HybridRunbookWorker) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	h.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", h.Properties)
-	populate(objectMap, "systemData", h.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // HybridRunbookWorkerCreateOrUpdateParameters - The parameters supplied to the create or update hybrid runbook worker operation.
@@ -2599,12 +2644,38 @@ func (h HybridRunbookWorkerGroup) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// HybridRunbookWorkerGroupCreateOptions contains the optional parameters for the HybridRunbookWorkerGroup.Create method.
-type HybridRunbookWorkerGroupCreateOptions struct {
+// HybridRunbookWorkerGroupClientCreateOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.Create
+// method.
+type HybridRunbookWorkerGroupClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridRunbookWorkerGroupCreateOrUpdateParameters - The parameters supplied to the create or update hybrid runbook worker group operation.
+// HybridRunbookWorkerGroupClientDeleteOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.Delete
+// method.
+type HybridRunbookWorkerGroupClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HybridRunbookWorkerGroupClientGetOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.Get method.
+type HybridRunbookWorkerGroupClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HybridRunbookWorkerGroupClientListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.ListByAutomationAccount
+// method.
+type HybridRunbookWorkerGroupClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+}
+
+// HybridRunbookWorkerGroupClientUpdateOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.Update
+// method.
+type HybridRunbookWorkerGroupClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HybridRunbookWorkerGroupCreateOrUpdateParameters - The parameters supplied to the create or update hybrid runbook worker
+// group operation.
 type HybridRunbookWorkerGroupCreateOrUpdateParameters struct {
 	// Sets the credential of a worker group.
 	Credential *RunAsCredentialAssociationProperty `json:"credential,omitempty"`
@@ -2615,27 +2686,6 @@ func (h HybridRunbookWorkerGroupCreateOrUpdateParameters) MarshalJSON() ([]byte,
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "credential", h.Credential)
 	return json.Marshal(objectMap)
-}
-
-// HybridRunbookWorkerGroupDeleteOptions contains the optional parameters for the HybridRunbookWorkerGroup.Delete method.
-type HybridRunbookWorkerGroupDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HybridRunbookWorkerGroupGetOptions contains the optional parameters for the HybridRunbookWorkerGroup.Get method.
-type HybridRunbookWorkerGroupGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HybridRunbookWorkerGroupListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroup.ListByAutomationAccount method.
-type HybridRunbookWorkerGroupListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
-}
-
-// HybridRunbookWorkerGroupUpdateOptions contains the optional parameters for the HybridRunbookWorkerGroup.Update method.
-type HybridRunbookWorkerGroupUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // HybridRunbookWorkerGroupUpdateParameters - Parameters supplied to the update operation.
@@ -2789,26 +2839,31 @@ func (h *HybridRunbookWorkerProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// HybridRunbookWorkersCreateOptions contains the optional parameters for the HybridRunbookWorkers.Create method.
-type HybridRunbookWorkersCreateOptions struct {
+// HybridRunbookWorkersClientCreateOptions contains the optional parameters for the HybridRunbookWorkersClient.Create method.
+type HybridRunbookWorkersClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridRunbookWorkersDeleteOptions contains the optional parameters for the HybridRunbookWorkers.Delete method.
-type HybridRunbookWorkersDeleteOptions struct {
+// HybridRunbookWorkersClientDeleteOptions contains the optional parameters for the HybridRunbookWorkersClient.Delete method.
+type HybridRunbookWorkersClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridRunbookWorkersGetOptions contains the optional parameters for the HybridRunbookWorkers.Get method.
-type HybridRunbookWorkersGetOptions struct {
+// HybridRunbookWorkersClientGetOptions contains the optional parameters for the HybridRunbookWorkersClient.Get method.
+type HybridRunbookWorkersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridRunbookWorkersListByHybridRunbookWorkerGroupOptions contains the optional parameters for the HybridRunbookWorkers.ListByHybridRunbookWorkerGroup
+// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions contains the optional parameters for the HybridRunbookWorkersClient.ListByHybridRunbookWorkerGroup
 // method.
-type HybridRunbookWorkersListByHybridRunbookWorkerGroupOptions struct {
+type HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
+}
+
+// HybridRunbookWorkersClientMoveOptions contains the optional parameters for the HybridRunbookWorkersClient.Move method.
+type HybridRunbookWorkersClientMoveOptions struct {
+	// placeholder for future optional parameters
 }
 
 // HybridRunbookWorkersListResult - The response model for the list hybrid runbook workers.
@@ -2828,17 +2883,13 @@ func (h HybridRunbookWorkersListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// HybridRunbookWorkersMoveOptions contains the optional parameters for the HybridRunbookWorkers.Move method.
-type HybridRunbookWorkersMoveOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
 
@@ -2861,32 +2912,82 @@ func (i Identity) MarshalJSON() ([]byte, error) {
 
 // Job - Definition of the job.
 type Job struct {
-	ProxyResource
 	// The properties of the job.
 	Properties *JobProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Job.
-func (j Job) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	j.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", j.Properties)
-	return json.Marshal(objectMap)
+// JobClientCreateOptions contains the optional parameters for the JobClient.Create method.
+type JobClientCreateOptions struct {
+	// Identifies this specific client request.
+	ClientRequestID *string
+}
+
+// JobClientGetOptions contains the optional parameters for the JobClient.Get method.
+type JobClientGetOptions struct {
+	// Identifies this specific client request.
+	ClientRequestID *string
+}
+
+// JobClientGetOutputOptions contains the optional parameters for the JobClient.GetOutput method.
+type JobClientGetOutputOptions struct {
+	// Identifies this specific client request.
+	ClientRequestID *string
+}
+
+// JobClientGetRunbookContentOptions contains the optional parameters for the JobClient.GetRunbookContent method.
+type JobClientGetRunbookContentOptions struct {
+	// Identifies this specific client request.
+	ClientRequestID *string
+}
+
+// JobClientListByAutomationAccountOptions contains the optional parameters for the JobClient.ListByAutomationAccount method.
+type JobClientListByAutomationAccountOptions struct {
+	// Identifies this specific client request.
+	ClientRequestID *string
+	// The filter to apply on the operation.
+	Filter *string
+}
+
+// JobClientResumeOptions contains the optional parameters for the JobClient.Resume method.
+type JobClientResumeOptions struct {
+	// Identifies this specific client request.
+	ClientRequestID *string
+}
+
+// JobClientStopOptions contains the optional parameters for the JobClient.Stop method.
+type JobClientStopOptions struct {
+	// Identifies this specific client request.
+	ClientRequestID *string
+}
+
+// JobClientSuspendOptions contains the optional parameters for the JobClient.Suspend method.
+type JobClientSuspendOptions struct {
+	// Identifies this specific client request.
+	ClientRequestID *string
 }
 
 // JobCollectionItem - Job collection item properties.
 type JobCollectionItem struct {
-	ProxyResource
 	// REQUIRED; Job properties.
 	Properties *JobCollectionItemProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type JobCollectionItem.
-func (j JobCollectionItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	j.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", j.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // JobCollectionItemProperties - Job collection item properties.
@@ -2978,12 +3079,6 @@ func (j *JobCollectionItemProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JobCreateOptions contains the optional parameters for the Job.Create method.
-type JobCreateOptions struct {
-	// Identifies this specific client request.
-	ClientRequestID *string
-}
-
 // JobCreateParameters - The parameters supplied to the create job operation.
 type JobCreateParameters struct {
 	// REQUIRED; Gets or sets the list of job properties.
@@ -3008,32 +3103,6 @@ func (j JobCreateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "runOn", j.RunOn)
 	populate(objectMap, "runbook", j.Runbook)
 	return json.Marshal(objectMap)
-}
-
-// JobGetOptions contains the optional parameters for the Job.Get method.
-type JobGetOptions struct {
-	// Identifies this specific client request.
-	ClientRequestID *string
-}
-
-// JobGetOutputOptions contains the optional parameters for the Job.GetOutput method.
-type JobGetOutputOptions struct {
-	// Identifies this specific client request.
-	ClientRequestID *string
-}
-
-// JobGetRunbookContentOptions contains the optional parameters for the Job.GetRunbookContent method.
-type JobGetRunbookContentOptions struct {
-	// Identifies this specific client request.
-	ClientRequestID *string
-}
-
-// JobListByAutomationAccountOptions contains the optional parameters for the Job.ListByAutomationAccount method.
-type JobListByAutomationAccountOptions struct {
-	// Identifies this specific client request.
-	ClientRequestID *string
-	// The filter to apply on the operation.
-	Filter *string
 }
 
 // JobListResultV2 - The response model for the list job operation.
@@ -3183,12 +3252,6 @@ func (j *JobProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JobResumeOptions contains the optional parameters for the Job.Resume method.
-type JobResumeOptions struct {
-	// Identifies this specific client request.
-	ClientRequestID *string
-}
-
 // JobSchedule - Definition of the job schedule.
 type JobSchedule struct {
 	// Gets or sets the properties of the job schedule.
@@ -3204,9 +3267,26 @@ type JobSchedule struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// JobScheduleCreateOptions contains the optional parameters for the JobSchedule.Create method.
-type JobScheduleCreateOptions struct {
+// JobScheduleClientCreateOptions contains the optional parameters for the JobScheduleClient.Create method.
+type JobScheduleClientCreateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// JobScheduleClientDeleteOptions contains the optional parameters for the JobScheduleClient.Delete method.
+type JobScheduleClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobScheduleClientGetOptions contains the optional parameters for the JobScheduleClient.Get method.
+type JobScheduleClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.ListByAutomationAccount
+// method.
+type JobScheduleClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
 }
 
 // JobScheduleCreateParameters - The parameters supplied to the create job schedule operation.
@@ -3238,22 +3318,6 @@ func (j JobScheduleCreateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "runbook", j.Runbook)
 	populate(objectMap, "schedule", j.Schedule)
 	return json.Marshal(objectMap)
-}
-
-// JobScheduleDeleteOptions contains the optional parameters for the JobSchedule.Delete method.
-type JobScheduleDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// JobScheduleGetOptions contains the optional parameters for the JobSchedule.Get method.
-type JobScheduleGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// JobScheduleListByAutomationAccountOptions contains the optional parameters for the JobSchedule.ListByAutomationAccount method.
-type JobScheduleListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
 }
 
 // JobScheduleListResult - The response model for the list job schedule operation.
@@ -3302,12 +3366,6 @@ func (j JobScheduleProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// JobStopOptions contains the optional parameters for the Job.Stop method.
-type JobStopOptions struct {
-	// Identifies this specific client request.
-	ClientRequestID *string
-}
-
 // JobStream - Definition of the job stream.
 type JobStream struct {
 	// Gets or sets the id of the resource.
@@ -3317,14 +3375,14 @@ type JobStream struct {
 	Properties *JobStreamProperties `json:"properties,omitempty"`
 }
 
-// JobStreamGetOptions contains the optional parameters for the JobStream.Get method.
-type JobStreamGetOptions struct {
+// JobStreamClientGetOptions contains the optional parameters for the JobStreamClient.Get method.
+type JobStreamClientGetOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
 }
 
-// JobStreamListByJobOptions contains the optional parameters for the JobStream.ListByJob method.
-type JobStreamListByJobOptions struct {
+// JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.ListByJob method.
+type JobStreamClientListByJobOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
 	// The filter to apply on the operation.
@@ -3416,12 +3474,6 @@ func (j *JobStreamProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JobSuspendOptions contains the optional parameters for the Job.Suspend method.
-type JobSuspendOptions struct {
-	// Identifies this specific client request.
-	ClientRequestID *string
-}
-
 // Key - Automation key which is used to register a DSC Node
 type Key struct {
 	// READ-ONLY; Automation key name.
@@ -3458,8 +3510,8 @@ type KeyVaultProperties struct {
 	KeyvaultURI *string `json:"keyvaultUri,omitempty"`
 }
 
-// KeysListByAutomationAccountOptions contains the optional parameters for the Keys.ListByAutomationAccount method.
-type KeysListByAutomationAccountOptions struct {
+// KeysClientListByAutomationAccountOptions contains the optional parameters for the KeysClient.ListByAutomationAccount method.
+type KeysClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3469,8 +3521,8 @@ type LinkedWorkspace struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// LinkedWorkspaceGetOptions contains the optional parameters for the LinkedWorkspace.Get method.
-type LinkedWorkspaceGetOptions struct {
+// LinkedWorkspaceClientGetOptions contains the optional parameters for the LinkedWorkspaceClient.Get method.
+type LinkedWorkspaceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3501,25 +3553,64 @@ func (l LinuxProperties) MarshalJSON() ([]byte, error) {
 
 // Module - Definition of the module type.
 type Module struct {
-	TrackedResource
 	// Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 
+	// The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Gets or sets the module properties.
 	Properties *ModuleProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Module.
 func (m Module) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", m.Etag)
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "name", m.Name)
 	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "tags", m.Tags)
+	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
-// ModuleCreateOrUpdateOptions contains the optional parameters for the Module.CreateOrUpdate method.
-type ModuleCreateOrUpdateOptions struct {
+// ModuleClientCreateOrUpdateOptions contains the optional parameters for the ModuleClient.CreateOrUpdate method.
+type ModuleClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModuleClientDeleteOptions contains the optional parameters for the ModuleClient.Delete method.
+type ModuleClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModuleClientGetOptions contains the optional parameters for the ModuleClient.Get method.
+type ModuleClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.ListByAutomationAccount
+// method.
+type ModuleClientListByAutomationAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModuleClientUpdateOptions contains the optional parameters for the ModuleClient.Update method.
+type ModuleClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3554,11 +3645,6 @@ type ModuleCreateOrUpdateProperties struct {
 	ContentLink *ContentLink `json:"contentLink,omitempty"`
 }
 
-// ModuleDeleteOptions contains the optional parameters for the Module.Delete method.
-type ModuleDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ModuleErrorInfo - Definition of the module error info type.
 type ModuleErrorInfo struct {
 	// Gets or sets the error code.
@@ -3566,16 +3652,6 @@ type ModuleErrorInfo struct {
 
 	// Gets or sets the error message.
 	Message *string `json:"message,omitempty"`
-}
-
-// ModuleGetOptions contains the optional parameters for the Module.Get method.
-type ModuleGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ModuleListByAutomationAccountOptions contains the optional parameters for the Module.ListByAutomationAccount method.
-type ModuleListByAutomationAccountOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ModuleListResult - The response model for the list module operation.
@@ -3698,11 +3774,6 @@ func (m *ModuleProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ModuleUpdateOptions contains the optional parameters for the Module.Update method.
-type ModuleUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ModuleUpdateParameters - The parameters supplied to the update module operation.
 type ModuleUpdateParameters struct {
 	// Gets or sets the location of the resource.
@@ -3741,8 +3812,8 @@ type NodeCount struct {
 	Properties *NodeCountProperties `json:"properties,omitempty"`
 }
 
-// NodeCountInformationGetOptions contains the optional parameters for the NodeCountInformation.Get method.
-type NodeCountInformationGetOptions struct {
+// NodeCountInformationClientGetOptions contains the optional parameters for the NodeCountInformationClient.Get method.
+type NodeCountInformationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3768,18 +3839,18 @@ func (n NodeCounts) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// NodeReportsGetContentOptions contains the optional parameters for the NodeReports.GetContent method.
-type NodeReportsGetContentOptions struct {
+// NodeReportsClientGetContentOptions contains the optional parameters for the NodeReportsClient.GetContent method.
+type NodeReportsClientGetContentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NodeReportsGetOptions contains the optional parameters for the NodeReports.Get method.
-type NodeReportsGetOptions struct {
+// NodeReportsClientGetOptions contains the optional parameters for the NodeReportsClient.Get method.
+type NodeReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NodeReportsListByNodeOptions contains the optional parameters for the NodeReports.ListByNode method.
-type NodeReportsListByNodeOptions struct {
+// NodeReportsClientListByNodeOptions contains the optional parameters for the NodeReportsClient.ListByNode method.
+type NodeReportsClientListByNodeOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
@@ -3793,13 +3864,15 @@ type NonAzureQueryProperties struct {
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 }
 
-// ObjectDataTypesListFieldsByModuleAndTypeOptions contains the optional parameters for the ObjectDataTypes.ListFieldsByModuleAndType method.
-type ObjectDataTypesListFieldsByModuleAndTypeOptions struct {
+// ObjectDataTypesClientListFieldsByModuleAndTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByModuleAndType
+// method.
+type ObjectDataTypesClientListFieldsByModuleAndTypeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectDataTypesListFieldsByTypeOptions contains the optional parameters for the ObjectDataTypes.ListFieldsByType method.
-type ObjectDataTypesListFieldsByTypeOptions struct {
+// ObjectDataTypesClientListFieldsByTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByType
+// method.
+type ObjectDataTypesClientListFieldsByTypeOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3837,24 +3910,24 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateEndpointConnection - A private endpoint connection
 type PrivateEndpointConnection struct {
-	ProxyResource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - A list of private endpoint connections
@@ -3879,24 +3952,27 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsListByAutomationAccountOptions contains the optional parameters for the PrivateEndpointConnections.ListByAutomationAccount
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 // method.
-type PrivateEndpointConnectionsListByAutomationAccountOptions struct {
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByAutomationAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByAutomationAccount
+// method.
+type PrivateEndpointConnectionsClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3908,17 +3984,17 @@ type PrivateEndpointProperty struct {
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	ProxyResource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -3951,8 +4027,9 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesAutomationOptions contains the optional parameters for the PrivateLinkResources.Automation method.
-type PrivateLinkResourcesAutomationOptions struct {
+// PrivateLinkResourcesClientAutomationOptions contains the optional parameters for the PrivateLinkResourcesClient.Automation
+// method.
+type PrivateLinkResourcesClientAutomationOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3970,35 +4047,40 @@ type PrivateLinkServiceConnectionStateProperty struct {
 
 // ProxyResource - ARM proxy resource.
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
-}
-
-// Python2PackageCreateOrUpdateOptions contains the optional parameters for the Python2Package.CreateOrUpdate method.
-type Python2PackageCreateOrUpdateOptions struct {
+// Python2PackageClientCreateOrUpdateOptions contains the optional parameters for the Python2PackageClient.CreateOrUpdate
+// method.
+type Python2PackageClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Python2PackageDeleteOptions contains the optional parameters for the Python2Package.Delete method.
-type Python2PackageDeleteOptions struct {
+// Python2PackageClientDeleteOptions contains the optional parameters for the Python2PackageClient.Delete method.
+type Python2PackageClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Python2PackageGetOptions contains the optional parameters for the Python2Package.Get method.
-type Python2PackageGetOptions struct {
+// Python2PackageClientGetOptions contains the optional parameters for the Python2PackageClient.Get method.
+type Python2PackageClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Python2PackageListByAutomationAccountOptions contains the optional parameters for the Python2Package.ListByAutomationAccount method.
-type Python2PackageListByAutomationAccountOptions struct {
+// Python2PackageClientListByAutomationAccountOptions contains the optional parameters for the Python2PackageClient.ListByAutomationAccount
+// method.
+type Python2PackageClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Python2PackageUpdateOptions contains the optional parameters for the Python2Package.Update method.
-type Python2PackageUpdateOptions struct {
+// Python2PackageClientUpdateOptions contains the optional parameters for the Python2PackageClient.Update method.
+type Python2PackageClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4062,19 +4144,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // RunAsCredentialAssociationProperty - Definition of RunAs credential to use for hybrid worker.
 type RunAsCredentialAssociationProperty struct {
 	// Gets or sets the name of the credential.
@@ -4083,20 +4152,38 @@ type RunAsCredentialAssociationProperty struct {
 
 // Runbook - Definition of the runbook type.
 type Runbook struct {
-	TrackedResource
 	// Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 
+	// The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Gets or sets the runbook properties.
 	Properties *RunbookProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Runbook.
 func (r Runbook) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", r.Etag)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -4106,8 +4193,39 @@ type RunbookAssociationProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// RunbookBeginPublishOptions contains the optional parameters for the Runbook.BeginPublish method.
-type RunbookBeginPublishOptions struct {
+// RunbookClientBeginPublishOptions contains the optional parameters for the RunbookClient.BeginPublish method.
+type RunbookClientBeginPublishOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RunbookClientCreateOrUpdateOptions contains the optional parameters for the RunbookClient.CreateOrUpdate method.
+type RunbookClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RunbookClientDeleteOptions contains the optional parameters for the RunbookClient.Delete method.
+type RunbookClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RunbookClientGetContentOptions contains the optional parameters for the RunbookClient.GetContent method.
+type RunbookClientGetContentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RunbookClientGetOptions contains the optional parameters for the RunbookClient.Get method.
+type RunbookClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.ListByAutomationAccount
+// method.
+type RunbookClientListByAutomationAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RunbookClientUpdateOptions contains the optional parameters for the RunbookClient.Update method.
+type RunbookClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4136,11 +4254,6 @@ type RunbookCreateOrUpdateDraftProperties struct {
 
 	// Gets or sets verbose log option.
 	LogVerbose *bool `json:"logVerbose,omitempty"`
-}
-
-// RunbookCreateOrUpdateOptions contains the optional parameters for the Runbook.CreateOrUpdate method.
-type RunbookCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // RunbookCreateOrUpdateParameters - The parameters supplied to the create or update runbook operation.
@@ -4190,11 +4303,6 @@ type RunbookCreateOrUpdateProperties struct {
 
 	// Gets or sets the published runbook content link.
 	PublishContentLink *ContentLink `json:"publishContentLink,omitempty"`
-}
-
-// RunbookDeleteOptions contains the optional parameters for the Runbook.Delete method.
-type RunbookDeleteOptions struct {
-	// placeholder for future optional parameters
 }
 
 type RunbookDraft struct {
@@ -4264,23 +4372,24 @@ func (r *RunbookDraft) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// RunbookDraftBeginReplaceContentOptions contains the optional parameters for the RunbookDraft.BeginReplaceContent method.
-type RunbookDraftBeginReplaceContentOptions struct {
+// RunbookDraftClientBeginReplaceContentOptions contains the optional parameters for the RunbookDraftClient.BeginReplaceContent
+// method.
+type RunbookDraftClientBeginReplaceContentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RunbookDraftGetContentOptions contains the optional parameters for the RunbookDraft.GetContent method.
-type RunbookDraftGetContentOptions struct {
+// RunbookDraftClientGetContentOptions contains the optional parameters for the RunbookDraftClient.GetContent method.
+type RunbookDraftClientGetContentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RunbookDraftGetOptions contains the optional parameters for the RunbookDraft.Get method.
-type RunbookDraftGetOptions struct {
+// RunbookDraftClientGetOptions contains the optional parameters for the RunbookDraftClient.Get method.
+type RunbookDraftClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RunbookDraftUndoEditOptions contains the optional parameters for the RunbookDraft.UndoEdit method.
-type RunbookDraftUndoEditOptions struct {
+// RunbookDraftClientUndoEditOptions contains the optional parameters for the RunbookDraftClient.UndoEdit method.
+type RunbookDraftClientUndoEditOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4288,21 +4397,6 @@ type RunbookDraftUndoEditOptions struct {
 type RunbookDraftUndoEditResult struct {
 	RequestID  *string         `json:"requestId,omitempty"`
 	StatusCode *HTTPStatusCode `json:"statusCode,omitempty"`
-}
-
-// RunbookGetContentOptions contains the optional parameters for the Runbook.GetContent method.
-type RunbookGetContentOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RunbookGetOptions contains the optional parameters for the Runbook.Get method.
-type RunbookGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RunbookListByAutomationAccountOptions contains the optional parameters for the Runbook.ListByAutomationAccount method.
-type RunbookListByAutomationAccountOptions struct {
-	// placeholder for future optional parameters
 }
 
 // RunbookListResult - The response model for the list runbook operation.
@@ -4466,11 +4560,6 @@ func (r *RunbookProperties) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// RunbookUpdateOptions contains the optional parameters for the Runbook.Update method.
-type RunbookUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // RunbookUpdateParameters - The parameters supplied to the update runbook operation.
@@ -4651,17 +4740,17 @@ func (s *SUCScheduleProperties) UnmarshalJSON(data []byte) error {
 
 // Schedule - Definition of the schedule.
 type Schedule struct {
-	ProxyResource
 	// Gets or sets the properties of the schedule.
 	Properties *ScheduleProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Schedule.
-func (s Schedule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ScheduleAssociationProperty - The schedule property associated with the entity.
@@ -4670,8 +4759,29 @@ type ScheduleAssociationProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ScheduleCreateOrUpdateOptions contains the optional parameters for the Schedule.CreateOrUpdate method.
-type ScheduleCreateOrUpdateOptions struct {
+// ScheduleClientCreateOrUpdateOptions contains the optional parameters for the ScheduleClient.CreateOrUpdate method.
+type ScheduleClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduleClientDeleteOptions contains the optional parameters for the ScheduleClient.Delete method.
+type ScheduleClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduleClientGetOptions contains the optional parameters for the ScheduleClient.Get method.
+type ScheduleClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduleClientListByAutomationAccountOptions contains the optional parameters for the ScheduleClient.ListByAutomationAccount
+// method.
+type ScheduleClientListByAutomationAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduleClientUpdateOptions contains the optional parameters for the ScheduleClient.Update method.
+type ScheduleClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4715,7 +4825,7 @@ func (s ScheduleCreateOrUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", s.Description)
 	populateTimeRFC3339(objectMap, "expiryTime", s.ExpiryTime)
 	populate(objectMap, "frequency", s.Frequency)
-	populate(objectMap, "interval", s.Interval)
+	populate(objectMap, "interval", &s.Interval)
 	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
 	populate(objectMap, "timeZone", s.TimeZone)
 	return json.Marshal(objectMap)
@@ -4757,21 +4867,6 @@ func (s *ScheduleCreateOrUpdateProperties) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// ScheduleDeleteOptions contains the optional parameters for the Schedule.Delete method.
-type ScheduleDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduleGetOptions contains the optional parameters for the Schedule.Get method.
-type ScheduleGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduleListByAutomationAccountOptions contains the optional parameters for the Schedule.ListByAutomationAccount method.
-type ScheduleListByAutomationAccountOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ScheduleListResult - The response model for the list schedule operation.
@@ -4845,7 +4940,7 @@ func (s ScheduleProperties) MarshalJSON() ([]byte, error) {
 	populateTimeRFC3339(objectMap, "expiryTime", s.ExpiryTime)
 	populate(objectMap, "expiryTimeOffsetMinutes", s.ExpiryTimeOffsetMinutes)
 	populate(objectMap, "frequency", s.Frequency)
-	populate(objectMap, "interval", s.Interval)
+	populate(objectMap, "interval", &s.Interval)
 	populate(objectMap, "isEnabled", s.IsEnabled)
 	populateTimeRFC3339(objectMap, "lastModifiedTime", s.LastModifiedTime)
 	populateTimeRFC3339(objectMap, "nextRun", s.NextRun)
@@ -4913,11 +5008,6 @@ func (s *ScheduleProperties) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// ScheduleUpdateOptions contains the optional parameters for the Schedule.Update method.
-type ScheduleUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ScheduleUpdateParameters - The parameters supplied to the update schedule operation.
@@ -5097,17 +5187,20 @@ func (s SoftwareUpdateConfigurationMachineRunListResult) MarshalJSON() ([]byte, 
 	return json.Marshal(objectMap)
 }
 
-// SoftwareUpdateConfigurationMachineRunsGetByIDOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRuns.GetByID method.
-type SoftwareUpdateConfigurationMachineRunsGetByIDOptions struct {
+// SoftwareUpdateConfigurationMachineRunsClientGetByIDOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRunsClient.GetByID
+// method.
+type SoftwareUpdateConfigurationMachineRunsClientGetByIDOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
 }
 
-// SoftwareUpdateConfigurationMachineRunsListOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRuns.List method.
-type SoftwareUpdateConfigurationMachineRunsListOptions struct {
+// SoftwareUpdateConfigurationMachineRunsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRunsClient.List
+// method.
+type SoftwareUpdateConfigurationMachineRunsClientListOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
-	// The filter to apply on the operation. You can use the following filters: 'properties/osType', 'properties/status', 'properties/startTime', and 'properties/softwareUpdateConfiguration/name'
+	// The filter to apply on the operation. You can use the following filters: 'properties/osType', 'properties/status', 'properties/startTime',
+	// and 'properties/softwareUpdateConfiguration/name'
 	Filter *string
 	// number of entries you skip before returning results
 	Skip *string
@@ -5371,17 +5464,20 @@ type SoftwareUpdateConfigurationRunTasks struct {
 	PreTask *SoftwareUpdateConfigurationRunTaskProperties `json:"preTask,omitempty"`
 }
 
-// SoftwareUpdateConfigurationRunsGetByIDOptions contains the optional parameters for the SoftwareUpdateConfigurationRuns.GetByID method.
-type SoftwareUpdateConfigurationRunsGetByIDOptions struct {
+// SoftwareUpdateConfigurationRunsClientGetByIDOptions contains the optional parameters for the SoftwareUpdateConfigurationRunsClient.GetByID
+// method.
+type SoftwareUpdateConfigurationRunsClientGetByIDOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
 }
 
-// SoftwareUpdateConfigurationRunsListOptions contains the optional parameters for the SoftwareUpdateConfigurationRuns.List method.
-type SoftwareUpdateConfigurationRunsListOptions struct {
+// SoftwareUpdateConfigurationRunsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationRunsClient.List
+// method.
+type SoftwareUpdateConfigurationRunsClientListOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
-	// The filter to apply on the operation. You can use the following filters: 'properties/osType', 'properties/status', 'properties/startTime', and 'properties/softwareUpdateConfiguration/name'
+	// The filter to apply on the operation. You can use the following filters: 'properties/osType', 'properties/status', 'properties/startTime',
+	// and 'properties/softwareUpdateConfiguration/name'
 	Filter *string
 	// Number of entries you skip before returning results
 	Skip *string
@@ -5398,26 +5494,30 @@ type SoftwareUpdateConfigurationTasks struct {
 	PreTask *TaskProperties `json:"preTask,omitempty"`
 }
 
-// SoftwareUpdateConfigurationsCreateOptions contains the optional parameters for the SoftwareUpdateConfigurations.Create method.
-type SoftwareUpdateConfigurationsCreateOptions struct {
+// SoftwareUpdateConfigurationsClientCreateOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.Create
+// method.
+type SoftwareUpdateConfigurationsClientCreateOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
 }
 
-// SoftwareUpdateConfigurationsDeleteOptions contains the optional parameters for the SoftwareUpdateConfigurations.Delete method.
-type SoftwareUpdateConfigurationsDeleteOptions struct {
+// SoftwareUpdateConfigurationsClientDeleteOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.Delete
+// method.
+type SoftwareUpdateConfigurationsClientDeleteOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
 }
 
-// SoftwareUpdateConfigurationsGetByNameOptions contains the optional parameters for the SoftwareUpdateConfigurations.GetByName method.
-type SoftwareUpdateConfigurationsGetByNameOptions struct {
+// SoftwareUpdateConfigurationsClientGetByNameOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.GetByName
+// method.
+type SoftwareUpdateConfigurationsClientGetByNameOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
 }
 
-// SoftwareUpdateConfigurationsListOptions contains the optional parameters for the SoftwareUpdateConfigurations.List method.
-type SoftwareUpdateConfigurationsListOptions struct {
+// SoftwareUpdateConfigurationsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.List
+// method.
+type SoftwareUpdateConfigurationsClientListOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
 	// The filter to apply on the operation.
@@ -5426,21 +5526,43 @@ type SoftwareUpdateConfigurationsListOptions struct {
 
 // SourceControl - Definition of the source control.
 type SourceControl struct {
-	ProxyResource
 	// The properties of the source control.
 	Properties *SourceControlProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SourceControl.
-func (s SourceControl) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+// SourceControlClientCreateOrUpdateOptions contains the optional parameters for the SourceControlClient.CreateOrUpdate method.
+type SourceControlClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// SourceControlCreateOrUpdateOptions contains the optional parameters for the SourceControl.CreateOrUpdate method.
-type SourceControlCreateOrUpdateOptions struct {
+// SourceControlClientDeleteOptions contains the optional parameters for the SourceControlClient.Delete method.
+type SourceControlClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SourceControlClientGetOptions contains the optional parameters for the SourceControlClient.Get method.
+type SourceControlClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.ListByAutomationAccount
+// method.
+type SourceControlClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+}
+
+// SourceControlClientUpdateOptions contains the optional parameters for the SourceControlClient.Update method.
+type SourceControlClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5475,22 +5597,6 @@ type SourceControlCreateOrUpdateProperties struct {
 
 	// The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive.
 	SourceType *SourceType `json:"sourceType,omitempty"`
-}
-
-// SourceControlDeleteOptions contains the optional parameters for the SourceControl.Delete method.
-type SourceControlDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SourceControlGetOptions contains the optional parameters for the SourceControl.Get method.
-type SourceControlGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SourceControlListByAutomationAccountOptions contains the optional parameters for the SourceControl.ListByAutomationAccount method.
-type SourceControlListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
 }
 
 // SourceControlListResult - The response model for the list source controls operation.
@@ -5709,9 +5815,21 @@ func (s *SourceControlSyncJobByIDProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SourceControlSyncJobCreateOptions contains the optional parameters for the SourceControlSyncJob.Create method.
-type SourceControlSyncJobCreateOptions struct {
+// SourceControlSyncJobClientCreateOptions contains the optional parameters for the SourceControlSyncJobClient.Create method.
+type SourceControlSyncJobClientCreateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SourceControlSyncJobClientGetOptions contains the optional parameters for the SourceControlSyncJobClient.Get method.
+type SourceControlSyncJobClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.ListByAutomationAccount
+// method.
+type SourceControlSyncJobClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
 }
 
 // SourceControlSyncJobCreateParameters - The parameters supplied to the create source control sync job operation.
@@ -5724,17 +5842,6 @@ type SourceControlSyncJobCreateParameters struct {
 type SourceControlSyncJobCreateProperties struct {
 	// REQUIRED; The commit id of the source control sync job. If not syncing to a commitId, enter an empty string.
 	CommitID *string `json:"commitId,omitempty"`
-}
-
-// SourceControlSyncJobGetOptions contains the optional parameters for the SourceControlSyncJob.Get method.
-type SourceControlSyncJobGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SourceControlSyncJobListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJob.ListByAutomationAccount method.
-type SourceControlSyncJobListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
 }
 
 // SourceControlSyncJobListResult - The response model for the list source control sync jobs operation.
@@ -5962,9 +6069,17 @@ func (s *SourceControlSyncJobStreamProperties) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-// SourceControlSyncJobStreamsGetOptions contains the optional parameters for the SourceControlSyncJobStreams.Get method.
-type SourceControlSyncJobStreamsGetOptions struct {
+// SourceControlSyncJobStreamsClientGetOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.Get
+// method.
+type SourceControlSyncJobStreamsClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SourceControlSyncJobStreamsClientListBySyncJobOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.ListBySyncJob
+// method.
+type SourceControlSyncJobStreamsClientListBySyncJobOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
 }
 
 // SourceControlSyncJobStreamsListBySyncJob - The response model for the list source control sync job streams operation.
@@ -5982,17 +6097,6 @@ func (s SourceControlSyncJobStreamsListBySyncJob) MarshalJSON() ([]byte, error) 
 	populate(objectMap, "nextLink", s.NextLink)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
-}
-
-// SourceControlSyncJobStreamsListBySyncJobOptions contains the optional parameters for the SourceControlSyncJobStreams.ListBySyncJob method.
-type SourceControlSyncJobStreamsListBySyncJobOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
-}
-
-// SourceControlUpdateOptions contains the optional parameters for the SourceControl.Update method.
-type SourceControlUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // SourceControlUpdateParameters - The parameters supplied to the update source control operation.
@@ -6090,8 +6194,9 @@ func (s *Statistics) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// StatisticsListByAutomationAccountOptions contains the optional parameters for the Statistics.ListByAutomationAccount method.
-type StatisticsListByAutomationAccountOptions struct {
+// StatisticsClientListByAutomationAccountOptions contains the optional parameters for the StatisticsClient.ListByAutomationAccount
+// method.
+type StatisticsClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
@@ -6331,8 +6436,28 @@ func (t *TestJob) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TestJobCreateOptions contains the optional parameters for the TestJob.Create method.
-type TestJobCreateOptions struct {
+// TestJobClientCreateOptions contains the optional parameters for the TestJobClient.Create method.
+type TestJobClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TestJobClientGetOptions contains the optional parameters for the TestJobClient.Get method.
+type TestJobClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TestJobClientResumeOptions contains the optional parameters for the TestJobClient.Resume method.
+type TestJobClientResumeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TestJobClientStopOptions contains the optional parameters for the TestJobClient.Stop method.
+type TestJobClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TestJobClientSuspendOptions contains the optional parameters for the TestJobClient.Suspend method.
+type TestJobClientSuspendOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6353,58 +6478,44 @@ func (t TestJobCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TestJobGetOptions contains the optional parameters for the TestJob.Get method.
-type TestJobGetOptions struct {
+// TestJobStreamsClientGetOptions contains the optional parameters for the TestJobStreamsClient.Get method.
+type TestJobStreamsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TestJobResumeOptions contains the optional parameters for the TestJob.Resume method.
-type TestJobResumeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TestJobStopOptions contains the optional parameters for the TestJob.Stop method.
-type TestJobStopOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TestJobStreamsGetOptions contains the optional parameters for the TestJobStreams.Get method.
-type TestJobStreamsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TestJobStreamsListByTestJobOptions contains the optional parameters for the TestJobStreams.ListByTestJob method.
-type TestJobStreamsListByTestJobOptions struct {
+// TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.ListByTestJob method.
+type TestJobStreamsClientListByTestJobOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
 
-// TestJobSuspendOptions contains the optional parameters for the TestJob.Suspend method.
-type TestJobSuspendOptions struct {
-	// placeholder for future optional parameters
-}
-
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	Resource
 	// The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // TypeField - Information about a field of a type.
@@ -6437,7 +6548,8 @@ type UpdateConfiguration struct {
 	// List of azure resource Ids for azure virtual machines targeted by the software update configuration.
 	AzureVirtualMachines []*string `json:"azureVirtualMachines,omitempty"`
 
-	// Maximum time allowed for the software update configuration run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601
+	// Maximum time allowed for the software update configuration run. Duration needs to be specified using the format PT[n]H[n]M[n]S
+	// as per ISO8601
 	Duration *string `json:"duration,omitempty"`
 
 	// Linux specific update configuration.
@@ -6653,28 +6765,50 @@ func (u UsageListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UsagesListByAutomationAccountOptions contains the optional parameters for the Usages.ListByAutomationAccount method.
-type UsagesListByAutomationAccountOptions struct {
+// UsagesClientListByAutomationAccountOptions contains the optional parameters for the UsagesClient.ListByAutomationAccount
+// method.
+type UsagesClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Variable - Definition of the variable.
 type Variable struct {
-	ProxyResource
 	// Gets or sets the properties of the variable.
 	Properties *VariableProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Variable.
-func (v Variable) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", v.Properties)
-	return json.Marshal(objectMap)
+// VariableClientCreateOrUpdateOptions contains the optional parameters for the VariableClient.CreateOrUpdate method.
+type VariableClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// VariableCreateOrUpdateOptions contains the optional parameters for the Variable.CreateOrUpdate method.
-type VariableCreateOrUpdateOptions struct {
+// VariableClientDeleteOptions contains the optional parameters for the VariableClient.Delete method.
+type VariableClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VariableClientGetOptions contains the optional parameters for the VariableClient.Get method.
+type VariableClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VariableClientListByAutomationAccountOptions contains the optional parameters for the VariableClient.ListByAutomationAccount
+// method.
+type VariableClientListByAutomationAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VariableClientUpdateOptions contains the optional parameters for the VariableClient.Update method.
+type VariableClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6697,21 +6831,6 @@ type VariableCreateOrUpdateProperties struct {
 
 	// Gets or sets the value of the variable.
 	Value *string `json:"value,omitempty"`
-}
-
-// VariableDeleteOptions contains the optional parameters for the Variable.Delete method.
-type VariableDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableGetOptions contains the optional parameters for the Variable.Get method.
-type VariableGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableListByAutomationAccountOptions contains the optional parameters for the Variable.ListByAutomationAccount method.
-type VariableListByAutomationAccountOptions struct {
-	// placeholder for future optional parameters
 }
 
 // VariableListResult - The response model for the list variables operation.
@@ -6792,11 +6911,6 @@ func (v *VariableProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// VariableUpdateOptions contains the optional parameters for the Variable.Update method.
-type VariableUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // VariableUpdateParameters - The parameters supplied to the update variable operation.
 type VariableUpdateParameters struct {
 	// Gets or sets the name of the variable.
@@ -6825,7 +6939,6 @@ type VariableUpdateProperties struct {
 
 // Watcher - Definition of the watcher type.
 type Watcher struct {
-	Resource
 	// Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 
@@ -6837,38 +6950,65 @@ type Watcher struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Watcher.
 func (w Watcher) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.Resource.marshalInternal(objectMap)
 	populate(objectMap, "etag", w.Etag)
+	populate(objectMap, "id", w.ID)
 	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
 	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 
-// WatcherCreateOrUpdateOptions contains the optional parameters for the Watcher.CreateOrUpdate method.
-type WatcherCreateOrUpdateOptions struct {
+// WatcherClientCreateOrUpdateOptions contains the optional parameters for the WatcherClient.CreateOrUpdate method.
+type WatcherClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatcherDeleteOptions contains the optional parameters for the Watcher.Delete method.
-type WatcherDeleteOptions struct {
+// WatcherClientDeleteOptions contains the optional parameters for the WatcherClient.Delete method.
+type WatcherClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatcherGetOptions contains the optional parameters for the Watcher.Get method.
-type WatcherGetOptions struct {
+// WatcherClientGetOptions contains the optional parameters for the WatcherClient.Get method.
+type WatcherClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatcherListByAutomationAccountOptions contains the optional parameters for the Watcher.ListByAutomationAccount method.
-type WatcherListByAutomationAccountOptions struct {
+// WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.ListByAutomationAccount
+// method.
+type WatcherClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
+}
+
+// WatcherClientStartOptions contains the optional parameters for the WatcherClient.Start method.
+type WatcherClientStartOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WatcherClientStopOptions contains the optional parameters for the WatcherClient.Stop method.
+type WatcherClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WatcherClientUpdateOptions contains the optional parameters for the WatcherClient.Update method.
+type WatcherClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // WatcherListResult - The response model for the list watcher operation.
@@ -6977,21 +7117,6 @@ func (w *WatcherProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// WatcherStartOptions contains the optional parameters for the Watcher.Start method.
-type WatcherStartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WatcherStopOptions contains the optional parameters for the Watcher.Stop method.
-type WatcherStopOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WatcherUpdateOptions contains the optional parameters for the Watcher.Update method.
-type WatcherUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 type WatcherUpdateParameters struct {
 	// Gets or sets the name of the resource.
 	Name *string `json:"name,omitempty"`
@@ -7016,21 +7141,48 @@ type WatcherUpdateProperties struct {
 
 // Webhook - Definition of the webhook type.
 type Webhook struct {
-	ProxyResource
 	// Gets or sets the webhook properties.
 	Properties *WebhookProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Webhook.
-func (w Webhook) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+// WebhookClientCreateOrUpdateOptions contains the optional parameters for the WebhookClient.CreateOrUpdate method.
+type WebhookClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// WebhookCreateOrUpdateOptions contains the optional parameters for the Webhook.CreateOrUpdate method.
-type WebhookCreateOrUpdateOptions struct {
+// WebhookClientDeleteOptions contains the optional parameters for the WebhookClient.Delete method.
+type WebhookClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebhookClientGenerateURIOptions contains the optional parameters for the WebhookClient.GenerateURI method.
+type WebhookClientGenerateURIOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebhookClientGetOptions contains the optional parameters for the WebhookClient.Get method.
+type WebhookClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.ListByAutomationAccount
+// method.
+type WebhookClientListByAutomationAccountOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
+}
+
+// WebhookClientUpdateOptions contains the optional parameters for the WebhookClient.Update method.
+type WebhookClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7109,27 +7261,6 @@ func (w *WebhookCreateOrUpdateProperties) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// WebhookDeleteOptions contains the optional parameters for the Webhook.Delete method.
-type WebhookDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebhookGenerateURIOptions contains the optional parameters for the Webhook.GenerateURI method.
-type WebhookGenerateURIOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebhookGetOptions contains the optional parameters for the Webhook.Get method.
-type WebhookGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebhookListByAutomationAccountOptions contains the optional parameters for the Webhook.ListByAutomationAccount method.
-type WebhookListByAutomationAccountOptions struct {
-	// The filter to apply on the operation.
-	Filter *string
 }
 
 // WebhookListResult - The response model for the list webhook operation.
@@ -7250,11 +7381,6 @@ func (w *WebhookProperties) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// WebhookUpdateOptions contains the optional parameters for the Webhook.Update method.
-type WebhookUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // WebhookUpdateParameters - The parameters supplied to the update webhook operation.

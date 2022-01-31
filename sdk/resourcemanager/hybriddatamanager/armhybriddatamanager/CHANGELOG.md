@@ -1,5 +1,516 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*DataManagersClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *DataManagersListByResourceGroupOptions)` to `(context.Context, string, *DataManagersClientListByResourceGroupOptions)`
+- Function `*DataManagersClient.ListByResourceGroup` return value(s) have been changed from `(DataManagersListByResourceGroupResponse, error)` to `(DataManagersClientListByResourceGroupResponse, error)`
+- Function `*JobsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *JobsGetOptions)` to `(context.Context, string, string, string, string, string, *JobsClientGetOptions)`
+- Function `*JobsClient.Get` return value(s) have been changed from `(JobsGetResponse, error)` to `(JobsClientGetResponse, error)`
+- Function `*DataStoreTypesClient.ListByDataManager` parameter(s) have been changed from `(string, string, *DataStoreTypesListByDataManagerOptions)` to `(string, string, *DataStoreTypesClientListByDataManagerOptions)`
+- Function `*DataStoreTypesClient.ListByDataManager` return value(s) have been changed from `(*DataStoreTypesListByDataManagerPager)` to `(*DataStoreTypesClientListByDataManagerPager)`
+- Function `*DataManagersClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, DataManagerUpdateParameter, *DataManagersBeginUpdateOptions)` to `(context.Context, string, string, DataManagerUpdateParameter, *DataManagersClientBeginUpdateOptions)`
+- Function `*DataManagersClient.BeginUpdate` return value(s) have been changed from `(DataManagersUpdatePollerResponse, error)` to `(DataManagersClientUpdatePollerResponse, error)`
+- Function `*DataStoresClient.ListByDataManager` parameter(s) have been changed from `(string, string, *DataStoresListByDataManagerOptions)` to `(string, string, *DataStoresClientListByDataManagerOptions)`
+- Function `*DataStoresClient.ListByDataManager` return value(s) have been changed from `(*DataStoresListByDataManagerPager)` to `(*DataStoresClientListByDataManagerPager)`
+- Function `*JobsClient.ListByJobDefinition` parameter(s) have been changed from `(string, string, string, string, *JobsListByJobDefinitionOptions)` to `(string, string, string, string, *JobsClientListByJobDefinitionOptions)`
+- Function `*JobsClient.ListByJobDefinition` return value(s) have been changed from `(*JobsListByJobDefinitionPager)` to `(*JobsClientListByJobDefinitionPager)`
+- Function `*JobDefinitionsClient.ListByDataService` parameter(s) have been changed from `(string, string, string, *JobDefinitionsListByDataServiceOptions)` to `(string, string, string, *JobDefinitionsClientListByDataServiceOptions)`
+- Function `*JobDefinitionsClient.ListByDataService` return value(s) have been changed from `(*JobDefinitionsListByDataServicePager)` to `(*JobDefinitionsClientListByDataServicePager)`
+- Function `*JobsClient.ListByDataService` parameter(s) have been changed from `(string, string, string, *JobsListByDataServiceOptions)` to `(string, string, string, *JobsClientListByDataServiceOptions)`
+- Function `*JobsClient.ListByDataService` return value(s) have been changed from `(*JobsListByDataServicePager)` to `(*JobsClientListByDataServicePager)`
+- Function `*DataStoresClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataStoresGetOptions)` to `(context.Context, string, string, string, *DataStoresClientGetOptions)`
+- Function `*DataStoresClient.Get` return value(s) have been changed from `(DataStoresGetResponse, error)` to `(DataStoresClientGetResponse, error)`
+- Function `*DataServicesClient.ListByDataManager` parameter(s) have been changed from `(string, string, *DataServicesListByDataManagerOptions)` to `(string, string, *DataServicesClientListByDataManagerOptions)`
+- Function `*DataServicesClient.ListByDataManager` return value(s) have been changed from `(*DataServicesListByDataManagerPager)` to `(*DataServicesClientListByDataManagerPager)`
+- Function `*DataManagersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DataManagersGetOptions)` to `(context.Context, string, string, *DataManagersClientGetOptions)`
+- Function `*DataManagersClient.Get` return value(s) have been changed from `(DataManagersGetResponse, error)` to `(DataManagersClientGetResponse, error)`
+- Function `*DataManagersClient.List` parameter(s) have been changed from `(context.Context, *DataManagersListOptions)` to `(context.Context, *DataManagersClientListOptions)`
+- Function `*DataManagersClient.List` return value(s) have been changed from `(DataManagersListResponse, error)` to `(DataManagersClientListResponse, error)`
+- Function `*DataManagersClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, DataManager, *DataManagersBeginCreateOptions)` to `(context.Context, string, string, DataManager, *DataManagersClientBeginCreateOptions)`
+- Function `*DataManagersClient.BeginCreate` return value(s) have been changed from `(DataManagersCreatePollerResponse, error)` to `(DataManagersClientCreatePollerResponse, error)`
+- Function `*JobsClient.BeginResume` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *JobsBeginResumeOptions)` to `(context.Context, string, string, string, string, string, *JobsClientBeginResumeOptions)`
+- Function `*JobsClient.BeginResume` return value(s) have been changed from `(JobsResumePollerResponse, error)` to `(JobsClientResumePollerResponse, error)`
+- Function `*JobsClient.ListByDataManager` parameter(s) have been changed from `(string, string, *JobsListByDataManagerOptions)` to `(string, string, *JobsClientListByDataManagerOptions)`
+- Function `*JobsClient.ListByDataManager` return value(s) have been changed from `(*JobsListByDataManagerPager)` to `(*JobsClientListByDataManagerPager)`
+- Function `*JobDefinitionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *JobDefinitionsGetOptions)` to `(context.Context, string, string, string, string, *JobDefinitionsClientGetOptions)`
+- Function `*JobDefinitionsClient.Get` return value(s) have been changed from `(JobDefinitionsGetResponse, error)` to `(JobDefinitionsClientGetResponse, error)`
+- Function `*DataStoresClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *DataStoresBeginDeleteOptions)` to `(context.Context, string, string, string, *DataStoresClientBeginDeleteOptions)`
+- Function `*DataStoresClient.BeginDelete` return value(s) have been changed from `(DataStoresDeletePollerResponse, error)` to `(DataStoresClientDeletePollerResponse, error)`
+- Function `*JobDefinitionsClient.ListByDataManager` parameter(s) have been changed from `(string, string, *JobDefinitionsListByDataManagerOptions)` to `(string, string, *JobDefinitionsClientListByDataManagerOptions)`
+- Function `*JobDefinitionsClient.ListByDataManager` return value(s) have been changed from `(*JobDefinitionsListByDataManagerPager)` to `(*JobDefinitionsClientListByDataManagerPager)`
+- Function `*JobDefinitionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, JobDefinition, *JobDefinitionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, JobDefinition, *JobDefinitionsClientBeginCreateOrUpdateOptions)`
+- Function `*JobDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(JobDefinitionsCreateOrUpdatePollerResponse, error)` to `(JobDefinitionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*PublicKeysClient.ListByDataManager` parameter(s) have been changed from `(string, string, *PublicKeysListByDataManagerOptions)` to `(string, string, *PublicKeysClientListByDataManagerOptions)`
+- Function `*PublicKeysClient.ListByDataManager` return value(s) have been changed from `(*PublicKeysListByDataManagerPager)` to `(*PublicKeysClientListByDataManagerPager)`
+- Function `*DataServicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataServicesGetOptions)` to `(context.Context, string, string, string, *DataServicesClientGetOptions)`
+- Function `*DataServicesClient.Get` return value(s) have been changed from `(DataServicesGetResponse, error)` to `(DataServicesClientGetResponse, error)`
+- Function `*PublicKeysClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PublicKeysGetOptions)` to `(context.Context, string, string, string, *PublicKeysClientGetOptions)`
+- Function `*PublicKeysClient.Get` return value(s) have been changed from `(PublicKeysGetResponse, error)` to `(PublicKeysClientGetResponse, error)`
+- Function `*JobsClient.BeginCancel` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *JobsBeginCancelOptions)` to `(context.Context, string, string, string, string, string, *JobsClientBeginCancelOptions)`
+- Function `*JobsClient.BeginCancel` return value(s) have been changed from `(JobsCancelPollerResponse, error)` to `(JobsClientCancelPollerResponse, error)`
+- Function `*DataManagersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *DataManagersBeginDeleteOptions)` to `(context.Context, string, string, *DataManagersClientBeginDeleteOptions)`
+- Function `*DataManagersClient.BeginDelete` return value(s) have been changed from `(DataManagersDeletePollerResponse, error)` to `(DataManagersClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*JobDefinitionsClient.BeginRun` parameter(s) have been changed from `(context.Context, string, string, string, string, RunParameters, *JobDefinitionsBeginRunOptions)` to `(context.Context, string, string, string, string, RunParameters, *JobDefinitionsClientBeginRunOptions)`
+- Function `*JobDefinitionsClient.BeginRun` return value(s) have been changed from `(JobDefinitionsRunPollerResponse, error)` to `(JobDefinitionsClientRunPollerResponse, error)`
+- Function `*JobDefinitionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *JobDefinitionsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *JobDefinitionsClientBeginDeleteOptions)`
+- Function `*JobDefinitionsClient.BeginDelete` return value(s) have been changed from `(JobDefinitionsDeletePollerResponse, error)` to `(JobDefinitionsClientDeletePollerResponse, error)`
+- Function `*DataStoresClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DataStore, *DataStoresBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, DataStore, *DataStoresClientBeginCreateOrUpdateOptions)`
+- Function `*DataStoresClient.BeginCreateOrUpdate` return value(s) have been changed from `(DataStoresCreateOrUpdatePollerResponse, error)` to `(DataStoresClientCreateOrUpdatePollerResponse, error)`
+- Function `*DataStoreTypesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataStoreTypesGetOptions)` to `(context.Context, string, string, string, *DataStoreTypesClientGetOptions)`
+- Function `*DataStoreTypesClient.Get` return value(s) have been changed from `(DataStoreTypesGetResponse, error)` to `(DataStoreTypesClientGetResponse, error)`
+- Function `*JobDefinitionsDeletePoller.Done` has been removed
+- Function `*JobDefinitionsRunPoller.Done` has been removed
+- Function `*DataManagersUpdatePollerResponse.Resume` has been removed
+- Function `*DataStoresDeletePoller.Done` has been removed
+- Function `*JobDefinitionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*JobDefinitionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DataStoresDeletePollerResponse.Resume` has been removed
+- Function `JobsResumePollerResponse.PollUntilDone` has been removed
+- Function `*DataManagersUpdatePoller.Done` has been removed
+- Function `*DataManagersDeletePoller.ResumeToken` has been removed
+- Function `*JobsListByDataServicePager.NextPage` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `DataService.MarshalJSON` has been removed
+- Function `DataStoresDeletePollerResponse.PollUntilDone` has been removed
+- Function `JobDefinitionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*JobDefinitionsRunPoller.Poll` has been removed
+- Function `*DataManagersDeletePoller.FinalResponse` has been removed
+- Function `*DataStore.UnmarshalJSON` has been removed
+- Function `*JobDefinitionsDeletePoller.FinalResponse` has been removed
+- Function `*DataServicesListByDataManagerPager.PageResponse` has been removed
+- Function `*JobsResumePoller.Poll` has been removed
+- Function `*JobDefinitionsListByDataServicePager.PageResponse` has been removed
+- Function `DmsBaseObject.MarshalJSON` has been removed
+- Function `*DataStoresCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*JobDefinitionsRunPoller.FinalResponse` has been removed
+- Function `*JobsCancelPoller.FinalResponse` has been removed
+- Function `*DataManagersCreatePollerResponse.Resume` has been removed
+- Function `DataManagersUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DataStoresCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*JobsResumePollerResponse.Resume` has been removed
+- Function `*DataManagersDeletePollerResponse.Resume` has been removed
+- Function `*DataStoresListByDataManagerPager.PageResponse` has been removed
+- Function `*PublicKeysListByDataManagerPager.PageResponse` has been removed
+- Function `*DataStoresCreateOrUpdatePoller.Done` has been removed
+- Function `*JobDefinitionsDeletePoller.Poll` has been removed
+- Function `JobDefinitionsRunPollerResponse.PollUntilDone` has been removed
+- Function `*JobsCancelPollerResponse.Resume` has been removed
+- Function `*DataManagersUpdatePoller.FinalResponse` has been removed
+- Function `*JobsCancelPoller.ResumeToken` has been removed
+- Function `*DataStoresListByDataManagerPager.NextPage` has been removed
+- Function `*DataStoresCreateOrUpdatePoller.Poll` has been removed
+- Function `*JobDefinition.UnmarshalJSON` has been removed
+- Function `*PublicKeysListByDataManagerPager.Err` has been removed
+- Function `*DataService.UnmarshalJSON` has been removed
+- Function `*JobsListByDataServicePager.PageResponse` has been removed
+- Function `*JobDefinitionsRunPollerResponse.Resume` has been removed
+- Function `DataStore.MarshalJSON` has been removed
+- Function `*JobsListByDataManagerPager.PageResponse` has been removed
+- Function `*DataStoreTypesListByDataManagerPager.NextPage` has been removed
+- Function `*JobsListByDataManagerPager.NextPage` has been removed
+- Function `*DmsBaseObject.UnmarshalJSON` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*JobDefinitionsListByDataServicePager.NextPage` has been removed
+- Function `*DataManagersCreatePoller.FinalResponse` has been removed
+- Function `*JobDefinitionsListByDataManagerPager.Err` has been removed
+- Function `JobDefinition.MarshalJSON` has been removed
+- Function `*JobDefinitionsListByDataManagerPager.PageResponse` has been removed
+- Function `*PublicKeysListByDataManagerPager.NextPage` has been removed
+- Function `*JobsResumePoller.FinalResponse` has been removed
+- Function `*DataManagersDeletePoller.Poll` has been removed
+- Function `*DataServicesListByDataManagerPager.Err` has been removed
+- Function `*JobsCancelPoller.Done` has been removed
+- Function `DataManagersDeletePollerResponse.PollUntilDone` has been removed
+- Function `*JobDefinitionsDeletePollerResponse.Resume` has been removed
+- Function `*JobsListByDataManagerPager.Err` has been removed
+- Function `*JobsListByJobDefinitionPager.PageResponse` has been removed
+- Function `*DataStoresDeletePoller.Poll` has been removed
+- Function `*DataStoresCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*JobsResumePoller.ResumeToken` has been removed
+- Function `*JobDefinitionsListByDataServicePager.Err` has been removed
+- Function `*DataServicesListByDataManagerPager.NextPage` has been removed
+- Function `JobDefinitionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*JobsListByDataServicePager.Err` has been removed
+- Function `DataStoresCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*JobDefinitionsRunPoller.ResumeToken` has been removed
+- Function `*DataStoreTypesListByDataManagerPager.Err` has been removed
+- Function `JobsCancelPollerResponse.PollUntilDone` has been removed
+- Function `*DataStoresListByDataManagerPager.Err` has been removed
+- Function `*DataManagersCreatePoller.ResumeToken` has been removed
+- Function `*JobDefinitionsListByDataManagerPager.NextPage` has been removed
+- Function `*DataManagersDeletePoller.Done` has been removed
+- Function `*JobDefinitionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DataStoresDeletePoller.ResumeToken` has been removed
+- Function `*JobsListByJobDefinitionPager.NextPage` has been removed
+- Function `*JobDefinitionsCreateOrUpdatePoller.Done` has been removed
+- Function `*DataStoresDeletePoller.FinalResponse` has been removed
+- Function `*DataStoreTypesListByDataManagerPager.PageResponse` has been removed
+- Function `*DataStoreType.UnmarshalJSON` has been removed
+- Function `*JobsCancelPoller.Poll` has been removed
+- Function `*DataManagersUpdatePoller.Poll` has been removed
+- Function `PublicKey.MarshalJSON` has been removed
+- Function `*JobsResumePoller.Done` has been removed
+- Function `*DataManagersCreatePoller.Poll` has been removed
+- Function `*PublicKey.UnmarshalJSON` has been removed
+- Function `*JobDefinitionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*JobDefinitionsDeletePoller.ResumeToken` has been removed
+- Function `*DataManagersUpdatePoller.ResumeToken` has been removed
+- Function `*JobsListByJobDefinitionPager.Err` has been removed
+- Function `*DataManagersCreatePoller.Done` has been removed
+- Function `DataStoreType.MarshalJSON` has been removed
+- Function `DataManagersCreatePollerResponse.PollUntilDone` has been removed
+- Struct `DataManagersBeginCreateOptions` has been removed
+- Struct `DataManagersBeginDeleteOptions` has been removed
+- Struct `DataManagersBeginUpdateOptions` has been removed
+- Struct `DataManagersCreatePoller` has been removed
+- Struct `DataManagersCreatePollerResponse` has been removed
+- Struct `DataManagersCreateResponse` has been removed
+- Struct `DataManagersCreateResult` has been removed
+- Struct `DataManagersDeletePoller` has been removed
+- Struct `DataManagersDeletePollerResponse` has been removed
+- Struct `DataManagersDeleteResponse` has been removed
+- Struct `DataManagersGetOptions` has been removed
+- Struct `DataManagersGetResponse` has been removed
+- Struct `DataManagersGetResult` has been removed
+- Struct `DataManagersListByResourceGroupOptions` has been removed
+- Struct `DataManagersListByResourceGroupResponse` has been removed
+- Struct `DataManagersListByResourceGroupResult` has been removed
+- Struct `DataManagersListOptions` has been removed
+- Struct `DataManagersListResponse` has been removed
+- Struct `DataManagersListResult` has been removed
+- Struct `DataManagersUpdatePoller` has been removed
+- Struct `DataManagersUpdatePollerResponse` has been removed
+- Struct `DataManagersUpdateResponse` has been removed
+- Struct `DataManagersUpdateResult` has been removed
+- Struct `DataServicesGetOptions` has been removed
+- Struct `DataServicesGetResponse` has been removed
+- Struct `DataServicesGetResult` has been removed
+- Struct `DataServicesListByDataManagerOptions` has been removed
+- Struct `DataServicesListByDataManagerPager` has been removed
+- Struct `DataServicesListByDataManagerResponse` has been removed
+- Struct `DataServicesListByDataManagerResult` has been removed
+- Struct `DataStoreTypesGetOptions` has been removed
+- Struct `DataStoreTypesGetResponse` has been removed
+- Struct `DataStoreTypesGetResult` has been removed
+- Struct `DataStoreTypesListByDataManagerOptions` has been removed
+- Struct `DataStoreTypesListByDataManagerPager` has been removed
+- Struct `DataStoreTypesListByDataManagerResponse` has been removed
+- Struct `DataStoreTypesListByDataManagerResult` has been removed
+- Struct `DataStoresBeginCreateOrUpdateOptions` has been removed
+- Struct `DataStoresBeginDeleteOptions` has been removed
+- Struct `DataStoresCreateOrUpdatePoller` has been removed
+- Struct `DataStoresCreateOrUpdatePollerResponse` has been removed
+- Struct `DataStoresCreateOrUpdateResponse` has been removed
+- Struct `DataStoresCreateOrUpdateResult` has been removed
+- Struct `DataStoresDeletePoller` has been removed
+- Struct `DataStoresDeletePollerResponse` has been removed
+- Struct `DataStoresDeleteResponse` has been removed
+- Struct `DataStoresGetOptions` has been removed
+- Struct `DataStoresGetResponse` has been removed
+- Struct `DataStoresGetResult` has been removed
+- Struct `DataStoresListByDataManagerOptions` has been removed
+- Struct `DataStoresListByDataManagerPager` has been removed
+- Struct `DataStoresListByDataManagerResponse` has been removed
+- Struct `DataStoresListByDataManagerResult` has been removed
+- Struct `JobDefinitionsBeginCreateOrUpdateOptions` has been removed
+- Struct `JobDefinitionsBeginDeleteOptions` has been removed
+- Struct `JobDefinitionsBeginRunOptions` has been removed
+- Struct `JobDefinitionsCreateOrUpdatePoller` has been removed
+- Struct `JobDefinitionsCreateOrUpdatePollerResponse` has been removed
+- Struct `JobDefinitionsCreateOrUpdateResponse` has been removed
+- Struct `JobDefinitionsCreateOrUpdateResult` has been removed
+- Struct `JobDefinitionsDeletePoller` has been removed
+- Struct `JobDefinitionsDeletePollerResponse` has been removed
+- Struct `JobDefinitionsDeleteResponse` has been removed
+- Struct `JobDefinitionsGetOptions` has been removed
+- Struct `JobDefinitionsGetResponse` has been removed
+- Struct `JobDefinitionsGetResult` has been removed
+- Struct `JobDefinitionsListByDataManagerOptions` has been removed
+- Struct `JobDefinitionsListByDataManagerPager` has been removed
+- Struct `JobDefinitionsListByDataManagerResponse` has been removed
+- Struct `JobDefinitionsListByDataManagerResult` has been removed
+- Struct `JobDefinitionsListByDataServiceOptions` has been removed
+- Struct `JobDefinitionsListByDataServicePager` has been removed
+- Struct `JobDefinitionsListByDataServiceResponse` has been removed
+- Struct `JobDefinitionsListByDataServiceResult` has been removed
+- Struct `JobDefinitionsRunPoller` has been removed
+- Struct `JobDefinitionsRunPollerResponse` has been removed
+- Struct `JobDefinitionsRunResponse` has been removed
+- Struct `JobsBeginCancelOptions` has been removed
+- Struct `JobsBeginResumeOptions` has been removed
+- Struct `JobsCancelPoller` has been removed
+- Struct `JobsCancelPollerResponse` has been removed
+- Struct `JobsCancelResponse` has been removed
+- Struct `JobsGetOptions` has been removed
+- Struct `JobsGetResponse` has been removed
+- Struct `JobsGetResult` has been removed
+- Struct `JobsListByDataManagerOptions` has been removed
+- Struct `JobsListByDataManagerPager` has been removed
+- Struct `JobsListByDataManagerResponse` has been removed
+- Struct `JobsListByDataManagerResult` has been removed
+- Struct `JobsListByDataServiceOptions` has been removed
+- Struct `JobsListByDataServicePager` has been removed
+- Struct `JobsListByDataServiceResponse` has been removed
+- Struct `JobsListByDataServiceResult` has been removed
+- Struct `JobsListByJobDefinitionOptions` has been removed
+- Struct `JobsListByJobDefinitionPager` has been removed
+- Struct `JobsListByJobDefinitionResponse` has been removed
+- Struct `JobsListByJobDefinitionResult` has been removed
+- Struct `JobsResumePoller` has been removed
+- Struct `JobsResumePollerResponse` has been removed
+- Struct `JobsResumeResponse` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PublicKeysGetOptions` has been removed
+- Struct `PublicKeysGetResponse` has been removed
+- Struct `PublicKeysGetResult` has been removed
+- Struct `PublicKeysListByDataManagerOptions` has been removed
+- Struct `PublicKeysListByDataManagerPager` has been removed
+- Struct `PublicKeysListByDataManagerResponse` has been removed
+- Struct `PublicKeysListByDataManagerResult` has been removed
+- Field `DmsBaseObject` of struct `DataStore` has been removed
+- Field `DmsBaseObject` of struct `DataStoreType` has been removed
+- Field `DmsBaseObject` of struct `DataService` has been removed
+- Field `DmsBaseObject` of struct `JobDefinition` has been removed
+- Field `Resource` of struct `DataManager` has been removed
+- Field `DmsBaseObject` of struct `PublicKey` has been removed
+- Field `DmsBaseObject` of struct `Job` has been removed
+
+### Features Added
+
+- New function `*DataStoresClientListByDataManagerPager.Err() error`
+- New function `*DataServicesClientListByDataManagerPager.Err() error`
+- New function `*JobDefinitionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*JobDefinitionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobsClientResumePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobsClientCancelPoller.ResumeToken() (string, error)`
+- New function `*JobsClientResumePollerResponse.Resume(context.Context, *JobsClient, string) error`
+- New function `*PublicKeysClientListByDataManagerPager.PageResponse() PublicKeysClientListByDataManagerResponse`
+- New function `JobsClientResumePollerResponse.PollUntilDone(context.Context, time.Duration) (JobsClientResumeResponse, error)`
+- New function `*JobsClientListByDataServicePager.NextPage(context.Context) bool`
+- New function `*DataManagersClientDeletePoller.Done() bool`
+- New function `*PublicKeysClientListByDataManagerPager.Err() error`
+- New function `*JobsClientCancelPoller.Done() bool`
+- New function `*JobDefinitionsClientListByDataServicePager.PageResponse() JobDefinitionsClientListByDataServiceResponse`
+- New function `*DataManagersClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `JobsClientCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (JobsClientCancelResponse, error)`
+- New function `*DataManagersClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `DataManagersClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (DataManagersClientCreateResponse, error)`
+- New function `*DataManagersClientCreatePoller.FinalResponse(context.Context) (DataManagersClientCreateResponse, error)`
+- New function `*JobDefinitionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DataManagersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobDefinitionsClientRunPollerResponse.Resume(context.Context, *JobDefinitionsClient, string) error`
+- New function `*JobDefinitionsClientListByDataManagerPager.PageResponse() JobDefinitionsClientListByDataManagerResponse`
+- New function `*JobDefinitionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *JobDefinitionsClient, string) error`
+- New function `*DataManagersClientDeletePollerResponse.Resume(context.Context, *DataManagersClient, string) error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*JobsClientCancelPollerResponse.Resume(context.Context, *JobsClient, string) error`
+- New function `*JobsClientListByJobDefinitionPager.PageResponse() JobsClientListByJobDefinitionResponse`
+- New function `*DataManagersClientUpdatePoller.FinalResponse(context.Context) (DataManagersClientUpdateResponse, error)`
+- New function `*DataStoresClientCreateOrUpdatePoller.Done() bool`
+- New function `*DataServicesClientListByDataManagerPager.PageResponse() DataServicesClientListByDataManagerResponse`
+- New function `*JobsClientListByDataManagerPager.Err() error`
+- New function `*JobsClientListByDataServicePager.Err() error`
+- New function `*DataManagersClientUpdatePoller.Done() bool`
+- New function `*JobDefinitionsClientRunPoller.FinalResponse(context.Context) (JobDefinitionsClientRunResponse, error)`
+- New function `*DataManagersClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DataStoreTypesClientListByDataManagerPager.Err() error`
+- New function `DataStoresClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DataStoresClientCreateOrUpdateResponse, error)`
+- New function `*JobDefinitionsClientListByDataServicePager.Err() error`
+- New function `*DataStoresClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*JobDefinitionsClientRunPoller.Done() bool`
+- New function `*JobDefinitionsClientListByDataServicePager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*DataStoreTypesClientListByDataManagerPager.PageResponse() DataStoreTypesClientListByDataManagerResponse`
+- New function `*JobsClientListByDataServicePager.PageResponse() JobsClientListByDataServiceResponse`
+- New function `*JobsClientListByJobDefinitionPager.NextPage(context.Context) bool`
+- New function `*DataStoresClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DataStoresClientDeletePollerResponse.Resume(context.Context, *DataStoresClient, string) error`
+- New function `*JobsClientResumePoller.Done() bool`
+- New function `DataManagersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DataManagersClientDeleteResponse, error)`
+- New function `*JobDefinitionsClientDeletePoller.FinalResponse(context.Context) (JobDefinitionsClientDeleteResponse, error)`
+- New function `*JobDefinitionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*JobsClientListByDataManagerPager.NextPage(context.Context) bool`
+- New function `*DataManagersClientCreatePollerResponse.Resume(context.Context, *DataManagersClient, string) error`
+- New function `*DataStoresClientListByDataManagerPager.NextPage(context.Context) bool`
+- New function `*JobDefinitionsClientRunPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DataManagersClientDeletePoller.FinalResponse(context.Context) (DataManagersClientDeleteResponse, error)`
+- New function `*DataStoresClientListByDataManagerPager.PageResponse() DataStoresClientListByDataManagerResponse`
+- New function `*DataManagersClientCreatePoller.ResumeToken() (string, error)`
+- New function `*JobDefinitionsClientDeletePollerResponse.Resume(context.Context, *JobDefinitionsClient, string) error`
+- New function `*DataStoresClientDeletePoller.ResumeToken() (string, error)`
+- New function `JobDefinitionsClientRunPollerResponse.PollUntilDone(context.Context, time.Duration) (JobDefinitionsClientRunResponse, error)`
+- New function `*JobDefinitionsClientRunPoller.ResumeToken() (string, error)`
+- New function `DataStoresClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DataStoresClientDeleteResponse, error)`
+- New function `*DataManagersClientCreatePoller.Done() bool`
+- New function `*JobDefinitionsClientListByDataManagerPager.NextPage(context.Context) bool`
+- New function `DataManagersClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DataManagersClientUpdateResponse, error)`
+- New function `*DataManagersClientUpdatePollerResponse.Resume(context.Context, *DataManagersClient, string) error`
+- New function `*DataStoresClientCreateOrUpdatePollerResponse.Resume(context.Context, *DataStoresClient, string) error`
+- New function `*JobDefinitionsClientDeletePoller.Done() bool`
+- New function `*JobsClientCancelPoller.FinalResponse(context.Context) (JobsClientCancelResponse, error)`
+- New function `*DataStoresClientCreateOrUpdatePoller.FinalResponse(context.Context) (DataStoresClientCreateOrUpdateResponse, error)`
+- New function `JobDefinitionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (JobDefinitionsClientCreateOrUpdateResponse, error)`
+- New function `*JobDefinitionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (JobDefinitionsClientCreateOrUpdateResponse, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*JobsClientResumePoller.FinalResponse(context.Context) (JobsClientResumeResponse, error)`
+- New function `*DataStoreTypesClientListByDataManagerPager.NextPage(context.Context) bool`
+- New function `*DataManagersClientDeletePoller.ResumeToken() (string, error)`
+- New function `*JobDefinitionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `JobDefinitionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (JobDefinitionsClientDeleteResponse, error)`
+- New function `*DataStoresClientDeletePoller.Done() bool`
+- New function `*JobDefinitionsClientListByDataManagerPager.Err() error`
+- New function `*JobsClientCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobsClientResumePoller.ResumeToken() (string, error)`
+- New function `*DataStoresClientDeletePoller.FinalResponse(context.Context) (DataStoresClientDeleteResponse, error)`
+- New function `*PublicKeysClientListByDataManagerPager.NextPage(context.Context) bool`
+- New function `*JobsClientListByDataManagerPager.PageResponse() JobsClientListByDataManagerResponse`
+- New function `*JobsClientListByJobDefinitionPager.Err() error`
+- New function `*DataStoresClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DataServicesClientListByDataManagerPager.NextPage(context.Context) bool`
+- New struct `DataManagersClientBeginCreateOptions`
+- New struct `DataManagersClientBeginDeleteOptions`
+- New struct `DataManagersClientBeginUpdateOptions`
+- New struct `DataManagersClientCreatePoller`
+- New struct `DataManagersClientCreatePollerResponse`
+- New struct `DataManagersClientCreateResponse`
+- New struct `DataManagersClientCreateResult`
+- New struct `DataManagersClientDeletePoller`
+- New struct `DataManagersClientDeletePollerResponse`
+- New struct `DataManagersClientDeleteResponse`
+- New struct `DataManagersClientGetOptions`
+- New struct `DataManagersClientGetResponse`
+- New struct `DataManagersClientGetResult`
+- New struct `DataManagersClientListByResourceGroupOptions`
+- New struct `DataManagersClientListByResourceGroupResponse`
+- New struct `DataManagersClientListByResourceGroupResult`
+- New struct `DataManagersClientListOptions`
+- New struct `DataManagersClientListResponse`
+- New struct `DataManagersClientListResult`
+- New struct `DataManagersClientUpdatePoller`
+- New struct `DataManagersClientUpdatePollerResponse`
+- New struct `DataManagersClientUpdateResponse`
+- New struct `DataManagersClientUpdateResult`
+- New struct `DataServicesClientGetOptions`
+- New struct `DataServicesClientGetResponse`
+- New struct `DataServicesClientGetResult`
+- New struct `DataServicesClientListByDataManagerOptions`
+- New struct `DataServicesClientListByDataManagerPager`
+- New struct `DataServicesClientListByDataManagerResponse`
+- New struct `DataServicesClientListByDataManagerResult`
+- New struct `DataStoreTypesClientGetOptions`
+- New struct `DataStoreTypesClientGetResponse`
+- New struct `DataStoreTypesClientGetResult`
+- New struct `DataStoreTypesClientListByDataManagerOptions`
+- New struct `DataStoreTypesClientListByDataManagerPager`
+- New struct `DataStoreTypesClientListByDataManagerResponse`
+- New struct `DataStoreTypesClientListByDataManagerResult`
+- New struct `DataStoresClientBeginCreateOrUpdateOptions`
+- New struct `DataStoresClientBeginDeleteOptions`
+- New struct `DataStoresClientCreateOrUpdatePoller`
+- New struct `DataStoresClientCreateOrUpdatePollerResponse`
+- New struct `DataStoresClientCreateOrUpdateResponse`
+- New struct `DataStoresClientCreateOrUpdateResult`
+- New struct `DataStoresClientDeletePoller`
+- New struct `DataStoresClientDeletePollerResponse`
+- New struct `DataStoresClientDeleteResponse`
+- New struct `DataStoresClientGetOptions`
+- New struct `DataStoresClientGetResponse`
+- New struct `DataStoresClientGetResult`
+- New struct `DataStoresClientListByDataManagerOptions`
+- New struct `DataStoresClientListByDataManagerPager`
+- New struct `DataStoresClientListByDataManagerResponse`
+- New struct `DataStoresClientListByDataManagerResult`
+- New struct `JobDefinitionsClientBeginCreateOrUpdateOptions`
+- New struct `JobDefinitionsClientBeginDeleteOptions`
+- New struct `JobDefinitionsClientBeginRunOptions`
+- New struct `JobDefinitionsClientCreateOrUpdatePoller`
+- New struct `JobDefinitionsClientCreateOrUpdatePollerResponse`
+- New struct `JobDefinitionsClientCreateOrUpdateResponse`
+- New struct `JobDefinitionsClientCreateOrUpdateResult`
+- New struct `JobDefinitionsClientDeletePoller`
+- New struct `JobDefinitionsClientDeletePollerResponse`
+- New struct `JobDefinitionsClientDeleteResponse`
+- New struct `JobDefinitionsClientGetOptions`
+- New struct `JobDefinitionsClientGetResponse`
+- New struct `JobDefinitionsClientGetResult`
+- New struct `JobDefinitionsClientListByDataManagerOptions`
+- New struct `JobDefinitionsClientListByDataManagerPager`
+- New struct `JobDefinitionsClientListByDataManagerResponse`
+- New struct `JobDefinitionsClientListByDataManagerResult`
+- New struct `JobDefinitionsClientListByDataServiceOptions`
+- New struct `JobDefinitionsClientListByDataServicePager`
+- New struct `JobDefinitionsClientListByDataServiceResponse`
+- New struct `JobDefinitionsClientListByDataServiceResult`
+- New struct `JobDefinitionsClientRunPoller`
+- New struct `JobDefinitionsClientRunPollerResponse`
+- New struct `JobDefinitionsClientRunResponse`
+- New struct `JobsClientBeginCancelOptions`
+- New struct `JobsClientBeginResumeOptions`
+- New struct `JobsClientCancelPoller`
+- New struct `JobsClientCancelPollerResponse`
+- New struct `JobsClientCancelResponse`
+- New struct `JobsClientGetOptions`
+- New struct `JobsClientGetResponse`
+- New struct `JobsClientGetResult`
+- New struct `JobsClientListByDataManagerOptions`
+- New struct `JobsClientListByDataManagerPager`
+- New struct `JobsClientListByDataManagerResponse`
+- New struct `JobsClientListByDataManagerResult`
+- New struct `JobsClientListByDataServiceOptions`
+- New struct `JobsClientListByDataServicePager`
+- New struct `JobsClientListByDataServiceResponse`
+- New struct `JobsClientListByDataServiceResult`
+- New struct `JobsClientListByJobDefinitionOptions`
+- New struct `JobsClientListByJobDefinitionPager`
+- New struct `JobsClientListByJobDefinitionResponse`
+- New struct `JobsClientListByJobDefinitionResult`
+- New struct `JobsClientResumePoller`
+- New struct `JobsClientResumePollerResponse`
+- New struct `JobsClientResumeResponse`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PublicKeysClientGetOptions`
+- New struct `PublicKeysClientGetResponse`
+- New struct `PublicKeysClientGetResult`
+- New struct `PublicKeysClientListByDataManagerOptions`
+- New struct `PublicKeysClientListByDataManagerPager`
+- New struct `PublicKeysClientListByDataManagerResponse`
+- New struct `PublicKeysClientListByDataManagerResult`
+- New field `ID` in struct `PublicKey`
+- New field `Name` in struct `PublicKey`
+- New field `Type` in struct `PublicKey`
+- New field `ID` in struct `DataStore`
+- New field `Name` in struct `DataStore`
+- New field `Type` in struct `DataStore`
+- New field `Tags` in struct `DataManager`
+- New field `ID` in struct `DataManager`
+- New field `Name` in struct `DataManager`
+- New field `Type` in struct `DataManager`
+- New field `Location` in struct `DataManager`
+- New field `SKU` in struct `DataManager`
+- New field `ID` in struct `DataStoreType`
+- New field `Name` in struct `DataStoreType`
+- New field `Type` in struct `DataStoreType`
+- New field `ID` in struct `Job`
+- New field `Name` in struct `Job`
+- New field `Type` in struct `Job`
+- New field `Type` in struct `DataService`
+- New field `ID` in struct `DataService`
+- New field `Name` in struct `DataService`
+- New field `ID` in struct `JobDefinition`
+- New field `Name` in struct `JobDefinition`
+- New field `Type` in struct `JobDefinition`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Init release.

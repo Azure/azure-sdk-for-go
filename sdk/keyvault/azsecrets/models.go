@@ -49,7 +49,7 @@ type Secret struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-func secretFromGenerated(i internal.SecretBundle) Secret {
+func secretFromGenerated(i internal.DeletedSecretBundle) Secret {
 	return Secret{
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
@@ -87,17 +87,18 @@ type Attributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
-func (s Attributes) toGenerated() *internal.SecretAttributes {
+func (s *Attributes) toGenerated() *internal.SecretAttributes {
+	if s == nil {
+		return nil
+	}
 	return &internal.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
-		RecoveryLevel:   s.RecoveryLevel.toGenerated().ToPtr(),
-		Attributes: internal.Attributes{
-			Enabled:   s.Enabled,
-			Expires:   s.Expires,
-			NotBefore: s.NotBefore,
-			Created:   s.Created,
-			Updated:   s.Updated,
-		},
+		RecoveryLevel:   s.RecoveryLevel.toGenerated(),
+		Enabled:         s.Enabled,
+		Expires:         s.Expires,
+		NotBefore:       s.NotBefore,
+		Created:         s.Created,
+		Updated:         s.Updated,
 	}
 }
 
@@ -172,7 +173,13 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Item:               secretItemFromGenerated(&i.SecretItem),
+		Item: Item{
+			Attributes:  secretAttributesFromGenerated(i.Attributes),
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        convertPtrMap(i.Tags),
+			Managed:     i.Managed,
+		},
 	}
 }
 
@@ -183,8 +190,11 @@ type BackupSecretResult struct {
 }
 
 func convertPtrMap(m map[string]*string) map[string]string {
-	ret := map[string]string{}
+	if m == nil {
+		return nil
+	}
 
+	ret := map[string]string{}
 	for key, val := range m {
 		ret[key] = *val
 	}
@@ -193,8 +203,11 @@ func convertPtrMap(m map[string]*string) map[string]string {
 }
 
 func createPtrMap(m map[string]string) map[string]*string {
-	ret := map[string]*string{}
+	if m == nil {
+		return nil
+	}
 
+	ret := map[string]*string{}
 	for key, val := range m {
 		ret[key] = &val
 	}

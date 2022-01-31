@@ -11,7 +11,6 @@ package armadvisor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,45 +25,57 @@ import (
 // SuppressionsClient contains the methods for the Suppressions group.
 // Don't use this type directly, use NewSuppressionsClient() instead.
 type SuppressionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSuppressionsClient creates a new instance of SuppressionsClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSuppressionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SuppressionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SuppressionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SuppressionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Create - Enables the snoozed or dismissed attribute of a recommendation. The snoozed or dismissed attribute is referred to as a suppression. Use this
-// API to create or update the snoozed or dismissed status of
+// Create - Enables the snoozed or dismissed attribute of a recommendation. The snoozed or dismissed attribute is referred
+// to as a suppression. Use this API to create or update the snoozed or dismissed status of
 // a recommendation.
-// If the operation fails it returns one of the following error types.
-// - *ArmErrorResponse, *ArmErrorResponse
-func (client *SuppressionsClient) Create(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract, options *SuppressionsCreateOptions) (SuppressionsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
+// recommendationID - The recommendation ID.
+// name - The name of the suppression.
+// suppressionContract - The snoozed or dismissed attribute; for example, the snooze duration.
+// options - SuppressionsClientCreateOptions contains the optional parameters for the SuppressionsClient.Create method.
+func (client *SuppressionsClient) Create(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract, options *SuppressionsClientCreateOptions) (SuppressionsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceURI, recommendationID, name, suppressionContract, options)
 	if err != nil {
-		return SuppressionsCreateResponse{}, err
+		return SuppressionsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SuppressionsCreateResponse{}, err
+		return SuppressionsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SuppressionsCreateResponse{}, client.createHandleError(resp)
+		return SuppressionsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract, options *SuppressionsCreateOptions) (*policy.Request, error) {
+func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract, options *SuppressionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -78,7 +89,7 @@ func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,47 +101,38 @@ func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resou
 }
 
 // createHandleResponse handles the Create response.
-func (client *SuppressionsClient) createHandleResponse(resp *http.Response) (SuppressionsCreateResponse, error) {
-	result := SuppressionsCreateResponse{RawResponse: resp}
+func (client *SuppressionsClient) createHandleResponse(resp *http.Response) (SuppressionsClientCreateResponse, error) {
+	result := SuppressionsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContract); err != nil {
-		return SuppressionsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SuppressionsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SuppressionsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - Enables the activation of a snoozed or dismissed recommendation. The snoozed or dismissed attribute of a recommendation is referred to as a
-// suppression.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *SuppressionsClient) Delete(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsDeleteOptions) (SuppressionsDeleteResponse, error) {
+// Delete - Enables the activation of a snoozed or dismissed recommendation. The snoozed or dismissed attribute of a recommendation
+// is referred to as a suppression.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
+// recommendationID - The recommendation ID.
+// name - The name of the suppression.
+// options - SuppressionsClientDeleteOptions contains the optional parameters for the SuppressionsClient.Delete method.
+func (client *SuppressionsClient) Delete(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsClientDeleteOptions) (SuppressionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceURI, recommendationID, name, options)
 	if err != nil {
-		return SuppressionsDeleteResponse{}, err
+		return SuppressionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SuppressionsDeleteResponse{}, err
+		return SuppressionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return SuppressionsDeleteResponse{}, client.deleteHandleError(resp)
+		return SuppressionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SuppressionsDeleteResponse{RawResponse: resp}, nil
+	return SuppressionsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsDeleteOptions) (*policy.Request, error) {
+func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -144,7 +146,7 @@ func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,39 +157,29 @@ func (client *SuppressionsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SuppressionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Obtains the details of a suppression.
-// If the operation fails it returns one of the following error types.
-// - *ArmErrorResponse, *ArmErrorResponse
-func (client *SuppressionsClient) Get(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsGetOptions) (SuppressionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
+// recommendationID - The recommendation ID.
+// name - The name of the suppression.
+// options - SuppressionsClientGetOptions contains the optional parameters for the SuppressionsClient.Get method.
+func (client *SuppressionsClient) Get(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsClientGetOptions) (SuppressionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, recommendationID, name, options)
 	if err != nil {
-		return SuppressionsGetResponse{}, err
+		return SuppressionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SuppressionsGetResponse{}, err
+		return SuppressionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SuppressionsGetResponse{}, client.getHandleError(resp)
+		return SuppressionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsGetOptions) (*policy.Request, error) {
+func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resourceURI string, recommendationID string, name string, options *SuppressionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -201,7 +193,7 @@ func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -213,50 +205,38 @@ func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *SuppressionsClient) getHandleResponse(resp *http.Response) (SuppressionsGetResponse, error) {
-	result := SuppressionsGetResponse{RawResponse: resp}
+func (client *SuppressionsClient) getHandleResponse(resp *http.Response) (SuppressionsClientGetResponse, error) {
+	result := SuppressionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContract); err != nil {
-		return SuppressionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SuppressionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SuppressionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Retrieves the list of snoozed or dismissed suppressions for a subscription. The snoozed or dismissed attribute of a recommendation is referred
-// to as a suppression.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *SuppressionsClient) List(options *SuppressionsListOptions) *SuppressionsListPager {
-	return &SuppressionsListPager{
+// List - Retrieves the list of snoozed or dismissed suppressions for a subscription. The snoozed or dismissed attribute of
+// a recommendation is referred to as a suppression.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SuppressionsClientListOptions contains the optional parameters for the SuppressionsClient.List method.
+func (client *SuppressionsClient) List(options *SuppressionsClientListOptions) *SuppressionsClientListPager {
+	return &SuppressionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SuppressionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SuppressionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SuppressionContractListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SuppressionsClient) listCreateRequest(ctx context.Context, options *SuppressionsListOptions) (*policy.Request, error) {
+func (client *SuppressionsClient) listCreateRequest(ctx context.Context, options *SuppressionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,23 +254,10 @@ func (client *SuppressionsClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *SuppressionsClient) listHandleResponse(resp *http.Response) (SuppressionsListResponse, error) {
-	result := SuppressionsListResponse{RawResponse: resp}
+func (client *SuppressionsClient) listHandleResponse(resp *http.Response) (SuppressionsClientListResponse, error) {
+	result := SuppressionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContractListResult); err != nil {
-		return SuppressionsListResponse{}, runtime.NewResponseError(err, resp)
+		return SuppressionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SuppressionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

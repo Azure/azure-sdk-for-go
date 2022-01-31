@@ -4,28 +4,27 @@
 package azservicebus
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
 )
 
 // ReceivedMessage is a received message from a Client.NewReceiver().
 type ReceivedMessage struct {
 	MessageID string
 
-	ContentType      string
-	CorrelationID    string
+	ContentType      *string
+	CorrelationID    *string
 	SessionID        *string
-	Subject          string
-	ReplyTo          string
-	ReplyToSessionID string
-	To               string
+	Subject          *string
+	ReplyTo          *string
+	ReplyToSessionID *string
+	To               *string
 
 	TimeToLive *time.Duration
 
@@ -69,19 +68,19 @@ func (rm *ReceivedMessage) Body() ([]byte, error) {
 	return rm.rawAMQPMessage.Data[0], nil
 }
 
-// Message is a SendableMessage which can be sent using a Client.NewSender().
+// Message is a message with a body and commonly used properties.
 type Message struct {
-	MessageID string
+	MessageID *string
 
-	ContentType   string
-	CorrelationID string
+	ContentType   *string
+	CorrelationID *string
 	// Body corresponds to the first []byte array in the Data section of an AMQP message.
 	Body             []byte
 	SessionID        *string
-	Subject          string
-	ReplyTo          string
-	ReplyToSessionID string
-	To               string
+	Subject          *string
+	ReplyTo          *string
+	ReplyToSessionID *string
+	To               *string
 	TimeToLive       *time.Duration
 
 	PartitionKey            *string
@@ -117,16 +116,10 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 		amqpMsg.Header.TTL = *m.TimeToLive
 	}
 
-	// TODO: I don't think this should be strictly required. Need to
-	// look into why it won't send properly without one.
-	var messageID = m.MessageID
+	var messageID interface{}
 
-	if messageID == "" {
-		uuid, err := uuid.New()
-
-		if err == nil {
-			messageID = uuid.String()
-		}
+	if m.MessageID != nil {
+		messageID = *m.MessageID
 	}
 
 	amqpMsg.Properties = &amqp.MessageProperties{
@@ -134,14 +127,17 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 	}
 
 	if m.SessionID != nil {
-		amqpMsg.Properties.GroupID = *m.SessionID
+		amqpMsg.Properties.GroupID = m.SessionID
 	}
 
 	// if m.GroupSequence != nil {
 	// 	amqpMsg.Properties.GroupSequence = *m.GroupSequence
 	// }
 
-	amqpMsg.Properties.CorrelationID = m.CorrelationID
+	if m.CorrelationID != nil {
+		amqpMsg.Properties.CorrelationID = *m.CorrelationID
+	}
+
 	amqpMsg.Properties.ContentType = m.ContentType
 	amqpMsg.Properties.Subject = m.Subject
 	amqpMsg.Properties.To = m.To
@@ -197,7 +193,7 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // newReceivedMessage creates a received message from an AMQP message.
 // NOTE: this converter assumes that the Body of this message will be the first
 // serialized byte array in the Data section of the messsage.
-func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *ReceivedMessage {
+func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
 		rawAMQPMessage: amqpMsg,
 	}
@@ -206,11 +202,11 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		if id, ok := amqpMsg.Properties.MessageID.(string); ok {
 			msg.MessageID = id
 		}
-		msg.SessionID = &amqpMsg.Properties.GroupID
+		msg.SessionID = amqpMsg.Properties.GroupID
 		//msg.GroupSequence = &amqpMsg.Properties.GroupSequence
 
 		if id, ok := amqpMsg.Properties.CorrelationID.(string); ok {
-			msg.CorrelationID = id
+			msg.CorrelationID = &id
 		}
 		msg.ContentType = amqpMsg.Properties.ContentType
 		msg.Subject = amqpMsg.Properties.Subject
@@ -306,7 +302,7 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		if err == nil {
 			msg.LockToken = *(*amqp.UUID)(lockToken)
 		} else {
-			tab.For(ctxForLogging).Info(fmt.Sprintf("msg.DeliveryTag could not be converted into a UUID: %s", err.Error()))
+			log.Writef(internal.EventReceiver, "msg.DeliveryTag could not be converted into a UUID: %s", err.Error())
 		}
 	}
 

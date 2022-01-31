@@ -1,14 +1,290 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*VaultExtendedInfoClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, VaultExtendedInfoResource, *VaultExtendedInfoCreateOrUpdateOptions)` to `(context.Context, string, string, VaultExtendedInfoResource, *VaultExtendedInfoClientCreateOrUpdateOptions)`
+- Function `*VaultExtendedInfoClient.CreateOrUpdate` return value(s) have been changed from `(VaultExtendedInfoCreateOrUpdateResponse, error)` to `(VaultExtendedInfoClientCreateOrUpdateResponse, error)`
+- Function `*VaultsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *VaultsListByResourceGroupOptions)` to `(string, *VaultsClientListByResourceGroupOptions)`
+- Function `*VaultsClient.ListByResourceGroup` return value(s) have been changed from `(*VaultsListByResourceGroupPager)` to `(*VaultsClientListByResourceGroupPager)`
+- Function `*VaultCertificatesClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, CertificateRequest, *VaultCertificatesCreateOptions)` to `(context.Context, string, string, string, CertificateRequest, *VaultCertificatesClientCreateOptions)`
+- Function `*VaultCertificatesClient.Create` return value(s) have been changed from `(VaultCertificatesCreateResponse, error)` to `(VaultCertificatesClientCreateResponse, error)`
+- Function `*VaultsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, PatchVault, *VaultsBeginUpdateOptions)` to `(context.Context, string, string, PatchVault, *VaultsClientBeginUpdateOptions)`
+- Function `*VaultsClient.BeginUpdate` return value(s) have been changed from `(VaultsUpdatePollerResponse, error)` to `(VaultsClientUpdatePollerResponse, error)`
+- Function `*OperationsClient.GetOperationResult` parameter(s) have been changed from `(context.Context, string, string, string, *OperationsGetOperationResultOptions)` to `(context.Context, string, string, string, *OperationsClientGetOperationResultOptions)`
+- Function `*OperationsClient.GetOperationResult` return value(s) have been changed from `(OperationsGetOperationResultResponse, error)` to `(OperationsClientGetOperationResultResponse, error)`
+- Function `*UsagesClient.ListByVaults` parameter(s) have been changed from `(context.Context, string, string, *UsagesListByVaultsOptions)` to `(context.Context, string, string, *UsagesClientListByVaultsOptions)`
+- Function `*UsagesClient.ListByVaults` return value(s) have been changed from `(UsagesListByVaultsResponse, error)` to `(UsagesClientListByVaultsResponse, error)`
+- Function `*VaultExtendedInfoClient.Get` parameter(s) have been changed from `(context.Context, string, string, *VaultExtendedInfoGetOptions)` to `(context.Context, string, string, *VaultExtendedInfoClientGetOptions)`
+- Function `*VaultExtendedInfoClient.Get` return value(s) have been changed from `(VaultExtendedInfoGetResponse, error)` to `(VaultExtendedInfoClientGetResponse, error)`
+- Function `*RegisteredIdentitiesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *RegisteredIdentitiesDeleteOptions)` to `(context.Context, string, string, string, *RegisteredIdentitiesClientDeleteOptions)`
+- Function `*RegisteredIdentitiesClient.Delete` return value(s) have been changed from `(RegisteredIdentitiesDeleteResponse, error)` to `(RegisteredIdentitiesClientDeleteResponse, error)`
+- Function `*ReplicationUsagesClient.List` parameter(s) have been changed from `(context.Context, string, string, *ReplicationUsagesListOptions)` to `(context.Context, string, string, *ReplicationUsagesClientListOptions)`
+- Function `*ReplicationUsagesClient.List` return value(s) have been changed from `(ReplicationUsagesListResponse, error)` to `(ReplicationUsagesClientListResponse, error)`
+- Function `*VaultExtendedInfoClient.Update` parameter(s) have been changed from `(context.Context, string, string, VaultExtendedInfoResource, *VaultExtendedInfoUpdateOptions)` to `(context.Context, string, string, VaultExtendedInfoResource, *VaultExtendedInfoClientUpdateOptions)`
+- Function `*VaultExtendedInfoClient.Update` return value(s) have been changed from `(VaultExtendedInfoUpdateResponse, error)` to `(VaultExtendedInfoClientUpdateResponse, error)`
+- Function `*PrivateLinkResourcesClient.List` parameter(s) have been changed from `(string, string, *PrivateLinkResourcesListOptions)` to `(string, string, *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(*PrivateLinkResourcesListPager)` to `(*PrivateLinkResourcesClientListPager)`
+- Function `*VaultsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Vault, *VaultsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Vault, *VaultsClientBeginCreateOrUpdateOptions)`
+- Function `*VaultsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VaultsCreateOrUpdatePollerResponse, error)` to `(VaultsClientCreateOrUpdatePollerResponse, error)`
+- Function `*OperationsClient.OperationStatusGet` parameter(s) have been changed from `(context.Context, string, string, string, *OperationsOperationStatusGetOptions)` to `(context.Context, string, string, string, *OperationsClientOperationStatusGetOptions)`
+- Function `*OperationsClient.OperationStatusGet` return value(s) have been changed from `(OperationsOperationStatusGetResponse, error)` to `(OperationsClientOperationStatusGetResponse, error)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*VaultsClient.ListBySubscriptionID` parameter(s) have been changed from `(*VaultsListBySubscriptionIDOptions)` to `(*VaultsClientListBySubscriptionIDOptions)`
+- Function `*VaultsClient.ListBySubscriptionID` return value(s) have been changed from `(*VaultsListBySubscriptionIDPager)` to `(*VaultsClientListBySubscriptionIDPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*VaultsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *VaultsDeleteOptions)` to `(context.Context, string, string, *VaultsClientDeleteOptions)`
+- Function `*VaultsClient.Delete` return value(s) have been changed from `(VaultsDeleteResponse, error)` to `(VaultsClientDeleteResponse, error)`
+- Function `*VaultsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *VaultsGetOptions)` to `(context.Context, string, string, *VaultsClientGetOptions)`
+- Function `*VaultsClient.Get` return value(s) have been changed from `(VaultsGetResponse, error)` to `(VaultsClientGetResponse, error)`
+- Function `*VaultsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*VaultsListBySubscriptionIDPager.PageResponse` has been removed
+- Function `*VaultsUpdatePoller.Poll` has been removed
+- Function `*VaultsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VaultsListByResourceGroupPager.PageResponse` has been removed
+- Function `*VaultsCreateOrUpdatePoller.Poll` has been removed
+- Function `*VaultsUpdatePollerResponse.Resume` has been removed
+- Function `NewRecoveryServicesClient` has been removed
+- Function `*VaultsCreateOrUpdatePoller.Done` has been removed
+- Function `*VaultsListBySubscriptionIDPager.NextPage` has been removed
+- Function `*VaultsListByResourceGroupPager.NextPage` has been removed
+- Function `VaultsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VaultsUpdatePoller.FinalResponse` has been removed
+- Function `*VaultsUpdatePoller.Done` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*PrivateLinkResourcesListPager.PageResponse` has been removed
+- Function `*VaultsListByResourceGroupPager.Err` has been removed
+- Function `*RecoveryServicesClient.CheckNameAvailability` has been removed
+- Function `*PrivateLinkResourcesListPager.NextPage` has been removed
+- Function `*VaultsUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkResourcesListPager.Err` has been removed
+- Function `*VaultsListBySubscriptionIDPager.Err` has been removed
+- Function `*VaultsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `CloudError.Error` has been removed
+- Function `VaultsUpdatePollerResponse.PollUntilDone` has been removed
+- Struct `OperationsGetOperationResultOptions` has been removed
+- Struct `OperationsGetOperationResultResponse` has been removed
+- Struct `OperationsGetOperationResultResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `OperationsOperationStatusGetOptions` has been removed
+- Struct `OperationsOperationStatusGetResponse` has been removed
+- Struct `OperationsOperationStatusGetResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkResourcesListPager` has been removed
+- Struct `PrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Struct `RecoveryServicesCheckNameAvailabilityOptions` has been removed
+- Struct `RecoveryServicesCheckNameAvailabilityResponse` has been removed
+- Struct `RecoveryServicesCheckNameAvailabilityResult` has been removed
+- Struct `RecoveryServicesClient` has been removed
+- Struct `RegisteredIdentitiesDeleteOptions` has been removed
+- Struct `RegisteredIdentitiesDeleteResponse` has been removed
+- Struct `ReplicationUsagesListOptions` has been removed
+- Struct `ReplicationUsagesListResponse` has been removed
+- Struct `ReplicationUsagesListResult` has been removed
+- Struct `UsagesListByVaultsOptions` has been removed
+- Struct `UsagesListByVaultsResponse` has been removed
+- Struct `UsagesListByVaultsResult` has been removed
+- Struct `VaultCertificatesCreateOptions` has been removed
+- Struct `VaultCertificatesCreateResponse` has been removed
+- Struct `VaultCertificatesCreateResult` has been removed
+- Struct `VaultExtendedInfoCreateOrUpdateOptions` has been removed
+- Struct `VaultExtendedInfoCreateOrUpdateResponse` has been removed
+- Struct `VaultExtendedInfoCreateOrUpdateResult` has been removed
+- Struct `VaultExtendedInfoGetOptions` has been removed
+- Struct `VaultExtendedInfoGetResponse` has been removed
+- Struct `VaultExtendedInfoGetResult` has been removed
+- Struct `VaultExtendedInfoUpdateOptions` has been removed
+- Struct `VaultExtendedInfoUpdateResponse` has been removed
+- Struct `VaultExtendedInfoUpdateResult` has been removed
+- Struct `VaultsBeginCreateOrUpdateOptions` has been removed
+- Struct `VaultsBeginUpdateOptions` has been removed
+- Struct `VaultsCreateOrUpdatePoller` has been removed
+- Struct `VaultsCreateOrUpdatePollerResponse` has been removed
+- Struct `VaultsCreateOrUpdateResponse` has been removed
+- Struct `VaultsCreateOrUpdateResult` has been removed
+- Struct `VaultsDeleteOptions` has been removed
+- Struct `VaultsDeleteResponse` has been removed
+- Struct `VaultsGetOptions` has been removed
+- Struct `VaultsGetResponse` has been removed
+- Struct `VaultsGetResult` has been removed
+- Struct `VaultsListByResourceGroupOptions` has been removed
+- Struct `VaultsListByResourceGroupPager` has been removed
+- Struct `VaultsListByResourceGroupResponse` has been removed
+- Struct `VaultsListByResourceGroupResult` has been removed
+- Struct `VaultsListBySubscriptionIDOptions` has been removed
+- Struct `VaultsListBySubscriptionIDPager` has been removed
+- Struct `VaultsListBySubscriptionIDResponse` has been removed
+- Struct `VaultsListBySubscriptionIDResult` has been removed
+- Struct `VaultsUpdatePoller` has been removed
+- Struct `VaultsUpdatePollerResponse` has been removed
+- Struct `VaultsUpdateResponse` has been removed
+- Struct `VaultsUpdateResult` has been removed
+- Field `ResourceCertificateDetails` of struct `ResourceCertificateAndAcsDetails` has been removed
+- Field `TrackedResource` of struct `Vault` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `ResourceCertificateDetails` of struct `ResourceCertificateAndAADDetails` has been removed
+- Field `Resource` of struct `PatchTrackedResource` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Resource` of struct `VaultExtendedInfoResource` has been removed
+- Field `PatchTrackedResource` of struct `PatchVault` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `BackupStorageVersionV2`
+- New const `BackupStorageVersionUnassigned`
+- New const `BackupStorageVersionV1`
+- New function `*PrivateLinkResourcesClientListPager.NextPage(context.Context) bool`
+- New function `*Client.CheckNameAvailability(context.Context, string, string, CheckNameAvailabilityParameters, *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error)`
+- New function `*VaultsClientListBySubscriptionIDPager.Err() error`
+- New function `*VaultsClientListByResourceGroupPager.Err() error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*VaultsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*VaultsClientUpdatePoller.Done() bool`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*VaultsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VaultsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VaultsClientUpdatePoller.FinalResponse(context.Context) (VaultsClientUpdateResponse, error)`
+- New function `*VaultsClientListByResourceGroupPager.PageResponse() VaultsClientListByResourceGroupResponse`
+- New function `VaultsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VaultsClientUpdateResponse, error)`
+- New function `*PrivateLinkResourcesClientListPager.Err() error`
+- New function `*ResourceCertificateAndAcsDetails.GetResourceCertificateDetails() *ResourceCertificateDetails`
+- New function `*VaultsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VaultsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `VaultsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VaultsClientCreateOrUpdateResponse, error)`
+- New function `*VaultsClientUpdatePollerResponse.Resume(context.Context, *VaultsClient, string) error`
+- New function `ResourceCertificateDetails.MarshalJSON() ([]byte, error)`
+- New function `*PrivateLinkResourcesClientListPager.PageResponse() PrivateLinkResourcesClientListResponse`
+- New function `BackupStorageVersion.ToPtr() *BackupStorageVersion`
+- New function `*VaultsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VaultsClientCreateOrUpdatePoller.FinalResponse(context.Context) (VaultsClientCreateOrUpdateResponse, error)`
+- New function `PossibleBackupStorageVersionValues() []BackupStorageVersion`
+- New function `*VaultsClientListBySubscriptionIDPager.PageResponse() VaultsClientListBySubscriptionIDResponse`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*VaultsClientCreateOrUpdatePollerResponse.Resume(context.Context, *VaultsClient, string) error`
+- New function `*ResourceCertificateAndAADDetails.GetResourceCertificateDetails() *ResourceCertificateDetails`
+- New function `*VaultsClientListBySubscriptionIDPager.NextPage(context.Context) bool`
+- New struct `Client`
+- New struct `ClientCheckNameAvailabilityOptions`
+- New struct `ClientCheckNameAvailabilityResponse`
+- New struct `ClientCheckNameAvailabilityResult`
+- New struct `OperationsClientGetOperationResultOptions`
+- New struct `OperationsClientGetOperationResultResponse`
+- New struct `OperationsClientGetOperationResultResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `OperationsClientOperationStatusGetOptions`
+- New struct `OperationsClientOperationStatusGetResponse`
+- New struct `OperationsClientOperationStatusGetResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListPager`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `RegisteredIdentitiesClientDeleteOptions`
+- New struct `RegisteredIdentitiesClientDeleteResponse`
+- New struct `ReplicationUsagesClientListOptions`
+- New struct `ReplicationUsagesClientListResponse`
+- New struct `ReplicationUsagesClientListResult`
+- New struct `UsagesClientListByVaultsOptions`
+- New struct `UsagesClientListByVaultsResponse`
+- New struct `UsagesClientListByVaultsResult`
+- New struct `VaultCertificatesClientCreateOptions`
+- New struct `VaultCertificatesClientCreateResponse`
+- New struct `VaultCertificatesClientCreateResult`
+- New struct `VaultExtendedInfoClientCreateOrUpdateOptions`
+- New struct `VaultExtendedInfoClientCreateOrUpdateResponse`
+- New struct `VaultExtendedInfoClientCreateOrUpdateResult`
+- New struct `VaultExtendedInfoClientGetOptions`
+- New struct `VaultExtendedInfoClientGetResponse`
+- New struct `VaultExtendedInfoClientGetResult`
+- New struct `VaultExtendedInfoClientUpdateOptions`
+- New struct `VaultExtendedInfoClientUpdateResponse`
+- New struct `VaultExtendedInfoClientUpdateResult`
+- New struct `VaultsClientBeginCreateOrUpdateOptions`
+- New struct `VaultsClientBeginUpdateOptions`
+- New struct `VaultsClientCreateOrUpdatePoller`
+- New struct `VaultsClientCreateOrUpdatePollerResponse`
+- New struct `VaultsClientCreateOrUpdateResponse`
+- New struct `VaultsClientCreateOrUpdateResult`
+- New struct `VaultsClientDeleteOptions`
+- New struct `VaultsClientDeleteResponse`
+- New struct `VaultsClientGetOptions`
+- New struct `VaultsClientGetResponse`
+- New struct `VaultsClientGetResult`
+- New struct `VaultsClientListByResourceGroupOptions`
+- New struct `VaultsClientListByResourceGroupPager`
+- New struct `VaultsClientListByResourceGroupResponse`
+- New struct `VaultsClientListByResourceGroupResult`
+- New struct `VaultsClientListBySubscriptionIDOptions`
+- New struct `VaultsClientListBySubscriptionIDPager`
+- New struct `VaultsClientListBySubscriptionIDResponse`
+- New struct `VaultsClientListBySubscriptionIDResult`
+- New struct `VaultsClientUpdatePoller`
+- New struct `VaultsClientUpdatePollerResponse`
+- New struct `VaultsClientUpdateResponse`
+- New struct `VaultsClientUpdateResult`
+- New field `Etag` in struct `PatchTrackedResource`
+- New field `ID` in struct `PatchTrackedResource`
+- New field `Name` in struct `PatchTrackedResource`
+- New field `Type` in struct `PatchTrackedResource`
+- New field `Subject` in struct `ResourceCertificateAndAcsDetails`
+- New field `FriendlyName` in struct `ResourceCertificateAndAcsDetails`
+- New field `ValidTo` in struct `ResourceCertificateAndAcsDetails`
+- New field `ValidFrom` in struct `ResourceCertificateAndAcsDetails`
+- New field `Issuer` in struct `ResourceCertificateAndAcsDetails`
+- New field `ResourceID` in struct `ResourceCertificateAndAcsDetails`
+- New field `Certificate` in struct `ResourceCertificateAndAcsDetails`
+- New field `Thumbprint` in struct `ResourceCertificateAndAcsDetails`
+- New field `AuthType` in struct `ResourceCertificateAndAcsDetails`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Etag` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Etag` in struct `Vault`
+- New field `Tags` in struct `Vault`
+- New field `ID` in struct `Vault`
+- New field `Name` in struct `Vault`
+- New field `Type` in struct `Vault`
+- New field `Location` in struct `Vault`
+- New field `Thumbprint` in struct `ResourceCertificateAndAADDetails`
+- New field `ValidTo` in struct `ResourceCertificateAndAADDetails`
+- New field `AuthType` in struct `ResourceCertificateAndAADDetails`
+- New field `FriendlyName` in struct `ResourceCertificateAndAADDetails`
+- New field `ResourceID` in struct `ResourceCertificateAndAADDetails`
+- New field `Subject` in struct `ResourceCertificateAndAADDetails`
+- New field `Issuer` in struct `ResourceCertificateAndAADDetails`
+- New field `ValidFrom` in struct `ResourceCertificateAndAADDetails`
+- New field `Certificate` in struct `ResourceCertificateAndAADDetails`
+- New field `Error` in struct `CloudError`
+- New field `BackupStorageVersion` in struct `VaultProperties`
+- New field `Etag` in struct `PatchVault`
+- New field `Tags` in struct `PatchVault`
+- New field `Name` in struct `PatchVault`
+- New field `Location` in struct `PatchVault`
+- New field `ID` in struct `PatchVault`
+- New field `Type` in struct `PatchVault`
+- New field `Name` in struct `VaultExtendedInfoResource`
+- New field `Type` in struct `VaultExtendedInfoResource`
+- New field `Etag` in struct `VaultExtendedInfoResource`
+- New field `ID` in struct `VaultExtendedInfoResource`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

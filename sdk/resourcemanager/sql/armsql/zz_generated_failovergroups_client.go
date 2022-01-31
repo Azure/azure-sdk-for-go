@@ -24,46 +24,61 @@ import (
 // FailoverGroupsClient contains the methods for the FailoverGroups group.
 // Don't use this type directly, use NewFailoverGroupsClient() instead.
 type FailoverGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFailoverGroupsClient creates a new instance of FailoverGroupsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFailoverGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FailoverGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FailoverGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FailoverGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a failover group.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsBeginCreateOrUpdateOptions) (FailoverGroupsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server containing the failover group.
+// failoverGroupName - The name of the failover group.
+// parameters - The failover group parameters.
+// options - FailoverGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the FailoverGroupsClient.BeginCreateOrUpdate
+// method.
+func (client *FailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsClientBeginCreateOrUpdateOptions) (FailoverGroupsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
 	if err != nil {
-		return FailoverGroupsCreateOrUpdatePollerResponse{}, err
+		return FailoverGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := FailoverGroupsCreateOrUpdatePollerResponse{
+	result := FailoverGroupsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return FailoverGroupsCreateOrUpdatePollerResponse{}, err
+		return FailoverGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &FailoverGroupsCreateOrUpdatePoller{
+	result.Poller = &FailoverGroupsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a failover group.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *FailoverGroupsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +112,7 @@ func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +123,35 @@ func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *FailoverGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a failover group.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginDeleteOptions) (FailoverGroupsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server containing the failover group.
+// failoverGroupName - The name of the failover group.
+// options - FailoverGroupsClientBeginDeleteOptions contains the optional parameters for the FailoverGroupsClient.BeginDelete
+// method.
+func (client *FailoverGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginDeleteOptions) (FailoverGroupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
-		return FailoverGroupsDeletePollerResponse{}, err
+		return FailoverGroupsClientDeletePollerResponse{}, err
 	}
-	result := FailoverGroupsDeletePollerResponse{
+	result := FailoverGroupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return FailoverGroupsDeletePollerResponse{}, err
+		return FailoverGroupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &FailoverGroupsDeletePoller{
+	result.Poller = &FailoverGroupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a failover group.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +161,13 @@ func (client *FailoverGroupsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +185,7 @@ func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,41 +195,35 @@ func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FailoverGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginFailover - Fails over from the current primary server to this server.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginFailoverOptions) (FailoverGroupsFailoverPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server containing the failover group.
+// failoverGroupName - The name of the failover group.
+// options - FailoverGroupsClientBeginFailoverOptions contains the optional parameters for the FailoverGroupsClient.BeginFailover
+// method.
+func (client *FailoverGroupsClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginFailoverOptions) (FailoverGroupsClientFailoverPollerResponse, error) {
 	resp, err := client.failover(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
-		return FailoverGroupsFailoverPollerResponse{}, err
+		return FailoverGroupsClientFailoverPollerResponse{}, err
 	}
-	result := FailoverGroupsFailoverPollerResponse{
+	result := FailoverGroupsClientFailoverPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.Failover", "", resp, client.pl, client.failoverHandleError)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.Failover", "", resp, client.pl)
 	if err != nil {
-		return FailoverGroupsFailoverPollerResponse{}, err
+		return FailoverGroupsClientFailoverPollerResponse{}, err
 	}
-	result.Poller = &FailoverGroupsFailoverPoller{
+	result.Poller = &FailoverGroupsClientFailoverPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Failover - Fails over from the current primary server to this server.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginFailoverOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -230,13 +233,13 @@ func (client *FailoverGroupsClient) failover(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.failoverHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // failoverCreateRequest creates the Failover request.
-func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginFailoverOptions) (*policy.Request, error) {
+func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}/failover"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -254,7 +257,7 @@ func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,41 +268,37 @@ func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// failoverHandleError handles the Failover error response.
-func (client *FailoverGroupsClient) failoverHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// BeginForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result in data loss.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginForceFailoverAllowDataLossOptions) (FailoverGroupsForceFailoverAllowDataLossPollerResponse, error) {
+// BeginForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result
+// in data loss.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server containing the failover group.
+// failoverGroupName - The name of the failover group.
+// options - FailoverGroupsClientBeginForceFailoverAllowDataLossOptions contains the optional parameters for the FailoverGroupsClient.BeginForceFailoverAllowDataLoss
+// method.
+func (client *FailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (FailoverGroupsClientForceFailoverAllowDataLossPollerResponse, error) {
 	resp, err := client.forceFailoverAllowDataLoss(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
-		return FailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
+		return FailoverGroupsClientForceFailoverAllowDataLossPollerResponse{}, err
 	}
-	result := FailoverGroupsForceFailoverAllowDataLossPollerResponse{
+	result := FailoverGroupsClientForceFailoverAllowDataLossPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.ForceFailoverAllowDataLoss", "", resp, client.pl, client.forceFailoverAllowDataLossHandleError)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.ForceFailoverAllowDataLoss", "", resp, client.pl)
 	if err != nil {
-		return FailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
+		return FailoverGroupsClientForceFailoverAllowDataLossPollerResponse{}, err
 	}
-	result.Poller = &FailoverGroupsForceFailoverAllowDataLossPoller{
+	result.Poller = &FailoverGroupsClientForceFailoverAllowDataLossPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// ForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result in data loss.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
+// ForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result in
+// data loss.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
 	req, err := client.forceFailoverAllowDataLossCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -309,13 +308,13 @@ func (client *FailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.forceFailoverAllowDataLossHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // forceFailoverAllowDataLossCreateRequest creates the ForceFailoverAllowDataLoss request.
-func (client *FailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginForceFailoverAllowDataLossOptions) (*policy.Request, error) {
+func (client *FailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -333,7 +332,7 @@ func (client *FailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -344,37 +343,30 @@ func (client *FailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx 
 	return req, nil
 }
 
-// forceFailoverAllowDataLossHandleError handles the ForceFailoverAllowDataLoss error response.
-func (client *FailoverGroupsClient) forceFailoverAllowDataLossHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a failover group.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsGetOptions) (FailoverGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server containing the failover group.
+// failoverGroupName - The name of the failover group.
+// options - FailoverGroupsClientGetOptions contains the optional parameters for the FailoverGroupsClient.Get method.
+func (client *FailoverGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientGetOptions) (FailoverGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
-		return FailoverGroupsGetResponse{}, err
+		return FailoverGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FailoverGroupsGetResponse{}, err
+		return FailoverGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FailoverGroupsGetResponse{}, client.getHandleError(resp)
+		return FailoverGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsGetOptions) (*policy.Request, error) {
+func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -392,7 +384,7 @@ func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -404,42 +396,35 @@ func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (FailoverGroupsGetResponse, error) {
-	result := FailoverGroupsGetResponse{RawResponse: resp}
+func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (FailoverGroupsClientGetResponse, error) {
+	result := FailoverGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FailoverGroup); err != nil {
-		return FailoverGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return FailoverGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FailoverGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByServer - Lists the failover groups in a server.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) ListByServer(resourceGroupName string, serverName string, options *FailoverGroupsListByServerOptions) *FailoverGroupsListByServerPager {
-	return &FailoverGroupsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server containing the failover group.
+// options - FailoverGroupsClientListByServerOptions contains the optional parameters for the FailoverGroupsClient.ListByServer
+// method.
+func (client *FailoverGroupsClient) ListByServer(resourceGroupName string, serverName string, options *FailoverGroupsClientListByServerOptions) *FailoverGroupsClientListByServerPager {
+	return &FailoverGroupsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp FailoverGroupsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp FailoverGroupsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.FailoverGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *FailoverGroupsListByServerOptions) (*policy.Request, error) {
+func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *FailoverGroupsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -453,7 +438,7 @@ func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -465,49 +450,44 @@ func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Contex
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *FailoverGroupsClient) listByServerHandleResponse(resp *http.Response) (FailoverGroupsListByServerResponse, error) {
-	result := FailoverGroupsListByServerResponse{RawResponse: resp}
+func (client *FailoverGroupsClient) listByServerHandleResponse(resp *http.Response) (FailoverGroupsClientListByServerResponse, error) {
+	result := FailoverGroupsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FailoverGroupListResult); err != nil {
-		return FailoverGroupsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return FailoverGroupsClientListByServerResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServerHandleError handles the ListByServer error response.
-func (client *FailoverGroupsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Updates a failover group.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsBeginUpdateOptions) (FailoverGroupsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server containing the failover group.
+// failoverGroupName - The name of the failover group.
+// parameters - The failover group parameters.
+// options - FailoverGroupsClientBeginUpdateOptions contains the optional parameters for the FailoverGroupsClient.BeginUpdate
+// method.
+func (client *FailoverGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsClientBeginUpdateOptions) (FailoverGroupsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
 	if err != nil {
-		return FailoverGroupsUpdatePollerResponse{}, err
+		return FailoverGroupsClientUpdatePollerResponse{}, err
 	}
-	result := FailoverGroupsUpdatePollerResponse{
+	result := FailoverGroupsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("FailoverGroupsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return FailoverGroupsUpdatePollerResponse{}, err
+		return FailoverGroupsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &FailoverGroupsUpdatePoller{
+	result.Poller = &FailoverGroupsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a failover group.
-// If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FailoverGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -517,13 +497,13 @@ func (client *FailoverGroupsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsBeginUpdateOptions) (*policy.Request, error) {
+func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -541,7 +521,7 @@ func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -550,16 +530,4 @@ func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *FailoverGroupsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

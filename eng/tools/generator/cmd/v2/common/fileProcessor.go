@@ -22,6 +22,8 @@ import (
 
 const (
 	sdk_generated_file_prefix         = "zz_generated_"
+	sdk_example_file_prefix           = "ze_generated_"
+	sdk_test_file_prefix              = "zt_generated_"
 	autorest_md_file_suffix           = "readme.md"
 	autorest_md_module_version_prefix = "module-version: "
 	swagger_md_module_name_prefix     = "module-name: "
@@ -31,7 +33,7 @@ var (
 	v2BeginRegex             = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
 	v2EndRegex               = regexp.MustCompile("^\\s*```\\s*$")
 	newClientMethodNameRegex = regexp.MustCompile("^New.+Client$")
-	versionLineRegex         = regexp.MustCompile(`version\s*=\s*\".*v\d+\.\d+\.\d+\"`)
+	versionLineRegex         = regexp.MustCompile(`moduleVersion\s*=\s*\".*v\d+\.\d+\.\d+\"`)
 	changelogVersionRegex    = regexp.MustCompile(`##\s*(?P<version>\d+\.\d+\.\d+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
 	packageConfigRegex       = regexp.MustCompile(`\$\((package-.+)\)`)
 )
@@ -110,7 +112,7 @@ func CleanSDKGeneratedFiles(path string) error {
 	}
 
 	for _, file := range files {
-		if strings.HasPrefix(file.Name(), sdk_generated_file_prefix) {
+		if strings.HasPrefix(file.Name(), sdk_generated_file_prefix) || strings.HasPrefix(file.Name(), sdk_example_file_prefix) || strings.HasPrefix(file.Name(), sdk_test_file_prefix) {
 			err = os.Remove(filepath.Join(path, file.Name()))
 			if err != nil {
 				return err
@@ -136,8 +138,8 @@ func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.md"))
-			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.go.md"))
+			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, specRPName, "resource-manager", "readme.md"))
+			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, specRPName, "resource-manager", "readme.go.md"))
 			break
 		}
 	}
@@ -231,7 +233,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 	if b, err = ioutil.ReadFile(path); err != nil {
 		return err
 	}
-	contents := versionLineRegex.ReplaceAllString(string(b), "version = \"v"+newVersion+"\"")
+	contents := versionLineRegex.ReplaceAllString(string(b), "moduleVersion = \"v"+newVersion+"\"")
 
 	return ioutil.WriteFile(path, []byte(contents), 0644)
 }
@@ -247,7 +249,7 @@ func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*s
 	var newVersion semver.Version
 	if version.Major() == 0 {
 		// preview version calculation
-		if changelog.HasBreakingChanges() {
+		if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
 		} else {
 			newVersion = version.IncPatch()

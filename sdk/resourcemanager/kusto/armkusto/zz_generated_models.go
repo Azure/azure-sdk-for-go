@@ -23,47 +23,20 @@ type AcceptedAudiences struct {
 
 // AttachedDatabaseConfiguration - Class representing an attached database configuration.
 type AttachedDatabaseConfiguration struct {
-	ProxyResource
 	// Resource location.
 	Location *string `json:"location,omitempty"`
 
 	// The properties of the attached database configuration.
 	Properties *AttachedDatabaseConfigurationProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AttachedDatabaseConfiguration.
-func (a AttachedDatabaseConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AttachedDatabaseConfiguration.
-func (a *AttachedDatabaseConfiguration) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "location":
-			err = unpopulate(val, &a.Location)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AttachedDatabaseConfigurationListResult - The list attached database configurations operation response.
@@ -79,7 +52,8 @@ func (a AttachedDatabaseConfigurationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AttachedDatabaseConfigurationProperties - Class representing the an attached database configuration properties of kind specific.
+// AttachedDatabaseConfigurationProperties - Class representing the an attached database configuration properties of kind
+// specific.
 type AttachedDatabaseConfigurationProperties struct {
 	// REQUIRED; The resource id of the cluster where the databases you would like to attach reside.
 	ClusterResourceID *string `json:"clusterResourceId,omitempty"`
@@ -112,24 +86,8 @@ func (a AttachedDatabaseConfigurationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AttachedDatabaseConfigurationsBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDatabaseConfigurations.BeginCreateOrUpdate
-// method.
-type AttachedDatabaseConfigurationsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AttachedDatabaseConfigurationsBeginDeleteOptions contains the optional parameters for the AttachedDatabaseConfigurations.BeginDelete method.
-type AttachedDatabaseConfigurationsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AttachedDatabaseConfigurationsCheckNameAvailabilityOptions contains the optional parameters for the AttachedDatabaseConfigurations.CheckNameAvailability
-// method.
-type AttachedDatabaseConfigurationsCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AttachedDatabaseConfigurationsCheckNameRequest - The result returned from a AttachedDatabaseConfigurations check name availability request.
+// AttachedDatabaseConfigurationsCheckNameRequest - The result returned from a AttachedDatabaseConfigurations check name availability
+// request.
 type AttachedDatabaseConfigurationsCheckNameRequest struct {
 	// REQUIRED; Attached database resource name.
 	Name *string `json:"name,omitempty"`
@@ -138,13 +96,33 @@ type AttachedDatabaseConfigurationsCheckNameRequest struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// AttachedDatabaseConfigurationsGetOptions contains the optional parameters for the AttachedDatabaseConfigurations.Get method.
-type AttachedDatabaseConfigurationsGetOptions struct {
+// AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate
+// method.
+type AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttachedDatabaseConfigurationsListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurations.ListByCluster method.
-type AttachedDatabaseConfigurationsListByClusterOptions struct {
+// AttachedDatabaseConfigurationsClientBeginDeleteOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginDelete
+// method.
+type AttachedDatabaseConfigurationsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.CheckNameAvailability
+// method.
+type AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AttachedDatabaseConfigurationsClientGetOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.Get
+// method.
+type AttachedDatabaseConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AttachedDatabaseConfigurationsClientListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.ListByCluster
+// method.
+type AttachedDatabaseConfigurationsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -212,17 +190,9 @@ type CheckNameResult struct {
 }
 
 // CloudError - An error response from Kusto.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// An error response from Kusto.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from Kusto.
@@ -252,7 +222,9 @@ func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
 
 // Cluster - Class representing a Kusto cluster.
 type Cluster struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; The SKU of the cluster.
 	SKU *AzureSKU `json:"sku,omitempty"`
 
@@ -262,65 +234,43 @@ type Cluster struct {
 	// The cluster properties.
 	Properties *ClusterProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
 	// The availability zones of the cluster.
 	Zones []*string `json:"zones,omitempty"`
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Cluster.
 func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", c.Etag)
+	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "sku", c.SKU)
 	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	populate(objectMap, "zones", c.Zones)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Cluster.
-func (c *Cluster) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &c.Etag)
-			delete(rawMsg, key)
-		case "identity":
-			err = unpopulate(val, &c.Identity)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &c.SKU)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &c.SystemData)
-			delete(rawMsg, key)
-		case "zones":
-			err = unpopulate(val, &c.Zones)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.TrackedResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ClusterCheckNameRequest - The result returned from a cluster check name availability request.
@@ -347,40 +297,17 @@ func (c ClusterListResult) MarshalJSON() ([]byte, error) {
 
 // ClusterPrincipalAssignment - Class representing a cluster principal assignment.
 type ClusterPrincipalAssignment struct {
-	ProxyResource
 	// The cluster principal.
 	Properties *ClusterPrincipalProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ClusterPrincipalAssignment.
-func (c ClusterPrincipalAssignment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClusterPrincipalAssignment.
-func (c *ClusterPrincipalAssignment) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ClusterPrincipalAssignmentCheckNameRequest - A principal assignment check name availability request.
@@ -405,34 +332,40 @@ func (c ClusterPrincipalAssignmentListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ClusterPrincipalAssignmentsBeginCreateOrUpdateOptions contains the optional parameters for the ClusterPrincipalAssignments.BeginCreateOrUpdate method.
-type ClusterPrincipalAssignmentsBeginCreateOrUpdateOptions struct {
+// ClusterPrincipalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.BeginCreateOrUpdate
+// method.
+type ClusterPrincipalAssignmentsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterPrincipalAssignmentsBeginDeleteOptions contains the optional parameters for the ClusterPrincipalAssignments.BeginDelete method.
-type ClusterPrincipalAssignmentsBeginDeleteOptions struct {
+// ClusterPrincipalAssignmentsClientBeginDeleteOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.BeginDelete
+// method.
+type ClusterPrincipalAssignmentsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterPrincipalAssignmentsCheckNameAvailabilityOptions contains the optional parameters for the ClusterPrincipalAssignments.CheckNameAvailability method.
-type ClusterPrincipalAssignmentsCheckNameAvailabilityOptions struct {
+// ClusterPrincipalAssignmentsClientCheckNameAvailabilityOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.CheckNameAvailability
+// method.
+type ClusterPrincipalAssignmentsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterPrincipalAssignmentsGetOptions contains the optional parameters for the ClusterPrincipalAssignments.Get method.
-type ClusterPrincipalAssignmentsGetOptions struct {
+// ClusterPrincipalAssignmentsClientGetOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.Get
+// method.
+type ClusterPrincipalAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterPrincipalAssignmentsListOptions contains the optional parameters for the ClusterPrincipalAssignments.List method.
-type ClusterPrincipalAssignmentsListOptions struct {
+// ClusterPrincipalAssignmentsClientListOptions contains the optional parameters for the ClusterPrincipalAssignmentsClient.List
+// method.
+type ClusterPrincipalAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ClusterPrincipalProperties - A class representing cluster principal property.
 type ClusterPrincipalProperties struct {
-	// REQUIRED; The principal ID assigned to the cluster principal. It can be a user email, application ID, or security group name.
+	// REQUIRED; The principal ID assigned to the cluster principal. It can be a user email, application ID, or security group
+	// name.
 	PrincipalID *string `json:"principalId,omitempty"`
 
 	// REQUIRED; Principal type.
@@ -465,7 +398,8 @@ type ClusterProperties struct {
 	// The list of ips in the format of CIDR allowed to connect to the cluster.
 	AllowedIPRangeList []*string `json:"allowedIpRangeList,omitempty"`
 
-	// A boolean value that indicates if the cluster could be automatically stopped (due to lack of data or no activity for many days).
+	// A boolean value that indicates if the cluster could be automatically stopped (due to lack of data or no activity for many
+	// days).
 	EnableAutoStop *bool `json:"enableAutoStop,omitempty"`
 
 	// A boolean value that indicates if the cluster's disks are encrypted.
@@ -489,7 +423,8 @@ type ClusterProperties struct {
 	// Optimized auto scale definition.
 	OptimizedAutoscale *OptimizedAutoscale `json:"optimizedAutoscale,omitempty"`
 
-	// Public network access to the cluster is enabled by default. When disabled, only private endpoint connection to the cluster is allowed
+	// Public network access to the cluster is enabled by default. When disabled, only private endpoint connection to the cluster
+	// is allowed
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
 	// Whether or not to restrict outbound network access. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
@@ -549,7 +484,6 @@ func (c ClusterProperties) MarshalJSON() ([]byte, error) {
 
 // ClusterUpdate - Class representing an update to a Kusto cluster.
 type ClusterUpdate struct {
-	Resource
 	// The identity of the cluster, if configured.
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -564,149 +498,133 @@ type ClusterUpdate struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ClusterUpdate.
 func (c ClusterUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
 	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "sku", c.SKU)
 	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClusterUpdate.
-func (c *ClusterUpdate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &c.Identity)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &c.Location)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &c.SKU)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &c.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// ClustersBeginAddLanguageExtensionsOptions contains the optional parameters for the Clusters.BeginAddLanguageExtensions method.
-type ClustersBeginAddLanguageExtensionsOptions struct {
+// ClustersClientBeginAddLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginAddLanguageExtensions
+// method.
+type ClustersClientBeginAddLanguageExtensionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginCreateOrUpdateOptions contains the optional parameters for the Clusters.BeginCreateOrUpdate method.
-type ClustersBeginCreateOrUpdateOptions struct {
-	// The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the last-seen ETag value to prevent accidentally overwriting
-	// concurrent changes.
+// ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
+type ClustersClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the last-seen ETag value to prevent
+	// accidentally overwriting concurrent changes.
 	IfMatch *string
-	// Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster. Other values will result in a 412 Pre-condition Failed
-	// response.
+	// Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster. Other values will result
+	// in a 412 Pre-condition Failed response.
 	IfNoneMatch *string
 }
 
-// ClustersBeginDeleteOptions contains the optional parameters for the Clusters.BeginDelete method.
-type ClustersBeginDeleteOptions struct {
+// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+type ClustersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginDetachFollowerDatabasesOptions contains the optional parameters for the Clusters.BeginDetachFollowerDatabases method.
-type ClustersBeginDetachFollowerDatabasesOptions struct {
+// ClustersClientBeginDetachFollowerDatabasesOptions contains the optional parameters for the ClustersClient.BeginDetachFollowerDatabases
+// method.
+type ClustersClientBeginDetachFollowerDatabasesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginDiagnoseVirtualNetworkOptions contains the optional parameters for the Clusters.BeginDiagnoseVirtualNetwork method.
-type ClustersBeginDiagnoseVirtualNetworkOptions struct {
+// ClustersClientBeginDiagnoseVirtualNetworkOptions contains the optional parameters for the ClustersClient.BeginDiagnoseVirtualNetwork
+// method.
+type ClustersClientBeginDiagnoseVirtualNetworkOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginRemoveLanguageExtensionsOptions contains the optional parameters for the Clusters.BeginRemoveLanguageExtensions method.
-type ClustersBeginRemoveLanguageExtensionsOptions struct {
+// ClustersClientBeginRemoveLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginRemoveLanguageExtensions
+// method.
+type ClustersClientBeginRemoveLanguageExtensionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginStartOptions contains the optional parameters for the Clusters.BeginStart method.
-type ClustersBeginStartOptions struct {
+// ClustersClientBeginStartOptions contains the optional parameters for the ClustersClient.BeginStart method.
+type ClustersClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginStopOptions contains the optional parameters for the Clusters.BeginStop method.
-type ClustersBeginStopOptions struct {
+// ClustersClientBeginStopOptions contains the optional parameters for the ClustersClient.BeginStop method.
+type ClustersClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginUpdateOptions contains the optional parameters for the Clusters.BeginUpdate method.
-type ClustersBeginUpdateOptions struct {
-	// The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the last-seen ETag value to prevent accidentally overwriting
-	// concurrent changes.
+// ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
+type ClustersClientBeginUpdateOptions struct {
+	// The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the last-seen ETag value to prevent
+	// accidentally overwriting concurrent changes.
 	IfMatch *string
 }
 
-// ClustersCheckNameAvailabilityOptions contains the optional parameters for the Clusters.CheckNameAvailability method.
-type ClustersCheckNameAvailabilityOptions struct {
+// ClustersClientCheckNameAvailabilityOptions contains the optional parameters for the ClustersClient.CheckNameAvailability
+// method.
+type ClustersClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersGetOptions contains the optional parameters for the Clusters.Get method.
-type ClustersGetOptions struct {
+// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListByResourceGroupOptions contains the optional parameters for the Clusters.ListByResourceGroup method.
-type ClustersListByResourceGroupOptions struct {
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListFollowerDatabasesOptions contains the optional parameters for the Clusters.ListFollowerDatabases method.
-type ClustersListFollowerDatabasesOptions struct {
+// ClustersClientListFollowerDatabasesOptions contains the optional parameters for the ClustersClient.ListFollowerDatabases
+// method.
+type ClustersClientListFollowerDatabasesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListLanguageExtensionsOptions contains the optional parameters for the Clusters.ListLanguageExtensions method.
-type ClustersListLanguageExtensionsOptions struct {
+// ClustersClientListLanguageExtensionsOptions contains the optional parameters for the ClustersClient.ListLanguageExtensions
+// method.
+type ClustersClientListLanguageExtensionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListOptions contains the optional parameters for the Clusters.List method.
-type ClustersListOptions struct {
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the Clusters.ListOutboundNetworkDependenciesEndpoints method.
-type ClustersListOutboundNetworkDependenciesEndpointsOptions struct {
+// ClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ClustersClient.ListOutboundNetworkDependenciesEndpoints
+// method.
+type ClustersClientListOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListSKUsByResourceOptions contains the optional parameters for the Clusters.ListSKUsByResource method.
-type ClustersListSKUsByResourceOptions struct {
+// ClustersClientListSKUsByResourceOptions contains the optional parameters for the ClustersClient.ListSKUsByResource method.
+type ClustersClientListSKUsByResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListSKUsOptions contains the optional parameters for the Clusters.ListSKUs method.
-type ClustersListSKUsOptions struct {
+// ClustersClientListSKUsOptions contains the optional parameters for the ClustersClient.ListSKUs method.
+type ClustersClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -729,52 +647,34 @@ type DataConnectionClassification interface {
 
 // DataConnection - Class representing an data connection.
 type DataConnection struct {
-	ProxyResource
 	// REQUIRED; Kind of the endpoint for the data connection
 	Kind *DataConnectionKind `json:"kind,omitempty"`
 
 	// Resource location.
 	Location *string `json:"location,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetDataConnection implements the DataConnectionClassification interface for type DataConnection.
 func (d *DataConnection) GetDataConnection() *DataConnection { return d }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnection.
-func (d *DataConnection) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DataConnection) marshalInternal(objectMap map[string]interface{}, discValue DataConnectionKind) {
-	d.ProxyResource.marshalInternal(objectMap)
-	d.Kind = &discValue
+// MarshalJSON implements the json.Marshaller interface for type DataConnection.
+func (d DataConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", d.ID)
 	objectMap["kind"] = d.Kind
 	populate(objectMap, "location", d.Location)
-}
-
-func (d *DataConnection) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &d.Kind)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &d.Location)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	populate(objectMap, "name", d.Name)
+	populate(objectMap, "type", d.Type)
+	return json.Marshal(objectMap)
 }
 
 // DataConnectionCheckNameRequest - A data connection check name availability request.
@@ -878,38 +778,42 @@ type DataConnectionValidationResult struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
-// DataConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the DataConnections.BeginCreateOrUpdate method.
-type DataConnectionsBeginCreateOrUpdateOptions struct {
+// DataConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginCreateOrUpdate
+// method.
+type DataConnectionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataConnectionsBeginDataConnectionValidationOptions contains the optional parameters for the DataConnections.BeginDataConnectionValidation method.
-type DataConnectionsBeginDataConnectionValidationOptions struct {
+// DataConnectionsClientBeginDataConnectionValidationOptions contains the optional parameters for the DataConnectionsClient.BeginDataConnectionValidation
+// method.
+type DataConnectionsClientBeginDataConnectionValidationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataConnectionsBeginDeleteOptions contains the optional parameters for the DataConnections.BeginDelete method.
-type DataConnectionsBeginDeleteOptions struct {
+// DataConnectionsClientBeginDeleteOptions contains the optional parameters for the DataConnectionsClient.BeginDelete method.
+type DataConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataConnectionsBeginUpdateOptions contains the optional parameters for the DataConnections.BeginUpdate method.
-type DataConnectionsBeginUpdateOptions struct {
+// DataConnectionsClientBeginUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginUpdate method.
+type DataConnectionsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataConnectionsCheckNameAvailabilityOptions contains the optional parameters for the DataConnections.CheckNameAvailability method.
-type DataConnectionsCheckNameAvailabilityOptions struct {
+// DataConnectionsClientCheckNameAvailabilityOptions contains the optional parameters for the DataConnectionsClient.CheckNameAvailability
+// method.
+type DataConnectionsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataConnectionsGetOptions contains the optional parameters for the DataConnections.Get method.
-type DataConnectionsGetOptions struct {
+// DataConnectionsClientGetOptions contains the optional parameters for the DataConnectionsClient.Get method.
+type DataConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataConnectionsListByDatabaseOptions contains the optional parameters for the DataConnections.ListByDatabase method.
-type DataConnectionsListByDatabaseOptions struct {
+// DataConnectionsClientListByDatabaseOptions contains the optional parameters for the DataConnectionsClient.ListByDatabase
+// method.
+type DataConnectionsClientListByDatabaseOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -924,52 +828,34 @@ type DatabaseClassification interface {
 
 // Database - Class representing a Kusto database.
 type Database struct {
-	ProxyResource
 	// REQUIRED; Kind of the database
 	Kind *Kind `json:"kind,omitempty"`
 
 	// Resource location.
 	Location *string `json:"location,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetDatabase implements the DatabaseClassification interface for type Database.
 func (d *Database) GetDatabase() *Database { return d }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Database.
-func (d *Database) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d Database) marshalInternal(objectMap map[string]interface{}, discValue Kind) {
-	d.ProxyResource.marshalInternal(objectMap)
-	d.Kind = &discValue
+// MarshalJSON implements the json.Marshaller interface for type Database.
+func (d Database) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", d.ID)
 	objectMap["kind"] = d.Kind
 	populate(objectMap, "location", d.Location)
-}
-
-func (d *Database) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &d.Kind)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &d.Location)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	populate(objectMap, "name", d.Name)
+	populate(objectMap, "type", d.Type)
+	return json.Marshal(objectMap)
 }
 
 // DatabaseListResult - The list Kusto databases operation response.
@@ -1031,40 +917,17 @@ type DatabasePrincipal struct {
 
 // DatabasePrincipalAssignment - Class representing a database principal assignment.
 type DatabasePrincipalAssignment struct {
-	ProxyResource
 	// The database principal.
 	Properties *DatabasePrincipalProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DatabasePrincipalAssignment.
-func (d DatabasePrincipalAssignment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatabasePrincipalAssignment.
-func (d *DatabasePrincipalAssignment) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DatabasePrincipalAssignmentCheckNameRequest - A principal assignment check name availability request.
@@ -1089,29 +952,33 @@ func (d DatabasePrincipalAssignmentListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DatabasePrincipalAssignmentsBeginCreateOrUpdateOptions contains the optional parameters for the DatabasePrincipalAssignments.BeginCreateOrUpdate method.
-type DatabasePrincipalAssignmentsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DatabasePrincipalAssignmentsBeginDeleteOptions contains the optional parameters for the DatabasePrincipalAssignments.BeginDelete method.
-type DatabasePrincipalAssignmentsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DatabasePrincipalAssignmentsCheckNameAvailabilityOptions contains the optional parameters for the DatabasePrincipalAssignments.CheckNameAvailability
+// DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.BeginCreateOrUpdate
 // method.
-type DatabasePrincipalAssignmentsCheckNameAvailabilityOptions struct {
+type DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasePrincipalAssignmentsGetOptions contains the optional parameters for the DatabasePrincipalAssignments.Get method.
-type DatabasePrincipalAssignmentsGetOptions struct {
+// DatabasePrincipalAssignmentsClientBeginDeleteOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.BeginDelete
+// method.
+type DatabasePrincipalAssignmentsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasePrincipalAssignmentsListOptions contains the optional parameters for the DatabasePrincipalAssignments.List method.
-type DatabasePrincipalAssignmentsListOptions struct {
+// DatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.CheckNameAvailability
+// method.
+type DatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatabasePrincipalAssignmentsClientGetOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.Get
+// method.
+type DatabasePrincipalAssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatabasePrincipalAssignmentsClientListOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.List
+// method.
+type DatabasePrincipalAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1143,7 +1010,8 @@ func (d DatabasePrincipalListResult) MarshalJSON() ([]byte, error) {
 
 // DatabasePrincipalProperties - A class representing database principal property.
 type DatabasePrincipalProperties struct {
-	// REQUIRED; The principal ID assigned to the database principal. It can be a user email, application ID, or security group name.
+	// REQUIRED; The principal ID assigned to the database principal. It can be a user email, application ID, or security group
+	// name.
 	PrincipalID *string `json:"principalId,omitempty"`
 
 	// REQUIRED; Principal type.
@@ -1171,48 +1039,50 @@ type DatabaseStatistics struct {
 	Size *float32 `json:"size,omitempty"`
 }
 
-// DatabasesAddPrincipalsOptions contains the optional parameters for the Databases.AddPrincipals method.
-type DatabasesAddPrincipalsOptions struct {
+// DatabasesClientAddPrincipalsOptions contains the optional parameters for the DatabasesClient.AddPrincipals method.
+type DatabasesClientAddPrincipalsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesBeginCreateOrUpdateOptions contains the optional parameters for the Databases.BeginCreateOrUpdate method.
-type DatabasesBeginCreateOrUpdateOptions struct {
+// DatabasesClientBeginCreateOrUpdateOptions contains the optional parameters for the DatabasesClient.BeginCreateOrUpdate
+// method.
+type DatabasesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesBeginDeleteOptions contains the optional parameters for the Databases.BeginDelete method.
-type DatabasesBeginDeleteOptions struct {
+// DatabasesClientBeginDeleteOptions contains the optional parameters for the DatabasesClient.BeginDelete method.
+type DatabasesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesBeginUpdateOptions contains the optional parameters for the Databases.BeginUpdate method.
-type DatabasesBeginUpdateOptions struct {
+// DatabasesClientBeginUpdateOptions contains the optional parameters for the DatabasesClient.BeginUpdate method.
+type DatabasesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesCheckNameAvailabilityOptions contains the optional parameters for the Databases.CheckNameAvailability method.
-type DatabasesCheckNameAvailabilityOptions struct {
+// DatabasesClientCheckNameAvailabilityOptions contains the optional parameters for the DatabasesClient.CheckNameAvailability
+// method.
+type DatabasesClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesGetOptions contains the optional parameters for the Databases.Get method.
-type DatabasesGetOptions struct {
+// DatabasesClientGetOptions contains the optional parameters for the DatabasesClient.Get method.
+type DatabasesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesListByClusterOptions contains the optional parameters for the Databases.ListByCluster method.
-type DatabasesListByClusterOptions struct {
+// DatabasesClientListByClusterOptions contains the optional parameters for the DatabasesClient.ListByCluster method.
+type DatabasesClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesListPrincipalsOptions contains the optional parameters for the Databases.ListPrincipals method.
-type DatabasesListPrincipalsOptions struct {
+// DatabasesClientListPrincipalsOptions contains the optional parameters for the DatabasesClient.ListPrincipals method.
+type DatabasesClientListPrincipalsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatabasesRemovePrincipalsOptions contains the optional parameters for the Databases.RemovePrincipals method.
-type DatabasesRemovePrincipalsOptions struct {
+// DatabasesClientRemovePrincipalsOptions contains the optional parameters for the DatabasesClient.RemovePrincipals method.
+type DatabasesClientRemovePrincipalsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1283,16 +1153,45 @@ type EventGridConnectionProperties struct {
 
 // EventGridDataConnection - Class representing an Event Grid data connection.
 type EventGridDataConnection struct {
-	DataConnection
+	// REQUIRED; Kind of the endpoint for the data connection
+	Kind *DataConnectionKind `json:"kind,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The properties of the Event Grid data connection.
 	Properties *EventGridConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type EventGridDataConnection.
+func (e *EventGridDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location: e.Location,
+		Kind:     e.Kind,
+		ID:       e.ID,
+		Name:     e.Name,
+		Type:     e.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EventGridDataConnection.
 func (e EventGridDataConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.DataConnection.marshalInternal(objectMap, DataConnectionKindEventGrid)
+	populate(objectMap, "id", e.ID)
+	objectMap["kind"] = DataConnectionKindEventGrid
+	populate(objectMap, "location", e.Location)
+	populate(objectMap, "name", e.Name)
 	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1305,16 +1204,28 @@ func (e *EventGridDataConnection) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &e.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &e.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &e.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &e.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &e.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &e.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := e.DataConnection.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1366,16 +1277,45 @@ func (e EventHubConnectionProperties) MarshalJSON() ([]byte, error) {
 
 // EventHubDataConnection - Class representing an event hub data connection.
 type EventHubDataConnection struct {
-	DataConnection
+	// REQUIRED; Kind of the endpoint for the data connection
+	Kind *DataConnectionKind `json:"kind,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The Event Hub data connection properties to validate.
 	Properties *EventHubConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type EventHubDataConnection.
+func (e *EventHubDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location: e.Location,
+		Kind:     e.Kind,
+		ID:       e.ID,
+		Name:     e.Name,
+		Type:     e.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EventHubDataConnection.
 func (e EventHubDataConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.DataConnection.marshalInternal(objectMap, DataConnectionKindEventHub)
+	populate(objectMap, "id", e.ID)
+	objectMap["kind"] = DataConnectionKindEventHub
+	populate(objectMap, "location", e.Location)
+	populate(objectMap, "name", e.Name)
 	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1388,16 +1328,28 @@ func (e *EventHubDataConnection) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &e.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &e.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &e.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &e.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &e.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &e.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := e.DataConnection.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1429,12 +1381,13 @@ func (f FollowerDatabaseListResult) MarshalJSON() ([]byte, error) {
 
 // Identity for the resource.
 type Identity struct {
-	// REQUIRED; The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned
-	// identities. The type 'None' will remove all
+	// REQUIRED; The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+	// identity and a set of user-assigned identities. The type 'None' will remove all
 	// identities.
 	Type *IdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM
+	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
 
@@ -1498,16 +1451,45 @@ func (i IotHubConnectionProperties) MarshalJSON() ([]byte, error) {
 
 // IotHubDataConnection - Class representing an iot hub data connection.
 type IotHubDataConnection struct {
-	DataConnection
+	// REQUIRED; Kind of the endpoint for the data connection
+	Kind *DataConnectionKind `json:"kind,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The Iot Hub data connection properties.
 	Properties *IotHubConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type IotHubDataConnection.
+func (i *IotHubDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location: i.Location,
+		Kind:     i.Kind,
+		ID:       i.ID,
+		Name:     i.Name,
+		Type:     i.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IotHubDataConnection.
 func (i IotHubDataConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.DataConnection.marshalInternal(objectMap, DataConnectionKindIotHub)
+	populate(objectMap, "id", i.ID)
+	objectMap["kind"] = DataConnectionKindIotHub
+	populate(objectMap, "location", i.Location)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1520,16 +1502,28 @@ func (i *IotHubDataConnection) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &i.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &i.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &i.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &i.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &i.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &i.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := i.DataConnection.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1583,47 +1577,31 @@ func (l ListResourceSKUsResult) MarshalJSON() ([]byte, error) {
 
 // ManagedPrivateEndpoint - Class representing a managed private endpoint.
 type ManagedPrivateEndpoint struct {
-	ProxyResource
 	// A managed private endpoint.
 	Properties *ManagedPrivateEndpointProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ManagedPrivateEndpoint.
 func (m ManagedPrivateEndpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "name", m.Name)
 	populate(objectMap, "properties", m.Properties)
 	populate(objectMap, "systemData", m.SystemData)
+	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ManagedPrivateEndpoint.
-func (m *ManagedPrivateEndpoint) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ManagedPrivateEndpointListResult - The list managed private endpoints operation response.
@@ -1657,26 +1635,6 @@ type ManagedPrivateEndpointProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// ManagedPrivateEndpointsBeginCreateOrUpdateOptions contains the optional parameters for the ManagedPrivateEndpoints.BeginCreateOrUpdate method.
-type ManagedPrivateEndpointsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedPrivateEndpointsBeginDeleteOptions contains the optional parameters for the ManagedPrivateEndpoints.BeginDelete method.
-type ManagedPrivateEndpointsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedPrivateEndpointsBeginUpdateOptions contains the optional parameters for the ManagedPrivateEndpoints.BeginUpdate method.
-type ManagedPrivateEndpointsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedPrivateEndpointsCheckNameAvailabilityOptions contains the optional parameters for the ManagedPrivateEndpoints.CheckNameAvailability method.
-type ManagedPrivateEndpointsCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ManagedPrivateEndpointsCheckNameRequest - The result returned from a managedPrivateEndpoints check name availability request.
 type ManagedPrivateEndpointsCheckNameRequest struct {
 	// REQUIRED; Managed private endpoint resource name.
@@ -1686,13 +1644,37 @@ type ManagedPrivateEndpointsCheckNameRequest struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ManagedPrivateEndpointsGetOptions contains the optional parameters for the ManagedPrivateEndpoints.Get method.
-type ManagedPrivateEndpointsGetOptions struct {
+// ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginCreateOrUpdate
+// method.
+type ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedPrivateEndpointsListOptions contains the optional parameters for the ManagedPrivateEndpoints.List method.
-type ManagedPrivateEndpointsListOptions struct {
+// ManagedPrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginDelete
+// method.
+type ManagedPrivateEndpointsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedPrivateEndpointsClientBeginUpdateOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginUpdate
+// method.
+type ManagedPrivateEndpointsClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedPrivateEndpointsClientCheckNameAvailabilityOptions contains the optional parameters for the ManagedPrivateEndpointsClient.CheckNameAvailability
+// method.
+type ManagedPrivateEndpointsClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedPrivateEndpointsClientGetOptions contains the optional parameters for the ManagedPrivateEndpointsClient.Get method.
+type ManagedPrivateEndpointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedPrivateEndpointsClientListOptions contains the optional parameters for the ManagedPrivateEndpointsClient.List method.
+type ManagedPrivateEndpointsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1726,7 +1708,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the next set of results.
+// OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
+// to get the next set of results.
 type OperationListResult struct {
 	// The URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1843,13 +1826,13 @@ type OperationResultProperties struct {
 	OperationState *string `json:"operationState,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsResultsGetOptions contains the optional parameters for the OperationsResults.Get method.
-type OperationsResultsGetOptions struct {
+// OperationsResultsClientGetOptions contains the optional parameters for the OperationsResultsClient.Get method.
+type OperationsResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1868,49 +1851,23 @@ type OptimizedAutoscale struct {
 	Version *int32 `json:"version,omitempty"`
 }
 
-// OutboundNetworkDependenciesEndpoint - Endpoints accessed for a common purpose that the Kusto Service Environment requires outbound network access to.
+// OutboundNetworkDependenciesEndpoint - Endpoints accessed for a common purpose that the Kusto Service Environment requires
+// outbound network access to.
 type OutboundNetworkDependenciesEndpoint struct {
-	ProxyResource
 	// The outbound environment endpoint properties.
 	Properties *OutboundNetworkDependenciesEndpointProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type OutboundNetworkDependenciesEndpoint.
-func (o OutboundNetworkDependenciesEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "etag", o.Etag)
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type OutboundNetworkDependenciesEndpoint.
-func (o *OutboundNetworkDependenciesEndpoint) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &o.Etag)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := o.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OutboundNetworkDependenciesEndpointListResult - Collection of Outbound Environment Endpoints
@@ -1930,10 +1887,11 @@ func (o OutboundNetworkDependenciesEndpointListResult) MarshalJSON() ([]byte, er
 	return json.Marshal(objectMap)
 }
 
-// OutboundNetworkDependenciesEndpointProperties - Endpoints accessed for a common purpose that the Kusto Service Environment requires outbound network
-// access to.
+// OutboundNetworkDependenciesEndpointProperties - Endpoints accessed for a common purpose that the Kusto Service Environment
+// requires outbound network access to.
 type OutboundNetworkDependenciesEndpointProperties struct {
-	// The type of service accessed by the Kusto Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
+	// The type of service accessed by the Kusto Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active
+	// Directory.
 	Category *string `json:"category,omitempty"`
 
 	// The endpoints that the Kusto Service Environment reaches the service at.
@@ -1954,47 +1912,20 @@ func (o OutboundNetworkDependenciesEndpointProperties) MarshalJSON() ([]byte, er
 
 // PrivateEndpointConnection - A private endpoint connection
 type PrivateEndpointConnection struct {
-	ProxyResource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateEndpointConnection.
-func (p *PrivateEndpointConnection) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &p.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - A list of private endpoint connections
@@ -2025,23 +1956,27 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsBeginCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2053,47 +1988,20 @@ type PrivateEndpointProperty struct {
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateLinkResource.
-func (p *PrivateLinkResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &p.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -2130,13 +2038,13 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListOptions contains the optional parameters for the PrivateLinkResources.List method.
-type PrivateLinkResourcesListOptions struct {
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2152,34 +2060,60 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
-}
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
 
-func (p *ProxyResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ReadOnlyFollowingDatabase - Class representing a read only following database.
 type ReadOnlyFollowingDatabase struct {
-	Database
+	// REQUIRED; Kind of the database
+	Kind *Kind `json:"kind,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The database properties.
 	Properties *ReadOnlyFollowingDatabaseProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDatabase implements the DatabaseClassification interface for type ReadOnlyFollowingDatabase.
+func (r *ReadOnlyFollowingDatabase) GetDatabase() *Database {
+	return &Database{
+		Location: r.Location,
+		Kind:     r.Kind,
+		ID:       r.ID,
+		Name:     r.Name,
+		Type:     r.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ReadOnlyFollowingDatabase.
 func (r ReadOnlyFollowingDatabase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.Database.marshalInternal(objectMap, KindReadOnlyFollowing)
+	populate(objectMap, "id", r.ID)
+	objectMap["kind"] = KindReadOnlyFollowing
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2192,16 +2126,28 @@ func (r *ReadOnlyFollowingDatabase) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &r.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &r.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &r.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &r.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.Database.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2232,16 +2178,45 @@ type ReadOnlyFollowingDatabaseProperties struct {
 
 // ReadWriteDatabase - Class representing a read write database.
 type ReadWriteDatabase struct {
-	Database
+	// REQUIRED; Kind of the database
+	Kind *Kind `json:"kind,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The database properties.
 	Properties *ReadWriteDatabaseProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDatabase implements the DatabaseClassification interface for type ReadWriteDatabase.
+func (r *ReadWriteDatabase) GetDatabase() *Database {
+	return &Database{
+		Location: r.Location,
+		Kind:     r.Kind,
+		ID:       r.ID,
+		Name:     r.Name,
+		Type:     r.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ReadWriteDatabase.
 func (r ReadWriteDatabase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.Database.marshalInternal(objectMap, KindReadWrite)
+	populate(objectMap, "id", r.ID)
+	objectMap["kind"] = KindReadWrite
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2254,16 +2229,28 @@ func (r *ReadWriteDatabase) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &r.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &r.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &r.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &r.Properties)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.Database.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2296,49 +2283,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SKUDescription - The Kusto SKU description of given resource type
@@ -2406,47 +2350,31 @@ func (s SKULocationInfoItem) MarshalJSON() ([]byte, error) {
 
 // Script - Class representing a database script.
 type Script struct {
-	ProxyResource
 	// The database script.
 	Properties *ScriptProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Script.
 func (s Script) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Script.
-func (s *Script) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ScriptCheckNameRequest - A script name availability request.
@@ -2489,33 +2417,34 @@ type ScriptProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// ScriptsBeginCreateOrUpdateOptions contains the optional parameters for the Scripts.BeginCreateOrUpdate method.
-type ScriptsBeginCreateOrUpdateOptions struct {
+// ScriptsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScriptsClient.BeginCreateOrUpdate method.
+type ScriptsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptsBeginDeleteOptions contains the optional parameters for the Scripts.BeginDelete method.
-type ScriptsBeginDeleteOptions struct {
+// ScriptsClientBeginDeleteOptions contains the optional parameters for the ScriptsClient.BeginDelete method.
+type ScriptsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptsBeginUpdateOptions contains the optional parameters for the Scripts.BeginUpdate method.
-type ScriptsBeginUpdateOptions struct {
+// ScriptsClientBeginUpdateOptions contains the optional parameters for the ScriptsClient.BeginUpdate method.
+type ScriptsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptsCheckNameAvailabilityOptions contains the optional parameters for the Scripts.CheckNameAvailability method.
-type ScriptsCheckNameAvailabilityOptions struct {
+// ScriptsClientCheckNameAvailabilityOptions contains the optional parameters for the ScriptsClient.CheckNameAvailability
+// method.
+type ScriptsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptsGetOptions contains the optional parameters for the Scripts.Get method.
-type ScriptsGetOptions struct {
+// ScriptsClientGetOptions contains the optional parameters for the ScriptsClient.Get method.
+type ScriptsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptsListByDatabaseOptions contains the optional parameters for the Scripts.ListByDatabase method.
-type ScriptsListByDatabaseOptions struct {
+// ScriptsClientListByDatabaseOptions contains the optional parameters for the ScriptsClient.ListByDatabase method.
+type ScriptsClientListByDatabaseOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2620,57 +2549,34 @@ func (t TableLevelSharingProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TrackedResource.
-func (t *TrackedResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return t.unmarshalInternal(rawMsg)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
-}
-
-func (t *TrackedResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "location":
-			err = unpopulate(val, &t.Location)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &t.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // TrustedExternalTenant - Represents a tenant ID that is trusted by the cluster.

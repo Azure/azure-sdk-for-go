@@ -9,8 +9,8 @@
 package armapimanagement
 
 const (
-	module  = "armapimanagement"
-	version = "v0.2.1"
+	moduleName    = "armapimanagement"
+	moduleVersion = "v0.3.0"
 )
 
 // APIManagementSKUCapacityScaleType - The scale type applicable to the sku.
@@ -103,7 +103,8 @@ func (c APIType) ToPtr() *APIType {
 	return &c
 }
 
-// APIVersionSetContractDetailsVersioningScheme - An value that determines where the API Version identifier will be located in a HTTP request.
+// APIVersionSetContractDetailsVersioningScheme - An value that determines where the API Version identifier will be located
+// in a HTTP request.
 type APIVersionSetContractDetailsVersioningScheme string
 
 const (
@@ -192,8 +193,8 @@ func (c AlwaysLog) ToPtr() *AlwaysLog {
 	return &c
 }
 
-// ApimIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and
-// a set of user assigned identities. The type 'None' will remove any
+// ApimIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an
+// implicitly created identity and a set of user assigned identities. The type 'None' will remove any
 // identities from the service.
 type ApimIdentityType string
 
@@ -345,7 +346,8 @@ func (c BearerTokenSendingMethod) ToPtr() *BearerTokenSendingMethod {
 type BearerTokenSendingMethods string
 
 const (
-	// BearerTokenSendingMethodsAuthorizationHeader - Access token will be transmitted in the Authorization header using Bearer schema
+	// BearerTokenSendingMethodsAuthorizationHeader - Access token will be transmitted in the Authorization header using Bearer
+	// schema
 	BearerTokenSendingMethodsAuthorizationHeader BearerTokenSendingMethods = "authorizationHeader"
 	// BearerTokenSendingMethodsQuery - Access token will be transmitted as query parameters.
 	BearerTokenSendingMethodsQuery BearerTokenSendingMethods = "query"
@@ -364,8 +366,8 @@ func (c BearerTokenSendingMethods) ToPtr() *BearerTokenSendingMethods {
 	return &c
 }
 
-// CertificateConfigurationStoreName - The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and CertificateAuthority
-// are valid locations.
+// CertificateConfigurationStoreName - The System.Security.Cryptography.x509certificates.StoreName certificate store location.
+// Only Root and CertificateAuthority are valid locations.
 type CertificateConfigurationStoreName string
 
 const (
@@ -522,8 +524,8 @@ func (c ConnectionStatus) ToPtr() *ConnectionStatus {
 	return &c
 }
 
-// ConnectivityCheckProtocol - The request's protocol. Specific protocol configuration can be available based on this selection. The specified destination
-// address must be coherent with this value.
+// ConnectivityCheckProtocol - The request's protocol. Specific protocol configuration can be available based on this selection.
+// The specified destination address must be coherent with this value.
 type ConnectivityCheckProtocol string
 
 const (
@@ -726,7 +728,8 @@ const (
 	ExportResultFormatSwagger ExportResultFormat = "swagger-link-json"
 	// ExportResultFormatWadl - Export the API Definition in WADL Schema to Storage Blob.
 	ExportResultFormatWadl ExportResultFormat = "wadl-link-json"
-	// ExportResultFormatWsdl - The API Definition is exported in WSDL Schema to Storage Blob. This is only supported for APIs of Type `soap`
+	// ExportResultFormatWsdl - The API Definition is exported in WSDL Schema to Storage Blob. This is only supported for APIs
+	// of Type `soap`
 	ExportResultFormatWsdl ExportResultFormat = "wsdl-link+xml"
 )
 
@@ -986,8 +989,8 @@ func (c Method) ToPtr() *Method {
 	return &c
 }
 
-// NameAvailabilityReason - Invalid indicates the name provided does not match the resource provider’s naming requirements (incorrect length, unsupported
-// characters, etc.) AlreadyExists indicates that the name is already in use
+// NameAvailabilityReason - Invalid indicates the name provided does not match the resource provider’s naming requirements
+// (incorrect length, unsupported characters, etc.) AlreadyExists indicates that the name is already in use
 // and is therefore unavailable.
 type NameAvailabilityReason string
 
@@ -1014,24 +1017,25 @@ func (c NameAvailabilityReason) ToPtr() *NameAvailabilityReason {
 type NotificationName string
 
 const (
-	// NotificationNameAccountClosedPublisher - The following email recipients and users will receive email notifications when developer closes his account.
+	// NotificationNameAccountClosedPublisher - The following email recipients and users will receive email notifications when
+	// developer closes his account.
 	NotificationNameAccountClosedPublisher NotificationName = "AccountClosedPublisher"
 	// NotificationNameBCC - The following recipients will receive blind carbon copies of all emails sent to developers.
 	NotificationNameBCC NotificationName = "BCC"
-	// NotificationNameNewApplicationNotificationMessage - The following email recipients and users will receive email notifications when new applications are
-	// submitted to the application gallery.
+	// NotificationNameNewApplicationNotificationMessage - The following email recipients and users will receive email notifications
+	// when new applications are submitted to the application gallery.
 	NotificationNameNewApplicationNotificationMessage NotificationName = "NewApplicationNotificationMessage"
-	// NotificationNameNewIssuePublisherNotificationMessage - The following email recipients and users will receive email notifications when a new issue or
-	// comment is submitted on the developer portal.
+	// NotificationNameNewIssuePublisherNotificationMessage - The following email recipients and users will receive email notifications
+	// when a new issue or comment is submitted on the developer portal.
 	NotificationNameNewIssuePublisherNotificationMessage NotificationName = "NewIssuePublisherNotificationMessage"
-	// NotificationNamePurchasePublisherNotificationMessage - The following email recipients and users will receive email notifications about new API product
-	// subscriptions.
+	// NotificationNamePurchasePublisherNotificationMessage - The following email recipients and users will receive email notifications
+	// about new API product subscriptions.
 	NotificationNamePurchasePublisherNotificationMessage NotificationName = "PurchasePublisherNotificationMessage"
-	// NotificationNameQuotaLimitApproachingPublisherNotificationMessage - The following email recipients and users will receive email notifications when subscription
-	// usage gets close to usage quota.
+	// NotificationNameQuotaLimitApproachingPublisherNotificationMessage - The following email recipients and users will receive
+	// email notifications when subscription usage gets close to usage quota.
 	NotificationNameQuotaLimitApproachingPublisherNotificationMessage NotificationName = "QuotaLimitApproachingPublisherNotificationMessage"
-	// NotificationNameRequestPublisherNotificationMessage - The following email recipients and users will receive email notifications about subscription requests
-	// for API products requiring approval.
+	// NotificationNameRequestPublisherNotificationMessage - The following email recipients and users will receive email notifications
+	// about subscription requests for API products requiring approval.
 	NotificationNameRequestPublisherNotificationMessage NotificationName = "RequestPublisherNotificationMessage"
 )
 
@@ -1134,7 +1138,8 @@ type PolicyContentFormat string
 const (
 	// PolicyContentFormatRawxml - The contents are inline and Content type is a non XML encoded policy document.
 	PolicyContentFormatRawxml PolicyContentFormat = "rawxml"
-	// PolicyContentFormatRawxmlLink - The policy document is not Xml encoded and is hosted on a http endpoint accessible from the API Management service.
+	// PolicyContentFormatRawxmlLink - The policy document is not Xml encoded and is hosted on a http endpoint accessible from
+	// the API Management service.
 	PolicyContentFormatRawxmlLink PolicyContentFormat = "rawxml-link"
 	// PolicyContentFormatXML - The contents are inline and Content type is an XML document.
 	PolicyContentFormatXML PolicyContentFormat = "xml"
@@ -1319,8 +1324,8 @@ func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceC
 	return &c
 }
 
-// ProductState - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible
-// only to administrators. Default state of Product is
+// ProductState - whether product is published or not. Published products are discoverable by users of developer portal. Non
+// published products are visible only to administrators. Default state of Product is
 // notPublished.
 type ProductState string
 
@@ -1366,8 +1371,8 @@ func (c Protocol) ToPtr() *Protocol {
 	return &c
 }
 
-// PublicNetworkAccess - Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must be 'Enabled'
-// or 'Disabled'. If 'Disabled', private endpoints are the
+// PublicNetworkAccess - Whether or not public endpoint access is allowed for this API Management service. Value is optional
+// but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
 // exclusive access method. Default value is 'Enabled'
 type PublicNetworkAccess string
 
@@ -1467,6 +1472,29 @@ func PossibleSamplingTypeValues() []SamplingType {
 
 // ToPtr returns a *SamplingType pointing to the current value.
 func (c SamplingType) ToPtr() *SamplingType {
+	return &c
+}
+
+// SchemaType - Schema Type. Immutable.
+type SchemaType string
+
+const (
+	// SchemaTypeJSON - Json schema type.
+	SchemaTypeJSON SchemaType = "json"
+	// SchemaTypeXML - Xml schema type.
+	SchemaTypeXML SchemaType = "xml"
+)
+
+// PossibleSchemaTypeValues returns the possible values for the SchemaType const type.
+func PossibleSchemaTypeValues() []SchemaType {
+	return []SchemaType{
+		SchemaTypeJSON,
+		SchemaTypeXML,
+	}
+}
+
+// ToPtr returns a *SchemaType pointing to the current value.
+func (c SchemaType) ToPtr() *SchemaType {
 	return &c
 }
 
@@ -1574,11 +1602,12 @@ func (c State) ToPtr() *State {
 	return &c
 }
 
-// SubscriptionState - Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the
-// subscriber cannot call any APIs of the product, * submitted – the
-// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied
-// by an administrator, * cancelled – the
-// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
+// SubscriptionState - Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription
+// is blocked, and the subscriber cannot call any APIs of the product, * submitted – the
+// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription
+// request has been denied by an administrator, * cancelled – the
+// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
+// date and was deactivated.
 type SubscriptionState string
 
 const (
@@ -1651,8 +1680,8 @@ func (c TemplateName) ToPtr() *TemplateName {
 	return &c
 }
 
-// UserState - Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal or call any APIs of
-// subscribed products. Default state is Active.
+// UserState - Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer
+// portal or call any APIs of subscribed products. Default state is Active.
 type UserState string
 
 const (
@@ -1687,7 +1716,8 @@ type Verbosity string
 const (
 	// VerbosityError - Only traces with 'severity' set to 'error' will be sent to the logger attached to this diagnostic instance.
 	VerbosityError Verbosity = "error"
-	// VerbosityInformation - Traces with 'severity' set to 'information' and 'error' will be sent to the logger attached to this diagnostic instance.
+	// VerbosityInformation - Traces with 'severity' set to 'information' and 'error' will be sent to the logger attached to this
+	// diagnostic instance.
 	VerbosityInformation Verbosity = "information"
 	// VerbosityVerbose - All the traces emitted by trace policies will be sent to the logger attached to this diagnostic instance.
 	VerbosityVerbose Verbosity = "verbose"
@@ -1733,10 +1763,10 @@ func (c VersioningScheme) ToPtr() *VersioningScheme {
 	return &c
 }
 
-// VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service
-// is not part of any Virtual Network, External means the API Management
-// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a
-// Virtual Network having an Intranet Facing Endpoint
+// VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means
+// the API Management service is not part of any Virtual Network, External means the API Management
+// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
+// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
 // only.
 type VirtualNetworkType string
 

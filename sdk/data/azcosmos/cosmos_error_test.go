@@ -6,9 +6,12 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
+	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -25,12 +28,21 @@ func TestCosmosErrorOnEmptyResponse(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 
-	cError := newCosmosError(resp)
-	if cError.Error() != "response contained no body" {
-		t.Errorf("Expected response contained no body, but got %v", cError)
+	var azErr *azcore.ResponseError
+	if err := newCosmosError(resp); !errors.As(err, &azErr) {
+		t.Fatalf("unexpected error type %T", err)
+	}
+	if azErr.StatusCode != http.StatusNotFound {
+		t.Errorf("unexpected status code %d", azErr.StatusCode)
+	}
+	if azErr.ErrorCode != "" {
+		t.Errorf("unexpected error code %s", azErr.ErrorCode)
+	}
+	if azErr.RawResponse == nil {
+		t.Error("unexpected nil RawResponse")
 	}
 }
 
@@ -46,12 +58,24 @@ func TestCosmosErrorOnNonJsonBody(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 
-	cError := newCosmosError(resp)
-	if cError.Error() != "This is not JSON" {
-		t.Errorf("Expected This is not JSON, but got %v", cError)
+	var azErr *azcore.ResponseError
+	if err := newCosmosError(resp); !errors.As(err, &azErr) {
+		t.Fatalf("unexpected error type %T", err)
+	}
+	if azErr.StatusCode != http.StatusNotFound {
+		t.Errorf("unexpected status code %d", azErr.StatusCode)
+	}
+	if azErr.ErrorCode != "" {
+		t.Errorf("unexpected error code %s", azErr.ErrorCode)
+	}
+	if azErr.RawResponse == nil {
+		t.Error("unexpected nil RawResponse")
+	}
+	if !strings.Contains(azErr.Error(), "This is not JSON") {
+		t.Error("missing error message")
 	}
 }
 
@@ -76,20 +100,23 @@ func TestCosmosErrorOnJsonBody(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 
-	cError := newCosmosError(resp)
-	asError := cError.(*cosmosError)
-	if asError.ErrorCode() != someError.Code {
-		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode())
+	var azErr *azcore.ResponseError
+	if err := newCosmosError(resp); !errors.As(err, &azErr) {
+		t.Fatalf("unexpected error type %T", err)
 	}
-
-	if asError.StatusCode() != 404 {
-		t.Errorf("Expected 404 Not Found, but got %v", asError.StatusCode())
+	if azErr.StatusCode != http.StatusNotFound {
+		t.Errorf("unexpected status code %d", azErr.StatusCode)
 	}
-
-	if asError.Error() != string(jsonString) {
-		t.Errorf("Expected %v, but got %v", string(jsonString), asError.Error())
+	if azErr.ErrorCode != someError.Code {
+		t.Errorf("unexpected error code %s", azErr.ErrorCode)
+	}
+	if azErr.RawResponse == nil {
+		t.Error("unexpected nil RawResponse")
+	}
+	if !strings.Contains(azErr.Error(), `"Code": "SomeCode"`) {
+		t.Error("missing error JSON")
 	}
 }

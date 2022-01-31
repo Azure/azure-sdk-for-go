@@ -11,7 +11,7 @@ The `armkeyvault` module provides operations for working with Azure Key Vault.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,12 @@ options = arm.ClientOptions{
 }
 client := armkeyvault.NewKeysClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Key](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/key)
+- [Secret](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/secret)
+- [Vault](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/vault)
 
 ## Provide Feedback
 

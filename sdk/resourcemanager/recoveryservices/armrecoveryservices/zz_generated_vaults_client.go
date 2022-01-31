@@ -11,7 +11,6 @@ package armrecoveryservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // VaultsClient contains the methods for the Vaults group.
 // Don't use this type directly, use NewVaultsClient() instead.
 type VaultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVaultsClient creates a new instance of VaultsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VaultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VaultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VaultsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a Recovery Services vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsBeginCreateOrUpdateOptions) (VaultsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// vaultName - The name of the recovery services vault.
+// vault - Recovery Services Vault to be created.
+// options - VaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the VaultsClient.BeginCreateOrUpdate
+// method.
+func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsClientBeginCreateOrUpdateOptions) (VaultsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, vault, options)
 	if err != nil {
-		return VaultsCreateOrUpdatePollerResponse{}, err
+		return VaultsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := VaultsCreateOrUpdatePollerResponse{
+	result := VaultsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VaultsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("VaultsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return VaultsCreateOrUpdatePollerResponse{}, err
+		return VaultsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &VaultsCreateOrUpdatePoller{
+	result.Poller = &VaultsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a Recovery Services vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, vault, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,49 +106,39 @@ func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, vault)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VaultsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsDeleteOptions) (VaultsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// vaultName - The name of the recovery services vault.
+// options - VaultsClientDeleteOptions contains the optional parameters for the VaultsClient.Delete method.
+func (client *VaultsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsClientDeleteOptions) (VaultsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
-		return VaultsDeleteResponse{}, err
+		return VaultsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VaultsDeleteResponse{}, err
+		return VaultsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VaultsDeleteResponse{}, client.deleteHandleError(resp)
+		return VaultsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VaultsDeleteResponse{RawResponse: resp}, nil
+	return VaultsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VaultsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsDeleteOptions) (*policy.Request, error) {
+func (client *VaultsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,49 +152,39 @@ func (client *VaultsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VaultsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the Vault details.
-// If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsGetOptions) (VaultsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// vaultName - The name of the recovery services vault.
+// options - VaultsClientGetOptions contains the optional parameters for the VaultsClient.Get method.
+func (client *VaultsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsClientGetOptions) (VaultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
-		return VaultsGetResponse{}, err
+		return VaultsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VaultsGetResponse{}, err
+		return VaultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VaultsGetResponse{}, client.getHandleError(resp)
+		return VaultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VaultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsGetOptions) (*policy.Request, error) {
+func (client *VaultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,55 +198,45 @@ func (client *VaultsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VaultsClient) getHandleResponse(resp *http.Response) (VaultsGetResponse, error) {
-	result := VaultsGetResponse{RawResponse: resp}
+func (client *VaultsClient) getHandleResponse(resp *http.Response) (VaultsClientGetResponse, error) {
+	result := VaultsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Vault); err != nil {
-		return VaultsGetResponse{}, runtime.NewResponseError(err, resp)
+		return VaultsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VaultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Retrieve a list of Vaults.
-// If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsListByResourceGroupOptions) *VaultsListByResourceGroupPager {
-	return &VaultsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// options - VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.ListByResourceGroup
+// method.
+func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsClientListByResourceGroupOptions) *VaultsClientListByResourceGroupPager {
+	return &VaultsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp VaultsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VaultsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VaultList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *VaultsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VaultsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *VaultsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VaultsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -264,116 +246,96 @@ func (client *VaultsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Response) (VaultsListByResourceGroupResponse, error) {
-	result := VaultsListByResourceGroupResponse{RawResponse: resp}
+func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Response) (VaultsClientListByResourceGroupResponse, error) {
+	result := VaultsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultList); err != nil {
-		return VaultsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return VaultsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *VaultsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscriptionID - Fetches all the resources of the specified type in the subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) ListBySubscriptionID(options *VaultsListBySubscriptionIDOptions) *VaultsListBySubscriptionIDPager {
-	return &VaultsListBySubscriptionIDPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - VaultsClientListBySubscriptionIDOptions contains the optional parameters for the VaultsClient.ListBySubscriptionID
+// method.
+func (client *VaultsClient) ListBySubscriptionID(options *VaultsClientListBySubscriptionIDOptions) *VaultsClientListBySubscriptionIDPager {
+	return &VaultsClientListBySubscriptionIDPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionIDCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp VaultsListBySubscriptionIDResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VaultsClientListBySubscriptionIDResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VaultList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *VaultsClient) listBySubscriptionIDCreateRequest(ctx context.Context, options *VaultsListBySubscriptionIDOptions) (*policy.Request, error) {
+func (client *VaultsClient) listBySubscriptionIDCreateRequest(ctx context.Context, options *VaultsClientListBySubscriptionIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/vaults"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
-func (client *VaultsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (VaultsListBySubscriptionIDResponse, error) {
-	result := VaultsListBySubscriptionIDResponse{RawResponse: resp}
+func (client *VaultsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (VaultsClientListBySubscriptionIDResponse, error) {
+	result := VaultsClientListBySubscriptionIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultList); err != nil {
-		return VaultsListBySubscriptionIDResponse{}, runtime.NewResponseError(err, resp)
+		return VaultsClientListBySubscriptionIDResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionIDHandleError handles the ListBySubscriptionID error response.
-func (client *VaultsClient) listBySubscriptionIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates the vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsBeginUpdateOptions) (VaultsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// vaultName - The name of the recovery services vault.
+// vault - Recovery Services Vault to be created.
+// options - VaultsClientBeginUpdateOptions contains the optional parameters for the VaultsClient.BeginUpdate method.
+func (client *VaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsClientBeginUpdateOptions) (VaultsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vaultName, vault, options)
 	if err != nil {
-		return VaultsUpdatePollerResponse{}, err
+		return VaultsClientUpdatePollerResponse{}, err
 	}
-	result := VaultsUpdatePollerResponse{
+	result := VaultsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VaultsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("VaultsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return VaultsUpdatePollerResponse{}, err
+		return VaultsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &VaultsUpdatePoller{
+	result.Poller = &VaultsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates the vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) update(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VaultsClient) update(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vaultName, vault, options)
 	if err != nil {
 		return nil, err
@@ -383,13 +345,13 @@ func (client *VaultsClient) update(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsBeginUpdateOptions) (*policy.Request, error) {
+func (client *VaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -403,26 +365,13 @@ func (client *VaultsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, vault)
-}
-
-// updateHandleError handles the Update error response.
-func (client *VaultsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

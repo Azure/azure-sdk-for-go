@@ -24,43 +24,58 @@ import (
 // VirtualNetworkRulesClient contains the methods for the VirtualNetworkRules group.
 // Don't use this type directly, use NewVirtualNetworkRulesClient() instead.
 type VirtualNetworkRulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualNetworkRulesClient creates a new instance of VirtualNetworkRulesClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualNetworkRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualNetworkRulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VirtualNetworkRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualNetworkRulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified name will be replaced
-// with this new virtual network rule.
-// If the operation fails it returns a generic error.
-func (client *VirtualNetworkRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, parameters CreateOrUpdateVirtualNetworkRuleParameters, options *VirtualNetworkRulesCreateOrUpdateOptions) (VirtualNetworkRulesCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Creates or updates the specified virtual network rule. During update, the virtual network rule with the
+// specified name will be replaced with this new virtual network rule.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// virtualNetworkRuleName - The name of the virtual network rule to create or update.
+// parameters - Parameters supplied to create or update the virtual network rule.
+// options - VirtualNetworkRulesClientCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkRulesClient.CreateOrUpdate
+// method.
+func (client *VirtualNetworkRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, parameters CreateOrUpdateVirtualNetworkRuleParameters, options *VirtualNetworkRulesClientCreateOrUpdateOptions) (VirtualNetworkRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, virtualNetworkRuleName, parameters, options)
 	if err != nil {
-		return VirtualNetworkRulesCreateOrUpdateResponse{}, err
+		return VirtualNetworkRulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkRulesCreateOrUpdateResponse{}, err
+		return VirtualNetworkRulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualNetworkRulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return VirtualNetworkRulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualNetworkRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, parameters CreateOrUpdateVirtualNetworkRuleParameters, options *VirtualNetworkRulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VirtualNetworkRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, parameters CreateOrUpdateVirtualNetworkRuleParameters, options *VirtualNetworkRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +93,7 @@ func (client *VirtualNetworkRulesClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter virtualNetworkRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkRuleName}", url.PathEscape(virtualNetworkRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,45 +105,38 @@ func (client *VirtualNetworkRulesClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VirtualNetworkRulesClient) createOrUpdateHandleResponse(resp *http.Response) (VirtualNetworkRulesCreateOrUpdateResponse, error) {
-	result := VirtualNetworkRulesCreateOrUpdateResponse{RawResponse: resp}
+func (client *VirtualNetworkRulesClient) createOrUpdateHandleResponse(resp *http.Response) (VirtualNetworkRulesClientCreateOrUpdateResponse, error) {
+	result := VirtualNetworkRulesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkRule); err != nil {
-		return VirtualNetworkRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkRulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualNetworkRulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes the specified virtual network rule from the specified Data Lake Store account.
-// If the operation fails it returns a generic error.
-func (client *VirtualNetworkRulesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesDeleteOptions) (VirtualNetworkRulesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// virtualNetworkRuleName - The name of the virtual network rule to delete.
+// options - VirtualNetworkRulesClientDeleteOptions contains the optional parameters for the VirtualNetworkRulesClient.Delete
+// method.
+func (client *VirtualNetworkRulesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesClientDeleteOptions) (VirtualNetworkRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, virtualNetworkRuleName, options)
 	if err != nil {
-		return VirtualNetworkRulesDeleteResponse{}, err
+		return VirtualNetworkRulesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkRulesDeleteResponse{}, err
+		return VirtualNetworkRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return VirtualNetworkRulesDeleteResponse{}, client.deleteHandleError(resp)
+		return VirtualNetworkRulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VirtualNetworkRulesDeleteResponse{RawResponse: resp}, nil
+	return VirtualNetworkRulesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualNetworkRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesDeleteOptions) (*policy.Request, error) {
+func (client *VirtualNetworkRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -146,7 +154,7 @@ func (client *VirtualNetworkRulesClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter virtualNetworkRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkRuleName}", url.PathEscape(virtualNetworkRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,37 +164,29 @@ func (client *VirtualNetworkRulesClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VirtualNetworkRulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the specified Data Lake Store virtual network rule.
-// If the operation fails it returns a generic error.
-func (client *VirtualNetworkRulesClient) Get(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesGetOptions) (VirtualNetworkRulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// virtualNetworkRuleName - The name of the virtual network rule to retrieve.
+// options - VirtualNetworkRulesClientGetOptions contains the optional parameters for the VirtualNetworkRulesClient.Get method.
+func (client *VirtualNetworkRulesClient) Get(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesClientGetOptions) (VirtualNetworkRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, virtualNetworkRuleName, options)
 	if err != nil {
-		return VirtualNetworkRulesGetResponse{}, err
+		return VirtualNetworkRulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkRulesGetResponse{}, err
+		return VirtualNetworkRulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualNetworkRulesGetResponse{}, client.getHandleError(resp)
+		return VirtualNetworkRulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualNetworkRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesGetOptions) (*policy.Request, error) {
+func (client *VirtualNetworkRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -204,7 +204,7 @@ func (client *VirtualNetworkRulesClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter virtualNetworkRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkRuleName}", url.PathEscape(virtualNetworkRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,42 +216,34 @@ func (client *VirtualNetworkRulesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualNetworkRulesClient) getHandleResponse(resp *http.Response) (VirtualNetworkRulesGetResponse, error) {
-	result := VirtualNetworkRulesGetResponse{RawResponse: resp}
+func (client *VirtualNetworkRulesClient) getHandleResponse(resp *http.Response) (VirtualNetworkRulesClientGetResponse, error) {
+	result := VirtualNetworkRulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkRule); err != nil {
-		return VirtualNetworkRulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkRulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VirtualNetworkRulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByAccount - Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-// If the operation fails it returns a generic error.
-func (client *VirtualNetworkRulesClient) ListByAccount(resourceGroupName string, accountName string, options *VirtualNetworkRulesListByAccountOptions) *VirtualNetworkRulesListByAccountPager {
-	return &VirtualNetworkRulesListByAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// options - VirtualNetworkRulesClientListByAccountOptions contains the optional parameters for the VirtualNetworkRulesClient.ListByAccount
+// method.
+func (client *VirtualNetworkRulesClient) ListByAccount(resourceGroupName string, accountName string, options *VirtualNetworkRulesClientListByAccountOptions) *VirtualNetworkRulesClientListByAccountPager {
+	return &VirtualNetworkRulesClientListByAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualNetworkRulesListByAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualNetworkRulesClientListByAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualNetworkRuleListResult.NextLink)
 		},
 	}
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *VirtualNetworkRulesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *VirtualNetworkRulesListByAccountOptions) (*policy.Request, error) {
+func (client *VirtualNetworkRulesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *VirtualNetworkRulesClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -265,7 +257,7 @@ func (client *VirtualNetworkRulesClient) listByAccountCreateRequest(ctx context.
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -277,45 +269,38 @@ func (client *VirtualNetworkRulesClient) listByAccountCreateRequest(ctx context.
 }
 
 // listByAccountHandleResponse handles the ListByAccount response.
-func (client *VirtualNetworkRulesClient) listByAccountHandleResponse(resp *http.Response) (VirtualNetworkRulesListByAccountResponse, error) {
-	result := VirtualNetworkRulesListByAccountResponse{RawResponse: resp}
+func (client *VirtualNetworkRulesClient) listByAccountHandleResponse(resp *http.Response) (VirtualNetworkRulesClientListByAccountResponse, error) {
+	result := VirtualNetworkRulesClientListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkRuleListResult); err != nil {
-		return VirtualNetworkRulesListByAccountResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkRulesClientListByAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAccountHandleError handles the ListByAccount error response.
-func (client *VirtualNetworkRulesClient) listByAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates the specified virtual network rule.
-// If the operation fails it returns a generic error.
-func (client *VirtualNetworkRulesClient) Update(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesUpdateOptions) (VirtualNetworkRulesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// virtualNetworkRuleName - The name of the virtual network rule to update.
+// options - VirtualNetworkRulesClientUpdateOptions contains the optional parameters for the VirtualNetworkRulesClient.Update
+// method.
+func (client *VirtualNetworkRulesClient) Update(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesClientUpdateOptions) (VirtualNetworkRulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, virtualNetworkRuleName, options)
 	if err != nil {
-		return VirtualNetworkRulesUpdateResponse{}, err
+		return VirtualNetworkRulesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkRulesUpdateResponse{}, err
+		return VirtualNetworkRulesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualNetworkRulesUpdateResponse{}, client.updateHandleError(resp)
+		return VirtualNetworkRulesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VirtualNetworkRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesUpdateOptions) (*policy.Request, error) {
+func (client *VirtualNetworkRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, virtualNetworkRuleName string, options *VirtualNetworkRulesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -333,7 +318,7 @@ func (client *VirtualNetworkRulesClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter virtualNetworkRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkRuleName}", url.PathEscape(virtualNetworkRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -348,22 +333,10 @@ func (client *VirtualNetworkRulesClient) updateCreateRequest(ctx context.Context
 }
 
 // updateHandleResponse handles the Update response.
-func (client *VirtualNetworkRulesClient) updateHandleResponse(resp *http.Response) (VirtualNetworkRulesUpdateResponse, error) {
-	result := VirtualNetworkRulesUpdateResponse{RawResponse: resp}
+func (client *VirtualNetworkRulesClient) updateHandleResponse(resp *http.Response) (VirtualNetworkRulesClientUpdateResponse, error) {
+	result := VirtualNetworkRulesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkRule); err != nil {
-		return VirtualNetworkRulesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkRulesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *VirtualNetworkRulesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

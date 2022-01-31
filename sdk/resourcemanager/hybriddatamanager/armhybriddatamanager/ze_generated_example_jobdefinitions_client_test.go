@@ -30,13 +30,17 @@ func ExampleJobDefinitionsClient_ListByDataService() {
 	pager := client.ListByDataService("<data-service-name>",
 		"<resource-group-name>",
 		"<data-manager-name>",
-		&armhybriddatamanager.JobDefinitionsListByDataServiceOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armhybriddatamanager.JobDefinitionsClientListByDataServiceOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("JobDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -58,7 +62,7 @@ func ExampleJobDefinitionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JobDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobDefinitionsClientGetResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/JobDefinitions_CreateOrUpdate-PUT-example-83.json
@@ -105,7 +109,7 @@ func ExampleJobDefinitionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JobDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobDefinitionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/JobDefinitions_Delete-DELETE-example-81.json
@@ -182,13 +186,17 @@ func ExampleJobDefinitionsClient_ListByDataManager() {
 	client := armhybriddatamanager.NewJobDefinitionsClient("<subscription-id>", cred, nil)
 	pager := client.ListByDataManager("<resource-group-name>",
 		"<data-manager-name>",
-		&armhybriddatamanager.JobDefinitionsListByDataManagerOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armhybriddatamanager.JobDefinitionsClientListByDataManagerOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("JobDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

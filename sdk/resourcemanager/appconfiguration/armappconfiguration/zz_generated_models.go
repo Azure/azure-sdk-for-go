@@ -109,10 +109,12 @@ type CheckNameAvailabilityParameters struct {
 	Type *ConfigurationResourceType `json:"type,omitempty"`
 }
 
-// ConfigurationStore - The configuration store along with all resource properties. The Configuration Store will have all information to begin utilizing
-// it.
+// ConfigurationStore - The configuration store along with all resource properties. The Configuration Store will have all
+// information to begin utilizing it.
 type ConfigurationStore struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; The sku of the configuration store.
 	SKU *SKU `json:"sku,omitempty"`
 
@@ -122,18 +124,34 @@ type ConfigurationStore struct {
 	// The properties of a configuration store.
 	Properties *ConfigurationStoreProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Resource system metadata.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ConfigurationStore.
 func (c ConfigurationStore) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "sku", c.SKU)
 	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -266,49 +284,57 @@ func (c ConfigurationStoreUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConfigurationStoresBeginCreateOptions contains the optional parameters for the ConfigurationStores.BeginCreate method.
-type ConfigurationStoresBeginCreateOptions struct {
+// ConfigurationStoresClientBeginCreateOptions contains the optional parameters for the ConfigurationStoresClient.BeginCreate
+// method.
+type ConfigurationStoresClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationStoresBeginDeleteOptions contains the optional parameters for the ConfigurationStores.BeginDelete method.
-type ConfigurationStoresBeginDeleteOptions struct {
+// ConfigurationStoresClientBeginDeleteOptions contains the optional parameters for the ConfigurationStoresClient.BeginDelete
+// method.
+type ConfigurationStoresClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationStoresBeginUpdateOptions contains the optional parameters for the ConfigurationStores.BeginUpdate method.
-type ConfigurationStoresBeginUpdateOptions struct {
+// ConfigurationStoresClientBeginUpdateOptions contains the optional parameters for the ConfigurationStoresClient.BeginUpdate
+// method.
+type ConfigurationStoresClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationStoresGetOptions contains the optional parameters for the ConfigurationStores.Get method.
-type ConfigurationStoresGetOptions struct {
+// ConfigurationStoresClientGetOptions contains the optional parameters for the ConfigurationStoresClient.Get method.
+type ConfigurationStoresClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationStoresListByResourceGroupOptions contains the optional parameters for the ConfigurationStores.ListByResourceGroup method.
-type ConfigurationStoresListByResourceGroupOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// ConfigurationStoresClientListByResourceGroupOptions contains the optional parameters for the ConfigurationStoresClient.ListByResourceGroup
+// method.
+type ConfigurationStoresClientListByResourceGroupOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
-// ConfigurationStoresListKeysOptions contains the optional parameters for the ConfigurationStores.ListKeys method.
-type ConfigurationStoresListKeysOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// ConfigurationStoresClientListKeysOptions contains the optional parameters for the ConfigurationStoresClient.ListKeys method.
+type ConfigurationStoresClientListKeysOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
-// ConfigurationStoresListOptions contains the optional parameters for the ConfigurationStores.List method.
-type ConfigurationStoresListOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// ConfigurationStoresClientListOptions contains the optional parameters for the ConfigurationStoresClient.List method.
+type ConfigurationStoresClientListOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
-// ConfigurationStoresRegenerateKeyOptions contains the optional parameters for the ConfigurationStores.RegenerateKey method.
-type ConfigurationStoresRegenerateKeyOptions struct {
+// ConfigurationStoresClientRegenerateKeyOptions contains the optional parameters for the ConfigurationStoresClient.RegenerateKey
+// method.
+type ConfigurationStoresClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -348,18 +374,11 @@ func (e ErrorDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided in the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
+// in the error message.
 type ErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 // KeyValue - The key-value resource along with all resource properties.
@@ -396,7 +415,8 @@ func (k KeyValueListResult) MarshalJSON() ([]byte, error) {
 
 // KeyValueProperties - All key-value properties.
 type KeyValueProperties struct {
-	// The content type of the key-value's value. Providing a proper content-type can enable transformations of values when they are retrieved by applications.
+	// The content type of the key-value's value. Providing a proper content-type can enable transformations of values when they
+	// are retrieved by applications.
 	ContentType *string `json:"contentType,omitempty"`
 
 	// A dictionary of tags that can help identify what a key-value may be applicable for.
@@ -476,26 +496,28 @@ func (k *KeyValueProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// KeyValuesBeginDeleteOptions contains the optional parameters for the KeyValues.BeginDelete method.
-type KeyValuesBeginDeleteOptions struct {
+// KeyValuesClientBeginDeleteOptions contains the optional parameters for the KeyValuesClient.BeginDelete method.
+type KeyValuesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyValuesCreateOrUpdateOptions contains the optional parameters for the KeyValues.CreateOrUpdate method.
-type KeyValuesCreateOrUpdateOptions struct {
+// KeyValuesClientCreateOrUpdateOptions contains the optional parameters for the KeyValuesClient.CreateOrUpdate method.
+type KeyValuesClientCreateOrUpdateOptions struct {
 	// The parameters for creating a key-value.
 	KeyValueParameters *KeyValue
 }
 
-// KeyValuesGetOptions contains the optional parameters for the KeyValues.Get method.
-type KeyValuesGetOptions struct {
+// KeyValuesClientGetOptions contains the optional parameters for the KeyValuesClient.Get method.
+type KeyValuesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyValuesListByConfigurationStoreOptions contains the optional parameters for the KeyValues.ListByConfigurationStore method.
-type KeyValuesListByConfigurationStoreOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// KeyValuesClientListByConfigurationStoreOptions contains the optional parameters for the KeyValuesClient.ListByConfigurationStore
+// method.
+type KeyValuesClientListByConfigurationStoreOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
@@ -641,15 +663,17 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsCheckNameAvailabilityOptions contains the optional parameters for the Operations.CheckNameAvailability method.
-type OperationsCheckNameAvailabilityOptions struct {
+// OperationsClientCheckNameAvailabilityOptions contains the optional parameters for the OperationsClient.CheckNameAvailability
+// method.
+type OperationsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
@@ -718,24 +742,27 @@ type PrivateEndpointConnectionReference struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsListByConfigurationStoreOptions contains the optional parameters for the PrivateEndpointConnections.ListByConfigurationStore
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 // method.
-type PrivateEndpointConnectionsListByConfigurationStoreOptions struct {
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByConfigurationStoreOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByConfigurationStore
+// method.
+type PrivateEndpointConnectionsClientListByConfigurationStoreOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -792,13 +819,14 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListByConfigurationStoreOptions contains the optional parameters for the PrivateLinkResources.ListByConfigurationStore method.
-type PrivateLinkResourcesListByConfigurationStoreOptions struct {
+// PrivateLinkResourcesClientListByConfigurationStoreOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByConfigurationStore
+// method.
+type PrivateLinkResourcesClientListByConfigurationStoreOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -832,34 +860,23 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // ResourceIdentity - An identity that can be associated with a resource.
 type ResourceIdentity struct {
-	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities.
-	// The type 'None' will remove any
+	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
+	// and a set of user-assigned identities. The type 'None' will remove any
 	// identities.
 	Type *IdentityType `json:"type,omitempty"`
 
-	// The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys will be ARM resource ids in the form:
+	// The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys will be ARM
+	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentity `json:"userAssignedIdentities,omitempty"`
 
 	// READ-ONLY; The principal id of the identity. This property will only be provided for a system-assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The tenant id associated with the resource's identity. This property will only be provided for a system-assigned identity.
+	// READ-ONLY; The tenant id associated with the resource's identity. This property will only be provided for a system-assigned
+	// identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
@@ -964,27 +981,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UserIdentity - A resource identity that is managed by the user of the service.

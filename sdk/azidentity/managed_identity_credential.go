@@ -72,31 +72,23 @@ type ManagedIdentityCredential struct {
 // NewManagedIdentityCredential creates a ManagedIdentityCredential.
 // options: Optional configuration.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
-	cp := ManagedIdentityCredentialOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &ManagedIdentityCredentialOptions{}
 	}
-	client := newManagedIdentityClient(&cp)
-	msiType, err := client.getMSIType()
+	client, err := newManagedIdentityClient(options)
 	if err != nil {
 		logCredentialError("Managed Identity Credential", err)
 		return nil, err
 	}
-	client.msiType = msiType
-	return &ManagedIdentityCredential{id: cp.ID, client: client}, nil
+	return &ManagedIdentityCredential{id: options.ID, client: client}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 // ctx: Context used to control the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	if opts.Scopes == nil {
-		err := errors.New("must specify a resource in order to authenticate")
-		addGetTokenFailureLogs("Managed Identity Credential", err, true)
-		return nil, err
-	}
 	if len(opts.Scopes) != 1 {
-		err := errors.New("can only specify one resource to authenticate with ManagedIdentityCredential")
+		err := errors.New("ManagedIdentityCredential.GetToken() requires exactly one scope")
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
@@ -108,7 +100,6 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.To
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)
-	logMSIEnv(c.client.msiType)
 	return tk, err
 }
 

@@ -1,5 +1,796 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.DeleteByHostPool` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsDeleteByHostPoolOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteByHostPoolOptions)`
+- Function `*PrivateEndpointConnectionsClient.DeleteByHostPool` return value(s) have been changed from `(PrivateEndpointConnectionsDeleteByHostPoolResponse, error)` to `(PrivateEndpointConnectionsClientDeleteByHostPoolResponse, error)`
+- Function `*ScalingPlansClient.Update` parameter(s) have been changed from `(context.Context, string, string, *ScalingPlansUpdateOptions)` to `(context.Context, string, string, *ScalingPlansClientUpdateOptions)`
+- Function `*ScalingPlansClient.Update` return value(s) have been changed from `(ScalingPlansUpdateResponse, error)` to `(ScalingPlansClientUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.UpdateByHostPool` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsUpdateByHostPoolOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientUpdateByHostPoolOptions)`
+- Function `*PrivateEndpointConnectionsClient.UpdateByHostPool` return value(s) have been changed from `(PrivateEndpointConnectionsUpdateByHostPoolResponse, error)` to `(PrivateEndpointConnectionsClientUpdateByHostPoolResponse, error)`
+- Function `*WorkspacesClient.ListBySubscription` parameter(s) have been changed from `(*WorkspacesListBySubscriptionOptions)` to `(*WorkspacesClientListBySubscriptionOptions)`
+- Function `*WorkspacesClient.ListBySubscription` return value(s) have been changed from `(*WorkspacesListBySubscriptionPager)` to `(*WorkspacesClientListBySubscriptionPager)`
+- Function `*PrivateLinkResourcesClient.ListByHostPool` parameter(s) have been changed from `(string, string, *PrivateLinkResourcesListByHostPoolOptions)` to `(string, string, *PrivateLinkResourcesClientListByHostPoolOptions)`
+- Function `*PrivateLinkResourcesClient.ListByHostPool` return value(s) have been changed from `(*PrivateLinkResourcesListByHostPoolPager)` to `(*PrivateLinkResourcesClientListByHostPoolPager)`
+- Function `*UserSessionsClient.Disconnect` parameter(s) have been changed from `(context.Context, string, string, string, string, *UserSessionsDisconnectOptions)` to `(context.Context, string, string, string, string, *UserSessionsClientDisconnectOptions)`
+- Function `*UserSessionsClient.Disconnect` return value(s) have been changed from `(UserSessionsDisconnectResponse, error)` to `(UserSessionsClientDisconnectResponse, error)`
+- Function `*MSIXPackagesClient.List` parameter(s) have been changed from `(string, string, *MSIXPackagesListOptions)` to `(string, string, *MSIXPackagesClientListOptions)`
+- Function `*MSIXPackagesClient.List` return value(s) have been changed from `(*MSIXPackagesListPager)` to `(*MSIXPackagesClientListPager)`
+- Function `*SessionHostsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *SessionHostsDeleteOptions)` to `(context.Context, string, string, string, *SessionHostsClientDeleteOptions)`
+- Function `*SessionHostsClient.Delete` return value(s) have been changed from `(SessionHostsDeleteResponse, error)` to `(SessionHostsClientDeleteResponse, error)`
+- Function `*UserSessionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *UserSessionsGetOptions)` to `(context.Context, string, string, string, string, *UserSessionsClientGetOptions)`
+- Function `*UserSessionsClient.Get` return value(s) have been changed from `(UserSessionsGetResponse, error)` to `(UserSessionsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByHostPool` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionsListByHostPoolOptions)` to `(string, string, *PrivateEndpointConnectionsClientListByHostPoolOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByHostPool` return value(s) have been changed from `(*PrivateEndpointConnectionsListByHostPoolPager)` to `(*PrivateEndpointConnectionsClientListByHostPoolPager)`
+- Function `*ApplicationGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ApplicationGroupsGetOptions)` to `(context.Context, string, string, *ApplicationGroupsClientGetOptions)`
+- Function `*ApplicationGroupsClient.Get` return value(s) have been changed from `(ApplicationGroupsGetResponse, error)` to `(ApplicationGroupsClientGetResponse, error)`
+- Function `*MSIXPackagesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, MSIXPackage, *MSIXPackagesCreateOrUpdateOptions)` to `(context.Context, string, string, string, MSIXPackage, *MSIXPackagesClientCreateOrUpdateOptions)`
+- Function `*MSIXPackagesClient.CreateOrUpdate` return value(s) have been changed from `(MSIXPackagesCreateOrUpdateResponse, error)` to `(MSIXPackagesClientCreateOrUpdateResponse, error)`
+- Function `*HostPoolsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *HostPoolsDeleteOptions)` to `(context.Context, string, string, *HostPoolsClientDeleteOptions)`
+- Function `*HostPoolsClient.Delete` return value(s) have been changed from `(HostPoolsDeleteResponse, error)` to `(HostPoolsClientDeleteResponse, error)`
+- Function `*ScalingPlansClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ScalingPlansGetOptions)` to `(context.Context, string, string, *ScalingPlansClientGetOptions)`
+- Function `*ScalingPlansClient.Get` return value(s) have been changed from `(ScalingPlansGetResponse, error)` to `(ScalingPlansClientGetResponse, error)`
+- Function `*ApplicationGroupsClient.Update` parameter(s) have been changed from `(context.Context, string, string, *ApplicationGroupsUpdateOptions)` to `(context.Context, string, string, *ApplicationGroupsClientUpdateOptions)`
+- Function `*ApplicationGroupsClient.Update` return value(s) have been changed from `(ApplicationGroupsUpdateResponse, error)` to `(ApplicationGroupsClientUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionsListByWorkspaceOptions)` to `(string, string, *PrivateEndpointConnectionsClientListByWorkspaceOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByWorkspace` return value(s) have been changed from `(*PrivateEndpointConnectionsListByWorkspacePager)` to `(*PrivateEndpointConnectionsClientListByWorkspacePager)`
+- Function `*ApplicationGroupsClient.ListBySubscription` parameter(s) have been changed from `(*ApplicationGroupsListBySubscriptionOptions)` to `(*ApplicationGroupsClientListBySubscriptionOptions)`
+- Function `*ApplicationGroupsClient.ListBySubscription` return value(s) have been changed from `(*ApplicationGroupsListBySubscriptionPager)` to `(*ApplicationGroupsClientListBySubscriptionPager)`
+- Function `*WorkspacesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesDeleteOptions)` to `(context.Context, string, string, *WorkspacesClientDeleteOptions)`
+- Function `*WorkspacesClient.Delete` return value(s) have been changed from `(WorkspacesDeleteResponse, error)` to `(WorkspacesClientDeleteResponse, error)`
+- Function `*SessionHostsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *SessionHostsUpdateOptions)` to `(context.Context, string, string, string, *SessionHostsClientUpdateOptions)`
+- Function `*SessionHostsClient.Update` return value(s) have been changed from `(SessionHostsUpdateResponse, error)` to `(SessionHostsClientUpdateResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *PrivateLinkResourcesListByWorkspaceOptions)` to `(string, string, *PrivateLinkResourcesClientListByWorkspaceOptions)`
+- Function `*PrivateLinkResourcesClient.ListByWorkspace` return value(s) have been changed from `(*PrivateLinkResourcesListByWorkspacePager)` to `(*PrivateLinkResourcesClientListByWorkspacePager)`
+- Function `*WorkspacesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesGetOptions)` to `(context.Context, string, string, *WorkspacesClientGetOptions)`
+- Function `*WorkspacesClient.Get` return value(s) have been changed from `(WorkspacesGetResponse, error)` to `(WorkspacesClientGetResponse, error)`
+- Function `*UserSessionsClient.ListByHostPool` parameter(s) have been changed from `(string, string, *UserSessionsListByHostPoolOptions)` to `(string, string, *UserSessionsClientListByHostPoolOptions)`
+- Function `*UserSessionsClient.ListByHostPool` return value(s) have been changed from `(*UserSessionsListByHostPoolPager)` to `(*UserSessionsClientListByHostPoolPager)`
+- Function `*PrivateEndpointConnectionsClient.GetByHostPool` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetByHostPoolOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetByHostPoolOptions)`
+- Function `*PrivateEndpointConnectionsClient.GetByHostPool` return value(s) have been changed from `(PrivateEndpointConnectionsGetByHostPoolResponse, error)` to `(PrivateEndpointConnectionsClientGetByHostPoolResponse, error)`
+- Function `*UserSessionsClient.List` parameter(s) have been changed from `(string, string, string, *UserSessionsListOptions)` to `(string, string, string, *UserSessionsClientListOptions)`
+- Function `*UserSessionsClient.List` return value(s) have been changed from `(*UserSessionsListPager)` to `(*UserSessionsClientListPager)`
+- Function `*HostPoolsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *HostPoolsGetOptions)` to `(context.Context, string, string, *HostPoolsClientGetOptions)`
+- Function `*HostPoolsClient.Get` return value(s) have been changed from `(HostPoolsGetResponse, error)` to `(HostPoolsClientGetResponse, error)`
+- Function `*HostPoolsClient.Update` parameter(s) have been changed from `(context.Context, string, string, *HostPoolsUpdateOptions)` to `(context.Context, string, string, *HostPoolsClientUpdateOptions)`
+- Function `*HostPoolsClient.Update` return value(s) have been changed from `(HostPoolsUpdateResponse, error)` to `(HostPoolsClientUpdateResponse, error)`
+- Function `*ApplicationsClient.List` parameter(s) have been changed from `(string, string, *ApplicationsListOptions)` to `(string, string, *ApplicationsClientListOptions)`
+- Function `*ApplicationsClient.List` return value(s) have been changed from `(*ApplicationsListPager)` to `(*ApplicationsClientListPager)`
+- Function `*HostPoolsClient.List` parameter(s) have been changed from `(*HostPoolsListOptions)` to `(*HostPoolsClientListOptions)`
+- Function `*HostPoolsClient.List` return value(s) have been changed from `(*HostPoolsListPager)` to `(*HostPoolsClientListPager)`
+- Function `*WorkspacesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Workspace, *WorkspacesCreateOrUpdateOptions)` to `(context.Context, string, string, Workspace, *WorkspacesClientCreateOrUpdateOptions)`
+- Function `*WorkspacesClient.CreateOrUpdate` return value(s) have been changed from `(WorkspacesCreateOrUpdateResponse, error)` to `(WorkspacesClientCreateOrUpdateResponse, error)`
+- Function `*ApplicationGroupsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ApplicationGroupsDeleteOptions)` to `(context.Context, string, string, *ApplicationGroupsClientDeleteOptions)`
+- Function `*ApplicationGroupsClient.Delete` return value(s) have been changed from `(ApplicationGroupsDeleteResponse, error)` to `(ApplicationGroupsClientDeleteResponse, error)`
+- Function `*ApplicationGroupsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ApplicationGroupsListByResourceGroupOptions)` to `(string, *ApplicationGroupsClientListByResourceGroupOptions)`
+- Function `*ApplicationGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*ApplicationGroupsListByResourceGroupPager)` to `(*ApplicationGroupsClientListByResourceGroupPager)`
+- Function `*WorkspacesClient.Update` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesUpdateOptions)` to `(context.Context, string, string, *WorkspacesClientUpdateOptions)`
+- Function `*WorkspacesClient.Update` return value(s) have been changed from `(WorkspacesUpdateResponse, error)` to `(WorkspacesClientUpdateResponse, error)`
+- Function `*MSIXPackagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *MSIXPackagesGetOptions)` to `(context.Context, string, string, string, *MSIXPackagesClientGetOptions)`
+- Function `*MSIXPackagesClient.Get` return value(s) have been changed from `(MSIXPackagesGetResponse, error)` to `(MSIXPackagesClientGetResponse, error)`
+- Function `*DesktopsClient.List` parameter(s) have been changed from `(string, string, *DesktopsListOptions)` to `(string, string, *DesktopsClientListOptions)`
+- Function `*DesktopsClient.List` return value(s) have been changed from `(*DesktopsListPager)` to `(*DesktopsClientListPager)`
+- Function `*ApplicationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationsGetOptions)` to `(context.Context, string, string, string, *ApplicationsClientGetOptions)`
+- Function `*ApplicationsClient.Get` return value(s) have been changed from `(ApplicationsGetResponse, error)` to `(ApplicationsClientGetResponse, error)`
+- Function `*HostPoolsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *HostPoolsListByResourceGroupOptions)` to `(string, *HostPoolsClientListByResourceGroupOptions)`
+- Function `*HostPoolsClient.ListByResourceGroup` return value(s) have been changed from `(*HostPoolsListByResourceGroupPager)` to `(*HostPoolsClientListByResourceGroupPager)`
+- Function `*UserSessionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *UserSessionsDeleteOptions)` to `(context.Context, string, string, string, string, *UserSessionsClientDeleteOptions)`
+- Function `*UserSessionsClient.Delete` return value(s) have been changed from `(UserSessionsDeleteResponse, error)` to `(UserSessionsClientDeleteResponse, error)`
+- Function `*MSIXPackagesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *MSIXPackagesDeleteOptions)` to `(context.Context, string, string, string, *MSIXPackagesClientDeleteOptions)`
+- Function `*MSIXPackagesClient.Delete` return value(s) have been changed from `(MSIXPackagesDeleteResponse, error)` to `(MSIXPackagesClientDeleteResponse, error)`
+- Function `*ScalingPlansClient.Create` parameter(s) have been changed from `(context.Context, string, string, ScalingPlan, *ScalingPlansCreateOptions)` to `(context.Context, string, string, ScalingPlan, *ScalingPlansClientCreateOptions)`
+- Function `*ScalingPlansClient.Create` return value(s) have been changed from `(ScalingPlansCreateResponse, error)` to `(ScalingPlansClientCreateResponse, error)`
+- Function `*SessionHostsClient.List` parameter(s) have been changed from `(string, string, *SessionHostsListOptions)` to `(string, string, *SessionHostsClientListOptions)`
+- Function `*SessionHostsClient.List` return value(s) have been changed from `(*SessionHostsListPager)` to `(*SessionHostsClientListPager)`
+- Function `*WorkspacesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *WorkspacesListByResourceGroupOptions)` to `(string, *WorkspacesClientListByResourceGroupOptions)`
+- Function `*WorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(*WorkspacesListByResourceGroupPager)` to `(*WorkspacesClientListByResourceGroupPager)`
+- Function `*ScalingPlansClient.ListBySubscription` parameter(s) have been changed from `(*ScalingPlansListBySubscriptionOptions)` to `(*ScalingPlansClientListBySubscriptionOptions)`
+- Function `*ScalingPlansClient.ListBySubscription` return value(s) have been changed from `(*ScalingPlansListBySubscriptionPager)` to `(*ScalingPlansClientListBySubscriptionPager)`
+- Function `*ApplicationsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationsUpdateOptions)` to `(context.Context, string, string, string, *ApplicationsClientUpdateOptions)`
+- Function `*ApplicationsClient.Update` return value(s) have been changed from `(ApplicationsUpdateResponse, error)` to `(ApplicationsClientUpdateResponse, error)`
+- Function `*ScalingPlansClient.ListByHostPool` parameter(s) have been changed from `(string, string, *ScalingPlansListByHostPoolOptions)` to `(string, string, *ScalingPlansClientListByHostPoolOptions)`
+- Function `*ScalingPlansClient.ListByHostPool` return value(s) have been changed from `(*ScalingPlansListByHostPoolPager)` to `(*ScalingPlansClientListByHostPoolPager)`
+- Function `*MsixImagesClient.Expand` parameter(s) have been changed from `(string, string, MSIXImageURI, *MsixImagesExpandOptions)` to `(string, string, MSIXImageURI, *MsixImagesClientExpandOptions)`
+- Function `*MsixImagesClient.Expand` return value(s) have been changed from `(*MsixImagesExpandPager)` to `(*MsixImagesClientExpandPager)`
+- Function `*HostPoolsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, HostPool, *HostPoolsCreateOrUpdateOptions)` to `(context.Context, string, string, HostPool, *HostPoolsClientCreateOrUpdateOptions)`
+- Function `*HostPoolsClient.CreateOrUpdate` return value(s) have been changed from `(HostPoolsCreateOrUpdateResponse, error)` to `(HostPoolsClientCreateOrUpdateResponse, error)`
+- Function `*ApplicationGroupsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ApplicationGroup, *ApplicationGroupsCreateOrUpdateOptions)` to `(context.Context, string, string, ApplicationGroup, *ApplicationGroupsClientCreateOrUpdateOptions)`
+- Function `*ApplicationGroupsClient.CreateOrUpdate` return value(s) have been changed from `(ApplicationGroupsCreateOrUpdateResponse, error)` to `(ApplicationGroupsClientCreateOrUpdateResponse, error)`
+- Function `*ApplicationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Application, *ApplicationsCreateOrUpdateOptions)` to `(context.Context, string, string, string, Application, *ApplicationsClientCreateOrUpdateOptions)`
+- Function `*ApplicationsClient.CreateOrUpdate` return value(s) have been changed from `(ApplicationsCreateOrUpdateResponse, error)` to `(ApplicationsClientCreateOrUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.GetByWorkspace` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetByWorkspaceOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetByWorkspaceOptions)`
+- Function `*PrivateEndpointConnectionsClient.GetByWorkspace` return value(s) have been changed from `(PrivateEndpointConnectionsGetByWorkspaceResponse, error)` to `(PrivateEndpointConnectionsClientGetByWorkspaceResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*HostPoolsClient.RetrieveRegistrationToken` parameter(s) have been changed from `(context.Context, string, string, *HostPoolsRetrieveRegistrationTokenOptions)` to `(context.Context, string, string, *HostPoolsClientRetrieveRegistrationTokenOptions)`
+- Function `*HostPoolsClient.RetrieveRegistrationToken` return value(s) have been changed from `(HostPoolsRetrieveRegistrationTokenResponse, error)` to `(HostPoolsClientRetrieveRegistrationTokenResponse, error)`
+- Function `*StartMenuItemsClient.List` parameter(s) have been changed from `(string, string, *StartMenuItemsListOptions)` to `(string, string, *StartMenuItemsClientListOptions)`
+- Function `*StartMenuItemsClient.List` return value(s) have been changed from `(*StartMenuItemsListPager)` to `(*StartMenuItemsClientListPager)`
+- Function `*ApplicationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationsDeleteOptions)` to `(context.Context, string, string, string, *ApplicationsClientDeleteOptions)`
+- Function `*ApplicationsClient.Delete` return value(s) have been changed from `(ApplicationsDeleteResponse, error)` to `(ApplicationsClientDeleteResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.UpdateByWorkspace` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsUpdateByWorkspaceOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientUpdateByWorkspaceOptions)`
+- Function `*PrivateEndpointConnectionsClient.UpdateByWorkspace` return value(s) have been changed from `(PrivateEndpointConnectionsUpdateByWorkspaceResponse, error)` to `(PrivateEndpointConnectionsClientUpdateByWorkspaceResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.DeleteByWorkspace` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsDeleteByWorkspaceOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteByWorkspaceOptions)`
+- Function `*PrivateEndpointConnectionsClient.DeleteByWorkspace` return value(s) have been changed from `(PrivateEndpointConnectionsDeleteByWorkspaceResponse, error)` to `(PrivateEndpointConnectionsClientDeleteByWorkspaceResponse, error)`
+- Function `*DesktopsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *DesktopsUpdateOptions)` to `(context.Context, string, string, string, *DesktopsClientUpdateOptions)`
+- Function `*DesktopsClient.Update` return value(s) have been changed from `(DesktopsUpdateResponse, error)` to `(DesktopsClientUpdateResponse, error)`
+- Function `*ScalingPlansClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ScalingPlansDeleteOptions)` to `(context.Context, string, string, *ScalingPlansClientDeleteOptions)`
+- Function `*ScalingPlansClient.Delete` return value(s) have been changed from `(ScalingPlansDeleteResponse, error)` to `(ScalingPlansClientDeleteResponse, error)`
+- Function `*UserSessionsClient.SendMessage` parameter(s) have been changed from `(context.Context, string, string, string, string, *UserSessionsSendMessageOptions)` to `(context.Context, string, string, string, string, *UserSessionsClientSendMessageOptions)`
+- Function `*UserSessionsClient.SendMessage` return value(s) have been changed from `(UserSessionsSendMessageResponse, error)` to `(UserSessionsClientSendMessageResponse, error)`
+- Function `*SessionHostsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SessionHostsGetOptions)` to `(context.Context, string, string, string, *SessionHostsClientGetOptions)`
+- Function `*SessionHostsClient.Get` return value(s) have been changed from `(SessionHostsGetResponse, error)` to `(SessionHostsClientGetResponse, error)`
+- Function `*DesktopsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DesktopsGetOptions)` to `(context.Context, string, string, string, *DesktopsClientGetOptions)`
+- Function `*DesktopsClient.Get` return value(s) have been changed from `(DesktopsGetResponse, error)` to `(DesktopsClientGetResponse, error)`
+- Function `*MSIXPackagesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *MSIXPackagesUpdateOptions)` to `(context.Context, string, string, string, *MSIXPackagesClientUpdateOptions)`
+- Function `*MSIXPackagesClient.Update` return value(s) have been changed from `(MSIXPackagesUpdateResponse, error)` to `(MSIXPackagesClientUpdateResponse, error)`
+- Function `*ScalingPlansClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ScalingPlansListByResourceGroupOptions)` to `(string, *ScalingPlansClientListByResourceGroupOptions)`
+- Function `*ScalingPlansClient.ListByResourceGroup` return value(s) have been changed from `(*ScalingPlansListByResourceGroupPager)` to `(*ScalingPlansClientListByResourceGroupPager)`
+- Function `*HostPoolsListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsListByHostPoolPager.NextPage` has been removed
+- Function `*ApplicationsListPager.PageResponse` has been removed
+- Function `*ApplicationGroupsListBySubscriptionPager.PageResponse` has been removed
+- Function `*MSIXPackagesListPager.PageResponse` has been removed
+- Function `*ScalingPlansListByHostPoolPager.PageResponse` has been removed
+- Function `*WorkspacesListByResourceGroupPager.NextPage` has been removed
+- Function `*HostPoolsListByResourceGroupPager.Err` has been removed
+- Function `*ScalingPlansListByResourceGroupPager.PageResponse` has been removed
+- Function `StartMenuItem.MarshalJSON` has been removed
+- Function `*StartMenuItemsListPager.Err` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*WorkspacesListBySubscriptionPager.PageResponse` has been removed
+- Function `ExpandMsixImage.MarshalJSON` has been removed
+- Function `MSIXPackage.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsListByWorkspacePager.Err` has been removed
+- Function `*SessionHostsListPager.Err` has been removed
+- Function `*PrivateLinkResourcesListByWorkspacePager.NextPage` has been removed
+- Function `*SessionHostsListPager.PageResponse` has been removed
+- Function `*DesktopsListPager.PageResponse` has been removed
+- Function `*PrivateLinkResourcesListByWorkspacePager.PageResponse` has been removed
+- Function `*WorkspacesListBySubscriptionPager.NextPage` has been removed
+- Function `*ApplicationGroupsListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsListByWorkspacePager.PageResponse` has been removed
+- Function `*PrivateLinkResourcesListByHostPoolPager.NextPage` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*ScalingPlansListByResourceGroupPager.NextPage` has been removed
+- Function `*ApplicationsListPager.Err` has been removed
+- Function `*UserSessionsListByHostPoolPager.PageResponse` has been removed
+- Function `*UserSessionsListByHostPoolPager.NextPage` has been removed
+- Function `*ScalingPlansListBySubscriptionPager.Err` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*PrivateLinkResourcesListByHostPoolPager.Err` has been removed
+- Function `*WorkspacesListByResourceGroupPager.PageResponse` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*ScalingPlansListByHostPoolPager.Err` has been removed
+- Function `*MsixImagesExpandPager.Err` has been removed
+- Function `Desktop.MarshalJSON` has been removed
+- Function `*ApplicationGroupsListByResourceGroupPager.NextPage` has been removed
+- Function `*MsixImagesExpandPager.NextPage` has been removed
+- Function `*HostPoolsListPager.PageResponse` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `Application.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionWithSystemData.MarshalJSON` has been removed
+- Function `*HostPoolsListPager.Err` has been removed
+- Function `*ScalingPlansListBySubscriptionPager.PageResponse` has been removed
+- Function `UserSession.MarshalJSON` has been removed
+- Function `*ApplicationGroupsListByResourceGroupPager.Err` has been removed
+- Function `*StartMenuItemsListPager.PageResponse` has been removed
+- Function `*DesktopsListPager.Err` has been removed
+- Function `*MSIXPackagesListPager.NextPage` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ApplicationGroupsListBySubscriptionPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsListByHostPoolPager.PageResponse` has been removed
+- Function `*HostPoolsListByResourceGroupPager.PageResponse` has been removed
+- Function `*MSIXPackagesListPager.Err` has been removed
+- Function `*PrivateLinkResourcesListByWorkspacePager.Err` has been removed
+- Function `*SessionHostsListPager.NextPage` has been removed
+- Function `SessionHost.MarshalJSON` has been removed
+- Function `*HostPoolsListPager.NextPage` has been removed
+- Function `*ApplicationGroupsListByResourceGroupPager.PageResponse` has been removed
+- Function `*UserSessionsListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsListByHostPoolPager.Err` has been removed
+- Function `*UserSessionsListByHostPoolPager.Err` has been removed
+- Function `*ApplicationsListPager.NextPage` has been removed
+- Function `*StartMenuItemsListPager.NextPage` has been removed
+- Function `*MsixImagesExpandPager.PageResponse` has been removed
+- Function `*WorkspacesListBySubscriptionPager.Err` has been removed
+- Function `*UserSessionsListPager.PageResponse` has been removed
+- Function `*ScalingPlansListByHostPoolPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsListByWorkspacePager.NextPage` has been removed
+- Function `*PrivateLinkResourcesListByHostPoolPager.PageResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*ScalingPlansListBySubscriptionPager.NextPage` has been removed
+- Function `*DesktopsListPager.NextPage` has been removed
+- Function `*ScalingPlansListByResourceGroupPager.Err` has been removed
+- Function `*WorkspacesListByResourceGroupPager.Err` has been removed
+- Function `*UserSessionsListPager.Err` has been removed
+- Struct `ApplicationGroupsCreateOrUpdateOptions` has been removed
+- Struct `ApplicationGroupsCreateOrUpdateResponse` has been removed
+- Struct `ApplicationGroupsCreateOrUpdateResult` has been removed
+- Struct `ApplicationGroupsDeleteOptions` has been removed
+- Struct `ApplicationGroupsDeleteResponse` has been removed
+- Struct `ApplicationGroupsGetOptions` has been removed
+- Struct `ApplicationGroupsGetResponse` has been removed
+- Struct `ApplicationGroupsGetResult` has been removed
+- Struct `ApplicationGroupsListByResourceGroupOptions` has been removed
+- Struct `ApplicationGroupsListByResourceGroupPager` has been removed
+- Struct `ApplicationGroupsListByResourceGroupResponse` has been removed
+- Struct `ApplicationGroupsListByResourceGroupResult` has been removed
+- Struct `ApplicationGroupsListBySubscriptionOptions` has been removed
+- Struct `ApplicationGroupsListBySubscriptionPager` has been removed
+- Struct `ApplicationGroupsListBySubscriptionResponse` has been removed
+- Struct `ApplicationGroupsListBySubscriptionResult` has been removed
+- Struct `ApplicationGroupsUpdateOptions` has been removed
+- Struct `ApplicationGroupsUpdateResponse` has been removed
+- Struct `ApplicationGroupsUpdateResult` has been removed
+- Struct `ApplicationsCreateOrUpdateOptions` has been removed
+- Struct `ApplicationsCreateOrUpdateResponse` has been removed
+- Struct `ApplicationsCreateOrUpdateResult` has been removed
+- Struct `ApplicationsDeleteOptions` has been removed
+- Struct `ApplicationsDeleteResponse` has been removed
+- Struct `ApplicationsGetOptions` has been removed
+- Struct `ApplicationsGetResponse` has been removed
+- Struct `ApplicationsGetResult` has been removed
+- Struct `ApplicationsListOptions` has been removed
+- Struct `ApplicationsListPager` has been removed
+- Struct `ApplicationsListResponse` has been removed
+- Struct `ApplicationsListResult` has been removed
+- Struct `ApplicationsUpdateOptions` has been removed
+- Struct `ApplicationsUpdateResponse` has been removed
+- Struct `ApplicationsUpdateResult` has been removed
+- Struct `DesktopsGetOptions` has been removed
+- Struct `DesktopsGetResponse` has been removed
+- Struct `DesktopsGetResult` has been removed
+- Struct `DesktopsListOptions` has been removed
+- Struct `DesktopsListPager` has been removed
+- Struct `DesktopsListResponse` has been removed
+- Struct `DesktopsListResult` has been removed
+- Struct `DesktopsUpdateOptions` has been removed
+- Struct `DesktopsUpdateResponse` has been removed
+- Struct `DesktopsUpdateResult` has been removed
+- Struct `HostPoolsCreateOrUpdateOptions` has been removed
+- Struct `HostPoolsCreateOrUpdateResponse` has been removed
+- Struct `HostPoolsCreateOrUpdateResult` has been removed
+- Struct `HostPoolsDeleteOptions` has been removed
+- Struct `HostPoolsDeleteResponse` has been removed
+- Struct `HostPoolsGetOptions` has been removed
+- Struct `HostPoolsGetResponse` has been removed
+- Struct `HostPoolsGetResult` has been removed
+- Struct `HostPoolsListByResourceGroupOptions` has been removed
+- Struct `HostPoolsListByResourceGroupPager` has been removed
+- Struct `HostPoolsListByResourceGroupResponse` has been removed
+- Struct `HostPoolsListByResourceGroupResult` has been removed
+- Struct `HostPoolsListOptions` has been removed
+- Struct `HostPoolsListPager` has been removed
+- Struct `HostPoolsListResponse` has been removed
+- Struct `HostPoolsListResult` has been removed
+- Struct `HostPoolsRetrieveRegistrationTokenOptions` has been removed
+- Struct `HostPoolsRetrieveRegistrationTokenResponse` has been removed
+- Struct `HostPoolsRetrieveRegistrationTokenResult` has been removed
+- Struct `HostPoolsUpdateOptions` has been removed
+- Struct `HostPoolsUpdateResponse` has been removed
+- Struct `HostPoolsUpdateResult` has been removed
+- Struct `MSIXPackagesCreateOrUpdateOptions` has been removed
+- Struct `MSIXPackagesCreateOrUpdateResponse` has been removed
+- Struct `MSIXPackagesCreateOrUpdateResult` has been removed
+- Struct `MSIXPackagesDeleteOptions` has been removed
+- Struct `MSIXPackagesDeleteResponse` has been removed
+- Struct `MSIXPackagesGetOptions` has been removed
+- Struct `MSIXPackagesGetResponse` has been removed
+- Struct `MSIXPackagesGetResult` has been removed
+- Struct `MSIXPackagesListOptions` has been removed
+- Struct `MSIXPackagesListPager` has been removed
+- Struct `MSIXPackagesListResponse` has been removed
+- Struct `MSIXPackagesListResult` has been removed
+- Struct `MSIXPackagesUpdateOptions` has been removed
+- Struct `MSIXPackagesUpdateResponse` has been removed
+- Struct `MSIXPackagesUpdateResult` has been removed
+- Struct `MsixImagesExpandOptions` has been removed
+- Struct `MsixImagesExpandPager` has been removed
+- Struct `MsixImagesExpandResponse` has been removed
+- Struct `MsixImagesExpandResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsDeleteByHostPoolOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteByHostPoolResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteByWorkspaceOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteByWorkspaceResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetByHostPoolOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetByHostPoolResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetByHostPoolResult` has been removed
+- Struct `PrivateEndpointConnectionsGetByWorkspaceOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetByWorkspaceResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetByWorkspaceResult` has been removed
+- Struct `PrivateEndpointConnectionsListByHostPoolOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByHostPoolPager` has been removed
+- Struct `PrivateEndpointConnectionsListByHostPoolResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByHostPoolResult` has been removed
+- Struct `PrivateEndpointConnectionsListByWorkspaceOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByWorkspacePager` has been removed
+- Struct `PrivateEndpointConnectionsListByWorkspaceResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByWorkspaceResult` has been removed
+- Struct `PrivateEndpointConnectionsUpdateByHostPoolOptions` has been removed
+- Struct `PrivateEndpointConnectionsUpdateByHostPoolResponse` has been removed
+- Struct `PrivateEndpointConnectionsUpdateByHostPoolResult` has been removed
+- Struct `PrivateEndpointConnectionsUpdateByWorkspaceOptions` has been removed
+- Struct `PrivateEndpointConnectionsUpdateByWorkspaceResponse` has been removed
+- Struct `PrivateEndpointConnectionsUpdateByWorkspaceResult` has been removed
+- Struct `PrivateLinkResourcesListByHostPoolOptions` has been removed
+- Struct `PrivateLinkResourcesListByHostPoolPager` has been removed
+- Struct `PrivateLinkResourcesListByHostPoolResponse` has been removed
+- Struct `PrivateLinkResourcesListByHostPoolResult` has been removed
+- Struct `PrivateLinkResourcesListByWorkspaceOptions` has been removed
+- Struct `PrivateLinkResourcesListByWorkspacePager` has been removed
+- Struct `PrivateLinkResourcesListByWorkspaceResponse` has been removed
+- Struct `PrivateLinkResourcesListByWorkspaceResult` has been removed
+- Struct `ScalingPlansCreateOptions` has been removed
+- Struct `ScalingPlansCreateResponse` has been removed
+- Struct `ScalingPlansCreateResult` has been removed
+- Struct `ScalingPlansDeleteOptions` has been removed
+- Struct `ScalingPlansDeleteResponse` has been removed
+- Struct `ScalingPlansGetOptions` has been removed
+- Struct `ScalingPlansGetResponse` has been removed
+- Struct `ScalingPlansGetResult` has been removed
+- Struct `ScalingPlansListByHostPoolOptions` has been removed
+- Struct `ScalingPlansListByHostPoolPager` has been removed
+- Struct `ScalingPlansListByHostPoolResponse` has been removed
+- Struct `ScalingPlansListByHostPoolResult` has been removed
+- Struct `ScalingPlansListByResourceGroupOptions` has been removed
+- Struct `ScalingPlansListByResourceGroupPager` has been removed
+- Struct `ScalingPlansListByResourceGroupResponse` has been removed
+- Struct `ScalingPlansListByResourceGroupResult` has been removed
+- Struct `ScalingPlansListBySubscriptionOptions` has been removed
+- Struct `ScalingPlansListBySubscriptionPager` has been removed
+- Struct `ScalingPlansListBySubscriptionResponse` has been removed
+- Struct `ScalingPlansListBySubscriptionResult` has been removed
+- Struct `ScalingPlansUpdateOptions` has been removed
+- Struct `ScalingPlansUpdateResponse` has been removed
+- Struct `ScalingPlansUpdateResult` has been removed
+- Struct `SessionHostsDeleteOptions` has been removed
+- Struct `SessionHostsDeleteResponse` has been removed
+- Struct `SessionHostsGetOptions` has been removed
+- Struct `SessionHostsGetResponse` has been removed
+- Struct `SessionHostsGetResult` has been removed
+- Struct `SessionHostsListOptions` has been removed
+- Struct `SessionHostsListPager` has been removed
+- Struct `SessionHostsListResponse` has been removed
+- Struct `SessionHostsListResult` has been removed
+- Struct `SessionHostsUpdateOptions` has been removed
+- Struct `SessionHostsUpdateResponse` has been removed
+- Struct `SessionHostsUpdateResult` has been removed
+- Struct `StartMenuItemsListOptions` has been removed
+- Struct `StartMenuItemsListPager` has been removed
+- Struct `StartMenuItemsListResponse` has been removed
+- Struct `StartMenuItemsListResult` has been removed
+- Struct `UserSessionsDeleteOptions` has been removed
+- Struct `UserSessionsDeleteResponse` has been removed
+- Struct `UserSessionsDisconnectOptions` has been removed
+- Struct `UserSessionsDisconnectResponse` has been removed
+- Struct `UserSessionsGetOptions` has been removed
+- Struct `UserSessionsGetResponse` has been removed
+- Struct `UserSessionsGetResult` has been removed
+- Struct `UserSessionsListByHostPoolOptions` has been removed
+- Struct `UserSessionsListByHostPoolPager` has been removed
+- Struct `UserSessionsListByHostPoolResponse` has been removed
+- Struct `UserSessionsListByHostPoolResult` has been removed
+- Struct `UserSessionsListOptions` has been removed
+- Struct `UserSessionsListPager` has been removed
+- Struct `UserSessionsListResponse` has been removed
+- Struct `UserSessionsListResult` has been removed
+- Struct `UserSessionsSendMessageOptions` has been removed
+- Struct `UserSessionsSendMessageResponse` has been removed
+- Struct `WorkspacesCreateOrUpdateOptions` has been removed
+- Struct `WorkspacesCreateOrUpdateResponse` has been removed
+- Struct `WorkspacesCreateOrUpdateResult` has been removed
+- Struct `WorkspacesDeleteOptions` has been removed
+- Struct `WorkspacesDeleteResponse` has been removed
+- Struct `WorkspacesGetOptions` has been removed
+- Struct `WorkspacesGetResponse` has been removed
+- Struct `WorkspacesGetResult` has been removed
+- Struct `WorkspacesListByResourceGroupOptions` has been removed
+- Struct `WorkspacesListByResourceGroupPager` has been removed
+- Struct `WorkspacesListByResourceGroupResponse` has been removed
+- Struct `WorkspacesListByResourceGroupResult` has been removed
+- Struct `WorkspacesListBySubscriptionOptions` has been removed
+- Struct `WorkspacesListBySubscriptionPager` has been removed
+- Struct `WorkspacesListBySubscriptionResponse` has been removed
+- Struct `WorkspacesListBySubscriptionResult` has been removed
+- Struct `WorkspacesUpdateOptions` has been removed
+- Struct `WorkspacesUpdateResponse` has been removed
+- Struct `WorkspacesUpdateResult` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `Resource` of struct `ApplicationGroupPatch` has been removed
+- Field `Plan` of struct `ResourceModelWithAllowedPropertySetPlan` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `ResourceModelWithAllowedPropertySet` of struct `Workspace` has been removed
+- Field `Resource` of struct `Desktop` has been removed
+- Field `Resource` of struct `HostPoolPatch` has been removed
+- Field `Resource` of struct `StartMenuItem` has been removed
+- Field `Resource` of struct `MSIXPackagePatch` has been removed
+- Field `SKU` of struct `ResourceModelWithAllowedPropertySetSKU` has been removed
+- Field `ResourceModelWithAllowedPropertySet` of struct `ApplicationGroup` has been removed
+- Field `Resource` of struct `ExpandMsixImage` has been removed
+- Field `Resource` of struct `UserSession` has been removed
+- Field `PrivateEndpointConnection` of struct `PrivateEndpointConnectionWithSystemData` has been removed
+- Field `ResourceModelWithAllowedPropertySet` of struct `ScalingPlan` has been removed
+- Field `ResourceModelWithAllowedPropertySet` of struct `HostPool` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `Resource` of struct `Application` has been removed
+- Field `Identity` of struct `ResourceModelWithAllowedPropertySetIdentity` has been removed
+- Field `Resource` of struct `MSIXPackage` has been removed
+- Field `Resource` of struct `SessionHostPatch` has been removed
+- Field `Resource` of struct `SessionHost` has been removed
+
+### Features Added
+
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ApplicationGroupsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkResourcesClientListByWorkspacePager.Err() error`
+- New function `*ScalingPlansClientListBySubscriptionPager.PageResponse() ScalingPlansClientListBySubscriptionResponse`
+- New function `*ApplicationGroupsClientListBySubscriptionPager.Err() error`
+- New function `*DesktopsClientListPager.PageResponse() DesktopsClientListResponse`
+- New function `*PrivateLinkResourcesClientListByWorkspacePager.PageResponse() PrivateLinkResourcesClientListByWorkspaceResponse`
+- New function `*ApplicationGroupsClientListBySubscriptionPager.PageResponse() ApplicationGroupsClientListBySubscriptionResponse`
+- New function `*WorkspacesClientListBySubscriptionPager.PageResponse() WorkspacesClientListBySubscriptionResponse`
+- New function `*HostPoolsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*WorkspacesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SessionHostsClientListPager.Err() error`
+- New function `*PrivateEndpointConnectionsClientListByWorkspacePager.Err() error`
+- New function `*UserSessionsClientListByHostPoolPager.Err() error`
+- New function `*MsixImagesClientExpandPager.NextPage(context.Context) bool`
+- New function `*UserSessionsClientListByHostPoolPager.PageResponse() UserSessionsClientListByHostPoolResponse`
+- New function `*ScalingPlansClientListBySubscriptionPager.Err() error`
+- New function `*HostPoolsClientListByResourceGroupPager.PageResponse() HostPoolsClientListByResourceGroupResponse`
+- New function `*ApplicationsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*HostPoolsClientListPager.PageResponse() HostPoolsClientListResponse`
+- New function `*ScalingPlansClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*StartMenuItemsClientListPager.NextPage(context.Context) bool`
+- New function `*ApplicationGroupsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*HostPoolsClientListPager.Err() error`
+- New function `*SessionHostsClientListPager.NextPage(context.Context) bool`
+- New function `*WorkspacesClientListByResourceGroupPager.Err() error`
+- New function `*HostPoolsClientListPager.NextPage(context.Context) bool`
+- New function `*MSIXPackagesClientListPager.PageResponse() MSIXPackagesClientListResponse`
+- New function `*ApplicationGroupsClientListByResourceGroupPager.Err() error`
+- New function `*StartMenuItemsClientListPager.PageResponse() StartMenuItemsClientListResponse`
+- New function `*WorkspacesClientListByResourceGroupPager.PageResponse() WorkspacesClientListByResourceGroupResponse`
+- New function `*DesktopsClientListPager.NextPage(context.Context) bool`
+- New function `*ScalingPlansClientListByHostPoolPager.NextPage(context.Context) bool`
+- New function `*ScalingPlansClientListByResourceGroupPager.Err() error`
+- New function `*MsixImagesClientExpandPager.PageResponse() MsixImagesClientExpandResponse`
+- New function `*PrivateLinkResourcesClientListByHostPoolPager.NextPage(context.Context) bool`
+- New function `*MSIXPackagesClientListPager.Err() error`
+- New function `*SessionHostsClientListPager.PageResponse() SessionHostsClientListResponse`
+- New function `*WorkspacesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*MsixImagesClientExpandPager.Err() error`
+- New function `*ApplicationsClientListPager.Err() error`
+- New function `*PrivateEndpointConnectionsClientListByHostPoolPager.NextPage(context.Context) bool`
+- New function `*ScalingPlansClientListByHostPoolPager.Err() error`
+- New function `*UserSessionsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientListByWorkspacePager.PageResponse() PrivateEndpointConnectionsClientListByWorkspaceResponse`
+- New function `*ScalingPlansClientListByHostPoolPager.PageResponse() ScalingPlansClientListByHostPoolResponse`
+- New function `*ApplicationGroupsClientListByResourceGroupPager.PageResponse() ApplicationGroupsClientListByResourceGroupResponse`
+- New function `*PrivateEndpointConnectionsClientListByHostPoolPager.Err() error`
+- New function `*MSIXPackagesClientListPager.NextPage(context.Context) bool`
+- New function `*UserSessionsClientListPager.Err() error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*WorkspacesClientListBySubscriptionPager.Err() error`
+- New function `*ScalingPlansClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkResourcesClientListByHostPoolPager.PageResponse() PrivateLinkResourcesClientListByHostPoolResponse`
+- New function `*PrivateLinkResourcesClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*HostPoolsClientListByResourceGroupPager.Err() error`
+- New function `*UserSessionsClientListPager.PageResponse() UserSessionsClientListResponse`
+- New function `*StartMenuItemsClientListPager.Err() error`
+- New function `*ApplicationsClientListPager.PageResponse() ApplicationsClientListResponse`
+- New function `*DesktopsClientListPager.Err() error`
+- New function `*PrivateLinkResourcesClientListByHostPoolPager.Err() error`
+- New function `*PrivateEndpointConnectionsClientListByHostPoolPager.PageResponse() PrivateEndpointConnectionsClientListByHostPoolResponse`
+- New function `*ScalingPlansClientListByResourceGroupPager.PageResponse() ScalingPlansClientListByResourceGroupResponse`
+- New function `*UserSessionsClientListByHostPoolPager.NextPage(context.Context) bool`
+- New struct `ApplicationGroupsClientCreateOrUpdateOptions`
+- New struct `ApplicationGroupsClientCreateOrUpdateResponse`
+- New struct `ApplicationGroupsClientCreateOrUpdateResult`
+- New struct `ApplicationGroupsClientDeleteOptions`
+- New struct `ApplicationGroupsClientDeleteResponse`
+- New struct `ApplicationGroupsClientGetOptions`
+- New struct `ApplicationGroupsClientGetResponse`
+- New struct `ApplicationGroupsClientGetResult`
+- New struct `ApplicationGroupsClientListByResourceGroupOptions`
+- New struct `ApplicationGroupsClientListByResourceGroupPager`
+- New struct `ApplicationGroupsClientListByResourceGroupResponse`
+- New struct `ApplicationGroupsClientListByResourceGroupResult`
+- New struct `ApplicationGroupsClientListBySubscriptionOptions`
+- New struct `ApplicationGroupsClientListBySubscriptionPager`
+- New struct `ApplicationGroupsClientListBySubscriptionResponse`
+- New struct `ApplicationGroupsClientListBySubscriptionResult`
+- New struct `ApplicationGroupsClientUpdateOptions`
+- New struct `ApplicationGroupsClientUpdateResponse`
+- New struct `ApplicationGroupsClientUpdateResult`
+- New struct `ApplicationsClientCreateOrUpdateOptions`
+- New struct `ApplicationsClientCreateOrUpdateResponse`
+- New struct `ApplicationsClientCreateOrUpdateResult`
+- New struct `ApplicationsClientDeleteOptions`
+- New struct `ApplicationsClientDeleteResponse`
+- New struct `ApplicationsClientGetOptions`
+- New struct `ApplicationsClientGetResponse`
+- New struct `ApplicationsClientGetResult`
+- New struct `ApplicationsClientListOptions`
+- New struct `ApplicationsClientListPager`
+- New struct `ApplicationsClientListResponse`
+- New struct `ApplicationsClientListResult`
+- New struct `ApplicationsClientUpdateOptions`
+- New struct `ApplicationsClientUpdateResponse`
+- New struct `ApplicationsClientUpdateResult`
+- New struct `DesktopsClientGetOptions`
+- New struct `DesktopsClientGetResponse`
+- New struct `DesktopsClientGetResult`
+- New struct `DesktopsClientListOptions`
+- New struct `DesktopsClientListPager`
+- New struct `DesktopsClientListResponse`
+- New struct `DesktopsClientListResult`
+- New struct `DesktopsClientUpdateOptions`
+- New struct `DesktopsClientUpdateResponse`
+- New struct `DesktopsClientUpdateResult`
+- New struct `HostPoolsClientCreateOrUpdateOptions`
+- New struct `HostPoolsClientCreateOrUpdateResponse`
+- New struct `HostPoolsClientCreateOrUpdateResult`
+- New struct `HostPoolsClientDeleteOptions`
+- New struct `HostPoolsClientDeleteResponse`
+- New struct `HostPoolsClientGetOptions`
+- New struct `HostPoolsClientGetResponse`
+- New struct `HostPoolsClientGetResult`
+- New struct `HostPoolsClientListByResourceGroupOptions`
+- New struct `HostPoolsClientListByResourceGroupPager`
+- New struct `HostPoolsClientListByResourceGroupResponse`
+- New struct `HostPoolsClientListByResourceGroupResult`
+- New struct `HostPoolsClientListOptions`
+- New struct `HostPoolsClientListPager`
+- New struct `HostPoolsClientListResponse`
+- New struct `HostPoolsClientListResult`
+- New struct `HostPoolsClientRetrieveRegistrationTokenOptions`
+- New struct `HostPoolsClientRetrieveRegistrationTokenResponse`
+- New struct `HostPoolsClientRetrieveRegistrationTokenResult`
+- New struct `HostPoolsClientUpdateOptions`
+- New struct `HostPoolsClientUpdateResponse`
+- New struct `HostPoolsClientUpdateResult`
+- New struct `MSIXPackagesClientCreateOrUpdateOptions`
+- New struct `MSIXPackagesClientCreateOrUpdateResponse`
+- New struct `MSIXPackagesClientCreateOrUpdateResult`
+- New struct `MSIXPackagesClientDeleteOptions`
+- New struct `MSIXPackagesClientDeleteResponse`
+- New struct `MSIXPackagesClientGetOptions`
+- New struct `MSIXPackagesClientGetResponse`
+- New struct `MSIXPackagesClientGetResult`
+- New struct `MSIXPackagesClientListOptions`
+- New struct `MSIXPackagesClientListPager`
+- New struct `MSIXPackagesClientListResponse`
+- New struct `MSIXPackagesClientListResult`
+- New struct `MSIXPackagesClientUpdateOptions`
+- New struct `MSIXPackagesClientUpdateResponse`
+- New struct `MSIXPackagesClientUpdateResult`
+- New struct `MsixImagesClientExpandOptions`
+- New struct `MsixImagesClientExpandPager`
+- New struct `MsixImagesClientExpandResponse`
+- New struct `MsixImagesClientExpandResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientDeleteByHostPoolOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteByHostPoolResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteByWorkspaceOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteByWorkspaceResponse`
+- New struct `PrivateEndpointConnectionsClientGetByHostPoolOptions`
+- New struct `PrivateEndpointConnectionsClientGetByHostPoolResponse`
+- New struct `PrivateEndpointConnectionsClientGetByHostPoolResult`
+- New struct `PrivateEndpointConnectionsClientGetByWorkspaceOptions`
+- New struct `PrivateEndpointConnectionsClientGetByWorkspaceResponse`
+- New struct `PrivateEndpointConnectionsClientGetByWorkspaceResult`
+- New struct `PrivateEndpointConnectionsClientListByHostPoolOptions`
+- New struct `PrivateEndpointConnectionsClientListByHostPoolPager`
+- New struct `PrivateEndpointConnectionsClientListByHostPoolResponse`
+- New struct `PrivateEndpointConnectionsClientListByHostPoolResult`
+- New struct `PrivateEndpointConnectionsClientListByWorkspaceOptions`
+- New struct `PrivateEndpointConnectionsClientListByWorkspacePager`
+- New struct `PrivateEndpointConnectionsClientListByWorkspaceResponse`
+- New struct `PrivateEndpointConnectionsClientListByWorkspaceResult`
+- New struct `PrivateEndpointConnectionsClientUpdateByHostPoolOptions`
+- New struct `PrivateEndpointConnectionsClientUpdateByHostPoolResponse`
+- New struct `PrivateEndpointConnectionsClientUpdateByHostPoolResult`
+- New struct `PrivateEndpointConnectionsClientUpdateByWorkspaceOptions`
+- New struct `PrivateEndpointConnectionsClientUpdateByWorkspaceResponse`
+- New struct `PrivateEndpointConnectionsClientUpdateByWorkspaceResult`
+- New struct `PrivateLinkResourcesClientListByHostPoolOptions`
+- New struct `PrivateLinkResourcesClientListByHostPoolPager`
+- New struct `PrivateLinkResourcesClientListByHostPoolResponse`
+- New struct `PrivateLinkResourcesClientListByHostPoolResult`
+- New struct `PrivateLinkResourcesClientListByWorkspaceOptions`
+- New struct `PrivateLinkResourcesClientListByWorkspacePager`
+- New struct `PrivateLinkResourcesClientListByWorkspaceResponse`
+- New struct `PrivateLinkResourcesClientListByWorkspaceResult`
+- New struct `ScalingPlansClientCreateOptions`
+- New struct `ScalingPlansClientCreateResponse`
+- New struct `ScalingPlansClientCreateResult`
+- New struct `ScalingPlansClientDeleteOptions`
+- New struct `ScalingPlansClientDeleteResponse`
+- New struct `ScalingPlansClientGetOptions`
+- New struct `ScalingPlansClientGetResponse`
+- New struct `ScalingPlansClientGetResult`
+- New struct `ScalingPlansClientListByHostPoolOptions`
+- New struct `ScalingPlansClientListByHostPoolPager`
+- New struct `ScalingPlansClientListByHostPoolResponse`
+- New struct `ScalingPlansClientListByHostPoolResult`
+- New struct `ScalingPlansClientListByResourceGroupOptions`
+- New struct `ScalingPlansClientListByResourceGroupPager`
+- New struct `ScalingPlansClientListByResourceGroupResponse`
+- New struct `ScalingPlansClientListByResourceGroupResult`
+- New struct `ScalingPlansClientListBySubscriptionOptions`
+- New struct `ScalingPlansClientListBySubscriptionPager`
+- New struct `ScalingPlansClientListBySubscriptionResponse`
+- New struct `ScalingPlansClientListBySubscriptionResult`
+- New struct `ScalingPlansClientUpdateOptions`
+- New struct `ScalingPlansClientUpdateResponse`
+- New struct `ScalingPlansClientUpdateResult`
+- New struct `SessionHostsClientDeleteOptions`
+- New struct `SessionHostsClientDeleteResponse`
+- New struct `SessionHostsClientGetOptions`
+- New struct `SessionHostsClientGetResponse`
+- New struct `SessionHostsClientGetResult`
+- New struct `SessionHostsClientListOptions`
+- New struct `SessionHostsClientListPager`
+- New struct `SessionHostsClientListResponse`
+- New struct `SessionHostsClientListResult`
+- New struct `SessionHostsClientUpdateOptions`
+- New struct `SessionHostsClientUpdateResponse`
+- New struct `SessionHostsClientUpdateResult`
+- New struct `StartMenuItemsClientListOptions`
+- New struct `StartMenuItemsClientListPager`
+- New struct `StartMenuItemsClientListResponse`
+- New struct `StartMenuItemsClientListResult`
+- New struct `UserSessionsClientDeleteOptions`
+- New struct `UserSessionsClientDeleteResponse`
+- New struct `UserSessionsClientDisconnectOptions`
+- New struct `UserSessionsClientDisconnectResponse`
+- New struct `UserSessionsClientGetOptions`
+- New struct `UserSessionsClientGetResponse`
+- New struct `UserSessionsClientGetResult`
+- New struct `UserSessionsClientListByHostPoolOptions`
+- New struct `UserSessionsClientListByHostPoolPager`
+- New struct `UserSessionsClientListByHostPoolResponse`
+- New struct `UserSessionsClientListByHostPoolResult`
+- New struct `UserSessionsClientListOptions`
+- New struct `UserSessionsClientListPager`
+- New struct `UserSessionsClientListResponse`
+- New struct `UserSessionsClientListResult`
+- New struct `UserSessionsClientSendMessageOptions`
+- New struct `UserSessionsClientSendMessageResponse`
+- New struct `WorkspacesClientCreateOrUpdateOptions`
+- New struct `WorkspacesClientCreateOrUpdateResponse`
+- New struct `WorkspacesClientCreateOrUpdateResult`
+- New struct `WorkspacesClientDeleteOptions`
+- New struct `WorkspacesClientDeleteResponse`
+- New struct `WorkspacesClientGetOptions`
+- New struct `WorkspacesClientGetResponse`
+- New struct `WorkspacesClientGetResult`
+- New struct `WorkspacesClientListByResourceGroupOptions`
+- New struct `WorkspacesClientListByResourceGroupPager`
+- New struct `WorkspacesClientListByResourceGroupResponse`
+- New struct `WorkspacesClientListByResourceGroupResult`
+- New struct `WorkspacesClientListBySubscriptionOptions`
+- New struct `WorkspacesClientListBySubscriptionPager`
+- New struct `WorkspacesClientListBySubscriptionResponse`
+- New struct `WorkspacesClientListBySubscriptionResult`
+- New struct `WorkspacesClientUpdateOptions`
+- New struct `WorkspacesClientUpdateResponse`
+- New struct `WorkspacesClientUpdateResult`
+- New field `ID` in struct `UserSession`
+- New field `Name` in struct `UserSession`
+- New field `Type` in struct `UserSession`
+- New field `ID` in struct `Workspace`
+- New field `Kind` in struct `Workspace`
+- New field `Tags` in struct `Workspace`
+- New field `Identity` in struct `Workspace`
+- New field `ManagedBy` in struct `Workspace`
+- New field `Plan` in struct `Workspace`
+- New field `Location` in struct `Workspace`
+- New field `SKU` in struct `Workspace`
+- New field `Name` in struct `Workspace`
+- New field `Etag` in struct `Workspace`
+- New field `Type` in struct `Workspace`
+- New field `Type` in struct `StartMenuItem`
+- New field `ID` in struct `StartMenuItem`
+- New field `Name` in struct `StartMenuItem`
+- New field `ID` in struct `Desktop`
+- New field `Name` in struct `Desktop`
+- New field `Type` in struct `Desktop`
+- New field `Type` in struct `ResourceModelWithAllowedPropertySetIdentity`
+- New field `PrincipalID` in struct `ResourceModelWithAllowedPropertySetIdentity`
+- New field `TenantID` in struct `ResourceModelWithAllowedPropertySetIdentity`
+- New field `ID` in struct `SessionHost`
+- New field `Name` in struct `SessionHost`
+- New field `Type` in struct `SessionHost`
+- New field `Version` in struct `ResourceModelWithAllowedPropertySetPlan`
+- New field `Name` in struct `ResourceModelWithAllowedPropertySetPlan`
+- New field `Product` in struct `ResourceModelWithAllowedPropertySetPlan`
+- New field `Publisher` in struct `ResourceModelWithAllowedPropertySetPlan`
+- New field `PromotionCode` in struct `ResourceModelWithAllowedPropertySetPlan`
+- New field `Name` in struct `Application`
+- New field `Type` in struct `Application`
+- New field `ID` in struct `Application`
+- New field `ID` in struct `MSIXPackagePatch`
+- New field `Name` in struct `MSIXPackagePatch`
+- New field `Type` in struct `MSIXPackagePatch`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `ExpandMsixImage`
+- New field `Name` in struct `ExpandMsixImage`
+- New field `Type` in struct `ExpandMsixImage`
+- New field `Capacity` in struct `ResourceModelWithAllowedPropertySetSKU`
+- New field `Family` in struct `ResourceModelWithAllowedPropertySetSKU`
+- New field `Size` in struct `ResourceModelWithAllowedPropertySetSKU`
+- New field `Tier` in struct `ResourceModelWithAllowedPropertySetSKU`
+- New field `Name` in struct `ResourceModelWithAllowedPropertySetSKU`
+- New field `SKU` in struct `ApplicationGroup`
+- New field `Tags` in struct `ApplicationGroup`
+- New field `Etag` in struct `ApplicationGroup`
+- New field `Type` in struct `ApplicationGroup`
+- New field `Name` in struct `ApplicationGroup`
+- New field `Location` in struct `ApplicationGroup`
+- New field `Plan` in struct `ApplicationGroup`
+- New field `Kind` in struct `ApplicationGroup`
+- New field `ManagedBy` in struct `ApplicationGroup`
+- New field `ID` in struct `ApplicationGroup`
+- New field `Identity` in struct `ApplicationGroup`
+- New field `ID` in struct `ScalingPlan`
+- New field `SKU` in struct `ScalingPlan`
+- New field `Etag` in struct `ScalingPlan`
+- New field `Identity` in struct `ScalingPlan`
+- New field `Kind` in struct `ScalingPlan`
+- New field `Name` in struct `ScalingPlan`
+- New field `Type` in struct `ScalingPlan`
+- New field `Location` in struct `ScalingPlan`
+- New field `ManagedBy` in struct `ScalingPlan`
+- New field `Plan` in struct `ScalingPlan`
+- New field `Tags` in struct `ScalingPlan`
+- New field `ID` in struct `HostPoolPatch`
+- New field `Name` in struct `HostPoolPatch`
+- New field `Type` in struct `HostPoolPatch`
+- New field `Properties` in struct `PrivateEndpointConnectionWithSystemData`
+- New field `ID` in struct `PrivateEndpointConnectionWithSystemData`
+- New field `Name` in struct `PrivateEndpointConnectionWithSystemData`
+- New field `Type` in struct `PrivateEndpointConnectionWithSystemData`
+- New field `Error` in struct `CloudError`
+- New field `Name` in struct `HostPool`
+- New field `Type` in struct `HostPool`
+- New field `ManagedBy` in struct `HostPool`
+- New field `Identity` in struct `HostPool`
+- New field `SKU` in struct `HostPool`
+- New field `Tags` in struct `HostPool`
+- New field `Etag` in struct `HostPool`
+- New field `ID` in struct `HostPool`
+- New field `Kind` in struct `HostPool`
+- New field `Location` in struct `HostPool`
+- New field `Plan` in struct `HostPool`
+- New field `ID` in struct `ApplicationGroupPatch`
+- New field `Name` in struct `ApplicationGroupPatch`
+- New field `Type` in struct `ApplicationGroupPatch`
+- New field `Name` in struct `SessionHostPatch`
+- New field `Type` in struct `SessionHostPatch`
+- New field `ID` in struct `SessionHostPatch`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `Type` in struct `MSIXPackage`
+- New field `ID` in struct `MSIXPackage`
+- New field `Name` in struct `MSIXPackage`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Initial preview release.

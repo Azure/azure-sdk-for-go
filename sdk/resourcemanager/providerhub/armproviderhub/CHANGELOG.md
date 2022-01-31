@@ -1,0 +1,783 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeFirst` parameter(s) have been changed from `(string, string, string, *SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstOptions)` to `(string, string, string, *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions)`
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeFirst` return value(s) have been changed from `(*SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstPager)` to `(*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstPager)`
+- Function `*ProviderRegistrationsClient.GenerateOperations` parameter(s) have been changed from `(context.Context, string, *ProviderRegistrationsGenerateOperationsOptions)` to `(context.Context, string, *ProviderRegistrationsClientGenerateOperationsOptions)`
+- Function `*ProviderRegistrationsClient.GenerateOperations` return value(s) have been changed from `(ProviderRegistrationsGenerateOperationsResponse, error)` to `(ProviderRegistrationsClientGenerateOperationsResponse, error)`
+- Function `*OperationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, OperationsPutContent, *OperationsCreateOrUpdateOptions)` to `(context.Context, string, OperationsPutContent, *OperationsClientCreateOrUpdateOptions)`
+- Function `*OperationsClient.CreateOrUpdate` return value(s) have been changed from `(OperationsCreateOrUpdateResponse, error)` to `(OperationsClientCreateOrUpdateResponse, error)`
+- Function `*DefaultRolloutsClient.ListByProviderRegistration` parameter(s) have been changed from `(string, *DefaultRolloutsListByProviderRegistrationOptions)` to `(string, *DefaultRolloutsClientListByProviderRegistrationOptions)`
+- Function `*DefaultRolloutsClient.ListByProviderRegistration` return value(s) have been changed from `(*DefaultRolloutsListByProviderRegistrationPager)` to `(*DefaultRolloutsClientListByProviderRegistrationPager)`
+- Function `*ResourceTypeRegistrationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ResourceTypeRegistration, *ResourceTypeRegistrationsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, ResourceTypeRegistration, *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions)`
+- Function `*ResourceTypeRegistrationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ResourceTypeRegistrationsCreateOrUpdatePollerResponse, error)` to `(ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ProviderRegistrationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, ProviderRegistration, *ProviderRegistrationsBeginCreateOrUpdateOptions)` to `(context.Context, string, ProviderRegistration, *ProviderRegistrationsClientBeginCreateOrUpdateOptions)`
+- Function `*ProviderRegistrationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ProviderRegistrationsCreateOrUpdatePollerResponse, error)` to `(ProviderRegistrationsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DefaultRolloutsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DefaultRollout, *DefaultRolloutsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, DefaultRollout, *DefaultRolloutsClientBeginCreateOrUpdateOptions)`
+- Function `*DefaultRolloutsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DefaultRolloutsCreateOrUpdatePollerResponse, error)` to `(DefaultRolloutsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ResourceTypeRegistrationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ResourceTypeRegistrationsDeleteOptions)` to `(context.Context, string, string, *ResourceTypeRegistrationsClientDeleteOptions)`
+- Function `*ResourceTypeRegistrationsClient.Delete` return value(s) have been changed from `(ResourceTypeRegistrationsDeleteResponse, error)` to `(ResourceTypeRegistrationsClientDeleteResponse, error)`
+- Function `*OperationsClient.Delete` parameter(s) have been changed from `(context.Context, string, *OperationsDeleteOptions)` to `(context.Context, string, *OperationsClientDeleteOptions)`
+- Function `*OperationsClient.Delete` return value(s) have been changed from `(OperationsDeleteResponse, error)` to `(OperationsClientDeleteResponse, error)`
+- Function `*SKUsClient.DeleteNestedResourceTypeFirst` parameter(s) have been changed from `(context.Context, string, string, string, string, *SKUsDeleteNestedResourceTypeFirstOptions)` to `(context.Context, string, string, string, string, *SKUsClientDeleteNestedResourceTypeFirstOptions)`
+- Function `*SKUsClient.DeleteNestedResourceTypeFirst` return value(s) have been changed from `(SKUsDeleteNestedResourceTypeFirstResponse, error)` to `(SKUsClientDeleteNestedResourceTypeFirstResponse, error)`
+- Function `*SKUsClient.GetNestedResourceTypeSecond` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *SKUsGetNestedResourceTypeSecondOptions)` to `(context.Context, string, string, string, string, string, *SKUsClientGetNestedResourceTypeSecondOptions)`
+- Function `*SKUsClient.GetNestedResourceTypeSecond` return value(s) have been changed from `(SKUsGetNestedResourceTypeSecondResponse, error)` to `(SKUsClientGetNestedResourceTypeSecondResponse, error)`
+- Function `*ResourceTypeRegistrationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ResourceTypeRegistrationsGetOptions)` to `(context.Context, string, string, *ResourceTypeRegistrationsClientGetOptions)`
+- Function `*ResourceTypeRegistrationsClient.Get` return value(s) have been changed from `(ResourceTypeRegistrationsGetResponse, error)` to `(ResourceTypeRegistrationsClientGetResponse, error)`
+- Function `*NotificationRegistrationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *NotificationRegistrationsDeleteOptions)` to `(context.Context, string, string, *NotificationRegistrationsClientDeleteOptions)`
+- Function `*NotificationRegistrationsClient.Delete` return value(s) have been changed from `(NotificationRegistrationsDeleteResponse, error)` to `(NotificationRegistrationsClientDeleteResponse, error)`
+- Function `*ResourceTypeRegistrationsClient.ListByProviderRegistration` parameter(s) have been changed from `(string, *ResourceTypeRegistrationsListByProviderRegistrationOptions)` to `(string, *ResourceTypeRegistrationsClientListByProviderRegistrationOptions)`
+- Function `*ResourceTypeRegistrationsClient.ListByProviderRegistration` return value(s) have been changed from `(*ResourceTypeRegistrationsListByProviderRegistrationPager)` to `(*ResourceTypeRegistrationsClientListByProviderRegistrationPager)`
+- Function `*DefaultRolloutsClient.Stop` parameter(s) have been changed from `(context.Context, string, string, *DefaultRolloutsStopOptions)` to `(context.Context, string, string, *DefaultRolloutsClientStopOptions)`
+- Function `*DefaultRolloutsClient.Stop` return value(s) have been changed from `(DefaultRolloutsStopResponse, error)` to `(DefaultRolloutsClientStopResponse, error)`
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeSecond` parameter(s) have been changed from `(string, string, string, string, *SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondOptions)` to `(string, string, string, string, *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondOptions)`
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeSecond` return value(s) have been changed from `(*SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondPager)` to `(*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondPager)`
+- Function `*NotificationRegistrationsClient.ListByProviderRegistration` parameter(s) have been changed from `(string, *NotificationRegistrationsListByProviderRegistrationOptions)` to `(string, *NotificationRegistrationsClientListByProviderRegistrationOptions)`
+- Function `*NotificationRegistrationsClient.ListByProviderRegistration` return value(s) have been changed from `(*NotificationRegistrationsListByProviderRegistrationPager)` to `(*NotificationRegistrationsClientListByProviderRegistrationPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*SKUsClient.CreateOrUpdateNestedResourceTypeFirst` parameter(s) have been changed from `(context.Context, string, string, string, string, SKUResource, *SKUsCreateOrUpdateNestedResourceTypeFirstOptions)` to `(context.Context, string, string, string, string, SKUResource, *SKUsClientCreateOrUpdateNestedResourceTypeFirstOptions)`
+- Function `*SKUsClient.CreateOrUpdateNestedResourceTypeFirst` return value(s) have been changed from `(SKUsCreateOrUpdateNestedResourceTypeFirstResponse, error)` to `(SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse, error)`
+- Function `*NotificationRegistrationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, NotificationRegistration, *NotificationRegistrationsCreateOrUpdateOptions)` to `(context.Context, string, string, NotificationRegistration, *NotificationRegistrationsClientCreateOrUpdateOptions)`
+- Function `*NotificationRegistrationsClient.CreateOrUpdate` return value(s) have been changed from `(NotificationRegistrationsCreateOrUpdateResponse, error)` to `(NotificationRegistrationsClientCreateOrUpdateResponse, error)`
+- Function `*DefaultRolloutsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DefaultRolloutsGetOptions)` to `(context.Context, string, string, *DefaultRolloutsClientGetOptions)`
+- Function `*DefaultRolloutsClient.Get` return value(s) have been changed from `(DefaultRolloutsGetResponse, error)` to `(DefaultRolloutsClientGetResponse, error)`
+- Function `*OperationsClient.ListByProviderRegistration` parameter(s) have been changed from `(context.Context, string, *OperationsListByProviderRegistrationOptions)` to `(context.Context, string, *OperationsClientListByProviderRegistrationOptions)`
+- Function `*OperationsClient.ListByProviderRegistration` return value(s) have been changed from `(OperationsListByProviderRegistrationResponse, error)` to `(OperationsClientListByProviderRegistrationResponse, error)`
+- Function `*SKUsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SKUsGetOptions)` to `(context.Context, string, string, string, *SKUsClientGetOptions)`
+- Function `*SKUsClient.Get` return value(s) have been changed from `(SKUsGetResponse, error)` to `(SKUsClientGetResponse, error)`
+- Function `*SKUsClient.ListByResourceTypeRegistrations` parameter(s) have been changed from `(string, string, *SKUsListByResourceTypeRegistrationsOptions)` to `(string, string, *SKUsClientListByResourceTypeRegistrationsOptions)`
+- Function `*SKUsClient.ListByResourceTypeRegistrations` return value(s) have been changed from `(*SKUsListByResourceTypeRegistrationsPager)` to `(*SKUsClientListByResourceTypeRegistrationsPager)`
+- Function `*CustomRolloutsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, CustomRollout, *CustomRolloutsCreateOrUpdateOptions)` to `(context.Context, string, string, CustomRollout, *CustomRolloutsClientCreateOrUpdateOptions)`
+- Function `*CustomRolloutsClient.CreateOrUpdate` return value(s) have been changed from `(CustomRolloutsCreateOrUpdateResponse, error)` to `(CustomRolloutsClientCreateOrUpdateResponse, error)`
+- Function `*SKUsClient.CreateOrUpdateNestedResourceTypeSecond` parameter(s) have been changed from `(context.Context, string, string, string, string, string, SKUResource, *SKUsCreateOrUpdateNestedResourceTypeSecondOptions)` to `(context.Context, string, string, string, string, string, SKUResource, *SKUsClientCreateOrUpdateNestedResourceTypeSecondOptions)`
+- Function `*SKUsClient.CreateOrUpdateNestedResourceTypeSecond` return value(s) have been changed from `(SKUsCreateOrUpdateNestedResourceTypeSecondResponse, error)` to `(SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse, error)`
+- Function `*SKUsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *SKUsDeleteOptions)` to `(context.Context, string, string, string, *SKUsClientDeleteOptions)`
+- Function `*SKUsClient.Delete` return value(s) have been changed from `(SKUsDeleteResponse, error)` to `(SKUsClientDeleteResponse, error)`
+- Function `*ProviderRegistrationsClient.Delete` parameter(s) have been changed from `(context.Context, string, *ProviderRegistrationsDeleteOptions)` to `(context.Context, string, *ProviderRegistrationsClientDeleteOptions)`
+- Function `*ProviderRegistrationsClient.Delete` return value(s) have been changed from `(ProviderRegistrationsDeleteResponse, error)` to `(ProviderRegistrationsClientDeleteResponse, error)`
+- Function `*ProviderRegistrationsClient.Get` parameter(s) have been changed from `(context.Context, string, *ProviderRegistrationsGetOptions)` to `(context.Context, string, *ProviderRegistrationsClientGetOptions)`
+- Function `*ProviderRegistrationsClient.Get` return value(s) have been changed from `(ProviderRegistrationsGetResponse, error)` to `(ProviderRegistrationsClientGetResponse, error)`
+- Function `*SKUsClient.CreateOrUpdateNestedResourceTypeThird` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, SKUResource, *SKUsCreateOrUpdateNestedResourceTypeThirdOptions)` to `(context.Context, string, string, string, string, string, string, SKUResource, *SKUsClientCreateOrUpdateNestedResourceTypeThirdOptions)`
+- Function `*SKUsClient.CreateOrUpdateNestedResourceTypeThird` return value(s) have been changed from `(SKUsCreateOrUpdateNestedResourceTypeThirdResponse, error)` to `(SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse, error)`
+- Function `*SKUsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, SKUResource, *SKUsCreateOrUpdateOptions)` to `(context.Context, string, string, string, SKUResource, *SKUsClientCreateOrUpdateOptions)`
+- Function `*SKUsClient.CreateOrUpdate` return value(s) have been changed from `(SKUsCreateOrUpdateResponse, error)` to `(SKUsClientCreateOrUpdateResponse, error)`
+- Function `*SKUsClient.GetNestedResourceTypeFirst` parameter(s) have been changed from `(context.Context, string, string, string, string, *SKUsGetNestedResourceTypeFirstOptions)` to `(context.Context, string, string, string, string, *SKUsClientGetNestedResourceTypeFirstOptions)`
+- Function `*SKUsClient.GetNestedResourceTypeFirst` return value(s) have been changed from `(SKUsGetNestedResourceTypeFirstResponse, error)` to `(SKUsClientGetNestedResourceTypeFirstResponse, error)`
+- Function `*SKUsClient.GetNestedResourceTypeThird` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *SKUsGetNestedResourceTypeThirdOptions)` to `(context.Context, string, string, string, string, string, string, *SKUsClientGetNestedResourceTypeThirdOptions)`
+- Function `*SKUsClient.GetNestedResourceTypeThird` return value(s) have been changed from `(SKUsGetNestedResourceTypeThirdResponse, error)` to `(SKUsClientGetNestedResourceTypeThirdResponse, error)`
+- Function `*DefaultRolloutsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DefaultRolloutsDeleteOptions)` to `(context.Context, string, string, *DefaultRolloutsClientDeleteOptions)`
+- Function `*DefaultRolloutsClient.Delete` return value(s) have been changed from `(DefaultRolloutsDeleteResponse, error)` to `(DefaultRolloutsClientDeleteResponse, error)`
+- Function `*NotificationRegistrationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *NotificationRegistrationsGetOptions)` to `(context.Context, string, string, *NotificationRegistrationsClientGetOptions)`
+- Function `*NotificationRegistrationsClient.Get` return value(s) have been changed from `(NotificationRegistrationsGetResponse, error)` to `(NotificationRegistrationsClientGetResponse, error)`
+- Function `*CustomRolloutsClient.ListByProviderRegistration` parameter(s) have been changed from `(string, *CustomRolloutsListByProviderRegistrationOptions)` to `(string, *CustomRolloutsClientListByProviderRegistrationOptions)`
+- Function `*CustomRolloutsClient.ListByProviderRegistration` return value(s) have been changed from `(*CustomRolloutsListByProviderRegistrationPager)` to `(*CustomRolloutsClientListByProviderRegistrationPager)`
+- Function `*CustomRolloutsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CustomRolloutsGetOptions)` to `(context.Context, string, string, *CustomRolloutsClientGetOptions)`
+- Function `*CustomRolloutsClient.Get` return value(s) have been changed from `(CustomRolloutsGetResponse, error)` to `(CustomRolloutsClientGetResponse, error)`
+- Function `*ProviderRegistrationsClient.List` parameter(s) have been changed from `(*ProviderRegistrationsListOptions)` to `(*ProviderRegistrationsClientListOptions)`
+- Function `*ProviderRegistrationsClient.List` return value(s) have been changed from `(*ProviderRegistrationsListPager)` to `(*ProviderRegistrationsClientListPager)`
+- Function `*SKUsClient.DeleteNestedResourceTypeThird` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *SKUsDeleteNestedResourceTypeThirdOptions)` to `(context.Context, string, string, string, string, string, string, *SKUsClientDeleteNestedResourceTypeThirdOptions)`
+- Function `*SKUsClient.DeleteNestedResourceTypeThird` return value(s) have been changed from `(SKUsDeleteNestedResourceTypeThirdResponse, error)` to `(SKUsClientDeleteNestedResourceTypeThirdResponse, error)`
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeThird` parameter(s) have been changed from `(string, string, string, string, string, *SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdOptions)` to `(string, string, string, string, string, *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions)`
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeThird` return value(s) have been changed from `(*SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdPager)` to `(*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdPager)`
+- Function `*SKUsClient.DeleteNestedResourceTypeSecond` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *SKUsDeleteNestedResourceTypeSecondOptions)` to `(context.Context, string, string, string, string, string, *SKUsClientDeleteNestedResourceTypeSecondOptions)`
+- Function `*SKUsClient.DeleteNestedResourceTypeSecond` return value(s) have been changed from `(SKUsDeleteNestedResourceTypeSecondResponse, error)` to `(SKUsClientDeleteNestedResourceTypeSecondResponse, error)`
+- Function `*RolloutStatusBase.UnmarshalJSON` has been removed
+- Function `*DefaultRolloutsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ProviderRegistrationsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*NotificationRegistrationsListByProviderRegistrationPager.PageResponse` has been removed
+- Function `*ResourceTypeRegistrationsCreateOrUpdatePoller.Done` has been removed
+- Function `*ProviderRegistrationsListPager.PageResponse` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdPager.PageResponse` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstPager.NextPage` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstPager.Err` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsPager.NextPage` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsPager.PageResponse` has been removed
+- Function `ProviderRegistrationsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ProviderHubClient.GenerateManifest` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*ResourceTypeRegistrationsListByProviderRegistrationPager.NextPage` has been removed
+- Function `*DefaultRolloutsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ProviderHubClient.CheckinManifest` has been removed
+- Function `*DefaultRolloutsListByProviderRegistrationPager.PageResponse` has been removed
+- Function `*CustomRolloutsListByProviderRegistrationPager.NextPage` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondPager.NextPage` has been removed
+- Function `*DefaultRolloutsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `NewProviderHubClient` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdPager.NextPage` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondPager.PageResponse` has been removed
+- Function `*ProviderRegistrationsListPager.NextPage` has been removed
+- Function `*NotificationRegistrationsListByProviderRegistrationPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*DefaultRolloutsListByProviderRegistrationPager.NextPage` has been removed
+- Function `*CustomRolloutsListByProviderRegistrationPager.PageResponse` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstPager.PageResponse` has been removed
+- Function `ResourceTypeRegistrationsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomRolloutsListByProviderRegistrationPager.Err` has been removed
+- Function `*ProviderRegistrationsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ResourceTypeRegistrationsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DefaultRolloutsListByProviderRegistrationPager.Err` has been removed
+- Function `*DefaultRolloutsCreateOrUpdatePoller.Poll` has been removed
+- Function `*ResourceTypeRegistrationsListByProviderRegistrationPager.Err` has been removed
+- Function `*ResourceTypeRegistrationsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*ResourceTypeRegistrationsListByProviderRegistrationPager.PageResponse` has been removed
+- Function `*ResourceTypeRegistrationsCreateOrUpdatePoller.Poll` has been removed
+- Function `ProviderHubMetadata.MarshalJSON` has been removed
+- Function `DefaultRolloutsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*NotificationRegistrationsListByProviderRegistrationPager.Err` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondPager.Err` has been removed
+- Function `*SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdPager.Err` has been removed
+- Function `*ResourceTypeRegistrationsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ProviderRegistrationsCreateOrUpdatePoller.Poll` has been removed
+- Function `*DefaultRolloutsCreateOrUpdatePoller.Done` has been removed
+- Function `*ProviderRegistrationsCreateOrUpdatePoller.Done` has been removed
+- Function `*ProviderRegistrationsListPager.Err` has been removed
+- Function `*ProviderRegistrationsCreateOrUpdatePoller.ResumeToken` has been removed
+- Struct `CustomRolloutsCreateOrUpdateOptions` has been removed
+- Struct `CustomRolloutsCreateOrUpdateResponse` has been removed
+- Struct `CustomRolloutsCreateOrUpdateResult` has been removed
+- Struct `CustomRolloutsGetOptions` has been removed
+- Struct `CustomRolloutsGetResponse` has been removed
+- Struct `CustomRolloutsGetResult` has been removed
+- Struct `CustomRolloutsListByProviderRegistrationOptions` has been removed
+- Struct `CustomRolloutsListByProviderRegistrationPager` has been removed
+- Struct `CustomRolloutsListByProviderRegistrationResponse` has been removed
+- Struct `CustomRolloutsListByProviderRegistrationResult` has been removed
+- Struct `DefaultRolloutsBeginCreateOrUpdateOptions` has been removed
+- Struct `DefaultRolloutsCreateOrUpdatePoller` has been removed
+- Struct `DefaultRolloutsCreateOrUpdatePollerResponse` has been removed
+- Struct `DefaultRolloutsCreateOrUpdateResponse` has been removed
+- Struct `DefaultRolloutsCreateOrUpdateResult` has been removed
+- Struct `DefaultRolloutsDeleteOptions` has been removed
+- Struct `DefaultRolloutsDeleteResponse` has been removed
+- Struct `DefaultRolloutsGetOptions` has been removed
+- Struct `DefaultRolloutsGetResponse` has been removed
+- Struct `DefaultRolloutsGetResult` has been removed
+- Struct `DefaultRolloutsListByProviderRegistrationOptions` has been removed
+- Struct `DefaultRolloutsListByProviderRegistrationPager` has been removed
+- Struct `DefaultRolloutsListByProviderRegistrationResponse` has been removed
+- Struct `DefaultRolloutsListByProviderRegistrationResult` has been removed
+- Struct `DefaultRolloutsStopOptions` has been removed
+- Struct `DefaultRolloutsStopResponse` has been removed
+- Struct `NotificationRegistrationsCreateOrUpdateOptions` has been removed
+- Struct `NotificationRegistrationsCreateOrUpdateResponse` has been removed
+- Struct `NotificationRegistrationsCreateOrUpdateResult` has been removed
+- Struct `NotificationRegistrationsDeleteOptions` has been removed
+- Struct `NotificationRegistrationsDeleteResponse` has been removed
+- Struct `NotificationRegistrationsGetOptions` has been removed
+- Struct `NotificationRegistrationsGetResponse` has been removed
+- Struct `NotificationRegistrationsGetResult` has been removed
+- Struct `NotificationRegistrationsListByProviderRegistrationOptions` has been removed
+- Struct `NotificationRegistrationsListByProviderRegistrationPager` has been removed
+- Struct `NotificationRegistrationsListByProviderRegistrationResponse` has been removed
+- Struct `NotificationRegistrationsListByProviderRegistrationResult` has been removed
+- Struct `OperationsCreateOrUpdateOptions` has been removed
+- Struct `OperationsCreateOrUpdateResponse` has been removed
+- Struct `OperationsCreateOrUpdateResult` has been removed
+- Struct `OperationsDeleteOptions` has been removed
+- Struct `OperationsDeleteResponse` has been removed
+- Struct `OperationsListByProviderRegistrationOptions` has been removed
+- Struct `OperationsListByProviderRegistrationResponse` has been removed
+- Struct `OperationsListByProviderRegistrationResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `ProviderHubCheckinManifestOptions` has been removed
+- Struct `ProviderHubCheckinManifestResponse` has been removed
+- Struct `ProviderHubCheckinManifestResult` has been removed
+- Struct `ProviderHubClient` has been removed
+- Struct `ProviderHubGenerateManifestOptions` has been removed
+- Struct `ProviderHubGenerateManifestResponse` has been removed
+- Struct `ProviderHubGenerateManifestResult` has been removed
+- Struct `ProviderHubMetadata` has been removed
+- Struct `ProviderHubMetadataProviderAuthentication` has been removed
+- Struct `ProviderHubMetadataThirdPartyProviderAuthorization` has been removed
+- Struct `ProviderRegistrationsBeginCreateOrUpdateOptions` has been removed
+- Struct `ProviderRegistrationsCreateOrUpdatePoller` has been removed
+- Struct `ProviderRegistrationsCreateOrUpdatePollerResponse` has been removed
+- Struct `ProviderRegistrationsCreateOrUpdateResponse` has been removed
+- Struct `ProviderRegistrationsCreateOrUpdateResult` has been removed
+- Struct `ProviderRegistrationsDeleteOptions` has been removed
+- Struct `ProviderRegistrationsDeleteResponse` has been removed
+- Struct `ProviderRegistrationsGenerateOperationsOptions` has been removed
+- Struct `ProviderRegistrationsGenerateOperationsResponse` has been removed
+- Struct `ProviderRegistrationsGenerateOperationsResult` has been removed
+- Struct `ProviderRegistrationsGetOptions` has been removed
+- Struct `ProviderRegistrationsGetResponse` has been removed
+- Struct `ProviderRegistrationsGetResult` has been removed
+- Struct `ProviderRegistrationsListOptions` has been removed
+- Struct `ProviderRegistrationsListPager` has been removed
+- Struct `ProviderRegistrationsListResponse` has been removed
+- Struct `ProviderRegistrationsListResult` has been removed
+- Struct `ResourceTypeRegistrationsBeginCreateOrUpdateOptions` has been removed
+- Struct `ResourceTypeRegistrationsCreateOrUpdatePoller` has been removed
+- Struct `ResourceTypeRegistrationsCreateOrUpdatePollerResponse` has been removed
+- Struct `ResourceTypeRegistrationsCreateOrUpdateResponse` has been removed
+- Struct `ResourceTypeRegistrationsCreateOrUpdateResult` has been removed
+- Struct `ResourceTypeRegistrationsDeleteOptions` has been removed
+- Struct `ResourceTypeRegistrationsDeleteResponse` has been removed
+- Struct `ResourceTypeRegistrationsGetOptions` has been removed
+- Struct `ResourceTypeRegistrationsGetResponse` has been removed
+- Struct `ResourceTypeRegistrationsGetResult` has been removed
+- Struct `ResourceTypeRegistrationsListByProviderRegistrationOptions` has been removed
+- Struct `ResourceTypeRegistrationsListByProviderRegistrationPager` has been removed
+- Struct `ResourceTypeRegistrationsListByProviderRegistrationResponse` has been removed
+- Struct `ResourceTypeRegistrationsListByProviderRegistrationResult` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeFirstOptions` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeFirstResponse` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeFirstResult` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeSecondOptions` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeSecondResponse` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeSecondResult` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeThirdOptions` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeThirdResponse` has been removed
+- Struct `SKUsCreateOrUpdateNestedResourceTypeThirdResult` has been removed
+- Struct `SKUsCreateOrUpdateOptions` has been removed
+- Struct `SKUsCreateOrUpdateResponse` has been removed
+- Struct `SKUsCreateOrUpdateResult` has been removed
+- Struct `SKUsDeleteNestedResourceTypeFirstOptions` has been removed
+- Struct `SKUsDeleteNestedResourceTypeFirstResponse` has been removed
+- Struct `SKUsDeleteNestedResourceTypeSecondOptions` has been removed
+- Struct `SKUsDeleteNestedResourceTypeSecondResponse` has been removed
+- Struct `SKUsDeleteNestedResourceTypeThirdOptions` has been removed
+- Struct `SKUsDeleteNestedResourceTypeThirdResponse` has been removed
+- Struct `SKUsDeleteOptions` has been removed
+- Struct `SKUsDeleteResponse` has been removed
+- Struct `SKUsGetNestedResourceTypeFirstOptions` has been removed
+- Struct `SKUsGetNestedResourceTypeFirstResponse` has been removed
+- Struct `SKUsGetNestedResourceTypeFirstResult` has been removed
+- Struct `SKUsGetNestedResourceTypeSecondOptions` has been removed
+- Struct `SKUsGetNestedResourceTypeSecondResponse` has been removed
+- Struct `SKUsGetNestedResourceTypeSecondResult` has been removed
+- Struct `SKUsGetNestedResourceTypeThirdOptions` has been removed
+- Struct `SKUsGetNestedResourceTypeThirdResponse` has been removed
+- Struct `SKUsGetNestedResourceTypeThirdResult` has been removed
+- Struct `SKUsGetOptions` has been removed
+- Struct `SKUsGetResponse` has been removed
+- Struct `SKUsGetResult` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstOptions` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstPager` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstResponse` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstResult` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondOptions` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondPager` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondResponse` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondResult` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdOptions` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdPager` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdResponse` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdResult` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsOptions` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsPager` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsResponse` has been removed
+- Struct `SKUsListByResourceTypeRegistrationsResult` has been removed
+- Field `CustomRolloutSpecification` of struct `CustomRolloutPropertiesSpecification` has been removed
+- Field `TrafficRegionRolloutConfiguration` of struct `DefaultRolloutSpecificationMediumTraffic` has been removed
+- Field `TrafficRegionRolloutConfiguration` of struct `DefaultRolloutSpecificationHighTraffic` has been removed
+- Field `ResourceProviderAuthentication` of struct `ResourceProviderManifestProviderAuthentication` has been removed
+- Field `TrafficRegions` of struct `CustomRolloutSpecificationCanary` has been removed
+- Field `CustomRolloutStatus` of struct `CustomRolloutPropertiesStatus` has been removed
+- Field `DefaultRolloutStatus` of struct `DefaultRolloutPropertiesStatus` has been removed
+- Field `ResourceTypeSKU` of struct `SKUResourceProperties` has been removed
+- Field `RequestHeaderOptions` of struct `ResourceProviderManifestRequestHeaderOptions` has been removed
+- Field `IdentityManagementProperties` of struct `ResourceTypeRegistrationPropertiesIdentityManagement` has been removed
+- Field `TrafficRegionRolloutConfiguration` of struct `DefaultRolloutSpecificationLowTraffic` has been removed
+- Field `ProviderHubMetadata` of struct `ProviderRegistrationPropertiesProviderHubMetadata` has been removed
+- Field `ResourceMovePolicy` of struct `ResourceTypeRegistrationPropertiesResourceMovePolicy` has been removed
+- Field `ProviderRegistrationPropertiesAutoGenerated` of struct `ProviderRegistrationProperties` has been removed
+- Field `ReRegisterSubscriptionMetadata` of struct `ResourceProviderManifestReRegisterSubscriptionMetadata` has been removed
+- Field `TrafficRegionRolloutConfiguration` of struct `DefaultRolloutSpecificationRestOfTheWorldGroupOne` has been removed
+- Field `Resource` of struct `OperationsContent` has been removed
+- Field `ProxyResource` of struct `DefaultRollout` has been removed
+- Field `DefaultRolloutPropertiesAutoGenerated` of struct `DefaultRolloutProperties` has been removed
+- Field `ProxyResource` of struct `CustomRollout` has been removed
+- Field `SubscriptionLifecycleNotificationSpecifications` of struct `ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` has been removed
+- Field `ProxyResource` of struct `SKUResource` has been removed
+- Field `IdentityManagement` of struct `ResourceTypeIdentityManagement` has been removed
+- Field `FeaturesRule` of struct `ResourceProviderEndpointFeaturesRule` has been removed
+- Field `TrafficRegionRolloutConfiguration` of struct `DefaultRolloutSpecificationRestOfTheWorldGroupTwo` has been removed
+- Field `FeaturesRule` of struct `ResourceTypeEndpointFeaturesRule` has been removed
+- Field `Error` of struct `ErrorResponseError` has been removed
+- Field `ResourceTypeExtensionOptions` of struct `ResourceTypeRegistrationPropertiesExtensionOptions` has been removed
+- Field `LoggingHiddenPropertyPath` of struct `LoggingRuleHiddenPropertyPaths` has been removed
+- Field `RolloutStatusBase` of struct `DefaultRolloutStatus` has been removed
+- Field `ProviderRegistration` of struct `DefaultRolloutSpecificationProviderRegistration` has been removed
+- Field `ResourceProviderManifestProperties` of struct `ProviderRegistrationPropertiesAutoGenerated` has been removed
+- Field `InnerError` of struct `ErrorInnerError` has been removed
+- Field `ResourceTypeRegistrationPropertiesAutoGenerated` of struct `ResourceTypeRegistrationProperties` has been removed
+- Field `ResourceProviderManagement` of struct `ResourceProviderManifestManagement` has been removed
+- Field `TemplateDeploymentPolicy` of struct `ResourceTypeTemplateDeploymentPolicy` has been removed
+- Field `ProxyResource` of struct `ResourceTypeRegistration` has been removed
+- Field `CanaryTrafficRegionRolloutConfiguration` of struct `DefaultRolloutSpecificationCanary` has been removed
+- Field `RequestHeaderOptions` of struct `ResourceTypeRegistrationPropertiesRequestHeaderOptions` has been removed
+- Field `ResourceProviderManagement` of struct `ResourceProviderManifestPropertiesManagement` has been removed
+- Field `FeaturesRule` of struct `ResourceProviderManifestFeaturesRule` has been removed
+- Field `FeaturesRule` of struct `ResourceTypeRegistrationPropertiesFeaturesRule` has been removed
+- Field `ExtensionOptions` of struct `ResourceTypeExtensionOptionsResourceCreationBegin` has been removed
+- Field `NotificationRegistrationPropertiesAutoGenerated` of struct `NotificationRegistrationProperties` has been removed
+- Field `TrafficRegions` of struct `TrafficRegionRolloutConfiguration` has been removed
+- Field `ProviderRegistration` of struct `CustomRolloutSpecificationProviderRegistration` has been removed
+- Field `FeaturesRule` of struct `ResourceTypeFeaturesRule` has been removed
+- Field `ProxyResource` of struct `ProviderRegistration` has been removed
+- Field `CustomRolloutPropertiesAutoGenerated` of struct `CustomRolloutProperties` has been removed
+- Field `FeaturesRule` of struct `ResourceProviderManifestPropertiesFeaturesRule` has been removed
+- Field `DefaultRolloutSpecification` of struct `DefaultRolloutPropertiesSpecification` has been removed
+- Field `OperationsDisplayDefinition` of struct `OperationsDefinitionDisplay` has been removed
+- Field `ResourceProviderAuthentication` of struct `ResourceProviderManifestPropertiesProviderAuthentication` has been removed
+- Field `TemplateDeploymentOptions` of struct `ResourceProviderManifestPropertiesTemplateDeploymentOptions` has been removed
+- Field `CheckNameAvailabilitySpecifications` of struct `ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications` has been removed
+- Field `SKUCapacity` of struct `SKUSettingCapacity` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `RequestHeaderOptions` of struct `ResourceProviderManifestPropertiesRequestHeaderOptions` has been removed
+- Field `RequestHeaderOptions` of struct `ResourceTypeRequestHeaderOptions` has been removed
+- Field `SubscriptionLifecycleNotificationSpecifications` of struct `ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` has been removed
+- Field `Resource` of struct `NotificationRegistration` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `TemplateDeploymentOptions` of struct `ResourceTypeRegistrationPropertiesTemplateDeploymentOptions` has been removed
+
+### Features Added
+
+- New function `CustomRolloutPropertiesStatus.MarshalJSON() ([]byte, error)`
+- New function `*ProviderRegistrationsClientListPager.NextPage(context.Context) bool`
+- New function `*ResourceTypeRegistrationsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ErrorInnerError.UnmarshalJSON([]byte) error`
+- New function `DefaultRolloutPropertiesStatus.MarshalJSON() ([]byte, error)`
+- New function `CustomRolloutPropertiesSpecification.MarshalJSON() ([]byte, error)`
+- New function `*SKUsClientListByResourceTypeRegistrationsPager.NextPage(context.Context) bool`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstPager.NextPage(context.Context) bool`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*NotificationRegistrationsClientListByProviderRegistrationPager.NextPage(context.Context) bool`
+- New function `*ProviderRegistrationsClientCreateOrUpdatePoller.FinalResponse(context.Context) (ProviderRegistrationsClientCreateOrUpdateResponse, error)`
+- New function `ResourceTypeRegistrationPropertiesTemplateDeploymentOptions.MarshalJSON() ([]byte, error)`
+- New function `*DefaultRolloutsClientCreateOrUpdatePoller.FinalResponse(context.Context) (DefaultRolloutsClientCreateOrUpdateResponse, error)`
+- New function `DefaultRolloutSpecificationRestOfTheWorldGroupOne.MarshalJSON() ([]byte, error)`
+- New function `*SKUsClientListByResourceTypeRegistrationsPager.Err() error`
+- New function `LoggingRuleHiddenPropertyPaths.MarshalJSON() ([]byte, error)`
+- New function `*ResourceTypeRegistrationsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse.Resume(context.Context, *ResourceTypeRegistrationsClient, string) error`
+- New function `ResourceProviderManifestManagement.MarshalJSON() ([]byte, error)`
+- New function `ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications.MarshalJSON() ([]byte, error)`
+- New function `*ProviderRegistrationsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ResourceTypeRegistrationsClientListByProviderRegistrationPager.NextPage(context.Context) bool`
+- New function `ResourceProviderManifestPropertiesProviderAuthentication.MarshalJSON() ([]byte, error)`
+- New function `SKUResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*ProviderRegistrationsClientListPager.PageResponse() ProviderRegistrationsClientListResponse`
+- New function `*ProviderRegistrationsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceTypeRegistrationsClientListByProviderRegistrationPager.PageResponse() ResourceTypeRegistrationsClientListByProviderRegistrationResponse`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdPager.Err() error`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstPager.PageResponse() SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse`
+- New function `*ProviderRegistrationsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ResourceTypeRegistrationsClientListByProviderRegistrationPager.Err() error`
+- New function `*CustomRolloutsClientListByProviderRegistrationPager.NextPage(context.Context) bool`
+- New function `*DefaultRolloutsClientListByProviderRegistrationPager.PageResponse() DefaultRolloutsClientListByProviderRegistrationResponse`
+- New function `ResourceProviderManifestProviderAuthentication.MarshalJSON() ([]byte, error)`
+- New function `*ProviderRegistrationsClientListPager.Err() error`
+- New function `*ProviderRegistrationsClientCreateOrUpdatePollerResponse.Resume(context.Context, *ProviderRegistrationsClient, string) error`
+- New function `*DefaultRolloutsClientListByProviderRegistrationPager.Err() error`
+- New function `ResourceTypeExtensionOptionsResourceCreationBegin.MarshalJSON() ([]byte, error)`
+- New function `DefaultRolloutSpecificationCanary.MarshalJSON() ([]byte, error)`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondPager.Err() error`
+- New function `NotificationRegistrationProperties.MarshalJSON() ([]byte, error)`
+- New function `ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ResourceTypeRegistrationsClientCreateOrUpdateResponse, error)`
+- New function `ProviderRegistrationProperties.MarshalJSON() ([]byte, error)`
+- New function `DefaultRolloutSpecificationLowTraffic.MarshalJSON() ([]byte, error)`
+- New function `*DefaultRolloutPropertiesStatus.UnmarshalJSON([]byte) error`
+- New function `MetadataProviderAuthentication.MarshalJSON() ([]byte, error)`
+- New function `*Client.GenerateManifest(context.Context, string, *ClientGenerateManifestOptions) (ClientGenerateManifestResponse, error)`
+- New function `ProviderRegistrationPropertiesProviderHubMetadata.MarshalJSON() ([]byte, error)`
+- New function `*DefaultRolloutsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondPager.NextPage(context.Context) bool`
+- New function `DefaultRolloutSpecificationRestOfTheWorldGroupTwo.MarshalJSON() ([]byte, error)`
+- New function `DefaultRolloutSpecificationMediumTraffic.MarshalJSON() ([]byte, error)`
+- New function `CustomRolloutSpecificationCanary.MarshalJSON() ([]byte, error)`
+- New function `*ResourceTypeRegistrationsClientCreateOrUpdatePoller.FinalResponse(context.Context) (ResourceTypeRegistrationsClientCreateOrUpdateResponse, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdPager.PageResponse() SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse`
+- New function `ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.MarshalJSON() ([]byte, error)`
+- New function `*DefaultRolloutsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications.MarshalJSON() ([]byte, error)`
+- New function `DefaultRolloutsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DefaultRolloutsClientCreateOrUpdateResponse, error)`
+- New function `*CustomRolloutsClientListByProviderRegistrationPager.Err() error`
+- New function `ProviderRegistrationsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ProviderRegistrationsClientCreateOrUpdateResponse, error)`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondPager.PageResponse() SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstPager.Err() error`
+- New function `MetadataThirdPartyProviderAuthorization.MarshalJSON() ([]byte, error)`
+- New function `*SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.Err() error`
+- New function `ResourceProviderManifestPropertiesManagement.MarshalJSON() ([]byte, error)`
+- New function `ResourceProviderManifestPropertiesTemplateDeploymentOptions.MarshalJSON() ([]byte, error)`
+- New function `*NotificationRegistrationsClientListByProviderRegistrationPager.PageResponse() NotificationRegistrationsClientListByProviderRegistrationResponse`
+- New function `*DefaultRolloutsClientCreateOrUpdatePollerResponse.Resume(context.Context, *DefaultRolloutsClient, string) error`
+- New function `*DefaultRolloutsClientCreateOrUpdatePoller.Done() bool`
+- New function `DefaultRolloutPropertiesSpecification.MarshalJSON() ([]byte, error)`
+- New function `Metadata.MarshalJSON() ([]byte, error)`
+- New function `DefaultRolloutSpecificationHighTraffic.MarshalJSON() ([]byte, error)`
+- New function `*SKUsClientListByResourceTypeRegistrationsPager.PageResponse() SKUsClientListByResourceTypeRegistrationsResponse`
+- New function `*ResourceTypeRegistrationsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomRolloutsClientListByProviderRegistrationPager.PageResponse() CustomRolloutsClientListByProviderRegistrationResponse`
+- New function `*DefaultRolloutsClientListByProviderRegistrationPager.NextPage(context.Context) bool`
+- New function `ErrorResponseError.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `ErrorInnerError.MarshalJSON() ([]byte, error)`
+- New function `ResourceTypeRegistrationProperties.MarshalJSON() ([]byte, error)`
+- New function `*Client.CheckinManifest(context.Context, string, CheckinManifestParams, *ClientCheckinManifestOptions) (ClientCheckinManifestResponse, error)`
+- New function `*NotificationRegistrationsClientListByProviderRegistrationPager.Err() error`
+- New struct `Client`
+- New struct `ClientCheckinManifestOptions`
+- New struct `ClientCheckinManifestResponse`
+- New struct `ClientCheckinManifestResult`
+- New struct `ClientGenerateManifestOptions`
+- New struct `ClientGenerateManifestResponse`
+- New struct `ClientGenerateManifestResult`
+- New struct `CustomRolloutsClientCreateOrUpdateOptions`
+- New struct `CustomRolloutsClientCreateOrUpdateResponse`
+- New struct `CustomRolloutsClientCreateOrUpdateResult`
+- New struct `CustomRolloutsClientGetOptions`
+- New struct `CustomRolloutsClientGetResponse`
+- New struct `CustomRolloutsClientGetResult`
+- New struct `CustomRolloutsClientListByProviderRegistrationOptions`
+- New struct `CustomRolloutsClientListByProviderRegistrationPager`
+- New struct `CustomRolloutsClientListByProviderRegistrationResponse`
+- New struct `CustomRolloutsClientListByProviderRegistrationResult`
+- New struct `DefaultRolloutsClientBeginCreateOrUpdateOptions`
+- New struct `DefaultRolloutsClientCreateOrUpdatePoller`
+- New struct `DefaultRolloutsClientCreateOrUpdatePollerResponse`
+- New struct `DefaultRolloutsClientCreateOrUpdateResponse`
+- New struct `DefaultRolloutsClientCreateOrUpdateResult`
+- New struct `DefaultRolloutsClientDeleteOptions`
+- New struct `DefaultRolloutsClientDeleteResponse`
+- New struct `DefaultRolloutsClientGetOptions`
+- New struct `DefaultRolloutsClientGetResponse`
+- New struct `DefaultRolloutsClientGetResult`
+- New struct `DefaultRolloutsClientListByProviderRegistrationOptions`
+- New struct `DefaultRolloutsClientListByProviderRegistrationPager`
+- New struct `DefaultRolloutsClientListByProviderRegistrationResponse`
+- New struct `DefaultRolloutsClientListByProviderRegistrationResult`
+- New struct `DefaultRolloutsClientStopOptions`
+- New struct `DefaultRolloutsClientStopResponse`
+- New struct `Metadata`
+- New struct `MetadataProviderAuthentication`
+- New struct `MetadataThirdPartyProviderAuthorization`
+- New struct `NotificationRegistrationsClientCreateOrUpdateOptions`
+- New struct `NotificationRegistrationsClientCreateOrUpdateResponse`
+- New struct `NotificationRegistrationsClientCreateOrUpdateResult`
+- New struct `NotificationRegistrationsClientDeleteOptions`
+- New struct `NotificationRegistrationsClientDeleteResponse`
+- New struct `NotificationRegistrationsClientGetOptions`
+- New struct `NotificationRegistrationsClientGetResponse`
+- New struct `NotificationRegistrationsClientGetResult`
+- New struct `NotificationRegistrationsClientListByProviderRegistrationOptions`
+- New struct `NotificationRegistrationsClientListByProviderRegistrationPager`
+- New struct `NotificationRegistrationsClientListByProviderRegistrationResponse`
+- New struct `NotificationRegistrationsClientListByProviderRegistrationResult`
+- New struct `OperationsClientCreateOrUpdateOptions`
+- New struct `OperationsClientCreateOrUpdateResponse`
+- New struct `OperationsClientCreateOrUpdateResult`
+- New struct `OperationsClientDeleteOptions`
+- New struct `OperationsClientDeleteResponse`
+- New struct `OperationsClientListByProviderRegistrationOptions`
+- New struct `OperationsClientListByProviderRegistrationResponse`
+- New struct `OperationsClientListByProviderRegistrationResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `ProviderRegistrationsClientBeginCreateOrUpdateOptions`
+- New struct `ProviderRegistrationsClientCreateOrUpdatePoller`
+- New struct `ProviderRegistrationsClientCreateOrUpdatePollerResponse`
+- New struct `ProviderRegistrationsClientCreateOrUpdateResponse`
+- New struct `ProviderRegistrationsClientCreateOrUpdateResult`
+- New struct `ProviderRegistrationsClientDeleteOptions`
+- New struct `ProviderRegistrationsClientDeleteResponse`
+- New struct `ProviderRegistrationsClientGenerateOperationsOptions`
+- New struct `ProviderRegistrationsClientGenerateOperationsResponse`
+- New struct `ProviderRegistrationsClientGenerateOperationsResult`
+- New struct `ProviderRegistrationsClientGetOptions`
+- New struct `ProviderRegistrationsClientGetResponse`
+- New struct `ProviderRegistrationsClientGetResult`
+- New struct `ProviderRegistrationsClientListOptions`
+- New struct `ProviderRegistrationsClientListPager`
+- New struct `ProviderRegistrationsClientListResponse`
+- New struct `ProviderRegistrationsClientListResult`
+- New struct `ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions`
+- New struct `ResourceTypeRegistrationsClientCreateOrUpdatePoller`
+- New struct `ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse`
+- New struct `ResourceTypeRegistrationsClientCreateOrUpdateResponse`
+- New struct `ResourceTypeRegistrationsClientCreateOrUpdateResult`
+- New struct `ResourceTypeRegistrationsClientDeleteOptions`
+- New struct `ResourceTypeRegistrationsClientDeleteResponse`
+- New struct `ResourceTypeRegistrationsClientGetOptions`
+- New struct `ResourceTypeRegistrationsClientGetResponse`
+- New struct `ResourceTypeRegistrationsClientGetResult`
+- New struct `ResourceTypeRegistrationsClientListByProviderRegistrationOptions`
+- New struct `ResourceTypeRegistrationsClientListByProviderRegistrationPager`
+- New struct `ResourceTypeRegistrationsClientListByProviderRegistrationResponse`
+- New struct `ResourceTypeRegistrationsClientListByProviderRegistrationResult`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeFirstOptions`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeFirstResult`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeSecondOptions`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeSecondResult`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeThirdOptions`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse`
+- New struct `SKUsClientCreateOrUpdateNestedResourceTypeThirdResult`
+- New struct `SKUsClientCreateOrUpdateOptions`
+- New struct `SKUsClientCreateOrUpdateResponse`
+- New struct `SKUsClientCreateOrUpdateResult`
+- New struct `SKUsClientDeleteNestedResourceTypeFirstOptions`
+- New struct `SKUsClientDeleteNestedResourceTypeFirstResponse`
+- New struct `SKUsClientDeleteNestedResourceTypeSecondOptions`
+- New struct `SKUsClientDeleteNestedResourceTypeSecondResponse`
+- New struct `SKUsClientDeleteNestedResourceTypeThirdOptions`
+- New struct `SKUsClientDeleteNestedResourceTypeThirdResponse`
+- New struct `SKUsClientDeleteOptions`
+- New struct `SKUsClientDeleteResponse`
+- New struct `SKUsClientGetNestedResourceTypeFirstOptions`
+- New struct `SKUsClientGetNestedResourceTypeFirstResponse`
+- New struct `SKUsClientGetNestedResourceTypeFirstResult`
+- New struct `SKUsClientGetNestedResourceTypeSecondOptions`
+- New struct `SKUsClientGetNestedResourceTypeSecondResponse`
+- New struct `SKUsClientGetNestedResourceTypeSecondResult`
+- New struct `SKUsClientGetNestedResourceTypeThirdOptions`
+- New struct `SKUsClientGetNestedResourceTypeThirdResponse`
+- New struct `SKUsClientGetNestedResourceTypeThirdResult`
+- New struct `SKUsClientGetOptions`
+- New struct `SKUsClientGetResponse`
+- New struct `SKUsClientGetResult`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstPager`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResult`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondOptions`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondPager`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResult`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdPager`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse`
+- New struct `SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResult`
+- New struct `SKUsClientListByResourceTypeRegistrationsOptions`
+- New struct `SKUsClientListByResourceTypeRegistrationsPager`
+- New struct `SKUsClientListByResourceTypeRegistrationsResponse`
+- New struct `SKUsClientListByResourceTypeRegistrationsResult`
+- New field `ProviderVersion` in struct `ProviderRegistrationProperties`
+- New field `ProvisioningState` in struct `ProviderRegistrationProperties`
+- New field `Namespace` in struct `ProviderRegistrationProperties`
+- New field `TemplateDeploymentOptions` in struct `ProviderRegistrationProperties`
+- New field `RequiredFeatures` in struct `ProviderRegistrationProperties`
+- New field `Management` in struct `ProviderRegistrationProperties`
+- New field `RequestHeaderOptions` in struct `ProviderRegistrationProperties`
+- New field `Capabilities` in struct `ProviderRegistrationProperties`
+- New field `ProviderHubMetadata` in struct `ProviderRegistrationProperties`
+- New field `ProviderAuthentication` in struct `ProviderRegistrationProperties`
+- New field `Metadata` in struct `ProviderRegistrationProperties`
+- New field `FeaturesRule` in struct `ProviderRegistrationProperties`
+- New field `ProviderAuthorizations` in struct `ProviderRegistrationProperties`
+- New field `ProviderType` in struct `ProviderRegistrationProperties`
+- New field `SubscriptionLifecycleNotificationSpecifications` in struct `ProviderRegistrationProperties`
+- New field `ID` in struct `DefaultRollout`
+- New field `Name` in struct `DefaultRollout`
+- New field `Type` in struct `DefaultRollout`
+- New field `WaitDuration` in struct `DefaultRolloutSpecificationRestOfTheWorldGroupOne`
+- New field `Regions` in struct `DefaultRolloutSpecificationRestOfTheWorldGroupOne`
+- New field `ID` in struct `ResourceTypeRegistration`
+- New field `Name` in struct `ResourceTypeRegistration`
+- New field `Type` in struct `ResourceTypeRegistration`
+- New field `Regions` in struct `CustomRolloutSpecificationCanary`
+- New field `HiddenPathsOnResponse` in struct `LoggingRuleHiddenPropertyPaths`
+- New field `HiddenPathsOnRequest` in struct `LoggingRuleHiddenPropertyPaths`
+- New field `RequiredFeaturesPolicy` in struct `ResourceTypeFeaturesRule`
+- New field `SKUSettings` in struct `SKUResourceProperties`
+- New field `ProvisioningState` in struct `SKUResourceProperties`
+- New field `Type` in struct `ResourceTypeIdentityManagement`
+- New field `SoftDeleteTTL` in struct `ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications`
+- New field `SubscriptionStateOverrideActions` in struct `ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications`
+- New field `OptInHeaders` in struct `ResourceProviderManifestPropertiesRequestHeaderOptions`
+- New field `RequiredFeaturesPolicy` in struct `ResourceTypeEndpointFeaturesRule`
+- New field `IncidentRoutingService` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `IncidentRoutingTeam` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `ManifestOwners` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `ResourceAccessPolicy` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `ResourceAccessRoles` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `SchemaOwners` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `ServiceTreeInfos` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `IncidentContactEmail` in struct `ResourceProviderManifestPropertiesManagement`
+- New field `Regions` in struct `DefaultRolloutSpecificationLowTraffic`
+- New field `WaitDuration` in struct `DefaultRolloutSpecificationLowTraffic`
+- New field `OptInHeaders` in struct `ResourceProviderManifestRequestHeaderOptions`
+- New field `AdditionalProperties` in struct `ErrorInnerError`
+- New field `Code` in struct `ErrorInnerError`
+- New field `InnerError` in struct `ErrorInnerError`
+- New field `PreflightOptions` in struct `ResourceProviderManifestPropertiesTemplateDeploymentOptions`
+- New field `PreflightSupported` in struct `ResourceProviderManifestPropertiesTemplateDeploymentOptions`
+- New field `RequiredFeaturesPolicy` in struct `ResourceProviderEndpointFeaturesRule`
+- New field `ID` in struct `NotificationRegistration`
+- New field `Name` in struct `NotificationRegistration`
+- New field `Type` in struct `NotificationRegistration`
+- New field `Name` in struct `DefaultRolloutSpecificationProviderRegistration`
+- New field `Type` in struct `DefaultRolloutSpecificationProviderRegistration`
+- New field `Properties` in struct `DefaultRolloutSpecificationProviderRegistration`
+- New field `ID` in struct `DefaultRolloutSpecificationProviderRegistration`
+- New field `ProvisioningState` in struct `DefaultRolloutProperties`
+- New field `Specification` in struct `DefaultRolloutProperties`
+- New field `Status` in struct `DefaultRolloutProperties`
+- New field `Error` in struct `ErrorResponse`
+- New field `ProviderAuthentication` in struct `ProviderRegistrationPropertiesProviderHubMetadata`
+- New field `ProviderAuthorizations` in struct `ProviderRegistrationPropertiesProviderHubMetadata`
+- New field `ThirdPartyProviderAuthorization` in struct `ProviderRegistrationPropertiesProviderHubMetadata`
+- New field `CrossResourceGroupMoveEnabled` in struct `ResourceTypeRegistrationPropertiesResourceMovePolicy`
+- New field `CrossSubscriptionMoveEnabled` in struct `ResourceTypeRegistrationPropertiesResourceMovePolicy`
+- New field `ValidationRequired` in struct `ResourceTypeRegistrationPropertiesResourceMovePolicy`
+- New field `Type` in struct `OperationsContent`
+- New field `ID` in struct `OperationsContent`
+- New field `Name` in struct `OperationsContent`
+- New field `Response` in struct `ResourceTypeExtensionOptionsResourceCreationBegin`
+- New field `Request` in struct `ResourceTypeExtensionOptionsResourceCreationBegin`
+- New field `WaitDuration` in struct `DefaultRolloutSpecificationRestOfTheWorldGroupTwo`
+- New field `Regions` in struct `DefaultRolloutSpecificationRestOfTheWorldGroupTwo`
+- New field `RequiredFeaturesPolicy` in struct `ResourceProviderManifestFeaturesRule`
+- New field `EnableDefaultValidation` in struct `ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications`
+- New field `ResourceTypesWithCustomValidation` in struct `ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications`
+- New field `RequiredFeaturesPolicy` in struct `ResourceProviderManifestPropertiesFeaturesRule`
+- New field `Type` in struct `CustomRollout`
+- New field `ID` in struct `CustomRollout`
+- New field `Name` in struct `CustomRollout`
+- New field `SoftDeleteTTL` in struct `ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications`
+- New field `SubscriptionStateOverrideActions` in struct `ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications`
+- New field `Regions` in struct `DefaultRolloutSpecificationHighTraffic`
+- New field `WaitDuration` in struct `DefaultRolloutSpecificationHighTraffic`
+- New field `ResourceAccessPolicy` in struct `ResourceProviderManifestManagement`
+- New field `ResourceAccessRoles` in struct `ResourceProviderManifestManagement`
+- New field `SchemaOwners` in struct `ResourceProviderManifestManagement`
+- New field `ServiceTreeInfos` in struct `ResourceProviderManifestManagement`
+- New field `IncidentContactEmail` in struct `ResourceProviderManifestManagement`
+- New field `IncidentRoutingService` in struct `ResourceProviderManifestManagement`
+- New field `IncidentRoutingTeam` in struct `ResourceProviderManifestManagement`
+- New field `ManifestOwners` in struct `ResourceProviderManifestManagement`
+- New field `RequiredFeaturesPolicy` in struct `ResourceTypeRegistrationPropertiesFeaturesRule`
+- New field `CompletedRegions` in struct `CustomRolloutPropertiesStatus`
+- New field `FailedOrSkippedRegions` in struct `CustomRolloutPropertiesStatus`
+- New field `Name` in struct `ProviderRegistration`
+- New field `Type` in struct `ProviderRegistration`
+- New field `ID` in struct `ProviderRegistration`
+- New field `Regions` in struct `DefaultRolloutSpecificationCanary`
+- New field `SkipRegions` in struct `DefaultRolloutSpecificationCanary`
+- New field `ApplicationID` in struct `ResourceTypeRegistrationPropertiesIdentityManagement`
+- New field `Type` in struct `ResourceTypeRegistrationPropertiesIdentityManagement`
+- New field `FailedOrSkippedRegions` in struct `DefaultRolloutPropertiesStatus`
+- New field `NextTrafficRegion` in struct `DefaultRolloutPropertiesStatus`
+- New field `NextTrafficRegionScheduledTime` in struct `DefaultRolloutPropertiesStatus`
+- New field `SubscriptionReregistrationResult` in struct `DefaultRolloutPropertiesStatus`
+- New field `CompletedRegions` in struct `DefaultRolloutPropertiesStatus`
+- New field `MessageScope` in struct `NotificationRegistrationProperties`
+- New field `NotificationEndpoints` in struct `NotificationRegistrationProperties`
+- New field `NotificationMode` in struct `NotificationRegistrationProperties`
+- New field `ProvisioningState` in struct `NotificationRegistrationProperties`
+- New field `IncludedEvents` in struct `NotificationRegistrationProperties`
+- New field `Regions` in struct `TrafficRegionRolloutConfiguration`
+- New field `ID` in struct `SKUResource`
+- New field `Name` in struct `SKUResource`
+- New field `Type` in struct `SKUResource`
+- New field `OptInHeaders` in struct `ResourceTypeRegistrationPropertiesRequestHeaderOptions`
+- New field `Name` in struct `CustomRolloutSpecificationProviderRegistration`
+- New field `Type` in struct `CustomRolloutSpecificationProviderRegistration`
+- New field `Properties` in struct `CustomRolloutSpecificationProviderRegistration`
+- New field `ID` in struct `CustomRolloutSpecificationProviderRegistration`
+- New field `AllowedAudiences` in struct `ResourceProviderManifestPropertiesProviderAuthentication`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Capabilities` in struct `ResourceTypeTemplateDeploymentPolicy`
+- New field `PreflightOptions` in struct `ResourceTypeTemplateDeploymentPolicy`
+- New field `Endpoints` in struct `ResourceTypeRegistrationProperties`
+- New field `RoutingType` in struct `ResourceTypeRegistrationProperties`
+- New field `AuthorizationActionMappings` in struct `ResourceTypeRegistrationProperties`
+- New field `SubscriptionLifecycleNotificationSpecifications` in struct `ResourceTypeRegistrationProperties`
+- New field `MarketplaceType` in struct `ResourceTypeRegistrationProperties`
+- New field `ResourceMovePolicy` in struct `ResourceTypeRegistrationProperties`
+- New field `IsPureProxy` in struct `ResourceTypeRegistrationProperties`
+- New field `ServiceTreeInfos` in struct `ResourceTypeRegistrationProperties`
+- New field `IdentityManagement` in struct `ResourceTypeRegistrationProperties`
+- New field `DefaultAPIVersion` in struct `ResourceTypeRegistrationProperties`
+- New field `EnableThirdPartyS2S` in struct `ResourceTypeRegistrationProperties`
+- New field `ResourceDeletionPolicy` in struct `ResourceTypeRegistrationProperties`
+- New field `ExtendedLocations` in struct `ResourceTypeRegistrationProperties`
+- New field `CheckNameAvailabilitySpecifications` in struct `ResourceTypeRegistrationProperties`
+- New field `EnableAsyncOperation` in struct `ResourceTypeRegistrationProperties`
+- New field `LinkedAccessChecks` in struct `ResourceTypeRegistrationProperties`
+- New field `ProvisioningState` in struct `ResourceTypeRegistrationProperties`
+- New field `SwaggerSpecifications` in struct `ResourceTypeRegistrationProperties`
+- New field `SubscriptionStateRules` in struct `ResourceTypeRegistrationProperties`
+- New field `TemplateDeploymentOptions` in struct `ResourceTypeRegistrationProperties`
+- New field `Regionality` in struct `ResourceTypeRegistrationProperties`
+- New field `ThrottlingRules` in struct `ResourceTypeRegistrationProperties`
+- New field `LoggingRules` in struct `ResourceTypeRegistrationProperties`
+- New field `DisallowedActionVerbs` in struct `ResourceTypeRegistrationProperties`
+- New field `RequiredFeatures` in struct `ResourceTypeRegistrationProperties`
+- New field `FeaturesRule` in struct `ResourceTypeRegistrationProperties`
+- New field `RequestHeaderOptions` in struct `ResourceTypeRegistrationProperties`
+- New field `AllowedUnauthorizedActions` in struct `ResourceTypeRegistrationProperties`
+- New field `ExtensionOptions` in struct `ResourceTypeRegistrationProperties`
+- New field `ResourceCreationBegin` in struct `ResourceTypeRegistrationPropertiesExtensionOptions`
+- New field `AllowedAudiences` in struct `ResourceProviderManifestProviderAuthentication`
+- New field `OptInHeaders` in struct `ResourceTypeRequestHeaderOptions`
+- New field `ResourceTypeRegistrations` in struct `DefaultRolloutPropertiesSpecification`
+- New field `RestOfTheWorldGroupOne` in struct `DefaultRolloutPropertiesSpecification`
+- New field `RestOfTheWorldGroupTwo` in struct `DefaultRolloutPropertiesSpecification`
+- New field `Canary` in struct `DefaultRolloutPropertiesSpecification`
+- New field `HighTraffic` in struct `DefaultRolloutPropertiesSpecification`
+- New field `LowTraffic` in struct `DefaultRolloutPropertiesSpecification`
+- New field `MediumTraffic` in struct `DefaultRolloutPropertiesSpecification`
+- New field `ProviderRegistration` in struct `DefaultRolloutPropertiesSpecification`
+- New field `Minimum` in struct `SKUSettingCapacity`
+- New field `Default` in struct `SKUSettingCapacity`
+- New field `Maximum` in struct `SKUSettingCapacity`
+- New field `ScaleType` in struct `SKUSettingCapacity`
+- New field `WaitDuration` in struct `DefaultRolloutSpecificationMediumTraffic`
+- New field `Regions` in struct `DefaultRolloutSpecificationMediumTraffic`
+- New field `Metadata` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `ProviderAuthentication` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `ProviderAuthorizations` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `RequestHeaderOptions` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `TemplateDeploymentOptions` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `Capabilities` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `ProviderType` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `Namespace` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `RequiredFeatures` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `Management` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `FeaturesRule` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `ProviderVersion` in struct `ProviderRegistrationPropertiesAutoGenerated`
+- New field `Provider` in struct `OperationsDefinitionDisplay`
+- New field `Resource` in struct `OperationsDefinitionDisplay`
+- New field `Description` in struct `OperationsDefinitionDisplay`
+- New field `Operation` in struct `OperationsDefinitionDisplay`
+- New field `Enabled` in struct `ResourceProviderManifestReRegisterSubscriptionMetadata`
+- New field `ConcurrencyLimit` in struct `ResourceProviderManifestReRegisterSubscriptionMetadata`
+- New field `PreflightSupported` in struct `ResourceTypeRegistrationPropertiesTemplateDeploymentOptions`
+- New field `PreflightOptions` in struct `ResourceTypeRegistrationPropertiesTemplateDeploymentOptions`
+- New field `Specification` in struct `CustomRolloutProperties`
+- New field `ProvisioningState` in struct `CustomRolloutProperties`
+- New field `Status` in struct `CustomRolloutProperties`
+- New field `Canary` in struct `CustomRolloutPropertiesSpecification`
+- New field `ProviderRegistration` in struct `CustomRolloutPropertiesSpecification`
+- New field `ResourceTypeRegistrations` in struct `CustomRolloutPropertiesSpecification`
+- New field `Target` in struct `ErrorResponseError`
+- New field `Code` in struct `ErrorResponseError`
+- New field `Details` in struct `ErrorResponseError`
+- New field `InnerError` in struct `ErrorResponseError`
+- New field `Message` in struct `ErrorResponseError`
+- New field `CompletedRegions` in struct `DefaultRolloutStatus`
+- New field `FailedOrSkippedRegions` in struct `DefaultRolloutStatus`
+
+
+## 0.1.0 (2021-12-22)
+
+- Init release.

@@ -9,22 +9,24 @@
 package armazurearcdata
 
 const (
-	module  = "armazurearcdata"
-	version = "v0.1.0"
+	moduleName    = "armazurearcdata"
+	moduleVersion = "v0.2.0"
 )
 
 // ArcSQLManagedInstanceLicenseType - The license type to apply for this managed instance.
 type ArcSQLManagedInstanceLicenseType string
 
 const (
-	ArcSQLManagedInstanceLicenseTypeBasePrice       ArcSQLManagedInstanceLicenseType = "BasePrice"
-	ArcSQLManagedInstanceLicenseTypeLicenseIncluded ArcSQLManagedInstanceLicenseType = "LicenseIncluded"
+	ArcSQLManagedInstanceLicenseTypeBasePrice        ArcSQLManagedInstanceLicenseType = "BasePrice"
+	ArcSQLManagedInstanceLicenseTypeDisasterRecovery ArcSQLManagedInstanceLicenseType = "DisasterRecovery"
+	ArcSQLManagedInstanceLicenseTypeLicenseIncluded  ArcSQLManagedInstanceLicenseType = "LicenseIncluded"
 )
 
 // PossibleArcSQLManagedInstanceLicenseTypeValues returns the possible values for the ArcSQLManagedInstanceLicenseType const type.
 func PossibleArcSQLManagedInstanceLicenseTypeValues() []ArcSQLManagedInstanceLicenseType {
 	return []ArcSQLManagedInstanceLicenseType{
 		ArcSQLManagedInstanceLicenseTypeBasePrice,
+		ArcSQLManagedInstanceLicenseTypeDisasterRecovery,
 		ArcSQLManagedInstanceLicenseTypeLicenseIncluded,
 	}
 }

@@ -9,8 +9,8 @@
 package armdataboxedge
 
 const (
-	module  = "armdataboxedge"
-	version = "v0.1.0"
+	moduleName    = "armdataboxedge"
+	moduleVersion = "v0.2.0"
 )
 
 // AccessLevel - Access level allowed for this remote application type
@@ -581,7 +581,8 @@ func (c JobType) ToPtr() *JobType {
 	return &c
 }
 
-// KeyVaultSyncStatus - For changing or to initiate the resync to key-vault set the status to KeyVaultSyncPending, rest of the status will not be applicable.
+// KeyVaultSyncStatus - For changing or to initiate the resync to key-vault set the status to KeyVaultSyncPending, rest of
+// the status will not be applicable.
 type KeyVaultSyncStatus string
 
 const (

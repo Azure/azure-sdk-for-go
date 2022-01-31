@@ -1,0 +1,408 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*OperationsStatusClient.Get` parameter(s) have been changed from `(context.Context, string, string, *OperationsStatusGetOptions)` to `(context.Context, string, string, *OperationsStatusClientGetOptions)`
+- Function `*OperationsStatusClient.Get` return value(s) have been changed from `(OperationsStatusGetResponse, error)` to `(OperationsStatusClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginPut` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginPutOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginPutOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginPut` return value(s) have been changed from `(PrivateEndpointConnectionsPutPollerResponse, error)` to `(PrivateEndpointConnectionsClientPutPollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListResponse, error)` to `(PrivateEndpointConnectionsClientListResponse, error)`
+- Function `*DatabasesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *DatabasesBeginDeleteOptions)` to `(context.Context, string, string, string, *DatabasesClientBeginDeleteOptions)`
+- Function `*DatabasesClient.BeginDelete` return value(s) have been changed from `(DatabasesDeletePollerResponse, error)` to `(DatabasesClientDeletePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.Delete` return value(s) have been changed from `(PrivateEndpointConnectionsDeleteResponse, error)` to `(PrivateEndpointConnectionsClientDeleteResponse, error)`
+- Function `*DatabasesClient.BeginExport` parameter(s) have been changed from `(context.Context, string, string, string, ExportClusterParameters, *DatabasesBeginExportOptions)` to `(context.Context, string, string, string, ExportClusterParameters, *DatabasesClientBeginExportOptions)`
+- Function `*DatabasesClient.BeginExport` return value(s) have been changed from `(DatabasesExportPollerResponse, error)` to `(DatabasesClientExportPollerResponse, error)`
+- Function `*DatabasesClient.BeginRegenerateKey` parameter(s) have been changed from `(context.Context, string, string, string, RegenerateKeyParameters, *DatabasesBeginRegenerateKeyOptions)` to `(context.Context, string, string, string, RegenerateKeyParameters, *DatabasesClientBeginRegenerateKeyOptions)`
+- Function `*DatabasesClient.BeginRegenerateKey` return value(s) have been changed from `(DatabasesRegenerateKeyPollerResponse, error)` to `(DatabasesClientRegenerateKeyPollerResponse, error)`
+- Function `*DatabasesClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, *DatabasesListKeysOptions)` to `(context.Context, string, string, string, *DatabasesClientListKeysOptions)`
+- Function `*DatabasesClient.ListKeys` return value(s) have been changed from `(DatabasesListKeysResponse, error)` to `(DatabasesClientListKeysResponse, error)`
+- Function `*DatabasesClient.ListByCluster` parameter(s) have been changed from `(string, string, *DatabasesListByClusterOptions)` to `(string, string, *DatabasesClientListByClusterOptions)`
+- Function `*DatabasesClient.ListByCluster` return value(s) have been changed from `(*DatabasesListByClusterPager)` to `(*DatabasesClientListByClusterPager)`
+- Function `*DatabasesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DatabaseUpdate, *DatabasesBeginUpdateOptions)` to `(context.Context, string, string, string, DatabaseUpdate, *DatabasesClientBeginUpdateOptions)`
+- Function `*DatabasesClient.BeginUpdate` return value(s) have been changed from `(DatabasesUpdatePollerResponse, error)` to `(DatabasesClientUpdatePollerResponse, error)`
+- Function `*DatabasesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DatabasesGetOptions)` to `(context.Context, string, string, string, *DatabasesClientGetOptions)`
+- Function `*DatabasesClient.Get` return value(s) have been changed from `(DatabasesGetResponse, error)` to `(DatabasesClientGetResponse, error)`
+- Function `*DatabasesClient.BeginImport` parameter(s) have been changed from `(context.Context, string, string, string, ImportClusterParameters, *DatabasesBeginImportOptions)` to `(context.Context, string, string, string, ImportClusterParameters, *DatabasesClientBeginImportOptions)`
+- Function `*DatabasesClient.BeginImport` return value(s) have been changed from `(DatabasesImportPollerResponse, error)` to `(DatabasesClientImportPollerResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByCluster` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListByClusterOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListByClusterOptions)`
+- Function `*PrivateLinkResourcesClient.ListByCluster` return value(s) have been changed from `(PrivateLinkResourcesListByClusterResponse, error)` to `(PrivateLinkResourcesClientListByClusterResponse, error)`
+- Function `*DatabasesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, Database, *DatabasesBeginCreateOptions)` to `(context.Context, string, string, string, Database, *DatabasesClientBeginCreateOptions)`
+- Function `*DatabasesClient.BeginCreate` return value(s) have been changed from `(DatabasesCreatePollerResponse, error)` to `(DatabasesClientCreatePollerResponse, error)`
+- Function `*DatabasesRegenerateKeyPoller.Poll` has been removed
+- Function `*DatabasesExportPollerResponse.Resume` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*RedisEnterpriseClient.BeginCreate` has been removed
+- Function `*DatabasesExportPoller.Done` has been removed
+- Function `*RedisEnterpriseClient.ListByResourceGroup` has been removed
+- Function `*RedisEnterpriseListByResourceGroupPager.NextPage` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*DatabasesImportPoller.Done` has been removed
+- Function `*DatabasesDeletePoller.ResumeToken` has been removed
+- Function `Database.MarshalJSON` has been removed
+- Function `*DatabasesCreatePoller.ResumeToken` has been removed
+- Function `*DatabasesExportPoller.Poll` has been removed
+- Function `*RedisEnterpriseDeletePoller.Poll` has been removed
+- Function `DatabasesCreatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionsPutPollerResponse.PollUntilDone` has been removed
+- Function `*RedisEnterpriseClient.BeginDelete` has been removed
+- Function `RedisEnterpriseDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RedisEnterpriseDeletePollerResponse.Resume` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*RedisEnterpriseDeletePoller.FinalResponse` has been removed
+- Function `*DatabasesUpdatePoller.Poll` has been removed
+- Function `*DatabasesCreatePoller.Poll` has been removed
+- Function `*DatabasesUpdatePoller.Done` has been removed
+- Function `NewRedisEnterpriseClient` has been removed
+- Function `*DatabasesDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsPutPoller.FinalResponse` has been removed
+- Function `*RedisEnterpriseUpdatePollerResponse.Resume` has been removed
+- Function `*RedisEnterpriseUpdatePoller.ResumeToken` has been removed
+- Function `DatabasesImportPollerResponse.PollUntilDone` has been removed
+- Function `*RedisEnterpriseCreatePollerResponse.Resume` has been removed
+- Function `*DatabasesRegenerateKeyPoller.FinalResponse` has been removed
+- Function `*DatabasesUpdatePollerResponse.Resume` has been removed
+- Function `*DatabasesListByClusterPager.PageResponse` has been removed
+- Function `*DatabasesImportPollerResponse.Resume` has been removed
+- Function `*RedisEnterpriseListByResourceGroupPager.PageResponse` has been removed
+- Function `DatabasesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesDeletePollerResponse.Resume` has been removed
+- Function `*RedisEnterpriseUpdatePoller.FinalResponse` has been removed
+- Function `DatabasesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RedisEnterpriseCreatePoller.Poll` has been removed
+- Function `*DatabasesImportPoller.FinalResponse` has been removed
+- Function `*RedisEnterpriseClient.Get` has been removed
+- Function `RedisEnterpriseCreatePollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesRegenerateKeyPollerResponse.Resume` has been removed
+- Function `*DatabasesRegenerateKeyPoller.ResumeToken` has been removed
+- Function `*RedisEnterpriseListPager.NextPage` has been removed
+- Function `*RedisEnterpriseListPager.PageResponse` has been removed
+- Function `*DatabasesUpdatePoller.FinalResponse` has been removed
+- Function `*DatabasesCreatePoller.FinalResponse` has been removed
+- Function `*RedisEnterpriseDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsPutPoller.ResumeToken` has been removed
+- Function `*DatabasesExportPoller.ResumeToken` has been removed
+- Function `*RedisEnterpriseCreatePoller.FinalResponse` has been removed
+- Function `*RedisEnterpriseListPager.Err` has been removed
+- Function `*RedisEnterpriseCreatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsPutPollerResponse.Resume` has been removed
+- Function `*RedisEnterpriseClient.BeginUpdate` has been removed
+- Function `*DatabasesExportPoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsPutPoller.Done` has been removed
+- Function `*DatabasesDeletePoller.Done` has been removed
+- Function `*RedisEnterpriseClient.List` has been removed
+- Function `*RedisEnterpriseUpdatePoller.Poll` has been removed
+- Function `*DatabasesCreatePollerResponse.Resume` has been removed
+- Function `*DatabasesCreatePoller.Done` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*DatabasesUpdatePoller.ResumeToken` has been removed
+- Function `*DatabasesListByClusterPager.NextPage` has been removed
+- Function `*RedisEnterpriseCreatePoller.Done` has been removed
+- Function `DatabasesRegenerateKeyPollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesRegenerateKeyPoller.Done` has been removed
+- Function `*RedisEnterpriseDeletePoller.ResumeToken` has been removed
+- Function `*DatabasesImportPoller.ResumeToken` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*RedisEnterpriseListByResourceGroupPager.Err` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*PrivateEndpointConnectionsPutPoller.Poll` has been removed
+- Function `RedisEnterpriseUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesImportPoller.Poll` has been removed
+- Function `DatabasesExportPollerResponse.PollUntilDone` has been removed
+- Function `*DatabasesListByClusterPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*RedisEnterpriseUpdatePoller.Done` has been removed
+- Function `*DatabasesDeletePoller.Poll` has been removed
+- Struct `DatabasesBeginCreateOptions` has been removed
+- Struct `DatabasesBeginDeleteOptions` has been removed
+- Struct `DatabasesBeginExportOptions` has been removed
+- Struct `DatabasesBeginImportOptions` has been removed
+- Struct `DatabasesBeginRegenerateKeyOptions` has been removed
+- Struct `DatabasesBeginUpdateOptions` has been removed
+- Struct `DatabasesCreatePoller` has been removed
+- Struct `DatabasesCreatePollerResponse` has been removed
+- Struct `DatabasesCreateResponse` has been removed
+- Struct `DatabasesCreateResult` has been removed
+- Struct `DatabasesDeletePoller` has been removed
+- Struct `DatabasesDeletePollerResponse` has been removed
+- Struct `DatabasesDeleteResponse` has been removed
+- Struct `DatabasesExportPoller` has been removed
+- Struct `DatabasesExportPollerResponse` has been removed
+- Struct `DatabasesExportResponse` has been removed
+- Struct `DatabasesGetOptions` has been removed
+- Struct `DatabasesGetResponse` has been removed
+- Struct `DatabasesGetResult` has been removed
+- Struct `DatabasesImportPoller` has been removed
+- Struct `DatabasesImportPollerResponse` has been removed
+- Struct `DatabasesImportResponse` has been removed
+- Struct `DatabasesListByClusterOptions` has been removed
+- Struct `DatabasesListByClusterPager` has been removed
+- Struct `DatabasesListByClusterResponse` has been removed
+- Struct `DatabasesListByClusterResult` has been removed
+- Struct `DatabasesListKeysOptions` has been removed
+- Struct `DatabasesListKeysResponse` has been removed
+- Struct `DatabasesListKeysResult` has been removed
+- Struct `DatabasesRegenerateKeyPoller` has been removed
+- Struct `DatabasesRegenerateKeyPollerResponse` has been removed
+- Struct `DatabasesRegenerateKeyResponse` has been removed
+- Struct `DatabasesRegenerateKeyResult` has been removed
+- Struct `DatabasesUpdatePoller` has been removed
+- Struct `DatabasesUpdatePollerResponse` has been removed
+- Struct `DatabasesUpdateResponse` has been removed
+- Struct `DatabasesUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `OperationsStatusGetOptions` has been removed
+- Struct `OperationsStatusGetResponse` has been removed
+- Struct `OperationsStatusGetResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginPutOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateEndpointConnectionsPutPoller` has been removed
+- Struct `PrivateEndpointConnectionsPutPollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsPutResponse` has been removed
+- Struct `PrivateEndpointConnectionsPutResult` has been removed
+- Struct `PrivateLinkResourcesListByClusterOptions` has been removed
+- Struct `PrivateLinkResourcesListByClusterResponse` has been removed
+- Struct `PrivateLinkResourcesListByClusterResult` has been removed
+- Struct `RedisEnterpriseBeginCreateOptions` has been removed
+- Struct `RedisEnterpriseBeginDeleteOptions` has been removed
+- Struct `RedisEnterpriseBeginUpdateOptions` has been removed
+- Struct `RedisEnterpriseClient` has been removed
+- Struct `RedisEnterpriseCreatePoller` has been removed
+- Struct `RedisEnterpriseCreatePollerResponse` has been removed
+- Struct `RedisEnterpriseCreateResponse` has been removed
+- Struct `RedisEnterpriseCreateResult` has been removed
+- Struct `RedisEnterpriseDeletePoller` has been removed
+- Struct `RedisEnterpriseDeletePollerResponse` has been removed
+- Struct `RedisEnterpriseDeleteResponse` has been removed
+- Struct `RedisEnterpriseGetOptions` has been removed
+- Struct `RedisEnterpriseGetResponse` has been removed
+- Struct `RedisEnterpriseGetResult` has been removed
+- Struct `RedisEnterpriseListByResourceGroupOptions` has been removed
+- Struct `RedisEnterpriseListByResourceGroupPager` has been removed
+- Struct `RedisEnterpriseListByResourceGroupResponse` has been removed
+- Struct `RedisEnterpriseListByResourceGroupResult` has been removed
+- Struct `RedisEnterpriseListOptions` has been removed
+- Struct `RedisEnterpriseListPager` has been removed
+- Struct `RedisEnterpriseListResponse` has been removed
+- Struct `RedisEnterpriseListResult` has been removed
+- Struct `RedisEnterpriseUpdatePoller` has been removed
+- Struct `RedisEnterpriseUpdatePollerResponse` has been removed
+- Struct `RedisEnterpriseUpdateResponse` has been removed
+- Struct `RedisEnterpriseUpdateResult` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `TrackedResource` of struct `Cluster` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `ProxyResource` of struct `Database` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New function `*ClientUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*DatabasesClientRegenerateKeyPoller.ResumeToken() (string, error)`
+- New function `PrivateEndpointConnectionsClientPutPollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientPutResponse, error)`
+- New function `*DatabasesClientImportPoller.Done() bool`
+- New function `*DatabasesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DatabasesClientListByClusterPager.NextPage(context.Context) bool`
+- New function `*DatabasesClientListByClusterPager.PageResponse() DatabasesClientListByClusterResponse`
+- New function `*DatabasesClientDeletePoller.FinalResponse(context.Context) (DatabasesClientDeleteResponse, error)`
+- New function `*Client.BeginCreate(context.Context, string, string, Cluster, *ClientBeginCreateOptions) (ClientCreatePollerResponse, error)`
+- New function `*ClientListByResourceGroupPager.PageResponse() ClientListByResourceGroupResponse`
+- New function `*ClientCreatePoller.ResumeToken() (string, error)`
+- New function `*Client.ListByResourceGroup(string, *ClientListByResourceGroupOptions) *ClientListByResourceGroupPager`
+- New function `*Client.Get(context.Context, string, string, *ClientGetOptions) (ClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionsClientPutPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*Client.BeginUpdate(context.Context, string, string, ClusterUpdate, *ClientBeginUpdateOptions) (ClientUpdatePollerResponse, error)`
+- New function `*DatabasesClientImportPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DatabasesClientImportPollerResponse.Resume(context.Context, *DatabasesClient, string) error`
+- New function `ClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientUpdateResponse, error)`
+- New function `DatabasesClientRegenerateKeyPollerResponse.PollUntilDone(context.Context, time.Duration) (DatabasesClientRegenerateKeyResponse, error)`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*ClientDeletePoller.Done() bool`
+- New function `*ClientDeletePoller.FinalResponse(context.Context) (ClientDeleteResponse, error)`
+- New function `*Client.List(*ClientListOptions) *ClientListPager`
+- New function `*DatabasesClientCreatePollerResponse.Resume(context.Context, *DatabasesClient, string) error`
+- New function `*Client.BeginDelete(context.Context, string, string, *ClientBeginDeleteOptions) (ClientDeletePollerResponse, error)`
+- New function `*ClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ClientCreatePoller.Done() bool`
+- New function `DatabasesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (DatabasesClientCreateResponse, error)`
+- New function `*ClientListPager.Err() error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*DatabasesClientRegenerateKeyPoller.Done() bool`
+- New function `*DatabasesClientExportPoller.ResumeToken() (string, error)`
+- New function `*ClientUpdatePoller.Done() bool`
+- New function `*DatabasesClientCreatePoller.FinalResponse(context.Context) (DatabasesClientCreateResponse, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*DatabasesClientUpdatePoller.Done() bool`
+- New function `*DatabasesClientExportPoller.FinalResponse(context.Context) (DatabasesClientExportResponse, error)`
+- New function `*DatabasesClientRegenerateKeyPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DatabasesClientExportPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientPutPoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientPutPollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*DatabasesClientRegenerateKeyPoller.FinalResponse(context.Context) (DatabasesClientRegenerateKeyResponse, error)`
+- New function `*DatabasesClientExportPollerResponse.Resume(context.Context, *DatabasesClient, string) error`
+- New function `*ClientListPager.PageResponse() ClientListResponse`
+- New function `*DatabasesClientUpdatePollerResponse.Resume(context.Context, *DatabasesClient, string) error`
+- New function `*PrivateEndpointConnectionsClientPutPoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientPutResponse, error)`
+- New function `ClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientDeleteResponse, error)`
+- New function `DatabasesClientImportPollerResponse.PollUntilDone(context.Context, time.Duration) (DatabasesClientImportResponse, error)`
+- New function `*ClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientCreateResponse, error)`
+- New function `*DatabasesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DatabasesClientDeletePoller.Done() bool`
+- New function `DatabasesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DatabasesClientUpdateResponse, error)`
+- New function `*DatabasesClientCreatePoller.Done() bool`
+- New function `*DatabasesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DatabasesClientRegenerateKeyPollerResponse.Resume(context.Context, *DatabasesClient, string) error`
+- New function `*ClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ClientListPager.NextPage(context.Context) bool`
+- New function `*ClientCreatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*DatabasesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientPutPoller.Done() bool`
+- New function `*ClientCreatePoller.FinalResponse(context.Context) (ClientCreateResponse, error)`
+- New function `*DatabasesClientDeletePollerResponse.Resume(context.Context, *DatabasesClient, string) error`
+- New function `*DatabasesClientUpdatePoller.FinalResponse(context.Context) (DatabasesClientUpdateResponse, error)`
+- New function `*DatabasesClientImportPoller.ResumeToken() (string, error)`
+- New function `*ClientUpdatePoller.FinalResponse(context.Context) (ClientUpdateResponse, error)`
+- New function `*DatabasesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ClientDeletePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*DatabasesClientExportPoller.Done() bool`
+- New function `DatabasesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DatabasesClientDeleteResponse, error)`
+- New function `DatabasesClientExportPollerResponse.PollUntilDone(context.Context, time.Duration) (DatabasesClientExportResponse, error)`
+- New function `*DatabasesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DatabasesClientListByClusterPager.Err() error`
+- New function `*DatabasesClientImportPoller.FinalResponse(context.Context) (DatabasesClientImportResponse, error)`
+- New function `*ClientListByResourceGroupPager.Err() error`
+- New function `*ClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New struct `Client`
+- New struct `ClientBeginCreateOptions`
+- New struct `ClientBeginDeleteOptions`
+- New struct `ClientBeginUpdateOptions`
+- New struct `ClientCreatePoller`
+- New struct `ClientCreatePollerResponse`
+- New struct `ClientCreateResponse`
+- New struct `ClientCreateResult`
+- New struct `ClientDeletePoller`
+- New struct `ClientDeletePollerResponse`
+- New struct `ClientDeleteResponse`
+- New struct `ClientGetOptions`
+- New struct `ClientGetResponse`
+- New struct `ClientGetResult`
+- New struct `ClientListByResourceGroupOptions`
+- New struct `ClientListByResourceGroupPager`
+- New struct `ClientListByResourceGroupResponse`
+- New struct `ClientListByResourceGroupResult`
+- New struct `ClientListOptions`
+- New struct `ClientListPager`
+- New struct `ClientListResponse`
+- New struct `ClientListResult`
+- New struct `ClientUpdatePoller`
+- New struct `ClientUpdatePollerResponse`
+- New struct `ClientUpdateResponse`
+- New struct `ClientUpdateResult`
+- New struct `DatabasesClientBeginCreateOptions`
+- New struct `DatabasesClientBeginDeleteOptions`
+- New struct `DatabasesClientBeginExportOptions`
+- New struct `DatabasesClientBeginImportOptions`
+- New struct `DatabasesClientBeginRegenerateKeyOptions`
+- New struct `DatabasesClientBeginUpdateOptions`
+- New struct `DatabasesClientCreatePoller`
+- New struct `DatabasesClientCreatePollerResponse`
+- New struct `DatabasesClientCreateResponse`
+- New struct `DatabasesClientCreateResult`
+- New struct `DatabasesClientDeletePoller`
+- New struct `DatabasesClientDeletePollerResponse`
+- New struct `DatabasesClientDeleteResponse`
+- New struct `DatabasesClientExportPoller`
+- New struct `DatabasesClientExportPollerResponse`
+- New struct `DatabasesClientExportResponse`
+- New struct `DatabasesClientGetOptions`
+- New struct `DatabasesClientGetResponse`
+- New struct `DatabasesClientGetResult`
+- New struct `DatabasesClientImportPoller`
+- New struct `DatabasesClientImportPollerResponse`
+- New struct `DatabasesClientImportResponse`
+- New struct `DatabasesClientListByClusterOptions`
+- New struct `DatabasesClientListByClusterPager`
+- New struct `DatabasesClientListByClusterResponse`
+- New struct `DatabasesClientListByClusterResult`
+- New struct `DatabasesClientListKeysOptions`
+- New struct `DatabasesClientListKeysResponse`
+- New struct `DatabasesClientListKeysResult`
+- New struct `DatabasesClientRegenerateKeyPoller`
+- New struct `DatabasesClientRegenerateKeyPollerResponse`
+- New struct `DatabasesClientRegenerateKeyResponse`
+- New struct `DatabasesClientRegenerateKeyResult`
+- New struct `DatabasesClientUpdatePoller`
+- New struct `DatabasesClientUpdatePollerResponse`
+- New struct `DatabasesClientUpdateResponse`
+- New struct `DatabasesClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `OperationsStatusClientGetOptions`
+- New struct `OperationsStatusClientGetResponse`
+- New struct `OperationsStatusClientGetResult`
+- New struct `PrivateEndpointConnectionsClientBeginPutOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateEndpointConnectionsClientPutPoller`
+- New struct `PrivateEndpointConnectionsClientPutPollerResponse`
+- New struct `PrivateEndpointConnectionsClientPutResponse`
+- New struct `PrivateEndpointConnectionsClientPutResult`
+- New struct `PrivateLinkResourcesClientListByClusterOptions`
+- New struct `PrivateLinkResourcesClientListByClusterResponse`
+- New struct `PrivateLinkResourcesClientListByClusterResult`
+- New field `Error` in struct `ErrorResponse`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `Database`
+- New field `Name` in struct `Database`
+- New field `Type` in struct `Database`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `Tags` in struct `Cluster`
+- New field `ID` in struct `Cluster`
+- New field `Name` in struct `Cluster`
+- New field `Type` in struct `Cluster`
+- New field `Location` in struct `Cluster`
+
+
+## 0.1.0 (2021-12-09)
+
+- Init release.

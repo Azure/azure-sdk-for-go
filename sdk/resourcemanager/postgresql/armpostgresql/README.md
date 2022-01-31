@@ -11,7 +11,7 @@ The `armpostgresql` module provides operations for working with Azure Database f
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,14 @@ options = arm.ClientOptions{
 }
 client := armpostgresql.NewFirewallRulesClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Configuration](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/configuration)
+- [Database](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/database)
+- [Firewall Rule](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/firewall_rule)
+- [Postgresql Servers](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/servers)
+- [Virtual Network Rule](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/virtual_network_rule)
 
 ## Provide Feedback
 

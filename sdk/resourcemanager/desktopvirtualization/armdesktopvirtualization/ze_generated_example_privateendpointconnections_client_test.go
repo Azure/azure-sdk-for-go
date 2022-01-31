@@ -28,12 +28,16 @@ func ExamplePrivateEndpointConnectionsClient_ListByHostPool() {
 	pager := client.ListByHostPool("<resource-group-name>",
 		"<host-pool-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExamplePrivateEndpointConnectionsClient_GetByHostPool() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetByHostPoolResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_DeleteByHostPool.json
@@ -92,7 +96,7 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 				PrivateLinkServiceConnectionState: &armdesktopvirtualization.PrivateLinkServiceConnectionState{
 					Description:     to.StringPtr("<description>"),
 					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Status:          armdesktopvirtualization.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -100,7 +104,7 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientUpdateByHostPoolResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_ListByWorkspace.json
@@ -114,12 +118,16 @@ func ExamplePrivateEndpointConnectionsClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -140,7 +148,7 @@ func ExamplePrivateEndpointConnectionsClient_GetByWorkspace() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetByWorkspaceResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_DeleteByWorkspace.json
@@ -178,7 +186,7 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 				PrivateLinkServiceConnectionState: &armdesktopvirtualization.PrivateLinkServiceConnectionState{
 					Description:     to.StringPtr("<description>"),
 					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Status:          armdesktopvirtualization.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -186,5 +194,5 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientUpdateByWorkspaceResult)
 }

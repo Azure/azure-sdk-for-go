@@ -11,7 +11,6 @@ package armcontainerregistry
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // TaskRunsClient contains the methods for the TaskRuns group.
 // Don't use this type directly, use NewTaskRunsClient() instead.
 type TaskRunsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTaskRunsClient creates a new instance of TaskRunsClient with the specified values.
+// subscriptionID - The Microsoft Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TaskRunsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TaskRunsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TaskRunsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates a task run for a container registry with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsBeginCreateOptions) (TaskRunsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// taskRunName - The name of the task run.
+// taskRun - The parameters of a run that needs to scheduled.
+// options - TaskRunsClientBeginCreateOptions contains the optional parameters for the TaskRunsClient.BeginCreate method.
+func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsClientBeginCreateOptions) (TaskRunsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, registryName, taskRunName, taskRun, options)
 	if err != nil {
-		return TaskRunsCreatePollerResponse{}, err
+		return TaskRunsClientCreatePollerResponse{}, err
 	}
-	result := TaskRunsCreatePollerResponse{
+	result := TaskRunsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TaskRunsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("TaskRunsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return TaskRunsCreatePollerResponse{}, err
+		return TaskRunsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &TaskRunsCreatePoller{
+	result.Poller = &TaskRunsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a task run for a container registry with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TaskRunsClient) create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, taskRunName, taskRun, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *TaskRunsClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsBeginCreateOptions) (*policy.Request, error) {
+func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +110,7 @@ func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +121,33 @@ func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceG
 	return req, runtime.MarshalAsJSON(req, taskRun)
 }
 
-// createHandleError handles the Create error response.
-func (client *TaskRunsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a specified task run resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsBeginDeleteOptions) (TaskRunsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// taskRunName - The name of the task run.
+// options - TaskRunsClientBeginDeleteOptions contains the optional parameters for the TaskRunsClient.BeginDelete method.
+func (client *TaskRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientBeginDeleteOptions) (TaskRunsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, taskRunName, options)
 	if err != nil {
-		return TaskRunsDeletePollerResponse{}, err
+		return TaskRunsClientDeletePollerResponse{}, err
 	}
-	result := TaskRunsDeletePollerResponse{
+	result := TaskRunsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TaskRunsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("TaskRunsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return TaskRunsDeletePollerResponse{}, err
+		return TaskRunsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &TaskRunsDeletePoller{
+	result.Poller = &TaskRunsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a specified task run resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TaskRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, taskRunName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +157,13 @@ func (client *TaskRunsClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsBeginDeleteOptions) (*policy.Request, error) {
+func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +181,7 @@ func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +192,29 @@ func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *TaskRunsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the detailed information for a given task run.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsGetOptions) (TaskRunsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// taskRunName - The name of the task run.
+// options - TaskRunsClientGetOptions contains the optional parameters for the TaskRunsClient.Get method.
+func (client *TaskRunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientGetOptions) (TaskRunsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, taskRunName, options)
 	if err != nil {
-		return TaskRunsGetResponse{}, err
+		return TaskRunsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TaskRunsGetResponse{}, err
+		return TaskRunsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TaskRunsGetResponse{}, client.getHandleError(resp)
+		return TaskRunsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsGetOptions) (*policy.Request, error) {
+func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +232,7 @@ func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,46 +244,37 @@ func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *TaskRunsClient) getHandleResponse(resp *http.Response) (TaskRunsGetResponse, error) {
-	result := TaskRunsGetResponse{RawResponse: resp}
+func (client *TaskRunsClient) getHandleResponse(resp *http.Response) (TaskRunsClientGetResponse, error) {
+	result := TaskRunsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRun); err != nil {
-		return TaskRunsGetResponse{}, runtime.NewResponseError(err, resp)
+		return TaskRunsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TaskRunsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetDetails - Gets the detailed information for a given task run that includes all secrets.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsGetDetailsOptions) (TaskRunsGetDetailsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// taskRunName - The name of the task run.
+// options - TaskRunsClientGetDetailsOptions contains the optional parameters for the TaskRunsClient.GetDetails method.
+func (client *TaskRunsClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientGetDetailsOptions) (TaskRunsClientGetDetailsResponse, error) {
 	req, err := client.getDetailsCreateRequest(ctx, resourceGroupName, registryName, taskRunName, options)
 	if err != nil {
-		return TaskRunsGetDetailsResponse{}, err
+		return TaskRunsClientGetDetailsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TaskRunsGetDetailsResponse{}, err
+		return TaskRunsClientGetDetailsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TaskRunsGetDetailsResponse{}, client.getDetailsHandleError(resp)
+		return TaskRunsClientGetDetailsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDetailsHandleResponse(resp)
 }
 
 // getDetailsCreateRequest creates the GetDetails request.
-func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsGetDetailsOptions) (*policy.Request, error) {
+func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientGetDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}/listDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -307,7 +292,7 @@ func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,43 +304,33 @@ func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resou
 }
 
 // getDetailsHandleResponse handles the GetDetails response.
-func (client *TaskRunsClient) getDetailsHandleResponse(resp *http.Response) (TaskRunsGetDetailsResponse, error) {
-	result := TaskRunsGetDetailsResponse{RawResponse: resp}
+func (client *TaskRunsClient) getDetailsHandleResponse(resp *http.Response) (TaskRunsClientGetDetailsResponse, error) {
+	result := TaskRunsClientGetDetailsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRun); err != nil {
-		return TaskRunsGetDetailsResponse{}, runtime.NewResponseError(err, resp)
+		return TaskRunsClientGetDetailsResponse{}, err
 	}
 	return result, nil
 }
 
-// getDetailsHandleError handles the GetDetails error response.
-func (client *TaskRunsClient) getDetailsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the task runs for a specified container registry.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) List(resourceGroupName string, registryName string, options *TaskRunsListOptions) *TaskRunsListPager {
-	return &TaskRunsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// options - TaskRunsClientListOptions contains the optional parameters for the TaskRunsClient.List method.
+func (client *TaskRunsClient) List(resourceGroupName string, registryName string, options *TaskRunsClientListOptions) *TaskRunsClientListPager {
+	return &TaskRunsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
 		},
-		advancer: func(ctx context.Context, resp TaskRunsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TaskRunsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TaskRunListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *TaskRunsListOptions) (*policy.Request, error) {
+func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *TaskRunsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -369,7 +344,7 @@ func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -381,50 +356,42 @@ func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGro
 }
 
 // listHandleResponse handles the List response.
-func (client *TaskRunsClient) listHandleResponse(resp *http.Response) (TaskRunsListResponse, error) {
-	result := TaskRunsListResponse{RawResponse: resp}
+func (client *TaskRunsClient) listHandleResponse(resp *http.Response) (TaskRunsClientListResponse, error) {
+	result := TaskRunsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRunListResult); err != nil {
-		return TaskRunsListResponse{}, runtime.NewResponseError(err, resp)
+		return TaskRunsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *TaskRunsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates a task run with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsBeginUpdateOptions) (TaskRunsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// taskRunName - The name of the task run.
+// updateParameters - The parameters for updating a task run.
+// options - TaskRunsClientBeginUpdateOptions contains the optional parameters for the TaskRunsClient.BeginUpdate method.
+func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsClientBeginUpdateOptions) (TaskRunsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, registryName, taskRunName, updateParameters, options)
 	if err != nil {
-		return TaskRunsUpdatePollerResponse{}, err
+		return TaskRunsClientUpdatePollerResponse{}, err
 	}
-	result := TaskRunsUpdatePollerResponse{
+	result := TaskRunsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TaskRunsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("TaskRunsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return TaskRunsUpdatePollerResponse{}, err
+		return TaskRunsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &TaskRunsUpdatePoller{
+	result.Poller = &TaskRunsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a task run with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TaskRunsClient) update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TaskRunsClient) update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, taskRunName, updateParameters, options)
 	if err != nil {
 		return nil, err
@@ -434,13 +401,13 @@ func (client *TaskRunsClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TaskRunsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsBeginUpdateOptions) (*policy.Request, error) {
+func (client *TaskRunsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -458,7 +425,7 @@ func (client *TaskRunsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter taskRunName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskRunName}", url.PathEscape(taskRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -467,17 +434,4 @@ func (client *TaskRunsClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *TaskRunsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

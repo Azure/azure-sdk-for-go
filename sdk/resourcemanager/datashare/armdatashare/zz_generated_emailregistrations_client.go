@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,57 @@ import (
 // EmailRegistrationsClient contains the methods for the EmailRegistrations group.
 // Don't use this type directly, use NewEmailRegistrationsClient() instead.
 type EmailRegistrationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEmailRegistrationsClient creates a new instance of EmailRegistrationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEmailRegistrationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EmailRegistrationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EmailRegistrationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EmailRegistrationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ActivateEmail - Activate the email registration for the current tenant
-// If the operation fails it returns the *DataShareError error type.
-func (client *EmailRegistrationsClient) ActivateEmail(ctx context.Context, location string, emailRegistration EmailRegistration, options *EmailRegistrationsActivateEmailOptions) (EmailRegistrationsActivateEmailResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Location of the activation.
+// emailRegistration - The payload for tenant domain activation.
+// options - EmailRegistrationsClientActivateEmailOptions contains the optional parameters for the EmailRegistrationsClient.ActivateEmail
+// method.
+func (client *EmailRegistrationsClient) ActivateEmail(ctx context.Context, location string, emailRegistration EmailRegistration, options *EmailRegistrationsClientActivateEmailOptions) (EmailRegistrationsClientActivateEmailResponse, error) {
 	req, err := client.activateEmailCreateRequest(ctx, location, emailRegistration, options)
 	if err != nil {
-		return EmailRegistrationsActivateEmailResponse{}, err
+		return EmailRegistrationsClientActivateEmailResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EmailRegistrationsActivateEmailResponse{}, err
+		return EmailRegistrationsClientActivateEmailResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EmailRegistrationsActivateEmailResponse{}, client.activateEmailHandleError(resp)
+		return EmailRegistrationsClientActivateEmailResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.activateEmailHandleResponse(resp)
 }
 
 // activateEmailCreateRequest creates the ActivateEmail request.
-func (client *EmailRegistrationsClient) activateEmailCreateRequest(ctx context.Context, location string, emailRegistration EmailRegistration, options *EmailRegistrationsActivateEmailOptions) (*policy.Request, error) {
+func (client *EmailRegistrationsClient) activateEmailCreateRequest(ctx context.Context, location string, emailRegistration EmailRegistration, options *EmailRegistrationsClientActivateEmailOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DataShare/locations/{location}/activateEmail"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,52 +86,42 @@ func (client *EmailRegistrationsClient) activateEmailCreateRequest(ctx context.C
 }
 
 // activateEmailHandleResponse handles the ActivateEmail response.
-func (client *EmailRegistrationsClient) activateEmailHandleResponse(resp *http.Response) (EmailRegistrationsActivateEmailResponse, error) {
-	result := EmailRegistrationsActivateEmailResponse{RawResponse: resp}
+func (client *EmailRegistrationsClient) activateEmailHandleResponse(resp *http.Response) (EmailRegistrationsClientActivateEmailResponse, error) {
+	result := EmailRegistrationsClientActivateEmailResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmailRegistration); err != nil {
-		return EmailRegistrationsActivateEmailResponse{}, runtime.NewResponseError(err, resp)
+		return EmailRegistrationsClientActivateEmailResponse{}, err
 	}
 	return result, nil
 }
 
-// activateEmailHandleError handles the ActivateEmail error response.
-func (client *EmailRegistrationsClient) activateEmailHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegisterEmail - Register an email for the current tenant
-// If the operation fails it returns the *DataShareError error type.
-func (client *EmailRegistrationsClient) RegisterEmail(ctx context.Context, location string, options *EmailRegistrationsRegisterEmailOptions) (EmailRegistrationsRegisterEmailResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Location of the registration
+// options - EmailRegistrationsClientRegisterEmailOptions contains the optional parameters for the EmailRegistrationsClient.RegisterEmail
+// method.
+func (client *EmailRegistrationsClient) RegisterEmail(ctx context.Context, location string, options *EmailRegistrationsClientRegisterEmailOptions) (EmailRegistrationsClientRegisterEmailResponse, error) {
 	req, err := client.registerEmailCreateRequest(ctx, location, options)
 	if err != nil {
-		return EmailRegistrationsRegisterEmailResponse{}, err
+		return EmailRegistrationsClientRegisterEmailResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EmailRegistrationsRegisterEmailResponse{}, err
+		return EmailRegistrationsClientRegisterEmailResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EmailRegistrationsRegisterEmailResponse{}, client.registerEmailHandleError(resp)
+		return EmailRegistrationsClientRegisterEmailResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.registerEmailHandleResponse(resp)
 }
 
 // registerEmailCreateRequest creates the RegisterEmail request.
-func (client *EmailRegistrationsClient) registerEmailCreateRequest(ctx context.Context, location string, options *EmailRegistrationsRegisterEmailOptions) (*policy.Request, error) {
+func (client *EmailRegistrationsClient) registerEmailCreateRequest(ctx context.Context, location string, options *EmailRegistrationsClientRegisterEmailOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DataShare/locations/{location}/registerEmail"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,23 +133,10 @@ func (client *EmailRegistrationsClient) registerEmailCreateRequest(ctx context.C
 }
 
 // registerEmailHandleResponse handles the RegisterEmail response.
-func (client *EmailRegistrationsClient) registerEmailHandleResponse(resp *http.Response) (EmailRegistrationsRegisterEmailResponse, error) {
-	result := EmailRegistrationsRegisterEmailResponse{RawResponse: resp}
+func (client *EmailRegistrationsClient) registerEmailHandleResponse(resp *http.Response) (EmailRegistrationsClientRegisterEmailResponse, error) {
+	result := EmailRegistrationsClientRegisterEmailResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmailRegistration); err != nil {
-		return EmailRegistrationsRegisterEmailResponse{}, runtime.NewResponseError(err, resp)
+		return EmailRegistrationsClientRegisterEmailResponse{}, err
 	}
 	return result, nil
-}
-
-// registerEmailHandleError handles the RegisterEmail error response.
-func (client *EmailRegistrationsClient) registerEmailHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByHostPool - List the private link resources available for this hostpool.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkResourcesClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *PrivateLinkResourcesListByHostPoolOptions) *PrivateLinkResourcesListByHostPoolPager {
-	return &PrivateLinkResourcesListByHostPoolPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// options - PrivateLinkResourcesClientListByHostPoolOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByHostPool
+// method.
+func (client *PrivateLinkResourcesClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *PrivateLinkResourcesClientListByHostPoolOptions) *PrivateLinkResourcesClientListByHostPoolPager {
+	return &PrivateLinkResourcesClientListByHostPoolPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkResourcesListByHostPoolResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateLinkResourcesClientListByHostPoolResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourceListResult.NextLink)
 		},
 	}
 }
 
 // listByHostPoolCreateRequest creates the ListByHostPool request.
-func (client *PrivateLinkResourcesClient) listByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *PrivateLinkResourcesListByHostPoolOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *PrivateLinkResourcesClientListByHostPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +82,7 @@ func (client *PrivateLinkResourcesClient) listByHostPoolCreateRequest(ctx contex
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,43 +94,34 @@ func (client *PrivateLinkResourcesClient) listByHostPoolCreateRequest(ctx contex
 }
 
 // listByHostPoolHandleResponse handles the ListByHostPool response.
-func (client *PrivateLinkResourcesClient) listByHostPoolHandleResponse(resp *http.Response) (PrivateLinkResourcesListByHostPoolResponse, error) {
-	result := PrivateLinkResourcesListByHostPoolResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesClient) listByHostPoolHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByHostPoolResponse, error) {
+	result := PrivateLinkResourcesClientListByHostPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinkResourcesListByHostPoolResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesClientListByHostPoolResponse{}, err
 	}
 	return result, nil
 }
 
-// listByHostPoolHandleError handles the ListByHostPool error response.
-func (client *PrivateLinkResourcesClient) listByHostPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByWorkspace - List the private link resources available for this workspace.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkResourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *PrivateLinkResourcesListByWorkspaceOptions) *PrivateLinkResourcesListByWorkspacePager {
-	return &PrivateLinkResourcesListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace
+// options - PrivateLinkResourcesClientListByWorkspaceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByWorkspace
+// method.
+func (client *PrivateLinkResourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *PrivateLinkResourcesClientListByWorkspaceOptions) *PrivateLinkResourcesClientListByWorkspacePager {
+	return &PrivateLinkResourcesClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkResourcesListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateLinkResourcesClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourceListResult.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *PrivateLinkResourcesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *PrivateLinkResourcesListByWorkspaceOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *PrivateLinkResourcesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/workspaces/{workspaceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -133,7 +135,7 @@ func (client *PrivateLinkResourcesClient) listByWorkspaceCreateRequest(ctx conte
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,23 +147,10 @@ func (client *PrivateLinkResourcesClient) listByWorkspaceCreateRequest(ctx conte
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *PrivateLinkResourcesClient) listByWorkspaceHandleResponse(resp *http.Response) (PrivateLinkResourcesListByWorkspaceResponse, error) {
-	result := PrivateLinkResourcesListByWorkspaceResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesClient) listByWorkspaceHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByWorkspaceResponse, error) {
+	result := PrivateLinkResourcesClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinkResourcesListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *PrivateLinkResourcesClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

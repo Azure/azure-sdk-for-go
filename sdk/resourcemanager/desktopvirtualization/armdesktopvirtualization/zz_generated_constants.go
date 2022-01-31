@@ -9,8 +9,8 @@
 package armdesktopvirtualization
 
 const (
-	module  = "armdesktopvirtualization"
-	version = "v0.1.0"
+	moduleName    = "armdesktopvirtualization"
+	moduleVersion = "v0.2.0"
 )
 
 // ApplicationGroupType - Resource Type of ApplicationGroup.
@@ -55,8 +55,8 @@ func (c ApplicationType) ToPtr() *ApplicationType {
 	return &c
 }
 
-// CommandLineSetting - Specifies whether this published application can be launched with command line arguments provided by the client, command line arguments
-// specified at publish time, or no command line arguments at all.
+// CommandLineSetting - Specifies whether this published application can be launched with command line arguments provided
+// by the client, command line arguments specified at publish time, or no command line arguments at all.
 type CommandLineSetting string
 
 const (
@@ -108,45 +108,49 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 type HealthCheckName string
 
 const (
-	// HealthCheckNameAppAttachHealthCheck - Verifies that the AppAttachService is healthy (there were no issues during package staging). The AppAttachService
-	// is used to enable the staging/registration (and eventual deregistration/destaging) of MSIX apps that have been set up by the tenant admin. This checks
-	// whether the component had any failures during package staging. Failures in staging will prevent some MSIX apps from working properly for the end user.
-	// If this check fails, it is non fatal and the machine still can service connections, main issue may be certain apps will not work for end-users.
+	// HealthCheckNameAppAttachHealthCheck - Verifies that the AppAttachService is healthy (there were no issues during package
+	// staging). The AppAttachService is used to enable the staging/registration (and eventual deregistration/destaging) of MSIX
+	// apps that have been set up by the tenant admin. This checks whether the component had any failures during package staging.
+	// Failures in staging will prevent some MSIX apps from working properly for the end user. If this check fails, it is non
+	// fatal and the machine still can service connections, main issue may be certain apps will not work for end-users.
 	HealthCheckNameAppAttachHealthCheck HealthCheckName = "AppAttachHealthCheck"
-	// HealthCheckNameDomainJoinedCheck - Verifies the SessionHost is joined to a domain. If this check fails is classified as fatal as no connection can succeed
-	// if the SessionHost is not joined to the domain.
+	// HealthCheckNameDomainJoinedCheck - Verifies the SessionHost is joined to a domain. If this check fails is classified as
+	// fatal as no connection can succeed if the SessionHost is not joined to the domain.
 	HealthCheckNameDomainJoinedCheck HealthCheckName = "DomainJoinedCheck"
-	// HealthCheckNameDomainReachable - Verifies the domain the SessionHost is joined to is still reachable. If this check fails is classified as fatal as no
-	// connection can succeed if the domain the SessionHost is joined is not reachable at the time of connection.
+	// HealthCheckNameDomainReachable - Verifies the domain the SessionHost is joined to is still reachable. If this check fails
+	// is classified as fatal as no connection can succeed if the domain the SessionHost is joined is not reachable at the time
+	// of connection.
 	HealthCheckNameDomainReachable HealthCheckName = "DomainReachable"
-	// HealthCheckNameDomainTrustCheck - Verifies the SessionHost is not experiencing domain trust issues that will prevent authentication on SessionHost at
-	// connection time when session is created. If this check fails is classified as fatal as no connection can succeed if we cannot reach the domain for authentication
-	// on the SessionHost.
+	// HealthCheckNameDomainTrustCheck - Verifies the SessionHost is not experiencing domain trust issues that will prevent authentication
+	// on SessionHost at connection time when session is created. If this check fails is classified as fatal as no connection
+	// can succeed if we cannot reach the domain for authentication on the SessionHost.
 	HealthCheckNameDomainTrustCheck HealthCheckName = "DomainTrustCheck"
-	// HealthCheckNameFSLogixHealthCheck - Verifies the FSLogix service is up and running to make sure users' profiles are loaded in the session. If this check
-	// fails is classified as fatal as even if the connection can succeed, user experience is bad as the user profile cannot be loaded and user will get a temporary
-	// profile in the session.
+	// HealthCheckNameFSLogixHealthCheck - Verifies the FSLogix service is up and running to make sure users' profiles are loaded
+	// in the session. If this check fails is classified as fatal as even if the connection can succeed, user experience is bad
+	// as the user profile cannot be loaded and user will get a temporary profile in the session.
 	HealthCheckNameFSLogixHealthCheck HealthCheckName = "FSLogixHealthCheck"
 	// HealthCheckNameMetaDataServiceCheck - Verifies the metadata service is accessible and return compute properties.
 	HealthCheckNameMetaDataServiceCheck HealthCheckName = "MetaDataServiceCheck"
-	// HealthCheckNameMonitoringAgentCheck - Verifies that the required Geneva agent is running. If this check fails, it is non fatal and the machine still
-	// can service connections, main issue may be that monitoring agent is missing or running (possibly) older version.
+	// HealthCheckNameMonitoringAgentCheck - Verifies that the required Geneva agent is running. If this check fails, it is non
+	// fatal and the machine still can service connections, main issue may be that monitoring agent is missing or running (possibly)
+	// older version.
 	HealthCheckNameMonitoringAgentCheck HealthCheckName = "MonitoringAgentCheck"
-	// HealthCheckNameSupportedEncryptionCheck - Verifies the value of SecurityLayer registration key. If the value is 0 (SecurityLayer.RDP) this check fails
-	// with Error code = NativeMethodErrorCode.E_FAIL and is fatal. If the value is 1 (SecurityLayer.Negotiate) this check fails with Error code = NativeMethodErrorCode.ERROR_SUCCESS
-	// and is non fatal.
+	// HealthCheckNameSupportedEncryptionCheck - Verifies the value of SecurityLayer registration key. If the value is 0 (SecurityLayer.RDP)
+	// this check fails with Error code = NativeMethodErrorCode.E_FAIL and is fatal. If the value is 1 (SecurityLayer.Negotiate)
+	// this check fails with Error code = NativeMethodErrorCode.ERROR_SUCCESS and is non fatal.
 	HealthCheckNameSupportedEncryptionCheck HealthCheckName = "SupportedEncryptionCheck"
-	// HealthCheckNameSxSStackListenerCheck - Verifies that the SxS stack is up and running so connections can succeed. If this check fails is classified as
-	// fatal as no connection can succeed if the SxS stack is not ready.
+	// HealthCheckNameSxSStackListenerCheck - Verifies that the SxS stack is up and running so connections can succeed. If this
+	// check fails is classified as fatal as no connection can succeed if the SxS stack is not ready.
 	HealthCheckNameSxSStackListenerCheck HealthCheckName = "SxSStackListenerCheck"
-	// HealthCheckNameUrlsAccessibleCheck - Verifies that the required WVD service and Geneva URLs are reachable from the SessionHost. These URLs are: RdTokenUri,
-	// RdBrokerURI, RdDiagnosticsUri and storage blob URLs for agent monitoring (geneva). If this check fails, it is non fatal and the machine still can service
-	// connections, main issue may be that monitoring agent is unable to store warm path data (logs, operations ...).
+	// HealthCheckNameUrlsAccessibleCheck - Verifies that the required WVD service and Geneva URLs are reachable from the SessionHost.
+	// These URLs are: RdTokenUri, RdBrokerURI, RdDiagnosticsUri and storage blob URLs for agent monitoring (geneva). If this
+	// check fails, it is non fatal and the machine still can service connections, main issue may be that monitoring agent is
+	// unable to store warm path data (logs, operations ...).
 	HealthCheckNameUrlsAccessibleCheck HealthCheckName = "UrlsAccessibleCheck"
-	// HealthCheckNameWebRTCRedirectorCheck - Verifies whether the WebRTCRedirector component is healthy. The WebRTCRedirector component is used to optimize
-	// video and audio performance in Microsoft Teams. This checks whether the component is still running, and whether there is a higher version available.
-	// If this check fails, it is non fatal and the machine still can service connections, main issue may be the WebRTCRedirector component has to be restarted
-	// or updated.
+	// HealthCheckNameWebRTCRedirectorCheck - Verifies whether the WebRTCRedirector component is healthy. The WebRTCRedirector
+	// component is used to optimize video and audio performance in Microsoft Teams. This checks whether the component is still
+	// running, and whether there is a higher version available. If this check fails, it is non fatal and the machine still can
+	// service connections, main issue may be the WebRTCRedirector component has to be restarted or updated.
 	HealthCheckNameWebRTCRedirectorCheck HealthCheckName = "WebRTCRedirectorCheck"
 )
 
@@ -205,10 +209,12 @@ func (c HealthCheckResult) ToPtr() *HealthCheckResult {
 type HostPoolType string
 
 const (
-	// HostPoolTypeBYODesktop - Users assign their own machines, load balancing logic remains the same as Personal. PersonalDesktopAssignmentType must be Direct.
+	// HostPoolTypeBYODesktop - Users assign their own machines, load balancing logic remains the same as Personal. PersonalDesktopAssignmentType
+	// must be Direct.
 	HostPoolTypeBYODesktop HostPoolType = "BYODesktop"
-	// HostPoolTypePersonal - Users will be assigned a SessionHost either by administrators (PersonalDesktopAssignmentType = Direct) or upon connecting to the
-	// pool (PersonalDesktopAssignmentType = Automatic). They will always be redirected to their assigned SessionHost.
+	// HostPoolTypePersonal - Users will be assigned a SessionHost either by administrators (PersonalDesktopAssignmentType = Direct)
+	// or upon connecting to the pool (PersonalDesktopAssignmentType = Automatic). They will always be redirected to their assigned
+	// SessionHost.
 	HostPoolTypePersonal HostPoolType = "Personal"
 	// HostPoolTypePooled - Users get a new (random) SessionHost every time it connects to the HostPool.
 	HostPoolTypePooled HostPoolType = "Pooled"
@@ -375,8 +381,8 @@ func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceC
 	return &c
 }
 
-// PublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled allows this resource to only be accessed
-// via private endpoints
+// PublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled allows
+// this resource to only be accessed via private endpoints
 type PublicNetworkAccess string
 
 const (
@@ -441,7 +447,8 @@ func (c RemoteApplicationType) ToPtr() *RemoteApplicationType {
 	return &c
 }
 
-// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
 type SKUTier string
 
 const (
@@ -603,8 +610,8 @@ const (
 	StatusDomainTrustRelationshipLost Status = "DomainTrustRelationshipLost"
 	// StatusFSLogixNotHealthy - FSLogix is in an unhealthy state on the session host.
 	StatusFSLogixNotHealthy Status = "FSLogixNotHealthy"
-	// StatusNeedsAssistance - New status to inform admins that the health on their endpoint needs to be fixed. The connections might not fail, as these issues
-	// are not fatal.
+	// StatusNeedsAssistance - New status to inform admins that the health on their endpoint needs to be fixed. The connections
+	// might not fail, as these issues are not fatal.
 	StatusNeedsAssistance Status = "NeedsAssistance"
 	// StatusNoHeartbeat - The Session Host is not heart beating.
 	StatusNoHeartbeat Status = "NoHeartbeat"
@@ -614,13 +621,14 @@ const (
 	StatusShutdown Status = "Shutdown"
 	// StatusSxSStackListenerNotReady - SxS stack installed on the SessionHost is not ready to receive connections.
 	StatusSxSStackListenerNotReady Status = "SxSStackListenerNotReady"
-	// StatusUnavailable - Session Host is either turned off or has failed critical health checks which is causing service not to be able to route connections
-	// to this session host. Note this replaces previous 'NoHeartBeat' status.
+	// StatusUnavailable - Session Host is either turned off or has failed critical health checks which is causing service not
+	// to be able to route connections to this session host. Note this replaces previous 'NoHeartBeat' status.
 	StatusUnavailable Status = "Unavailable"
-	// StatusUpgradeFailed - Session Host is unavailable because the critical component upgrade (agent, side-by-side stack, etc.) failed.
+	// StatusUpgradeFailed - Session Host is unavailable because the critical component upgrade (agent, side-by-side stack, etc.)
+	// failed.
 	StatusUpgradeFailed Status = "UpgradeFailed"
-	// StatusUpgrading - Session Host is unavailable because currently an upgrade of RDAgent/side-by-side stack is in progress. Note: this state will be removed
-	// once the upgrade completes and the host is able to accept connections.
+	// StatusUpgrading - Session Host is unavailable because currently an upgrade of RDAgent/side-by-side stack is in progress.
+	// Note: this state will be removed once the upgrade completes and the host is able to accept connections.
 	StatusUpgrading Status = "Upgrading"
 )
 

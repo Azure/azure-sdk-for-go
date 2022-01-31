@@ -11,7 +11,7 @@ The `armeventgrid` module provides operations for working with Azure Event Grid.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 
@@ -49,6 +49,13 @@ options = arm.ClientOptions{
 }
 client := armeventgrid.NewPartnerNamespacesClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Domain](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/domain)
+- [Domain Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/domain_topic)
+- [System Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/systemtopic)
+- [Topic](https://aka.ms/azsdk/go/mgmt/samples?path=eventgrid/topic)
 
 ## Provide Feedback
 

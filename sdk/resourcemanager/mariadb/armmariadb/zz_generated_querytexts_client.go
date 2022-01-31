@@ -11,7 +11,6 @@ package armmariadb
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // QueryTextsClient contains the methods for the QueryTexts group.
 // Don't use this type directly, use NewQueryTextsClient() instead.
 type QueryTextsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewQueryTextsClient creates a new instance of QueryTextsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewQueryTextsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueryTextsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &QueryTextsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &QueryTextsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Retrieve the Query-Store query texts for the queryId.
-// If the operation fails it returns the *CloudError error type.
-func (client *QueryTextsClient) Get(ctx context.Context, resourceGroupName string, serverName string, queryID string, options *QueryTextsGetOptions) (QueryTextsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// queryID - The Query-Store query identifier.
+// options - QueryTextsClientGetOptions contains the optional parameters for the QueryTextsClient.Get method.
+func (client *QueryTextsClient) Get(ctx context.Context, resourceGroupName string, serverName string, queryID string, options *QueryTextsClientGetOptions) (QueryTextsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, queryID, options)
 	if err != nil {
-		return QueryTextsGetResponse{}, err
+		return QueryTextsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueryTextsGetResponse{}, err
+		return QueryTextsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueryTextsGetResponse{}, client.getHandleError(resp)
+		return QueryTextsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *QueryTextsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, queryID string, options *QueryTextsGetOptions) (*policy.Request, error) {
+func (client *QueryTextsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, queryID string, options *QueryTextsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/queryTexts/{queryId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *QueryTextsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter queryID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{queryId}", url.PathEscape(queryID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,34 @@ func (client *QueryTextsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *QueryTextsClient) getHandleResponse(resp *http.Response) (QueryTextsGetResponse, error) {
-	result := QueryTextsGetResponse{RawResponse: resp}
+func (client *QueryTextsClient) getHandleResponse(resp *http.Response) (QueryTextsClientGetResponse, error) {
+	result := QueryTextsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryText); err != nil {
-		return QueryTextsGetResponse{}, runtime.NewResponseError(err, resp)
+		return QueryTextsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *QueryTextsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByServer - Retrieve the Query-Store query texts for specified queryIds.
-// If the operation fails it returns the *CloudError error type.
-func (client *QueryTextsClient) ListByServer(resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsListByServerOptions) *QueryTextsListByServerPager {
-	return &QueryTextsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// queryIDs - The query identifiers
+// options - QueryTextsClientListByServerOptions contains the optional parameters for the QueryTextsClient.ListByServer method.
+func (client *QueryTextsClient) ListByServer(resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsClientListByServerOptions) *QueryTextsClientListByServerPager {
+	return &QueryTextsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, queryIDs, options)
 		},
-		advancer: func(ctx context.Context, resp QueryTextsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp QueryTextsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.QueryTextsResultList.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *QueryTextsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsListByServerOptions) (*policy.Request, error) {
+func (client *QueryTextsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/queryTexts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +142,7 @@ func (client *QueryTextsClient) listByServerCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,23 +157,10 @@ func (client *QueryTextsClient) listByServerCreateRequest(ctx context.Context, r
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *QueryTextsClient) listByServerHandleResponse(resp *http.Response) (QueryTextsListByServerResponse, error) {
-	result := QueryTextsListByServerResponse{RawResponse: resp}
+func (client *QueryTextsClient) listByServerHandleResponse(resp *http.Response) (QueryTextsClientListByServerResponse, error) {
+	result := QueryTextsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryTextsResultList); err != nil {
-		return QueryTextsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return QueryTextsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *QueryTextsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

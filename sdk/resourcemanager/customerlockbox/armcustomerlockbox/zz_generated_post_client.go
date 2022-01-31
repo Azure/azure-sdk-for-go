@@ -10,7 +10,6 @@ package armcustomerlockbox
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,43 +21,50 @@ import (
 // PostClient contains the methods for the Post group.
 // Don't use this type directly, use NewPostClient() instead.
 type PostClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewPostClient creates a new instance of PostClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPostClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PostClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PostClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PostClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // DisableLockbox - Disable Tenant for Lockbox
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PostClient) DisableLockbox(ctx context.Context, options *PostDisableLockboxOptions) (PostDisableLockboxResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PostClientDisableLockboxOptions contains the optional parameters for the PostClient.DisableLockbox method.
+func (client *PostClient) DisableLockbox(ctx context.Context, options *PostClientDisableLockboxOptions) (PostClientDisableLockboxResponse, error) {
 	req, err := client.disableLockboxCreateRequest(ctx, options)
 	if err != nil {
-		return PostDisableLockboxResponse{}, err
+		return PostClientDisableLockboxResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PostDisableLockboxResponse{}, err
+		return PostClientDisableLockboxResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PostDisableLockboxResponse{}, client.disableLockboxHandleError(resp)
+		return PostClientDisableLockboxResponse{}, runtime.NewResponseError(resp)
 	}
-	return PostDisableLockboxResponse{RawResponse: resp}, nil
+	return PostClientDisableLockboxResponse{RawResponse: resp}, nil
 }
 
 // disableLockboxCreateRequest creates the DisableLockbox request.
-func (client *PostClient) disableLockboxCreateRequest(ctx context.Context, options *PostDisableLockboxOptions) (*policy.Request, error) {
+func (client *PostClient) disableLockboxCreateRequest(ctx context.Context, options *PostClientDisableLockboxOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CustomerLockbox/disableLockbox"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -67,42 +73,30 @@ func (client *PostClient) disableLockboxCreateRequest(ctx context.Context, optio
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// disableLockboxHandleError handles the DisableLockbox error response.
-func (client *PostClient) disableLockboxHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // EnableLockbox - Enable Tenant for Lockbox
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PostClient) EnableLockbox(ctx context.Context, options *PostEnableLockboxOptions) (PostEnableLockboxResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PostClientEnableLockboxOptions contains the optional parameters for the PostClient.EnableLockbox method.
+func (client *PostClient) EnableLockbox(ctx context.Context, options *PostClientEnableLockboxOptions) (PostClientEnableLockboxResponse, error) {
 	req, err := client.enableLockboxCreateRequest(ctx, options)
 	if err != nil {
-		return PostEnableLockboxResponse{}, err
+		return PostClientEnableLockboxResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PostEnableLockboxResponse{}, err
+		return PostClientEnableLockboxResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PostEnableLockboxResponse{}, client.enableLockboxHandleError(resp)
+		return PostClientEnableLockboxResponse{}, runtime.NewResponseError(resp)
 	}
-	return PostEnableLockboxResponse{RawResponse: resp}, nil
+	return PostClientEnableLockboxResponse{RawResponse: resp}, nil
 }
 
 // enableLockboxCreateRequest creates the EnableLockbox request.
-func (client *PostClient) enableLockboxCreateRequest(ctx context.Context, options *PostEnableLockboxOptions) (*policy.Request, error) {
+func (client *PostClient) enableLockboxCreateRequest(ctx context.Context, options *PostClientEnableLockboxOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CustomerLockbox/enableLockbox"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,17 +105,4 @@ func (client *PostClient) enableLockboxCreateRequest(ctx context.Context, option
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// enableLockboxHandleError handles the EnableLockbox error response.
-func (client *PostClient) enableLockboxHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

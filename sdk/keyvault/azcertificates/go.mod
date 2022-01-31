@@ -2,6 +2,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates
 
 go 1.17
 
+replace github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal => ../internal
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.21.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.13.0

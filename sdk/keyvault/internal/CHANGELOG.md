@@ -1,14 +1,9 @@
 # Release History
 
-## 0.2.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.2.1 (2022-01-31)
 
 ### Bugs Fixed
-
-### Other Changes
+* Avoid retries on terminal failures (#16932)
 
 ## 0.2.0 (2022-01-12)
 

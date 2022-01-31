@@ -82,7 +82,7 @@ func TestClient_BeginDeleteCertificate(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	certName, err := createRandomName(t, "cert")
+	certName, err := createRandomName(t, "createCert")
 	require.NoError(t, err)
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{

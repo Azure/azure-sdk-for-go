@@ -93,10 +93,6 @@ func (m *listBlobPerfTest) GetMetadata() perf.PerfTestOptions {
 	return m.PerfTestOptions
 }
 
-func (l *listBlobPerfTest) RegisterArguments() error {
-	return nil
-}
-
 func NewListTest(options *perf.PerfTestOptions) perf.PerfTest {
 	if options == nil {
 		options = &perf.PerfTestOptions{}

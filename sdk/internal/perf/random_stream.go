@@ -4,8 +4,8 @@
 package perf
 
 import (
-	"bytes"
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"io"
 )
@@ -15,15 +15,53 @@ const (
 )
 
 type randomStream struct {
-	readSeeker io.ReadSeeker
+	baseData         []byte
+	dataLength       int64
+	baseBufferLength int
+	position         int64
+	remaining        int
 }
 
 func (r *randomStream) Read(p []byte) (int, error) {
-	return r.readSeeker.Read(p)
+	if r.remaining == 0 {
+		return 0, io.EOF
+	}
+
+	size := len(p)
+	e := min(size, r.remaining)
+	if e > r.baseBufferLength {
+		// Need to create a larger buffer
+		b, err := getRandomBytes(e)
+		if err != nil {
+			return 0, err
+		}
+		r.baseData = b
+		r.baseBufferLength = e
+	}
+
+	r.remaining -= e
+	r.position += int64(e)
+
+	n := copy(p, r.baseData[:e])
+	return n, nil
 }
 
 func (r *randomStream) Seek(offset int64, whence int) (int64, error) {
-	return r.readSeeker.Seek(offset, whence)
+	switch whence {
+	case io.SeekStart:
+		r.position = offset
+	case io.SeekCurrent:
+		r.position += offset
+	case io.SeekEnd:
+		r.position = r.dataLength + offset
+	default:
+		return 0, fmt.Errorf("randomStream: did not understand whence: %d", whence)
+	}
+	r.remaining = int(r.dataLength - r.position)
+	if r.position < 0 {
+		return 0, errors.New("randomStream: negative position")
+	}
+	return r.position, nil
 }
 
 func (r randomStream) Close() error {
@@ -42,12 +80,16 @@ func getRandomBytes(i int) ([]byte, error) {
 	return ret, nil
 }
 
-func NewRandomStream(size int) (io.ReadSeekCloser, error) {
-	baseData, err := getRandomBytes(size)
+func NewRandomStream(length int) (io.ReadSeekCloser, error) {
+	base, err := getRandomBytes(min(length, defaultLength))
 	if err != nil {
 		return nil, err
 	}
 	return &randomStream{
-		readSeeker: bytes.NewReader(baseData),
+		baseData:         base,
+		dataLength:       int64(length),
+		baseBufferLength: defaultLength,
+		position:         0,
+		remaining:        length,
 	}, nil
 }

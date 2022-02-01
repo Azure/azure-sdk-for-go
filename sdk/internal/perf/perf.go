@@ -25,10 +25,7 @@ var (
 
 type PerfTest interface {
 	// GetMetadata returns the name of the test
-	// TODO: Add local flags to the GetMetadata
 	GetMetadata() PerfTestOptions
-
-	RegisterArguments() error
 
 	GlobalSetup(context.Context) error
 
@@ -273,6 +270,14 @@ func testsToRun(registered []NewPerfTest) NewPerfTest {
 	return registered[0]
 }
 
+var registerCalled bool
+
+// RegisterArguments is used to
+func RegisterArguments(f func()) {
+	f()
+	registerCalled = true
+}
+
 // Run runs all individual tests
 func Run(perfTests []NewPerfTest) {
 	// Start with adding all of our arguments
@@ -284,16 +289,11 @@ func Run(perfTests []NewPerfTest) {
 	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
 	pflag.CommandLine.MarkHidden("debug")
 
-	// TODO: add individual performance tests local flags
-	for _, perfTest := range perfTests {
-		p := perfTest(nil)
-		err := p.RegisterArguments()
-		if err != nil {
-			panic(err)
-		}
-	}
-
 	pflag.Parse()
+
+	if !registerCalled && debug {
+		fmt.Println("There were no local flags added.")
+	}
 
 	perfTestToRun := testsToRun(perfTests)
 

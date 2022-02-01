@@ -36,9 +36,12 @@ func (d *downloadPerfTest) GlobalSetup(ctx context.Context) error {
 
 	blobClient := containerClient.NewBlockBlobClient(d.blobName)
 
-	data := "This is all placeholder random data for now. This is all placeholder random data for now. This is all placeholder random data for now."
+	data, err := perf.NewRandomStream(int(*size))
+	if err != nil {
+		return err
+	}
 
-	_, err = blobClient.Upload(context.Background(), NopCloser(bytes.NewReader([]byte(data))), nil)
+	_, err = blobClient.Upload(context.Background(), data, nil)
 
 	return err
 }
@@ -94,10 +97,6 @@ func (d *downloadPerfTest) GlobalCleanup(ctx context.Context) error {
 
 func (d *downloadPerfTest) GetMetadata() perf.PerfTestOptions {
 	return d.PerfTestOptions
-}
-
-func (*downloadPerfTest) RegisterArguments() error {
-	return nil
 }
 
 func NewDownloadTest(options *perf.PerfTestOptions) perf.PerfTest {

@@ -1,6 +1,10 @@
 package main
 
-import "io"
+import (
+	"io"
+
+	"github.com/spf13/pflag"
+)
 
 type nopCloser struct {
 	io.ReadSeeker
@@ -17,3 +21,8 @@ func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
 
 var size *int64
 var count *int64
+
+func RegisterArguments() {
+	count = pflag.Int64("num-blobs", 100, "Number of blobs to list. Defaults to 100.")
+	size = pflag.Int64("size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
+}

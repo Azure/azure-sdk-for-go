@@ -12,7 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/spf13/pflag"
 )
 
 type uploadPerfTest struct {
@@ -60,10 +59,10 @@ func (m *uploadPerfTest) Setup(ctx context.Context) error {
 
 func (m *uploadPerfTest) Run(ctx context.Context) error {
 	_, err := m.blobClient.Upload(ctx, m.data, &azblob.UploadBlockBlobOptions{})
-	_, seekErr := m.data.Seek(0, io.SeekStart) // we have to manually seek, is this expected?
-	if seekErr != nil {
-		return seekErr
+	if err != nil {
+		return err
 	}
+	_, err = m.data.Seek(0, io.SeekStart) // rewind to the beginning
 	return err
 }
 
@@ -90,13 +89,6 @@ func (m *uploadPerfTest) GetMetadata() perf.PerfTestOptions {
 	return m.PerfTestOptions
 }
 
-func (*uploadPerfTest) RegisterArguments() error {
-	count = pflag.Int64("num-blobs", 100, "Number of blobs to list. Defaults to 100.")
-	size = pflag.Int64("size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
-
-	return nil
-}
-
 func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
 	if options == nil {
 		options = &perf.PerfTestOptions{}
@@ -111,7 +103,6 @@ func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
 		count = to.Int64Ptr(100)
 	}
 	data, err := perf.NewRandomStream(int(*size))
-	// data := streaming.NopCloser(strings.NewReader("blahblahblah"))
 	if err != nil {
 		panic(err)
 	}

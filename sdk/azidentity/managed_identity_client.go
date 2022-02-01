@@ -381,6 +381,10 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, k
 }
 
 func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, id ManagedIDKind, scopes []string) (*policy.Request, error) {
+	if id != nil {
+		msg := "Cloud Shell doesn't support user assigned managed identities. To authenticate the signed in user, omit ManagedIdentityCredentialOptions.ID"
+		return nil, newAuthenticationFailedError(errors.New(msg), nil) //lint:ignore ST1005 Cloud Shell is a proper noun
+	}
 	request, err := runtime.NewRequest(ctx, http.MethodPost, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -388,9 +392,6 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	request.Raw().Header.Set(headerMetadata, "true")
 	data := url.Values{}
 	data.Set("resource", strings.Join(scopes, " "))
-	if id != nil {
-		data.Set(qpClientID, id.String())
-	}
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
 	if err := request.SetBody(body, "application/x-www-form-urlencoded"); err != nil {

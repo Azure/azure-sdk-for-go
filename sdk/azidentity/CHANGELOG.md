@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `ManagedIdentityCredential.GetToken()` now returns an error when configured for
+   a user assigned identity in Azure Cloud Shell (which doesn't support such identities)
 
 ### Other Changes
 

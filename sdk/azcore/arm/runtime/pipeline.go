@@ -30,7 +30,7 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 		return pipeline.Pipeline{}, err
 	}
 	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{
-		Scopes:           []string{shared.EndpointToScope(conf.Endpoint)},
+		Scopes:           conf.Audiences[:1],
 		AuxiliaryTenants: options.AuxiliaryTenants,
 	})
 	perRetry := make([]pipeline.Policy, 0, len(plOpts.PerRetry)+1)

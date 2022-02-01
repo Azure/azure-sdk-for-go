@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
@@ -57,13 +56,13 @@ func (m *listBlobPerfTest) Setup(ctx context.Context) error {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, &azblob.ClientOptions{Transporter: m.ProxyInstance})
 	m.containerClient = containerClient
 	return err
 }
 
 func (m *listBlobPerfTest) Run(ctx context.Context) error {
-	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobFlatSegmentOptions{Maxresults: to.Int32Ptr(int32(*count))})
+	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobFlatSegmentOptions{Maxresults: count})
 	for pager.NextPage(context.Background()) {
 	}
 	return pager.Err()
@@ -96,6 +95,9 @@ func (m *listBlobPerfTest) GetMetadata() perf.PerfTestOptions {
 func NewListTest(options *perf.PerfTestOptions) perf.PerfTest {
 	if options == nil {
 		options = &perf.PerfTestOptions{}
+	}
+	if count == nil {
+		*count = 100
 	}
 	options.Name = "BlobListTest"
 	return &listBlobPerfTest{

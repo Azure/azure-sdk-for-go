@@ -99,9 +99,6 @@ func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
 		size = to.Int64Ptr(10240)
 	}
 
-	if count == nil {
-		count = to.Int64Ptr(100)
-	}
 	data, err := perf.NewRandomStream(int(*size))
 	if err != nil {
 		panic(err)

@@ -6,6 +6,7 @@ package perf
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"sync"
 	"text/tabwriter"
@@ -38,9 +39,13 @@ type PerfTest interface {
 	GlobalCleanup(context.Context) error
 }
 
+type HTTPClient interface {
+	Do(*http.Request) (*http.Response, error)
+}
+
 type PerfTestOptions struct {
 	ParallelIndex int
-	ProxyInstance *RecordingHTTPClient
+	ProxyInstance HTTPClient
 	Name          string
 }
 
@@ -182,19 +187,20 @@ func runPerfTest(p NewPerfTest) error {
 	}
 
 	for idx := 0; idx < Parallel; idx++ {
-		var transporter *RecordingHTTPClient
-		var err error
+		options := &PerfTestOptions{}
 		if TestProxy != "" {
-			transporter, err = NewProxyTransport(nil)
+			transporter, err := NewProxyTransport(nil)
 			if err != nil {
 				panic(err)
 			}
+			options.ProxyInstance = transporter
+			fmt.Println("Using a test proxy")
+		} else {
+			options.ProxyInstance = defaultHTTPClient
 		}
+		options.ParallelIndex = idx
 
-		perfTest := p(&PerfTestOptions{
-			ParallelIndex: idx,
-			ProxyInstance: transporter,
-		})
+		perfTest := p(options)
 		perfTests = append(perfTests, perfTest)
 
 		// Run the setup for a single instance
@@ -248,26 +254,17 @@ func runPerfTest(p NewPerfTest) error {
 
 // testsToRun trims the slice of PerfTest to only those that are flagged as running.
 func testsToRun(registered []NewPerfTest) NewPerfTest {
-	var ret []NewPerfTest
-
 	args := os.Args[1:]
 	for _, r := range registered {
 		p := r(nil)
 		for _, arg := range args {
 			if p.GetMetadata().Name == arg {
-				ret = append(ret, r)
+				return r
 			}
 		}
 	}
 
-	if len(ret) > 1 {
-		fmt.Println("Performance only supports running one test per process. Run the performance multiple times per performance for each test you want to run.")
-		os.Exit(1)
-	} else if len(ret) == 0 {
-		return nil
-	}
-
-	return registered[0]
+	return nil
 }
 
 var registerCalled bool

@@ -432,13 +432,7 @@ func TestRPRegistrationPolicyWithIncompleteCloudConfig(t *testing.T) {
 			cloud.ResourceManager: {Audiences: []string{"..."}},
 		}},
 		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-			cloud.ResourceManager: {Audiences: []string{"..."}, Suffix: "..."},
-		}},
-		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
 			cloud.ResourceManager: {Endpoint: "http://localhost"},
-		}},
-		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-			cloud.ResourceManager: {Suffix: "..."},
 		}},
 	}
 	for _, c := range partialConfigs {

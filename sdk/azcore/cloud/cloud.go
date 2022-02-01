@@ -49,7 +49,6 @@ type ServiceConfiguration struct {
 	Audiences []string
 	// Endpoint is the service's URL.
 	Endpoint string
-	Suffix   string
 }
 
 // Configuration configures a cloud.

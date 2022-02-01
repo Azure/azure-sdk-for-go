@@ -1,10 +1,24 @@
 # Release History
 
-## 0.13.3 (Unreleased)
+## 0.14.0 (2022-04-05)
 
 ### Features Added
 
 ### Breaking Changes
+* Removed `AuthorityHost`. Credentials are now configured for sovereign or private
+  clouds with the API in `azcore/cloud`, for example:
+  ```go
+  // before
+  opts := azidentity.ClientSecretCredentialOptions{AuthorityHost: azidentity.AzureGovernment}
+  cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
+
+  // after
+  import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+
+  opts := azidentity.ClientSecretCredentialOptions{}
+  opts.Cloud = cloud.AzureGovernment
+  cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
+  ```
 
 ### Bugs Fixed
 

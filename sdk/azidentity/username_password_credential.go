@@ -18,10 +18,6 @@ const credNameUserPassword = "UsernamePasswordCredential"
 // UsernamePasswordCredentialOptions contains optional parameters for UsernamePasswordCredential.
 type UsernamePasswordCredentialOptions struct {
 	azcore.ClientOptions
-
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 // UsernamePasswordCredential authenticates user with a password. Microsoft doesn't recommend this kind of authentication,

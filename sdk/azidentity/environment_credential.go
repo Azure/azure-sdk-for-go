@@ -20,10 +20,6 @@ const envVarSendCertChain = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN"
 // EnvironmentCredentialOptions contains optional parameters for EnvironmentCredential
 type EnvironmentCredentialOptions struct {
 	azcore.ClientOptions
-
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 // EnvironmentCredential authenticates a service principal with a secret or certificate, or a user with a password, depending

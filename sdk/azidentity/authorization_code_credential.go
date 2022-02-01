@@ -22,9 +22,6 @@ type AuthorizationCodeCredentialOptions struct {
 
 	// ClientSecret is one of the application's client secrets.
 	ClientSecret string
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 // AuthorizationCodeCredential authenticates by redeeming an authorization code previously

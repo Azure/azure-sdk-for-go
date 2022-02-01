@@ -30,18 +30,6 @@ const (
 
 const azureAuthorityHost = "AZURE_AUTHORITY_HOST"
 
-// AuthorityHost is the base URL for Azure Active Directory
-type AuthorityHost string
-
-const (
-	// AzureChina is a global constant to use in order to access the Azure China cloud.
-	AzureChina AuthorityHost = "https://login.chinacloudapi.cn/"
-	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
-	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
-	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
-	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com/"
-)
-
 // setAuthorityHost initializes the authority host for credentials.
 func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 	host := string(authorityHost)

@@ -19,9 +19,6 @@ import (
 type DefaultAzureCredentialOptions struct {
 	azcore.ClientOptions
 
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 	// TenantID identifies the tenant the Azure CLI should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
 	TenantID string

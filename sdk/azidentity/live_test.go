@@ -62,14 +62,6 @@ const (
 var liveTestScope = "https://management.core.windows.net//.default"
 
 func init() {
-	host := AuthorityHost(os.Getenv(azureAuthorityHost))
-	switch host {
-	case AzureChina:
-		liveTestScope = "https://management.core.chinacloudapi.cn//.default"
-	case AzureGovernment:
-		liveTestScope = "https://management.core.usgovcloudapi.net//.default"
-	}
-
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		liveManagedIdentity.clientID = fakeClientID
 		liveManagedIdentity.resourceID = fakeResourceID

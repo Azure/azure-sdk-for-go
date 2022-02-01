@@ -31,9 +31,6 @@ type DeviceCodeCredentialOptions struct {
 	// this function with authentication details when it receives a device code. By default, the credential
 	// prints these details to stdout.
 	UserPrompt func(context.Context, DeviceCodeMessage) error
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 func (o *DeviceCodeCredentialOptions) init() {

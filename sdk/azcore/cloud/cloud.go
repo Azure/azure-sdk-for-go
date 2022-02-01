@@ -11,11 +11,15 @@ import "encoding/json"
 // WellKnownClouds contains configuration settings for public Azure clouds.
 var WellKnownClouds = map[Name]Configuration{}
 
+// Name identifies a cloud.
 type Name string
 
 const (
-	AzureChina       Name = "AzureChina"
-	AzureGovernment  Name = "AzureGovernment"
+	// AzureChina is a global constant identifying Azure China.
+	AzureChina Name = "AzureChina"
+	// AzureGovernment is a global constant identifying Azure Government.
+	AzureGovernment Name = "AzureGovernment"
+	// AzurePublicCloud is a global constant identifying Azure Public Cloud.
 	AzurePublicCloud Name = "AzurePublicCloud"
 )
 
@@ -33,20 +37,29 @@ func init() {
 	}
 }
 
+// ServiceName identifies a cloud service.
 type ServiceName string
 
+// ResourceManager is a global constant identifying Azure Resource Manager.
 const ResourceManager ServiceName = "resourceManager"
 
+// ServiceConfiguration configures a specific cloud service such as Azure Resource Manager.
 type ServiceConfiguration struct {
+	// Audiences determine the authentication scope used to authorize access to the service.
 	Audiences []string
-	Endpoint  string
-	Suffix    string
+	// Endpoint is the service's URL.
+	Endpoint string
+	Suffix   string
 }
 
+// Configuration configures a cloud.
 type Configuration struct {
+	// LoginEndpoint is the URL of the cloud's Azure Active Directory.
 	LoginEndpoint string
-	Name          string
-	Services      map[ServiceName]ServiceConfiguration
+	// Name is the name of the cloud.
+	Name string
+	// Services contains configuration for the cloud's services.
+	Services map[ServiceName]ServiceConfiguration
 }
 
 // getConfigurationsFromMetadata unmarshals Configuration objects from ARM endpoint metadata

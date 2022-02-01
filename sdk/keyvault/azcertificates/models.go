@@ -15,7 +15,7 @@ import (
 // Action - The action that will be executed.
 type Action struct {
 	// The type of the action.
-	ActionType *ActionType `json:"action_type,omitempty"`
+	ActionType *CertificatePolicyAction `json:"action_type,omitempty"`
 }
 
 func (a *Action) toGenerated() *generated.Action {
@@ -590,7 +590,7 @@ func issuerParametersFromGenerated(g *generated.IssuerParameters) *IssuerParamet
 // KeyProperties - Properties of the key pair backing a certificate.
 type KeyProperties struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
+	Curve *CertificateKeyCurveName `json:"crv,omitempty"`
 
 	// Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
@@ -599,7 +599,7 @@ type KeyProperties struct {
 	KeySize *int32 `json:"key_size,omitempty"`
 
 	// The type of key pair to be used for the certificate.
-	KeyType *JSONWebKeyType `json:"kty,omitempty"`
+	KeyType *CertificateKeyType `json:"kty,omitempty"`
 
 	// Indicates if the same key pair will be used on certificate renewal.
 	ReuseKey *bool `json:"reuse_key,omitempty"`
@@ -625,10 +625,10 @@ func keyPropertiesFromGenerated(g *generated.KeyProperties) *KeyProperties {
 	}
 
 	return &KeyProperties{
-		Curve:      (*JSONWebKeyCurveName)(g.Curve),
+		Curve:      (*CertificateKeyCurveName)(g.Curve),
 		Exportable: g.Exportable,
 		KeySize:    g.KeySize,
-		KeyType:    (*JSONWebKeyType)(g.KeyType),
+		KeyType:    (*CertificateKeyType)(g.KeyType),
 		ReuseKey:   g.ReuseKey,
 	}
 }
@@ -656,7 +656,7 @@ func lifetimeActionFromGenerated(g *generated.LifetimeAction) *LifetimeAction {
 
 	return &LifetimeAction{
 		Action: &Action{
-			ActionType: (*ActionType)(g.Action.ActionType),
+			ActionType: (*CertificatePolicyAction)(g.Action.ActionType),
 		},
 		Trigger: &Trigger{
 			DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
@@ -785,7 +785,7 @@ type X509CertificateProperties struct {
 	Ekus []*string `json:"ekus,omitempty"`
 
 	// List of key usages.
-	KeyUsage []*KeyUsageType `json:"key_usage,omitempty"`
+	KeyUsage []*CerificateKeyUsage `json:"key_usage,omitempty"`
 
 	// The subject name. Should be a valid X509 distinguished Name.
 	Subject *string `json:"subject,omitempty"`
@@ -821,9 +821,9 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 		return nil
 	}
 
-	var ku []*KeyUsageType
+	var ku []*CerificateKeyUsage
 	for _, k := range g.KeyUsage {
-		ku = append(ku, (*KeyUsageType)(k))
+		ku = append(ku, (*CerificateKeyUsage)(k))
 	}
 
 	return &X509CertificateProperties{

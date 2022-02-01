@@ -6,16 +6,16 @@
 
 package azcertificates
 
-// ActionType - The type of the action.
-type ActionType string
+// CertificatePolicyAction - The type of the action.
+type CertificatePolicyAction string
 
 const (
-	ActionTypeEmailContacts ActionType = "EmailContacts"
-	ActionTypeAutoRenew     ActionType = "AutoRenew"
+	CertificatePolicyActionEmailContacts CertificatePolicyAction = "EmailContacts"
+	CertificatePolicyActionAutoRenew     CertificatePolicyAction = "AutoRenew"
 )
 
 // ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
+func (c CertificatePolicyAction) ToPtr() *CertificatePolicyAction {
 	return &c
 }
 
@@ -61,53 +61,53 @@ func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 	return &c
 }
 
-// JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-type JSONWebKeyCurveName string
+// CertificateKeyCurveName - Elliptic curve name. For valid values, see CertificateKeyCurveName.
+type CertificateKeyCurveName string
 
 const (
-	JSONWebKeyCurveNameP256  JSONWebKeyCurveName = "P-256"
-	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
-	JSONWebKeyCurveNameP384  JSONWebKeyCurveName = "P-384"
-	JSONWebKeyCurveNameP521  JSONWebKeyCurveName = "P-521"
+	CertificateKeyCurveNameP256  CertificateKeyCurveName = "P-256"
+	CertificateKeyCurveNameP256K CertificateKeyCurveName = "P-256K"
+	CertificateKeyCurveNameP384  CertificateKeyCurveName = "P-384"
+	CertificateKeyCurveNameP521  CertificateKeyCurveName = "P-521"
 )
 
-// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
-func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
+// ToPtr returns a *CertificateKeyCurveName pointing to the current value.
+func (c CertificateKeyCurveName) ToPtr() *CertificateKeyCurveName {
 	return &c
 }
 
-// JSONWebKeyType - The type of key pair to be used for the certificate.
-type JSONWebKeyType string
+// CertificateKeyType - The type of key pair to be used for the certificate.
+type CertificateKeyType string
 
 const (
-	JSONWebKeyTypeEC     JSONWebKeyType = "EC"
-	JSONWebKeyTypeECHSM  JSONWebKeyType = "EC-HSM"
-	JSONWebKeyTypeOct    JSONWebKeyType = "oct"
-	JSONWebKeyTypeOctHSM JSONWebKeyType = "oct-HSM"
-	JSONWebKeyTypeRSA    JSONWebKeyType = "RSA"
-	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
+	CertificateKeyTypeEC     CertificateKeyType = "EC"
+	CertificateKeyTypeECHSM  CertificateKeyType = "EC-HSM"
+	CertificateKeyTypeOct    CertificateKeyType = "oct"
+	CertificateKeyTypeOctHSM CertificateKeyType = "oct-HSM"
+	CertificateKeyTypeRSA    CertificateKeyType = "RSA"
+	CertificateKeyTypeRSAHSM CertificateKeyType = "RSA-HSM"
 )
 
-// ToPtr returns a *JSONWebKeyType pointing to the current value.
-func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
+// ToPtr returns a *CertificateKeyType pointing to the current value.
+func (c CertificateKeyType) ToPtr() *CertificateKeyType {
 	return &c
 }
 
-type KeyUsageType string
+type CerificateKeyUsage string
 
 const (
-	KeyUsageTypeCRLSign          KeyUsageType = "cRLSign"
-	KeyUsageTypeDataEncipherment KeyUsageType = "dataEncipherment"
-	KeyUsageTypeDecipherOnly     KeyUsageType = "decipherOnly"
-	KeyUsageTypeDigitalSignature KeyUsageType = "digitalSignature"
-	KeyUsageTypeEncipherOnly     KeyUsageType = "encipherOnly"
-	KeyUsageTypeKeyAgreement     KeyUsageType = "keyAgreement"
-	KeyUsageTypeKeyCertSign      KeyUsageType = "keyCertSign"
-	KeyUsageTypeKeyEncipherment  KeyUsageType = "keyEncipherment"
-	KeyUsageTypeNonRepudiation   KeyUsageType = "nonRepudiation"
+	CertificateKeyUsageCRLSign          CerificateKeyUsage = "cRLSign"
+	CertificateKeyUsageDataEncipherment CerificateKeyUsage = "dataEncipherment"
+	CertificateKeyUsageDecipherOnly     CerificateKeyUsage = "decipherOnly"
+	CertificateKeyUsageDigitalSignature CerificateKeyUsage = "digitalSignature"
+	CertificateKeyUsageEncipherOnly     CerificateKeyUsage = "encipherOnly"
+	CertificateKeyUsageKeyAgreement     CerificateKeyUsage = "keyAgreement"
+	CertificateKeyUsageKeyCertSign      CerificateKeyUsage = "keyCertSign"
+	CertificateKeyUsageKeyEncipherment  CerificateKeyUsage = "keyEncipherment"
+	CertificateKeyUsageNonRepudiation   CerificateKeyUsage = "nonRepudiation"
 )
 
-// ToPtr returns a *KeyUsageType pointing to the current value.
-func (c KeyUsageType) ToPtr() *KeyUsageType {
+// ToPtr returns a *CertificateKeyUsage pointing to the current value.
+func (c CerificateKeyUsage) ToPtr() *CerificateKeyUsage {
 	return &c
 }

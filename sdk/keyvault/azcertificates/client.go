@@ -444,7 +444,7 @@ type PurgeDeletedCertificateResponse struct {
 	RawResponse *http.Response
 }
 
-// PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for  recovery. The operation
+// PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for recovery. The operation
 // is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
 func (c *Client) PurgeDeletedCertificate(ctx context.Context, certName string, options *PurgeDeletedCertificateOptions) (PurgeDeletedCertificateResponse, error) {
 	resp, err := c.genClient.PurgeDeletedCertificate(ctx, c.vaultURL, certName, options.toGenerated())
@@ -619,9 +619,7 @@ func (l *ListCertificatesPager) NextPage(ctx context.Context) bool {
 }
 
 // ListCertificatesOptions contains the optional parameters for the Client.ListCertificates method
-type ListCertificatesOptions struct {
-	MaxResults *int32
-}
+type ListCertificatesOptions struct{}
 
 // convert ListCertificatesOptions to generated options
 func (l *ListCertificatesOptions) toGenerated() *generated.KeyVaultClientGetCertificatesOptions {
@@ -629,7 +627,7 @@ func (l *ListCertificatesOptions) toGenerated() *generated.KeyVaultClientGetCert
 		return &generated.KeyVaultClientGetCertificatesOptions{}
 	}
 
-	return &generated.KeyVaultClientGetCertificatesOptions{Maxresults: l.MaxResults}
+	return &generated.KeyVaultClientGetCertificatesOptions{}
 }
 
 // ListCertificatesPage contains the current page of results for the Client.ListSecrets operation
@@ -693,10 +691,7 @@ func (l *ListCertificateVersionsPager) NextPage(ctx context.Context) bool {
 }
 
 // ListCertificateVersionsOptions contains the options for the ListCertificateVersions operations
-type ListCertificateVersionsOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
-}
+type ListCertificateVersionsOptions struct{}
 
 // convert the public ListCertificateVersionsOptions to the generated version
 func (l *ListCertificateVersionsOptions) toGenerated() *generated.KeyVaultClientGetCertificateVersionsOptions {
@@ -704,9 +699,7 @@ func (l *ListCertificateVersionsOptions) toGenerated() *generated.KeyVaultClient
 		return &generated.KeyVaultClientGetCertificateVersionsOptions{}
 	}
 
-	return &generated.KeyVaultClientGetCertificateVersionsOptions{
-		Maxresults: l.MaxResults,
-	}
+	return &generated.KeyVaultClientGetCertificateVersionsOptions{}
 }
 
 // ListCertificateVersionsPage contains the current page from a ListCertificateVersionsPager.PageResponse method
@@ -864,9 +857,7 @@ func (l *ListIssuersPager) NextPage(ctx context.Context) bool {
 }
 
 // ListIssuersOptions contains the optional parameters for the Client.ListIssuers method
-type ListIssuersOptions struct {
-	MaxResults *int32
-}
+type ListIssuersOptions struct{}
 
 // convert ListIssuersOptions to generated options
 func (l *ListIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuersOptions {
@@ -874,7 +865,7 @@ func (l *ListIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertifica
 		return &generated.KeyVaultClientGetCertificateIssuersOptions{}
 	}
 
-	return &generated.KeyVaultClientGetCertificateIssuersOptions{Maxresults: l.MaxResults}
+	return &generated.KeyVaultClientGetCertificateIssuersOptions{}
 }
 
 // ListIssuersPage contains the current page of results for the Client.ListSecrets operation
@@ -1473,15 +1464,11 @@ type ListDeletedCertificatesPage struct {
 
 // ListDeletedCertificatesOptions contains the optional parameters for the Client.ListDeletedCertificates operation.
 type ListDeletedCertificatesOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
 }
 
 // Convert publicly exposed options to the generated version.a
 func (l *ListDeletedCertificatesOptions) toGenerated() *generated.KeyVaultClientGetDeletedCertificatesOptions {
-	return &generated.KeyVaultClientGetDeletedCertificatesOptions{
-		Maxresults: l.MaxResults,
-	}
+	return &generated.KeyVaultClientGetDeletedCertificatesOptions{}
 }
 
 // ListDeletedCertificates retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging.

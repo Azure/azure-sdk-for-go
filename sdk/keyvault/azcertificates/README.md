@@ -2,9 +2,9 @@
 Azure Key Vault helps solve the following problems:
 - Certificate management (this library) - create, manage, and deploy public and private SSL/TLS certificates
 - Cryptographic key management
-([azure-keyvault-keys](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data
+([azkeys](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data
 - Secrets management
-([azure-keyvault-secrets](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets)) -
+([azsecrets](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets)) -
 securely store and control access to tokens, passwords, certificates, API keys,
 and other secrets
 
@@ -119,10 +119,14 @@ import (
 
 func main() {
     credential, err := azidentity.NewDefaultAzureCredential(nil)
-    handle(err)
+	if err != nil {
+		panic(err)
+	}
 
     client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
-    handle(err)
+	if err != nil {
+		panic(err)
+	}
 }
 ```
 
@@ -154,9 +158,13 @@ import (
 
 func main() {
     credential, err := azidentity.NewDefaultAzureCredential(nil)
-    handle(err)
+	if err != nil {
+		panic(err)
+	}
     client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
-    handle(err)
+	if err != nil {
+		panic(err)
+	}
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
@@ -166,10 +174,14 @@ func main() {
 			Subject: to.StringPtr("CN=DefaultPolicy"),
 		},
 	}, nil)
-    handle(err)
+	if err != nil {
+		panic(err)
+	}
 
 	pollerResp, err := resp.PollUntilDone(ctx, delay())
-    handle(err)
+	if err != nil {
+		panic(err)
+	}
     fmt.Println(*pollerResp.ID)
 }
 ```

@@ -11,21 +11,27 @@ import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the
 // certificate can be permanently deleted by a privileged user; otherwise,
 // only the system can purge the certificate, at the end of the retention interval.
+// Access the predefined values through the azkeys.DeletionRecoveryLevels instance.
 type DeletionRecoveryLevel = generated.DeletionRecoveryLevel
 
 // JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+// Access the predefined values through the azkeys.JSONWebKeyCurveNames instance.
 type JSONWebKeyCurveName = generated.JSONWebKeyCurveName
 
 // JSONWebKeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
+// Access the predefined values through the azkeys.JSONWebKeyOperations instance.
 type JSONWebKeyOperation = generated.JSONWebKeyOperation
 
 // ActionType - The type of the action.
+// Access the predefined values through the azkeys.ActionTypes instance.
 type ActionType = generated.ActionType
 
 // KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
+// Access the predefined values through the azkeys.KeyEncryptionAlgorithms instance.
 type KeyEncryptionAlgorithm = generated.KeyEncryptionAlgorithm
 
 // KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+// Access the predefined values through the azkeys.KeyTypes instance.
 type KeyType string
 
 // EC - Elliptic Curve.

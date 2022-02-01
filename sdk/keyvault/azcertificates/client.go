@@ -834,33 +834,33 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 	}, nil
 }
 
-// ListIssuersPager is the pager returned by Client.ListIssuers
-type ListIssuersPager struct {
+// ListPropertiesOfIssuersPager is the pager returned by Client.ListIssuers
+type ListPropertiesOfIssuersPager struct {
 	genPager *generated.KeyVaultClientGetCertificateIssuersPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service
-func (l *ListIssuersPager) PageResponse() ListIssuersPage {
+func (l *ListPropertiesOfIssuersPager) PageResponse() ListIssuersPropertiesOfIssuersPage {
 	return listIssuersPageFromGenerated(l.genPager.PageResponse())
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *ListIssuersPager) Err() error {
+func (l *ListPropertiesOfIssuersPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *ListIssuersPager) NextPage(ctx context.Context) bool {
+func (l *ListPropertiesOfIssuersPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
-// ListIssuersOptions contains the optional parameters for the Client.ListIssuers method
-type ListIssuersOptions struct{}
+// ListPropertiesOfIssuersOptions contains the optional parameters for the Client.ListIssuers method
+type ListPropertiesOfIssuersOptions struct{}
 
 // convert ListIssuersOptions to generated options
-func (l *ListIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuersOptions {
+func (l *ListPropertiesOfIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuersOptions {
 	if l == nil {
 		return &generated.KeyVaultClientGetCertificateIssuersOptions{}
 	}
@@ -868,8 +868,8 @@ func (l *ListIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertifica
 	return &generated.KeyVaultClientGetCertificateIssuersOptions{}
 }
 
-// ListIssuersPage contains the current page of results for the Client.ListSecrets operation
-type ListIssuersPage struct {
+// ListIssuersPropertiesOfIssuersPage contains the current page of results for the Client.ListSecrets operation
+type ListIssuersPropertiesOfIssuersPage struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Issuers []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
 
@@ -877,24 +877,24 @@ type ListIssuersPage struct {
 	RawResponse *http.Response
 }
 
-// convert internal Response to ListIssuersPage
-func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListIssuersPage {
+// convert internal Response to ListPropertiesOfIssuersPage
+func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListIssuersPropertiesOfIssuersPage {
 	var vals []*CertificateIssuerItem
 
 	for _, v := range i.Value {
 		vals = append(vals, certificateIssuerItemFromGenerated(v))
 	}
 
-	return ListIssuersPage{
+	return ListIssuersPropertiesOfIssuersPage{
 		RawResponse: i.RawResponse,
 		Issuers:     vals,
 	}
 }
 
-// ListIssuers returns a pager that can be used to get the set of certificate issuer resources in the specified key vault. This operation
+// ListPropertiesOfIssuers returns a pager that can be used to get the set of certificate issuer resources in the specified key vault. This operation
 // requires the certificates/manageissuers/getissuers permission.
-func (c *Client) ListIssuers(options *ListIssuersOptions) ListIssuersPager {
-	return ListIssuersPager{
+func (c *Client) ListPropertiesOfIssuers(options *ListPropertiesOfIssuersOptions) ListPropertiesOfIssuersPager {
+	return ListPropertiesOfIssuersPager{
 		genPager: c.genClient.GetCertificateIssuers(c.vaultURL, options.toGenerated()),
 	}
 }

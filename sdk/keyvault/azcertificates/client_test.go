@@ -367,7 +367,7 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	require.NoError(t, err)
 
 	// List operation
-	pager := client.ListIssuers(nil)
+	pager := client.ListPropertiesOfIssuers(nil)
 	count := 0
 	for pager.NextPage(ctx) {
 		for _, issuer := range pager.PageResponse().Issuers {

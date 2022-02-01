@@ -1,12 +1,12 @@
 # Release History
 
-## 0.22.0 (2022-02-03)
+## 0.21.1 (2022-02-03)
 
 ### Bugs Fixed
-* Restore response body after reading in `Poller.FinalResponse()`
+* Restore response body after reading in `Poller.FinalResponse()`. (#16911)
 
 ### Other Changes
-* `BearerTokenPolicy` is more resilient to transient authentication failures
+* `BearerTokenPolicy` is more resilient to transient authentication failures. (#16789)
 
 ## 0.21.0 (2022-01-11)
 

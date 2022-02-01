@@ -56,7 +56,7 @@ func (m *listBlobPerfTest) Setup(ctx context.Context) error {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, &azblob.ClientOptions{Transporter: m.ProxyInstance})
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil) // &azblob.ClientOptions{Transporter: m.ProxyInstance})
 	m.containerClient = containerClient
 	return err
 }

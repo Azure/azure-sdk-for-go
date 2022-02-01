@@ -79,21 +79,23 @@ func runTest(p PerfTest, c chan runResult) {
 		setRecordingMode("live")
 		err := p.Run(context.Background())
 		if err != nil {
-			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
+			c <- runResult{err: err}
 		}
 
 		// 2nd request goes through in Record mode
 		setRecordingMode("record")
-		start(p.GetMetadata().Name, nil)
+		err = start(p.GetMetadata().Name, nil)
+		if err != nil {panic(err)}
 		err = p.Run(context.Background())
 		if err != nil {
-			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
+			c <- runResult{err: err}
 		}
 		stop(p.GetMetadata().Name, nil)
 
 		// All ensuing requests go through in Playback mode
 		setRecordingMode("playback")
-		start(p.GetMetadata().Name, nil)
+		err = start(p.GetMetadata().Name, nil)
+		if err != nil {panic(err)}
 	}
 
 	if WarmUp > 0 {
@@ -101,25 +103,25 @@ func runTest(p PerfTest, c chan runResult) {
 		for time.Since(warmUpStart).Seconds() < float64(WarmUp) {
 			err := p.Run(context.Background())
 			if err != nil {
-				c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
+				c <- runResult{err: err}
 			}
 		}
 	}
 
-	start := time.Now()
+	timeStart := time.Now()
 	totalCount := 0
 	lastPrint := 1.0
 	perSecondCount := make([]int, 0)
 	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight|tabwriter.Debug)
-	for time.Since(start).Seconds() < float64(Duration) {
+	for time.Since(timeStart).Seconds() < float64(Duration) {
 		err := p.Run(context.Background())
 		if err != nil {
-			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
+			c <- runResult{err: err}
 		}
 		totalCount += 1
 
 		// Every second (roughly) we print out an update
-		if time.Since(start).Seconds() > float64(lastPrint) {
+		if time.Since(timeStart).Seconds() > float64(lastPrint) {
 			thisCount := totalCount - sumInts(perSecondCount)
 			perSecondCount = append(perSecondCount, thisCount)
 			_, err = fmt.Fprintf(
@@ -127,17 +129,17 @@ func runTest(p PerfTest, c chan runResult) {
 				"%s\t%s\t%.2f\t\n",
 				commaIze(thisCount),
 				commaIze(totalCount),
-				float64(sumInts(perSecondCount))/time.Since(start).Seconds(),
+				float64(sumInts(perSecondCount))/time.Since(timeStart).Seconds(),
 			)
 			if err != nil {
-				c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
+				c <- runResult{err: err}
 			}
-			lastPrint = time.Since(start).Seconds() + 1.0
+			lastPrint = time.Since(timeStart).Seconds() + 1.0
 			w.Flush()
 		}
 	}
 
-	elapsed := time.Since(start).Seconds()
+	elapsed := time.Since(timeStart).Seconds()
 
 	// Stop the proxy now
 	stop(p.GetMetadata().Name, nil)
@@ -194,7 +196,6 @@ func runPerfTest(p NewPerfTest) error {
 				panic(err)
 			}
 			options.ProxyInstance = transporter
-			fmt.Println("Using a test proxy")
 		} else {
 			options.ProxyInstance = defaultHTTPClient
 		}

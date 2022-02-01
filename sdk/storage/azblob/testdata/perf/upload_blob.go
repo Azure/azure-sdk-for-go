@@ -30,12 +30,10 @@ func (m *uploadPerfTest) GlobalSetup(ctx context.Context) error {
 
 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
 	if err != nil {
-		fmt.Println("Error creating the container client: ")
 		return err
 	}
 	_, err = containerClient.Create(context.Background(), nil)
 	if err != nil {
-		fmt.Printf("Error creating the container: '%s'\n", m.containerName)
 		return err
 	}
 
@@ -48,7 +46,7 @@ func (m *uploadPerfTest) Setup(ctx context.Context) error {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil) // &azblob.ClientOptions{Transporter: m.ProxyInstance})
 	if err != nil {
 		return err
 	}
@@ -58,11 +56,11 @@ func (m *uploadPerfTest) Setup(ctx context.Context) error {
 }
 
 func (m *uploadPerfTest) Run(ctx context.Context) error {
-	_, err := m.blobClient.Upload(ctx, m.data, &azblob.UploadBlockBlobOptions{})
+	_, err := m.data.Seek(0, io.SeekStart) // rewind to the beginning
 	if err != nil {
 		return err
 	}
-	_, err = m.data.Seek(0, io.SeekStart) // rewind to the beginning
+	_, err = m.blobClient.Upload(ctx, m.data, nil)
 	return err
 }
 

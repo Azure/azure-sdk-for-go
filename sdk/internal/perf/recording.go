@@ -11,23 +11,27 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
-
+	"time"
 )
 
+var defaultHTTPClient *http.Client
+
 func init() {
-	recordMode = os.Getenv("AZURE_RECORD_MODE")
-	if recordMode == "" {
-		log.Printf("AZURE_RECORD_MODE was not set, defaulting to playback")
-		recordMode = playbackMode
-	}
-	if !(recordMode == recordingMode || recordMode == playbackMode || recordMode == liveMode) {
-		log.Panicf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s\nReceived: %v.\n", recordingMode, playbackMode, liveMode, recordMode)
-	}
+	// recordMode = os.Getenv("AZURE_RECORD_MODE")
+	// if recordMode == "" {
+	// 	log.Printf("AZURE_RECORD_MODE was not set, defaulting to playback")
+	// 	recordMode = playbackMode
+	// }
+	// if !(recordMode == recordingMode || recordMode == playbackMode || recordMode == liveMode) {
+	// 	log.Panicf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s\nReceived: %v.\n", recordingMode, playbackMode, liveMode, recordMode)
+	// }
 
 	localFile, err := findProxyCertLocation()
 	if err != nil {
@@ -51,6 +55,27 @@ func init() {
 
 	if ok := certPool.AppendCertsFromPEM(cert); !ok {
 		log.Println("no certs appended, using system certs only")
+	}
+
+	defaultTransport := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+		TLSClientConfig: &tls.Config{
+			MinVersion:         tls.VersionTLS12,
+			InsecureSkipVerify: true,
+			RootCAs:            rootCAs,
+		},
+	}
+	defaultHTTPClient = &http.Client{
+		Transport: defaultTransport,
 	}
 }
 
@@ -86,19 +111,6 @@ type TransportOptions struct {
 	TestName string
 }
 
-func host() string {
-	if TestProxy == "https" {
-		return "localhost:5001"
-	} else if TestProxy == "http" {
-		return "localhost:5000"
-	}
-	return ""
-}
-
-func scheme() string {
-	return TestProxy
-}
-
 func getRecordMode() string {
 	return recordMode
 }
@@ -113,46 +125,58 @@ func NewProxyTransport(options *TransportOptions) (*RecordingHTTPClient, error) 
 	if options == nil {
 		options = &TransportOptions{}
 	}
-	c, err := getHTTPClient()
-	if err != nil {
-		return nil, err
-	}
+	// c, err := getHTTPClient()
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	return &RecordingHTTPClient{
-		defaultClient: c,
+		defaultClient: defaultHTTPClient,
 		options:       *options,
 	}, nil
 }
 
-func getHTTPClient() (*http.Client, error) {
-	transport := http.DefaultTransport.(*http.Transport).Clone()
-	transport.TLSClientConfig.RootCAs = rootCAs
-	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
-	transport.TLSClientConfig.InsecureSkipVerify = true
+// func getHTTPClient() (*http.Client, error) {
+// 	transport := http.DefaultTransport.(*http.Transport).Clone()
+// 	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+// 	transport.TLSClientConfig.InsecureSkipVerify = true
 
-	defaultHttpClient := &http.Client{
-		Transport: transport,
-	}
-	return defaultHttpClient, nil
-}
+// 	c := &http.Client{
+// 		Transport: transport,
+// 	}
+// 	return c, nil
+// }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
+	fmt.Println("Do")
 	if recordMode != liveMode {
-		c.options.replaceAuthority(req)
+		fmt.Println("RecordingClient DO")
+		err := c.options.replaceAuthority(req)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return c.defaultClient.Do(req)
 }
 
-func (r TransportOptions) replaceAuthority(rawReq *http.Request) {
+func (r TransportOptions) replaceAuthority(rawReq *http.Request) error {
+	parsedProxyURL, err := url.Parse(TestProxy)
+	if err != nil {
+		return err
+	}
 	originalURLHost := rawReq.URL.Host
-	rawReq.URL.Scheme = scheme()
-	rawReq.URL.Host = host()
-	rawReq.Host = host()
+	originalURLScheme := rawReq.URL.Scheme
+	rawReq.URL.Scheme = parsedProxyURL.Scheme
+	rawReq.URL.Host = parsedProxyURL.Host
+	rawReq.Host = parsedProxyURL.Host
 
-	rawReq.Header.Set(upstreamURIHeader, fmt.Sprintf("%v://%v", scheme(), originalURLHost))
+	rawReq.Header.Set(upstreamURIHeader, fmt.Sprintf("%v://%v", originalURLScheme, originalURLHost))
 	rawReq.Header.Set(modeHeader, getRecordMode())
 	rawReq.Header.Set(idHeader, getRecordingId(r.TestName))
 	rawReq.Header.Set("x-recording-remove", "false")
+	fmt.Println(rawReq.URL.String())
+	fmt.Println(rawReq.Header.Get(upstreamURIHeader))
+	return nil
 }
 
 func getRecordingId(s string) string {
@@ -163,12 +187,6 @@ func getRecordingId(s string) string {
 }
 
 type RecordingOptions struct{}
-
-var client = http.Client{
-	Transport: &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	},
-}
 
 // start tells the test proxy to begin accepting requests for a given test
 func start(t string, options *RecordingOptions) error {
@@ -183,7 +201,7 @@ func start(t string, options *RecordingOptions) error {
 		req.Header.Set(idHeader, perfTestSuite[t])
 	}
 
-	resp, err := client.Do(req)
+	resp, err := defaultHTTPClient.Do(req)
 	if err != nil {
 		return err
 	}
@@ -217,7 +235,7 @@ func stop(t string, options *RecordingOptions) error {
 	}
 
 	req.Header.Set("x-recording-id", recTest)
-	resp, err := client.Do(req)
+	resp, err := defaultHTTPClient.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()

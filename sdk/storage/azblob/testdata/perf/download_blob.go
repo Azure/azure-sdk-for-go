@@ -52,7 +52,7 @@ func (d *downloadPerfTest) Setup(ctx context.Context) error {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.blobName, nil)
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.blobName, nil) // &azblob.ClientOptions{Transporter: d.ProxyInstance})
 	if err != nil {
 		return err
 	}

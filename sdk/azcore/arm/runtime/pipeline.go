@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
@@ -24,7 +25,7 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	conf, err := getConfiguration(options)
+	conf, err := getConfiguration(&options.ClientOptions)
 	if err != nil {
 		return pipeline.Pipeline{}, err
 	}
@@ -36,8 +37,10 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 	copy(perRetry, plOpts.PerRetry)
 	plOpts.PerRetry = append(perRetry, authPolicy)
 	if !options.DisableRPRegistration {
-		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}
-		regPolicy := NewRPRegistrationPolicy(conf.Endpoint, cred, &regRPOpts)
+		regPolicy, err := NewRPRegistrationPolicy(cred, &armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions})
+		if err != nil {
+			return pipeline.Pipeline{}, err
+		}
 		perCall := make([]pipeline.Policy, 0, len(plOpts.PerCall)+1)
 		copy(perCall, plOpts.PerCall)
 		plOpts.PerCall = append(perCall, regPolicy)
@@ -45,7 +48,7 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions), nil
 }
 
-func getConfiguration(o *arm.ClientOptions) (cloud.ServiceConfiguration, error) {
+func getConfiguration(o *azpolicy.ClientOptions) (cloud.ServiceConfiguration, error) {
 	c := cloud.WellKnownClouds[cloud.AzurePublicCloud]
 	if !reflect.ValueOf(o.Cloud).IsZero() {
 		c = o.Cloud

@@ -58,7 +58,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(options.Cloud)
 	if err != nil {
 		return nil, err
 	}

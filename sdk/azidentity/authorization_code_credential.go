@@ -49,7 +49,7 @@ func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode s
 	if options == nil {
 		options = &AuthorizationCodeCredentialOptions{}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(options.Cloud)
 	if err != nil {
 		return nil, err
 	}

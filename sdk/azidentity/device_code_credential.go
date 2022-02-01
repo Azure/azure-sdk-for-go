@@ -80,7 +80,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	if !validTenantID(cp.TenantID) {
 		return nil, errors.New(tenantIDValidationErr)
 	}
-	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.Cloud)
 	if err != nil {
 		return nil, err
 	}

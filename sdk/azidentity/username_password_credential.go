@@ -44,7 +44,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	if options == nil {
 		options = &UsernamePasswordCredentialOptions{}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(options.Cloud)
 	if err != nil {
 		return nil, err
 	}

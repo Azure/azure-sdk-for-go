@@ -62,7 +62,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
 		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientSecretCredential")
-		o := &ClientSecretCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		o := &ClientSecretCredentialOptions{ClientOptions: options.ClientOptions}
 		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, o)
 		if err != nil {
 			return nil, err
@@ -79,7 +79,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}
-		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		o := &ClientCertificateCredentialOptions{ClientOptions: options.ClientOptions}
 		if v, ok := os.LookupEnv(envVarSendCertChain); ok {
 			o.SendCertificateChain = v == "1" || strings.ToLower(v) == "true"
 		}
@@ -92,7 +92,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
 			log.Write(EventAuthentication, "EnvironmentCredential will authenticate with UsernamePasswordCredential")
-			o := &UsernamePasswordCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+			o := &UsernamePasswordCredentialOptions{ClientOptions: options.ClientOptions}
 			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, o)
 			if err != nil {
 				return nil, err

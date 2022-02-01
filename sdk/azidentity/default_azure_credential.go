@@ -44,9 +44,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		options = &DefaultAzureCredentialOptions{}
 	}
 
-	envCred, err := NewEnvironmentCredential(
-		&EnvironmentCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions},
-	)
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: options.ClientOptions})
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {

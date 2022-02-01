@@ -37,7 +37,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	if options == nil {
 		options = &ClientSecretCredentialOptions{}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(options.Cloud)
 	if err != nil {
 		return nil, err
 	}

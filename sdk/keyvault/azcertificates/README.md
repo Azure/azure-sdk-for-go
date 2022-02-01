@@ -118,12 +118,12 @@ import (
 )
 
 func main() {
-    credential, err := azidentity.NewDefaultAzureCredential(nil)
+	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
 	}
 
-    client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+	client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -157,11 +157,11 @@ import (
 )
 
 func main() {
-    credential, err := azidentity.NewDefaultAzureCredential(nil)
+	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
 	}
-    client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+	client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -182,7 +182,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-    fmt.Println(*pollerResp.ID)
+	fmt.Println(*pollerResp.ID)
 }
 ```
 If you would like to check the status of your certificate creation, you can call `Poll(ctx context.Context)` on the poller or

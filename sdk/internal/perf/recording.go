@@ -24,14 +24,7 @@ import (
 var defaultHTTPClient *http.Client
 
 func init() {
-	// recordMode = os.Getenv("AZURE_RECORD_MODE")
-	// if recordMode == "" {
-	// 	log.Printf("AZURE_RECORD_MODE was not set, defaulting to playback")
-	// 	recordMode = playbackMode
-	// }
-	// if !(recordMode == recordingMode || recordMode == playbackMode || recordMode == liveMode) {
-	// 	log.Panicf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s\nReceived: %v.\n", recordingMode, playbackMode, liveMode, recordMode)
-	// }
+	recordMode = os.Getenv("AZURE_RECORD_MODE")
 
 	localFile, err := findProxyCertLocation()
 	if err != nil {
@@ -125,27 +118,12 @@ func NewProxyTransport(options *TransportOptions) (*RecordingHTTPClient, error) 
 	if options == nil {
 		options = &TransportOptions{}
 	}
-	// c, err := getHTTPClient()
-	// if err != nil {
-	// 	return nil, err
-	// }
 
 	return &RecordingHTTPClient{
 		defaultClient: defaultHTTPClient,
 		options:       *options,
 	}, nil
 }
-
-// func getHTTPClient() (*http.Client, error) {
-// 	transport := http.DefaultTransport.(*http.Transport).Clone()
-// 	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
-// 	transport.TLSClientConfig.InsecureSkipVerify = true
-
-// 	c := &http.Client{
-// 		Transport: transport,
-// 	}
-// 	return c, nil
-// }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	fmt.Println("Do")

@@ -38,9 +38,6 @@ func TestRandomStream(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 24, n)
 
-	// require.NotEqual(t, a, b)
-	// require.NotEqual(t, a, c)
-	// require.NotEqual(t, c, b)
 	require.NoError(t, r.Close())
 
 	// Read after finishing should return io.EOF

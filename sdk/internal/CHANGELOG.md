@@ -1,15 +1,9 @@
 # Release History
 
-## 0.9.1 (Unreleased)
+## 0.9.1 (2022-02-01)
 
 ### Features Added
-* Adds a `CustomDefaultMatcher` that adds headers `:path`, `:authority`, `:method`, and `:scheme` to the 
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Adds a `CustomDefaultMatcher` that adds headers `:path`, `:authority`, `:method`, and `:scheme` to the default matcher.
 
 ## 0.9.0 (2022-01-24)
 

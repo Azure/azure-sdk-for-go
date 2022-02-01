@@ -107,7 +107,7 @@ type CertificateAttributes struct {
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
 	// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
 	// only the system can purge the certificate, at the end of the retention interval.
-	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
@@ -141,7 +141,7 @@ func certificateAttributesFromGenerated(g *generated.CertificateAttributes) *Cer
 		Created:         g.Created,
 		Updated:         g.Updated,
 		RecoverableDays: g.RecoverableDays,
-		RecoveryLevel:   (*DeletionRecoveryLevel)(g.RecoveryLevel),
+		RecoveryLevel:   (*string)(g.RecoveryLevel),
 	}
 }
 
@@ -505,8 +505,8 @@ func (i *IssuerAttributes) toGenerated() *generated.IssuerAttributes {
 	}
 }
 
-// IssuerBundle - The issuer for Key Vault certificate.
-type IssuerBundle struct {
+// CertificateIssuer - The issuer for Key Vault certificate.
+type CertificateIssuer struct {
 	// Attributes of the issuer object.
 	Attributes *IssuerAttributes `json:"attributes,omitempty"`
 

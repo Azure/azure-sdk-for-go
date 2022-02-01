@@ -760,7 +760,7 @@ func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertific
 
 // CreateIssuerResponse is the response struct for the Client.CreateIssuer function
 type CreateIssuerResponse struct {
-	IssuerBundle
+	CertificateIssuer
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -790,7 +790,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 
 	return CreateIssuerResponse{
 		RawResponse: resp.RawResponse,
-		IssuerBundle: IssuerBundle{
+		CertificateIssuer: CertificateIssuer{
 			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
 			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
 			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
@@ -809,7 +809,7 @@ func (g *GetIssuerOptions) toGenerated() *generated.KeyVaultClientGetCertificate
 
 // GetIssuerResponse contains the response from method Client.GetIssuer.
 type GetIssuerResponse struct {
-	IssuerBundle
+	CertificateIssuer
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -824,7 +824,7 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 
 	return GetIssuerResponse{
 		RawResponse: resp.RawResponse,
-		IssuerBundle: IssuerBundle{
+		CertificateIssuer: CertificateIssuer{
 			ID:                  resp.ID,
 			Provider:            resp.Provider,
 			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
@@ -908,7 +908,7 @@ func (d *DeleteIssuerOptions) toGenerated() *generated.KeyVaultClientDeleteCerti
 
 // DeleteIssuerResponse contains the response from method Client.DeleteIssuer.
 type DeleteIssuerResponse struct {
-	IssuerBundle
+	CertificateIssuer
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -922,7 +922,7 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 
 	return DeleteIssuerResponse{
 		RawResponse: resp.RawResponse,
-		IssuerBundle: IssuerBundle{
+		CertificateIssuer: CertificateIssuer{
 			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
 			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
 			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
@@ -962,7 +962,7 @@ func (u *UpdateIssuerOptions) toUpdateParameters() generated.CertificateIssuerUp
 
 // UpdateIssuerResponse contains the response from method Client.UpdateIssuer.
 type UpdateIssuerResponse struct {
-	IssuerBundle
+	CertificateIssuer
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -984,7 +984,7 @@ func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *U
 
 	return UpdateIssuerResponse{
 		RawResponse: resp.RawResponse,
-		IssuerBundle: IssuerBundle{
+		CertificateIssuer: CertificateIssuer{
 			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
 			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
 			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),

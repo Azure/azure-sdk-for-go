@@ -1,10 +1,6 @@
 # Release History
 
-## 0.21.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.22.0 (2022-02-03)
 
 ### Bugs Fixed
 * Restore response body after reading in `Poller.FinalResponse()`

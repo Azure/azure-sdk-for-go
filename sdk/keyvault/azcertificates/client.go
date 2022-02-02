@@ -814,9 +814,9 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 
 	cr := CreateIssuerResponse{RawResponse: resp.RawResponse}
 	cr.CertificateIssuer = CertificateIssuer{
-		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-		Provider:            resp.Provider,
-		ID:                  resp.ID,
+		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
+		Provider:    resp.Provider,
+		ID:          resp.ID,
 	}
 
 	if resp.Attributes != nil {
@@ -868,9 +868,9 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 
 	g := GetIssuerResponse{RawResponse: resp.RawResponse}
 	g.CertificateIssuer = CertificateIssuer{
-		ID:                  resp.ID,
-		Provider:            resp.Provider,
-		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+		ID:          resp.ID,
+		Provider:    resp.Provider,
+		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 	}
 
 	if resp.Attributes != nil {
@@ -986,9 +986,9 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 
 	d := DeleteIssuerResponse{RawResponse: resp.RawResponse}
 	d.CertificateIssuer = CertificateIssuer{
-		ID:                  resp.ID,
-		Provider:            resp.Provider,
-		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+		ID:          resp.ID,
+		Provider:    resp.Provider,
+		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 	}
 
 	if resp.Attributes != nil {

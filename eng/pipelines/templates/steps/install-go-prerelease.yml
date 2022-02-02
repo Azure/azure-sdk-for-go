@@ -4,7 +4,7 @@ parameters:
 
 steps:
   - pwsh: |
-      curl -sSL -o goarchive https://dl.google.com/go/${{archive}}
+      curl -sSL -o goarchive https://dl.google.com/go/${{parameters.archive}}
       tar -xzf goarchive -C "$(Build.SourcesDirectory)/.."
 
       Write-Host "Prepending Path with $(Build.SourcesDirectory)/../go/bin"

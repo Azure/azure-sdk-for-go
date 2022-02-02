@@ -43,32 +43,6 @@ type AdministratorContact struct {
 	Phone *string `json:"phone,omitempty"`
 }
 
-func administratorDetailsFromGenerated(g *generated.AdministratorDetails) *AdministratorContact {
-	if g == nil {
-		return nil
-	}
-
-	return &AdministratorContact{
-		EmailAddress: g.EmailAddress,
-		FirstName:    g.FirstName,
-		LastName:     g.LastName,
-		Phone:        g.Phone,
-	}
-}
-
-func (a *AdministratorContact) toGenerated() *generated.AdministratorDetails {
-	if a == nil {
-		return nil
-	}
-
-	return &generated.AdministratorDetails{
-		EmailAddress: a.EmailAddress,
-		FirstName:    a.FirstName,
-		LastName:     a.LastName,
-		Phone:        a.Phone,
-	}
-}
-
 // CertificateProperties - The certificate management properties.
 type CertificateProperties struct {
 	// Determines whether the object is enabled.

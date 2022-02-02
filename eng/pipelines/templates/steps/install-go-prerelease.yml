@@ -1,0 +1,16 @@
+parameters:
+  - name: platform
+    type: string
+  - name: version
+    type: string
+
+steps:
+  - pwsh: |
+      curl -sSL https://go.dev/dl/$(version).$(platform)-amd64.tar.gz
+      tar -xzf $(version).$(platform)-amd64.tar.gz "$(Build.SourcesDirectory)/../$(version)"
+
+      Write-Host "Prepending Path with $(Build.SourcesDirectory)/../$(version)/bin"
+
+      # also prepend the path permanently to ensure access the newly installed tools
+      Write-Host "##vso[task.prependpath]$(Build.SourcesDirectory)/../$(version)/bin"
+    displayName: "Install Go Pre-release Version"

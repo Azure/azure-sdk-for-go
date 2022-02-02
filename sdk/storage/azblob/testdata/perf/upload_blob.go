@@ -22,13 +22,13 @@ type uploadPerfTest struct {
 	data          io.ReadSeekCloser
 }
 
-func (m *uploadPerfTest) GlobalSetup(ctx context.Context) error {
+func (u *uploadPerfTest) GlobalSetup(ctx context.Context) error {
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, u.containerName, nil)
 	if err != nil {
 		return err
 	}

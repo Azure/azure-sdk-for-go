@@ -66,7 +66,7 @@ func defaultTestPipeline(srv azpolicy.Transporter, scope string) (pipeline.Pipel
 				Retry:     retryOpts,
 				Transport: srv,
 			},
-		})
+		}), nil // TODO: remove this nil once NewPipeline returns an error
 }
 
 func TestBearerPolicy_SuccessGetToken(t *testing.T) {

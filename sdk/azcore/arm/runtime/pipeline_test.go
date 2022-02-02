@@ -32,10 +32,7 @@ func TestNewPipelineWithOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
-	if err != nil {
-		t.Fatal(err)
-	}
+	pl := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -63,10 +60,7 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
-	if err != nil {
-		t.Fatal(err)
-	}
+	pl := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -99,10 +93,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
-	if err != nil {
-		t.Fatal(err)
-	}
+	pl := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
@@ -147,10 +138,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
-	if err != nil {
-		t.Fatal(err)
-	}
+	pl := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
@@ -192,10 +180,7 @@ func TestPipelineAudiences(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		pl, err := NewPipeline("test", "v0.1.0", cred, azruntime.PipelineOptions{}, opts)
-		if err != nil {
-			t.Fatal(err)
-		}
+		pl := NewPipeline("test", "v0.1.0", cred, azruntime.PipelineOptions{}, opts)
 		_, err = pl.Do(req)
 		if err != nil {
 			t.Fatal(err)
@@ -207,6 +192,7 @@ func TestPipelineAudiences(t *testing.T) {
 }
 
 func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
+	t.Skip("this test can't pass without a breaking change to arm/runtime.NewPipeline")
 	partialConfigs := []cloud.Configuration{
 		{Name: "..."},
 		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{"...": {Endpoint: "..."}}},
@@ -220,9 +206,10 @@ func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
 	for _, c := range partialConfigs {
 		opts := &arm.ClientOptions{}
 		opts.Cloud = c
-		_, err := NewPipeline("test", "v0.1.0", mockCredential{}, azruntime.PipelineOptions{}, opts)
-		if err == nil {
-			t.Fatal("expected an error")
-		}
+		// TODO: uncomment after adding error return to NewPipeline
+		// _, err := NewPipeline("test", "v0.1.0", mockCredential{}, azruntime.PipelineOptions{}, opts)
+		// if err == nil {
+		// 	t.Fatal("expected an error")
+		// }
 	}
 }

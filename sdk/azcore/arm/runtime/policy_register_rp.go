@@ -12,10 +12,12 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -49,23 +51,30 @@ func setDefaults(r *armpolicy.RegistrationOptions) {
 // NewRPRegistrationPolicy creates a policy object configured using the specified options.
 // The policy controls whether an unregistered resource provider should automatically be
 // registered. See https://aka.ms/rps-not-found for more information.
-func NewRPRegistrationPolicy(cred shared.TokenCredential, o *armpolicy.RegistrationOptions) (azpolicy.Policy, error) {
+// This method panics when the RegistrationOptions.Cloud field is set with a Configuration object
+// that's missing Azure Resource Manager settings. A future version will return an error instead.
+func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *armpolicy.RegistrationOptions) azpolicy.Policy {
 	if o == nil {
 		o = &armpolicy.RegistrationOptions{}
 	}
-	conf, err := getConfiguration(&o.ClientOptions)
-	if err != nil {
-		return nil, err
+	scope := shared.EndpointToScope(endpoint)
+	// TODO: use getConfiguration(), return an error instead of panicking
+	if c := o.ClientOptions.Cloud; !reflect.ValueOf(c).IsZero() {
+		if conf, ok := c.Services[cloud.ResourceManager]; ok && len(conf.Audiences) > 0 {
+			scope = conf.Audiences[0]
+		} else {
+			panic(fmt.Sprintf(`missing Azure Resource Manager configuration for cloud "%s"`, c.Name))
+		}
 	}
-	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: conf.Audiences[:1]})
+	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: []string{scope}})
 	p := &rpRegistrationPolicy{
-		endpoint: conf.Endpoint,
+		endpoint: endpoint,
 		pipeline: runtime.NewPipeline(shared.Module, shared.Version, runtime.PipelineOptions{PerRetry: []pipeline.Policy{authPolicy}}, &o.ClientOptions),
 		options:  *o,
 	}
 	// init the copy
 	setDefaults(&p.options)
-	return p, nil
+	return p
 }
 
 type rpRegistrationPolicy struct {

@@ -21,31 +21,38 @@ import (
 
 // NewPipeline creates a pipeline from connection options.
 // The telemetry policy, when enabled, will use the specified module and version info.
-func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (pipeline.Pipeline, error) {
+// This method panics when the ClientOptions.Cloud field is set with a Configuration object
+// that's missing Azure Resource Manager settings. A future version will return an error instead.
+func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) pipeline.Pipeline {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
 	conf, err := getConfiguration(&options.ClientOptions)
 	if err != nil {
-		return pipeline.Pipeline{}, err
+		// TODO: return the error
+		panic(err)
+	}
+	scope := conf.Audiences[0]
+	ep := conf.Endpoint
+	if options.Endpoint != "" {
+		scope = shared.EndpointToScope(string(options.Endpoint))
+		ep = string(options.Endpoint)
 	}
 	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{
-		Scopes:           conf.Audiences[:1],
+		Scopes:           []string{scope},
 		AuxiliaryTenants: options.AuxiliaryTenants,
 	})
 	perRetry := make([]pipeline.Policy, 0, len(plOpts.PerRetry)+1)
 	copy(perRetry, plOpts.PerRetry)
 	plOpts.PerRetry = append(perRetry, authPolicy)
 	if !options.DisableRPRegistration {
-		regPolicy, err := NewRPRegistrationPolicy(cred, &armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions})
-		if err != nil {
-			return pipeline.Pipeline{}, err
-		}
+		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}
+		regPolicy := NewRPRegistrationPolicy(ep, cred, &regRPOpts)
 		perCall := make([]pipeline.Policy, 0, len(plOpts.PerCall)+1)
 		copy(perCall, plOpts.PerCall)
 		plOpts.PerCall = append(perCall, regPolicy)
 	}
-	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions), nil
+	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions)
 }
 
 func getConfiguration(o *azpolicy.ClientOptions) (cloud.ServiceConfiguration, error) {

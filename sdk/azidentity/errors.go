@@ -28,7 +28,7 @@ func newAuthenticationFailedError(credType string, err error, resp *http.Respons
 	if resp == nil {
 		var e msal.CallErr
 		if errors.As(err, &e) {
-			return AuthenticationFailedError{err: e, RawResponse: e.Resp}
+			return AuthenticationFailedError{credType: credType, err: e, RawResponse: e.Resp}
 		}
 	}
 	return AuthenticationFailedError{credType: credType, err: err, RawResponse: resp}
@@ -38,9 +38,10 @@ func newAuthenticationFailedError(credType string, err error, resp *http.Respons
 // Note that the message contents are not contractual and can change over time.
 func (e AuthenticationFailedError) Error() string {
 	if e.RawResponse == nil {
-		return e.err.Error()
+		return e.credType + " authentication failed: " + e.err.Error()
 	}
 	msg := &bytes.Buffer{}
+	fmt.Fprintf(msg, e.credType+" authentication failed\n")
 	fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
 	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
 	fmt.Fprintf(msg, "RESPONSE %s\n", e.RawResponse.Status)

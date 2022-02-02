@@ -76,23 +76,15 @@ stages:
         - template: ../variables/globals.yml
       strategy:
         matrix:
-          Linux_Go117:
+          Linux_Go118:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
-            go.version: '1.17'
-          Windows_Go117:
+            go.version: '1.18beta.2'
+          Windows_Go118:
             pool.name: azsdk-pool-mms-win-2019-general
             image.name: MMS2019
-            go.version: '1.17'
+            go.version: '1.18beta.2'
             generate.bom: true
-          Linux_Go116:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
-            go.version: '1.16.7'
-          Windows_Go116:
-            pool.name: azsdk-pool-mms-win-2019-general
-            image.name: MMS2019
-            go.version: '1.16.7'
       pool:
         name: $(pool.name)
         vmImage: $(image.name)
@@ -134,7 +126,7 @@ stages:
 
       - task: GoTool@0
         inputs:
-          version: '1.17'
+          version: '1.18beta.2'
         displayName: "Select Go Version"
 
       - template: ../steps/create-go-workspace.yml

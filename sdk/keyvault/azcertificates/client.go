@@ -750,8 +750,11 @@ type CreateIssuerOptions struct {
 	// The credentials to be used for the issuer.
 	Credentials *IssuerCredentials `json:"credentials,omitempty"`
 
-	// Details of the organization as provided to the issuer.
-	OrganizationDetails *OrganizationDetails `json:"org_details,omitempty"`
+	// Details of the organization administrator.
+	AdministratorContacts []*AdministratorContact `json:"admin_details,omitempty"`
+
+	// Id of the organization.
+	OrganizationID *string `json:"id,omitempty"`
 }
 
 func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertificateIssuerOptions {
@@ -771,6 +774,27 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		options = &CreateIssuerOptions{}
 	}
 
+	var orgDetails *generated.OrganizationDetails
+	if options.AdministratorContacts != nil || options.OrganizationID != nil {
+		orgDetails = &generated.OrganizationDetails{}
+		if options.OrganizationID != nil {
+			orgDetails.ID = options.OrganizationID
+		}
+
+		if options.AdministratorContacts != nil {
+			a := make([]*generated.AdministratorDetails, len(options.AdministratorContacts))
+			for idx, v := range options.AdministratorContacts {
+				a[idx] = &generated.AdministratorDetails{
+					EmailAddress: v.EmailAddress,
+					FirstName:    v.FirstName,
+					LastName:     v.LastName,
+					Phone:        v.Phone,
+				}
+			}
+			orgDetails.AdminDetails = a
+		}
+	}
+
 	resp, err := c.genClient.SetCertificateIssuer(
 		ctx,
 		c.vaultURL,
@@ -779,7 +803,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 			Provider:            &provider,
 			Attributes:          &generated.IssuerAttributes{Enabled: options.Enabled},
 			Credentials:         options.Credentials.toGenerated(),
-			OrganizationDetails: options.OrganizationDetails.toGenerated(),
+			OrganizationDetails: orgDetails,
 		},
 		options.toGenerated(),
 	)
@@ -791,7 +815,6 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 	cr := CreateIssuerResponse{RawResponse: resp.RawResponse}
 	cr.CertificateIssuer = CertificateIssuer{
 		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-		OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
 		Provider:            resp.Provider,
 		ID:                  resp.ID,
 	}
@@ -800,7 +823,22 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		cr.CertificateIssuer.Created = resp.Attributes.Created
 		cr.CertificateIssuer.Enabled = resp.Attributes.Enabled
 		cr.CertificateIssuer.Updated = resp.Attributes.Updated
-
+	}
+	if resp.OrganizationDetails != nil {
+		cr.OrganizationID = resp.OrganizationDetails.ID
+		var adminDetails []*AdministratorContact
+		if resp.OrganizationDetails.AdminDetails != nil {
+			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
+			for idx, v := range resp.OrganizationDetails.AdminDetails {
+				adminDetails[idx] = &AdministratorContact{
+					EmailAddress: v.EmailAddress,
+					FirstName:    v.FirstName,
+					LastName:     v.LastName,
+					Phone:        v.Phone,
+				}
+			}
+		}
+		cr.AdministratorContacts = adminDetails
 	}
 
 	return cr, nil
@@ -833,14 +871,28 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 		ID:                  resp.ID,
 		Provider:            resp.Provider,
 		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-		OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
 	}
 
 	if resp.Attributes != nil {
 		g.CertificateIssuer.Created = resp.Attributes.Created
 		g.CertificateIssuer.Enabled = resp.Attributes.Enabled
 		g.CertificateIssuer.Updated = resp.Attributes.Updated
-
+	}
+	if resp.OrganizationDetails != nil {
+		g.OrganizationID = resp.OrganizationDetails.ID
+		var adminDetails []*AdministratorContact
+		if resp.OrganizationDetails.AdminDetails != nil {
+			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
+			for idx, v := range resp.OrganizationDetails.AdminDetails {
+				adminDetails[idx] = &AdministratorContact{
+					EmailAddress: v.EmailAddress,
+					FirstName:    v.FirstName,
+					LastName:     v.LastName,
+					Phone:        v.Phone,
+				}
+			}
+		}
+		g.AdministratorContacts = adminDetails
 	}
 
 	return g, nil
@@ -937,14 +989,28 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 		ID:                  resp.ID,
 		Provider:            resp.Provider,
 		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-		OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
 	}
 
 	if resp.Attributes != nil {
 		d.CertificateIssuer.Created = resp.Attributes.Created
 		d.CertificateIssuer.Enabled = resp.Attributes.Enabled
 		d.CertificateIssuer.Updated = resp.Attributes.Updated
-
+	}
+	if resp.OrganizationDetails != nil {
+		d.OrganizationID = resp.OrganizationDetails.ID
+		var adminDetails []*AdministratorContact
+		if resp.OrganizationDetails.AdminDetails != nil {
+			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
+			for idx, v := range resp.OrganizationDetails.AdminDetails {
+				adminDetails[idx] = &AdministratorContact{
+					EmailAddress: v.EmailAddress,
+					FirstName:    v.FirstName,
+					LastName:     v.LastName,
+					Phone:        v.Phone,
+				}
+			}
+		}
+		d.AdministratorContacts = adminDetails
 	}
 
 	return d, nil
@@ -958,8 +1024,11 @@ type UpdateIssuerOptions struct {
 	// The credentials to be used for the issuer.
 	Credentials *IssuerCredentials `json:"credentials,omitempty"`
 
-	// Details of the organization as provided to the issuer.
-	OrganizationDetails *OrganizationDetails `json:"org_details,omitempty"`
+	// Details of the organization administrator.
+	AdministratorContacts []*AdministratorContact `json:"admin_details,omitempty"`
+
+	// Id of the organization.
+	OrganizationID *string `json:"id,omitempty"`
 
 	// The issuer provider.
 	Provider *string `json:"provider,omitempty"`
@@ -974,10 +1043,32 @@ func (u *UpdateIssuerOptions) toUpdateParameters() generated.CertificateIssuerUp
 		attrib = &generated.IssuerAttributes{Enabled: u.Enabled}
 	}
 
+	var orgDetail *generated.OrganizationDetails
+	if u.OrganizationID != nil || u.AdministratorContacts != nil {
+		orgDetail = &generated.OrganizationDetails{}
+		if u.OrganizationID != nil {
+			orgDetail.ID = u.OrganizationID
+		}
+
+		if u.AdministratorContacts != nil {
+			a := make([]*generated.AdministratorDetails, len(u.AdministratorContacts))
+			for idx, v := range u.AdministratorContacts {
+				a[idx] = &generated.AdministratorDetails{
+					EmailAddress: v.EmailAddress,
+					FirstName:    v.FirstName,
+					LastName:     v.LastName,
+					Phone:        v.Phone,
+				}
+			}
+
+			orgDetail.AdminDetails = a
+		}
+	}
+
 	return generated.CertificateIssuerUpdateParameters{
 		Attributes:          attrib,
 		Credentials:         u.Credentials.toGenerated(),
-		OrganizationDetails: u.OrganizationDetails.toGenerated(),
+		OrganizationDetails: orgDetail,
 		Provider:            u.Provider,
 	}
 }
@@ -1006,18 +1097,33 @@ func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *U
 
 	u := UpdateIssuerResponse{RawResponse: resp.RawResponse}
 	u.CertificateIssuer = CertificateIssuer{
-		ID:                  resp.ID,
-		Provider:            resp.Provider,
-		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-		OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+		ID:          resp.ID,
+		Provider:    resp.Provider,
+		Credentials: issuerCredentialsFromGenerated(resp.Credentials),
 	}
 
 	if resp.Attributes != nil {
 		u.CertificateIssuer.Created = resp.Attributes.Created
 		u.CertificateIssuer.Enabled = resp.Attributes.Enabled
 		u.CertificateIssuer.Updated = resp.Attributes.Updated
-
 	}
+	if resp.OrganizationDetails != nil {
+		u.OrganizationID = resp.OrganizationDetails.ID
+		var adminDetails []*AdministratorContact
+		if resp.OrganizationDetails.AdminDetails != nil {
+			adminDetails = make([]*AdministratorContact, len(resp.OrganizationDetails.AdminDetails))
+			for idx, v := range resp.OrganizationDetails.AdminDetails {
+				adminDetails[idx] = &AdministratorContact{
+					EmailAddress: v.EmailAddress,
+					FirstName:    v.FirstName,
+					LastName:     v.LastName,
+					Phone:        v.Phone,
+				}
+			}
+		}
+		u.AdministratorContacts = adminDetails
+	}
+
 	return u, nil
 }
 

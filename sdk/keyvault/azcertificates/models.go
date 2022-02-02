@@ -28,8 +28,8 @@ func (a *Action) toGenerated() *generated.Action {
 	}
 }
 
-// AdministratorDetails - Details of the organization administrator of the certificate issuer.
-type AdministratorDetails struct {
+// AdministratorContact - Details of the organization administrator of the certificate issuer.
+type AdministratorContact struct {
 	// Email address.
 	EmailAddress *string `json:"email,omitempty"`
 
@@ -43,12 +43,12 @@ type AdministratorDetails struct {
 	Phone *string `json:"phone,omitempty"`
 }
 
-func administratorDetailsFromGenerated(g *generated.AdministratorDetails) *AdministratorDetails {
+func administratorDetailsFromGenerated(g *generated.AdministratorDetails) *AdministratorContact {
 	if g == nil {
 		return nil
 	}
 
-	return &AdministratorDetails{
+	return &AdministratorContact{
 		EmailAddress: g.EmailAddress,
 		FirstName:    g.FirstName,
 		LastName:     g.LastName,
@@ -56,7 +56,7 @@ func administratorDetailsFromGenerated(g *generated.AdministratorDetails) *Admin
 	}
 }
 
-func (a *AdministratorDetails) toGenerated() *generated.AdministratorDetails {
+func (a *AdministratorContact) toGenerated() *generated.AdministratorDetails {
 	if a == nil {
 		return nil
 	}
@@ -67,24 +67,6 @@ func (a *AdministratorDetails) toGenerated() *generated.AdministratorDetails {
 		LastName:     a.LastName,
 		Phone:        a.Phone,
 	}
-}
-
-// Attributes - The object attributes managed by the KeyVault service.
-type Attributes struct {
-	// Determines whether the object is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
-
-	// Not before date in UTC.
-	NotBefore *time.Time `json:"nbf,omitempty"`
-
-	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // CertificateProperties - The certificate management properties.
@@ -193,24 +175,24 @@ func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 	}
 }
 
-// CertificateError - The key vault server error.
-type CertificateError struct {
+// CertificateOperationError - The key vault server error.
+type CertificateOperationError struct {
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; The key vault server error.
-	InnerError *CertificateError `json:"innererror,omitempty" azure:"ro"`
+	InnerError *CertificateOperationError `json:"innererror,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-func certificateErrorFromGenerated(g *generated.Error) *CertificateError {
+func certificateErrorFromGenerated(g *generated.Error) *CertificateOperationError {
 	if g == nil {
 		return nil
 	}
 
-	return &CertificateError{
+	return &CertificateOperationError{
 		Code:       g.Code,
 		Message:    g.Message,
 		InnerError: certificateErrorFromGenerated(g.InnerError),
@@ -258,7 +240,7 @@ type CertificateOperation struct {
 	Csr []byte `json:"csr,omitempty"`
 
 	// Error encountered, if any, during the certificate operation.
-	Error *CertificateError `json:"error,omitempty"`
+	Error *CertificateOperationError `json:"error,omitempty"`
 
 	// Parameters for the issuer of the X509 component of a certificate.
 	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
@@ -499,42 +481,6 @@ type DeletedCertificateItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// // IssuerProperties - The properties of an issuer managed by the Key Vault service.
-// type IssuerProperties struct {
-// 	// Determines whether the issuer is enabled.
-// 	Enabled *bool `json:"enabled,omitempty"`
-
-// 	// READ-ONLY; Creation time in UTC.
-// 	Created *time.Time `json:"created,omitempty" azure:"ro"`
-
-// 	// READ-ONLY; Last updated time in UTC.
-// 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
-// }
-
-// func issuerAttributesFromGenerated(g *generated.IssuerAttributes) *IssuerProperties {
-// 	if g == nil {
-// 		return nil
-// 	}
-
-// 	return &IssuerProperties{
-// 		Enabled: g.Enabled,
-// 		Created: g.Created,
-// 		Updated: g.Updated,
-// 	}
-// }
-
-// func (i *IssuerProperties) toGenerated() *generated.IssuerAttributes {
-// 	if i == nil {
-// 		return nil
-// 	}
-
-// 	return &generated.IssuerAttributes{
-// 		Enabled: i.Enabled,
-// 		Created: i.Created,
-// 		Updated: i.Updated,
-// 	}
-// }
-
 // CertificateIssuer - The issuer for Key Vault certificate.
 type CertificateIssuer struct {
 	// Determines whether the issuer is enabled.
@@ -549,8 +495,11 @@ type CertificateIssuer struct {
 	// The credentials to be used for the issuer.
 	Credentials *IssuerCredentials `json:"credentials,omitempty"`
 
-	// Details of the organization as provided to the issuer.
-	OrganizationDetails *OrganizationDetails `json:"org_details,omitempty"`
+	// Details of the organization administrator.
+	AdministratorContacts []*AdministratorContact `json:"admin_details,omitempty"`
+
+	// Id of the organization.
+	OrganizationID *string `json:"organization_id,omitempty"`
 
 	// The issuer provider.
 	Provider *string `json:"provider,omitempty"`
@@ -652,47 +601,6 @@ func lifetimeActionFromGenerated(g *generated.LifetimeAction) *LifetimeAction {
 			DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
 			LifetimePercentage: g.Trigger.LifetimePercentage,
 		},
-	}
-}
-
-// OrganizationDetails - Details of the organization of the certificate issuer.
-type OrganizationDetails struct {
-	// Details of the organization administrator.
-	AdminDetails []*AdministratorDetails `json:"admin_details,omitempty"`
-
-	// Id of the organization.
-	ID *string `json:"id,omitempty"`
-}
-
-func organizationDetailsFromGenerated(g *generated.OrganizationDetails) *OrganizationDetails {
-	if g == nil {
-		return nil
-	}
-	var ret []*AdministratorDetails
-
-	for _, a := range g.AdminDetails {
-		ret = append(ret, administratorDetailsFromGenerated(a))
-	}
-
-	return &OrganizationDetails{
-		ID:           g.ID,
-		AdminDetails: ret,
-	}
-}
-
-func (o *OrganizationDetails) toGenerated() *generated.OrganizationDetails {
-	if o == nil {
-		return nil
-	}
-
-	var adminDetails []*generated.AdministratorDetails
-	for _, a := range o.AdminDetails {
-		adminDetails = append(adminDetails, a.toGenerated())
-	}
-
-	return &generated.OrganizationDetails{
-		ID:           o.ID,
-		AdminDetails: adminDetails,
 	}
 }
 

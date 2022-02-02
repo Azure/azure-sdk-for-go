@@ -319,14 +319,12 @@ func TestClient_IssuerCRUD(t *testing.T) {
 			AccountID: to.StringPtr("keyvaultuser"),
 		},
 		Enabled: to.BoolPtr(true),
-		OrganizationDetails: &OrganizationDetails{
-			AdminDetails: []*AdministratorDetails{
-				{
-					FirstName:    to.StringPtr("John"),
-					LastName:     to.StringPtr("Doe"),
-					EmailAddress: to.StringPtr("admin@microsoft.com"),
-					Phone:        to.StringPtr("4255555555"),
-				},
+		AdministratorContacts: []*AdministratorContact{
+			{
+				FirstName:    to.StringPtr("John"),
+				LastName:     to.StringPtr("Doe"),
+				EmailAddress: to.StringPtr("admin@microsoft.com"),
+				Phone:        to.StringPtr("4255555555"),
 			},
 		},
 	})
@@ -349,14 +347,12 @@ func TestClient_IssuerCRUD(t *testing.T) {
 			AccountID: to.StringPtr("keyvaultuser2"),
 		},
 		Enabled: to.BoolPtr(true),
-		OrganizationDetails: &OrganizationDetails{
-			AdminDetails: []*AdministratorDetails{
-				{
-					FirstName:    to.StringPtr("John"),
-					LastName:     to.StringPtr("Doe"),
-					EmailAddress: to.StringPtr("admin@microsoft.com"),
-					Phone:        to.StringPtr("4255555555"),
-				},
+		AdministratorContacts: []*AdministratorContact{
+			{
+				FirstName:    to.StringPtr("John"),
+				LastName:     to.StringPtr("Doe"),
+				EmailAddress: to.StringPtr("admin@microsoft.com"),
+				Phone:        to.StringPtr("4255555555"),
 			},
 		},
 	})
@@ -376,23 +372,21 @@ func TestClient_IssuerCRUD(t *testing.T) {
 
 	// Update the certificate issuer
 	updateResp, err := client.UpdateIssuer(ctx, issuerName2, &UpdateIssuerOptions{
-		OrganizationDetails: &OrganizationDetails{
-			AdminDetails: []*AdministratorDetails{
-				{
-					FirstName:    to.StringPtr("Jane"),
-					LastName:     to.StringPtr("Doey"),
-					EmailAddress: to.StringPtr("admin2@microsoft.com"),
-					Phone:        to.StringPtr("4266666666"),
-				},
+		AdministratorContacts: []*AdministratorContact{
+			{
+				FirstName:    to.StringPtr("Jane"),
+				LastName:     to.StringPtr("Doey"),
+				EmailAddress: to.StringPtr("admin2@microsoft.com"),
+				Phone:        to.StringPtr("4266666666"),
 			},
 		},
 	})
 	require.NoError(t, err)
-	require.Equal(t, 1, len(updateResp.OrganizationDetails.AdminDetails))
-	require.Equal(t, "Jane", *updateResp.OrganizationDetails.AdminDetails[0].FirstName)
-	require.Equal(t, "Doey", *updateResp.OrganizationDetails.AdminDetails[0].LastName)
-	require.Equal(t, "admin2@microsoft.com", *updateResp.OrganizationDetails.AdminDetails[0].EmailAddress)
-	require.Equal(t, "4266666666", *updateResp.OrganizationDetails.AdminDetails[0].Phone)
+	require.Equal(t, 1, len(updateResp.AdministratorContacts))
+	require.Equal(t, "Jane", *updateResp.AdministratorContacts[0].FirstName)
+	require.Equal(t, "Doey", *updateResp.AdministratorContacts[0].LastName)
+	require.Equal(t, "admin2@microsoft.com", *updateResp.AdministratorContacts[0].EmailAddress)
+	require.Equal(t, "4266666666", *updateResp.AdministratorContacts[0].Phone)
 
 	// Delete the first issuer
 	_, err = client.DeleteIssuer(ctx, issuerName, nil)

@@ -1,16 +1,14 @@
 parameters:
-  - name: platform
-    type: string
-  - name: version
+  - name: archive
     type: string
 
 steps:
   - pwsh: |
-      curl -sSL -o ${{parameters.version}}.${{parameters.platform}}-amd64.tar.gz https://dl.google.com/go/${{parameters.version}}.${{parameters.platform}}-amd64.tar.gz
-      tar -xzf ${{parameters.version}}.${{parameters.platform}}-amd64.tar.gz "$(Build.SourcesDirectory)/../${{parameters.version}}"
+      curl -sSL -o goarchive https://dl.google.com/go/${{archive}}
+      tar -xzf goarchive -C "$(Build.SourcesDirectory)/.."
 
-      Write-Host "Prepending Path with $(Build.SourcesDirectory)/../${{parameters.version}}/bin"
+      Write-Host "Prepending Path with $(Build.SourcesDirectory)/../go/bin"
 
       # also prepend the path permanently to ensure access the newly installed tools
-      Write-Host "##vso[task.prependpath]$(Build.SourcesDirectory)/../${{parameters.version}}/bin"
+      Write-Host "##vso[task.prependpath]$(Build.SourcesDirectory)/../go/bin"
     displayName: "Install Go Pre-release Version"

@@ -134,7 +134,7 @@ func ExampleClient_UpdateCertificateProperties() {
 		panic(err)
 	}
 	fmt.Println(*resp.ID)
-	fmt.Println(*resp.CertificateBundle.Attributes.Enabled)
+	fmt.Println(*resp.Certificate.Attributes.Enabled)
 	fmt.Println(resp.Tags)
 	fmt.Println(*resp.Policy.IssuerParameters.Name)
 }

@@ -265,7 +265,7 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(*resp.ID)
-	fmt.Println(*resp.CertificateBundle.Attributes.Enabled)
+	fmt.Println(*resp.Certificate.Attributes.Enabled)
 }
 ```
 

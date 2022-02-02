@@ -145,8 +145,8 @@ func certificateAttributesFromGenerated(g *generated.CertificateAttributes) *Cer
 	}
 }
 
-// CertificateBundle - A certificate bundle consists of a certificate (X509) plus its attributes.
-type CertificateBundle struct {
+// Certificate - A certificate bundle consists of a certificate (X509) plus its attributes.
+type Certificate struct {
 	// The certificate attributes.
 	Attributes *CertificateAttributes `json:"attributes,omitempty"`
 
@@ -169,18 +169,18 @@ type CertificateBundle struct {
 	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
 
 	// READ-ONLY; The secret id.
-	Sid *string `json:"sid,omitempty" azure:"ro"`
+	SecretID *string `json:"sid,omitempty" azure:"ro"`
 
 	// READ-ONLY; Thumbprint of the certificate.
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
-func certificateBundleFromGenerated(g *generated.CertificateBundle) CertificateBundle {
+func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 	if g == nil {
-		return CertificateBundle{}
+		return Certificate{}
 	}
 
-	return CertificateBundle{
+	return Certificate{
 		Attributes:     certificateAttributesFromGenerated(g.Attributes),
 		Cer:            g.Cer,
 		ContentType:    g.ContentType,
@@ -188,7 +188,7 @@ func certificateBundleFromGenerated(g *generated.CertificateBundle) CertificateB
 		ID:             g.ID,
 		Kid:            g.Kid,
 		Policy:         certificatePolicyFromGenerated(g.Policy),
-		Sid:            g.Sid,
+		SecretID:       g.Sid,
 		X509Thumbprint: g.X509Thumbprint,
 	}
 }
@@ -406,8 +406,8 @@ func (c *Contacts) toGenerated() generated.Contacts {
 	}
 }
 
-// DeletedCertificateBundle - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-type DeletedCertificateBundle struct {
+// DeletedCertificate consists of its previous id, attributes and its tags, as well as information on when it will be purged.
+type DeletedCertificate struct {
 	// The certificate attributes.
 	Attributes *CertificateAttributes `json:"attributes,omitempty"`
 

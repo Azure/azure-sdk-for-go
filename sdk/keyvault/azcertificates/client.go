@@ -68,7 +68,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 // Optional parameters for the Client.BeginCreateCertificate function
 type BeginCreateCertificateOptions struct {
 	// The attributes of the certificate (optional).
-	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
+	CertificateAttributes *CertificateProperties `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -236,7 +236,7 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 	return GetCertificateResponse{
 		RawResponse: resp.RawResponse,
 		Certificate: Certificate{
-			Attributes:     certificateAttributesFromGenerated(resp.Attributes),
+			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
 			Tags:           convertGeneratedMap(resp.Tags),
@@ -313,7 +313,7 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 			RecoveryID:         g.RecoveryID,
 			DeletedDate:        g.DeletedDate,
 			ScheduledPurgeDate: g.ScheduledPurgeDate,
-			Attributes:         certificateAttributesFromGenerated(g.Attributes),
+			Properties:         certificateAttributesFromGenerated(g.Attributes),
 			Cer:                g.Cer,
 			ContentType:        g.ContentType,
 			Tags:               convertGeneratedMap(g.Tags),
@@ -486,7 +486,7 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 			RecoveryID:         resp.RecoveryID,
 			DeletedDate:        resp.DeletedDate,
 			ScheduledPurgeDate: resp.ScheduledPurgeDate,
-			Attributes:         certificateAttributesFromGenerated(resp.Attributes),
+			Properties:         certificateAttributesFromGenerated(resp.Attributes),
 			Cer:                resp.Cer,
 			ContentType:        resp.ContentType,
 			Tags:               convertGeneratedMap(resp.Tags),
@@ -532,7 +532,7 @@ func (c *Client) BackupCertificate(ctx context.Context, certName string, options
 // ImportCertificateOptions contains the optional parameters for the Client.ImportCertificate function.
 type ImportCertificateOptions struct {
 	// The attributes of the certificate (optional).
-	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
+	CertificateAttributes *CertificateProperties `json:"attributes,omitempty"`
 
 	// The management policy for the certificate.
 	CertificatePolicy *CertificatePolicy `json:"policy,omitempty"`
@@ -583,7 +583,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 	return ImportCertificateResponse{
 		RawResponse: resp.RawResponse,
 		Certificate: Certificate{
-			Attributes:     certificateAttributesFromGenerated(resp.Attributes),
+			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
 			Tags:           convertGeneratedMap(resp.Tags),
@@ -645,7 +645,7 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Attributes:     certificateAttributesFromGenerated(v.Attributes),
+			Properties:     certificateAttributesFromGenerated(v.Attributes),
 			ID:             v.ID,
 			Tags:           convertGeneratedMap(v.Tags),
 			X509Thumbprint: v.X509Thumbprint,
@@ -716,7 +716,7 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVe
 	var vals []*CertificateItem
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Attributes:     certificateAttributesFromGenerated(v.Attributes),
+			Properties:     certificateAttributesFromGenerated(v.Attributes),
 			ID:             v.ID,
 			Tags:           convertGeneratedMap(v.Tags),
 			X509Thumbprint: v.X509Thumbprint,
@@ -744,8 +744,8 @@ func (c *Client) ListCertificateVersions(certificateName string, options *ListCe
 
 // CreateIssuerOptions contains the optional parameters for the Client.CreateIssuer function
 type CreateIssuerOptions struct {
-	// Attributes of the issuer object.
-	Attributes *IssuerAttributes `json:"attributes,omitempty"`
+	// Determines whether the issuer is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
 
 	// The credentials to be used for the issuer.
 	Credentials *IssuerCredentials `json:"credentials,omitempty"`
@@ -777,7 +777,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		issuerName,
 		generated.CertificateIssuerSetParameters{
 			Provider:            &provider,
-			Attributes:          options.Attributes.toGenerated(),
+			Attributes:          &generated.IssuerAttributes{Enabled: options.Enabled},
 			Credentials:         options.Credentials.toGenerated(),
 			OrganizationDetails: options.OrganizationDetails.toGenerated(),
 		},
@@ -788,16 +788,22 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		return CreateIssuerResponse{}, err
 	}
 
-	return CreateIssuerResponse{
-		RawResponse: resp.RawResponse,
-		CertificateIssuer: CertificateIssuer{
-			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
-			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
-			Provider:            resp.Provider,
-			ID:                  resp.ID,
-		},
-	}, nil
+	cr := CreateIssuerResponse{RawResponse: resp.RawResponse}
+	cr.CertificateIssuer = CertificateIssuer{
+		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+		OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+		Provider:            resp.Provider,
+		ID:                  resp.ID,
+	}
+
+	if resp.Attributes != nil {
+		cr.CertificateIssuer.Created = resp.Attributes.Created
+		cr.CertificateIssuer.Enabled = resp.Attributes.Enabled
+		cr.CertificateIssuer.Updated = resp.Attributes.Updated
+
+	}
+
+	return cr, nil
 }
 
 // GetIssuerOptions contains the optional parameters for the Client.GetIssuer function
@@ -822,16 +828,22 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 		return GetIssuerResponse{}, err
 	}
 
-	return GetIssuerResponse{
-		RawResponse: resp.RawResponse,
-		CertificateIssuer: CertificateIssuer{
-			ID:                  resp.ID,
-			Provider:            resp.Provider,
-			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
-			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
-		},
-	}, nil
+	g := GetIssuerResponse{RawResponse: resp.RawResponse}
+	g.CertificateIssuer = CertificateIssuer{
+		ID:                  resp.ID,
+		Provider:            resp.Provider,
+		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+		OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+	}
+
+	if resp.Attributes != nil {
+		g.CertificateIssuer.Created = resp.Attributes.Created
+		g.CertificateIssuer.Enabled = resp.Attributes.Enabled
+		g.CertificateIssuer.Updated = resp.Attributes.Updated
+
+	}
+
+	return g, nil
 }
 
 // ListPropertiesOfIssuersPager is the pager returned by Client.ListIssuers
@@ -920,22 +932,28 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 		return DeleteIssuerResponse{}, err
 	}
 
-	return DeleteIssuerResponse{
-		RawResponse: resp.RawResponse,
-		CertificateIssuer: CertificateIssuer{
-			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
-			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
-			Provider:            resp.Provider,
-			ID:                  resp.ID,
-		},
-	}, nil
+	d := DeleteIssuerResponse{RawResponse: resp.RawResponse}
+	d.CertificateIssuer = CertificateIssuer{
+		ID:                  resp.ID,
+		Provider:            resp.Provider,
+		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+		OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+	}
+
+	if resp.Attributes != nil {
+		d.CertificateIssuer.Created = resp.Attributes.Created
+		d.CertificateIssuer.Enabled = resp.Attributes.Enabled
+		d.CertificateIssuer.Updated = resp.Attributes.Updated
+
+	}
+
+	return d, nil
 }
 
 // UpdateIssuerOptions contains the optional parameters for the Client.UpdateIssuer function
 type UpdateIssuerOptions struct {
-	// Attributes of the issuer object.
-	Attributes *IssuerAttributes `json:"attributes,omitempty"`
+	// Determines whether the issuer is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
 
 	// The credentials to be used for the issuer.
 	Credentials *IssuerCredentials `json:"credentials,omitempty"`
@@ -951,9 +969,13 @@ func (u *UpdateIssuerOptions) toUpdateParameters() generated.CertificateIssuerUp
 	if u == nil {
 		return generated.CertificateIssuerUpdateParameters{}
 	}
+	var attrib *generated.IssuerAttributes
+	if u.Enabled != nil {
+		attrib = &generated.IssuerAttributes{Enabled: u.Enabled}
+	}
 
 	return generated.CertificateIssuerUpdateParameters{
-		Attributes:          u.Attributes.toGenerated(),
+		Attributes:          attrib,
 		Credentials:         u.Credentials.toGenerated(),
 		OrganizationDetails: u.OrganizationDetails.toGenerated(),
 		Provider:            u.Provider,
@@ -982,16 +1004,21 @@ func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *U
 		return UpdateIssuerResponse{}, err
 	}
 
-	return UpdateIssuerResponse{
-		RawResponse: resp.RawResponse,
-		CertificateIssuer: CertificateIssuer{
-			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
-			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
-			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
-			Provider:            resp.Provider,
-			ID:                  resp.ID,
-		},
-	}, nil
+	u := UpdateIssuerResponse{RawResponse: resp.RawResponse}
+	u.CertificateIssuer = CertificateIssuer{
+		ID:                  resp.ID,
+		Provider:            resp.Provider,
+		Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+		OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+	}
+
+	if resp.Attributes != nil {
+		u.CertificateIssuer.Created = resp.Attributes.Created
+		u.CertificateIssuer.Enabled = resp.Attributes.Enabled
+		u.CertificateIssuer.Updated = resp.Attributes.Updated
+
+	}
+	return u, nil
 }
 
 // SetContactsOptions contains the optional parameters for the Client.CreateContacts function
@@ -1167,7 +1194,7 @@ type UpdateCertificatePropertiesOptions struct {
 	Version string
 
 	// The attributes of the certificate (optional).
-	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
+	CertificateAttributes *CertificateProperties `json:"attributes,omitempty"`
 
 	// The management policy for the certificate.
 	CertificatePolicy *CertificatePolicy `json:"policy,omitempty"`
@@ -1217,7 +1244,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 // MergeCertificateOptions contains the optional parameters for the Client.MergeCertificate function.
 type MergeCertificateOptions struct {
 	// The attributes of the certificate (optional).
-	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
+	CertificateAttributes *CertificateProperties `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -1430,7 +1457,7 @@ func (l *ListDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPag
 			RecoveryID:         v.RecoveryID,
 			DeletedDate:        v.DeletedDate,
 			ScheduledPurgeDate: v.ScheduledPurgeDate,
-			Attributes:         certificateAttributesFromGenerated(v.Attributes),
+			Properties:         certificateAttributesFromGenerated(v.Attributes),
 			ID:                 v.ID,
 			Tags:               convertGeneratedMap(v.Tags),
 			X509Thumbprint:     v.X509Thumbprint,

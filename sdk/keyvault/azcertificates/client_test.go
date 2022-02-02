@@ -318,9 +318,7 @@ func TestClient_IssuerCRUD(t *testing.T) {
 		Credentials: &IssuerCredentials{
 			AccountID: to.StringPtr("keyvaultuser"),
 		},
-		Attributes: &IssuerAttributes{
-			Enabled: to.BoolPtr(true),
-		},
+		Enabled: to.BoolPtr(true),
 		OrganizationDetails: &OrganizationDetails{
 			AdminDetails: []*AdministratorDetails{
 				{
@@ -350,9 +348,7 @@ func TestClient_IssuerCRUD(t *testing.T) {
 		Credentials: &IssuerCredentials{
 			AccountID: to.StringPtr("keyvaultuser2"),
 		},
-		Attributes: &IssuerAttributes{
-			Enabled: to.BoolPtr(true),
-		},
+		Enabled: to.BoolPtr(true),
 		OrganizationDetails: &OrganizationDetails{
 			AdminDetails: []*AdministratorDetails{
 				{
@@ -457,12 +453,10 @@ func TestPolicy(t *testing.T) {
 			CertificateTransparency: to.BoolPtr(false),
 			Name:                    to.StringPtr("Self"),
 		},
-		KeyProperties: &KeyProperties{
-			Exportable: to.BoolPtr(true),
-			KeySize:    to.Int32Ptr(2048),
-			ReuseKey:   to.BoolPtr(true),
-			KeyType:    CertificateKeyTypeRSA.ToPtr(),
-		},
+		Exportable: to.BoolPtr(true),
+		KeySize:    to.Int32Ptr(2048),
+		ReuseKey:   to.BoolPtr(true),
+		KeyType:    CertificateKeyTypeRSA.ToPtr(),
 		LifetimeActions: []*LifetimeAction{
 			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Int32Ptr(98)}},
 		},
@@ -488,23 +482,23 @@ func TestPolicy(t *testing.T) {
 
 	// Make sure policies are equal
 	require.Equal(t, *policy.IssuerParameters.Name, *receivedPolicy.CertificatePolicy.IssuerParameters.Name)
-	require.Equal(t, *policy.KeyProperties.Exportable, *receivedPolicy.KeyProperties.Exportable)
+	require.Equal(t, *policy.Exportable, *receivedPolicy.Exportable)
 	require.Equal(t, *policy.SecretProperties.ContentType, *receivedPolicy.SecretProperties.ContentType)
 
 	// Update the policy
-	policy.KeyProperties.KeyType = CertificateKeyTypeEC.ToPtr()
-	policy.KeyProperties.KeySize = to.Int32Ptr(256)
-	policy.KeyProperties.Curve = CertificateKeyCurveNameP256.ToPtr()
+	policy.KeyType = CertificateKeyTypeEC.ToPtr()
+	policy.KeySize = to.Int32Ptr(256)
+	policy.Curve = CertificateKeyCurveNameP256.ToPtr()
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
 
 	require.Equal(t, *policy.IssuerParameters.Name, *updateResp.CertificatePolicy.IssuerParameters.Name)
-	require.Equal(t, *policy.KeyProperties.Exportable, *updateResp.KeyProperties.Exportable)
+	require.Equal(t, *policy.Exportable, *updateResp.Exportable)
 	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
-	require.Equal(t, *policy.KeyProperties.KeyType, *updateResp.KeyProperties.KeyType)
-	require.Equal(t, *policy.KeyProperties.KeySize, *updateResp.KeyProperties.KeySize)
-	require.Equal(t, *policy.KeyProperties.Curve, *updateResp.KeyProperties.Curve)
+	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
+	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
+	require.Equal(t, *policy.Curve, *updateResp.Curve)
 
 }
 
@@ -523,12 +517,10 @@ func TestCRUDOperations(t *testing.T) {
 			CertificateTransparency: to.BoolPtr(false),
 			Name:                    to.StringPtr("Self"),
 		},
-		KeyProperties: &KeyProperties{
-			Exportable: to.BoolPtr(true),
-			KeySize:    to.Int32Ptr(2048),
-			ReuseKey:   to.BoolPtr(true),
-			KeyType:    CertificateKeyTypeRSA.ToPtr(),
-		},
+		Exportable: to.BoolPtr(true),
+		KeySize:    to.Int32Ptr(2048),
+		ReuseKey:   to.BoolPtr(true),
+		KeyType:    CertificateKeyTypeRSA.ToPtr(),
 		LifetimeActions: []*LifetimeAction{
 			{Action: &Action{ActionType: CertificatePolicyActionEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Int32Ptr(98)}},
 		},
@@ -567,19 +559,19 @@ func TestCRUDOperations(t *testing.T) {
 	// require.NotNil(t, parsedCert)
 
 	// Update the policy
-	policy.KeyProperties.KeyType = CertificateKeyTypeEC.ToPtr()
-	policy.KeyProperties.KeySize = to.Int32Ptr(256)
-	policy.KeyProperties.Curve = CertificateKeyCurveNameP256.ToPtr()
+	policy.KeyType = CertificateKeyTypeEC.ToPtr()
+	policy.KeySize = to.Int32Ptr(256)
+	policy.Curve = CertificateKeyCurveNameP256.ToPtr()
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
 
 	require.Equal(t, *policy.IssuerParameters.Name, *updateResp.CertificatePolicy.IssuerParameters.Name)
-	require.Equal(t, *policy.KeyProperties.Exportable, *updateResp.KeyProperties.Exportable)
+	require.Equal(t, *policy.Exportable, *updateResp.Exportable)
 	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
-	require.Equal(t, *policy.KeyProperties.KeyType, *updateResp.KeyProperties.KeyType)
-	require.Equal(t, *policy.KeyProperties.KeySize, *updateResp.KeyProperties.KeySize)
-	require.Equal(t, *policy.KeyProperties.Curve, *updateResp.KeyProperties.Curve)
+	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
+	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
+	require.Equal(t, *policy.Curve, *updateResp.Curve)
 
 	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, &UpdateCertificatePropertiesOptions{Tags: map[string]string{"tag1": "updated_values1"}})
 	require.NoError(t, err)

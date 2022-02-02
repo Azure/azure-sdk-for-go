@@ -126,9 +126,7 @@ func NewProxyTransport(options *TransportOptions) (*RecordingHTTPClient, error) 
 }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
-	fmt.Println("Do")
 	if recordMode != liveMode {
-		fmt.Println("RecordingClient DO")
 		err := c.options.replaceAuthority(req)
 		if err != nil {
 			return nil, err
@@ -152,8 +150,6 @@ func (r TransportOptions) replaceAuthority(rawReq *http.Request) error {
 	rawReq.Header.Set(modeHeader, getRecordMode())
 	rawReq.Header.Set(idHeader, getRecordingId(r.TestName))
 	rawReq.Header.Set("x-recording-remove", "false")
-	fmt.Println(rawReq.URL.String())
-	fmt.Println(rawReq.Header.Get(upstreamURIHeader))
 	return nil
 }
 

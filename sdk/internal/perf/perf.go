@@ -85,17 +85,24 @@ func runTest(p PerfTest, c chan runResult) {
 		// 2nd request goes through in Record mode
 		setRecordingMode("record")
 		err = start(p.GetMetadata().Name, nil)
-		if err != nil {panic(err)}
+		if err != nil {
+			panic(err)
+		}
 		err = p.Run(context.Background())
 		if err != nil {
 			c <- runResult{err: err}
 		}
-		stop(p.GetMetadata().Name, nil)
+		err = stop(p.GetMetadata().Name, nil)
+		if err != nil {
+			panic(err)
+		}
 
 		// All ensuing requests go through in Playback mode
 		setRecordingMode("playback")
 		err = start(p.GetMetadata().Name, nil)
-		if err != nil {panic(err)}
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	if WarmUp > 0 {
@@ -191,7 +198,7 @@ func runPerfTest(p NewPerfTest) error {
 	for idx := 0; idx < Parallel; idx++ {
 		options := &PerfTestOptions{}
 		if TestProxy != "" {
-			transporter, err := NewProxyTransport(nil)
+			transporter, err := NewProxyTransport(&TransportOptions{TestName: p(nil).GetMetadata().Name})
 			if err != nil {
 				panic(err)
 			}

@@ -51,7 +51,7 @@ stages:
       steps:
       - template: /eng/pipelines/templates/steps/install-go-prerelease.yml
         parameters:
-          platform: '$(go.platform)'
+          platform: 'linux'
           version: '1.18beta.2'
 
       - template: ../steps/create-go-workspace.yml

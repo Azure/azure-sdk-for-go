@@ -6,7 +6,7 @@ parameters:
 
 steps:
   - pwsh: |
-      curl -sSL https://go.dev/dl/${{parameters.version}}.${{parameters.platform}}-amd64.tar.gz
+      curl -sSL -o ${{parameters.version}}.${{parameters.platform}}-amd64.tar.gz https://dl.google.com/go/${{parameters.version}}.${{parameters.platform}}-amd64.tar.gz
       tar -xzf ${{parameters.version}}.${{parameters.platform}}-amd64.tar.gz "$(Build.SourcesDirectory)/../${{parameters.version}}"
 
       Write-Host "Prepending Path with $(Build.SourcesDirectory)/../${{parameters.version}}/bin"

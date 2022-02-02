@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 
@@ -54,7 +53,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {
-		errorMessages = append(errorMessages, fmt.Sprintf("EnvironmentCredential: %s", err.Error()))
+		errorMessages = append(errorMessages, "EnvironmentCredential: "+err.Error())
 		creds = append(creds, &defaultCredentialErrorReporter{credType: "EnvironmentCredential", err: err})
 	}
 
@@ -63,16 +62,16 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, msiCred)
 		msiCred.client.imdsTimeout = time.Second
 	} else {
-		errorMessages = append(errorMessages, fmt.Sprintf("ManagedIdentityCredential: %s", err.Error()))
-		creds = append(creds, &defaultCredentialErrorReporter{credType: "ManagedIdentityCredential", err: err})
+		errorMessages = append(errorMessages, credNameManagedIdentity+": "+err.Error())
+		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameManagedIdentity, err: err})
 	}
 
 	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {
-		errorMessages = append(errorMessages, fmt.Sprintf("AzureCLICredential: %s", err.Error()))
-		creds = append(creds, &defaultCredentialErrorReporter{credType: "AzureCLICredential", err: err})
+		errorMessages = append(errorMessages, credNameAzureCLI+": "+err.Error())
+		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameAzureCLI, err: err})
 	}
 
 	err = defaultAzureCredentialConstructorErrorHandler(len(creds), errorMessages)
@@ -119,7 +118,7 @@ func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials
 // in the error returned by ChainedTokenCredential.GetToken()
 type defaultCredentialErrorReporter struct {
 	credType string
-	err error
+	err      error
 }
 
 func (d *defaultCredentialErrorReporter) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {

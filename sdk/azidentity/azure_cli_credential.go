@@ -20,6 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+const credNameAzureCLI = "AzureCLICredential"
+
 // used by tests to fake invoking the CLI
 type azureCLITokenProvider func(ctx context.Context, resource string, tenantID string) ([]byte, error)
 
@@ -71,7 +73,7 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	scope := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, scope)
 	if err != nil {
-		addGetTokenFailureLogs("AzureCLICredential", err, true)
+		addGetTokenFailureLogs(credNameAzureCLI, err, true)
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)
@@ -132,7 +134,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 			if msg == "" {
 				msg = err.Error()
 			}
-			return nil, newCredentialUnavailableError("AzureCLICredential", msg)
+			return nil, newCredentialUnavailableError(credNameAzureCLI, msg)
 		}
 
 		return output, nil

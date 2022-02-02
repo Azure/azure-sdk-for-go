@@ -13,6 +13,8 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
+const credNameBrowser = "InteractiveBrowserCredentiall"
+
 // InteractiveBrowserCredentialOptions contains optional parameters for InteractiveBrowserCredential.
 type InteractiveBrowserCredentialOptions struct {
 	azcore.ClientOptions
@@ -88,8 +90,8 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	}
 	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes, o...)
 	if err != nil {
-		addGetTokenFailureLogs("InteractiveBrowserCredential", err, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		addGetTokenFailureLogs(credNameBrowser, err, true)
+		return nil, newAuthenticationFailedError(credNameBrowser, err, nil)
 	}
 	c.account = ar.Account
 	logGetTokenSuccess(c, opts)

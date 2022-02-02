@@ -169,9 +169,9 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 	resp, err := c.pipeline.Do(msg)
 	if err != nil {
 		if cancel != nil && errors.Is(err, context.DeadlineExceeded) {
-			return nil, newCredentialUnavailableError("ManagedIdentityCredential", "IMDS token request timed out")
+			return nil, newCredentialUnavailableError(credNameManagedIdentity, "IMDS token request timed out")
 		}
-		return nil, newAuthenticationFailedError(err, nil)
+		return nil, newAuthenticationFailedError(credNameManagedIdentity, err, nil)
 	}
 
 	// got a response, remove the IMDS timeout so future requests use the transport's configuration
@@ -183,12 +183,12 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 
 	if c.msiType == msiTypeIMDS && resp.StatusCode == 400 {
 		if id != nil {
-			return nil, newAuthenticationFailedError(errors.New("the requested identity isn't assigned to this resource"), resp)
+			return nil, newAuthenticationFailedError(credNameManagedIdentity, errors.New("the requested identity isn't assigned to this resource"), resp)
 		}
-		return nil, newCredentialUnavailableError("ManagedIdentityCredential", "no default identity is assigned to this resource")
+		return nil, newCredentialUnavailableError(credNameManagedIdentity, "no default identity is assigned to this resource")
 	}
 
-	return nil, newAuthenticationFailedError(errors.New("authentication failed"), resp)
+	return nil, newAuthenticationFailedError(credNameManagedIdentity, errors.New("authentication failed"), resp)
 }
 
 func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.AccessToken, error) {
@@ -229,7 +229,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 		}
 	default:
 		err := fmt.Errorf("unsupported type received in expires_on: %T, %v", v, v)
-		return nil, newAuthenticationFailedError(err, res)
+		return nil, newAuthenticationFailedError(credNameManagedIdentity, err, res)
 	}
 }
 
@@ -244,7 +244,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id Manage
 		key, err := c.getAzureArcSecretKey(ctx, scopes)
 		if err != nil {
 			msg := fmt.Errorf("failed to retreive secret key from the identity endpoint: %v", err)
-			return nil, newAuthenticationFailedError(msg, nil)
+			return nil, newAuthenticationFailedError(credNameManagedIdentity, msg, nil)
 		}
 		return c.createAzureArcAuthRequest(ctx, key, scopes)
 	case msiTypeServiceFabric:
@@ -252,7 +252,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id Manage
 	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(ctx, id, scopes)
 	default:
-		return nil, newCredentialUnavailableError("ManagedIdentityCredential", "managed identity isn't supported in this environment")
+		return nil, newCredentialUnavailableError(credNameManagedIdentity, "managed identity isn't supported in this environment")
 	}
 }
 
@@ -348,7 +348,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	// of the secret key file. Any other status code indicates an error in the request.
 	if response.StatusCode != 401 {
 		err := fmt.Errorf("expected a 401 response, received %d", response.StatusCode)
-		return "", newAuthenticationFailedError(err, response)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, err, response)
 	}
 	header := response.Header.Get("WWW-Authenticate")
 	if len(header) == 0 {
@@ -383,7 +383,7 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, k
 func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, id ManagedIDKind, scopes []string) (*policy.Request, error) {
 	if id != nil {
 		msg := "Cloud Shell doesn't support user assigned managed identities. To authenticate the signed in user, omit ManagedIdentityCredentialOptions.ID"
-		return nil, newAuthenticationFailedError(errors.New(msg), nil) //lint:ignore ST1005 Cloud Shell is a proper noun
+		return nil, newAuthenticationFailedError(credNameManagedIdentity, errors.New(msg), nil) //lint:ignore ST1005 Cloud Shell is a proper noun
 	}
 	request, err := runtime.NewRequest(ctx, http.MethodPost, c.endpoint)
 	if err != nil {

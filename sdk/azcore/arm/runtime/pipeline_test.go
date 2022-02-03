@@ -155,12 +155,12 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 }
 
 func TestPipelineAudiences(t *testing.T) {
-	for _, c := range []cloud.Name{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublicCloud} {
+	for _, c := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublicCloud} {
 		srv, close := mock.NewServer()
 		defer close()
 		srv.AppendResponse(mock.WithStatusCode(200))
 		opts := &arm.ClientOptions{}
-		opts.Cloud = cloud.WellKnownClouds[c]
+		opts.Cloud = c
 		opts.Transport = srv
 		getTokenCalled := false
 		cred := mockCredential{getTokenImpl: func(ctx context.Context, options shared.TokenRequestOptions) (*shared.AccessToken, error) {

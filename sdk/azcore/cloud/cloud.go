@@ -8,19 +8,13 @@ package cloud
 
 import "encoding/json"
 
-// WellKnownClouds contains configuration settings for public Azure clouds.
-var WellKnownClouds = map[Name]Configuration{}
-
-// Name identifies a cloud.
-type Name string
-
-const (
-	// AzureChina is a global constant identifying Azure China.
-	AzureChina Name = "AzureChina"
-	// AzureGovernment is a global constant identifying Azure Government.
-	AzureGovernment Name = "AzureGovernment"
-	// AzurePublicCloud is a global constant identifying Azure Public Cloud.
-	AzurePublicCloud Name = "AzurePublicCloud"
+var (
+	// AzureChina contains configuration for Azure China.
+	AzureChina Configuration
+	// AzureGovernment contains configuration for Azure Government.
+	AzureGovernment Configuration
+	// AzurePublicCloud contains configuration for Azure Public Cloud.
+	AzurePublicCloud Configuration
 )
 
 func init() {
@@ -28,11 +22,11 @@ func init() {
 	for _, cloud := range clouds {
 		switch cloud.Name {
 		case "AzureChinaCloud":
-			WellKnownClouds[AzureChina] = cloud
+			AzureChina = cloud
 		case "AzureCloud":
-			WellKnownClouds[AzurePublicCloud] = cloud
+			AzurePublicCloud = cloud
 		case "AzureUSGovernment":
-			WellKnownClouds[AzureGovernment] = cloud
+			AzureGovernment = cloud
 		}
 	}
 }

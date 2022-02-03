@@ -56,7 +56,7 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 }
 
 func getConfiguration(o *azpolicy.ClientOptions) (cloud.ServiceConfiguration, error) {
-	c := cloud.WellKnownClouds[cloud.AzurePublicCloud]
+	c := cloud.AzurePublicCloud
 	if !reflect.ValueOf(o.Cloud).IsZero() {
 		c = o.Cloud
 	}

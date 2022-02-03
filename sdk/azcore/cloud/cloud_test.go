@@ -11,16 +11,10 @@ import (
 	"testing"
 )
 
-func TestWellKnownClouds(t *testing.T) {
-	expectedClouds := []Name{AzureChina, AzurePublicCloud, AzureGovernment}
-	if len(expectedClouds) != len(WellKnownClouds) {
-		t.Fatalf("expected %d clouds, got %d", len(expectedClouds), len(WellKnownClouds))
-	}
-	for _, cloud := range expectedClouds {
-		if config, ok := WellKnownClouds[cloud]; !ok {
-			t.Fatalf("WellKnownClouds has no configuration for %s", cloud)
-		} else if arm, ok := config.Services[ResourceManager]; !ok || len(arm.Audiences) == 0 || arm.Endpoint == "" {
-			t.Fatalf("%s is missing ARM configuration", cloud)
+func TestPreconfiguredClouds(t *testing.T) {
+	for _, config := range []Configuration{AzureChina, AzurePublicCloud, AzureGovernment} {
+		if arm, ok := config.Services[ResourceManager]; !ok || len(arm.Audiences) == 0 || arm.Endpoint == "" {
+			t.Fatalf("%s is missing ARM configuration", config.Name)
 		}
 	}
 }

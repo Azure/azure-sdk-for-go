@@ -14,9 +14,7 @@ appropriately.
 Applications deployed to a sovereign cloud such as Azure US Government can use WellKnownClouds to configure
 Azure SDK clients, for example:
 
-	opts := azcore.ClientOptions{
-		Cloud: cloud.WellKnownClouds[cloud.AzureGovernment],
-	}
+	opts := azcore.ClientOptions{Cloud: cloud.AzureGovernment}
 	cred, err := azidentity.NewDefaultAzureCredential(
 		&azidentity.DefaultAzureCredentialOptions{ClientOptions: opts}
 	)

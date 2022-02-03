@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.1 (2022-02-08)
+## 0.3.0 (2022-02-08)
 
 ### Breaking Changes
 * Changed the `Tags` properties from `map[string]*string` to `map[string]string`

@@ -149,7 +149,10 @@ func runTest(p PerfTest, c chan runResult) {
 	elapsed := time.Since(timeStart).Seconds()
 
 	// Stop the proxy now
-	stop(p.GetMetadata().Name, nil)
+	err := stop(p.GetMetadata().Name, nil)
+	if err != nil {
+		c <- runResult{err: err}
+	}
 	setRecordingMode("live")
 	c <- runResult{count: totalCount, timeInSeconds: elapsed, err: nil}
 }
@@ -212,7 +215,10 @@ func runPerfTest(p NewPerfTest) error {
 		perfTests = append(perfTests, perfTest)
 
 		// Run the setup for a single instance
-		runSetup(perfTest)
+		err := runSetup(perfTest)
+		if err != nil {
+			return err
+		}
 
 		// Create a thread for running a single test
 		wg.Add(1)
@@ -292,7 +298,10 @@ func Run(perfTests []NewPerfTest) {
 	pflag.IntVarP(&Parallel, "parallel", "p", 1, "Degree of parallelism to run with. Default is 1.")
 
 	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
-	pflag.CommandLine.MarkHidden("debug")
+	err := pflag.CommandLine.MarkHidden("debug")
+	if err != nil {
+		panic(err)
+	}
 
 	pflag.Parse()
 
@@ -313,7 +322,7 @@ func Run(perfTests []NewPerfTest) {
 
 	fmt.Printf("\tRunning %s\n", perfTestToRun(nil).GetMetadata().Name)
 
-	err := runPerfTest(perfTestToRun)
+	err = runPerfTest(perfTestToRun)
 	if err != nil {
 		panic(err)
 	}

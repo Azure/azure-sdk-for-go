@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -31,7 +32,13 @@ var enableHSM = true
 
 func TestMain(m *testing.M) {
 	// Initialize
-	if recording.GetRecordMode() == "record" {
+	switch recording.GetRecordMode() {
+	case recording.PlaybackMode:
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{CompareBodies: to.BoolPtr(true)})
+		if err != nil {
+			panic(err)
+		}
+	case recording.RecordingMode:
 		err := recording.ResetProxy(nil)
 		if err != nil {
 			panic(err)
@@ -74,7 +81,7 @@ func TestMain(m *testing.M) {
 				panic(err)
 			}
 		}
-	} else if recording.GetRecordMode() == "live" {
+	case recording.LiveMode:
 		_, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
 		if !ok {
 			fmt.Println("Did not find managed HSM url, skipping those tests")

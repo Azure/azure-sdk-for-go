@@ -20,7 +20,7 @@ steps:
       arguments: 'sdk/${{ parameters.ServiceDirectory }}'
 
   - script: |
-      curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
+      go install github.com/golangci/golangci-lint/cmd/golangci-lint@${{parameters.LintVersion}}
       golangci-lint --version
     displayName: 'Install GoLintCLI and dependencies.'
     workingDirectory: $(System.DefaultWorkingDirectory)

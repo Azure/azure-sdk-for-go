@@ -76,23 +76,17 @@ stages:
         - template: ../variables/globals.yml
       strategy:
         matrix:
-          Linux_Go117:
+          Linux_Go118:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
-            go.version: '1.17'
-          Windows_Go117:
+            go.archive: 'go1.18beta2.linux-amd64.tar.gz'
+            go.version: '1.18beta.2'
+          Windows_Go118:
             pool.name: azsdk-pool-mms-win-2019-general
             image.name: MMS2019
-            go.version: '1.17'
+            go.archive: 'go1.18beta2.windows-amd64.zip'
+            go.version: '1.18beta.2'
             generate.bom: true
-          Linux_Go116:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
-            go.version: '1.16.7'
-          Windows_Go116:
-            pool.name: azsdk-pool-mms-win-2019-general
-            image.name: MMS2019
-            go.version: '1.16.7'
       pool:
         name: $(pool.name)
         vmImage: $(image.name)
@@ -101,10 +95,9 @@ stages:
         parameters:
           AgentImage: $(image.name)
 
-      - task: GoTool@0
-        inputs:
-          version: '$(go.version)'
-        displayName: "Select Go Version"
+      - template: /eng/pipelines/templates/steps/install-go-prerelease.yml
+        parameters:
+          archive: '$(go.archive)'
 
       - template: ../steps/create-go-workspace.yml
 
@@ -132,10 +125,9 @@ stages:
       steps:
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 
-      - task: GoTool@0
-        inputs:
-          version: '1.17'
-        displayName: "Select Go Version"
+      - template: /eng/pipelines/templates/steps/install-go-prerelease.yml
+        parameters:
+          archive: 'go1.18beta2.linux-amd64.tar.gz'
 
       - template: ../steps/create-go-workspace.yml
 

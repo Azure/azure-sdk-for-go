@@ -169,7 +169,7 @@ func TestPipelineAudiences(t *testing.T) {
 				t.Fatalf("expected 1 scope, got %d", n)
 			}
 			for _, a := range opts.Cloud.Services[cloud.ResourceManager].Audiences {
-				if a == options.Scopes[0] {
+				if options.Scopes[0] == a+"/.default" {
 					return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 				}
 			}

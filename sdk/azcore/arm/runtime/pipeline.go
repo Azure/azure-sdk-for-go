@@ -32,7 +32,7 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 		// TODO: return the error
 		panic(err)
 	}
-	scope := conf.Audiences[0]
+	scope := conf.Audiences[0] + "/.default"
 	ep := conf.Endpoint
 	if options.Endpoint != "" {
 		scope = shared.EndpointToScope(string(options.Endpoint))

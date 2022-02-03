@@ -393,7 +393,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 		if n := len(options.Scopes); n != 1 {
 			t.Fatalf("expected 1 scope, got %d", n)
 		}
-		if options.Scopes[0] != audience {
+		if options.Scopes[0] != audience+"/.default" {
 			t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
 		}
 		return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil

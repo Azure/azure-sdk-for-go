@@ -61,7 +61,7 @@ func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *ar
 	// TODO: use getConfiguration(), return an error instead of panicking
 	if c := o.ClientOptions.Cloud; !reflect.ValueOf(c).IsZero() {
 		if conf, ok := c.Services[cloud.ResourceManager]; ok && len(conf.Audiences) > 0 {
-			scope = conf.Audiences[0]
+			scope = conf.Audiences[0] + "/.default"
 		} else {
 			panic(fmt.Sprintf(`missing Azure Resource Manager configuration for cloud "%s"`, c.Name))
 		}

@@ -542,10 +542,8 @@ func ExampleContainerClient_SetMetadata() {
 	// NOTE: SetMetadata & SetProperties methods update the container's ETag & LastModified properties
 }
 
-// This examples shows how to create a blob with metadata and then how to read & update
-// the blob's read-only properties and metadata.
+// This examples shows how to create a blob with metadata, read blob metadata, and update a blob's read-only properties and metadata.
 func ExampleBlobClient_SetMetadata() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
 	// Create a blob client
@@ -554,53 +552,55 @@ func ExampleBlobClient_SetMetadata() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	BlobClient, err := azblob.NewBlockBlobClientWithSharedKey(u, credential, nil)
+	blobClient, err := azblob.NewBlockBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Create a blob with metadata (string key/value pairs)
-	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
-	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
-	creatingApp, _ := os.Executable()
-	_, err = BlobClient.Upload(context.TODO(), streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))), &azblob.UploadBlockBlobOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	// Metadata key names are always converted to lowercase before being sent to the Storage Service.
+	// Always use lowercase letters; especially when querying a map for a metadata key.
+	creatingApp, err := os.Executable()
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = blobClient.Upload(
+		context.TODO(),
+		streaming.NopCloser(strings.NewReader("Some text")),
+		&azblob.UploadBlockBlobOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}},
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Query the blob's properties and metadata
-	get, err := BlobClient.GetProperties(context.TODO(), nil)
+	get, err := blobClient.GetProperties(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Show some of the blob's read-only properties
-	fmt.Println(*get.BlobType, *get.ETag, *get.LastModified)
+	fmt.Printf("BlobType: %s\nETag: %s\nLastModified: %s\n", *get.BlobType, *get.ETag, *get.LastModified)
 
 	// Show the blob's metadata
 	if get.Metadata == nil {
 		log.Fatal("No metadata returned")
 	}
 
-	metadata := get.Metadata
-	for k, v := range metadata {
+	for k, v := range get.Metadata {
 		fmt.Print(k + "=" + v + "\n")
 	}
 
 	// Update the blob's metadata and write it back to the blob
-	metadata["editor"] = "Grant" // Add a new key/value; NOTE: The keyname is in all lowercase letters
-	_, err = BlobClient.SetMetadata(context.TODO(), metadata, nil)
+	get.Metadata["editor"] = "Grant"
+	_, err = blobClient.SetMetadata(context.TODO(), get.Metadata, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// NOTE: The SetMetadata method updates the blob's ETag & LastModified properties
 }
 
-// This examples shows how to create a blob with HTTP Headers and then how to read & update
-// the blob's HTTP headers.
+// This examples shows how to create a blob with HTTP Headers, how to read, and how to update the blob's HTTP headers.
 func ExampleBlobHTTPHeaders() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
 	// Create a blob client
@@ -615,11 +615,14 @@ func ExampleBlobHTTPHeaders() {
 	}
 
 	// Create a blob with HTTP headers
-	_, err = blobClient.Upload(context.TODO(), streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))),
+	_, err = blobClient.Upload(
+		context.TODO(),
+		streaming.NopCloser(strings.NewReader("Some text")),
 		&azblob.UploadBlockBlobOptions{HTTPHeaders: &azblob.BlobHTTPHeaders{
 			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 			BlobContentDisposition: to.StringPtr("attachment"),
-		}})
+		}},
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -631,7 +634,7 @@ func ExampleBlobHTTPHeaders() {
 	}
 
 	// Show some of the blob's read-only properties
-	fmt.Println(*get.BlobType, *get.ETag, *get.LastModified)
+	fmt.Printf("BlobType: %s\nETag: %s\nLastModified: %s\n", *get.BlobType, *get.ETag, *get.LastModified)
 
 	// Shows some of the blob's HTTP Headers
 	httpHeaders := get.GetHTTPHeaders()
@@ -643,13 +646,11 @@ func ExampleBlobHTTPHeaders() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// NOTE: The SetMetadata method updates the blob's ETag & LastModified properties
 }
 
-// ExampleBlockBlobClient shows how to upload a lot of data (in blocks) to a blob.
+// ExampleBlockBlobClient shows how to upload data (in blocks) to a blob.
 // A block blob can have a maximum of 50,000 blocks; each block can have a maximum of 100MB.
-// Therefore, the maximum size of a block blob is slightly more than 4.75 TB (100 MB X 50,000 blocks).
+// The maximum size of a block blob is slightly more than 4.75 TB (100 MB X 50,000 blocks).
 func ExampleBlockBlobClient() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
@@ -660,12 +661,11 @@ func ExampleBlockBlobClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	BlobClient, err := azblob.NewBlockBlobClientWithSharedKey(u, credential, nil)
+	blobClient, err := azblob.NewBlockBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// These helper functions convert a binary block ID to a base-64 string and vice versa
 	// NOTE: The blockID must be <= 64 bytes and ALL blockIDs for the block must be the same length
 	blockIDBinaryToBase64 := func(blockID []byte) string { return base64.StdEncoding.EncodeToString(blockID) }
 	blockIDBase64ToBinary := func(blockID string) []byte { _binary, _ := base64.StdEncoding.DecodeString(blockID); return _binary }
@@ -685,27 +685,27 @@ func ExampleBlockBlobClient() {
 	words := []string{"Azure ", "Storage ", "Block ", "Blob."}
 	base64BlockIDs := make([]string, len(words)) // The collection of block IDs (base 64 strings)
 
-	// Upload each block sequentially (one after the other); for better performance, you want to upload multiple blocks in parallel)
+	// Upload each block sequentially (one after the other)
 	for index, word := range words {
 		// This example uses the index as the block ID; convert the index/ID into a base-64 encoded string as required by the service.
 		// NOTE: Over the lifetime of a blob, all block IDs (before base 64 encoding) must be the same length (this example uses 4 byte block IDs).
-		base64BlockIDs[index] = blockIDIntToBase64(index) // Some people use UUIDs for block IDs
+		base64BlockIDs[index] = blockIDIntToBase64(index)
 
 		// Upload a block to this blob specifying the Block ID and its content (up to 100MB); this block is uncommitted.
-		_, err := BlobClient.StageBlock(context.TODO(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), nil)
+		_, err := blobClient.StageBlock(context.TODO(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), nil)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
 	// After all the blocks are uploaded, atomically commit them to the blob.
-	_, err = BlobClient.CommitBlockList(context.TODO(), base64BlockIDs, nil)
+	_, err = blobClient.CommitBlockList(context.TODO(), base64BlockIDs, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// For the blob, show each block (ID and size) that is a committed part of it.
-	getBlock, err := BlobClient.GetBlockList(context.TODO(), azblob.BlockListTypeAll, nil)
+	getBlock, err := blobClient.GetBlockList(context.TODO(), azblob.BlockListTypeAll, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -714,8 +714,7 @@ func ExampleBlockBlobClient() {
 	}
 
 	// Download the blob in its entirety; download operations do not take blocks into account.
-	// NOTE: For really large blobs, downloading them like allocates a lot of memory.
-	get, err := BlobClient.Download(context.TODO(), nil)
+	get, err := blobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -728,18 +727,16 @@ func ExampleBlockBlobClient() {
 	err = reader.Close()
 	if err != nil {
 		return
-	} // The client must close the response body when finished with it
+	}
 	fmt.Println(blobData)
 }
 
 // ExampleAppendBlobClient shows how to append data (in blocks) to an append blob.
 // An append blob can have a maximum of 50,000 blocks; each block can have a maximum of 100MB.
-// Therefore, the maximum size of an append blob is slightly more than 4.75 TB (100 MB X 50,000 blocks).
+// The maximum size of an append blob is slightly more than 4.75 TB (100 MB X 50,000 blocks).
 func ExampleAppendBlobClient() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a ContainerClient object that wraps a soon-to-be-created blob's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/MyAppendBlob.txt", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
@@ -762,7 +759,7 @@ func ExampleAppendBlobClient() {
 		}
 	}
 
-	// Download the entire append blob's contents and show it.
+	// Download the entire append blob's contents and read into a bytes.Buffer.
 	get, err := appendBlobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
@@ -776,7 +773,7 @@ func ExampleAppendBlobClient() {
 	err = reader.Close()
 	if err != nil {
 		return
-	} // The client must close the response body when finished with it
+	}
 	fmt.Println(b.String())
 }
 
@@ -803,7 +800,7 @@ func ExamplePageBlobClient() {
 		log.Fatal(err)
 	}
 
-	page := [azblob.PageBlobPageBytes]byte{}
+	page := make([]byte, azblob.PageBlobPageBytes)
 	copy(page[:], "Page 0")
 	_, err = blobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page[:])), nil)
 	if err != nil {
@@ -811,12 +808,16 @@ func ExamplePageBlobClient() {
 	}
 
 	copy(page[:], "Page 1")
-	_, err = blobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page[:])), &azblob.UploadPagesOptions{PageRange: &azblob.HttpRange{0, 2 * azblob.PageBlobPageBytes}})
+	_, err = blobClient.UploadPages(
+		context.TODO(),
+		streaming.NopCloser(bytes.NewReader(page[:])),
+		&azblob.UploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * azblob.PageBlobPageBytes}},
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	getPages, err := blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{0 * azblob.PageBlobPageBytes, 10 * azblob.PageBlobPageBytes}, nil)
+	getPages, err := blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{Offset: 0, Count: 10 * azblob.PageBlobPageBytes}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -824,12 +825,12 @@ func ExamplePageBlobClient() {
 		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 	}
 
-	_, err = blobClient.ClearPages(context.TODO(), azblob.HttpRange{0 * azblob.PageBlobPageBytes, 1 * azblob.PageBlobPageBytes}, nil)
+	_, err = blobClient.ClearPages(context.TODO(), azblob.HttpRange{Offset: 0, Count: 1 * azblob.PageBlobPageBytes}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	getPages, err = blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{0 * azblob.PageBlobPageBytes, 10 * azblob.PageBlobPageBytes}, nil)
+	getPages, err = blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{Offset: 0, Count: 10 * azblob.PageBlobPageBytes}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -850,17 +851,15 @@ func ExamplePageBlobClient() {
 	err = reader.Close()
 	if err != nil {
 		return
-	} // The client must close the response body when finished with it
+	}
 	fmt.Printf("%#v", blobData.Bytes())
 }
 
 // This example show how to create a blob, take a snapshot of it, update the base blob,
-// read from the blob snapshot, list blobs with their snapshots, and hot to delete blob snapshots.
+// read from the blob snapshot, list blobs with their snapshots, and delete blob snapshots.
 func Example_blobSnapshots() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a ContainerClient object to a container where we'll create a blob and its snapshot.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {

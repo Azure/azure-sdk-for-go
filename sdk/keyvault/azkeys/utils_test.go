@@ -33,7 +33,7 @@ func TestMain(m *testing.M) {
 	// Initialize
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
-		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{ExcludedHeaders: []string{":authority", ":path", ":scheme", ":method"}})
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{ExcludedHeaders: []string{":path", ":authority", ":method", ":scheme"}, IgnoredHeaders: []string{":path", ":authority", ":method", ":scheme"}})
 		if err != nil {
 			panic(err)
 		}

@@ -18,33 +18,17 @@ import (
 )
 
 type aztablesPerfTest struct {
+	perf.PerfTestOptions
 	client    aztables.Client
 	entity    []byte
 	tableName string
 }
 
-func (a *aztablesPerfTest) createClient() error {
-	options := &aztables.ClientOptions{}
-	if perf.TestProxy == "http" {
-		t, err := perf.NewProxyTransport(&perf.TransportOptions{TestName: a.GetMetadata()})
-		if err != nil {
-			return err
-		}
-		options = &aztables.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: t,
-			},
-		}
-	} else if perf.TestProxy == "https" {
-		t, err := perf.NewProxyTransport(&perf.TransportOptions{TestName: a.GetMetadata()})
-		if err != nil {
-			return err
-		}
-		options = &aztables.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: t,
-			},
-		}
+func (a *aztablesPerfTest) createClient() (*aztables.Client, error) {
+	options := &aztables.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: a.ProxyInstance,
+		},
 	}
 
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
@@ -57,24 +41,59 @@ func (a *aztablesPerfTest) createClient() error {
 	}
 	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	client, err := aztables.NewClientWithSharedKey(fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, a.tableName), cred, options)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	a.client = *client
 
-	return nil
+	return client, nil
 }
 
 func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
-	a.tableName = "randomTableName"
-
-	err := a.createClient()
+	client, err := a.createClient()
 	if err != nil {
 		return err
 	}
+
+	_, err = client.Create(context.Background(), nil)
+	return err
+}
+
+func (a *aztablesPerfTest) Setup(ctx context.Context) error {
+	client, err := a.createClient()
+	if err != nil {
+		return nil
+	}
+	a.client = *client
+	return nil
+}
+
+func (a *aztablesPerfTest) Run(ctx context.Context) error {
+	_, err := a.client.InsertEntity(ctx, a.entity, nil)
+	return err
+}
+
+func (a *aztablesPerfTest) Cleanup(ctx context.Context) error {
+	return nil
+}
+
+func (a *aztablesPerfTest) GlobalCleanup(ctx context.Context) error {
+	_, err := a.client.Delete(context.Background(), nil)
+	return err
+}
+
+func (a *aztablesPerfTest) GetMetadata() perf.PerfTestOptions {
+	return a.PerfTestOptions
+}
+
+func NewCreateEntityTest(options *perf.PerfTestOptions) perf.PerfTest {
+	if options == nil {
+		options = &perf.PerfTestOptions{}
+	}
+	options.Name = "CreateEntityTest"
+
 	e := aztables.EDMEntity{
 		Entity: aztables.Entity{
 			PartitionKey: "pk001",
@@ -93,32 +112,12 @@ func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 	}
 	marshalled, err := json.Marshal(e)
 	if err != nil {
-		return err
+		panic(err)
 	}
-	a.entity = marshalled
 
-	_, err = a.client.Create(context.Background(), nil)
-	return err
-}
-
-func (a *aztablesPerfTest) GlobalTearDown(ctx context.Context) error {
-	_, err := a.client.Delete(context.Background(), nil)
-	return err
-}
-
-func (a *aztablesPerfTest) Setup(ctx context.Context) error {
-	return nil
-}
-
-func (a *aztablesPerfTest) Run(ctx context.Context) error {
-	_, err := a.client.InsertEntity(ctx, a.entity, nil)
-	return err
-}
-
-func (a *aztablesPerfTest) TearDown(ctx context.Context) error {
-	return nil
-}
-
-func (a *aztablesPerfTest) GetMetadata() string {
-	return "CreateEntity"
+	return &aztablesPerfTest{
+		PerfTestOptions: *options,
+		tableName:       "createEntityTable",
+		entity:          marshalled,
+	}
 }

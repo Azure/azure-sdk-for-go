@@ -1,15 +1,9 @@
 # Release History
 
-## 0.5.0 (Unreleased)
-
-### Features Added
+## 0.5.0 (2022-02-08)
 
 ### Breaking Changes
 * Fixes a bug where `UpdateSecretProperties` will delete properties that are not explicitly set each time. This is only a breaking change at runtime, where the request body will change.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.4.0 (2022-01-11)
 

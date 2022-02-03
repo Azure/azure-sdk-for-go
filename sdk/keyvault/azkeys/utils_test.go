@@ -17,7 +17,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -34,7 +33,7 @@ func TestMain(m *testing.M) {
 	// Initialize
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
-		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{CompareBodies: to.BoolPtr(true)})
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{ExcludedHeaders: []string{":authority", ":path", ":scheme", ":method"}})
 		if err != nil {
 			panic(err)
 		}

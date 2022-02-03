@@ -9,9 +9,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 

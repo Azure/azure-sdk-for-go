@@ -93,7 +93,6 @@ func ExampleClient_GetCertificate() {
 		panic(err)
 	}
 	fmt.Println(*resp.ID)
-	fmt.Println(*resp.Policy.IssuerParameters.Name)
 
 	// optionally you can get a specific version
 	resp, err = client.GetCertificate(context.TODO(), "myCertName", &azcertificates.GetCertificateOptions{Version: "myCertVersion"})
@@ -136,7 +135,6 @@ func ExampleClient_UpdateCertificateProperties() {
 	fmt.Println(*resp.ID)
 	fmt.Println(*resp.KeyVaultCertificate.Properties.Enabled)
 	fmt.Println(resp.Tags)
-	fmt.Println(*resp.Policy.IssuerParameters.Name)
 }
 
 func ExampleClient_ListCertificates() {

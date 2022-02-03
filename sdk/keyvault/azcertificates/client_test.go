@@ -300,6 +300,7 @@ func TestClient_ImportCertificate(t *testing.T) {
 	importResp, err := client.ImportCertificate(ctx, importedName, certContentNotPasswordEncoded, nil)
 	require.NoError(t, err)
 	require.Contains(t, *importResp.ID, importedName)
+	require.NotNil(t, importResp.Policy)
 
 	cleanUp(t, client, importedName)
 }
@@ -539,6 +540,7 @@ func TestCRUDOperations(t *testing.T) {
 
 	received, err := client.GetCertificate(ctx, certName, nil)
 	require.NoError(t, err)
+	require.NotNil(t, received.Policy)
 
 	// Make sure certificates are the same
 	require.Equal(t, *finalResp.ID, *received.ID)
@@ -651,8 +653,9 @@ func TestMergeCertificate(t *testing.T) {
 	certificateString = strings.Replace(certificateString, "-----Begin Certificate-----", "", 1)
 	certificateString = strings.Replace(certificateString, "-----End Certificate-----", "", 1)
 
-	_, err = client.MergeCertificate(ctx, certName, [][]byte{[]byte(certificateString)}, nil)
+	mergeResp, err := client.MergeCertificate(ctx, certName, [][]byte{[]byte(certificateString)}, nil)
 	require.NoError(t, err)
+	require.NotNil(t, mergeResp.Policy)
 }
 
 func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
@@ -745,8 +748,9 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 	// Poll until no exception
 	count := 0
 	for {
-		_, err = client.RestoreCertificateBackup(ctx, certificateBackupResp.Value, nil)
+		resp, err := client.RestoreCertificateBackup(ctx, certificateBackupResp.Value, nil)
 		if err == nil {
+			require.NotNil(t, resp.Policy)
 			break
 		}
 		count += 1

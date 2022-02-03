@@ -216,7 +216,7 @@ type GetCertificateOptions struct {
 
 // GetCertificateResponse contains the result from method Client.GetCertificate.
 type GetCertificateResponse struct {
-	KeyVaultCertificate
+	KeyVaultCertificateWithPolicy
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -235,16 +235,16 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 
 	return GetCertificateResponse{
 		RawResponse: resp.RawResponse,
-		KeyVaultCertificate: KeyVaultCertificate{
+		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
 			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
 			Tags:           convertGeneratedMap(resp.Tags),
 			ID:             resp.ID,
-			KeyID:            resp.Kid,
-			Policy:         certificatePolicyFromGenerated(resp.Policy),
+			KeyID:          resp.Kid,
 			SecretID:       resp.Sid,
 			X509Thumbprint: resp.X509Thumbprint,
+			Policy:         certificatePolicyFromGenerated(resp.Policy),
 		},
 	}, nil
 }
@@ -318,9 +318,9 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 			ContentType:        g.ContentType,
 			Tags:               convertGeneratedMap(g.Tags),
 			ID:                 g.ID,
-			KeyID:                g.Kid,
+			KeyID:              g.Kid,
 			Policy:             certificatePolicyFromGenerated(g.Policy),
-			SecretID:                g.Sid,
+			SecretID:           g.Sid,
 			X509Thumbprint:     g.X509Thumbprint,
 		},
 	}
@@ -491,9 +491,9 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 			ContentType:        resp.ContentType,
 			Tags:               convertGeneratedMap(resp.Tags),
 			ID:                 resp.ID,
-			KeyID:                resp.Kid,
+			KeyID:              resp.Kid,
 			Policy:             certificatePolicyFromGenerated(resp.Policy),
-			SecretID:                resp.Sid,
+			SecretID:           resp.Sid,
 			X509Thumbprint:     resp.X509Thumbprint,
 		},
 	}, nil
@@ -550,7 +550,7 @@ func (i *ImportCertificateOptions) toGenerated() *generated.KeyVaultClientImport
 
 // ImportCertificateResponse is the response struct for the Client.ImportCertificate function.
 type ImportCertificateResponse struct {
-	KeyVaultCertificate
+	KeyVaultCertificateWithPolicy
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -582,16 +582,16 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 
 	return ImportCertificateResponse{
 		RawResponse: resp.RawResponse,
-		KeyVaultCertificate: KeyVaultCertificate{
+		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
 			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
 			Tags:           convertGeneratedMap(resp.Tags),
 			ID:             resp.ID,
-			KeyID:            resp.Kid,
-			Policy:         certificatePolicyFromGenerated(resp.Policy),
+			KeyID:          resp.Kid,
 			SecretID:       resp.Sid,
 			X509Thumbprint: resp.X509Thumbprint,
+			Policy:         certificatePolicyFromGenerated(resp.Policy),
 		},
 	}, nil
 }
@@ -1342,7 +1342,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 		return UpdateCertificatePropertiesResponse{}, err
 	}
 	return UpdateCertificatePropertiesResponse{
-		RawResponse: resp.RawResponse,
+		RawResponse:         resp.RawResponse,
 		KeyVaultCertificate: certificateFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
@@ -1362,7 +1362,7 @@ func (m *MergeCertificateOptions) toGenerated() *generated.KeyVaultClientMergeCe
 
 // MergeCertificateResponse contains the response from method Client.MergeCertificate.
 type MergeCertificateResponse struct {
-	KeyVaultCertificate
+	KeyVaultCertificateWithPolicy
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1389,7 +1389,17 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 
 	return MergeCertificateResponse{
 		RawResponse: resp.RawResponse,
-		KeyVaultCertificate: certificateFromGenerated(&resp.CertificateBundle),
+		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
+			Properties:     certificateAttributesFromGenerated(resp.Attributes),
+			Cer:            resp.Cer,
+			ContentType:    resp.ContentType,
+			Tags:           convertGeneratedMap(resp.Tags),
+			ID:             resp.ID,
+			KeyID:          resp.Kid,
+			SecretID:       resp.Sid,
+			X509Thumbprint: resp.X509Thumbprint,
+			Policy:         certificatePolicyFromGenerated(resp.Policy),
+		},
 	}, nil
 }
 
@@ -1402,7 +1412,7 @@ func (r *RestoreCertificateBackupOptions) toGenerated() *generated.KeyVaultClien
 
 // RestoreCertificateBackupResponse contains the response from method Client.RestoreCertificateBackup
 type RestoreCertificateBackupResponse struct {
-	KeyVaultCertificate
+	KeyVaultCertificateWithPolicy
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1424,7 +1434,17 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 
 	return RestoreCertificateBackupResponse{
 		RawResponse: resp.RawResponse,
-		KeyVaultCertificate: certificateFromGenerated(&resp.CertificateBundle),
+		KeyVaultCertificateWithPolicy: KeyVaultCertificateWithPolicy{
+			Properties:     certificateAttributesFromGenerated(resp.Attributes),
+			Cer:            resp.Cer,
+			ContentType:    resp.ContentType,
+			Tags:           convertGeneratedMap(resp.Tags),
+			ID:             resp.ID,
+			KeyID:          resp.Kid,
+			SecretID:       resp.Sid,
+			X509Thumbprint: resp.X509Thumbprint,
+			Policy:         certificatePolicyFromGenerated(resp.Policy),
+		},
 	}, nil
 }
 
@@ -1496,7 +1516,7 @@ type RecoverDeletedCertificateResponse struct {
 func recoverDeletedCertificateResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedCertificateResponse) RecoverDeletedCertificateResponse {
 	return RecoverDeletedCertificateResponse{
 		KeyVaultCertificate: certificateFromGenerated(&i.CertificateBundle),
-		RawResponse: i.RawResponse,
+		RawResponse:         i.RawResponse,
 	}
 }
 

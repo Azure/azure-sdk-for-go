@@ -121,6 +121,33 @@ type KeyVaultCertificate struct {
 	// READ-ONLY; The key ID.
 	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
+	// READ-ONLY; The secret ID.
+	SecretID *string `json:"sid,omitempty" azure:"ro"`
+
+	// READ-ONLY; Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
+}
+
+// KeyVaultCertificateWithPolicy - A certificate bundle consists of a certificate (X509) with a policy, and its properties.
+type KeyVaultCertificateWithPolicy struct {
+	// The certificate attributes.
+	Properties *CertificateProperties `json:"attributes,omitempty"`
+
+	// CER contents of x509 certificate.
+	Cer []byte `json:"cer,omitempty"`
+
+	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
+	ContentType *string `json:"contentType,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs
+	Tags map[string]string `json:"tags,omitempty"`
+
+	// READ-ONLY; The certificate id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The key ID.
+	KeyID *string `json:"kid,omitempty" azure:"ro"`
+
 	// READ-ONLY; The management policy.
 	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
 
@@ -142,8 +169,7 @@ func certificateFromGenerated(g *generated.CertificateBundle) KeyVaultCertificat
 		ContentType:    g.ContentType,
 		Tags:           convertGeneratedMap(g.Tags),
 		ID:             g.ID,
-		KeyID:            g.Kid,
-		Policy:         certificatePolicyFromGenerated(g.Policy),
+		KeyID:          g.Kid,
 		SecretID:       g.Sid,
 		X509Thumbprint: g.X509Thumbprint,
 	}

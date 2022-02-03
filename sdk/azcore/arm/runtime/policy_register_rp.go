@@ -63,7 +63,7 @@ func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *ar
 		if conf, ok := c.Services[cloud.ResourceManager]; ok && conf.Audience != "" {
 			scope = conf.Audience + "/.default"
 		} else {
-			panic(fmt.Sprintf(`missing Azure Resource Manager configuration for cloud "%s"`, c.Name))
+			panic("provided Cloud field is missing Azure Resource Manager configuration")
 		}
 	}
 	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: []string{scope}})

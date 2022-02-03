@@ -30,7 +30,6 @@ appropriate values:
 
 	c = cloud.Configuration{
 		LoginEndpoint: "https://...",
-		Name: "private-cloud",
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
 			cloud.ResourceManager: {
 				Audience: "...",

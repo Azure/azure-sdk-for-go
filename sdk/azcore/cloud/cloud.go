@@ -20,7 +20,7 @@ var (
 func init() {
 	clouds, _ := getConfigurationsFromMetadata(armMetadata)
 	for _, cloud := range clouds {
-		switch cloud.Name {
+		switch cloud.name {
 		case "AzureChinaCloud":
 			AzureChina = cloud
 		case "AzureCloud":
@@ -47,10 +47,10 @@ type ServiceConfiguration struct {
 
 // Configuration configures a cloud.
 type Configuration struct {
+	name string
+
 	// LoginEndpoint is the base URL of the cloud's Azure Active Directory.
 	LoginEndpoint string
-	// Name is the name of the cloud.
-	Name string
 	// Services contains configuration for the cloud's services.
 	Services map[ServiceName]ServiceConfiguration
 }
@@ -66,7 +66,7 @@ func getConfigurationsFromMetadata(b []byte) ([]Configuration, error) {
 	for _, r := range raw {
 		c := Configuration{
 			LoginEndpoint: r.Authentication.LoginEndpoint,
-			Name:          r.Name,
+			name:          r.Name,
 			Services: map[ServiceName]ServiceConfiguration{
 				ResourceManager: {
 					// ARM metadata contains 2 audiences having no functional distinction, so we arbitrarily choose one

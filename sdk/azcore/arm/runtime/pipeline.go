@@ -7,7 +7,7 @@
 package runtime
 
 import (
-	"fmt"
+	"errors"
 	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -63,6 +63,6 @@ func getConfiguration(o *azpolicy.ClientOptions) (cloud.ServiceConfiguration, er
 	if conf, ok := c.Services[cloud.ResourceManager]; ok && conf.Endpoint != "" && conf.Audience != "" {
 		return conf, nil
 	} else {
-		return conf, fmt.Errorf(`missing Azure Resource Manager configuration for cloud "%s"`, c.Name)
+		return conf, errors.New("provided Cloud field is missing Azure Resource Manager configuration")
 	}
 }

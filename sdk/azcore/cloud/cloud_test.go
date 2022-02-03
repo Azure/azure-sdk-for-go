@@ -14,7 +14,7 @@ import (
 func TestPreconfiguredClouds(t *testing.T) {
 	for _, config := range []Configuration{AzureChina, AzurePublicCloud, AzureGovernment} {
 		if arm, ok := config.Services[ResourceManager]; !ok || arm.Audience == "" || arm.Endpoint == "" {
-			t.Fatalf("%s is missing ARM configuration", config.Name)
+			t.Fatalf("%s is missing ARM configuration", config.name)
 		}
 	}
 }
@@ -48,7 +48,7 @@ func TestGetConfigurations_Stack(t *testing.T) {
 	if len(clouds) != 1 {
 		t.Fatalf("unmarshaled configuration for %d clouds; expected 1", len(clouds))
 	}
-	if v := clouds[0].Name; v != name {
+	if v := clouds[0].name; v != name {
 		t.Fatalf(`unexpected Name "%s"`, v)
 	}
 	if v := clouds[0].LoginEndpoint; v != loginEndpoint {

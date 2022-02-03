@@ -24,42 +24,60 @@ import (
 // CollectionPartitionRegionClient contains the methods for the CollectionPartitionRegion group.
 // Don't use this type directly, use NewCollectionPartitionRegionClient() instead.
 type CollectionPartitionRegionClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCollectionPartitionRegionClient creates a new instance of CollectionPartitionRegionClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCollectionPartitionRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CollectionPartitionRegionClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CollectionPartitionRegionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CollectionPartitionRegionClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
-// If the operation fails it returns a generic error.
-func (client *CollectionPartitionRegionClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionRegionListMetricsOptions) (CollectionPartitionRegionListMetricsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// region - Cosmos DB region, with spaces between words and each word capitalized.
+// databaseRid - Cosmos DB database rid.
+// collectionRid - Cosmos DB collection rid.
+// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+// and timeGrain. The supported operator is eq.
+// options - CollectionPartitionRegionClientListMetricsOptions contains the optional parameters for the CollectionPartitionRegionClient.ListMetrics
+// method.
+func (client *CollectionPartitionRegionClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionRegionClientListMetricsOptions) (CollectionPartitionRegionClientListMetricsResponse, error) {
 	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, region, databaseRid, collectionRid, filter, options)
 	if err != nil {
-		return CollectionPartitionRegionListMetricsResponse{}, err
+		return CollectionPartitionRegionClientListMetricsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CollectionPartitionRegionListMetricsResponse{}, err
+		return CollectionPartitionRegionClientListMetricsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CollectionPartitionRegionListMetricsResponse{}, client.listMetricsHandleError(resp)
+		return CollectionPartitionRegionClientListMetricsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *CollectionPartitionRegionClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionRegionListMetricsOptions) (*policy.Request, error) {
+func (client *CollectionPartitionRegionClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionRegionClientListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/region/{region}/databases/{databaseRid}/collections/{collectionRid}/partitions/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -85,7 +103,7 @@ func (client *CollectionPartitionRegionClient) listMetricsCreateRequest(ctx cont
 		return nil, errors.New("parameter collectionRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionRid}", url.PathEscape(collectionRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,22 +116,10 @@ func (client *CollectionPartitionRegionClient) listMetricsCreateRequest(ctx cont
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *CollectionPartitionRegionClient) listMetricsHandleResponse(resp *http.Response) (CollectionPartitionRegionListMetricsResponse, error) {
-	result := CollectionPartitionRegionListMetricsResponse{RawResponse: resp}
+func (client *CollectionPartitionRegionClient) listMetricsHandleResponse(resp *http.Response) (CollectionPartitionRegionClientListMetricsResponse, error) {
+	result := CollectionPartitionRegionClientListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartitionMetricListResult); err != nil {
-		return CollectionPartitionRegionListMetricsResponse{}, runtime.NewResponseError(err, resp)
+		return CollectionPartitionRegionClientListMetricsResponse{}, err
 	}
 	return result, nil
-}
-
-// listMetricsHandleError handles the ListMetrics error response.
-func (client *CollectionPartitionRegionClient) listMetricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

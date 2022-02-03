@@ -1,0 +1,209 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*UsagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *UsagesGetOptions)` to `(context.Context, string, string, *UsagesClientGetOptions)`
+- Function `*UsagesClient.Get` return value(s) have been changed from `(UsagesGetResponse, error)` to `(UsagesClientGetResponse, error)`
+- Function `*UsagesClient.List` parameter(s) have been changed from `(string, *UsagesListOptions)` to `(string, *UsagesClientListOptions)`
+- Function `*UsagesClient.List` return value(s) have been changed from `(*UsagesListPager)` to `(*UsagesClientListPager)`
+- Type of `CurrentQuotaLimitBase.Properties` has been changed from `*QuotaProperties` to `*Properties`
+- Function `*QuotaClient.BeginCreateOrUpdate` has been removed
+- Function `*QuotaOperationListPager.PageResponse` has been removed
+- Function `*QuotaListPager.NextPage` has been removed
+- Function `*UsagesListPager.PageResponse` has been removed
+- Function `*QuotaListPager.PageResponse` has been removed
+- Function `*QuotaUpdatePollerResponse.Resume` has been removed
+- Function `*QuotaOperationListPager.Err` has been removed
+- Function `*QuotaRequestStatusClient.Get` has been removed
+- Function `NewQuotaOperationClient` has been removed
+- Function `*QuotaRequestOneResourceProperties.UnmarshalJSON` has been removed
+- Function `*QuotaCreateOrUpdatePoller.Done` has been removed
+- Function `*QuotaRequestProperties.UnmarshalJSON` has been removed
+- Function `QuotaLimits.MarshalJSON` has been removed
+- Function `*QuotaRequestStatusClient.List` has been removed
+- Function `QuotaRequestOneResourceProperties.MarshalJSON` has been removed
+- Function `QuotaRequestProperties.MarshalJSON` has been removed
+- Function `*UsagesListPager.Err` has been removed
+- Function `*QuotaCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*QuotaListPager.Err` has been removed
+- Function `*UsagesListPager.NextPage` has been removed
+- Function `NewQuotaClient` has been removed
+- Function `*QuotaCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*QuotaCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*QuotaProperties.UnmarshalJSON` has been removed
+- Function `*QuotaUpdatePoller.Done` has been removed
+- Function `*QuotaUpdatePoller.ResumeToken` has been removed
+- Function `NewQuotaRequestStatusClient` has been removed
+- Function `*QuotaRequestStatusListPager.NextPage` has been removed
+- Function `*LimitJSONObject.UnmarshalJSON` has been removed
+- Function `QuotaLimitsResponse.MarshalJSON` has been removed
+- Function `*QuotaRequestStatusListPager.Err` has been removed
+- Function `*QuotaClient.List` has been removed
+- Function `*QuotaOperationClient.List` has been removed
+- Function `QuotaUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*QuotaUpdatePoller.FinalResponse` has been removed
+- Function `*QuotaRequestStatusListPager.PageResponse` has been removed
+- Function `*QuotaOperationListPager.NextPage` has been removed
+- Function `ExceptionResponse.Error` has been removed
+- Function `QuotaRequestDetailsList.MarshalJSON` has been removed
+- Function `QuotaProperties.MarshalJSON` has been removed
+- Function `*QuotaClient.Get` has been removed
+- Function `*QuotaClient.BeginUpdate` has been removed
+- Function `QuotaCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*QuotaCreateOrUpdatePoller.Poll` has been removed
+- Function `*QuotaUpdatePoller.Poll` has been removed
+- Struct `QuotaBeginCreateOrUpdateOptions` has been removed
+- Struct `QuotaBeginUpdateOptions` has been removed
+- Struct `QuotaClient` has been removed
+- Struct `QuotaCreateOrUpdatePoller` has been removed
+- Struct `QuotaCreateOrUpdatePollerResponse` has been removed
+- Struct `QuotaCreateOrUpdateResponse` has been removed
+- Struct `QuotaCreateOrUpdateResult` has been removed
+- Struct `QuotaGetOptions` has been removed
+- Struct `QuotaGetResponse` has been removed
+- Struct `QuotaGetResult` has been removed
+- Struct `QuotaLimits` has been removed
+- Struct `QuotaLimitsResponse` has been removed
+- Struct `QuotaListOptions` has been removed
+- Struct `QuotaListPager` has been removed
+- Struct `QuotaListResponse` has been removed
+- Struct `QuotaListResult` has been removed
+- Struct `QuotaOperationClient` has been removed
+- Struct `QuotaOperationListOptions` has been removed
+- Struct `QuotaOperationListPager` has been removed
+- Struct `QuotaOperationListResponse` has been removed
+- Struct `QuotaOperationListResult` has been removed
+- Struct `QuotaProperties` has been removed
+- Struct `QuotaRequestDetails` has been removed
+- Struct `QuotaRequestDetailsList` has been removed
+- Struct `QuotaRequestOneResourceProperties` has been removed
+- Struct `QuotaRequestOneResourceSubmitResponse` has been removed
+- Struct `QuotaRequestProperties` has been removed
+- Struct `QuotaRequestStatusClient` has been removed
+- Struct `QuotaRequestStatusDetails` has been removed
+- Struct `QuotaRequestStatusGetOptions` has been removed
+- Struct `QuotaRequestStatusGetResponse` has been removed
+- Struct `QuotaRequestStatusGetResult` has been removed
+- Struct `QuotaRequestStatusListOptions` has been removed
+- Struct `QuotaRequestStatusListPager` has been removed
+- Struct `QuotaRequestStatusListResponse` has been removed
+- Struct `QuotaRequestStatusListResult` has been removed
+- Struct `QuotaRequestSubmitResponse` has been removed
+- Struct `QuotaRequestSubmitResponse202` has been removed
+- Struct `QuotaUpdatePoller` has been removed
+- Struct `QuotaUpdatePollerResponse` has been removed
+- Struct `QuotaUpdateResponse` has been removed
+- Struct `QuotaUpdateResult` has been removed
+- Struct `UsagesGetOptions` has been removed
+- Struct `UsagesGetResponse` has been removed
+- Struct `UsagesGetResult` has been removed
+- Struct `UsagesListOptions` has been removed
+- Struct `UsagesListPager` has been removed
+- Struct `UsagesListResponse` has been removed
+- Struct `UsagesListResult` has been removed
+- Field `InnerError` of struct `ExceptionResponse` has been removed
+- Field `LimitJSONObject` of struct `LimitObject` has been removed
+
+### Features Added
+
+- New function `Properties.MarshalJSON() ([]byte, error)`
+- New function `*Client.BeginUpdate(context.Context, string, string, CurrentQuotaLimitBase, *ClientBeginUpdateOptions) (ClientUpdatePollerResponse, error)`
+- New function `*ClientUpdatePoller.FinalResponse(context.Context) (ClientUpdateResponse, error)`
+- New function `RequestDetailsList.MarshalJSON() ([]byte, error)`
+- New function `*ClientCreateOrUpdatePoller.FinalResponse(context.Context) (ClientCreateOrUpdateResponse, error)`
+- New function `*ClientListPager.NextPage(context.Context) bool`
+- New function `*ClientListPager.PageResponse() ClientListResponse`
+- New function `*OperationClient.List(*OperationClientListOptions) *OperationClientListPager`
+- New function `*Client.List(string, *ClientListOptions) *ClientListPager`
+- New function `*RequestOneResourceProperties.UnmarshalJSON([]byte) error`
+- New function `LimitsResponse.MarshalJSON() ([]byte, error)`
+- New function `RequestOneResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `ClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientCreateOrUpdateResponse, error)`
+- New function `*ClientListPager.Err() error`
+- New function `*Client.Get(context.Context, string, string, *ClientGetOptions) (ClientGetResponse, error)`
+- New function `*ClientCreateOrUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*ClientUpdatePoller.Done() bool`
+- New function `*RequestStatusClient.Get(context.Context, string, string, *RequestStatusClientGetOptions) (RequestStatusClientGetResponse, error)`
+- New function `*RequestStatusClientListPager.NextPage(context.Context) bool`
+- New function `*UsagesClientListPager.NextPage(context.Context) bool`
+- New function `*RequestStatusClientListPager.Err() error`
+- New function `*LimitObject.GetLimitJSONObject() *LimitJSONObject`
+- New function `*Properties.UnmarshalJSON([]byte) error`
+- New function `ClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientUpdateResponse, error)`
+- New function `*ClientCreateOrUpdatePoller.Done() bool`
+- New function `*RequestStatusClient.List(string, *RequestStatusClientListOptions) *RequestStatusClientListPager`
+- New function `NewOperationClient(azcore.TokenCredential, *arm.ClientOptions) *OperationClient`
+- New function `*OperationClientListPager.PageResponse() OperationClientListResponse`
+- New function `*ClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `Limits.MarshalJSON() ([]byte, error)`
+- New function `*ClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*UsagesClientListPager.Err() error`
+- New function `*ClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ClientUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*OperationClientListPager.NextPage(context.Context) bool`
+- New function `RequestProperties.MarshalJSON() ([]byte, error)`
+- New function `*UsagesClientListPager.PageResponse() UsagesClientListResponse`
+- New function `NewRequestStatusClient(azcore.TokenCredential, *arm.ClientOptions) *RequestStatusClient`
+- New function `*ClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*Client.BeginCreateOrUpdate(context.Context, string, string, CurrentQuotaLimitBase, *ClientBeginCreateOrUpdateOptions) (ClientCreateOrUpdatePollerResponse, error)`
+- New function `*RequestStatusClientListPager.PageResponse() RequestStatusClientListResponse`
+- New function `*RequestProperties.UnmarshalJSON([]byte) error`
+- New function `NewClient(azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*OperationClientListPager.Err() error`
+- New struct `Client`
+- New struct `ClientBeginCreateOrUpdateOptions`
+- New struct `ClientBeginUpdateOptions`
+- New struct `ClientCreateOrUpdatePoller`
+- New struct `ClientCreateOrUpdatePollerResponse`
+- New struct `ClientCreateOrUpdateResponse`
+- New struct `ClientCreateOrUpdateResult`
+- New struct `ClientGetOptions`
+- New struct `ClientGetResponse`
+- New struct `ClientGetResult`
+- New struct `ClientListOptions`
+- New struct `ClientListPager`
+- New struct `ClientListResponse`
+- New struct `ClientListResult`
+- New struct `ClientUpdatePoller`
+- New struct `ClientUpdatePollerResponse`
+- New struct `ClientUpdateResponse`
+- New struct `ClientUpdateResult`
+- New struct `Limits`
+- New struct `LimitsResponse`
+- New struct `OperationClient`
+- New struct `OperationClientListOptions`
+- New struct `OperationClientListPager`
+- New struct `OperationClientListResponse`
+- New struct `OperationClientListResult`
+- New struct `Properties`
+- New struct `RequestDetails`
+- New struct `RequestDetailsList`
+- New struct `RequestOneResourceProperties`
+- New struct `RequestOneResourceSubmitResponse`
+- New struct `RequestProperties`
+- New struct `RequestStatusClient`
+- New struct `RequestStatusClientGetOptions`
+- New struct `RequestStatusClientGetResponse`
+- New struct `RequestStatusClientGetResult`
+- New struct `RequestStatusClientListOptions`
+- New struct `RequestStatusClientListPager`
+- New struct `RequestStatusClientListResponse`
+- New struct `RequestStatusClientListResult`
+- New struct `RequestStatusDetails`
+- New struct `RequestSubmitResponse`
+- New struct `RequestSubmitResponse202`
+- New struct `UsagesClientGetOptions`
+- New struct `UsagesClientGetResponse`
+- New struct `UsagesClientGetResult`
+- New struct `UsagesClientListOptions`
+- New struct `UsagesClientListPager`
+- New struct `UsagesClientListResponse`
+- New struct `UsagesClientListResult`
+- New field `Error` in struct `ExceptionResponse`
+- New field `LimitObjectType` in struct `LimitObject`
+
+
+## 0.1.0 (2021-12-16)
+
+- Init release.

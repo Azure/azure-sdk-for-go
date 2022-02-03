@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,52 @@ import (
 // LoadBalancerNetworkInterfacesClient contains the methods for the LoadBalancerNetworkInterfaces group.
 // Don't use this type directly, use NewLoadBalancerNetworkInterfacesClient() instead.
 type LoadBalancerNetworkInterfacesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLoadBalancerNetworkInterfacesClient creates a new instance of LoadBalancerNetworkInterfacesClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLoadBalancerNetworkInterfacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LoadBalancerNetworkInterfacesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LoadBalancerNetworkInterfacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LoadBalancerNetworkInterfacesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Gets associated load balancer network interfaces.
-// If the operation fails it returns the *CloudError error type.
-func (client *LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) *LoadBalancerNetworkInterfacesListPager {
-	return &LoadBalancerNetworkInterfacesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// loadBalancerName - The name of the load balancer.
+// options - LoadBalancerNetworkInterfacesClientListOptions contains the optional parameters for the LoadBalancerNetworkInterfacesClient.List
+// method.
+func (client *LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesClientListOptions) *LoadBalancerNetworkInterfacesClientListPager {
+	return &LoadBalancerNetworkInterfacesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 		},
-		advancer: func(ctx context.Context, resp LoadBalancerNetworkInterfacesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceListResult.NextLink)
+		advancer: func(ctx context.Context, resp LoadBalancerNetworkInterfacesClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.InterfaceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *LoadBalancerNetworkInterfacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) (*policy.Request, error) {
+func (client *LoadBalancerNetworkInterfacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/networkInterfaces"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,7 +83,7 @@ func (client *LoadBalancerNetworkInterfacesClient) listCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +95,10 @@ func (client *LoadBalancerNetworkInterfacesClient) listCreateRequest(ctx context
 }
 
 // listHandleResponse handles the List response.
-func (client *LoadBalancerNetworkInterfacesClient) listHandleResponse(resp *http.Response) (LoadBalancerNetworkInterfacesListResponse, error) {
-	result := LoadBalancerNetworkInterfacesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return LoadBalancerNetworkInterfacesListResponse{}, runtime.NewResponseError(err, resp)
+func (client *LoadBalancerNetworkInterfacesClient) listHandleResponse(resp *http.Response) (LoadBalancerNetworkInterfacesClientListResponse, error) {
+	result := LoadBalancerNetworkInterfacesClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceListResult); err != nil {
+		return LoadBalancerNetworkInterfacesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *LoadBalancerNetworkInterfacesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

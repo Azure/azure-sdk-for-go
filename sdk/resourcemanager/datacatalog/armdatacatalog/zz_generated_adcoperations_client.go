@@ -10,7 +10,6 @@ package armdatacatalog
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,43 +21,50 @@ import (
 // ADCOperationsClient contains the methods for the ADCOperations group.
 // Don't use this type directly, use NewADCOperationsClient() instead.
 type ADCOperationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewADCOperationsClient creates a new instance of ADCOperationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewADCOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ADCOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ADCOperationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ADCOperationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all the available Azure Data Catalog service operations.
-// If the operation fails it returns a generic error.
-func (client *ADCOperationsClient) List(ctx context.Context, options *ADCOperationsListOptions) (ADCOperationsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ADCOperationsClientListOptions contains the optional parameters for the ADCOperationsClient.List method.
+func (client *ADCOperationsClient) List(ctx context.Context, options *ADCOperationsClientListOptions) (ADCOperationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return ADCOperationsListResponse{}, err
+		return ADCOperationsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ADCOperationsListResponse{}, err
+		return ADCOperationsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ADCOperationsListResponse{}, client.listHandleError(resp)
+		return ADCOperationsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ADCOperationsClient) listCreateRequest(ctx context.Context, options *ADCOperationsListOptions) (*policy.Request, error) {
+func (client *ADCOperationsClient) listCreateRequest(ctx context.Context, options *ADCOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DataCatalog/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -70,22 +76,10 @@ func (client *ADCOperationsClient) listCreateRequest(ctx context.Context, option
 }
 
 // listHandleResponse handles the List response.
-func (client *ADCOperationsClient) listHandleResponse(resp *http.Response) (ADCOperationsListResponse, error) {
-	result := ADCOperationsListResponse{RawResponse: resp}
+func (client *ADCOperationsClient) listHandleResponse(resp *http.Response) (ADCOperationsClientListResponse, error) {
+	result := ADCOperationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationEntityListResult); err != nil {
-		return ADCOperationsListResponse{}, runtime.NewResponseError(err, resp)
+		return ADCOperationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ADCOperationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

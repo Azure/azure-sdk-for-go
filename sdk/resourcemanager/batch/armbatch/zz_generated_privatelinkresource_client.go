@@ -11,7 +11,6 @@ package armbatch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,54 @@ import (
 // PrivateLinkResourceClient contains the methods for the PrivateLinkResource group.
 // Don't use this type directly, use NewPrivateLinkResourceClient() instead.
 type PrivateLinkResourceClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourceClient creates a new instance of PrivateLinkResourceClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourceClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkResourceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkResourceClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets information about the specified private link resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkResourceClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateLinkResourceName string, options *PrivateLinkResourceGetOptions) (PrivateLinkResourceGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// privateLinkResourceName - The private link resource name. This must be unique within the account.
+// options - PrivateLinkResourceClientGetOptions contains the optional parameters for the PrivateLinkResourceClient.Get method.
+func (client *PrivateLinkResourceClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateLinkResourceName string, options *PrivateLinkResourceClientGetOptions) (PrivateLinkResourceClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, privateLinkResourceName, options)
 	if err != nil {
-		return PrivateLinkResourceGetResponse{}, err
+		return PrivateLinkResourceClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourceGetResponse{}, err
+		return PrivateLinkResourceClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourceGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkResourceClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkResourceClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateLinkResourceName string, options *PrivateLinkResourceGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourceClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateLinkResourceName string, options *PrivateLinkResourceClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateLinkResources/{privateLinkResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +90,7 @@ func (client *PrivateLinkResourceClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter privateLinkResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateLinkResourceName}", url.PathEscape(privateLinkResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,43 +102,34 @@ func (client *PrivateLinkResourceClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourceClient) getHandleResponse(resp *http.Response) (PrivateLinkResourceGetResponse, error) {
-	result := PrivateLinkResourceGetResponse{RawResponse: resp}
+func (client *PrivateLinkResourceClient) getHandleResponse(resp *http.Response) (PrivateLinkResourceClientGetResponse, error) {
+	result := PrivateLinkResourceClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
-		return PrivateLinkResourceGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourceClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateLinkResourceClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByBatchAccount - Lists all of the private link resources in the specified account.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkResourceClient) ListByBatchAccount(resourceGroupName string, accountName string, options *PrivateLinkResourceListByBatchAccountOptions) *PrivateLinkResourceListByBatchAccountPager {
-	return &PrivateLinkResourceListByBatchAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// options - PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.ListByBatchAccount
+// method.
+func (client *PrivateLinkResourceClient) ListByBatchAccount(resourceGroupName string, accountName string, options *PrivateLinkResourceClientListByBatchAccountOptions) *PrivateLinkResourceClientListByBatchAccountPager {
+	return &PrivateLinkResourceClientListByBatchAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByBatchAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkResourceListByBatchAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateLinkResourceClientListByBatchAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListPrivateLinkResourcesResult.NextLink)
 		},
 	}
 }
 
 // listByBatchAccountCreateRequest creates the ListByBatchAccount request.
-func (client *PrivateLinkResourceClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourceListByBatchAccountOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourceClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourceClientListByBatchAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,7 +143,7 @@ func (client *PrivateLinkResourceClient) listByBatchAccountCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,23 +158,10 @@ func (client *PrivateLinkResourceClient) listByBatchAccountCreateRequest(ctx con
 }
 
 // listByBatchAccountHandleResponse handles the ListByBatchAccount response.
-func (client *PrivateLinkResourceClient) listByBatchAccountHandleResponse(resp *http.Response) (PrivateLinkResourceListByBatchAccountResponse, error) {
-	result := PrivateLinkResourceListByBatchAccountResponse{RawResponse: resp}
+func (client *PrivateLinkResourceClient) listByBatchAccountHandleResponse(resp *http.Response) (PrivateLinkResourceClientListByBatchAccountResponse, error) {
+	result := PrivateLinkResourceClientListByBatchAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPrivateLinkResourcesResult); err != nil {
-		return PrivateLinkResourceListByBatchAccountResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourceClientListByBatchAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// listByBatchAccountHandleError handles the ListByBatchAccount error response.
-func (client *PrivateLinkResourceClient) listByBatchAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,55 @@ import (
 // EnrollmentAccountsClient contains the methods for the EnrollmentAccounts group.
 // Don't use this type directly, use NewEnrollmentAccountsClient() instead.
 type EnrollmentAccountsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEnrollmentAccountsClient creates a new instance of EnrollmentAccountsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEnrollmentAccountsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EnrollmentAccountsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EnrollmentAccountsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EnrollmentAccountsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a enrollment account by name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EnrollmentAccountsClient) Get(ctx context.Context, name string, options *EnrollmentAccountsGetOptions) (EnrollmentAccountsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// name - Enrollment Account name.
+// options - EnrollmentAccountsClientGetOptions contains the optional parameters for the EnrollmentAccountsClient.Get method.
+func (client *EnrollmentAccountsClient) Get(ctx context.Context, name string, options *EnrollmentAccountsClientGetOptions) (EnrollmentAccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, name, options)
 	if err != nil {
-		return EnrollmentAccountsGetResponse{}, err
+		return EnrollmentAccountsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EnrollmentAccountsGetResponse{}, err
+		return EnrollmentAccountsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EnrollmentAccountsGetResponse{}, client.getHandleError(resp)
+		return EnrollmentAccountsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *EnrollmentAccountsClient) getCreateRequest(ctx context.Context, name string, options *EnrollmentAccountsGetOptions) (*policy.Request, error) {
+func (client *EnrollmentAccountsClient) getCreateRequest(ctx context.Context, name string, options *EnrollmentAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/enrollmentAccounts/{name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,45 +84,33 @@ func (client *EnrollmentAccountsClient) getCreateRequest(ctx context.Context, na
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnrollmentAccountsClient) getHandleResponse(resp *http.Response) (EnrollmentAccountsGetResponse, error) {
-	result := EnrollmentAccountsGetResponse{RawResponse: resp}
+func (client *EnrollmentAccountsClient) getHandleResponse(resp *http.Response) (EnrollmentAccountsClientGetResponse, error) {
+	result := EnrollmentAccountsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentAccountSummary); err != nil {
-		return EnrollmentAccountsGetResponse{}, runtime.NewResponseError(err, resp)
+		return EnrollmentAccountsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *EnrollmentAccountsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the enrollment accounts the caller has access to.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EnrollmentAccountsClient) List(options *EnrollmentAccountsListOptions) *EnrollmentAccountsListPager {
-	return &EnrollmentAccountsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - EnrollmentAccountsClientListOptions contains the optional parameters for the EnrollmentAccountsClient.List method.
+func (client *EnrollmentAccountsClient) List(options *EnrollmentAccountsClientListOptions) *EnrollmentAccountsClientListPager {
+	return &EnrollmentAccountsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp EnrollmentAccountsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp EnrollmentAccountsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EnrollmentAccountListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *EnrollmentAccountsClient) listCreateRequest(ctx context.Context, options *EnrollmentAccountsListOptions) (*policy.Request, error) {
+func (client *EnrollmentAccountsClient) listCreateRequest(ctx context.Context, options *EnrollmentAccountsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/enrollmentAccounts"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,23 +122,10 @@ func (client *EnrollmentAccountsClient) listCreateRequest(ctx context.Context, o
 }
 
 // listHandleResponse handles the List response.
-func (client *EnrollmentAccountsClient) listHandleResponse(resp *http.Response) (EnrollmentAccountsListResponse, error) {
-	result := EnrollmentAccountsListResponse{RawResponse: resp}
+func (client *EnrollmentAccountsClient) listHandleResponse(resp *http.Response) (EnrollmentAccountsClientListResponse, error) {
+	result := EnrollmentAccountsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentAccountListResult); err != nil {
-		return EnrollmentAccountsListResponse{}, runtime.NewResponseError(err, resp)
+		return EnrollmentAccountsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *EnrollmentAccountsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

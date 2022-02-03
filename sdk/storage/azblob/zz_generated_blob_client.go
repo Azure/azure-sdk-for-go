@@ -11,13 +11,13 @@ package azblob
 import (
 	"context"
 	"encoding/base64"
-	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 type blobClient struct {
@@ -38,7 +38,7 @@ func (client *blobClient) AbortCopyFromURL(ctx context.Context, copyID string, b
 		return BlobAbortCopyFromURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return BlobAbortCopyFromURLResponse{}, client.abortCopyFromURLHandleError(resp)
+		return BlobAbortCopyFromURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.abortCopyFromURLHandleResponse(resp)
 }
@@ -90,19 +90,6 @@ func (client *blobClient) abortCopyFromURLHandleResponse(resp *http.Response) (B
 	return result, nil
 }
 
-// abortCopyFromURLHandleError handles the AbortCopyFromURL error response.
-func (client *blobClient) abortCopyFromURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // AcquireLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) AcquireLease(ctx context.Context, blobAcquireLeaseOptions *BlobAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobAcquireLeaseResponse, error) {
@@ -115,7 +102,7 @@ func (client *blobClient) AcquireLease(ctx context.Context, blobAcquireLeaseOpti
 		return BlobAcquireLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return BlobAcquireLeaseResponse{}, client.acquireLeaseHandleError(resp)
+		return BlobAcquireLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.acquireLeaseHandleResponse(resp)
 }
@@ -197,19 +184,6 @@ func (client *blobClient) acquireLeaseHandleResponse(resp *http.Response) (BlobA
 	return result, nil
 }
 
-// acquireLeaseHandleError handles the AcquireLease error response.
-func (client *blobClient) acquireLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BreakLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) BreakLease(ctx context.Context, blobBreakLeaseOptions *BlobBreakLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobBreakLeaseResponse, error) {
@@ -222,7 +196,7 @@ func (client *blobClient) BreakLease(ctx context.Context, blobBreakLeaseOptions 
 		return BlobBreakLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return BlobBreakLeaseResponse{}, client.breakLeaseHandleError(resp)
+		return BlobBreakLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.breakLeaseHandleResponse(resp)
 }
@@ -306,19 +280,6 @@ func (client *blobClient) breakLeaseHandleResponse(resp *http.Response) (BlobBre
 	return result, nil
 }
 
-// breakLeaseHandleError handles the BreakLease error response.
-func (client *blobClient) breakLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ChangeLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) ChangeLease(ctx context.Context, leaseID string, proposedLeaseID string, blobChangeLeaseOptions *BlobChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobChangeLeaseResponse, error) {
@@ -331,7 +292,7 @@ func (client *blobClient) ChangeLease(ctx context.Context, leaseID string, propo
 		return BlobChangeLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobChangeLeaseResponse{}, client.changeLeaseHandleError(resp)
+		return BlobChangeLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.changeLeaseHandleResponse(resp)
 }
@@ -409,19 +370,6 @@ func (client *blobClient) changeLeaseHandleResponse(resp *http.Response) (BlobCh
 	return result, nil
 }
 
-// changeLeaseHandleError handles the ChangeLease error response.
-func (client *blobClient) changeLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CopyFromURL - The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response until the copy is complete.
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) CopyFromURL(ctx context.Context, copySource string, blobCopyFromURLOptions *BlobCopyFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (BlobCopyFromURLResponse, error) {
@@ -434,7 +382,7 @@ func (client *blobClient) CopyFromURL(ctx context.Context, copySource string, bl
 		return BlobCopyFromURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return BlobCopyFromURLResponse{}, client.copyFromURLHandleError(resp)
+		return BlobCopyFromURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.copyFromURLHandleResponse(resp)
 }
@@ -559,19 +507,6 @@ func (client *blobClient) copyFromURLHandleResponse(resp *http.Response) (BlobCo
 	return result, nil
 }
 
-// copyFromURLHandleError handles the CopyFromURL error response.
-func (client *blobClient) copyFromURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateSnapshot - The Create Snapshot operation creates a read-only snapshot of a blob
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) CreateSnapshot(ctx context.Context, blobCreateSnapshotOptions *BlobCreateSnapshotOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (BlobCreateSnapshotResponse, error) {
@@ -584,7 +519,7 @@ func (client *blobClient) CreateSnapshot(ctx context.Context, blobCreateSnapshot
 		return BlobCreateSnapshotResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return BlobCreateSnapshotResponse{}, client.createSnapshotHandleError(resp)
+		return BlobCreateSnapshotResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createSnapshotHandleResponse(resp)
 }
@@ -689,19 +624,6 @@ func (client *blobClient) createSnapshotHandleResponse(resp *http.Response) (Blo
 	return result, nil
 }
 
-// createSnapshotHandleError handles the CreateSnapshot error response.
-func (client *blobClient) createSnapshotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - If the storage account's soft delete feature is disabled then, when a blob is deleted, it is permanently removed from the storage account. If
 // the storage account's soft delete feature is enabled,
 // then, when a blob is deleted, it is marked for deletion and becomes inaccessible immediately. However, the blob service retains the blob or snapshot
@@ -724,7 +646,7 @@ func (client *blobClient) Delete(ctx context.Context, blobDeleteOptions *BlobDel
 		return BlobDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return BlobDeleteResponse{}, client.deleteHandleError(resp)
+		return BlobDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
@@ -797,19 +719,6 @@ func (client *blobClient) deleteHandleResponse(resp *http.Response) (BlobDeleteR
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *blobClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Download - The Download operation reads or downloads a blob from the system, including its metadata and properties. You can also call Download to read
 // a snapshot.
 // If the operation fails it returns the *StorageError error type.
@@ -823,7 +732,7 @@ func (client *blobClient) Download(ctx context.Context, blobDownloadOptions *Blo
 		return BlobDownloadResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusPartialContent) {
-		return BlobDownloadResponse{}, client.downloadHandleError(resp)
+		return BlobDownloadResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.downloadHandleResponse(resp)
 }
@@ -845,7 +754,7 @@ func (client *blobClient) downloadCreateRequest(ctx context.Context, blobDownloa
 		reqQP.Set("timeout", strconv.FormatInt(int64(*blobDownloadOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	if blobDownloadOptions != nil && blobDownloadOptions.Range != nil {
 		req.Raw().Header.Set("x-ms-range", *blobDownloadOptions.Range)
 	}
@@ -1076,19 +985,6 @@ func (client *blobClient) downloadHandleResponse(resp *http.Response) (BlobDownl
 	return result, nil
 }
 
-// downloadHandleError handles the Download error response.
-func (client *blobClient) downloadHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAccessControl - Get the owner, group, permissions, or access control list for a blob.
 // If the operation fails it returns the *DataLakeStorageError error type.
 func (client *blobClient) GetAccessControl(ctx context.Context, blobGetAccessControlOptions *BlobGetAccessControlOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (BlobGetAccessControlResponse, error) {
@@ -1101,7 +997,7 @@ func (client *blobClient) GetAccessControl(ctx context.Context, blobGetAccessCon
 		return BlobGetAccessControlResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobGetAccessControlResponse{}, client.getAccessControlHandleError(resp)
+		return BlobGetAccessControlResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAccessControlHandleResponse(resp)
 }
@@ -1185,19 +1081,6 @@ func (client *blobClient) getAccessControlHandleResponse(resp *http.Response) (B
 	return result, nil
 }
 
-// getAccessControlHandleError handles the GetAccessControl error response.
-func (client *blobClient) getAccessControlHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataLakeStorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAccountInfo - Returns the sku name and account kind
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) GetAccountInfo(ctx context.Context, options *BlobGetAccountInfoOptions) (BlobGetAccountInfoResponse, error) {
@@ -1210,7 +1093,7 @@ func (client *blobClient) GetAccountInfo(ctx context.Context, options *BlobGetAc
 		return BlobGetAccountInfoResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobGetAccountInfoResponse{}, client.getAccountInfoHandleError(resp)
+		return BlobGetAccountInfoResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAccountInfoHandleResponse(resp)
 }
@@ -1258,19 +1141,6 @@ func (client *blobClient) getAccountInfoHandleResponse(resp *http.Response) (Blo
 	return result, nil
 }
 
-// getAccountInfoHandleError handles the GetAccountInfo error response.
-func (client *blobClient) getAccountInfoHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetProperties - The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties for the blob. It does
 // not return the content of the blob.
 // If the operation fails it returns the *StorageError error type.
@@ -1284,7 +1154,7 @@ func (client *blobClient) GetProperties(ctx context.Context, blobGetPropertiesOp
 		return BlobGetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobGetPropertiesResponse{}, client.getPropertiesHandleError(resp)
+		return BlobGetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPropertiesHandleResponse(resp)
 }
@@ -1557,19 +1427,6 @@ func (client *blobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 	return result, nil
 }
 
-// getPropertiesHandleError handles the GetProperties error response.
-func (client *blobClient) getPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetTags - The Get Tags operation enables users to get the tags associated with a blob.
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) GetTags(ctx context.Context, blobGetTagsOptions *BlobGetTagsOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobGetTagsResponse, error) {
@@ -1582,7 +1439,7 @@ func (client *blobClient) GetTags(ctx context.Context, blobGetTagsOptions *BlobG
 		return BlobGetTagsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobGetTagsResponse{}, client.getTagsHandleError(resp)
+		return BlobGetTagsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getTagsHandleResponse(resp)
 }
@@ -1641,19 +1498,6 @@ func (client *blobClient) getTagsHandleResponse(resp *http.Response) (BlobGetTag
 	return result, nil
 }
 
-// getTagsHandleError handles the GetTags error response.
-func (client *blobClient) getTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Query - The Query operation enables users to select/project on blob data by providing simple query expressions.
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) Query(ctx context.Context, blobQueryOptions *BlobQueryOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobQueryResponse, error) {
@@ -1666,7 +1510,7 @@ func (client *blobClient) Query(ctx context.Context, blobQueryOptions *BlobQuery
 		return BlobQueryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusPartialContent) {
-		return BlobQueryResponse{}, client.queryHandleError(resp)
+		return BlobQueryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.queryHandleResponse(resp)
 }
@@ -1686,7 +1530,7 @@ func (client *blobClient) queryCreateRequest(ctx context.Context, blobQueryOptio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*blobQueryOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -1876,19 +1720,6 @@ func (client *blobClient) queryHandleResponse(resp *http.Response) (BlobQueryRes
 	return result, nil
 }
 
-// queryHandleError handles the Query error response.
-func (client *blobClient) queryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ReleaseLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) ReleaseLease(ctx context.Context, leaseID string, blobReleaseLeaseOptions *BlobReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobReleaseLeaseResponse, error) {
@@ -1901,7 +1732,7 @@ func (client *blobClient) ReleaseLease(ctx context.Context, leaseID string, blob
 		return BlobReleaseLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobReleaseLeaseResponse{}, client.releaseLeaseHandleError(resp)
+		return BlobReleaseLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.releaseLeaseHandleResponse(resp)
 }
@@ -1975,19 +1806,6 @@ func (client *blobClient) releaseLeaseHandleResponse(resp *http.Response) (BlobR
 	return result, nil
 }
 
-// releaseLeaseHandleError handles the ReleaseLease error response.
-func (client *blobClient) releaseLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Rename - Rename a blob/file. By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken. This
 // operation supports conditional HTTP requests. For more
 // information, see Specifying Conditional Headers for Blob Service Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
@@ -2004,7 +1822,7 @@ func (client *blobClient) Rename(ctx context.Context, renameSource string, blobR
 		return BlobRenameResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return BlobRenameResponse{}, client.renameHandleError(resp)
+		return BlobRenameResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.renameHandleResponse(resp)
 }
@@ -2125,19 +1943,6 @@ func (client *blobClient) renameHandleResponse(resp *http.Response) (BlobRenameR
 	return result, nil
 }
 
-// renameHandleError handles the Rename error response.
-func (client *blobClient) renameHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataLakeStorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RenewLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) RenewLease(ctx context.Context, leaseID string, blobRenewLeaseOptions *BlobRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobRenewLeaseResponse, error) {
@@ -2150,7 +1955,7 @@ func (client *blobClient) RenewLease(ctx context.Context, leaseID string, blobRe
 		return BlobRenewLeaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobRenewLeaseResponse{}, client.renewLeaseHandleError(resp)
+		return BlobRenewLeaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.renewLeaseHandleResponse(resp)
 }
@@ -2227,19 +2032,6 @@ func (client *blobClient) renewLeaseHandleResponse(resp *http.Response) (BlobRen
 	return result, nil
 }
 
-// renewLeaseHandleError handles the RenewLease error response.
-func (client *blobClient) renewLeaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetAccessControl - Set the owner, group, permissions, or access control list for a blob.
 // If the operation fails it returns the *DataLakeStorageError error type.
 func (client *blobClient) SetAccessControl(ctx context.Context, blobSetAccessControlOptions *BlobSetAccessControlOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (BlobSetAccessControlResponse, error) {
@@ -2252,7 +2044,7 @@ func (client *blobClient) SetAccessControl(ctx context.Context, blobSetAccessCon
 		return BlobSetAccessControlResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobSetAccessControlResponse{}, client.setAccessControlHandleError(resp)
+		return BlobSetAccessControlResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setAccessControlHandleResponse(resp)
 }
@@ -2333,19 +2125,6 @@ func (client *blobClient) setAccessControlHandleResponse(resp *http.Response) (B
 	return result, nil
 }
 
-// setAccessControlHandleError handles the SetAccessControl error response.
-func (client *blobClient) setAccessControlHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataLakeStorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetExpiry - Sets the time a blob will expire and be deleted.
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) SetExpiry(ctx context.Context, expiryOptions BlobExpiryOptions, options *BlobSetExpiryOptions) (BlobSetExpiryResponse, error) {
@@ -2358,7 +2137,7 @@ func (client *blobClient) SetExpiry(ctx context.Context, expiryOptions BlobExpir
 		return BlobSetExpiryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobSetExpiryResponse{}, client.setExpiryHandleError(resp)
+		return BlobSetExpiryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setExpiryHandleResponse(resp)
 }
@@ -2419,19 +2198,6 @@ func (client *blobClient) setExpiryHandleResponse(resp *http.Response) (BlobSetE
 	return result, nil
 }
 
-// setExpiryHandleError handles the SetExpiry error response.
-func (client *blobClient) setExpiryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetHTTPHeaders - The Set HTTP Headers operation sets system properties on the blob
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) SetHTTPHeaders(ctx context.Context, blobSetHTTPHeadersOptions *BlobSetHTTPHeadersOptions, blobHTTPHeaders *BlobHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (BlobSetHTTPHeadersResponse, error) {
@@ -2444,7 +2210,7 @@ func (client *blobClient) SetHTTPHeaders(ctx context.Context, blobSetHTTPHeaders
 		return BlobSetHTTPHeadersResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobSetHTTPHeadersResponse{}, client.setHTTPHeadersHandleError(resp)
+		return BlobSetHTTPHeadersResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setHTTPHeadersHandleResponse(resp)
 }
@@ -2544,19 +2310,6 @@ func (client *blobClient) setHTTPHeadersHandleResponse(resp *http.Response) (Blo
 	return result, nil
 }
 
-// setHTTPHeadersHandleError handles the SetHTTPHeaders error response.
-func (client *blobClient) setHTTPHeadersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetMetadata - The Set Blob Metadata operation sets user-defined metadata for the specified blob as one or more name-value pairs
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) SetMetadata(ctx context.Context, blobSetMetadataOptions *BlobSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobSetMetadataResponse, error) {
@@ -2569,7 +2322,7 @@ func (client *blobClient) SetMetadata(ctx context.Context, blobSetMetadataOption
 		return BlobSetMetadataResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobSetMetadataResponse{}, client.setMetadataHandleError(resp)
+		return BlobSetMetadataResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setMetadataHandleResponse(resp)
 }
@@ -2677,19 +2430,6 @@ func (client *blobClient) setMetadataHandleResponse(resp *http.Response) (BlobSe
 	return result, nil
 }
 
-// setMetadataHandleError handles the SetMetadata error response.
-func (client *blobClient) setMetadataHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetTags - The Set Tags operation enables users to set tags on a blob.
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) SetTags(ctx context.Context, blobSetTagsOptions *BlobSetTagsOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobSetTagsResponse, error) {
@@ -2702,7 +2442,7 @@ func (client *blobClient) SetTags(ctx context.Context, blobSetTagsOptions *BlobS
 		return BlobSetTagsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return BlobSetTagsResponse{}, client.setTagsHandleError(resp)
+		return BlobSetTagsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setTagsHandleResponse(resp)
 }
@@ -2764,19 +2504,6 @@ func (client *blobClient) setTagsHandleResponse(resp *http.Response) (BlobSetTag
 	return result, nil
 }
 
-// setTagsHandleError handles the SetTags error response.
-func (client *blobClient) setTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetTier - The Set Tier operation sets the tier on a blob. The operation is allowed on a page blob in a premium storage account and on a block blob in
 // a blob storage account (locally redundant storage only). A
 // premium page blob's tier determines the allowed size, IOPS, and bandwidth of the blob. A block blob's tier determines Hot/Cool/Archive storage type.
@@ -2792,7 +2519,7 @@ func (client *blobClient) SetTier(ctx context.Context, tier AccessTier, blobSetT
 		return BlobSetTierResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return BlobSetTierResponse{}, client.setTierHandleError(resp)
+		return BlobSetTierResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setTierHandleResponse(resp)
 }
@@ -2848,19 +2575,6 @@ func (client *blobClient) setTierHandleResponse(resp *http.Response) (BlobSetTie
 	return result, nil
 }
 
-// setTierHandleError handles the SetTier error response.
-func (client *blobClient) setTierHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // StartCopyFromURL - The Start Copy From URL operation copies a blob or an internet resource to a new blob.
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) StartCopyFromURL(ctx context.Context, copySource string, blobStartCopyFromURLOptions *BlobStartCopyFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (BlobStartCopyFromURLResponse, error) {
@@ -2873,7 +2587,7 @@ func (client *blobClient) StartCopyFromURL(ctx context.Context, copySource strin
 		return BlobStartCopyFromURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return BlobStartCopyFromURLResponse{}, client.startCopyFromURLHandleError(resp)
+		return BlobStartCopyFromURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.startCopyFromURLHandleResponse(resp)
 }
@@ -2989,19 +2703,6 @@ func (client *blobClient) startCopyFromURLHandleResponse(resp *http.Response) (B
 	return result, nil
 }
 
-// startCopyFromURLHandleError handles the StartCopyFromURL error response.
-func (client *blobClient) startCopyFromURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Undelete - Undelete a blob that was previously soft deleted
 // If the operation fails it returns the *StorageError error type.
 func (client *blobClient) Undelete(ctx context.Context, options *BlobUndeleteOptions) (BlobUndeleteResponse, error) {
@@ -3014,7 +2715,7 @@ func (client *blobClient) Undelete(ctx context.Context, options *BlobUndeleteOpt
 		return BlobUndeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobUndeleteResponse{}, client.undeleteHandleError(resp)
+		return BlobUndeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.undeleteHandleResponse(resp)
 }
@@ -3059,17 +2760,4 @@ func (client *blobClient) undeleteHandleResponse(resp *http.Response) (BlobUndel
 		result.Date = &date
 	}
 	return result, nil
-}
-
-// undeleteHandleError handles the Undelete error response.
-func (client *blobClient) undeleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -51,25 +51,6 @@ func unmarshalDataConnectionClassificationArray(rawMsg json.RawMessage) ([]DataC
 	return fArray, nil
 }
 
-func unmarshalDataConnectionClassificationMap(rawMsg json.RawMessage) (map[string]DataConnectionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DataConnectionClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDataConnectionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalDatabaseClassification(rawMsg json.RawMessage) (DatabaseClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -107,23 +88,4 @@ func unmarshalDatabaseClassificationArray(rawMsg json.RawMessage) ([]DatabaseCla
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalDatabaseClassificationMap(rawMsg json.RawMessage) (map[string]DatabaseClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DatabaseClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDatabaseClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

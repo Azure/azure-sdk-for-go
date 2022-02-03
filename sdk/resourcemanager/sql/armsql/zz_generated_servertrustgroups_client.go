@@ -24,46 +24,61 @@ import (
 // ServerTrustGroupsClient contains the methods for the ServerTrustGroups group.
 // Don't use this type directly, use NewServerTrustGroupsClient() instead.
 type ServerTrustGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerTrustGroupsClient creates a new instance of ServerTrustGroupsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerTrustGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerTrustGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerTrustGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a server trust group.
-// If the operation fails it returns a generic error.
-func (client *ServerTrustGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsBeginCreateOrUpdateOptions) (ServerTrustGroupsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// serverTrustGroupName - The name of the server trust group.
+// parameters - The server trust group parameters.
+// options - ServerTrustGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerTrustGroupsClient.BeginCreateOrUpdate
+// method.
+func (client *ServerTrustGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (ServerTrustGroupsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, locationName, serverTrustGroupName, parameters, options)
 	if err != nil {
-		return ServerTrustGroupsCreateOrUpdatePollerResponse{}, err
+		return ServerTrustGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ServerTrustGroupsCreateOrUpdatePollerResponse{
+	result := ServerTrustGroupsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerTrustGroupsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerTrustGroupsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ServerTrustGroupsCreateOrUpdatePollerResponse{}, err
+		return ServerTrustGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServerTrustGroupsCreateOrUpdatePoller{
+	result.Poller = &ServerTrustGroupsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a server trust group.
-// If the operation fails it returns a generic error.
-func (client *ServerTrustGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerTrustGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, locationName, serverTrustGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *ServerTrustGroupsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerTrustGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerTrustGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +112,7 @@ func (client *ServerTrustGroupsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +123,35 @@ func (client *ServerTrustGroupsClient) createOrUpdateCreateRequest(ctx context.C
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServerTrustGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a server trust group.
-// If the operation fails it returns a generic error.
-func (client *ServerTrustGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsBeginDeleteOptions) (ServerTrustGroupsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// serverTrustGroupName - The name of the server trust group.
+// options - ServerTrustGroupsClientBeginDeleteOptions contains the optional parameters for the ServerTrustGroupsClient.BeginDelete
+// method.
+func (client *ServerTrustGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (ServerTrustGroupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
 	if err != nil {
-		return ServerTrustGroupsDeletePollerResponse{}, err
+		return ServerTrustGroupsClientDeletePollerResponse{}, err
 	}
-	result := ServerTrustGroupsDeletePollerResponse{
+	result := ServerTrustGroupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerTrustGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServerTrustGroupsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ServerTrustGroupsDeletePollerResponse{}, err
+		return ServerTrustGroupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ServerTrustGroupsDeletePoller{
+	result.Poller = &ServerTrustGroupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a server trust group.
-// If the operation fails it returns a generic error.
-func (client *ServerTrustGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerTrustGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +161,13 @@ func (client *ServerTrustGroupsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerTrustGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServerTrustGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +185,7 @@ func (client *ServerTrustGroupsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,37 +195,30 @@ func (client *ServerTrustGroupsClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServerTrustGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a server trust group.
-// If the operation fails it returns a generic error.
-func (client *ServerTrustGroupsClient) Get(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsGetOptions) (ServerTrustGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// serverTrustGroupName - The name of the server trust group.
+// options - ServerTrustGroupsClientGetOptions contains the optional parameters for the ServerTrustGroupsClient.Get method.
+func (client *ServerTrustGroupsClient) Get(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientGetOptions) (ServerTrustGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
 	if err != nil {
-		return ServerTrustGroupsGetResponse{}, err
+		return ServerTrustGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerTrustGroupsGetResponse{}, err
+		return ServerTrustGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerTrustGroupsGetResponse{}, client.getHandleError(resp)
+		return ServerTrustGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerTrustGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsGetOptions) (*policy.Request, error) {
+func (client *ServerTrustGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -234,7 +236,7 @@ func (client *ServerTrustGroupsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,42 +248,35 @@ func (client *ServerTrustGroupsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerTrustGroupsClient) getHandleResponse(resp *http.Response) (ServerTrustGroupsGetResponse, error) {
-	result := ServerTrustGroupsGetResponse{RawResponse: resp}
+func (client *ServerTrustGroupsClient) getHandleResponse(resp *http.Response) (ServerTrustGroupsClientGetResponse, error) {
+	result := ServerTrustGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerTrustGroup); err != nil {
-		return ServerTrustGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerTrustGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerTrustGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByInstance - Gets a server trust groups by instance name.
-// If the operation fails it returns a generic error.
-func (client *ServerTrustGroupsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsListByInstanceOptions) *ServerTrustGroupsListByInstancePager {
-	return &ServerTrustGroupsListByInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ServerTrustGroupsClientListByInstanceOptions contains the optional parameters for the ServerTrustGroupsClient.ListByInstance
+// method.
+func (client *ServerTrustGroupsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) *ServerTrustGroupsClientListByInstancePager {
+	return &ServerTrustGroupsClientListByInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ServerTrustGroupsListByInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServerTrustGroupsClientListByInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerTrustGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *ServerTrustGroupsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsListByInstanceOptions) (*policy.Request, error) {
+func (client *ServerTrustGroupsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -295,7 +290,7 @@ func (client *ServerTrustGroupsClient) listByInstanceCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,42 +302,35 @@ func (client *ServerTrustGroupsClient) listByInstanceCreateRequest(ctx context.C
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *ServerTrustGroupsClient) listByInstanceHandleResponse(resp *http.Response) (ServerTrustGroupsListByInstanceResponse, error) {
-	result := ServerTrustGroupsListByInstanceResponse{RawResponse: resp}
+func (client *ServerTrustGroupsClient) listByInstanceHandleResponse(resp *http.Response) (ServerTrustGroupsClientListByInstanceResponse, error) {
+	result := ServerTrustGroupsClientListByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerTrustGroupListResult); err != nil {
-		return ServerTrustGroupsListByInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return ServerTrustGroupsClientListByInstanceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByInstanceHandleError handles the ListByInstance error response.
-func (client *ServerTrustGroupsClient) listByInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByLocation - Lists a server trust group.
-// If the operation fails it returns a generic error.
-func (client *ServerTrustGroupsClient) ListByLocation(resourceGroupName string, locationName string, options *ServerTrustGroupsListByLocationOptions) *ServerTrustGroupsListByLocationPager {
-	return &ServerTrustGroupsListByLocationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// options - ServerTrustGroupsClientListByLocationOptions contains the optional parameters for the ServerTrustGroupsClient.ListByLocation
+// method.
+func (client *ServerTrustGroupsClient) ListByLocation(resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) *ServerTrustGroupsClientListByLocationPager {
+	return &ServerTrustGroupsClientListByLocationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp ServerTrustGroupsListByLocationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServerTrustGroupsClientListByLocationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerTrustGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *ServerTrustGroupsClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *ServerTrustGroupsListByLocationOptions) (*policy.Request, error) {
+func (client *ServerTrustGroupsClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -356,7 +344,7 @@ func (client *ServerTrustGroupsClient) listByLocationCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -368,22 +356,10 @@ func (client *ServerTrustGroupsClient) listByLocationCreateRequest(ctx context.C
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *ServerTrustGroupsClient) listByLocationHandleResponse(resp *http.Response) (ServerTrustGroupsListByLocationResponse, error) {
-	result := ServerTrustGroupsListByLocationResponse{RawResponse: resp}
+func (client *ServerTrustGroupsClient) listByLocationHandleResponse(resp *http.Response) (ServerTrustGroupsClientListByLocationResponse, error) {
+	result := ServerTrustGroupsClientListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerTrustGroupListResult); err != nil {
-		return ServerTrustGroupsListByLocationResponse{}, runtime.NewResponseError(err, resp)
+		return ServerTrustGroupsClientListByLocationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *ServerTrustGroupsClient) listByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

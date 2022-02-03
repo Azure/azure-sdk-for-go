@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // DscpConfigurationClient contains the methods for the DscpConfiguration group.
 // Don't use this type directly, use NewDscpConfigurationClient() instead.
 type DscpConfigurationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDscpConfigurationClient creates a new instance of DscpConfigurationClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDscpConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscpConfigurationClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DscpConfigurationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DscpConfigurationClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a DSCP Configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (DscpConfigurationCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// dscpConfigurationName - The name of the resource.
+// parameters - Parameters supplied to the create or update dscp configuration operation.
+// options - DscpConfigurationClientBeginCreateOrUpdateOptions contains the optional parameters for the DscpConfigurationClient.BeginCreateOrUpdate
+// method.
+func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationClientBeginCreateOrUpdateOptions) (DscpConfigurationClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
 	if err != nil {
-		return DscpConfigurationCreateOrUpdatePollerResponse{}, err
+		return DscpConfigurationClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DscpConfigurationCreateOrUpdatePollerResponse{
+	result := DscpConfigurationClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DscpConfigurationClient.CreateOrUpdate", "location", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DscpConfigurationClient.CreateOrUpdate", "location", resp, client.pl)
 	if err != nil {
-		return DscpConfigurationCreateOrUpdatePollerResponse{}, err
+		return DscpConfigurationClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DscpConfigurationCreateOrUpdatePoller{
+	result.Poller = &DscpConfigurationClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a DSCP Configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -94,7 +107,7 @@ func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +118,33 @@ func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.C
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DscpConfigurationClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a DSCP Configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (DscpConfigurationDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// dscpConfigurationName - The name of the resource.
+// options - DscpConfigurationClientBeginDeleteOptions contains the optional parameters for the DscpConfigurationClient.BeginDelete
+// method.
+func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (DscpConfigurationClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
-		return DscpConfigurationDeletePollerResponse{}, err
+		return DscpConfigurationClientDeletePollerResponse{}, err
 	}
-	result := DscpConfigurationDeletePollerResponse{
+	result := DscpConfigurationClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DscpConfigurationClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DscpConfigurationClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return DscpConfigurationDeletePollerResponse{}, err
+		return DscpConfigurationClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DscpConfigurationDeletePoller{
+	result.Poller = &DscpConfigurationClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a DSCP Configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +154,13 @@ func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationBeginDeleteOptions) (*policy.Request, error) {
+func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,7 +174,7 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +185,28 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DscpConfigurationClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a DSCP Configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) Get(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationGetOptions) (DscpConfigurationGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// dscpConfigurationName - The name of the resource.
+// options - DscpConfigurationClientGetOptions contains the optional parameters for the DscpConfigurationClient.Get method.
+func (client *DscpConfigurationClient) Get(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientGetOptions) (DscpConfigurationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
-		return DscpConfigurationGetResponse{}, err
+		return DscpConfigurationClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DscpConfigurationGetResponse{}, err
+		return DscpConfigurationClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DscpConfigurationGetResponse{}, client.getHandleError(resp)
+		return DscpConfigurationClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationGetOptions) (*policy.Request, error) {
+func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -226,7 +220,7 @@ func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,43 +232,32 @@ func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *DscpConfigurationClient) getHandleResponse(resp *http.Response) (DscpConfigurationGetResponse, error) {
-	result := DscpConfigurationGetResponse{RawResponse: resp}
+func (client *DscpConfigurationClient) getHandleResponse(resp *http.Response) (DscpConfigurationClientGetResponse, error) {
+	result := DscpConfigurationClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfiguration); err != nil {
-		return DscpConfigurationGetResponse{}, runtime.NewResponseError(err, resp)
+		return DscpConfigurationClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DscpConfigurationClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a DSCP Configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationListOptions) *DscpConfigurationListPager {
-	return &DscpConfigurationListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - DscpConfigurationClientListOptions contains the optional parameters for the DscpConfigurationClient.List method.
+func (client *DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationClientListOptions) *DscpConfigurationClientListPager {
+	return &DscpConfigurationClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DscpConfigurationListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DscpConfigurationClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscpConfigurationListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *DscpConfigurationListOptions) (*policy.Request, error) {
+func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *DscpConfigurationClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +267,7 @@ func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,49 +279,38 @@ func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *DscpConfigurationClient) listHandleResponse(resp *http.Response) (DscpConfigurationListResponse, error) {
-	result := DscpConfigurationListResponse{RawResponse: resp}
+func (client *DscpConfigurationClient) listHandleResponse(resp *http.Response) (DscpConfigurationClientListResponse, error) {
+	result := DscpConfigurationClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfigurationListResult); err != nil {
-		return DscpConfigurationListResponse{}, runtime.NewResponseError(err, resp)
+		return DscpConfigurationClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DscpConfigurationClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAll - Gets all dscp configurations in a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) ListAll(options *DscpConfigurationListAllOptions) *DscpConfigurationListAllPager {
-	return &DscpConfigurationListAllPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.ListAll
+// method.
+func (client *DscpConfigurationClient) ListAll(options *DscpConfigurationClientListAllOptions) *DscpConfigurationClientListAllPager {
+	return &DscpConfigurationClientListAllPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAllCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DscpConfigurationListAllResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DscpConfigurationClientListAllResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscpConfigurationListResult.NextLink)
 		},
 	}
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context, options *DscpConfigurationListAllOptions) (*policy.Request, error) {
+func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context, options *DscpConfigurationClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dscpConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,23 +322,10 @@ func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context,
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *DscpConfigurationClient) listAllHandleResponse(resp *http.Response) (DscpConfigurationListAllResponse, error) {
-	result := DscpConfigurationListAllResponse{RawResponse: resp}
+func (client *DscpConfigurationClient) listAllHandleResponse(resp *http.Response) (DscpConfigurationClientListAllResponse, error) {
+	result := DscpConfigurationClientListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfigurationListResult); err != nil {
-		return DscpConfigurationListAllResponse{}, runtime.NewResponseError(err, resp)
+		return DscpConfigurationClientListAllResponse{}, err
 	}
 	return result, nil
-}
-
-// listAllHandleError handles the ListAll error response.
-func (client *DscpConfigurationClient) listAllHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

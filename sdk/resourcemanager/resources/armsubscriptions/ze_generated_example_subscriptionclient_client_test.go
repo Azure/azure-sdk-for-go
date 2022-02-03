@@ -24,9 +24,10 @@ func ExampleSubscriptionClient_CheckResourceName() {
 	}
 	ctx := context.Background()
 	client := armsubscriptions.NewSubscriptionClient(cred, nil)
-	_, err = client.CheckResourceName(ctx,
+	res, err := client.CheckResourceName(ctx,
 		&armsubscriptions.SubscriptionClientCheckResourceNameOptions{ResourceNameDefinition: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SubscriptionClientCheckResourceNameResult)
 }

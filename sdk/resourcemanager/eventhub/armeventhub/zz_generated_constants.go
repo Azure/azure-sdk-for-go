@@ -9,8 +9,8 @@
 package armeventhub
 
 const (
-	module  = "armeventhub"
-	version = "v0.2.1"
+	moduleName    = "armeventhub"
+	moduleVersion = "v0.3.0"
 )
 
 type AccessRights string
@@ -100,8 +100,8 @@ func (c DefaultAction) ToPtr() *DefaultAction {
 	return &c
 }
 
-// EncodingCaptureDescription - Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be deprecated in
-// New API Version
+// EncodingCaptureDescription - Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate'
+// will be deprecated in New API Version
 type EncodingCaptureDescription string
 
 const (
@@ -276,7 +276,8 @@ func (c PrivateLinkConnectionStatus) ToPtr() *PrivateLinkConnectionStatus {
 	return &c
 }
 
-// ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or 'Failed'
+// ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or
+// 'Succeeded' or 'Failed'
 type ProvisioningStateDR string
 
 const (

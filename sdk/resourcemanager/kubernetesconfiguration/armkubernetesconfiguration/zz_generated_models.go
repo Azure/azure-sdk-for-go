@@ -26,7 +26,8 @@ type BucketDefinition struct {
 	// Specify whether to use insecure communication when puling data from the S3 bucket.
 	Insecure *bool `json:"insecure,omitempty"`
 
-	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided configuration secrets.
+	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
+	// configuration secrets.
 	LocalAuthRef *string `json:"localAuthRef,omitempty"`
 
 	// The interval at which to re-reconcile the cluster git repository source with the remote.
@@ -50,7 +51,8 @@ type BucketPatchDefinition struct {
 	// Specify whether to use insecure communication when puling data from the S3 bucket.
 	Insecure *bool `json:"insecure,omitempty"`
 
-	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided configuration secrets.
+	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
+	// configuration secrets.
 	LocalAuthRef *string `json:"localAuthRef,omitempty"`
 
 	// The interval at which to re-reconcile the cluster git repository source with the remote.
@@ -63,21 +65,29 @@ type BucketPatchDefinition struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// ClusterExtensionTypeGetOptions contains the optional parameters for the ClusterExtensionType.Get method.
-type ClusterExtensionTypeGetOptions struct {
+// ClusterExtensionTypeClientGetOptions contains the optional parameters for the ClusterExtensionTypeClient.Get method.
+type ClusterExtensionTypeClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterExtensionTypesListOptions contains the optional parameters for the ClusterExtensionTypes.List method.
-type ClusterExtensionTypesListOptions struct {
+// ClusterExtensionTypesClientListOptions contains the optional parameters for the ClusterExtensionTypesClient.List method.
+type ClusterExtensionTypesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ClusterScopeSettings - Extension scope settings
 type ClusterScopeSettings struct {
-	ProxyResource
 	// Extension scope settings
 	Properties *ClusterScopeSettingsProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ClusterScopeSettingsProperties - Extension scope settings
@@ -143,7 +153,8 @@ func (c *ComplianceStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DependsOnDefinition - Specify which kustomizations must succeed reconciliation on the cluster prior to reconciling this kustomization
+// DependsOnDefinition - Specify which kustomizations must succeed reconciliation on the cluster prior to reconciling this
+// kustomization
 type DependsOnDefinition struct {
 	// Name of the kustomization to claim dependency on
 	KustomizationName *string `json:"kustomizationName,omitempty"`
@@ -187,32 +198,32 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Extension - The Extension object.
 type Extension struct {
-	ProxyResource
 	// Identity of the Extension resource
 	Identity *Identity `json:"identity,omitempty"`
 
 	// Properties of an Extension resource
 	Properties *ExtensionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ExtensionProperties - Properties of an Extension resource
@@ -229,11 +240,12 @@ type ExtensionProperties struct {
 	// Configuration settings, as name-value pairs for configuring this extension.
 	ConfigurationSettings map[string]*string `json:"configurationSettings,omitempty"`
 
-	// Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with Microsoft.KubernetesConfiguration
-	// by the Extension publisher.
+	// Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with
+	// Microsoft.KubernetesConfiguration by the Extension publisher.
 	ExtensionType *string `json:"extensionType,omitempty"`
 
-	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is 'true'.
+	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion
+	// is 'true'.
 	ReleaseTrain *string `json:"releaseTrain,omitempty"`
 
 	// Scope at which the extension is installed.
@@ -354,8 +366,8 @@ func (e ExtensionTypeProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ExtensionTypeVersionsListOptions contains the optional parameters for the ExtensionTypeVersions.List method.
-type ExtensionTypeVersionsListOptions struct {
+// ExtensionTypeVersionsClientListOptions contains the optional parameters for the ExtensionTypeVersionsClient.List method.
+type ExtensionTypeVersionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -396,28 +408,34 @@ func (e ExtensionVersionListVersionsItem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ExtensionsBeginCreateOptions contains the optional parameters for the Extensions.BeginCreate method.
-type ExtensionsBeginCreateOptions struct {
+// ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
+type ExtensionsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsBeginDeleteOptions contains the optional parameters for the Extensions.BeginDelete method.
-type ExtensionsBeginDeleteOptions struct {
+// ExtensionsClientBeginDeleteOptions contains the optional parameters for the ExtensionsClient.BeginDelete method.
+type ExtensionsClientBeginDeleteOptions struct {
 	// Delete the extension resource in Azure - not the normal asynchronous delete.
 	ForceDelete *bool
 }
 
-// ExtensionsBeginUpdateOptions contains the optional parameters for the Extensions.BeginUpdate method.
-type ExtensionsBeginUpdateOptions struct {
+// ExtensionsClientBeginUpdateOptions contains the optional parameters for the ExtensionsClient.BeginUpdate method.
+type ExtensionsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsGetOptions contains the optional parameters for the Extensions.Get method.
-type ExtensionsGetOptions struct {
+// ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
+type ExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsList - Result of the request to list Extensions. It contains a list of Extension objects and a URL link to get the next set of results.
+// ExtensionsClientListOptions contains the optional parameters for the ExtensionsClient.List method.
+type ExtensionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExtensionsList - Result of the request to list Extensions. It contains a list of Extension objects and a URL link to get
+// the next set of results.
 type ExtensionsList struct {
 	// READ-ONLY; URL to get the next set of extension objects, if any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -434,24 +452,28 @@ func (e ExtensionsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ExtensionsListOptions contains the optional parameters for the Extensions.List method.
-type ExtensionsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FluxConfigOperationStatusGetOptions contains the optional parameters for the FluxConfigOperationStatus.Get method.
-type FluxConfigOperationStatusGetOptions struct {
+// FluxConfigOperationStatusClientGetOptions contains the optional parameters for the FluxConfigOperationStatusClient.Get
+// method.
+type FluxConfigOperationStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // FluxConfiguration - The Flux Configuration object returned in Get & Put response.
 type FluxConfiguration struct {
-	ProxyResource
 	// Properties to create a Flux Configuration resource
 	Properties *FluxConfigurationProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // FluxConfigurationPatch - The Flux Configuration Patch Request object.
@@ -514,7 +536,8 @@ type FluxConfigurationProperties struct {
 	// Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
 	Kustomizations map[string]*KustomizationDefinition `json:"kustomizations,omitempty"`
 
-	// The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only.
+	// The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and
+	// period only.
 	Namespace *string `json:"namespace,omitempty"`
 
 	// Scope at which the operator will be installed.
@@ -526,7 +549,8 @@ type FluxConfigurationProperties struct {
 	// Whether this configuration should suspend its reconciliation of its kustomizations and sources.
 	Suspend *bool `json:"suspend,omitempty"`
 
-	// READ-ONLY; Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects.
+	// READ-ONLY; Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed
+	// objects.
 	ComplianceState *FluxComplianceState `json:"complianceState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Error message returned to the user in the case of provisioning failure.
@@ -544,7 +568,8 @@ type FluxConfigurationProperties struct {
 	// READ-ONLY; Public Key associated with this fluxConfiguration (either generated within the cluster or provided by the user).
 	RepositoryPublicKey *string `json:"repositoryPublicKey,omitempty" azure:"ro"`
 
-	// READ-ONLY; Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects provisioned by the fluxConfiguration.
+	// READ-ONLY; Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects
+	// provisioned by the fluxConfiguration.
 	Statuses []*ObjectStatusDefinition `json:"statuses,omitempty" azure:"ro"`
 }
 
@@ -631,29 +656,37 @@ func (f *FluxConfigurationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// FluxConfigurationsBeginCreateOrUpdateOptions contains the optional parameters for the FluxConfigurations.BeginCreateOrUpdate method.
-type FluxConfigurationsBeginCreateOrUpdateOptions struct {
+// FluxConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the FluxConfigurationsClient.BeginCreateOrUpdate
+// method.
+type FluxConfigurationsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FluxConfigurationsBeginDeleteOptions contains the optional parameters for the FluxConfigurations.BeginDelete method.
-type FluxConfigurationsBeginDeleteOptions struct {
+// FluxConfigurationsClientBeginDeleteOptions contains the optional parameters for the FluxConfigurationsClient.BeginDelete
+// method.
+type FluxConfigurationsClientBeginDeleteOptions struct {
 	// Delete the extension resource in Azure - not the normal asynchronous delete.
 	ForceDelete *bool
 }
 
-// FluxConfigurationsBeginUpdateOptions contains the optional parameters for the FluxConfigurations.BeginUpdate method.
-type FluxConfigurationsBeginUpdateOptions struct {
+// FluxConfigurationsClientBeginUpdateOptions contains the optional parameters for the FluxConfigurationsClient.BeginUpdate
+// method.
+type FluxConfigurationsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FluxConfigurationsGetOptions contains the optional parameters for the FluxConfigurations.Get method.
-type FluxConfigurationsGetOptions struct {
+// FluxConfigurationsClientGetOptions contains the optional parameters for the FluxConfigurationsClient.Get method.
+type FluxConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FluxConfigurationsList - Result of the request to list Flux Configurations. It contains a list of FluxConfiguration objects and a URL link to get the
-// next set of results.
+// FluxConfigurationsClientListOptions contains the optional parameters for the FluxConfigurationsClient.List method.
+type FluxConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FluxConfigurationsList - Result of the request to list Flux Configurations. It contains a list of FluxConfiguration objects
+// and a URL link to get the next set of results.
 type FluxConfigurationsList struct {
 	// READ-ONLY; URL to get the next set of configuration objects, if any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -670,11 +703,6 @@ func (f FluxConfigurationsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FluxConfigurationsListOptions contains the optional parameters for the FluxConfigurations.List method.
-type FluxConfigurationsListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // GitRepositoryDefinition - Parameters to reconcile to the GitRepository source kind type.
 type GitRepositoryDefinition struct {
 	// Base64-encoded HTTPS certificate authority contents used to access git private git repositories over HTTPS
@@ -683,7 +711,8 @@ type GitRepositoryDefinition struct {
 	// Plaintext HTTPS username used to access private git repositories over HTTPS
 	HTTPSUser *string `json:"httpsUser,omitempty"`
 
-	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided configuration secrets.
+	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
+	// configuration secrets.
 	LocalAuthRef *string `json:"localAuthRef,omitempty"`
 
 	// The source reference for the GitRepository object.
@@ -710,7 +739,8 @@ type GitRepositoryPatchDefinition struct {
 	// Plaintext HTTPS username used to access private git repositories over HTTPS
 	HTTPSUser *string `json:"httpsUser,omitempty"`
 
-	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided configuration secrets.
+	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
+	// configuration secrets.
 	LocalAuthRef *string `json:"localAuthRef,omitempty"`
 
 	// The source reference for the GitRepository object.
@@ -769,8 +799,8 @@ type Identity struct {
 
 // KustomizationDefinition - The Kustomization defining how to reconcile the artifact pulled by the source type on the cluster.
 type KustomizationDefinition struct {
-	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies have completed their
-	// reconciliation.
+	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies
+	// have completed their reconciliation.
 	DependsOn []*DependsOnDefinition `json:"dependsOn,omitempty"`
 
 	// Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change.
@@ -805,10 +835,11 @@ func (k KustomizationDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// KustomizationPatchDefinition - The Kustomization defining how to reconcile the artifact pulled by the source type on the cluster.
+// KustomizationPatchDefinition - The Kustomization defining how to reconcile the artifact pulled by the source type on the
+// cluster.
 type KustomizationPatchDefinition struct {
-	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies have completed their
-	// reconciliation.
+	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies
+	// have completed their reconciliation.
 	DependsOn []*DependsOnDefinition `json:"dependsOn,omitempty"`
 
 	// Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change.
@@ -843,8 +874,8 @@ func (k KustomizationPatchDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LocationExtensionTypesListOptions contains the optional parameters for the LocationExtensionTypes.List method.
-type LocationExtensionTypesListOptions struct {
+// LocationExtensionTypesClientListOptions contains the optional parameters for the LocationExtensionTypesClient.List method.
+type LocationExtensionTypesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -955,8 +986,13 @@ func (o ObjectStatusDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationStatusGetOptions contains the optional parameters for the OperationStatus.Get method.
-type OperationStatusGetOptions struct {
+// OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
+type OperationStatusClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationStatusClientListOptions contains the optional parameters for the OperationStatusClient.List method.
+type OperationStatusClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -975,11 +1011,6 @@ func (o OperationStatusList) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", o.NextLink)
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
-}
-
-// OperationStatusListOptions contains the optional parameters for the OperationStatus.List method.
-type OperationStatusListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // OperationStatusResult - The current status of an async operation.
@@ -1011,8 +1042,8 @@ func (o OperationStatusResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1040,7 +1071,8 @@ type PatchExtensionProperties struct {
 	// Configuration settings, as name-value pairs for configuring this extension.
 	ConfigurationSettings map[string]*string `json:"configurationSettings,omitempty"`
 
-	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is 'true'.
+	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion
+	// is 'true'.
 	ReleaseTrain *string `json:"releaseTrain,omitempty"`
 
 	// Version of the extension for this extension, if it is 'pinned' to a specific version. autoUpgradeMinorVersion must be 'false'.
@@ -1058,9 +1090,17 @@ func (p PatchExtensionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RepositoryRefDefinition - The source reference for the GitRepository object.
@@ -1148,28 +1188,38 @@ type Scope struct {
 
 // ScopeCluster - Specifies that the scope of the extension is Cluster
 type ScopeCluster struct {
-	// Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created
+	// Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist,
+	// it will be created
 	ReleaseNamespace *string `json:"releaseNamespace,omitempty"`
 }
 
 // ScopeNamespace - Specifies that the scope of the extension is Namespace
 type ScopeNamespace struct {
-	// Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created
+	// Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will
+	// be created
 	TargetNamespace *string `json:"targetNamespace,omitempty"`
 }
 
 // SourceControlConfiguration - The SourceControl Configuration object returned in Get & Put response.
 type SourceControlConfiguration struct {
-	ProxyResource
 	// Properties to create a Source Control Configuration resource
 	Properties *SourceControlConfigurationProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SourceControlConfigurationList - Result of the request to list Source Control Configurations. It contains a list of SourceControlConfiguration objects
-// and a URL link to get the next set of results.
+// SourceControlConfigurationList - Result of the request to list Source Control Configurations. It contains a list of SourceControlConfiguration
+// objects and a URL link to get the next set of results.
 type SourceControlConfigurationList struct {
 	// READ-ONLY; URL to get the next set of configuration objects, if any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1200,7 +1250,8 @@ type SourceControlConfigurationProperties struct {
 	// Instance name of the operator - identifying the specific configuration.
 	OperatorInstanceName *string `json:"operatorInstanceName,omitempty"`
 
-	// The namespace to which this operator is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only.
+	// The namespace to which this operator is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period
+	// only.
 	OperatorNamespace *string `json:"operatorNamespace,omitempty"`
 
 	// Any Parameters for the Operator instance in string format.
@@ -1224,7 +1275,8 @@ type SourceControlConfigurationProperties struct {
 	// READ-ONLY; The provisioning state of the resource provider.
 	ProvisioningState *ProvisioningStateType `json:"provisioningState,omitempty" azure:"ro"`
 
-	// READ-ONLY; Public Key associated with this SourceControl configuration (either generated within the cluster or provided by the user).
+	// READ-ONLY; Public Key associated with this SourceControl configuration (either generated within the cluster or provided
+	// by the user).
 	RepositoryPublicKey *string `json:"repositoryPublicKey,omitempty" azure:"ro"`
 }
 
@@ -1247,23 +1299,27 @@ func (s SourceControlConfigurationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SourceControlConfigurationsBeginDeleteOptions contains the optional parameters for the SourceControlConfigurations.BeginDelete method.
-type SourceControlConfigurationsBeginDeleteOptions struct {
+// SourceControlConfigurationsClientBeginDeleteOptions contains the optional parameters for the SourceControlConfigurationsClient.BeginDelete
+// method.
+type SourceControlConfigurationsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlConfigurationsCreateOrUpdateOptions contains the optional parameters for the SourceControlConfigurations.CreateOrUpdate method.
-type SourceControlConfigurationsCreateOrUpdateOptions struct {
+// SourceControlConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the SourceControlConfigurationsClient.CreateOrUpdate
+// method.
+type SourceControlConfigurationsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlConfigurationsGetOptions contains the optional parameters for the SourceControlConfigurations.Get method.
-type SourceControlConfigurationsGetOptions struct {
+// SourceControlConfigurationsClientGetOptions contains the optional parameters for the SourceControlConfigurationsClient.Get
+// method.
+type SourceControlConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlConfigurationsListOptions contains the optional parameters for the SourceControlConfigurations.List method.
-type SourceControlConfigurationsListOptions struct {
+// SourceControlConfigurationsClientListOptions contains the optional parameters for the SourceControlConfigurationsClient.List
+// method.
+type SourceControlConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

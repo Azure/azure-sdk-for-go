@@ -68,8 +68,9 @@ Azure provides several other packages for using services from Go, listed below. 
 ## Samples
 
 More code samples for using the management library for Go SDK can be found in the following locations
+- [Go SDK Code Samples Repo(New version)](https://aka.ms/azsdk/go/mgmt/samples)
 - [Go SDK Code Samples Repo](https://github.com/azure-samples/azure-sdk-for-go-samples)
-- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/example_networkinterfaces_test.go)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/ze_generated_example_loadbalancernetworkinterfaces_client_test.go)
 
 ## Reporting security issues and security bugs
 
@@ -91,3 +92,6 @@ Slack](https://gophers.slack.com/). Sign up
 
 See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md).
 
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general). Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.

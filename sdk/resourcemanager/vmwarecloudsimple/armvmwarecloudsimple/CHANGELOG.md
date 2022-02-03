@@ -1,0 +1,502 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*DedicatedCloudNodesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DedicatedCloudNodesGetOptions)` to `(context.Context, string, string, *DedicatedCloudNodesClientGetOptions)`
+- Function `*DedicatedCloudNodesClient.Get` return value(s) have been changed from `(DedicatedCloudNodesGetResponse, error)` to `(DedicatedCloudNodesClientGetResponse, error)`
+- Function `*VirtualMachinesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, PatchPayload, *VirtualMachinesBeginUpdateOptions)` to `(context.Context, string, string, PatchPayload, *VirtualMachinesClientBeginUpdateOptions)`
+- Function `*VirtualMachinesClient.BeginUpdate` return value(s) have been changed from `(VirtualMachinesUpdatePollerResponse, error)` to `(VirtualMachinesClientUpdatePollerResponse, error)`
+- Function `*DedicatedCloudServicesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DedicatedCloudServicesListByResourceGroupOptions)` to `(string, *DedicatedCloudServicesClientListByResourceGroupOptions)`
+- Function `*DedicatedCloudServicesClient.ListByResourceGroup` return value(s) have been changed from `(*DedicatedCloudServicesListByResourceGroupPager)` to `(*DedicatedCloudServicesClientListByResourceGroupPager)`
+- Function `*CustomizationPoliciesClient.List` parameter(s) have been changed from `(string, string, *CustomizationPoliciesListOptions)` to `(string, string, *CustomizationPoliciesClientListOptions)`
+- Function `*CustomizationPoliciesClient.List` return value(s) have been changed from `(*CustomizationPoliciesListPager)` to `(*CustomizationPoliciesClientListPager)`
+- Function `*VirtualMachineTemplatesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineTemplatesGetOptions)` to `(context.Context, string, string, string, *VirtualMachineTemplatesClientGetOptions)`
+- Function `*VirtualMachineTemplatesClient.Get` return value(s) have been changed from `(VirtualMachineTemplatesGetResponse, error)` to `(VirtualMachineTemplatesClientGetResponse, error)`
+- Function `*CustomizationPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CustomizationPoliciesGetOptions)` to `(context.Context, string, string, string, *CustomizationPoliciesClientGetOptions)`
+- Function `*CustomizationPoliciesClient.Get` return value(s) have been changed from `(CustomizationPoliciesGetResponse, error)` to `(CustomizationPoliciesClientGetResponse, error)`
+- Function `*SKUsAvailabilityClient.List` parameter(s) have been changed from `(string, *SKUsAvailabilityListOptions)` to `(string, *SKUsAvailabilityClientListOptions)`
+- Function `*SKUsAvailabilityClient.List` return value(s) have been changed from `(*SKUsAvailabilityListPager)` to `(*SKUsAvailabilityClientListPager)`
+- Function `*VirtualMachinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesGetOptions)` to `(context.Context, string, string, *VirtualMachinesClientGetOptions)`
+- Function `*VirtualMachinesClient.Get` return value(s) have been changed from `(VirtualMachinesGetResponse, error)` to `(VirtualMachinesClientGetResponse, error)`
+- Function `*DedicatedCloudServicesClient.Update` parameter(s) have been changed from `(context.Context, string, string, PatchPayload, *DedicatedCloudServicesUpdateOptions)` to `(context.Context, string, string, PatchPayload, *DedicatedCloudServicesClientUpdateOptions)`
+- Function `*DedicatedCloudServicesClient.Update` return value(s) have been changed from `(DedicatedCloudServicesUpdateResponse, error)` to `(DedicatedCloudServicesClientUpdateResponse, error)`
+- Function `*DedicatedCloudNodesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DedicatedCloudNode, *DedicatedCloudNodesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, DedicatedCloudNode, *DedicatedCloudNodesClientBeginCreateOrUpdateOptions)`
+- Function `*DedicatedCloudNodesClient.BeginCreateOrUpdate` return value(s) have been changed from `(DedicatedCloudNodesCreateOrUpdatePollerResponse, error)` to `(DedicatedCloudNodesClientCreateOrUpdatePollerResponse, error)`
+- Function `*OperationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *OperationsGetOptions)` to `(context.Context, string, string, *OperationsClientGetOptions)`
+- Function `*OperationsClient.Get` return value(s) have been changed from `(OperationsGetResponse, error)` to `(OperationsClientGetResponse, error)`
+- Function `*VirtualMachinesClient.ListBySubscription` parameter(s) have been changed from `(*VirtualMachinesListBySubscriptionOptions)` to `(*VirtualMachinesClientListBySubscriptionOptions)`
+- Function `*VirtualMachinesClient.ListBySubscription` return value(s) have been changed from `(*VirtualMachinesListBySubscriptionPager)` to `(*VirtualMachinesClientListBySubscriptionPager)`
+- Function `*UsagesClient.List` parameter(s) have been changed from `(string, *UsagesListOptions)` to `(string, *UsagesClientListOptions)`
+- Function `*UsagesClient.List` return value(s) have been changed from `(*UsagesListPager)` to `(*UsagesClientListPager)`
+- Function `*PrivateCloudsClient.List` parameter(s) have been changed from `(string, *PrivateCloudsListOptions)` to `(string, *PrivateCloudsClientListOptions)`
+- Function `*PrivateCloudsClient.List` return value(s) have been changed from `(*PrivateCloudsListPager)` to `(*PrivateCloudsClientListPager)`
+- Function `*VirtualMachineTemplatesClient.List` parameter(s) have been changed from `(string, string, string, *VirtualMachineTemplatesListOptions)` to `(string, string, string, *VirtualMachineTemplatesClientListOptions)`
+- Function `*VirtualMachineTemplatesClient.List` return value(s) have been changed from `(*VirtualMachineTemplatesListPager)` to `(*VirtualMachineTemplatesClientListPager)`
+- Function `*VirtualMachinesClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginStopOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginStopOptions)`
+- Function `*VirtualMachinesClient.BeginStop` return value(s) have been changed from `(VirtualMachinesStopPollerResponse, error)` to `(VirtualMachinesClientStopPollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, VirtualMachine, *VirtualMachinesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, VirtualMachine, *VirtualMachinesClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachinesCreateOrUpdatePollerResponse, error)` to `(VirtualMachinesClientCreateOrUpdatePollerResponse, error)`
+- Function `*DedicatedCloudNodesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DedicatedCloudNodesDeleteOptions)` to `(context.Context, string, string, *DedicatedCloudNodesClientDeleteOptions)`
+- Function `*DedicatedCloudNodesClient.Delete` return value(s) have been changed from `(DedicatedCloudNodesDeleteResponse, error)` to `(DedicatedCloudNodesClientDeleteResponse, error)`
+- Function `*DedicatedCloudNodesClient.ListBySubscription` parameter(s) have been changed from `(*DedicatedCloudNodesListBySubscriptionOptions)` to `(*DedicatedCloudNodesClientListBySubscriptionOptions)`
+- Function `*DedicatedCloudNodesClient.ListBySubscription` return value(s) have been changed from `(*DedicatedCloudNodesListBySubscriptionPager)` to `(*DedicatedCloudNodesClientListBySubscriptionPager)`
+- Function `*VirtualNetworksClient.List` parameter(s) have been changed from `(string, string, string, *VirtualNetworksListOptions)` to `(string, string, string, *VirtualNetworksClientListOptions)`
+- Function `*VirtualNetworksClient.List` return value(s) have been changed from `(*VirtualNetworksListPager)` to `(*VirtualNetworksClientListPager)`
+- Function `*ResourcePoolsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ResourcePoolsGetOptions)` to `(context.Context, string, string, string, *ResourcePoolsClientGetOptions)`
+- Function `*ResourcePoolsClient.Get` return value(s) have been changed from `(ResourcePoolsGetResponse, error)` to `(ResourcePoolsClientGetResponse, error)`
+- Function `*PrivateCloudsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateCloudsGetOptions)` to `(context.Context, string, string, *PrivateCloudsClientGetOptions)`
+- Function `*PrivateCloudsClient.Get` return value(s) have been changed from `(PrivateCloudsGetResponse, error)` to `(PrivateCloudsClientGetResponse, error)`
+- Function `*DedicatedCloudServicesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *DedicatedCloudServicesBeginDeleteOptions)` to `(context.Context, string, string, *DedicatedCloudServicesClientBeginDeleteOptions)`
+- Function `*DedicatedCloudServicesClient.BeginDelete` return value(s) have been changed from `(DedicatedCloudServicesDeletePollerResponse, error)` to `(DedicatedCloudServicesClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*DedicatedCloudServicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DedicatedCloudServicesGetOptions)` to `(context.Context, string, string, *DedicatedCloudServicesClientGetOptions)`
+- Function `*DedicatedCloudServicesClient.Get` return value(s) have been changed from `(DedicatedCloudServicesGetResponse, error)` to `(DedicatedCloudServicesClientGetResponse, error)`
+- Function `*VirtualMachinesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginDeleteOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginDeleteOptions)`
+- Function `*VirtualMachinesClient.BeginDelete` return value(s) have been changed from `(VirtualMachinesDeletePollerResponse, error)` to `(VirtualMachinesClientDeletePollerResponse, error)`
+- Function `*ResourcePoolsClient.List` parameter(s) have been changed from `(string, string, *ResourcePoolsListOptions)` to `(string, string, *ResourcePoolsClientListOptions)`
+- Function `*ResourcePoolsClient.List` return value(s) have been changed from `(*ResourcePoolsListPager)` to `(*ResourcePoolsClientListPager)`
+- Function `*VirtualMachinesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *VirtualMachinesListByResourceGroupOptions)` to `(string, *VirtualMachinesClientListByResourceGroupOptions)`
+- Function `*VirtualMachinesClient.ListByResourceGroup` return value(s) have been changed from `(*VirtualMachinesListByResourceGroupPager)` to `(*VirtualMachinesClientListByResourceGroupPager)`
+- Function `*DedicatedCloudServicesClient.ListBySubscription` parameter(s) have been changed from `(*DedicatedCloudServicesListBySubscriptionOptions)` to `(*DedicatedCloudServicesClientListBySubscriptionOptions)`
+- Function `*DedicatedCloudServicesClient.ListBySubscription` return value(s) have been changed from `(*DedicatedCloudServicesListBySubscriptionPager)` to `(*DedicatedCloudServicesClientListBySubscriptionPager)`
+- Function `*DedicatedCloudNodesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DedicatedCloudNodesListByResourceGroupOptions)` to `(string, *DedicatedCloudNodesClientListByResourceGroupOptions)`
+- Function `*DedicatedCloudNodesClient.ListByResourceGroup` return value(s) have been changed from `(*DedicatedCloudNodesListByResourceGroupPager)` to `(*DedicatedCloudNodesClientListByResourceGroupPager)`
+- Function `*DedicatedCloudNodesClient.Update` parameter(s) have been changed from `(context.Context, string, string, PatchPayload, *DedicatedCloudNodesUpdateOptions)` to `(context.Context, string, string, PatchPayload, *DedicatedCloudNodesClientUpdateOptions)`
+- Function `*DedicatedCloudNodesClient.Update` return value(s) have been changed from `(DedicatedCloudNodesUpdateResponse, error)` to `(DedicatedCloudNodesClientUpdateResponse, error)`
+- Function `*VirtualMachinesClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginStartOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginStartOptions)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(VirtualMachinesStartPollerResponse, error)` to `(VirtualMachinesClientStartPollerResponse, error)`
+- Function `*VirtualNetworksClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualNetworksGetOptions)` to `(context.Context, string, string, string, *VirtualNetworksClientGetOptions)`
+- Function `*VirtualNetworksClient.Get` return value(s) have been changed from `(VirtualNetworksGetResponse, error)` to `(VirtualNetworksClientGetResponse, error)`
+- Function `*DedicatedCloudServicesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DedicatedCloudService, *DedicatedCloudServicesCreateOrUpdateOptions)` to `(context.Context, string, string, DedicatedCloudService, *DedicatedCloudServicesClientCreateOrUpdateOptions)`
+- Function `*DedicatedCloudServicesClient.CreateOrUpdate` return value(s) have been changed from `(DedicatedCloudServicesCreateOrUpdateResponse, error)` to `(DedicatedCloudServicesClientCreateOrUpdateResponse, error)`
+- Function `*DedicatedCloudNodesListBySubscriptionPager.Err` has been removed
+- Function `*UsagesListPager.PageResponse` has been removed
+- Function `*DedicatedCloudNodesCreateOrUpdatePoller.Poll` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*VirtualNetworksListPager.NextPage` has been removed
+- Function `*DedicatedCloudNodesListBySubscriptionPager.PageResponse` has been removed
+- Function `*ResourcePoolsListPager.Err` has been removed
+- Function `*DedicatedCloudServicesDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesListByResourceGroupPager.PageResponse` has been removed
+- Function `*DedicatedCloudNodesListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachinesListBySubscriptionPager.Err` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesUpdatePoller.FinalResponse` has been removed
+- Function `DedicatedCloudNodesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesDeletePoller.Done` has been removed
+- Function `*DedicatedCloudNodesListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachineTemplatesListPager.PageResponse` has been removed
+- Function `*VirtualMachinesStartPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesStopPoller.FinalResponse` has been removed
+- Function `VirtualMachinesStopPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePoller.Poll` has been removed
+- Function `*SKUsAvailabilityListPager.NextPage` has been removed
+- Function `*CustomizationPoliciesListPager.Err` has been removed
+- Function `*DedicatedCloudServicesListBySubscriptionPager.Err` has been removed
+- Function `*DedicatedCloudServicesListByResourceGroupPager.PageResponse` has been removed
+- Function `*UsagesListPager.Err` has been removed
+- Function `*VirtualMachinesStopPoller.ResumeToken` has been removed
+- Function `VirtualMachinesStartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesListBySubscriptionPager.NextPage` has been removed
+- Function `*VirtualMachinesStartPoller.Done` has been removed
+- Function `*VirtualMachinesListBySubscriptionPager.PageResponse` has been removed
+- Function `*VirtualMachineTemplatesListPager.NextPage` has been removed
+- Function `*CustomizationPoliciesListPager.NextPage` has been removed
+- Function `*VirtualMachinesListByResourceGroupPager.NextPage` has been removed
+- Function `CSRPError.Error` has been removed
+- Function `*PrivateCloudsListPager.PageResponse` has been removed
+- Function `*VirtualNetworksListPager.PageResponse` has been removed
+- Function `*ResourcePoolsListPager.PageResponse` has been removed
+- Function `*SKUsAvailabilityListPager.PageResponse` has been removed
+- Function `*VirtualMachinesDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineTemplatesListPager.Err` has been removed
+- Function `VirtualMachinesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesListByResourceGroupPager.Err` has been removed
+- Function `*DedicatedCloudNodesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DedicatedCloudServicesListBySubscriptionPager.NextPage` has been removed
+- Function `*DedicatedCloudServicesDeletePoller.ResumeToken` has been removed
+- Function `*PrivateCloudsListPager.NextPage` has been removed
+- Function `*DedicatedCloudServicesListBySubscriptionPager.PageResponse` has been removed
+- Function `*ResourcePoolsListPager.NextPage` has been removed
+- Function `*CustomizationPoliciesListPager.PageResponse` has been removed
+- Function `*VirtualMachinesUpdatePollerResponse.Resume` has been removed
+- Function `*DedicatedCloudNodesListBySubscriptionPager.NextPage` has been removed
+- Function `*VirtualMachinesDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesStopPoller.Done` has been removed
+- Function `*DedicatedCloudServicesListByResourceGroupPager.NextPage` has been removed
+- Function `*DedicatedCloudServicesDeletePoller.Done` has been removed
+- Function `*VirtualMachinesStartPoller.FinalResponse` has been removed
+- Function `DedicatedCloudServicesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateCloudsListPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*SKUsAvailabilityListPager.Err` has been removed
+- Function `*VirtualMachinesUpdatePoller.Poll` has been removed
+- Function `*DedicatedCloudNodesCreateOrUpdatePoller.Done` has been removed
+- Function `*DedicatedCloudServicesListByResourceGroupPager.Err` has been removed
+- Function `*VirtualNetworksListPager.Err` has been removed
+- Function `*DedicatedCloudServicesDeletePollerResponse.Resume` has been removed
+- Function `*UsagesListPager.NextPage` has been removed
+- Function `*DedicatedCloudNodesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DedicatedCloudServicesDeletePoller.FinalResponse` has been removed
+- Function `*DedicatedCloudNodesListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesStartPoller.Poll` has been removed
+- Function `VirtualMachinesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePoller.Done` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*VirtualMachinesStopPoller.Poll` has been removed
+- Function `*DedicatedCloudNodesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachinesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesStopPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesStartPollerResponse.Resume` has been removed
+- Struct `CustomizationPoliciesGetOptions` has been removed
+- Struct `CustomizationPoliciesGetResponse` has been removed
+- Struct `CustomizationPoliciesGetResult` has been removed
+- Struct `CustomizationPoliciesListOptions` has been removed
+- Struct `CustomizationPoliciesListPager` has been removed
+- Struct `CustomizationPoliciesListResponseEnvelope` has been removed
+- Struct `CustomizationPoliciesListResult` has been removed
+- Struct `DedicatedCloudNodesBeginCreateOrUpdateOptions` has been removed
+- Struct `DedicatedCloudNodesCreateOrUpdatePoller` has been removed
+- Struct `DedicatedCloudNodesCreateOrUpdatePollerResponse` has been removed
+- Struct `DedicatedCloudNodesCreateOrUpdateResponse` has been removed
+- Struct `DedicatedCloudNodesCreateOrUpdateResult` has been removed
+- Struct `DedicatedCloudNodesDeleteOptions` has been removed
+- Struct `DedicatedCloudNodesDeleteResponse` has been removed
+- Struct `DedicatedCloudNodesGetOptions` has been removed
+- Struct `DedicatedCloudNodesGetResponse` has been removed
+- Struct `DedicatedCloudNodesGetResult` has been removed
+- Struct `DedicatedCloudNodesListByResourceGroupOptions` has been removed
+- Struct `DedicatedCloudNodesListByResourceGroupPager` has been removed
+- Struct `DedicatedCloudNodesListByResourceGroupResponse` has been removed
+- Struct `DedicatedCloudNodesListByResourceGroupResult` has been removed
+- Struct `DedicatedCloudNodesListBySubscriptionOptions` has been removed
+- Struct `DedicatedCloudNodesListBySubscriptionPager` has been removed
+- Struct `DedicatedCloudNodesListBySubscriptionResponse` has been removed
+- Struct `DedicatedCloudNodesListBySubscriptionResult` has been removed
+- Struct `DedicatedCloudNodesUpdateOptions` has been removed
+- Struct `DedicatedCloudNodesUpdateResponse` has been removed
+- Struct `DedicatedCloudNodesUpdateResult` has been removed
+- Struct `DedicatedCloudServicesBeginDeleteOptions` has been removed
+- Struct `DedicatedCloudServicesCreateOrUpdateOptions` has been removed
+- Struct `DedicatedCloudServicesCreateOrUpdateResponse` has been removed
+- Struct `DedicatedCloudServicesCreateOrUpdateResult` has been removed
+- Struct `DedicatedCloudServicesDeletePoller` has been removed
+- Struct `DedicatedCloudServicesDeletePollerResponse` has been removed
+- Struct `DedicatedCloudServicesDeleteResponse` has been removed
+- Struct `DedicatedCloudServicesGetOptions` has been removed
+- Struct `DedicatedCloudServicesGetResponse` has been removed
+- Struct `DedicatedCloudServicesGetResult` has been removed
+- Struct `DedicatedCloudServicesListByResourceGroupOptions` has been removed
+- Struct `DedicatedCloudServicesListByResourceGroupPager` has been removed
+- Struct `DedicatedCloudServicesListByResourceGroupResponse` has been removed
+- Struct `DedicatedCloudServicesListByResourceGroupResult` has been removed
+- Struct `DedicatedCloudServicesListBySubscriptionOptions` has been removed
+- Struct `DedicatedCloudServicesListBySubscriptionPager` has been removed
+- Struct `DedicatedCloudServicesListBySubscriptionResponse` has been removed
+- Struct `DedicatedCloudServicesListBySubscriptionResult` has been removed
+- Struct `DedicatedCloudServicesUpdateOptions` has been removed
+- Struct `DedicatedCloudServicesUpdateResponse` has been removed
+- Struct `DedicatedCloudServicesUpdateResult` has been removed
+- Struct `OperationsGetOptions` has been removed
+- Struct `OperationsGetResponse` has been removed
+- Struct `OperationsGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateCloudsGetOptions` has been removed
+- Struct `PrivateCloudsGetResponse` has been removed
+- Struct `PrivateCloudsGetResult` has been removed
+- Struct `PrivateCloudsListOptions` has been removed
+- Struct `PrivateCloudsListPager` has been removed
+- Struct `PrivateCloudsListResponse` has been removed
+- Struct `PrivateCloudsListResult` has been removed
+- Struct `ResourcePoolsGetOptions` has been removed
+- Struct `ResourcePoolsGetResponse` has been removed
+- Struct `ResourcePoolsGetResult` has been removed
+- Struct `ResourcePoolsListOptions` has been removed
+- Struct `ResourcePoolsListPager` has been removed
+- Struct `ResourcePoolsListResponseEnvelope` has been removed
+- Struct `ResourcePoolsListResult` has been removed
+- Struct `SKUsAvailabilityListOptions` has been removed
+- Struct `SKUsAvailabilityListPager` has been removed
+- Struct `SKUsAvailabilityListResponse` has been removed
+- Struct `SKUsAvailabilityListResult` has been removed
+- Struct `UsagesListOptions` has been removed
+- Struct `UsagesListPager` has been removed
+- Struct `UsagesListResponse` has been removed
+- Struct `UsagesListResult` has been removed
+- Struct `VirtualMachineTemplatesGetOptions` has been removed
+- Struct `VirtualMachineTemplatesGetResponse` has been removed
+- Struct `VirtualMachineTemplatesGetResult` has been removed
+- Struct `VirtualMachineTemplatesListOptions` has been removed
+- Struct `VirtualMachineTemplatesListPager` has been removed
+- Struct `VirtualMachineTemplatesListResponse` has been removed
+- Struct `VirtualMachineTemplatesListResult` has been removed
+- Struct `VirtualMachinesBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachinesBeginDeleteOptions` has been removed
+- Struct `VirtualMachinesBeginStartOptions` has been removed
+- Struct `VirtualMachinesBeginStopOptions` has been removed
+- Struct `VirtualMachinesBeginUpdateOptions` has been removed
+- Struct `VirtualMachinesCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachinesCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachinesCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachinesCreateOrUpdateResult` has been removed
+- Struct `VirtualMachinesDeletePoller` has been removed
+- Struct `VirtualMachinesDeletePollerResponse` has been removed
+- Struct `VirtualMachinesDeleteResponse` has been removed
+- Struct `VirtualMachinesGetOptions` has been removed
+- Struct `VirtualMachinesGetResponse` has been removed
+- Struct `VirtualMachinesGetResult` has been removed
+- Struct `VirtualMachinesListByResourceGroupOptions` has been removed
+- Struct `VirtualMachinesListByResourceGroupPager` has been removed
+- Struct `VirtualMachinesListByResourceGroupResponse` has been removed
+- Struct `VirtualMachinesListByResourceGroupResult` has been removed
+- Struct `VirtualMachinesListBySubscriptionOptions` has been removed
+- Struct `VirtualMachinesListBySubscriptionPager` has been removed
+- Struct `VirtualMachinesListBySubscriptionResponse` has been removed
+- Struct `VirtualMachinesListBySubscriptionResult` has been removed
+- Struct `VirtualMachinesStartPoller` has been removed
+- Struct `VirtualMachinesStartPollerResponse` has been removed
+- Struct `VirtualMachinesStartResponse` has been removed
+- Struct `VirtualMachinesStopPoller` has been removed
+- Struct `VirtualMachinesStopPollerResponse` has been removed
+- Struct `VirtualMachinesStopResponse` has been removed
+- Struct `VirtualMachinesUpdatePoller` has been removed
+- Struct `VirtualMachinesUpdatePollerResponse` has been removed
+- Struct `VirtualMachinesUpdateResponse` has been removed
+- Struct `VirtualMachinesUpdateResult` has been removed
+- Struct `VirtualNetworksGetOptions` has been removed
+- Struct `VirtualNetworksGetResponse` has been removed
+- Struct `VirtualNetworksGetResult` has been removed
+- Struct `VirtualNetworksListOptions` has been removed
+- Struct `VirtualNetworksListPager` has been removed
+- Struct `VirtualNetworksListResponse` has been removed
+- Struct `VirtualNetworksListResult` has been removed
+- Field `InnerError` of struct `CSRPError` has been removed
+
+### Features Added
+
+- New function `*VirtualMachinesClientListBySubscriptionPager.PageResponse() VirtualMachinesClientListBySubscriptionResponse`
+- New function `*DedicatedCloudServicesClientListBySubscriptionPager.Err() error`
+- New function `*DedicatedCloudNodesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientStopPoller.FinalResponse(context.Context) (VirtualMachinesClientStopResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*PrivateCloudsClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineTemplatesClientListPager.Err() error`
+- New function `*VirtualNetworksClientListPager.PageResponse() VirtualNetworksClientListResponse`
+- New function `*DedicatedCloudServicesClientDeletePoller.ResumeToken() (string, error)`
+- New function `VirtualMachinesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientCreateOrUpdateResponse, error)`
+- New function `VirtualMachinesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientUpdateResponse, error)`
+- New function `*VirtualMachinesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*UsagesClientListPager.Err() error`
+- New function `*VirtualMachinesClientStopPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*VirtualMachinesClientStopPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachinesClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientStopResponse, error)`
+- New function `*DedicatedCloudServicesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientStartPoller.Done() bool`
+- New function `*DedicatedCloudNodesClientListByResourceGroupPager.PageResponse() DedicatedCloudNodesClientListByResourceGroupResponse`
+- New function `*VirtualMachinesClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourcePoolsClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientListByResourceGroupPager.Err() error`
+- New function `*VirtualMachinesClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachinesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineTemplatesClientListPager.NextPage(context.Context) bool`
+- New function `*ResourcePoolsClientListPager.PageResponse() ResourcePoolsClientListResponse`
+- New function `*VirtualMachinesClientCreateOrUpdatePoller.Done() bool`
+- New function `*DedicatedCloudNodesClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachinesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SKUsAvailabilityClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientUpdatePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*VirtualMachinesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `DedicatedCloudNodesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DedicatedCloudNodesClientCreateOrUpdateResponse, error)`
+- New function `VirtualMachinesClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientStartResponse, error)`
+- New function `*VirtualMachinesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DedicatedCloudNodesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientListBySubscriptionPager.Err() error`
+- New function `*VirtualMachinesClientStartPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*DedicatedCloudServicesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*DedicatedCloudNodesClientCreateOrUpdatePollerResponse.Resume(context.Context, *DedicatedCloudNodesClient, string) error`
+- New function `*VirtualMachinesClientUpdatePoller.FinalResponse(context.Context) (VirtualMachinesClientUpdateResponse, error)`
+- New function `*VirtualMachinesClientStartPoller.FinalResponse(context.Context) (VirtualMachinesClientStartResponse, error)`
+- New function `*DedicatedCloudServicesClientDeletePollerResponse.Resume(context.Context, *DedicatedCloudServicesClient, string) error`
+- New function `*VirtualNetworksClientListPager.Err() error`
+- New function `*SKUsAvailabilityClientListPager.PageResponse() SKUsAvailabilityClientListResponse`
+- New function `*CustomizationPoliciesClientListPager.Err() error`
+- New function `*ResourcePoolsClientListPager.Err() error`
+- New function `*VirtualMachinesClientStopPoller.Done() bool`
+- New function `VirtualMachinesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientDeleteResponse, error)`
+- New function `*VirtualMachinesClientDeletePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `DedicatedCloudServicesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DedicatedCloudServicesClientDeleteResponse, error)`
+- New function `*VirtualMachinesClientDeletePoller.Done() bool`
+- New function `*VirtualMachinesClientListByResourceGroupPager.PageResponse() VirtualMachinesClientListByResourceGroupResponse`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*DedicatedCloudNodesClientListBySubscriptionPager.Err() error`
+- New function `*SKUsAvailabilityClientListPager.Err() error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*DedicatedCloudServicesClientListByResourceGroupPager.Err() error`
+- New function `*DedicatedCloudServicesClientDeletePoller.FinalResponse(context.Context) (DedicatedCloudServicesClientDeleteResponse, error)`
+- New function `*DedicatedCloudServicesClientListBySubscriptionPager.PageResponse() DedicatedCloudServicesClientListBySubscriptionResponse`
+- New function `*VirtualMachineTemplatesClientListPager.PageResponse() VirtualMachineTemplatesClientListResponse`
+- New function `*VirtualMachinesClientStartPoller.ResumeToken() (string, error)`
+- New function `*DedicatedCloudServicesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*VirtualNetworksClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateCloudsClientListPager.Err() error`
+- New function `*DedicatedCloudNodesClientListBySubscriptionPager.PageResponse() DedicatedCloudNodesClientListBySubscriptionResponse`
+- New function `*DedicatedCloudNodesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*CustomizationPoliciesClientListPager.PageResponse() CustomizationPoliciesClientListResponse`
+- New function `*CustomizationPoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateCloudsClientListPager.PageResponse() PrivateCloudsClientListResponse`
+- New function `*VirtualMachinesClientDeletePoller.FinalResponse(context.Context) (VirtualMachinesClientDeleteResponse, error)`
+- New function `*UsagesClientListPager.NextPage(context.Context) bool`
+- New function `*DedicatedCloudServicesClientListByResourceGroupPager.PageResponse() DedicatedCloudServicesClientListByResourceGroupResponse`
+- New function `*DedicatedCloudNodesClientListByResourceGroupPager.Err() error`
+- New function `*UsagesClientListPager.PageResponse() UsagesClientListResponse`
+- New function `*DedicatedCloudNodesClientCreateOrUpdatePoller.FinalResponse(context.Context) (DedicatedCloudNodesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachinesClientUpdatePoller.Done() bool`
+- New function `*DedicatedCloudServicesClientDeletePoller.Done() bool`
+- New function `*DedicatedCloudNodesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New struct `CustomizationPoliciesClientGetOptions`
+- New struct `CustomizationPoliciesClientGetResponse`
+- New struct `CustomizationPoliciesClientGetResult`
+- New struct `CustomizationPoliciesClientListOptions`
+- New struct `CustomizationPoliciesClientListPager`
+- New struct `CustomizationPoliciesClientListResponse`
+- New struct `CustomizationPoliciesClientListResult`
+- New struct `DedicatedCloudNodesClientBeginCreateOrUpdateOptions`
+- New struct `DedicatedCloudNodesClientCreateOrUpdatePoller`
+- New struct `DedicatedCloudNodesClientCreateOrUpdatePollerResponse`
+- New struct `DedicatedCloudNodesClientCreateOrUpdateResponse`
+- New struct `DedicatedCloudNodesClientCreateOrUpdateResult`
+- New struct `DedicatedCloudNodesClientDeleteOptions`
+- New struct `DedicatedCloudNodesClientDeleteResponse`
+- New struct `DedicatedCloudNodesClientGetOptions`
+- New struct `DedicatedCloudNodesClientGetResponse`
+- New struct `DedicatedCloudNodesClientGetResult`
+- New struct `DedicatedCloudNodesClientListByResourceGroupOptions`
+- New struct `DedicatedCloudNodesClientListByResourceGroupPager`
+- New struct `DedicatedCloudNodesClientListByResourceGroupResponse`
+- New struct `DedicatedCloudNodesClientListByResourceGroupResult`
+- New struct `DedicatedCloudNodesClientListBySubscriptionOptions`
+- New struct `DedicatedCloudNodesClientListBySubscriptionPager`
+- New struct `DedicatedCloudNodesClientListBySubscriptionResponse`
+- New struct `DedicatedCloudNodesClientListBySubscriptionResult`
+- New struct `DedicatedCloudNodesClientUpdateOptions`
+- New struct `DedicatedCloudNodesClientUpdateResponse`
+- New struct `DedicatedCloudNodesClientUpdateResult`
+- New struct `DedicatedCloudServicesClientBeginDeleteOptions`
+- New struct `DedicatedCloudServicesClientCreateOrUpdateOptions`
+- New struct `DedicatedCloudServicesClientCreateOrUpdateResponse`
+- New struct `DedicatedCloudServicesClientCreateOrUpdateResult`
+- New struct `DedicatedCloudServicesClientDeletePoller`
+- New struct `DedicatedCloudServicesClientDeletePollerResponse`
+- New struct `DedicatedCloudServicesClientDeleteResponse`
+- New struct `DedicatedCloudServicesClientGetOptions`
+- New struct `DedicatedCloudServicesClientGetResponse`
+- New struct `DedicatedCloudServicesClientGetResult`
+- New struct `DedicatedCloudServicesClientListByResourceGroupOptions`
+- New struct `DedicatedCloudServicesClientListByResourceGroupPager`
+- New struct `DedicatedCloudServicesClientListByResourceGroupResponse`
+- New struct `DedicatedCloudServicesClientListByResourceGroupResult`
+- New struct `DedicatedCloudServicesClientListBySubscriptionOptions`
+- New struct `DedicatedCloudServicesClientListBySubscriptionPager`
+- New struct `DedicatedCloudServicesClientListBySubscriptionResponse`
+- New struct `DedicatedCloudServicesClientListBySubscriptionResult`
+- New struct `DedicatedCloudServicesClientUpdateOptions`
+- New struct `DedicatedCloudServicesClientUpdateResponse`
+- New struct `DedicatedCloudServicesClientUpdateResult`
+- New struct `OperationsClientGetOptions`
+- New struct `OperationsClientGetResponse`
+- New struct `OperationsClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateCloudsClientGetOptions`
+- New struct `PrivateCloudsClientGetResponse`
+- New struct `PrivateCloudsClientGetResult`
+- New struct `PrivateCloudsClientListOptions`
+- New struct `PrivateCloudsClientListPager`
+- New struct `PrivateCloudsClientListResponse`
+- New struct `PrivateCloudsClientListResult`
+- New struct `ResourcePoolsClientGetOptions`
+- New struct `ResourcePoolsClientGetResponse`
+- New struct `ResourcePoolsClientGetResult`
+- New struct `ResourcePoolsClientListOptions`
+- New struct `ResourcePoolsClientListPager`
+- New struct `ResourcePoolsClientListResponse`
+- New struct `ResourcePoolsClientListResult`
+- New struct `SKUsAvailabilityClientListOptions`
+- New struct `SKUsAvailabilityClientListPager`
+- New struct `SKUsAvailabilityClientListResponse`
+- New struct `SKUsAvailabilityClientListResult`
+- New struct `UsagesClientListOptions`
+- New struct `UsagesClientListPager`
+- New struct `UsagesClientListResponse`
+- New struct `UsagesClientListResult`
+- New struct `VirtualMachineTemplatesClientGetOptions`
+- New struct `VirtualMachineTemplatesClientGetResponse`
+- New struct `VirtualMachineTemplatesClientGetResult`
+- New struct `VirtualMachineTemplatesClientListOptions`
+- New struct `VirtualMachineTemplatesClientListPager`
+- New struct `VirtualMachineTemplatesClientListResponse`
+- New struct `VirtualMachineTemplatesClientListResult`
+- New struct `VirtualMachinesClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachinesClientBeginDeleteOptions`
+- New struct `VirtualMachinesClientBeginStartOptions`
+- New struct `VirtualMachinesClientBeginStopOptions`
+- New struct `VirtualMachinesClientBeginUpdateOptions`
+- New struct `VirtualMachinesClientCreateOrUpdatePoller`
+- New struct `VirtualMachinesClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachinesClientCreateOrUpdateResponse`
+- New struct `VirtualMachinesClientCreateOrUpdateResult`
+- New struct `VirtualMachinesClientDeletePoller`
+- New struct `VirtualMachinesClientDeletePollerResponse`
+- New struct `VirtualMachinesClientDeleteResponse`
+- New struct `VirtualMachinesClientGetOptions`
+- New struct `VirtualMachinesClientGetResponse`
+- New struct `VirtualMachinesClientGetResult`
+- New struct `VirtualMachinesClientListByResourceGroupOptions`
+- New struct `VirtualMachinesClientListByResourceGroupPager`
+- New struct `VirtualMachinesClientListByResourceGroupResponse`
+- New struct `VirtualMachinesClientListByResourceGroupResult`
+- New struct `VirtualMachinesClientListBySubscriptionOptions`
+- New struct `VirtualMachinesClientListBySubscriptionPager`
+- New struct `VirtualMachinesClientListBySubscriptionResponse`
+- New struct `VirtualMachinesClientListBySubscriptionResult`
+- New struct `VirtualMachinesClientStartPoller`
+- New struct `VirtualMachinesClientStartPollerResponse`
+- New struct `VirtualMachinesClientStartResponse`
+- New struct `VirtualMachinesClientStopPoller`
+- New struct `VirtualMachinesClientStopPollerResponse`
+- New struct `VirtualMachinesClientStopResponse`
+- New struct `VirtualMachinesClientUpdatePoller`
+- New struct `VirtualMachinesClientUpdatePollerResponse`
+- New struct `VirtualMachinesClientUpdateResponse`
+- New struct `VirtualMachinesClientUpdateResult`
+- New struct `VirtualNetworksClientGetOptions`
+- New struct `VirtualNetworksClientGetResponse`
+- New struct `VirtualNetworksClientGetResult`
+- New struct `VirtualNetworksClientListOptions`
+- New struct `VirtualNetworksClientListPager`
+- New struct `VirtualNetworksClientListResponse`
+- New struct `VirtualNetworksClientListResult`
+- New field `Error` in struct `CSRPError`
+
+
+## 0.1.0 (2021-12-23)
+
+- Init release.

@@ -16,77 +16,23 @@ import (
 	"reflect"
 )
 
-// NamespacesListAllPager provides operations for iterating over paged responses.
-type NamespacesListAllPager struct {
-	client    *NamespacesClient
-	current   NamespacesListAllResponse
+// ClientListAuthorizationRulesPager provides operations for iterating over paged responses.
+type ClientListAuthorizationRulesPager struct {
+	client    *Client
+	current   ClientListAuthorizationRulesResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, NamespacesListAllResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClientListAuthorizationRulesResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *NamespacesListAllPager) Err() error {
+func (p *ClientListAuthorizationRulesPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *NamespacesListAllPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.NamespaceListResult.NextLink == nil || len(*p.current.NamespaceListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listAllHandleError(resp)
-		return false
-	}
-	result, err := p.client.listAllHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current NamespacesListAllResponse page.
-func (p *NamespacesListAllPager) PageResponse() NamespacesListAllResponse {
-	return p.current
-}
-
-// NamespacesListAuthorizationRulesPager provides operations for iterating over paged responses.
-type NamespacesListAuthorizationRulesPager struct {
-	client    *NamespacesClient
-	current   NamespacesListAuthorizationRulesResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, NamespacesListAuthorizationRulesResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *NamespacesListAuthorizationRulesPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *NamespacesListAuthorizationRulesPager) NextPage(ctx context.Context) bool {
+func (p *ClientListAuthorizationRulesPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +53,7 @@ func (p *NamespacesListAuthorizationRulesPager) NextPage(ctx context.Context) bo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listAuthorizationRulesHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listAuthorizationRulesHandleResponse(resp)
@@ -119,136 +65,28 @@ func (p *NamespacesListAuthorizationRulesPager) NextPage(ctx context.Context) bo
 	return true
 }
 
-// PageResponse returns the current NamespacesListAuthorizationRulesResponse page.
-func (p *NamespacesListAuthorizationRulesPager) PageResponse() NamespacesListAuthorizationRulesResponse {
+// PageResponse returns the current ClientListAuthorizationRulesResponse page.
+func (p *ClientListAuthorizationRulesPager) PageResponse() ClientListAuthorizationRulesResponse {
 	return p.current
 }
 
-// NamespacesListPager provides operations for iterating over paged responses.
-type NamespacesListPager struct {
-	client    *NamespacesClient
-	current   NamespacesListResponse
+// ClientListPager provides operations for iterating over paged responses.
+type ClientListPager struct {
+	client    *Client
+	current   ClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, NamespacesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *NamespacesListPager) Err() error {
+func (p *ClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *NamespacesListPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.NamespaceListResult.NextLink == nil || len(*p.current.NamespaceListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
-		return false
-	}
-	result, err := p.client.listHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current NamespacesListResponse page.
-func (p *NamespacesListPager) PageResponse() NamespacesListResponse {
-	return p.current
-}
-
-// NotificationHubsListAuthorizationRulesPager provides operations for iterating over paged responses.
-type NotificationHubsListAuthorizationRulesPager struct {
-	client    *NotificationHubsClient
-	current   NotificationHubsListAuthorizationRulesResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, NotificationHubsListAuthorizationRulesResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *NotificationHubsListAuthorizationRulesPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *NotificationHubsListAuthorizationRulesPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SharedAccessAuthorizationRuleListResult.NextLink == nil || len(*p.current.SharedAccessAuthorizationRuleListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listAuthorizationRulesHandleError(resp)
-		return false
-	}
-	result, err := p.client.listAuthorizationRulesHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current NotificationHubsListAuthorizationRulesResponse page.
-func (p *NotificationHubsListAuthorizationRulesPager) PageResponse() NotificationHubsListAuthorizationRulesResponse {
-	return p.current
-}
-
-// NotificationHubsListPager provides operations for iterating over paged responses.
-type NotificationHubsListPager struct {
-	client    *NotificationHubsClient
-	current   NotificationHubsListResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, NotificationHubsListResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *NotificationHubsListPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *NotificationHubsListPager) NextPage(ctx context.Context) bool {
+func (p *ClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +107,7 @@ func (p *NotificationHubsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -281,28 +119,190 @@ func (p *NotificationHubsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current NotificationHubsListResponse page.
-func (p *NotificationHubsListPager) PageResponse() NotificationHubsListResponse {
+// PageResponse returns the current ClientListResponse page.
+func (p *ClientListPager) PageResponse() ClientListResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
-	client    *OperationsClient
-	current   OperationsListResponse
+// NamespacesClientListAllPager provides operations for iterating over paged responses.
+type NamespacesClientListAllPager struct {
+	client    *NamespacesClient
+	current   NamespacesClientListAllResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, NamespacesClientListAllResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *NamespacesClientListAllPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *NamespacesClientListAllPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.NamespaceListResult.NextLink == nil || len(*p.current.NamespaceListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listAllHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current NamespacesClientListAllResponse page.
+func (p *NamespacesClientListAllPager) PageResponse() NamespacesClientListAllResponse {
+	return p.current
+}
+
+// NamespacesClientListAuthorizationRulesPager provides operations for iterating over paged responses.
+type NamespacesClientListAuthorizationRulesPager struct {
+	client    *NamespacesClient
+	current   NamespacesClientListAuthorizationRulesResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, NamespacesClientListAuthorizationRulesResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *NamespacesClientListAuthorizationRulesPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *NamespacesClientListAuthorizationRulesPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SharedAccessAuthorizationRuleListResult.NextLink == nil || len(*p.current.SharedAccessAuthorizationRuleListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listAuthorizationRulesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current NamespacesClientListAuthorizationRulesResponse page.
+func (p *NamespacesClientListAuthorizationRulesPager) PageResponse() NamespacesClientListAuthorizationRulesResponse {
+	return p.current
+}
+
+// NamespacesClientListPager provides operations for iterating over paged responses.
+type NamespacesClientListPager struct {
+	client    *NamespacesClient
+	current   NamespacesClientListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, NamespacesClientListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *NamespacesClientListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *NamespacesClientListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.NamespaceListResult.NextLink == nil || len(*p.current.NamespaceListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current NamespacesClientListResponse page.
+func (p *NamespacesClientListPager) PageResponse() NamespacesClientListResponse {
+	return p.current
+}
+
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
+	client    *OperationsClient
+	current   OperationsClientListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *OperationsClientListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -323,7 +323,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -335,7 +335,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }

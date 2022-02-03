@@ -28,12 +28,16 @@ func ExampleSapMonitorsClient_List() {
 	ctx := context.Background()
 	client := armhanaonazure.NewSapMonitorsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SapMonitor.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,7 +57,7 @@ func ExampleSapMonitorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SapMonitor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SapMonitorsClientGetResult)
 }
 
 // x-ms-original-file: specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2020-02-07-preview/examples/SapMonitors_Create.json
@@ -68,11 +72,9 @@ func ExampleSapMonitorsClient_BeginCreate() {
 		"<resource-group-name>",
 		"<sap-monitor-name>",
 		armhanaonazure.SapMonitor{
-			TrackedResource: armhanaonazure.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key": to.StringPtr("value"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key": to.StringPtr("value"),
 			},
 			Properties: &armhanaonazure.SapMonitorProperties{
 				EnableCustomerAnalytics:        to.BoolPtr(true),
@@ -90,7 +92,7 @@ func ExampleSapMonitorsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SapMonitor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SapMonitorsClientCreateResult)
 }
 
 // x-ms-original-file: specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2020-02-07-preview/examples/SapMonitors_Delete.json
@@ -132,5 +134,5 @@ func ExampleSapMonitorsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SapMonitor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SapMonitorsClientUpdateResult)
 }

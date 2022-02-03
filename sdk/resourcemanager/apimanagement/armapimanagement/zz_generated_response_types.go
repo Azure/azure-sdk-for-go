@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// APICreateOrUpdatePollerResponse contains the response from method API.CreateOrUpdate.
-type APICreateOrUpdatePollerResponse struct {
+// APIClientCreateOrUpdatePollerResponse contains the response from method APIClient.CreateOrUpdate.
+type APIClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *APICreateOrUpdatePoller
+	Poller *APIClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type APICreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APICreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APICreateOrUpdateResponse, error) {
-	respType := APICreateOrUpdateResponse{}
+func (l APIClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APIClientCreateOrUpdateResponse, error) {
+	respType := APIClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.APIContract)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l APICreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a APICreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *APICreateOrUpdatePollerResponse) Resume(ctx context.Context, client *APIClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APIClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a APIClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *APIClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *APIClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("APIClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &APICreateOrUpdatePoller{
+	poller := &APIClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,53 +55,33 @@ func (l *APICreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AP
 	return nil
 }
 
-// APICreateOrUpdateResponse contains the response from method API.CreateOrUpdate.
-type APICreateOrUpdateResponse struct {
-	APICreateOrUpdateResult
+// APIClientCreateOrUpdateResponse contains the response from method APIClient.CreateOrUpdate.
+type APIClientCreateOrUpdateResponse struct {
+	APIClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APICreateOrUpdateResult contains the result from method API.CreateOrUpdate.
-type APICreateOrUpdateResult struct {
+// APIClientCreateOrUpdateResult contains the result from method APIClient.CreateOrUpdate.
+type APIClientCreateOrUpdateResult struct {
 	APIContract
 }
 
-// APIDeleteResponse contains the response from method API.Delete.
-type APIDeleteResponse struct {
+// APIClientDeleteResponse contains the response from method APIClient.Delete.
+type APIClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIDiagnosticCreateOrUpdateResponse contains the response from method APIDiagnostic.CreateOrUpdate.
-type APIDiagnosticCreateOrUpdateResponse struct {
-	APIDiagnosticCreateOrUpdateResult
+// APIClientGetEntityTagResponse contains the response from method APIClient.GetEntityTag.
+type APIClientGetEntityTagResponse struct {
+	APIClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIDiagnosticCreateOrUpdateResult contains the result from method APIDiagnostic.CreateOrUpdate.
-type APIDiagnosticCreateOrUpdateResult struct {
-	DiagnosticContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIDiagnosticDeleteResponse contains the response from method APIDiagnostic.Delete.
-type APIDiagnosticDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIDiagnosticGetEntityTagResponse contains the response from method APIDiagnostic.GetEntityTag.
-type APIDiagnosticGetEntityTagResponse struct {
-	APIDiagnosticGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIDiagnosticGetEntityTagResult contains the result from method APIDiagnostic.GetEntityTag.
-type APIDiagnosticGetEntityTagResult struct {
+// APIClientGetEntityTagResult contains the result from method APIClient.GetEntityTag.
+type APIClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -109,813 +89,87 @@ type APIDiagnosticGetEntityTagResult struct {
 	Success bool
 }
 
-// APIDiagnosticGetResponse contains the response from method APIDiagnostic.Get.
-type APIDiagnosticGetResponse struct {
-	APIDiagnosticGetResult
+// APIClientGetResponse contains the response from method APIClient.Get.
+type APIClientGetResponse struct {
+	APIClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIDiagnosticGetResult contains the result from method APIDiagnostic.Get.
-type APIDiagnosticGetResult struct {
-	DiagnosticContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIDiagnosticListByServiceResponse contains the response from method APIDiagnostic.ListByService.
-type APIDiagnosticListByServiceResponse struct {
-	APIDiagnosticListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIDiagnosticListByServiceResult contains the result from method APIDiagnostic.ListByService.
-type APIDiagnosticListByServiceResult struct {
-	DiagnosticCollection
-}
-
-// APIDiagnosticUpdateResponse contains the response from method APIDiagnostic.Update.
-type APIDiagnosticUpdateResponse struct {
-	APIDiagnosticUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIDiagnosticUpdateResult contains the result from method APIDiagnostic.Update.
-type APIDiagnosticUpdateResult struct {
-	DiagnosticContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIExportGetResponse contains the response from method APIExport.Get.
-type APIExportGetResponse struct {
-	APIExportGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIExportGetResult contains the result from method APIExport.Get.
-type APIExportGetResult struct {
-	APIExportResult
-}
-
-// APIGetEntityTagResponse contains the response from method API.GetEntityTag.
-type APIGetEntityTagResponse struct {
-	APIGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIGetEntityTagResult contains the result from method API.GetEntityTag.
-type APIGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// APIGetResponse contains the response from method API.Get.
-type APIGetResponse struct {
-	APIGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIGetResult contains the result from method API.Get.
-type APIGetResult struct {
+// APIClientGetResult contains the result from method APIClient.Get.
+type APIClientGetResult struct {
 	APIContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIIssueAttachmentCreateOrUpdateResponse contains the response from method APIIssueAttachment.CreateOrUpdate.
-type APIIssueAttachmentCreateOrUpdateResponse struct {
-	APIIssueAttachmentCreateOrUpdateResult
+// APIClientListByServiceResponse contains the response from method APIClient.ListByService.
+type APIClientListByServiceResponse struct {
+	APIClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIIssueAttachmentCreateOrUpdateResult contains the result from method APIIssueAttachment.CreateOrUpdate.
-type APIIssueAttachmentCreateOrUpdateResult struct {
-	IssueAttachmentContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIIssueAttachmentDeleteResponse contains the response from method APIIssueAttachment.Delete.
-type APIIssueAttachmentDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueAttachmentGetEntityTagResponse contains the response from method APIIssueAttachment.GetEntityTag.
-type APIIssueAttachmentGetEntityTagResponse struct {
-	APIIssueAttachmentGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueAttachmentGetEntityTagResult contains the result from method APIIssueAttachment.GetEntityTag.
-type APIIssueAttachmentGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// APIIssueAttachmentGetResponse contains the response from method APIIssueAttachment.Get.
-type APIIssueAttachmentGetResponse struct {
-	APIIssueAttachmentGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueAttachmentGetResult contains the result from method APIIssueAttachment.Get.
-type APIIssueAttachmentGetResult struct {
-	IssueAttachmentContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIIssueAttachmentListByServiceResponse contains the response from method APIIssueAttachment.ListByService.
-type APIIssueAttachmentListByServiceResponse struct {
-	APIIssueAttachmentListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueAttachmentListByServiceResult contains the result from method APIIssueAttachment.ListByService.
-type APIIssueAttachmentListByServiceResult struct {
-	IssueAttachmentCollection
-}
-
-// APIIssueCommentCreateOrUpdateResponse contains the response from method APIIssueComment.CreateOrUpdate.
-type APIIssueCommentCreateOrUpdateResponse struct {
-	APIIssueCommentCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueCommentCreateOrUpdateResult contains the result from method APIIssueComment.CreateOrUpdate.
-type APIIssueCommentCreateOrUpdateResult struct {
-	IssueCommentContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIIssueCommentDeleteResponse contains the response from method APIIssueComment.Delete.
-type APIIssueCommentDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueCommentGetEntityTagResponse contains the response from method APIIssueComment.GetEntityTag.
-type APIIssueCommentGetEntityTagResponse struct {
-	APIIssueCommentGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueCommentGetEntityTagResult contains the result from method APIIssueComment.GetEntityTag.
-type APIIssueCommentGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// APIIssueCommentGetResponse contains the response from method APIIssueComment.Get.
-type APIIssueCommentGetResponse struct {
-	APIIssueCommentGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueCommentGetResult contains the result from method APIIssueComment.Get.
-type APIIssueCommentGetResult struct {
-	IssueCommentContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIIssueCommentListByServiceResponse contains the response from method APIIssueComment.ListByService.
-type APIIssueCommentListByServiceResponse struct {
-	APIIssueCommentListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueCommentListByServiceResult contains the result from method APIIssueComment.ListByService.
-type APIIssueCommentListByServiceResult struct {
-	IssueCommentCollection
-}
-
-// APIIssueCreateOrUpdateResponse contains the response from method APIIssue.CreateOrUpdate.
-type APIIssueCreateOrUpdateResponse struct {
-	APIIssueCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueCreateOrUpdateResult contains the result from method APIIssue.CreateOrUpdate.
-type APIIssueCreateOrUpdateResult struct {
-	IssueContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIIssueDeleteResponse contains the response from method APIIssue.Delete.
-type APIIssueDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueGetEntityTagResponse contains the response from method APIIssue.GetEntityTag.
-type APIIssueGetEntityTagResponse struct {
-	APIIssueGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueGetEntityTagResult contains the result from method APIIssue.GetEntityTag.
-type APIIssueGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// APIIssueGetResponse contains the response from method APIIssue.Get.
-type APIIssueGetResponse struct {
-	APIIssueGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueGetResult contains the result from method APIIssue.Get.
-type APIIssueGetResult struct {
-	IssueContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIIssueListByServiceResponse contains the response from method APIIssue.ListByService.
-type APIIssueListByServiceResponse struct {
-	APIIssueListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueListByServiceResult contains the result from method APIIssue.ListByService.
-type APIIssueListByServiceResult struct {
-	IssueCollection
-}
-
-// APIIssueUpdateResponse contains the response from method APIIssue.Update.
-type APIIssueUpdateResponse struct {
-	APIIssueUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIIssueUpdateResult contains the result from method APIIssue.Update.
-type APIIssueUpdateResult struct {
-	IssueContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIListByServiceResponse contains the response from method API.ListByService.
-type APIListByServiceResponse struct {
-	APIListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIListByServiceResult contains the result from method API.ListByService.
-type APIListByServiceResult struct {
+// APIClientListByServiceResult contains the result from method APIClient.ListByService.
+type APIClientListByServiceResult struct {
 	APICollection
 }
 
-// APIListByTagsResponse contains the response from method API.ListByTags.
-type APIListByTagsResponse struct {
-	APIListByTagsResult
+// APIClientListByTagsResponse contains the response from method APIClient.ListByTags.
+type APIClientListByTagsResponse struct {
+	APIClientListByTagsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIListByTagsResult contains the result from method API.ListByTags.
-type APIListByTagsResult struct {
+// APIClientListByTagsResult contains the result from method APIClient.ListByTags.
+type APIClientListByTagsResult struct {
 	TagResourceCollection
 }
 
-// APIManagementClientPerformConnectivityCheckAsyncPollerResponse contains the response from method APIManagementClient.PerformConnectivityCheckAsync.
-type APIManagementClientPerformConnectivityCheckAsyncPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *APIManagementClientPerformConnectivityCheckAsyncPoller
-
+// APIClientUpdateResponse contains the response from method APIClient.Update.
+type APIClientUpdateResponse struct {
+	APIClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APIManagementClientPerformConnectivityCheckAsyncPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APIManagementClientPerformConnectivityCheckAsyncResponse, error) {
-	respType := APIManagementClientPerformConnectivityCheckAsyncResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConnectivityCheckResponse)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a APIManagementClientPerformConnectivityCheckAsyncPollerResponse from the provided client and resume token.
-func (l *APIManagementClientPerformConnectivityCheckAsyncPollerResponse) Resume(ctx context.Context, client *APIManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APIManagementClient.PerformConnectivityCheckAsync", token, client.pl, client.performConnectivityCheckAsyncHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &APIManagementClientPerformConnectivityCheckAsyncPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// APIManagementClientPerformConnectivityCheckAsyncResponse contains the response from method APIManagementClient.PerformConnectivityCheckAsync.
-type APIManagementClientPerformConnectivityCheckAsyncResponse struct {
-	APIManagementClientPerformConnectivityCheckAsyncResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementClientPerformConnectivityCheckAsyncResult contains the result from method APIManagementClient.PerformConnectivityCheckAsync.
-type APIManagementClientPerformConnectivityCheckAsyncResult struct {
-	ConnectivityCheckResponse
-}
-
-// APIManagementOperationsListResponse contains the response from method APIManagementOperations.List.
-type APIManagementOperationsListResponse struct {
-	APIManagementOperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementOperationsListResult contains the result from method APIManagementOperations.List.
-type APIManagementOperationsListResult struct {
-	OperationListResult
-}
-
-// APIManagementSKUsListResponse contains the response from method APIManagementSKUs.List.
-type APIManagementSKUsListResponse struct {
-	APIManagementSKUsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementSKUsListResult contains the result from method APIManagementSKUs.List.
-type APIManagementSKUsListResult struct {
-	APIManagementSKUsResult
-}
-
-// APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse contains the response from method APIManagementService.ApplyNetworkConfigurationUpdates.
-type APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *APIManagementServiceApplyNetworkConfigurationUpdatesPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APIManagementServiceApplyNetworkConfigurationUpdatesResponse, error) {
-	respType := APIManagementServiceApplyNetworkConfigurationUpdatesResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.APIManagementServiceResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse from the provided client and resume token.
-func (l *APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse) Resume(ctx context.Context, client *APIManagementServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APIManagementServiceClient.ApplyNetworkConfigurationUpdates", token, client.pl, client.applyNetworkConfigurationUpdatesHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &APIManagementServiceApplyNetworkConfigurationUpdatesPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// APIManagementServiceApplyNetworkConfigurationUpdatesResponse contains the response from method APIManagementService.ApplyNetworkConfigurationUpdates.
-type APIManagementServiceApplyNetworkConfigurationUpdatesResponse struct {
-	APIManagementServiceApplyNetworkConfigurationUpdatesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceApplyNetworkConfigurationUpdatesResult contains the result from method APIManagementService.ApplyNetworkConfigurationUpdates.
-type APIManagementServiceApplyNetworkConfigurationUpdatesResult struct {
-	APIManagementServiceResource
-}
-
-// APIManagementServiceBackupPollerResponse contains the response from method APIManagementService.Backup.
-type APIManagementServiceBackupPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *APIManagementServiceBackupPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APIManagementServiceBackupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APIManagementServiceBackupResponse, error) {
-	respType := APIManagementServiceBackupResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.APIManagementServiceResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a APIManagementServiceBackupPollerResponse from the provided client and resume token.
-func (l *APIManagementServiceBackupPollerResponse) Resume(ctx context.Context, client *APIManagementServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APIManagementServiceClient.Backup", token, client.pl, client.backupHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &APIManagementServiceBackupPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// APIManagementServiceBackupResponse contains the response from method APIManagementService.Backup.
-type APIManagementServiceBackupResponse struct {
-	APIManagementServiceBackupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceBackupResult contains the result from method APIManagementService.Backup.
-type APIManagementServiceBackupResult struct {
-	APIManagementServiceResource
-}
-
-// APIManagementServiceCheckNameAvailabilityResponse contains the response from method APIManagementService.CheckNameAvailability.
-type APIManagementServiceCheckNameAvailabilityResponse struct {
-	APIManagementServiceCheckNameAvailabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceCheckNameAvailabilityResult contains the result from method APIManagementService.CheckNameAvailability.
-type APIManagementServiceCheckNameAvailabilityResult struct {
-	APIManagementServiceNameAvailabilityResult
-}
-
-// APIManagementServiceCreateOrUpdatePollerResponse contains the response from method APIManagementService.CreateOrUpdate.
-type APIManagementServiceCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *APIManagementServiceCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APIManagementServiceCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APIManagementServiceCreateOrUpdateResponse, error) {
-	respType := APIManagementServiceCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.APIManagementServiceResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a APIManagementServiceCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *APIManagementServiceCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *APIManagementServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APIManagementServiceClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &APIManagementServiceCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// APIManagementServiceCreateOrUpdateResponse contains the response from method APIManagementService.CreateOrUpdate.
-type APIManagementServiceCreateOrUpdateResponse struct {
-	APIManagementServiceCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceCreateOrUpdateResult contains the result from method APIManagementService.CreateOrUpdate.
-type APIManagementServiceCreateOrUpdateResult struct {
-	APIManagementServiceResource
-}
-
-// APIManagementServiceDeletePollerResponse contains the response from method APIManagementService.Delete.
-type APIManagementServiceDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *APIManagementServiceDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APIManagementServiceDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APIManagementServiceDeleteResponse, error) {
-	respType := APIManagementServiceDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.APIManagementServiceResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a APIManagementServiceDeletePollerResponse from the provided client and resume token.
-func (l *APIManagementServiceDeletePollerResponse) Resume(ctx context.Context, client *APIManagementServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APIManagementServiceClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &APIManagementServiceDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// APIManagementServiceDeleteResponse contains the response from method APIManagementService.Delete.
-type APIManagementServiceDeleteResponse struct {
-	APIManagementServiceDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceDeleteResult contains the result from method APIManagementService.Delete.
-type APIManagementServiceDeleteResult struct {
-	APIManagementServiceResource
-}
-
-// APIManagementServiceGetDomainOwnershipIdentifierResponse contains the response from method APIManagementService.GetDomainOwnershipIdentifier.
-type APIManagementServiceGetDomainOwnershipIdentifierResponse struct {
-	APIManagementServiceGetDomainOwnershipIdentifierResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceGetDomainOwnershipIdentifierResultEnvelope contains the result from method APIManagementService.GetDomainOwnershipIdentifier.
-type APIManagementServiceGetDomainOwnershipIdentifierResultEnvelope struct {
-	APIManagementServiceGetDomainOwnershipIdentifierResult
-}
-
-// APIManagementServiceGetResponse contains the response from method APIManagementService.Get.
-type APIManagementServiceGetResponse struct {
-	APIManagementServiceGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceGetResult contains the result from method APIManagementService.Get.
-type APIManagementServiceGetResult struct {
-	APIManagementServiceResource
-}
-
-// APIManagementServiceGetSsoTokenResponse contains the response from method APIManagementService.GetSsoToken.
-type APIManagementServiceGetSsoTokenResponse struct {
-	APIManagementServiceGetSsoTokenResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceGetSsoTokenResultEnvelope contains the result from method APIManagementService.GetSsoToken.
-type APIManagementServiceGetSsoTokenResultEnvelope struct {
-	APIManagementServiceGetSsoTokenResult
-}
-
-// APIManagementServiceListByResourceGroupResponse contains the response from method APIManagementService.ListByResourceGroup.
-type APIManagementServiceListByResourceGroupResponse struct {
-	APIManagementServiceListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceListByResourceGroupResult contains the result from method APIManagementService.ListByResourceGroup.
-type APIManagementServiceListByResourceGroupResult struct {
-	APIManagementServiceListResult
-}
-
-// APIManagementServiceListResponse contains the response from method APIManagementService.List.
-type APIManagementServiceListResponse struct {
-	APIManagementServiceListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceListResultEnvelope contains the result from method APIManagementService.List.
-type APIManagementServiceListResultEnvelope struct {
-	APIManagementServiceListResult
-}
-
-// APIManagementServiceRestorePollerResponse contains the response from method APIManagementService.Restore.
-type APIManagementServiceRestorePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *APIManagementServiceRestorePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APIManagementServiceRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APIManagementServiceRestoreResponse, error) {
-	respType := APIManagementServiceRestoreResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.APIManagementServiceResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a APIManagementServiceRestorePollerResponse from the provided client and resume token.
-func (l *APIManagementServiceRestorePollerResponse) Resume(ctx context.Context, client *APIManagementServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APIManagementServiceClient.Restore", token, client.pl, client.restoreHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &APIManagementServiceRestorePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// APIManagementServiceRestoreResponse contains the response from method APIManagementService.Restore.
-type APIManagementServiceRestoreResponse struct {
-	APIManagementServiceRestoreResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceRestoreResult contains the result from method APIManagementService.Restore.
-type APIManagementServiceRestoreResult struct {
-	APIManagementServiceResource
-}
-
-// APIManagementServiceSKUsListAvailableServiceSKUsResponse contains the response from method APIManagementServiceSKUs.ListAvailableServiceSKUs.
-type APIManagementServiceSKUsListAvailableServiceSKUsResponse struct {
-	APIManagementServiceSKUsListAvailableServiceSKUsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceSKUsListAvailableServiceSKUsResult contains the result from method APIManagementServiceSKUs.ListAvailableServiceSKUs.
-type APIManagementServiceSKUsListAvailableServiceSKUsResult struct {
-	ResourceSKUResults
-}
-
-// APIManagementServiceUpdatePollerResponse contains the response from method APIManagementService.Update.
-type APIManagementServiceUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *APIManagementServiceUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APIManagementServiceUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APIManagementServiceUpdateResponse, error) {
-	respType := APIManagementServiceUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.APIManagementServiceResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a APIManagementServiceUpdatePollerResponse from the provided client and resume token.
-func (l *APIManagementServiceUpdatePollerResponse) Resume(ctx context.Context, client *APIManagementServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APIManagementServiceClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &APIManagementServiceUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// APIManagementServiceUpdateResponse contains the response from method APIManagementService.Update.
-type APIManagementServiceUpdateResponse struct {
-	APIManagementServiceUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIManagementServiceUpdateResult contains the result from method APIManagementService.Update.
-type APIManagementServiceUpdateResult struct {
-	APIManagementServiceResource
-}
-
-// APIOperationCreateOrUpdateResponse contains the response from method APIOperation.CreateOrUpdate.
-type APIOperationCreateOrUpdateResponse struct {
-	APIOperationCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIOperationCreateOrUpdateResult contains the result from method APIOperation.CreateOrUpdate.
-type APIOperationCreateOrUpdateResult struct {
-	OperationContract
+// APIClientUpdateResult contains the result from method APIClient.Update.
+type APIClientUpdateResult struct {
+	APIContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIOperationDeleteResponse contains the response from method APIOperation.Delete.
-type APIOperationDeleteResponse struct {
+// APIDiagnosticClientCreateOrUpdateResponse contains the response from method APIDiagnosticClient.CreateOrUpdate.
+type APIDiagnosticClientCreateOrUpdateResponse struct {
+	APIDiagnosticClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIOperationGetEntityTagResponse contains the response from method APIOperation.GetEntityTag.
-type APIOperationGetEntityTagResponse struct {
-	APIOperationGetEntityTagResult
+// APIDiagnosticClientCreateOrUpdateResult contains the result from method APIDiagnosticClient.CreateOrUpdate.
+type APIDiagnosticClientCreateOrUpdateResult struct {
+	DiagnosticContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIDiagnosticClientDeleteResponse contains the response from method APIDiagnosticClient.Delete.
+type APIDiagnosticClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIOperationGetEntityTagResult contains the result from method APIOperation.GetEntityTag.
-type APIOperationGetEntityTagResult struct {
+// APIDiagnosticClientGetEntityTagResponse contains the response from method APIDiagnosticClient.GetEntityTag.
+type APIDiagnosticClientGetEntityTagResponse struct {
+	APIDiagnosticClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIDiagnosticClientGetEntityTagResult contains the result from method APIDiagnosticClient.GetEntityTag.
+type APIDiagnosticClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -923,137 +177,363 @@ type APIOperationGetEntityTagResult struct {
 	Success bool
 }
 
-// APIOperationGetResponse contains the response from method APIOperation.Get.
-type APIOperationGetResponse struct {
-	APIOperationGetResult
+// APIDiagnosticClientGetResponse contains the response from method APIDiagnosticClient.Get.
+type APIDiagnosticClientGetResponse struct {
+	APIDiagnosticClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIOperationGetResult contains the result from method APIOperation.Get.
-type APIOperationGetResult struct {
+// APIDiagnosticClientGetResult contains the result from method APIDiagnosticClient.Get.
+type APIDiagnosticClientGetResult struct {
+	DiagnosticContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIDiagnosticClientListByServiceResponse contains the response from method APIDiagnosticClient.ListByService.
+type APIDiagnosticClientListByServiceResponse struct {
+	APIDiagnosticClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIDiagnosticClientListByServiceResult contains the result from method APIDiagnosticClient.ListByService.
+type APIDiagnosticClientListByServiceResult struct {
+	DiagnosticCollection
+}
+
+// APIDiagnosticClientUpdateResponse contains the response from method APIDiagnosticClient.Update.
+type APIDiagnosticClientUpdateResponse struct {
+	APIDiagnosticClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIDiagnosticClientUpdateResult contains the result from method APIDiagnosticClient.Update.
+type APIDiagnosticClientUpdateResult struct {
+	DiagnosticContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIExportClientGetResponse contains the response from method APIExportClient.Get.
+type APIExportClientGetResponse struct {
+	APIExportClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIExportClientGetResult contains the result from method APIExportClient.Get.
+type APIExportClientGetResult struct {
+	APIExportResult
+}
+
+// APIIssueAttachmentClientCreateOrUpdateResponse contains the response from method APIIssueAttachmentClient.CreateOrUpdate.
+type APIIssueAttachmentClientCreateOrUpdateResponse struct {
+	APIIssueAttachmentClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueAttachmentClientCreateOrUpdateResult contains the result from method APIIssueAttachmentClient.CreateOrUpdate.
+type APIIssueAttachmentClientCreateOrUpdateResult struct {
+	IssueAttachmentContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIIssueAttachmentClientDeleteResponse contains the response from method APIIssueAttachmentClient.Delete.
+type APIIssueAttachmentClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueAttachmentClientGetEntityTagResponse contains the response from method APIIssueAttachmentClient.GetEntityTag.
+type APIIssueAttachmentClientGetEntityTagResponse struct {
+	APIIssueAttachmentClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueAttachmentClientGetEntityTagResult contains the result from method APIIssueAttachmentClient.GetEntityTag.
+type APIIssueAttachmentClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// APIIssueAttachmentClientGetResponse contains the response from method APIIssueAttachmentClient.Get.
+type APIIssueAttachmentClientGetResponse struct {
+	APIIssueAttachmentClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueAttachmentClientGetResult contains the result from method APIIssueAttachmentClient.Get.
+type APIIssueAttachmentClientGetResult struct {
+	IssueAttachmentContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIIssueAttachmentClientListByServiceResponse contains the response from method APIIssueAttachmentClient.ListByService.
+type APIIssueAttachmentClientListByServiceResponse struct {
+	APIIssueAttachmentClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueAttachmentClientListByServiceResult contains the result from method APIIssueAttachmentClient.ListByService.
+type APIIssueAttachmentClientListByServiceResult struct {
+	IssueAttachmentCollection
+}
+
+// APIIssueClientCreateOrUpdateResponse contains the response from method APIIssueClient.CreateOrUpdate.
+type APIIssueClientCreateOrUpdateResponse struct {
+	APIIssueClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueClientCreateOrUpdateResult contains the result from method APIIssueClient.CreateOrUpdate.
+type APIIssueClientCreateOrUpdateResult struct {
+	IssueContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIIssueClientDeleteResponse contains the response from method APIIssueClient.Delete.
+type APIIssueClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueClientGetEntityTagResponse contains the response from method APIIssueClient.GetEntityTag.
+type APIIssueClientGetEntityTagResponse struct {
+	APIIssueClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueClientGetEntityTagResult contains the result from method APIIssueClient.GetEntityTag.
+type APIIssueClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// APIIssueClientGetResponse contains the response from method APIIssueClient.Get.
+type APIIssueClientGetResponse struct {
+	APIIssueClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueClientGetResult contains the result from method APIIssueClient.Get.
+type APIIssueClientGetResult struct {
+	IssueContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIIssueClientListByServiceResponse contains the response from method APIIssueClient.ListByService.
+type APIIssueClientListByServiceResponse struct {
+	APIIssueClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueClientListByServiceResult contains the result from method APIIssueClient.ListByService.
+type APIIssueClientListByServiceResult struct {
+	IssueCollection
+}
+
+// APIIssueClientUpdateResponse contains the response from method APIIssueClient.Update.
+type APIIssueClientUpdateResponse struct {
+	APIIssueClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueClientUpdateResult contains the result from method APIIssueClient.Update.
+type APIIssueClientUpdateResult struct {
+	IssueContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIIssueCommentClientCreateOrUpdateResponse contains the response from method APIIssueCommentClient.CreateOrUpdate.
+type APIIssueCommentClientCreateOrUpdateResponse struct {
+	APIIssueCommentClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueCommentClientCreateOrUpdateResult contains the result from method APIIssueCommentClient.CreateOrUpdate.
+type APIIssueCommentClientCreateOrUpdateResult struct {
+	IssueCommentContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIIssueCommentClientDeleteResponse contains the response from method APIIssueCommentClient.Delete.
+type APIIssueCommentClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueCommentClientGetEntityTagResponse contains the response from method APIIssueCommentClient.GetEntityTag.
+type APIIssueCommentClientGetEntityTagResponse struct {
+	APIIssueCommentClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueCommentClientGetEntityTagResult contains the result from method APIIssueCommentClient.GetEntityTag.
+type APIIssueCommentClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// APIIssueCommentClientGetResponse contains the response from method APIIssueCommentClient.Get.
+type APIIssueCommentClientGetResponse struct {
+	APIIssueCommentClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueCommentClientGetResult contains the result from method APIIssueCommentClient.Get.
+type APIIssueCommentClientGetResult struct {
+	IssueCommentContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIIssueCommentClientListByServiceResponse contains the response from method APIIssueCommentClient.ListByService.
+type APIIssueCommentClientListByServiceResponse struct {
+	APIIssueCommentClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIIssueCommentClientListByServiceResult contains the result from method APIIssueCommentClient.ListByService.
+type APIIssueCommentClientListByServiceResult struct {
+	IssueCommentCollection
+}
+
+// APIOperationClientCreateOrUpdateResponse contains the response from method APIOperationClient.CreateOrUpdate.
+type APIOperationClientCreateOrUpdateResponse struct {
+	APIOperationClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIOperationClientCreateOrUpdateResult contains the result from method APIOperationClient.CreateOrUpdate.
+type APIOperationClientCreateOrUpdateResult struct {
 	OperationContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIOperationListByAPIResponse contains the response from method APIOperation.ListByAPI.
-type APIOperationListByAPIResponse struct {
-	APIOperationListByAPIResult
+// APIOperationClientDeleteResponse contains the response from method APIOperationClient.Delete.
+type APIOperationClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIOperationListByAPIResult contains the result from method APIOperation.ListByAPI.
-type APIOperationListByAPIResult struct {
+// APIOperationClientGetEntityTagResponse contains the response from method APIOperationClient.GetEntityTag.
+type APIOperationClientGetEntityTagResponse struct {
+	APIOperationClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIOperationClientGetEntityTagResult contains the result from method APIOperationClient.GetEntityTag.
+type APIOperationClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// APIOperationClientGetResponse contains the response from method APIOperationClient.Get.
+type APIOperationClientGetResponse struct {
+	APIOperationClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIOperationClientGetResult contains the result from method APIOperationClient.Get.
+type APIOperationClientGetResult struct {
+	OperationContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIOperationClientListByAPIResponse contains the response from method APIOperationClient.ListByAPI.
+type APIOperationClientListByAPIResponse struct {
+	APIOperationClientListByAPIResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIOperationClientListByAPIResult contains the result from method APIOperationClient.ListByAPI.
+type APIOperationClientListByAPIResult struct {
 	OperationCollection
 }
 
-// APIOperationPolicyCreateOrUpdateResponse contains the response from method APIOperationPolicy.CreateOrUpdate.
-type APIOperationPolicyCreateOrUpdateResponse struct {
-	APIOperationPolicyCreateOrUpdateResult
+// APIOperationClientUpdateResponse contains the response from method APIOperationClient.Update.
+type APIOperationClientUpdateResponse struct {
+	APIOperationClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIOperationPolicyCreateOrUpdateResult contains the result from method APIOperationPolicy.CreateOrUpdate.
-type APIOperationPolicyCreateOrUpdateResult struct {
-	PolicyContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIOperationPolicyDeleteResponse contains the response from method APIOperationPolicy.Delete.
-type APIOperationPolicyDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIOperationPolicyGetEntityTagResponse contains the response from method APIOperationPolicy.GetEntityTag.
-type APIOperationPolicyGetEntityTagResponse struct {
-	APIOperationPolicyGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIOperationPolicyGetEntityTagResult contains the result from method APIOperationPolicy.GetEntityTag.
-type APIOperationPolicyGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// APIOperationPolicyGetResponse contains the response from method APIOperationPolicy.Get.
-type APIOperationPolicyGetResponse struct {
-	APIOperationPolicyGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIOperationPolicyGetResult contains the result from method APIOperationPolicy.Get.
-type APIOperationPolicyGetResult struct {
-	PolicyContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIOperationPolicyListByOperationResponse contains the response from method APIOperationPolicy.ListByOperation.
-type APIOperationPolicyListByOperationResponse struct {
-	APIOperationPolicyListByOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIOperationPolicyListByOperationResult contains the result from method APIOperationPolicy.ListByOperation.
-type APIOperationPolicyListByOperationResult struct {
-	PolicyCollection
-}
-
-// APIOperationUpdateResponse contains the response from method APIOperation.Update.
-type APIOperationUpdateResponse struct {
-	APIOperationUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIOperationUpdateResult contains the result from method APIOperation.Update.
-type APIOperationUpdateResult struct {
+// APIOperationClientUpdateResult contains the result from method APIOperationClient.Update.
+type APIOperationClientUpdateResult struct {
 	OperationContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIPolicyCreateOrUpdateResponse contains the response from method APIPolicy.CreateOrUpdate.
-type APIPolicyCreateOrUpdateResponse struct {
-	APIPolicyCreateOrUpdateResult
+// APIOperationPolicyClientCreateOrUpdateResponse contains the response from method APIOperationPolicyClient.CreateOrUpdate.
+type APIOperationPolicyClientCreateOrUpdateResponse struct {
+	APIOperationPolicyClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIPolicyCreateOrUpdateResult contains the result from method APIPolicy.CreateOrUpdate.
-type APIPolicyCreateOrUpdateResult struct {
+// APIOperationPolicyClientCreateOrUpdateResult contains the result from method APIOperationPolicyClient.CreateOrUpdate.
+type APIOperationPolicyClientCreateOrUpdateResult struct {
 	PolicyContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIPolicyDeleteResponse contains the response from method APIPolicy.Delete.
-type APIPolicyDeleteResponse struct {
+// APIOperationPolicyClientDeleteResponse contains the response from method APIOperationPolicyClient.Delete.
+type APIOperationPolicyClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIPolicyGetEntityTagResponse contains the response from method APIPolicy.GetEntityTag.
-type APIPolicyGetEntityTagResponse struct {
-	APIPolicyGetEntityTagResult
+// APIOperationPolicyClientGetEntityTagResponse contains the response from method APIOperationPolicyClient.GetEntityTag.
+type APIOperationPolicyClientGetEntityTagResponse struct {
+	APIOperationPolicyClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIPolicyGetEntityTagResult contains the result from method APIPolicy.GetEntityTag.
-type APIPolicyGetEntityTagResult struct {
+// APIOperationPolicyClientGetEntityTagResult contains the result from method APIOperationPolicyClient.GetEntityTag.
+type APIOperationPolicyClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1061,73 +541,61 @@ type APIPolicyGetEntityTagResult struct {
 	Success bool
 }
 
-// APIPolicyGetResponse contains the response from method APIPolicy.Get.
-type APIPolicyGetResponse struct {
-	APIPolicyGetResult
+// APIOperationPolicyClientGetResponse contains the response from method APIOperationPolicyClient.Get.
+type APIOperationPolicyClientGetResponse struct {
+	APIOperationPolicyClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIPolicyGetResult contains the result from method APIPolicy.Get.
-type APIPolicyGetResult struct {
+// APIOperationPolicyClientGetResult contains the result from method APIOperationPolicyClient.Get.
+type APIOperationPolicyClientGetResult struct {
 	PolicyContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIPolicyListByAPIResponse contains the response from method APIPolicy.ListByAPI.
-type APIPolicyListByAPIResponse struct {
-	APIPolicyListByAPIResult
+// APIOperationPolicyClientListByOperationResponse contains the response from method APIOperationPolicyClient.ListByOperation.
+type APIOperationPolicyClientListByOperationResponse struct {
+	APIOperationPolicyClientListByOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIPolicyListByAPIResult contains the result from method APIPolicy.ListByAPI.
-type APIPolicyListByAPIResult struct {
+// APIOperationPolicyClientListByOperationResult contains the result from method APIOperationPolicyClient.ListByOperation.
+type APIOperationPolicyClientListByOperationResult struct {
 	PolicyCollection
 }
 
-// APIProductListByApisResponse contains the response from method APIProduct.ListByApis.
-type APIProductListByApisResponse struct {
-	APIProductListByApisResult
+// APIPolicyClientCreateOrUpdateResponse contains the response from method APIPolicyClient.CreateOrUpdate.
+type APIPolicyClientCreateOrUpdateResponse struct {
+	APIPolicyClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIProductListByApisResult contains the result from method APIProduct.ListByApis.
-type APIProductListByApisResult struct {
-	ProductCollection
-}
-
-// APIReleaseCreateOrUpdateResponse contains the response from method APIRelease.CreateOrUpdate.
-type APIReleaseCreateOrUpdateResponse struct {
-	APIReleaseCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIReleaseCreateOrUpdateResult contains the result from method APIRelease.CreateOrUpdate.
-type APIReleaseCreateOrUpdateResult struct {
-	APIReleaseContract
+// APIPolicyClientCreateOrUpdateResult contains the result from method APIPolicyClient.CreateOrUpdate.
+type APIPolicyClientCreateOrUpdateResult struct {
+	PolicyContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIReleaseDeleteResponse contains the response from method APIRelease.Delete.
-type APIReleaseDeleteResponse struct {
+// APIPolicyClientDeleteResponse contains the response from method APIPolicyClient.Delete.
+type APIPolicyClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIReleaseGetEntityTagResponse contains the response from method APIRelease.GetEntityTag.
-type APIReleaseGetEntityTagResponse struct {
-	APIReleaseGetEntityTagResult
+// APIPolicyClientGetEntityTagResponse contains the response from method APIPolicyClient.GetEntityTag.
+type APIPolicyClientGetEntityTagResponse struct {
+	APIPolicyClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIReleaseGetEntityTagResult contains the result from method APIRelease.GetEntityTag.
-type APIReleaseGetEntityTagResult struct {
+// APIPolicyClientGetEntityTagResult contains the result from method APIPolicyClient.GetEntityTag.
+type APIPolicyClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1135,62 +603,136 @@ type APIReleaseGetEntityTagResult struct {
 	Success bool
 }
 
-// APIReleaseGetResponse contains the response from method APIRelease.Get.
-type APIReleaseGetResponse struct {
-	APIReleaseGetResult
+// APIPolicyClientGetResponse contains the response from method APIPolicyClient.Get.
+type APIPolicyClientGetResponse struct {
+	APIPolicyClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIReleaseGetResult contains the result from method APIRelease.Get.
-type APIReleaseGetResult struct {
+// APIPolicyClientGetResult contains the result from method APIPolicyClient.Get.
+type APIPolicyClientGetResult struct {
+	PolicyContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIPolicyClientListByAPIResponse contains the response from method APIPolicyClient.ListByAPI.
+type APIPolicyClientListByAPIResponse struct {
+	APIPolicyClientListByAPIResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIPolicyClientListByAPIResult contains the result from method APIPolicyClient.ListByAPI.
+type APIPolicyClientListByAPIResult struct {
+	PolicyCollection
+}
+
+// APIProductClientListByApisResponse contains the response from method APIProductClient.ListByApis.
+type APIProductClientListByApisResponse struct {
+	APIProductClientListByApisResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIProductClientListByApisResult contains the result from method APIProductClient.ListByApis.
+type APIProductClientListByApisResult struct {
+	ProductCollection
+}
+
+// APIReleaseClientCreateOrUpdateResponse contains the response from method APIReleaseClient.CreateOrUpdate.
+type APIReleaseClientCreateOrUpdateResponse struct {
+	APIReleaseClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIReleaseClientCreateOrUpdateResult contains the result from method APIReleaseClient.CreateOrUpdate.
+type APIReleaseClientCreateOrUpdateResult struct {
 	APIReleaseContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIReleaseListByServiceResponse contains the response from method APIRelease.ListByService.
-type APIReleaseListByServiceResponse struct {
-	APIReleaseListByServiceResult
+// APIReleaseClientDeleteResponse contains the response from method APIReleaseClient.Delete.
+type APIReleaseClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIReleaseListByServiceResult contains the result from method APIRelease.ListByService.
-type APIReleaseListByServiceResult struct {
+// APIReleaseClientGetEntityTagResponse contains the response from method APIReleaseClient.GetEntityTag.
+type APIReleaseClientGetEntityTagResponse struct {
+	APIReleaseClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIReleaseClientGetEntityTagResult contains the result from method APIReleaseClient.GetEntityTag.
+type APIReleaseClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// APIReleaseClientGetResponse contains the response from method APIReleaseClient.Get.
+type APIReleaseClientGetResponse struct {
+	APIReleaseClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIReleaseClientGetResult contains the result from method APIReleaseClient.Get.
+type APIReleaseClientGetResult struct {
+	APIReleaseContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIReleaseClientListByServiceResponse contains the response from method APIReleaseClient.ListByService.
+type APIReleaseClientListByServiceResponse struct {
+	APIReleaseClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// APIReleaseClientListByServiceResult contains the result from method APIReleaseClient.ListByService.
+type APIReleaseClientListByServiceResult struct {
 	APIReleaseCollection
 }
 
-// APIReleaseUpdateResponse contains the response from method APIRelease.Update.
-type APIReleaseUpdateResponse struct {
-	APIReleaseUpdateResult
+// APIReleaseClientUpdateResponse contains the response from method APIReleaseClient.Update.
+type APIReleaseClientUpdateResponse struct {
+	APIReleaseClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIReleaseUpdateResult contains the result from method APIRelease.Update.
-type APIReleaseUpdateResult struct {
+// APIReleaseClientUpdateResult contains the result from method APIReleaseClient.Update.
+type APIReleaseClientUpdateResult struct {
 	APIReleaseContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIRevisionListByServiceResponse contains the response from method APIRevision.ListByService.
-type APIRevisionListByServiceResponse struct {
-	APIRevisionListByServiceResult
+// APIRevisionClientListByServiceResponse contains the response from method APIRevisionClient.ListByService.
+type APIRevisionClientListByServiceResponse struct {
+	APIRevisionClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIRevisionListByServiceResult contains the result from method APIRevision.ListByService.
-type APIRevisionListByServiceResult struct {
+// APIRevisionClientListByServiceResult contains the result from method APIRevisionClient.ListByService.
+type APIRevisionClientListByServiceResult struct {
 	APIRevisionCollection
 }
 
-// APISchemaCreateOrUpdatePollerResponse contains the response from method APISchema.CreateOrUpdate.
-type APISchemaCreateOrUpdatePollerResponse struct {
+// APISchemaClientCreateOrUpdatePollerResponse contains the response from method APISchemaClient.CreateOrUpdate.
+type APISchemaClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *APISchemaCreateOrUpdatePoller
+	Poller *APISchemaClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1199,8 +741,8 @@ type APISchemaCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l APISchemaCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APISchemaCreateOrUpdateResponse, error) {
-	respType := APISchemaCreateOrUpdateResponse{}
+func (l APISchemaClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (APISchemaClientCreateOrUpdateResponse, error) {
+	respType := APISchemaClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SchemaContract)
 	if err != nil {
 		return respType, err
@@ -1209,13 +751,13 @@ func (l APISchemaCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a APISchemaCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *APISchemaCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *APISchemaClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("APISchemaClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a APISchemaClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *APISchemaClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *APISchemaClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("APISchemaClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &APISchemaCreateOrUpdatePoller{
+	poller := &APISchemaClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1227,33 +769,33 @@ func (l *APISchemaCreateOrUpdatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// APISchemaCreateOrUpdateResponse contains the response from method APISchema.CreateOrUpdate.
-type APISchemaCreateOrUpdateResponse struct {
-	APISchemaCreateOrUpdateResult
+// APISchemaClientCreateOrUpdateResponse contains the response from method APISchemaClient.CreateOrUpdate.
+type APISchemaClientCreateOrUpdateResponse struct {
+	APISchemaClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APISchemaCreateOrUpdateResult contains the result from method APISchema.CreateOrUpdate.
-type APISchemaCreateOrUpdateResult struct {
+// APISchemaClientCreateOrUpdateResult contains the result from method APISchemaClient.CreateOrUpdate.
+type APISchemaClientCreateOrUpdateResult struct {
 	SchemaContract
 }
 
-// APISchemaDeleteResponse contains the response from method APISchema.Delete.
-type APISchemaDeleteResponse struct {
+// APISchemaClientDeleteResponse contains the response from method APISchemaClient.Delete.
+type APISchemaClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APISchemaGetEntityTagResponse contains the response from method APISchema.GetEntityTag.
-type APISchemaGetEntityTagResponse struct {
-	APISchemaGetEntityTagResult
+// APISchemaClientGetEntityTagResponse contains the response from method APISchemaClient.GetEntityTag.
+type APISchemaClientGetEntityTagResponse struct {
+	APISchemaClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APISchemaGetEntityTagResult contains the result from method APISchema.GetEntityTag.
-type APISchemaGetEntityTagResult struct {
+// APISchemaClientGetEntityTagResult contains the result from method APISchemaClient.GetEntityTag.
+type APISchemaClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1261,61 +803,61 @@ type APISchemaGetEntityTagResult struct {
 	Success bool
 }
 
-// APISchemaGetResponse contains the response from method APISchema.Get.
-type APISchemaGetResponse struct {
-	APISchemaGetResult
+// APISchemaClientGetResponse contains the response from method APISchemaClient.Get.
+type APISchemaClientGetResponse struct {
+	APISchemaClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APISchemaGetResult contains the result from method APISchema.Get.
-type APISchemaGetResult struct {
+// APISchemaClientGetResult contains the result from method APISchemaClient.Get.
+type APISchemaClientGetResult struct {
 	SchemaContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APISchemaListByAPIResponse contains the response from method APISchema.ListByAPI.
-type APISchemaListByAPIResponse struct {
-	APISchemaListByAPIResult
+// APISchemaClientListByAPIResponse contains the response from method APISchemaClient.ListByAPI.
+type APISchemaClientListByAPIResponse struct {
+	APISchemaClientListByAPIResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APISchemaListByAPIResult contains the result from method APISchema.ListByAPI.
-type APISchemaListByAPIResult struct {
+// APISchemaClientListByAPIResult contains the result from method APISchemaClient.ListByAPI.
+type APISchemaClientListByAPIResult struct {
 	SchemaCollection
 }
 
-// APITagDescriptionCreateOrUpdateResponse contains the response from method APITagDescription.CreateOrUpdate.
-type APITagDescriptionCreateOrUpdateResponse struct {
-	APITagDescriptionCreateOrUpdateResult
+// APITagDescriptionClientCreateOrUpdateResponse contains the response from method APITagDescriptionClient.CreateOrUpdate.
+type APITagDescriptionClientCreateOrUpdateResponse struct {
+	APITagDescriptionClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APITagDescriptionCreateOrUpdateResult contains the result from method APITagDescription.CreateOrUpdate.
-type APITagDescriptionCreateOrUpdateResult struct {
+// APITagDescriptionClientCreateOrUpdateResult contains the result from method APITagDescriptionClient.CreateOrUpdate.
+type APITagDescriptionClientCreateOrUpdateResult struct {
 	TagDescriptionContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APITagDescriptionDeleteResponse contains the response from method APITagDescription.Delete.
-type APITagDescriptionDeleteResponse struct {
+// APITagDescriptionClientDeleteResponse contains the response from method APITagDescriptionClient.Delete.
+type APITagDescriptionClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APITagDescriptionGetEntityTagResponse contains the response from method APITagDescription.GetEntityTag.
-type APITagDescriptionGetEntityTagResponse struct {
-	APITagDescriptionGetEntityTagResult
+// APITagDescriptionClientGetEntityTagResponse contains the response from method APITagDescriptionClient.GetEntityTag.
+type APITagDescriptionClientGetEntityTagResponse struct {
+	APITagDescriptionClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APITagDescriptionGetEntityTagResult contains the result from method APITagDescription.GetEntityTag.
-type APITagDescriptionGetEntityTagResult struct {
+// APITagDescriptionClientGetEntityTagResult contains the result from method APITagDescriptionClient.GetEntityTag.
+type APITagDescriptionClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1323,75 +865,61 @@ type APITagDescriptionGetEntityTagResult struct {
 	Success bool
 }
 
-// APITagDescriptionGetResponse contains the response from method APITagDescription.Get.
-type APITagDescriptionGetResponse struct {
-	APITagDescriptionGetResult
+// APITagDescriptionClientGetResponse contains the response from method APITagDescriptionClient.Get.
+type APITagDescriptionClientGetResponse struct {
+	APITagDescriptionClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APITagDescriptionGetResult contains the result from method APITagDescription.Get.
-type APITagDescriptionGetResult struct {
+// APITagDescriptionClientGetResult contains the result from method APITagDescriptionClient.Get.
+type APITagDescriptionClientGetResult struct {
 	TagDescriptionContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APITagDescriptionListByServiceResponse contains the response from method APITagDescription.ListByService.
-type APITagDescriptionListByServiceResponse struct {
-	APITagDescriptionListByServiceResult
+// APITagDescriptionClientListByServiceResponse contains the response from method APITagDescriptionClient.ListByService.
+type APITagDescriptionClientListByServiceResponse struct {
+	APITagDescriptionClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APITagDescriptionListByServiceResult contains the result from method APITagDescription.ListByService.
-type APITagDescriptionListByServiceResult struct {
+// APITagDescriptionClientListByServiceResult contains the result from method APITagDescriptionClient.ListByService.
+type APITagDescriptionClientListByServiceResult struct {
 	TagDescriptionCollection
 }
 
-// APIUpdateResponse contains the response from method API.Update.
-type APIUpdateResponse struct {
-	APIUpdateResult
+// APIVersionSetClientCreateOrUpdateResponse contains the response from method APIVersionSetClient.CreateOrUpdate.
+type APIVersionSetClientCreateOrUpdateResponse struct {
+	APIVersionSetClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIUpdateResult contains the result from method API.Update.
-type APIUpdateResult struct {
-	APIContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// APIVersionSetCreateOrUpdateResponse contains the response from method APIVersionSet.CreateOrUpdate.
-type APIVersionSetCreateOrUpdateResponse struct {
-	APIVersionSetCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// APIVersionSetCreateOrUpdateResult contains the result from method APIVersionSet.CreateOrUpdate.
-type APIVersionSetCreateOrUpdateResult struct {
+// APIVersionSetClientCreateOrUpdateResult contains the result from method APIVersionSetClient.CreateOrUpdate.
+type APIVersionSetClientCreateOrUpdateResult struct {
 	APIVersionSetContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIVersionSetDeleteResponse contains the response from method APIVersionSet.Delete.
-type APIVersionSetDeleteResponse struct {
+// APIVersionSetClientDeleteResponse contains the response from method APIVersionSetClient.Delete.
+type APIVersionSetClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIVersionSetGetEntityTagResponse contains the response from method APIVersionSet.GetEntityTag.
-type APIVersionSetGetEntityTagResponse struct {
-	APIVersionSetGetEntityTagResult
+// APIVersionSetClientGetEntityTagResponse contains the response from method APIVersionSetClient.GetEntityTag.
+type APIVersionSetClientGetEntityTagResponse struct {
+	APIVersionSetClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIVersionSetGetEntityTagResult contains the result from method APIVersionSet.GetEntityTag.
-type APIVersionSetGetEntityTagResult struct {
+// APIVersionSetClientGetEntityTagResult contains the result from method APIVersionSetClient.GetEntityTag.
+type APIVersionSetClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1399,75 +927,75 @@ type APIVersionSetGetEntityTagResult struct {
 	Success bool
 }
 
-// APIVersionSetGetResponse contains the response from method APIVersionSet.Get.
-type APIVersionSetGetResponse struct {
-	APIVersionSetGetResult
+// APIVersionSetClientGetResponse contains the response from method APIVersionSetClient.Get.
+type APIVersionSetClientGetResponse struct {
+	APIVersionSetClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIVersionSetGetResult contains the result from method APIVersionSet.Get.
-type APIVersionSetGetResult struct {
+// APIVersionSetClientGetResult contains the result from method APIVersionSetClient.Get.
+type APIVersionSetClientGetResult struct {
 	APIVersionSetContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// APIVersionSetListByServiceResponse contains the response from method APIVersionSet.ListByService.
-type APIVersionSetListByServiceResponse struct {
-	APIVersionSetListByServiceResult
+// APIVersionSetClientListByServiceResponse contains the response from method APIVersionSetClient.ListByService.
+type APIVersionSetClientListByServiceResponse struct {
+	APIVersionSetClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIVersionSetListByServiceResult contains the result from method APIVersionSet.ListByService.
-type APIVersionSetListByServiceResult struct {
+// APIVersionSetClientListByServiceResult contains the result from method APIVersionSetClient.ListByService.
+type APIVersionSetClientListByServiceResult struct {
 	APIVersionSetCollection
 }
 
-// APIVersionSetUpdateResponse contains the response from method APIVersionSet.Update.
-type APIVersionSetUpdateResponse struct {
-	APIVersionSetUpdateResult
+// APIVersionSetClientUpdateResponse contains the response from method APIVersionSetClient.Update.
+type APIVersionSetClientUpdateResponse struct {
+	APIVersionSetClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIVersionSetUpdateResult contains the result from method APIVersionSet.Update.
-type APIVersionSetUpdateResult struct {
+// APIVersionSetClientUpdateResult contains the result from method APIVersionSetClient.Update.
+type APIVersionSetClientUpdateResult struct {
 	APIVersionSetContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// AuthorizationServerCreateOrUpdateResponse contains the response from method AuthorizationServer.CreateOrUpdate.
-type AuthorizationServerCreateOrUpdateResponse struct {
-	AuthorizationServerCreateOrUpdateResult
+// AuthorizationServerClientCreateOrUpdateResponse contains the response from method AuthorizationServerClient.CreateOrUpdate.
+type AuthorizationServerClientCreateOrUpdateResponse struct {
+	AuthorizationServerClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AuthorizationServerCreateOrUpdateResult contains the result from method AuthorizationServer.CreateOrUpdate.
-type AuthorizationServerCreateOrUpdateResult struct {
+// AuthorizationServerClientCreateOrUpdateResult contains the result from method AuthorizationServerClient.CreateOrUpdate.
+type AuthorizationServerClientCreateOrUpdateResult struct {
 	AuthorizationServerContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// AuthorizationServerDeleteResponse contains the response from method AuthorizationServer.Delete.
-type AuthorizationServerDeleteResponse struct {
+// AuthorizationServerClientDeleteResponse contains the response from method AuthorizationServerClient.Delete.
+type AuthorizationServerClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AuthorizationServerGetEntityTagResponse contains the response from method AuthorizationServer.GetEntityTag.
-type AuthorizationServerGetEntityTagResponse struct {
-	AuthorizationServerGetEntityTagResult
+// AuthorizationServerClientGetEntityTagResponse contains the response from method AuthorizationServerClient.GetEntityTag.
+type AuthorizationServerClientGetEntityTagResponse struct {
+	AuthorizationServerClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AuthorizationServerGetEntityTagResult contains the result from method AuthorizationServer.GetEntityTag.
-type AuthorizationServerGetEntityTagResult struct {
+// AuthorizationServerClientGetEntityTagResult contains the result from method AuthorizationServerClient.GetEntityTag.
+type AuthorizationServerClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1475,89 +1003,89 @@ type AuthorizationServerGetEntityTagResult struct {
 	Success bool
 }
 
-// AuthorizationServerGetResponse contains the response from method AuthorizationServer.Get.
-type AuthorizationServerGetResponse struct {
-	AuthorizationServerGetResult
+// AuthorizationServerClientGetResponse contains the response from method AuthorizationServerClient.Get.
+type AuthorizationServerClientGetResponse struct {
+	AuthorizationServerClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AuthorizationServerGetResult contains the result from method AuthorizationServer.Get.
-type AuthorizationServerGetResult struct {
+// AuthorizationServerClientGetResult contains the result from method AuthorizationServerClient.Get.
+type AuthorizationServerClientGetResult struct {
 	AuthorizationServerContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// AuthorizationServerListByServiceResponse contains the response from method AuthorizationServer.ListByService.
-type AuthorizationServerListByServiceResponse struct {
-	AuthorizationServerListByServiceResult
+// AuthorizationServerClientListByServiceResponse contains the response from method AuthorizationServerClient.ListByService.
+type AuthorizationServerClientListByServiceResponse struct {
+	AuthorizationServerClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AuthorizationServerListByServiceResult contains the result from method AuthorizationServer.ListByService.
-type AuthorizationServerListByServiceResult struct {
+// AuthorizationServerClientListByServiceResult contains the result from method AuthorizationServerClient.ListByService.
+type AuthorizationServerClientListByServiceResult struct {
 	AuthorizationServerCollection
 }
 
-// AuthorizationServerListSecretsResponse contains the response from method AuthorizationServer.ListSecrets.
-type AuthorizationServerListSecretsResponse struct {
-	AuthorizationServerListSecretsResult
+// AuthorizationServerClientListSecretsResponse contains the response from method AuthorizationServerClient.ListSecrets.
+type AuthorizationServerClientListSecretsResponse struct {
+	AuthorizationServerClientListSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AuthorizationServerListSecretsResult contains the result from method AuthorizationServer.ListSecrets.
-type AuthorizationServerListSecretsResult struct {
+// AuthorizationServerClientListSecretsResult contains the result from method AuthorizationServerClient.ListSecrets.
+type AuthorizationServerClientListSecretsResult struct {
 	AuthorizationServerSecretsContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// AuthorizationServerUpdateResponse contains the response from method AuthorizationServer.Update.
-type AuthorizationServerUpdateResponse struct {
-	AuthorizationServerUpdateResult
+// AuthorizationServerClientUpdateResponse contains the response from method AuthorizationServerClient.Update.
+type AuthorizationServerClientUpdateResponse struct {
+	AuthorizationServerClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AuthorizationServerUpdateResult contains the result from method AuthorizationServer.Update.
-type AuthorizationServerUpdateResult struct {
+// AuthorizationServerClientUpdateResult contains the result from method AuthorizationServerClient.Update.
+type AuthorizationServerClientUpdateResult struct {
 	AuthorizationServerContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// BackendCreateOrUpdateResponse contains the response from method Backend.CreateOrUpdate.
-type BackendCreateOrUpdateResponse struct {
-	BackendCreateOrUpdateResult
+// BackendClientCreateOrUpdateResponse contains the response from method BackendClient.CreateOrUpdate.
+type BackendClientCreateOrUpdateResponse struct {
+	BackendClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackendCreateOrUpdateResult contains the result from method Backend.CreateOrUpdate.
-type BackendCreateOrUpdateResult struct {
+// BackendClientCreateOrUpdateResult contains the result from method BackendClient.CreateOrUpdate.
+type BackendClientCreateOrUpdateResult struct {
 	BackendContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// BackendDeleteResponse contains the response from method Backend.Delete.
-type BackendDeleteResponse struct {
+// BackendClientDeleteResponse contains the response from method BackendClient.Delete.
+type BackendClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackendGetEntityTagResponse contains the response from method Backend.GetEntityTag.
-type BackendGetEntityTagResponse struct {
-	BackendGetEntityTagResult
+// BackendClientGetEntityTagResponse contains the response from method BackendClient.GetEntityTag.
+type BackendClientGetEntityTagResponse struct {
+	BackendClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackendGetEntityTagResult contains the result from method Backend.GetEntityTag.
-type BackendGetEntityTagResult struct {
+// BackendClientGetEntityTagResult contains the result from method BackendClient.GetEntityTag.
+type BackendClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1565,81 +1093,81 @@ type BackendGetEntityTagResult struct {
 	Success bool
 }
 
-// BackendGetResponse contains the response from method Backend.Get.
-type BackendGetResponse struct {
-	BackendGetResult
+// BackendClientGetResponse contains the response from method BackendClient.Get.
+type BackendClientGetResponse struct {
+	BackendClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackendGetResult contains the result from method Backend.Get.
-type BackendGetResult struct {
+// BackendClientGetResult contains the result from method BackendClient.Get.
+type BackendClientGetResult struct {
 	BackendContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// BackendListByServiceResponse contains the response from method Backend.ListByService.
-type BackendListByServiceResponse struct {
-	BackendListByServiceResult
+// BackendClientListByServiceResponse contains the response from method BackendClient.ListByService.
+type BackendClientListByServiceResponse struct {
+	BackendClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackendListByServiceResult contains the result from method Backend.ListByService.
-type BackendListByServiceResult struct {
+// BackendClientListByServiceResult contains the result from method BackendClient.ListByService.
+type BackendClientListByServiceResult struct {
 	BackendCollection
 }
 
-// BackendReconnectResponse contains the response from method Backend.Reconnect.
-type BackendReconnectResponse struct {
+// BackendClientReconnectResponse contains the response from method BackendClient.Reconnect.
+type BackendClientReconnectResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackendUpdateResponse contains the response from method Backend.Update.
-type BackendUpdateResponse struct {
-	BackendUpdateResult
+// BackendClientUpdateResponse contains the response from method BackendClient.Update.
+type BackendClientUpdateResponse struct {
+	BackendClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackendUpdateResult contains the result from method Backend.Update.
-type BackendUpdateResult struct {
+// BackendClientUpdateResult contains the result from method BackendClient.Update.
+type BackendClientUpdateResult struct {
 	BackendContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// CacheCreateOrUpdateResponse contains the response from method Cache.CreateOrUpdate.
-type CacheCreateOrUpdateResponse struct {
-	CacheCreateOrUpdateResult
+// CacheClientCreateOrUpdateResponse contains the response from method CacheClient.CreateOrUpdate.
+type CacheClientCreateOrUpdateResponse struct {
+	CacheClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CacheCreateOrUpdateResult contains the result from method Cache.CreateOrUpdate.
-type CacheCreateOrUpdateResult struct {
+// CacheClientCreateOrUpdateResult contains the result from method CacheClient.CreateOrUpdate.
+type CacheClientCreateOrUpdateResult struct {
 	CacheContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// CacheDeleteResponse contains the response from method Cache.Delete.
-type CacheDeleteResponse struct {
+// CacheClientDeleteResponse contains the response from method CacheClient.Delete.
+type CacheClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CacheGetEntityTagResponse contains the response from method Cache.GetEntityTag.
-type CacheGetEntityTagResponse struct {
-	CacheGetEntityTagResult
+// CacheClientGetEntityTagResponse contains the response from method CacheClient.GetEntityTag.
+type CacheClientGetEntityTagResponse struct {
+	CacheClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CacheGetEntityTagResult contains the result from method Cache.GetEntityTag.
-type CacheGetEntityTagResult struct {
+// CacheClientGetEntityTagResult contains the result from method CacheClient.GetEntityTag.
+type CacheClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1647,75 +1175,75 @@ type CacheGetEntityTagResult struct {
 	Success bool
 }
 
-// CacheGetResponse contains the response from method Cache.Get.
-type CacheGetResponse struct {
-	CacheGetResult
+// CacheClientGetResponse contains the response from method CacheClient.Get.
+type CacheClientGetResponse struct {
+	CacheClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CacheGetResult contains the result from method Cache.Get.
-type CacheGetResult struct {
+// CacheClientGetResult contains the result from method CacheClient.Get.
+type CacheClientGetResult struct {
 	CacheContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// CacheListByServiceResponse contains the response from method Cache.ListByService.
-type CacheListByServiceResponse struct {
-	CacheListByServiceResult
+// CacheClientListByServiceResponse contains the response from method CacheClient.ListByService.
+type CacheClientListByServiceResponse struct {
+	CacheClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CacheListByServiceResult contains the result from method Cache.ListByService.
-type CacheListByServiceResult struct {
+// CacheClientListByServiceResult contains the result from method CacheClient.ListByService.
+type CacheClientListByServiceResult struct {
 	CacheCollection
 }
 
-// CacheUpdateResponse contains the response from method Cache.Update.
-type CacheUpdateResponse struct {
-	CacheUpdateResult
+// CacheClientUpdateResponse contains the response from method CacheClient.Update.
+type CacheClientUpdateResponse struct {
+	CacheClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CacheUpdateResult contains the result from method Cache.Update.
-type CacheUpdateResult struct {
+// CacheClientUpdateResult contains the result from method CacheClient.Update.
+type CacheClientUpdateResult struct {
 	CacheContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// CertificateCreateOrUpdateResponse contains the response from method Certificate.CreateOrUpdate.
-type CertificateCreateOrUpdateResponse struct {
-	CertificateCreateOrUpdateResult
+// CertificateClientCreateOrUpdateResponse contains the response from method CertificateClient.CreateOrUpdate.
+type CertificateClientCreateOrUpdateResponse struct {
+	CertificateClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateCreateOrUpdateResult contains the result from method Certificate.CreateOrUpdate.
-type CertificateCreateOrUpdateResult struct {
+// CertificateClientCreateOrUpdateResult contains the result from method CertificateClient.CreateOrUpdate.
+type CertificateClientCreateOrUpdateResult struct {
 	CertificateContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// CertificateDeleteResponse contains the response from method Certificate.Delete.
-type CertificateDeleteResponse struct {
+// CertificateClientDeleteResponse contains the response from method CertificateClient.Delete.
+type CertificateClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateGetEntityTagResponse contains the response from method Certificate.GetEntityTag.
-type CertificateGetEntityTagResponse struct {
-	CertificateGetEntityTagResult
+// CertificateClientGetEntityTagResponse contains the response from method CertificateClient.GetEntityTag.
+type CertificateClientGetEntityTagResponse struct {
+	CertificateClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateGetEntityTagResult contains the result from method Certificate.GetEntityTag.
-type CertificateGetEntityTagResult struct {
+// CertificateClientGetEntityTagResult contains the result from method CertificateClient.GetEntityTag.
+type CertificateClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -1723,242 +1251,50 @@ type CertificateGetEntityTagResult struct {
 	Success bool
 }
 
-// CertificateGetResponse contains the response from method Certificate.Get.
-type CertificateGetResponse struct {
-	CertificateGetResult
+// CertificateClientGetResponse contains the response from method CertificateClient.Get.
+type CertificateClientGetResponse struct {
+	CertificateClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateGetResult contains the result from method Certificate.Get.
-type CertificateGetResult struct {
+// CertificateClientGetResult contains the result from method CertificateClient.Get.
+type CertificateClientGetResult struct {
 	CertificateContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// CertificateListByServiceResponse contains the response from method Certificate.ListByService.
-type CertificateListByServiceResponse struct {
-	CertificateListByServiceResult
+// CertificateClientListByServiceResponse contains the response from method CertificateClient.ListByService.
+type CertificateClientListByServiceResponse struct {
+	CertificateClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateListByServiceResult contains the result from method Certificate.ListByService.
-type CertificateListByServiceResult struct {
+// CertificateClientListByServiceResult contains the result from method CertificateClient.ListByService.
+type CertificateClientListByServiceResult struct {
 	CertificateCollection
 }
 
-// CertificateRefreshSecretResponse contains the response from method Certificate.RefreshSecret.
-type CertificateRefreshSecretResponse struct {
-	CertificateRefreshSecretResult
+// CertificateClientRefreshSecretResponse contains the response from method CertificateClient.RefreshSecret.
+type CertificateClientRefreshSecretResponse struct {
+	CertificateClientRefreshSecretResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateRefreshSecretResult contains the result from method Certificate.RefreshSecret.
-type CertificateRefreshSecretResult struct {
+// CertificateClientRefreshSecretResult contains the result from method CertificateClient.RefreshSecret.
+type CertificateClientRefreshSecretResult struct {
 	CertificateContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// ContentItemCreateOrUpdateResponse contains the response from method ContentItem.CreateOrUpdate.
-type ContentItemCreateOrUpdateResponse struct {
-	ContentItemCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentItemCreateOrUpdateResult contains the result from method ContentItem.CreateOrUpdate.
-type ContentItemCreateOrUpdateResult struct {
-	ContentItemContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// ContentItemDeleteResponse contains the response from method ContentItem.Delete.
-type ContentItemDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentItemGetEntityTagResponse contains the response from method ContentItem.GetEntityTag.
-type ContentItemGetEntityTagResponse struct {
-	ContentItemGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentItemGetEntityTagResult contains the result from method ContentItem.GetEntityTag.
-type ContentItemGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// ContentItemGetResponse contains the response from method ContentItem.Get.
-type ContentItemGetResponse struct {
-	ContentItemGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentItemGetResult contains the result from method ContentItem.Get.
-type ContentItemGetResult struct {
-	ContentItemContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// ContentItemListByServiceResponse contains the response from method ContentItem.ListByService.
-type ContentItemListByServiceResponse struct {
-	ContentItemListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentItemListByServiceResult contains the result from method ContentItem.ListByService.
-type ContentItemListByServiceResult struct {
-	ContentItemCollection
-}
-
-// ContentTypeCreateOrUpdateResponse contains the response from method ContentType.CreateOrUpdate.
-type ContentTypeCreateOrUpdateResponse struct {
-	ContentTypeCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentTypeCreateOrUpdateResult contains the result from method ContentType.CreateOrUpdate.
-type ContentTypeCreateOrUpdateResult struct {
-	ContentTypeContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// ContentTypeDeleteResponse contains the response from method ContentType.Delete.
-type ContentTypeDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentTypeGetResponse contains the response from method ContentType.Get.
-type ContentTypeGetResponse struct {
-	ContentTypeGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentTypeGetResult contains the result from method ContentType.Get.
-type ContentTypeGetResult struct {
-	ContentTypeContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// ContentTypeListByServiceResponse contains the response from method ContentType.ListByService.
-type ContentTypeListByServiceResponse struct {
-	ContentTypeListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContentTypeListByServiceResult contains the result from method ContentType.ListByService.
-type ContentTypeListByServiceResult struct {
-	ContentTypeCollection
-}
-
-// DelegationSettingsCreateOrUpdateResponse contains the response from method DelegationSettings.CreateOrUpdate.
-type DelegationSettingsCreateOrUpdateResponse struct {
-	DelegationSettingsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DelegationSettingsCreateOrUpdateResult contains the result from method DelegationSettings.CreateOrUpdate.
-type DelegationSettingsCreateOrUpdateResult struct {
-	PortalDelegationSettings
-}
-
-// DelegationSettingsGetEntityTagResponse contains the response from method DelegationSettings.GetEntityTag.
-type DelegationSettingsGetEntityTagResponse struct {
-	DelegationSettingsGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DelegationSettingsGetEntityTagResult contains the result from method DelegationSettings.GetEntityTag.
-type DelegationSettingsGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// DelegationSettingsGetResponse contains the response from method DelegationSettings.Get.
-type DelegationSettingsGetResponse struct {
-	DelegationSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DelegationSettingsGetResult contains the result from method DelegationSettings.Get.
-type DelegationSettingsGetResult struct {
-	PortalDelegationSettings
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// DelegationSettingsListSecretsResponse contains the response from method DelegationSettings.ListSecrets.
-type DelegationSettingsListSecretsResponse struct {
-	DelegationSettingsListSecretsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DelegationSettingsListSecretsResult contains the result from method DelegationSettings.ListSecrets.
-type DelegationSettingsListSecretsResult struct {
-	PortalSettingValidationKeyContract
-}
-
-// DelegationSettingsUpdateResponse contains the response from method DelegationSettings.Update.
-type DelegationSettingsUpdateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DeletedServicesGetByNameResponse contains the response from method DeletedServices.GetByName.
-type DeletedServicesGetByNameResponse struct {
-	DeletedServicesGetByNameResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DeletedServicesGetByNameResult contains the result from method DeletedServices.GetByName.
-type DeletedServicesGetByNameResult struct {
-	DeletedServiceContract
-}
-
-// DeletedServicesListBySubscriptionResponse contains the response from method DeletedServices.ListBySubscription.
-type DeletedServicesListBySubscriptionResponse struct {
-	DeletedServicesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DeletedServicesListBySubscriptionResult contains the result from method DeletedServices.ListBySubscription.
-type DeletedServicesListBySubscriptionResult struct {
-	DeletedServicesCollection
-}
-
-// DeletedServicesPurgePollerResponse contains the response from method DeletedServices.Purge.
-type DeletedServicesPurgePollerResponse struct {
+// ClientPerformConnectivityCheckAsyncPollerResponse contains the response from method Client.PerformConnectivityCheckAsync.
+type ClientPerformConnectivityCheckAsyncPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DeletedServicesPurgePoller
+	Poller *ClientPerformConnectivityCheckAsyncPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1967,8 +1303,252 @@ type DeletedServicesPurgePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DeletedServicesPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeletedServicesPurgeResponse, error) {
-	respType := DeletedServicesPurgeResponse{}
+func (l ClientPerformConnectivityCheckAsyncPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientPerformConnectivityCheckAsyncResponse, error) {
+	respType := ClientPerformConnectivityCheckAsyncResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConnectivityCheckResponse)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ClientPerformConnectivityCheckAsyncPollerResponse from the provided client and resume token.
+func (l *ClientPerformConnectivityCheckAsyncPollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.PerformConnectivityCheckAsync", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ClientPerformConnectivityCheckAsyncPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ClientPerformConnectivityCheckAsyncResponse contains the response from method Client.PerformConnectivityCheckAsync.
+type ClientPerformConnectivityCheckAsyncResponse struct {
+	ClientPerformConnectivityCheckAsyncResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientPerformConnectivityCheckAsyncResult contains the result from method Client.PerformConnectivityCheckAsync.
+type ClientPerformConnectivityCheckAsyncResult struct {
+	ConnectivityCheckResponse
+}
+
+// ContentItemClientCreateOrUpdateResponse contains the response from method ContentItemClient.CreateOrUpdate.
+type ContentItemClientCreateOrUpdateResponse struct {
+	ContentItemClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentItemClientCreateOrUpdateResult contains the result from method ContentItemClient.CreateOrUpdate.
+type ContentItemClientCreateOrUpdateResult struct {
+	ContentItemContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// ContentItemClientDeleteResponse contains the response from method ContentItemClient.Delete.
+type ContentItemClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentItemClientGetEntityTagResponse contains the response from method ContentItemClient.GetEntityTag.
+type ContentItemClientGetEntityTagResponse struct {
+	ContentItemClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentItemClientGetEntityTagResult contains the result from method ContentItemClient.GetEntityTag.
+type ContentItemClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// ContentItemClientGetResponse contains the response from method ContentItemClient.Get.
+type ContentItemClientGetResponse struct {
+	ContentItemClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentItemClientGetResult contains the result from method ContentItemClient.Get.
+type ContentItemClientGetResult struct {
+	ContentItemContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// ContentItemClientListByServiceResponse contains the response from method ContentItemClient.ListByService.
+type ContentItemClientListByServiceResponse struct {
+	ContentItemClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentItemClientListByServiceResult contains the result from method ContentItemClient.ListByService.
+type ContentItemClientListByServiceResult struct {
+	ContentItemCollection
+}
+
+// ContentTypeClientCreateOrUpdateResponse contains the response from method ContentTypeClient.CreateOrUpdate.
+type ContentTypeClientCreateOrUpdateResponse struct {
+	ContentTypeClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentTypeClientCreateOrUpdateResult contains the result from method ContentTypeClient.CreateOrUpdate.
+type ContentTypeClientCreateOrUpdateResult struct {
+	ContentTypeContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// ContentTypeClientDeleteResponse contains the response from method ContentTypeClient.Delete.
+type ContentTypeClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentTypeClientGetResponse contains the response from method ContentTypeClient.Get.
+type ContentTypeClientGetResponse struct {
+	ContentTypeClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentTypeClientGetResult contains the result from method ContentTypeClient.Get.
+type ContentTypeClientGetResult struct {
+	ContentTypeContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// ContentTypeClientListByServiceResponse contains the response from method ContentTypeClient.ListByService.
+type ContentTypeClientListByServiceResponse struct {
+	ContentTypeClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContentTypeClientListByServiceResult contains the result from method ContentTypeClient.ListByService.
+type ContentTypeClientListByServiceResult struct {
+	ContentTypeCollection
+}
+
+// DelegationSettingsClientCreateOrUpdateResponse contains the response from method DelegationSettingsClient.CreateOrUpdate.
+type DelegationSettingsClientCreateOrUpdateResponse struct {
+	DelegationSettingsClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DelegationSettingsClientCreateOrUpdateResult contains the result from method DelegationSettingsClient.CreateOrUpdate.
+type DelegationSettingsClientCreateOrUpdateResult struct {
+	PortalDelegationSettings
+}
+
+// DelegationSettingsClientGetEntityTagResponse contains the response from method DelegationSettingsClient.GetEntityTag.
+type DelegationSettingsClientGetEntityTagResponse struct {
+	DelegationSettingsClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DelegationSettingsClientGetEntityTagResult contains the result from method DelegationSettingsClient.GetEntityTag.
+type DelegationSettingsClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// DelegationSettingsClientGetResponse contains the response from method DelegationSettingsClient.Get.
+type DelegationSettingsClientGetResponse struct {
+	DelegationSettingsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DelegationSettingsClientGetResult contains the result from method DelegationSettingsClient.Get.
+type DelegationSettingsClientGetResult struct {
+	PortalDelegationSettings
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// DelegationSettingsClientListSecretsResponse contains the response from method DelegationSettingsClient.ListSecrets.
+type DelegationSettingsClientListSecretsResponse struct {
+	DelegationSettingsClientListSecretsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DelegationSettingsClientListSecretsResult contains the result from method DelegationSettingsClient.ListSecrets.
+type DelegationSettingsClientListSecretsResult struct {
+	PortalSettingValidationKeyContract
+}
+
+// DelegationSettingsClientUpdateResponse contains the response from method DelegationSettingsClient.Update.
+type DelegationSettingsClientUpdateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeletedServicesClientGetByNameResponse contains the response from method DeletedServicesClient.GetByName.
+type DeletedServicesClientGetByNameResponse struct {
+	DeletedServicesClientGetByNameResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeletedServicesClientGetByNameResult contains the result from method DeletedServicesClient.GetByName.
+type DeletedServicesClientGetByNameResult struct {
+	DeletedServiceContract
+}
+
+// DeletedServicesClientListBySubscriptionResponse contains the response from method DeletedServicesClient.ListBySubscription.
+type DeletedServicesClientListBySubscriptionResponse struct {
+	DeletedServicesClientListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeletedServicesClientListBySubscriptionResult contains the result from method DeletedServicesClient.ListBySubscription.
+type DeletedServicesClientListBySubscriptionResult struct {
+	DeletedServicesCollection
+}
+
+// DeletedServicesClientPurgePollerResponse contains the response from method DeletedServicesClient.Purge.
+type DeletedServicesClientPurgePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *DeletedServicesClientPurgePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DeletedServicesClientPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeletedServicesClientPurgeResponse, error) {
+	respType := DeletedServicesClientPurgeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DeletedServiceContract)
 	if err != nil {
 		return respType, err
@@ -1977,13 +1557,13 @@ func (l DeletedServicesPurgePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a DeletedServicesPurgePollerResponse from the provided client and resume token.
-func (l *DeletedServicesPurgePollerResponse) Resume(ctx context.Context, client *DeletedServicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DeletedServicesClient.Purge", token, client.pl, client.purgeHandleError)
+// Resume rehydrates a DeletedServicesClientPurgePollerResponse from the provided client and resume token.
+func (l *DeletedServicesClientPurgePollerResponse) Resume(ctx context.Context, client *DeletedServicesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DeletedServicesClient.Purge", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DeletedServicesPurgePoller{
+	poller := &DeletedServicesClientPurgePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1995,47 +1575,47 @@ func (l *DeletedServicesPurgePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// DeletedServicesPurgeResponse contains the response from method DeletedServices.Purge.
-type DeletedServicesPurgeResponse struct {
-	DeletedServicesPurgeResult
+// DeletedServicesClientPurgeResponse contains the response from method DeletedServicesClient.Purge.
+type DeletedServicesClientPurgeResponse struct {
+	DeletedServicesClientPurgeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeletedServicesPurgeResult contains the result from method DeletedServices.Purge.
-type DeletedServicesPurgeResult struct {
+// DeletedServicesClientPurgeResult contains the result from method DeletedServicesClient.Purge.
+type DeletedServicesClientPurgeResult struct {
 	DeletedServiceContract
 }
 
-// DiagnosticCreateOrUpdateResponse contains the response from method Diagnostic.CreateOrUpdate.
-type DiagnosticCreateOrUpdateResponse struct {
-	DiagnosticCreateOrUpdateResult
+// DiagnosticClientCreateOrUpdateResponse contains the response from method DiagnosticClient.CreateOrUpdate.
+type DiagnosticClientCreateOrUpdateResponse struct {
+	DiagnosticClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticCreateOrUpdateResult contains the result from method Diagnostic.CreateOrUpdate.
-type DiagnosticCreateOrUpdateResult struct {
+// DiagnosticClientCreateOrUpdateResult contains the result from method DiagnosticClient.CreateOrUpdate.
+type DiagnosticClientCreateOrUpdateResult struct {
 	DiagnosticContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// DiagnosticDeleteResponse contains the response from method Diagnostic.Delete.
-type DiagnosticDeleteResponse struct {
+// DiagnosticClientDeleteResponse contains the response from method DiagnosticClient.Delete.
+type DiagnosticClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticGetEntityTagResponse contains the response from method Diagnostic.GetEntityTag.
-type DiagnosticGetEntityTagResponse struct {
-	DiagnosticGetEntityTagResult
+// DiagnosticClientGetEntityTagResponse contains the response from method DiagnosticClient.GetEntityTag.
+type DiagnosticClientGetEntityTagResponse struct {
+	DiagnosticClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticGetEntityTagResult contains the result from method Diagnostic.GetEntityTag.
-type DiagnosticGetEntityTagResult struct {
+// DiagnosticClientGetEntityTagResult contains the result from method DiagnosticClient.GetEntityTag.
+type DiagnosticClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2043,73 +1623,73 @@ type DiagnosticGetEntityTagResult struct {
 	Success bool
 }
 
-// DiagnosticGetResponse contains the response from method Diagnostic.Get.
-type DiagnosticGetResponse struct {
-	DiagnosticGetResult
+// DiagnosticClientGetResponse contains the response from method DiagnosticClient.Get.
+type DiagnosticClientGetResponse struct {
+	DiagnosticClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticGetResult contains the result from method Diagnostic.Get.
-type DiagnosticGetResult struct {
+// DiagnosticClientGetResult contains the result from method DiagnosticClient.Get.
+type DiagnosticClientGetResult struct {
 	DiagnosticContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// DiagnosticListByServiceResponse contains the response from method Diagnostic.ListByService.
-type DiagnosticListByServiceResponse struct {
-	DiagnosticListByServiceResult
+// DiagnosticClientListByServiceResponse contains the response from method DiagnosticClient.ListByService.
+type DiagnosticClientListByServiceResponse struct {
+	DiagnosticClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticListByServiceResult contains the result from method Diagnostic.ListByService.
-type DiagnosticListByServiceResult struct {
+// DiagnosticClientListByServiceResult contains the result from method DiagnosticClient.ListByService.
+type DiagnosticClientListByServiceResult struct {
 	DiagnosticCollection
 }
 
-// DiagnosticUpdateResponse contains the response from method Diagnostic.Update.
-type DiagnosticUpdateResponse struct {
-	DiagnosticUpdateResult
+// DiagnosticClientUpdateResponse contains the response from method DiagnosticClient.Update.
+type DiagnosticClientUpdateResponse struct {
+	DiagnosticClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticUpdateResult contains the result from method Diagnostic.Update.
-type DiagnosticUpdateResult struct {
+// DiagnosticClientUpdateResult contains the result from method DiagnosticClient.Update.
+type DiagnosticClientUpdateResult struct {
 	DiagnosticContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// EmailTemplateCreateOrUpdateResponse contains the response from method EmailTemplate.CreateOrUpdate.
-type EmailTemplateCreateOrUpdateResponse struct {
-	EmailTemplateCreateOrUpdateResult
+// EmailTemplateClientCreateOrUpdateResponse contains the response from method EmailTemplateClient.CreateOrUpdate.
+type EmailTemplateClientCreateOrUpdateResponse struct {
+	EmailTemplateClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmailTemplateCreateOrUpdateResult contains the result from method EmailTemplate.CreateOrUpdate.
-type EmailTemplateCreateOrUpdateResult struct {
+// EmailTemplateClientCreateOrUpdateResult contains the result from method EmailTemplateClient.CreateOrUpdate.
+type EmailTemplateClientCreateOrUpdateResult struct {
 	EmailTemplateContract
 }
 
-// EmailTemplateDeleteResponse contains the response from method EmailTemplate.Delete.
-type EmailTemplateDeleteResponse struct {
+// EmailTemplateClientDeleteResponse contains the response from method EmailTemplateClient.Delete.
+type EmailTemplateClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmailTemplateGetEntityTagResponse contains the response from method EmailTemplate.GetEntityTag.
-type EmailTemplateGetEntityTagResponse struct {
-	EmailTemplateGetEntityTagResult
+// EmailTemplateClientGetEntityTagResponse contains the response from method EmailTemplateClient.GetEntityTag.
+type EmailTemplateClientGetEntityTagResponse struct {
+	EmailTemplateClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmailTemplateGetEntityTagResult contains the result from method EmailTemplate.GetEntityTag.
-type EmailTemplateGetEntityTagResult struct {
+// EmailTemplateClientGetEntityTagResult contains the result from method EmailTemplateClient.GetEntityTag.
+type EmailTemplateClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2117,73 +1697,73 @@ type EmailTemplateGetEntityTagResult struct {
 	Success bool
 }
 
-// EmailTemplateGetResponse contains the response from method EmailTemplate.Get.
-type EmailTemplateGetResponse struct {
-	EmailTemplateGetResult
+// EmailTemplateClientGetResponse contains the response from method EmailTemplateClient.Get.
+type EmailTemplateClientGetResponse struct {
+	EmailTemplateClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmailTemplateGetResult contains the result from method EmailTemplate.Get.
-type EmailTemplateGetResult struct {
+// EmailTemplateClientGetResult contains the result from method EmailTemplateClient.Get.
+type EmailTemplateClientGetResult struct {
 	EmailTemplateContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// EmailTemplateListByServiceResponse contains the response from method EmailTemplate.ListByService.
-type EmailTemplateListByServiceResponse struct {
-	EmailTemplateListByServiceResult
+// EmailTemplateClientListByServiceResponse contains the response from method EmailTemplateClient.ListByService.
+type EmailTemplateClientListByServiceResponse struct {
+	EmailTemplateClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmailTemplateListByServiceResult contains the result from method EmailTemplate.ListByService.
-type EmailTemplateListByServiceResult struct {
+// EmailTemplateClientListByServiceResult contains the result from method EmailTemplateClient.ListByService.
+type EmailTemplateClientListByServiceResult struct {
 	EmailTemplateCollection
 }
 
-// EmailTemplateUpdateResponse contains the response from method EmailTemplate.Update.
-type EmailTemplateUpdateResponse struct {
-	EmailTemplateUpdateResult
+// EmailTemplateClientUpdateResponse contains the response from method EmailTemplateClient.Update.
+type EmailTemplateClientUpdateResponse struct {
+	EmailTemplateClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmailTemplateUpdateResult contains the result from method EmailTemplate.Update.
-type EmailTemplateUpdateResult struct {
+// EmailTemplateClientUpdateResult contains the result from method EmailTemplateClient.Update.
+type EmailTemplateClientUpdateResult struct {
 	EmailTemplateContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GatewayAPICreateOrUpdateResponse contains the response from method GatewayAPI.CreateOrUpdate.
-type GatewayAPICreateOrUpdateResponse struct {
-	GatewayAPICreateOrUpdateResult
+// GatewayAPIClientCreateOrUpdateResponse contains the response from method GatewayAPIClient.CreateOrUpdate.
+type GatewayAPIClientCreateOrUpdateResponse struct {
+	GatewayAPIClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayAPICreateOrUpdateResult contains the result from method GatewayAPI.CreateOrUpdate.
-type GatewayAPICreateOrUpdateResult struct {
+// GatewayAPIClientCreateOrUpdateResult contains the result from method GatewayAPIClient.CreateOrUpdate.
+type GatewayAPIClientCreateOrUpdateResult struct {
 	APIContract
 }
 
-// GatewayAPIDeleteResponse contains the response from method GatewayAPI.Delete.
-type GatewayAPIDeleteResponse struct {
+// GatewayAPIClientDeleteResponse contains the response from method GatewayAPIClient.Delete.
+type GatewayAPIClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayAPIGetEntityTagResponse contains the response from method GatewayAPI.GetEntityTag.
-type GatewayAPIGetEntityTagResponse struct {
-	GatewayAPIGetEntityTagResult
+// GatewayAPIClientGetEntityTagResponse contains the response from method GatewayAPIClient.GetEntityTag.
+type GatewayAPIClientGetEntityTagResponse struct {
+	GatewayAPIClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayAPIGetEntityTagResult contains the result from method GatewayAPI.GetEntityTag.
-type GatewayAPIGetEntityTagResult struct {
+// GatewayAPIClientGetEntityTagResult contains the result from method GatewayAPIClient.GetEntityTag.
+type GatewayAPIClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2191,47 +1771,47 @@ type GatewayAPIGetEntityTagResult struct {
 	Success bool
 }
 
-// GatewayAPIListByServiceResponse contains the response from method GatewayAPI.ListByService.
-type GatewayAPIListByServiceResponse struct {
-	GatewayAPIListByServiceResult
+// GatewayAPIClientListByServiceResponse contains the response from method GatewayAPIClient.ListByService.
+type GatewayAPIClientListByServiceResponse struct {
+	GatewayAPIClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayAPIListByServiceResult contains the result from method GatewayAPI.ListByService.
-type GatewayAPIListByServiceResult struct {
+// GatewayAPIClientListByServiceResult contains the result from method GatewayAPIClient.ListByService.
+type GatewayAPIClientListByServiceResult struct {
 	APICollection
 }
 
-// GatewayCertificateAuthorityCreateOrUpdateResponse contains the response from method GatewayCertificateAuthority.CreateOrUpdate.
-type GatewayCertificateAuthorityCreateOrUpdateResponse struct {
-	GatewayCertificateAuthorityCreateOrUpdateResult
+// GatewayCertificateAuthorityClientCreateOrUpdateResponse contains the response from method GatewayCertificateAuthorityClient.CreateOrUpdate.
+type GatewayCertificateAuthorityClientCreateOrUpdateResponse struct {
+	GatewayCertificateAuthorityClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayCertificateAuthorityCreateOrUpdateResult contains the result from method GatewayCertificateAuthority.CreateOrUpdate.
-type GatewayCertificateAuthorityCreateOrUpdateResult struct {
+// GatewayCertificateAuthorityClientCreateOrUpdateResult contains the result from method GatewayCertificateAuthorityClient.CreateOrUpdate.
+type GatewayCertificateAuthorityClientCreateOrUpdateResult struct {
 	GatewayCertificateAuthorityContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GatewayCertificateAuthorityDeleteResponse contains the response from method GatewayCertificateAuthority.Delete.
-type GatewayCertificateAuthorityDeleteResponse struct {
+// GatewayCertificateAuthorityClientDeleteResponse contains the response from method GatewayCertificateAuthorityClient.Delete.
+type GatewayCertificateAuthorityClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayCertificateAuthorityGetEntityTagResponse contains the response from method GatewayCertificateAuthority.GetEntityTag.
-type GatewayCertificateAuthorityGetEntityTagResponse struct {
-	GatewayCertificateAuthorityGetEntityTagResult
+// GatewayCertificateAuthorityClientGetEntityTagResponse contains the response from method GatewayCertificateAuthorityClient.GetEntityTag.
+type GatewayCertificateAuthorityClientGetEntityTagResponse struct {
+	GatewayCertificateAuthorityClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayCertificateAuthorityGetEntityTagResult contains the result from method GatewayCertificateAuthority.GetEntityTag.
-type GatewayCertificateAuthorityGetEntityTagResult struct {
+// GatewayCertificateAuthorityClientGetEntityTagResult contains the result from method GatewayCertificateAuthorityClient.GetEntityTag.
+type GatewayCertificateAuthorityClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2239,73 +1819,73 @@ type GatewayCertificateAuthorityGetEntityTagResult struct {
 	Success bool
 }
 
-// GatewayCertificateAuthorityGetResponse contains the response from method GatewayCertificateAuthority.Get.
-type GatewayCertificateAuthorityGetResponse struct {
-	GatewayCertificateAuthorityGetResult
+// GatewayCertificateAuthorityClientGetResponse contains the response from method GatewayCertificateAuthorityClient.Get.
+type GatewayCertificateAuthorityClientGetResponse struct {
+	GatewayCertificateAuthorityClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayCertificateAuthorityGetResult contains the result from method GatewayCertificateAuthority.Get.
-type GatewayCertificateAuthorityGetResult struct {
+// GatewayCertificateAuthorityClientGetResult contains the result from method GatewayCertificateAuthorityClient.Get.
+type GatewayCertificateAuthorityClientGetResult struct {
 	GatewayCertificateAuthorityContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GatewayCertificateAuthorityListByServiceResponse contains the response from method GatewayCertificateAuthority.ListByService.
-type GatewayCertificateAuthorityListByServiceResponse struct {
-	GatewayCertificateAuthorityListByServiceResult
+// GatewayCertificateAuthorityClientListByServiceResponse contains the response from method GatewayCertificateAuthorityClient.ListByService.
+type GatewayCertificateAuthorityClientListByServiceResponse struct {
+	GatewayCertificateAuthorityClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayCertificateAuthorityListByServiceResult contains the result from method GatewayCertificateAuthority.ListByService.
-type GatewayCertificateAuthorityListByServiceResult struct {
+// GatewayCertificateAuthorityClientListByServiceResult contains the result from method GatewayCertificateAuthorityClient.ListByService.
+type GatewayCertificateAuthorityClientListByServiceResult struct {
 	GatewayCertificateAuthorityCollection
 }
 
-// GatewayCreateOrUpdateResponse contains the response from method Gateway.CreateOrUpdate.
-type GatewayCreateOrUpdateResponse struct {
-	GatewayCreateOrUpdateResult
+// GatewayClientCreateOrUpdateResponse contains the response from method GatewayClient.CreateOrUpdate.
+type GatewayClientCreateOrUpdateResponse struct {
+	GatewayClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayCreateOrUpdateResult contains the result from method Gateway.CreateOrUpdate.
-type GatewayCreateOrUpdateResult struct {
+// GatewayClientCreateOrUpdateResult contains the result from method GatewayClient.CreateOrUpdate.
+type GatewayClientCreateOrUpdateResult struct {
 	GatewayContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GatewayDeleteResponse contains the response from method Gateway.Delete.
-type GatewayDeleteResponse struct {
+// GatewayClientDeleteResponse contains the response from method GatewayClient.Delete.
+type GatewayClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayGenerateTokenResponse contains the response from method Gateway.GenerateToken.
-type GatewayGenerateTokenResponse struct {
-	GatewayGenerateTokenResult
+// GatewayClientGenerateTokenResponse contains the response from method GatewayClient.GenerateToken.
+type GatewayClientGenerateTokenResponse struct {
+	GatewayClientGenerateTokenResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayGenerateTokenResult contains the result from method Gateway.GenerateToken.
-type GatewayGenerateTokenResult struct {
+// GatewayClientGenerateTokenResult contains the result from method GatewayClient.GenerateToken.
+type GatewayClientGenerateTokenResult struct {
 	GatewayTokenContract
 }
 
-// GatewayGetEntityTagResponse contains the response from method Gateway.GetEntityTag.
-type GatewayGetEntityTagResponse struct {
-	GatewayGetEntityTagResult
+// GatewayClientGetEntityTagResponse contains the response from method GatewayClient.GetEntityTag.
+type GatewayClientGetEntityTagResponse struct {
+	GatewayClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayGetEntityTagResult contains the result from method Gateway.GetEntityTag.
-type GatewayGetEntityTagResult struct {
+// GatewayClientGetEntityTagResult contains the result from method GatewayClient.GetEntityTag.
+type GatewayClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2313,157 +1893,95 @@ type GatewayGetEntityTagResult struct {
 	Success bool
 }
 
-// GatewayGetResponse contains the response from method Gateway.Get.
-type GatewayGetResponse struct {
-	GatewayGetResult
+// GatewayClientGetResponse contains the response from method GatewayClient.Get.
+type GatewayClientGetResponse struct {
+	GatewayClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayGetResult contains the result from method Gateway.Get.
-type GatewayGetResult struct {
+// GatewayClientGetResult contains the result from method GatewayClient.Get.
+type GatewayClientGetResult struct {
 	GatewayContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GatewayHostnameConfigurationCreateOrUpdateResponse contains the response from method GatewayHostnameConfiguration.CreateOrUpdate.
-type GatewayHostnameConfigurationCreateOrUpdateResponse struct {
-	GatewayHostnameConfigurationCreateOrUpdateResult
+// GatewayClientListByServiceResponse contains the response from method GatewayClient.ListByService.
+type GatewayClientListByServiceResponse struct {
+	GatewayClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayHostnameConfigurationCreateOrUpdateResult contains the result from method GatewayHostnameConfiguration.CreateOrUpdate.
-type GatewayHostnameConfigurationCreateOrUpdateResult struct {
-	GatewayHostnameConfigurationContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// GatewayHostnameConfigurationDeleteResponse contains the response from method GatewayHostnameConfiguration.Delete.
-type GatewayHostnameConfigurationDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GatewayHostnameConfigurationGetEntityTagResponse contains the response from method GatewayHostnameConfiguration.GetEntityTag.
-type GatewayHostnameConfigurationGetEntityTagResponse struct {
-	GatewayHostnameConfigurationGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GatewayHostnameConfigurationGetEntityTagResult contains the result from method GatewayHostnameConfiguration.GetEntityTag.
-type GatewayHostnameConfigurationGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// GatewayHostnameConfigurationGetResponse contains the response from method GatewayHostnameConfiguration.Get.
-type GatewayHostnameConfigurationGetResponse struct {
-	GatewayHostnameConfigurationGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GatewayHostnameConfigurationGetResult contains the result from method GatewayHostnameConfiguration.Get.
-type GatewayHostnameConfigurationGetResult struct {
-	GatewayHostnameConfigurationContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// GatewayHostnameConfigurationListByServiceResponse contains the response from method GatewayHostnameConfiguration.ListByService.
-type GatewayHostnameConfigurationListByServiceResponse struct {
-	GatewayHostnameConfigurationListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GatewayHostnameConfigurationListByServiceResult contains the result from method GatewayHostnameConfiguration.ListByService.
-type GatewayHostnameConfigurationListByServiceResult struct {
-	GatewayHostnameConfigurationCollection
-}
-
-// GatewayListByServiceResponse contains the response from method Gateway.ListByService.
-type GatewayListByServiceResponse struct {
-	GatewayListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GatewayListByServiceResult contains the result from method Gateway.ListByService.
-type GatewayListByServiceResult struct {
+// GatewayClientListByServiceResult contains the result from method GatewayClient.ListByService.
+type GatewayClientListByServiceResult struct {
 	GatewayCollection
 }
 
-// GatewayListKeysResponse contains the response from method Gateway.ListKeys.
-type GatewayListKeysResponse struct {
-	GatewayListKeysResult
+// GatewayClientListKeysResponse contains the response from method GatewayClient.ListKeys.
+type GatewayClientListKeysResponse struct {
+	GatewayClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayListKeysResult contains the result from method Gateway.ListKeys.
-type GatewayListKeysResult struct {
+// GatewayClientListKeysResult contains the result from method GatewayClient.ListKeys.
+type GatewayClientListKeysResult struct {
 	GatewayKeysContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GatewayRegenerateKeyResponse contains the response from method Gateway.RegenerateKey.
-type GatewayRegenerateKeyResponse struct {
+// GatewayClientRegenerateKeyResponse contains the response from method GatewayClient.RegenerateKey.
+type GatewayClientRegenerateKeyResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayUpdateResponse contains the response from method Gateway.Update.
-type GatewayUpdateResponse struct {
-	GatewayUpdateResult
+// GatewayClientUpdateResponse contains the response from method GatewayClient.Update.
+type GatewayClientUpdateResponse struct {
+	GatewayClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayUpdateResult contains the result from method Gateway.Update.
-type GatewayUpdateResult struct {
+// GatewayClientUpdateResult contains the result from method GatewayClient.Update.
+type GatewayClientUpdateResult struct {
 	GatewayContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GroupCreateOrUpdateResponse contains the response from method Group.CreateOrUpdate.
-type GroupCreateOrUpdateResponse struct {
-	GroupCreateOrUpdateResult
+// GatewayHostnameConfigurationClientCreateOrUpdateResponse contains the response from method GatewayHostnameConfigurationClient.CreateOrUpdate.
+type GatewayHostnameConfigurationClientCreateOrUpdateResponse struct {
+	GatewayHostnameConfigurationClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupCreateOrUpdateResult contains the result from method Group.CreateOrUpdate.
-type GroupCreateOrUpdateResult struct {
-	GroupContract
+// GatewayHostnameConfigurationClientCreateOrUpdateResult contains the result from method GatewayHostnameConfigurationClient.CreateOrUpdate.
+type GatewayHostnameConfigurationClientCreateOrUpdateResult struct {
+	GatewayHostnameConfigurationContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GroupDeleteResponse contains the response from method Group.Delete.
-type GroupDeleteResponse struct {
+// GatewayHostnameConfigurationClientDeleteResponse contains the response from method GatewayHostnameConfigurationClient.Delete.
+type GatewayHostnameConfigurationClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupGetEntityTagResponse contains the response from method Group.GetEntityTag.
-type GroupGetEntityTagResponse struct {
-	GroupGetEntityTagResult
+// GatewayHostnameConfigurationClientGetEntityTagResponse contains the response from method GatewayHostnameConfigurationClient.GetEntityTag.
+type GatewayHostnameConfigurationClientGetEntityTagResponse struct {
+	GatewayHostnameConfigurationClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupGetEntityTagResult contains the result from method Group.GetEntityTag.
-type GroupGetEntityTagResult struct {
+// GatewayHostnameConfigurationClientGetEntityTagResult contains the result from method GatewayHostnameConfigurationClient.GetEntityTag.
+type GatewayHostnameConfigurationClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2471,118 +1989,280 @@ type GroupGetEntityTagResult struct {
 	Success bool
 }
 
-// GroupGetResponse contains the response from method Group.Get.
-type GroupGetResponse struct {
-	GroupGetResult
+// GatewayHostnameConfigurationClientGetResponse contains the response from method GatewayHostnameConfigurationClient.Get.
+type GatewayHostnameConfigurationClientGetResponse struct {
+	GatewayHostnameConfigurationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupGetResult contains the result from method Group.Get.
-type GroupGetResult struct {
+// GatewayHostnameConfigurationClientGetResult contains the result from method GatewayHostnameConfigurationClient.Get.
+type GatewayHostnameConfigurationClientGetResult struct {
+	GatewayHostnameConfigurationContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// GatewayHostnameConfigurationClientListByServiceResponse contains the response from method GatewayHostnameConfigurationClient.ListByService.
+type GatewayHostnameConfigurationClientListByServiceResponse struct {
+	GatewayHostnameConfigurationClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GatewayHostnameConfigurationClientListByServiceResult contains the result from method GatewayHostnameConfigurationClient.ListByService.
+type GatewayHostnameConfigurationClientListByServiceResult struct {
+	GatewayHostnameConfigurationCollection
+}
+
+// GlobalSchemaClientCreateOrUpdatePollerResponse contains the response from method GlobalSchemaClient.CreateOrUpdate.
+type GlobalSchemaClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *GlobalSchemaClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l GlobalSchemaClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GlobalSchemaClientCreateOrUpdateResponse, error) {
+	respType := GlobalSchemaClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.GlobalSchemaContract)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a GlobalSchemaClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *GlobalSchemaClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *GlobalSchemaClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GlobalSchemaClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &GlobalSchemaClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// GlobalSchemaClientCreateOrUpdateResponse contains the response from method GlobalSchemaClient.CreateOrUpdate.
+type GlobalSchemaClientCreateOrUpdateResponse struct {
+	GlobalSchemaClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GlobalSchemaClientCreateOrUpdateResult contains the result from method GlobalSchemaClient.CreateOrUpdate.
+type GlobalSchemaClientCreateOrUpdateResult struct {
+	GlobalSchemaContract
+}
+
+// GlobalSchemaClientDeleteResponse contains the response from method GlobalSchemaClient.Delete.
+type GlobalSchemaClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GlobalSchemaClientGetEntityTagResponse contains the response from method GlobalSchemaClient.GetEntityTag.
+type GlobalSchemaClientGetEntityTagResponse struct {
+	GlobalSchemaClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GlobalSchemaClientGetEntityTagResult contains the result from method GlobalSchemaClient.GetEntityTag.
+type GlobalSchemaClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// GlobalSchemaClientGetResponse contains the response from method GlobalSchemaClient.Get.
+type GlobalSchemaClientGetResponse struct {
+	GlobalSchemaClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GlobalSchemaClientGetResult contains the result from method GlobalSchemaClient.Get.
+type GlobalSchemaClientGetResult struct {
+	GlobalSchemaContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// GlobalSchemaClientListByServiceResponse contains the response from method GlobalSchemaClient.ListByService.
+type GlobalSchemaClientListByServiceResponse struct {
+	GlobalSchemaClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GlobalSchemaClientListByServiceResult contains the result from method GlobalSchemaClient.ListByService.
+type GlobalSchemaClientListByServiceResult struct {
+	GlobalSchemaCollection
+}
+
+// GroupClientCreateOrUpdateResponse contains the response from method GroupClient.CreateOrUpdate.
+type GroupClientCreateOrUpdateResponse struct {
+	GroupClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GroupClientCreateOrUpdateResult contains the result from method GroupClient.CreateOrUpdate.
+type GroupClientCreateOrUpdateResult struct {
 	GroupContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GroupListByServiceResponse contains the response from method Group.ListByService.
-type GroupListByServiceResponse struct {
-	GroupListByServiceResult
+// GroupClientDeleteResponse contains the response from method GroupClient.Delete.
+type GroupClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupListByServiceResult contains the result from method Group.ListByService.
-type GroupListByServiceResult struct {
+// GroupClientGetEntityTagResponse contains the response from method GroupClient.GetEntityTag.
+type GroupClientGetEntityTagResponse struct {
+	GroupClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GroupClientGetEntityTagResult contains the result from method GroupClient.GetEntityTag.
+type GroupClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// GroupClientGetResponse contains the response from method GroupClient.Get.
+type GroupClientGetResponse struct {
+	GroupClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GroupClientGetResult contains the result from method GroupClient.Get.
+type GroupClientGetResult struct {
+	GroupContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// GroupClientListByServiceResponse contains the response from method GroupClient.ListByService.
+type GroupClientListByServiceResponse struct {
+	GroupClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GroupClientListByServiceResult contains the result from method GroupClient.ListByService.
+type GroupClientListByServiceResult struct {
 	GroupCollection
 }
 
-// GroupUpdateResponse contains the response from method Group.Update.
-type GroupUpdateResponse struct {
-	GroupUpdateResult
+// GroupClientUpdateResponse contains the response from method GroupClient.Update.
+type GroupClientUpdateResponse struct {
+	GroupClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupUpdateResult contains the result from method Group.Update.
-type GroupUpdateResult struct {
+// GroupClientUpdateResult contains the result from method GroupClient.Update.
+type GroupClientUpdateResult struct {
 	GroupContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// GroupUserCheckEntityExistsResponse contains the response from method GroupUser.CheckEntityExists.
-type GroupUserCheckEntityExistsResponse struct {
-	GroupUserCheckEntityExistsResult
+// GroupUserClientCheckEntityExistsResponse contains the response from method GroupUserClient.CheckEntityExists.
+type GroupUserClientCheckEntityExistsResponse struct {
+	GroupUserClientCheckEntityExistsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupUserCheckEntityExistsResult contains the result from method GroupUser.CheckEntityExists.
-type GroupUserCheckEntityExistsResult struct {
+// GroupUserClientCheckEntityExistsResult contains the result from method GroupUserClient.CheckEntityExists.
+type GroupUserClientCheckEntityExistsResult struct {
 	// Success indicates if the operation succeeded or failed.
 	Success bool
 }
 
-// GroupUserCreateResponse contains the response from method GroupUser.Create.
-type GroupUserCreateResponse struct {
-	GroupUserCreateResult
+// GroupUserClientCreateResponse contains the response from method GroupUserClient.Create.
+type GroupUserClientCreateResponse struct {
+	GroupUserClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupUserCreateResult contains the result from method GroupUser.Create.
-type GroupUserCreateResult struct {
+// GroupUserClientCreateResult contains the result from method GroupUserClient.Create.
+type GroupUserClientCreateResult struct {
 	UserContract
 }
 
-// GroupUserDeleteResponse contains the response from method GroupUser.Delete.
-type GroupUserDeleteResponse struct {
+// GroupUserClientDeleteResponse contains the response from method GroupUserClient.Delete.
+type GroupUserClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupUserListResponse contains the response from method GroupUser.List.
-type GroupUserListResponse struct {
-	GroupUserListResult
+// GroupUserClientListResponse contains the response from method GroupUserClient.List.
+type GroupUserClientListResponse struct {
+	GroupUserClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GroupUserListResult contains the result from method GroupUser.List.
-type GroupUserListResult struct {
+// GroupUserClientListResult contains the result from method GroupUserClient.List.
+type GroupUserClientListResult struct {
 	UserCollection
 }
 
-// IdentityProviderCreateOrUpdateResponse contains the response from method IdentityProvider.CreateOrUpdate.
-type IdentityProviderCreateOrUpdateResponse struct {
-	IdentityProviderCreateOrUpdateResult
+// IdentityProviderClientCreateOrUpdateResponse contains the response from method IdentityProviderClient.CreateOrUpdate.
+type IdentityProviderClientCreateOrUpdateResponse struct {
+	IdentityProviderClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IdentityProviderCreateOrUpdateResult contains the result from method IdentityProvider.CreateOrUpdate.
-type IdentityProviderCreateOrUpdateResult struct {
+// IdentityProviderClientCreateOrUpdateResult contains the result from method IdentityProviderClient.CreateOrUpdate.
+type IdentityProviderClientCreateOrUpdateResult struct {
 	IdentityProviderContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// IdentityProviderDeleteResponse contains the response from method IdentityProvider.Delete.
-type IdentityProviderDeleteResponse struct {
+// IdentityProviderClientDeleteResponse contains the response from method IdentityProviderClient.Delete.
+type IdentityProviderClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IdentityProviderGetEntityTagResponse contains the response from method IdentityProvider.GetEntityTag.
-type IdentityProviderGetEntityTagResponse struct {
-	IdentityProviderGetEntityTagResult
+// IdentityProviderClientGetEntityTagResponse contains the response from method IdentityProviderClient.GetEntityTag.
+type IdentityProviderClientGetEntityTagResponse struct {
+	IdentityProviderClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IdentityProviderGetEntityTagResult contains the result from method IdentityProvider.GetEntityTag.
-type IdentityProviderGetEntityTagResult struct {
+// IdentityProviderClientGetEntityTagResult contains the result from method IdentityProviderClient.GetEntityTag.
+type IdentityProviderClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2590,115 +2270,115 @@ type IdentityProviderGetEntityTagResult struct {
 	Success bool
 }
 
-// IdentityProviderGetResponse contains the response from method IdentityProvider.Get.
-type IdentityProviderGetResponse struct {
-	IdentityProviderGetResult
+// IdentityProviderClientGetResponse contains the response from method IdentityProviderClient.Get.
+type IdentityProviderClientGetResponse struct {
+	IdentityProviderClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IdentityProviderGetResult contains the result from method IdentityProvider.Get.
-type IdentityProviderGetResult struct {
+// IdentityProviderClientGetResult contains the result from method IdentityProviderClient.Get.
+type IdentityProviderClientGetResult struct {
 	IdentityProviderContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// IdentityProviderListByServiceResponse contains the response from method IdentityProvider.ListByService.
-type IdentityProviderListByServiceResponse struct {
-	IdentityProviderListByServiceResult
+// IdentityProviderClientListByServiceResponse contains the response from method IdentityProviderClient.ListByService.
+type IdentityProviderClientListByServiceResponse struct {
+	IdentityProviderClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IdentityProviderListByServiceResult contains the result from method IdentityProvider.ListByService.
-type IdentityProviderListByServiceResult struct {
+// IdentityProviderClientListByServiceResult contains the result from method IdentityProviderClient.ListByService.
+type IdentityProviderClientListByServiceResult struct {
 	IdentityProviderList
 }
 
-// IdentityProviderListSecretsResponse contains the response from method IdentityProvider.ListSecrets.
-type IdentityProviderListSecretsResponse struct {
-	IdentityProviderListSecretsResult
+// IdentityProviderClientListSecretsResponse contains the response from method IdentityProviderClient.ListSecrets.
+type IdentityProviderClientListSecretsResponse struct {
+	IdentityProviderClientListSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IdentityProviderListSecretsResult contains the result from method IdentityProvider.ListSecrets.
-type IdentityProviderListSecretsResult struct {
+// IdentityProviderClientListSecretsResult contains the result from method IdentityProviderClient.ListSecrets.
+type IdentityProviderClientListSecretsResult struct {
 	ClientSecretContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// IdentityProviderUpdateResponse contains the response from method IdentityProvider.Update.
-type IdentityProviderUpdateResponse struct {
-	IdentityProviderUpdateResult
+// IdentityProviderClientUpdateResponse contains the response from method IdentityProviderClient.Update.
+type IdentityProviderClientUpdateResponse struct {
+	IdentityProviderClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IdentityProviderUpdateResult contains the result from method IdentityProvider.Update.
-type IdentityProviderUpdateResult struct {
+// IdentityProviderClientUpdateResult contains the result from method IdentityProviderClient.Update.
+type IdentityProviderClientUpdateResult struct {
 	IdentityProviderContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// IssueGetResponse contains the response from method Issue.Get.
-type IssueGetResponse struct {
-	IssueGetResult
+// IssueClientGetResponse contains the response from method IssueClient.Get.
+type IssueClientGetResponse struct {
+	IssueClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IssueGetResult contains the result from method Issue.Get.
-type IssueGetResult struct {
+// IssueClientGetResult contains the result from method IssueClient.Get.
+type IssueClientGetResult struct {
 	IssueContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// IssueListByServiceResponse contains the response from method Issue.ListByService.
-type IssueListByServiceResponse struct {
-	IssueListByServiceResult
+// IssueClientListByServiceResponse contains the response from method IssueClient.ListByService.
+type IssueClientListByServiceResponse struct {
+	IssueClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IssueListByServiceResult contains the result from method Issue.ListByService.
-type IssueListByServiceResult struct {
+// IssueClientListByServiceResult contains the result from method IssueClient.ListByService.
+type IssueClientListByServiceResult struct {
 	IssueCollection
 }
 
-// LoggerCreateOrUpdateResponse contains the response from method Logger.CreateOrUpdate.
-type LoggerCreateOrUpdateResponse struct {
-	LoggerCreateOrUpdateResult
+// LoggerClientCreateOrUpdateResponse contains the response from method LoggerClient.CreateOrUpdate.
+type LoggerClientCreateOrUpdateResponse struct {
+	LoggerClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoggerCreateOrUpdateResult contains the result from method Logger.CreateOrUpdate.
-type LoggerCreateOrUpdateResult struct {
+// LoggerClientCreateOrUpdateResult contains the result from method LoggerClient.CreateOrUpdate.
+type LoggerClientCreateOrUpdateResult struct {
 	LoggerContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// LoggerDeleteResponse contains the response from method Logger.Delete.
-type LoggerDeleteResponse struct {
+// LoggerClientDeleteResponse contains the response from method LoggerClient.Delete.
+type LoggerClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoggerGetEntityTagResponse contains the response from method Logger.GetEntityTag.
-type LoggerGetEntityTagResponse struct {
-	LoggerGetEntityTagResult
+// LoggerClientGetEntityTagResponse contains the response from method LoggerClient.GetEntityTag.
+type LoggerClientGetEntityTagResponse struct {
+	LoggerClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoggerGetEntityTagResult contains the result from method Logger.GetEntityTag.
-type LoggerGetEntityTagResult struct {
+// LoggerClientGetEntityTagResult contains the result from method LoggerClient.GetEntityTag.
+type LoggerClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2706,50 +2386,50 @@ type LoggerGetEntityTagResult struct {
 	Success bool
 }
 
-// LoggerGetResponse contains the response from method Logger.Get.
-type LoggerGetResponse struct {
-	LoggerGetResult
+// LoggerClientGetResponse contains the response from method LoggerClient.Get.
+type LoggerClientGetResponse struct {
+	LoggerClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoggerGetResult contains the result from method Logger.Get.
-type LoggerGetResult struct {
+// LoggerClientGetResult contains the result from method LoggerClient.Get.
+type LoggerClientGetResult struct {
 	LoggerContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// LoggerListByServiceResponse contains the response from method Logger.ListByService.
-type LoggerListByServiceResponse struct {
-	LoggerListByServiceResult
+// LoggerClientListByServiceResponse contains the response from method LoggerClient.ListByService.
+type LoggerClientListByServiceResponse struct {
+	LoggerClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoggerListByServiceResult contains the result from method Logger.ListByService.
-type LoggerListByServiceResult struct {
+// LoggerClientListByServiceResult contains the result from method LoggerClient.ListByService.
+type LoggerClientListByServiceResult struct {
 	LoggerCollection
 }
 
-// LoggerUpdateResponse contains the response from method Logger.Update.
-type LoggerUpdateResponse struct {
-	LoggerUpdateResult
+// LoggerClientUpdateResponse contains the response from method LoggerClient.Update.
+type LoggerClientUpdateResponse struct {
+	LoggerClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoggerUpdateResult contains the result from method Logger.Update.
-type LoggerUpdateResult struct {
+// LoggerClientUpdateResult contains the result from method LoggerClient.Update.
+type LoggerClientUpdateResult struct {
 	LoggerContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// NamedValueCreateOrUpdatePollerResponse contains the response from method NamedValue.CreateOrUpdate.
-type NamedValueCreateOrUpdatePollerResponse struct {
+// NamedValueClientCreateOrUpdatePollerResponse contains the response from method NamedValueClient.CreateOrUpdate.
+type NamedValueClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *NamedValueCreateOrUpdatePoller
+	Poller *NamedValueClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2758,8 +2438,8 @@ type NamedValueCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l NamedValueCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamedValueCreateOrUpdateResponse, error) {
-	respType := NamedValueCreateOrUpdateResponse{}
+func (l NamedValueClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamedValueClientCreateOrUpdateResponse, error) {
+	respType := NamedValueClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NamedValueContract)
 	if err != nil {
 		return respType, err
@@ -2768,13 +2448,13 @@ func (l NamedValueCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a NamedValueCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *NamedValueCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *NamedValueClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NamedValueClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a NamedValueClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *NamedValueClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *NamedValueClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NamedValueClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &NamedValueCreateOrUpdatePoller{
+	poller := &NamedValueClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2786,33 +2466,33 @@ func (l *NamedValueCreateOrUpdatePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// NamedValueCreateOrUpdateResponse contains the response from method NamedValue.CreateOrUpdate.
-type NamedValueCreateOrUpdateResponse struct {
-	NamedValueCreateOrUpdateResult
+// NamedValueClientCreateOrUpdateResponse contains the response from method NamedValueClient.CreateOrUpdate.
+type NamedValueClientCreateOrUpdateResponse struct {
+	NamedValueClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamedValueCreateOrUpdateResult contains the result from method NamedValue.CreateOrUpdate.
-type NamedValueCreateOrUpdateResult struct {
+// NamedValueClientCreateOrUpdateResult contains the result from method NamedValueClient.CreateOrUpdate.
+type NamedValueClientCreateOrUpdateResult struct {
 	NamedValueContract
 }
 
-// NamedValueDeleteResponse contains the response from method NamedValue.Delete.
-type NamedValueDeleteResponse struct {
+// NamedValueClientDeleteResponse contains the response from method NamedValueClient.Delete.
+type NamedValueClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamedValueGetEntityTagResponse contains the response from method NamedValue.GetEntityTag.
-type NamedValueGetEntityTagResponse struct {
-	NamedValueGetEntityTagResult
+// NamedValueClientGetEntityTagResponse contains the response from method NamedValueClient.GetEntityTag.
+type NamedValueClientGetEntityTagResponse struct {
+	NamedValueClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamedValueGetEntityTagResult contains the result from method NamedValue.GetEntityTag.
-type NamedValueGetEntityTagResult struct {
+// NamedValueClientGetEntityTagResult contains the result from method NamedValueClient.GetEntityTag.
+type NamedValueClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -2820,50 +2500,50 @@ type NamedValueGetEntityTagResult struct {
 	Success bool
 }
 
-// NamedValueGetResponse contains the response from method NamedValue.Get.
-type NamedValueGetResponse struct {
-	NamedValueGetResult
+// NamedValueClientGetResponse contains the response from method NamedValueClient.Get.
+type NamedValueClientGetResponse struct {
+	NamedValueClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamedValueGetResult contains the result from method NamedValue.Get.
-type NamedValueGetResult struct {
+// NamedValueClientGetResult contains the result from method NamedValueClient.Get.
+type NamedValueClientGetResult struct {
 	NamedValueContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// NamedValueListByServiceResponse contains the response from method NamedValue.ListByService.
-type NamedValueListByServiceResponse struct {
-	NamedValueListByServiceResult
+// NamedValueClientListByServiceResponse contains the response from method NamedValueClient.ListByService.
+type NamedValueClientListByServiceResponse struct {
+	NamedValueClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamedValueListByServiceResult contains the result from method NamedValue.ListByService.
-type NamedValueListByServiceResult struct {
+// NamedValueClientListByServiceResult contains the result from method NamedValueClient.ListByService.
+type NamedValueClientListByServiceResult struct {
 	NamedValueCollection
 }
 
-// NamedValueListValueResponse contains the response from method NamedValue.ListValue.
-type NamedValueListValueResponse struct {
-	NamedValueListValueResult
+// NamedValueClientListValueResponse contains the response from method NamedValueClient.ListValue.
+type NamedValueClientListValueResponse struct {
+	NamedValueClientListValueResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamedValueListValueResult contains the result from method NamedValue.ListValue.
-type NamedValueListValueResult struct {
+// NamedValueClientListValueResult contains the result from method NamedValueClient.ListValue.
+type NamedValueClientListValueResult struct {
 	NamedValueSecretContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// NamedValueRefreshSecretPollerResponse contains the response from method NamedValue.RefreshSecret.
-type NamedValueRefreshSecretPollerResponse struct {
+// NamedValueClientRefreshSecretPollerResponse contains the response from method NamedValueClient.RefreshSecret.
+type NamedValueClientRefreshSecretPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *NamedValueRefreshSecretPoller
+	Poller *NamedValueClientRefreshSecretPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2872,8 +2552,8 @@ type NamedValueRefreshSecretPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l NamedValueRefreshSecretPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamedValueRefreshSecretResponse, error) {
-	respType := NamedValueRefreshSecretResponse{}
+func (l NamedValueClientRefreshSecretPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamedValueClientRefreshSecretResponse, error) {
+	respType := NamedValueClientRefreshSecretResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NamedValueContract)
 	if err != nil {
 		return respType, err
@@ -2882,13 +2562,13 @@ func (l NamedValueRefreshSecretPollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a NamedValueRefreshSecretPollerResponse from the provided client and resume token.
-func (l *NamedValueRefreshSecretPollerResponse) Resume(ctx context.Context, client *NamedValueClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NamedValueClient.RefreshSecret", token, client.pl, client.refreshSecretHandleError)
+// Resume rehydrates a NamedValueClientRefreshSecretPollerResponse from the provided client and resume token.
+func (l *NamedValueClientRefreshSecretPollerResponse) Resume(ctx context.Context, client *NamedValueClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NamedValueClient.RefreshSecret", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &NamedValueRefreshSecretPoller{
+	poller := &NamedValueClientRefreshSecretPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2900,22 +2580,22 @@ func (l *NamedValueRefreshSecretPollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// NamedValueRefreshSecretResponse contains the response from method NamedValue.RefreshSecret.
-type NamedValueRefreshSecretResponse struct {
-	NamedValueRefreshSecretResult
+// NamedValueClientRefreshSecretResponse contains the response from method NamedValueClient.RefreshSecret.
+type NamedValueClientRefreshSecretResponse struct {
+	NamedValueClientRefreshSecretResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamedValueRefreshSecretResult contains the result from method NamedValue.RefreshSecret.
-type NamedValueRefreshSecretResult struct {
+// NamedValueClientRefreshSecretResult contains the result from method NamedValueClient.RefreshSecret.
+type NamedValueClientRefreshSecretResult struct {
 	NamedValueContract
 }
 
-// NamedValueUpdatePollerResponse contains the response from method NamedValue.Update.
-type NamedValueUpdatePollerResponse struct {
+// NamedValueClientUpdatePollerResponse contains the response from method NamedValueClient.Update.
+type NamedValueClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *NamedValueUpdatePoller
+	Poller *NamedValueClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2924,8 +2604,8 @@ type NamedValueUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l NamedValueUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamedValueUpdateResponse, error) {
-	respType := NamedValueUpdateResponse{}
+func (l NamedValueClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamedValueClientUpdateResponse, error) {
+	respType := NamedValueClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NamedValueContract)
 	if err != nil {
 		return respType, err
@@ -2934,13 +2614,13 @@ func (l NamedValueUpdatePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a NamedValueUpdatePollerResponse from the provided client and resume token.
-func (l *NamedValueUpdatePollerResponse) Resume(ctx context.Context, client *NamedValueClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NamedValueClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a NamedValueClientUpdatePollerResponse from the provided client and resume token.
+func (l *NamedValueClientUpdatePollerResponse) Resume(ctx context.Context, client *NamedValueClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NamedValueClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &NamedValueUpdatePoller{
+	poller := &NamedValueClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2952,194 +2632,194 @@ func (l *NamedValueUpdatePollerResponse) Resume(ctx context.Context, client *Nam
 	return nil
 }
 
-// NamedValueUpdateResponse contains the response from method NamedValue.Update.
-type NamedValueUpdateResponse struct {
-	NamedValueUpdateResult
+// NamedValueClientUpdateResponse contains the response from method NamedValueClient.Update.
+type NamedValueClientUpdateResponse struct {
+	NamedValueClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamedValueUpdateResult contains the result from method NamedValue.Update.
-type NamedValueUpdateResult struct {
+// NamedValueClientUpdateResult contains the result from method NamedValueClient.Update.
+type NamedValueClientUpdateResult struct {
 	NamedValueContract
 }
 
-// NetworkStatusListByLocationResponse contains the response from method NetworkStatus.ListByLocation.
-type NetworkStatusListByLocationResponse struct {
-	NetworkStatusListByLocationResult
+// NetworkStatusClientListByLocationResponse contains the response from method NetworkStatusClient.ListByLocation.
+type NetworkStatusClientListByLocationResponse struct {
+	NetworkStatusClientListByLocationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NetworkStatusListByLocationResult contains the result from method NetworkStatus.ListByLocation.
-type NetworkStatusListByLocationResult struct {
+// NetworkStatusClientListByLocationResult contains the result from method NetworkStatusClient.ListByLocation.
+type NetworkStatusClientListByLocationResult struct {
 	NetworkStatusContract
 }
 
-// NetworkStatusListByServiceResponse contains the response from method NetworkStatus.ListByService.
-type NetworkStatusListByServiceResponse struct {
-	NetworkStatusListByServiceResult
+// NetworkStatusClientListByServiceResponse contains the response from method NetworkStatusClient.ListByService.
+type NetworkStatusClientListByServiceResponse struct {
+	NetworkStatusClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NetworkStatusListByServiceResult contains the result from method NetworkStatus.ListByService.
-type NetworkStatusListByServiceResult struct {
+// NetworkStatusClientListByServiceResult contains the result from method NetworkStatusClient.ListByService.
+type NetworkStatusClientListByServiceResult struct {
 	// List of Network Status values.
 	NetworkStatusContractByLocationArray []*NetworkStatusContractByLocation
 }
 
-// NotificationCreateOrUpdateResponse contains the response from method Notification.CreateOrUpdate.
-type NotificationCreateOrUpdateResponse struct {
-	NotificationCreateOrUpdateResult
+// NotificationClientCreateOrUpdateResponse contains the response from method NotificationClient.CreateOrUpdate.
+type NotificationClientCreateOrUpdateResponse struct {
+	NotificationClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationCreateOrUpdateResult contains the result from method Notification.CreateOrUpdate.
-type NotificationCreateOrUpdateResult struct {
+// NotificationClientCreateOrUpdateResult contains the result from method NotificationClient.CreateOrUpdate.
+type NotificationClientCreateOrUpdateResult struct {
 	NotificationContract
 }
 
-// NotificationGetResponse contains the response from method Notification.Get.
-type NotificationGetResponse struct {
-	NotificationGetResult
+// NotificationClientGetResponse contains the response from method NotificationClient.Get.
+type NotificationClientGetResponse struct {
+	NotificationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationGetResult contains the result from method Notification.Get.
-type NotificationGetResult struct {
+// NotificationClientGetResult contains the result from method NotificationClient.Get.
+type NotificationClientGetResult struct {
 	NotificationContract
 }
 
-// NotificationListByServiceResponse contains the response from method Notification.ListByService.
-type NotificationListByServiceResponse struct {
-	NotificationListByServiceResult
+// NotificationClientListByServiceResponse contains the response from method NotificationClient.ListByService.
+type NotificationClientListByServiceResponse struct {
+	NotificationClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationListByServiceResult contains the result from method Notification.ListByService.
-type NotificationListByServiceResult struct {
+// NotificationClientListByServiceResult contains the result from method NotificationClient.ListByService.
+type NotificationClientListByServiceResult struct {
 	NotificationCollection
 }
 
-// NotificationRecipientEmailCheckEntityExistsResponse contains the response from method NotificationRecipientEmail.CheckEntityExists.
-type NotificationRecipientEmailCheckEntityExistsResponse struct {
-	NotificationRecipientEmailCheckEntityExistsResult
+// NotificationRecipientEmailClientCheckEntityExistsResponse contains the response from method NotificationRecipientEmailClient.CheckEntityExists.
+type NotificationRecipientEmailClientCheckEntityExistsResponse struct {
+	NotificationRecipientEmailClientCheckEntityExistsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRecipientEmailCheckEntityExistsResult contains the result from method NotificationRecipientEmail.CheckEntityExists.
-type NotificationRecipientEmailCheckEntityExistsResult struct {
+// NotificationRecipientEmailClientCheckEntityExistsResult contains the result from method NotificationRecipientEmailClient.CheckEntityExists.
+type NotificationRecipientEmailClientCheckEntityExistsResult struct {
 	// Success indicates if the operation succeeded or failed.
 	Success bool
 }
 
-// NotificationRecipientEmailCreateOrUpdateResponse contains the response from method NotificationRecipientEmail.CreateOrUpdate.
-type NotificationRecipientEmailCreateOrUpdateResponse struct {
-	NotificationRecipientEmailCreateOrUpdateResult
+// NotificationRecipientEmailClientCreateOrUpdateResponse contains the response from method NotificationRecipientEmailClient.CreateOrUpdate.
+type NotificationRecipientEmailClientCreateOrUpdateResponse struct {
+	NotificationRecipientEmailClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRecipientEmailCreateOrUpdateResult contains the result from method NotificationRecipientEmail.CreateOrUpdate.
-type NotificationRecipientEmailCreateOrUpdateResult struct {
+// NotificationRecipientEmailClientCreateOrUpdateResult contains the result from method NotificationRecipientEmailClient.CreateOrUpdate.
+type NotificationRecipientEmailClientCreateOrUpdateResult struct {
 	RecipientEmailContract
 }
 
-// NotificationRecipientEmailDeleteResponse contains the response from method NotificationRecipientEmail.Delete.
-type NotificationRecipientEmailDeleteResponse struct {
+// NotificationRecipientEmailClientDeleteResponse contains the response from method NotificationRecipientEmailClient.Delete.
+type NotificationRecipientEmailClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRecipientEmailListByNotificationResponse contains the response from method NotificationRecipientEmail.ListByNotification.
-type NotificationRecipientEmailListByNotificationResponse struct {
-	NotificationRecipientEmailListByNotificationResult
+// NotificationRecipientEmailClientListByNotificationResponse contains the response from method NotificationRecipientEmailClient.ListByNotification.
+type NotificationRecipientEmailClientListByNotificationResponse struct {
+	NotificationRecipientEmailClientListByNotificationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRecipientEmailListByNotificationResult contains the result from method NotificationRecipientEmail.ListByNotification.
-type NotificationRecipientEmailListByNotificationResult struct {
+// NotificationRecipientEmailClientListByNotificationResult contains the result from method NotificationRecipientEmailClient.ListByNotification.
+type NotificationRecipientEmailClientListByNotificationResult struct {
 	RecipientEmailCollection
 }
 
-// NotificationRecipientUserCheckEntityExistsResponse contains the response from method NotificationRecipientUser.CheckEntityExists.
-type NotificationRecipientUserCheckEntityExistsResponse struct {
-	NotificationRecipientUserCheckEntityExistsResult
+// NotificationRecipientUserClientCheckEntityExistsResponse contains the response from method NotificationRecipientUserClient.CheckEntityExists.
+type NotificationRecipientUserClientCheckEntityExistsResponse struct {
+	NotificationRecipientUserClientCheckEntityExistsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRecipientUserCheckEntityExistsResult contains the result from method NotificationRecipientUser.CheckEntityExists.
-type NotificationRecipientUserCheckEntityExistsResult struct {
+// NotificationRecipientUserClientCheckEntityExistsResult contains the result from method NotificationRecipientUserClient.CheckEntityExists.
+type NotificationRecipientUserClientCheckEntityExistsResult struct {
 	// Success indicates if the operation succeeded or failed.
 	Success bool
 }
 
-// NotificationRecipientUserCreateOrUpdateResponse contains the response from method NotificationRecipientUser.CreateOrUpdate.
-type NotificationRecipientUserCreateOrUpdateResponse struct {
-	NotificationRecipientUserCreateOrUpdateResult
+// NotificationRecipientUserClientCreateOrUpdateResponse contains the response from method NotificationRecipientUserClient.CreateOrUpdate.
+type NotificationRecipientUserClientCreateOrUpdateResponse struct {
+	NotificationRecipientUserClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRecipientUserCreateOrUpdateResult contains the result from method NotificationRecipientUser.CreateOrUpdate.
-type NotificationRecipientUserCreateOrUpdateResult struct {
+// NotificationRecipientUserClientCreateOrUpdateResult contains the result from method NotificationRecipientUserClient.CreateOrUpdate.
+type NotificationRecipientUserClientCreateOrUpdateResult struct {
 	RecipientUserContract
 }
 
-// NotificationRecipientUserDeleteResponse contains the response from method NotificationRecipientUser.Delete.
-type NotificationRecipientUserDeleteResponse struct {
+// NotificationRecipientUserClientDeleteResponse contains the response from method NotificationRecipientUserClient.Delete.
+type NotificationRecipientUserClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRecipientUserListByNotificationResponse contains the response from method NotificationRecipientUser.ListByNotification.
-type NotificationRecipientUserListByNotificationResponse struct {
-	NotificationRecipientUserListByNotificationResult
+// NotificationRecipientUserClientListByNotificationResponse contains the response from method NotificationRecipientUserClient.ListByNotification.
+type NotificationRecipientUserClientListByNotificationResponse struct {
+	NotificationRecipientUserClientListByNotificationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRecipientUserListByNotificationResult contains the result from method NotificationRecipientUser.ListByNotification.
-type NotificationRecipientUserListByNotificationResult struct {
+// NotificationRecipientUserClientListByNotificationResult contains the result from method NotificationRecipientUserClient.ListByNotification.
+type NotificationRecipientUserClientListByNotificationResult struct {
 	RecipientUserCollection
 }
 
-// OpenIDConnectProviderCreateOrUpdateResponse contains the response from method OpenIDConnectProvider.CreateOrUpdate.
-type OpenIDConnectProviderCreateOrUpdateResponse struct {
-	OpenIDConnectProviderCreateOrUpdateResult
+// OpenIDConnectProviderClientCreateOrUpdateResponse contains the response from method OpenIDConnectProviderClient.CreateOrUpdate.
+type OpenIDConnectProviderClientCreateOrUpdateResponse struct {
+	OpenIDConnectProviderClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenIDConnectProviderCreateOrUpdateResult contains the result from method OpenIDConnectProvider.CreateOrUpdate.
-type OpenIDConnectProviderCreateOrUpdateResult struct {
+// OpenIDConnectProviderClientCreateOrUpdateResult contains the result from method OpenIDConnectProviderClient.CreateOrUpdate.
+type OpenIDConnectProviderClientCreateOrUpdateResult struct {
 	OpenidConnectProviderContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// OpenIDConnectProviderDeleteResponse contains the response from method OpenIDConnectProvider.Delete.
-type OpenIDConnectProviderDeleteResponse struct {
+// OpenIDConnectProviderClientDeleteResponse contains the response from method OpenIDConnectProviderClient.Delete.
+type OpenIDConnectProviderClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenIDConnectProviderGetEntityTagResponse contains the response from method OpenIDConnectProvider.GetEntityTag.
-type OpenIDConnectProviderGetEntityTagResponse struct {
-	OpenIDConnectProviderGetEntityTagResult
+// OpenIDConnectProviderClientGetEntityTagResponse contains the response from method OpenIDConnectProviderClient.GetEntityTag.
+type OpenIDConnectProviderClientGetEntityTagResponse struct {
+	OpenIDConnectProviderClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenIDConnectProviderGetEntityTagResult contains the result from method OpenIDConnectProvider.GetEntityTag.
-type OpenIDConnectProviderGetEntityTagResult struct {
+// OpenIDConnectProviderClientGetEntityTagResult contains the result from method OpenIDConnectProviderClient.GetEntityTag.
+type OpenIDConnectProviderClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -3147,125 +2827,125 @@ type OpenIDConnectProviderGetEntityTagResult struct {
 	Success bool
 }
 
-// OpenIDConnectProviderGetResponse contains the response from method OpenIDConnectProvider.Get.
-type OpenIDConnectProviderGetResponse struct {
-	OpenIDConnectProviderGetResult
+// OpenIDConnectProviderClientGetResponse contains the response from method OpenIDConnectProviderClient.Get.
+type OpenIDConnectProviderClientGetResponse struct {
+	OpenIDConnectProviderClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenIDConnectProviderGetResult contains the result from method OpenIDConnectProvider.Get.
-type OpenIDConnectProviderGetResult struct {
+// OpenIDConnectProviderClientGetResult contains the result from method OpenIDConnectProviderClient.Get.
+type OpenIDConnectProviderClientGetResult struct {
 	OpenidConnectProviderContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// OpenIDConnectProviderListByServiceResponse contains the response from method OpenIDConnectProvider.ListByService.
-type OpenIDConnectProviderListByServiceResponse struct {
-	OpenIDConnectProviderListByServiceResult
+// OpenIDConnectProviderClientListByServiceResponse contains the response from method OpenIDConnectProviderClient.ListByService.
+type OpenIDConnectProviderClientListByServiceResponse struct {
+	OpenIDConnectProviderClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenIDConnectProviderListByServiceResult contains the result from method OpenIDConnectProvider.ListByService.
-type OpenIDConnectProviderListByServiceResult struct {
+// OpenIDConnectProviderClientListByServiceResult contains the result from method OpenIDConnectProviderClient.ListByService.
+type OpenIDConnectProviderClientListByServiceResult struct {
 	OpenIDConnectProviderCollection
 }
 
-// OpenIDConnectProviderListSecretsResponse contains the response from method OpenIDConnectProvider.ListSecrets.
-type OpenIDConnectProviderListSecretsResponse struct {
-	OpenIDConnectProviderListSecretsResult
+// OpenIDConnectProviderClientListSecretsResponse contains the response from method OpenIDConnectProviderClient.ListSecrets.
+type OpenIDConnectProviderClientListSecretsResponse struct {
+	OpenIDConnectProviderClientListSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenIDConnectProviderListSecretsResult contains the result from method OpenIDConnectProvider.ListSecrets.
-type OpenIDConnectProviderListSecretsResult struct {
+// OpenIDConnectProviderClientListSecretsResult contains the result from method OpenIDConnectProviderClient.ListSecrets.
+type OpenIDConnectProviderClientListSecretsResult struct {
 	ClientSecretContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// OpenIDConnectProviderUpdateResponse contains the response from method OpenIDConnectProvider.Update.
-type OpenIDConnectProviderUpdateResponse struct {
-	OpenIDConnectProviderUpdateResult
+// OpenIDConnectProviderClientUpdateResponse contains the response from method OpenIDConnectProviderClient.Update.
+type OpenIDConnectProviderClientUpdateResponse struct {
+	OpenIDConnectProviderClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenIDConnectProviderUpdateResult contains the result from method OpenIDConnectProvider.Update.
-type OpenIDConnectProviderUpdateResult struct {
+// OpenIDConnectProviderClientUpdateResult contains the result from method OpenIDConnectProviderClient.Update.
+type OpenIDConnectProviderClientUpdateResult struct {
 	OpenidConnectProviderContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// OperationListByTagsResponse contains the response from method Operation.ListByTags.
-type OperationListByTagsResponse struct {
-	OperationListByTagsResult
+// OperationClientListByTagsResponse contains the response from method OperationClient.ListByTags.
+type OperationClientListByTagsResponse struct {
+	OperationClientListByTagsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationListByTagsResult contains the result from method Operation.ListByTags.
-type OperationListByTagsResult struct {
+// OperationClientListByTagsResult contains the result from method OperationClient.ListByTags.
+type OperationClientListByTagsResult struct {
 	TagResourceCollection
 }
 
-// OutboundNetworkDependenciesEndpointsListByServiceResponse contains the response from method OutboundNetworkDependenciesEndpoints.ListByService.
-type OutboundNetworkDependenciesEndpointsListByServiceResponse struct {
-	OutboundNetworkDependenciesEndpointsListByServiceResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OutboundNetworkDependenciesEndpointsListByServiceResult contains the result from method OutboundNetworkDependenciesEndpoints.ListByService.
-type OutboundNetworkDependenciesEndpointsListByServiceResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	OperationListResult
+}
+
+// OutboundNetworkDependenciesEndpointsClientListByServiceResponse contains the response from method OutboundNetworkDependenciesEndpointsClient.ListByService.
+type OutboundNetworkDependenciesEndpointsClientListByServiceResponse struct {
+	OutboundNetworkDependenciesEndpointsClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OutboundNetworkDependenciesEndpointsClientListByServiceResult contains the result from method OutboundNetworkDependenciesEndpointsClient.ListByService.
+type OutboundNetworkDependenciesEndpointsClientListByServiceResult struct {
 	OutboundEnvironmentEndpointList
 }
 
-// PolicyCreateOrUpdateResponse contains the response from method Policy.CreateOrUpdate.
-type PolicyCreateOrUpdateResponse struct {
-	PolicyCreateOrUpdateResult
+// PolicyClientCreateOrUpdateResponse contains the response from method PolicyClient.CreateOrUpdate.
+type PolicyClientCreateOrUpdateResponse struct {
+	PolicyClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PolicyCreateOrUpdateResult contains the result from method Policy.CreateOrUpdate.
-type PolicyCreateOrUpdateResult struct {
+// PolicyClientCreateOrUpdateResult contains the result from method PolicyClient.CreateOrUpdate.
+type PolicyClientCreateOrUpdateResult struct {
 	PolicyContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// PolicyDeleteResponse contains the response from method Policy.Delete.
-type PolicyDeleteResponse struct {
+// PolicyClientDeleteResponse contains the response from method PolicyClient.Delete.
+type PolicyClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PolicyDescriptionListByServiceResponse contains the response from method PolicyDescription.ListByService.
-type PolicyDescriptionListByServiceResponse struct {
-	PolicyDescriptionListByServiceResult
+// PolicyClientGetEntityTagResponse contains the response from method PolicyClient.GetEntityTag.
+type PolicyClientGetEntityTagResponse struct {
+	PolicyClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PolicyDescriptionListByServiceResult contains the result from method PolicyDescription.ListByService.
-type PolicyDescriptionListByServiceResult struct {
-	PolicyDescriptionCollection
-}
-
-// PolicyGetEntityTagResponse contains the response from method Policy.GetEntityTag.
-type PolicyGetEntityTagResponse struct {
-	PolicyGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyGetEntityTagResult contains the result from method Policy.GetEntityTag.
-type PolicyGetEntityTagResult struct {
+// PolicyClientGetEntityTagResult contains the result from method PolicyClient.GetEntityTag.
+type PolicyClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -3273,36 +2953,48 @@ type PolicyGetEntityTagResult struct {
 	Success bool
 }
 
-// PolicyGetResponse contains the response from method Policy.Get.
-type PolicyGetResponse struct {
-	PolicyGetResult
+// PolicyClientGetResponse contains the response from method PolicyClient.Get.
+type PolicyClientGetResponse struct {
+	PolicyClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PolicyGetResult contains the result from method Policy.Get.
-type PolicyGetResult struct {
+// PolicyClientGetResult contains the result from method PolicyClient.Get.
+type PolicyClientGetResult struct {
 	PolicyContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// PolicyListByServiceResponse contains the response from method Policy.ListByService.
-type PolicyListByServiceResponse struct {
-	PolicyListByServiceResult
+// PolicyClientListByServiceResponse contains the response from method PolicyClient.ListByService.
+type PolicyClientListByServiceResponse struct {
+	PolicyClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PolicyListByServiceResult contains the result from method Policy.ListByService.
-type PolicyListByServiceResult struct {
+// PolicyClientListByServiceResult contains the result from method PolicyClient.ListByService.
+type PolicyClientListByServiceResult struct {
 	PolicyCollection
 }
 
-// PortalRevisionCreateOrUpdatePollerResponse contains the response from method PortalRevision.CreateOrUpdate.
-type PortalRevisionCreateOrUpdatePollerResponse struct {
+// PolicyDescriptionClientListByServiceResponse contains the response from method PolicyDescriptionClient.ListByService.
+type PolicyDescriptionClientListByServiceResponse struct {
+	PolicyDescriptionClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PolicyDescriptionClientListByServiceResult contains the result from method PolicyDescriptionClient.ListByService.
+type PolicyDescriptionClientListByServiceResult struct {
+	PolicyDescriptionCollection
+}
+
+// PortalRevisionClientCreateOrUpdatePollerResponse contains the response from method PortalRevisionClient.CreateOrUpdate.
+type PortalRevisionClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PortalRevisionCreateOrUpdatePoller
+	Poller *PortalRevisionClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3311,8 +3003,8 @@ type PortalRevisionCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PortalRevisionCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PortalRevisionCreateOrUpdateResponse, error) {
-	respType := PortalRevisionCreateOrUpdateResponse{}
+func (l PortalRevisionClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PortalRevisionClientCreateOrUpdateResponse, error) {
+	respType := PortalRevisionClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PortalRevisionContract)
 	if err != nil {
 		return respType, err
@@ -3321,13 +3013,13 @@ func (l PortalRevisionCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a PortalRevisionCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PortalRevisionCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PortalRevisionClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PortalRevisionClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PortalRevisionClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *PortalRevisionClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PortalRevisionClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PortalRevisionClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PortalRevisionCreateOrUpdatePoller{
+	poller := &PortalRevisionClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3339,27 +3031,27 @@ func (l *PortalRevisionCreateOrUpdatePollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// PortalRevisionCreateOrUpdateResponse contains the response from method PortalRevision.CreateOrUpdate.
-type PortalRevisionCreateOrUpdateResponse struct {
-	PortalRevisionCreateOrUpdateResult
+// PortalRevisionClientCreateOrUpdateResponse contains the response from method PortalRevisionClient.CreateOrUpdate.
+type PortalRevisionClientCreateOrUpdateResponse struct {
+	PortalRevisionClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PortalRevisionCreateOrUpdateResult contains the result from method PortalRevision.CreateOrUpdate.
-type PortalRevisionCreateOrUpdateResult struct {
+// PortalRevisionClientCreateOrUpdateResult contains the result from method PortalRevisionClient.CreateOrUpdate.
+type PortalRevisionClientCreateOrUpdateResult struct {
 	PortalRevisionContract
 }
 
-// PortalRevisionGetEntityTagResponse contains the response from method PortalRevision.GetEntityTag.
-type PortalRevisionGetEntityTagResponse struct {
-	PortalRevisionGetEntityTagResult
+// PortalRevisionClientGetEntityTagResponse contains the response from method PortalRevisionClient.GetEntityTag.
+type PortalRevisionClientGetEntityTagResponse struct {
+	PortalRevisionClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PortalRevisionGetEntityTagResult contains the result from method PortalRevision.GetEntityTag.
-type PortalRevisionGetEntityTagResult struct {
+// PortalRevisionClientGetEntityTagResult contains the result from method PortalRevisionClient.GetEntityTag.
+type PortalRevisionClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -3367,36 +3059,36 @@ type PortalRevisionGetEntityTagResult struct {
 	Success bool
 }
 
-// PortalRevisionGetResponse contains the response from method PortalRevision.Get.
-type PortalRevisionGetResponse struct {
-	PortalRevisionGetResult
+// PortalRevisionClientGetResponse contains the response from method PortalRevisionClient.Get.
+type PortalRevisionClientGetResponse struct {
+	PortalRevisionClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PortalRevisionGetResult contains the result from method PortalRevision.Get.
-type PortalRevisionGetResult struct {
+// PortalRevisionClientGetResult contains the result from method PortalRevisionClient.Get.
+type PortalRevisionClientGetResult struct {
 	PortalRevisionContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// PortalRevisionListByServiceResponse contains the response from method PortalRevision.ListByService.
-type PortalRevisionListByServiceResponse struct {
-	PortalRevisionListByServiceResult
+// PortalRevisionClientListByServiceResponse contains the response from method PortalRevisionClient.ListByService.
+type PortalRevisionClientListByServiceResponse struct {
+	PortalRevisionClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PortalRevisionListByServiceResult contains the result from method PortalRevision.ListByService.
-type PortalRevisionListByServiceResult struct {
+// PortalRevisionClientListByServiceResult contains the result from method PortalRevisionClient.ListByService.
+type PortalRevisionClientListByServiceResult struct {
 	PortalRevisionCollection
 }
 
-// PortalRevisionUpdatePollerResponse contains the response from method PortalRevision.Update.
-type PortalRevisionUpdatePollerResponse struct {
+// PortalRevisionClientUpdatePollerResponse contains the response from method PortalRevisionClient.Update.
+type PortalRevisionClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PortalRevisionUpdatePoller
+	Poller *PortalRevisionClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3405,8 +3097,8 @@ type PortalRevisionUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PortalRevisionUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PortalRevisionUpdateResponse, error) {
-	respType := PortalRevisionUpdateResponse{}
+func (l PortalRevisionClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PortalRevisionClientUpdateResponse, error) {
+	respType := PortalRevisionClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PortalRevisionContract)
 	if err != nil {
 		return respType, err
@@ -3415,13 +3107,13 @@ func (l PortalRevisionUpdatePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a PortalRevisionUpdatePollerResponse from the provided client and resume token.
-func (l *PortalRevisionUpdatePollerResponse) Resume(ctx context.Context, client *PortalRevisionClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PortalRevisionClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PortalRevisionClientUpdatePollerResponse from the provided client and resume token.
+func (l *PortalRevisionClientUpdatePollerResponse) Resume(ctx context.Context, client *PortalRevisionClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PortalRevisionClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PortalRevisionUpdatePoller{
+	poller := &PortalRevisionClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3433,34 +3125,34 @@ func (l *PortalRevisionUpdatePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// PortalRevisionUpdateResponse contains the response from method PortalRevision.Update.
-type PortalRevisionUpdateResponse struct {
-	PortalRevisionUpdateResult
+// PortalRevisionClientUpdateResponse contains the response from method PortalRevisionClient.Update.
+type PortalRevisionClientUpdateResponse struct {
+	PortalRevisionClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PortalRevisionUpdateResult contains the result from method PortalRevision.Update.
-type PortalRevisionUpdateResult struct {
+// PortalRevisionClientUpdateResult contains the result from method PortalRevisionClient.Update.
+type PortalRevisionClientUpdateResult struct {
 	PortalRevisionContract
 }
 
-// PortalSettingsListByServiceResponse contains the response from method PortalSettings.ListByService.
-type PortalSettingsListByServiceResponse struct {
-	PortalSettingsListByServiceResult
+// PortalSettingsClientListByServiceResponse contains the response from method PortalSettingsClient.ListByService.
+type PortalSettingsClientListByServiceResponse struct {
+	PortalSettingsClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PortalSettingsListByServiceResult contains the result from method PortalSettings.ListByService.
-type PortalSettingsListByServiceResult struct {
+// PortalSettingsClientListByServiceResult contains the result from method PortalSettingsClient.ListByService.
+type PortalSettingsClientListByServiceResult struct {
 	PortalSettingsCollection
 }
 
-// PrivateEndpointConnectionCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnection.CreateOrUpdate.
-type PrivateEndpointConnectionCreateOrUpdatePollerResponse struct {
+// PrivateEndpointConnectionClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionClient.CreateOrUpdate.
+type PrivateEndpointConnectionClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionCreateOrUpdatePoller
+	Poller *PrivateEndpointConnectionClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3469,8 +3161,8 @@ type PrivateEndpointConnectionCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionCreateOrUpdateResponse{}
+func (l PrivateEndpointConnectionClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -3479,13 +3171,13 @@ func (l PrivateEndpointConnectionCreateOrUpdatePollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionCreateOrUpdatePoller{
+	poller := &PrivateEndpointConnectionClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3497,22 +3189,22 @@ func (l *PrivateEndpointConnectionCreateOrUpdatePollerResponse) Resume(ctx conte
 	return nil
 }
 
-// PrivateEndpointConnectionCreateOrUpdateResponse contains the response from method PrivateEndpointConnection.CreateOrUpdate.
-type PrivateEndpointConnectionCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionCreateOrUpdateResult
+// PrivateEndpointConnectionClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionClient.CreateOrUpdate.
+type PrivateEndpointConnectionClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionCreateOrUpdateResult contains the result from method PrivateEndpointConnection.CreateOrUpdate.
-type PrivateEndpointConnectionCreateOrUpdateResult struct {
+// PrivateEndpointConnectionClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionClient.CreateOrUpdate.
+type PrivateEndpointConnectionClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionDeletePollerResponse contains the response from method PrivateEndpointConnection.Delete.
-type PrivateEndpointConnectionDeletePollerResponse struct {
+// PrivateEndpointConnectionClientDeletePollerResponse contains the response from method PrivateEndpointConnectionClient.Delete.
+type PrivateEndpointConnectionClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionDeletePoller
+	Poller *PrivateEndpointConnectionClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3521,8 +3213,8 @@ type PrivateEndpointConnectionDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionDeleteResponse, error) {
-	respType := PrivateEndpointConnectionDeleteResponse{}
+func (l PrivateEndpointConnectionClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3531,13 +3223,13 @@ func (l PrivateEndpointConnectionDeletePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionDeletePoller{
+	poller := &PrivateEndpointConnectionClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3549,132 +3241,132 @@ func (l *PrivateEndpointConnectionDeletePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// PrivateEndpointConnectionDeleteResponse contains the response from method PrivateEndpointConnection.Delete.
-type PrivateEndpointConnectionDeleteResponse struct {
+// PrivateEndpointConnectionClientDeleteResponse contains the response from method PrivateEndpointConnectionClient.Delete.
+type PrivateEndpointConnectionClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionGetByNameResponse contains the response from method PrivateEndpointConnection.GetByName.
-type PrivateEndpointConnectionGetByNameResponse struct {
-	PrivateEndpointConnectionGetByNameResult
+// PrivateEndpointConnectionClientGetByNameResponse contains the response from method PrivateEndpointConnectionClient.GetByName.
+type PrivateEndpointConnectionClientGetByNameResponse struct {
+	PrivateEndpointConnectionClientGetByNameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionGetByNameResult contains the result from method PrivateEndpointConnection.GetByName.
-type PrivateEndpointConnectionGetByNameResult struct {
+// PrivateEndpointConnectionClientGetByNameResult contains the result from method PrivateEndpointConnectionClient.GetByName.
+type PrivateEndpointConnectionClientGetByNameResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionGetPrivateLinkResourceResponse contains the response from method PrivateEndpointConnection.GetPrivateLinkResource.
-type PrivateEndpointConnectionGetPrivateLinkResourceResponse struct {
-	PrivateEndpointConnectionGetPrivateLinkResourceResult
+// PrivateEndpointConnectionClientGetPrivateLinkResourceResponse contains the response from method PrivateEndpointConnectionClient.GetPrivateLinkResource.
+type PrivateEndpointConnectionClientGetPrivateLinkResourceResponse struct {
+	PrivateEndpointConnectionClientGetPrivateLinkResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionGetPrivateLinkResourceResult contains the result from method PrivateEndpointConnection.GetPrivateLinkResource.
-type PrivateEndpointConnectionGetPrivateLinkResourceResult struct {
+// PrivateEndpointConnectionClientGetPrivateLinkResourceResult contains the result from method PrivateEndpointConnectionClient.GetPrivateLinkResource.
+type PrivateEndpointConnectionClientGetPrivateLinkResourceResult struct {
 	PrivateLinkResource
 }
 
-// PrivateEndpointConnectionListByServiceResponse contains the response from method PrivateEndpointConnection.ListByService.
-type PrivateEndpointConnectionListByServiceResponse struct {
-	PrivateEndpointConnectionListByServiceResult
+// PrivateEndpointConnectionClientListByServiceResponse contains the response from method PrivateEndpointConnectionClient.ListByService.
+type PrivateEndpointConnectionClientListByServiceResponse struct {
+	PrivateEndpointConnectionClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionListByServiceResult contains the result from method PrivateEndpointConnection.ListByService.
-type PrivateEndpointConnectionListByServiceResult struct {
+// PrivateEndpointConnectionClientListByServiceResult contains the result from method PrivateEndpointConnectionClient.ListByService.
+type PrivateEndpointConnectionClientListByServiceResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionListPrivateLinkResourcesResponse contains the response from method PrivateEndpointConnection.ListPrivateLinkResources.
-type PrivateEndpointConnectionListPrivateLinkResourcesResponse struct {
-	PrivateEndpointConnectionListPrivateLinkResourcesResult
+// PrivateEndpointConnectionClientListPrivateLinkResourcesResponse contains the response from method PrivateEndpointConnectionClient.ListPrivateLinkResources.
+type PrivateEndpointConnectionClientListPrivateLinkResourcesResponse struct {
+	PrivateEndpointConnectionClientListPrivateLinkResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionListPrivateLinkResourcesResult contains the result from method PrivateEndpointConnection.ListPrivateLinkResources.
-type PrivateEndpointConnectionListPrivateLinkResourcesResult struct {
+// PrivateEndpointConnectionClientListPrivateLinkResourcesResult contains the result from method PrivateEndpointConnectionClient.ListPrivateLinkResources.
+type PrivateEndpointConnectionClientListPrivateLinkResourcesResult struct {
 	PrivateLinkResourceListResult
 }
 
-// ProductAPICheckEntityExistsResponse contains the response from method ProductAPI.CheckEntityExists.
-type ProductAPICheckEntityExistsResponse struct {
-	ProductAPICheckEntityExistsResult
+// ProductAPIClientCheckEntityExistsResponse contains the response from method ProductAPIClient.CheckEntityExists.
+type ProductAPIClientCheckEntityExistsResponse struct {
+	ProductAPIClientCheckEntityExistsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductAPICheckEntityExistsResult contains the result from method ProductAPI.CheckEntityExists.
-type ProductAPICheckEntityExistsResult struct {
+// ProductAPIClientCheckEntityExistsResult contains the result from method ProductAPIClient.CheckEntityExists.
+type ProductAPIClientCheckEntityExistsResult struct {
 	// Success indicates if the operation succeeded or failed.
 	Success bool
 }
 
-// ProductAPICreateOrUpdateResponse contains the response from method ProductAPI.CreateOrUpdate.
-type ProductAPICreateOrUpdateResponse struct {
-	ProductAPICreateOrUpdateResult
+// ProductAPIClientCreateOrUpdateResponse contains the response from method ProductAPIClient.CreateOrUpdate.
+type ProductAPIClientCreateOrUpdateResponse struct {
+	ProductAPIClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductAPICreateOrUpdateResult contains the result from method ProductAPI.CreateOrUpdate.
-type ProductAPICreateOrUpdateResult struct {
+// ProductAPIClientCreateOrUpdateResult contains the result from method ProductAPIClient.CreateOrUpdate.
+type ProductAPIClientCreateOrUpdateResult struct {
 	APIContract
 }
 
-// ProductAPIDeleteResponse contains the response from method ProductAPI.Delete.
-type ProductAPIDeleteResponse struct {
+// ProductAPIClientDeleteResponse contains the response from method ProductAPIClient.Delete.
+type ProductAPIClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductAPIListByProductResponse contains the response from method ProductAPI.ListByProduct.
-type ProductAPIListByProductResponse struct {
-	ProductAPIListByProductResult
+// ProductAPIClientListByProductResponse contains the response from method ProductAPIClient.ListByProduct.
+type ProductAPIClientListByProductResponse struct {
+	ProductAPIClientListByProductResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductAPIListByProductResult contains the result from method ProductAPI.ListByProduct.
-type ProductAPIListByProductResult struct {
+// ProductAPIClientListByProductResult contains the result from method ProductAPIClient.ListByProduct.
+type ProductAPIClientListByProductResult struct {
 	APICollection
 }
 
-// ProductCreateOrUpdateResponse contains the response from method Product.CreateOrUpdate.
-type ProductCreateOrUpdateResponse struct {
-	ProductCreateOrUpdateResult
+// ProductClientCreateOrUpdateResponse contains the response from method ProductClient.CreateOrUpdate.
+type ProductClientCreateOrUpdateResponse struct {
+	ProductClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductCreateOrUpdateResult contains the result from method Product.CreateOrUpdate.
-type ProductCreateOrUpdateResult struct {
+// ProductClientCreateOrUpdateResult contains the result from method ProductClient.CreateOrUpdate.
+type ProductClientCreateOrUpdateResult struct {
 	ProductContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// ProductDeleteResponse contains the response from method Product.Delete.
-type ProductDeleteResponse struct {
+// ProductClientDeleteResponse contains the response from method ProductClient.Delete.
+type ProductClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductGetEntityTagResponse contains the response from method Product.GetEntityTag.
-type ProductGetEntityTagResponse struct {
-	ProductGetEntityTagResult
+// ProductClientGetEntityTagResponse contains the response from method ProductClient.GetEntityTag.
+type ProductClientGetEntityTagResponse struct {
+	ProductClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductGetEntityTagResult contains the result from method Product.GetEntityTag.
-type ProductGetEntityTagResult struct {
+// ProductClientGetEntityTagResult contains the result from method ProductClient.GetEntityTag.
+type ProductClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -3682,352 +3374,130 @@ type ProductGetEntityTagResult struct {
 	Success bool
 }
 
-// ProductGetResponse contains the response from method Product.Get.
-type ProductGetResponse struct {
-	ProductGetResult
+// ProductClientGetResponse contains the response from method ProductClient.Get.
+type ProductClientGetResponse struct {
+	ProductClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductGetResult contains the result from method Product.Get.
-type ProductGetResult struct {
+// ProductClientGetResult contains the result from method ProductClient.Get.
+type ProductClientGetResult struct {
 	ProductContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// ProductGroupCheckEntityExistsResponse contains the response from method ProductGroup.CheckEntityExists.
-type ProductGroupCheckEntityExistsResponse struct {
-	ProductGroupCheckEntityExistsResult
+// ProductClientListByServiceResponse contains the response from method ProductClient.ListByService.
+type ProductClientListByServiceResponse struct {
+	ProductClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductGroupCheckEntityExistsResult contains the result from method ProductGroup.CheckEntityExists.
-type ProductGroupCheckEntityExistsResult struct {
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// ProductGroupCreateOrUpdateResponse contains the response from method ProductGroup.CreateOrUpdate.
-type ProductGroupCreateOrUpdateResponse struct {
-	ProductGroupCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductGroupCreateOrUpdateResult contains the result from method ProductGroup.CreateOrUpdate.
-type ProductGroupCreateOrUpdateResult struct {
-	GroupContract
-}
-
-// ProductGroupDeleteResponse contains the response from method ProductGroup.Delete.
-type ProductGroupDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductGroupListByProductResponse contains the response from method ProductGroup.ListByProduct.
-type ProductGroupListByProductResponse struct {
-	ProductGroupListByProductResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductGroupListByProductResult contains the result from method ProductGroup.ListByProduct.
-type ProductGroupListByProductResult struct {
-	GroupCollection
-}
-
-// ProductListByServiceResponse contains the response from method Product.ListByService.
-type ProductListByServiceResponse struct {
-	ProductListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductListByServiceResult contains the result from method Product.ListByService.
-type ProductListByServiceResult struct {
+// ProductClientListByServiceResult contains the result from method ProductClient.ListByService.
+type ProductClientListByServiceResult struct {
 	ProductCollection
 }
 
-// ProductListByTagsResponse contains the response from method Product.ListByTags.
-type ProductListByTagsResponse struct {
-	ProductListByTagsResult
+// ProductClientListByTagsResponse contains the response from method ProductClient.ListByTags.
+type ProductClientListByTagsResponse struct {
+	ProductClientListByTagsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductListByTagsResult contains the result from method Product.ListByTags.
-type ProductListByTagsResult struct {
+// ProductClientListByTagsResult contains the result from method ProductClient.ListByTags.
+type ProductClientListByTagsResult struct {
 	TagResourceCollection
 }
 
-// ProductPolicyCreateOrUpdateResponse contains the response from method ProductPolicy.CreateOrUpdate.
-type ProductPolicyCreateOrUpdateResponse struct {
-	ProductPolicyCreateOrUpdateResult
+// ProductClientUpdateResponse contains the response from method ProductClient.Update.
+type ProductClientUpdateResponse struct {
+	ProductClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProductPolicyCreateOrUpdateResult contains the result from method ProductPolicy.CreateOrUpdate.
-type ProductPolicyCreateOrUpdateResult struct {
-	PolicyContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// ProductPolicyDeleteResponse contains the response from method ProductPolicy.Delete.
-type ProductPolicyDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductPolicyGetEntityTagResponse contains the response from method ProductPolicy.GetEntityTag.
-type ProductPolicyGetEntityTagResponse struct {
-	ProductPolicyGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductPolicyGetEntityTagResult contains the result from method ProductPolicy.GetEntityTag.
-type ProductPolicyGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// ProductPolicyGetResponse contains the response from method ProductPolicy.Get.
-type ProductPolicyGetResponse struct {
-	ProductPolicyGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductPolicyGetResult contains the result from method ProductPolicy.Get.
-type ProductPolicyGetResult struct {
-	PolicyContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// ProductPolicyListByProductResponse contains the response from method ProductPolicy.ListByProduct.
-type ProductPolicyListByProductResponse struct {
-	ProductPolicyListByProductResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductPolicyListByProductResult contains the result from method ProductPolicy.ListByProduct.
-type ProductPolicyListByProductResult struct {
-	PolicyCollection
-}
-
-// ProductSubscriptionsListResponse contains the response from method ProductSubscriptions.List.
-type ProductSubscriptionsListResponse struct {
-	ProductSubscriptionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductSubscriptionsListResult contains the result from method ProductSubscriptions.List.
-type ProductSubscriptionsListResult struct {
-	SubscriptionCollection
-}
-
-// ProductUpdateResponse contains the response from method Product.Update.
-type ProductUpdateResponse struct {
-	ProductUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductUpdateResult contains the result from method Product.Update.
-type ProductUpdateResult struct {
+// ProductClientUpdateResult contains the result from method ProductClient.Update.
+type ProductClientUpdateResult struct {
 	ProductContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// QuotaByCounterKeysListByServiceResponse contains the response from method QuotaByCounterKeys.ListByService.
-type QuotaByCounterKeysListByServiceResponse struct {
-	QuotaByCounterKeysListByServiceResult
+// ProductGroupClientCheckEntityExistsResponse contains the response from method ProductGroupClient.CheckEntityExists.
+type ProductGroupClientCheckEntityExistsResponse struct {
+	ProductGroupClientCheckEntityExistsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaByCounterKeysListByServiceResult contains the result from method QuotaByCounterKeys.ListByService.
-type QuotaByCounterKeysListByServiceResult struct {
-	QuotaCounterCollection
+// ProductGroupClientCheckEntityExistsResult contains the result from method ProductGroupClient.CheckEntityExists.
+type ProductGroupClientCheckEntityExistsResult struct {
+	// Success indicates if the operation succeeded or failed.
+	Success bool
 }
 
-// QuotaByCounterKeysUpdateResponse contains the response from method QuotaByCounterKeys.Update.
-type QuotaByCounterKeysUpdateResponse struct {
-	QuotaByCounterKeysUpdateResult
+// ProductGroupClientCreateOrUpdateResponse contains the response from method ProductGroupClient.CreateOrUpdate.
+type ProductGroupClientCreateOrUpdateResponse struct {
+	ProductGroupClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaByCounterKeysUpdateResult contains the result from method QuotaByCounterKeys.Update.
-type QuotaByCounterKeysUpdateResult struct {
-	QuotaCounterCollection
+// ProductGroupClientCreateOrUpdateResult contains the result from method ProductGroupClient.CreateOrUpdate.
+type ProductGroupClientCreateOrUpdateResult struct {
+	GroupContract
 }
 
-// QuotaByPeriodKeysGetResponse contains the response from method QuotaByPeriodKeys.Get.
-type QuotaByPeriodKeysGetResponse struct {
-	QuotaByPeriodKeysGetResult
+// ProductGroupClientDeleteResponse contains the response from method ProductGroupClient.Delete.
+type ProductGroupClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaByPeriodKeysGetResult contains the result from method QuotaByPeriodKeys.Get.
-type QuotaByPeriodKeysGetResult struct {
-	QuotaCounterContract
-}
-
-// QuotaByPeriodKeysUpdateResponse contains the response from method QuotaByPeriodKeys.Update.
-type QuotaByPeriodKeysUpdateResponse struct {
-	QuotaByPeriodKeysUpdateResult
+// ProductGroupClientListByProductResponse contains the response from method ProductGroupClient.ListByProduct.
+type ProductGroupClientListByProductResponse struct {
+	ProductGroupClientListByProductResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaByPeriodKeysUpdateResult contains the result from method QuotaByPeriodKeys.Update.
-type QuotaByPeriodKeysUpdateResult struct {
-	QuotaCounterContract
+// ProductGroupClientListByProductResult contains the result from method ProductGroupClient.ListByProduct.
+type ProductGroupClientListByProductResult struct {
+	GroupCollection
 }
 
-// RegionListByServiceResponse contains the response from method Region.ListByService.
-type RegionListByServiceResponse struct {
-	RegionListByServiceResult
+// ProductPolicyClientCreateOrUpdateResponse contains the response from method ProductPolicyClient.CreateOrUpdate.
+type ProductPolicyClientCreateOrUpdateResponse struct {
+	ProductPolicyClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegionListByServiceResult contains the result from method Region.ListByService.
-type RegionListByServiceResult struct {
-	RegionListResult
+// ProductPolicyClientCreateOrUpdateResult contains the result from method ProductPolicyClient.CreateOrUpdate.
+type ProductPolicyClientCreateOrUpdateResult struct {
+	PolicyContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
 }
 
-// ReportsListByAPIResponse contains the response from method Reports.ListByAPI.
-type ReportsListByAPIResponse struct {
-	ReportsListByAPIResult
+// ProductPolicyClientDeleteResponse contains the response from method ProductPolicyClient.Delete.
+type ProductPolicyClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReportsListByAPIResult contains the result from method Reports.ListByAPI.
-type ReportsListByAPIResult struct {
-	ReportCollection
-}
-
-// ReportsListByGeoResponse contains the response from method Reports.ListByGeo.
-type ReportsListByGeoResponse struct {
-	ReportsListByGeoResult
+// ProductPolicyClientGetEntityTagResponse contains the response from method ProductPolicyClient.GetEntityTag.
+type ProductPolicyClientGetEntityTagResponse struct {
+	ProductPolicyClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReportsListByGeoResult contains the result from method Reports.ListByGeo.
-type ReportsListByGeoResult struct {
-	ReportCollection
-}
-
-// ReportsListByOperationResponse contains the response from method Reports.ListByOperation.
-type ReportsListByOperationResponse struct {
-	ReportsListByOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReportsListByOperationResult contains the result from method Reports.ListByOperation.
-type ReportsListByOperationResult struct {
-	ReportCollection
-}
-
-// ReportsListByProductResponse contains the response from method Reports.ListByProduct.
-type ReportsListByProductResponse struct {
-	ReportsListByProductResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReportsListByProductResult contains the result from method Reports.ListByProduct.
-type ReportsListByProductResult struct {
-	ReportCollection
-}
-
-// ReportsListByRequestResponse contains the response from method Reports.ListByRequest.
-type ReportsListByRequestResponse struct {
-	ReportsListByRequestResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReportsListByRequestResult contains the result from method Reports.ListByRequest.
-type ReportsListByRequestResult struct {
-	RequestReportCollection
-}
-
-// ReportsListBySubscriptionResponse contains the response from method Reports.ListBySubscription.
-type ReportsListBySubscriptionResponse struct {
-	ReportsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReportsListBySubscriptionResult contains the result from method Reports.ListBySubscription.
-type ReportsListBySubscriptionResult struct {
-	ReportCollection
-}
-
-// ReportsListByTimeResponse contains the response from method Reports.ListByTime.
-type ReportsListByTimeResponse struct {
-	ReportsListByTimeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReportsListByTimeResult contains the result from method Reports.ListByTime.
-type ReportsListByTimeResult struct {
-	ReportCollection
-}
-
-// ReportsListByUserResponse contains the response from method Reports.ListByUser.
-type ReportsListByUserResponse struct {
-	ReportsListByUserResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReportsListByUserResult contains the result from method Reports.ListByUser.
-type ReportsListByUserResult struct {
-	ReportCollection
-}
-
-// SignInSettingsCreateOrUpdateResponse contains the response from method SignInSettings.CreateOrUpdate.
-type SignInSettingsCreateOrUpdateResponse struct {
-	SignInSettingsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SignInSettingsCreateOrUpdateResult contains the result from method SignInSettings.CreateOrUpdate.
-type SignInSettingsCreateOrUpdateResult struct {
-	PortalSigninSettings
-}
-
-// SignInSettingsGetEntityTagResponse contains the response from method SignInSettings.GetEntityTag.
-type SignInSettingsGetEntityTagResponse struct {
-	SignInSettingsGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SignInSettingsGetEntityTagResult contains the result from method SignInSettings.GetEntityTag.
-type SignInSettingsGetEntityTagResult struct {
+// ProductPolicyClientGetEntityTagResult contains the result from method ProductPolicyClient.GetEntityTag.
+type ProductPolicyClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -4035,303 +3505,933 @@ type SignInSettingsGetEntityTagResult struct {
 	Success bool
 }
 
-// SignInSettingsGetResponse contains the response from method SignInSettings.Get.
-type SignInSettingsGetResponse struct {
-	SignInSettingsGetResult
+// ProductPolicyClientGetResponse contains the response from method ProductPolicyClient.Get.
+type ProductPolicyClientGetResponse struct {
+	ProductPolicyClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignInSettingsGetResult contains the result from method SignInSettings.Get.
-type SignInSettingsGetResult struct {
-	PortalSigninSettings
+// ProductPolicyClientGetResult contains the result from method ProductPolicyClient.Get.
+type ProductPolicyClientGetResult struct {
+	PolicyContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// SignInSettingsUpdateResponse contains the response from method SignInSettings.Update.
-type SignInSettingsUpdateResponse struct {
+// ProductPolicyClientListByProductResponse contains the response from method ProductPolicyClient.ListByProduct.
+type ProductPolicyClientListByProductResponse struct {
+	ProductPolicyClientListByProductResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignUpSettingsCreateOrUpdateResponse contains the response from method SignUpSettings.CreateOrUpdate.
-type SignUpSettingsCreateOrUpdateResponse struct {
-	SignUpSettingsCreateOrUpdateResult
+// ProductPolicyClientListByProductResult contains the result from method ProductPolicyClient.ListByProduct.
+type ProductPolicyClientListByProductResult struct {
+	PolicyCollection
+}
+
+// ProductSubscriptionsClientListResponse contains the response from method ProductSubscriptionsClient.List.
+type ProductSubscriptionsClientListResponse struct {
+	ProductSubscriptionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignUpSettingsCreateOrUpdateResult contains the result from method SignUpSettings.CreateOrUpdate.
-type SignUpSettingsCreateOrUpdateResult struct {
-	PortalSignupSettings
-}
-
-// SignUpSettingsGetEntityTagResponse contains the response from method SignUpSettings.GetEntityTag.
-type SignUpSettingsGetEntityTagResponse struct {
-	SignUpSettingsGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SignUpSettingsGetEntityTagResult contains the result from method SignUpSettings.GetEntityTag.
-type SignUpSettingsGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// SignUpSettingsGetResponse contains the response from method SignUpSettings.Get.
-type SignUpSettingsGetResponse struct {
-	SignUpSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SignUpSettingsGetResult contains the result from method SignUpSettings.Get.
-type SignUpSettingsGetResult struct {
-	PortalSignupSettings
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// SignUpSettingsUpdateResponse contains the response from method SignUpSettings.Update.
-type SignUpSettingsUpdateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionCreateOrUpdateResponse contains the response from method Subscription.CreateOrUpdate.
-type SubscriptionCreateOrUpdateResponse struct {
-	SubscriptionCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionCreateOrUpdateResult contains the result from method Subscription.CreateOrUpdate.
-type SubscriptionCreateOrUpdateResult struct {
-	SubscriptionContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// SubscriptionDeleteResponse contains the response from method Subscription.Delete.
-type SubscriptionDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionGetEntityTagResponse contains the response from method Subscription.GetEntityTag.
-type SubscriptionGetEntityTagResponse struct {
-	SubscriptionGetEntityTagResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionGetEntityTagResult contains the result from method Subscription.GetEntityTag.
-type SubscriptionGetEntityTagResult struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// SubscriptionGetResponse contains the response from method Subscription.Get.
-type SubscriptionGetResponse struct {
-	SubscriptionGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionGetResult contains the result from method Subscription.Get.
-type SubscriptionGetResult struct {
-	SubscriptionContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// SubscriptionListResponse contains the response from method Subscription.List.
-type SubscriptionListResponse struct {
-	SubscriptionListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionListResult contains the result from method Subscription.List.
-type SubscriptionListResult struct {
+// ProductSubscriptionsClientListResult contains the result from method ProductSubscriptionsClient.List.
+type ProductSubscriptionsClientListResult struct {
 	SubscriptionCollection
 }
 
-// SubscriptionListSecretsResponse contains the response from method Subscription.ListSecrets.
-type SubscriptionListSecretsResponse struct {
-	SubscriptionListSecretsResult
+// QuotaByCounterKeysClientListByServiceResponse contains the response from method QuotaByCounterKeysClient.ListByService.
+type QuotaByCounterKeysClientListByServiceResponse struct {
+	QuotaByCounterKeysClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionListSecretsResult contains the result from method Subscription.ListSecrets.
-type SubscriptionListSecretsResult struct {
+// QuotaByCounterKeysClientListByServiceResult contains the result from method QuotaByCounterKeysClient.ListByService.
+type QuotaByCounterKeysClientListByServiceResult struct {
+	QuotaCounterCollection
+}
+
+// QuotaByCounterKeysClientUpdateResponse contains the response from method QuotaByCounterKeysClient.Update.
+type QuotaByCounterKeysClientUpdateResponse struct {
+	QuotaByCounterKeysClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QuotaByCounterKeysClientUpdateResult contains the result from method QuotaByCounterKeysClient.Update.
+type QuotaByCounterKeysClientUpdateResult struct {
+	QuotaCounterCollection
+}
+
+// QuotaByPeriodKeysClientGetResponse contains the response from method QuotaByPeriodKeysClient.Get.
+type QuotaByPeriodKeysClientGetResponse struct {
+	QuotaByPeriodKeysClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QuotaByPeriodKeysClientGetResult contains the result from method QuotaByPeriodKeysClient.Get.
+type QuotaByPeriodKeysClientGetResult struct {
+	QuotaCounterContract
+}
+
+// QuotaByPeriodKeysClientUpdateResponse contains the response from method QuotaByPeriodKeysClient.Update.
+type QuotaByPeriodKeysClientUpdateResponse struct {
+	QuotaByPeriodKeysClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// QuotaByPeriodKeysClientUpdateResult contains the result from method QuotaByPeriodKeysClient.Update.
+type QuotaByPeriodKeysClientUpdateResult struct {
+	QuotaCounterContract
+}
+
+// RegionClientListByServiceResponse contains the response from method RegionClient.ListByService.
+type RegionClientListByServiceResponse struct {
+	RegionClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RegionClientListByServiceResult contains the result from method RegionClient.ListByService.
+type RegionClientListByServiceResult struct {
+	RegionListResult
+}
+
+// ReportsClientListByAPIResponse contains the response from method ReportsClient.ListByAPI.
+type ReportsClientListByAPIResponse struct {
+	ReportsClientListByAPIResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListByAPIResult contains the result from method ReportsClient.ListByAPI.
+type ReportsClientListByAPIResult struct {
+	ReportCollection
+}
+
+// ReportsClientListByGeoResponse contains the response from method ReportsClient.ListByGeo.
+type ReportsClientListByGeoResponse struct {
+	ReportsClientListByGeoResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListByGeoResult contains the result from method ReportsClient.ListByGeo.
+type ReportsClientListByGeoResult struct {
+	ReportCollection
+}
+
+// ReportsClientListByOperationResponse contains the response from method ReportsClient.ListByOperation.
+type ReportsClientListByOperationResponse struct {
+	ReportsClientListByOperationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListByOperationResult contains the result from method ReportsClient.ListByOperation.
+type ReportsClientListByOperationResult struct {
+	ReportCollection
+}
+
+// ReportsClientListByProductResponse contains the response from method ReportsClient.ListByProduct.
+type ReportsClientListByProductResponse struct {
+	ReportsClientListByProductResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListByProductResult contains the result from method ReportsClient.ListByProduct.
+type ReportsClientListByProductResult struct {
+	ReportCollection
+}
+
+// ReportsClientListByRequestResponse contains the response from method ReportsClient.ListByRequest.
+type ReportsClientListByRequestResponse struct {
+	ReportsClientListByRequestResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListByRequestResult contains the result from method ReportsClient.ListByRequest.
+type ReportsClientListByRequestResult struct {
+	RequestReportCollection
+}
+
+// ReportsClientListBySubscriptionResponse contains the response from method ReportsClient.ListBySubscription.
+type ReportsClientListBySubscriptionResponse struct {
+	ReportsClientListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListBySubscriptionResult contains the result from method ReportsClient.ListBySubscription.
+type ReportsClientListBySubscriptionResult struct {
+	ReportCollection
+}
+
+// ReportsClientListByTimeResponse contains the response from method ReportsClient.ListByTime.
+type ReportsClientListByTimeResponse struct {
+	ReportsClientListByTimeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListByTimeResult contains the result from method ReportsClient.ListByTime.
+type ReportsClientListByTimeResult struct {
+	ReportCollection
+}
+
+// ReportsClientListByUserResponse contains the response from method ReportsClient.ListByUser.
+type ReportsClientListByUserResponse struct {
+	ReportsClientListByUserResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListByUserResult contains the result from method ReportsClient.ListByUser.
+type ReportsClientListByUserResult struct {
+	ReportCollection
+}
+
+// SKUsClientListResponse contains the response from method SKUsClient.List.
+type SKUsClientListResponse struct {
+	SKUsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SKUsClientListResult contains the result from method SKUsClient.List.
+type SKUsClientListResult struct {
+	SKUsResult
+}
+
+// ServiceClientApplyNetworkConfigurationUpdatesPollerResponse contains the response from method ServiceClient.ApplyNetworkConfigurationUpdates.
+type ServiceClientApplyNetworkConfigurationUpdatesPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServiceClientApplyNetworkConfigurationUpdatesPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServiceClientApplyNetworkConfigurationUpdatesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceClientApplyNetworkConfigurationUpdatesResponse, error) {
+	respType := ServiceClientApplyNetworkConfigurationUpdatesResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServiceClientApplyNetworkConfigurationUpdatesPollerResponse from the provided client and resume token.
+func (l *ServiceClientApplyNetworkConfigurationUpdatesPollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.ApplyNetworkConfigurationUpdates", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ServiceClientApplyNetworkConfigurationUpdatesPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ServiceClientApplyNetworkConfigurationUpdatesResponse contains the response from method ServiceClient.ApplyNetworkConfigurationUpdates.
+type ServiceClientApplyNetworkConfigurationUpdatesResponse struct {
+	ServiceClientApplyNetworkConfigurationUpdatesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientApplyNetworkConfigurationUpdatesResult contains the result from method ServiceClient.ApplyNetworkConfigurationUpdates.
+type ServiceClientApplyNetworkConfigurationUpdatesResult struct {
+	ServiceResource
+}
+
+// ServiceClientBackupPollerResponse contains the response from method ServiceClient.Backup.
+type ServiceClientBackupPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServiceClientBackupPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServiceClientBackupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceClientBackupResponse, error) {
+	respType := ServiceClientBackupResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServiceClientBackupPollerResponse from the provided client and resume token.
+func (l *ServiceClientBackupPollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.Backup", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ServiceClientBackupPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ServiceClientBackupResponse contains the response from method ServiceClient.Backup.
+type ServiceClientBackupResponse struct {
+	ServiceClientBackupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientBackupResult contains the result from method ServiceClient.Backup.
+type ServiceClientBackupResult struct {
+	ServiceResource
+}
+
+// ServiceClientCheckNameAvailabilityResponse contains the response from method ServiceClient.CheckNameAvailability.
+type ServiceClientCheckNameAvailabilityResponse struct {
+	ServiceClientCheckNameAvailabilityResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientCheckNameAvailabilityResult contains the result from method ServiceClient.CheckNameAvailability.
+type ServiceClientCheckNameAvailabilityResult struct {
+	ServiceNameAvailabilityResult
+}
+
+// ServiceClientCreateOrUpdatePollerResponse contains the response from method ServiceClient.CreateOrUpdate.
+type ServiceClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServiceClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServiceClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceClientCreateOrUpdateResponse, error) {
+	respType := ServiceClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServiceClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ServiceClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ServiceClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ServiceClientCreateOrUpdateResponse contains the response from method ServiceClient.CreateOrUpdate.
+type ServiceClientCreateOrUpdateResponse struct {
+	ServiceClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientCreateOrUpdateResult contains the result from method ServiceClient.CreateOrUpdate.
+type ServiceClientCreateOrUpdateResult struct {
+	ServiceResource
+}
+
+// ServiceClientDeletePollerResponse contains the response from method ServiceClient.Delete.
+type ServiceClientDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServiceClientDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServiceClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceClientDeleteResponse, error) {
+	respType := ServiceClientDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServiceClientDeletePollerResponse from the provided client and resume token.
+func (l *ServiceClientDeletePollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.Delete", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ServiceClientDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ServiceClientDeleteResponse contains the response from method ServiceClient.Delete.
+type ServiceClientDeleteResponse struct {
+	ServiceClientDeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientDeleteResult contains the result from method ServiceClient.Delete.
+type ServiceClientDeleteResult struct {
+	ServiceResource
+}
+
+// ServiceClientGetDomainOwnershipIdentifierResponse contains the response from method ServiceClient.GetDomainOwnershipIdentifier.
+type ServiceClientGetDomainOwnershipIdentifierResponse struct {
+	ServiceClientGetDomainOwnershipIdentifierResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientGetDomainOwnershipIdentifierResult contains the result from method ServiceClient.GetDomainOwnershipIdentifier.
+type ServiceClientGetDomainOwnershipIdentifierResult struct {
+	ServiceGetDomainOwnershipIdentifierResult
+}
+
+// ServiceClientGetResponse contains the response from method ServiceClient.Get.
+type ServiceClientGetResponse struct {
+	ServiceClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientGetResult contains the result from method ServiceClient.Get.
+type ServiceClientGetResult struct {
+	ServiceResource
+}
+
+// ServiceClientGetSsoTokenResponse contains the response from method ServiceClient.GetSsoToken.
+type ServiceClientGetSsoTokenResponse struct {
+	ServiceClientGetSsoTokenResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientGetSsoTokenResult contains the result from method ServiceClient.GetSsoToken.
+type ServiceClientGetSsoTokenResult struct {
+	ServiceGetSsoTokenResult
+}
+
+// ServiceClientListByResourceGroupResponse contains the response from method ServiceClient.ListByResourceGroup.
+type ServiceClientListByResourceGroupResponse struct {
+	ServiceClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientListByResourceGroupResult contains the result from method ServiceClient.ListByResourceGroup.
+type ServiceClientListByResourceGroupResult struct {
+	ServiceListResult
+}
+
+// ServiceClientListResponse contains the response from method ServiceClient.List.
+type ServiceClientListResponse struct {
+	ServiceClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientListResult contains the result from method ServiceClient.List.
+type ServiceClientListResult struct {
+	ServiceListResult
+}
+
+// ServiceClientRestorePollerResponse contains the response from method ServiceClient.Restore.
+type ServiceClientRestorePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServiceClientRestorePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServiceClientRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceClientRestoreResponse, error) {
+	respType := ServiceClientRestoreResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServiceClientRestorePollerResponse from the provided client and resume token.
+func (l *ServiceClientRestorePollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.Restore", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ServiceClientRestorePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ServiceClientRestoreResponse contains the response from method ServiceClient.Restore.
+type ServiceClientRestoreResponse struct {
+	ServiceClientRestoreResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientRestoreResult contains the result from method ServiceClient.Restore.
+type ServiceClientRestoreResult struct {
+	ServiceResource
+}
+
+// ServiceClientUpdatePollerResponse contains the response from method ServiceClient.Update.
+type ServiceClientUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServiceClientUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServiceClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceClientUpdateResponse, error) {
+	respType := ServiceClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServiceClientUpdatePollerResponse from the provided client and resume token.
+func (l *ServiceClientUpdatePollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.Update", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ServiceClientUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ServiceClientUpdateResponse contains the response from method ServiceClient.Update.
+type ServiceClientUpdateResponse struct {
+	ServiceClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientUpdateResult contains the result from method ServiceClient.Update.
+type ServiceClientUpdateResult struct {
+	ServiceResource
+}
+
+// ServiceSKUsClientListAvailableServiceSKUsResponse contains the response from method ServiceSKUsClient.ListAvailableServiceSKUs.
+type ServiceSKUsClientListAvailableServiceSKUsResponse struct {
+	ServiceSKUsClientListAvailableServiceSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceSKUsClientListAvailableServiceSKUsResult contains the result from method ServiceSKUsClient.ListAvailableServiceSKUs.
+type ServiceSKUsClientListAvailableServiceSKUsResult struct {
+	ResourceSKUResults
+}
+
+// SignInSettingsClientCreateOrUpdateResponse contains the response from method SignInSettingsClient.CreateOrUpdate.
+type SignInSettingsClientCreateOrUpdateResponse struct {
+	SignInSettingsClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SignInSettingsClientCreateOrUpdateResult contains the result from method SignInSettingsClient.CreateOrUpdate.
+type SignInSettingsClientCreateOrUpdateResult struct {
+	PortalSigninSettings
+}
+
+// SignInSettingsClientGetEntityTagResponse contains the response from method SignInSettingsClient.GetEntityTag.
+type SignInSettingsClientGetEntityTagResponse struct {
+	SignInSettingsClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SignInSettingsClientGetEntityTagResult contains the result from method SignInSettingsClient.GetEntityTag.
+type SignInSettingsClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// SignInSettingsClientGetResponse contains the response from method SignInSettingsClient.Get.
+type SignInSettingsClientGetResponse struct {
+	SignInSettingsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SignInSettingsClientGetResult contains the result from method SignInSettingsClient.Get.
+type SignInSettingsClientGetResult struct {
+	PortalSigninSettings
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// SignInSettingsClientUpdateResponse contains the response from method SignInSettingsClient.Update.
+type SignInSettingsClientUpdateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SignUpSettingsClientCreateOrUpdateResponse contains the response from method SignUpSettingsClient.CreateOrUpdate.
+type SignUpSettingsClientCreateOrUpdateResponse struct {
+	SignUpSettingsClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SignUpSettingsClientCreateOrUpdateResult contains the result from method SignUpSettingsClient.CreateOrUpdate.
+type SignUpSettingsClientCreateOrUpdateResult struct {
+	PortalSignupSettings
+}
+
+// SignUpSettingsClientGetEntityTagResponse contains the response from method SignUpSettingsClient.GetEntityTag.
+type SignUpSettingsClientGetEntityTagResponse struct {
+	SignUpSettingsClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SignUpSettingsClientGetEntityTagResult contains the result from method SignUpSettingsClient.GetEntityTag.
+type SignUpSettingsClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// SignUpSettingsClientGetResponse contains the response from method SignUpSettingsClient.Get.
+type SignUpSettingsClientGetResponse struct {
+	SignUpSettingsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SignUpSettingsClientGetResult contains the result from method SignUpSettingsClient.Get.
+type SignUpSettingsClientGetResult struct {
+	PortalSignupSettings
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// SignUpSettingsClientUpdateResponse contains the response from method SignUpSettingsClient.Update.
+type SignUpSettingsClientUpdateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionClientCreateOrUpdateResponse contains the response from method SubscriptionClient.CreateOrUpdate.
+type SubscriptionClientCreateOrUpdateResponse struct {
+	SubscriptionClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionClientCreateOrUpdateResult contains the result from method SubscriptionClient.CreateOrUpdate.
+type SubscriptionClientCreateOrUpdateResult struct {
+	SubscriptionContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// SubscriptionClientDeleteResponse contains the response from method SubscriptionClient.Delete.
+type SubscriptionClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionClientGetEntityTagResponse contains the response from method SubscriptionClient.GetEntityTag.
+type SubscriptionClientGetEntityTagResponse struct {
+	SubscriptionClientGetEntityTagResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionClientGetEntityTagResult contains the result from method SubscriptionClient.GetEntityTag.
+type SubscriptionClientGetEntityTagResult struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// SubscriptionClientGetResponse contains the response from method SubscriptionClient.Get.
+type SubscriptionClientGetResponse struct {
+	SubscriptionClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionClientGetResult contains the result from method SubscriptionClient.Get.
+type SubscriptionClientGetResult struct {
+	SubscriptionContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// SubscriptionClientListResponse contains the response from method SubscriptionClient.List.
+type SubscriptionClientListResponse struct {
+	SubscriptionClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionClientListResult contains the result from method SubscriptionClient.List.
+type SubscriptionClientListResult struct {
+	SubscriptionCollection
+}
+
+// SubscriptionClientListSecretsResponse contains the response from method SubscriptionClient.ListSecrets.
+type SubscriptionClientListSecretsResponse struct {
+	SubscriptionClientListSecretsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionClientListSecretsResult contains the result from method SubscriptionClient.ListSecrets.
+type SubscriptionClientListSecretsResult struct {
 	SubscriptionKeysContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// SubscriptionRegeneratePrimaryKeyResponse contains the response from method Subscription.RegeneratePrimaryKey.
-type SubscriptionRegeneratePrimaryKeyResponse struct {
+// SubscriptionClientRegeneratePrimaryKeyResponse contains the response from method SubscriptionClient.RegeneratePrimaryKey.
+type SubscriptionClientRegeneratePrimaryKeyResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionRegenerateSecondaryKeyResponse contains the response from method Subscription.RegenerateSecondaryKey.
-type SubscriptionRegenerateSecondaryKeyResponse struct {
+// SubscriptionClientRegenerateSecondaryKeyResponse contains the response from method SubscriptionClient.RegenerateSecondaryKey.
+type SubscriptionClientRegenerateSecondaryKeyResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionUpdateResponse contains the response from method Subscription.Update.
-type SubscriptionUpdateResponse struct {
-	SubscriptionUpdateResult
+// SubscriptionClientUpdateResponse contains the response from method SubscriptionClient.Update.
+type SubscriptionClientUpdateResponse struct {
+	SubscriptionClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionUpdateResult contains the result from method Subscription.Update.
-type SubscriptionUpdateResult struct {
+// SubscriptionClientUpdateResult contains the result from method SubscriptionClient.Update.
+type SubscriptionClientUpdateResult struct {
 	SubscriptionContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TagAssignToAPIResponse contains the response from method Tag.AssignToAPI.
-type TagAssignToAPIResponse struct {
-	TagAssignToAPIResult
+// TagClientAssignToAPIResponse contains the response from method TagClient.AssignToAPI.
+type TagClientAssignToAPIResponse struct {
+	TagClientAssignToAPIResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagAssignToAPIResult contains the result from method Tag.AssignToAPI.
-type TagAssignToAPIResult struct {
+// TagClientAssignToAPIResult contains the result from method TagClient.AssignToAPI.
+type TagClientAssignToAPIResult struct {
 	TagContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TagAssignToOperationResponse contains the response from method Tag.AssignToOperation.
-type TagAssignToOperationResponse struct {
-	TagAssignToOperationResult
+// TagClientAssignToOperationResponse contains the response from method TagClient.AssignToOperation.
+type TagClientAssignToOperationResponse struct {
+	TagClientAssignToOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagAssignToOperationResult contains the result from method Tag.AssignToOperation.
-type TagAssignToOperationResult struct {
+// TagClientAssignToOperationResult contains the result from method TagClient.AssignToOperation.
+type TagClientAssignToOperationResult struct {
 	TagContract
 }
 
-// TagAssignToProductResponse contains the response from method Tag.AssignToProduct.
-type TagAssignToProductResponse struct {
-	TagAssignToProductResult
+// TagClientAssignToProductResponse contains the response from method TagClient.AssignToProduct.
+type TagClientAssignToProductResponse struct {
+	TagClientAssignToProductResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagAssignToProductResult contains the result from method Tag.AssignToProduct.
-type TagAssignToProductResult struct {
+// TagClientAssignToProductResult contains the result from method TagClient.AssignToProduct.
+type TagClientAssignToProductResult struct {
 	TagContract
 }
 
-// TagCreateOrUpdateResponse contains the response from method Tag.CreateOrUpdate.
-type TagCreateOrUpdateResponse struct {
-	TagCreateOrUpdateResult
+// TagClientCreateOrUpdateResponse contains the response from method TagClient.CreateOrUpdate.
+type TagClientCreateOrUpdateResponse struct {
+	TagClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagCreateOrUpdateResult contains the result from method Tag.CreateOrUpdate.
-type TagCreateOrUpdateResult struct {
-	TagContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// TagDeleteResponse contains the response from method Tag.Delete.
-type TagDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TagDetachFromAPIResponse contains the response from method Tag.DetachFromAPI.
-type TagDetachFromAPIResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TagDetachFromOperationResponse contains the response from method Tag.DetachFromOperation.
-type TagDetachFromOperationResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TagDetachFromProductResponse contains the response from method Tag.DetachFromProduct.
-type TagDetachFromProductResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TagGetByAPIResponse contains the response from method Tag.GetByAPI.
-type TagGetByAPIResponse struct {
-	TagGetByAPIResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TagGetByAPIResult contains the result from method Tag.GetByAPI.
-type TagGetByAPIResult struct {
+// TagClientCreateOrUpdateResult contains the result from method TagClient.CreateOrUpdate.
+type TagClientCreateOrUpdateResult struct {
 	TagContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TagGetByOperationResponse contains the response from method Tag.GetByOperation.
-type TagGetByOperationResponse struct {
-	TagGetByOperationResult
+// TagClientDeleteResponse contains the response from method TagClient.Delete.
+type TagClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagGetByOperationResult contains the result from method Tag.GetByOperation.
-type TagGetByOperationResult struct {
+// TagClientDetachFromAPIResponse contains the response from method TagClient.DetachFromAPI.
+type TagClientDetachFromAPIResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagClientDetachFromOperationResponse contains the response from method TagClient.DetachFromOperation.
+type TagClientDetachFromOperationResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagClientDetachFromProductResponse contains the response from method TagClient.DetachFromProduct.
+type TagClientDetachFromProductResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagClientGetByAPIResponse contains the response from method TagClient.GetByAPI.
+type TagClientGetByAPIResponse struct {
+	TagClientGetByAPIResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagClientGetByAPIResult contains the result from method TagClient.GetByAPI.
+type TagClientGetByAPIResult struct {
 	TagContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TagGetByProductResponse contains the response from method Tag.GetByProduct.
-type TagGetByProductResponse struct {
-	TagGetByProductResult
+// TagClientGetByOperationResponse contains the response from method TagClient.GetByOperation.
+type TagClientGetByOperationResponse struct {
+	TagClientGetByOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagGetByProductResult contains the result from method Tag.GetByProduct.
-type TagGetByProductResult struct {
+// TagClientGetByOperationResult contains the result from method TagClient.GetByOperation.
+type TagClientGetByOperationResult struct {
 	TagContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TagGetEntityStateByAPIResponse contains the response from method Tag.GetEntityStateByAPI.
-type TagGetEntityStateByAPIResponse struct {
-	TagGetEntityStateByAPIResult
+// TagClientGetByProductResponse contains the response from method TagClient.GetByProduct.
+type TagClientGetByProductResponse struct {
+	TagClientGetByProductResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagGetEntityStateByAPIResult contains the result from method Tag.GetEntityStateByAPI.
-type TagGetEntityStateByAPIResult struct {
+// TagClientGetByProductResult contains the result from method TagClient.GetByProduct.
+type TagClientGetByProductResult struct {
+	TagContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// TagClientGetEntityStateByAPIResponse contains the response from method TagClient.GetEntityStateByAPI.
+type TagClientGetEntityStateByAPIResponse struct {
+	TagClientGetEntityStateByAPIResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagClientGetEntityStateByAPIResult contains the result from method TagClient.GetEntityStateByAPI.
+type TagClientGetEntityStateByAPIResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -4339,15 +4439,15 @@ type TagGetEntityStateByAPIResult struct {
 	Success bool
 }
 
-// TagGetEntityStateByOperationResponse contains the response from method Tag.GetEntityStateByOperation.
-type TagGetEntityStateByOperationResponse struct {
-	TagGetEntityStateByOperationResult
+// TagClientGetEntityStateByOperationResponse contains the response from method TagClient.GetEntityStateByOperation.
+type TagClientGetEntityStateByOperationResponse struct {
+	TagClientGetEntityStateByOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagGetEntityStateByOperationResult contains the result from method Tag.GetEntityStateByOperation.
-type TagGetEntityStateByOperationResult struct {
+// TagClientGetEntityStateByOperationResult contains the result from method TagClient.GetEntityStateByOperation.
+type TagClientGetEntityStateByOperationResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -4355,15 +4455,15 @@ type TagGetEntityStateByOperationResult struct {
 	Success bool
 }
 
-// TagGetEntityStateByProductResponse contains the response from method Tag.GetEntityStateByProduct.
-type TagGetEntityStateByProductResponse struct {
-	TagGetEntityStateByProductResult
+// TagClientGetEntityStateByProductResponse contains the response from method TagClient.GetEntityStateByProduct.
+type TagClientGetEntityStateByProductResponse struct {
+	TagClientGetEntityStateByProductResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagGetEntityStateByProductResult contains the result from method Tag.GetEntityStateByProduct.
-type TagGetEntityStateByProductResult struct {
+// TagClientGetEntityStateByProductResult contains the result from method TagClient.GetEntityStateByProduct.
+type TagClientGetEntityStateByProductResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -4371,15 +4471,15 @@ type TagGetEntityStateByProductResult struct {
 	Success bool
 }
 
-// TagGetEntityStateResponse contains the response from method Tag.GetEntityState.
-type TagGetEntityStateResponse struct {
-	TagGetEntityStateResult
+// TagClientGetEntityStateResponse contains the response from method TagClient.GetEntityState.
+type TagClientGetEntityStateResponse struct {
+	TagClientGetEntityStateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagGetEntityStateResult contains the result from method Tag.GetEntityState.
-type TagGetEntityStateResult struct {
+// TagClientGetEntityStateResult contains the result from method TagClient.GetEntityState.
+type TagClientGetEntityStateResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -4387,117 +4487,117 @@ type TagGetEntityStateResult struct {
 	Success bool
 }
 
-// TagGetResponse contains the response from method Tag.Get.
-type TagGetResponse struct {
-	TagGetResult
+// TagClientGetResponse contains the response from method TagClient.Get.
+type TagClientGetResponse struct {
+	TagClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagGetResult contains the result from method Tag.Get.
-type TagGetResult struct {
+// TagClientGetResult contains the result from method TagClient.Get.
+type TagClientGetResult struct {
 	TagContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TagListByAPIResponse contains the response from method Tag.ListByAPI.
-type TagListByAPIResponse struct {
-	TagListByAPIResult
+// TagClientListByAPIResponse contains the response from method TagClient.ListByAPI.
+type TagClientListByAPIResponse struct {
+	TagClientListByAPIResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagListByAPIResult contains the result from method Tag.ListByAPI.
-type TagListByAPIResult struct {
+// TagClientListByAPIResult contains the result from method TagClient.ListByAPI.
+type TagClientListByAPIResult struct {
 	TagCollection
 }
 
-// TagListByOperationResponse contains the response from method Tag.ListByOperation.
-type TagListByOperationResponse struct {
-	TagListByOperationResult
+// TagClientListByOperationResponse contains the response from method TagClient.ListByOperation.
+type TagClientListByOperationResponse struct {
+	TagClientListByOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagListByOperationResult contains the result from method Tag.ListByOperation.
-type TagListByOperationResult struct {
+// TagClientListByOperationResult contains the result from method TagClient.ListByOperation.
+type TagClientListByOperationResult struct {
 	TagCollection
 }
 
-// TagListByProductResponse contains the response from method Tag.ListByProduct.
-type TagListByProductResponse struct {
-	TagListByProductResult
+// TagClientListByProductResponse contains the response from method TagClient.ListByProduct.
+type TagClientListByProductResponse struct {
+	TagClientListByProductResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagListByProductResult contains the result from method Tag.ListByProduct.
-type TagListByProductResult struct {
+// TagClientListByProductResult contains the result from method TagClient.ListByProduct.
+type TagClientListByProductResult struct {
 	TagCollection
 }
 
-// TagListByServiceResponse contains the response from method Tag.ListByService.
-type TagListByServiceResponse struct {
-	TagListByServiceResult
+// TagClientListByServiceResponse contains the response from method TagClient.ListByService.
+type TagClientListByServiceResponse struct {
+	TagClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagListByServiceResult contains the result from method Tag.ListByService.
-type TagListByServiceResult struct {
+// TagClientListByServiceResult contains the result from method TagClient.ListByService.
+type TagClientListByServiceResult struct {
 	TagCollection
 }
 
-// TagResourceListByServiceResponse contains the response from method TagResource.ListByService.
-type TagResourceListByServiceResponse struct {
-	TagResourceListByServiceResult
+// TagClientUpdateResponse contains the response from method TagClient.Update.
+type TagClientUpdateResponse struct {
+	TagClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagResourceListByServiceResult contains the result from method TagResource.ListByService.
-type TagResourceListByServiceResult struct {
+// TagClientUpdateResult contains the result from method TagClient.Update.
+type TagClientUpdateResult struct {
+	TagContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// TagResourceClientListByServiceResponse contains the response from method TagResourceClient.ListByService.
+type TagResourceClientListByServiceResponse struct {
+	TagResourceClientListByServiceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagResourceClientListByServiceResult contains the result from method TagResourceClient.ListByService.
+type TagResourceClientListByServiceResult struct {
 	TagResourceCollection
 }
 
-// TagUpdateResponse contains the response from method Tag.Update.
-type TagUpdateResponse struct {
-	TagUpdateResult
+// TenantAccessClientCreateResponse contains the response from method TenantAccessClient.Create.
+type TenantAccessClientCreateResponse struct {
+	TenantAccessClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagUpdateResult contains the result from method Tag.Update.
-type TagUpdateResult struct {
-	TagContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-}
-
-// TenantAccessCreateResponse contains the response from method TenantAccess.Create.
-type TenantAccessCreateResponse struct {
-	TenantAccessCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantAccessCreateResult contains the result from method TenantAccess.Create.
-type TenantAccessCreateResult struct {
+// TenantAccessClientCreateResult contains the result from method TenantAccessClient.Create.
+type TenantAccessClientCreateResult struct {
 	AccessInformationContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TenantAccessGetEntityTagResponse contains the response from method TenantAccess.GetEntityTag.
-type TenantAccessGetEntityTagResponse struct {
-	TenantAccessGetEntityTagResult
+// TenantAccessClientGetEntityTagResponse contains the response from method TenantAccessClient.GetEntityTag.
+type TenantAccessClientGetEntityTagResponse struct {
+	TenantAccessClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantAccessGetEntityTagResult contains the result from method TenantAccess.GetEntityTag.
-type TenantAccessGetEntityTagResult struct {
+// TenantAccessClientGetEntityTagResult contains the result from method TenantAccessClient.GetEntityTag.
+type TenantAccessClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -4505,88 +4605,88 @@ type TenantAccessGetEntityTagResult struct {
 	Success bool
 }
 
-// TenantAccessGetResponse contains the response from method TenantAccess.Get.
-type TenantAccessGetResponse struct {
-	TenantAccessGetResult
+// TenantAccessClientGetResponse contains the response from method TenantAccessClient.Get.
+type TenantAccessClientGetResponse struct {
+	TenantAccessClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantAccessGetResult contains the result from method TenantAccess.Get.
-type TenantAccessGetResult struct {
+// TenantAccessClientGetResult contains the result from method TenantAccessClient.Get.
+type TenantAccessClientGetResult struct {
 	AccessInformationContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TenantAccessGitRegeneratePrimaryKeyResponse contains the response from method TenantAccessGit.RegeneratePrimaryKey.
-type TenantAccessGitRegeneratePrimaryKeyResponse struct {
+// TenantAccessClientListByServiceResponse contains the response from method TenantAccessClient.ListByService.
+type TenantAccessClientListByServiceResponse struct {
+	TenantAccessClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantAccessGitRegenerateSecondaryKeyResponse contains the response from method TenantAccessGit.RegenerateSecondaryKey.
-type TenantAccessGitRegenerateSecondaryKeyResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantAccessListByServiceResponse contains the response from method TenantAccess.ListByService.
-type TenantAccessListByServiceResponse struct {
-	TenantAccessListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantAccessListByServiceResult contains the result from method TenantAccess.ListByService.
-type TenantAccessListByServiceResult struct {
+// TenantAccessClientListByServiceResult contains the result from method TenantAccessClient.ListByService.
+type TenantAccessClientListByServiceResult struct {
 	AccessInformationCollection
 }
 
-// TenantAccessListSecretsResponse contains the response from method TenantAccess.ListSecrets.
-type TenantAccessListSecretsResponse struct {
-	TenantAccessListSecretsResult
+// TenantAccessClientListSecretsResponse contains the response from method TenantAccessClient.ListSecrets.
+type TenantAccessClientListSecretsResponse struct {
+	TenantAccessClientListSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantAccessListSecretsResult contains the result from method TenantAccess.ListSecrets.
-type TenantAccessListSecretsResult struct {
+// TenantAccessClientListSecretsResult contains the result from method TenantAccessClient.ListSecrets.
+type TenantAccessClientListSecretsResult struct {
 	AccessInformationSecretsContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TenantAccessRegeneratePrimaryKeyResponse contains the response from method TenantAccess.RegeneratePrimaryKey.
-type TenantAccessRegeneratePrimaryKeyResponse struct {
+// TenantAccessClientRegeneratePrimaryKeyResponse contains the response from method TenantAccessClient.RegeneratePrimaryKey.
+type TenantAccessClientRegeneratePrimaryKeyResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantAccessRegenerateSecondaryKeyResponse contains the response from method TenantAccess.RegenerateSecondaryKey.
-type TenantAccessRegenerateSecondaryKeyResponse struct {
+// TenantAccessClientRegenerateSecondaryKeyResponse contains the response from method TenantAccessClient.RegenerateSecondaryKey.
+type TenantAccessClientRegenerateSecondaryKeyResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantAccessUpdateResponse contains the response from method TenantAccess.Update.
-type TenantAccessUpdateResponse struct {
-	TenantAccessUpdateResult
+// TenantAccessClientUpdateResponse contains the response from method TenantAccessClient.Update.
+type TenantAccessClientUpdateResponse struct {
+	TenantAccessClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantAccessUpdateResult contains the result from method TenantAccess.Update.
-type TenantAccessUpdateResult struct {
+// TenantAccessClientUpdateResult contains the result from method TenantAccessClient.Update.
+type TenantAccessClientUpdateResult struct {
 	AccessInformationContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TenantConfigurationDeployPollerResponse contains the response from method TenantConfiguration.Deploy.
-type TenantConfigurationDeployPollerResponse struct {
+// TenantAccessGitClientRegeneratePrimaryKeyResponse contains the response from method TenantAccessGitClient.RegeneratePrimaryKey.
+type TenantAccessGitClientRegeneratePrimaryKeyResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TenantAccessGitClientRegenerateSecondaryKeyResponse contains the response from method TenantAccessGitClient.RegenerateSecondaryKey.
+type TenantAccessGitClientRegenerateSecondaryKeyResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TenantConfigurationClientDeployPollerResponse contains the response from method TenantConfigurationClient.Deploy.
+type TenantConfigurationClientDeployPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TenantConfigurationDeployPoller
+	Poller *TenantConfigurationClientDeployPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4595,8 +4695,8 @@ type TenantConfigurationDeployPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l TenantConfigurationDeployPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TenantConfigurationDeployResponse, error) {
-	respType := TenantConfigurationDeployResponse{}
+func (l TenantConfigurationClientDeployPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TenantConfigurationClientDeployResponse, error) {
+	respType := TenantConfigurationClientDeployResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResultContract)
 	if err != nil {
 		return respType, err
@@ -4605,13 +4705,13 @@ func (l TenantConfigurationDeployPollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a TenantConfigurationDeployPollerResponse from the provided client and resume token.
-func (l *TenantConfigurationDeployPollerResponse) Resume(ctx context.Context, client *TenantConfigurationClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TenantConfigurationClient.Deploy", token, client.pl, client.deployHandleError)
+// Resume rehydrates a TenantConfigurationClientDeployPollerResponse from the provided client and resume token.
+func (l *TenantConfigurationClientDeployPollerResponse) Resume(ctx context.Context, client *TenantConfigurationClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TenantConfigurationClient.Deploy", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TenantConfigurationDeployPoller{
+	poller := &TenantConfigurationClientDeployPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4623,34 +4723,34 @@ func (l *TenantConfigurationDeployPollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// TenantConfigurationDeployResponse contains the response from method TenantConfiguration.Deploy.
-type TenantConfigurationDeployResponse struct {
-	TenantConfigurationDeployResult
+// TenantConfigurationClientDeployResponse contains the response from method TenantConfigurationClient.Deploy.
+type TenantConfigurationClientDeployResponse struct {
+	TenantConfigurationClientDeployResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantConfigurationDeployResult contains the result from method TenantConfiguration.Deploy.
-type TenantConfigurationDeployResult struct {
+// TenantConfigurationClientDeployResult contains the result from method TenantConfigurationClient.Deploy.
+type TenantConfigurationClientDeployResult struct {
 	OperationResultContract
 }
 
-// TenantConfigurationGetSyncStateResponse contains the response from method TenantConfiguration.GetSyncState.
-type TenantConfigurationGetSyncStateResponse struct {
-	TenantConfigurationGetSyncStateResult
+// TenantConfigurationClientGetSyncStateResponse contains the response from method TenantConfigurationClient.GetSyncState.
+type TenantConfigurationClientGetSyncStateResponse struct {
+	TenantConfigurationClientGetSyncStateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantConfigurationGetSyncStateResult contains the result from method TenantConfiguration.GetSyncState.
-type TenantConfigurationGetSyncStateResult struct {
+// TenantConfigurationClientGetSyncStateResult contains the result from method TenantConfigurationClient.GetSyncState.
+type TenantConfigurationClientGetSyncStateResult struct {
 	TenantConfigurationSyncStateContract
 }
 
-// TenantConfigurationSavePollerResponse contains the response from method TenantConfiguration.Save.
-type TenantConfigurationSavePollerResponse struct {
+// TenantConfigurationClientSavePollerResponse contains the response from method TenantConfigurationClient.Save.
+type TenantConfigurationClientSavePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TenantConfigurationSavePoller
+	Poller *TenantConfigurationClientSavePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4659,8 +4759,8 @@ type TenantConfigurationSavePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l TenantConfigurationSavePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TenantConfigurationSaveResponse, error) {
-	respType := TenantConfigurationSaveResponse{}
+func (l TenantConfigurationClientSavePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TenantConfigurationClientSaveResponse, error) {
+	respType := TenantConfigurationClientSaveResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResultContract)
 	if err != nil {
 		return respType, err
@@ -4669,13 +4769,13 @@ func (l TenantConfigurationSavePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a TenantConfigurationSavePollerResponse from the provided client and resume token.
-func (l *TenantConfigurationSavePollerResponse) Resume(ctx context.Context, client *TenantConfigurationClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TenantConfigurationClient.Save", token, client.pl, client.saveHandleError)
+// Resume rehydrates a TenantConfigurationClientSavePollerResponse from the provided client and resume token.
+func (l *TenantConfigurationClientSavePollerResponse) Resume(ctx context.Context, client *TenantConfigurationClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TenantConfigurationClient.Save", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TenantConfigurationSavePoller{
+	poller := &TenantConfigurationClientSavePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4687,22 +4787,22 @@ func (l *TenantConfigurationSavePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// TenantConfigurationSaveResponse contains the response from method TenantConfiguration.Save.
-type TenantConfigurationSaveResponse struct {
-	TenantConfigurationSaveResult
+// TenantConfigurationClientSaveResponse contains the response from method TenantConfigurationClient.Save.
+type TenantConfigurationClientSaveResponse struct {
+	TenantConfigurationClientSaveResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantConfigurationSaveResult contains the result from method TenantConfiguration.Save.
-type TenantConfigurationSaveResult struct {
+// TenantConfigurationClientSaveResult contains the result from method TenantConfigurationClient.Save.
+type TenantConfigurationClientSaveResult struct {
 	OperationResultContract
 }
 
-// TenantConfigurationValidatePollerResponse contains the response from method TenantConfiguration.Validate.
-type TenantConfigurationValidatePollerResponse struct {
+// TenantConfigurationClientValidatePollerResponse contains the response from method TenantConfigurationClient.Validate.
+type TenantConfigurationClientValidatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TenantConfigurationValidatePoller
+	Poller *TenantConfigurationClientValidatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4711,8 +4811,8 @@ type TenantConfigurationValidatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l TenantConfigurationValidatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TenantConfigurationValidateResponse, error) {
-	respType := TenantConfigurationValidateResponse{}
+func (l TenantConfigurationClientValidatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TenantConfigurationClientValidateResponse, error) {
+	respType := TenantConfigurationClientValidateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResultContract)
 	if err != nil {
 		return respType, err
@@ -4721,13 +4821,13 @@ func (l TenantConfigurationValidatePollerResponse) PollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// Resume rehydrates a TenantConfigurationValidatePollerResponse from the provided client and resume token.
-func (l *TenantConfigurationValidatePollerResponse) Resume(ctx context.Context, client *TenantConfigurationClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TenantConfigurationClient.Validate", token, client.pl, client.validateHandleError)
+// Resume rehydrates a TenantConfigurationClientValidatePollerResponse from the provided client and resume token.
+func (l *TenantConfigurationClientValidatePollerResponse) Resume(ctx context.Context, client *TenantConfigurationClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TenantConfigurationClient.Validate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TenantConfigurationValidatePoller{
+	poller := &TenantConfigurationClientValidatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4739,91 +4839,85 @@ func (l *TenantConfigurationValidatePollerResponse) Resume(ctx context.Context, 
 	return nil
 }
 
-// TenantConfigurationValidateResponse contains the response from method TenantConfiguration.Validate.
-type TenantConfigurationValidateResponse struct {
-	TenantConfigurationValidateResult
+// TenantConfigurationClientValidateResponse contains the response from method TenantConfigurationClient.Validate.
+type TenantConfigurationClientValidateResponse struct {
+	TenantConfigurationClientValidateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantConfigurationValidateResult contains the result from method TenantConfiguration.Validate.
-type TenantConfigurationValidateResult struct {
+// TenantConfigurationClientValidateResult contains the result from method TenantConfigurationClient.Validate.
+type TenantConfigurationClientValidateResult struct {
 	OperationResultContract
 }
 
-// TenantSettingsGetResponse contains the response from method TenantSettings.Get.
-type TenantSettingsGetResponse struct {
-	TenantSettingsGetResult
+// TenantSettingsClientGetResponse contains the response from method TenantSettingsClient.Get.
+type TenantSettingsClientGetResponse struct {
+	TenantSettingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantSettingsGetResult contains the result from method TenantSettings.Get.
-type TenantSettingsGetResult struct {
+// TenantSettingsClientGetResult contains the result from method TenantSettingsClient.Get.
+type TenantSettingsClientGetResult struct {
 	TenantSettingsContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// TenantSettingsListByServiceResponse contains the response from method TenantSettings.ListByService.
-type TenantSettingsListByServiceResponse struct {
-	TenantSettingsListByServiceResult
+// TenantSettingsClientListByServiceResponse contains the response from method TenantSettingsClient.ListByService.
+type TenantSettingsClientListByServiceResponse struct {
+	TenantSettingsClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TenantSettingsListByServiceResult contains the result from method TenantSettings.ListByService.
-type TenantSettingsListByServiceResult struct {
+// TenantSettingsClientListByServiceResult contains the result from method TenantSettingsClient.ListByService.
+type TenantSettingsClientListByServiceResult struct {
 	TenantSettingsCollection
 }
 
-// UserConfirmationPasswordSendResponse contains the response from method UserConfirmationPassword.Send.
-type UserConfirmationPasswordSendResponse struct {
+// UserClientCreateOrUpdateResponse contains the response from method UserClient.CreateOrUpdate.
+type UserClientCreateOrUpdateResponse struct {
+	UserClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserCreateOrUpdateResponse contains the response from method User.CreateOrUpdate.
-type UserCreateOrUpdateResponse struct {
-	UserCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UserCreateOrUpdateResult contains the result from method User.CreateOrUpdate.
-type UserCreateOrUpdateResult struct {
+// UserClientCreateOrUpdateResult contains the result from method UserClient.CreateOrUpdate.
+type UserClientCreateOrUpdateResult struct {
 	UserContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// UserDeleteResponse contains the response from method User.Delete.
-type UserDeleteResponse struct {
+// UserClientDeleteResponse contains the response from method UserClient.Delete.
+type UserClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserGenerateSsoURLResponse contains the response from method User.GenerateSsoURL.
-type UserGenerateSsoURLResponse struct {
-	UserGenerateSsoURLResult
+// UserClientGenerateSsoURLResponse contains the response from method UserClient.GenerateSsoURL.
+type UserClientGenerateSsoURLResponse struct {
+	UserClientGenerateSsoURLResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserGenerateSsoURLResult contains the result from method User.GenerateSsoURL.
-type UserGenerateSsoURLResult struct {
+// UserClientGenerateSsoURLResult contains the result from method UserClient.GenerateSsoURL.
+type UserClientGenerateSsoURLResult struct {
 	GenerateSsoURLResult
 }
 
-// UserGetEntityTagResponse contains the response from method User.GetEntityTag.
-type UserGetEntityTagResponse struct {
-	UserGetEntityTagResult
+// UserClientGetEntityTagResponse contains the response from method UserClient.GetEntityTag.
+type UserClientGetEntityTagResponse struct {
+	UserClientGetEntityTagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserGetEntityTagResult contains the result from method User.GetEntityTag.
-type UserGetEntityTagResult struct {
+// UserClientGetEntityTagResult contains the result from method UserClient.GetEntityTag.
+type UserClientGetEntityTagResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -4831,104 +4925,110 @@ type UserGetEntityTagResult struct {
 	Success bool
 }
 
-// UserGetResponse contains the response from method User.Get.
-type UserGetResponse struct {
-	UserGetResult
+// UserClientGetResponse contains the response from method UserClient.Get.
+type UserClientGetResponse struct {
+	UserClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserGetResult contains the result from method User.Get.
-type UserGetResult struct {
+// UserClientGetResult contains the result from method UserClient.Get.
+type UserClientGetResult struct {
 	UserContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// UserGetSharedAccessTokenResponse contains the response from method User.GetSharedAccessToken.
-type UserGetSharedAccessTokenResponse struct {
-	UserGetSharedAccessTokenResult
+// UserClientGetSharedAccessTokenResponse contains the response from method UserClient.GetSharedAccessToken.
+type UserClientGetSharedAccessTokenResponse struct {
+	UserClientGetSharedAccessTokenResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserGetSharedAccessTokenResult contains the result from method User.GetSharedAccessToken.
-type UserGetSharedAccessTokenResult struct {
+// UserClientGetSharedAccessTokenResult contains the result from method UserClient.GetSharedAccessToken.
+type UserClientGetSharedAccessTokenResult struct {
 	UserTokenResult
 }
 
-// UserGroupListResponse contains the response from method UserGroup.List.
-type UserGroupListResponse struct {
-	UserGroupListResult
+// UserClientListByServiceResponse contains the response from method UserClient.ListByService.
+type UserClientListByServiceResponse struct {
+	UserClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserGroupListResult contains the result from method UserGroup.List.
-type UserGroupListResult struct {
-	GroupCollection
-}
-
-// UserIdentitiesListResponse contains the response from method UserIdentities.List.
-type UserIdentitiesListResponse struct {
-	UserIdentitiesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UserIdentitiesListResult contains the result from method UserIdentities.List.
-type UserIdentitiesListResult struct {
-	UserIdentityCollection
-}
-
-// UserListByServiceResponse contains the response from method User.ListByService.
-type UserListByServiceResponse struct {
-	UserListByServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UserListByServiceResult contains the result from method User.ListByService.
-type UserListByServiceResult struct {
+// UserClientListByServiceResult contains the result from method UserClient.ListByService.
+type UserClientListByServiceResult struct {
 	UserCollection
 }
 
-// UserSubscriptionGetResponse contains the response from method UserSubscription.Get.
-type UserSubscriptionGetResponse struct {
-	UserSubscriptionGetResult
+// UserClientUpdateResponse contains the response from method UserClient.Update.
+type UserClientUpdateResponse struct {
+	UserClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserSubscriptionGetResult contains the result from method UserSubscription.Get.
-type UserSubscriptionGetResult struct {
+// UserClientUpdateResult contains the result from method UserClient.Update.
+type UserClientUpdateResult struct {
+	UserContract
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// UserConfirmationPasswordClientSendResponse contains the response from method UserConfirmationPasswordClient.Send.
+type UserConfirmationPasswordClientSendResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UserGroupClientListResponse contains the response from method UserGroupClient.List.
+type UserGroupClientListResponse struct {
+	UserGroupClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UserGroupClientListResult contains the result from method UserGroupClient.List.
+type UserGroupClientListResult struct {
+	GroupCollection
+}
+
+// UserIdentitiesClientListResponse contains the response from method UserIdentitiesClient.List.
+type UserIdentitiesClientListResponse struct {
+	UserIdentitiesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UserIdentitiesClientListResult contains the result from method UserIdentitiesClient.List.
+type UserIdentitiesClientListResult struct {
+	UserIdentityCollection
+}
+
+// UserSubscriptionClientGetResponse contains the response from method UserSubscriptionClient.Get.
+type UserSubscriptionClientGetResponse struct {
+	UserSubscriptionClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UserSubscriptionClientGetResult contains the result from method UserSubscriptionClient.Get.
+type UserSubscriptionClientGetResult struct {
 	SubscriptionContract
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// UserSubscriptionListResponse contains the response from method UserSubscription.List.
-type UserSubscriptionListResponse struct {
-	UserSubscriptionListResult
+// UserSubscriptionClientListResponse contains the response from method UserSubscriptionClient.List.
+type UserSubscriptionClientListResponse struct {
+	UserSubscriptionClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserSubscriptionListResult contains the result from method UserSubscription.List.
-type UserSubscriptionListResult struct {
+// UserSubscriptionClientListResult contains the result from method UserSubscriptionClient.List.
+type UserSubscriptionClientListResult struct {
 	SubscriptionCollection
-}
-
-// UserUpdateResponse contains the response from method User.Update.
-type UserUpdateResponse struct {
-	UserUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UserUpdateResult contains the result from method User.Update.
-type UserUpdateResult struct {
-	UserContract
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
 }

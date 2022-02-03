@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // WorkspaceSettingsClient contains the methods for the WorkspaceSettings group.
 // Don't use this type directly, use NewWorkspaceSettingsClient() instead.
 type WorkspaceSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceSettingsClient creates a new instance of WorkspaceSettingsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspaceSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceSettingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &WorkspaceSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspaceSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Create - creating settings about where we should store your security data and logs
-// If the operation fails it returns the *CloudError error type.
-func (client *WorkspaceSettingsClient) Create(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsCreateOptions) (WorkspaceSettingsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceSettingName - Name of the security setting
+// workspaceSetting - Security data setting object
+// options - WorkspaceSettingsClientCreateOptions contains the optional parameters for the WorkspaceSettingsClient.Create
+// method.
+func (client *WorkspaceSettingsClient) Create(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsClientCreateOptions) (WorkspaceSettingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, workspaceSettingName, workspaceSetting, options)
 	if err != nil {
-		return WorkspaceSettingsCreateResponse{}, err
+		return WorkspaceSettingsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceSettingsCreateResponse{}, err
+		return WorkspaceSettingsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspaceSettingsCreateResponse{}, client.createHandleError(resp)
+		return WorkspaceSettingsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsCreateOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workspaceSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceSettingName}", url.PathEscape(workspaceSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +93,36 @@ func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, 
 }
 
 // createHandleResponse handles the Create response.
-func (client *WorkspaceSettingsClient) createHandleResponse(resp *http.Response) (WorkspaceSettingsCreateResponse, error) {
-	result := WorkspaceSettingsCreateResponse{RawResponse: resp}
+func (client *WorkspaceSettingsClient) createHandleResponse(resp *http.Response) (WorkspaceSettingsClientCreateResponse, error) {
+	result := WorkspaceSettingsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceSetting); err != nil {
-		return WorkspaceSettingsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceSettingsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *WorkspaceSettingsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace
-// If the operation fails it returns the *CloudError error type.
-func (client *WorkspaceSettingsClient) Delete(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsDeleteOptions) (WorkspaceSettingsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceSettingName - Name of the security setting
+// options - WorkspaceSettingsClientDeleteOptions contains the optional parameters for the WorkspaceSettingsClient.Delete
+// method.
+func (client *WorkspaceSettingsClient) Delete(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientDeleteOptions) (WorkspaceSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, workspaceSettingName, options)
 	if err != nil {
-		return WorkspaceSettingsDeleteResponse{}, err
+		return WorkspaceSettingsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceSettingsDeleteResponse{}, err
+		return WorkspaceSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return WorkspaceSettingsDeleteResponse{}, client.deleteHandleError(resp)
+		return WorkspaceSettingsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkspaceSettingsDeleteResponse{RawResponse: resp}, nil
+	return WorkspaceSettingsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsDeleteOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,7 +132,7 @@ func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workspaceSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceSettingName}", url.PathEscape(workspaceSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,38 +143,28 @@ func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WorkspaceSettingsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Settings about where we should store your security data and logs. If the result is empty, it means that no custom-workspace configuration was set
-// If the operation fails it returns the *CloudError error type.
-func (client *WorkspaceSettingsClient) Get(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsGetOptions) (WorkspaceSettingsGetResponse, error) {
+// Get - Settings about where we should store your security data and logs. If the result is empty, it means that no custom-workspace
+// configuration was set
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceSettingName - Name of the security setting
+// options - WorkspaceSettingsClientGetOptions contains the optional parameters for the WorkspaceSettingsClient.Get method.
+func (client *WorkspaceSettingsClient) Get(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientGetOptions) (WorkspaceSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, workspaceSettingName, options)
 	if err != nil {
-		return WorkspaceSettingsGetResponse{}, err
+		return WorkspaceSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceSettingsGetResponse{}, err
+		return WorkspaceSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspaceSettingsGetResponse{}, client.getHandleError(resp)
+		return WorkspaceSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsGetOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -183,7 +174,7 @@ func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, wor
 		return nil, errors.New("parameter workspaceSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceSettingName}", url.PathEscape(workspaceSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -195,50 +186,38 @@ func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, wor
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceSettingsClient) getHandleResponse(resp *http.Response) (WorkspaceSettingsGetResponse, error) {
-	result := WorkspaceSettingsGetResponse{RawResponse: resp}
+func (client *WorkspaceSettingsClient) getHandleResponse(resp *http.Response) (WorkspaceSettingsClientGetResponse, error) {
+	result := WorkspaceSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceSetting); err != nil {
-		return WorkspaceSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WorkspaceSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Settings about where we should store your security data and logs. If the result is empty, it means that no custom-workspace configuration was
-// set
-// If the operation fails it returns the *CloudError error type.
-func (client *WorkspaceSettingsClient) List(options *WorkspaceSettingsListOptions) *WorkspaceSettingsListPager {
-	return &WorkspaceSettingsListPager{
+// List - Settings about where we should store your security data and logs. If the result is empty, it means that no custom-workspace
+// configuration was set
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - WorkspaceSettingsClientListOptions contains the optional parameters for the WorkspaceSettingsClient.List method.
+func (client *WorkspaceSettingsClient) List(options *WorkspaceSettingsClientListOptions) *WorkspaceSettingsClientListPager {
+	return &WorkspaceSettingsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp WorkspaceSettingsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkspaceSettingsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkspaceSettingList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, options *WorkspaceSettingsListOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, options *WorkspaceSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,46 +229,37 @@ func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, op
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspaceSettingsClient) listHandleResponse(resp *http.Response) (WorkspaceSettingsListResponse, error) {
-	result := WorkspaceSettingsListResponse{RawResponse: resp}
+func (client *WorkspaceSettingsClient) listHandleResponse(resp *http.Response) (WorkspaceSettingsClientListResponse, error) {
+	result := WorkspaceSettingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceSettingList); err != nil {
-		return WorkspaceSettingsListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceSettingsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *WorkspaceSettingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Settings about where we should store your security data and logs
-// If the operation fails it returns the *CloudError error type.
-func (client *WorkspaceSettingsClient) Update(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsUpdateOptions) (WorkspaceSettingsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceSettingName - Name of the security setting
+// workspaceSetting - Security data setting object
+// options - WorkspaceSettingsClientUpdateOptions contains the optional parameters for the WorkspaceSettingsClient.Update
+// method.
+func (client *WorkspaceSettingsClient) Update(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsClientUpdateOptions) (WorkspaceSettingsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, workspaceSettingName, workspaceSetting, options)
 	if err != nil {
-		return WorkspaceSettingsUpdateResponse{}, err
+		return WorkspaceSettingsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceSettingsUpdateResponse{}, err
+		return WorkspaceSettingsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspaceSettingsUpdateResponse{}, client.updateHandleError(resp)
+		return WorkspaceSettingsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsUpdateOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -299,7 +269,7 @@ func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workspaceSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceSettingName}", url.PathEscape(workspaceSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -311,23 +281,10 @@ func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *WorkspaceSettingsClient) updateHandleResponse(resp *http.Response) (WorkspaceSettingsUpdateResponse, error) {
-	result := WorkspaceSettingsUpdateResponse{RawResponse: resp}
+func (client *WorkspaceSettingsClient) updateHandleResponse(resp *http.Response) (WorkspaceSettingsClientUpdateResponse, error) {
+	result := WorkspaceSettingsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceSetting); err != nil {
-		return WorkspaceSettingsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceSettingsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *WorkspaceSettingsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

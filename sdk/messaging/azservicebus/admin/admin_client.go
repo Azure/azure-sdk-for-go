@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 )
 
 // Client allows you to administer resources in a Service Bus Namespace.
@@ -21,8 +22,13 @@ type Client struct {
 	em atom.EntityManager
 }
 
+// RetryOptions represent the options for retries.
+type RetryOptions = utils.RetryOptions
+
+// ClientOptions allows you to set optional configuration for `Client`.
 type ClientOptions struct {
-	// for future expansion
+	// RetryOptions controls how often operations are retried from this client.
+	RetryOptions *RetryOptions
 }
 
 // NewClientFromConnectionString creates a Client authenticating using a connection string.
@@ -38,7 +44,13 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 // NewClient creates a Client authenticating using a TokenCredential.
 func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	em, err := atom.NewEntityManager(fullyQualifiedNamespace, tokenCredential, internal.Version)
+	var retryOptions utils.RetryOptions
+
+	if options != nil && options.RetryOptions != nil {
+		retryOptions = *options.RetryOptions
+	}
+
+	em, err := atom.NewEntityManager(fullyQualifiedNamespace, tokenCredential, internal.Version, retryOptions)
 
 	if err != nil {
 		return nil, err

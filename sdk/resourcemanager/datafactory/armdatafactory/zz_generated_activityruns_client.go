@@ -11,7 +11,6 @@ package armdatafactory
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ActivityRunsClient contains the methods for the ActivityRuns group.
 // Don't use this type directly, use NewActivityRunsClient() instead.
 type ActivityRunsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewActivityRunsClient creates a new instance of ActivityRunsClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewActivityRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActivityRunsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ActivityRunsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ActivityRunsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // QueryByPipelineRun - Query activity runs based on input filter conditions.
-// If the operation fails it returns the *CloudError error type.
-func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, options *ActivityRunsQueryByPipelineRunOptions) (ActivityRunsQueryByPipelineRunResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// runID - The pipeline run identifier.
+// filterParameters - Parameters to filter the activity runs.
+// options - ActivityRunsClientQueryByPipelineRunOptions contains the optional parameters for the ActivityRunsClient.QueryByPipelineRun
+// method.
+func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, options *ActivityRunsClientQueryByPipelineRunOptions) (ActivityRunsClientQueryByPipelineRunResponse, error) {
 	req, err := client.queryByPipelineRunCreateRequest(ctx, resourceGroupName, factoryName, runID, filterParameters, options)
 	if err != nil {
-		return ActivityRunsQueryByPipelineRunResponse{}, err
+		return ActivityRunsClientQueryByPipelineRunResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActivityRunsQueryByPipelineRunResponse{}, err
+		return ActivityRunsClientQueryByPipelineRunResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActivityRunsQueryByPipelineRunResponse{}, client.queryByPipelineRunHandleError(resp)
+		return ActivityRunsClientQueryByPipelineRunResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.queryByPipelineRunHandleResponse(resp)
 }
 
 // queryByPipelineRunCreateRequest creates the QueryByPipelineRun request.
-func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, options *ActivityRunsQueryByPipelineRunOptions) (*policy.Request, error) {
+func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, options *ActivityRunsClientQueryByPipelineRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Co
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +103,10 @@ func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Co
 }
 
 // queryByPipelineRunHandleResponse handles the QueryByPipelineRun response.
-func (client *ActivityRunsClient) queryByPipelineRunHandleResponse(resp *http.Response) (ActivityRunsQueryByPipelineRunResponse, error) {
-	result := ActivityRunsQueryByPipelineRunResponse{RawResponse: resp}
+func (client *ActivityRunsClient) queryByPipelineRunHandleResponse(resp *http.Response) (ActivityRunsClientQueryByPipelineRunResponse, error) {
+	result := ActivityRunsClientQueryByPipelineRunResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityRunsQueryResponse); err != nil {
-		return ActivityRunsQueryByPipelineRunResponse{}, runtime.NewResponseError(err, resp)
+		return ActivityRunsClientQueryByPipelineRunResponse{}, err
 	}
 	return result, nil
-}
-
-// queryByPipelineRunHandleError handles the QueryByPipelineRun error response.
-func (client *ActivityRunsClient) queryByPipelineRunHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

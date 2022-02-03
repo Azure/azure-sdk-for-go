@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // DelegationSettingsClient contains the methods for the DelegationSettings group.
 // Don't use this type directly, use NewDelegationSettingsClient() instead.
 type DelegationSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDelegationSettingsClient creates a new instance of DelegationSettingsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDelegationSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DelegationSettingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DelegationSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DelegationSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or Update Delegation settings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DelegationSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings, options *DelegationSettingsCreateOrUpdateOptions) (DelegationSettingsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// parameters - Create or update parameters.
+// options - DelegationSettingsClientCreateOrUpdateOptions contains the optional parameters for the DelegationSettingsClient.CreateOrUpdate
+// method.
+func (client *DelegationSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings, options *DelegationSettingsClientCreateOrUpdateOptions) (DelegationSettingsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
-		return DelegationSettingsCreateOrUpdateResponse{}, err
+		return DelegationSettingsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DelegationSettingsCreateOrUpdateResponse{}, err
+		return DelegationSettingsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DelegationSettingsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DelegationSettingsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DelegationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings, options *DelegationSettingsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DelegationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings, options *DelegationSettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +87,7 @@ func (client *DelegationSettingsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,46 +102,36 @@ func (client *DelegationSettingsClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DelegationSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (DelegationSettingsCreateOrUpdateResponse, error) {
-	result := DelegationSettingsCreateOrUpdateResponse{RawResponse: resp}
+func (client *DelegationSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (DelegationSettingsClientCreateOrUpdateResponse, error) {
+	result := DelegationSettingsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalDelegationSettings); err != nil {
-		return DelegationSettingsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DelegationSettingsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DelegationSettingsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get Delegation Settings for the Portal.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DelegationSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsGetOptions) (DelegationSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - DelegationSettingsClientGetOptions contains the optional parameters for the DelegationSettingsClient.Get method.
+func (client *DelegationSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientGetOptions) (DelegationSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
-		return DelegationSettingsGetResponse{}, err
+		return DelegationSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DelegationSettingsGetResponse{}, err
+		return DelegationSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DelegationSettingsGetResponse{}, client.getHandleError(resp)
+		return DelegationSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DelegationSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsGetOptions) (*policy.Request, error) {
+func (client *DelegationSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -142,7 +145,7 @@ func (client *DelegationSettingsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -154,46 +157,36 @@ func (client *DelegationSettingsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *DelegationSettingsClient) getHandleResponse(resp *http.Response) (DelegationSettingsGetResponse, error) {
-	result := DelegationSettingsGetResponse{RawResponse: resp}
+func (client *DelegationSettingsClient) getHandleResponse(resp *http.Response) (DelegationSettingsClientGetResponse, error) {
+	result := DelegationSettingsClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalDelegationSettings); err != nil {
-		return DelegationSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DelegationSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DelegationSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the DelegationSettings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DelegationSettingsClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsGetEntityTagOptions) (DelegationSettingsGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - DelegationSettingsClientGetEntityTagOptions contains the optional parameters for the DelegationSettingsClient.GetEntityTag
+// method.
+func (client *DelegationSettingsClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientGetEntityTagOptions) (DelegationSettingsClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
-		return DelegationSettingsGetEntityTagResponse{}, err
+		return DelegationSettingsClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DelegationSettingsGetEntityTagResponse{}, err
+		return DelegationSettingsClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *DelegationSettingsClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsGetEntityTagOptions) (*policy.Request, error) {
+func (client *DelegationSettingsClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +200,7 @@ func (client *DelegationSettingsClient) getEntityTagCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,8 +212,8 @@ func (client *DelegationSettingsClient) getEntityTagCreateRequest(ctx context.Co
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *DelegationSettingsClient) getEntityTagHandleResponse(resp *http.Response) (DelegationSettingsGetEntityTagResponse, error) {
-	result := DelegationSettingsGetEntityTagResponse{RawResponse: resp}
+func (client *DelegationSettingsClient) getEntityTagHandleResponse(resp *http.Response) (DelegationSettingsClientGetEntityTagResponse, error) {
+	result := DelegationSettingsClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -231,24 +224,28 @@ func (client *DelegationSettingsClient) getEntityTagHandleResponse(resp *http.Re
 }
 
 // ListSecrets - Gets the secret validation key of the DelegationSettings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DelegationSettingsClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsListSecretsOptions) (DelegationSettingsListSecretsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - DelegationSettingsClientListSecretsOptions contains the optional parameters for the DelegationSettingsClient.ListSecrets
+// method.
+func (client *DelegationSettingsClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientListSecretsOptions) (DelegationSettingsClientListSecretsResponse, error) {
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
-		return DelegationSettingsListSecretsResponse{}, err
+		return DelegationSettingsClientListSecretsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DelegationSettingsListSecretsResponse{}, err
+		return DelegationSettingsClientListSecretsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DelegationSettingsListSecretsResponse{}, client.listSecretsHandleError(resp)
+		return DelegationSettingsClientListSecretsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSecretsHandleResponse(resp)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
-func (client *DelegationSettingsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsListSecretsOptions) (*policy.Request, error) {
+func (client *DelegationSettingsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation/listSecrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -262,7 +259,7 @@ func (client *DelegationSettingsClient) listSecretsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,46 +271,40 @@ func (client *DelegationSettingsClient) listSecretsCreateRequest(ctx context.Con
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *DelegationSettingsClient) listSecretsHandleResponse(resp *http.Response) (DelegationSettingsListSecretsResponse, error) {
-	result := DelegationSettingsListSecretsResponse{RawResponse: resp}
+func (client *DelegationSettingsClient) listSecretsHandleResponse(resp *http.Response) (DelegationSettingsClientListSecretsResponse, error) {
+	result := DelegationSettingsClientListSecretsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalSettingValidationKeyContract); err != nil {
-		return DelegationSettingsListSecretsResponse{}, runtime.NewResponseError(err, resp)
+		return DelegationSettingsClientListSecretsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSecretsHandleError handles the ListSecrets error response.
-func (client *DelegationSettingsClient) listSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update Delegation settings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DelegationSettingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalDelegationSettings, options *DelegationSettingsUpdateOptions) (DelegationSettingsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update Delegation settings.
+// options - DelegationSettingsClientUpdateOptions contains the optional parameters for the DelegationSettingsClient.Update
+// method.
+func (client *DelegationSettingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalDelegationSettings, options *DelegationSettingsClientUpdateOptions) (DelegationSettingsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, ifMatch, parameters, options)
 	if err != nil {
-		return DelegationSettingsUpdateResponse{}, err
+		return DelegationSettingsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DelegationSettingsUpdateResponse{}, err
+		return DelegationSettingsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return DelegationSettingsUpdateResponse{}, client.updateHandleError(resp)
+		return DelegationSettingsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return DelegationSettingsUpdateResponse{RawResponse: resp}, nil
+	return DelegationSettingsClientUpdateResponse{RawResponse: resp}, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DelegationSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalDelegationSettings, options *DelegationSettingsUpdateOptions) (*policy.Request, error) {
+func (client *DelegationSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalDelegationSettings, options *DelegationSettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -327,7 +318,7 @@ func (client *DelegationSettingsClient) updateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -337,17 +328,4 @@ func (client *DelegationSettingsClient) updateCreateRequest(ctx context.Context,
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *DelegationSettingsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

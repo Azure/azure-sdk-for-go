@@ -11,7 +11,6 @@ package armservicefabricmesh
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,55 @@ import (
 // VolumeClient contains the methods for the Volume group.
 // Don't use this type directly, use NewVolumeClient() instead.
 type VolumeClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVolumeClient creates a new instance of VolumeClient with the specified values.
+// subscriptionID - The customer subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVolumeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VolumeClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VolumeClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VolumeClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Create - Creates a volume resource with the specified name, description and properties. If a volume resource with the same name exists, then it is updated
-// with the specified description and properties.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *VolumeClient) Create(ctx context.Context, resourceGroupName string, volumeResourceName string, volumeResourceDescription VolumeResourceDescription, options *VolumeCreateOptions) (VolumeCreateResponse, error) {
+// Create - Creates a volume resource with the specified name, description and properties. If a volume resource with the same
+// name exists, then it is updated with the specified description and properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// volumeResourceName - The identity of the volume.
+// volumeResourceDescription - Description for creating a Volume resource.
+// options - VolumeClientCreateOptions contains the optional parameters for the VolumeClient.Create method.
+func (client *VolumeClient) Create(ctx context.Context, resourceGroupName string, volumeResourceName string, volumeResourceDescription VolumeResourceDescription, options *VolumeClientCreateOptions) (VolumeClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, volumeResourceName, volumeResourceDescription, options)
 	if err != nil {
-		return VolumeCreateResponse{}, err
+		return VolumeClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VolumeCreateResponse{}, err
+		return VolumeClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return VolumeCreateResponse{}, client.createHandleError(resp)
+		return VolumeClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *VolumeClient) createCreateRequest(ctx context.Context, resourceGroupName string, volumeResourceName string, volumeResourceDescription VolumeResourceDescription, options *VolumeCreateOptions) (*policy.Request, error) {
+func (client *VolumeClient) createCreateRequest(ctx context.Context, resourceGroupName string, volumeResourceName string, volumeResourceDescription VolumeResourceDescription, options *VolumeClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/volumes/{volumeResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -72,7 +83,7 @@ func (client *VolumeClient) createCreateRequest(ctx context.Context, resourceGro
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{volumeResourceName}", volumeResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -84,46 +95,36 @@ func (client *VolumeClient) createCreateRequest(ctx context.Context, resourceGro
 }
 
 // createHandleResponse handles the Create response.
-func (client *VolumeClient) createHandleResponse(resp *http.Response) (VolumeCreateResponse, error) {
-	result := VolumeCreateResponse{RawResponse: resp}
+func (client *VolumeClient) createHandleResponse(resp *http.Response) (VolumeClientCreateResponse, error) {
+	result := VolumeClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeResourceDescription); err != nil {
-		return VolumeCreateResponse{}, runtime.NewResponseError(err, resp)
+		return VolumeClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *VolumeClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the volume resource identified by the name.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *VolumeClient) Delete(ctx context.Context, resourceGroupName string, volumeResourceName string, options *VolumeDeleteOptions) (VolumeDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// volumeResourceName - The identity of the volume.
+// options - VolumeClientDeleteOptions contains the optional parameters for the VolumeClient.Delete method.
+func (client *VolumeClient) Delete(ctx context.Context, resourceGroupName string, volumeResourceName string, options *VolumeClientDeleteOptions) (VolumeClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, volumeResourceName, options)
 	if err != nil {
-		return VolumeDeleteResponse{}, err
+		return VolumeClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VolumeDeleteResponse{}, err
+		return VolumeClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return VolumeDeleteResponse{}, client.deleteHandleError(resp)
+		return VolumeClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VolumeDeleteResponse{RawResponse: resp}, nil
+	return VolumeClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VolumeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, volumeResourceName string, options *VolumeDeleteOptions) (*policy.Request, error) {
+func (client *VolumeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, volumeResourceName string, options *VolumeClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/volumes/{volumeResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -134,7 +135,7 @@ func (client *VolumeClient) deleteCreateRequest(ctx context.Context, resourceGro
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{volumeResourceName}", volumeResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,38 +146,29 @@ func (client *VolumeClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VolumeClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Gets the information about the volume resource with the given name. The information include the description and other properties of the volume.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *VolumeClient) Get(ctx context.Context, resourceGroupName string, volumeResourceName string, options *VolumeGetOptions) (VolumeGetResponse, error) {
+// Get - Gets the information about the volume resource with the given name. The information include the description and other
+// properties of the volume.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// volumeResourceName - The identity of the volume.
+// options - VolumeClientGetOptions contains the optional parameters for the VolumeClient.Get method.
+func (client *VolumeClient) Get(ctx context.Context, resourceGroupName string, volumeResourceName string, options *VolumeClientGetOptions) (VolumeClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, volumeResourceName, options)
 	if err != nil {
-		return VolumeGetResponse{}, err
+		return VolumeClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VolumeGetResponse{}, err
+		return VolumeClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VolumeGetResponse{}, client.getHandleError(resp)
+		return VolumeClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VolumeClient) getCreateRequest(ctx context.Context, resourceGroupName string, volumeResourceName string, options *VolumeGetOptions) (*policy.Request, error) {
+func (client *VolumeClient) getCreateRequest(ctx context.Context, resourceGroupName string, volumeResourceName string, options *VolumeClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/volumes/{volumeResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -187,7 +179,7 @@ func (client *VolumeClient) getCreateRequest(ctx context.Context, resourceGroupN
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{volumeResourceName}", volumeResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -199,44 +191,34 @@ func (client *VolumeClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *VolumeClient) getHandleResponse(resp *http.Response) (VolumeGetResponse, error) {
-	result := VolumeGetResponse{RawResponse: resp}
+func (client *VolumeClient) getHandleResponse(resp *http.Response) (VolumeClientGetResponse, error) {
+	result := VolumeClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeResourceDescription); err != nil {
-		return VolumeGetResponse{}, runtime.NewResponseError(err, resp)
+		return VolumeClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VolumeClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Gets the information about all volume resources in a given resource group. The information include the description and other properties
-// of the Volume.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *VolumeClient) ListByResourceGroup(resourceGroupName string, options *VolumeListByResourceGroupOptions) *VolumeListByResourceGroupPager {
-	return &VolumeListByResourceGroupPager{
+// ListByResourceGroup - Gets the information about all volume resources in a given resource group. The information include
+// the description and other properties of the Volume.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// options - VolumeClientListByResourceGroupOptions contains the optional parameters for the VolumeClient.ListByResourceGroup
+// method.
+func (client *VolumeClient) ListByResourceGroup(resourceGroupName string, options *VolumeClientListByResourceGroupOptions) *VolumeClientListByResourceGroupPager {
+	return &VolumeClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp VolumeListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VolumeClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VolumeResourceDescriptionList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *VolumeClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VolumeListByResourceGroupOptions) (*policy.Request, error) {
+func (client *VolumeClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VolumeClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/volumes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -246,7 +228,7 @@ func (client *VolumeClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,50 +240,39 @@ func (client *VolumeClient) listByResourceGroupCreateRequest(ctx context.Context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *VolumeClient) listByResourceGroupHandleResponse(resp *http.Response) (VolumeListByResourceGroupResponse, error) {
-	result := VolumeListByResourceGroupResponse{RawResponse: resp}
+func (client *VolumeClient) listByResourceGroupHandleResponse(resp *http.Response) (VolumeClientListByResourceGroupResponse, error) {
+	result := VolumeClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeResourceDescriptionList); err != nil {
-		return VolumeListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return VolumeClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *VolumeClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Gets the information about all volume resources in a given resource group. The information include the description and other properties
-// of the volume.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *VolumeClient) ListBySubscription(options *VolumeListBySubscriptionOptions) *VolumeListBySubscriptionPager {
-	return &VolumeListBySubscriptionPager{
+// ListBySubscription - Gets the information about all volume resources in a given resource group. The information include
+// the description and other properties of the volume.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - VolumeClientListBySubscriptionOptions contains the optional parameters for the VolumeClient.ListBySubscription
+// method.
+func (client *VolumeClient) ListBySubscription(options *VolumeClientListBySubscriptionOptions) *VolumeClientListBySubscriptionPager {
+	return &VolumeClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp VolumeListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VolumeClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VolumeResourceDescriptionList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *VolumeClient) listBySubscriptionCreateRequest(ctx context.Context, options *VolumeListBySubscriptionOptions) (*policy.Request, error) {
+func (client *VolumeClient) listBySubscriptionCreateRequest(ctx context.Context, options *VolumeClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabricMesh/volumes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -313,23 +284,10 @@ func (client *VolumeClient) listBySubscriptionCreateRequest(ctx context.Context,
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *VolumeClient) listBySubscriptionHandleResponse(resp *http.Response) (VolumeListBySubscriptionResponse, error) {
-	result := VolumeListBySubscriptionResponse{RawResponse: resp}
+func (client *VolumeClient) listBySubscriptionHandleResponse(resp *http.Response) (VolumeClientListBySubscriptionResponse, error) {
+	result := VolumeClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeResourceDescriptionList); err != nil {
-		return VolumeListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return VolumeClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *VolumeClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

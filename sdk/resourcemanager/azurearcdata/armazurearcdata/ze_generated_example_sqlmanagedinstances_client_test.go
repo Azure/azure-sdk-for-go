@@ -28,12 +28,16 @@ func ExampleSQLManagedInstancesClient_List() {
 	ctx := context.Background()
 	client := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLManagedInstance.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleSQLManagedInstancesClient_ListByResourceGroup() {
 	client := armazurearcdata.NewSQLManagedInstancesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLManagedInstance.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleSQLManagedInstancesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLManagedInstance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLManagedInstancesClientGetResult)
 }
 
 // x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/CreateOrUpdateSqlManagedInstance.json
@@ -88,15 +96,13 @@ func ExampleSQLManagedInstancesClient_BeginCreate() {
 		"<resource-group-name>",
 		"<sql-managed-instance-name>",
 		armazurearcdata.SQLManagedInstance{
-			TrackedResource: armazurearcdata.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"mytag": to.StringPtr("myval"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"mytag": to.StringPtr("myval"),
 			},
 			ExtendedLocation: &armazurearcdata.ExtendedLocation{
 				Name: to.StringPtr("<name>"),
-				Type: armazurearcdata.ExtendedLocationTypesCustomLocation.ToPtr(),
+				Type: armazurearcdata.ExtendedLocationTypes("CustomLocation").ToPtr(),
 			},
 			Properties: &armazurearcdata.SQLManagedInstanceProperties{
 				Admin: to.StringPtr("<admin>"),
@@ -131,11 +137,11 @@ func ExampleSQLManagedInstancesClient_BeginCreate() {
 						},
 					},
 				},
-				LicenseType: armazurearcdata.ArcSQLManagedInstanceLicenseTypeLicenseIncluded.ToPtr(),
+				LicenseType: armazurearcdata.ArcSQLManagedInstanceLicenseType("LicenseIncluded").ToPtr(),
 				StartTime:   to.StringPtr("<start-time>"),
 			},
 			SKU: &armazurearcdata.SQLManagedInstanceSKU{
-				Name: armazurearcdata.SQLManagedInstanceSKUNameVCore.ToPtr(),
+				Name: armazurearcdata.SQLManagedInstanceSKUName("vCore").ToPtr(),
 				Dev:  to.BoolPtr(true),
 				Tier: armazurearcdata.SQLManagedInstanceSKUTierGeneralPurpose.ToPtr(),
 			},
@@ -148,7 +154,7 @@ func ExampleSQLManagedInstancesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLManagedInstance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLManagedInstancesClientCreateResult)
 }
 
 // x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/DeleteSqlManagedInstance.json
@@ -192,5 +198,5 @@ func ExampleSQLManagedInstancesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLManagedInstance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLManagedInstancesClientUpdateResult)
 }

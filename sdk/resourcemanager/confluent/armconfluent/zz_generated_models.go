@@ -15,8 +15,8 @@ import (
 	"time"
 )
 
-// ConfluentAgreementProperties - Terms properties for Marketplace and Confluent.
-type ConfluentAgreementProperties struct {
+// AgreementProperties - Terms properties for Marketplace and Confluent.
+type AgreementProperties struct {
 	// If any version of the terms have been accepted, otherwise false.
 	Accepted *bool `json:"accepted,omitempty"`
 
@@ -42,22 +42,22 @@ type ConfluentAgreementProperties struct {
 	Signature *string `json:"signature,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfluentAgreementProperties.
-func (c ConfluentAgreementProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AgreementProperties.
+func (a AgreementProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "accepted", c.Accepted)
-	populate(objectMap, "licenseTextLink", c.LicenseTextLink)
-	populate(objectMap, "plan", c.Plan)
-	populate(objectMap, "privacyPolicyLink", c.PrivacyPolicyLink)
-	populate(objectMap, "product", c.Product)
-	populate(objectMap, "publisher", c.Publisher)
-	populateTimeRFC3339(objectMap, "retrieveDatetime", c.RetrieveDatetime)
-	populate(objectMap, "signature", c.Signature)
+	populate(objectMap, "accepted", a.Accepted)
+	populate(objectMap, "licenseTextLink", a.LicenseTextLink)
+	populate(objectMap, "plan", a.Plan)
+	populate(objectMap, "privacyPolicyLink", a.PrivacyPolicyLink)
+	populate(objectMap, "product", a.Product)
+	populate(objectMap, "publisher", a.Publisher)
+	populateTimeRFC3339(objectMap, "retrieveDatetime", a.RetrieveDatetime)
+	populate(objectMap, "signature", a.Signature)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConfluentAgreementProperties.
-func (c *ConfluentAgreementProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AgreementProperties.
+func (a *AgreementProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -66,28 +66,28 @@ func (c *ConfluentAgreementProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "accepted":
-			err = unpopulate(val, &c.Accepted)
+			err = unpopulate(val, &a.Accepted)
 			delete(rawMsg, key)
 		case "licenseTextLink":
-			err = unpopulate(val, &c.LicenseTextLink)
+			err = unpopulate(val, &a.LicenseTextLink)
 			delete(rawMsg, key)
 		case "plan":
-			err = unpopulate(val, &c.Plan)
+			err = unpopulate(val, &a.Plan)
 			delete(rawMsg, key)
 		case "privacyPolicyLink":
-			err = unpopulate(val, &c.PrivacyPolicyLink)
+			err = unpopulate(val, &a.PrivacyPolicyLink)
 			delete(rawMsg, key)
 		case "product":
-			err = unpopulate(val, &c.Product)
+			err = unpopulate(val, &a.Product)
 			delete(rawMsg, key)
 		case "publisher":
-			err = unpopulate(val, &c.Publisher)
+			err = unpopulate(val, &a.Publisher)
 			delete(rawMsg, key)
 		case "retrieveDatetime":
-			err = unpopulateTimeRFC3339(val, &c.RetrieveDatetime)
+			err = unpopulateTimeRFC3339(val, &a.RetrieveDatetime)
 			delete(rawMsg, key)
 		case "signature":
-			err = unpopulate(val, &c.Signature)
+			err = unpopulate(val, &a.Signature)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -97,10 +97,10 @@ func (c *ConfluentAgreementProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ConfluentAgreementResource - Agreement Terms definition
-type ConfluentAgreementResource struct {
+// AgreementResource - Agreement Terms definition
+type AgreementResource struct {
 	// Represents the properties of the resource.
-	Properties *ConfluentAgreementProperties `json:"properties,omitempty"`
+	Properties *AgreementProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; The ARM id of the resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -115,20 +115,20 @@ type ConfluentAgreementResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ConfluentAgreementResourceListResponse - Response of a list operation.
-type ConfluentAgreementResourceListResponse struct {
+// AgreementResourceListResponse - Response of a list operation.
+type AgreementResourceListResponse struct {
 	// Link to the next set of results, if any.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// Results of a list operation.
-	Value []*ConfluentAgreementResource `json:"value,omitempty"`
+	Value []*AgreementResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfluentAgreementResourceListResponse.
-func (c ConfluentAgreementResourceListResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AgreementResourceListResponse.
+func (a AgreementResourceListResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -157,14 +157,14 @@ func (e ErrorResponseBody) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarketplaceAgreementsCreateOptions contains the optional parameters for the MarketplaceAgreements.Create method.
-type MarketplaceAgreementsCreateOptions struct {
+// MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create method.
+type MarketplaceAgreementsClientCreateOptions struct {
 	// Confluent Marketplace Agreement resource
-	Body *ConfluentAgreementResource
+	Body *AgreementResource
 }
 
-// MarketplaceAgreementsListOptions contains the optional parameters for the MarketplaceAgreements.List method.
-type MarketplaceAgreementsListOptions struct {
+// MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.List method.
+type MarketplaceAgreementsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -185,8 +185,8 @@ type OfferDetail struct {
 	// REQUIRED; Offer Plan Term unit
 	TermUnit *string `json:"termUnit,omitempty"`
 
-	// SaaS Offer Status
-	Status *SaaSOfferStatus `json:"status,omitempty"`
+	// READ-ONLY; SaaS Offer Status
+	Status *SaaSOfferStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - The object that represents the operation.
@@ -233,34 +233,42 @@ type OperationResult struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OrganizationBeginCreateOptions contains the optional parameters for the Organization.BeginCreate method.
-type OrganizationBeginCreateOptions struct {
+// OrganizationClientBeginCreateOptions contains the optional parameters for the OrganizationClient.BeginCreate method.
+type OrganizationClientBeginCreateOptions struct {
 	// Organization resource model
 	Body *OrganizationResource
 }
 
-// OrganizationBeginDeleteOptions contains the optional parameters for the Organization.BeginDelete method.
-type OrganizationBeginDeleteOptions struct {
+// OrganizationClientBeginDeleteOptions contains the optional parameters for the OrganizationClient.BeginDelete method.
+type OrganizationClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OrganizationGetOptions contains the optional parameters for the Organization.Get method.
-type OrganizationGetOptions struct {
+// OrganizationClientGetOptions contains the optional parameters for the OrganizationClient.Get method.
+type OrganizationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OrganizationListByResourceGroupOptions contains the optional parameters for the Organization.ListByResourceGroup method.
-type OrganizationListByResourceGroupOptions struct {
+// OrganizationClientListByResourceGroupOptions contains the optional parameters for the OrganizationClient.ListByResourceGroup
+// method.
+type OrganizationClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OrganizationListBySubscriptionOptions contains the optional parameters for the Organization.ListBySubscription method.
-type OrganizationListBySubscriptionOptions struct {
+// OrganizationClientListBySubscriptionOptions contains the optional parameters for the OrganizationClient.ListBySubscription
+// method.
+type OrganizationClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OrganizationOperationsListOptions contains the optional parameters for the OrganizationOperations.List method.
-type OrganizationOperationsListOptions struct {
+// OrganizationClientUpdateOptions contains the optional parameters for the OrganizationClient.Update method.
+type OrganizationClientUpdateOptions struct {
+	// Updated Organization resource
+	Body *OrganizationResourceUpdate
+}
+
+// OrganizationOperationsClientListOptions contains the optional parameters for the OrganizationOperationsClient.List method.
+type OrganizationOperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -399,24 +407,10 @@ func (o OrganizationResourceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OrganizationUpdateOptions contains the optional parameters for the Organization.Update method.
-type OrganizationUpdateOptions struct {
-	// Updated Organization resource
-	Body *OrganizationResourceUpdate
-}
-
 // ResourceProviderDefaultErrorResponse - Default error response for resource provider
-// Implements the error and azcore.HTTPResponse interfaces.
 type ResourceProviderDefaultErrorResponse struct {
-	raw string
 	// READ-ONLY; Response body of Error
-	InnerError *ErrorResponseBody `json:"error,omitempty" azure:"ro"`
-}
-
-// Error implements the error interface for type ResourceProviderDefaultErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ResourceProviderDefaultErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseBody `json:"error,omitempty" azure:"ro"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -499,8 +493,9 @@ type UserDetail struct {
 	LastName *string `json:"lastName,omitempty"`
 }
 
-// ValidationsValidateOrganizationOptions contains the optional parameters for the Validations.ValidateOrganization method.
-type ValidationsValidateOrganizationOptions struct {
+// ValidationsClientValidateOrganizationOptions contains the optional parameters for the ValidationsClient.ValidateOrganization
+// method.
+type ValidationsClientValidateOrganizationOptions struct {
 	// placeholder for future optional parameters
 }
 

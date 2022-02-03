@@ -24,17 +24,9 @@ type ArmTemplateParameter struct {
 }
 
 // CodeMessageError - The error body contract.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CodeMessageError struct {
-	raw string
 	// The error details for a failed request.
-	InnerError *CodeMessageErrorError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CodeMessageError.
-// The contents of the error text are not contractual and subject to change.
-func (e CodeMessageError) Error() string {
-	return e.raw
+	Error *CodeMessageErrorError `json:"error,omitempty"`
 }
 
 // CodeMessageErrorError - The error details for a failed request.
@@ -83,23 +75,26 @@ func (m ManagementAssociationPropertiesList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ManagementAssociationsCreateOrUpdateOptions contains the optional parameters for the ManagementAssociations.CreateOrUpdate method.
-type ManagementAssociationsCreateOrUpdateOptions struct {
+// ManagementAssociationsClientCreateOrUpdateOptions contains the optional parameters for the ManagementAssociationsClient.CreateOrUpdate
+// method.
+type ManagementAssociationsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementAssociationsDeleteOptions contains the optional parameters for the ManagementAssociations.Delete method.
-type ManagementAssociationsDeleteOptions struct {
+// ManagementAssociationsClientDeleteOptions contains the optional parameters for the ManagementAssociationsClient.Delete
+// method.
+type ManagementAssociationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementAssociationsGetOptions contains the optional parameters for the ManagementAssociations.Get method.
-type ManagementAssociationsGetOptions struct {
+// ManagementAssociationsClientGetOptions contains the optional parameters for the ManagementAssociationsClient.Get method.
+type ManagementAssociationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementAssociationsListBySubscriptionOptions contains the optional parameters for the ManagementAssociations.ListBySubscription method.
-type ManagementAssociationsListBySubscriptionOptions struct {
+// ManagementAssociationsClientListBySubscriptionOptions contains the optional parameters for the ManagementAssociationsClient.ListBySubscription
+// method.
+type ManagementAssociationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -163,23 +158,26 @@ func (m ManagementConfigurationPropertiesList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ManagementConfigurationsCreateOrUpdateOptions contains the optional parameters for the ManagementConfigurations.CreateOrUpdate method.
-type ManagementConfigurationsCreateOrUpdateOptions struct {
+// ManagementConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ManagementConfigurationsClient.CreateOrUpdate
+// method.
+type ManagementConfigurationsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementConfigurationsDeleteOptions contains the optional parameters for the ManagementConfigurations.Delete method.
-type ManagementConfigurationsDeleteOptions struct {
+// ManagementConfigurationsClientDeleteOptions contains the optional parameters for the ManagementConfigurationsClient.Delete
+// method.
+type ManagementConfigurationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementConfigurationsGetOptions contains the optional parameters for the ManagementConfigurations.Get method.
-type ManagementConfigurationsGetOptions struct {
+// ManagementConfigurationsClientGetOptions contains the optional parameters for the ManagementConfigurationsClient.Get method.
+type ManagementConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementConfigurationsListBySubscriptionOptions contains the optional parameters for the ManagementConfigurations.ListBySubscription method.
-type ManagementConfigurationsListBySubscriptionOptions struct {
+// ManagementConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ManagementConfigurationsClient.ListBySubscription
+// method.
+type ManagementConfigurationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -217,8 +215,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -274,12 +272,13 @@ func (s SolutionPatch) MarshalJSON() ([]byte, error) {
 
 // SolutionPlan - Plan for solution object supported by the OperationsManagement resource provider.
 type SolutionPlan struct {
-	// name of the solution to be created. For Microsoft published solution it should be in the format of solutionType(workspaceName). SolutionType part is
-	// case sensitive. For third party solution, it can be
+	// name of the solution to be created. For Microsoft published solution it should be in the format of solutionType(workspaceName).
+	// SolutionType part is case sensitive. For third party solution, it can be
 	// anything.
 	Name *string `json:"name,omitempty"`
 
-	// name of the solution to enabled/add. For Microsoft published gallery solution it should be in the format of OMSGallery/. This is case sensitive
+	// name of the solution to enabled/add. For Microsoft published gallery solution it should be in the format of OMSGallery/.
+	// This is case sensitive
 	Product *string `json:"product,omitempty"`
 
 	// promotionCode, Not really used now, can you left as empty
@@ -294,7 +293,8 @@ type SolutionProperties struct {
 	// REQUIRED; The azure resourceId for the workspace where the solution will be deployed/enabled.
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
 
-	// The azure resources that will be contained within the solutions. They will be locked and gets deleted automatically when the solution is deleted.
+	// The azure resources that will be contained within the solutions. They will be locked and gets deleted automatically when
+	// the solution is deleted.
 	ContainedResources []*string `json:"containedResources,omitempty"`
 
 	// The resources that will be referenced from this solution. Deleting any of those solution out of band will break the solution.
@@ -327,33 +327,35 @@ func (s SolutionPropertiesList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SolutionsBeginCreateOrUpdateOptions contains the optional parameters for the Solutions.BeginCreateOrUpdate method.
-type SolutionsBeginCreateOrUpdateOptions struct {
+// SolutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SolutionsClient.BeginCreateOrUpdate
+// method.
+type SolutionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SolutionsBeginDeleteOptions contains the optional parameters for the Solutions.BeginDelete method.
-type SolutionsBeginDeleteOptions struct {
+// SolutionsClientBeginDeleteOptions contains the optional parameters for the SolutionsClient.BeginDelete method.
+type SolutionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SolutionsBeginUpdateOptions contains the optional parameters for the Solutions.BeginUpdate method.
-type SolutionsBeginUpdateOptions struct {
+// SolutionsClientBeginUpdateOptions contains the optional parameters for the SolutionsClient.BeginUpdate method.
+type SolutionsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SolutionsGetOptions contains the optional parameters for the Solutions.Get method.
-type SolutionsGetOptions struct {
+// SolutionsClientGetOptions contains the optional parameters for the SolutionsClient.Get method.
+type SolutionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SolutionsListByResourceGroupOptions contains the optional parameters for the Solutions.ListByResourceGroup method.
-type SolutionsListByResourceGroupOptions struct {
+// SolutionsClientListByResourceGroupOptions contains the optional parameters for the SolutionsClient.ListByResourceGroup
+// method.
+type SolutionsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SolutionsListBySubscriptionOptions contains the optional parameters for the Solutions.ListBySubscription method.
-type SolutionsListBySubscriptionOptions struct {
+// SolutionsClientListBySubscriptionOptions contains the optional parameters for the SolutionsClient.ListBySubscription method.
+type SolutionsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

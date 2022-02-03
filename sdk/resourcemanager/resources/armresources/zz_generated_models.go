@@ -113,27 +113,133 @@ type BasicDependency struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
-// CloudError - An error response for a resource management request.
-// Implements the error and azcore.HTTPResponse interfaces.
-type CloudError struct {
-	raw string
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response
-	// format.)
-	InnerError *ErrorResponse `json:"error,omitempty"`
+// ClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the Client.BeginCreateOrUpdateByID method.
+type ClientBeginCreateOrUpdateByIDOptions struct {
+	// placeholder for future optional parameters
 }
 
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+// ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
+type ClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginDeleteByIDOptions contains the optional parameters for the Client.BeginDeleteByID method.
+type ClientBeginDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+type ClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginMoveResourcesOptions contains the optional parameters for the Client.BeginMoveResources method.
+type ClientBeginMoveResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginUpdateByIDOptions contains the optional parameters for the Client.BeginUpdateByID method.
+type ClientBeginUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
+type ClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginValidateMoveResourcesOptions contains the optional parameters for the Client.BeginValidateMoveResources method.
+type ClientBeginValidateMoveResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientCheckExistenceByIDOptions contains the optional parameters for the Client.CheckExistenceByID method.
+type ClientCheckExistenceByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientCheckExistenceOptions contains the optional parameters for the Client.CheckExistence method.
+type ClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetByIDOptions contains the optional parameters for the Client.GetByID method.
+type ClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+type ClientListByResourceGroupOptions struct {
+	// Comma-separated list of additional properties to be included in the response. Valid values include createdTime, changedTime
+	// and provisioningState. For example, $expand=createdTime,changedTime.
+	Expand *string
+	// The filter to apply on the operation.
+	// The properties you can use for eq (equals) or ne (not equals) are: location, resourceType, name, resourceGroup, identity,
+	// identity/principalId, plan, plan/publisher, plan/product, plan/name,
+	// plan/version, and plan/promotionCode.
+	// For example, to filter by a resource type, use: $filter=resourceType eq 'Microsoft.Network/virtualNetworks'
+	// You can use substringof(value, property) in the filter. The properties you can use for substring are: name and resourceGroup.
+	// For example, to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo', name)
+	// You can link more than one substringof together by adding and/or operators.
+	// You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1'
+	// and tagValue eq 'Value1'. When you filter by a tag name and value, the tags for
+	// each resource are not returned in the results.
+	// You can use some properties together when filtering. The combinations you can use are: substringof and/or resourceType,
+	// plan and plan/publisher and plan/name, identity and identity/principalId.
+	Filter *string
+	// The number of results to return. If null is passed, returns all resources.
+	Top *int32
+}
+
+// ClientListOptions contains the optional parameters for the Client.List method.
+type ClientListOptions struct {
+	// Comma-separated list of additional properties to be included in the response. Valid values include createdTime, changedTime
+	// and provisioningState. For example, $expand=createdTime,changedTime.
+	Expand *string
+	// The filter to apply on the operation.
+	// Filter comparison operators include eq (equals) and ne (not equals) and may be used with the following properties: location,
+	// resourceType, name, resourceGroup, identity, identity/principalId, plan,
+	// plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.
+	// For example, to filter by a resource type, use $filter=resourceType eq 'Microsoft.Network/virtualNetworks'
+	// substringof(value, property) can be used to filter for substrings of the following currently-supported properties: name
+	// and resourceGroup
+	// For example, to get all resources with 'demo' anywhere in the resource name, use $filter=substringof('demo', name)
+	// Multiple substring operations can also be combined using and/or operators.
+	// Note that any truncated number of results queried via $top may also not be compatible when using a filter.
+	// Resources can be filtered by tag names and values. For example, to filter for a tag name and value, use $filter=tagName
+	// eq 'tag1' and tagValue eq 'Value1'. Note that when resources are filtered by tag
+	// name and value, the original tags for each resource will not be returned in the results. Any list of additional properties
+	// queried via $expand may also not be compatible when filtering by tag
+	// names/values.
+	// For tag names only, resources can be filtered by prefix using the following syntax: $filter=startswith(tagName, 'depart').
+	// This query will return all resources with a tag name prefixed by the phrase
+	// depart (i.e.department, departureDate, departureTime, etc.)
+	// Note that some properties can be combined when filtering resources, which include the following: substringof() and/or resourceType,
+	// plan and plan/publisher and plan/name, and identity and
+	// identity/principalId.
+	Filter *string
+	// The number of results to return. If null is passed, returns all resources.
+	Top *int32
+}
+
+// CloudError - An error response for a resource management request.
+type CloudError struct {
+	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
+	// the OData error response format.)
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // DebugSetting - The debug setting.
 type DebugSetting struct {
-	// Specifies the type of information to log for debugging. The permitted values are none, requestContent, responseContent, or both requestContent and responseContent
-	// separated by a comma. The default is
-	// none. When setting this value, carefully consider the type of information you are passing in during deployment. By logging information about the request
-	// or response, you could potentially expose
+	// Specifies the type of information to log for debugging. The permitted values are none, requestContent, responseContent,
+	// or both requestContent and responseContent separated by a comma. The default is
+	// none. When setting this value, carefully consider the type of information you are passing in during deployment. By logging
+	// information about the request or response, you could potentially expose
 	// sensitive data that is retrieved through the deployment operations.
 	DetailLevel *string `json:"detailLevel,omitempty"`
 }
@@ -278,11 +384,12 @@ type DeploymentOperationProperties struct {
 	// READ-ONLY; Deployment operation service request id.
 	ServiceRequestID *string `json:"serviceRequestId,omitempty" azure:"ro"`
 
-	// READ-ONLY; Operation status code from the resource provider. This property may not be set if a response has not yet been received.
+	// READ-ONLY; Operation status code from the resource provider. This property may not be set if a response has not yet been
+	// received.
 	StatusCode *string `json:"statusCode,omitempty" azure:"ro"`
 
-	// READ-ONLY; Operation status message from the resource provider. This property is optional. It will only be provided if an error was received from the
-	// resource provider.
+	// READ-ONLY; Operation status message from the resource provider. This property is optional. It will only be provided if
+	// an error was received from the resource provider.
 	StatusMessage *StatusMessage `json:"statusMessage,omitempty" azure:"ro"`
 
 	// READ-ONLY; The target resource.
@@ -355,57 +462,65 @@ func (d *DeploymentOperationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DeploymentOperationsGetAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperations.GetAtManagementGroupScope method.
-type DeploymentOperationsGetAtManagementGroupScopeOptions struct {
+// DeploymentOperationsClientGetAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtManagementGroupScope
+// method.
+type DeploymentOperationsClientGetAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentOperationsGetAtScopeOptions contains the optional parameters for the DeploymentOperations.GetAtScope method.
-type DeploymentOperationsGetAtScopeOptions struct {
+// DeploymentOperationsClientGetAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtScope
+// method.
+type DeploymentOperationsClientGetAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentOperationsGetAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperations.GetAtSubscriptionScope method.
-type DeploymentOperationsGetAtSubscriptionScopeOptions struct {
+// DeploymentOperationsClientGetAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtSubscriptionScope
+// method.
+type DeploymentOperationsClientGetAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentOperationsGetAtTenantScopeOptions contains the optional parameters for the DeploymentOperations.GetAtTenantScope method.
-type DeploymentOperationsGetAtTenantScopeOptions struct {
+// DeploymentOperationsClientGetAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtTenantScope
+// method.
+type DeploymentOperationsClientGetAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentOperationsGetOptions contains the optional parameters for the DeploymentOperations.Get method.
-type DeploymentOperationsGetOptions struct {
+// DeploymentOperationsClientGetOptions contains the optional parameters for the DeploymentOperationsClient.Get method.
+type DeploymentOperationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentOperationsListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperations.ListAtManagementGroupScope method.
-type DeploymentOperationsListAtManagementGroupScopeOptions struct {
+// DeploymentOperationsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtManagementGroupScope
+// method.
+type DeploymentOperationsClientListAtManagementGroupScopeOptions struct {
 	// The number of results to return.
 	Top *int32
 }
 
-// DeploymentOperationsListAtScopeOptions contains the optional parameters for the DeploymentOperations.ListAtScope method.
-type DeploymentOperationsListAtScopeOptions struct {
+// DeploymentOperationsClientListAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtScope
+// method.
+type DeploymentOperationsClientListAtScopeOptions struct {
 	// The number of results to return.
 	Top *int32
 }
 
-// DeploymentOperationsListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperations.ListAtSubscriptionScope method.
-type DeploymentOperationsListAtSubscriptionScopeOptions struct {
+// DeploymentOperationsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtSubscriptionScope
+// method.
+type DeploymentOperationsClientListAtSubscriptionScopeOptions struct {
 	// The number of results to return.
 	Top *int32
 }
 
-// DeploymentOperationsListAtTenantScopeOptions contains the optional parameters for the DeploymentOperations.ListAtTenantScope method.
-type DeploymentOperationsListAtTenantScopeOptions struct {
+// DeploymentOperationsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtTenantScope
+// method.
+type DeploymentOperationsClientListAtTenantScopeOptions struct {
 	// The number of results to return.
 	Top *int32
 }
 
-// DeploymentOperationsListOptions contains the optional parameters for the DeploymentOperations.List method.
-type DeploymentOperationsListOptions struct {
+// DeploymentOperationsClientListOptions contains the optional parameters for the DeploymentOperationsClient.List method.
+type DeploymentOperationsClientListOptions struct {
 	// The number of results to return.
 	Top *int32
 }
@@ -429,34 +544,35 @@ func (d DeploymentOperationsListResult) MarshalJSON() ([]byte, error) {
 
 // DeploymentProperties - Deployment properties.
 type DeploymentProperties struct {
-	// REQUIRED; The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode, resources are deployed without
-	// deleting existing resources that are not included in
-	// the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included in the template are deleted.
-	// Be careful when using Complete mode as you may
+	// REQUIRED; The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode,
+	// resources are deployed without deleting existing resources that are not included in
+	// the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included
+	// in the template are deleted. Be careful when using Complete mode as you may
 	// unintentionally delete resources.
 	Mode *DeploymentMode `json:"mode,omitempty"`
 
 	// The debug setting of the deployment.
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
 
-	// Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates.
-	// If not specified, default value is outer.
+	// Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable
+	// to nested templates. If not specified, default value is outer.
 	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
 
 	// The deployment on error behavior.
 	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
 
-	// Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide the parameter values directly
-	// in the request rather than link to an existing
-	// parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or a well formed JSON string.
+	// Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide
+	// the parameter values directly in the request rather than link to an existing
+	// parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or
+	// a well formed JSON string.
 	Parameters map[string]interface{} `json:"parameters,omitempty"`
 
-	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink property or the parameters property,
-	// but not both.
+	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink
+	// property or the parameters property, but not both.
 	ParametersLink *ParametersLink `json:"parametersLink,omitempty"`
 
-	// The template content. You use this element when you want to pass the template syntax directly in the request rather than link to an existing template.
-	// It can be a JObject or well-formed JSON string.
+	// The template content. You use this element when you want to pass the template syntax directly in the request rather than
+	// link to an existing template. It can be a JObject or well-formed JSON string.
 	// Use either the templateLink property or the template property, but not both.
 	Template map[string]interface{} `json:"template,omitempty"`
 
@@ -629,7 +745,41 @@ type DeploymentWhatIf struct {
 
 // DeploymentWhatIfProperties - Deployment What-if properties.
 type DeploymentWhatIfProperties struct {
-	DeploymentProperties
+	// REQUIRED; The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode,
+	// resources are deployed without deleting existing resources that are not included in
+	// the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included
+	// in the template are deleted. Be careful when using Complete mode as you may
+	// unintentionally delete resources.
+	Mode *DeploymentMode `json:"mode,omitempty"`
+
+	// The debug setting of the deployment.
+	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
+
+	// Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable
+	// to nested templates. If not specified, default value is outer.
+	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
+
+	// The deployment on error behavior.
+	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
+
+	// Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide
+	// the parameter values directly in the request rather than link to an existing
+	// parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or
+	// a well formed JSON string.
+	Parameters map[string]interface{} `json:"parameters,omitempty"`
+
+	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink
+	// property or the parameters property, but not both.
+	ParametersLink *ParametersLink `json:"parametersLink,omitempty"`
+
+	// The template content. You use this element when you want to pass the template syntax directly in the request rather than
+	// link to an existing template. It can be a JObject or well-formed JSON string.
+	// Use either the templateLink property or the template property, but not both.
+	Template map[string]interface{} `json:"template,omitempty"`
+
+	// The URI of the template. Use either the templateLink property or the template property, but not both.
+	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
+
 	// Optional What-If operation settings.
 	WhatIfSettings *DeploymentWhatIfSettings `json:"whatIfSettings,omitempty"`
 }
@@ -640,242 +790,274 @@ type DeploymentWhatIfSettings struct {
 	ResultFormat *WhatIfResultFormat `json:"resultFormat,omitempty"`
 }
 
-// DeploymentsBeginCreateOrUpdateAtManagementGroupScopeOptions contains the optional parameters for the Deployments.BeginCreateOrUpdateAtManagementGroupScope
+// DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope
 // method.
-type DeploymentsBeginCreateOrUpdateAtManagementGroupScopeOptions struct {
+type DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginCreateOrUpdateAtScopeOptions contains the optional parameters for the Deployments.BeginCreateOrUpdateAtScope method.
-type DeploymentsBeginCreateOrUpdateAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentsBeginCreateOrUpdateAtSubscriptionScopeOptions contains the optional parameters for the Deployments.BeginCreateOrUpdateAtSubscriptionScope
+// DeploymentsClientBeginCreateOrUpdateAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtScope
 // method.
-type DeploymentsBeginCreateOrUpdateAtSubscriptionScopeOptions struct {
+type DeploymentsClientBeginCreateOrUpdateAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginCreateOrUpdateAtTenantScopeOptions contains the optional parameters for the Deployments.BeginCreateOrUpdateAtTenantScope method.
-type DeploymentsBeginCreateOrUpdateAtTenantScopeOptions struct {
+// DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope
+// method.
+type DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginCreateOrUpdateOptions contains the optional parameters for the Deployments.BeginCreateOrUpdate method.
-type DeploymentsBeginCreateOrUpdateOptions struct {
+// DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtTenantScope
+// method.
+type DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginDeleteAtManagementGroupScopeOptions contains the optional parameters for the Deployments.BeginDeleteAtManagementGroupScope method.
-type DeploymentsBeginDeleteAtManagementGroupScopeOptions struct {
+// DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
+// method.
+type DeploymentsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginDeleteAtScopeOptions contains the optional parameters for the Deployments.BeginDeleteAtScope method.
-type DeploymentsBeginDeleteAtScopeOptions struct {
+// DeploymentsClientBeginDeleteAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtManagementGroupScope
+// method.
+type DeploymentsClientBeginDeleteAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginDeleteAtSubscriptionScopeOptions contains the optional parameters for the Deployments.BeginDeleteAtSubscriptionScope method.
-type DeploymentsBeginDeleteAtSubscriptionScopeOptions struct {
+// DeploymentsClientBeginDeleteAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtScope
+// method.
+type DeploymentsClientBeginDeleteAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginDeleteAtTenantScopeOptions contains the optional parameters for the Deployments.BeginDeleteAtTenantScope method.
-type DeploymentsBeginDeleteAtTenantScopeOptions struct {
+// DeploymentsClientBeginDeleteAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtSubscriptionScope
+// method.
+type DeploymentsClientBeginDeleteAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginDeleteOptions contains the optional parameters for the Deployments.BeginDelete method.
-type DeploymentsBeginDeleteOptions struct {
+// DeploymentsClientBeginDeleteAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtTenantScope
+// method.
+type DeploymentsClientBeginDeleteAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginValidateAtManagementGroupScopeOptions contains the optional parameters for the Deployments.BeginValidateAtManagementGroupScope method.
-type DeploymentsBeginValidateAtManagementGroupScopeOptions struct {
+// DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
+type DeploymentsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginValidateAtScopeOptions contains the optional parameters for the Deployments.BeginValidateAtScope method.
-type DeploymentsBeginValidateAtScopeOptions struct {
+// DeploymentsClientBeginValidateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtManagementGroupScope
+// method.
+type DeploymentsClientBeginValidateAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginValidateAtSubscriptionScopeOptions contains the optional parameters for the Deployments.BeginValidateAtSubscriptionScope method.
-type DeploymentsBeginValidateAtSubscriptionScopeOptions struct {
+// DeploymentsClientBeginValidateAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtScope
+// method.
+type DeploymentsClientBeginValidateAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginValidateAtTenantScopeOptions contains the optional parameters for the Deployments.BeginValidateAtTenantScope method.
-type DeploymentsBeginValidateAtTenantScopeOptions struct {
+// DeploymentsClientBeginValidateAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtSubscriptionScope
+// method.
+type DeploymentsClientBeginValidateAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginValidateOptions contains the optional parameters for the Deployments.BeginValidate method.
-type DeploymentsBeginValidateOptions struct {
+// DeploymentsClientBeginValidateAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtTenantScope
+// method.
+type DeploymentsClientBeginValidateAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginWhatIfAtManagementGroupScopeOptions contains the optional parameters for the Deployments.BeginWhatIfAtManagementGroupScope method.
-type DeploymentsBeginWhatIfAtManagementGroupScopeOptions struct {
+// DeploymentsClientBeginValidateOptions contains the optional parameters for the DeploymentsClient.BeginValidate method.
+type DeploymentsClientBeginValidateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginWhatIfAtSubscriptionScopeOptions contains the optional parameters for the Deployments.BeginWhatIfAtSubscriptionScope method.
-type DeploymentsBeginWhatIfAtSubscriptionScopeOptions struct {
+// DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtManagementGroupScope
+// method.
+type DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginWhatIfAtTenantScopeOptions contains the optional parameters for the Deployments.BeginWhatIfAtTenantScope method.
-type DeploymentsBeginWhatIfAtTenantScopeOptions struct {
+// DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtSubscriptionScope
+// method.
+type DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginWhatIfOptions contains the optional parameters for the Deployments.BeginWhatIf method.
-type DeploymentsBeginWhatIfOptions struct {
+// DeploymentsClientBeginWhatIfAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtTenantScope
+// method.
+type DeploymentsClientBeginWhatIfAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCalculateTemplateHashOptions contains the optional parameters for the Deployments.CalculateTemplateHash method.
-type DeploymentsCalculateTemplateHashOptions struct {
+// DeploymentsClientBeginWhatIfOptions contains the optional parameters for the DeploymentsClient.BeginWhatIf method.
+type DeploymentsClientBeginWhatIfOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCancelAtManagementGroupScopeOptions contains the optional parameters for the Deployments.CancelAtManagementGroupScope method.
-type DeploymentsCancelAtManagementGroupScopeOptions struct {
+// DeploymentsClientCalculateTemplateHashOptions contains the optional parameters for the DeploymentsClient.CalculateTemplateHash
+// method.
+type DeploymentsClientCalculateTemplateHashOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCancelAtScopeOptions contains the optional parameters for the Deployments.CancelAtScope method.
-type DeploymentsCancelAtScopeOptions struct {
+// DeploymentsClientCancelAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.CancelAtManagementGroupScope
+// method.
+type DeploymentsClientCancelAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCancelAtSubscriptionScopeOptions contains the optional parameters for the Deployments.CancelAtSubscriptionScope method.
-type DeploymentsCancelAtSubscriptionScopeOptions struct {
+// DeploymentsClientCancelAtScopeOptions contains the optional parameters for the DeploymentsClient.CancelAtScope method.
+type DeploymentsClientCancelAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCancelAtTenantScopeOptions contains the optional parameters for the Deployments.CancelAtTenantScope method.
-type DeploymentsCancelAtTenantScopeOptions struct {
+// DeploymentsClientCancelAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.CancelAtSubscriptionScope
+// method.
+type DeploymentsClientCancelAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCancelOptions contains the optional parameters for the Deployments.Cancel method.
-type DeploymentsCancelOptions struct {
+// DeploymentsClientCancelAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.CancelAtTenantScope
+// method.
+type DeploymentsClientCancelAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCheckExistenceAtManagementGroupScopeOptions contains the optional parameters for the Deployments.CheckExistenceAtManagementGroupScope method.
-type DeploymentsCheckExistenceAtManagementGroupScopeOptions struct {
+// DeploymentsClientCancelOptions contains the optional parameters for the DeploymentsClient.Cancel method.
+type DeploymentsClientCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCheckExistenceAtScopeOptions contains the optional parameters for the Deployments.CheckExistenceAtScope method.
-type DeploymentsCheckExistenceAtScopeOptions struct {
+// DeploymentsClientCheckExistenceAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.CheckExistenceAtManagementGroupScope
+// method.
+type DeploymentsClientCheckExistenceAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCheckExistenceAtSubscriptionScopeOptions contains the optional parameters for the Deployments.CheckExistenceAtSubscriptionScope method.
-type DeploymentsCheckExistenceAtSubscriptionScopeOptions struct {
+// DeploymentsClientCheckExistenceAtScopeOptions contains the optional parameters for the DeploymentsClient.CheckExistenceAtScope
+// method.
+type DeploymentsClientCheckExistenceAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCheckExistenceAtTenantScopeOptions contains the optional parameters for the Deployments.CheckExistenceAtTenantScope method.
-type DeploymentsCheckExistenceAtTenantScopeOptions struct {
+// DeploymentsClientCheckExistenceAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.CheckExistenceAtSubscriptionScope
+// method.
+type DeploymentsClientCheckExistenceAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsCheckExistenceOptions contains the optional parameters for the Deployments.CheckExistence method.
-type DeploymentsCheckExistenceOptions struct {
+// DeploymentsClientCheckExistenceAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.CheckExistenceAtTenantScope
+// method.
+type DeploymentsClientCheckExistenceAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsExportTemplateAtManagementGroupScopeOptions contains the optional parameters for the Deployments.ExportTemplateAtManagementGroupScope method.
-type DeploymentsExportTemplateAtManagementGroupScopeOptions struct {
+// DeploymentsClientCheckExistenceOptions contains the optional parameters for the DeploymentsClient.CheckExistence method.
+type DeploymentsClientCheckExistenceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsExportTemplateAtScopeOptions contains the optional parameters for the Deployments.ExportTemplateAtScope method.
-type DeploymentsExportTemplateAtScopeOptions struct {
+// DeploymentsClientExportTemplateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.ExportTemplateAtManagementGroupScope
+// method.
+type DeploymentsClientExportTemplateAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsExportTemplateAtSubscriptionScopeOptions contains the optional parameters for the Deployments.ExportTemplateAtSubscriptionScope method.
-type DeploymentsExportTemplateAtSubscriptionScopeOptions struct {
+// DeploymentsClientExportTemplateAtScopeOptions contains the optional parameters for the DeploymentsClient.ExportTemplateAtScope
+// method.
+type DeploymentsClientExportTemplateAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsExportTemplateAtTenantScopeOptions contains the optional parameters for the Deployments.ExportTemplateAtTenantScope method.
-type DeploymentsExportTemplateAtTenantScopeOptions struct {
+// DeploymentsClientExportTemplateAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.ExportTemplateAtSubscriptionScope
+// method.
+type DeploymentsClientExportTemplateAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsExportTemplateOptions contains the optional parameters for the Deployments.ExportTemplate method.
-type DeploymentsExportTemplateOptions struct {
+// DeploymentsClientExportTemplateAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.ExportTemplateAtTenantScope
+// method.
+type DeploymentsClientExportTemplateAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsGetAtManagementGroupScopeOptions contains the optional parameters for the Deployments.GetAtManagementGroupScope method.
-type DeploymentsGetAtManagementGroupScopeOptions struct {
+// DeploymentsClientExportTemplateOptions contains the optional parameters for the DeploymentsClient.ExportTemplate method.
+type DeploymentsClientExportTemplateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsGetAtScopeOptions contains the optional parameters for the Deployments.GetAtScope method.
-type DeploymentsGetAtScopeOptions struct {
+// DeploymentsClientGetAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.GetAtManagementGroupScope
+// method.
+type DeploymentsClientGetAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsGetAtSubscriptionScopeOptions contains the optional parameters for the Deployments.GetAtSubscriptionScope method.
-type DeploymentsGetAtSubscriptionScopeOptions struct {
+// DeploymentsClientGetAtScopeOptions contains the optional parameters for the DeploymentsClient.GetAtScope method.
+type DeploymentsClientGetAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsGetAtTenantScopeOptions contains the optional parameters for the Deployments.GetAtTenantScope method.
-type DeploymentsGetAtTenantScopeOptions struct {
+// DeploymentsClientGetAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.GetAtSubscriptionScope
+// method.
+type DeploymentsClientGetAtSubscriptionScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsGetOptions contains the optional parameters for the Deployments.Get method.
-type DeploymentsGetOptions struct {
+// DeploymentsClientGetAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.GetAtTenantScope method.
+type DeploymentsClientGetAtTenantScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsListAtManagementGroupScopeOptions contains the optional parameters for the Deployments.ListAtManagementGroupScope method.
-type DeploymentsListAtManagementGroupScopeOptions struct {
+// DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
+type DeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.ListAtManagementGroupScope
+// method.
+type DeploymentsClientListAtManagementGroupScopeOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
 	Filter *string
 	// The number of results to get. If null is passed, returns all deployments.
 	Top *int32
 }
 
-// DeploymentsListAtScopeOptions contains the optional parameters for the Deployments.ListAtScope method.
-type DeploymentsListAtScopeOptions struct {
+// DeploymentsClientListAtScopeOptions contains the optional parameters for the DeploymentsClient.ListAtScope method.
+type DeploymentsClientListAtScopeOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
 	Filter *string
 	// The number of results to get. If null is passed, returns all deployments.
 	Top *int32
 }
 
-// DeploymentsListAtSubscriptionScopeOptions contains the optional parameters for the Deployments.ListAtSubscriptionScope method.
-type DeploymentsListAtSubscriptionScopeOptions struct {
+// DeploymentsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.ListAtSubscriptionScope
+// method.
+type DeploymentsClientListAtSubscriptionScopeOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
 	Filter *string
 	// The number of results to get. If null is passed, returns all deployments.
 	Top *int32
 }
 
-// DeploymentsListAtTenantScopeOptions contains the optional parameters for the Deployments.ListAtTenantScope method.
-type DeploymentsListAtTenantScopeOptions struct {
+// DeploymentsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.ListAtTenantScope
+// method.
+type DeploymentsClientListAtTenantScopeOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
 	Filter *string
 	// The number of results to get. If null is passed, returns all deployments.
 	Top *int32
 }
 
-// DeploymentsListByResourceGroupOptions contains the optional parameters for the Deployments.ListByResourceGroup method.
-type DeploymentsListByResourceGroupOptions struct {
+// DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.ListByResourceGroup
+// method.
+type DeploymentsClientListByResourceGroupOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
 	Filter *string
 	// The number of results to get. If null is passed, returns all deployments.
@@ -891,8 +1073,8 @@ type ErrorAdditionalInfo struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.)
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
@@ -923,7 +1105,8 @@ func (e ErrorResponse) MarshalJSON() ([]byte, error) {
 
 // ExportTemplateRequest - Export resource group template request parameters.
 type ExportTemplateRequest struct {
-	// The export template options. A CSV-formatted list containing zero or more of the following: 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization',
+	// The export template options. A CSV-formatted list containing zero or more of the following: 'IncludeParameterDefaultValue',
+	// 'IncludeComments', 'SkipResourceNameParameterization',
 	// 'SkipAllParameterization'
 	Options *string `json:"options,omitempty"`
 
@@ -939,7 +1122,8 @@ func (e ExportTemplateRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ExpressionEvaluationOptions - Specifies whether template expressions are evaluated within the scope of the parent template or nested template.
+// ExpressionEvaluationOptions - Specifies whether template expressions are evaluated within the scope of the parent template
+// or nested template.
 type ExpressionEvaluationOptions struct {
 	// The scope to be used for evaluation of parameters, variables and functions in a nested template.
 	Scope *ExpressionEvaluationOptionsScopeType `json:"scope,omitempty"`
@@ -956,12 +1140,17 @@ type ExtendedLocation struct {
 
 // GenericResource - Resource information.
 type GenericResource struct {
-	Resource
+	// Resource extended location.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
 	// The kind of the resource.
 	Kind *string `json:"kind,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
 
 	// ID of the resource that manages this resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
@@ -974,87 +1163,104 @@ type GenericResource struct {
 
 	// The SKU of the resource.
 	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type GenericResource.
 func (g GenericResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GenericResource.
-func (g *GenericResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return g.unmarshalInternal(rawMsg)
-}
-
-func (g GenericResource) marshalInternal(objectMap map[string]interface{}) {
-	g.Resource.marshalInternal(objectMap)
+	populate(objectMap, "extendedLocation", g.ExtendedLocation)
+	populate(objectMap, "id", g.ID)
 	populate(objectMap, "identity", g.Identity)
 	populate(objectMap, "kind", g.Kind)
+	populate(objectMap, "location", g.Location)
 	populate(objectMap, "managedBy", g.ManagedBy)
+	populate(objectMap, "name", g.Name)
 	populate(objectMap, "plan", g.Plan)
 	populate(objectMap, "properties", g.Properties)
 	populate(objectMap, "sku", g.SKU)
-}
-
-func (g *GenericResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &g.Identity)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &g.Kind)
-			delete(rawMsg, key)
-		case "managedBy":
-			err = unpopulate(val, &g.ManagedBy)
-			delete(rawMsg, key)
-		case "plan":
-			err = unpopulate(val, &g.Plan)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &g.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &g.SKU)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := g.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	populate(objectMap, "tags", g.Tags)
+	populate(objectMap, "type", g.Type)
+	return json.Marshal(objectMap)
 }
 
 // GenericResourceExpanded - Resource information.
 type GenericResourceExpanded struct {
-	GenericResource
+	// Resource extended location.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
+	// The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+
+	// The kind of the resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+
+	// The plan of the resource.
+	Plan *Plan `json:"plan,omitempty"`
+
+	// The resource properties.
+	Properties map[string]interface{} `json:"properties,omitempty"`
+
+	// The SKU of the resource.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
 	// READ-ONLY; The changed time of the resource. This is only present if requested via the $expand query parameter.
 	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The created time of the resource. This is only present if requested via the $expand query parameter.
 	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
 
+	// READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The provisioning state of the resource. This is only present if requested via the $expand query parameter.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type GenericResourceExpanded.
 func (g GenericResourceExpanded) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.GenericResource.marshalInternal(objectMap)
 	populateTimeRFC3339(objectMap, "changedTime", g.ChangedTime)
 	populateTimeRFC3339(objectMap, "createdTime", g.CreatedTime)
+	populate(objectMap, "extendedLocation", g.ExtendedLocation)
+	populate(objectMap, "id", g.ID)
+	populate(objectMap, "identity", g.Identity)
+	populate(objectMap, "kind", g.Kind)
+	populate(objectMap, "location", g.Location)
+	populate(objectMap, "managedBy", g.ManagedBy)
+	populate(objectMap, "name", g.Name)
+	populate(objectMap, "plan", g.Plan)
+	populate(objectMap, "properties", g.Properties)
 	populate(objectMap, "provisioningState", g.ProvisioningState)
+	populate(objectMap, "sku", g.SKU)
+	populate(objectMap, "tags", g.Tags)
+	populate(objectMap, "type", g.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1073,16 +1279,49 @@ func (g *GenericResourceExpanded) UnmarshalJSON(data []byte) error {
 		case "createdTime":
 			err = unpopulateTimeRFC3339(val, &g.CreatedTime)
 			delete(rawMsg, key)
+		case "extendedLocation":
+			err = unpopulate(val, &g.ExtendedLocation)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &g.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, &g.Identity)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &g.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &g.Location)
+			delete(rawMsg, key)
+		case "managedBy":
+			err = unpopulate(val, &g.ManagedBy)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &g.Name)
+			delete(rawMsg, key)
+		case "plan":
+			err = unpopulate(val, &g.Plan)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, &g.Properties)
+			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, &g.ProvisioningState)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, &g.SKU)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &g.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &g.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := g.GenericResource.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1110,7 +1349,8 @@ type Identity struct {
 	// The identity type.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*IdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
 
@@ -1137,6 +1377,23 @@ type IdentityUserAssignedIdentitiesValue struct {
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+}
+
+// MoveInfo - Parameters of move resources.
+type MoveInfo struct {
+	// The IDs of the resources.
+	Resources []*string `json:"resources,omitempty"`
+
+	// The target resource group.
+	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MoveInfo.
+func (m MoveInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "resources", m.Resources)
+	populate(objectMap, "targetResourceGroup", m.TargetResourceGroup)
+	return json.Marshal(objectMap)
 }
 
 // OnErrorDeployment - Deployment on error behavior.
@@ -1184,8 +1441,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1202,8 +1459,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1395,7 +1652,8 @@ type ProviderResourceType struct {
 	Properties map[string]*string `json:"properties,omitempty"`
 
 	// The resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string        `json:"resourceType,omitempty"`
+	ZoneMappings []*ZoneMapping `json:"zoneMappings,omitempty"`
 
 	// READ-ONLY; The API profiles for the resource provider.
 	APIProfiles []*APIProfile `json:"apiProfiles,omitempty" azure:"ro"`
@@ -1416,6 +1674,7 @@ func (p ProviderResourceType) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "locations", p.Locations)
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "resourceType", p.ResourceType)
+	populate(objectMap, "zoneMappings", p.ZoneMappings)
 	return json.Marshal(objectMap)
 }
 
@@ -1436,56 +1695,60 @@ func (p ProviderResourceTypeListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProviderResourceTypesListOptions contains the optional parameters for the ProviderResourceTypes.List method.
-type ProviderResourceTypesListOptions struct {
+// ProviderResourceTypesClientListOptions contains the optional parameters for the ProviderResourceTypesClient.List method.
+type ProviderResourceTypesClientListOptions struct {
 	// The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
 	Expand *string
 }
 
-// ProvidersGetAtTenantScopeOptions contains the optional parameters for the Providers.GetAtTenantScope method.
-type ProvidersGetAtTenantScopeOptions struct {
+// ProvidersClientGetAtTenantScopeOptions contains the optional parameters for the ProvidersClient.GetAtTenantScope method.
+type ProvidersClientGetAtTenantScopeOptions struct {
 	// The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
 	Expand *string
 }
 
-// ProvidersGetOptions contains the optional parameters for the Providers.Get method.
-type ProvidersGetOptions struct {
+// ProvidersClientGetOptions contains the optional parameters for the ProvidersClient.Get method.
+type ProvidersClientGetOptions struct {
 	// The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
 	Expand *string
 }
 
-// ProvidersListAtTenantScopeOptions contains the optional parameters for the Providers.ListAtTenantScope method.
-type ProvidersListAtTenantScopeOptions struct {
-	// The properties to include in the results. For example, use &$expand=metadata in the query string to retrieve resource provider metadata. To include property
-	// aliases in response, use $expand=resourceTypes/aliases.
+// ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.ListAtTenantScope method.
+type ProvidersClientListAtTenantScopeOptions struct {
+	// The properties to include in the results. For example, use &$expand=metadata in the query string to retrieve resource provider
+	// metadata. To include property aliases in response, use
+	// $expand=resourceTypes/aliases.
 	Expand *string
 }
 
-// ProvidersListOptions contains the optional parameters for the Providers.List method.
-type ProvidersListOptions struct {
-	// The properties to include in the results. For example, use &$expand=metadata in the query string to retrieve resource provider metadata. To include property
-	// aliases in response, use $expand=resourceTypes/aliases.
+// ProvidersClientListOptions contains the optional parameters for the ProvidersClient.List method.
+type ProvidersClientListOptions struct {
+	// The properties to include in the results. For example, use &$expand=metadata in the query string to retrieve resource provider
+	// metadata. To include property aliases in response, use
+	// $expand=resourceTypes/aliases.
 	Expand *string
 }
 
-// ProvidersProviderPermissionsOptions contains the optional parameters for the Providers.ProviderPermissions method.
-type ProvidersProviderPermissionsOptions struct {
+// ProvidersClientProviderPermissionsOptions contains the optional parameters for the ProvidersClient.ProviderPermissions
+// method.
+type ProvidersClientProviderPermissionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProvidersRegisterAtManagementGroupScopeOptions contains the optional parameters for the Providers.RegisterAtManagementGroupScope method.
-type ProvidersRegisterAtManagementGroupScopeOptions struct {
+// ProvidersClientRegisterAtManagementGroupScopeOptions contains the optional parameters for the ProvidersClient.RegisterAtManagementGroupScope
+// method.
+type ProvidersClientRegisterAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProvidersRegisterOptions contains the optional parameters for the Providers.Register method.
-type ProvidersRegisterOptions struct {
+// ProvidersClientRegisterOptions contains the optional parameters for the ProvidersClient.Register method.
+type ProvidersClientRegisterOptions struct {
 	// The third party consent for S2S.
 	Properties *ProviderRegistrationRequest
 }
 
-// ProvidersUnregisterOptions contains the optional parameters for the Providers.Unregister method.
-type ProvidersUnregisterOptions struct {
+// ProvidersClientUnregisterOptions contains the optional parameters for the ProvidersClient.Unregister method.
+type ProvidersClientUnregisterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1513,61 +1776,19 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "extendedLocation", r.ExtendedLocation)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "extendedLocation":
-			err = unpopulate(val, &r.ExtendedLocation)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &r.Location)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &r.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return json.Marshal(objectMap)
 }
 
 // ResourceGroup - Resource group information.
 type ResourceGroup struct {
-	// REQUIRED; The location of the resource group. It cannot be changed after the resource group has been created. It must be one of the supported Azure locations.
+	// REQUIRED; The location of the resource group. It cannot be changed after the resource group has been created. It must be
+	// one of the supported Azure locations.
 	Location *string `json:"location,omitempty"`
 
 	// The ID of the resource that manages this resource group.
@@ -1668,43 +1889,47 @@ type ResourceGroupProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// ResourceGroupsBeginDeleteOptions contains the optional parameters for the ResourceGroups.BeginDelete method.
-type ResourceGroupsBeginDeleteOptions struct {
+// ResourceGroupsClientBeginDeleteOptions contains the optional parameters for the ResourceGroupsClient.BeginDelete method.
+type ResourceGroupsClientBeginDeleteOptions struct {
 	// The resource types you want to force delete. Currently, only the following is supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets
 	ForceDeletionTypes *string
 }
 
-// ResourceGroupsBeginExportTemplateOptions contains the optional parameters for the ResourceGroups.BeginExportTemplate method.
-type ResourceGroupsBeginExportTemplateOptions struct {
+// ResourceGroupsClientBeginExportTemplateOptions contains the optional parameters for the ResourceGroupsClient.BeginExportTemplate
+// method.
+type ResourceGroupsClientBeginExportTemplateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGroupsCheckExistenceOptions contains the optional parameters for the ResourceGroups.CheckExistence method.
-type ResourceGroupsCheckExistenceOptions struct {
+// ResourceGroupsClientCheckExistenceOptions contains the optional parameters for the ResourceGroupsClient.CheckExistence
+// method.
+type ResourceGroupsClientCheckExistenceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGroupsCreateOrUpdateOptions contains the optional parameters for the ResourceGroups.CreateOrUpdate method.
-type ResourceGroupsCreateOrUpdateOptions struct {
+// ResourceGroupsClientCreateOrUpdateOptions contains the optional parameters for the ResourceGroupsClient.CreateOrUpdate
+// method.
+type ResourceGroupsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGroupsGetOptions contains the optional parameters for the ResourceGroups.Get method.
-type ResourceGroupsGetOptions struct {
+// ResourceGroupsClientGetOptions contains the optional parameters for the ResourceGroupsClient.Get method.
+type ResourceGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGroupsListOptions contains the optional parameters for the ResourceGroups.List method.
-type ResourceGroupsListOptions struct {
-	// The filter to apply on the operation.<br><br>You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName
-	// eq 'tag1' and tagValue eq 'Value1'
+// ResourceGroupsClientListOptions contains the optional parameters for the ResourceGroupsClient.List method.
+type ResourceGroupsClientListOptions struct {
+	// The filter to apply on the operation.
+	// You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1'
+	// and tagValue eq 'Value1'
 	Filter *string
 	// The number of results to return. If null is passed, returns all resource groups.
 	Top *int32
 }
 
-// ResourceGroupsUpdateOptions contains the optional parameters for the ResourceGroups.Update method.
-type ResourceGroupsUpdateOptions struct {
+// ResourceGroupsClientUpdateOptions contains the optional parameters for the ResourceGroupsClient.Update method.
+type ResourceGroupsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1747,123 +1972,6 @@ type ResourceProviderOperationDisplayProperties struct {
 type ResourceReference struct {
 	// READ-ONLY; The fully qualified resource Id.
 	ID *string `json:"id,omitempty" azure:"ro"`
-}
-
-// ResourcesBeginCreateOrUpdateByIDOptions contains the optional parameters for the Resources.BeginCreateOrUpdateByID method.
-type ResourcesBeginCreateOrUpdateByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesBeginCreateOrUpdateOptions contains the optional parameters for the Resources.BeginCreateOrUpdate method.
-type ResourcesBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesBeginDeleteByIDOptions contains the optional parameters for the Resources.BeginDeleteByID method.
-type ResourcesBeginDeleteByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesBeginDeleteOptions contains the optional parameters for the Resources.BeginDelete method.
-type ResourcesBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesBeginMoveResourcesOptions contains the optional parameters for the Resources.BeginMoveResources method.
-type ResourcesBeginMoveResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesBeginUpdateByIDOptions contains the optional parameters for the Resources.BeginUpdateByID method.
-type ResourcesBeginUpdateByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesBeginUpdateOptions contains the optional parameters for the Resources.BeginUpdate method.
-type ResourcesBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesBeginValidateMoveResourcesOptions contains the optional parameters for the Resources.BeginValidateMoveResources method.
-type ResourcesBeginValidateMoveResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesCheckExistenceByIDOptions contains the optional parameters for the Resources.CheckExistenceByID method.
-type ResourcesCheckExistenceByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesCheckExistenceOptions contains the optional parameters for the Resources.CheckExistence method.
-type ResourcesCheckExistenceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesGetByIDOptions contains the optional parameters for the Resources.GetByID method.
-type ResourcesGetByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesGetOptions contains the optional parameters for the Resources.Get method.
-type ResourcesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourcesListByResourceGroupOptions contains the optional parameters for the Resources.ListByResourceGroup method.
-type ResourcesListByResourceGroupOptions struct {
-	// Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`.
-	// For example, `$expand=createdTime,changedTime`.
-	Expand *string
-	// The filter to apply on the operation.<br><br>The properties you can use for eq (equals) or ne (not equals) are: location, resourceType, name, resourceGroup,
-	// identity, identity/principalId, plan, plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.<br><br>For example, to filter by
-	// a resource type, use: $filter=resourceType eq 'Microsoft.Network/virtualNetworks'<br><br>You can use substringof(value, property) in the filter. The
-	// properties you can use for substring are: name and resourceGroup.<br><br>For example, to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
-	// name)<br><br>You can link more than one substringof together by adding and/or operators.<br><br>You can filter by tag names and values. For example,
-	// to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value, the tags for each
-	// resource are not returned in the results.<br><br>You can use some properties together when filtering. The combinations you can use are: substringof and/or
-	// resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
-	Filter *string
-	// The number of results to return. If null is passed, returns all resources.
-	Top *int32
-}
-
-// ResourcesListOptions contains the optional parameters for the Resources.List method.
-type ResourcesListOptions struct {
-	// Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`.
-	// For example, `$expand=createdTime,changedTime`.
-	Expand *string
-	// The filter to apply on the operation.<br><br>Filter comparison operators include `eq` (equals) and `ne` (not equals) and may be used with the following
-	// properties: `location`, `resourceType`, `name`, `resourceGroup`, `identity`, `identity/principalId`, `plan`, `plan/publisher`, `plan/product`, `plan/name`,
-	// `plan/version`, and `plan/promotionCode`.<br><br>For example, to filter by a resource type, use `$filter=resourceType eq 'Microsoft.Network/virtualNetworks'`<br><br><br>`substringof(value,
-	// property)` can be used to filter for substrings of the following currently-supported properties: `name` and `resourceGroup`<br><br>For example, to get
-	// all resources with 'demo' anywhere in the resource name, use `$filter=substringof('demo', name)`<br><br>Multiple substring operations can also be combined
-	// using `and`/`or` operators.<br><br>Note that any truncated number of results queried via `$top` may also not be compatible when using a filter.<br><br><br>Resources
-	// can be filtered by tag names and values. For example, to filter for a tag name and value, use `$filter=tagName eq 'tag1' and tagValue eq 'Value1'`. Note
-	// that when resources are filtered by tag name and value, <b>the original tags for each resource will not be returned in the results.</b> Any list of additional
-	// properties queried via `$expand` may also not be compatible when filtering by tag names/values. <br><br>For tag names only, resources can be filtered
-	// by prefix using the following syntax: `$filter=startswith(tagName, 'depart')`. This query will return all resources with a tag name prefixed by the phrase
-	// `depart` (i.e.`department`, `departureDate`, `departureTime`, etc.)<br><br><br>Note that some properties can be combined when filtering resources, which
-	// include the following: `substringof() and/or resourceType`, `plan and plan/publisher and plan/name`, and `identity and identity/principalId`.
-	Filter *string
-	// The number of results to return. If null is passed, returns all resources.
-	Top *int32
-}
-
-// ResourcesMoveInfo - Parameters of move resources.
-type ResourcesMoveInfo struct {
-	// The IDs of the resources.
-	Resources []*string `json:"resources,omitempty"`
-
-	// The target resource group.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourcesMoveInfo.
-func (r ResourcesMoveInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "resources", r.Resources)
-	populate(objectMap, "targetResourceGroup", r.TargetResourceGroup)
-	return json.Marshal(objectMap)
 }
 
 // RoleDefinition - Role definition properties.
@@ -1972,7 +2080,8 @@ type TagCount struct {
 
 // TagDetails - Tag details.
 type TagDetails struct {
-	// The total number of resources that use the resource tag. When a tag is initially created and has no associated resources, the value is 0.
+	// The total number of resources that use the resource tag. When a tag is initially created and has no associated resources,
+	// the value is 0.
 	Count *TagCount `json:"count,omitempty"`
 
 	// The tag name.
@@ -2020,43 +2129,48 @@ func (t Tags) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TagsCreateOrUpdateAtScopeOptions contains the optional parameters for the Tags.CreateOrUpdateAtScope method.
-type TagsCreateOrUpdateAtScopeOptions struct {
+// TagsClientCreateOrUpdateAtScopeOptions contains the optional parameters for the TagsClient.CreateOrUpdateAtScope method.
+type TagsClientCreateOrUpdateAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsCreateOrUpdateOptions contains the optional parameters for the Tags.CreateOrUpdate method.
-type TagsCreateOrUpdateOptions struct {
+// TagsClientCreateOrUpdateOptions contains the optional parameters for the TagsClient.CreateOrUpdate method.
+type TagsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsCreateOrUpdateValueOptions contains the optional parameters for the Tags.CreateOrUpdateValue method.
-type TagsCreateOrUpdateValueOptions struct {
+// TagsClientCreateOrUpdateValueOptions contains the optional parameters for the TagsClient.CreateOrUpdateValue method.
+type TagsClientCreateOrUpdateValueOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsDeleteAtScopeOptions contains the optional parameters for the Tags.DeleteAtScope method.
-type TagsDeleteAtScopeOptions struct {
+// TagsClientDeleteAtScopeOptions contains the optional parameters for the TagsClient.DeleteAtScope method.
+type TagsClientDeleteAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsDeleteOptions contains the optional parameters for the Tags.Delete method.
-type TagsDeleteOptions struct {
+// TagsClientDeleteOptions contains the optional parameters for the TagsClient.Delete method.
+type TagsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsDeleteValueOptions contains the optional parameters for the Tags.DeleteValue method.
-type TagsDeleteValueOptions struct {
+// TagsClientDeleteValueOptions contains the optional parameters for the TagsClient.DeleteValue method.
+type TagsClientDeleteValueOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsGetAtScopeOptions contains the optional parameters for the Tags.GetAtScope method.
-type TagsGetAtScopeOptions struct {
+// TagsClientGetAtScopeOptions contains the optional parameters for the TagsClient.GetAtScope method.
+type TagsClientGetAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsListOptions contains the optional parameters for the Tags.List method.
-type TagsListOptions struct {
+// TagsClientListOptions contains the optional parameters for the TagsClient.List method.
+type TagsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagsClientUpdateAtScopeOptions contains the optional parameters for the TagsClient.UpdateAtScope method.
+type TagsClientUpdateAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2109,11 +2223,6 @@ type TagsResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// TagsUpdateAtScopeOptions contains the optional parameters for the Tags.UpdateAtScope method.
-type TagsUpdateAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
 // TargetResource - Target resource.
 type TargetResource struct {
 	// The ID of the resource.
@@ -2126,7 +2235,8 @@ type TargetResource struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
-// TemplateHashResult - Result of the request to calculate template hash. It contains a string of minified template and its hash.
+// TemplateHashResult - Result of the request to calculate template hash. It contains a string of minified template and its
+// hash.
 type TemplateHashResult struct {
 	// The minified template string.
 	MinifiedTemplate *string `json:"minifiedTemplate,omitempty"`
@@ -2146,9 +2256,10 @@ type TemplateLink struct {
 	// The query string (for example, a SAS token) to be used with the templateLink URI.
 	QueryString *string `json:"queryString,omitempty"`
 
-	// The relativePath property can be used to deploy a linked template at a location relative to the parent. If the parent template was linked with a TemplateSpec,
-	// this will reference an artifact in the
-	// TemplateSpec. If the parent was linked with a URI, the child deployment will be a combination of the parent and relativePath URIs
+	// The relativePath property can be used to deploy a linked template at a location relative to the parent. If the parent template
+	// was linked with a TemplateSpec, this will reference an artifact in the
+	// TemplateSpec. If the parent was linked with a URI, the child deployment will be a combination of the parent and relativePath
+	// URIs
 	RelativePath *string `json:"relativePath,omitempty"`
 
 	// The URI of the template to deploy. Use either the uri or id property, but not both.
@@ -2201,7 +2312,8 @@ func (w WhatIfOperationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WhatIfOperationResult - Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
+// WhatIfOperationResult - Result of the What-If operation. Contains a list of predicted changes and a URL link to get to
+// the next set of results.
 type WhatIfOperationResult struct {
 	// Error when What-If operation fails.
 	Error *ErrorResponse `json:"error,omitempty"`
@@ -2239,6 +2351,20 @@ func (w WhatIfPropertyChange) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "children", w.Children)
 	populate(objectMap, "path", w.Path)
 	populate(objectMap, "propertyChangeType", w.PropertyChangeType)
+	return json.Marshal(objectMap)
+}
+
+type ZoneMapping struct {
+	// The location of the zone mapping.
+	Location *string   `json:"location,omitempty"`
+	Zones    []*string `json:"zones,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ZoneMapping.
+func (z ZoneMapping) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "location", z.Location)
+	populate(objectMap, "zones", z.Zones)
 	return json.Marshal(objectMap)
 }
 

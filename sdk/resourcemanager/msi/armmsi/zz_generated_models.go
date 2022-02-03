@@ -15,17 +15,9 @@ import (
 )
 
 // CloudError - An error response from the ManagedServiceIdentity service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// A list of additional details about the error.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the ManagedServiceIdentity service.
@@ -55,39 +47,67 @@ func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
 
 // Identity - Describes an identity resource.
 type Identity struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The properties associated with the identity.
 	Properties *UserAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Identity.
 func (i Identity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", i.ID)
+	populate(objectMap, "location", i.Location)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "tags", i.Tags)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
 // IdentityUpdate - Describes an identity resource.
 type IdentityUpdate struct {
-	Resource
 	// The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The properties associated with the identity.
 	Properties *UserAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IdentityUpdate.
 func (i IdentityUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", i.ID)
 	populate(objectMap, "location", i.Location)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
 	populate(objectMap, "tags", i.Tags)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -132,18 +152,22 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -158,44 +182,42 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-// SystemAssignedIdentitiesGetByScopeOptions contains the optional parameters for the SystemAssignedIdentities.GetByScope method.
-type SystemAssignedIdentitiesGetByScopeOptions struct {
+// SystemAssignedIdentitiesClientGetByScopeOptions contains the optional parameters for the SystemAssignedIdentitiesClient.GetByScope
+// method.
+type SystemAssignedIdentitiesClientGetByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
 // SystemAssignedIdentity - Describes a system assigned identity resource.
 type SystemAssignedIdentity struct {
-	ProxyResource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The properties associated with the identity.
 	Properties *SystemAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SystemAssignedIdentity.
 func (s SystemAssignedIdentity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
 	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -214,51 +236,68 @@ type SystemAssignedIdentityProperties struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
-}
-
-// UserAssignedIdentitiesCreateOrUpdateOptions contains the optional parameters for the UserAssignedIdentities.CreateOrUpdate method.
-type UserAssignedIdentitiesCreateOrUpdateOptions struct {
+// UserAssignedIdentitiesClientCreateOrUpdateOptions contains the optional parameters for the UserAssignedIdentitiesClient.CreateOrUpdate
+// method.
+type UserAssignedIdentitiesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIdentitiesDeleteOptions contains the optional parameters for the UserAssignedIdentities.Delete method.
-type UserAssignedIdentitiesDeleteOptions struct {
+// UserAssignedIdentitiesClientDeleteOptions contains the optional parameters for the UserAssignedIdentitiesClient.Delete
+// method.
+type UserAssignedIdentitiesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIdentitiesGetOptions contains the optional parameters for the UserAssignedIdentities.Get method.
-type UserAssignedIdentitiesGetOptions struct {
+// UserAssignedIdentitiesClientGetOptions contains the optional parameters for the UserAssignedIdentitiesClient.Get method.
+type UserAssignedIdentitiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIdentitiesListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentities.ListByResourceGroup method.
-type UserAssignedIdentitiesListByResourceGroupOptions struct {
+// UserAssignedIdentitiesClientListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListByResourceGroup
+// method.
+type UserAssignedIdentitiesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIdentitiesListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentities.ListBySubscription method.
-type UserAssignedIdentitiesListBySubscriptionOptions struct {
+// UserAssignedIdentitiesClientListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListBySubscription
+// method.
+type UserAssignedIdentitiesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UserAssignedIdentitiesClientUpdateOptions contains the optional parameters for the UserAssignedIdentitiesClient.Update
+// method.
+type UserAssignedIdentitiesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -277,11 +316,6 @@ func (u UserAssignedIdentitiesListResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", u.NextLink)
 	populate(objectMap, "value", u.Value)
 	return json.Marshal(objectMap)
-}
-
-// UserAssignedIdentitiesUpdateOptions contains the optional parameters for the UserAssignedIdentities.Update method.
-type UserAssignedIdentitiesUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // UserAssignedIdentityProperties - The properties associated with the user assigned identity.

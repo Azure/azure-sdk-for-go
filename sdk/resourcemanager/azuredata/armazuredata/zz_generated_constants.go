@@ -9,8 +9,8 @@
 package armazuredata
 
 const (
-	module  = "armazuredata"
-	version = "v0.1.0"
+	moduleName    = "armazuredata"
+	moduleVersion = "v0.2.0"
 )
 
 // IdentityType - The type of identity that creates/modifies resources
@@ -59,7 +59,8 @@ func (c OperationOrigin) ToPtr() *OperationOrigin {
 	return &c
 }
 
-// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
 type SKUTier string
 
 const (

@@ -9,12 +9,12 @@
 package armoperationalinsights
 
 const (
-	module  = "armoperationalinsights"
-	version = "v0.2.1"
+	moduleName    = "armoperationalinsights"
+	moduleVersion = "v0.3.0"
 )
 
-// BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional use. This does not change the
-// overall billing, only how it will be distributed. Default
+// BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional
+// use. This does not change the overall billing, only how it will be distributed. Default
 // value is 'Cluster'
 type BillingType string
 
@@ -141,6 +141,93 @@ func PossibleClusterSKUNameEnumValues() []ClusterSKUNameEnum {
 
 // ToPtr returns a *ClusterSKUNameEnum pointing to the current value.
 func (c ClusterSKUNameEnum) ToPtr() *ClusterSKUNameEnum {
+	return &c
+}
+
+// ColumnDataTypeHintEnum - Column data type logical hint.
+type ColumnDataTypeHintEnum string
+
+const (
+	// ColumnDataTypeHintEnumArmPath - An Azure Resource Model (ARM) path: /subscriptions/{...}/resourceGroups/{...}/providers/Microsoft.{...}/{...}/{...}/{...}...
+	ColumnDataTypeHintEnumArmPath ColumnDataTypeHintEnum = "armPath"
+	// ColumnDataTypeHintEnumGUID - A standard 128-bit GUID following the standard shape, xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+	ColumnDataTypeHintEnumGUID ColumnDataTypeHintEnum = "guid"
+	// ColumnDataTypeHintEnumIP - A standard V4/V6 ip address following the standard shape, x.x.x.x/y:y:y:y:y:y:y:y
+	ColumnDataTypeHintEnumIP ColumnDataTypeHintEnum = "ip"
+	// ColumnDataTypeHintEnumURI - A string that matches the pattern of a URI, for example, scheme://username:password@host:1234/this/is/a/path?k1=v1&k2=v2#fragment
+	ColumnDataTypeHintEnumURI ColumnDataTypeHintEnum = "uri"
+)
+
+// PossibleColumnDataTypeHintEnumValues returns the possible values for the ColumnDataTypeHintEnum const type.
+func PossibleColumnDataTypeHintEnumValues() []ColumnDataTypeHintEnum {
+	return []ColumnDataTypeHintEnum{
+		ColumnDataTypeHintEnumArmPath,
+		ColumnDataTypeHintEnumGUID,
+		ColumnDataTypeHintEnumIP,
+		ColumnDataTypeHintEnumURI,
+	}
+}
+
+// ToPtr returns a *ColumnDataTypeHintEnum pointing to the current value.
+func (c ColumnDataTypeHintEnum) ToPtr() *ColumnDataTypeHintEnum {
+	return &c
+}
+
+// ColumnTypeEnum - Column data type.
+type ColumnTypeEnum string
+
+const (
+	ColumnTypeEnumBoolean  ColumnTypeEnum = "boolean"
+	ColumnTypeEnumDateTime ColumnTypeEnum = "dateTime"
+	ColumnTypeEnumDynamic  ColumnTypeEnum = "dynamic"
+	ColumnTypeEnumGUID     ColumnTypeEnum = "guid"
+	ColumnTypeEnumInt      ColumnTypeEnum = "int"
+	ColumnTypeEnumLong     ColumnTypeEnum = "long"
+	ColumnTypeEnumReal     ColumnTypeEnum = "real"
+	ColumnTypeEnumString   ColumnTypeEnum = "string"
+)
+
+// PossibleColumnTypeEnumValues returns the possible values for the ColumnTypeEnum const type.
+func PossibleColumnTypeEnumValues() []ColumnTypeEnum {
+	return []ColumnTypeEnum{
+		ColumnTypeEnumBoolean,
+		ColumnTypeEnumDateTime,
+		ColumnTypeEnumDynamic,
+		ColumnTypeEnumGUID,
+		ColumnTypeEnumInt,
+		ColumnTypeEnumLong,
+		ColumnTypeEnumReal,
+		ColumnTypeEnumString,
+	}
+}
+
+// ToPtr returns a *ColumnTypeEnum pointing to the current value.
+func (c ColumnTypeEnum) ToPtr() *ColumnTypeEnum {
+	return &c
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// ToPtr returns a *CreatedByType pointing to the current value.
+func (c CreatedByType) ToPtr() *CreatedByType {
 	return &c
 }
 
@@ -335,6 +422,34 @@ func (c LinkedServiceEntityStatus) ToPtr() *LinkedServiceEntityStatus {
 	return &c
 }
 
+// ProvisioningStateEnum - Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing
+// operation, forbidding any update to the table until the ongoing operation is concluded.
+type ProvisioningStateEnum string
+
+const (
+	// ProvisioningStateEnumInProgress - Table schema is stable and without changes, table data is being updated.
+	ProvisioningStateEnumInProgress ProvisioningStateEnum = "InProgress"
+	// ProvisioningStateEnumSucceeded - Table state is stable and without changes, table is unlocked and open for new updates.
+	ProvisioningStateEnumSucceeded ProvisioningStateEnum = "Succeeded"
+	// ProvisioningStateEnumUpdating - Table schema is still being built and updated, table is currently locked for any changes
+	// till the procedure is done.
+	ProvisioningStateEnumUpdating ProvisioningStateEnum = "Updating"
+)
+
+// PossibleProvisioningStateEnumValues returns the possible values for the ProvisioningStateEnum const type.
+func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
+	return []ProvisioningStateEnum{
+		ProvisioningStateEnumInProgress,
+		ProvisioningStateEnumSucceeded,
+		ProvisioningStateEnumUpdating,
+	}
+}
+
+// ToPtr returns a *ProvisioningStateEnum pointing to the current value.
+func (c ProvisioningStateEnum) ToPtr() *ProvisioningStateEnum {
+	return &c
+}
+
 // PublicNetworkAccessType - The network access type for operating on the Log Analytics Workspace. By default it is Enabled
 type PublicNetworkAccessType string
 
@@ -431,6 +546,30 @@ func (c SearchSortEnum) ToPtr() *SearchSortEnum {
 	return &c
 }
 
+// SourceEnum - Table's creator.
+type SourceEnum string
+
+const (
+	// SourceEnumCustomer - Tables created by the owner of the Workspace, and only found in this Workspace.
+	SourceEnumCustomer SourceEnum = "customer"
+	// SourceEnumMicrosoft - Tables provisioned by the system, as collected via Diagnostic Settings, the Agents, or any other
+	// standard data collection means.
+	SourceEnumMicrosoft SourceEnum = "microsoft"
+)
+
+// PossibleSourceEnumValues returns the possible values for the SourceEnum const type.
+func PossibleSourceEnumValues() []SourceEnum {
+	return []SourceEnum{
+		SourceEnumCustomer,
+		SourceEnumMicrosoft,
+	}
+}
+
+// ToPtr returns a *SourceEnum pointing to the current value.
+func (c SourceEnum) ToPtr() *SourceEnum {
+	return &c
+}
+
 // StorageInsightState - The state of the storage insight connection to the workspace
 type StorageInsightState string
 
@@ -449,6 +588,88 @@ func PossibleStorageInsightStateValues() []StorageInsightState {
 
 // ToPtr returns a *StorageInsightState pointing to the current value.
 func (c StorageInsightState) ToPtr() *StorageInsightState {
+	return &c
+}
+
+// TablePlanEnum - The table plan.
+type TablePlanEnum string
+
+const (
+	// TablePlanEnumAnalytics - Analytics - logs that allow monitoring and analytics.
+	TablePlanEnumAnalytics TablePlanEnum = "Analytics"
+	// TablePlanEnumBasic - Basic - logs that are adjusted to support high volume / low value verbose logs.
+	TablePlanEnumBasic TablePlanEnum = "Basic"
+)
+
+// PossibleTablePlanEnumValues returns the possible values for the TablePlanEnum const type.
+func PossibleTablePlanEnumValues() []TablePlanEnum {
+	return []TablePlanEnum{
+		TablePlanEnumAnalytics,
+		TablePlanEnumBasic,
+	}
+}
+
+// ToPtr returns a *TablePlanEnum pointing to the current value.
+func (c TablePlanEnum) ToPtr() *TablePlanEnum {
+	return &c
+}
+
+// TableSubTypeEnum - The subtype describes what APIs can be used to interact with the table, and what features are available
+// against it.
+type TableSubTypeEnum string
+
+const (
+	// TableSubTypeEnumAny - The default subtype with which built-in tables are created.
+	TableSubTypeEnumAny TableSubTypeEnum = "Any"
+	// TableSubTypeEnumClassic - Indicates a table created through the Data Collector API or with the custom logs feature of the
+	// MMA agent, or any table against which Custom Fields were created.
+	TableSubTypeEnumClassic TableSubTypeEnum = "Classic"
+	// TableSubTypeEnumDataCollectionRuleBased - A table eligible to have data sent into it via any of the means supported by
+	// Data Collection Rules: the Data Collection Endpoint API, ingestion-time transformations, or any other mechanism provided
+	// by Data Collection Rules
+	TableSubTypeEnumDataCollectionRuleBased TableSubTypeEnum = "DataCollectionRuleBased"
+)
+
+// PossibleTableSubTypeEnumValues returns the possible values for the TableSubTypeEnum const type.
+func PossibleTableSubTypeEnumValues() []TableSubTypeEnum {
+	return []TableSubTypeEnum{
+		TableSubTypeEnumAny,
+		TableSubTypeEnumClassic,
+		TableSubTypeEnumDataCollectionRuleBased,
+	}
+}
+
+// ToPtr returns a *TableSubTypeEnum pointing to the current value.
+func (c TableSubTypeEnum) ToPtr() *TableSubTypeEnum {
+	return &c
+}
+
+// TableTypeEnum - Table's creator.
+type TableTypeEnum string
+
+const (
+	// TableTypeEnumCustomLog - Custom log table.
+	TableTypeEnumCustomLog TableTypeEnum = "CustomLog"
+	// TableTypeEnumMicrosoft - Standard data collected by Azure Monitor.
+	TableTypeEnumMicrosoft TableTypeEnum = "Microsoft"
+	// TableTypeEnumRestoredLogs - Restored data.
+	TableTypeEnumRestoredLogs TableTypeEnum = "RestoredLogs"
+	// TableTypeEnumSearchResults - Data collected by a search job.
+	TableTypeEnumSearchResults TableTypeEnum = "SearchResults"
+)
+
+// PossibleTableTypeEnumValues returns the possible values for the TableTypeEnum const type.
+func PossibleTableTypeEnumValues() []TableTypeEnum {
+	return []TableTypeEnum{
+		TableTypeEnumCustomLog,
+		TableTypeEnumMicrosoft,
+		TableTypeEnumRestoredLogs,
+		TableTypeEnumSearchResults,
+	}
+}
+
+// ToPtr returns a *TableTypeEnum pointing to the current value.
+func (c TableTypeEnum) ToPtr() *TableTypeEnum {
 	return &c
 }
 

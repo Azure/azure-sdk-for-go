@@ -26,8 +26,8 @@ func ExampleFluxConfigOperationStatusClient_Get() {
 	client := armkubernetesconfiguration.NewFluxConfigOperationStatusClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		"<operation-id>",
@@ -35,5 +35,5 @@ func ExampleFluxConfigOperationStatusClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatusResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FluxConfigOperationStatusClientGetResult)
 }

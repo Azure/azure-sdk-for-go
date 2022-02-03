@@ -33,13 +33,20 @@ func ExampleSharesClient_ListSynchronizationDetails() {
 		armdatashare.ShareSynchronization{
 			SynchronizationID: to.StringPtr("<synchronization-id>"),
 		},
-		&armdatashare.SharesListSynchronizationDetailsOptions{SkipToken: nil,
+		&armdatashare.SharesClientListSynchronizationDetailsOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -55,13 +62,20 @@ func ExampleSharesClient_ListSynchronizations() {
 	pager := client.ListSynchronizations("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
-		&armdatashare.SharesListSynchronizationsOptions{SkipToken: nil,
+		&armdatashare.SharesClientListSynchronizationsOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -82,7 +96,7 @@ func ExampleSharesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Share.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SharesClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_Create.json
@@ -100,7 +114,7 @@ func ExampleSharesClient_Create() {
 		armdatashare.Share{
 			Properties: &armdatashare.ShareProperties{
 				Description: to.StringPtr("<description>"),
-				ShareKind:   armdatashare.ShareKindCopyBased.ToPtr(),
+				ShareKind:   armdatashare.ShareKind("CopyBased").ToPtr(),
 				Terms:       to.StringPtr("<terms>"),
 			},
 		},
@@ -108,7 +122,7 @@ func ExampleSharesClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Share.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SharesClientCreateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_Delete.json
@@ -127,10 +141,11 @@ func ExampleSharesClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SharesClientDeleteResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListByAccount.json
@@ -143,16 +158,20 @@ func ExampleSharesClient_ListByAccount() {
 	client := armdatashare.NewSharesClient("<subscription-id>", cred, nil)
 	pager := client.ListByAccount("<resource-group-name>",
 		"<account-name>",
-		&armdatashare.SharesListByAccountOptions{SkipToken: nil,
+		&armdatashare.SharesClientListByAccountOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Share.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

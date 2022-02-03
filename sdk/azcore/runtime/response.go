@@ -21,18 +21,9 @@ import (
 
 // Payload reads and returns the response body or an error.
 // On a successful read, the response body is cached.
+// Subsequent reads will access the cached value.
 func Payload(resp *http.Response) ([]byte, error) {
-	// r.Body won't be a nopClosingBytesReader if downloading was skipped
-	if buf, ok := resp.Body.(*nopClosingBytesReader); ok {
-		return buf.Bytes(), nil
-	}
-	bytesBody, err := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
-	if err != nil {
-		return nil, err
-	}
-	resp.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
-	return bytesBody, nil
+	return shared.Payload(resp)
 }
 
 // HasStatusCode returns true if the Response's status code is one of the specified values.
@@ -108,7 +99,7 @@ func removeBOM(resp *http.Response) error {
 	// UTF8
 	trimmed := bytes.TrimPrefix(payload, []byte("\xef\xbb\xbf"))
 	if len(trimmed) < len(payload) {
-		resp.Body.(*nopClosingBytesReader).Set(trimmed)
+		resp.Body.(*shared.NopClosingBytesReader).Set(trimmed)
 	}
 	return nil
 }

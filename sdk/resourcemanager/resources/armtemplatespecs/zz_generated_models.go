@@ -30,18 +30,45 @@ type AzureResourceBase struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureResourceBase.
-func (a AzureResourceBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
+// ClientCreateOrUpdateOptions contains the optional parameters for the Client.CreateOrUpdate method.
+type ClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-func (a AzureResourceBase) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
+// ClientDeleteOptions contains the optional parameters for the Client.Delete method.
+type ClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// Allows for expansion of additional Template Spec details in the response. Optional.
+	Expand *TemplateSpecExpandKind
+}
+
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+type ClientListByResourceGroupOptions struct {
+	// Allows for expansion of additional Template Spec details in the response. Optional.
+	Expand *TemplateSpecExpandKind
+}
+
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+type ClientListBySubscriptionOptions struct {
+	// Allows for expansion of additional Template Spec details in the response. Optional.
+	Expand *TemplateSpecExpandKind
+}
+
+// ClientUpdateOptions contains the optional parameters for the Client.Update method.
+type ClientUpdateOptions struct {
+	// Template Spec resource with the tags to be updated.
+	TemplateSpec *TemplateSpecUpdateModel
+}
+
+// Error - Template Specs error response.
+type Error struct {
+	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
+	// the OData error response format.)
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -53,8 +80,8 @@ type ErrorAdditionalInfo struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.)
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
@@ -83,13 +110,31 @@ func (e ErrorResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LinkedTemplateArtifact - Represents a Template Spec artifact containing an embedded Azure Resource Manager template for use as a linked template.
+// LinkedTemplateArtifact - Represents a Template Spec artifact containing an embedded Azure Resource Manager template for
+// use as a linked template.
 type LinkedTemplateArtifact struct {
 	// REQUIRED; A filesystem safe relative path of the artifact.
 	Path *string `json:"path,omitempty"`
 
 	// REQUIRED; The Azure Resource Manager template.
 	Template map[string]interface{} `json:"template,omitempty"`
+}
+
+// ListResult - List of Template Specs.
+type ListResult struct {
+	// An array of Template Specs.
+	Value []*TemplateSpec `json:"value,omitempty"`
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListResult.
+func (l ListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", l.NextLink)
+	populate(objectMap, "value", l.Value)
+	return json.Marshal(objectMap)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -162,8 +207,8 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // TemplateSpec - Template Spec object.
 type TemplateSpec struct {
-	AzureResourceBase
-	// REQUIRED; The location of the Template Spec. It cannot be changed after Template Spec creation. It must be one of the supported Azure locations.
+	// REQUIRED; The location of the Template Spec. It cannot be changed after Template Spec creation. It must be one of the supported
+	// Azure locations.
 	Location *string `json:"location,omitempty"`
 
 	// Template Spec properties.
@@ -171,15 +216,30 @@ type TemplateSpec struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TemplateSpec.
 func (t TemplateSpec) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.AzureResourceBase.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "properties", t.Properties)
+	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -194,8 +254,8 @@ type TemplateSpecProperties struct {
 	// The Template Spec metadata. Metadata is an open-ended object and is typically a collection of key-value pairs.
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
 
-	// READ-ONLY; High-level information about the versions within this Template Spec. The keys are the version names. Only populated if the $expand query parameter
-	// is set to 'versions'.
+	// READ-ONLY; High-level information about the versions within this Template Spec. The keys are the version names. Only populated
+	// if the $expand query parameter is set to 'versions'.
 	Versions map[string]*TemplateSpecVersionInfo `json:"versions,omitempty" azure:"ro"`
 }
 
@@ -211,22 +271,35 @@ func (t TemplateSpecProperties) MarshalJSON() ([]byte, error) {
 
 // TemplateSpecUpdateModel - Template Spec properties to be updated (only tags are currently supported).
 type TemplateSpecUpdateModel struct {
-	AzureResourceBase
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TemplateSpecUpdateModel.
 func (t TemplateSpecUpdateModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.AzureResourceBase.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
 // TemplateSpecVersion - Template Spec Version object.
 type TemplateSpecVersion struct {
-	AzureResourceBase
 	// REQUIRED; The location of the Template Spec Version. It must match the location of the parent Template Spec.
 	Location *string `json:"location,omitempty"`
 
@@ -235,15 +308,30 @@ type TemplateSpecVersion struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TemplateSpecVersion.
 func (t TemplateSpecVersion) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.AzureResourceBase.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "properties", t.Properties)
+	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -325,37 +413,58 @@ func (t TemplateSpecVersionProperties) MarshalJSON() ([]byte, error) {
 
 // TemplateSpecVersionUpdateModel - Template Spec Version properties to be updated (only tags are currently supported).
 type TemplateSpecVersionUpdateModel struct {
-	AzureResourceBase
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TemplateSpecVersionUpdateModel.
 func (t TemplateSpecVersionUpdateModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.AzureResourceBase.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-// TemplateSpecVersionsCreateOrUpdateOptions contains the optional parameters for the TemplateSpecVersions.CreateOrUpdate method.
-type TemplateSpecVersionsCreateOrUpdateOptions struct {
+// TemplateSpecVersionsClientCreateOrUpdateOptions contains the optional parameters for the TemplateSpecVersionsClient.CreateOrUpdate
+// method.
+type TemplateSpecVersionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TemplateSpecVersionsDeleteOptions contains the optional parameters for the TemplateSpecVersions.Delete method.
-type TemplateSpecVersionsDeleteOptions struct {
+// TemplateSpecVersionsClientDeleteOptions contains the optional parameters for the TemplateSpecVersionsClient.Delete method.
+type TemplateSpecVersionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TemplateSpecVersionsGetOptions contains the optional parameters for the TemplateSpecVersions.Get method.
-type TemplateSpecVersionsGetOptions struct {
+// TemplateSpecVersionsClientGetOptions contains the optional parameters for the TemplateSpecVersionsClient.Get method.
+type TemplateSpecVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TemplateSpecVersionsListOptions contains the optional parameters for the TemplateSpecVersions.List method.
-type TemplateSpecVersionsListOptions struct {
+// TemplateSpecVersionsClientListOptions contains the optional parameters for the TemplateSpecVersionsClient.List method.
+type TemplateSpecVersionsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// TemplateSpecVersionsClientUpdateOptions contains the optional parameters for the TemplateSpecVersionsClient.Update method.
+type TemplateSpecVersionsClientUpdateOptions struct {
+	// Template Spec Version resource with the tags to be updated.
+	TemplateSpecVersionUpdateModel *TemplateSpecVersionUpdateModel
 }
 
 // TemplateSpecVersionsListResult - List of Template Specs versions
@@ -373,78 +482,6 @@ func (t TemplateSpecVersionsListResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", t.NextLink)
 	populate(objectMap, "value", t.Value)
 	return json.Marshal(objectMap)
-}
-
-// TemplateSpecVersionsUpdateOptions contains the optional parameters for the TemplateSpecVersions.Update method.
-type TemplateSpecVersionsUpdateOptions struct {
-	// Template Spec Version resource with the tags to be updated.
-	TemplateSpecVersionUpdateModel *TemplateSpecVersionUpdateModel
-}
-
-// TemplateSpecsCreateOrUpdateOptions contains the optional parameters for the TemplateSpecs.CreateOrUpdate method.
-type TemplateSpecsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TemplateSpecsDeleteOptions contains the optional parameters for the TemplateSpecs.Delete method.
-type TemplateSpecsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TemplateSpecsError - Template Specs error response.
-// Implements the error and azcore.HTTPResponse interfaces.
-type TemplateSpecsError struct {
-	raw string
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response
-	// format.)
-	InnerError *ErrorResponse `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type TemplateSpecsError.
-// The contents of the error text are not contractual and subject to change.
-func (e TemplateSpecsError) Error() string {
-	return e.raw
-}
-
-// TemplateSpecsGetOptions contains the optional parameters for the TemplateSpecs.Get method.
-type TemplateSpecsGetOptions struct {
-	// Allows for expansion of additional Template Spec details in the response. Optional.
-	Expand *TemplateSpecExpandKind
-}
-
-// TemplateSpecsListByResourceGroupOptions contains the optional parameters for the TemplateSpecs.ListByResourceGroup method.
-type TemplateSpecsListByResourceGroupOptions struct {
-	// Allows for expansion of additional Template Spec details in the response. Optional.
-	Expand *TemplateSpecExpandKind
-}
-
-// TemplateSpecsListBySubscriptionOptions contains the optional parameters for the TemplateSpecs.ListBySubscription method.
-type TemplateSpecsListBySubscriptionOptions struct {
-	// Allows for expansion of additional Template Spec details in the response. Optional.
-	Expand *TemplateSpecExpandKind
-}
-
-// TemplateSpecsListResult - List of Template Specs.
-type TemplateSpecsListResult struct {
-	// An array of Template Specs.
-	Value []*TemplateSpec `json:"value,omitempty"`
-
-	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TemplateSpecsListResult.
-func (t TemplateSpecsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
-// TemplateSpecsUpdateOptions contains the optional parameters for the TemplateSpecs.Update method.
-type TemplateSpecsUpdateOptions struct {
-	// Template Spec resource with the tags to be updated.
-	TemplateSpec *TemplateSpecUpdateModel
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

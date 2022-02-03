@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// IotDpsResourceCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type IotDpsResourceCreateOrUpdatePoller struct {
+// IotDpsResourceClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type IotDpsResourceClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *IotDpsResourceCreateOrUpdatePoller) Done() bool {
+func (p *IotDpsResourceClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *IotDpsResourceCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *IotDpsResourceCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *IotDpsResourceClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final IotDpsResourceCreateOrUpdateResponse will be returned.
-func (p *IotDpsResourceCreateOrUpdatePoller) FinalResponse(ctx context.Context) (IotDpsResourceCreateOrUpdateResponse, error) {
-	respType := IotDpsResourceCreateOrUpdateResponse{}
+// If the final GET succeeded then the final IotDpsResourceClientCreateOrUpdateResponse will be returned.
+func (p *IotDpsResourceClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (IotDpsResourceClientCreateOrUpdateResponse, error) {
+	respType := IotDpsResourceClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ProvisioningServiceDescription)
 	if err != nil {
-		return IotDpsResourceCreateOrUpdateResponse{}, err
+		return IotDpsResourceClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *IotDpsResourceCreateOrUpdatePoller) FinalResponse(ctx context.Context) 
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *IotDpsResourceCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *IotDpsResourceClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
-type IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller struct {
+// IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller) Done() bool {
+func (p *IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller) Done() boo
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResponse will be returned.
-func (p *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResponse, error) {
-	respType := IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResponse{}
+// If the final GET succeeded then the final IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse will be returned.
+func (p *IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse, error) {
+	respType := IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.PrivateEndpointConnection)
 	if err != nil {
-		return IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResponse{}, err
+		return IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller) FinalRespo
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller) ResumeToken() (string, error) {
+func (p *IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// IotDpsResourceDeletePoller provides polling facilities until the operation reaches a terminal state.
-type IotDpsResourceDeletePoller struct {
+// IotDpsResourceClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type IotDpsResourceClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *IotDpsResourceDeletePoller) Done() bool {
+func (p *IotDpsResourceClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *IotDpsResourceDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *IotDpsResourceDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *IotDpsResourceClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final IotDpsResourceDeleteResponse will be returned.
-func (p *IotDpsResourceDeletePoller) FinalResponse(ctx context.Context) (IotDpsResourceDeleteResponse, error) {
-	respType := IotDpsResourceDeleteResponse{}
+// If the final GET succeeded then the final IotDpsResourceClientDeleteResponse will be returned.
+func (p *IotDpsResourceClientDeletePoller) FinalResponse(ctx context.Context) (IotDpsResourceClientDeleteResponse, error) {
+	respType := IotDpsResourceClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return IotDpsResourceDeleteResponse{}, err
+		return IotDpsResourceClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,17 +139,17 @@ func (p *IotDpsResourceDeletePoller) FinalResponse(ctx context.Context) (IotDpsR
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *IotDpsResourceDeletePoller) ResumeToken() (string, error) {
+func (p *IotDpsResourceClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// IotDpsResourceDeletePrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
-type IotDpsResourceDeletePrivateEndpointConnectionPoller struct {
+// IotDpsResourceClientDeletePrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type IotDpsResourceClientDeletePrivateEndpointConnectionPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *IotDpsResourceDeletePrivateEndpointConnectionPoller) Done() bool {
+func (p *IotDpsResourceClientDeletePrivateEndpointConnectionPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -163,18 +163,18 @@ func (p *IotDpsResourceDeletePrivateEndpointConnectionPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *IotDpsResourceDeletePrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *IotDpsResourceClientDeletePrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final IotDpsResourceDeletePrivateEndpointConnectionResponse will be returned.
-func (p *IotDpsResourceDeletePrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (IotDpsResourceDeletePrivateEndpointConnectionResponse, error) {
-	respType := IotDpsResourceDeletePrivateEndpointConnectionResponse{}
+// If the final GET succeeded then the final IotDpsResourceClientDeletePrivateEndpointConnectionResponse will be returned.
+func (p *IotDpsResourceClientDeletePrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (IotDpsResourceClientDeletePrivateEndpointConnectionResponse, error) {
+	respType := IotDpsResourceClientDeletePrivateEndpointConnectionResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.PrivateEndpointConnection)
 	if err != nil {
-		return IotDpsResourceDeletePrivateEndpointConnectionResponse{}, err
+		return IotDpsResourceClientDeletePrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -182,17 +182,17 @@ func (p *IotDpsResourceDeletePrivateEndpointConnectionPoller) FinalResponse(ctx 
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *IotDpsResourceDeletePrivateEndpointConnectionPoller) ResumeToken() (string, error) {
+func (p *IotDpsResourceClientDeletePrivateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// IotDpsResourceUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type IotDpsResourceUpdatePoller struct {
+// IotDpsResourceClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type IotDpsResourceClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *IotDpsResourceUpdatePoller) Done() bool {
+func (p *IotDpsResourceClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -206,18 +206,18 @@ func (p *IotDpsResourceUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *IotDpsResourceUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *IotDpsResourceClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final IotDpsResourceUpdateResponse will be returned.
-func (p *IotDpsResourceUpdatePoller) FinalResponse(ctx context.Context) (IotDpsResourceUpdateResponse, error) {
-	respType := IotDpsResourceUpdateResponse{}
+// If the final GET succeeded then the final IotDpsResourceClientUpdateResponse will be returned.
+func (p *IotDpsResourceClientUpdatePoller) FinalResponse(ctx context.Context) (IotDpsResourceClientUpdateResponse, error) {
+	respType := IotDpsResourceClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ProvisioningServiceDescription)
 	if err != nil {
-		return IotDpsResourceUpdateResponse{}, err
+		return IotDpsResourceClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -225,6 +225,6 @@ func (p *IotDpsResourceUpdatePoller) FinalResponse(ctx context.Context) (IotDpsR
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *IotDpsResourceUpdatePoller) ResumeToken() (string, error) {
+func (p *IotDpsResourceClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

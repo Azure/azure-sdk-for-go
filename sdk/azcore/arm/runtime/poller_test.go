@@ -42,14 +42,6 @@ type mockType struct {
 	Field *string `json:"field,omitempty"`
 }
 
-type mockError struct {
-	Msg string `json:"error"`
-}
-
-func (m mockError) Error() string {
-	return m.Msg
-}
-
 func getPipeline(srv *mock.Server) pipeline.Pipeline {
 	return runtime.NewPipeline(
 		"test",
@@ -57,14 +49,6 @@ func getPipeline(srv *mock.Server) pipeline.Pipeline {
 		runtime.PipelineOptions{PerRetry: []pipeline.Policy{runtime.NewLogPolicy(nil)}},
 		&policy.ClientOptions{Transport: srv},
 	)
-}
-
-func handleError(resp *http.Response) error {
-	var me mockError
-	if err := runtime.UnmarshalAsJSON(resp, &me); err != nil {
-		return err
-	}
-	return me
 }
 
 func initialResponse(method, u string, resp io.Reader) (*http.Response, mock.TrackedClose) {
@@ -91,7 +75,7 @@ func TestNewPollerAsync(t *testing.T) {
 	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
-	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
+	poller, err := NewPoller("pollerID", "", resp, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -105,7 +89,7 @@ func TestNewPollerAsync(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	poller, err = NewPollerFromResumeToken("pollerID", tk, pl, handleError)
+	poller, err = NewPollerFromResumeToken("pollerID", tk, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -127,7 +111,7 @@ func TestNewPollerBody(t *testing.T) {
 	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
-	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
+	poller, err := NewPoller("pollerID", "", resp, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -141,7 +125,7 @@ func TestNewPollerBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	poller, err = NewPollerFromResumeToken("pollerID", tk, pl, handleError)
+	poller, err = NewPollerFromResumeToken("pollerID", tk, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -164,7 +148,7 @@ func TestNewPollerLoc(t *testing.T) {
 	resp.Header.Set(shared.HeaderLocation, srv.URL())
 	resp.StatusCode = http.StatusAccepted
 	pl := getPipeline(srv)
-	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
+	poller, err := NewPoller("pollerID", "", resp, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -178,7 +162,7 @@ func TestNewPollerLoc(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	poller, err = NewPollerFromResumeToken("pollerID", tk, pl, handleError)
+	poller, err = NewPollerFromResumeToken("pollerID", tk, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -203,7 +187,7 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 	resp.Header.Set("Retry-After", "1")
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
-	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
+	poller, err := NewPoller("pollerID", "", resp, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -232,7 +216,7 @@ func TestNewPollerCanceled(t *testing.T) {
 	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
-	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
+	poller, err := NewPoller("pollerID", "", resp, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -261,7 +245,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
-	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
+	poller, err := NewPoller("pollerID", "", resp, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -276,7 +260,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	if err == nil {
 		t.Fatal(err)
 	}
-	if _, ok := err.(mockError); !ok {
+	if _, ok := err.(*shared.ResponseError); !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
 }
@@ -289,7 +273,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
-	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
+	poller, err := NewPoller("pollerID", "", resp, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -303,7 +287,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	poller, err = NewPollerFromResumeToken("pollerID", tk, pl, handleError)
+	poller, err = NewPollerFromResumeToken("pollerID", tk, pl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -323,7 +307,7 @@ func TestNewPollerFail202NoHeaders(t *testing.T) {
 	resp, closed := initialResponse(http.MethodDelete, srv.URL(), http.NoBody)
 	resp.StatusCode = http.StatusAccepted
 	pl := getPipeline(srv)
-	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
+	poller, err := NewPoller("pollerID", "", resp, pl)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}

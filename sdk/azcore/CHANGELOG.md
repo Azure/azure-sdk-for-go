@@ -1,18 +1,30 @@
 # Release History
 
-## 0.21.0 (Unreleased)
+## 0.21.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+* Restore response body after reading in `Poller.FinalResponse()`
+
+### Other Changes
+* `BearerTokenPolicy` is more resilient to transient authentication failures
+
+## 0.21.0 (2022-01-11)
 
 ### Features Added
 * Added `AllowedHeaders` and `AllowedQueryParams` to `policy.LogOptions` to control which headers and query parameters are written to the logger.
+* Added `azcore.ResponseError` type which is returned from APIs when a non-success HTTP status code is received.
 
 ### Breaking Changes
 * Moved `[]policy.Policy` parameters of `arm/runtime.NewPipeline` and `runtime.NewPipeline` into a new struct, `runtime.PipelineOptions`
 * Renamed `arm/ClientOptions.Host` to `.Endpoint`
 * Moved `Request.SkipBodyDownload` method to function `runtime.SkipBodyDownload`
-
-### Bugs Fixed
-
-### Other Changes
+* Removed `azcore.HTTPResponse` interface type
+* `arm.NewPoller()` and `runtime.NewPoller()` no longer require an `eu` parameter
+* `runtime.NewResponseError()` no longer requires an `error` parameter
 
 ## 0.20.0 (2021-10-22)
 

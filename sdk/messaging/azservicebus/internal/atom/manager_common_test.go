@@ -4,10 +4,11 @@
 package atom
 
 import (
+	"bytes"
 	"context"
-	"errors"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -15,34 +16,54 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func newFakeResponse(statusCode int, status string, contents string) *http.Response {
+	var body io.ReadCloser = http.NoBody
+
+	if contents != "" {
+		body = &FakeReader{
+			Reader: bytes.NewBufferString(contents),
+		}
+	}
+
+	return &http.Response{
+		Request: &http.Request{
+			URL: &url.URL{},
+		},
+		StatusCode: statusCode,
+		Status:     status,
+		Body:       body,
+	}
+}
+
 func TestResponseError(t *testing.T) {
-	// sanity check to make sure my error conforms to azcore's interface
-	var err azcore.HTTPResponse = ResponseError{}
-	require.NotNil(t, err)
+	resp := newFakeResponse(http.StatusConflict, "statusString", "")
+	require.Contains(t, NewResponseError(resp).Error(), "statusString")
 
-	require.EqualValues(t, "this is now the error message: 409", NewResponseError(nil, &http.Response{
-		StatusCode: http.StatusConflict,
-		Status:     "this is now the error message",
-	}).Error())
+	resp = newFakeResponse(http.StatusConflict, "statusString", "contents")
+	require.Contains(t, NewResponseError(resp).Error(), "statusString")
 
-	require.EqualValues(t, "inner errors message takes precedence", NewResponseError(errors.New("inner errors message takes precedence"), &http.Response{
-		StatusCode: http.StatusConflict,
-		Status:     "going to be ignored",
-	}).Error())
+	resp = newFakeResponse(http.StatusBadGateway, "statusString", "<Error><Code>401</Code><Detail>Manage,EntityRead claims required for this operation.</Detail></Error>")
+	err := NewResponseError(resp)
+
+	re, ok := err.(*azcore.ResponseError)
+	require.True(t, ok)
+
+	require.Contains(t, re.Error(), "statusString")
+	require.EqualValues(t, http.StatusBadGateway, re.StatusCode)
 }
 
 type FakeReader struct {
 	io.Reader
-	closed bool
+	closed   bool
+	closeErr error
 }
 
 func (f *FakeReader) Close() error {
 	f.closed = true
-	return nil
+	return f.closeErr
 }
 
 func TestCloseRes(t *testing.T) {
-
 	reader := strings.NewReader("hello")
 	body := &FakeReader{Reader: reader}
 

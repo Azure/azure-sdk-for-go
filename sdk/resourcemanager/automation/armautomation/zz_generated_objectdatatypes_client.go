@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // ObjectDataTypesClient contains the methods for the ObjectDataTypes group.
 // Don't use this type directly, use NewObjectDataTypesClient() instead.
 type ObjectDataTypesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewObjectDataTypesClient creates a new instance of ObjectDataTypesClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewObjectDataTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ObjectDataTypesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ObjectDataTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ObjectDataTypesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListFieldsByModuleAndType - Retrieve a list of fields of a given type identified by module name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ObjectDataTypesClient) ListFieldsByModuleAndType(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesListFieldsByModuleAndTypeOptions) (ObjectDataTypesListFieldsByModuleAndTypeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// moduleName - The name of module.
+// typeName - The name of type.
+// options - ObjectDataTypesClientListFieldsByModuleAndTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByModuleAndType
+// method.
+func (client *ObjectDataTypesClient) ListFieldsByModuleAndType(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesClientListFieldsByModuleAndTypeOptions) (ObjectDataTypesClientListFieldsByModuleAndTypeResponse, error) {
 	req, err := client.listFieldsByModuleAndTypeCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, typeName, options)
 	if err != nil {
-		return ObjectDataTypesListFieldsByModuleAndTypeResponse{}, err
+		return ObjectDataTypesClientListFieldsByModuleAndTypeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ObjectDataTypesListFieldsByModuleAndTypeResponse{}, err
+		return ObjectDataTypesClientListFieldsByModuleAndTypeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ObjectDataTypesListFieldsByModuleAndTypeResponse{}, client.listFieldsByModuleAndTypeHandleError(resp)
+		return ObjectDataTypesClientListFieldsByModuleAndTypeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listFieldsByModuleAndTypeHandleResponse(resp)
 }
 
 // listFieldsByModuleAndTypeCreateRequest creates the ListFieldsByModuleAndType request.
-func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesListFieldsByModuleAndTypeOptions) (*policy.Request, error) {
+func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesClientListFieldsByModuleAndTypeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/objectDataTypes/{typeName}/fields"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -82,7 +96,7 @@ func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +108,38 @@ func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx 
 }
 
 // listFieldsByModuleAndTypeHandleResponse handles the ListFieldsByModuleAndType response.
-func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleResponse(resp *http.Response) (ObjectDataTypesListFieldsByModuleAndTypeResponse, error) {
-	result := ObjectDataTypesListFieldsByModuleAndTypeResponse{RawResponse: resp}
+func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleResponse(resp *http.Response) (ObjectDataTypesClientListFieldsByModuleAndTypeResponse, error) {
+	result := ObjectDataTypesClientListFieldsByModuleAndTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TypeFieldListResult); err != nil {
-		return ObjectDataTypesListFieldsByModuleAndTypeResponse{}, runtime.NewResponseError(err, resp)
+		return ObjectDataTypesClientListFieldsByModuleAndTypeResponse{}, err
 	}
 	return result, nil
 }
 
-// listFieldsByModuleAndTypeHandleError handles the ListFieldsByModuleAndType error response.
-func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListFieldsByType - Retrieve a list of fields of a given type across all accessible modules.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ObjectDataTypesClient) ListFieldsByType(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesListFieldsByTypeOptions) (ObjectDataTypesListFieldsByTypeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// typeName - The name of type.
+// options - ObjectDataTypesClientListFieldsByTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByType
+// method.
+func (client *ObjectDataTypesClient) ListFieldsByType(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesClientListFieldsByTypeOptions) (ObjectDataTypesClientListFieldsByTypeResponse, error) {
 	req, err := client.listFieldsByTypeCreateRequest(ctx, resourceGroupName, automationAccountName, typeName, options)
 	if err != nil {
-		return ObjectDataTypesListFieldsByTypeResponse{}, err
+		return ObjectDataTypesClientListFieldsByTypeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ObjectDataTypesListFieldsByTypeResponse{}, err
+		return ObjectDataTypesClientListFieldsByTypeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ObjectDataTypesListFieldsByTypeResponse{}, client.listFieldsByTypeHandleError(resp)
+		return ObjectDataTypesClientListFieldsByTypeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listFieldsByTypeHandleResponse(resp)
 }
 
 // listFieldsByTypeCreateRequest creates the ListFieldsByType request.
-func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesListFieldsByTypeOptions) (*policy.Request, error) {
+func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesClientListFieldsByTypeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/objectDataTypes/{typeName}/fields"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -151,7 +157,7 @@ func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,23 +169,10 @@ func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.C
 }
 
 // listFieldsByTypeHandleResponse handles the ListFieldsByType response.
-func (client *ObjectDataTypesClient) listFieldsByTypeHandleResponse(resp *http.Response) (ObjectDataTypesListFieldsByTypeResponse, error) {
-	result := ObjectDataTypesListFieldsByTypeResponse{RawResponse: resp}
+func (client *ObjectDataTypesClient) listFieldsByTypeHandleResponse(resp *http.Response) (ObjectDataTypesClientListFieldsByTypeResponse, error) {
+	result := ObjectDataTypesClientListFieldsByTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TypeFieldListResult); err != nil {
-		return ObjectDataTypesListFieldsByTypeResponse{}, runtime.NewResponseError(err, resp)
+		return ObjectDataTypesClientListFieldsByTypeResponse{}, err
 	}
 	return result, nil
-}
-
-// listFieldsByTypeHandleError handles the ListFieldsByType error response.
-func (client *ObjectDataTypesClient) listFieldsByTypeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

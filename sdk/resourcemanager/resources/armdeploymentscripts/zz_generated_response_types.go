@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// DeploymentScriptsCreatePollerResponse contains the response from method DeploymentScripts.Create.
-type DeploymentScriptsCreatePollerResponse struct {
+// ClientCreatePollerResponse contains the response from method Client.Create.
+type ClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DeploymentScriptsCreatePoller
+	Poller *ClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,9 +27,9 @@ type DeploymentScriptsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DeploymentScriptsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentScriptsCreateResponse, error) {
-	respType := DeploymentScriptsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DeploymentScriptClassification)
+func (l ClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientCreateResponse, error) {
+	respType := ClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ClientCreateResult)
 	if err != nil {
 		return respType, err
 	}
@@ -37,13 +37,13 @@ func (l DeploymentScriptsCreatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a DeploymentScriptsCreatePollerResponse from the provided client and resume token.
-func (l *DeploymentScriptsCreatePollerResponse) Resume(ctx context.Context, client *DeploymentScriptsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DeploymentScriptsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ClientCreatePollerResponse from the provided client and resume token.
+func (l *ClientCreatePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DeploymentScriptsCreatePoller{
+	poller := &ClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,122 +55,122 @@ func (l *DeploymentScriptsCreatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// DeploymentScriptsCreateResponse contains the response from method DeploymentScripts.Create.
-type DeploymentScriptsCreateResponse struct {
-	DeploymentScriptsCreateResult
+// ClientCreateResponse contains the response from method Client.Create.
+type ClientCreateResponse struct {
+	ClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeploymentScriptsCreateResult contains the result from method DeploymentScripts.Create.
-type DeploymentScriptsCreateResult struct {
+// ClientCreateResult contains the result from method Client.Create.
+type ClientCreateResult struct {
 	DeploymentScriptClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentScriptsCreateResult.
-func (d *DeploymentScriptsCreateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClientCreateResult.
+func (c *ClientCreateResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDeploymentScriptClassification(data)
 	if err != nil {
 		return err
 	}
-	d.DeploymentScriptClassification = res
+	c.DeploymentScriptClassification = res
 	return nil
 }
 
-// DeploymentScriptsDeleteResponse contains the response from method DeploymentScripts.Delete.
-type DeploymentScriptsDeleteResponse struct {
+// ClientDeleteResponse contains the response from method Client.Delete.
+type ClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeploymentScriptsGetLogsDefaultResponse contains the response from method DeploymentScripts.GetLogsDefault.
-type DeploymentScriptsGetLogsDefaultResponse struct {
-	DeploymentScriptsGetLogsDefaultResult
+// ClientGetLogsDefaultResponse contains the response from method Client.GetLogsDefault.
+type ClientGetLogsDefaultResponse struct {
+	ClientGetLogsDefaultResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeploymentScriptsGetLogsDefaultResult contains the result from method DeploymentScripts.GetLogsDefault.
-type DeploymentScriptsGetLogsDefaultResult struct {
+// ClientGetLogsDefaultResult contains the result from method Client.GetLogsDefault.
+type ClientGetLogsDefaultResult struct {
 	ScriptLog
 }
 
-// DeploymentScriptsGetLogsResponse contains the response from method DeploymentScripts.GetLogs.
-type DeploymentScriptsGetLogsResponse struct {
-	DeploymentScriptsGetLogsResult
+// ClientGetLogsResponse contains the response from method Client.GetLogs.
+type ClientGetLogsResponse struct {
+	ClientGetLogsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeploymentScriptsGetLogsResult contains the result from method DeploymentScripts.GetLogs.
-type DeploymentScriptsGetLogsResult struct {
+// ClientGetLogsResult contains the result from method Client.GetLogs.
+type ClientGetLogsResult struct {
 	ScriptLogsList
 }
 
-// DeploymentScriptsGetResponse contains the response from method DeploymentScripts.Get.
-type DeploymentScriptsGetResponse struct {
-	DeploymentScriptsGetResult
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
+	ClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeploymentScriptsGetResult contains the result from method DeploymentScripts.Get.
-type DeploymentScriptsGetResult struct {
+// ClientGetResult contains the result from method Client.Get.
+type ClientGetResult struct {
 	DeploymentScriptClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentScriptsGetResult.
-func (d *DeploymentScriptsGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClientGetResult.
+func (c *ClientGetResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDeploymentScriptClassification(data)
 	if err != nil {
 		return err
 	}
-	d.DeploymentScriptClassification = res
+	c.DeploymentScriptClassification = res
 	return nil
 }
 
-// DeploymentScriptsListByResourceGroupResponse contains the response from method DeploymentScripts.ListByResourceGroup.
-type DeploymentScriptsListByResourceGroupResponse struct {
-	DeploymentScriptsListByResourceGroupResult
+// ClientListByResourceGroupResponse contains the response from method Client.ListByResourceGroup.
+type ClientListByResourceGroupResponse struct {
+	ClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeploymentScriptsListByResourceGroupResult contains the result from method DeploymentScripts.ListByResourceGroup.
-type DeploymentScriptsListByResourceGroupResult struct {
+// ClientListByResourceGroupResult contains the result from method Client.ListByResourceGroup.
+type ClientListByResourceGroupResult struct {
 	DeploymentScriptListResult
 }
 
-// DeploymentScriptsListBySubscriptionResponse contains the response from method DeploymentScripts.ListBySubscription.
-type DeploymentScriptsListBySubscriptionResponse struct {
-	DeploymentScriptsListBySubscriptionResult
+// ClientListBySubscriptionResponse contains the response from method Client.ListBySubscription.
+type ClientListBySubscriptionResponse struct {
+	ClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeploymentScriptsListBySubscriptionResult contains the result from method DeploymentScripts.ListBySubscription.
-type DeploymentScriptsListBySubscriptionResult struct {
+// ClientListBySubscriptionResult contains the result from method Client.ListBySubscription.
+type ClientListBySubscriptionResult struct {
 	DeploymentScriptListResult
 }
 
-// DeploymentScriptsUpdateResponse contains the response from method DeploymentScripts.Update.
-type DeploymentScriptsUpdateResponse struct {
-	DeploymentScriptsUpdateResult
+// ClientUpdateResponse contains the response from method Client.Update.
+type ClientUpdateResponse struct {
+	ClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeploymentScriptsUpdateResult contains the result from method DeploymentScripts.Update.
-type DeploymentScriptsUpdateResult struct {
+// ClientUpdateResult contains the result from method Client.Update.
+type ClientUpdateResult struct {
 	DeploymentScriptClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentScriptsUpdateResult.
-func (d *DeploymentScriptsUpdateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClientUpdateResult.
+func (c *ClientUpdateResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDeploymentScriptClassification(data)
 	if err != nil {
 		return err
 	}
-	d.DeploymentScriptClassification = res
+	c.DeploymentScriptClassification = res
 	return nil
 }

@@ -12,7 +12,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
@@ -30,14 +29,14 @@ const (
 )
 
 type mockCredential struct {
-	getTokenImpl func(ctx context.Context, options azpolicy.TokenRequestOptions) (*azcore.AccessToken, error)
+	getTokenImpl func(ctx context.Context, options shared.TokenRequestOptions) (*shared.AccessToken, error)
 }
 
-func (mc mockCredential) GetToken(ctx context.Context, options azpolicy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (mc mockCredential) GetToken(ctx context.Context, options shared.TokenRequestOptions) (*shared.AccessToken, error) {
 	if mc.getTokenImpl != nil {
 		return mc.getTokenImpl(ctx, options)
 	}
-	return &azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
+	return &shared.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
 }
 
 func (mc mockCredential) NewAuthenticationPolicy() azpolicy.Policy {
@@ -63,7 +62,7 @@ func defaultTestPipeline(srv azpolicy.Transporter, scope string) pipeline.Pipeli
 		mockCredential{},
 		runtime.PipelineOptions{},
 		&arm.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
+			ClientOptions: azpolicy.ClientOptions{
 				Retry:     retryOpts,
 				Transport: srv,
 			},
@@ -95,7 +94,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	defer close()
 	expectedErr := errors.New("oops")
 	failCredential := mockCredential{}
-	failCredential.getTokenImpl = func(ctx context.Context, options azpolicy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	failCredential.getTokenImpl = func(ctx context.Context, options shared.TokenRequestOptions) (*shared.AccessToken, error) {
 		return nil, expectedErr
 	}
 	b := NewBearerTokenPolicy(failCredential, nil)

@@ -11,7 +11,6 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,55 @@ import (
 // ManagedRuleSetsClient contains the methods for the ManagedRuleSets group.
 // Don't use this type directly, use NewManagedRuleSetsClient() instead.
 type ManagedRuleSetsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedRuleSetsClient creates a new instance of ManagedRuleSetsClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedRuleSetsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedRuleSetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedRuleSetsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all available managed rule sets.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagedRuleSetsClient) List(options *ManagedRuleSetsListOptions) *ManagedRuleSetsListPager {
-	return &ManagedRuleSetsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ManagedRuleSetsClientListOptions contains the optional parameters for the ManagedRuleSetsClient.List method.
+func (client *ManagedRuleSetsClient) List(options *ManagedRuleSetsClientListOptions) *ManagedRuleSetsClientListPager {
+	return &ManagedRuleSetsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedRuleSetsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedRuleSetsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedRuleSetDefinitionList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, options *ManagedRuleSetsListOptions) (*policy.Request, error) {
+func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, options *ManagedRuleSetsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -75,23 +84,10 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedRuleSetsClient) listHandleResponse(resp *http.Response) (ManagedRuleSetsListResponse, error) {
-	result := ManagedRuleSetsListResponse{RawResponse: resp}
+func (client *ManagedRuleSetsClient) listHandleResponse(resp *http.Response) (ManagedRuleSetsClientListResponse, error) {
+	result := ManagedRuleSetsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedRuleSetDefinitionList); err != nil {
-		return ManagedRuleSetsListResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedRuleSetsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ManagedRuleSetsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

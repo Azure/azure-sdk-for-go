@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -57,17 +58,21 @@ func parseKeyIDAndVersion(id string) (string, string, error) {
 		return "", "", err
 	}
 
-	path := strings.Split(parsed.Path, "/")
+	if !strings.HasPrefix(parsed.Path, "/keys/") {
+		return "", "", fmt.Errorf("URL is not for a specific key, expect path to start with '/keys/', received %s", id)
+	}
 
-	if len(path) < 3 {
+	path := strings.Split(strings.TrimPrefix(parsed.Path, "/keys/"), "/")
+
+	if len(path) < 1 {
 		return "", "", fmt.Errorf("could not parse Key ID from %s", id)
 	}
 
-	if len(path) == 3 {
-		return path[2], "", nil
+	if len(path) == 1 {
+		return path[0], "", nil
 	}
 
-	return path[2], path[3], nil
+	return path[0], path[1], nil
 }
 
 // Parse vault URL from the key identifier
@@ -93,7 +98,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 		genOptions.PerRetryPolicies,
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
-	conn := generated.NewConnection(genOptions)
+	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 
 	vaultURL, err := parseVaultURL(keyURL)
 	if err != nil {
@@ -106,7 +111,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 	}
 
 	return &Client{
-		kvClient:   generated.NewKeyVaultClient(conn),
+		kvClient:   generated.NewKeyVaultClient(pl),
 		vaultURL:   vaultURL,
 		keyID:      keyID,
 		keyVersion: keyVersion,

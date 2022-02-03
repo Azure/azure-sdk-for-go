@@ -109,7 +109,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			if sepStr == "resource-manager" {
 				readme = strings.Join(sepStrs[i-1:], "/")
 				if i > 1 {
-					ctx.specRoot = ctx.specRoot + "/" + strings.Join(sepStrs[:i-1], "/")
+					ctx.specRoot = input.SpecFolder + "/" + strings.Join(sepStrs[:i-1], "/")
 				}
 				break
 			}

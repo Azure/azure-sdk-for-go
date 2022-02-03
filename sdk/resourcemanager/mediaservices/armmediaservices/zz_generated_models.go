@@ -18,16 +18,53 @@ import (
 
 // AacAudio - Describes Advanced Audio Codec (AAC) audio encoding settings.
 type AacAudio struct {
-	Audio
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The bitrate, in bits per second, of the output encoded audio.
+	Bitrate *int32 `json:"bitrate,omitempty"`
+
+	// The number of channels in the audio.
+	Channels *int32 `json:"channels,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
+
 	// The encoding profile to be used when encoding audio with AAC.
 	Profile *AacAudioProfile `json:"profile,omitempty"`
+
+	// The sampling rate to use for encoding in hertz.
+	SamplingRate *int32 `json:"samplingRate,omitempty"`
+}
+
+// GetAudio implements the AudioClassification interface for type AacAudio.
+func (a *AacAudio) GetAudio() *Audio {
+	return &Audio{
+		Channels:     a.Channels,
+		SamplingRate: a.SamplingRate,
+		Bitrate:      a.Bitrate,
+		ODataType:    a.ODataType,
+		Label:        a.Label,
+	}
+}
+
+// GetCodec implements the CodecClassification interface for type AacAudio.
+func (a *AacAudio) GetCodec() *Codec {
+	return &Codec{
+		ODataType: a.ODataType,
+		Label:     a.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AacAudio.
 func (a AacAudio) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Audio.marshalInternal(objectMap, "#Microsoft.Media.AacAudio")
+	populate(objectMap, "bitrate", a.Bitrate)
+	populate(objectMap, "channels", a.Channels)
+	populate(objectMap, "label", a.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.AacAudio"
 	populate(objectMap, "profile", a.Profile)
+	populate(objectMap, "samplingRate", a.SamplingRate)
 	return json.Marshal(objectMap)
 }
 
@@ -40,32 +77,54 @@ func (a *AacAudio) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "bitrate":
+			err = unpopulate(val, &a.Bitrate)
+			delete(rawMsg, key)
+		case "channels":
+			err = unpopulate(val, &a.Channels)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &a.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &a.ODataType)
+			delete(rawMsg, key)
 		case "profile":
 			err = unpopulate(val, &a.Profile)
+			delete(rawMsg, key)
+		case "samplingRate":
+			err = unpopulate(val, &a.SamplingRate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.Audio.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// AbsoluteClipTime - Specifies the clip time as an absolute time position in the media file. The absolute time can point to a different position depending
-// on whether the media file starts from a timestamp of zero or not.
+// AbsoluteClipTime - Specifies the clip time as an absolute time position in the media file. The absolute time can point
+// to a different position depending on whether the media file starts from a timestamp of zero or not.
 type AbsoluteClipTime struct {
-	ClipTime
-	// REQUIRED; The time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S for 30 seconds.
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// REQUIRED; The time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S
+	// for 30 seconds.
 	Time *string `json:"time,omitempty"`
+}
+
+// GetClipTime implements the ClipTimeClassification interface for type AbsoluteClipTime.
+func (a *AbsoluteClipTime) GetClipTime() *ClipTime {
+	return &ClipTime{
+		ODataType: a.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AbsoluteClipTime.
 func (a AbsoluteClipTime) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ClipTime.marshalInternal(objectMap, "#Microsoft.Media.AbsoluteClipTime")
+	objectMap["@odata.type"] = "#Microsoft.Media.AbsoluteClipTime"
 	populate(objectMap, "time", a.Time)
 	return json.Marshal(objectMap)
 }
@@ -79,6 +138,9 @@ func (a *AbsoluteClipTime) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &a.ODataType)
+			delete(rawMsg, key)
 		case "time":
 			err = unpopulate(val, &a.Time)
 			delete(rawMsg, key)
@@ -87,9 +149,6 @@ func (a *AbsoluteClipTime) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := a.ClipTime.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -97,7 +156,8 @@ type AccessControl struct {
 	// The behavior for IP access control in Key Delivery.
 	DefaultAction *DefaultAction `json:"defaultAction,omitempty"`
 
-	// The IP allow list for access control in Key Delivery. If the default action is set to 'Allow', the IP allow list must be empty.
+	// The IP allow list for access control in Key Delivery. If the default action is set to 'Allow', the IP allow list must be
+	// empty.
 	IPAllowList []*string `json:"ipAllowList,omitempty"`
 }
 
@@ -125,20 +185,30 @@ type AccountEncryption struct {
 
 // AccountFilter - An Account Filter.
 type AccountFilter struct {
-	ProxyResource
 	// The Media Filter properties.
 	Properties *MediaFilterProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccountFilter.
 func (a AccountFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -159,28 +229,29 @@ func (a AccountFilterCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AccountFiltersCreateOrUpdateOptions contains the optional parameters for the AccountFilters.CreateOrUpdate method.
-type AccountFiltersCreateOrUpdateOptions struct {
+// AccountFiltersClientCreateOrUpdateOptions contains the optional parameters for the AccountFiltersClient.CreateOrUpdate
+// method.
+type AccountFiltersClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountFiltersDeleteOptions contains the optional parameters for the AccountFilters.Delete method.
-type AccountFiltersDeleteOptions struct {
+// AccountFiltersClientDeleteOptions contains the optional parameters for the AccountFiltersClient.Delete method.
+type AccountFiltersClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountFiltersGetOptions contains the optional parameters for the AccountFilters.Get method.
-type AccountFiltersGetOptions struct {
+// AccountFiltersClientGetOptions contains the optional parameters for the AccountFiltersClient.Get method.
+type AccountFiltersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountFiltersListOptions contains the optional parameters for the AccountFilters.List method.
-type AccountFiltersListOptions struct {
+// AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.List method.
+type AccountFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountFiltersUpdateOptions contains the optional parameters for the AccountFilters.Update method.
-type AccountFiltersUpdateOptions struct {
+// AccountFiltersClientUpdateOptions contains the optional parameters for the AccountFiltersClient.Update method.
+type AccountFiltersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -246,20 +317,30 @@ func (a *AkamaiSignatureHeaderAuthenticationKey) UnmarshalJSON(data []byte) erro
 
 // Asset - An Asset.
 type Asset struct {
-	ProxyResource
 	// The resource properties.
 	Properties *AssetProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Asset.
 func (a Asset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -307,20 +388,30 @@ type AssetFileEncryptionMetadata struct {
 
 // AssetFilter - An Asset Filter.
 type AssetFilter struct {
-	ProxyResource
 	// The Media Filter properties.
 	Properties *MediaFilterProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AssetFilter.
 func (a AssetFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -341,28 +432,28 @@ func (a AssetFilterCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AssetFiltersCreateOrUpdateOptions contains the optional parameters for the AssetFilters.CreateOrUpdate method.
-type AssetFiltersCreateOrUpdateOptions struct {
+// AssetFiltersClientCreateOrUpdateOptions contains the optional parameters for the AssetFiltersClient.CreateOrUpdate method.
+type AssetFiltersClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetFiltersDeleteOptions contains the optional parameters for the AssetFilters.Delete method.
-type AssetFiltersDeleteOptions struct {
+// AssetFiltersClientDeleteOptions contains the optional parameters for the AssetFiltersClient.Delete method.
+type AssetFiltersClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetFiltersGetOptions contains the optional parameters for the AssetFilters.Get method.
-type AssetFiltersGetOptions struct {
+// AssetFiltersClientGetOptions contains the optional parameters for the AssetFiltersClient.Get method.
+type AssetFiltersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetFiltersListOptions contains the optional parameters for the AssetFilters.List method.
-type AssetFiltersListOptions struct {
+// AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.List method.
+type AssetFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetFiltersUpdateOptions contains the optional parameters for the AssetFilters.Update method.
-type AssetFiltersUpdateOptions struct {
+// AssetFiltersClientUpdateOptions contains the optional parameters for the AssetFiltersClient.Update method.
+type AssetFiltersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -530,49 +621,49 @@ func (a *AssetStreamingLocator) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// AssetsCreateOrUpdateOptions contains the optional parameters for the Assets.CreateOrUpdate method.
-type AssetsCreateOrUpdateOptions struct {
+// AssetsClientCreateOrUpdateOptions contains the optional parameters for the AssetsClient.CreateOrUpdate method.
+type AssetsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsDeleteOptions contains the optional parameters for the Assets.Delete method.
-type AssetsDeleteOptions struct {
+// AssetsClientDeleteOptions contains the optional parameters for the AssetsClient.Delete method.
+type AssetsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsGetEncryptionKeyOptions contains the optional parameters for the Assets.GetEncryptionKey method.
-type AssetsGetEncryptionKeyOptions struct {
+// AssetsClientGetEncryptionKeyOptions contains the optional parameters for the AssetsClient.GetEncryptionKey method.
+type AssetsClientGetEncryptionKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsGetOptions contains the optional parameters for the Assets.Get method.
-type AssetsGetOptions struct {
+// AssetsClientGetOptions contains the optional parameters for the AssetsClient.Get method.
+type AssetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsListContainerSasOptions contains the optional parameters for the Assets.ListContainerSas method.
-type AssetsListContainerSasOptions struct {
+// AssetsClientListContainerSasOptions contains the optional parameters for the AssetsClient.ListContainerSas method.
+type AssetsClientListContainerSasOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsListOptions contains the optional parameters for the Assets.List method.
-type AssetsListOptions struct {
+// AssetsClientListOptions contains the optional parameters for the AssetsClient.List method.
+type AssetsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
 	// Specifies the key by which the result collection should be ordered.
 	Orderby *string
-	// Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to
-	// but not greater than the specified value n.
+	// Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the
+	// number of available items up to but not greater than the specified value n.
 	Top *int32
 }
 
-// AssetsListStreamingLocatorsOptions contains the optional parameters for the Assets.ListStreamingLocators method.
-type AssetsListStreamingLocatorsOptions struct {
+// AssetsClientListStreamingLocatorsOptions contains the optional parameters for the AssetsClient.ListStreamingLocators method.
+type AssetsClientListStreamingLocatorsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsUpdateOptions contains the optional parameters for the Assets.Update method.
-type AssetsUpdateOptions struct {
+// AssetsClientUpdateOptions contains the optional parameters for the AssetsClient.Update method.
+type AssetsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -588,12 +679,17 @@ type AudioClassification interface {
 
 // Audio - Defines the common properties for all audio codecs.
 type Audio struct {
-	Codec
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// The bitrate, in bits per second, of the output encoded audio.
 	Bitrate *int32 `json:"bitrate,omitempty"`
 
 	// The number of channels in the audio.
 	Channels *int32 `json:"channels,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
 
 	// The sampling rate to use for encoding in hertz.
 	SamplingRate *int32 `json:"samplingRate,omitempty"`
@@ -602,10 +698,22 @@ type Audio struct {
 // GetAudio implements the AudioClassification interface for type Audio.
 func (a *Audio) GetAudio() *Audio { return a }
 
+// GetCodec implements the CodecClassification interface for type Audio.
+func (a *Audio) GetCodec() *Codec {
+	return &Codec{
+		ODataType: a.ODataType,
+		Label:     a.Label,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Audio.
 func (a Audio) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "#Microsoft.Media.Audio")
+	populate(objectMap, "bitrate", a.Bitrate)
+	populate(objectMap, "channels", a.Channels)
+	populate(objectMap, "label", a.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.Audio"
+	populate(objectMap, "samplingRate", a.SamplingRate)
 	return json.Marshal(objectMap)
 }
 
@@ -615,17 +723,6 @@ func (a *Audio) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a Audio) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.Codec.marshalInternal(objectMap, discValue)
-	populate(objectMap, "bitrate", a.Bitrate)
-	populate(objectMap, "channels", a.Channels)
-	populate(objectMap, "samplingRate", a.SamplingRate)
-}
-
-func (a *Audio) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -635,6 +732,12 @@ func (a *Audio) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 		case "channels":
 			err = unpopulate(val, &a.Channels)
 			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &a.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &a.ODataType)
+			delete(rawMsg, key)
 		case "samplingRate":
 			err = unpopulate(val, &a.SamplingRate)
 			delete(rawMsg, key)
@@ -642,9 +745,6 @@ func (a *Audio) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.Codec.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -659,35 +759,48 @@ type AudioAnalyzerPresetClassification interface {
 	GetAudioAnalyzerPreset() *AudioAnalyzerPreset
 }
 
-// AudioAnalyzerPreset - The Audio Analyzer preset applies a pre-defined set of AI-based analysis operations, including speech transcription. Currently,
-// the preset supports processing of content with a single audio track.
+// AudioAnalyzerPreset - The Audio Analyzer preset applies a pre-defined set of AI-based analysis operations, including speech
+// transcription. Currently, the preset supports processing of content with a single audio track.
 type AudioAnalyzerPreset struct {
-	Preset
-	// The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). If you know the language of your content,
-	// it is recommended that you specify it. The
-	// language must be specified explicitly for AudioAnalysisMode::Basic, since automatic language detection is not included in basic mode. If the language
-	// isn't specified or set to null, automatic language
-	// detection will choose the first language detected and process with the selected language for the duration of the file. It does not currently support
-	// dynamically switching between languages after the
-	// first language is detected. The automatic detection works best with audio recordings with clearly discernable speech. If automatic detection fails to
-	// find the language, transcription would fallback to
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). If you
+	// know the language of your content, it is recommended that you specify it. The
+	// language must be specified explicitly for AudioAnalysisMode::Basic, since automatic language detection is not included
+	// in basic mode. If the language isn't specified or set to null, automatic language
+	// detection will choose the first language detected and process with the selected language for the duration of the file.
+	// It does not currently support dynamically switching between languages after the
+	// first language is detected. The automatic detection works best with audio recordings with clearly discernable speech. If
+	// automatic detection fails to find the language, transcription would fallback to
 	// 'en-US'." The list of supported languages is available here: https://go.microsoft.com/fwlink/?linkid=2109463
 	AudioLanguage *string `json:"audioLanguage,omitempty"`
 
 	// Dictionary containing key value pairs for parameters not exposed in the preset itself
 	ExperimentalOptions map[string]*string `json:"experimentalOptions,omitempty"`
 
-	// Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode would be chosen.
+	// Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode would be
+	// chosen.
 	Mode *AudioAnalysisMode `json:"mode,omitempty"`
 }
 
 // GetAudioAnalyzerPreset implements the AudioAnalyzerPresetClassification interface for type AudioAnalyzerPreset.
 func (a *AudioAnalyzerPreset) GetAudioAnalyzerPreset() *AudioAnalyzerPreset { return a }
 
+// GetPreset implements the PresetClassification interface for type AudioAnalyzerPreset.
+func (a *AudioAnalyzerPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: a.ODataType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AudioAnalyzerPreset.
 func (a AudioAnalyzerPreset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "#Microsoft.Media.AudioAnalyzerPreset")
+	populate(objectMap, "audioLanguage", a.AudioLanguage)
+	populate(objectMap, "experimentalOptions", a.ExperimentalOptions)
+	populate(objectMap, "mode", a.Mode)
+	objectMap["@odata.type"] = "#Microsoft.Media.AudioAnalyzerPreset"
 	return json.Marshal(objectMap)
 }
 
@@ -697,17 +810,6 @@ func (a *AudioAnalyzerPreset) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AudioAnalyzerPreset) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.Preset.marshalInternal(objectMap, discValue)
-	populate(objectMap, "audioLanguage", a.AudioLanguage)
-	populate(objectMap, "experimentalOptions", a.ExperimentalOptions)
-	populate(objectMap, "mode", a.Mode)
-}
-
-func (a *AudioAnalyzerPreset) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -720,33 +822,120 @@ func (a *AudioAnalyzerPreset) unmarshalInternal(rawMsg map[string]json.RawMessag
 		case "mode":
 			err = unpopulate(val, &a.Mode)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &a.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.Preset.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // AudioOverlay - Describes the properties of an audio overlay.
 type AudioOverlay struct {
-	Overlay
+	// REQUIRED; The label of the job input which is to be used as an overlay. The Input must specify exactly one file. You can
+	// specify an image file in JPG, PNG, GIF or BMP format, or an audio file (such as a WAV,
+	// MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video
+	// file formats.
+	InputLabel *string `json:"inputLabel,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The gain level of audio in the overlay. The value should be in the range [0, 1.0]. The default is 1.0.
+	AudioGainLevel *float64 `json:"audioGainLevel,omitempty"`
+
+	// The end position, with reference to the input video, at which the overlay ends. The value should be in ISO 8601 format.
+	// For example, PT30S to end the overlay at 30 seconds into the input video. If not
+	// specified or the value is greater than the input video duration, the overlay will be applied until the end of the input
+	// video if the overlay media duration is greater than the input video duration,
+	// else the overlay will last as long as the overlay media duration.
+	End *string `json:"end,omitempty"`
+
+	// The duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If
+	// not specified the default behavior is to have no fade in (same as PT0S).
+	FadeInDuration *string `json:"fadeInDuration,omitempty"`
+
+	// The duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not
+	// specified the default behavior is to have no fade out (same as PT0S).
+	FadeOutDuration *string `json:"fadeOutDuration,omitempty"`
+
+	// The start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format.
+	// For example, PT05S to start the overlay at 5 seconds into the input video.
+	// If not specified the overlay starts from the beginning of the input video.
+	Start *string `json:"start,omitempty"`
+}
+
+// GetOverlay implements the OverlayClassification interface for type AudioOverlay.
+func (a *AudioOverlay) GetOverlay() *Overlay {
+	return &Overlay{
+		ODataType:       a.ODataType,
+		InputLabel:      a.InputLabel,
+		Start:           a.Start,
+		End:             a.End,
+		FadeInDuration:  a.FadeInDuration,
+		FadeOutDuration: a.FadeOutDuration,
+		AudioGainLevel:  a.AudioGainLevel,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AudioOverlay.
 func (a AudioOverlay) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Overlay.marshalInternal(objectMap, "#Microsoft.Media.AudioOverlay")
+	populate(objectMap, "audioGainLevel", a.AudioGainLevel)
+	populate(objectMap, "end", a.End)
+	populate(objectMap, "fadeInDuration", a.FadeInDuration)
+	populate(objectMap, "fadeOutDuration", a.FadeOutDuration)
+	populate(objectMap, "inputLabel", a.InputLabel)
+	objectMap["@odata.type"] = "#Microsoft.Media.AudioOverlay"
+	populate(objectMap, "start", a.Start)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AudioOverlay.
+func (a *AudioOverlay) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "audioGainLevel":
+			err = unpopulate(val, &a.AudioGainLevel)
+			delete(rawMsg, key)
+		case "end":
+			err = unpopulate(val, &a.End)
+			delete(rawMsg, key)
+		case "fadeInDuration":
+			err = unpopulate(val, &a.FadeInDuration)
+			delete(rawMsg, key)
+		case "fadeOutDuration":
+			err = unpopulate(val, &a.FadeOutDuration)
+			delete(rawMsg, key)
+		case "inputLabel":
+			err = unpopulate(val, &a.InputLabel)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &a.ODataType)
+			delete(rawMsg, key)
+		case "start":
+			err = unpopulate(val, &a.Start)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AudioTrackDescriptorClassification provides polymorphic access to related types.
 // Call the interface's GetAudioTrackDescriptor() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AudioTrackDescriptor, *SelectAudioTrackByAttribute, *SelectAudioTrackById
+// - *AudioTrackDescriptor, *SelectAudioTrackByAttribute, *SelectAudioTrackByID
 type AudioTrackDescriptorClassification interface {
 	TrackDescriptorClassification
 	// GetAudioTrackDescriptor returns the AudioTrackDescriptor content of the underlying type.
@@ -755,18 +944,29 @@ type AudioTrackDescriptorClassification interface {
 
 // AudioTrackDescriptor - A TrackSelection to select audio tracks.
 type AudioTrackDescriptor struct {
-	TrackDescriptor
-	// Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel audio tracks.
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel audio
+	// tracks.
 	ChannelMapping *ChannelMapping `json:"channelMapping,omitempty"`
 }
 
 // GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type AudioTrackDescriptor.
 func (a *AudioTrackDescriptor) GetAudioTrackDescriptor() *AudioTrackDescriptor { return a }
 
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type AudioTrackDescriptor.
+func (a *AudioTrackDescriptor) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: a.ODataType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AudioTrackDescriptor.
 func (a AudioTrackDescriptor) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "#Microsoft.Media.AudioTrackDescriptor")
+	populate(objectMap, "channelMapping", a.ChannelMapping)
+	objectMap["@odata.type"] = "#Microsoft.Media.AudioTrackDescriptor"
 	return json.Marshal(objectMap)
 }
 
@@ -776,48 +976,48 @@ func (a *AudioTrackDescriptor) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AudioTrackDescriptor) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.TrackDescriptor.marshalInternal(objectMap, discValue)
-	populate(objectMap, "channelMapping", a.ChannelMapping)
-}
-
-func (a *AudioTrackDescriptor) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelMapping":
 			err = unpopulate(val, &a.ChannelMapping)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &a.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.TrackDescriptor.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // BuiltInStandardEncoderPreset - Describes a built-in preset for encoding the input video with the Standard Encoder.
 type BuiltInStandardEncoderPreset struct {
-	Preset
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// REQUIRED; The built-in preset to be used for encoding videos.
 	PresetName *EncoderNamedPreset `json:"presetName,omitempty"`
 
-	// PresetConfigurations are only supported for the ContentAwareEncoding and H265ContentAwareEncoding built-in presets. These settings will not affect other
-	// built-in or custom defined presets.
+	// PresetConfigurations are only supported for the ContentAwareEncoding and H265ContentAwareEncoding built-in presets. These
+	// settings will not affect other built-in or custom defined presets.
 	Configurations *PresetConfigurations `json:"configurations,omitempty"`
+}
+
+// GetPreset implements the PresetClassification interface for type BuiltInStandardEncoderPreset.
+func (b *BuiltInStandardEncoderPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: b.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BuiltInStandardEncoderPreset.
 func (b BuiltInStandardEncoderPreset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Preset.marshalInternal(objectMap, "#Microsoft.Media.BuiltInStandardEncoderPreset")
 	populate(objectMap, "configurations", b.Configurations)
+	objectMap["@odata.type"] = "#Microsoft.Media.BuiltInStandardEncoderPreset"
 	populate(objectMap, "presetName", b.PresetName)
 	return json.Marshal(objectMap)
 }
@@ -834,6 +1034,9 @@ func (b *BuiltInStandardEncoderPreset) UnmarshalJSON(data []byte) error {
 		case "configurations":
 			err = unpopulate(val, &b.Configurations)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &b.ODataType)
+			delete(rawMsg, key)
 		case "presetName":
 			err = unpopulate(val, &b.PresetName)
 			delete(rawMsg, key)
@@ -841,9 +1044,6 @@ func (b *BuiltInStandardEncoderPreset) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := b.Preset.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -878,10 +1078,50 @@ type CheckNameAvailabilityInput struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// ClientCreateOrUpdateOptions contains the optional parameters for the Client.CreateOrUpdate method.
+type ClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientDeleteOptions contains the optional parameters for the Client.Delete method.
+type ClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+type ClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListEdgePoliciesOptions contains the optional parameters for the Client.ListEdgePolicies method.
+type ClientListEdgePoliciesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListOptions contains the optional parameters for the Client.List method.
+type ClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientSyncStorageKeysOptions contains the optional parameters for the Client.SyncStorageKeys method.
+type ClientSyncStorageKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientUpdateOptions contains the optional parameters for the Client.Update method.
+type ClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClipTimeClassification provides polymorphic access to related types.
 // Call the interface's GetClipTime() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AbsoluteClipTime, *ClipTime, *UtcClipTime
+// - *AbsoluteClipTime, *ClipTime, *UTCClipTime
 type ClipTimeClassification interface {
 	// GetClipTime returns the ClipTime content of the underlying type.
 	GetClipTime() *ClipTime
@@ -896,39 +1136,10 @@ type ClipTime struct {
 // GetClipTime implements the ClipTimeClassification interface for type ClipTime.
 func (c *ClipTime) GetClipTime() *ClipTime { return c }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClipTime.
-func (c *ClipTime) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c ClipTime) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	c.ODataType = &discValue
-	objectMap["@odata.type"] = c.ODataType
-}
-
-func (c *ClipTime) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CodecClassification provides polymorphic access to related types.
 // Call the interface's GetCodec() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AacAudio, *Audio, *Codec, *CopyAudio, *CopyVideo, *H264Video, *H265Video, *Image, *JpgImage, *PngImage, *Video
+// - *AacAudio, *Audio, *Codec, *CopyAudio, *CopyVideo, *H264Video, *H265Video, *Image, *JpgImage, *PNGImage, *Video
 type CodecClassification interface {
 	// GetCodec returns the Codec content of the underlying type.
 	GetCodec() *Codec
@@ -945,39 +1156,6 @@ type Codec struct {
 
 // GetCodec implements the CodecClassification interface for type Codec.
 func (c *Codec) GetCodec() *Codec { return c }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Codec.
-func (c *Codec) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c Codec) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "label", c.Label)
-	c.ODataType = &discValue
-	objectMap["@odata.type"] = c.ODataType
-}
-
-func (c *Codec) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "label":
-			err = unpopulate(val, &c.Label)
-			delete(rawMsg, key)
-		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // CommonEncryptionCbcs - Class for CommonEncryptionCbcs encryption scheme
 type CommonEncryptionCbcs struct {
@@ -1029,71 +1207,111 @@ func (c CommonEncryptionCenc) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ContentKeyPoliciesCreateOrUpdateOptions contains the optional parameters for the ContentKeyPolicies.CreateOrUpdate method.
-type ContentKeyPoliciesCreateOrUpdateOptions struct {
+// ContentKeyPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.CreateOrUpdate
+// method.
+type ContentKeyPoliciesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentKeyPoliciesDeleteOptions contains the optional parameters for the ContentKeyPolicies.Delete method.
-type ContentKeyPoliciesDeleteOptions struct {
+// ContentKeyPoliciesClientDeleteOptions contains the optional parameters for the ContentKeyPoliciesClient.Delete method.
+type ContentKeyPoliciesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentKeyPoliciesGetOptions contains the optional parameters for the ContentKeyPolicies.Get method.
-type ContentKeyPoliciesGetOptions struct {
+// ContentKeyPoliciesClientGetOptions contains the optional parameters for the ContentKeyPoliciesClient.Get method.
+type ContentKeyPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentKeyPoliciesGetPolicyPropertiesWithSecretsOptions contains the optional parameters for the ContentKeyPolicies.GetPolicyPropertiesWithSecrets method.
-type ContentKeyPoliciesGetPolicyPropertiesWithSecretsOptions struct {
+// ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions contains the optional parameters for the ContentKeyPoliciesClient.GetPolicyPropertiesWithSecrets
+// method.
+type ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentKeyPoliciesListOptions contains the optional parameters for the ContentKeyPolicies.List method.
-type ContentKeyPoliciesListOptions struct {
+// ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
+type ContentKeyPoliciesClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
 	// Specifies the key by which the result collection should be ordered.
 	Orderby *string
-	// Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to
-	// but not greater than the specified value n.
+	// Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the
+	// number of available items up to but not greater than the specified value n.
 	Top *int32
 }
 
-// ContentKeyPoliciesUpdateOptions contains the optional parameters for the ContentKeyPolicies.Update method.
-type ContentKeyPoliciesUpdateOptions struct {
+// ContentKeyPoliciesClientUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.Update method.
+type ContentKeyPoliciesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ContentKeyPolicy - A Content Key Policy resource.
 type ContentKeyPolicy struct {
-	ProxyResource
 	// The properties of the Content Key Policy.
 	Properties *ContentKeyPolicyProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicy.
 func (c ContentKeyPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
 // ContentKeyPolicyClearKeyConfiguration - Represents a configuration for non-DRM keys.
 type ContentKeyPolicyClearKeyConfiguration struct {
-	ContentKeyPolicyConfiguration
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyClearKeyConfiguration.
+func (c *ContentKeyPolicyClearKeyConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyClearKeyConfiguration.
 func (c ContentKeyPolicyClearKeyConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyConfiguration.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyClearKeyConfiguration")
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyClearKeyConfiguration"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyClearKeyConfiguration.
+func (c *ContentKeyPolicyClearKeyConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ContentKeyPolicyCollection - A collection of ContentKeyPolicy items.
@@ -1123,7 +1341,8 @@ type ContentKeyPolicyConfigurationClassification interface {
 	GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration
 }
 
-// ContentKeyPolicyConfiguration - Base class for Content Key Policy configuration. A derived class must be used to create a configuration.
+// ContentKeyPolicyConfiguration - Base class for Content Key Policy configuration. A derived class must be used to create
+// a configuration.
 type ContentKeyPolicyConfiguration struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
@@ -1134,38 +1353,8 @@ func (c *ContentKeyPolicyConfiguration) GetContentKeyPolicyConfiguration() *Cont
 	return c
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyConfiguration.
-func (c *ContentKeyPolicyConfiguration) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c ContentKeyPolicyConfiguration) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	c.ODataType = &discValue
-	objectMap["@odata.type"] = c.ODataType
-}
-
-func (c *ContentKeyPolicyConfiguration) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ContentKeyPolicyFairPlayConfiguration - Specifies a configuration for FairPlay licenses.
 type ContentKeyPolicyFairPlayConfiguration struct {
-	ContentKeyPolicyConfiguration
 	// REQUIRED; The key that must be used as FairPlay Application Secret key.
 	Ask []byte `json:"ask,omitempty"`
 
@@ -1174,6 +1363,9 @@ type ContentKeyPolicyFairPlayConfiguration struct {
 
 	// REQUIRED; The password encrypting FairPlay certificate in PKCS 12 (pfx) format.
 	FairPlayPfxPassword *string `json:"fairPlayPfxPassword,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; The rental and lease key type.
 	RentalAndLeaseKeyType *ContentKeyPolicyFairPlayRentalAndLeaseKeyType `json:"rentalAndLeaseKeyType,omitempty"`
@@ -1185,13 +1377,20 @@ type ContentKeyPolicyFairPlayConfiguration struct {
 	OfflineRentalConfiguration *ContentKeyPolicyFairPlayOfflineRentalConfiguration `json:"offlineRentalConfiguration,omitempty"`
 }
 
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyFairPlayConfiguration.
+func (c *ContentKeyPolicyFairPlayConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyFairPlayConfiguration.
 func (c ContentKeyPolicyFairPlayConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyConfiguration.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyFairPlayConfiguration")
 	populateByteArray(objectMap, "ask", c.Ask, runtime.Base64StdFormat)
 	populate(objectMap, "fairPlayPfx", c.FairPlayPfx)
 	populate(objectMap, "fairPlayPfxPassword", c.FairPlayPfxPassword)
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyFairPlayConfiguration"
 	populate(objectMap, "offlineRentalConfiguration", c.OfflineRentalConfiguration)
 	populate(objectMap, "rentalAndLeaseKeyType", c.RentalAndLeaseKeyType)
 	populate(objectMap, "rentalDuration", c.RentalDuration)
@@ -1216,6 +1415,9 @@ func (c *ContentKeyPolicyFairPlayConfiguration) UnmarshalJSON(data []byte) error
 		case "fairPlayPfxPassword":
 			err = unpopulate(val, &c.FairPlayPfxPassword)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
 		case "offlineRentalConfiguration":
 			err = unpopulate(val, &c.OfflineRentalConfiguration)
 			delete(rawMsg, key)
@@ -1230,9 +1432,6 @@ func (c *ContentKeyPolicyFairPlayConfiguration) UnmarshalJSON(data []byte) error
 			return err
 		}
 	}
-	if err := c.ContentKeyPolicyConfiguration.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -1246,14 +1445,42 @@ type ContentKeyPolicyFairPlayOfflineRentalConfiguration struct {
 
 // ContentKeyPolicyOpenRestriction - Represents an open restriction. License or key will be delivered on every request.
 type ContentKeyPolicyOpenRestriction struct {
-	ContentKeyPolicyRestriction
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyOpenRestriction.
+func (c *ContentKeyPolicyOpenRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
+	return &ContentKeyPolicyRestriction{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyOpenRestriction.
 func (c ContentKeyPolicyOpenRestriction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyRestriction.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyOpenRestriction")
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyOpenRestriction"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyOpenRestriction.
+func (c *ContentKeyPolicyOpenRestriction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ContentKeyPolicyOption - Represents a policy option.
@@ -1312,19 +1539,28 @@ func (c *ContentKeyPolicyOption) UnmarshalJSON(data []byte) error {
 
 // ContentKeyPolicyPlayReadyConfiguration - Specifies a configuration for PlayReady licenses.
 type ContentKeyPolicyPlayReadyConfiguration struct {
-	ContentKeyPolicyConfiguration
 	// REQUIRED; The PlayReady licenses.
 	Licenses []*ContentKeyPolicyPlayReadyLicense `json:"licenses,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// The custom response data.
 	ResponseCustomData *string `json:"responseCustomData,omitempty"`
 }
 
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyPlayReadyConfiguration.
+func (c *ContentKeyPolicyPlayReadyConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyPlayReadyConfiguration.
 func (c ContentKeyPolicyPlayReadyConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyConfiguration.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyPlayReadyConfiguration")
 	populate(objectMap, "licenses", c.Licenses)
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyPlayReadyConfiguration"
 	populate(objectMap, "responseCustomData", c.ResponseCustomData)
 	return json.Marshal(objectMap)
 }
@@ -1341,6 +1577,9 @@ func (c *ContentKeyPolicyPlayReadyConfiguration) UnmarshalJSON(data []byte) erro
 		case "licenses":
 			err = unpopulate(val, &c.Licenses)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
 		case "responseCustomData":
 			err = unpopulate(val, &c.ResponseCustomData)
 			delete(rawMsg, key)
@@ -1349,36 +1588,73 @@ func (c *ContentKeyPolicyPlayReadyConfiguration) UnmarshalJSON(data []byte) erro
 			return err
 		}
 	}
-	if err := c.ContentKeyPolicyConfiguration.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader - Specifies that the content key ID is in the PlayReady header.
 type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader struct {
-	ContentKeyPolicyPlayReadyContentKeyLocation
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
+// interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.
+func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
+	return &ContentKeyPolicyPlayReadyContentKeyLocation{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.
 func (c ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyPlayReadyContentKeyLocation.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader")
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader"
 	return json.Marshal(objectMap)
 }
 
-// ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier - Specifies that the content key ID is specified in the PlayReady configuration.
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.
+func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier - Specifies that the content key ID is specified in the
+// PlayReady configuration.
 type ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier struct {
-	ContentKeyPolicyPlayReadyContentKeyLocation
 	// REQUIRED; The content key ID.
 	KeyID *string `json:"keyId,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
+// interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.
+func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
+	return &ContentKeyPolicyPlayReadyContentKeyLocation{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.
 func (c ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyPlayReadyContentKeyLocation.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier")
 	populate(objectMap, "keyId", c.KeyID)
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier"
 	return json.Marshal(objectMap)
 }
 
@@ -1394,13 +1670,13 @@ func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier) Unmarsh
 		case "keyId":
 			err = unpopulate(val, &c.KeyID)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.ContentKeyPolicyPlayReadyContentKeyLocation.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1415,48 +1691,21 @@ type ContentKeyPolicyPlayReadyContentKeyLocationClassification interface {
 	GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation
 }
 
-// ContentKeyPolicyPlayReadyContentKeyLocation - Base class for content key ID location. A derived class must be used to represent the location.
+// ContentKeyPolicyPlayReadyContentKeyLocation - Base class for content key ID location. A derived class must be used to represent
+// the location.
 type ContentKeyPolicyPlayReadyContentKeyLocation struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
-// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification interface for type ContentKeyPolicyPlayReadyContentKeyLocation.
+// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
+// interface for type ContentKeyPolicyPlayReadyContentKeyLocation.
 func (c *ContentKeyPolicyPlayReadyContentKeyLocation) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
 	return c
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyPlayReadyContentKeyLocation.
-func (c *ContentKeyPolicyPlayReadyContentKeyLocation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c ContentKeyPolicyPlayReadyContentKeyLocation) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	c.ODataType = &discValue
-	objectMap["@odata.type"] = c.ODataType
-}
-
-func (c *ContentKeyPolicyPlayReadyContentKeyLocation) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction - Configures the Explicit Analog Television Output Restriction control bits. For further
-// details see the PlayReady Compliance Rules.
+// ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction - Configures the Explicit Analog Television Output Restriction
+// control bits. For further details see the PlayReady Compliance Rules.
 type ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction struct {
 	// REQUIRED; Indicates whether this restriction is enforced on a Best Effort basis.
 	BestEffort *bool `json:"bestEffort,omitempty"`
@@ -1587,7 +1836,8 @@ type ContentKeyPolicyPlayReadyPlayRight struct {
 	// Specifies the output protection level for compressed digital video.
 	CompressedDigitalVideoOpl *int32 `json:"compressedDigitalVideoOpl,omitempty"`
 
-	// Configures the Explicit Analog Television Output Restriction in the license. Configuration data must be between 0 and 3 inclusive.
+	// Configures the Explicit Analog Television Output Restriction in the license. Configuration data must be between 0 and 3
+	// inclusive.
 	ExplicitAnalogTelevisionOutputRestriction *ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction `json:"explicitAnalogTelevisionOutputRestriction,omitempty"`
 
 	// The amount of time that the license is valid after the license is first used to play content.
@@ -1673,7 +1923,8 @@ type ContentKeyPolicyRestrictionClassification interface {
 	GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction
 }
 
-// ContentKeyPolicyRestriction - Base class for Content Key Policy restrictions. A derived class must be used to create a restriction.
+// ContentKeyPolicyRestriction - Base class for Content Key Policy restrictions. A derived class must be used to create a
+// restriction.
 type ContentKeyPolicyRestriction struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
@@ -1682,35 +1933,6 @@ type ContentKeyPolicyRestriction struct {
 // GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyRestriction.
 func (c *ContentKeyPolicyRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
 	return c
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyRestriction.
-func (c *ContentKeyPolicyRestriction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c ContentKeyPolicyRestriction) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	c.ODataType = &discValue
-	objectMap["@odata.type"] = c.ODataType
-}
-
-func (c *ContentKeyPolicyRestriction) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ContentKeyPolicyRestrictionTokenKeyClassification provides polymorphic access to related types.
@@ -1722,62 +1944,45 @@ type ContentKeyPolicyRestrictionTokenKeyClassification interface {
 	GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey
 }
 
-// ContentKeyPolicyRestrictionTokenKey - Base class for Content Key Policy key for token validation. A derived class must be used to create a token key.
+// ContentKeyPolicyRestrictionTokenKey - Base class for Content Key Policy key for token validation. A derived class must
+// be used to create a token key.
 type ContentKeyPolicyRestrictionTokenKey struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
-// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type ContentKeyPolicyRestrictionTokenKey.
+// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
+// ContentKeyPolicyRestrictionTokenKey.
 func (c *ContentKeyPolicyRestrictionTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
 	return c
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyRestrictionTokenKey.
-func (c *ContentKeyPolicyRestrictionTokenKey) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c ContentKeyPolicyRestrictionTokenKey) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	c.ODataType = &discValue
-	objectMap["@odata.type"] = c.ODataType
-}
-
-func (c *ContentKeyPolicyRestrictionTokenKey) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ContentKeyPolicyRsaTokenKey - Specifies a RSA key for token validation
 type ContentKeyPolicyRsaTokenKey struct {
-	ContentKeyPolicyRestrictionTokenKey
 	// REQUIRED; The RSA Parameter exponent
 	Exponent []byte `json:"exponent,omitempty"`
 
 	// REQUIRED; The RSA Parameter modulus
 	Modulus []byte `json:"modulus,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
+// ContentKeyPolicyRsaTokenKey.
+func (c *ContentKeyPolicyRsaTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
+	return &ContentKeyPolicyRestrictionTokenKey{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyRsaTokenKey.
 func (c ContentKeyPolicyRsaTokenKey) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyRestrictionTokenKey.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyRsaTokenKey")
 	populateByteArray(objectMap, "exponent", c.Exponent, runtime.Base64StdFormat)
 	populateByteArray(objectMap, "modulus", c.Modulus, runtime.Base64StdFormat)
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyRsaTokenKey"
 	return json.Marshal(objectMap)
 }
 
@@ -1796,29 +2001,39 @@ func (c *ContentKeyPolicyRsaTokenKey) UnmarshalJSON(data []byte) error {
 		case "modulus":
 			err = runtime.DecodeByteArray(string(val), &c.Modulus, runtime.Base64StdFormat)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.ContentKeyPolicyRestrictionTokenKey.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // ContentKeyPolicySymmetricTokenKey - Specifies a symmetric key for token validation.
 type ContentKeyPolicySymmetricTokenKey struct {
-	ContentKeyPolicyRestrictionTokenKey
 	// REQUIRED; The key value of the key
 	KeyValue []byte `json:"keyValue,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
+// ContentKeyPolicySymmetricTokenKey.
+func (c *ContentKeyPolicySymmetricTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
+	return &ContentKeyPolicyRestrictionTokenKey{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicySymmetricTokenKey.
 func (c ContentKeyPolicySymmetricTokenKey) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyRestrictionTokenKey.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicySymmetricTokenKey")
 	populateByteArray(objectMap, "keyValue", c.KeyValue, runtime.Base64StdFormat)
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicySymmetricTokenKey"
 	return json.Marshal(objectMap)
 }
 
@@ -1834,13 +2049,13 @@ func (c *ContentKeyPolicySymmetricTokenKey) UnmarshalJSON(data []byte) error {
 		case "keyValue":
 			err = runtime.DecodeByteArray(string(val), &c.KeyValue, runtime.Base64StdFormat)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.ContentKeyPolicyRestrictionTokenKey.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1854,14 +2069,17 @@ type ContentKeyPolicyTokenClaim struct {
 	ClaimValue *string `json:"claimValue,omitempty"`
 }
 
-// ContentKeyPolicyTokenRestriction - Represents a token restriction. Provided token must match these requirements for successful license or key delivery.
+// ContentKeyPolicyTokenRestriction - Represents a token restriction. Provided token must match these requirements for successful
+// license or key delivery.
 type ContentKeyPolicyTokenRestriction struct {
-	ContentKeyPolicyRestriction
 	// REQUIRED; The audience for the token.
 	Audience *string `json:"audience,omitempty"`
 
 	// REQUIRED; The token issuer.
 	Issuer *string `json:"issuer,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; The primary verification key.
 	PrimaryVerificationKey ContentKeyPolicyRestrictionTokenKeyClassification `json:"primaryVerificationKey,omitempty"`
@@ -1879,13 +2097,20 @@ type ContentKeyPolicyTokenRestriction struct {
 	RequiredClaims []*ContentKeyPolicyTokenClaim `json:"requiredClaims,omitempty"`
 }
 
+// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyTokenRestriction.
+func (c *ContentKeyPolicyTokenRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
+	return &ContentKeyPolicyRestriction{
+		ODataType: c.ODataType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyTokenRestriction.
 func (c ContentKeyPolicyTokenRestriction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyRestriction.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyTokenRestriction")
 	populate(objectMap, "alternateVerificationKeys", c.AlternateVerificationKeys)
 	populate(objectMap, "audience", c.Audience)
 	populate(objectMap, "issuer", c.Issuer)
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyTokenRestriction"
 	populate(objectMap, "openIdConnectDiscoveryDocument", c.OpenIDConnectDiscoveryDocument)
 	populate(objectMap, "primaryVerificationKey", c.PrimaryVerificationKey)
 	populate(objectMap, "requiredClaims", c.RequiredClaims)
@@ -1911,6 +2136,9 @@ func (c *ContentKeyPolicyTokenRestriction) UnmarshalJSON(data []byte) error {
 		case "issuer":
 			err = unpopulate(val, &c.Issuer)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
 		case "openIdConnectDiscoveryDocument":
 			err = unpopulate(val, &c.OpenIDConnectDiscoveryDocument)
 			delete(rawMsg, key)
@@ -1928,47 +2156,110 @@ func (c *ContentKeyPolicyTokenRestriction) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := c.ContentKeyPolicyRestriction.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// ContentKeyPolicyUnknownConfiguration - Represents a ContentKeyPolicyConfiguration that is unavailable in the current API version.
+// ContentKeyPolicyUnknownConfiguration - Represents a ContentKeyPolicyConfiguration that is unavailable in the current API
+// version.
 type ContentKeyPolicyUnknownConfiguration struct {
-	ContentKeyPolicyConfiguration
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyUnknownConfiguration.
+func (c *ContentKeyPolicyUnknownConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyUnknownConfiguration.
 func (c ContentKeyPolicyUnknownConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyConfiguration.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyUnknownConfiguration")
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyUnknownConfiguration"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyUnknownConfiguration.
+func (c *ContentKeyPolicyUnknownConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ContentKeyPolicyUnknownRestriction - Represents a ContentKeyPolicyRestriction that is unavailable in the current API version.
 type ContentKeyPolicyUnknownRestriction struct {
-	ContentKeyPolicyRestriction
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyUnknownRestriction.
+func (c *ContentKeyPolicyUnknownRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
+	return &ContentKeyPolicyRestriction{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyUnknownRestriction.
 func (c ContentKeyPolicyUnknownRestriction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyRestriction.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyUnknownRestriction")
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyUnknownRestriction"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentKeyPolicyUnknownRestriction.
+func (c *ContentKeyPolicyUnknownRestriction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ContentKeyPolicyWidevineConfiguration - Specifies a configuration for Widevine licenses.
 type ContentKeyPolicyWidevineConfiguration struct {
-	ContentKeyPolicyConfiguration
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// REQUIRED; The Widevine template.
 	WidevineTemplate *string `json:"widevineTemplate,omitempty"`
+}
+
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyWidevineConfiguration.
+func (c *ContentKeyPolicyWidevineConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyWidevineConfiguration.
 func (c ContentKeyPolicyWidevineConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyConfiguration.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyWidevineConfiguration")
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyWidevineConfiguration"
 	populate(objectMap, "widevineTemplate", c.WidevineTemplate)
 	return json.Marshal(objectMap)
 }
@@ -1982,6 +2273,9 @@ func (c *ContentKeyPolicyWidevineConfiguration) UnmarshalJSON(data []byte) error
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
 		case "widevineTemplate":
 			err = unpopulate(val, &c.WidevineTemplate)
 			delete(rawMsg, key)
@@ -1990,23 +2284,30 @@ func (c *ContentKeyPolicyWidevineConfiguration) UnmarshalJSON(data []byte) error
 			return err
 		}
 	}
-	if err := c.ContentKeyPolicyConfiguration.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // ContentKeyPolicyX509CertificateTokenKey - Specifies a certificate for token validation.
 type ContentKeyPolicyX509CertificateTokenKey struct {
-	ContentKeyPolicyRestrictionTokenKey
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// REQUIRED; The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET)
 	RawBody []byte `json:"rawBody,omitempty"`
+}
+
+// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
+// ContentKeyPolicyX509CertificateTokenKey.
+func (c *ContentKeyPolicyX509CertificateTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
+	return &ContentKeyPolicyRestrictionTokenKey{
+		ODataType: c.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyX509CertificateTokenKey.
 func (c ContentKeyPolicyX509CertificateTokenKey) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ContentKeyPolicyRestrictionTokenKey.marshalInternal(objectMap, "#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey")
+	objectMap["@odata.type"] = "#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey"
 	populateByteArray(objectMap, "rawBody", c.RawBody, runtime.Base64StdFormat)
 	return json.Marshal(objectMap)
 }
@@ -2020,6 +2321,9 @@ func (c *ContentKeyPolicyX509CertificateTokenKey) UnmarshalJSON(data []byte) err
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
 		case "rawBody":
 			err = runtime.DecodeByteArray(string(val), &c.RawBody, runtime.Base64StdFormat)
 			delete(rawMsg, key)
@@ -2028,34 +2332,103 @@ func (c *ContentKeyPolicyX509CertificateTokenKey) UnmarshalJSON(data []byte) err
 			return err
 		}
 	}
-	if err := c.ContentKeyPolicyRestrictionTokenKey.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // CopyAudio - A codec flag, which tells the encoder to copy the input audio bitstream.
 type CopyAudio struct {
-	Codec
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type CopyAudio.
+func (c *CopyAudio) GetCodec() *Codec {
+	return &Codec{
+		ODataType: c.ODataType,
+		Label:     c.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CopyAudio.
 func (c CopyAudio) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Codec.marshalInternal(objectMap, "#Microsoft.Media.CopyAudio")
+	populate(objectMap, "label", c.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.CopyAudio"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CopyAudio.
+func (c *CopyAudio) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "label":
+			err = unpopulate(val, &c.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // CopyVideo - A codec flag, which tells the encoder to copy the input video bitstream without re-encoding.
 type CopyVideo struct {
-	Codec
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type CopyVideo.
+func (c *CopyVideo) GetCodec() *Codec {
+	return &Codec{
+		ODataType: c.ODataType,
+		Label:     c.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CopyVideo.
 func (c CopyVideo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Codec.marshalInternal(objectMap, "#Microsoft.Media.CopyVideo")
+	populate(objectMap, "label", c.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.CopyVideo"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CopyVideo.
+func (c *CopyVideo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "label":
+			err = unpopulate(val, &c.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &c.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // CrossSiteAccessPolicies - The client access policy.
@@ -2149,10 +2522,10 @@ type EnvelopeEncryption struct {
 	// Representing default content key for each encryption scheme and separate content keys for specific tracks
 	ContentKeys *StreamingPolicyContentKeys `json:"contentKeys,omitempty"`
 
-	// Template for the URL of the custom service delivering keys to end user players. Not required when using Azure Media Services for issuing keys. The template
-	// supports replaceable tokens that the service
-	// will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId}, which is replaced with
-	// the value of StreamingLocatorId.AlternativeMediaId,
+	// Template for the URL of the custom service delivering keys to end user players. Not required when using Azure Media Services
+	// for issuing keys. The template supports replaceable tokens that the service
+	// will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId},
+	// which is replaced with the value of StreamingLocatorId.AlternativeMediaId,
 	// and {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
 	CustomKeyAcquisitionURLTemplate *string `json:"customKeyAcquisitionUrlTemplate,omitempty"`
 
@@ -2208,56 +2581,58 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-// FaceDetectorPreset - Describes all the settings to be used when analyzing a video in order to detect (and optionally redact) all the faces present.
+// FaceDetectorPreset - Describes all the settings to be used when analyzing a video in order to detect (and optionally redact)
+// all the faces present.
 type FaceDetectorPreset struct {
-	Preset
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// Blur type
 	BlurType *BlurType `json:"blurType,omitempty"`
 
 	// Dictionary containing key value pairs for parameters not exposed in the preset itself
 	ExperimentalOptions map[string]*string `json:"experimentalOptions,omitempty"`
 
-	// This mode provides the ability to choose between the following settings: 1) Analyze - For detection only.This mode generates a metadata JSON file marking
-	// appearances of faces throughout the
-	// video.Where possible, appearances of the same person are assigned the same ID. 2) Combined - Additionally redacts(blurs) detected faces. 3) Redact -
-	// This enables a 2-pass process, allowing for
-	// selective redaction of a subset of detected faces.It takes in the metadata file from a prior analyze pass, along with the source video, and a user-selected
-	// subset of IDs that require redaction.
+	// This mode provides the ability to choose between the following settings: 1) Analyze - For detection only.This mode generates
+	// a metadata JSON file marking appearances of faces throughout the
+	// video.Where possible, appearances of the same person are assigned the same ID. 2) Combined - Additionally redacts(blurs)
+	// detected faces. 3) Redact - This enables a 2-pass process, allowing for
+	// selective redaction of a subset of detected faces.It takes in the metadata file from a prior analyze pass, along with the
+	// source video, and a user-selected subset of IDs that require redaction.
 	Mode *FaceRedactorMode `json:"mode,omitempty"`
 
-	// Specifies the maximum resolution at which your video is analyzed. The default behavior is "SourceResolution," which will keep the input video at its
-	// original resolution when analyzed. Using
-	// "StandardDefinition" will resize input videos to standard definition while preserving the appropriate aspect ratio. It will only resize if the video
-	// is of higher resolution. For example, a 1920x1080
-	// input would be scaled to 640x360 before processing. Switching to "StandardDefinition" will reduce the time it takes to process high resolution video.
-	// It may also reduce the cost of using this
-	// component (see https://azure.microsoft.com/en-us/pricing/details/media-services/#analytics for details). However, faces that end up being too small in
-	// the resized video may not be detected.
+	// Specifies the maximum resolution at which your video is analyzed. The default behavior is "SourceResolution," which will
+	// keep the input video at its original resolution when analyzed. Using
+	// "StandardDefinition" will resize input videos to standard definition while preserving the appropriate aspect ratio. It
+	// will only resize if the video is of higher resolution. For example, a 1920x1080
+	// input would be scaled to 640x360 before processing. Switching to "StandardDefinition" will reduce the time it takes to
+	// process high resolution video. It may also reduce the cost of using this
+	// component (see https://azure.microsoft.com/en-us/pricing/details/media-services/#analytics for details). However, faces
+	// that end up being too small in the resized video may not be detected.
 	Resolution *AnalysisResolution `json:"resolution,omitempty"`
+}
+
+// GetPreset implements the PresetClassification interface for type FaceDetectorPreset.
+func (f *FaceDetectorPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: f.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FaceDetectorPreset.
 func (f FaceDetectorPreset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	f.Preset.marshalInternal(objectMap, "#Microsoft.Media.FaceDetectorPreset")
 	populate(objectMap, "blurType", f.BlurType)
 	populate(objectMap, "experimentalOptions", f.ExperimentalOptions)
 	populate(objectMap, "mode", f.Mode)
+	objectMap["@odata.type"] = "#Microsoft.Media.FaceDetectorPreset"
 	populate(objectMap, "resolution", f.Resolution)
 	return json.Marshal(objectMap)
 }
@@ -2280,6 +2655,9 @@ func (f *FaceDetectorPreset) UnmarshalJSON(data []byte) error {
 		case "mode":
 			err = unpopulate(val, &f.Mode)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &f.ODataType)
+			delete(rawMsg, key)
 		case "resolution":
 			err = unpopulate(val, &f.Resolution)
 			delete(rawMsg, key)
@@ -2287,9 +2665,6 @@ func (f *FaceDetectorPreset) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := f.Preset.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2306,7 +2681,8 @@ type FilterTrackPropertyCondition struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// FilterTrackSelection - Representing a list of FilterTrackPropertyConditions to select a track. The filters are combined using a logical AND operation.
+// FilterTrackSelection - Representing a list of FilterTrackPropertyConditions to select a track. The filters are combined
+// using a logical AND operation.
 type FilterTrackSelection struct {
 	// REQUIRED; The track selections.
 	TrackSelections []*FilterTrackPropertyCondition `json:"trackSelections,omitempty"`
@@ -2319,7 +2695,8 @@ func (f FilterTrackSelection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Filters - Describes all the filtering operations, such as de-interlacing, rotation etc. that are to be applied to the input media before encoding.
+// Filters - Describes all the filtering operations, such as de-interlacing, rotation etc. that are to be applied to the input
+// media before encoding.
 type Filters struct {
 	// The parameters for the rectangular window with which to crop the input video.
 	Crop *Rectangle `json:"crop,omitempty"`
@@ -2382,7 +2759,7 @@ type FirstQuality struct {
 // FormatClassification provides polymorphic access to related types.
 // Call the interface's GetFormat() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *Format, *ImageFormat, *JpgFormat, *Mp4Format, *MultiBitrateFormat, *PngFormat, *TransportStreamFormat
+// - *Format, *ImageFormat, *JpgFormat, *Mp4Format, *MultiBitrateFormat, *PNGFormat, *TransportStreamFormat
 type FormatClassification interface {
 	// GetFormat returns the Format content of the underlying type.
 	GetFormat() *Format
@@ -2390,14 +2767,14 @@ type FormatClassification interface {
 
 // Format - Base class for output.
 type Format struct {
-	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file name: {Basename} - An expansion
-	// macro that will use the name of the input video file. If
-	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of input video files will be used.
-	// If the length of base name of the input video
-	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate extension for this format.
-	// {Label} - The label assigned to the
-	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate. Not applicable to thumbnails.
-	// {Codec} - The type of the audio/video codec.
+	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// name: {Basename} - An expansion macro that will use the name of the input video file. If
+	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
+	// input video files will be used. If the length of base name of the input video
+	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
+	// extension for this format. {Label} - The label assigned to the
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
 	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
 	FilenamePattern *string `json:"filenamePattern,omitempty"`
 
@@ -2408,27 +2785,44 @@ type Format struct {
 // GetFormat implements the FormatClassification interface for type Format.
 func (f *Format) GetFormat() *Format { return f }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Format.
-func (f *Format) UnmarshalJSON(data []byte) error {
+// FromAllInputFile - An InputDefinition that looks across all of the files provided to select tracks specified by the IncludedTracks
+// property. Generally used with the AudioTrackByAttribute and VideoTrackByAttribute to
+// allow selection of a single track across a set of input files.
+type FromAllInputFile struct {
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
+	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+}
+
+// GetInputDefinition implements the InputDefinitionClassification interface for type FromAllInputFile.
+func (f *FromAllInputFile) GetInputDefinition() *InputDefinition {
+	return &InputDefinition{
+		ODataType:      f.ODataType,
+		IncludedTracks: f.IncludedTracks,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FromAllInputFile.
+func (f FromAllInputFile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "includedTracks", f.IncludedTracks)
+	objectMap["@odata.type"] = "#Microsoft.Media.FromAllInputFile"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FromAllInputFile.
+func (f *FromAllInputFile) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return f.unmarshalInternal(rawMsg)
-}
-
-func (f Format) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "filenamePattern", f.FilenamePattern)
-	f.ODataType = &discValue
-	objectMap["@odata.type"] = f.ODataType
-}
-
-func (f *Format) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "filenamePattern":
-			err = unpopulate(val, &f.FilenamePattern)
+		case "includedTracks":
+			f.IncludedTracks, err = unmarshalTrackDescriptorClassificationArray(val)
 			delete(rawMsg, key)
 		case "@odata.type":
 			err = unpopulate(val, &f.ODataType)
@@ -2441,66 +2835,165 @@ func (f *Format) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	return nil
 }
 
-// FromAllInputFile - An InputDefinition that looks across all of the files provided to select tracks specified by the IncludedTracks property. Generally
-// used with the AudioTrackByAttribute and VideoTrackByAttribute to
-// allow selection of a single track across a set of input files.
-type FromAllInputFile struct {
-	InputDefinition
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FromAllInputFile.
-func (f FromAllInputFile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	f.InputDefinition.marshalInternal(objectMap, "#Microsoft.Media.FromAllInputFile")
-	return json.Marshal(objectMap)
-}
-
-// FromEachInputFile - An InputDefinition that looks at each input file provided to select tracks specified by the IncludedTracks property. Generally used
-// with the AudioTrackByAttribute and VideoTrackByAttribute to select
+// FromEachInputFile - An InputDefinition that looks at each input file provided to select tracks specified by the IncludedTracks
+// property. Generally used with the AudioTrackByAttribute and VideoTrackByAttribute to select
 // tracks from each file given.
 type FromEachInputFile struct {
-	InputDefinition
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
+	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+}
+
+// GetInputDefinition implements the InputDefinitionClassification interface for type FromEachInputFile.
+func (f *FromEachInputFile) GetInputDefinition() *InputDefinition {
+	return &InputDefinition{
+		ODataType:      f.ODataType,
+		IncludedTracks: f.IncludedTracks,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FromEachInputFile.
 func (f FromEachInputFile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	f.InputDefinition.marshalInternal(objectMap, "#Microsoft.Media.FromEachInputFile")
+	populate(objectMap, "includedTracks", f.IncludedTracks)
+	objectMap["@odata.type"] = "#Microsoft.Media.FromEachInputFile"
 	return json.Marshal(objectMap)
 }
 
-// H264Layer - Describes the settings to be used when encoding the input video into a desired output bitrate layer with the H.264 video codec.
+// UnmarshalJSON implements the json.Unmarshaller interface for type FromEachInputFile.
+func (f *FromEachInputFile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "includedTracks":
+			f.IncludedTracks, err = unmarshalTrackDescriptorClassificationArray(val)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &f.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// H264Layer - Describes the settings to be used when encoding the input video into a desired output bitrate layer with the
+// H.264 video codec.
 type H264Layer struct {
-	VideoLayer
-	// The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds. The default is 5 seconds (for
-	// example, PT5S).
+	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. This is
+	// a required field.
+	Bitrate *int32 `json:"bitrate,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on
+	// whenever the video profile permits its use.
+	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
+
+	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number
+	// based on the video profile and level.
+	BFrames *int32 `json:"bFrames,omitempty"`
+
+	// The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds.
+	// The default is 5 seconds (for example, PT5S).
 	BufferWindow *string `json:"bufferWindow,omitempty"`
 
-	// The entropy mode to be used for this layer. If not specified, the encoder chooses the mode that is appropriate for the profile and level.
+	// The entropy mode to be used for this layer. If not specified, the encoder chooses the mode that is appropriate for the
+	// profile and level.
 	EntropyMode *EntropyMode `json:"entropyMode,omitempty"`
 
-	// We currently support Level up to 6.2. The value can be Auto, or a number that matches the H.264 profile. If not specified, the default is Auto, which
-	// lets the encoder choose the Level that is
+	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
+	// are integers (For example, 30000/1001), or in the form of a number (For example,
+	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified,
+	// the encoder will use the same frame rate as the input video.
+	FrameRate *string `json:"frameRate,omitempty"`
+
+	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in height as the input.
+	Height *string `json:"height,omitempty"`
+
+	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
+	// the output file.
+	Label *string `json:"label,omitempty"`
+
+	// We currently support Level up to 6.2. The value can be Auto, or a number that matches the H.264 profile. If not specified,
+	// the default is Auto, which lets the encoder choose the Level that is
 	// appropriate for this layer.
 	Level *string `json:"level,omitempty"`
+
+	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults
+	// to the same value as bitrate.
+	MaxBitrate *int32 `json:"maxBitrate,omitempty"`
 
 	// We currently support Baseline, Main, High, High422, High444. Default is Auto.
 	Profile *H264VideoProfile `json:"profile,omitempty"`
 
-	// The number of reference frames to be used when encoding this layer. If not specified, the encoder determines an appropriate number based on the encoder
-	// complexity setting.
+	// The number of reference frames to be used when encoding this layer. If not specified, the encoder determines an appropriate
+	// number based on the encoder complexity setting.
 	ReferenceFrames *int32 `json:"referenceFrames,omitempty"`
+
+	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will
+	// use a single slice for each frame.
+	Slices *int32 `json:"slices,omitempty"`
+
+	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in width as the input.
+	Width *string `json:"width,omitempty"`
+}
+
+// GetLayer implements the LayerClassification interface for type H264Layer.
+func (h *H264Layer) GetLayer() *Layer {
+	return &Layer{
+		ODataType: h.ODataType,
+		Width:     h.Width,
+		Height:    h.Height,
+		Label:     h.Label,
+	}
+}
+
+// GetVideoLayer implements the VideoLayerClassification interface for type H264Layer.
+func (h *H264Layer) GetVideoLayer() *VideoLayer {
+	return &VideoLayer{
+		Bitrate:        h.Bitrate,
+		MaxBitrate:     h.MaxBitrate,
+		BFrames:        h.BFrames,
+		FrameRate:      h.FrameRate,
+		Slices:         h.Slices,
+		AdaptiveBFrame: h.AdaptiveBFrame,
+		ODataType:      h.ODataType,
+		Width:          h.Width,
+		Height:         h.Height,
+		Label:          h.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type H264Layer.
 func (h H264Layer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.VideoLayer.marshalInternal(objectMap, "#Microsoft.Media.H264Layer")
+	populate(objectMap, "adaptiveBFrame", h.AdaptiveBFrame)
+	populate(objectMap, "bFrames", h.BFrames)
+	populate(objectMap, "bitrate", h.Bitrate)
 	populate(objectMap, "bufferWindow", h.BufferWindow)
 	populate(objectMap, "entropyMode", h.EntropyMode)
+	populate(objectMap, "frameRate", h.FrameRate)
+	populate(objectMap, "height", h.Height)
+	populate(objectMap, "label", h.Label)
 	populate(objectMap, "level", h.Level)
+	populate(objectMap, "maxBitrate", h.MaxBitrate)
+	objectMap["@odata.type"] = "#Microsoft.Media.H264Layer"
 	populate(objectMap, "profile", h.Profile)
 	populate(objectMap, "referenceFrames", h.ReferenceFrames)
+	populate(objectMap, "slices", h.Slices)
+	populate(objectMap, "width", h.Width)
 	return json.Marshal(objectMap)
 }
 
@@ -2513,14 +3006,38 @@ func (h *H264Layer) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "adaptiveBFrame":
+			err = unpopulate(val, &h.AdaptiveBFrame)
+			delete(rawMsg, key)
+		case "bFrames":
+			err = unpopulate(val, &h.BFrames)
+			delete(rawMsg, key)
+		case "bitrate":
+			err = unpopulate(val, &h.Bitrate)
+			delete(rawMsg, key)
 		case "bufferWindow":
 			err = unpopulate(val, &h.BufferWindow)
 			delete(rawMsg, key)
 		case "entropyMode":
 			err = unpopulate(val, &h.EntropyMode)
 			delete(rawMsg, key)
+		case "frameRate":
+			err = unpopulate(val, &h.FrameRate)
+			delete(rawMsg, key)
+		case "height":
+			err = unpopulate(val, &h.Height)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &h.Label)
+			delete(rawMsg, key)
 		case "level":
 			err = unpopulate(val, &h.Level)
+			delete(rawMsg, key)
+		case "maxBitrate":
+			err = unpopulate(val, &h.MaxBitrate)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &h.ODataType)
 			delete(rawMsg, key)
 		case "profile":
 			err = unpopulate(val, &h.Profile)
@@ -2528,39 +3045,81 @@ func (h *H264Layer) UnmarshalJSON(data []byte) error {
 		case "referenceFrames":
 			err = unpopulate(val, &h.ReferenceFrames)
 			delete(rawMsg, key)
+		case "slices":
+			err = unpopulate(val, &h.Slices)
+			delete(rawMsg, key)
+		case "width":
+			err = unpopulate(val, &h.Width)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := h.VideoLayer.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // H264Video - Describes all the properties for encoding a video with the H.264 codec.
 type H264Video struct {
-	Video
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// Tells the encoder how to choose its encoding settings. The default value is Balanced.
 	Complexity *H264Complexity `json:"complexity,omitempty"`
+
+	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
+	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
+	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
+	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
 
 	// The collection of output H.264 layers to be produced by the encoder.
 	Layers []*H264Layer `json:"layers,omitempty"`
 
-	// Whether or not the encoder should insert key frames at scene changes. If not specified, the default is false. This flag should be set to true only when
-	// the encoder is being configured to produce a
+	// Whether or not the encoder should insert key frames at scene changes. If not specified, the default is false. This flag
+	// should be set to true only when the encoder is being configured to produce a
 	// single output video.
 	SceneChangeDetection *bool `json:"sceneChangeDetection,omitempty"`
+
+	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
+	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+
+	// The Video Sync Mode
+	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type H264Video.
+func (h *H264Video) GetCodec() *Codec {
+	return &Codec{
+		ODataType: h.ODataType,
+		Label:     h.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type H264Video.
+func (h *H264Video) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: h.KeyFrameInterval,
+		StretchMode:      h.StretchMode,
+		SyncMode:         h.SyncMode,
+		ODataType:        h.ODataType,
+		Label:            h.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type H264Video.
 func (h H264Video) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.Video.marshalInternal(objectMap, "#Microsoft.Media.H264Video")
 	populate(objectMap, "complexity", h.Complexity)
+	populate(objectMap, "keyFrameInterval", h.KeyFrameInterval)
+	populate(objectMap, "label", h.Label)
 	populate(objectMap, "layers", h.Layers)
+	objectMap["@odata.type"] = "#Microsoft.Media.H264Video"
 	populate(objectMap, "sceneChangeDetection", h.SceneChangeDetection)
+	populate(objectMap, "stretchMode", h.StretchMode)
+	populate(objectMap, "syncMode", h.SyncMode)
 	return json.Marshal(objectMap)
 }
 
@@ -2576,51 +3135,140 @@ func (h *H264Video) UnmarshalJSON(data []byte) error {
 		case "complexity":
 			err = unpopulate(val, &h.Complexity)
 			delete(rawMsg, key)
+		case "keyFrameInterval":
+			err = unpopulate(val, &h.KeyFrameInterval)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &h.Label)
+			delete(rawMsg, key)
 		case "layers":
 			err = unpopulate(val, &h.Layers)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &h.ODataType)
+			delete(rawMsg, key)
 		case "sceneChangeDetection":
 			err = unpopulate(val, &h.SceneChangeDetection)
+			delete(rawMsg, key)
+		case "stretchMode":
+			err = unpopulate(val, &h.StretchMode)
+			delete(rawMsg, key)
+		case "syncMode":
+			err = unpopulate(val, &h.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := h.Video.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// H265Layer - Describes the settings to be used when encoding the input video into a desired output bitrate layer with the H.265 video codec.
+// H265Layer - Describes the settings to be used when encoding the input video into a desired output bitrate layer with the
+// H.265 video codec.
 type H265Layer struct {
-	H265VideoLayer
-	// The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds. The default is 5 seconds (for
-	// example, PT5S).
+	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. For example:
+	// a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This is a
+	// required field.
+	Bitrate *int32 `json:"bitrate,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will
+	// turn it on whenever the video profile permits its use.
+	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
+
+	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number
+	// based on the video profile and level.
+	BFrames *int32 `json:"bFrames,omitempty"`
+
+	// The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds.
+	// The default is 5 seconds (for example, PT5S).
 	BufferWindow *string `json:"bufferWindow,omitempty"`
 
-	// We currently support Level up to 6.2. The value can be Auto, or a number that matches the H.265 profile. If not specified, the default is Auto, which
-	// lets the encoder choose the Level that is
+	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
+	// are integers (For example, 30000/1001), or in the form of a number (For example,
+	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified,
+	// the encoder will use the same frame rate as the input video.
+	FrameRate *string `json:"frameRate,omitempty"`
+
+	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in height as the input.
+	Height *string `json:"height,omitempty"`
+
+	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
+	// the output file.
+	Label *string `json:"label,omitempty"`
+
+	// We currently support Level up to 6.2. The value can be Auto, or a number that matches the H.265 profile. If not specified,
+	// the default is Auto, which lets the encoder choose the Level that is
 	// appropriate for this layer.
 	Level *string `json:"level,omitempty"`
+
+	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults
+	// to the same value as bitrate.
+	MaxBitrate *int32 `json:"maxBitrate,omitempty"`
 
 	// We currently support Main. Default is Auto.
 	Profile *H265VideoProfile `json:"profile,omitempty"`
 
-	// The number of reference frames to be used when encoding this layer. If not specified, the encoder determines an appropriate number based on the encoder
-	// complexity setting.
+	// The number of reference frames to be used when encoding this layer. If not specified, the encoder determines an appropriate
+	// number based on the encoder complexity setting.
 	ReferenceFrames *int32 `json:"referenceFrames,omitempty"`
+
+	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will
+	// use a single slice for each frame.
+	Slices *int32 `json:"slices,omitempty"`
+
+	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in width as the input.
+	Width *string `json:"width,omitempty"`
+}
+
+// GetH265VideoLayer implements the H265VideoLayerClassification interface for type H265Layer.
+func (h *H265Layer) GetH265VideoLayer() *H265VideoLayer {
+	return &H265VideoLayer{
+		Bitrate:        h.Bitrate,
+		MaxBitrate:     h.MaxBitrate,
+		BFrames:        h.BFrames,
+		FrameRate:      h.FrameRate,
+		Slices:         h.Slices,
+		AdaptiveBFrame: h.AdaptiveBFrame,
+		ODataType:      h.ODataType,
+		Width:          h.Width,
+		Height:         h.Height,
+		Label:          h.Label,
+	}
+}
+
+// GetLayer implements the LayerClassification interface for type H265Layer.
+func (h *H265Layer) GetLayer() *Layer {
+	return &Layer{
+		ODataType: h.ODataType,
+		Width:     h.Width,
+		Height:    h.Height,
+		Label:     h.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type H265Layer.
 func (h H265Layer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.H265VideoLayer.marshalInternal(objectMap, "#Microsoft.Media.H265Layer")
+	populate(objectMap, "adaptiveBFrame", h.AdaptiveBFrame)
+	populate(objectMap, "bFrames", h.BFrames)
+	populate(objectMap, "bitrate", h.Bitrate)
 	populate(objectMap, "bufferWindow", h.BufferWindow)
+	populate(objectMap, "frameRate", h.FrameRate)
+	populate(objectMap, "height", h.Height)
+	populate(objectMap, "label", h.Label)
 	populate(objectMap, "level", h.Level)
+	populate(objectMap, "maxBitrate", h.MaxBitrate)
+	objectMap["@odata.type"] = "#Microsoft.Media.H265Layer"
 	populate(objectMap, "profile", h.Profile)
 	populate(objectMap, "referenceFrames", h.ReferenceFrames)
+	populate(objectMap, "slices", h.Slices)
+	populate(objectMap, "width", h.Width)
 	return json.Marshal(objectMap)
 }
 
@@ -2633,11 +3281,35 @@ func (h *H265Layer) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "adaptiveBFrame":
+			err = unpopulate(val, &h.AdaptiveBFrame)
+			delete(rawMsg, key)
+		case "bFrames":
+			err = unpopulate(val, &h.BFrames)
+			delete(rawMsg, key)
+		case "bitrate":
+			err = unpopulate(val, &h.Bitrate)
+			delete(rawMsg, key)
 		case "bufferWindow":
 			err = unpopulate(val, &h.BufferWindow)
 			delete(rawMsg, key)
+		case "frameRate":
+			err = unpopulate(val, &h.FrameRate)
+			delete(rawMsg, key)
+		case "height":
+			err = unpopulate(val, &h.Height)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &h.Label)
+			delete(rawMsg, key)
 		case "level":
 			err = unpopulate(val, &h.Level)
+			delete(rawMsg, key)
+		case "maxBitrate":
+			err = unpopulate(val, &h.MaxBitrate)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &h.ODataType)
 			delete(rawMsg, key)
 		case "profile":
 			err = unpopulate(val, &h.Profile)
@@ -2645,41 +3317,83 @@ func (h *H265Layer) UnmarshalJSON(data []byte) error {
 		case "referenceFrames":
 			err = unpopulate(val, &h.ReferenceFrames)
 			delete(rawMsg, key)
+		case "slices":
+			err = unpopulate(val, &h.Slices)
+			delete(rawMsg, key)
+		case "width":
+			err = unpopulate(val, &h.Width)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := h.H265VideoLayer.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // H265Video - Describes all the properties for encoding a video with the H.265 codec.
 type H265Video struct {
-	Video
-	// Tells the encoder how to choose its encoding settings. Quality will provide for a higher compression ratio but at a higher cost and longer compute time.
-	// Speed will produce a relatively larger file but
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Tells the encoder how to choose its encoding settings. Quality will provide for a higher compression ratio but at a higher
+	// cost and longer compute time. Speed will produce a relatively larger file but
 	// is faster and more economical. The default value is Balanced.
 	Complexity *H265Complexity `json:"complexity,omitempty"`
+
+	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
+	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
+	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
+	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
 
 	// The collection of output H.265 layers to be produced by the encoder.
 	Layers []*H265Layer `json:"layers,omitempty"`
 
-	// Specifies whether or not the encoder should insert key frames at scene changes. If not specified, the default is false. This flag should be set to true
-	// only when the encoder is being configured to
+	// Specifies whether or not the encoder should insert key frames at scene changes. If not specified, the default is false.
+	// This flag should be set to true only when the encoder is being configured to
 	// produce a single output video.
 	SceneChangeDetection *bool `json:"sceneChangeDetection,omitempty"`
+
+	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
+	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+
+	// The Video Sync Mode
+	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type H265Video.
+func (h *H265Video) GetCodec() *Codec {
+	return &Codec{
+		ODataType: h.ODataType,
+		Label:     h.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type H265Video.
+func (h *H265Video) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: h.KeyFrameInterval,
+		StretchMode:      h.StretchMode,
+		SyncMode:         h.SyncMode,
+		ODataType:        h.ODataType,
+		Label:            h.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type H265Video.
 func (h H265Video) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.Video.marshalInternal(objectMap, "#Microsoft.Media.H265Video")
 	populate(objectMap, "complexity", h.Complexity)
+	populate(objectMap, "keyFrameInterval", h.KeyFrameInterval)
+	populate(objectMap, "label", h.Label)
 	populate(objectMap, "layers", h.Layers)
+	objectMap["@odata.type"] = "#Microsoft.Media.H265Video"
 	populate(objectMap, "sceneChangeDetection", h.SceneChangeDetection)
+	populate(objectMap, "stretchMode", h.StretchMode)
+	populate(objectMap, "syncMode", h.SyncMode)
 	return json.Marshal(objectMap)
 }
 
@@ -2695,19 +3409,31 @@ func (h *H265Video) UnmarshalJSON(data []byte) error {
 		case "complexity":
 			err = unpopulate(val, &h.Complexity)
 			delete(rawMsg, key)
+		case "keyFrameInterval":
+			err = unpopulate(val, &h.KeyFrameInterval)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &h.Label)
+			delete(rawMsg, key)
 		case "layers":
 			err = unpopulate(val, &h.Layers)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &h.ODataType)
+			delete(rawMsg, key)
 		case "sceneChangeDetection":
 			err = unpopulate(val, &h.SceneChangeDetection)
+			delete(rawMsg, key)
+		case "stretchMode":
+			err = unpopulate(val, &h.StretchMode)
+			delete(rawMsg, key)
+		case "syncMode":
+			err = unpopulate(val, &h.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := h.Video.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2724,41 +3450,75 @@ type H265VideoLayerClassification interface {
 
 // H265VideoLayer - Describes the settings to be used when encoding the input video into a desired output bitrate layer.
 type H265VideoLayer struct {
-	Layer
-	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. For example: a target bitrate of 3000Kbps
-	// or 3Mbps means this value should be 3000000 This is a
+	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. For example:
+	// a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This is a
 	// required field.
 	Bitrate *int32 `json:"bitrate,omitempty"`
 
-	// Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on whenever the video
-	// profile permits its use.
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will
+	// turn it on whenever the video profile permits its use.
 	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
 
-	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number based on the video profile and
-	// level.
+	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number
+	// based on the video profile and level.
 	BFrames *int32 `json:"bFrames,omitempty"`
 
-	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N are integers (For example, 30000/1001),
-	// or in the form of a number (For example,
-	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified, the encoder will use the
-	// same frame rate as the input video.
+	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
+	// are integers (For example, 30000/1001), or in the form of a number (For example,
+	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified,
+	// the encoder will use the same frame rate as the input video.
 	FrameRate *string `json:"frameRate,omitempty"`
 
-	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults to the same value as bitrate.
+	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in height as the input.
+	Height *string `json:"height,omitempty"`
+
+	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
+	// the output file.
+	Label *string `json:"label,omitempty"`
+
+	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults
+	// to the same value as bitrate.
 	MaxBitrate *int32 `json:"maxBitrate,omitempty"`
 
-	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will use a single slice for each
-	// frame.
+	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will
+	// use a single slice for each frame.
 	Slices *int32 `json:"slices,omitempty"`
+
+	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in width as the input.
+	Width *string `json:"width,omitempty"`
 }
 
 // GetH265VideoLayer implements the H265VideoLayerClassification interface for type H265VideoLayer.
 func (h *H265VideoLayer) GetH265VideoLayer() *H265VideoLayer { return h }
 
+// GetLayer implements the LayerClassification interface for type H265VideoLayer.
+func (h *H265VideoLayer) GetLayer() *Layer {
+	return &Layer{
+		ODataType: h.ODataType,
+		Width:     h.Width,
+		Height:    h.Height,
+		Label:     h.Label,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type H265VideoLayer.
 func (h H265VideoLayer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.marshalInternal(objectMap, "#Microsoft.Media.H265VideoLayer")
+	populate(objectMap, "adaptiveBFrame", h.AdaptiveBFrame)
+	populate(objectMap, "bFrames", h.BFrames)
+	populate(objectMap, "bitrate", h.Bitrate)
+	populate(objectMap, "frameRate", h.FrameRate)
+	populate(objectMap, "height", h.Height)
+	populate(objectMap, "label", h.Label)
+	populate(objectMap, "maxBitrate", h.MaxBitrate)
+	objectMap["@odata.type"] = "#Microsoft.Media.H265VideoLayer"
+	populate(objectMap, "slices", h.Slices)
+	populate(objectMap, "width", h.Width)
 	return json.Marshal(objectMap)
 }
 
@@ -2768,20 +3528,6 @@ func (h *H265VideoLayer) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return h.unmarshalInternal(rawMsg)
-}
-
-func (h H265VideoLayer) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	h.Layer.marshalInternal(objectMap, discValue)
-	populate(objectMap, "adaptiveBFrame", h.AdaptiveBFrame)
-	populate(objectMap, "bFrames", h.BFrames)
-	populate(objectMap, "bitrate", h.Bitrate)
-	populate(objectMap, "frameRate", h.FrameRate)
-	populate(objectMap, "maxBitrate", h.MaxBitrate)
-	populate(objectMap, "slices", h.Slices)
-}
-
-func (h *H265VideoLayer) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -2797,27 +3543,36 @@ func (h *H265VideoLayer) unmarshalInternal(rawMsg map[string]json.RawMessage) er
 		case "frameRate":
 			err = unpopulate(val, &h.FrameRate)
 			delete(rawMsg, key)
+		case "height":
+			err = unpopulate(val, &h.Height)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &h.Label)
+			delete(rawMsg, key)
 		case "maxBitrate":
 			err = unpopulate(val, &h.MaxBitrate)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &h.ODataType)
+			delete(rawMsg, key)
 		case "slices":
 			err = unpopulate(val, &h.Slices)
+			delete(rawMsg, key)
+		case "width":
+			err = unpopulate(val, &h.Width)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := h.Layer.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // Hls - HTTP Live Streaming (HLS) packing setting for the live output.
 type Hls struct {
-	// The number of fragments in an HTTP Live Streaming (HLS) TS segment in the output of the live event. This value does not affect the packing ratio for
-	// HLS CMAF output.
+	// The number of fragments in an HTTP Live Streaming (HLS) TS segment in the output of the live event. This value does not
+	// affect the packing ratio for HLS CMAF output.
 	FragmentsPerTsSegment *int32 `json:"fragmentsPerTsSegment,omitempty"`
 }
 
@@ -2849,7 +3604,7 @@ type IPRange struct {
 // ImageClassification provides polymorphic access to related types.
 // Call the interface's GetImage() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *Image, *JpgImage, *PngImage
+// - *Image, *JpgImage, *PNGImage
 type ImageClassification interface {
 	VideoClassification
 	// GetImage returns the Image content of the underlying type.
@@ -2858,42 +3613,84 @@ type ImageClassification interface {
 
 // Image - Describes the basic properties for generating thumbnails from the input video
 type Image struct {
-	Video
-	// REQUIRED; The position in the input video from where to start generating thumbnails. The value can be in ISO 8601 format (For example, PT05S to start
-	// at 5 seconds), or a frame count (For example, 10 to start at
-	// the 10th frame), or a relative value to stream duration (For example, 10% to start at 10% of stream duration). Also supports a macro {Best}, which tells
-	// the encoder to select the best thumbnail from
-	// the first few seconds of the video and will only produce one thumbnail, no matter what other settings are for Step and Range. The default value is macro
-	// {Best}.
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// REQUIRED; The position in the input video from where to start generating thumbnails. The value can be in ISO 8601 format
+	// (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at
+	// the 10th frame), or a relative value to stream duration (For example, 10% to start at 10% of stream duration). Also supports
+	// a macro {Best}, which tells the encoder to select the best thumbnail from
+	// the first few seconds of the video and will only produce one thumbnail, no matter what other settings are for Step and
+	// Range. The default value is macro {Best}.
 	Start *string `json:"start,omitempty"`
 
-	// The position relative to transform preset start time in the input video at which to stop generating thumbnails. The value can be in ISO 8601 format (For
-	// example, PT5M30S to stop at 5 minutes and 30
-	// seconds from start time), or a frame count (For example, 300 to stop at the 300th frame from the frame at start time. If this value is 1, it means only
-	// producing one thumbnail at start time), or a
-	// relative value to the stream duration (For example, 50% to stop at half of stream duration from start time). The default value is 100%, which means to
-	// stop at the end of the stream.
+	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
+	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
+	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
+	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
+
+	// The position relative to transform preset start time in the input video at which to stop generating thumbnails. The value
+	// can be in ISO 8601 format (For example, PT5M30S to stop at 5 minutes and 30
+	// seconds from start time), or a frame count (For example, 300 to stop at the 300th frame from the frame at start time. If
+	// this value is 1, it means only producing one thumbnail at start time), or a
+	// relative value to the stream duration (For example, 50% to stop at half of stream duration from start time). The default
+	// value is 100%, which means to stop at the end of the stream.
 	Range *string `json:"range,omitempty"`
 
-	// The intervals at which thumbnails are generated. The value can be in ISO 8601 format (For example, PT05S for one image every 5 seconds), or a frame count
-	// (For example, 30 for one image every 30
-	// frames), or a relative value to stream duration (For example, 10% for one image every 10% of stream duration). Note: Step value will affect the first
-	// generated thumbnail, which may not be exactly the
-	// one specified at transform preset start time. This is due to the encoder, which tries to select the best thumbnail between start time and Step position
-	// from start time as the first output. As the
-	// default value is 10%, it means if stream has long duration, the first generated thumbnail might be far away from the one specified at start time. Try
-	// to select reasonable value for Step if the first
+	// The intervals at which thumbnails are generated. The value can be in ISO 8601 format (For example, PT05S for one image
+	// every 5 seconds), or a frame count (For example, 30 for one image every 30
+	// frames), or a relative value to stream duration (For example, 10% for one image every 10% of stream duration). Note: Step
+	// value will affect the first generated thumbnail, which may not be exactly the
+	// one specified at transform preset start time. This is due to the encoder, which tries to select the best thumbnail between
+	// start time and Step position from start time as the first output. As the
+	// default value is 10%, it means if stream has long duration, the first generated thumbnail might be far away from the one
+	// specified at start time. Try to select reasonable value for Step if the first
 	// thumbnail is expected close to start time, or set Range value at 1 if only one thumbnail is needed at start time.
 	Step *string `json:"step,omitempty"`
+
+	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
+	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+
+	// The Video Sync Mode
+	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type Image.
+func (i *Image) GetCodec() *Codec {
+	return &Codec{
+		ODataType: i.ODataType,
+		Label:     i.Label,
+	}
 }
 
 // GetImage implements the ImageClassification interface for type Image.
 func (i *Image) GetImage() *Image { return i }
 
+// GetVideo implements the VideoClassification interface for type Image.
+func (i *Image) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: i.KeyFrameInterval,
+		StretchMode:      i.StretchMode,
+		SyncMode:         i.SyncMode,
+		ODataType:        i.ODataType,
+		Label:            i.Label,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Image.
 func (i Image) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.marshalInternal(objectMap, "#Microsoft.Media.Image")
+	populate(objectMap, "keyFrameInterval", i.KeyFrameInterval)
+	populate(objectMap, "label", i.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.Image"
+	populate(objectMap, "range", i.Range)
+	populate(objectMap, "start", i.Start)
+	populate(objectMap, "step", i.Step)
+	populate(objectMap, "stretchMode", i.StretchMode)
+	populate(objectMap, "syncMode", i.SyncMode)
 	return json.Marshal(objectMap)
 }
 
@@ -2903,20 +3700,18 @@ func (i *Image) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return i.unmarshalInternal(rawMsg)
-}
-
-func (i Image) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	i.Video.marshalInternal(objectMap, discValue)
-	populate(objectMap, "range", i.Range)
-	populate(objectMap, "start", i.Start)
-	populate(objectMap, "step", i.Step)
-}
-
-func (i *Image) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "keyFrameInterval":
+			err = unpopulate(val, &i.KeyFrameInterval)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &i.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &i.ODataType)
+			delete(rawMsg, key)
 		case "range":
 			err = unpopulate(val, &i.Range)
 			delete(rawMsg, key)
@@ -2926,13 +3721,16 @@ func (i *Image) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 		case "step":
 			err = unpopulate(val, &i.Step)
 			delete(rawMsg, key)
+		case "stretchMode":
+			err = unpopulate(val, &i.StretchMode)
+			delete(rawMsg, key)
+		case "syncMode":
+			err = unpopulate(val, &i.SyncMode)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := i.Video.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2940,7 +3738,7 @@ func (i *Image) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 // ImageFormatClassification provides polymorphic access to related types.
 // Call the interface's GetImageFormat() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ImageFormat, *JpgFormat, *PngFormat
+// - *ImageFormat, *JpgFormat, *PNGFormat
 type ImageFormatClassification interface {
 	FormatClassification
 	// GetImageFormat returns the ImageFormat content of the underlying type.
@@ -2949,7 +3747,27 @@ type ImageFormatClassification interface {
 
 // ImageFormat - Describes the properties for an output image file.
 type ImageFormat struct {
-	Format
+	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// name: {Basename} - An expansion macro that will use the name of the input video file. If
+	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
+	// input video files will be used. If the length of base name of the input video
+	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
+	// extension for this format. {Label} - The label assigned to the
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
+	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	FilenamePattern *string `json:"filenamePattern,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetFormat implements the FormatClassification interface for type ImageFormat.
+func (i *ImageFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       i.ODataType,
+		FilenamePattern: i.FilenamePattern,
+	}
 }
 
 // GetImageFormat implements the ImageFormatClassification interface for type ImageFormat.
@@ -2958,17 +3776,30 @@ func (i *ImageFormat) GetImageFormat() *ImageFormat { return i }
 // MarshalJSON implements the json.Marshaller interface for type ImageFormat.
 func (i ImageFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.marshalInternal(objectMap, "#Microsoft.Media.ImageFormat")
+	populate(objectMap, "filenamePattern", i.FilenamePattern)
+	objectMap["@odata.type"] = "#Microsoft.Media.ImageFormat"
 	return json.Marshal(objectMap)
 }
 
-func (i ImageFormat) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	i.Format.marshalInternal(objectMap, discValue)
-}
-
-func (i *ImageFormat) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := i.Format.unmarshalInternal(rawMsg); err != nil {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImageFormat.
+func (i *ImageFormat) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "filenamePattern":
+			err = unpopulate(val, &i.FilenamePattern)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &i.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -2982,7 +3813,8 @@ type InputDefinitionClassification interface {
 	GetInputDefinition() *InputDefinition
 }
 
-// InputDefinition - Base class for defining an input. Use sub classes of this class to specify tracks selections and related metadata.
+// InputDefinition - Base class for defining an input. Use sub classes of this class to specify tracks selections and related
+// metadata.
 type InputDefinition struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
@@ -2994,22 +3826,20 @@ type InputDefinition struct {
 // GetInputDefinition implements the InputDefinitionClassification interface for type InputDefinition.
 func (i *InputDefinition) GetInputDefinition() *InputDefinition { return i }
 
+// MarshalJSON implements the json.Marshaller interface for type InputDefinition.
+func (i InputDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "includedTracks", i.IncludedTracks)
+	objectMap["@odata.type"] = i.ODataType
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON implements the json.Unmarshaller interface for type InputDefinition.
 func (i *InputDefinition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return i.unmarshalInternal(rawMsg)
-}
-
-func (i InputDefinition) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "includedTracks", i.IncludedTracks)
-	i.ODataType = &discValue
-	objectMap["@odata.type"] = i.ODataType
-}
-
-func (i *InputDefinition) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -3029,16 +3859,30 @@ func (i *InputDefinition) unmarshalInternal(rawMsg map[string]json.RawMessage) e
 
 // InputFile - An InputDefinition for a single file. TrackSelections are scoped to the file specified.
 type InputFile struct {
-	InputDefinition
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// Name of the file that this input definition applies to.
 	Filename *string `json:"filename,omitempty"`
+
+	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
+	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+}
+
+// GetInputDefinition implements the InputDefinitionClassification interface for type InputFile.
+func (i *InputFile) GetInputDefinition() *InputDefinition {
+	return &InputDefinition{
+		ODataType:      i.ODataType,
+		IncludedTracks: i.IncludedTracks,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type InputFile.
 func (i InputFile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.InputDefinition.marshalInternal(objectMap, "#Microsoft.Media.InputFile")
 	populate(objectMap, "filename", i.Filename)
+	populate(objectMap, "includedTracks", i.IncludedTracks)
+	objectMap["@odata.type"] = "#Microsoft.Media.InputFile"
 	return json.Marshal(objectMap)
 }
 
@@ -3054,33 +3898,46 @@ func (i *InputFile) UnmarshalJSON(data []byte) error {
 		case "filename":
 			err = unpopulate(val, &i.Filename)
 			delete(rawMsg, key)
+		case "includedTracks":
+			i.IncludedTracks, err = unmarshalTrackDescriptorClassificationArray(val)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &i.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := i.InputDefinition.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // Job - A Job resource type. The progress and state can be obtained by polling a Job or subscribing to events using EventGrid.
 type Job struct {
-	ProxyResource
 	// The resource properties.
 	Properties *JobProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Job.
 func (j Job) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", j.ID)
+	populate(objectMap, "name", j.Name)
 	populate(objectMap, "properties", j.Properties)
 	populate(objectMap, "systemData", j.SystemData)
+	populate(objectMap, "type", j.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -3115,7 +3972,8 @@ type JobError struct {
 	// READ-ONLY; A human-readable language-dependent representation of the error.
 	Message *string `json:"message,omitempty" azure:"ro"`
 
-	// READ-ONLY; Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via Azure Portal.
+	// READ-ONLY; Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
+	// Azure Portal.
 	Retry *JobRetry `json:"retry,omitempty" azure:"ro"`
 }
 
@@ -3142,7 +4000,7 @@ type JobErrorDetail struct {
 // JobInputClassification provides polymorphic access to related types.
 // Call the interface's GetJobInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *JobInput, *JobInputAsset, *JobInputClip, *JobInputHttp, *JobInputSequence, *JobInputs
+// - *JobInput, *JobInputAsset, *JobInputClip, *JobInputHTTP, *JobInputSequence, *JobInputs
 type JobInputClassification interface {
 	// GetJobInput returns the JobInput content of the underlying type.
 	GetJobInput() *JobInput
@@ -3157,47 +4015,64 @@ type JobInput struct {
 // GetJobInput implements the JobInputClassification interface for type JobInput.
 func (j *JobInput) GetJobInput() *JobInput { return j }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type JobInput.
-func (j *JobInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return j.unmarshalInternal(rawMsg)
-}
-
-func (j JobInput) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	j.ODataType = &discValue
-	objectMap["@odata.type"] = j.ODataType
-}
-
-func (j *JobInput) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // JobInputAsset - Represents an Asset for input into a Job.
 type JobInputAsset struct {
-	JobInputClip
 	// REQUIRED; The name of the input Asset.
 	AssetName *string `json:"assetName,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Defines a point on the timeline of the input media at which processing will end. Defaults to the end of the input media.
+	End ClipTimeClassification `json:"end,omitempty"`
+
+	// List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings will not be returned in service
+	// responses to prevent sensitive data exposure.
+	Files []*string `json:"files,omitempty"`
+
+	// Defines a list of InputDefinitions. For each InputDefinition, it defines a list of track selections and related metadata.
+	InputDefinitions []InputDefinitionClassification `json:"inputDefinitions,omitempty"`
+
+	// A label that is assigned to a JobInputClip, that is used to satisfy a reference used in the Transform. For example, a Transform
+	// can be authored so as to take an image file with the label 'xyz' and
+	// apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should
+	// be the image file, and it should have the label 'xyz'.
+	Label *string `json:"label,omitempty"`
+
+	// Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input
+	// media.
+	Start ClipTimeClassification `json:"start,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type JobInputAsset.
+func (j *JobInputAsset) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
+}
+
+// GetJobInputClip implements the JobInputClipClassification interface for type JobInputAsset.
+func (j *JobInputAsset) GetJobInputClip() *JobInputClip {
+	return &JobInputClip{
+		Files:            j.Files,
+		Start:            j.Start,
+		End:              j.End,
+		Label:            j.Label,
+		InputDefinitions: j.InputDefinitions,
+		ODataType:        j.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputAsset.
 func (j JobInputAsset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.JobInputClip.marshalInternal(objectMap, "#Microsoft.Media.JobInputAsset")
 	populate(objectMap, "assetName", j.AssetName)
+	populate(objectMap, "end", j.End)
+	populate(objectMap, "files", j.Files)
+	populate(objectMap, "inputDefinitions", j.InputDefinitions)
+	populate(objectMap, "label", j.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.JobInputAsset"
+	populate(objectMap, "start", j.Start)
 	return json.Marshal(objectMap)
 }
 
@@ -3213,13 +4088,28 @@ func (j *JobInputAsset) UnmarshalJSON(data []byte) error {
 		case "assetName":
 			err = unpopulate(val, &j.AssetName)
 			delete(rawMsg, key)
+		case "end":
+			j.End, err = unmarshalClipTimeClassification(val)
+			delete(rawMsg, key)
+		case "files":
+			err = unpopulate(val, &j.Files)
+			delete(rawMsg, key)
+		case "inputDefinitions":
+			j.InputDefinitions, err = unmarshalInputDefinitionClassificationArray(val)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &j.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
+		case "start":
+			j.Start, err = unmarshalClipTimeClassification(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := j.JobInputClip.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3227,7 +4117,7 @@ func (j *JobInputAsset) UnmarshalJSON(data []byte) error {
 // JobInputClipClassification provides polymorphic access to related types.
 // Call the interface's GetJobInputClip() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *JobInputAsset, *JobInputClip, *JobInputHttp
+// - *JobInputAsset, *JobInputClip, *JobInputHTTP
 type JobInputClipClassification interface {
 	JobInputClassification
 	// GetJobInputClip returns the JobInputClip content of the underlying type.
@@ -3236,25 +4126,35 @@ type JobInputClipClassification interface {
 
 // JobInputClip - Represents input files for a Job.
 type JobInputClip struct {
-	JobInput
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// Defines a point on the timeline of the input media at which processing will end. Defaults to the end of the input media.
 	End ClipTimeClassification `json:"end,omitempty"`
 
-	// List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings will not be returned in service responses to prevent sensitive
-	// data exposure.
+	// List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings will not be returned in service
+	// responses to prevent sensitive data exposure.
 	Files []*string `json:"files,omitempty"`
 
 	// Defines a list of InputDefinitions. For each InputDefinition, it defines a list of track selections and related metadata.
 	InputDefinitions []InputDefinitionClassification `json:"inputDefinitions,omitempty"`
 
-	// A label that is assigned to a JobInputClip, that is used to satisfy a reference used in the Transform. For example, a Transform can be authored so as
-	// to take an image file with the label 'xyz' and
-	// apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should be the image file, and it
-	// should have the label 'xyz'.
+	// A label that is assigned to a JobInputClip, that is used to satisfy a reference used in the Transform. For example, a Transform
+	// can be authored so as to take an image file with the label 'xyz' and
+	// apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should
+	// be the image file, and it should have the label 'xyz'.
 	Label *string `json:"label,omitempty"`
 
-	// Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input media.
+	// Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input
+	// media.
 	Start ClipTimeClassification `json:"start,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type JobInputClip.
+func (j *JobInputClip) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
 }
 
 // GetJobInputClip implements the JobInputClipClassification interface for type JobInputClip.
@@ -3263,7 +4163,12 @@ func (j *JobInputClip) GetJobInputClip() *JobInputClip { return j }
 // MarshalJSON implements the json.Marshaller interface for type JobInputClip.
 func (j JobInputClip) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.marshalInternal(objectMap, "#Microsoft.Media.JobInputClip")
+	populate(objectMap, "end", j.End)
+	populate(objectMap, "files", j.Files)
+	populate(objectMap, "inputDefinitions", j.InputDefinitions)
+	populate(objectMap, "label", j.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.JobInputClip"
+	populate(objectMap, "start", j.Start)
 	return json.Marshal(objectMap)
 }
 
@@ -3273,19 +4178,6 @@ func (j *JobInputClip) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return j.unmarshalInternal(rawMsg)
-}
-
-func (j JobInputClip) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	j.JobInput.marshalInternal(objectMap, discValue)
-	populate(objectMap, "end", j.End)
-	populate(objectMap, "files", j.Files)
-	populate(objectMap, "inputDefinitions", j.InputDefinitions)
-	populate(objectMap, "label", j.Label)
-	populate(objectMap, "start", j.Start)
-}
-
-func (j *JobInputClip) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -3301,6 +4193,9 @@ func (j *JobInputClip) unmarshalInternal(rawMsg map[string]json.RawMessage) erro
 		case "label":
 			err = unpopulate(val, &j.Label)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
 		case "start":
 			j.Start, err = unmarshalClipTimeClassification(val)
 			delete(rawMsg, key)
@@ -3309,26 +4204,69 @@ func (j *JobInputClip) unmarshalInternal(rawMsg map[string]json.RawMessage) erro
 			return err
 		}
 	}
-	if err := j.JobInput.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // JobInputHTTP - Represents HTTPS job input.
 type JobInputHTTP struct {
-	JobInputClip
-	// Base URI for HTTPS job input. It will be concatenated with provided file names. If no base uri is given, then the provided file list is assumed to be
-	// fully qualified uris. Maximum length of 4000
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Base URI for HTTPS job input. It will be concatenated with provided file names. If no base uri is given, then the provided
+	// file list is assumed to be fully qualified uris. Maximum length of 4000
 	// characters. The query strings will not be returned in service responses to prevent sensitive data exposure.
 	BaseURI *string `json:"baseUri,omitempty"`
+
+	// Defines a point on the timeline of the input media at which processing will end. Defaults to the end of the input media.
+	End ClipTimeClassification `json:"end,omitempty"`
+
+	// List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings will not be returned in service
+	// responses to prevent sensitive data exposure.
+	Files []*string `json:"files,omitempty"`
+
+	// Defines a list of InputDefinitions. For each InputDefinition, it defines a list of track selections and related metadata.
+	InputDefinitions []InputDefinitionClassification `json:"inputDefinitions,omitempty"`
+
+	// A label that is assigned to a JobInputClip, that is used to satisfy a reference used in the Transform. For example, a Transform
+	// can be authored so as to take an image file with the label 'xyz' and
+	// apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should
+	// be the image file, and it should have the label 'xyz'.
+	Label *string `json:"label,omitempty"`
+
+	// Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input
+	// media.
+	Start ClipTimeClassification `json:"start,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type JobInputHTTP.
+func (j *JobInputHTTP) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
+}
+
+// GetJobInputClip implements the JobInputClipClassification interface for type JobInputHTTP.
+func (j *JobInputHTTP) GetJobInputClip() *JobInputClip {
+	return &JobInputClip{
+		Files:            j.Files,
+		Start:            j.Start,
+		End:              j.End,
+		Label:            j.Label,
+		InputDefinitions: j.InputDefinitions,
+		ODataType:        j.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputHTTP.
 func (j JobInputHTTP) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.JobInputClip.marshalInternal(objectMap, "#Microsoft.Media.JobInputHttp")
 	populate(objectMap, "baseUri", j.BaseURI)
+	populate(objectMap, "end", j.End)
+	populate(objectMap, "files", j.Files)
+	populate(objectMap, "inputDefinitions", j.InputDefinitions)
+	populate(objectMap, "label", j.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.JobInputHttp"
+	populate(objectMap, "start", j.Start)
 	return json.Marshal(objectMap)
 }
 
@@ -3344,29 +4282,54 @@ func (j *JobInputHTTP) UnmarshalJSON(data []byte) error {
 		case "baseUri":
 			err = unpopulate(val, &j.BaseURI)
 			delete(rawMsg, key)
+		case "end":
+			j.End, err = unmarshalClipTimeClassification(val)
+			delete(rawMsg, key)
+		case "files":
+			err = unpopulate(val, &j.Files)
+			delete(rawMsg, key)
+		case "inputDefinitions":
+			j.InputDefinitions, err = unmarshalInputDefinitionClassificationArray(val)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &j.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
+		case "start":
+			j.Start, err = unmarshalClipTimeClassification(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := j.JobInputClip.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// JobInputSequence - A Sequence contains an ordered list of Clips where each clip is a JobInput. The Sequence will be treated as a single input.
+// JobInputSequence - A Sequence contains an ordered list of Clips where each clip is a JobInput. The Sequence will be treated
+// as a single input.
 type JobInputSequence struct {
-	JobInput
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// JobInputs that make up the timeline.
 	Inputs []JobInputClipClassification `json:"inputs,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type JobInputSequence.
+func (j *JobInputSequence) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputSequence.
 func (j JobInputSequence) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.JobInput.marshalInternal(objectMap, "#Microsoft.Media.JobInputSequence")
 	populate(objectMap, "inputs", j.Inputs)
+	objectMap["@odata.type"] = "#Microsoft.Media.JobInputSequence"
 	return json.Marshal(objectMap)
 }
 
@@ -3382,29 +4345,38 @@ func (j *JobInputSequence) UnmarshalJSON(data []byte) error {
 		case "inputs":
 			j.Inputs, err = unmarshalJobInputClipClassificationArray(val)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := j.JobInput.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // JobInputs - Describes a list of inputs to a Job.
 type JobInputs struct {
-	JobInput
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// List of inputs to a Job.
 	Inputs []JobInputClassification `json:"inputs,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type JobInputs.
+func (j *JobInputs) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputs.
 func (j JobInputs) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.JobInput.marshalInternal(objectMap, "#Microsoft.Media.JobInputs")
 	populate(objectMap, "inputs", j.Inputs)
+	objectMap["@odata.type"] = "#Microsoft.Media.JobInputs"
 	return json.Marshal(objectMap)
 }
 
@@ -3420,13 +4392,13 @@ func (j *JobInputs) UnmarshalJSON(data []byte) error {
 		case "inputs":
 			j.Inputs, err = unmarshalJobInputClassificationArray(val)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := j.JobInput.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3445,14 +4417,14 @@ type JobOutput struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
 
-	// A label that is assigned to a JobOutput in order to help uniquely identify it. This is useful when your Transform has more than one TransformOutput,
-	// whereby your Job has more than one JobOutput. In
-	// such cases, when you submit the Job, you will add two or more JobOutputs, in the same order as TransformOutputs in the Transform. Subsequently, when
-	// you retrieve the Job, either through events or on a
-	// GET request, you can use the label to easily identify the JobOutput. If a label is not provided, a default value of '{presetName}_{outputIndex}' will
-	// be used, where the preset name is the name of the
-	// preset in the corresponding TransformOutput and the output index is the relative index of the this JobOutput within the Job. Note that this index is
-	// the same as the relative index of the corresponding
+	// A label that is assigned to a JobOutput in order to help uniquely identify it. This is useful when your Transform has more
+	// than one TransformOutput, whereby your Job has more than one JobOutput. In
+	// such cases, when you submit the Job, you will add two or more JobOutputs, in the same order as TransformOutputs in the
+	// Transform. Subsequently, when you retrieve the Job, either through events or on a
+	// GET request, you can use the label to easily identify the JobOutput. If a label is not provided, a default value of '{presetName}_{outputIndex}'
+	// will be used, where the preset name is the name of the
+	// preset in the corresponding TransformOutput and the output index is the relative index of the this JobOutput within the
+	// Job. Note that this index is the same as the relative index of the corresponding
 	// TransformOutput within its Transform.
 	Label *string `json:"label,omitempty"`
 
@@ -3465,8 +4437,8 @@ type JobOutput struct {
 	// READ-ONLY; If the JobOutput is in the Error state, it contains the details of the error.
 	Error *JobError `json:"error,omitempty" azure:"ro"`
 
-	// READ-ONLY; If the JobOutput is in a Processing state, this contains the Job completion percentage. The value is an estimate and not intended to be used
-	// to predict Job completion times. To determine if the
+	// READ-ONLY; If the JobOutput is in a Processing state, this contains the Job completion percentage. The value is an estimate
+	// and not intended to be used to predict Job completion times. To determine if the
 	// JobOutput is complete, use the State property.
 	Progress *int32 `json:"progress,omitempty" azure:"ro"`
 
@@ -3480,28 +4452,26 @@ type JobOutput struct {
 // GetJobOutput implements the JobOutputClassification interface for type JobOutput.
 func (j *JobOutput) GetJobOutput() *JobOutput { return j }
 
+// MarshalJSON implements the json.Marshaller interface for type JobOutput.
+func (j JobOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
+	populate(objectMap, "error", j.Error)
+	populate(objectMap, "label", j.Label)
+	objectMap["@odata.type"] = j.ODataType
+	populate(objectMap, "presetOverride", j.PresetOverride)
+	populate(objectMap, "progress", j.Progress)
+	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
+	populate(objectMap, "state", j.State)
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON implements the json.Unmarshaller interface for type JobOutput.
 func (j *JobOutput) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return j.unmarshalInternal(rawMsg)
-}
-
-func (j JobOutput) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
-	populate(objectMap, "error", j.Error)
-	populate(objectMap, "label", j.Label)
-	j.ODataType = &discValue
-	objectMap["@odata.type"] = j.ODataType
-	populate(objectMap, "presetOverride", j.PresetOverride)
-	populate(objectMap, "progress", j.Progress)
-	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
-	populate(objectMap, "state", j.State)
-}
-
-func (j *JobOutput) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -3539,16 +4509,70 @@ func (j *JobOutput) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 
 // JobOutputAsset - Represents an Asset used as a JobOutput.
 type JobOutputAsset struct {
-	JobOutput
 	// REQUIRED; The name of the output Asset.
 	AssetName *string `json:"assetName,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// A label that is assigned to a JobOutput in order to help uniquely identify it. This is useful when your Transform has more
+	// than one TransformOutput, whereby your Job has more than one JobOutput. In
+	// such cases, when you submit the Job, you will add two or more JobOutputs, in the same order as TransformOutputs in the
+	// Transform. Subsequently, when you retrieve the Job, either through events or on a
+	// GET request, you can use the label to easily identify the JobOutput. If a label is not provided, a default value of '{presetName}_{outputIndex}'
+	// will be used, where the preset name is the name of the
+	// preset in the corresponding TransformOutput and the output index is the relative index of the this JobOutput within the
+	// Job. Note that this index is the same as the relative index of the corresponding
+	// TransformOutput within its Transform.
+	Label *string `json:"label,omitempty"`
+
+	// A preset used to override the preset in the corresponding transform output.
+	PresetOverride PresetClassification `json:"presetOverride,omitempty"`
+
+	// READ-ONLY; The UTC date and time at which this Job Output finished processing.
+	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; If the JobOutput is in the Error state, it contains the details of the error.
+	Error *JobError `json:"error,omitempty" azure:"ro"`
+
+	// READ-ONLY; If the JobOutput is in a Processing state, this contains the Job completion percentage. The value is an estimate
+	// and not intended to be used to predict Job completion times. To determine if the
+	// JobOutput is complete, use the State property.
+	Progress *int32 `json:"progress,omitempty" azure:"ro"`
+
+	// READ-ONLY; The UTC date and time at which this Job Output began processing.
+	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes the state of the JobOutput.
+	State *JobState `json:"state,omitempty" azure:"ro"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type JobOutputAsset.
+func (j *JobOutputAsset) GetJobOutput() *JobOutput {
+	return &JobOutput{
+		ODataType:      j.ODataType,
+		Error:          j.Error,
+		PresetOverride: j.PresetOverride,
+		State:          j.State,
+		Progress:       j.Progress,
+		Label:          j.Label,
+		StartTime:      j.StartTime,
+		EndTime:        j.EndTime,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobOutputAsset.
 func (j JobOutputAsset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.JobOutput.marshalInternal(objectMap, "#Microsoft.Media.JobOutputAsset")
 	populate(objectMap, "assetName", j.AssetName)
+	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
+	populate(objectMap, "error", j.Error)
+	populate(objectMap, "label", j.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.JobOutputAsset"
+	populate(objectMap, "presetOverride", j.PresetOverride)
+	populate(objectMap, "progress", j.Progress)
+	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
+	populate(objectMap, "state", j.State)
 	return json.Marshal(objectMap)
 }
 
@@ -3564,13 +4588,34 @@ func (j *JobOutputAsset) UnmarshalJSON(data []byte) error {
 		case "assetName":
 			err = unpopulate(val, &j.AssetName)
 			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &j.EndTime)
+			delete(rawMsg, key)
+		case "error":
+			err = unpopulate(val, &j.Error)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &j.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
+		case "presetOverride":
+			j.PresetOverride, err = unmarshalPresetClassification(val)
+			delete(rawMsg, key)
+		case "progress":
+			err = unpopulate(val, &j.Progress)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &j.StartTime)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, &j.State)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := j.JobOutput.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3589,7 +4634,8 @@ type JobProperties struct {
 	// Optional customer supplied description of the Job.
 	Description *string `json:"description,omitempty"`
 
-	// Priority with which the job should be processed. Higher priority jobs are processed before lower priority jobs. If not set, the default is normal.
+	// Priority with which the job should be processed. Higher priority jobs are processed before lower priority jobs. If not
+	// set, the default is normal.
 	Priority *Priority `json:"priority,omitempty"`
 
 	// READ-ONLY; The UTC date and time when the customer has created the Job, in 'YYYY-MM-DDThh:mm:ssZ' format.
@@ -3671,70 +4717,205 @@ func (j *JobProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JobsCancelJobOptions contains the optional parameters for the Jobs.CancelJob method.
-type JobsCancelJobOptions struct {
+// JobsClientCancelJobOptions contains the optional parameters for the JobsClient.CancelJob method.
+type JobsClientCancelJobOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsCreateOptions contains the optional parameters for the Jobs.Create method.
-type JobsCreateOptions struct {
+// JobsClientCreateOptions contains the optional parameters for the JobsClient.Create method.
+type JobsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsDeleteOptions contains the optional parameters for the Jobs.Delete method.
-type JobsDeleteOptions struct {
+// JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
+type JobsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsGetOptions contains the optional parameters for the Jobs.Get method.
-type JobsGetOptions struct {
+// JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsListOptions contains the optional parameters for the Jobs.List method.
-type JobsListOptions struct {
+// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+type JobsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
 	// Specifies the key by which the result collection should be ordered.
 	Orderby *string
 }
 
-// JobsUpdateOptions contains the optional parameters for the Jobs.Update method.
-type JobsUpdateOptions struct {
+// JobsClientUpdateOptions contains the optional parameters for the JobsClient.Update method.
+type JobsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // JpgFormat - Describes the settings for producing JPEG thumbnails.
 type JpgFormat struct {
-	ImageFormat
+	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// name: {Basename} - An expansion macro that will use the name of the input video file. If
+	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
+	// input video files will be used. If the length of base name of the input video
+	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
+	// extension for this format. {Label} - The label assigned to the
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
+	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	FilenamePattern *string `json:"filenamePattern,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetFormat implements the FormatClassification interface for type JpgFormat.
+func (j *JpgFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       j.ODataType,
+		FilenamePattern: j.FilenamePattern,
+	}
+}
+
+// GetImageFormat implements the ImageFormatClassification interface for type JpgFormat.
+func (j *JpgFormat) GetImageFormat() *ImageFormat {
+	return &ImageFormat{
+		ODataType:       j.ODataType,
+		FilenamePattern: j.FilenamePattern,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JpgFormat.
 func (j JpgFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.ImageFormat.marshalInternal(objectMap, "#Microsoft.Media.JpgFormat")
+	populate(objectMap, "filenamePattern", j.FilenamePattern)
+	objectMap["@odata.type"] = "#Microsoft.Media.JpgFormat"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type JpgFormat.
+func (j *JpgFormat) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "filenamePattern":
+			err = unpopulate(val, &j.FilenamePattern)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // JpgImage - Describes the properties for producing a series of JPEG images from the input video.
 type JpgImage struct {
-	Image
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// REQUIRED; The position in the input video from where to start generating thumbnails. The value can be in ISO 8601 format
+	// (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at
+	// the 10th frame), or a relative value to stream duration (For example, 10% to start at 10% of stream duration). Also supports
+	// a macro {Best}, which tells the encoder to select the best thumbnail from
+	// the first few seconds of the video and will only produce one thumbnail, no matter what other settings are for Step and
+	// Range. The default value is macro {Best}.
+	Start *string `json:"start,omitempty"`
+
+	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
+	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
+	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
+	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
+
 	// A collection of output JPEG image layers to be produced by the encoder.
 	Layers []*JpgLayer `json:"layers,omitempty"`
 
-	// Sets the number of columns used in thumbnail sprite image. The number of rows are automatically calculated and a VTT file is generated with the coordinate
-	// mappings for each thumbnail in the sprite.
-	// Note: this value should be a positive integer and a proper value is recommended so that the output image resolution will not go beyond JPEG maximum pixel
-	// resolution limit 65535x65535.
+	// The position relative to transform preset start time in the input video at which to stop generating thumbnails. The value
+	// can be in ISO 8601 format (For example, PT5M30S to stop at 5 minutes and 30
+	// seconds from start time), or a frame count (For example, 300 to stop at the 300th frame from the frame at start time. If
+	// this value is 1, it means only producing one thumbnail at start time), or a
+	// relative value to the stream duration (For example, 50% to stop at half of stream duration from start time). The default
+	// value is 100%, which means to stop at the end of the stream.
+	Range *string `json:"range,omitempty"`
+
+	// Sets the number of columns used in thumbnail sprite image. The number of rows are automatically calculated and a VTT file
+	// is generated with the coordinate mappings for each thumbnail in the sprite.
+	// Note: this value should be a positive integer and a proper value is recommended so that the output image resolution will
+	// not go beyond JPEG maximum pixel resolution limit 65535x65535.
 	SpriteColumn *int32 `json:"spriteColumn,omitempty"`
+
+	// The intervals at which thumbnails are generated. The value can be in ISO 8601 format (For example, PT05S for one image
+	// every 5 seconds), or a frame count (For example, 30 for one image every 30
+	// frames), or a relative value to stream duration (For example, 10% for one image every 10% of stream duration). Note: Step
+	// value will affect the first generated thumbnail, which may not be exactly the
+	// one specified at transform preset start time. This is due to the encoder, which tries to select the best thumbnail between
+	// start time and Step position from start time as the first output. As the
+	// default value is 10%, it means if stream has long duration, the first generated thumbnail might be far away from the one
+	// specified at start time. Try to select reasonable value for Step if the first
+	// thumbnail is expected close to start time, or set Range value at 1 if only one thumbnail is needed at start time.
+	Step *string `json:"step,omitempty"`
+
+	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
+	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+
+	// The Video Sync Mode
+	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type JpgImage.
+func (j *JpgImage) GetCodec() *Codec {
+	return &Codec{
+		ODataType: j.ODataType,
+		Label:     j.Label,
+	}
+}
+
+// GetImage implements the ImageClassification interface for type JpgImage.
+func (j *JpgImage) GetImage() *Image {
+	return &Image{
+		Start:            j.Start,
+		Step:             j.Step,
+		Range:            j.Range,
+		KeyFrameInterval: j.KeyFrameInterval,
+		StretchMode:      j.StretchMode,
+		SyncMode:         j.SyncMode,
+		ODataType:        j.ODataType,
+		Label:            j.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type JpgImage.
+func (j *JpgImage) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: j.KeyFrameInterval,
+		StretchMode:      j.StretchMode,
+		SyncMode:         j.SyncMode,
+		ODataType:        j.ODataType,
+		Label:            j.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JpgImage.
 func (j JpgImage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.Image.marshalInternal(objectMap, "#Microsoft.Media.JpgImage")
+	populate(objectMap, "keyFrameInterval", j.KeyFrameInterval)
+	populate(objectMap, "label", j.Label)
 	populate(objectMap, "layers", j.Layers)
+	objectMap["@odata.type"] = "#Microsoft.Media.JpgImage"
+	populate(objectMap, "range", j.Range)
 	populate(objectMap, "spriteColumn", j.SpriteColumn)
+	populate(objectMap, "start", j.Start)
+	populate(objectMap, "step", j.Step)
+	populate(objectMap, "stretchMode", j.StretchMode)
+	populate(objectMap, "syncMode", j.SyncMode)
 	return json.Marshal(objectMap)
 }
 
@@ -3747,35 +4928,83 @@ func (j *JpgImage) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "keyFrameInterval":
+			err = unpopulate(val, &j.KeyFrameInterval)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &j.Label)
+			delete(rawMsg, key)
 		case "layers":
 			err = unpopulate(val, &j.Layers)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
+		case "range":
+			err = unpopulate(val, &j.Range)
+			delete(rawMsg, key)
 		case "spriteColumn":
 			err = unpopulate(val, &j.SpriteColumn)
+			delete(rawMsg, key)
+		case "start":
+			err = unpopulate(val, &j.Start)
+			delete(rawMsg, key)
+		case "step":
+			err = unpopulate(val, &j.Step)
+			delete(rawMsg, key)
+		case "stretchMode":
+			err = unpopulate(val, &j.StretchMode)
+			delete(rawMsg, key)
+		case "syncMode":
+			err = unpopulate(val, &j.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := j.Image.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // JpgLayer - Describes the settings to produce a JPEG image from the input video.
 type JpgLayer struct {
-	Layer
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in height as the input.
+	Height *string `json:"height,omitempty"`
+
+	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
+	// the output file.
+	Label *string `json:"label,omitempty"`
+
 	// The compression quality of the JPEG output. Range is from 0-100 and the default is 70.
 	Quality *int32 `json:"quality,omitempty"`
+
+	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in width as the input.
+	Width *string `json:"width,omitempty"`
+}
+
+// GetLayer implements the LayerClassification interface for type JpgLayer.
+func (j *JpgLayer) GetLayer() *Layer {
+	return &Layer{
+		ODataType: j.ODataType,
+		Width:     j.Width,
+		Height:    j.Height,
+		Label:     j.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JpgLayer.
 func (j JpgLayer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.Layer.marshalInternal(objectMap, "#Microsoft.Media.JpgLayer")
+	populate(objectMap, "height", j.Height)
+	populate(objectMap, "label", j.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.JpgLayer"
 	populate(objectMap, "quality", j.Quality)
+	populate(objectMap, "width", j.Width)
 	return json.Marshal(objectMap)
 }
 
@@ -3788,16 +5017,25 @@ func (j *JpgLayer) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "height":
+			err = unpopulate(val, &j.Height)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &j.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &j.ODataType)
+			delete(rawMsg, key)
 		case "quality":
 			err = unpopulate(val, &j.Quality)
+			delete(rawMsg, key)
+		case "width":
+			err = unpopulate(val, &j.Width)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := j.Layer.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3808,8 +5046,8 @@ type KeyDelivery struct {
 }
 
 type KeyVaultProperties struct {
-	// The URL of the Key Vault key used to encrypt the account. The key may either be versioned (for example https://vault/keys/mykey/version1) or reference
-	// a key without a version (for example
+	// The URL of the Key Vault key used to encrypt the account. The key may either be versioned (for example https://vault/keys/mykey/version1)
+	// or reference a key without a version (for example
 	// https://vault/keys/mykey).
 	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
 
@@ -3820,74 +5058,34 @@ type KeyVaultProperties struct {
 // LayerClassification provides polymorphic access to related types.
 // Call the interface's GetLayer() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *H264Layer, *H265Layer, *H265VideoLayer, *JpgLayer, *Layer, *PngLayer, *VideoLayer
+// - *H264Layer, *H265Layer, *H265VideoLayer, *JpgLayer, *Layer, *PNGLayer, *VideoLayer
 type LayerClassification interface {
 	// GetLayer returns the Layer content of the underlying type.
 	GetLayer() *Layer
 }
 
-// Layer - The encoder can be configured to produce video and/or images (thumbnails) at different resolutions, by specifying a layer for each desired resolution.
-// A layer represents the properties for the video
+// Layer - The encoder can be configured to produce video and/or images (thumbnails) at different resolutions, by specifying
+// a layer for each desired resolution. A layer represents the properties for the video
 // or image at a resolution.
 type Layer struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
 
-	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example 50% means the output video
-	// has half as many pixels in height as the input.
+	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in height as the input.
 	Height *string `json:"height,omitempty"`
 
-	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming the output file.
+	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
+	// the output file.
 	Label *string `json:"label,omitempty"`
 
-	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example 50% means the output video
-	// has half as many pixels in width as the input.
+	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in width as the input.
 	Width *string `json:"width,omitempty"`
 }
 
 // GetLayer implements the LayerClassification interface for type Layer.
 func (l *Layer) GetLayer() *Layer { return l }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Layer.
-func (l *Layer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return l.unmarshalInternal(rawMsg)
-}
-
-func (l Layer) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "height", l.Height)
-	populate(objectMap, "label", l.Label)
-	l.ODataType = &discValue
-	objectMap["@odata.type"] = l.ODataType
-	populate(objectMap, "width", l.Width)
-}
-
-func (l *Layer) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "height":
-			err = unpopulate(val, &l.Height)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &l.Label)
-			delete(rawMsg, key)
-		case "@odata.type":
-			err = unpopulate(val, &l.ODataType)
-			delete(rawMsg, key)
-		case "width":
-			err = unpopulate(val, &l.Width)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // ListContainerSasInput - The parameters to the list SAS request.
 type ListContainerSasInput struct {
@@ -3979,48 +5177,66 @@ func (l ListStreamingLocatorsResponse) MarshalJSON() ([]byte, error) {
 
 // LiveEvent - The live event.
 type LiveEvent struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// The live event properties.
 	Properties *LiveEventProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LiveEvent.
 func (l LiveEvent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", l.ID)
+	populate(objectMap, "location", l.Location)
+	populate(objectMap, "name", l.Name)
 	populate(objectMap, "properties", l.Properties)
 	populate(objectMap, "systemData", l.SystemData)
+	populate(objectMap, "tags", l.Tags)
+	populate(objectMap, "type", l.Type)
 	return json.Marshal(objectMap)
 }
 
 // LiveEventActionInput - The LiveEvent action input parameter definition.
 type LiveEventActionInput struct {
-	// The flag indicates whether live outputs are automatically deleted when live event is being stopped. Deleting live outputs do not delete the underlying
-	// assets.
+	// The flag indicates whether live outputs are automatically deleted when live event is being stopped. Deleting live outputs
+	// do not delete the underlying assets.
 	RemoveOutputsOnStop *bool `json:"removeOutputsOnStop,omitempty"`
 }
 
 // LiveEventEncoding - Specifies the live event type and optional encoding settings for encoding live events.
 type LiveEventEncoding struct {
-	// Live event type. When encodingType is set to PassthroughBasic or PassthroughStandard, the service simply passes through the incoming video and audio
-	// layer(s) to the output. When encodingType is set to
+	// Live event type. When encodingType is set to PassthroughBasic or PassthroughStandard, the service simply passes through
+	// the incoming video and audio layer(s) to the output. When encodingType is set to
 	// Standard or Premium1080p, a live encoder transcodes the incoming stream into multiple bitrates or layers. See https://go.microsoft.com/fwlink/?linkid=2095101
 	// for more information. This property cannot
 	// be modified after the live event is created.
 	EncodingType *LiveEventEncodingType `json:"encodingType,omitempty"`
 
-	// Use an ISO 8601 time value between 0.5 to 20 seconds to specify the output fragment length for the video and audio tracks of an encoding live event.
-	// For example, use PT2S to indicate 2 seconds. For
-	// the video track it also defines the key frame interval, or the length of a GoP (group of pictures). If this value is not set for an encoding live event,
-	// the fragment duration defaults to 2 seconds.
+	// Use an ISO 8601 time value between 0.5 to 20 seconds to specify the output fragment length for the video and audio tracks
+	// of an encoding live event. For example, use PT2S to indicate 2 seconds. For
+	// the video track it also defines the key frame interval, or the length of a GoP (group of pictures). If this value is not
+	// set for an encoding live event, the fragment duration defaults to 2 seconds.
 	// The value cannot be set for pass-through live events.
 	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
 
-	// The optional encoding preset name, used when encodingType is not None. This value is specified at creation time and cannot be updated. If the encodingType
-	// is set to Standard, then the default preset
+	// The optional encoding preset name, used when encodingType is not None. This value is specified at creation time and cannot
+	// be updated. If the encodingType is set to Standard, then the default preset
 	// name is ‘Default720p’. Else if the encodingType is set to Premium1080p, the default preset is ‘Default1080p’.
 	PresetName *string `json:"presetName,omitempty"`
 
@@ -4045,15 +5261,15 @@ type LiveEventInput struct {
 	// Access control for live event input.
 	AccessControl *LiveEventInputAccessControl `json:"accessControl,omitempty"`
 
-	// A UUID in string form to uniquely identify the stream. This can be specified at creation time but cannot be updated. If omitted, the service will generate
-	// a unique value.
+	// A UUID in string form to uniquely identify the stream. This can be specified at creation time but cannot be updated. If
+	// omitted, the service will generate a unique value.
 	AccessToken *string `json:"accessToken,omitempty"`
 
 	// The input endpoints for the live event.
 	Endpoints []*LiveEventEndpoint `json:"endpoints,omitempty"`
 
-	// ISO 8601 time duration of the key frame interval duration of the input. This value sets the EXT-X-TARGETDURATION property in the HLS output. For example,
-	// use PT2S to indicate 2 seconds. Leave the
+	// ISO 8601 time duration of the key frame interval duration of the input. This value sets the EXT-X-TARGETDURATION property
+	// in the HLS output. For example, use PT2S to indicate 2 seconds. Leave the
 	// value empty for encoding live events.
 	KeyFrameIntervalDuration *string `json:"keyFrameIntervalDuration,omitempty"`
 }
@@ -4075,7 +5291,8 @@ type LiveEventInputAccessControl struct {
 	IP *IPAccessControl `json:"ip,omitempty"`
 }
 
-// LiveEventInputTrackSelection - A track selection condition. This property is reserved for future use, any value set on this property will be ignored.
+// LiveEventInputTrackSelection - A track selection condition. This property is reserved for future use, any value set on
+// this property will be ignored.
 type LiveEventInputTrackSelection struct {
 	// Comparing operation. This property is reserved for future use, any value set on this property will be ignored.
 	Operation *string `json:"operation,omitempty"`
@@ -4108,8 +5325,8 @@ func (l LiveEventListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LiveEventOutputTranscriptionTrack - Describes a transcription track in the output of a live event, generated using speech-to-text transcription. This
-// property is reserved for future use, any value set on this property will be ignored.
+// LiveEventOutputTranscriptionTrack - Describes a transcription track in the output of a live event, generated using speech-to-text
+// transcription. This property is reserved for future use, any value set on this property will be ignored.
 type LiveEventOutputTranscriptionTrack struct {
 	// REQUIRED; The output track name. This property is reserved for future use, any value set on this property will be ignored.
 	TrackName *string `json:"trackName,omitempty"`
@@ -4120,16 +5337,17 @@ type LiveEventPreview struct {
 	// The access control for live event preview.
 	AccessControl *LiveEventPreviewAccessControl `json:"accessControl,omitempty"`
 
-	// An alternative media identifier associated with the streaming locator created for the preview. This value is specified at creation time and cannot be
-	// updated. The identifier can be used in the
-	// CustomLicenseAcquisitionUrlTemplate or the CustomKeyAcquisitionUrlTemplate of the StreamingPolicy specified in the StreamingPolicyName field.
+	// An alternative media identifier associated with the streaming locator created for the preview. This value is specified
+	// at creation time and cannot be updated. The identifier can be used in the
+	// CustomLicenseAcquisitionUrlTemplate or the CustomKeyAcquisitionUrlTemplate of the StreamingPolicy specified in the StreamingPolicyName
+	// field.
 	AlternativeMediaID *string `json:"alternativeMediaId,omitempty"`
 
 	// The endpoints for preview. Do not share the preview URL with the live event audience.
 	Endpoints []*LiveEventEndpoint `json:"endpoints,omitempty"`
 
-	// The identifier of the preview locator in Guid format. Specifying this at creation time allows the caller to know the preview locator url before the event
-	// is created. If omitted, the service will
+	// The identifier of the preview locator in Guid format. Specifying this at creation time allows the caller to know the preview
+	// locator url before the event is created. If omitted, the service will
 	// generate a random identifier. This value cannot be updated once the live event is created.
 	PreviewLocator *string `json:"previewLocator,omitempty"`
 
@@ -4165,27 +5383,29 @@ type LiveEventProperties struct {
 	// A description for the live event.
 	Description *string `json:"description,omitempty"`
 
-	// Encoding settings for the live event. It configures whether a live encoder is used for the live event and settings for the live encoder if it is used.
+	// Encoding settings for the live event. It configures whether a live encoder is used for the live event and settings for
+	// the live encoder if it is used.
 	Encoding *LiveEventEncoding `json:"encoding,omitempty"`
 
-	// When useStaticHostname is set to true, the hostnamePrefix specifies the first part of the hostname assigned to the live event preview and ingest endpoints.
-	// The final hostname would be a combination of
+	// When useStaticHostname is set to true, the hostnamePrefix specifies the first part of the hostname assigned to the live
+	// event preview and ingest endpoints. The final hostname would be a combination of
 	// this prefix, the media service account name and a short code for the Azure Media Services data center.
 	HostnamePrefix *string `json:"hostnamePrefix,omitempty"`
 
-	// Live event preview settings. Preview allows live event producers to preview the live streaming content without creating any live output.
+	// Live event preview settings. Preview allows live event producers to preview the live streaming content without creating
+	// any live output.
 	Preview *LiveEventPreview `json:"preview,omitempty"`
 
-	// The options to use for the LiveEvent. This value is specified at creation time and cannot be updated. The valid values for the array entry values are
-	// 'Default' and 'LowLatency'.
+	// The options to use for the LiveEvent. This value is specified at creation time and cannot be updated. The valid values
+	// for the array entry values are 'Default' and 'LowLatency'.
 	StreamOptions []*StreamOptionsFlag `json:"streamOptions,omitempty"`
 
-	// Live transcription settings for the live event. See https://go.microsoft.com/fwlink/?linkid=2133742 for more information about the live transcription
-	// feature.
+	// Live transcription settings for the live event. See https://go.microsoft.com/fwlink/?linkid=2133742 for more information
+	// about the live transcription feature.
 	Transcriptions []*LiveEventTranscription `json:"transcriptions,omitempty"`
 
-	// Specifies whether a static hostname would be assigned to the live event preview and ingest endpoints. This value can only be updated if the live event
-	// is in Standby state
+	// Specifies whether a static hostname would be assigned to the live event preview and ingest endpoints. This value can only
+	// be updated if the live event is in Standby state
 	UseStaticHostname *bool `json:"useStaticHostname,omitempty"`
 
 	// READ-ONLY; The creation time for the live event
@@ -4276,22 +5496,23 @@ func (l *LiveEventProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// LiveEventTranscription - Describes the transcription tracks in the output of a live event, generated using speech-to-text transcription. This property
-// is reserved for future use, any value set on this property will be
+// LiveEventTranscription - Describes the transcription tracks in the output of a live event, generated using speech-to-text
+// transcription. This property is reserved for future use, any value set on this property will be
 // ignored.
 type LiveEventTranscription struct {
-	// Provides a mechanism to select the audio track in the input live feed, to which speech-to-text transcription is applied. This property is reserved for
-	// future use, any value set on this property will
+	// Provides a mechanism to select the audio track in the input live feed, to which speech-to-text transcription is applied.
+	// This property is reserved for future use, any value set on this property will
 	// be ignored.
 	InputTrackSelection []*LiveEventInputTrackSelection `json:"inputTrackSelection,omitempty"`
 
-	// Specifies the language (locale) to be used for speech-to-text transcription – it should match the spoken language in the audio track. The value should
-	// be in BCP-47 format (e.g: 'en-US'). See
-	// https://go.microsoft.com/fwlink/?linkid=2133742 for more information about the live transcription feature and the list of supported languages.
+	// Specifies the language (locale) to be used for speech-to-text transcription – it should match the spoken language in the
+	// audio track. The value should be in BCP-47 format (e.g: 'en-US'). See
+	// https://go.microsoft.com/fwlink/?linkid=2133742 for more information about the live transcription feature and the list
+	// of supported languages.
 	Language *string `json:"language,omitempty"`
 
-	// Describes a transcription track in the output of a live event, generated using speech-to-text transcription. This property is reserved for future use,
-	// any value set on this property will be ignored.
+	// Describes a transcription track in the output of a live event, generated using speech-to-text transcription. This property
+	// is reserved for future use, any value set on this property will be ignored.
 	OutputTranscriptionTrack *LiveEventOutputTranscriptionTrack `json:"outputTranscriptionTrack,omitempty"`
 }
 
@@ -4304,69 +5525,68 @@ func (l LiveEventTranscription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LiveEventsBeginAllocateOptions contains the optional parameters for the LiveEvents.BeginAllocate method.
-type LiveEventsBeginAllocateOptions struct {
+// LiveEventsClientBeginAllocateOptions contains the optional parameters for the LiveEventsClient.BeginAllocate method.
+type LiveEventsClientBeginAllocateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsBeginCreateOptions contains the optional parameters for the LiveEvents.BeginCreate method.
-type LiveEventsBeginCreateOptions struct {
+// LiveEventsClientBeginCreateOptions contains the optional parameters for the LiveEventsClient.BeginCreate method.
+type LiveEventsClientBeginCreateOptions struct {
 	// The flag indicates if the resource should be automatically started on creation.
 	AutoStart *bool
 }
 
-// LiveEventsBeginDeleteOptions contains the optional parameters for the LiveEvents.BeginDelete method.
-type LiveEventsBeginDeleteOptions struct {
+// LiveEventsClientBeginDeleteOptions contains the optional parameters for the LiveEventsClient.BeginDelete method.
+type LiveEventsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsBeginResetOptions contains the optional parameters for the LiveEvents.BeginReset method.
-type LiveEventsBeginResetOptions struct {
+// LiveEventsClientBeginResetOptions contains the optional parameters for the LiveEventsClient.BeginReset method.
+type LiveEventsClientBeginResetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsBeginStartOptions contains the optional parameters for the LiveEvents.BeginStart method.
-type LiveEventsBeginStartOptions struct {
+// LiveEventsClientBeginStartOptions contains the optional parameters for the LiveEventsClient.BeginStart method.
+type LiveEventsClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsBeginStopOptions contains the optional parameters for the LiveEvents.BeginStop method.
-type LiveEventsBeginStopOptions struct {
+// LiveEventsClientBeginStopOptions contains the optional parameters for the LiveEventsClient.BeginStop method.
+type LiveEventsClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsBeginUpdateOptions contains the optional parameters for the LiveEvents.BeginUpdate method.
-type LiveEventsBeginUpdateOptions struct {
+// LiveEventsClientBeginUpdateOptions contains the optional parameters for the LiveEventsClient.BeginUpdate method.
+type LiveEventsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsGetOptions contains the optional parameters for the LiveEvents.Get method.
-type LiveEventsGetOptions struct {
+// LiveEventsClientGetOptions contains the optional parameters for the LiveEventsClient.Get method.
+type LiveEventsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsListOptions contains the optional parameters for the LiveEvents.List method.
-type LiveEventsListOptions struct {
+// LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
+type LiveEventsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // LiveOutput - The Live Output.
 type LiveOutput struct {
-	ProxyResource
 	// Live output properties.
 	Properties *LiveOutputProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type LiveOutput.
-func (l LiveOutput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", l.Properties)
-	populate(objectMap, "systemData", l.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // LiveOutputListResult - The LiveOutput list result.
@@ -4392,8 +5612,8 @@ func (l LiveOutputListResult) MarshalJSON() ([]byte, error) {
 
 // LiveOutputProperties - The JSON object that contains the properties required to create a live output.
 type LiveOutputProperties struct {
-	// REQUIRED; ISO 8601 time between 1 minute to 25 hours to indicate the maximum content length that can be archived in the asset for this live output. This
-	// also sets the maximum content length for the rewind
+	// REQUIRED; ISO 8601 time between 1 minute to 25 hours to indicate the maximum content length that can be archived in the
+	// asset for this live output. This also sets the maximum content length for the rewind
 	// window. For example, use PT1H30M to indicate 1 hour and 30 minutes of archive window.
 	ArchiveWindowLength *string `json:"archiveWindowLength,omitempty"`
 
@@ -4488,28 +5708,29 @@ func (l *LiveOutputProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// LiveOutputsBeginCreateOptions contains the optional parameters for the LiveOutputs.BeginCreate method.
-type LiveOutputsBeginCreateOptions struct {
+// LiveOutputsClientBeginCreateOptions contains the optional parameters for the LiveOutputsClient.BeginCreate method.
+type LiveOutputsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveOutputsBeginDeleteOptions contains the optional parameters for the LiveOutputs.BeginDelete method.
-type LiveOutputsBeginDeleteOptions struct {
+// LiveOutputsClientBeginDeleteOptions contains the optional parameters for the LiveOutputsClient.BeginDelete method.
+type LiveOutputsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveOutputsGetOptions contains the optional parameters for the LiveOutputs.Get method.
-type LiveOutputsGetOptions struct {
+// LiveOutputsClientGetOptions contains the optional parameters for the LiveOutputsClient.Get method.
+type LiveOutputsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveOutputsListOptions contains the optional parameters for the LiveOutputs.List method.
-type LiveOutputsListOptions struct {
+// LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
+type LiveOutputsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationsCheckNameAvailabilityOptions contains the optional parameters for the Locations.CheckNameAvailability method.
-type LocationsCheckNameAvailabilityOptions struct {
+// LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
+// method.
+type LocationsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4548,24 +5769,42 @@ func (m MediaFilterProperties) MarshalJSON() ([]byte, error) {
 
 // MediaService - A Media Services account.
 type MediaService struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// The Managed Identity for the Media Services account.
 	Identity *MediaServiceIdentity `json:"identity,omitempty"`
 
 	// The resource properties.
 	Properties *MediaServiceProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MediaService.
 func (m MediaService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", m.ID)
 	populate(objectMap, "identity", m.Identity)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "name", m.Name)
 	populate(objectMap, "properties", m.Properties)
 	populate(objectMap, "systemData", m.SystemData)
+	populate(objectMap, "tags", m.Tags)
+	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -4662,46 +5901,6 @@ func (m MediaServiceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MediaservicesCreateOrUpdateOptions contains the optional parameters for the Mediaservices.CreateOrUpdate method.
-type MediaservicesCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MediaservicesDeleteOptions contains the optional parameters for the Mediaservices.Delete method.
-type MediaservicesDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MediaservicesGetOptions contains the optional parameters for the Mediaservices.Get method.
-type MediaservicesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MediaservicesListBySubscriptionOptions contains the optional parameters for the Mediaservices.ListBySubscription method.
-type MediaservicesListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MediaservicesListEdgePoliciesOptions contains the optional parameters for the Mediaservices.ListEdgePolicies method.
-type MediaservicesListEdgePoliciesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MediaservicesListOptions contains the optional parameters for the Mediaservices.List method.
-type MediaservicesListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MediaservicesSyncStorageKeysOptions contains the optional parameters for the Mediaservices.SyncStorageKeys method.
-type MediaservicesSyncStorageKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MediaservicesUpdateOptions contains the optional parameters for the Mediaservices.Update method.
-type MediaservicesUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // MetricDimension - A metric dimension.
 type MetricDimension struct {
 	// READ-ONLY; The display name for the dimension.
@@ -4773,14 +5972,75 @@ func (m MetricSpecification) MarshalJSON() ([]byte, error) {
 
 // Mp4Format - Describes the properties for an output ISO MP4 file.
 type Mp4Format struct {
-	MultiBitrateFormat
+	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// name: {Basename} - An expansion macro that will use the name of the input video file. If
+	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
+	// input video files will be used. If the length of base name of the input video
+	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
+	// extension for this format. {Label} - The label assigned to the
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
+	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	FilenamePattern *string `json:"filenamePattern,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The list of output files to produce. Each entry in the list is a set of audio and video layer labels to be muxed together
+	// .
+	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
+}
+
+// GetFormat implements the FormatClassification interface for type Mp4Format.
+func (m *Mp4Format) GetFormat() *Format {
+	return &Format{
+		ODataType:       m.ODataType,
+		FilenamePattern: m.FilenamePattern,
+	}
+}
+
+// GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type Mp4Format.
+func (m *Mp4Format) GetMultiBitrateFormat() *MultiBitrateFormat {
+	return &MultiBitrateFormat{
+		OutputFiles:     m.OutputFiles,
+		ODataType:       m.ODataType,
+		FilenamePattern: m.FilenamePattern,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Mp4Format.
 func (m Mp4Format) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.MultiBitrateFormat.marshalInternal(objectMap, "#Microsoft.Media.Mp4Format")
+	populate(objectMap, "filenamePattern", m.FilenamePattern)
+	objectMap["@odata.type"] = "#Microsoft.Media.Mp4Format"
+	populate(objectMap, "outputFiles", m.OutputFiles)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Mp4Format.
+func (m *Mp4Format) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "filenamePattern":
+			err = unpopulate(val, &m.FilenamePattern)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &m.ODataType)
+			delete(rawMsg, key)
+		case "outputFiles":
+			err = unpopulate(val, &m.OutputFiles)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // MultiBitrateFormatClassification provides polymorphic access to related types.
@@ -4793,13 +6053,35 @@ type MultiBitrateFormatClassification interface {
 	GetMultiBitrateFormat() *MultiBitrateFormat
 }
 
-// MultiBitrateFormat - Describes the properties for producing a collection of GOP aligned multi-bitrate files. The default behavior is to produce one output
-// file for each video layer which is muxed together with all the
+// MultiBitrateFormat - Describes the properties for producing a collection of GOP aligned multi-bitrate files. The default
+// behavior is to produce one output file for each video layer which is muxed together with all the
 // audios. The exact output files produced can be controlled by specifying the outputFiles collection.
 type MultiBitrateFormat struct {
-	Format
-	// The list of output files to produce. Each entry in the list is a set of audio and video layer labels to be muxed together .
+	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// name: {Basename} - An expansion macro that will use the name of the input video file. If
+	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
+	// input video files will be used. If the length of base name of the input video
+	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
+	// extension for this format. {Label} - The label assigned to the
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
+	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	FilenamePattern *string `json:"filenamePattern,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The list of output files to produce. Each entry in the list is a set of audio and video layer labels to be muxed together
+	// .
 	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
+}
+
+// GetFormat implements the FormatClassification interface for type MultiBitrateFormat.
+func (m *MultiBitrateFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       m.ODataType,
+		FilenamePattern: m.FilenamePattern,
+	}
 }
 
 // GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type MultiBitrateFormat.
@@ -4808,7 +6090,9 @@ func (m *MultiBitrateFormat) GetMultiBitrateFormat() *MultiBitrateFormat { retur
 // MarshalJSON implements the json.Marshaller interface for type MultiBitrateFormat.
 func (m MultiBitrateFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.marshalInternal(objectMap, "#Microsoft.Media.MultiBitrateFormat")
+	populate(objectMap, "filenamePattern", m.FilenamePattern)
+	objectMap["@odata.type"] = "#Microsoft.Media.MultiBitrateFormat"
+	populate(objectMap, "outputFiles", m.OutputFiles)
 	return json.Marshal(objectMap)
 }
 
@@ -4818,18 +6102,15 @@ func (m *MultiBitrateFormat) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return m.unmarshalInternal(rawMsg)
-}
-
-func (m MultiBitrateFormat) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	m.Format.marshalInternal(objectMap, discValue)
-	populate(objectMap, "outputFiles", m.OutputFiles)
-}
-
-func (m *MultiBitrateFormat) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "filenamePattern":
+			err = unpopulate(val, &m.FilenamePattern)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &m.ODataType)
+			delete(rawMsg, key)
 		case "outputFiles":
 			err = unpopulate(val, &m.OutputFiles)
 			delete(rawMsg, key)
@@ -4837,9 +6118,6 @@ func (m *MultiBitrateFormat) unmarshalInternal(rawMsg map[string]json.RawMessage
 		if err != nil {
 			return err
 		}
-	}
-	if err := m.Format.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -4899,17 +6177,17 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // OutputFile - Represents an output file produced.
 type OutputFile struct {
-	// REQUIRED; The list of labels that describe how the encoder should multiplex video and audio into an output file. For example, if the encoder is producing
-	// two video layers with labels v1 and v2, and one audio
-	// layer with label a1, then an array like '[v1, a1]' tells the encoder to produce an output file with the video track represented by v1 and the audio track
-	// represented by a1.
+	// REQUIRED; The list of labels that describe how the encoder should multiplex video and audio into an output file. For example,
+	// if the encoder is producing two video layers with labels v1 and v2, and one audio
+	// layer with label a1, then an array like '[v1, a1]' tells the encoder to produce an output file with the video track represented
+	// by v1 and the audio track represented by a1.
 	Labels []*string `json:"labels,omitempty"`
 }
 
@@ -4931,9 +6209,10 @@ type OverlayClassification interface {
 
 // Overlay - Base type for all overlays - image, audio or video.
 type Overlay struct {
-	// REQUIRED; The label of the job input which is to be used as an overlay. The Input must specify exactly one file. You can specify an image file in JPG,
-	// PNG, GIF or BMP format, or an audio file (such as a WAV,
-	// MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video file formats.
+	// REQUIRED; The label of the job input which is to be used as an overlay. The Input must specify exactly one file. You can
+	// specify an image file in JPG, PNG, GIF or BMP format, or an audio file (such as a WAV,
+	// MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video
+	// file formats.
 	InputLabel *string `json:"inputLabel,omitempty"`
 
 	// REQUIRED; The discriminator for derived types.
@@ -4942,23 +6221,23 @@ type Overlay struct {
 	// The gain level of audio in the overlay. The value should be in the range [0, 1.0]. The default is 1.0.
 	AudioGainLevel *float64 `json:"audioGainLevel,omitempty"`
 
-	// The end position, with reference to the input video, at which the overlay ends. The value should be in ISO 8601 format. For example, PT30S to end the
-	// overlay at 30 seconds into the input video. If not
-	// specified or the value is greater than the input video duration, the overlay will be applied until the end of the input video if the overlay media duration
-	// is greater than the input video duration,
+	// The end position, with reference to the input video, at which the overlay ends. The value should be in ISO 8601 format.
+	// For example, PT30S to end the overlay at 30 seconds into the input video. If not
+	// specified or the value is greater than the input video duration, the overlay will be applied until the end of the input
+	// video if the overlay media duration is greater than the input video duration,
 	// else the overlay will last as long as the overlay media duration.
 	End *string `json:"end,omitempty"`
 
-	// The duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If not specified the default behavior
-	// is to have no fade in (same as PT0S).
+	// The duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If
+	// not specified the default behavior is to have no fade in (same as PT0S).
 	FadeInDuration *string `json:"fadeInDuration,omitempty"`
 
-	// The duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not specified the default behavior
-	// is to have no fade out (same as PT0S).
+	// The duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not
+	// specified the default behavior is to have no fade out (same as PT0S).
 	FadeOutDuration *string `json:"fadeOutDuration,omitempty"`
 
-	// The start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format. For example, PT05S to start
-	// the overlay at 5 seconds into the input video.
+	// The start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format.
+	// For example, PT05S to start the overlay at 5 seconds into the input video.
 	// If not specified the overlay starts from the beginning of the input video.
 	Start *string `json:"start,omitempty"`
 }
@@ -4966,50 +6245,61 @@ type Overlay struct {
 // GetOverlay implements the OverlayClassification interface for type Overlay.
 func (o *Overlay) GetOverlay() *Overlay { return o }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Overlay.
-func (o *Overlay) UnmarshalJSON(data []byte) error {
+// PNGFormat - Describes the settings for producing PNG thumbnails.
+type PNGFormat struct {
+	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// name: {Basename} - An expansion macro that will use the name of the input video file. If
+	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
+	// input video files will be used. If the length of base name of the input video
+	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
+	// extension for this format. {Label} - The label assigned to the
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
+	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	FilenamePattern *string `json:"filenamePattern,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetFormat implements the FormatClassification interface for type PNGFormat.
+func (p *PNGFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       p.ODataType,
+		FilenamePattern: p.FilenamePattern,
+	}
+}
+
+// GetImageFormat implements the ImageFormatClassification interface for type PNGFormat.
+func (p *PNGFormat) GetImageFormat() *ImageFormat {
+	return &ImageFormat{
+		ODataType:       p.ODataType,
+		FilenamePattern: p.FilenamePattern,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PNGFormat.
+func (p PNGFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "filenamePattern", p.FilenamePattern)
+	objectMap["@odata.type"] = "#Microsoft.Media.PngFormat"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PNGFormat.
+func (p *PNGFormat) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return o.unmarshalInternal(rawMsg)
-}
-
-func (o Overlay) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "audioGainLevel", o.AudioGainLevel)
-	populate(objectMap, "end", o.End)
-	populate(objectMap, "fadeInDuration", o.FadeInDuration)
-	populate(objectMap, "fadeOutDuration", o.FadeOutDuration)
-	populate(objectMap, "inputLabel", o.InputLabel)
-	o.ODataType = &discValue
-	objectMap["@odata.type"] = o.ODataType
-	populate(objectMap, "start", o.Start)
-}
-
-func (o *Overlay) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "audioGainLevel":
-			err = unpopulate(val, &o.AudioGainLevel)
-			delete(rawMsg, key)
-		case "end":
-			err = unpopulate(val, &o.End)
-			delete(rawMsg, key)
-		case "fadeInDuration":
-			err = unpopulate(val, &o.FadeInDuration)
-			delete(rawMsg, key)
-		case "fadeOutDuration":
-			err = unpopulate(val, &o.FadeOutDuration)
-			delete(rawMsg, key)
-		case "inputLabel":
-			err = unpopulate(val, &o.InputLabel)
+		case "filenamePattern":
+			err = unpopulate(val, &p.FilenamePattern)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &o.ODataType)
-			delete(rawMsg, key)
-		case "start":
-			err = unpopulate(val, &o.Start)
+			err = unpopulate(val, &p.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5019,30 +6309,101 @@ func (o *Overlay) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	return nil
 }
 
-// PNGFormat - Describes the settings for producing PNG thumbnails.
-type PNGFormat struct {
-	ImageFormat
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PNGFormat.
-func (p PNGFormat) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ImageFormat.marshalInternal(objectMap, "#Microsoft.Media.PngFormat")
-	return json.Marshal(objectMap)
-}
-
 // PNGImage - Describes the properties for producing a series of PNG images from the input video.
 type PNGImage struct {
-	Image
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// REQUIRED; The position in the input video from where to start generating thumbnails. The value can be in ISO 8601 format
+	// (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at
+	// the 10th frame), or a relative value to stream duration (For example, 10% to start at 10% of stream duration). Also supports
+	// a macro {Best}, which tells the encoder to select the best thumbnail from
+	// the first few seconds of the video and will only produce one thumbnail, no matter what other settings are for Step and
+	// Range. The default value is macro {Best}.
+	Start *string `json:"start,omitempty"`
+
+	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
+	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
+	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
+	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
+
 	// A collection of output PNG image layers to be produced by the encoder.
 	Layers []*PNGLayer `json:"layers,omitempty"`
+
+	// The position relative to transform preset start time in the input video at which to stop generating thumbnails. The value
+	// can be in ISO 8601 format (For example, PT5M30S to stop at 5 minutes and 30
+	// seconds from start time), or a frame count (For example, 300 to stop at the 300th frame from the frame at start time. If
+	// this value is 1, it means only producing one thumbnail at start time), or a
+	// relative value to the stream duration (For example, 50% to stop at half of stream duration from start time). The default
+	// value is 100%, which means to stop at the end of the stream.
+	Range *string `json:"range,omitempty"`
+
+	// The intervals at which thumbnails are generated. The value can be in ISO 8601 format (For example, PT05S for one image
+	// every 5 seconds), or a frame count (For example, 30 for one image every 30
+	// frames), or a relative value to stream duration (For example, 10% for one image every 10% of stream duration). Note: Step
+	// value will affect the first generated thumbnail, which may not be exactly the
+	// one specified at transform preset start time. This is due to the encoder, which tries to select the best thumbnail between
+	// start time and Step position from start time as the first output. As the
+	// default value is 10%, it means if stream has long duration, the first generated thumbnail might be far away from the one
+	// specified at start time. Try to select reasonable value for Step if the first
+	// thumbnail is expected close to start time, or set Range value at 1 if only one thumbnail is needed at start time.
+	Step *string `json:"step,omitempty"`
+
+	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
+	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+
+	// The Video Sync Mode
+	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type PNGImage.
+func (p *PNGImage) GetCodec() *Codec {
+	return &Codec{
+		ODataType: p.ODataType,
+		Label:     p.Label,
+	}
+}
+
+// GetImage implements the ImageClassification interface for type PNGImage.
+func (p *PNGImage) GetImage() *Image {
+	return &Image{
+		Start:            p.Start,
+		Step:             p.Step,
+		Range:            p.Range,
+		KeyFrameInterval: p.KeyFrameInterval,
+		StretchMode:      p.StretchMode,
+		SyncMode:         p.SyncMode,
+		ODataType:        p.ODataType,
+		Label:            p.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type PNGImage.
+func (p *PNGImage) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: p.KeyFrameInterval,
+		StretchMode:      p.StretchMode,
+		SyncMode:         p.SyncMode,
+		ODataType:        p.ODataType,
+		Label:            p.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PNGImage.
 func (p PNGImage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Image.marshalInternal(objectMap, "#Microsoft.Media.PngImage")
+	populate(objectMap, "keyFrameInterval", p.KeyFrameInterval)
+	populate(objectMap, "label", p.Label)
 	populate(objectMap, "layers", p.Layers)
+	objectMap["@odata.type"] = "#Microsoft.Media.PngImage"
+	populate(objectMap, "range", p.Range)
+	populate(objectMap, "start", p.Start)
+	populate(objectMap, "step", p.Step)
+	populate(objectMap, "stretchMode", p.StretchMode)
+	populate(objectMap, "syncMode", p.SyncMode)
 	return json.Marshal(objectMap)
 }
 
@@ -5055,30 +6416,106 @@ func (p *PNGImage) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "keyFrameInterval":
+			err = unpopulate(val, &p.KeyFrameInterval)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &p.Label)
+			delete(rawMsg, key)
 		case "layers":
 			err = unpopulate(val, &p.Layers)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &p.ODataType)
+			delete(rawMsg, key)
+		case "range":
+			err = unpopulate(val, &p.Range)
+			delete(rawMsg, key)
+		case "start":
+			err = unpopulate(val, &p.Start)
+			delete(rawMsg, key)
+		case "step":
+			err = unpopulate(val, &p.Step)
+			delete(rawMsg, key)
+		case "stretchMode":
+			err = unpopulate(val, &p.StretchMode)
+			delete(rawMsg, key)
+		case "syncMode":
+			err = unpopulate(val, &p.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := p.Image.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // PNGLayer - Describes the settings to produce a PNG image from the input video.
 type PNGLayer struct {
-	Layer
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in height as the input.
+	Height *string `json:"height,omitempty"`
+
+	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
+	// the output file.
+	Label *string `json:"label,omitempty"`
+
+	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in width as the input.
+	Width *string `json:"width,omitempty"`
+}
+
+// GetLayer implements the LayerClassification interface for type PNGLayer.
+func (p *PNGLayer) GetLayer() *Layer {
+	return &Layer{
+		ODataType: p.ODataType,
+		Width:     p.Width,
+		Height:    p.Height,
+		Label:     p.Label,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PNGLayer.
 func (p PNGLayer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Layer.marshalInternal(objectMap, "#Microsoft.Media.PngLayer")
+	populate(objectMap, "height", p.Height)
+	populate(objectMap, "label", p.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.PngLayer"
+	populate(objectMap, "width", p.Width)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PNGLayer.
+func (p *PNGLayer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "height":
+			err = unpopulate(val, &p.Height)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &p.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &p.ODataType)
+			delete(rawMsg, key)
+		case "width":
+			err = unpopulate(val, &p.Width)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // PresentationTimeRange - The presentation time range, this is asset related and not recommended for Account Filter.
@@ -5120,65 +6557,39 @@ type Preset struct {
 // GetPreset implements the PresetClassification interface for type Preset.
 func (p *Preset) GetPreset() *Preset { return p }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Preset.
-func (p *Preset) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return p.unmarshalInternal(rawMsg)
-}
-
-func (p Preset) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	p.ODataType = &discValue
-	objectMap["@odata.type"] = p.ODataType
-}
-
-func (p *Preset) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "@odata.type":
-			err = unpopulate(val, &p.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PresetConfigurations - An object of optional configuration settings for encoder.
 type PresetConfigurations struct {
-	// Allows you to configure the encoder settings to control the balance between speed and quality. Example: set Complexity as Speed for faster encoding but
-	// less compression efficiency.
+	// Allows you to configure the encoder settings to control the balance between speed and quality. Example: set Complexity
+	// as Speed for faster encoding but less compression efficiency.
 	Complexity *Complexity `json:"complexity,omitempty"`
 
-	// Sets the interleave mode of the output to control how audio and video are stored in the container format. Example: set InterleavedOutput as NonInterleavedOutput
-	// to produce audio-only and video-only
+	// Sets the interleave mode of the output to control how audio and video are stored in the container format. Example: set
+	// InterleavedOutput as NonInterleavedOutput to produce audio-only and video-only
 	// outputs in separate MP4 files.
 	InterleaveOutput *InterleaveOutput `json:"interleaveOutput,omitempty"`
 
-	// The key frame interval in seconds. Example: set KeyFrameIntervalInSeconds as 2 to reduce the playback buffering for some players.
+	// The key frame interval in seconds. Example: set KeyFrameIntervalInSeconds as 2 to reduce the playback buffering for some
+	// players.
 	KeyFrameIntervalInSeconds *float32 `json:"keyFrameIntervalInSeconds,omitempty"`
 
-	// The maximum bitrate in bits per second (threshold for the top video layer). Example: set MaxBitrateBps as 6000000 to avoid producing very high bitrate
-	// outputs for contents with high complexity.
+	// The maximum bitrate in bits per second (threshold for the top video layer). Example: set MaxBitrateBps as 6000000 to avoid
+	// producing very high bitrate outputs for contents with high complexity.
 	MaxBitrateBps *int32 `json:"maxBitrateBps,omitempty"`
 
-	// The maximum height of output video layers. Example: set MaxHeight as 720 to produce output layers up to 720P even if the input is 4K.
+	// The maximum height of output video layers. Example: set MaxHeight as 720 to produce output layers up to 720P even if the
+	// input is 4K.
 	MaxHeight *int32 `json:"maxHeight,omitempty"`
 
-	// The maximum number of output video layers. Example: set MaxLayers as 4 to make sure at most 4 output layers are produced to control the overall cost
-	// of the encoding job.
+	// The maximum number of output video layers. Example: set MaxLayers as 4 to make sure at most 4 output layers are produced
+	// to control the overall cost of the encoding job.
 	MaxLayers *int32 `json:"maxLayers,omitempty"`
 
-	// The minimum bitrate in bits per second (threshold for the bottom video layer). Example: set MinBitrateBps as 200000 to have a bottom layer that covers
-	// users with low network bandwidth.
+	// The minimum bitrate in bits per second (threshold for the bottom video layer). Example: set MinBitrateBps as 200000 to
+	// have a bottom layer that covers users with low network bandwidth.
 	MinBitrateBps *int32 `json:"minBitrateBps,omitempty"`
 
-	// The minimum height of output video layers. Example: set MinHeight as 360 to avoid output layers of smaller resolutions like 180P.
+	// The minimum height of output video layers. Example: set MinHeight as 360 to avoid output layers of smaller resolutions
+	// like 180P.
 	MinHeight *int32 `json:"minHeight,omitempty"`
 }
 
@@ -5190,17 +6601,17 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
@@ -5228,39 +6639,43 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.CreateOrUpdate method.
-type PrivateEndpointConnectionsCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.CreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsDeleteOptions contains the optional parameters for the PrivateEndpointConnections.Delete method.
-type PrivateEndpointConnectionsDeleteOptions struct {
+// PrivateEndpointConnectionsClientDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Delete
+// method.
+type PrivateEndpointConnectionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -5297,17 +6712,18 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListOptions contains the optional parameters for the PrivateLinkResources.List method.
-type PrivateLinkResourcesListOptions struct {
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
@@ -5325,27 +6741,35 @@ type Properties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty" azure:"ro"`
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Rectangle - Describes the properties of a rectangular window applied to the input media before processing it.
 type Rectangle struct {
-	// The height of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
+	// The height of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of
+	// the video (For example, 50%).
 	Height *string `json:"height,omitempty"`
 
-	// The number of pixels from the left-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
+	// The number of pixels from the left-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video
+	// (For example, 50%).
 	Left *string `json:"left,omitempty"`
 
-	// The number of pixels from the top-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
+	// The number of pixels from the top-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video
+	// (For example, 50%).
 	Top *string `json:"top,omitempty"`
 
-	// The width of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
+	// The width of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of the
+	// video (For example, 50%).
 	Width *string `json:"width,omitempty"`
 }
 
@@ -5361,19 +6785,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 type ResourceIdentity struct {
 	// REQUIRED; Indicates whether to use System Assigned Managed Identity. Mutual exclusive with User Assigned Managed Identity.
 	UseSystemAssignedIdentity *bool `json:"useSystemAssignedIdentity,omitempty"`
@@ -5384,24 +6795,46 @@ type ResourceIdentity struct {
 
 // SelectAudioTrackByAttribute - Select audio tracks from the input by specifying an attribute and an attribute filter.
 type SelectAudioTrackByAttribute struct {
-	AudioTrackDescriptor
 	// REQUIRED; The TrackAttribute to filter the tracks by.
 	Attribute *TrackAttribute `json:"attribute,omitempty"`
 
 	// REQUIRED; The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
 	Filter *AttributeFilter `json:"filter,omitempty"`
 
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel audio
+	// tracks.
+	ChannelMapping *ChannelMapping `json:"channelMapping,omitempty"`
+
 	// The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is specified for the Filter property.
 	FilterValue *string `json:"filterValue,omitempty"`
+}
+
+// GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type SelectAudioTrackByAttribute.
+func (s *SelectAudioTrackByAttribute) GetAudioTrackDescriptor() *AudioTrackDescriptor {
+	return &AudioTrackDescriptor{
+		ChannelMapping: s.ChannelMapping,
+		ODataType:      s.ODataType,
+	}
+}
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectAudioTrackByAttribute.
+func (s *SelectAudioTrackByAttribute) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: s.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SelectAudioTrackByAttribute.
 func (s SelectAudioTrackByAttribute) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AudioTrackDescriptor.marshalInternal(objectMap, "#Microsoft.Media.SelectAudioTrackByAttribute")
 	populate(objectMap, "attribute", s.Attribute)
+	populate(objectMap, "channelMapping", s.ChannelMapping)
 	populate(objectMap, "filter", s.Filter)
 	populate(objectMap, "filterValue", s.FilterValue)
+	objectMap["@odata.type"] = "#Microsoft.Media.SelectAudioTrackByAttribute"
 	return json.Marshal(objectMap)
 }
 
@@ -5417,34 +6850,59 @@ func (s *SelectAudioTrackByAttribute) UnmarshalJSON(data []byte) error {
 		case "attribute":
 			err = unpopulate(val, &s.Attribute)
 			delete(rawMsg, key)
+		case "channelMapping":
+			err = unpopulate(val, &s.ChannelMapping)
+			delete(rawMsg, key)
 		case "filter":
 			err = unpopulate(val, &s.Filter)
 			delete(rawMsg, key)
 		case "filterValue":
 			err = unpopulate(val, &s.FilterValue)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &s.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.AudioTrackDescriptor.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // SelectAudioTrackByID - Select audio tracks from the input by specifying a track identifier.
 type SelectAudioTrackByID struct {
-	AudioTrackDescriptor
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// REQUIRED; Track identifier to select
 	TrackID *int64 `json:"trackId,omitempty"`
+
+	// Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel audio
+	// tracks.
+	ChannelMapping *ChannelMapping `json:"channelMapping,omitempty"`
+}
+
+// GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type SelectAudioTrackByID.
+func (s *SelectAudioTrackByID) GetAudioTrackDescriptor() *AudioTrackDescriptor {
+	return &AudioTrackDescriptor{
+		ChannelMapping: s.ChannelMapping,
+		ODataType:      s.ODataType,
+	}
+}
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectAudioTrackByID.
+func (s *SelectAudioTrackByID) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: s.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SelectAudioTrackByID.
 func (s SelectAudioTrackByID) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AudioTrackDescriptor.marshalInternal(objectMap, "#Microsoft.Media.SelectAudioTrackById")
+	populate(objectMap, "channelMapping", s.ChannelMapping)
+	objectMap["@odata.type"] = "#Microsoft.Media.SelectAudioTrackById"
 	populate(objectMap, "trackId", s.TrackID)
 	return json.Marshal(objectMap)
 }
@@ -5458,6 +6916,12 @@ func (s *SelectAudioTrackByID) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelMapping":
+			err = unpopulate(val, &s.ChannelMapping)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &s.ODataType)
+			delete(rawMsg, key)
 		case "trackId":
 			err = unpopulate(val, &s.TrackID)
 			delete(rawMsg, key)
@@ -5466,34 +6930,47 @@ func (s *SelectAudioTrackByID) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.AudioTrackDescriptor.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // SelectVideoTrackByAttribute - Select video tracks from the input by specifying an attribute and an attribute filter.
 type SelectVideoTrackByAttribute struct {
-	VideoTrackDescriptor
 	// REQUIRED; The TrackAttribute to filter the tracks by.
 	Attribute *TrackAttribute `json:"attribute,omitempty"`
 
 	// REQUIRED; The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
 	Filter *AttributeFilter `json:"filter,omitempty"`
 
-	// The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is specified for the Filter property. For TrackAttribute.Bitrate, this
-	// should be an integer value in bits per second (e.g:
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is specified for the Filter property. For
+	// TrackAttribute.Bitrate, this should be an integer value in bits per second (e.g:
 	// '1500000'). The TrackAttribute.Language is not supported for video tracks.
 	FilterValue *string `json:"filterValue,omitempty"`
+}
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectVideoTrackByAttribute.
+func (s *SelectVideoTrackByAttribute) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: s.ODataType,
+	}
+}
+
+// GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type SelectVideoTrackByAttribute.
+func (s *SelectVideoTrackByAttribute) GetVideoTrackDescriptor() *VideoTrackDescriptor {
+	return &VideoTrackDescriptor{
+		ODataType: s.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SelectVideoTrackByAttribute.
 func (s SelectVideoTrackByAttribute) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.VideoTrackDescriptor.marshalInternal(objectMap, "#Microsoft.Media.SelectVideoTrackByAttribute")
 	populate(objectMap, "attribute", s.Attribute)
 	populate(objectMap, "filter", s.Filter)
 	populate(objectMap, "filterValue", s.FilterValue)
+	objectMap["@odata.type"] = "#Microsoft.Media.SelectVideoTrackByAttribute"
 	return json.Marshal(objectMap)
 }
 
@@ -5515,28 +6992,44 @@ func (s *SelectVideoTrackByAttribute) UnmarshalJSON(data []byte) error {
 		case "filterValue":
 			err = unpopulate(val, &s.FilterValue)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &s.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.VideoTrackDescriptor.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // SelectVideoTrackByID - Select video tracks from the input by specifying a track identifier.
 type SelectVideoTrackByID struct {
-	VideoTrackDescriptor
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// REQUIRED; Track identifier to select
 	TrackID *int64 `json:"trackId,omitempty"`
+}
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectVideoTrackByID.
+func (s *SelectVideoTrackByID) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: s.ODataType,
+	}
+}
+
+// GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type SelectVideoTrackByID.
+func (s *SelectVideoTrackByID) GetVideoTrackDescriptor() *VideoTrackDescriptor {
+	return &VideoTrackDescriptor{
+		ODataType: s.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SelectVideoTrackByID.
 func (s SelectVideoTrackByID) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.VideoTrackDescriptor.marshalInternal(objectMap, "#Microsoft.Media.SelectVideoTrackById")
+	objectMap["@odata.type"] = "#Microsoft.Media.SelectVideoTrackById"
 	populate(objectMap, "trackId", s.TrackID)
 	return json.Marshal(objectMap)
 }
@@ -5550,6 +7043,9 @@ func (s *SelectVideoTrackByID) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &s.ODataType)
+			delete(rawMsg, key)
 		case "trackId":
 			err = unpopulate(val, &s.TrackID)
 			delete(rawMsg, key)
@@ -5557,9 +7053,6 @@ func (s *SelectVideoTrackByID) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.VideoTrackDescriptor.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -5583,24 +7076,33 @@ func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
 
 // StandardEncoderPreset - Describes all the settings to be used when encoding the input video with the Standard Encoder.
 type StandardEncoderPreset struct {
-	Preset
 	// REQUIRED; The list of codecs to be used when encoding the input video.
 	Codecs []CodecClassification `json:"codecs,omitempty"`
 
 	// REQUIRED; The list of outputs to be produced by the encoder.
 	Formats []FormatClassification `json:"formats,omitempty"`
 
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// One or more filtering operations that are applied to the input media before encoding.
 	Filters *Filters `json:"filters,omitempty"`
+}
+
+// GetPreset implements the PresetClassification interface for type StandardEncoderPreset.
+func (s *StandardEncoderPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: s.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StandardEncoderPreset.
 func (s StandardEncoderPreset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.Preset.marshalInternal(objectMap, "#Microsoft.Media.StandardEncoderPreset")
 	populate(objectMap, "codecs", s.Codecs)
 	populate(objectMap, "filters", s.Filters)
 	populate(objectMap, "formats", s.Formats)
+	objectMap["@odata.type"] = "#Microsoft.Media.StandardEncoderPreset"
 	return json.Marshal(objectMap)
 }
 
@@ -5622,13 +7124,13 @@ func (s *StandardEncoderPreset) UnmarshalJSON(data []byte) error {
 		case "formats":
 			s.Formats, err = unmarshalFormatClassificationArray(val)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &s.ODataType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.Preset.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -5638,8 +7140,8 @@ type StorageAccount struct {
 	// REQUIRED; The type of the storage account.
 	Type *StorageAccountType `json:"type,omitempty"`
 
-	// The ID of the storage account resource. Media Services relies on tables and queues as well as blobs, so the primary storage account must be a Standard
-	// Storage account (either Microsoft.ClassicStorage
+	// The ID of the storage account resource. Media Services relies on tables and queues as well as blobs, so the primary storage
+	// account must be a Standard Storage account (either Microsoft.ClassicStorage
 	// or Microsoft.Storage). Blob only storage accounts can be added as secondary storage accounts.
 	ID *string `json:"id,omitempty"`
 
@@ -5692,20 +7194,38 @@ func (s *StorageEncryptedAssetDecryptionData) UnmarshalJSON(data []byte) error {
 
 // StreamingEndpoint - The streaming endpoint.
 type StreamingEndpoint struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// The streaming endpoint properties.
 	Properties *StreamingEndpointProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StreamingEndpoint.
 func (s StreamingEndpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -5877,44 +7397,49 @@ func (s *StreamingEndpointProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// StreamingEndpointsBeginCreateOptions contains the optional parameters for the StreamingEndpoints.BeginCreate method.
-type StreamingEndpointsBeginCreateOptions struct {
+// StreamingEndpointsClientBeginCreateOptions contains the optional parameters for the StreamingEndpointsClient.BeginCreate
+// method.
+type StreamingEndpointsClientBeginCreateOptions struct {
 	// The flag indicates if the resource should be automatically started on creation.
 	AutoStart *bool
 }
 
-// StreamingEndpointsBeginDeleteOptions contains the optional parameters for the StreamingEndpoints.BeginDelete method.
-type StreamingEndpointsBeginDeleteOptions struct {
+// StreamingEndpointsClientBeginDeleteOptions contains the optional parameters for the StreamingEndpointsClient.BeginDelete
+// method.
+type StreamingEndpointsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsBeginScaleOptions contains the optional parameters for the StreamingEndpoints.BeginScale method.
-type StreamingEndpointsBeginScaleOptions struct {
+// StreamingEndpointsClientBeginScaleOptions contains the optional parameters for the StreamingEndpointsClient.BeginScale
+// method.
+type StreamingEndpointsClientBeginScaleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsBeginStartOptions contains the optional parameters for the StreamingEndpoints.BeginStart method.
-type StreamingEndpointsBeginStartOptions struct {
+// StreamingEndpointsClientBeginStartOptions contains the optional parameters for the StreamingEndpointsClient.BeginStart
+// method.
+type StreamingEndpointsClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsBeginStopOptions contains the optional parameters for the StreamingEndpoints.BeginStop method.
-type StreamingEndpointsBeginStopOptions struct {
+// StreamingEndpointsClientBeginStopOptions contains the optional parameters for the StreamingEndpointsClient.BeginStop method.
+type StreamingEndpointsClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsBeginUpdateOptions contains the optional parameters for the StreamingEndpoints.BeginUpdate method.
-type StreamingEndpointsBeginUpdateOptions struct {
+// StreamingEndpointsClientBeginUpdateOptions contains the optional parameters for the StreamingEndpointsClient.BeginUpdate
+// method.
+type StreamingEndpointsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsGetOptions contains the optional parameters for the StreamingEndpoints.Get method.
-type StreamingEndpointsGetOptions struct {
+// StreamingEndpointsClientGetOptions contains the optional parameters for the StreamingEndpointsClient.Get method.
+type StreamingEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsListOptions contains the optional parameters for the StreamingEndpoints.List method.
-type StreamingEndpointsListOptions struct {
+// StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.List method.
+type StreamingEndpointsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5926,21 +7451,20 @@ type StreamingEntityScaleUnit struct {
 
 // StreamingLocator - A Streaming Locator resource
 type StreamingLocator struct {
-	ProxyResource
 	// Properties of the Streaming Locator.
 	Properties *StreamingLocatorProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StreamingLocator.
-func (s StreamingLocator) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StreamingLocatorCollection - A collection of StreamingLocator items.
@@ -5998,10 +7522,10 @@ type StreamingLocatorProperties struct {
 	// REQUIRED; Asset Name
 	AssetName *string `json:"assetName,omitempty"`
 
-	// REQUIRED; Name of the Streaming Policy used by this Streaming Locator. Either specify the name of Streaming Policy you created or use one of the predefined
-	// Streaming Policies. The predefined Streaming Policies
-	// available are: 'PredefinedDownloadOnly', 'PredefinedClearStreamingOnly', 'PredefinedDownloadAndClearStreaming', 'PredefinedClearKey', 'PredefinedMultiDrmCencStreaming'
-	// and 'Predefined
+	// REQUIRED; Name of the Streaming Policy used by this Streaming Locator. Either specify the name of Streaming Policy you
+	// created or use one of the predefined Streaming Policies. The predefined Streaming Policies
+	// available are: 'PredefinedDownloadOnly', 'PredefinedClearStreamingOnly', 'PredefinedDownloadAndClearStreaming', 'PredefinedClearKey',
+	// 'PredefinedMultiDrmCencStreaming' and 'Predefined
 	// MultiDrmStreaming'
 	StreamingPolicyName *string `json:"streamingPolicyName,omitempty"`
 
@@ -6093,39 +7617,40 @@ func (s *StreamingLocatorProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// StreamingLocatorsCreateOptions contains the optional parameters for the StreamingLocators.Create method.
-type StreamingLocatorsCreateOptions struct {
+// StreamingLocatorsClientCreateOptions contains the optional parameters for the StreamingLocatorsClient.Create method.
+type StreamingLocatorsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingLocatorsDeleteOptions contains the optional parameters for the StreamingLocators.Delete method.
-type StreamingLocatorsDeleteOptions struct {
+// StreamingLocatorsClientDeleteOptions contains the optional parameters for the StreamingLocatorsClient.Delete method.
+type StreamingLocatorsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingLocatorsGetOptions contains the optional parameters for the StreamingLocators.Get method.
-type StreamingLocatorsGetOptions struct {
+// StreamingLocatorsClientGetOptions contains the optional parameters for the StreamingLocatorsClient.Get method.
+type StreamingLocatorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingLocatorsListContentKeysOptions contains the optional parameters for the StreamingLocators.ListContentKeys method.
-type StreamingLocatorsListContentKeysOptions struct {
+// StreamingLocatorsClientListContentKeysOptions contains the optional parameters for the StreamingLocatorsClient.ListContentKeys
+// method.
+type StreamingLocatorsClientListContentKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingLocatorsListOptions contains the optional parameters for the StreamingLocators.List method.
-type StreamingLocatorsListOptions struct {
+// StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
+type StreamingLocatorsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
 	// Specifies the key by which the result collection should be ordered.
 	Orderby *string
-	// Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to
-	// but not greater than the specified value n.
+	// Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the
+	// number of available items up to but not greater than the specified value n.
 	Top *int32
 }
 
-// StreamingLocatorsListPathsOptions contains the optional parameters for the StreamingLocators.ListPaths method.
-type StreamingLocatorsListPathsOptions struct {
+// StreamingLocatorsClientListPathsOptions contains the optional parameters for the StreamingLocatorsClient.ListPaths method.
+type StreamingLocatorsClientListPathsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6150,49 +7675,48 @@ func (s StreamingPath) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// StreamingPoliciesCreateOptions contains the optional parameters for the StreamingPolicies.Create method.
-type StreamingPoliciesCreateOptions struct {
+// StreamingPoliciesClientCreateOptions contains the optional parameters for the StreamingPoliciesClient.Create method.
+type StreamingPoliciesClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingPoliciesDeleteOptions contains the optional parameters for the StreamingPolicies.Delete method.
-type StreamingPoliciesDeleteOptions struct {
+// StreamingPoliciesClientDeleteOptions contains the optional parameters for the StreamingPoliciesClient.Delete method.
+type StreamingPoliciesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingPoliciesGetOptions contains the optional parameters for the StreamingPolicies.Get method.
-type StreamingPoliciesGetOptions struct {
+// StreamingPoliciesClientGetOptions contains the optional parameters for the StreamingPoliciesClient.Get method.
+type StreamingPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingPoliciesListOptions contains the optional parameters for the StreamingPolicies.List method.
-type StreamingPoliciesListOptions struct {
+// StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
+type StreamingPoliciesClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
 	// Specifies the key by which the result collection should be ordered.
 	Orderby *string
-	// Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to
-	// but not greater than the specified value n.
+	// Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the
+	// number of available items up to but not greater than the specified value n.
 	Top *int32
 }
 
 // StreamingPolicy - A Streaming Policy resource
 type StreamingPolicy struct {
-	ProxyResource
 	// Class to specify properties of Streaming Policy
 	Properties *StreamingPolicyProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StreamingPolicy.
-func (s StreamingPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StreamingPolicyCollection - A collection of StreamingPolicy items.
@@ -6255,21 +7779,23 @@ type StreamingPolicyFairPlayConfiguration struct {
 	// REQUIRED; All license to be persistent or not
 	AllowPersistentLicense *bool `json:"allowPersistentLicense,omitempty"`
 
-	// Template for the URL of the custom service delivering licenses to end user players. Not required when using Azure Media Services for issuing licenses.
-	// The template supports replaceable tokens that the
-	// service will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId}, which is replaced
-	// with the value of
-	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
+	// Template for the URL of the custom service delivering licenses to end user players. Not required when using Azure Media
+	// Services for issuing licenses. The template supports replaceable tokens that the
+	// service will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId},
+	// which is replaced with the value of
+	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being
+	// requested.
 	CustomLicenseAcquisitionURLTemplate *string `json:"customLicenseAcquisitionUrlTemplate,omitempty"`
 }
 
 // StreamingPolicyPlayReadyConfiguration - Class to specify configurations of PlayReady in Streaming Policy
 type StreamingPolicyPlayReadyConfiguration struct {
-	// Template for the URL of the custom service delivering licenses to end user players. Not required when using Azure Media Services for issuing licenses.
-	// The template supports replaceable tokens that the
-	// service will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId}, which is replaced
-	// with the value of
-	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
+	// Template for the URL of the custom service delivering licenses to end user players. Not required when using Azure Media
+	// Services for issuing licenses. The template supports replaceable tokens that the
+	// service will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId},
+	// which is replaced with the value of
+	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being
+	// requested.
 	CustomLicenseAcquisitionURLTemplate *string `json:"customLicenseAcquisitionUrlTemplate,omitempty"`
 
 	// Custom attributes for PlayReady
@@ -6346,11 +7872,12 @@ func (s *StreamingPolicyProperties) UnmarshalJSON(data []byte) error {
 
 // StreamingPolicyWidevineConfiguration - Class to specify configurations of Widevine in Streaming Policy
 type StreamingPolicyWidevineConfiguration struct {
-	// Template for the URL of the custom service delivering licenses to end user players. Not required when using Azure Media Services for issuing licenses.
-	// The template supports replaceable tokens that the
-	// service will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId}, which is replaced
-	// with the value of
-	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
+	// Template for the URL of the custom service delivering licenses to end user players. Not required when using Azure Media
+	// Services for issuing licenses. The template supports replaceable tokens that the
+	// service will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId},
+	// which is replaced with the value of
+	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being
+	// requested.
 	CustomLicenseAcquisitionURLTemplate *string `json:"customLicenseAcquisitionUrlTemplate,omitempty"`
 }
 
@@ -6431,14 +7958,15 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 // TrackDescriptorClassification provides polymorphic access to related types.
 // Call the interface's GetTrackDescriptor() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AudioTrackDescriptor, *SelectAudioTrackByAttribute, *SelectAudioTrackById, *SelectVideoTrackByAttribute, *SelectVideoTrackById,
+// - *AudioTrackDescriptor, *SelectAudioTrackByAttribute, *SelectAudioTrackByID, *SelectVideoTrackByAttribute, *SelectVideoTrackByID,
 // - *TrackDescriptor, *VideoTrackDescriptor
 type TrackDescriptorClassification interface {
 	// GetTrackDescriptor returns the TrackDescriptor content of the underlying type.
 	GetTrackDescriptor() *TrackDescriptor
 }
 
-// TrackDescriptor - Base type for all TrackDescriptor types, which define the metadata and selection for tracks that should be processed by a Job
+// TrackDescriptor - Base type for all TrackDescriptor types, which define the metadata and selection for tracks that should
+// be processed by a Job
 type TrackDescriptor struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
@@ -6446,35 +7974,6 @@ type TrackDescriptor struct {
 
 // GetTrackDescriptor implements the TrackDescriptorClassification interface for type TrackDescriptor.
 func (t *TrackDescriptor) GetTrackDescriptor() *TrackDescriptor { return t }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TrackDescriptor.
-func (t *TrackDescriptor) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return t.unmarshalInternal(rawMsg)
-}
-
-func (t TrackDescriptor) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	t.ODataType = &discValue
-	objectMap["@odata.type"] = t.ODataType
-}
-
-func (t *TrackDescriptor) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "@odata.type":
-			err = unpopulate(val, &t.ODataType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // TrackPropertyCondition - Class to specify one track property condition
 type TrackPropertyCondition struct {
@@ -6501,47 +8000,64 @@ func (t TrackSelection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
-}
-
-// Transform - A Transform encapsulates the rules or instructions for generating desired outputs from input media, such as by transcoding or by extracting
-// insights. After the Transform is created, it can be applied
+// Transform - A Transform encapsulates the rules or instructions for generating desired outputs from input media, such as
+// by transcoding or by extracting insights. After the Transform is created, it can be applied
 // to input media by creating Jobs.
 type Transform struct {
-	ProxyResource
 	// The resource properties.
 	Properties *TransformProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Transform.
 func (t Transform) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "properties", t.Properties)
 	populate(objectMap, "systemData", t.SystemData)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6562,18 +8078,20 @@ func (t TransformCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TransformOutput - Describes the properties of a TransformOutput, which are the rules to be applied while generating the desired output.
+// TransformOutput - Describes the properties of a TransformOutput, which are the rules to be applied while generating the
+// desired output.
 type TransformOutput struct {
-	// REQUIRED; Preset that describes the operations that will be used to modify, transcode, or extract insights from the source file to generate the output.
+	// REQUIRED; Preset that describes the operations that will be used to modify, transcode, or extract insights from the source
+	// file to generate the output.
 	Preset PresetClassification `json:"preset,omitempty"`
 
-	// A Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other
-	// outputs, or, stop the other outputs. The overall
+	// A Transform can define more than one outputs. This property defines what the service should do when one output fails -
+	// either continue to produce other outputs, or, stop the other outputs. The overall
 	// Job state will not reflect failures of outputs that are specified with 'ContinueJob'. The default is 'StopProcessingJob'.
 	OnError *OnErrorType `json:"onError,omitempty"`
 
-	// Sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service uses for processing TransformOutputs.
-	// The default priority is Normal.
+	// Sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service uses for
+	// processing TransformOutputs. The default priority is Normal.
 	RelativePriority *Priority `json:"relativePriority,omitempty"`
 }
 
@@ -6666,58 +8184,129 @@ func (t *TransformProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TransformsCreateOrUpdateOptions contains the optional parameters for the Transforms.CreateOrUpdate method.
-type TransformsCreateOrUpdateOptions struct {
+// TransformsClientCreateOrUpdateOptions contains the optional parameters for the TransformsClient.CreateOrUpdate method.
+type TransformsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransformsDeleteOptions contains the optional parameters for the Transforms.Delete method.
-type TransformsDeleteOptions struct {
+// TransformsClientDeleteOptions contains the optional parameters for the TransformsClient.Delete method.
+type TransformsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransformsGetOptions contains the optional parameters for the Transforms.Get method.
-type TransformsGetOptions struct {
+// TransformsClientGetOptions contains the optional parameters for the TransformsClient.Get method.
+type TransformsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransformsListOptions contains the optional parameters for the Transforms.List method.
-type TransformsListOptions struct {
+// TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
+type TransformsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
 	// Specifies the key by which the result collection should be ordered.
 	Orderby *string
 }
 
-// TransformsUpdateOptions contains the optional parameters for the Transforms.Update method.
-type TransformsUpdateOptions struct {
+// TransformsClientUpdateOptions contains the optional parameters for the TransformsClient.Update method.
+type TransformsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransportStreamFormat - Describes the properties for generating an MPEG-2 Transport Stream (ISO/IEC 13818-1) output video file(s).
+// TransportStreamFormat - Describes the properties for generating an MPEG-2 Transport Stream (ISO/IEC 13818-1) output video
+// file(s).
 type TransportStreamFormat struct {
-	MultiBitrateFormat
+	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// name: {Basename} - An expansion macro that will use the name of the input video file. If
+	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
+	// input video files will be used. If the length of base name of the input video
+	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
+	// extension for this format. {Label} - The label assigned to the
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
+	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	FilenamePattern *string `json:"filenamePattern,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The list of output files to produce. Each entry in the list is a set of audio and video layer labels to be muxed together
+	// .
+	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
+}
+
+// GetFormat implements the FormatClassification interface for type TransportStreamFormat.
+func (t *TransportStreamFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       t.ODataType,
+		FilenamePattern: t.FilenamePattern,
+	}
+}
+
+// GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type TransportStreamFormat.
+func (t *TransportStreamFormat) GetMultiBitrateFormat() *MultiBitrateFormat {
+	return &MultiBitrateFormat{
+		OutputFiles:     t.OutputFiles,
+		ODataType:       t.ODataType,
+		FilenamePattern: t.FilenamePattern,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TransportStreamFormat.
 func (t TransportStreamFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.MultiBitrateFormat.marshalInternal(objectMap, "#Microsoft.Media.TransportStreamFormat")
+	populate(objectMap, "filenamePattern", t.FilenamePattern)
+	objectMap["@odata.type"] = "#Microsoft.Media.TransportStreamFormat"
+	populate(objectMap, "outputFiles", t.OutputFiles)
 	return json.Marshal(objectMap)
 }
 
-// UTCClipTime - Specifies the clip time as a Utc time position in the media file. The Utc time can point to a different position depending on whether the
-// media file starts from a timestamp of zero or not.
+// UnmarshalJSON implements the json.Unmarshaller interface for type TransportStreamFormat.
+func (t *TransportStreamFormat) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "filenamePattern":
+			err = unpopulate(val, &t.FilenamePattern)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &t.ODataType)
+			delete(rawMsg, key)
+		case "outputFiles":
+			err = unpopulate(val, &t.OutputFiles)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// UTCClipTime - Specifies the clip time as a Utc time position in the media file. The Utc time can point to a different position
+// depending on whether the media file starts from a timestamp of zero or not.
 type UTCClipTime struct {
-	ClipTime
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
 	// REQUIRED; The time position on the timeline of the input media based on Utc time.
 	Time *time.Time `json:"time,omitempty"`
+}
+
+// GetClipTime implements the ClipTimeClassification interface for type UTCClipTime.
+func (u *UTCClipTime) GetClipTime() *ClipTime {
+	return &ClipTime{
+		ODataType: u.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type UTCClipTime.
 func (u UTCClipTime) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	u.ClipTime.marshalInternal(objectMap, "#Microsoft.Media.UtcClipTime")
+	objectMap["@odata.type"] = "#Microsoft.Media.UtcClipTime"
 	populateTimeRFC3339(objectMap, "time", u.Time)
 	return json.Marshal(objectMap)
 }
@@ -6731,6 +8320,9 @@ func (u *UTCClipTime) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &u.ODataType)
+			delete(rawMsg, key)
 		case "time":
 			err = unpopulateTimeRFC3339(val, &u.Time)
 			delete(rawMsg, key)
@@ -6738,9 +8330,6 @@ func (u *UTCClipTime) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := u.ClipTime.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -6756,7 +8345,7 @@ type UserAssignedManagedIdentity struct {
 // VideoClassification provides polymorphic access to related types.
 // Call the interface's GetVideo() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *H264Video, *H265Video, *Image, *JpgImage, *PngImage, *Video
+// - *H264Video, *H265Video, *Image, *JpgImage, *PNGImage, *Video
 type VideoClassification interface {
 	CodecClassification
 	// GetVideo returns the Video content of the underlying type.
@@ -6765,11 +8354,16 @@ type VideoClassification interface {
 
 // Video - Describes the basic properties for encoding the input video.
 type Video struct {
-	Codec
-	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601 format. The default is 2 seconds(PT2S).
-	// Note that this setting is ignored if
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
+	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
 	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
 	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
 
 	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
 	StretchMode *StretchMode `json:"stretchMode,omitempty"`
@@ -6778,8 +8372,27 @@ type Video struct {
 	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
 }
 
+// GetCodec implements the CodecClassification interface for type Video.
+func (v *Video) GetCodec() *Codec {
+	return &Codec{
+		ODataType: v.ODataType,
+		Label:     v.Label,
+	}
+}
+
 // GetVideo implements the VideoClassification interface for type Video.
 func (v *Video) GetVideo() *Video { return v }
+
+// MarshalJSON implements the json.Marshaller interface for type Video.
+func (v Video) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "keyFrameInterval", v.KeyFrameInterval)
+	populate(objectMap, "label", v.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.Video"
+	populate(objectMap, "stretchMode", v.StretchMode)
+	populate(objectMap, "syncMode", v.SyncMode)
+	return json.Marshal(objectMap)
+}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type Video.
 func (v *Video) UnmarshalJSON(data []byte) error {
@@ -6787,22 +8400,17 @@ func (v *Video) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return v.unmarshalInternal(rawMsg)
-}
-
-func (v Video) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	v.Codec.marshalInternal(objectMap, discValue)
-	populate(objectMap, "keyFrameInterval", v.KeyFrameInterval)
-	populate(objectMap, "stretchMode", v.StretchMode)
-	populate(objectMap, "syncMode", v.SyncMode)
-}
-
-func (v *Video) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "keyFrameInterval":
 			err = unpopulate(val, &v.KeyFrameInterval)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &v.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &v.ODataType)
 			delete(rawMsg, key)
 		case "stretchMode":
 			err = unpopulate(val, &v.StretchMode)
@@ -6815,29 +8423,67 @@ func (v *Video) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 			return err
 		}
 	}
-	if err := v.Codec.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// VideoAnalyzerPreset - A video analyzer preset that extracts insights (rich metadata) from both audio and video, and outputs a JSON format file.
+// VideoAnalyzerPreset - A video analyzer preset that extracts insights (rich metadata) from both audio and video, and outputs
+// a JSON format file.
 type VideoAnalyzerPreset struct {
-	AudioAnalyzerPreset
-	// Defines the type of insights that you want the service to generate. The allowed values are 'AudioInsightsOnly', 'VideoInsightsOnly', and 'AllInsights'.
-	// The default is AllInsights. If you set this to
-	// AllInsights and the input is audio only, then only audio insights are generated. Similarly if the input is video only, then only video insights are generated.
-	// It is recommended that you not use
-	// AudioInsightsOnly if you expect some of your inputs to be video only; or use VideoInsightsOnly if you expect some of your inputs to be audio only. Your
-	// Jobs in such conditions would error out.
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). If you
+	// know the language of your content, it is recommended that you specify it. The
+	// language must be specified explicitly for AudioAnalysisMode::Basic, since automatic language detection is not included
+	// in basic mode. If the language isn't specified or set to null, automatic language
+	// detection will choose the first language detected and process with the selected language for the duration of the file.
+	// It does not currently support dynamically switching between languages after the
+	// first language is detected. The automatic detection works best with audio recordings with clearly discernable speech. If
+	// automatic detection fails to find the language, transcription would fallback to
+	// 'en-US'." The list of supported languages is available here: https://go.microsoft.com/fwlink/?linkid=2109463
+	AudioLanguage *string `json:"audioLanguage,omitempty"`
+
+	// Dictionary containing key value pairs for parameters not exposed in the preset itself
+	ExperimentalOptions map[string]*string `json:"experimentalOptions,omitempty"`
+
+	// Defines the type of insights that you want the service to generate. The allowed values are 'AudioInsightsOnly', 'VideoInsightsOnly',
+	// and 'AllInsights'. The default is AllInsights. If you set this to
+	// AllInsights and the input is audio only, then only audio insights are generated. Similarly if the input is video only,
+	// then only video insights are generated. It is recommended that you not use
+	// AudioInsightsOnly if you expect some of your inputs to be video only; or use VideoInsightsOnly if you expect some of your
+	// inputs to be audio only. Your Jobs in such conditions would error out.
 	InsightsToExtract *InsightsType `json:"insightsToExtract,omitempty"`
+
+	// Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode would be
+	// chosen.
+	Mode *AudioAnalysisMode `json:"mode,omitempty"`
+}
+
+// GetAudioAnalyzerPreset implements the AudioAnalyzerPresetClassification interface for type VideoAnalyzerPreset.
+func (v *VideoAnalyzerPreset) GetAudioAnalyzerPreset() *AudioAnalyzerPreset {
+	return &AudioAnalyzerPreset{
+		AudioLanguage:       v.AudioLanguage,
+		Mode:                v.Mode,
+		ExperimentalOptions: v.ExperimentalOptions,
+		ODataType:           v.ODataType,
+	}
+}
+
+// GetPreset implements the PresetClassification interface for type VideoAnalyzerPreset.
+func (v *VideoAnalyzerPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: v.ODataType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VideoAnalyzerPreset.
 func (v VideoAnalyzerPreset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.AudioAnalyzerPreset.marshalInternal(objectMap, "#Microsoft.Media.VideoAnalyzerPreset")
+	populate(objectMap, "audioLanguage", v.AudioLanguage)
+	populate(objectMap, "experimentalOptions", v.ExperimentalOptions)
 	populate(objectMap, "insightsToExtract", v.InsightsToExtract)
+	populate(objectMap, "mode", v.Mode)
+	objectMap["@odata.type"] = "#Microsoft.Media.VideoAnalyzerPreset"
 	return json.Marshal(objectMap)
 }
 
@@ -6850,16 +8496,25 @@ func (v *VideoAnalyzerPreset) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "audioLanguage":
+			err = unpopulate(val, &v.AudioLanguage)
+			delete(rawMsg, key)
+		case "experimentalOptions":
+			err = unpopulate(val, &v.ExperimentalOptions)
+			delete(rawMsg, key)
 		case "insightsToExtract":
 			err = unpopulate(val, &v.InsightsToExtract)
+			delete(rawMsg, key)
+		case "mode":
+			err = unpopulate(val, &v.Mode)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &v.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := v.AudioAnalyzerPreset.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -6876,30 +8531,56 @@ type VideoLayerClassification interface {
 
 // VideoLayer - Describes the settings to be used when encoding the input video into a desired output bitrate layer.
 type VideoLayer struct {
-	Layer
-	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. This is a required field.
+	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. This is
+	// a required field.
 	Bitrate *int32 `json:"bitrate,omitempty"`
 
-	// Whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on whenever the video profile permits
-	// its use.
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on
+	// whenever the video profile permits its use.
 	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
 
-	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number based on the video profile and
-	// level.
+	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number
+	// based on the video profile and level.
 	BFrames *int32 `json:"bFrames,omitempty"`
 
-	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N are integers (For example, 30000/1001),
-	// or in the form of a number (For example,
-	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified, the encoder will use the
-	// same frame rate as the input video.
+	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
+	// are integers (For example, 30000/1001), or in the form of a number (For example,
+	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified,
+	// the encoder will use the same frame rate as the input video.
 	FrameRate *string `json:"frameRate,omitempty"`
 
-	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults to the same value as bitrate.
+	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in height as the input.
+	Height *string `json:"height,omitempty"`
+
+	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
+	// the output file.
+	Label *string `json:"label,omitempty"`
+
+	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults
+	// to the same value as bitrate.
 	MaxBitrate *int32 `json:"maxBitrate,omitempty"`
 
-	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will use a single slice for each
-	// frame.
+	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will
+	// use a single slice for each frame.
 	Slices *int32 `json:"slices,omitempty"`
+
+	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
+	// 50% means the output video has half as many pixels in width as the input.
+	Width *string `json:"width,omitempty"`
+}
+
+// GetLayer implements the LayerClassification interface for type VideoLayer.
+func (v *VideoLayer) GetLayer() *Layer {
+	return &Layer{
+		ODataType: v.ODataType,
+		Width:     v.Width,
+		Height:    v.Height,
+		Label:     v.Label,
+	}
 }
 
 // GetVideoLayer implements the VideoLayerClassification interface for type VideoLayer.
@@ -6908,7 +8589,16 @@ func (v *VideoLayer) GetVideoLayer() *VideoLayer { return v }
 // MarshalJSON implements the json.Marshaller interface for type VideoLayer.
 func (v VideoLayer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.marshalInternal(objectMap, "#Microsoft.Media.VideoLayer")
+	populate(objectMap, "adaptiveBFrame", v.AdaptiveBFrame)
+	populate(objectMap, "bFrames", v.BFrames)
+	populate(objectMap, "bitrate", v.Bitrate)
+	populate(objectMap, "frameRate", v.FrameRate)
+	populate(objectMap, "height", v.Height)
+	populate(objectMap, "label", v.Label)
+	populate(objectMap, "maxBitrate", v.MaxBitrate)
+	objectMap["@odata.type"] = "#Microsoft.Media.VideoLayer"
+	populate(objectMap, "slices", v.Slices)
+	populate(objectMap, "width", v.Width)
 	return json.Marshal(objectMap)
 }
 
@@ -6918,20 +8608,6 @@ func (v *VideoLayer) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return v.unmarshalInternal(rawMsg)
-}
-
-func (v VideoLayer) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	v.Layer.marshalInternal(objectMap, discValue)
-	populate(objectMap, "adaptiveBFrame", v.AdaptiveBFrame)
-	populate(objectMap, "bFrames", v.BFrames)
-	populate(objectMap, "bitrate", v.Bitrate)
-	populate(objectMap, "frameRate", v.FrameRate)
-	populate(objectMap, "maxBitrate", v.MaxBitrate)
-	populate(objectMap, "slices", v.Slices)
-}
-
-func (v *VideoLayer) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -6947,43 +8623,102 @@ func (v *VideoLayer) unmarshalInternal(rawMsg map[string]json.RawMessage) error 
 		case "frameRate":
 			err = unpopulate(val, &v.FrameRate)
 			delete(rawMsg, key)
+		case "height":
+			err = unpopulate(val, &v.Height)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, &v.Label)
+			delete(rawMsg, key)
 		case "maxBitrate":
 			err = unpopulate(val, &v.MaxBitrate)
 			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &v.ODataType)
+			delete(rawMsg, key)
 		case "slices":
 			err = unpopulate(val, &v.Slices)
+			delete(rawMsg, key)
+		case "width":
+			err = unpopulate(val, &v.Width)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := v.Layer.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // VideoOverlay - Describes the properties of a video overlay.
 type VideoOverlay struct {
-	Overlay
+	// REQUIRED; The label of the job input which is to be used as an overlay. The Input must specify exactly one file. You can
+	// specify an image file in JPG, PNG, GIF or BMP format, or an audio file (such as a WAV,
+	// MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video
+	// file formats.
+	InputLabel *string `json:"inputLabel,omitempty"`
+
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The gain level of audio in the overlay. The value should be in the range [0, 1.0]. The default is 1.0.
+	AudioGainLevel *float64 `json:"audioGainLevel,omitempty"`
+
 	// An optional rectangular window used to crop the overlay image or video.
 	CropRectangle *Rectangle `json:"cropRectangle,omitempty"`
+
+	// The end position, with reference to the input video, at which the overlay ends. The value should be in ISO 8601 format.
+	// For example, PT30S to end the overlay at 30 seconds into the input video. If not
+	// specified or the value is greater than the input video duration, the overlay will be applied until the end of the input
+	// video if the overlay media duration is greater than the input video duration,
+	// else the overlay will last as long as the overlay media duration.
+	End *string `json:"end,omitempty"`
+
+	// The duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If
+	// not specified the default behavior is to have no fade in (same as PT0S).
+	FadeInDuration *string `json:"fadeInDuration,omitempty"`
+
+	// The duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not
+	// specified the default behavior is to have no fade out (same as PT0S).
+	FadeOutDuration *string `json:"fadeOutDuration,omitempty"`
 
 	// The opacity of the overlay. This is a value in the range [0 - 1.0]. Default is 1.0 which mean the overlay is opaque.
 	Opacity *float64 `json:"opacity,omitempty"`
 
 	// The location in the input video where the overlay is applied.
 	Position *Rectangle `json:"position,omitempty"`
+
+	// The start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format.
+	// For example, PT05S to start the overlay at 5 seconds into the input video.
+	// If not specified the overlay starts from the beginning of the input video.
+	Start *string `json:"start,omitempty"`
+}
+
+// GetOverlay implements the OverlayClassification interface for type VideoOverlay.
+func (v *VideoOverlay) GetOverlay() *Overlay {
+	return &Overlay{
+		ODataType:       v.ODataType,
+		InputLabel:      v.InputLabel,
+		Start:           v.Start,
+		End:             v.End,
+		FadeInDuration:  v.FadeInDuration,
+		FadeOutDuration: v.FadeOutDuration,
+		AudioGainLevel:  v.AudioGainLevel,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VideoOverlay.
 func (v VideoOverlay) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.Overlay.marshalInternal(objectMap, "#Microsoft.Media.VideoOverlay")
+	populate(objectMap, "audioGainLevel", v.AudioGainLevel)
 	populate(objectMap, "cropRectangle", v.CropRectangle)
+	populate(objectMap, "end", v.End)
+	populate(objectMap, "fadeInDuration", v.FadeInDuration)
+	populate(objectMap, "fadeOutDuration", v.FadeOutDuration)
+	populate(objectMap, "inputLabel", v.InputLabel)
+	objectMap["@odata.type"] = "#Microsoft.Media.VideoOverlay"
 	populate(objectMap, "opacity", v.Opacity)
 	populate(objectMap, "position", v.Position)
+	populate(objectMap, "start", v.Start)
 	return json.Marshal(objectMap)
 }
 
@@ -6996,8 +8731,26 @@ func (v *VideoOverlay) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "audioGainLevel":
+			err = unpopulate(val, &v.AudioGainLevel)
+			delete(rawMsg, key)
 		case "cropRectangle":
 			err = unpopulate(val, &v.CropRectangle)
+			delete(rawMsg, key)
+		case "end":
+			err = unpopulate(val, &v.End)
+			delete(rawMsg, key)
+		case "fadeInDuration":
+			err = unpopulate(val, &v.FadeInDuration)
+			delete(rawMsg, key)
+		case "fadeOutDuration":
+			err = unpopulate(val, &v.FadeOutDuration)
+			delete(rawMsg, key)
+		case "inputLabel":
+			err = unpopulate(val, &v.InputLabel)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, &v.ODataType)
 			delete(rawMsg, key)
 		case "opacity":
 			err = unpopulate(val, &v.Opacity)
@@ -7005,13 +8758,13 @@ func (v *VideoOverlay) UnmarshalJSON(data []byte) error {
 		case "position":
 			err = unpopulate(val, &v.Position)
 			delete(rawMsg, key)
+		case "start":
+			err = unpopulate(val, &v.Start)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := v.Overlay.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -7019,7 +8772,7 @@ func (v *VideoOverlay) UnmarshalJSON(data []byte) error {
 // VideoTrackDescriptorClassification provides polymorphic access to related types.
 // Call the interface's GetVideoTrackDescriptor() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *SelectVideoTrackByAttribute, *SelectVideoTrackById, *VideoTrackDescriptor
+// - *SelectVideoTrackByAttribute, *SelectVideoTrackByID, *VideoTrackDescriptor
 type VideoTrackDescriptorClassification interface {
 	TrackDescriptorClassification
 	// GetVideoTrackDescriptor returns the VideoTrackDescriptor content of the underlying type.
@@ -7028,7 +8781,15 @@ type VideoTrackDescriptorClassification interface {
 
 // VideoTrackDescriptor - A TrackSelection to select video tracks.
 type VideoTrackDescriptor struct {
-	TrackDescriptor
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type VideoTrackDescriptor.
+func (v *VideoTrackDescriptor) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: v.ODataType,
+	}
 }
 
 // GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type VideoTrackDescriptor.
@@ -7037,17 +8798,26 @@ func (v *VideoTrackDescriptor) GetVideoTrackDescriptor() *VideoTrackDescriptor {
 // MarshalJSON implements the json.Marshaller interface for type VideoTrackDescriptor.
 func (v VideoTrackDescriptor) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.marshalInternal(objectMap, "#Microsoft.Media.VideoTrackDescriptor")
+	objectMap["@odata.type"] = "#Microsoft.Media.VideoTrackDescriptor"
 	return json.Marshal(objectMap)
 }
 
-func (v VideoTrackDescriptor) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	v.TrackDescriptor.marshalInternal(objectMap, discValue)
-}
-
-func (v *VideoTrackDescriptor) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := v.TrackDescriptor.unmarshalInternal(rawMsg); err != nil {
+// UnmarshalJSON implements the json.Unmarshaller interface for type VideoTrackDescriptor.
+func (v *VideoTrackDescriptor) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "@odata.type":
+			err = unpopulate(val, &v.ODataType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

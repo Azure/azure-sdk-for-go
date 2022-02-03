@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // FirewallPolicyIdpsSignaturesClient contains the methods for the FirewallPolicyIdpsSignatures group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesClient() instead.
 type FirewallPolicyIdpsSignaturesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFirewallPolicyIdpsSignaturesClient creates a new instance of FirewallPolicyIdpsSignaturesClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFirewallPolicyIdpsSignaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FirewallPolicyIdpsSignaturesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FirewallPolicyIdpsSignaturesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FirewallPolicyIdpsSignaturesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Retrieves the current status of IDPS signatures for the relevant policy
-// If the operation fails it returns the *CloudError error type.
-func (client *FirewallPolicyIdpsSignaturesClient) List(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters IDPSQueryObject, options *FirewallPolicyIdpsSignaturesListOptions) (FirewallPolicyIdpsSignaturesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// firewallPolicyName - The name of the Firewall Policy.
+// options - FirewallPolicyIdpsSignaturesClientListOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesClient.List
+// method.
+func (client *FirewallPolicyIdpsSignaturesClient) List(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters IDPSQueryObject, options *FirewallPolicyIdpsSignaturesClientListOptions) (FirewallPolicyIdpsSignaturesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, firewallPolicyName, parameters, options)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesListResponse{}, err
+		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesListResponse{}, err
+		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallPolicyIdpsSignaturesListResponse{}, client.listHandleError(resp)
+		return FirewallPolicyIdpsSignaturesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *FirewallPolicyIdpsSignaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters IDPSQueryObject, options *FirewallPolicyIdpsSignaturesListOptions) (*policy.Request, error) {
+func (client *FirewallPolicyIdpsSignaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters IDPSQueryObject, options *FirewallPolicyIdpsSignaturesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/listIdpsSignatures"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +86,7 @@ func (client *FirewallPolicyIdpsSignaturesClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +95,10 @@ func (client *FirewallPolicyIdpsSignaturesClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallPolicyIdpsSignaturesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesListResponse, error) {
-	result := FirewallPolicyIdpsSignaturesListResponse{RawResponse: resp}
+func (client *FirewallPolicyIdpsSignaturesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesClientListResponse, error) {
+	result := FirewallPolicyIdpsSignaturesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResults); err != nil {
-		return FirewallPolicyIdpsSignaturesListResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *FirewallPolicyIdpsSignaturesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

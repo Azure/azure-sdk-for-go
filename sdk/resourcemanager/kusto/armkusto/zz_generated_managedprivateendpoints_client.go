@@ -11,7 +11,6 @@ package armkusto
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ManagedPrivateEndpointsClient contains the methods for the ManagedPrivateEndpoints group.
 // Don't use this type directly, use NewManagedPrivateEndpointsClient() instead.
 type ManagedPrivateEndpointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedPrivateEndpointsClient creates a new instance of ManagedPrivateEndpointsClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedPrivateEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedPrivateEndpointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedPrivateEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedPrivateEndpointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Checks that the managed private endpoints resource name is valid and is not already in use.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName ManagedPrivateEndpointsCheckNameRequest, options *ManagedPrivateEndpointsCheckNameAvailabilityOptions) (ManagedPrivateEndpointsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// resourceName - The name of the resource.
+// options - ManagedPrivateEndpointsClientCheckNameAvailabilityOptions contains the optional parameters for the ManagedPrivateEndpointsClient.CheckNameAvailability
+// method.
+func (client *ManagedPrivateEndpointsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName ManagedPrivateEndpointsCheckNameRequest, options *ManagedPrivateEndpointsClientCheckNameAvailabilityOptions) (ManagedPrivateEndpointsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, resourceName, options)
 	if err != nil {
-		return ManagedPrivateEndpointsCheckNameAvailabilityResponse{}, err
+		return ManagedPrivateEndpointsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedPrivateEndpointsCheckNameAvailabilityResponse{}, err
+		return ManagedPrivateEndpointsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedPrivateEndpointsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return ManagedPrivateEndpointsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName ManagedPrivateEndpointsCheckNameRequest, options *ManagedPrivateEndpointsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resourceName ManagedPrivateEndpointsCheckNameRequest, options *ManagedPrivateEndpointsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/managedPrivateEndpointsCheckNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +87,7 @@ func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,50 +99,43 @@ func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityCreateRequest(
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ManagedPrivateEndpointsCheckNameAvailabilityResponse, error) {
-	result := ManagedPrivateEndpointsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ManagedPrivateEndpointsClientCheckNameAvailabilityResponse, error) {
+	result := ManagedPrivateEndpointsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
-		return ManagedPrivateEndpointsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedPrivateEndpointsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Creates a managed private endpoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsBeginCreateOrUpdateOptions) (ManagedPrivateEndpointsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// managedPrivateEndpointName - The name of the managed private endpoint.
+// parameters - The managed private endpoint parameters.
+// options - ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginCreateOrUpdate
+// method.
+func (client *ManagedPrivateEndpointsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions) (ManagedPrivateEndpointsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, parameters, options)
 	if err != nil {
-		return ManagedPrivateEndpointsCreateOrUpdatePollerResponse{}, err
+		return ManagedPrivateEndpointsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ManagedPrivateEndpointsCreateOrUpdatePollerResponse{
+	result := ManagedPrivateEndpointsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedPrivateEndpointsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ManagedPrivateEndpointsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ManagedPrivateEndpointsCreateOrUpdatePollerResponse{}, err
+		return ManagedPrivateEndpointsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ManagedPrivateEndpointsCreateOrUpdatePoller{
+	result.Poller = &ManagedPrivateEndpointsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a managed private endpoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedPrivateEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -139,13 +145,13 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedPrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagedPrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/managedPrivateEndpoints/{managedPrivateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -163,7 +169,7 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdateCreateRequest(ctx con
 		return nil, errors.New("parameter managedPrivateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedPrivateEndpointName}", url.PathEscape(managedPrivateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,42 +180,34 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdateCreateRequest(ctx con
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedPrivateEndpointsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a managed private endpoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsBeginDeleteOptions) (ManagedPrivateEndpointsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// managedPrivateEndpointName - The name of the managed private endpoint.
+// options - ManagedPrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginDelete
+// method.
+func (client *ManagedPrivateEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientBeginDeleteOptions) (ManagedPrivateEndpointsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, options)
 	if err != nil {
-		return ManagedPrivateEndpointsDeletePollerResponse{}, err
+		return ManagedPrivateEndpointsClientDeletePollerResponse{}, err
 	}
-	result := ManagedPrivateEndpointsDeletePollerResponse{
+	result := ManagedPrivateEndpointsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedPrivateEndpointsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ManagedPrivateEndpointsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ManagedPrivateEndpointsDeletePollerResponse{}, err
+		return ManagedPrivateEndpointsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ManagedPrivateEndpointsDeletePoller{
+	result.Poller = &ManagedPrivateEndpointsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a managed private endpoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedPrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, options)
 	if err != nil {
 		return nil, err
@@ -219,13 +217,13 @@ func (client *ManagedPrivateEndpointsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/managedPrivateEndpoints/{managedPrivateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -243,7 +241,7 @@ func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter managedPrivateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedPrivateEndpointName}", url.PathEscape(managedPrivateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -254,38 +252,30 @@ func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ManagedPrivateEndpointsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a managed private endpoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsGetOptions) (ManagedPrivateEndpointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// managedPrivateEndpointName - The name of the managed private endpoint.
+// options - ManagedPrivateEndpointsClientGetOptions contains the optional parameters for the ManagedPrivateEndpointsClient.Get
+// method.
+func (client *ManagedPrivateEndpointsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientGetOptions) (ManagedPrivateEndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, options)
 	if err != nil {
-		return ManagedPrivateEndpointsGetResponse{}, err
+		return ManagedPrivateEndpointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedPrivateEndpointsGetResponse{}, err
+		return ManagedPrivateEndpointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedPrivateEndpointsGetResponse{}, client.getHandleError(resp)
+		return ManagedPrivateEndpointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedPrivateEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsGetOptions) (*policy.Request, error) {
+func (client *ManagedPrivateEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/managedPrivateEndpoints/{managedPrivateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -303,7 +293,7 @@ func (client *ManagedPrivateEndpointsClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter managedPrivateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedPrivateEndpointName}", url.PathEscape(managedPrivateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -315,46 +305,37 @@ func (client *ManagedPrivateEndpointsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Response) (ManagedPrivateEndpointsGetResponse, error) {
-	result := ManagedPrivateEndpointsGetResponse{RawResponse: resp}
+func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Response) (ManagedPrivateEndpointsClientGetResponse, error) {
+	result := ManagedPrivateEndpointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedPrivateEndpoint); err != nil {
-		return ManagedPrivateEndpointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedPrivateEndpointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedPrivateEndpointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns the list of managed private endpoints.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) List(ctx context.Context, resourceGroupName string, clusterName string, options *ManagedPrivateEndpointsListOptions) (ManagedPrivateEndpointsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ManagedPrivateEndpointsClientListOptions contains the optional parameters for the ManagedPrivateEndpointsClient.List
+// method.
+func (client *ManagedPrivateEndpointsClient) List(ctx context.Context, resourceGroupName string, clusterName string, options *ManagedPrivateEndpointsClientListOptions) (ManagedPrivateEndpointsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
-		return ManagedPrivateEndpointsListResponse{}, err
+		return ManagedPrivateEndpointsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedPrivateEndpointsListResponse{}, err
+		return ManagedPrivateEndpointsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedPrivateEndpointsListResponse{}, client.listHandleError(resp)
+		return ManagedPrivateEndpointsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagedPrivateEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ManagedPrivateEndpointsListOptions) (*policy.Request, error) {
+func (client *ManagedPrivateEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ManagedPrivateEndpointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/managedPrivateEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -368,7 +349,7 @@ func (client *ManagedPrivateEndpointsClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -380,50 +361,43 @@ func (client *ManagedPrivateEndpointsClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedPrivateEndpointsClient) listHandleResponse(resp *http.Response) (ManagedPrivateEndpointsListResponse, error) {
-	result := ManagedPrivateEndpointsListResponse{RawResponse: resp}
+func (client *ManagedPrivateEndpointsClient) listHandleResponse(resp *http.Response) (ManagedPrivateEndpointsClientListResponse, error) {
+	result := ManagedPrivateEndpointsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedPrivateEndpointListResult); err != nil {
-		return ManagedPrivateEndpointsListResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedPrivateEndpointsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ManagedPrivateEndpointsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates a managed private endpoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsBeginUpdateOptions) (ManagedPrivateEndpointsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// managedPrivateEndpointName - The name of the managed private endpoint.
+// parameters - The managed private endpoint parameters.
+// options - ManagedPrivateEndpointsClientBeginUpdateOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginUpdate
+// method.
+func (client *ManagedPrivateEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsClientBeginUpdateOptions) (ManagedPrivateEndpointsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, parameters, options)
 	if err != nil {
-		return ManagedPrivateEndpointsUpdatePollerResponse{}, err
+		return ManagedPrivateEndpointsClientUpdatePollerResponse{}, err
 	}
-	result := ManagedPrivateEndpointsUpdatePollerResponse{
+	result := ManagedPrivateEndpointsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedPrivateEndpointsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ManagedPrivateEndpointsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ManagedPrivateEndpointsUpdatePollerResponse{}, err
+		return ManagedPrivateEndpointsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ManagedPrivateEndpointsUpdatePoller{
+	result.Poller = &ManagedPrivateEndpointsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a managed private endpoint.
-// If the operation fails it returns the *CloudError error type.
-func (client *ManagedPrivateEndpointsClient) update(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedPrivateEndpointsClient) update(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -433,13 +407,13 @@ func (client *ManagedPrivateEndpointsClient) update(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ManagedPrivateEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsBeginUpdateOptions) (*policy.Request, error) {
+func (client *ManagedPrivateEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/managedPrivateEndpoints/{managedPrivateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -457,7 +431,7 @@ func (client *ManagedPrivateEndpointsClient) updateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter managedPrivateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedPrivateEndpointName}", url.PathEscape(managedPrivateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -466,17 +440,4 @@ func (client *ManagedPrivateEndpointsClient) updateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ManagedPrivateEndpointsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -24,46 +24,61 @@ import (
 // ManagedDatabasesClient contains the methods for the ManagedDatabases group.
 // Don't use this type directly, use NewManagedDatabasesClient() instead.
 type ManagedDatabasesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedDatabasesClient creates a new instance of ManagedDatabasesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabasesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedDatabasesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedDatabasesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCompleteRestore - Completes the restore operation on a managed database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) BeginCompleteRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters CompleteDatabaseRestoreDefinition, options *ManagedDatabasesBeginCompleteRestoreOptions) (ManagedDatabasesCompleteRestorePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the database.
+// parameters - The definition for completing the restore of this managed database.
+// options - ManagedDatabasesClientBeginCompleteRestoreOptions contains the optional parameters for the ManagedDatabasesClient.BeginCompleteRestore
+// method.
+func (client *ManagedDatabasesClient) BeginCompleteRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters CompleteDatabaseRestoreDefinition, options *ManagedDatabasesClientBeginCompleteRestoreOptions) (ManagedDatabasesClientCompleteRestorePollerResponse, error) {
 	resp, err := client.completeRestore(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
-		return ManagedDatabasesCompleteRestorePollerResponse{}, err
+		return ManagedDatabasesClientCompleteRestorePollerResponse{}, err
 	}
-	result := ManagedDatabasesCompleteRestorePollerResponse{
+	result := ManagedDatabasesClientCompleteRestorePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedDatabasesClient.CompleteRestore", "", resp, client.pl, client.completeRestoreHandleError)
+	pt, err := armruntime.NewPoller("ManagedDatabasesClient.CompleteRestore", "", resp, client.pl)
 	if err != nil {
-		return ManagedDatabasesCompleteRestorePollerResponse{}, err
+		return ManagedDatabasesClientCompleteRestorePollerResponse{}, err
 	}
-	result.Poller = &ManagedDatabasesCompleteRestorePoller{
+	result.Poller = &ManagedDatabasesClientCompleteRestorePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CompleteRestore - Completes the restore operation on a managed database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) completeRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters CompleteDatabaseRestoreDefinition, options *ManagedDatabasesBeginCompleteRestoreOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedDatabasesClient) completeRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters CompleteDatabaseRestoreDefinition, options *ManagedDatabasesClientBeginCompleteRestoreOptions) (*http.Response, error) {
 	req, err := client.completeRestoreCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *ManagedDatabasesClient) completeRestore(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.completeRestoreHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // completeRestoreCreateRequest creates the CompleteRestore request.
-func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters CompleteDatabaseRestoreDefinition, options *ManagedDatabasesBeginCompleteRestoreOptions) (*policy.Request, error) {
+func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters CompleteDatabaseRestoreDefinition, options *ManagedDatabasesClientBeginCompleteRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/completeRestore"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +112,7 @@ func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -107,41 +122,36 @@ func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.C
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// completeRestoreHandleError handles the CompleteRestore error response.
-func (client *ManagedDatabasesClient) completeRestoreHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginCreateOrUpdate - Creates a new database or updates an existing database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabase, options *ManagedDatabasesBeginCreateOrUpdateOptions) (ManagedDatabasesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the database.
+// parameters - The requested database resource state.
+// options - ManagedDatabasesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedDatabasesClient.BeginCreateOrUpdate
+// method.
+func (client *ManagedDatabasesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabase, options *ManagedDatabasesClientBeginCreateOrUpdateOptions) (ManagedDatabasesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
-		return ManagedDatabasesCreateOrUpdatePollerResponse{}, err
+		return ManagedDatabasesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ManagedDatabasesCreateOrUpdatePollerResponse{
+	result := ManagedDatabasesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedDatabasesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ManagedDatabasesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ManagedDatabasesCreateOrUpdatePollerResponse{}, err
+		return ManagedDatabasesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ManagedDatabasesCreateOrUpdatePoller{
+	result.Poller = &ManagedDatabasesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a new database or updates an existing database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabase, options *ManagedDatabasesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedDatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabase, options *ManagedDatabasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -151,13 +161,13 @@ func (client *ManagedDatabasesClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabase, options *ManagedDatabasesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabase, options *ManagedDatabasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -175,7 +185,7 @@ func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,41 +196,35 @@ func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedDatabasesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a managed database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesBeginDeleteOptions) (ManagedDatabasesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the database.
+// options - ManagedDatabasesClientBeginDeleteOptions contains the optional parameters for the ManagedDatabasesClient.BeginDelete
+// method.
+func (client *ManagedDatabasesClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientBeginDeleteOptions) (ManagedDatabasesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, managedInstanceName, databaseName, options)
 	if err != nil {
-		return ManagedDatabasesDeletePollerResponse{}, err
+		return ManagedDatabasesClientDeletePollerResponse{}, err
 	}
-	result := ManagedDatabasesDeletePollerResponse{
+	result := ManagedDatabasesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedDatabasesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ManagedDatabasesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ManagedDatabasesDeletePollerResponse{}, err
+		return ManagedDatabasesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ManagedDatabasesDeletePoller{
+	result.Poller = &ManagedDatabasesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a managed database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedDatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -230,13 +234,13 @@ func (client *ManagedDatabasesClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ManagedDatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesBeginDeleteOptions) (*policy.Request, error) {
+func (client *ManagedDatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -254,7 +258,7 @@ func (client *ManagedDatabasesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,37 +268,30 @@ func (client *ManagedDatabasesClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ManagedDatabasesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a managed database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesGetOptions) (ManagedDatabasesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the database.
+// options - ManagedDatabasesClientGetOptions contains the optional parameters for the ManagedDatabasesClient.Get method.
+func (client *ManagedDatabasesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientGetOptions) (ManagedDatabasesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
 	if err != nil {
-		return ManagedDatabasesGetResponse{}, err
+		return ManagedDatabasesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedDatabasesGetResponse{}, err
+		return ManagedDatabasesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedDatabasesGetResponse{}, client.getHandleError(resp)
+		return ManagedDatabasesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesGetOptions) (*policy.Request, error) {
+func (client *ManagedDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -312,7 +309,7 @@ func (client *ManagedDatabasesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -324,42 +321,35 @@ func (client *ManagedDatabasesClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabasesClient) getHandleResponse(resp *http.Response) (ManagedDatabasesGetResponse, error) {
-	result := ManagedDatabasesGetResponse{RawResponse: resp}
+func (client *ManagedDatabasesClient) getHandleResponse(resp *http.Response) (ManagedDatabasesClientGetResponse, error) {
+	result := ManagedDatabasesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabase); err != nil {
-		return ManagedDatabasesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabasesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedDatabasesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByInstance - Gets a list of managed databases.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesListByInstanceOptions) *ManagedDatabasesListByInstancePager {
-	return &ManagedDatabasesListByInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedDatabasesClientListByInstanceOptions contains the optional parameters for the ManagedDatabasesClient.ListByInstance
+// method.
+func (client *ManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListByInstanceOptions) *ManagedDatabasesClientListByInstancePager {
+	return &ManagedDatabasesClientListByInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabasesListByInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedDatabasesClientListByInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedDatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *ManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedDatabasesListByInstanceOptions) (*policy.Request, error) {
+func (client *ManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -373,7 +363,7 @@ func (client *ManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -385,42 +375,35 @@ func (client *ManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Co
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *ManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (ManagedDatabasesListByInstanceResponse, error) {
-	result := ManagedDatabasesListByInstanceResponse{RawResponse: resp}
+func (client *ManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (ManagedDatabasesClientListByInstanceResponse, error) {
+	result := ManagedDatabasesClientListByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseListResult); err != nil {
-		return ManagedDatabasesListByInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabasesClientListByInstanceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByInstanceHandleError handles the ListByInstance error response.
-func (client *ManagedDatabasesClient) listByInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListInaccessibleByInstance - Gets a list of inaccessible managed databases in a managed instance
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) ListInaccessibleByInstance(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesListInaccessibleByInstanceOptions) *ManagedDatabasesListInaccessibleByInstancePager {
-	return &ManagedDatabasesListInaccessibleByInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedDatabasesClientListInaccessibleByInstanceOptions contains the optional parameters for the ManagedDatabasesClient.ListInaccessibleByInstance
+// method.
+func (client *ManagedDatabasesClient) ListInaccessibleByInstance(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListInaccessibleByInstanceOptions) *ManagedDatabasesClientListInaccessibleByInstancePager {
+	return &ManagedDatabasesClientListInaccessibleByInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listInaccessibleByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabasesListInaccessibleByInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedDatabasesClientListInaccessibleByInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedDatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listInaccessibleByInstanceCreateRequest creates the ListInaccessibleByInstance request.
-func (client *ManagedDatabasesClient) listInaccessibleByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedDatabasesListInaccessibleByInstanceOptions) (*policy.Request, error) {
+func (client *ManagedDatabasesClient) listInaccessibleByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListInaccessibleByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -434,7 +417,7 @@ func (client *ManagedDatabasesClient) listInaccessibleByInstanceCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -446,49 +429,44 @@ func (client *ManagedDatabasesClient) listInaccessibleByInstanceCreateRequest(ct
 }
 
 // listInaccessibleByInstanceHandleResponse handles the ListInaccessibleByInstance response.
-func (client *ManagedDatabasesClient) listInaccessibleByInstanceHandleResponse(resp *http.Response) (ManagedDatabasesListInaccessibleByInstanceResponse, error) {
-	result := ManagedDatabasesListInaccessibleByInstanceResponse{RawResponse: resp}
+func (client *ManagedDatabasesClient) listInaccessibleByInstanceHandleResponse(resp *http.Response) (ManagedDatabasesClientListInaccessibleByInstanceResponse, error) {
+	result := ManagedDatabasesClientListInaccessibleByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseListResult); err != nil {
-		return ManagedDatabasesListInaccessibleByInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabasesClientListInaccessibleByInstanceResponse{}, err
 	}
 	return result, nil
 }
 
-// listInaccessibleByInstanceHandleError handles the ListInaccessibleByInstance error response.
-func (client *ManagedDatabasesClient) listInaccessibleByInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Updates an existing database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseUpdate, options *ManagedDatabasesBeginUpdateOptions) (ManagedDatabasesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the database.
+// parameters - The requested database resource state.
+// options - ManagedDatabasesClientBeginUpdateOptions contains the optional parameters for the ManagedDatabasesClient.BeginUpdate
+// method.
+func (client *ManagedDatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseUpdate, options *ManagedDatabasesClientBeginUpdateOptions) (ManagedDatabasesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
-		return ManagedDatabasesUpdatePollerResponse{}, err
+		return ManagedDatabasesClientUpdatePollerResponse{}, err
 	}
-	result := ManagedDatabasesUpdatePollerResponse{
+	result := ManagedDatabasesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedDatabasesClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ManagedDatabasesClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ManagedDatabasesUpdatePollerResponse{}, err
+		return ManagedDatabasesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ManagedDatabasesUpdatePoller{
+	result.Poller = &ManagedDatabasesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates an existing database.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabasesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseUpdate, options *ManagedDatabasesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedDatabasesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseUpdate, options *ManagedDatabasesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -498,13 +476,13 @@ func (client *ManagedDatabasesClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ManagedDatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseUpdate, options *ManagedDatabasesBeginUpdateOptions) (*policy.Request, error) {
+func (client *ManagedDatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseUpdate, options *ManagedDatabasesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -522,7 +500,7 @@ func (client *ManagedDatabasesClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -531,16 +509,4 @@ func (client *ManagedDatabasesClient) updateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ManagedDatabasesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

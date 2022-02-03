@@ -27,7 +27,7 @@ func ExampleAttachedDatabaseConfigurationsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.AttachedDatabaseConfigurationsCheckNameRequest{
@@ -38,6 +38,7 @@ func ExampleAttachedDatabaseConfigurationsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AttachedDatabaseConfigurationsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoAttachedDatabaseConfigurationsListByCluster.json
@@ -48,13 +49,14 @@ func ExampleAttachedDatabaseConfigurationsClient_ListByCluster() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByCluster(ctx,
+	res, err := client.ListByCluster(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AttachedDatabaseConfigurationsClientListByClusterResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoAttachedDatabaseConfigurationsGet.json
@@ -73,7 +75,7 @@ func ExampleAttachedDatabaseConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AttachedDatabaseConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AttachedDatabaseConfigurationsClientGetResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoAttachedDatabaseConfigurationsCreateOrUpdate.json
@@ -93,7 +95,7 @@ func ExampleAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() {
 			Properties: &armkusto.AttachedDatabaseConfigurationProperties{
 				ClusterResourceID:                 to.StringPtr("<cluster-resource-id>"),
 				DatabaseName:                      to.StringPtr("<database-name>"),
-				DefaultPrincipalsModificationKind: armkusto.DefaultPrincipalsModificationKindUnion.ToPtr(),
+				DefaultPrincipalsModificationKind: armkusto.DefaultPrincipalsModificationKind("Union").ToPtr(),
 				TableLevelSharingProperties: &armkusto.TableLevelSharingProperties{
 					ExternalTablesToExclude: []*string{
 						to.StringPtr("ExternalTable2")},
@@ -118,7 +120,7 @@ func ExampleAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AttachedDatabaseConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AttachedDatabaseConfigurationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoAttachedDatabaseConfigurationsDelete.json

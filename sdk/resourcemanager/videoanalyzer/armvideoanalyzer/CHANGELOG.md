@@ -1,0 +1,777 @@
+# Release History
+
+## 0.2.0 (2022-01-21)
+### Breaking Changes
+
+- Function `*VideosClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *VideosDeleteOptions)` to `(context.Context, string, string, string, *VideosClientDeleteOptions)`
+- Function `*VideosClient.Delete` return value(s) have been changed from `(VideosDeleteResponse, error)` to `(VideosClientDeleteResponse, error)`
+- Function `*EdgeModulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *EdgeModulesGetOptions)` to `(context.Context, string, string, string, *EdgeModulesClientGetOptions)`
+- Function `*EdgeModulesClient.Get` return value(s) have been changed from `(EdgeModulesGetResponse, error)` to `(EdgeModulesClientGetResponse, error)`
+- Function `*EdgeModulesClient.List` parameter(s) have been changed from `(string, string, *EdgeModulesListOptions)` to `(string, string, *EdgeModulesClientListOptions)`
+- Function `*EdgeModulesClient.List` return value(s) have been changed from `(*EdgeModulesListPager)` to `(*EdgeModulesClientListPager)`
+- Function `*AccessPoliciesClient.List` parameter(s) have been changed from `(string, string, *AccessPoliciesListOptions)` to `(string, string, *AccessPoliciesClientListOptions)`
+- Function `*AccessPoliciesClient.List` return value(s) have been changed from `(*AccessPoliciesListPager)` to `(*AccessPoliciesClientListPager)`
+- Function `*EdgeModulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *EdgeModulesDeleteOptions)` to `(context.Context, string, string, string, *EdgeModulesClientDeleteOptions)`
+- Function `*EdgeModulesClient.Delete` return value(s) have been changed from `(EdgeModulesDeleteResponse, error)` to `(EdgeModulesClientDeleteResponse, error)`
+- Function `*PipelineJobOperationStatusesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *PipelineJobOperationStatusesGetOptions)` to `(context.Context, string, string, string, string, *PipelineJobOperationStatusesClientGetOptions)`
+- Function `*PipelineJobOperationStatusesClient.Get` return value(s) have been changed from `(PipelineJobOperationStatusesGetResponse, error)` to `(PipelineJobOperationStatusesClientGetResponse, error)`
+- Function `*VideoAnalyzersClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *VideoAnalyzersListBySubscriptionOptions)` to `(context.Context, *VideoAnalyzersClientListBySubscriptionOptions)`
+- Function `*VideoAnalyzersClient.ListBySubscription` return value(s) have been changed from `(VideoAnalyzersListBySubscriptionResponse, error)` to `(VideoAnalyzersClientListBySubscriptionResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*AccessPoliciesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *AccessPoliciesDeleteOptions)` to `(context.Context, string, string, string, *AccessPoliciesClientDeleteOptions)`
+- Function `*AccessPoliciesClient.Delete` return value(s) have been changed from `(AccessPoliciesDeleteResponse, error)` to `(AccessPoliciesClientDeleteResponse, error)`
+- Function `*EdgeModulesClient.ListProvisioningToken` parameter(s) have been changed from `(context.Context, string, string, string, ListProvisioningTokenInput, *EdgeModulesListProvisioningTokenOptions)` to `(context.Context, string, string, string, ListProvisioningTokenInput, *EdgeModulesClientListProvisioningTokenOptions)`
+- Function `*EdgeModulesClient.ListProvisioningToken` return value(s) have been changed from `(EdgeModulesListProvisioningTokenResponse, error)` to `(EdgeModulesClientListProvisioningTokenResponse, error)`
+- Function `*LocationsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, CheckNameAvailabilityRequest, *LocationsCheckNameAvailabilityOptions)` to `(context.Context, string, CheckNameAvailabilityRequest, *LocationsClientCheckNameAvailabilityOptions)`
+- Function `*LocationsClient.CheckNameAvailability` return value(s) have been changed from `(LocationsCheckNameAvailabilityResponse, error)` to `(LocationsClientCheckNameAvailabilityResponse, error)`
+- Function `*PipelineTopologiesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PipelineTopology, *PipelineTopologiesCreateOrUpdateOptions)` to `(context.Context, string, string, string, PipelineTopology, *PipelineTopologiesClientCreateOrUpdateOptions)`
+- Function `*PipelineTopologiesClient.CreateOrUpdate` return value(s) have been changed from `(PipelineTopologiesCreateOrUpdateResponse, error)` to `(PipelineTopologiesClientCreateOrUpdateResponse, error)`
+- Function `*OperationStatusesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *OperationStatusesGetOptions)` to `(context.Context, string, string, *OperationStatusesClientGetOptions)`
+- Function `*OperationStatusesClient.Get` return value(s) have been changed from `(OperationStatusesGetResponse, error)` to `(OperationStatusesClientGetResponse, error)`
+- Function `*VideoAnalyzersClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, VideoAnalyzerUpdate, *VideoAnalyzersBeginUpdateOptions)` to `(context.Context, string, string, Update, *VideoAnalyzersClientBeginUpdateOptions)`
+- Function `*VideoAnalyzersClient.BeginUpdate` return value(s) have been changed from `(VideoAnalyzersUpdatePollerResponse, error)` to `(VideoAnalyzersClientUpdatePollerResponse, error)`
+- Function `*LivePipelinesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *LivePipelinesDeleteOptions)` to `(context.Context, string, string, string, *LivePipelinesClientDeleteOptions)`
+- Function `*LivePipelinesClient.Delete` return value(s) have been changed from `(LivePipelinesDeleteResponse, error)` to `(LivePipelinesClientDeleteResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.Delete` return value(s) have been changed from `(PrivateEndpointConnectionsDeleteResponse, error)` to `(PrivateEndpointConnectionsClientDeleteResponse, error)`
+- Function `*VideoAnalyzersClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *VideoAnalyzersDeleteOptions)` to `(context.Context, string, string, *VideoAnalyzersClientDeleteOptions)`
+- Function `*VideoAnalyzersClient.Delete` return value(s) have been changed from `(VideoAnalyzersDeleteResponse, error)` to `(VideoAnalyzersClientDeleteResponse, error)`
+- Function `*PipelineTopologiesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PipelineTopologiesDeleteOptions)` to `(context.Context, string, string, string, *PipelineTopologiesClientDeleteOptions)`
+- Function `*PipelineTopologiesClient.Delete` return value(s) have been changed from `(PipelineTopologiesDeleteResponse, error)` to `(PipelineTopologiesClientDeleteResponse, error)`
+- Function `*VideosClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VideosGetOptions)` to `(context.Context, string, string, string, *VideosClientGetOptions)`
+- Function `*VideosClient.Get` return value(s) have been changed from `(VideosGetResponse, error)` to `(VideosClientGetResponse, error)`
+- Function `*PipelineJobsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PipelineJobsGetOptions)` to `(context.Context, string, string, string, *PipelineJobsClientGetOptions)`
+- Function `*PipelineJobsClient.Get` return value(s) have been changed from `(PipelineJobsGetResponse, error)` to `(PipelineJobsClientGetResponse, error)`
+- Function `*LivePipelinesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, LivePipeline, *LivePipelinesCreateOrUpdateOptions)` to `(context.Context, string, string, string, LivePipeline, *LivePipelinesClientCreateOrUpdateOptions)`
+- Function `*LivePipelinesClient.CreateOrUpdate` return value(s) have been changed from `(LivePipelinesCreateOrUpdateResponse, error)` to `(LivePipelinesClientCreateOrUpdateResponse, error)`
+- Function `*LivePipelineOperationStatusesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *LivePipelineOperationStatusesGetOptions)` to `(context.Context, string, string, string, string, *LivePipelineOperationStatusesClientGetOptions)`
+- Function `*LivePipelineOperationStatusesClient.Get` return value(s) have been changed from `(LivePipelineOperationStatusesGetResponse, error)` to `(LivePipelineOperationStatusesClientGetResponse, error)`
+- Function `*LivePipelinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *LivePipelinesGetOptions)` to `(context.Context, string, string, string, *LivePipelinesClientGetOptions)`
+- Function `*LivePipelinesClient.Get` return value(s) have been changed from `(LivePipelinesGetResponse, error)` to `(LivePipelinesClientGetResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdateResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- Function `*LivePipelinesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, LivePipelineUpdate, *LivePipelinesUpdateOptions)` to `(context.Context, string, string, string, LivePipelineUpdate, *LivePipelinesClientUpdateOptions)`
+- Function `*LivePipelinesClient.Update` return value(s) have been changed from `(LivePipelinesUpdateResponse, error)` to `(LivePipelinesClientUpdateResponse, error)`
+- Function `*PrivateLinkResourcesClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(PrivateLinkResourcesListResponse, error)` to `(PrivateLinkResourcesClientListResponse, error)`
+- Function `*PipelineJobsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PipelineJobsDeleteOptions)` to `(context.Context, string, string, string, *PipelineJobsClientDeleteOptions)`
+- Function `*PipelineJobsClient.Delete` return value(s) have been changed from `(PipelineJobsDeleteResponse, error)` to `(PipelineJobsClientDeleteResponse, error)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*VideosClient.List` parameter(s) have been changed from `(string, string, *VideosListOptions)` to `(string, string, *VideosClientListOptions)`
+- Function `*VideosClient.List` return value(s) have been changed from `(*VideosListPager)` to `(*VideosClientListPager)`
+- Function `*VideosClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, VideoEntity, *VideosUpdateOptions)` to `(context.Context, string, string, string, VideoEntity, *VideosClientUpdateOptions)`
+- Function `*VideosClient.Update` return value(s) have been changed from `(VideosUpdateResponse, error)` to `(VideosClientUpdateResponse, error)`
+- Function `*LivePipelinesClient.BeginDeactivate` parameter(s) have been changed from `(context.Context, string, string, string, *LivePipelinesBeginDeactivateOptions)` to `(context.Context, string, string, string, *LivePipelinesClientBeginDeactivateOptions)`
+- Function `*LivePipelinesClient.BeginDeactivate` return value(s) have been changed from `(LivePipelinesDeactivatePollerResponse, error)` to `(LivePipelinesClientDeactivatePollerResponse, error)`
+- Function `*PipelineJobsClient.BeginCancel` parameter(s) have been changed from `(context.Context, string, string, string, *PipelineJobsBeginCancelOptions)` to `(context.Context, string, string, string, *PipelineJobsClientBeginCancelOptions)`
+- Function `*PipelineJobsClient.BeginCancel` return value(s) have been changed from `(PipelineJobsCancelPollerResponse, error)` to `(PipelineJobsClientCancelPollerResponse, error)`
+- Function `*PipelineJobsClient.List` parameter(s) have been changed from `(string, string, *PipelineJobsListOptions)` to `(string, string, *PipelineJobsClientListOptions)`
+- Function `*PipelineJobsClient.List` return value(s) have been changed from `(*PipelineJobsListPager)` to `(*PipelineJobsClientListPager)`
+- Function `*AccessPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AccessPoliciesGetOptions)` to `(context.Context, string, string, string, *AccessPoliciesClientGetOptions)`
+- Function `*AccessPoliciesClient.Get` return value(s) have been changed from `(AccessPoliciesGetResponse, error)` to `(AccessPoliciesClientGetResponse, error)`
+- Function `*PipelineTopologiesClient.List` parameter(s) have been changed from `(string, string, *PipelineTopologiesListOptions)` to `(string, string, *PipelineTopologiesClientListOptions)`
+- Function `*PipelineTopologiesClient.List` return value(s) have been changed from `(*PipelineTopologiesListPager)` to `(*PipelineTopologiesClientListPager)`
+- Function `*VideosClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VideoEntity, *VideosCreateOrUpdateOptions)` to `(context.Context, string, string, string, VideoEntity, *VideosClientCreateOrUpdateOptions)`
+- Function `*VideosClient.CreateOrUpdate` return value(s) have been changed from `(VideosCreateOrUpdateResponse, error)` to `(VideosClientCreateOrUpdateResponse, error)`
+- Function `*PipelineTopologiesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, PipelineTopologyUpdate, *PipelineTopologiesUpdateOptions)` to `(context.Context, string, string, string, PipelineTopologyUpdate, *PipelineTopologiesClientUpdateOptions)`
+- Function `*PipelineTopologiesClient.Update` return value(s) have been changed from `(PipelineTopologiesUpdateResponse, error)` to `(PipelineTopologiesClientUpdateResponse, error)`
+- Function `*OperationResultsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *OperationResultsGetOptions)` to `(context.Context, string, string, *OperationResultsClientGetOptions)`
+- Function `*OperationResultsClient.Get` return value(s) have been changed from `(OperationResultsGetResponse, error)` to `(OperationResultsClientGetResponse, error)`
+- Function `*PipelineTopologiesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PipelineTopologiesGetOptions)` to `(context.Context, string, string, string, *PipelineTopologiesClientGetOptions)`
+- Function `*PipelineTopologiesClient.Get` return value(s) have been changed from `(PipelineTopologiesGetResponse, error)` to `(PipelineTopologiesClientGetResponse, error)`
+- Function `*VideosClient.ListContentToken` parameter(s) have been changed from `(context.Context, string, string, string, *VideosListContentTokenOptions)` to `(context.Context, string, string, string, *VideosClientListContentTokenOptions)`
+- Function `*VideosClient.ListContentToken` return value(s) have been changed from `(VideosListContentTokenResponse, error)` to `(VideosClientListContentTokenResponse, error)`
+- Function `*PipelineJobsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PipelineJob, *PipelineJobsCreateOrUpdateOptions)` to `(context.Context, string, string, string, PipelineJob, *PipelineJobsClientCreateOrUpdateOptions)`
+- Function `*PipelineJobsClient.CreateOrUpdate` return value(s) have been changed from `(PipelineJobsCreateOrUpdateResponse, error)` to `(PipelineJobsClientCreateOrUpdateResponse, error)`
+- Function `*AccessPoliciesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, AccessPolicyEntity, *AccessPoliciesUpdateOptions)` to `(context.Context, string, string, string, AccessPolicyEntity, *AccessPoliciesClientUpdateOptions)`
+- Function `*AccessPoliciesClient.Update` return value(s) have been changed from `(AccessPoliciesUpdateResponse, error)` to `(AccessPoliciesClientUpdateResponse, error)`
+- Function `*AccessPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, AccessPolicyEntity, *AccessPoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, string, AccessPolicyEntity, *AccessPoliciesClientCreateOrUpdateOptions)`
+- Function `*AccessPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(AccessPoliciesCreateOrUpdateResponse, error)` to `(AccessPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*LivePipelinesClient.BeginActivate` parameter(s) have been changed from `(context.Context, string, string, string, *LivePipelinesBeginActivateOptions)` to `(context.Context, string, string, string, *LivePipelinesClientBeginActivateOptions)`
+- Function `*LivePipelinesClient.BeginActivate` return value(s) have been changed from `(LivePipelinesActivatePollerResponse, error)` to `(LivePipelinesClientActivatePollerResponse, error)`
+- Function `*VideoAnalyzersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *VideoAnalyzersGetOptions)` to `(context.Context, string, string, *VideoAnalyzersClientGetOptions)`
+- Function `*VideoAnalyzersClient.Get` return value(s) have been changed from `(VideoAnalyzersGetResponse, error)` to `(VideoAnalyzersClientGetResponse, error)`
+- Function `*LivePipelinesClient.List` parameter(s) have been changed from `(string, string, *LivePipelinesListOptions)` to `(string, string, *LivePipelinesClientListOptions)`
+- Function `*LivePipelinesClient.List` return value(s) have been changed from `(*LivePipelinesListPager)` to `(*LivePipelinesClientListPager)`
+- Function `*EdgeModulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, EdgeModuleEntity, *EdgeModulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, EdgeModuleEntity, *EdgeModulesClientCreateOrUpdateOptions)`
+- Function `*EdgeModulesClient.CreateOrUpdate` return value(s) have been changed from `(EdgeModulesCreateOrUpdateResponse, error)` to `(EdgeModulesClientCreateOrUpdateResponse, error)`
+- Function `*VideoAnalyzersClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, VideoAnalyzer, *VideoAnalyzersBeginCreateOrUpdateOptions)` to `(context.Context, string, string, VideoAnalyzer, *VideoAnalyzersClientBeginCreateOrUpdateOptions)`
+- Function `*VideoAnalyzersClient.BeginCreateOrUpdate` return value(s) have been changed from `(VideoAnalyzersCreateOrUpdatePollerResponse, error)` to `(VideoAnalyzersClientCreateOrUpdatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListResponse, error)` to `(PrivateEndpointConnectionsClientListResponse, error)`
+- Function `*PipelineJobsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, PipelineJobUpdate, *PipelineJobsUpdateOptions)` to `(context.Context, string, string, string, PipelineJobUpdate, *PipelineJobsClientUpdateOptions)`
+- Function `*PipelineJobsClient.Update` return value(s) have been changed from `(PipelineJobsUpdateResponse, error)` to `(PipelineJobsClientUpdateResponse, error)`
+- Function `*VideoAnalyzersClient.List` parameter(s) have been changed from `(context.Context, string, *VideoAnalyzersListOptions)` to `(context.Context, string, *VideoAnalyzersClientListOptions)`
+- Function `*VideoAnalyzersClient.List` return value(s) have been changed from `(VideoAnalyzersListResponse, error)` to `(VideoAnalyzersClientListResponse, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `VideoAnalyzer.Identity` has been changed from `*VideoAnalyzerIdentity` to `*Identity`
+- Type of `VideoAnalyzer.Properties` has been changed from `*VideoAnalyzerProperties` to `*Properties`
+- Type of `Operation.Properties` has been changed from `*Properties` to `*MetricProperties`
+- Function `*LivePipelinesActivatePollerResponse.Resume` has been removed
+- Function `*AccessPoliciesListPager.NextPage` has been removed
+- Function `*PipelineJobsListPager.Err` has been removed
+- Function `VideoAnalyzerProperties.MarshalJSON` has been removed
+- Function `*TimeSequenceBase.UnmarshalJSON` has been removed
+- Function `PipelineJobsCancelPollerResponse.PollUntilDone` has been removed
+- Function `*VideoAnalyzersUpdatePoller.Poll` has been removed
+- Function `*VideosListPager.NextPage` has been removed
+- Function `*LivePipelinesListPager.NextPage` has been removed
+- Function `*VideoAnalyzersUpdatePollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*PipelineJobsCancelPoller.Done` has been removed
+- Function `*CertificateSource.UnmarshalJSON` has been removed
+- Function `*VideoAnalyzersUpdatePoller.Done` has been removed
+- Function `*VideoAnalyzersCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PipelineJobsCancelPollerResponse.Resume` has been removed
+- Function `*PipelineJobsListPager.PageResponse` has been removed
+- Function `*VideoEncoderBase.UnmarshalJSON` has been removed
+- Function `*LivePipelinesListPager.PageResponse` has been removed
+- Function `*VideoAnalyzerOperationResultsClient.Get` has been removed
+- Function `*AuthenticationBase.UnmarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*NodeBase.UnmarshalJSON` has been removed
+- Function `*VideosListPager.Err` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `VideoAnalyzerCollection.MarshalJSON` has been removed
+- Function `VideoAnalyzerPropertiesUpdate.MarshalJSON` has been removed
+- Function `VideoAnalyzerUpdate.MarshalJSON` has been removed
+- Function `*PipelineTopologiesListPager.NextPage` has been removed
+- Function `*VideoAnalyzersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VideoAnalyzersUpdatePollerResponse.PollUntilDone` has been removed
+- Function `LivePipelinesDeactivatePollerResponse.PollUntilDone` has been removed
+- Function `*CredentialsBase.UnmarshalJSON` has been removed
+- Function `LivePipeline.MarshalJSON` has been removed
+- Function `*PipelineTopologiesListPager.PageResponse` has been removed
+- Function `*LivePipelinesDeactivatePoller.Poll` has been removed
+- Function `*VideoAnalyzersCreateOrUpdatePoller.Done` has been removed
+- Function `*TokenKey.UnmarshalJSON` has been removed
+- Function `*VideosListPager.PageResponse` has been removed
+- Function `*LivePipelinesDeactivatePoller.Done` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*VideoAnalyzerOperationStatusesClient.Get` has been removed
+- Function `*AudioEncoderBase.UnmarshalJSON` has been removed
+- Function `*LivePipelinesActivatePoller.Done` has been removed
+- Function `NewVideoAnalyzerOperationResultsClient` has been removed
+- Function `*LivePipelinesListPager.Err` has been removed
+- Function `*LivePipelinesDeactivatePoller.FinalResponse` has been removed
+- Function `PipelineTopology.MarshalJSON` has been removed
+- Function `*VideoAnalyzersUpdatePoller.ResumeToken` has been removed
+- Function `*LivePipelinesDeactivatePollerResponse.Resume` has been removed
+- Function `*PipelineJobsListPager.NextPage` has been removed
+- Function `*AccessPoliciesListPager.PageResponse` has been removed
+- Function `*VideoAnalyzersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*TunnelBase.UnmarshalJSON` has been removed
+- Function `*EdgeModulesListPager.Err` has been removed
+- Function `*EdgeModulesListPager.NextPage` has been removed
+- Function `*PipelineJobsCancelPoller.ResumeToken` has been removed
+- Function `*EdgeModulesListPager.PageResponse` has been removed
+- Function `VideoAnalyzersCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*EncoderPresetBase.UnmarshalJSON` has been removed
+- Function `NewVideoAnalyzerOperationStatusesClient` has been removed
+- Function `*VideoAnalyzersCreateOrUpdatePoller.Poll` has been removed
+- Function `EdgeModuleEntity.MarshalJSON` has been removed
+- Function `*PipelineJobsCancelPoller.Poll` has been removed
+- Function `LivePipelinesActivatePollerResponse.PollUntilDone` has been removed
+- Function `VideoAnalyzerIdentity.MarshalJSON` has been removed
+- Function `*LivePipelinesActivatePoller.FinalResponse` has been removed
+- Function `*LivePipelinesDeactivatePoller.ResumeToken` has been removed
+- Function `*LivePipelinesActivatePoller.ResumeToken` has been removed
+- Function `*PipelineJobsCancelPoller.FinalResponse` has been removed
+- Function `*PipelineTopologiesListPager.Err` has been removed
+- Function `PipelineJob.MarshalJSON` has been removed
+- Function `*AccessPoliciesListPager.Err` has been removed
+- Function `*VideoAnalyzersUpdatePoller.FinalResponse` has been removed
+- Function `*LivePipelinesActivatePoller.Poll` has been removed
+- Struct `AccessPoliciesCreateOrUpdateOptions` has been removed
+- Struct `AccessPoliciesCreateOrUpdateResponse` has been removed
+- Struct `AccessPoliciesCreateOrUpdateResult` has been removed
+- Struct `AccessPoliciesDeleteOptions` has been removed
+- Struct `AccessPoliciesDeleteResponse` has been removed
+- Struct `AccessPoliciesGetOptions` has been removed
+- Struct `AccessPoliciesGetResponse` has been removed
+- Struct `AccessPoliciesGetResult` has been removed
+- Struct `AccessPoliciesListOptions` has been removed
+- Struct `AccessPoliciesListPager` has been removed
+- Struct `AccessPoliciesListResponse` has been removed
+- Struct `AccessPoliciesListResult` has been removed
+- Struct `AccessPoliciesUpdateOptions` has been removed
+- Struct `AccessPoliciesUpdateResponse` has been removed
+- Struct `AccessPoliciesUpdateResult` has been removed
+- Struct `EdgeModulesCreateOrUpdateOptions` has been removed
+- Struct `EdgeModulesCreateOrUpdateResponse` has been removed
+- Struct `EdgeModulesCreateOrUpdateResult` has been removed
+- Struct `EdgeModulesDeleteOptions` has been removed
+- Struct `EdgeModulesDeleteResponse` has been removed
+- Struct `EdgeModulesGetOptions` has been removed
+- Struct `EdgeModulesGetResponse` has been removed
+- Struct `EdgeModulesGetResult` has been removed
+- Struct `EdgeModulesListOptions` has been removed
+- Struct `EdgeModulesListPager` has been removed
+- Struct `EdgeModulesListProvisioningTokenOptions` has been removed
+- Struct `EdgeModulesListProvisioningTokenResponse` has been removed
+- Struct `EdgeModulesListProvisioningTokenResult` has been removed
+- Struct `EdgeModulesListResponse` has been removed
+- Struct `EdgeModulesListResult` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `LivePipelineOperationStatusesGetOptions` has been removed
+- Struct `LivePipelineOperationStatusesGetResponse` has been removed
+- Struct `LivePipelineOperationStatusesGetResult` has been removed
+- Struct `LivePipelinesActivatePoller` has been removed
+- Struct `LivePipelinesActivatePollerResponse` has been removed
+- Struct `LivePipelinesActivateResponse` has been removed
+- Struct `LivePipelinesBeginActivateOptions` has been removed
+- Struct `LivePipelinesBeginDeactivateOptions` has been removed
+- Struct `LivePipelinesCreateOrUpdateOptions` has been removed
+- Struct `LivePipelinesCreateOrUpdateResponse` has been removed
+- Struct `LivePipelinesCreateOrUpdateResult` has been removed
+- Struct `LivePipelinesDeactivatePoller` has been removed
+- Struct `LivePipelinesDeactivatePollerResponse` has been removed
+- Struct `LivePipelinesDeactivateResponse` has been removed
+- Struct `LivePipelinesDeleteOptions` has been removed
+- Struct `LivePipelinesDeleteResponse` has been removed
+- Struct `LivePipelinesGetOptions` has been removed
+- Struct `LivePipelinesGetResponse` has been removed
+- Struct `LivePipelinesGetResult` has been removed
+- Struct `LivePipelinesListOptions` has been removed
+- Struct `LivePipelinesListPager` has been removed
+- Struct `LivePipelinesListResponse` has been removed
+- Struct `LivePipelinesListResult` has been removed
+- Struct `LivePipelinesUpdateOptions` has been removed
+- Struct `LivePipelinesUpdateResponse` has been removed
+- Struct `LivePipelinesUpdateResult` has been removed
+- Struct `LocationsCheckNameAvailabilityOptions` has been removed
+- Struct `LocationsCheckNameAvailabilityResponse` has been removed
+- Struct `LocationsCheckNameAvailabilityResult` has been removed
+- Struct `OperationResultsGetOptions` has been removed
+- Struct `OperationResultsGetResponse` has been removed
+- Struct `OperationResultsGetResult` has been removed
+- Struct `OperationStatusesGetOptions` has been removed
+- Struct `OperationStatusesGetResponse` has been removed
+- Struct `OperationStatusesGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PipelineJobOperationStatusesGetOptions` has been removed
+- Struct `PipelineJobOperationStatusesGetResponse` has been removed
+- Struct `PipelineJobOperationStatusesGetResult` has been removed
+- Struct `PipelineJobsBeginCancelOptions` has been removed
+- Struct `PipelineJobsCancelPoller` has been removed
+- Struct `PipelineJobsCancelPollerResponse` has been removed
+- Struct `PipelineJobsCancelResponse` has been removed
+- Struct `PipelineJobsCreateOrUpdateOptions` has been removed
+- Struct `PipelineJobsCreateOrUpdateResponse` has been removed
+- Struct `PipelineJobsCreateOrUpdateResult` has been removed
+- Struct `PipelineJobsDeleteOptions` has been removed
+- Struct `PipelineJobsDeleteResponse` has been removed
+- Struct `PipelineJobsGetOptions` has been removed
+- Struct `PipelineJobsGetResponse` has been removed
+- Struct `PipelineJobsGetResult` has been removed
+- Struct `PipelineJobsListOptions` has been removed
+- Struct `PipelineJobsListPager` has been removed
+- Struct `PipelineJobsListResponse` has been removed
+- Struct `PipelineJobsListResult` has been removed
+- Struct `PipelineJobsUpdateOptions` has been removed
+- Struct `PipelineJobsUpdateResponse` has been removed
+- Struct `PipelineJobsUpdateResult` has been removed
+- Struct `PipelineTopologiesCreateOrUpdateOptions` has been removed
+- Struct `PipelineTopologiesCreateOrUpdateResponse` has been removed
+- Struct `PipelineTopologiesCreateOrUpdateResult` has been removed
+- Struct `PipelineTopologiesDeleteOptions` has been removed
+- Struct `PipelineTopologiesDeleteResponse` has been removed
+- Struct `PipelineTopologiesGetOptions` has been removed
+- Struct `PipelineTopologiesGetResponse` has been removed
+- Struct `PipelineTopologiesGetResult` has been removed
+- Struct `PipelineTopologiesListOptions` has been removed
+- Struct `PipelineTopologiesListPager` has been removed
+- Struct `PipelineTopologiesListResponse` has been removed
+- Struct `PipelineTopologiesListResult` has been removed
+- Struct `PipelineTopologiesUpdateOptions` has been removed
+- Struct `PipelineTopologiesUpdateResponse` has been removed
+- Struct `PipelineTopologiesUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Struct `VideoAnalyzerCollection` has been removed
+- Struct `VideoAnalyzerIdentity` has been removed
+- Struct `VideoAnalyzerOperationResultsClient` has been removed
+- Struct `VideoAnalyzerOperationResultsGetOptions` has been removed
+- Struct `VideoAnalyzerOperationResultsGetResponse` has been removed
+- Struct `VideoAnalyzerOperationResultsGetResult` has been removed
+- Struct `VideoAnalyzerOperationStatus` has been removed
+- Struct `VideoAnalyzerOperationStatusesClient` has been removed
+- Struct `VideoAnalyzerOperationStatusesGetOptions` has been removed
+- Struct `VideoAnalyzerOperationStatusesGetResponse` has been removed
+- Struct `VideoAnalyzerOperationStatusesGetResult` has been removed
+- Struct `VideoAnalyzerPrivateEndpointConnectionOperationStatus` has been removed
+- Struct `VideoAnalyzerProperties` has been removed
+- Struct `VideoAnalyzerPropertiesUpdate` has been removed
+- Struct `VideoAnalyzerUpdate` has been removed
+- Struct `VideoAnalyzersBeginCreateOrUpdateOptions` has been removed
+- Struct `VideoAnalyzersBeginUpdateOptions` has been removed
+- Struct `VideoAnalyzersCreateOrUpdatePoller` has been removed
+- Struct `VideoAnalyzersCreateOrUpdatePollerResponse` has been removed
+- Struct `VideoAnalyzersCreateOrUpdateResponse` has been removed
+- Struct `VideoAnalyzersCreateOrUpdateResult` has been removed
+- Struct `VideoAnalyzersDeleteOptions` has been removed
+- Struct `VideoAnalyzersDeleteResponse` has been removed
+- Struct `VideoAnalyzersGetOptions` has been removed
+- Struct `VideoAnalyzersGetResponse` has been removed
+- Struct `VideoAnalyzersGetResult` has been removed
+- Struct `VideoAnalyzersListBySubscriptionOptions` has been removed
+- Struct `VideoAnalyzersListBySubscriptionResponse` has been removed
+- Struct `VideoAnalyzersListBySubscriptionResult` has been removed
+- Struct `VideoAnalyzersListOptions` has been removed
+- Struct `VideoAnalyzersListResponse` has been removed
+- Struct `VideoAnalyzersListResult` has been removed
+- Struct `VideoAnalyzersUpdatePoller` has been removed
+- Struct `VideoAnalyzersUpdatePollerResponse` has been removed
+- Struct `VideoAnalyzersUpdateResponse` has been removed
+- Struct `VideoAnalyzersUpdateResult` has been removed
+- Struct `VideosCreateOrUpdateOptions` has been removed
+- Struct `VideosCreateOrUpdateResponse` has been removed
+- Struct `VideosCreateOrUpdateResult` has been removed
+- Struct `VideosDeleteOptions` has been removed
+- Struct `VideosDeleteResponse` has been removed
+- Struct `VideosGetOptions` has been removed
+- Struct `VideosGetResponse` has been removed
+- Struct `VideosGetResult` has been removed
+- Struct `VideosListContentTokenOptions` has been removed
+- Struct `VideosListContentTokenResponse` has been removed
+- Struct `VideosListContentTokenResult` has been removed
+- Struct `VideosListOptions` has been removed
+- Struct `VideosListPager` has been removed
+- Struct `VideosListResponse` has been removed
+- Struct `VideosListResult` has been removed
+- Struct `VideosUpdateOptions` has been removed
+- Struct `VideosUpdateResponse` has been removed
+- Struct `VideosUpdateResult` has been removed
+- Field `NodeBase` of struct `SinkNodeBase` has been removed
+- Field `TimeSequenceBase` of struct `VideoSequenceAbsoluteTimeMarkers` has been removed
+- Field `TokenKey` of struct `EccTokenKey` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `ProcessorNodeBase` of struct `EncoderProcessor` has been removed
+- Field `CertificateSource` of struct `PemCertificateList` has been removed
+- Field `VideoEncoderBase` of struct `VideoEncoderH264` has been removed
+- Field `ProxyResource` of struct `PipelineTopologyUpdate` has been removed
+- Field `EndpointBase` of struct `UnsecuredEndpoint` has been removed
+- Field `EncoderPresetBase` of struct `EncoderCustomPreset` has been removed
+- Field `EndpointBase` of struct `TLSEndpoint` has been removed
+- Field `SourceNodeBase` of struct `VideoSource` has been removed
+- Field `ProxyResource` of struct `PipelineTopology` has been removed
+- Field `NodeBase` of struct `SourceNodeBase` has been removed
+- Field `ProxyResource` of struct `PipelineJob` has been removed
+- Field `ProxyResource` of struct `VideoEntity` has been removed
+- Field `TokenKey` of struct `RsaTokenKey` has been removed
+- Field `TunnelBase` of struct `SecureIotDeviceRemoteTunnel` has been removed
+- Field `ProxyResource` of struct `EdgeModuleEntity` has been removed
+- Field `SinkNodeBase` of struct `VideoSink` has been removed
+- Field `ProxyResource` of struct `AccessPolicyEntity` has been removed
+- Field `ProxyResource` of struct `LivePipeline` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `NodeBase` of struct `ProcessorNodeBase` has been removed
+- Field `AuthenticationBase` of struct `JwtAuthentication` has been removed
+- Field `ProxyResource` of struct `LivePipelineUpdate` has been removed
+- Field `ProxyResource` of struct `PipelineJobUpdate` has been removed
+- Field `CredentialsBase` of struct `UsernamePasswordCredentials` has been removed
+- Field `TrackedResource` of struct `VideoAnalyzer` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `AudioEncoderBase` of struct `AudioEncoderAac` has been removed
+- Field `EncoderPresetBase` of struct `EncoderSystemPreset` has been removed
+- Field `ServiceSpecification` of struct `Properties` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `SourceNodeBase` of struct `RtspSource` has been removed
+
+### Features Added
+
+- New function `*VideoSink.GetNodeBase() *NodeBase`
+- New function `*LivePipelinesClientListPager.PageResponse() LivePipelinesClientListResponse`
+- New function `*VideoEncoderH264.GetVideoEncoderBase() *VideoEncoderBase`
+- New function `*VideoSink.GetSinkNodeBase() *SinkNodeBase`
+- New function `*LivePipelinesClientActivatePoller.ResumeToken() (string, error)`
+- New function `*VideoAnalyzersClientCreateOrUpdatePollerResponse.Resume(context.Context, *VideoAnalyzersClient, string) error`
+- New function `*PrivateEndpointConnectionsOperationStatusesClient.Get(context.Context, string, string, string, string, *PrivateEndpointConnectionsOperationStatusesClientGetOptions) (PrivateEndpointConnectionsOperationStatusesClientGetResponse, error)`
+- New function `*PipelineJobsClientCancelPollerResponse.Resume(context.Context, *PipelineJobsClient, string) error`
+- New function `*PemCertificateList.GetCertificateSource() *CertificateSource`
+- New function `*VideoSource.GetNodeBase() *NodeBase`
+- New function `Identity.MarshalJSON() ([]byte, error)`
+- New function `VideoAnalyzersClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VideoAnalyzersClientUpdateResponse, error)`
+- New function `NewPrivateEndpointConnectionsOperationStatusesClient(string, azcore.TokenCredential, *arm.ClientOptions) *PrivateEndpointConnectionsOperationStatusesClient`
+- New function `*LivePipelinesClientDeactivatePoller.ResumeToken() (string, error)`
+- New function `*LivePipelinesClientListPager.Err() error`
+- New function `*LivePipelinesClientDeactivatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RtspSource.GetSourceNodeBase() *SourceNodeBase`
+- New function `*PipelineJobsClientCancelPoller.FinalResponse(context.Context) (PipelineJobsClientCancelResponse, error)`
+- New function `*UnsecuredEndpoint.GetEndpointBase() *EndpointBase`
+- New function `*JwtAuthentication.GetAuthenticationBase() *AuthenticationBase`
+- New function `Properties.MarshalJSON() ([]byte, error)`
+- New function `*LivePipelinesClientActivatePoller.Done() bool`
+- New function `LivePipelinesClientDeactivatePollerResponse.PollUntilDone(context.Context, time.Duration) (LivePipelinesClientDeactivateResponse, error)`
+- New function `*VideoAnalyzersClientUpdatePollerResponse.Resume(context.Context, *VideoAnalyzersClient, string) error`
+- New function `*PipelineJobsClientCancelPoller.ResumeToken() (string, error)`
+- New function `*VideosClientListPager.PageResponse() VideosClientListResponse`
+- New function `*LivePipelinesClientDeactivatePoller.FinalResponse(context.Context) (LivePipelinesClientDeactivateResponse, error)`
+- New function `*VideoAnalyzersClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PipelineTopologiesClientListPager.NextPage(context.Context) bool`
+- New function `PropertiesUpdate.MarshalJSON() ([]byte, error)`
+- New function `*PipelineJobsClientListPager.PageResponse() PipelineJobsClientListResponse`
+- New function `*VideoAnalyzersClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*LivePipelinesClientActivatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VideoAnalyzersClientUpdatePoller.Done() bool`
+- New function `*VideosClientListPager.NextPage(context.Context) bool`
+- New function `*VideoAnalyzersClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VideoEncoderH264.UnmarshalJSON([]byte) error`
+- New function `*LivePipelinesClientDeactivatePollerResponse.Resume(context.Context, *LivePipelinesClient, string) error`
+- New function `PipelineJobsClientCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (PipelineJobsClientCancelResponse, error)`
+- New function `*EdgeModulesClientListPager.Err() error`
+- New function `*EncoderProcessor.GetProcessorNodeBase() *ProcessorNodeBase`
+- New function `*EccTokenKey.GetTokenKey() *TokenKey`
+- New function `*TLSEndpoint.GetEndpointBase() *EndpointBase`
+- New function `*EdgeModulesClientListPager.PageResponse() EdgeModulesClientListResponse`
+- New function `*PipelineJobsClientCancelPoller.Done() bool`
+- New function `*AudioEncoderAac.GetAudioEncoderBase() *AudioEncoderBase`
+- New function `*LivePipelinesClientListPager.NextPage(context.Context) bool`
+- New function `*RtspSource.GetNodeBase() *NodeBase`
+- New function `LivePipelinesClientActivatePollerResponse.PollUntilDone(context.Context, time.Duration) (LivePipelinesClientActivateResponse, error)`
+- New function `*LivePipelinesClientActivatePollerResponse.Resume(context.Context, *LivePipelinesClient, string) error`
+- New function `*SourceNodeBase.UnmarshalJSON([]byte) error`
+- New function `*VideosClientListPager.Err() error`
+- New function `*LivePipelinesClientDeactivatePoller.Done() bool`
+- New function `Update.MarshalJSON() ([]byte, error)`
+- New function `*VideoAnalyzersClientCreateOrUpdatePoller.Done() bool`
+- New function `*EncoderCustomPreset.GetEncoderPresetBase() *EncoderPresetBase`
+- New function `*RsaTokenKey.GetTokenKey() *TokenKey`
+- New function `*VideoAnalyzersClientCreateOrUpdatePoller.FinalResponse(context.Context) (VideoAnalyzersClientCreateOrUpdateResponse, error)`
+- New function `VideoAnalyzersClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VideoAnalyzersClientCreateOrUpdateResponse, error)`
+- New function `*EncoderSystemPreset.GetEncoderPresetBase() *EncoderPresetBase`
+- New function `*AccessPoliciesClientListPager.Err() error`
+- New function `*PipelineTopologiesClientListPager.PageResponse() PipelineTopologiesClientListResponse`
+- New function `NewPrivateEndpointConnectionsOperationResultsClient(string, azcore.TokenCredential, *arm.ClientOptions) *PrivateEndpointConnectionsOperationResultsClient`
+- New function `*ProcessorNodeBase.GetNodeBase() *NodeBase`
+- New function `*LivePipelinesClientActivatePoller.FinalResponse(context.Context) (LivePipelinesClientActivateResponse, error)`
+- New function `*UnsecuredEndpoint.UnmarshalJSON([]byte) error`
+- New function `*PrivateEndpointConnectionsOperationResultsClient.Get(context.Context, string, string, string, string, *PrivateEndpointConnectionsOperationResultsClientGetOptions) (PrivateEndpointConnectionsOperationResultsClientGetResponse, error)`
+- New function `*PipelineTopologiesClientListPager.Err() error`
+- New function `*SecureIotDeviceRemoteTunnel.GetTunnelBase() *TunnelBase`
+- New function `*UsernamePasswordCredentials.GetCredentialsBase() *CredentialsBase`
+- New function `Collection.MarshalJSON() ([]byte, error)`
+- New function `*EdgeModulesClientListPager.NextPage(context.Context) bool`
+- New function `*PipelineJobsClientListPager.Err() error`
+- New function `*VideoSequenceAbsoluteTimeMarkers.GetTimeSequenceBase() *TimeSequenceBase`
+- New function `*PipelineJobsClientListPager.NextPage(context.Context) bool`
+- New function `*EncoderProcessor.GetNodeBase() *NodeBase`
+- New function `*VideoAnalyzersClientUpdatePoller.FinalResponse(context.Context) (VideoAnalyzersClientUpdateResponse, error)`
+- New function `*AudioEncoderAac.UnmarshalJSON([]byte) error`
+- New function `*AccessPoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*SourceNodeBase.GetNodeBase() *NodeBase`
+- New function `*VideoAnalyzersClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccessPoliciesClientListPager.PageResponse() AccessPoliciesClientListResponse`
+- New function `EndpointBase.MarshalJSON() ([]byte, error)`
+- New function `*VideoSource.GetSourceNodeBase() *SourceNodeBase`
+- New function `*PipelineJobsClientCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SinkNodeBase.GetNodeBase() *NodeBase`
+- New struct `AccessPoliciesClientCreateOrUpdateOptions`
+- New struct `AccessPoliciesClientCreateOrUpdateResponse`
+- New struct `AccessPoliciesClientCreateOrUpdateResult`
+- New struct `AccessPoliciesClientDeleteOptions`
+- New struct `AccessPoliciesClientDeleteResponse`
+- New struct `AccessPoliciesClientGetOptions`
+- New struct `AccessPoliciesClientGetResponse`
+- New struct `AccessPoliciesClientGetResult`
+- New struct `AccessPoliciesClientListOptions`
+- New struct `AccessPoliciesClientListPager`
+- New struct `AccessPoliciesClientListResponse`
+- New struct `AccessPoliciesClientListResult`
+- New struct `AccessPoliciesClientUpdateOptions`
+- New struct `AccessPoliciesClientUpdateResponse`
+- New struct `AccessPoliciesClientUpdateResult`
+- New struct `Collection`
+- New struct `EdgeModulesClientCreateOrUpdateOptions`
+- New struct `EdgeModulesClientCreateOrUpdateResponse`
+- New struct `EdgeModulesClientCreateOrUpdateResult`
+- New struct `EdgeModulesClientDeleteOptions`
+- New struct `EdgeModulesClientDeleteResponse`
+- New struct `EdgeModulesClientGetOptions`
+- New struct `EdgeModulesClientGetResponse`
+- New struct `EdgeModulesClientGetResult`
+- New struct `EdgeModulesClientListOptions`
+- New struct `EdgeModulesClientListPager`
+- New struct `EdgeModulesClientListProvisioningTokenOptions`
+- New struct `EdgeModulesClientListProvisioningTokenResponse`
+- New struct `EdgeModulesClientListProvisioningTokenResult`
+- New struct `EdgeModulesClientListResponse`
+- New struct `EdgeModulesClientListResult`
+- New struct `Identity`
+- New struct `LivePipelineOperationStatusesClientGetOptions`
+- New struct `LivePipelineOperationStatusesClientGetResponse`
+- New struct `LivePipelineOperationStatusesClientGetResult`
+- New struct `LivePipelinesClientActivatePoller`
+- New struct `LivePipelinesClientActivatePollerResponse`
+- New struct `LivePipelinesClientActivateResponse`
+- New struct `LivePipelinesClientBeginActivateOptions`
+- New struct `LivePipelinesClientBeginDeactivateOptions`
+- New struct `LivePipelinesClientCreateOrUpdateOptions`
+- New struct `LivePipelinesClientCreateOrUpdateResponse`
+- New struct `LivePipelinesClientCreateOrUpdateResult`
+- New struct `LivePipelinesClientDeactivatePoller`
+- New struct `LivePipelinesClientDeactivatePollerResponse`
+- New struct `LivePipelinesClientDeactivateResponse`
+- New struct `LivePipelinesClientDeleteOptions`
+- New struct `LivePipelinesClientDeleteResponse`
+- New struct `LivePipelinesClientGetOptions`
+- New struct `LivePipelinesClientGetResponse`
+- New struct `LivePipelinesClientGetResult`
+- New struct `LivePipelinesClientListOptions`
+- New struct `LivePipelinesClientListPager`
+- New struct `LivePipelinesClientListResponse`
+- New struct `LivePipelinesClientListResult`
+- New struct `LivePipelinesClientUpdateOptions`
+- New struct `LivePipelinesClientUpdateResponse`
+- New struct `LivePipelinesClientUpdateResult`
+- New struct `LocationsClientCheckNameAvailabilityOptions`
+- New struct `LocationsClientCheckNameAvailabilityResponse`
+- New struct `LocationsClientCheckNameAvailabilityResult`
+- New struct `MetricProperties`
+- New struct `OperationResultsClientGetOptions`
+- New struct `OperationResultsClientGetResponse`
+- New struct `OperationResultsClientGetResult`
+- New struct `OperationStatus`
+- New struct `OperationStatusesClientGetOptions`
+- New struct `OperationStatusesClientGetResponse`
+- New struct `OperationStatusesClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PipelineJobOperationStatusesClientGetOptions`
+- New struct `PipelineJobOperationStatusesClientGetResponse`
+- New struct `PipelineJobOperationStatusesClientGetResult`
+- New struct `PipelineJobsClientBeginCancelOptions`
+- New struct `PipelineJobsClientCancelPoller`
+- New struct `PipelineJobsClientCancelPollerResponse`
+- New struct `PipelineJobsClientCancelResponse`
+- New struct `PipelineJobsClientCreateOrUpdateOptions`
+- New struct `PipelineJobsClientCreateOrUpdateResponse`
+- New struct `PipelineJobsClientCreateOrUpdateResult`
+- New struct `PipelineJobsClientDeleteOptions`
+- New struct `PipelineJobsClientDeleteResponse`
+- New struct `PipelineJobsClientGetOptions`
+- New struct `PipelineJobsClientGetResponse`
+- New struct `PipelineJobsClientGetResult`
+- New struct `PipelineJobsClientListOptions`
+- New struct `PipelineJobsClientListPager`
+- New struct `PipelineJobsClientListResponse`
+- New struct `PipelineJobsClientListResult`
+- New struct `PipelineJobsClientUpdateOptions`
+- New struct `PipelineJobsClientUpdateResponse`
+- New struct `PipelineJobsClientUpdateResult`
+- New struct `PipelineTopologiesClientCreateOrUpdateOptions`
+- New struct `PipelineTopologiesClientCreateOrUpdateResponse`
+- New struct `PipelineTopologiesClientCreateOrUpdateResult`
+- New struct `PipelineTopologiesClientDeleteOptions`
+- New struct `PipelineTopologiesClientDeleteResponse`
+- New struct `PipelineTopologiesClientGetOptions`
+- New struct `PipelineTopologiesClientGetResponse`
+- New struct `PipelineTopologiesClientGetResult`
+- New struct `PipelineTopologiesClientListOptions`
+- New struct `PipelineTopologiesClientListPager`
+- New struct `PipelineTopologiesClientListResponse`
+- New struct `PipelineTopologiesClientListResult`
+- New struct `PipelineTopologiesClientUpdateOptions`
+- New struct `PipelineTopologiesClientUpdateResponse`
+- New struct `PipelineTopologiesClientUpdateResult`
+- New struct `PrivateEndpointConnectionOperationStatus`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateEndpointConnectionsOperationResultsClient`
+- New struct `PrivateEndpointConnectionsOperationResultsClientGetOptions`
+- New struct `PrivateEndpointConnectionsOperationResultsClientGetResponse`
+- New struct `PrivateEndpointConnectionsOperationResultsClientGetResult`
+- New struct `PrivateEndpointConnectionsOperationStatusesClient`
+- New struct `PrivateEndpointConnectionsOperationStatusesClientGetOptions`
+- New struct `PrivateEndpointConnectionsOperationStatusesClientGetResponse`
+- New struct `PrivateEndpointConnectionsOperationStatusesClientGetResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `PropertiesUpdate`
+- New struct `Update`
+- New struct `VideoAnalyzersClientBeginCreateOrUpdateOptions`
+- New struct `VideoAnalyzersClientBeginUpdateOptions`
+- New struct `VideoAnalyzersClientCreateOrUpdatePoller`
+- New struct `VideoAnalyzersClientCreateOrUpdatePollerResponse`
+- New struct `VideoAnalyzersClientCreateOrUpdateResponse`
+- New struct `VideoAnalyzersClientCreateOrUpdateResult`
+- New struct `VideoAnalyzersClientDeleteOptions`
+- New struct `VideoAnalyzersClientDeleteResponse`
+- New struct `VideoAnalyzersClientGetOptions`
+- New struct `VideoAnalyzersClientGetResponse`
+- New struct `VideoAnalyzersClientGetResult`
+- New struct `VideoAnalyzersClientListBySubscriptionOptions`
+- New struct `VideoAnalyzersClientListBySubscriptionResponse`
+- New struct `VideoAnalyzersClientListBySubscriptionResult`
+- New struct `VideoAnalyzersClientListOptions`
+- New struct `VideoAnalyzersClientListResponse`
+- New struct `VideoAnalyzersClientListResult`
+- New struct `VideoAnalyzersClientUpdatePoller`
+- New struct `VideoAnalyzersClientUpdatePollerResponse`
+- New struct `VideoAnalyzersClientUpdateResponse`
+- New struct `VideoAnalyzersClientUpdateResult`
+- New struct `VideosClientCreateOrUpdateOptions`
+- New struct `VideosClientCreateOrUpdateResponse`
+- New struct `VideosClientCreateOrUpdateResult`
+- New struct `VideosClientDeleteOptions`
+- New struct `VideosClientDeleteResponse`
+- New struct `VideosClientGetOptions`
+- New struct `VideosClientGetResponse`
+- New struct `VideosClientGetResult`
+- New struct `VideosClientListContentTokenOptions`
+- New struct `VideosClientListContentTokenResponse`
+- New struct `VideosClientListContentTokenResult`
+- New struct `VideosClientListOptions`
+- New struct `VideosClientListPager`
+- New struct `VideosClientListResponse`
+- New struct `VideosClientListResult`
+- New struct `VideosClientUpdateOptions`
+- New struct `VideosClientUpdateResponse`
+- New struct `VideosClientUpdateResult`
+- New field `Scale` in struct `VideoEncoderH264`
+- New field `Type` in struct `VideoEncoderH264`
+- New field `BitrateKbps` in struct `VideoEncoderH264`
+- New field `FrameRate` in struct `VideoEncoderH264`
+- New field `Name` in struct `SourceNodeBase`
+- New field `Type` in struct `SourceNodeBase`
+- New field `Name` in struct `PipelineTopology`
+- New field `SystemData` in struct `PipelineTopology`
+- New field `Type` in struct `PipelineTopology`
+- New field `ID` in struct `PipelineTopology`
+- New field `SystemData` in struct `AccessPolicyEntity`
+- New field `Type` in struct `AccessPolicyEntity`
+- New field `ID` in struct `AccessPolicyEntity`
+- New field `Name` in struct `AccessPolicyEntity`
+- New field `Type` in struct `UnsecuredEndpoint`
+- New field `URL` in struct `UnsecuredEndpoint`
+- New field `Tunnel` in struct `UnsecuredEndpoint`
+- New field `Credentials` in struct `UnsecuredEndpoint`
+- New field `ID` in struct `EdgeModuleEntity`
+- New field `Name` in struct `EdgeModuleEntity`
+- New field `SystemData` in struct `EdgeModuleEntity`
+- New field `Type` in struct `EdgeModuleEntity`
+- New field `ID` in struct `LivePipelineUpdate`
+- New field `Name` in struct `LivePipelineUpdate`
+- New field `SystemData` in struct `LivePipelineUpdate`
+- New field `Type` in struct `LivePipelineUpdate`
+- New field `Kid` in struct `EccTokenKey`
+- New field `Type` in struct `EccTokenKey`
+- New field `Type` in struct `PemCertificateList`
+- New field `Type` in struct `JwtAuthentication`
+- New field `Type` in struct `PipelineJob`
+- New field `ID` in struct `PipelineJob`
+- New field `Name` in struct `PipelineJob`
+- New field `SystemData` in struct `PipelineJob`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `SystemData` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `URL` in struct `TLSEndpoint`
+- New field `Tunnel` in struct `TLSEndpoint`
+- New field `Credentials` in struct `TLSEndpoint`
+- New field `Type` in struct `TLSEndpoint`
+- New field `Kid` in struct `RsaTokenKey`
+- New field `Type` in struct `RsaTokenKey`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `SystemData` in struct `ProxyResource`
+- New field `Type` in struct `VideoSequenceAbsoluteTimeMarkers`
+- New field `Type` in struct `EncoderCustomPreset`
+- New field `Type` in struct `AudioEncoderAac`
+- New field `BitrateKbps` in struct `AudioEncoderAac`
+- New field `Name` in struct `ProcessorNodeBase`
+- New field `Type` in struct `ProcessorNodeBase`
+- New field `SystemData` in struct `LivePipeline`
+- New field `Type` in struct `LivePipeline`
+- New field `ID` in struct `LivePipeline`
+- New field `Name` in struct `LivePipeline`
+- New field `Type` in struct `SinkNodeBase`
+- New field `Name` in struct `SinkNodeBase`
+- New field `Name` in struct `VideoSource`
+- New field `Type` in struct `VideoSource`
+- New field `Name` in struct `PipelineJobUpdate`
+- New field `SystemData` in struct `PipelineJobUpdate`
+- New field `Type` in struct `PipelineJobUpdate`
+- New field `ID` in struct `PipelineJobUpdate`
+- New field `Type` in struct `SecureIotDeviceRemoteTunnel`
+- New field `Name` in struct `PipelineTopologyUpdate`
+- New field `SystemData` in struct `PipelineTopologyUpdate`
+- New field `Type` in struct `PipelineTopologyUpdate`
+- New field `ID` in struct `PipelineTopologyUpdate`
+- New field `ID` in struct `VideoEntity`
+- New field `Name` in struct `VideoEntity`
+- New field `SystemData` in struct `VideoEntity`
+- New field `Type` in struct `VideoEntity`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `EncoderProcessor`
+- New field `Inputs` in struct `EncoderProcessor`
+- New field `Name` in struct `EncoderProcessor`
+- New field `SystemData` in struct `VideoAnalyzer`
+- New field `Type` in struct `VideoAnalyzer`
+- New field `Location` in struct `VideoAnalyzer`
+- New field `Tags` in struct `VideoAnalyzer`
+- New field `ID` in struct `VideoAnalyzer`
+- New field `Name` in struct `VideoAnalyzer`
+- New field `Type` in struct `VideoSink`
+- New field `Inputs` in struct `VideoSink`
+- New field `Name` in struct `VideoSink`
+- New field `Type` in struct `UsernamePasswordCredentials`
+- New field `PrivateEndpointConnections` in struct `Properties`
+- New field `ProvisioningState` in struct `Properties`
+- New field `StorageAccounts` in struct `Properties`
+- New field `Encryption` in struct `Properties`
+- New field `IotHubs` in struct `Properties`
+- New field `NetworkAccessControl` in struct `Properties`
+- New field `PublicNetworkAccess` in struct `Properties`
+- New field `Endpoints` in struct `Properties`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `Name` in struct `RtspSource`
+- New field `Type` in struct `RtspSource`
+- New field `Type` in struct `EncoderSystemPreset`
+
+
+## 0.1.0 (2021-12-23)
+
+- Init release.

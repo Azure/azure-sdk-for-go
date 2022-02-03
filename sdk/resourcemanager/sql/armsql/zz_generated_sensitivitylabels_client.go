@@ -25,42 +25,60 @@ import (
 // SensitivityLabelsClient contains the methods for the SensitivityLabels group.
 // Don't use this type directly, use NewSensitivityLabelsClient() instead.
 type SensitivityLabelsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSensitivityLabelsClient creates a new instance of SensitivityLabelsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SensitivityLabelsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SensitivityLabelsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SensitivityLabelsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates the sensitivity label of a given column
-// If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *SensitivityLabelsCreateOrUpdateOptions) (SensitivityLabelsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// schemaName - The name of the schema.
+// tableName - The name of the table.
+// columnName - The name of the column.
+// parameters - The column sensitivity label resource.
+// options - SensitivityLabelsClientCreateOrUpdateOptions contains the optional parameters for the SensitivityLabelsClient.CreateOrUpdate
+// method.
+func (client *SensitivityLabelsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *SensitivityLabelsClientCreateOrUpdateOptions) (SensitivityLabelsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, parameters, options)
 	if err != nil {
-		return SensitivityLabelsCreateOrUpdateResponse{}, err
+		return SensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensitivityLabelsCreateOrUpdateResponse{}, err
+		return SensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SensitivityLabelsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SensitivityLabelsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *SensitivityLabelsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *SensitivityLabelsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -91,7 +109,7 @@ func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -103,45 +121,42 @@ func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.Response) (SensitivityLabelsCreateOrUpdateResponse, error) {
-	result := SensitivityLabelsCreateOrUpdateResponse{RawResponse: resp}
+func (client *SensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.Response) (SensitivityLabelsClientCreateOrUpdateResponse, error) {
+	result := SensitivityLabelsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
-		return SensitivityLabelsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SensitivityLabelsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes the sensitivity label of a given column
-// If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsDeleteOptions) (SensitivityLabelsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// schemaName - The name of the schema.
+// tableName - The name of the table.
+// columnName - The name of the column.
+// options - SensitivityLabelsClientDeleteOptions contains the optional parameters for the SensitivityLabelsClient.Delete
+// method.
+func (client *SensitivityLabelsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientDeleteOptions) (SensitivityLabelsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
-		return SensitivityLabelsDeleteResponse{}, err
+		return SensitivityLabelsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensitivityLabelsDeleteResponse{}, err
+		return SensitivityLabelsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensitivityLabelsDeleteResponse{}, client.deleteHandleError(resp)
+		return SensitivityLabelsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensitivityLabelsDeleteResponse{RawResponse: resp}, nil
+	return SensitivityLabelsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsDeleteOptions) (*policy.Request, error) {
+func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -172,7 +187,7 @@ func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -182,37 +197,34 @@ func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SensitivityLabelsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // DisableRecommendation - Disables sensitivity recommendations on a given column
-// If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) DisableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsDisableRecommendationOptions) (SensitivityLabelsDisableRecommendationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// schemaName - The name of the schema.
+// tableName - The name of the table.
+// columnName - The name of the column.
+// options - SensitivityLabelsClientDisableRecommendationOptions contains the optional parameters for the SensitivityLabelsClient.DisableRecommendation
+// method.
+func (client *SensitivityLabelsClient) DisableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientDisableRecommendationOptions) (SensitivityLabelsClientDisableRecommendationResponse, error) {
 	req, err := client.disableRecommendationCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
-		return SensitivityLabelsDisableRecommendationResponse{}, err
+		return SensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensitivityLabelsDisableRecommendationResponse{}, err
+		return SensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensitivityLabelsDisableRecommendationResponse{}, client.disableRecommendationHandleError(resp)
+		return SensitivityLabelsClientDisableRecommendationResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensitivityLabelsDisableRecommendationResponse{RawResponse: resp}, nil
+	return SensitivityLabelsClientDisableRecommendationResponse{RawResponse: resp}, nil
 }
 
 // disableRecommendationCreateRequest creates the DisableRecommendation request.
-func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsDisableRecommendationOptions) (*policy.Request, error) {
+func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientDisableRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/disable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -243,7 +255,7 @@ func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -253,37 +265,35 @@ func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx co
 	return req, nil
 }
 
-// disableRecommendationHandleError handles the DisableRecommendation error response.
-func (client *SensitivityLabelsClient) disableRecommendationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// EnableRecommendation - Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns)
-// If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) EnableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsEnableRecommendationOptions) (SensitivityLabelsEnableRecommendationResponse, error) {
+// EnableRecommendation - Enables sensitivity recommendations on a given column (recommendations are enabled by default on
+// all columns)
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// schemaName - The name of the schema.
+// tableName - The name of the table.
+// columnName - The name of the column.
+// options - SensitivityLabelsClientEnableRecommendationOptions contains the optional parameters for the SensitivityLabelsClient.EnableRecommendation
+// method.
+func (client *SensitivityLabelsClient) EnableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientEnableRecommendationOptions) (SensitivityLabelsClientEnableRecommendationResponse, error) {
 	req, err := client.enableRecommendationCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
-		return SensitivityLabelsEnableRecommendationResponse{}, err
+		return SensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensitivityLabelsEnableRecommendationResponse{}, err
+		return SensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensitivityLabelsEnableRecommendationResponse{}, client.enableRecommendationHandleError(resp)
+		return SensitivityLabelsClientEnableRecommendationResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensitivityLabelsEnableRecommendationResponse{RawResponse: resp}, nil
+	return SensitivityLabelsClientEnableRecommendationResponse{RawResponse: resp}, nil
 }
 
 // enableRecommendationCreateRequest creates the EnableRecommendation request.
-func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsEnableRecommendationOptions) (*policy.Request, error) {
+func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientEnableRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/enable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -314,7 +324,7 @@ func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -324,37 +334,34 @@ func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx con
 	return req, nil
 }
 
-// enableRecommendationHandleError handles the EnableRecommendation error response.
-func (client *SensitivityLabelsClient) enableRecommendationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the sensitivity label of a given column
-// If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, options *SensitivityLabelsGetOptions) (SensitivityLabelsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// schemaName - The name of the schema.
+// tableName - The name of the table.
+// columnName - The name of the column.
+// sensitivityLabelSource - The source of the sensitivity label.
+// options - SensitivityLabelsClientGetOptions contains the optional parameters for the SensitivityLabelsClient.Get method.
+func (client *SensitivityLabelsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, options *SensitivityLabelsClientGetOptions) (SensitivityLabelsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, sensitivityLabelSource, options)
 	if err != nil {
-		return SensitivityLabelsGetResponse{}, err
+		return SensitivityLabelsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensitivityLabelsGetResponse{}, err
+		return SensitivityLabelsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensitivityLabelsGetResponse{}, client.getHandleError(resp)
+		return SensitivityLabelsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, options *SensitivityLabelsGetOptions) (*policy.Request, error) {
+func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, options *SensitivityLabelsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -388,7 +395,7 @@ func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -400,42 +407,36 @@ func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *SensitivityLabelsClient) getHandleResponse(resp *http.Response) (SensitivityLabelsGetResponse, error) {
-	result := SensitivityLabelsGetResponse{RawResponse: resp}
+func (client *SensitivityLabelsClient) getHandleResponse(resp *http.Response) (SensitivityLabelsClientGetResponse, error) {
+	result := SensitivityLabelsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
-		return SensitivityLabelsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SensitivityLabelsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SensitivityLabelsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListCurrentByDatabase - Gets the sensitivity labels of a given database
-// If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) ListCurrentByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListCurrentByDatabaseOptions) *SensitivityLabelsListCurrentByDatabasePager {
-	return &SensitivityLabelsListCurrentByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - SensitivityLabelsClientListCurrentByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListCurrentByDatabase
+// method.
+func (client *SensitivityLabelsClient) ListCurrentByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListCurrentByDatabaseOptions) *SensitivityLabelsClientListCurrentByDatabasePager {
+	return &SensitivityLabelsClientListCurrentByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp SensitivityLabelsListCurrentByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SensitivityLabelsClientListCurrentByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
 		},
 	}
 }
 
 // listCurrentByDatabaseCreateRequest creates the ListCurrentByDatabase request.
-func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListCurrentByDatabaseOptions) (*policy.Request, error) {
+func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListCurrentByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/currentSensitivityLabels"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -453,7 +454,7 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -474,42 +475,36 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 }
 
 // listCurrentByDatabaseHandleResponse handles the ListCurrentByDatabase response.
-func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsListCurrentByDatabaseResponse, error) {
-	result := SensitivityLabelsListCurrentByDatabaseResponse{RawResponse: resp}
+func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsClientListCurrentByDatabaseResponse, error) {
+	result := SensitivityLabelsClientListCurrentByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
-		return SensitivityLabelsListCurrentByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return SensitivityLabelsClientListCurrentByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
-// listCurrentByDatabaseHandleError handles the ListCurrentByDatabase error response.
-func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListRecommendedByDatabase - Gets the sensitivity labels of a given database
-// If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) ListRecommendedByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListRecommendedByDatabaseOptions) *SensitivityLabelsListRecommendedByDatabasePager {
-	return &SensitivityLabelsListRecommendedByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - SensitivityLabelsClientListRecommendedByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListRecommendedByDatabase
+// method.
+func (client *SensitivityLabelsClient) ListRecommendedByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListRecommendedByDatabaseOptions) *SensitivityLabelsClientListRecommendedByDatabasePager {
+	return &SensitivityLabelsClientListRecommendedByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp SensitivityLabelsListRecommendedByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SensitivityLabelsClientListRecommendedByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
 		},
 	}
 }
 
 // listRecommendedByDatabaseCreateRequest creates the ListRecommendedByDatabase request.
-func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListRecommendedByDatabaseOptions) (*policy.Request, error) {
+func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListRecommendedByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/recommendedSensitivityLabels"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -527,7 +522,7 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -548,45 +543,39 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 }
 
 // listRecommendedByDatabaseHandleResponse handles the ListRecommendedByDatabase response.
-func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsListRecommendedByDatabaseResponse, error) {
-	result := SensitivityLabelsListRecommendedByDatabaseResponse{RawResponse: resp}
+func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsClientListRecommendedByDatabaseResponse, error) {
+	result := SensitivityLabelsClientListRecommendedByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
-		return SensitivityLabelsListRecommendedByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return SensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
-// listRecommendedByDatabaseHandleError handles the ListRecommendedByDatabase error response.
-func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Update sensitivity labels of a given database using an operations batch.
-// If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters SensitivityLabelUpdateList, options *SensitivityLabelsUpdateOptions) (SensitivityLabelsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - SensitivityLabelsClientUpdateOptions contains the optional parameters for the SensitivityLabelsClient.Update
+// method.
+func (client *SensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters SensitivityLabelUpdateList, options *SensitivityLabelsClientUpdateOptions) (SensitivityLabelsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
-		return SensitivityLabelsUpdateResponse{}, err
+		return SensitivityLabelsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensitivityLabelsUpdateResponse{}, err
+		return SensitivityLabelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensitivityLabelsUpdateResponse{}, client.updateHandleError(resp)
+		return SensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensitivityLabelsUpdateResponse{RawResponse: resp}, nil
+	return SensitivityLabelsClientUpdateResponse{RawResponse: resp}, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters SensitivityLabelUpdateList, options *SensitivityLabelsUpdateOptions) (*policy.Request, error) {
+func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters SensitivityLabelUpdateList, options *SensitivityLabelsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/currentSensitivityLabels"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -604,7 +593,7 @@ func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -612,16 +601,4 @@ func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *SensitivityLabelsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

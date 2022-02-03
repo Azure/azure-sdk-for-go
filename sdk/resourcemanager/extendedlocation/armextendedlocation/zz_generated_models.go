@@ -17,24 +17,42 @@ import (
 
 // CustomLocation - Custom Locations definition.
 type CustomLocation struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Identity for the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
 	// The set of properties specific to a Custom Location
 	Properties *CustomLocationProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CustomLocation.
 func (c CustomLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -139,7 +157,8 @@ func (c CustomLocationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CustomLocationPropertiesAuthentication - This is optional input that contains the authentication that should be used to generate the namespace.
+// CustomLocationPropertiesAuthentication - This is optional input that contains the authentication that should be used to
+// generate the namespace.
 type CustomLocationPropertiesAuthentication struct {
 	// The type of the Custom Locations authentication
 	Type *string `json:"type,omitempty"`
@@ -148,63 +167,67 @@ type CustomLocationPropertiesAuthentication struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// CustomLocationsBeginCreateOrUpdateOptions contains the optional parameters for the CustomLocations.BeginCreateOrUpdate method.
-type CustomLocationsBeginCreateOrUpdateOptions struct {
+// CustomLocationsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomLocationsClient.BeginCreateOrUpdate
+// method.
+type CustomLocationsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsBeginDeleteOptions contains the optional parameters for the CustomLocations.BeginDelete method.
-type CustomLocationsBeginDeleteOptions struct {
+// CustomLocationsClientBeginDeleteOptions contains the optional parameters for the CustomLocationsClient.BeginDelete method.
+type CustomLocationsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsGetOptions contains the optional parameters for the CustomLocations.Get method.
-type CustomLocationsGetOptions struct {
+// CustomLocationsClientGetOptions contains the optional parameters for the CustomLocationsClient.Get method.
+type CustomLocationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsListByResourceGroupOptions contains the optional parameters for the CustomLocations.ListByResourceGroup method.
-type CustomLocationsListByResourceGroupOptions struct {
+// CustomLocationsClientListByResourceGroupOptions contains the optional parameters for the CustomLocationsClient.ListByResourceGroup
+// method.
+type CustomLocationsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsListBySubscriptionOptions contains the optional parameters for the CustomLocations.ListBySubscription method.
-type CustomLocationsListBySubscriptionOptions struct {
+// CustomLocationsClientListBySubscriptionOptions contains the optional parameters for the CustomLocationsClient.ListBySubscription
+// method.
+type CustomLocationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsListEnabledResourceTypesOptions contains the optional parameters for the CustomLocations.ListEnabledResourceTypes method.
-type CustomLocationsListEnabledResourceTypesOptions struct {
+// CustomLocationsClientListEnabledResourceTypesOptions contains the optional parameters for the CustomLocationsClient.ListEnabledResourceTypes
+// method.
+type CustomLocationsClientListEnabledResourceTypesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsListOperationsOptions contains the optional parameters for the CustomLocations.ListOperations method.
-type CustomLocationsListOperationsOptions struct {
+// CustomLocationsClientListOperationsOptions contains the optional parameters for the CustomLocationsClient.ListOperations
+// method.
+type CustomLocationsClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomLocationsUpdateOptions contains the optional parameters for the CustomLocations.Update method.
-type CustomLocationsUpdateOptions struct {
+// CustomLocationsClientUpdateOptions contains the optional parameters for the CustomLocationsClient.Update method.
+type CustomLocationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // EnabledResourceType definition.
 type EnabledResourceType struct {
-	ProxyResource
 	// The set of properties for EnabledResourceType specific to a Custom Location
 	Properties *EnabledResourceTypeProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type EnabledResourceType.
-func (e EnabledResourceType) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // EnabledResourceTypeProperties - Properties for EnabledResourceType of a custom location.
@@ -295,19 +318,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Identity for the resource.
@@ -343,13 +358,17 @@ func (p PatchableCustomLocations) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -362,19 +381,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -445,27 +451,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

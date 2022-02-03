@@ -48,22 +48,3 @@ func unmarshalDeploymentScriptClassificationArray(rawMsg json.RawMessage) ([]Dep
 	}
 	return fArray, nil
 }
-
-func unmarshalDeploymentScriptClassificationMap(rawMsg json.RawMessage) (map[string]DeploymentScriptClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DeploymentScriptClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDeploymentScriptClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}

@@ -30,12 +30,16 @@ func ExampleIntegrationRuntimesClient_ListByFactory() {
 	pager := client.ListByFactory("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("IntegrationRuntimeResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,17 +58,15 @@ func ExampleIntegrationRuntimesClient_CreateOrUpdate() {
 		"<integration-runtime-name>",
 		armdatafactory.IntegrationRuntimeResource{
 			Properties: &armdatafactory.SelfHostedIntegrationRuntime{
-				IntegrationRuntime: armdatafactory.IntegrationRuntime{
-					Type:        armdatafactory.IntegrationRuntimeTypeSelfHosted.ToPtr(),
-					Description: to.StringPtr("<description>"),
-				},
+				Type:        armdatafactory.IntegrationRuntimeType("SelfHosted").ToPtr(),
+				Description: to.StringPtr("<description>"),
 			},
 		},
-		&armdatafactory.IntegrationRuntimesCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.IntegrationRuntimesClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IntegrationRuntimeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Get.json
@@ -79,11 +81,11 @@ func ExampleIntegrationRuntimesClient_Get() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
-		&armdatafactory.IntegrationRuntimesGetOptions{IfNoneMatch: nil})
+		&armdatafactory.IntegrationRuntimesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IntegrationRuntimeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Update.json
@@ -99,14 +101,14 @@ func ExampleIntegrationRuntimesClient_Update() {
 		"<factory-name>",
 		"<integration-runtime-name>",
 		armdatafactory.UpdateIntegrationRuntimeRequest{
-			AutoUpdate:        armdatafactory.IntegrationRuntimeAutoUpdateOff.ToPtr(),
+			AutoUpdate:        armdatafactory.IntegrationRuntimeAutoUpdate("Off").ToPtr(),
 			UpdateDelayOffset: to.StringPtr("<update-delay-offset>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IntegrationRuntimeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Delete.json
@@ -135,7 +137,7 @@ func ExampleIntegrationRuntimesClient_GetStatus() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
-	_, err = client.GetStatus(ctx,
+	res, err := client.GetStatus(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
@@ -143,6 +145,7 @@ func ExampleIntegrationRuntimesClient_GetStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientGetStatusResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
@@ -153,7 +156,7 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
-	_, err = client.ListOutboundNetworkDependenciesEndpoints(ctx,
+	res, err := client.ListOutboundNetworkDependenciesEndpoints(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
@@ -161,6 +164,7 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_GetConnectionInfo.json
@@ -171,7 +175,7 @@ func ExampleIntegrationRuntimesClient_GetConnectionInfo() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
-	_, err = client.GetConnectionInfo(ctx,
+	res, err := client.GetConnectionInfo(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
@@ -179,6 +183,7 @@ func ExampleIntegrationRuntimesClient_GetConnectionInfo() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientGetConnectionInfoResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_RegenerateAuthKey.json
@@ -189,17 +194,18 @@ func ExampleIntegrationRuntimesClient_RegenerateAuthKey() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
-	_, err = client.RegenerateAuthKey(ctx,
+	res, err := client.RegenerateAuthKey(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
 		armdatafactory.IntegrationRuntimeRegenerateKeyParameters{
-			KeyName: armdatafactory.IntegrationRuntimeAuthKeyNameAuthKey2.ToPtr(),
+			KeyName: armdatafactory.IntegrationRuntimeAuthKeyName("authKey2").ToPtr(),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientRegenerateAuthKeyResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListAuthKeys.json
@@ -210,7 +216,7 @@ func ExampleIntegrationRuntimesClient_ListAuthKeys() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
-	_, err = client.ListAuthKeys(ctx,
+	res, err := client.ListAuthKeys(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
@@ -218,6 +224,7 @@ func ExampleIntegrationRuntimesClient_ListAuthKeys() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientListAuthKeysResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Start.json
@@ -236,10 +243,11 @@ func ExampleIntegrationRuntimesClient_BeginStart() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientStartResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Stop.json
@@ -290,7 +298,7 @@ func ExampleIntegrationRuntimesClient_GetMonitoringData() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
-	_, err = client.GetMonitoringData(ctx,
+	res, err := client.GetMonitoringData(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
@@ -298,6 +306,7 @@ func ExampleIntegrationRuntimesClient_GetMonitoringData() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientGetMonitoringDataResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Upgrade.json
@@ -347,7 +356,7 @@ func ExampleIntegrationRuntimesClient_CreateLinkedIntegrationRuntime() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
-	_, err = client.CreateLinkedIntegrationRuntime(ctx,
+	res, err := client.CreateLinkedIntegrationRuntime(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
@@ -361,4 +370,5 @@ func ExampleIntegrationRuntimesClient_CreateLinkedIntegrationRuntime() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResult)
 }

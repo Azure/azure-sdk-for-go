@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
@@ -63,6 +64,33 @@ func TestCreateKeyRSA(t *testing.T) {
 			require.Nil(t, invalid.Attributes)
 		})
 	}
+}
+func TestCreateKeyRSATags(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	resp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+		Tags: map[string]string{
+			"Tag1": "Val1",
+		},
+	})
+	defer cleanUpKey(t, client, key)
+	require.NoError(t, err)
+	require.NotNil(t, resp.Key)
+	require.Equal(t, 1, len(resp.Tags))
+
+	// Remove the tag
+	resp2, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
+		Tags: map[string]string{},
+	})
+	require.NoError(t, err)
+	require.Equal(t, 0, len(resp2.Tags))
 }
 
 func TestCreateECKey(t *testing.T) {
@@ -263,13 +291,13 @@ func TestBackupKey(t *testing.T) {
 			require.NoError(t, err)
 
 			_, err = client.GetKey(ctx, key, nil)
-			var httpErr azcore.HTTPResponse
+			var httpErr *azcore.ResponseError
 			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 			_, err = client.GetDeletedKey(ctx, key, nil)
 			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 			time.Sleep(30 * delay())
 			// Poll this operation manually
@@ -363,8 +391,8 @@ func TestUpdateKeyProperties(t *testing.T) {
 			defer cleanUpKey(t, client, key)
 
 			resp, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
-				Tags: map[string]*string{
-					"Tag1": to.StringPtr("Val1"),
+				Tags: map[string]string{
+					"Tag1": "Val1",
 				},
 				KeyAttributes: &KeyAttributes{
 					Attributes: Attributes{
@@ -374,7 +402,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 			})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Attributes)
-			require.Equal(t, *resp.Tags["Tag1"], "Val1")
+			require.Equal(t, resp.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Attributes.Updated)
 
 			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)
@@ -565,6 +593,7 @@ func TestGetDeletedKey(t *testing.T) {
 }
 
 func TestRotateKey(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)
@@ -595,6 +624,7 @@ func TestRotateKey(t *testing.T) {
 }
 
 func TestGetKeyRotationPolicy(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)
@@ -639,26 +669,34 @@ func TestReleaseKey(t *testing.T) {
 			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
 			require.NoError(t, err)
 
-			_, err = http.DefaultClient.Do(req)
-			require.Error(t, err)
-			// require.Equal(t, resp.StatusCode, http.StatusOK)
-			// defer resp.Body.Close()
+			if recording.GetRecordMode() == recording.PlaybackMode {
+				t.Skip("Skipping test in playback")
+			}
 
-			// type targetResponse struct {
-			// 	Token string `json:"token"`
-			// }
+			// Issue when deploying HSM as well
+			if _, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL"); !ok {
+				_, err = http.DefaultClient.Do(req)
+				require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
+				// require.Equal(t, resp.StatusCode, http.StatusOK)
+				// defer resp.Body.Close()
 
-			// var tR targetResponse
-			// err = json.NewDecoder(resp.Body).Decode(&tR)
-			// require.NoError(t, err)
+				// type targetResponse struct {
+				// 	Token string `json:"token"`
+				// }
 
-			_, err = client.ReleaseKey(ctx, key, "target", nil)
-			require.Error(t, err)
+				// var tR targetResponse
+				// err = json.NewDecoder(resp.Body).Decode(&tR)
+				// require.NoError(t, err)
+
+				_, err = client.ReleaseKey(ctx, key, "target", nil)
+				require.Error(t, err)
+			}
 		})
 	}
 }
 
 func TestUpdateKeyRotationPolicy(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)

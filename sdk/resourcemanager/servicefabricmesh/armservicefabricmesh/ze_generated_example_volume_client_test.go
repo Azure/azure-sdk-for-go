@@ -29,27 +29,23 @@ func ExampleVolumeClient_Create() {
 		"<resource-group-name>",
 		"<volume-resource-name>",
 		armservicefabricmesh.VolumeResourceDescription{
-			TrackedResource: armservicefabricmesh.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.VolumeResourceProperties{
-				VolumeProperties: armservicefabricmesh.VolumeProperties{
-					Description: to.StringPtr("<description>"),
-					AzureFileParameters: &armservicefabricmesh.VolumeProviderParametersAzureFile{
-						AccountKey:  to.StringPtr("<account-key>"),
-						AccountName: to.StringPtr("<account-name>"),
-						ShareName:   to.StringPtr("<share-name>"),
-					},
-					Provider: armservicefabricmesh.VolumeProviderSFAzureFile.ToPtr(),
+				Description: to.StringPtr("<description>"),
+				AzureFileParameters: &armservicefabricmesh.VolumeProviderParametersAzureFile{
+					AccountKey:  to.StringPtr("<account-key>"),
+					AccountName: to.StringPtr("<account-name>"),
+					ShareName:   to.StringPtr("<share-name>"),
 				},
+				Provider: armservicefabricmesh.VolumeProvider("SFAzureFile").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VolumeResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VolumeClientCreateResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/volumes/get.json
@@ -67,7 +63,7 @@ func ExampleVolumeClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VolumeResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VolumeClientGetResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/volumes/delete.json
@@ -97,12 +93,16 @@ func ExampleVolumeClient_ListByResourceGroup() {
 	client := armservicefabricmesh.NewVolumeClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VolumeResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -116,12 +116,16 @@ func ExampleVolumeClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armservicefabricmesh.NewVolumeClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VolumeResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

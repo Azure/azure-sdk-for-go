@@ -25,39 +25,52 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByInstancePool - Gets all instance pool usage metrics
-// If the operation fails it returns a generic error.
-func (client *UsagesClient) ListByInstancePool(resourceGroupName string, instancePoolName string, options *UsagesListByInstancePoolOptions) *UsagesListByInstancePoolPager {
-	return &UsagesListByInstancePoolPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// instancePoolName - The name of the instance pool to be retrieved.
+// options - UsagesClientListByInstancePoolOptions contains the optional parameters for the UsagesClient.ListByInstancePool
+// method.
+func (client *UsagesClient) ListByInstancePool(resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) *UsagesClientListByInstancePoolPager {
+	return &UsagesClientListByInstancePoolPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
 		},
-		advancer: func(ctx context.Context, resp UsagesListByInstancePoolResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UsagesClientListByInstancePoolResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsageListResult.NextLink)
 		},
 	}
 }
 
 // listByInstancePoolCreateRequest creates the ListByInstancePool request.
-func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context, resourceGroupName string, instancePoolName string, options *UsagesListByInstancePoolOptions) (*policy.Request, error) {
+func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context, resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,7 +84,7 @@ func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,22 +99,10 @@ func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context,
 }
 
 // listByInstancePoolHandleResponse handles the ListByInstancePool response.
-func (client *UsagesClient) listByInstancePoolHandleResponse(resp *http.Response) (UsagesListByInstancePoolResponse, error) {
-	result := UsagesListByInstancePoolResponse{RawResponse: resp}
+func (client *UsagesClient) listByInstancePoolHandleResponse(resp *http.Response) (UsagesClientListByInstancePoolResponse, error) {
+	result := UsagesClientListByInstancePoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
-		return UsagesListByInstancePoolResponse{}, runtime.NewResponseError(err, resp)
+		return UsagesClientListByInstancePoolResponse{}, err
 	}
 	return result, nil
-}
-
-// listByInstancePoolHandleError handles the ListByInstancePool error response.
-func (client *UsagesClient) listByInstancePoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

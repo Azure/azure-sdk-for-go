@@ -9,15 +9,43 @@
 package armappplatform
 
 const (
-	module  = "armappplatform"
-	version = "v0.2.1"
+	moduleName    = "armappplatform"
+	moduleVersion = "v0.3.0"
 )
+
+// APIPortalProvisioningState - State of the API portal.
+type APIPortalProvisioningState string
+
+const (
+	APIPortalProvisioningStateCreating  APIPortalProvisioningState = "Creating"
+	APIPortalProvisioningStateDeleting  APIPortalProvisioningState = "Deleting"
+	APIPortalProvisioningStateFailed    APIPortalProvisioningState = "Failed"
+	APIPortalProvisioningStateSucceeded APIPortalProvisioningState = "Succeeded"
+	APIPortalProvisioningStateUpdating  APIPortalProvisioningState = "Updating"
+)
+
+// PossibleAPIPortalProvisioningStateValues returns the possible values for the APIPortalProvisioningState const type.
+func PossibleAPIPortalProvisioningStateValues() []APIPortalProvisioningState {
+	return []APIPortalProvisioningState{
+		APIPortalProvisioningStateCreating,
+		APIPortalProvisioningStateDeleting,
+		APIPortalProvisioningStateFailed,
+		APIPortalProvisioningStateSucceeded,
+		APIPortalProvisioningStateUpdating,
+	}
+}
+
+// ToPtr returns a *APIPortalProvisioningState pointing to the current value.
+func (c APIPortalProvisioningState) ToPtr() *APIPortalProvisioningState {
+	return &c
+}
 
 // AppResourceProvisioningState - Provisioning state of the App
 type AppResourceProvisioningState string
 
 const (
 	AppResourceProvisioningStateCreating  AppResourceProvisioningState = "Creating"
+	AppResourceProvisioningStateDeleting  AppResourceProvisioningState = "Deleting"
 	AppResourceProvisioningStateFailed    AppResourceProvisioningState = "Failed"
 	AppResourceProvisioningStateSucceeded AppResourceProvisioningState = "Succeeded"
 	AppResourceProvisioningStateUpdating  AppResourceProvisioningState = "Updating"
@@ -27,6 +55,7 @@ const (
 func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState {
 	return []AppResourceProvisioningState{
 		AppResourceProvisioningStateCreating,
+		AppResourceProvisioningStateDeleting,
 		AppResourceProvisioningStateFailed,
 		AppResourceProvisioningStateSucceeded,
 		AppResourceProvisioningStateUpdating,
@@ -35,6 +64,170 @@ func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState
 
 // ToPtr returns a *AppResourceProvisioningState pointing to the current value.
 func (c AppResourceProvisioningState) ToPtr() *AppResourceProvisioningState {
+	return &c
+}
+
+// BindingType - Buildpack Binding Type
+type BindingType string
+
+const (
+	BindingTypeApacheSkyWalking    BindingType = "ApacheSkyWalking"
+	BindingTypeAppDynamics         BindingType = "AppDynamics"
+	BindingTypeApplicationInsights BindingType = "ApplicationInsights"
+	BindingTypeDynatrace           BindingType = "Dynatrace"
+	BindingTypeElasticAPM          BindingType = "ElasticAPM"
+	BindingTypeNewRelic            BindingType = "NewRelic"
+)
+
+// PossibleBindingTypeValues returns the possible values for the BindingType const type.
+func PossibleBindingTypeValues() []BindingType {
+	return []BindingType{
+		BindingTypeApacheSkyWalking,
+		BindingTypeAppDynamics,
+		BindingTypeApplicationInsights,
+		BindingTypeDynatrace,
+		BindingTypeElasticAPM,
+		BindingTypeNewRelic,
+	}
+}
+
+// ToPtr returns a *BindingType pointing to the current value.
+func (c BindingType) ToPtr() *BindingType {
+	return &c
+}
+
+// BuildProvisioningState - Provisioning state of the KPack build result
+type BuildProvisioningState string
+
+const (
+	BuildProvisioningStateCreating  BuildProvisioningState = "Creating"
+	BuildProvisioningStateDeleting  BuildProvisioningState = "Deleting"
+	BuildProvisioningStateFailed    BuildProvisioningState = "Failed"
+	BuildProvisioningStateSucceeded BuildProvisioningState = "Succeeded"
+	BuildProvisioningStateUpdating  BuildProvisioningState = "Updating"
+)
+
+// PossibleBuildProvisioningStateValues returns the possible values for the BuildProvisioningState const type.
+func PossibleBuildProvisioningStateValues() []BuildProvisioningState {
+	return []BuildProvisioningState{
+		BuildProvisioningStateCreating,
+		BuildProvisioningStateDeleting,
+		BuildProvisioningStateFailed,
+		BuildProvisioningStateSucceeded,
+		BuildProvisioningStateUpdating,
+	}
+}
+
+// ToPtr returns a *BuildProvisioningState pointing to the current value.
+func (c BuildProvisioningState) ToPtr() *BuildProvisioningState {
+	return &c
+}
+
+// BuildResultProvisioningState - Provisioning state of the KPack build result
+type BuildResultProvisioningState string
+
+const (
+	BuildResultProvisioningStateBuilding  BuildResultProvisioningState = "Building"
+	BuildResultProvisioningStateDeleting  BuildResultProvisioningState = "Deleting"
+	BuildResultProvisioningStateFailed    BuildResultProvisioningState = "Failed"
+	BuildResultProvisioningStateQueuing   BuildResultProvisioningState = "Queuing"
+	BuildResultProvisioningStateSucceeded BuildResultProvisioningState = "Succeeded"
+)
+
+// PossibleBuildResultProvisioningStateValues returns the possible values for the BuildResultProvisioningState const type.
+func PossibleBuildResultProvisioningStateValues() []BuildResultProvisioningState {
+	return []BuildResultProvisioningState{
+		BuildResultProvisioningStateBuilding,
+		BuildResultProvisioningStateDeleting,
+		BuildResultProvisioningStateFailed,
+		BuildResultProvisioningStateQueuing,
+		BuildResultProvisioningStateSucceeded,
+	}
+}
+
+// ToPtr returns a *BuildResultProvisioningState pointing to the current value.
+func (c BuildResultProvisioningState) ToPtr() *BuildResultProvisioningState {
+	return &c
+}
+
+// BuildServiceProvisioningState - Provisioning state of the KPack build result
+type BuildServiceProvisioningState string
+
+const (
+	BuildServiceProvisioningStateCreating  BuildServiceProvisioningState = "Creating"
+	BuildServiceProvisioningStateDeleting  BuildServiceProvisioningState = "Deleting"
+	BuildServiceProvisioningStateFailed    BuildServiceProvisioningState = "Failed"
+	BuildServiceProvisioningStateSucceeded BuildServiceProvisioningState = "Succeeded"
+	BuildServiceProvisioningStateUpdating  BuildServiceProvisioningState = "Updating"
+)
+
+// PossibleBuildServiceProvisioningStateValues returns the possible values for the BuildServiceProvisioningState const type.
+func PossibleBuildServiceProvisioningStateValues() []BuildServiceProvisioningState {
+	return []BuildServiceProvisioningState{
+		BuildServiceProvisioningStateCreating,
+		BuildServiceProvisioningStateDeleting,
+		BuildServiceProvisioningStateFailed,
+		BuildServiceProvisioningStateSucceeded,
+		BuildServiceProvisioningStateUpdating,
+	}
+}
+
+// ToPtr returns a *BuildServiceProvisioningState pointing to the current value.
+func (c BuildServiceProvisioningState) ToPtr() *BuildServiceProvisioningState {
+	return &c
+}
+
+// BuilderProvisioningState - Builder provision status.
+type BuilderProvisioningState string
+
+const (
+	BuilderProvisioningStateCreating  BuilderProvisioningState = "Creating"
+	BuilderProvisioningStateDeleting  BuilderProvisioningState = "Deleting"
+	BuilderProvisioningStateFailed    BuilderProvisioningState = "Failed"
+	BuilderProvisioningStateSucceeded BuilderProvisioningState = "Succeeded"
+	BuilderProvisioningStateUpdating  BuilderProvisioningState = "Updating"
+)
+
+// PossibleBuilderProvisioningStateValues returns the possible values for the BuilderProvisioningState const type.
+func PossibleBuilderProvisioningStateValues() []BuilderProvisioningState {
+	return []BuilderProvisioningState{
+		BuilderProvisioningStateCreating,
+		BuilderProvisioningStateDeleting,
+		BuilderProvisioningStateFailed,
+		BuilderProvisioningStateSucceeded,
+		BuilderProvisioningStateUpdating,
+	}
+}
+
+// ToPtr returns a *BuilderProvisioningState pointing to the current value.
+func (c BuilderProvisioningState) ToPtr() *BuilderProvisioningState {
+	return &c
+}
+
+// BuildpackBindingProvisioningState - State of the Buildpack Binding.
+type BuildpackBindingProvisioningState string
+
+const (
+	BuildpackBindingProvisioningStateCreating  BuildpackBindingProvisioningState = "Creating"
+	BuildpackBindingProvisioningStateDeleting  BuildpackBindingProvisioningState = "Deleting"
+	BuildpackBindingProvisioningStateFailed    BuildpackBindingProvisioningState = "Failed"
+	BuildpackBindingProvisioningStateSucceeded BuildpackBindingProvisioningState = "Succeeded"
+	BuildpackBindingProvisioningStateUpdating  BuildpackBindingProvisioningState = "Updating"
+)
+
+// PossibleBuildpackBindingProvisioningStateValues returns the possible values for the BuildpackBindingProvisioningState const type.
+func PossibleBuildpackBindingProvisioningStateValues() []BuildpackBindingProvisioningState {
+	return []BuildpackBindingProvisioningState{
+		BuildpackBindingProvisioningStateCreating,
+		BuildpackBindingProvisioningStateDeleting,
+		BuildpackBindingProvisioningStateFailed,
+		BuildpackBindingProvisioningStateSucceeded,
+		BuildpackBindingProvisioningStateUpdating,
+	}
+}
+
+// ToPtr returns a *BuildpackBindingProvisioningState pointing to the current value.
+func (c BuildpackBindingProvisioningState) ToPtr() *BuildpackBindingProvisioningState {
 	return &c
 }
 
@@ -62,6 +255,33 @@ func PossibleConfigServerStateValues() []ConfigServerState {
 
 // ToPtr returns a *ConfigServerState pointing to the current value.
 func (c ConfigServerState) ToPtr() *ConfigServerState {
+	return &c
+}
+
+// ConfigurationServiceProvisioningState - State of the Application Configuration Service.
+type ConfigurationServiceProvisioningState string
+
+const (
+	ConfigurationServiceProvisioningStateCreating  ConfigurationServiceProvisioningState = "Creating"
+	ConfigurationServiceProvisioningStateDeleting  ConfigurationServiceProvisioningState = "Deleting"
+	ConfigurationServiceProvisioningStateFailed    ConfigurationServiceProvisioningState = "Failed"
+	ConfigurationServiceProvisioningStateSucceeded ConfigurationServiceProvisioningState = "Succeeded"
+	ConfigurationServiceProvisioningStateUpdating  ConfigurationServiceProvisioningState = "Updating"
+)
+
+// PossibleConfigurationServiceProvisioningStateValues returns the possible values for the ConfigurationServiceProvisioningState const type.
+func PossibleConfigurationServiceProvisioningStateValues() []ConfigurationServiceProvisioningState {
+	return []ConfigurationServiceProvisioningState{
+		ConfigurationServiceProvisioningStateCreating,
+		ConfigurationServiceProvisioningStateDeleting,
+		ConfigurationServiceProvisioningStateFailed,
+		ConfigurationServiceProvisioningStateSucceeded,
+		ConfigurationServiceProvisioningStateUpdating,
+	}
+}
+
+// ToPtr returns a *ConfigurationServiceProvisioningState pointing to the current value.
+func (c ConfigurationServiceProvisioningState) ToPtr() *ConfigurationServiceProvisioningState {
 	return &c
 }
 
@@ -138,30 +358,97 @@ func (c DeploymentResourceProvisioningState) ToPtr() *DeploymentResourceProvisio
 type DeploymentResourceStatus string
 
 const (
-	DeploymentResourceStatusAllocating DeploymentResourceStatus = "Allocating"
-	DeploymentResourceStatusCompiling  DeploymentResourceStatus = "Compiling"
-	DeploymentResourceStatusFailed     DeploymentResourceStatus = "Failed"
-	DeploymentResourceStatusRunning    DeploymentResourceStatus = "Running"
-	DeploymentResourceStatusStopped    DeploymentResourceStatus = "Stopped"
-	DeploymentResourceStatusUnknown    DeploymentResourceStatus = "Unknown"
-	DeploymentResourceStatusUpgrading  DeploymentResourceStatus = "Upgrading"
+	DeploymentResourceStatusRunning DeploymentResourceStatus = "Running"
+	DeploymentResourceStatusStopped DeploymentResourceStatus = "Stopped"
 )
 
 // PossibleDeploymentResourceStatusValues returns the possible values for the DeploymentResourceStatus const type.
 func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 	return []DeploymentResourceStatus{
-		DeploymentResourceStatusAllocating,
-		DeploymentResourceStatusCompiling,
-		DeploymentResourceStatusFailed,
 		DeploymentResourceStatusRunning,
 		DeploymentResourceStatusStopped,
-		DeploymentResourceStatusUnknown,
-		DeploymentResourceStatusUpgrading,
 	}
 }
 
 // ToPtr returns a *DeploymentResourceStatus pointing to the current value.
 func (c DeploymentResourceStatus) ToPtr() *DeploymentResourceStatus {
+	return &c
+}
+
+// GatewayProvisioningState - State of the Spring Cloud Gateway.
+type GatewayProvisioningState string
+
+const (
+	GatewayProvisioningStateCreating  GatewayProvisioningState = "Creating"
+	GatewayProvisioningStateDeleting  GatewayProvisioningState = "Deleting"
+	GatewayProvisioningStateFailed    GatewayProvisioningState = "Failed"
+	GatewayProvisioningStateSucceeded GatewayProvisioningState = "Succeeded"
+	GatewayProvisioningStateUpdating  GatewayProvisioningState = "Updating"
+)
+
+// PossibleGatewayProvisioningStateValues returns the possible values for the GatewayProvisioningState const type.
+func PossibleGatewayProvisioningStateValues() []GatewayProvisioningState {
+	return []GatewayProvisioningState{
+		GatewayProvisioningStateCreating,
+		GatewayProvisioningStateDeleting,
+		GatewayProvisioningStateFailed,
+		GatewayProvisioningStateSucceeded,
+		GatewayProvisioningStateUpdating,
+	}
+}
+
+// ToPtr returns a *GatewayProvisioningState pointing to the current value.
+func (c GatewayProvisioningState) ToPtr() *GatewayProvisioningState {
+	return &c
+}
+
+// KPackBuildStageProvisioningState - The provisioning state of this build stage resource.
+type KPackBuildStageProvisioningState string
+
+const (
+	KPackBuildStageProvisioningStateFailed     KPackBuildStageProvisioningState = "Failed"
+	KPackBuildStageProvisioningStateNotStarted KPackBuildStageProvisioningState = "NotStarted"
+	KPackBuildStageProvisioningStateRunning    KPackBuildStageProvisioningState = "Running"
+	KPackBuildStageProvisioningStateSucceeded  KPackBuildStageProvisioningState = "Succeeded"
+)
+
+// PossibleKPackBuildStageProvisioningStateValues returns the possible values for the KPackBuildStageProvisioningState const type.
+func PossibleKPackBuildStageProvisioningStateValues() []KPackBuildStageProvisioningState {
+	return []KPackBuildStageProvisioningState{
+		KPackBuildStageProvisioningStateFailed,
+		KPackBuildStageProvisioningStateNotStarted,
+		KPackBuildStageProvisioningStateRunning,
+		KPackBuildStageProvisioningStateSucceeded,
+	}
+}
+
+// ToPtr returns a *KPackBuildStageProvisioningState pointing to the current value.
+func (c KPackBuildStageProvisioningState) ToPtr() *KPackBuildStageProvisioningState {
+	return &c
+}
+
+// LastModifiedByType - The type of identity that last modified the resource.
+type LastModifiedByType string
+
+const (
+	LastModifiedByTypeApplication     LastModifiedByType = "Application"
+	LastModifiedByTypeKey             LastModifiedByType = "Key"
+	LastModifiedByTypeManagedIdentity LastModifiedByType = "ManagedIdentity"
+	LastModifiedByTypeUser            LastModifiedByType = "User"
+)
+
+// PossibleLastModifiedByTypeValues returns the possible values for the LastModifiedByType const type.
+func PossibleLastModifiedByTypeValues() []LastModifiedByType {
+	return []LastModifiedByType{
+		LastModifiedByTypeApplication,
+		LastModifiedByTypeKey,
+		LastModifiedByTypeManagedIdentity,
+		LastModifiedByTypeUser,
+	}
+}
+
+// ToPtr returns a *LastModifiedByType pointing to the current value.
+func (c LastModifiedByType) ToPtr() *LastModifiedByType {
 	return &c
 }
 
@@ -313,29 +600,6 @@ func (c ResourceSKURestrictionsType) ToPtr() *ResourceSKURestrictionsType {
 	return &c
 }
 
-// RuntimeVersion - Runtime version
-type RuntimeVersion string
-
-const (
-	RuntimeVersionJava11    RuntimeVersion = "Java_11"
-	RuntimeVersionJava8     RuntimeVersion = "Java_8"
-	RuntimeVersionNetCore31 RuntimeVersion = "NetCore_31"
-)
-
-// PossibleRuntimeVersionValues returns the possible values for the RuntimeVersion const type.
-func PossibleRuntimeVersionValues() []RuntimeVersion {
-	return []RuntimeVersion{
-		RuntimeVersionJava11,
-		RuntimeVersionJava8,
-		RuntimeVersionNetCore31,
-	}
-}
-
-// ToPtr returns a *RuntimeVersion pointing to the current value.
-func (c RuntimeVersion) ToPtr() *RuntimeVersion {
-	return &c
-}
-
 // SKUScaleType - Gets or sets the type of the scale.
 type SKUScaleType string
 
@@ -356,6 +620,33 @@ func PossibleSKUScaleTypeValues() []SKUScaleType {
 
 // ToPtr returns a *SKUScaleType pointing to the current value.
 func (c SKUScaleType) ToPtr() *SKUScaleType {
+	return &c
+}
+
+// ServiceRegistryProvisioningState - State of the Service Registry.
+type ServiceRegistryProvisioningState string
+
+const (
+	ServiceRegistryProvisioningStateCreating  ServiceRegistryProvisioningState = "Creating"
+	ServiceRegistryProvisioningStateDeleting  ServiceRegistryProvisioningState = "Deleting"
+	ServiceRegistryProvisioningStateFailed    ServiceRegistryProvisioningState = "Failed"
+	ServiceRegistryProvisioningStateSucceeded ServiceRegistryProvisioningState = "Succeeded"
+	ServiceRegistryProvisioningStateUpdating  ServiceRegistryProvisioningState = "Updating"
+)
+
+// PossibleServiceRegistryProvisioningStateValues returns the possible values for the ServiceRegistryProvisioningState const type.
+func PossibleServiceRegistryProvisioningStateValues() []ServiceRegistryProvisioningState {
+	return []ServiceRegistryProvisioningState{
+		ServiceRegistryProvisioningStateCreating,
+		ServiceRegistryProvisioningStateDeleting,
+		ServiceRegistryProvisioningStateFailed,
+		ServiceRegistryProvisioningStateSucceeded,
+		ServiceRegistryProvisioningStateUpdating,
+	}
+}
+
+// ToPtr returns a *ServiceRegistryProvisioningState pointing to the current value.
+func (c ServiceRegistryProvisioningState) ToPtr() *ServiceRegistryProvisioningState {
 	return &c
 }
 
@@ -404,6 +695,7 @@ type SupportedRuntimeValue string
 
 const (
 	SupportedRuntimeValueJava11    SupportedRuntimeValue = "Java_11"
+	SupportedRuntimeValueJava17    SupportedRuntimeValue = "Java_17"
 	SupportedRuntimeValueJava8     SupportedRuntimeValue = "Java_8"
 	SupportedRuntimeValueNetCore31 SupportedRuntimeValue = "NetCore_31"
 )
@@ -412,6 +704,7 @@ const (
 func PossibleSupportedRuntimeValueValues() []SupportedRuntimeValue {
 	return []SupportedRuntimeValue{
 		SupportedRuntimeValueJava11,
+		SupportedRuntimeValueJava17,
 		SupportedRuntimeValueJava8,
 		SupportedRuntimeValueNetCore31,
 	}
@@ -461,30 +754,5 @@ func PossibleTrafficDirectionValues() []TrafficDirection {
 
 // ToPtr returns a *TrafficDirection pointing to the current value.
 func (c TrafficDirection) ToPtr() *TrafficDirection {
-	return &c
-}
-
-// UserSourceType - Type of the source uploaded
-type UserSourceType string
-
-const (
-	UserSourceTypeContainer  UserSourceType = "Container"
-	UserSourceTypeJar        UserSourceType = "Jar"
-	UserSourceTypeNetCoreZip UserSourceType = "NetCoreZip"
-	UserSourceTypeSource     UserSourceType = "Source"
-)
-
-// PossibleUserSourceTypeValues returns the possible values for the UserSourceType const type.
-func PossibleUserSourceTypeValues() []UserSourceType {
-	return []UserSourceType{
-		UserSourceTypeContainer,
-		UserSourceTypeJar,
-		UserSourceTypeNetCoreZip,
-		UserSourceTypeSource,
-	}
-}
-
-// ToPtr returns a *UserSourceType pointing to the current value.
-func (c UserSourceType) ToPtr() *UserSourceType {
 	return &c
 }

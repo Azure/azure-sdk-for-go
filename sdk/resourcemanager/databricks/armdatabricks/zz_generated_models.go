@@ -152,32 +152,24 @@ func (e ErrorInfo) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Contains details when the response code indicates an error.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// REQUIRED; The error details.
-	InnerError *ErrorInfo `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorInfo `json:"error,omitempty"`
 }
 
 // GroupIDInformation - The group information for creating a private endpoint on a workspace
 type GroupIDInformation struct {
-	Resource
 	// REQUIRED; The group id properties.
 	Properties *GroupIDInformationProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type GroupIDInformation.
-func (g GroupIDInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GroupIDInformationProperties - The properties for a group information object
@@ -234,8 +226,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Resource Provider operations. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult - Result of the request to list Resource Provider operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -252,8 +244,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -274,8 +266,9 @@ func (o OutboundEnvironmentEndpoint) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OutboundNetworkDependenciesEndpointsListOptions contains the optional parameters for the OutboundNetworkDependenciesEndpoints.List method.
-type OutboundNetworkDependenciesEndpointsListOptions struct {
+// OutboundNetworkDependenciesEndpointsClientListOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.List
+// method.
+type OutboundNetworkDependenciesEndpointsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -312,18 +305,27 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreate method.
-type PrivateEndpointConnectionsBeginCreateOptions struct {
+// PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -344,13 +346,13 @@ func (p PrivateEndpointConnectionsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -369,11 +371,6 @@ func (p PrivateLinkResourcesList) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
-}
-
-// PrivateLinkResourcesListOptions contains the optional parameters for the PrivateLinkResources.List method.
-type PrivateLinkResourcesListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // PrivateLinkServiceConnectionState - The current state of a private endpoint connection
@@ -398,19 +395,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SKU for the resource.
@@ -492,44 +476,51 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
-}
-
-// VNetPeeringBeginCreateOrUpdateOptions contains the optional parameters for the VNetPeering.BeginCreateOrUpdate method.
-type VNetPeeringBeginCreateOrUpdateOptions struct {
+// VNetPeeringClientBeginCreateOrUpdateOptions contains the optional parameters for the VNetPeeringClient.BeginCreateOrUpdate
+// method.
+type VNetPeeringClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VNetPeeringBeginDeleteOptions contains the optional parameters for the VNetPeering.BeginDelete method.
-type VNetPeeringBeginDeleteOptions struct {
+// VNetPeeringClientBeginDeleteOptions contains the optional parameters for the VNetPeeringClient.BeginDelete method.
+type VNetPeeringClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VNetPeeringGetOptions contains the optional parameters for the VNetPeering.Get method.
-type VNetPeeringGetOptions struct {
+// VNetPeeringClientGetOptions contains the optional parameters for the VNetPeeringClient.Get method.
+type VNetPeeringClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VNetPeeringListByWorkspaceOptions contains the optional parameters for the VNetPeering.ListByWorkspace method.
-type VNetPeeringListByWorkspaceOptions struct {
+// VNetPeeringClientListByWorkspaceOptions contains the optional parameters for the VNetPeeringClient.ListByWorkspace method.
+type VNetPeeringClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -588,9 +579,10 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	// The reference to the remote virtual network address space.
 	RemoteAddressSpace *AddressSpace `json:"remoteAddressSpace,omitempty"`
 
-	// If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network
-	// will use gateways of remote virtual network
-	// for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
+	// If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering
+	// is also true, virtual network will use gateways of remote virtual network
+	// for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a
+	// gateway.
 	UseRemoteGateways *bool `json:"useRemoteGateways,omitempty"`
 
 	// READ-ONLY; The status of the virtual network peering.
@@ -600,13 +592,15 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	ProvisioningState *PeeringProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork - The remote virtual network should be in the same region. See here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
+// VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork - The remote virtual network should be in the same region.
+// See here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
 type VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork struct {
 	// The Id of the databricks virtual network.
 	ID *string `json:"id,omitempty"`
 }
 
-// VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork - The remote virtual network should be in the same region. See here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
+// VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork - The remote virtual network should be in the same region. See
+// here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
 type VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork struct {
 	// The Id of the remote virtual network.
 	ID *string `json:"id,omitempty"`
@@ -614,24 +608,42 @@ type VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork struct {
 
 // Workspace - Information about workspace.
 type Workspace struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; The workspace properties.
 	Properties *WorkspaceProperties `json:"properties,omitempty"`
 
 	// The SKU of the resource.
 	SKU *SKU `json:"sku,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Workspace.
 func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", w.ID)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
 	populate(objectMap, "sku", w.SKU)
 	populate(objectMap, "systemData", w.SystemData)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -688,8 +700,8 @@ type WorkspaceCustomParameters struct {
 	// Name of the Public IP for No Public IP workspace with managed vNet.
 	PublicIPName *WorkspaceCustomStringParameter `json:"publicIpName,omitempty"`
 
-	// A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data
-	// at rest.
+	// A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform
+	// managed keys for data at rest.
 	RequireInfrastructureEncryption *WorkspaceCustomBooleanParameter `json:"requireInfrastructureEncryption,omitempty"`
 
 	// Default DBFS storage account name.
@@ -760,8 +772,8 @@ type WorkspaceProperties struct {
 	// The network access type for accessing workspace. Set value to disabled to access workspace only via private link.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
-	// Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint. Supported values are 'AllRules'
-	// and 'NoAzureDatabricksRules'.
+	// Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint.
+	// Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
 	// 'NoAzureServiceRules' value is for internal use only.
 	RequiredNsgRules *RequiredNsgRules `json:"requiredNsgRules,omitempty"`
 
@@ -881,11 +893,12 @@ type WorkspacePropertiesEncryption struct {
 
 // WorkspaceProviderAuthorization - The workspace provider authorization.
 type WorkspaceProviderAuthorization struct {
-	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the workspace resources.
+	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
+	// workspace resources.
 	PrincipalID *string `json:"principalId,omitempty"`
 
-	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have on the workspace's container
-	// resource group. This role definition cannot have
+	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have
+	// on the workspace's container resource group. This role definition cannot have
 	// permission to delete the resource group.
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 }
@@ -903,33 +916,36 @@ func (w WorkspaceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WorkspacesBeginCreateOrUpdateOptions contains the optional parameters for the Workspaces.BeginCreateOrUpdate method.
-type WorkspacesBeginCreateOrUpdateOptions struct {
+// WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
+// method.
+type WorkspacesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesBeginDeleteOptions contains the optional parameters for the Workspaces.BeginDelete method.
-type WorkspacesBeginDeleteOptions struct {
+// WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
+type WorkspacesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesBeginUpdateOptions contains the optional parameters for the Workspaces.BeginUpdate method.
-type WorkspacesBeginUpdateOptions struct {
+// WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
+type WorkspacesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesGetOptions contains the optional parameters for the Workspaces.Get method.
-type WorkspacesGetOptions struct {
+// WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
+type WorkspacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesListByResourceGroupOptions contains the optional parameters for the Workspaces.ListByResourceGroup method.
-type WorkspacesListByResourceGroupOptions struct {
+// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
+// method.
+type WorkspacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesListBySubscriptionOptions contains the optional parameters for the Workspaces.ListBySubscription method.
-type WorkspacesListBySubscriptionOptions struct {
+// WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.ListBySubscription
+// method.
+type WorkspacesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -1,0 +1,518 @@
+# Release History
+
+## 0.2.0 (2022-01-21)
+### Breaking Changes
+
+- Function `*UsagesClient.List` parameter(s) have been changed from `(string, *UsagesListOptions)` to `(string, *UsagesClientListOptions)`
+- Function `*UsagesClient.List` return value(s) have been changed from `(*UsagesListPager)` to `(*UsagesClientListPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*WebPubSubRestartPoller.Done` has been removed
+- Function `*WebPubSubClient.ListByResourceGroup` has been removed
+- Function `WebPubSubHubList.MarshalJSON` has been removed
+- Function `*WebPubSubHubsCreateOrUpdatePoller.Done` has been removed
+- Function `*WebPubSubDeletePoller.ResumeToken` has been removed
+- Function `*WebPubSubHubsDeletePoller.Poll` has been removed
+- Function `*WebPubSubRestartPoller.Poll` has been removed
+- Function `*WebPubSubDeletePoller.Done` has been removed
+- Function `WebPubSubRegenerateKeyPollerResponse.PollUntilDone` has been removed
+- Function `*WebPubSubDeletePollerResponse.Resume` has been removed
+- Function `*UsagesListPager.NextPage` has been removed
+- Function `*WebPubSubUpdatePoller.FinalResponse` has been removed
+- Function `*WebPubSubUpdatePollerResponse.Resume` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `WebPubSubSharedPrivateLinkResourcesDeletePollerResponse.PollUntilDone` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `NewWebPubSubPrivateEndpointConnectionsClient` has been removed
+- Function `*WebPubSubClient.ListBySubscription` has been removed
+- Function `*WebPubSubHubsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsListPager.NextPage` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesClient.List` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `NewWebPubSubPrivateLinkResourcesClient` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WebPubSubHubsListPager.Err` has been removed
+- Function `*UsagesListPager.PageResponse` has been removed
+- Function `*WebPubSubClient.ListKeys` has been removed
+- Function `*WebPubSubUpdatePoller.Poll` has been removed
+- Function `*WebPubSubListByResourceGroupPager.PageResponse` has been removed
+- Function `WebPubSubPrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*WebPubSubListBySubscriptionPager.Err` has been removed
+- Function `NewWebPubSubClient` has been removed
+- Function `*WebPubSubPrivateLinkResourcesListPager.Err` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsListPager.Err` has been removed
+- Function `*WebPubSubRegenerateKeyPoller.Done` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*WebPubSubClient.BeginRegenerateKey` has been removed
+- Function `*WebPubSubListBySubscriptionPager.NextPage` has been removed
+- Function `*WebPubSubHubsCreateOrUpdatePoller.Poll` has been removed
+- Function `*WebPubSubClient.ListSKUs` has been removed
+- Function `*WebPubSubClient.BeginCreateOrUpdate` has been removed
+- Function `WebPubSubSharedPrivateLinkResourcesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesDeletePoller.Done` has been removed
+- Function `*WebPubSubUpdatePoller.ResumeToken` has been removed
+- Function `*WebPubSubPrivateLinkResourcesListPager.PageResponse` has been removed
+- Function `*WebPubSubDeletePoller.Poll` has been removed
+- Function `*WebPubSubRestartPoller.ResumeToken` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsClient.Update` has been removed
+- Function `*WebPubSubRegenerateKeyPollerResponse.Resume` has been removed
+- Function `WebPubSubHubsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesCreateOrUpdatePoller.Poll` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesDeletePoller.Poll` has been removed
+- Function `*WebPubSubRestartPollerResponse.Resume` has been removed
+- Function `*WebPubSubListByResourceGroupPager.Err` has been removed
+- Function `*WebPubSubHubsClient.BeginDelete` has been removed
+- Function `*WebPubSubRegenerateKeyPoller.ResumeToken` has been removed
+- Function `*WebPubSubHubsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WebPubSubCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WebPubSubClient.BeginDelete` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesClient.BeginDelete` has been removed
+- Function `NewWebPubSubSharedPrivateLinkResourcesClient` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesDeletePoller.ResumeToken` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `*WebPubSubHubsDeletePoller.ResumeToken` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `WebPubSubUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesClient.BeginCreateOrUpdate` has been removed
+- Function `*WebPubSubListByResourceGroupPager.NextPage` has been removed
+- Function `WebPubSubResource.MarshalJSON` has been removed
+- Function `*WebPubSubClient.BeginRestart` has been removed
+- Function `*WebPubSubCreateOrUpdatePoller.Done` has been removed
+- Function `*WebPubSubCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesClient.Get` has been removed
+- Function `*WebPubSubListBySubscriptionPager.PageResponse` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesListPager.NextPage` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsClient.Get` has been removed
+- Function `*WebPubSubClient.Get` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesCreateOrUpdatePoller.Done` has been removed
+- Function `*WebPubSubHubsClient.List` has been removed
+- Function `*WebPubSubHubsDeletePoller.FinalResponse` has been removed
+- Function `*WebPubSubPrivateLinkResourcesClient.List` has been removed
+- Function `*WebPubSubPrivateLinkResourcesListPager.NextPage` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `WebPubSubCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `SharedPrivateLinkResource.MarshalJSON` has been removed
+- Function `*UsagesListPager.Err` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesListPager.PageResponse` has been removed
+- Function `*WebPubSubRegenerateKeyPoller.FinalResponse` has been removed
+- Function `*WebPubSubClient.BeginUpdate` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesDeletePollerResponse.Resume` has been removed
+- Function `WebPubSubProperties.MarshalJSON` has been removed
+- Function `*WebPubSubHubsClient.Get` has been removed
+- Function `*WebPubSubHubsDeletePollerResponse.Resume` has been removed
+- Function `NewWebPubSubHubsClient` has been removed
+- Function `WebPubSubResourceList.MarshalJSON` has been removed
+- Function `*WebPubSubUpdatePoller.Done` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesListPager.Err` has been removed
+- Function `*WebPubSubDeletePoller.FinalResponse` has been removed
+- Function `*WebPubSubCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WebPubSubHubsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsClient.BeginDelete` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsListPager.PageResponse` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsClient.List` has been removed
+- Function `WebPubSubHubsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WebPubSubHubsClient.BeginCreateOrUpdate` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `WebPubSubRestartPollerResponse.PollUntilDone` has been removed
+- Function `*WebPubSubCreateOrUpdatePoller.Poll` has been removed
+- Function `WebPubSubHub.MarshalJSON` has been removed
+- Function `*WebPubSubClient.CheckNameAvailability` has been removed
+- Function `*WebPubSubHubsDeletePoller.Done` has been removed
+- Function `*WebPubSubHubsListPager.NextPage` has been removed
+- Function `*WebPubSubSharedPrivateLinkResourcesDeletePoller.FinalResponse` has been removed
+- Function `*WebPubSubRestartPoller.FinalResponse` has been removed
+- Function `WebPubSubHubProperties.MarshalJSON` has been removed
+- Function `*WebPubSubRegenerateKeyPoller.Poll` has been removed
+- Function `WebPubSubNetworkACLs.MarshalJSON` has been removed
+- Function `*WebPubSubHubsListPager.PageResponse` has been removed
+- Function `*WebPubSubPrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `WebPubSubDeletePollerResponse.PollUntilDone` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `UsagesListOptions` has been removed
+- Struct `UsagesListPager` has been removed
+- Struct `UsagesListResponse` has been removed
+- Struct `UsagesListResult` has been removed
+- Struct `WebPubSubBeginCreateOrUpdateOptions` has been removed
+- Struct `WebPubSubBeginDeleteOptions` has been removed
+- Struct `WebPubSubBeginRegenerateKeyOptions` has been removed
+- Struct `WebPubSubBeginRestartOptions` has been removed
+- Struct `WebPubSubBeginUpdateOptions` has been removed
+- Struct `WebPubSubCheckNameAvailabilityOptions` has been removed
+- Struct `WebPubSubCheckNameAvailabilityResponse` has been removed
+- Struct `WebPubSubCheckNameAvailabilityResult` has been removed
+- Struct `WebPubSubClient` has been removed
+- Struct `WebPubSubCreateOrUpdatePoller` has been removed
+- Struct `WebPubSubCreateOrUpdatePollerResponse` has been removed
+- Struct `WebPubSubCreateOrUpdateResponse` has been removed
+- Struct `WebPubSubCreateOrUpdateResult` has been removed
+- Struct `WebPubSubDeletePoller` has been removed
+- Struct `WebPubSubDeletePollerResponse` has been removed
+- Struct `WebPubSubDeleteResponse` has been removed
+- Struct `WebPubSubGetOptions` has been removed
+- Struct `WebPubSubGetResponse` has been removed
+- Struct `WebPubSubGetResult` has been removed
+- Struct `WebPubSubHub` has been removed
+- Struct `WebPubSubHubList` has been removed
+- Struct `WebPubSubHubProperties` has been removed
+- Struct `WebPubSubHubsBeginCreateOrUpdateOptions` has been removed
+- Struct `WebPubSubHubsBeginDeleteOptions` has been removed
+- Struct `WebPubSubHubsClient` has been removed
+- Struct `WebPubSubHubsCreateOrUpdatePoller` has been removed
+- Struct `WebPubSubHubsCreateOrUpdatePollerResponse` has been removed
+- Struct `WebPubSubHubsCreateOrUpdateResponse` has been removed
+- Struct `WebPubSubHubsCreateOrUpdateResult` has been removed
+- Struct `WebPubSubHubsDeletePoller` has been removed
+- Struct `WebPubSubHubsDeletePollerResponse` has been removed
+- Struct `WebPubSubHubsDeleteResponse` has been removed
+- Struct `WebPubSubHubsGetOptions` has been removed
+- Struct `WebPubSubHubsGetResponse` has been removed
+- Struct `WebPubSubHubsGetResult` has been removed
+- Struct `WebPubSubHubsListOptions` has been removed
+- Struct `WebPubSubHubsListPager` has been removed
+- Struct `WebPubSubHubsListResponse` has been removed
+- Struct `WebPubSubHubsListResult` has been removed
+- Struct `WebPubSubKeys` has been removed
+- Struct `WebPubSubListByResourceGroupOptions` has been removed
+- Struct `WebPubSubListByResourceGroupPager` has been removed
+- Struct `WebPubSubListByResourceGroupResponse` has been removed
+- Struct `WebPubSubListByResourceGroupResult` has been removed
+- Struct `WebPubSubListBySubscriptionOptions` has been removed
+- Struct `WebPubSubListBySubscriptionPager` has been removed
+- Struct `WebPubSubListBySubscriptionResponse` has been removed
+- Struct `WebPubSubListBySubscriptionResult` has been removed
+- Struct `WebPubSubListKeysOptions` has been removed
+- Struct `WebPubSubListKeysResponse` has been removed
+- Struct `WebPubSubListKeysResult` has been removed
+- Struct `WebPubSubListSKUsOptions` has been removed
+- Struct `WebPubSubListSKUsResponse` has been removed
+- Struct `WebPubSubListSKUsResult` has been removed
+- Struct `WebPubSubNetworkACLs` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsClient` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsGetOptions` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsGetResponse` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsGetResult` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsListOptions` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsListPager` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsListResponse` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsListResult` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsUpdateOptions` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsUpdateResponse` has been removed
+- Struct `WebPubSubPrivateEndpointConnectionsUpdateResult` has been removed
+- Struct `WebPubSubPrivateLinkResourcesClient` has been removed
+- Struct `WebPubSubPrivateLinkResourcesListOptions` has been removed
+- Struct `WebPubSubPrivateLinkResourcesListPager` has been removed
+- Struct `WebPubSubPrivateLinkResourcesListResponse` has been removed
+- Struct `WebPubSubPrivateLinkResourcesListResult` has been removed
+- Struct `WebPubSubProperties` has been removed
+- Struct `WebPubSubRegenerateKeyPoller` has been removed
+- Struct `WebPubSubRegenerateKeyPollerResponse` has been removed
+- Struct `WebPubSubRegenerateKeyResponse` has been removed
+- Struct `WebPubSubRegenerateKeyResult` has been removed
+- Struct `WebPubSubResource` has been removed
+- Struct `WebPubSubResourceList` has been removed
+- Struct `WebPubSubRestartPoller` has been removed
+- Struct `WebPubSubRestartPollerResponse` has been removed
+- Struct `WebPubSubRestartResponse` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesBeginCreateOrUpdateOptions` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesBeginDeleteOptions` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesClient` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesCreateOrUpdatePoller` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesCreateOrUpdatePollerResponse` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesCreateOrUpdateResponse` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesCreateOrUpdateResult` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesDeletePoller` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesDeletePollerResponse` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesDeleteResponse` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesGetOptions` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesGetResponse` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesGetResult` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesListOptions` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesListPager` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesListResponse` has been removed
+- Struct `WebPubSubSharedPrivateLinkResourcesListResult` has been removed
+- Struct `WebPubSubTLSSettings` has been removed
+- Struct `WebPubSubUpdatePoller` has been removed
+- Struct `WebPubSubUpdatePollerResponse` has been removed
+- Struct `WebPubSubUpdateResponse` has been removed
+- Struct `WebPubSubUpdateResult` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `ProxyResource` of struct `SharedPrivateLinkResource` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ProxyResource` of struct `PrivateLinkResource` has been removed
+- Field `ProxyResource` of struct `PrivateEndpointConnection` has been removed
+- Field `NetworkACL` of struct `PrivateEndpointACL` has been removed
+
+### Features Added
+
+- New function `*UsagesClientListPager.Err() error`
+- New function `*PrivateEndpointConnectionsClient.BeginDelete(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions) (PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- New function `*SharedPrivateLinkResourcesClient.BeginDelete(context.Context, string, string, string, *SharedPrivateLinkResourcesClientBeginDeleteOptions) (SharedPrivateLinkResourcesClientDeletePollerResponse, error)`
+- New function `*ClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*HubsClientCreateOrUpdatePollerResponse.Resume(context.Context, *HubsClient, string) error`
+- New function `*HubsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*Client.CheckNameAvailability(context.Context, string, NameAvailabilityParameters, *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error)`
+- New function `*PrivateEndpointConnectionsClientListPager.NextPage(context.Context) bool`
+- New function `*Client.BeginUpdate(context.Context, string, string, ResourceInfo, *ClientBeginUpdateOptions) (ClientUpdatePollerResponse, error)`
+- New function `*Client.BeginRegenerateKey(context.Context, string, string, RegenerateKeyParameters, *ClientBeginRegenerateKeyOptions) (ClientRegenerateKeyPollerResponse, error)`
+- New function `*HubsClientDeletePoller.FinalResponse(context.Context) (HubsClientDeleteResponse, error)`
+- New function `*ClientRestartPoller.FinalResponse(context.Context) (ClientRestartResponse, error)`
+- New function `*ClientUpdatePoller.Done() bool`
+- New function `*ClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.FinalResponse(context.Context) (SharedPrivateLinkResourcesClientCreateOrUpdateResponse, error)`
+- New function `*SharedPrivateLinkResourcesClientListPager.NextPage(context.Context) bool`
+- New function `HubProperties.MarshalJSON() ([]byte, error)`
+- New function `*ClientDeletePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*Client.ListKeys(context.Context, string, string, *ClientListKeysOptions) (ClientListKeysResponse, error)`
+- New function `*HubsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SharedPrivateLinkResourcesClientDeletePollerResponse.Resume(context.Context, *SharedPrivateLinkResourcesClient, string) error`
+- New function `*ClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*Client.Get(context.Context, string, string, *ClientGetOptions) (ClientGetResponse, error)`
+- New function `*UsagesClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SharedPrivateLinkResourcesClientDeletePoller.ResumeToken() (string, error)`
+- New function `NewHubsClient(string, azcore.TokenCredential, *arm.ClientOptions) *HubsClient`
+- New function `*Client.ListSKUs(context.Context, string, string, *ClientListSKUsOptions) (ClientListSKUsResponse, error)`
+- New function `SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SharedPrivateLinkResourcesClientCreateOrUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*ClientCreateOrUpdatePoller.FinalResponse(context.Context) (ClientCreateOrUpdateResponse, error)`
+- New function `*PrivateLinkResourcesClientListPager.PageResponse() PrivateLinkResourcesClientListResponse`
+- New function `*ClientCreateOrUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*PrivateLinkResourcesClient.List(string, string, *PrivateLinkResourcesClientListOptions) *PrivateLinkResourcesClientListPager`
+- New function `ResourceInfo.MarshalJSON() ([]byte, error)`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*ClientListBySubscriptionPager.Err() error`
+- New function `ClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientListPager.PageResponse() PrivateEndpointConnectionsClientListResponse`
+- New function `ResourceInfoList.MarshalJSON() ([]byte, error)`
+- New function `ClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientDeleteResponse, error)`
+- New function `*HubsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientRegenerateKeyPoller.Done() bool`
+- New function `*SharedPrivateLinkResourcesClientDeletePoller.Done() bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*ClientRegenerateKeyPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*HubsClient.List(string, string, *HubsClientListOptions) *HubsClientListPager`
+- New function `*ClientUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*PrivateEndpointConnectionsClient.Update(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientUpdateOptions) (PrivateEndpointConnectionsClientUpdateResponse, error)`
+- New function `*ClientDeletePoller.FinalResponse(context.Context) (ClientDeleteResponse, error)`
+- New function `ClientRegenerateKeyPollerResponse.PollUntilDone(context.Context, time.Duration) (ClientRegenerateKeyResponse, error)`
+- New function `*ClientListByResourceGroupPager.PageResponse() ClientListByResourceGroupResponse`
+- New function `*Client.BeginCreateOrUpdate(context.Context, string, string, ResourceInfo, *ClientBeginCreateOrUpdateOptions) (ClientCreateOrUpdatePollerResponse, error)`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse.Resume(context.Context, *SharedPrivateLinkResourcesClient, string) error`
+- New function `*HubsClient.BeginCreateOrUpdate(context.Context, string, string, string, Hub, *HubsClientBeginCreateOrUpdateOptions) (HubsClientCreateOrUpdatePollerResponse, error)`
+- New function `*ClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SharedPrivateLinkResourcesClientDeletePoller.FinalResponse(context.Context) (SharedPrivateLinkResourcesClientDeleteResponse, error)`
+- New function `*ClientRestartPollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientRegenerateKeyPollerResponse.Resume(context.Context, *Client, string) error`
+- New function `ClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (ClientRestartResponse, error)`
+- New function `*HubsClientCreateOrUpdatePoller.FinalResponse(context.Context) (HubsClientCreateOrUpdateResponse, error)`
+- New function `*SharedPrivateLinkResourcesClient.Get(context.Context, string, string, string, *SharedPrivateLinkResourcesClientGetOptions) (SharedPrivateLinkResourcesClientGetResponse, error)`
+- New function `*ClientCreateOrUpdatePoller.Done() bool`
+- New function `*ClientRegenerateKeyPoller.ResumeToken() (string, error)`
+- New function `NewSharedPrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) *SharedPrivateLinkResourcesClient`
+- New function `*ClientListByResourceGroupPager.Err() error`
+- New function `SharedPrivateLinkResourcesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SharedPrivateLinkResourcesClientDeleteResponse, error)`
+- New function `NetworkACLs.MarshalJSON() ([]byte, error)`
+- New function `*Client.BeginDelete(context.Context, string, string, *ClientBeginDeleteOptions) (ClientDeletePollerResponse, error)`
+- New function `*ClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClient.Get(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error)`
+- New function `*PrivateLinkResourcesClientListPager.NextPage(context.Context) bool`
+- New function `*HubsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*UsagesClientListPager.PageResponse() UsagesClientListResponse`
+- New function `*HubsClient.Get(context.Context, string, string, string, *HubsClientGetOptions) (HubsClientGetResponse, error)`
+- New function `*SharedPrivateLinkResourcesClientListPager.PageResponse() SharedPrivateLinkResourcesClientListResponse`
+- New function `*ClientUpdatePoller.FinalResponse(context.Context) (ClientUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.List(string, string, *PrivateEndpointConnectionsClientListOptions) *PrivateEndpointConnectionsClientListPager`
+- New function `*SharedPrivateLinkResourcesClient.List(string, string, *SharedPrivateLinkResourcesClientListOptions) *SharedPrivateLinkResourcesClientListPager`
+- New function `*HubsClientDeletePoller.Done() bool`
+- New function `*ClientRestartPoller.ResumeToken() (string, error)`
+- New function `*ClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.Done() bool`
+- New function `HubsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (HubsClientDeleteResponse, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*SharedPrivateLinkResourcesClientListPager.Err() error`
+- New function `*ClientListBySubscriptionPager.PageResponse() ClientListBySubscriptionResponse`
+- New function `HubsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (HubsClientCreateOrUpdateResponse, error)`
+- New function `*HubsClientDeletePollerResponse.Resume(context.Context, *HubsClient, string) error`
+- New function `*HubsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `Properties.MarshalJSON() ([]byte, error)`
+- New function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate(context.Context, string, string, string, SharedPrivateLinkResource, *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse, error)`
+- New function `*ClientRegenerateKeyPoller.FinalResponse(context.Context) (ClientRegenerateKeyResponse, error)`
+- New function `*ClientRestartPoller.Done() bool`
+- New function `*HubsClientListPager.Err() error`
+- New function `*HubsClient.BeginDelete(context.Context, string, string, string, *HubsClientBeginDeleteOptions) (HubsClientDeletePollerResponse, error)`
+- New function `*Client.ListBySubscription(*ClientListBySubscriptionOptions) *ClientListBySubscriptionPager`
+- New function `*ClientDeletePoller.Done() bool`
+- New function `ClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientCreateOrUpdateResponse, error)`
+- New function `*HubsClientListPager.PageResponse() HubsClientListResponse`
+- New function `*PrivateLinkResourcesClientListPager.Err() error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*SharedPrivateLinkResourcesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `HubList.MarshalJSON() ([]byte, error)`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `NewPrivateEndpointConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) *PrivateEndpointConnectionsClient`
+- New function `*PrivateEndpointConnectionsClientListPager.Err() error`
+- New function `*HubsClientListPager.NextPage(context.Context) bool`
+- New function `NewPrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) *PrivateLinkResourcesClient`
+- New function `*Client.BeginRestart(context.Context, string, string, *ClientBeginRestartOptions) (ClientRestartPollerResponse, error)`
+- New function `*Client.ListByResourceGroup(string, *ClientListByResourceGroupOptions) *ClientListByResourceGroupPager`
+- New function `*ClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New struct `Client`
+- New struct `ClientBeginCreateOrUpdateOptions`
+- New struct `ClientBeginDeleteOptions`
+- New struct `ClientBeginRegenerateKeyOptions`
+- New struct `ClientBeginRestartOptions`
+- New struct `ClientBeginUpdateOptions`
+- New struct `ClientCheckNameAvailabilityOptions`
+- New struct `ClientCheckNameAvailabilityResponse`
+- New struct `ClientCheckNameAvailabilityResult`
+- New struct `ClientCreateOrUpdatePoller`
+- New struct `ClientCreateOrUpdatePollerResponse`
+- New struct `ClientCreateOrUpdateResponse`
+- New struct `ClientCreateOrUpdateResult`
+- New struct `ClientDeletePoller`
+- New struct `ClientDeletePollerResponse`
+- New struct `ClientDeleteResponse`
+- New struct `ClientGetOptions`
+- New struct `ClientGetResponse`
+- New struct `ClientGetResult`
+- New struct `ClientListByResourceGroupOptions`
+- New struct `ClientListByResourceGroupPager`
+- New struct `ClientListByResourceGroupResponse`
+- New struct `ClientListByResourceGroupResult`
+- New struct `ClientListBySubscriptionOptions`
+- New struct `ClientListBySubscriptionPager`
+- New struct `ClientListBySubscriptionResponse`
+- New struct `ClientListBySubscriptionResult`
+- New struct `ClientListKeysOptions`
+- New struct `ClientListKeysResponse`
+- New struct `ClientListKeysResult`
+- New struct `ClientListSKUsOptions`
+- New struct `ClientListSKUsResponse`
+- New struct `ClientListSKUsResult`
+- New struct `ClientRegenerateKeyPoller`
+- New struct `ClientRegenerateKeyPollerResponse`
+- New struct `ClientRegenerateKeyResponse`
+- New struct `ClientRegenerateKeyResult`
+- New struct `ClientRestartPoller`
+- New struct `ClientRestartPollerResponse`
+- New struct `ClientRestartResponse`
+- New struct `ClientUpdatePoller`
+- New struct `ClientUpdatePollerResponse`
+- New struct `ClientUpdateResponse`
+- New struct `ClientUpdateResult`
+- New struct `Hub`
+- New struct `HubList`
+- New struct `HubProperties`
+- New struct `HubsClient`
+- New struct `HubsClientBeginCreateOrUpdateOptions`
+- New struct `HubsClientBeginDeleteOptions`
+- New struct `HubsClientCreateOrUpdatePoller`
+- New struct `HubsClientCreateOrUpdatePollerResponse`
+- New struct `HubsClientCreateOrUpdateResponse`
+- New struct `HubsClientCreateOrUpdateResult`
+- New struct `HubsClientDeletePoller`
+- New struct `HubsClientDeletePollerResponse`
+- New struct `HubsClientDeleteResponse`
+- New struct `HubsClientGetOptions`
+- New struct `HubsClientGetResponse`
+- New struct `HubsClientGetResult`
+- New struct `HubsClientListOptions`
+- New struct `HubsClientListPager`
+- New struct `HubsClientListResponse`
+- New struct `HubsClientListResult`
+- New struct `Keys`
+- New struct `NetworkACLs`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClient`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListPager`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateEndpointConnectionsClientUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientUpdateResult`
+- New struct `PrivateLinkResourcesClient`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListPager`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `Properties`
+- New struct `ResourceInfo`
+- New struct `ResourceInfoList`
+- New struct `SharedPrivateLinkResourcesClient`
+- New struct `SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions`
+- New struct `SharedPrivateLinkResourcesClientBeginDeleteOptions`
+- New struct `SharedPrivateLinkResourcesClientCreateOrUpdatePoller`
+- New struct `SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse`
+- New struct `SharedPrivateLinkResourcesClientCreateOrUpdateResponse`
+- New struct `SharedPrivateLinkResourcesClientCreateOrUpdateResult`
+- New struct `SharedPrivateLinkResourcesClientDeletePoller`
+- New struct `SharedPrivateLinkResourcesClientDeletePollerResponse`
+- New struct `SharedPrivateLinkResourcesClientDeleteResponse`
+- New struct `SharedPrivateLinkResourcesClientGetOptions`
+- New struct `SharedPrivateLinkResourcesClientGetResponse`
+- New struct `SharedPrivateLinkResourcesClientGetResult`
+- New struct `SharedPrivateLinkResourcesClientListOptions`
+- New struct `SharedPrivateLinkResourcesClientListPager`
+- New struct `SharedPrivateLinkResourcesClientListResponse`
+- New struct `SharedPrivateLinkResourcesClientListResult`
+- New struct `TLSSettings`
+- New struct `UsagesClientListOptions`
+- New struct `UsagesClientListPager`
+- New struct `UsagesClientListResponse`
+- New struct `UsagesClientListResult`
+- New field `Allow` in struct `PrivateEndpointACL`
+- New field `Deny` in struct `PrivateEndpointACL`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `ID` in struct `SharedPrivateLinkResource`
+- New field `Name` in struct `SharedPrivateLinkResource`
+- New field `Type` in struct `SharedPrivateLinkResource`
+
+
+## 0.1.0 (2021-12-22)
+
+- Init release.

@@ -41,17 +41,9 @@ type BootstrapConfiguration struct {
 }
 
 // CloudError - An error response from the Pipelines Resource Provider.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// Details of the error from the Pipelines Resource Provider.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Pipelines Resource Provider.
@@ -186,8 +178,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -202,16 +194,34 @@ type OrganizationReference struct {
 
 // Pipeline - Azure DevOps Pipeline used to configure Continuous Integration (CI) & Continuous Delivery (CD) for Azure resources.
 type Pipeline struct {
-	Resource
 	// REQUIRED; Custom properties of the Pipeline.
 	Properties *PipelineProperties `json:"properties,omitempty"`
+
+	// Resource Location
+	Location *string `json:"location,omitempty"`
+
+	// Resource Tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Pipeline.
 func (p Pipeline) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -302,8 +312,9 @@ func (p PipelineTemplateDefinitionListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PipelineTemplateDefinitionsListOptions contains the optional parameters for the PipelineTemplateDefinitions.List method.
-type PipelineTemplateDefinitionsListOptions struct {
+// PipelineTemplateDefinitionsClientListOptions contains the optional parameters for the PipelineTemplateDefinitionsClient.List
+// method.
+type PipelineTemplateDefinitionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -320,33 +331,35 @@ func (p PipelineUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PipelinesBeginCreateOrUpdateOptions contains the optional parameters for the Pipelines.BeginCreateOrUpdate method.
-type PipelinesBeginCreateOrUpdateOptions struct {
+// PipelinesClientBeginCreateOrUpdateOptions contains the optional parameters for the PipelinesClient.BeginCreateOrUpdate
+// method.
+type PipelinesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PipelinesDeleteOptions contains the optional parameters for the Pipelines.Delete method.
-type PipelinesDeleteOptions struct {
+// PipelinesClientDeleteOptions contains the optional parameters for the PipelinesClient.Delete method.
+type PipelinesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PipelinesGetOptions contains the optional parameters for the Pipelines.Get method.
-type PipelinesGetOptions struct {
+// PipelinesClientGetOptions contains the optional parameters for the PipelinesClient.Get method.
+type PipelinesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PipelinesListByResourceGroupOptions contains the optional parameters for the Pipelines.ListByResourceGroup method.
-type PipelinesListByResourceGroupOptions struct {
+// PipelinesClientListByResourceGroupOptions contains the optional parameters for the PipelinesClient.ListByResourceGroup
+// method.
+type PipelinesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PipelinesListBySubscriptionOptions contains the optional parameters for the Pipelines.ListBySubscription method.
-type PipelinesListBySubscriptionOptions struct {
+// PipelinesClientListBySubscriptionOptions contains the optional parameters for the PipelinesClient.ListBySubscription method.
+type PipelinesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PipelinesUpdateOptions contains the optional parameters for the Pipelines.Update method.
-type PipelinesUpdateOptions struct {
+// PipelinesClientUpdateOptions contains the optional parameters for the PipelinesClient.Update method.
+type PipelinesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -380,16 +393,12 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

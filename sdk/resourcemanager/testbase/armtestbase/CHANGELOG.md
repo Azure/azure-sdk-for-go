@@ -1,0 +1,789 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PackagesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, PackageResource, *PackagesBeginCreateOptions)` to `(context.Context, string, string, string, PackageResource, *PackagesClientBeginCreateOptions)`
+- Function `*PackagesClient.BeginCreate` return value(s) have been changed from `(PackagesCreatePollerResponse, error)` to `(PackagesClientCreatePollerResponse, error)`
+- Function `*TestSummariesClient.List` parameter(s) have been changed from `(string, string, *TestSummariesListOptions)` to `(string, string, *TestSummariesClientListOptions)`
+- Function `*TestSummariesClient.List` return value(s) have been changed from `(*TestSummariesListPager)` to `(*TestSummariesClientListPager)`
+- Function `*AnalysisResultsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, AnalysisResultName, *AnalysisResultsGetOptions)` to `(context.Context, string, string, string, string, AnalysisResultName, *AnalysisResultsClientGetOptions)`
+- Function `*AnalysisResultsClient.Get` return value(s) have been changed from `(AnalysisResultsGetResponse, error)` to `(AnalysisResultsClientGetResponse, error)`
+- Function `*SKUsClient.List` parameter(s) have been changed from `(*SKUsListOptions)` to `(*SKUsClientListOptions)`
+- Function `*SKUsClient.List` return value(s) have been changed from `(*SKUsListPager)` to `(*SKUsClientListPager)`
+- Function `*CustomerEventsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CustomerEventsGetOptions)` to `(context.Context, string, string, string, *CustomerEventsClientGetOptions)`
+- Function `*CustomerEventsClient.Get` return value(s) have been changed from `(CustomerEventsGetResponse, error)` to `(CustomerEventsClientGetResponse, error)`
+- Function `*PackagesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PackagesBeginDeleteOptions)` to `(context.Context, string, string, string, *PackagesClientBeginDeleteOptions)`
+- Function `*PackagesClient.BeginDelete` return value(s) have been changed from `(PackagesDeletePollerResponse, error)` to `(PackagesClientDeletePollerResponse, error)`
+- Function `*CustomerEventsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, CustomerEventResource, *CustomerEventsBeginCreateOptions)` to `(context.Context, string, string, string, CustomerEventResource, *CustomerEventsClientBeginCreateOptions)`
+- Function `*CustomerEventsClient.BeginCreate` return value(s) have been changed from `(CustomerEventsCreatePollerResponse, error)` to `(CustomerEventsClientCreatePollerResponse, error)`
+- Function `*TestTypesClient.List` parameter(s) have been changed from `(string, string, *TestTypesListOptions)` to `(string, string, *TestTypesClientListOptions)`
+- Function `*TestTypesClient.List` return value(s) have been changed from `(*TestTypesListPager)` to `(*TestTypesClientListPager)`
+- Function `*OSUpdatesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *OSUpdatesGetOptions)` to `(context.Context, string, string, string, string, *OSUpdatesClientGetOptions)`
+- Function `*OSUpdatesClient.Get` return value(s) have been changed from `(OSUpdatesGetResponse, error)` to `(OSUpdatesClientGetResponse, error)`
+- Function `*PackagesClient.BeginHardDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PackagesBeginHardDeleteOptions)` to `(context.Context, string, string, string, *PackagesClientBeginHardDeleteOptions)`
+- Function `*PackagesClient.BeginHardDelete` return value(s) have been changed from `(PackagesHardDeletePollerResponse, error)` to `(PackagesClientHardDeletePollerResponse, error)`
+- Function `*AvailableOSClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AvailableOSGetOptions)` to `(context.Context, string, string, string, *AvailableOSClientGetOptions)`
+- Function `*AvailableOSClient.Get` return value(s) have been changed from `(AvailableOSGetResponse, error)` to `(AvailableOSClientGetResponse, error)`
+- Function `*PackagesClient.ListByTestBaseAccount` parameter(s) have been changed from `(string, string, *PackagesListByTestBaseAccountOptions)` to `(string, string, *PackagesClientListByTestBaseAccountOptions)`
+- Function `*PackagesClient.ListByTestBaseAccount` return value(s) have been changed from `(*PackagesListByTestBaseAccountPager)` to `(*PackagesClientListByTestBaseAccountPager)`
+- Function `*TestSummariesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *TestSummariesGetOptions)` to `(context.Context, string, string, string, *TestSummariesClientGetOptions)`
+- Function `*TestSummariesClient.Get` return value(s) have been changed from `(TestSummariesGetResponse, error)` to `(TestSummariesClientGetResponse, error)`
+- Function `*AnalysisResultsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, AnalysisResultType, *AnalysisResultsListOptions)` to `(context.Context, string, string, string, string, AnalysisResultType, *AnalysisResultsClientListOptions)`
+- Function `*AnalysisResultsClient.List` return value(s) have been changed from `(AnalysisResultsListResponse, error)` to `(AnalysisResultsClientListResponse, error)`
+- Function `*UsageClient.List` parameter(s) have been changed from `(string, string, *UsageListOptions)` to `(string, string, *UsageClientListOptions)`
+- Function `*UsageClient.List` return value(s) have been changed from `(*UsageListPager)` to `(*UsageClientListPager)`
+- Function `*CustomerEventsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *CustomerEventsBeginDeleteOptions)` to `(context.Context, string, string, string, *CustomerEventsClientBeginDeleteOptions)`
+- Function `*CustomerEventsClient.BeginDelete` return value(s) have been changed from `(CustomerEventsDeletePollerResponse, error)` to `(CustomerEventsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*AvailableOSClient.List` parameter(s) have been changed from `(string, string, OsUpdateType, *AvailableOSListOptions)` to `(string, string, OsUpdateType, *AvailableOSClientListOptions)`
+- Function `*AvailableOSClient.List` return value(s) have been changed from `(*AvailableOSListPager)` to `(*AvailableOSClientListPager)`
+- Function `*TestResultsClient.List` parameter(s) have been changed from `(string, string, string, OsUpdateType, *TestResultsListOptions)` to `(string, string, string, OsUpdateType, *TestResultsClientListOptions)`
+- Function `*TestResultsClient.List` return value(s) have been changed from `(*TestResultsListPager)` to `(*TestResultsClientListPager)`
+- Function `*FavoriteProcessesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *FavoriteProcessesDeleteOptions)` to `(context.Context, string, string, string, string, *FavoriteProcessesClientDeleteOptions)`
+- Function `*FavoriteProcessesClient.Delete` return value(s) have been changed from `(FavoriteProcessesDeleteResponse, error)` to `(FavoriteProcessesClientDeleteResponse, error)`
+- Function `*FavoriteProcessesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *FavoriteProcessesGetOptions)` to `(context.Context, string, string, string, string, *FavoriteProcessesClientGetOptions)`
+- Function `*FavoriteProcessesClient.Get` return value(s) have been changed from `(FavoriteProcessesGetResponse, error)` to `(FavoriteProcessesClientGetResponse, error)`
+- Function `*PackagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PackagesGetOptions)` to `(context.Context, string, string, string, *PackagesClientGetOptions)`
+- Function `*PackagesClient.Get` return value(s) have been changed from `(PackagesGetResponse, error)` to `(PackagesClientGetResponse, error)`
+- Function `*CustomerEventsClient.ListByTestBaseAccount` parameter(s) have been changed from `(string, string, *CustomerEventsListByTestBaseAccountOptions)` to `(string, string, *CustomerEventsClientListByTestBaseAccountOptions)`
+- Function `*CustomerEventsClient.ListByTestBaseAccount` return value(s) have been changed from `(*CustomerEventsListByTestBaseAccountPager)` to `(*CustomerEventsClientListByTestBaseAccountPager)`
+- Function `*TestResultsClient.GetDownloadURL` parameter(s) have been changed from `(context.Context, string, string, string, string, *TestResultsGetDownloadURLOptions)` to `(context.Context, string, string, string, string, *TestResultsClientGetDownloadURLOptions)`
+- Function `*TestResultsClient.GetDownloadURL` return value(s) have been changed from `(TestResultsGetDownloadURLResponse, error)` to `(TestResultsClientGetDownloadURLResponse, error)`
+- Function `*PackagesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PackageUpdateParameters, *PackagesBeginUpdateOptions)` to `(context.Context, string, string, string, PackageUpdateParameters, *PackagesClientBeginUpdateOptions)`
+- Function `*PackagesClient.BeginUpdate` return value(s) have been changed from `(PackagesUpdatePollerResponse, error)` to `(PackagesClientUpdatePollerResponse, error)`
+- Function `*OSUpdatesClient.List` parameter(s) have been changed from `(string, string, string, OsUpdateType, *OSUpdatesListOptions)` to `(string, string, string, OsUpdateType, *OSUpdatesClientListOptions)`
+- Function `*OSUpdatesClient.List` return value(s) have been changed from `(*OSUpdatesListPager)` to `(*OSUpdatesClientListPager)`
+- Function `*FlightingRingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *FlightingRingsGetOptions)` to `(context.Context, string, string, string, *FlightingRingsClientGetOptions)`
+- Function `*FlightingRingsClient.Get` return value(s) have been changed from `(FlightingRingsGetResponse, error)` to `(FlightingRingsClientGetResponse, error)`
+- Function `*FavoriteProcessesClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, string, FavoriteProcessResource, *FavoriteProcessesCreateOptions)` to `(context.Context, string, string, string, string, FavoriteProcessResource, *FavoriteProcessesClientCreateOptions)`
+- Function `*FavoriteProcessesClient.Create` return value(s) have been changed from `(FavoriteProcessesCreateResponse, error)` to `(FavoriteProcessesClientCreateResponse, error)`
+- Function `*PackagesClient.GetDownloadURL` parameter(s) have been changed from `(context.Context, string, string, string, *PackagesGetDownloadURLOptions)` to `(context.Context, string, string, string, *PackagesClientGetDownloadURLOptions)`
+- Function `*PackagesClient.GetDownloadURL` return value(s) have been changed from `(PackagesGetDownloadURLResponse, error)` to `(PackagesClientGetDownloadURLResponse, error)`
+- Function `*EmailEventsClient.List` parameter(s) have been changed from `(string, string, *EmailEventsListOptions)` to `(string, string, *EmailEventsClientListOptions)`
+- Function `*EmailEventsClient.List` return value(s) have been changed from `(*EmailEventsListPager)` to `(*EmailEventsClientListPager)`
+- Function `*TestResultsClient.GetVideoDownloadURL` parameter(s) have been changed from `(context.Context, string, string, string, string, *TestResultsGetVideoDownloadURLOptions)` to `(context.Context, string, string, string, string, *TestResultsClientGetVideoDownloadURLOptions)`
+- Function `*TestResultsClient.GetVideoDownloadURL` return value(s) have been changed from `(TestResultsGetVideoDownloadURLResponse, error)` to `(TestResultsClientGetVideoDownloadURLResponse, error)`
+- Function `*FavoriteProcessesClient.List` parameter(s) have been changed from `(string, string, string, *FavoriteProcessesListOptions)` to `(string, string, string, *FavoriteProcessesClientListOptions)`
+- Function `*FavoriteProcessesClient.List` return value(s) have been changed from `(*FavoriteProcessesListPager)` to `(*FavoriteProcessesClientListPager)`
+- Function `*TestResultsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *TestResultsGetOptions)` to `(context.Context, string, string, string, string, *TestResultsClientGetOptions)`
+- Function `*TestResultsClient.Get` return value(s) have been changed from `(TestResultsGetResponse, error)` to `(TestResultsClientGetResponse, error)`
+- Function `*FlightingRingsClient.List` parameter(s) have been changed from `(string, string, *FlightingRingsListOptions)` to `(string, string, *FlightingRingsClientListOptions)`
+- Function `*FlightingRingsClient.List` return value(s) have been changed from `(*FlightingRingsListPager)` to `(*FlightingRingsClientListPager)`
+- Function `*TestTypesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *TestTypesGetOptions)` to `(context.Context, string, string, string, *TestTypesClientGetOptions)`
+- Function `*TestTypesClient.Get` return value(s) have been changed from `(TestTypesGetResponse, error)` to `(TestTypesClientGetResponse, error)`
+- Function `*EmailEventsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *EmailEventsGetOptions)` to `(context.Context, string, string, string, *EmailEventsClientGetOptions)`
+- Function `*EmailEventsClient.Get` return value(s) have been changed from `(EmailEventsGetResponse, error)` to `(EmailEventsClientGetResponse, error)`
+- Function `*PackagesUpdatePoller.Poll` has been removed
+- Function `*CustomerEventsCreatePollerResponse.Resume` has been removed
+- Function `*TestBaseAccountsListByResourceGroupPager.NextPage` has been removed
+- Function `*TestBaseAccountsOffboardPoller.ResumeToken` has been removed
+- Function `*PackagesHardDeletePoller.Poll` has been removed
+- Function `*EmailEventResource.UnmarshalJSON` has been removed
+- Function `*TestBaseAccountsClient.ListBySubscription` has been removed
+- Function `*SKUsListPager.Err` has been removed
+- Function `*TestResultsListPager.PageResponse` has been removed
+- Function `*PackagesCreatePoller.Poll` has been removed
+- Function `*AvailableOSListPager.NextPage` has been removed
+- Function `*TestBaseAccountsCreatePollerResponse.Resume` has been removed
+- Function `*TestBaseAccountsClient.GetFileUploadURL` has been removed
+- Function `*TestBaseAccountsCreatePoller.Done` has been removed
+- Function `*CustomerEventsDeletePoller.Done` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*TrackedResource.UnmarshalJSON` has been removed
+- Function `*CustomerEventsListByTestBaseAccountPager.PageResponse` has been removed
+- Function `TestBaseAccountSKU.MarshalJSON` has been removed
+- Function `*TestResultsListPager.NextPage` has been removed
+- Function `TestBaseAccountsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*TestBaseAccountsUpdatePoller.Done` has been removed
+- Function `*CustomerEventsDeletePoller.ResumeToken` has been removed
+- Function `*TestBaseAccountsOffboardPoller.FinalResponse` has been removed
+- Function `PackagesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PackagesHardDeletePoller.FinalResponse` has been removed
+- Function `*CustomerEventsCreatePoller.FinalResponse` has been removed
+- Function `FavoriteProcessResource.MarshalJSON` has been removed
+- Function `*TestBaseAccountsUpdatePoller.FinalResponse` has been removed
+- Function `NewTestBaseAccountsClient` has been removed
+- Function `TestBaseAccountUsageDataList.MarshalJSON` has been removed
+- Function `*PackagesDeletePoller.Poll` has been removed
+- Function `*PackagesListByTestBaseAccountPager.NextPage` has been removed
+- Function `*OSUpdatesListPager.PageResponse` has been removed
+- Function `*TestBaseAccountsOffboardPollerResponse.Resume` has been removed
+- Function `*TestBaseAccountsListBySubscriptionPager.NextPage` has been removed
+- Function `OSUpdateResource.MarshalJSON` has been removed
+- Function `*PackagesCreatePoller.Done` has been removed
+- Function `*AvailableOSListPager.Err` has been removed
+- Function `*PackagesCreatePoller.ResumeToken` has been removed
+- Function `*UsageListPager.Err` has been removed
+- Function `*FlightingRingResource.UnmarshalJSON` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `CustomerEventsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*PackagesDeletePoller.FinalResponse` has been removed
+- Function `*TestBaseAccountsClient.BeginUpdate` has been removed
+- Function `TestBaseAccountListResult.MarshalJSON` has been removed
+- Function `FlightingRingResource.MarshalJSON` has been removed
+- Function `*TestBaseAccountsOffboardPoller.Poll` has been removed
+- Function `*FavoriteProcessesListPager.NextPage` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*EmailEventsListPager.PageResponse` has been removed
+- Function `*FlightingRingsListPager.PageResponse` has been removed
+- Function `*TestBaseAccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `*TestBaseAccountsClient.BeginDelete` has been removed
+- Function `PackagesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*TestBaseAccountsUpdatePoller.ResumeToken` has been removed
+- Function `*PackagesHardDeletePollerResponse.Resume` has been removed
+- Function `*PackagesDeletePollerResponse.Resume` has been removed
+- Function `*CustomerEventsDeletePoller.Poll` has been removed
+- Function `*SKUsListPager.NextPage` has been removed
+- Function `*TestBaseAccountsCreatePoller.ResumeToken` has been removed
+- Function `*CustomerEventsDeletePollerResponse.Resume` has been removed
+- Function `*TestSummariesListPager.NextPage` has been removed
+- Function `*FavoriteProcessesListPager.Err` has been removed
+- Function `*OSUpdatesListPager.Err` has been removed
+- Function `*CustomerEventsListByTestBaseAccountPager.Err` has been removed
+- Function `*TestResultsListPager.Err` has been removed
+- Function `TestBaseAccountsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*OSUpdatesListPager.NextPage` has been removed
+- Function `*FlightingRingsListPager.Err` has been removed
+- Function `*TestBaseAccountsDeletePoller.Poll` has been removed
+- Function `TestResultResource.MarshalJSON` has been removed
+- Function `PackagesHardDeletePollerResponse.PollUntilDone` has been removed
+- Function `*TestTypesListPager.Err` has been removed
+- Function `*FavoriteProcessesListPager.PageResponse` has been removed
+- Function `TestSummaryResource.MarshalJSON` has been removed
+- Function `*FavoriteProcessResource.UnmarshalJSON` has been removed
+- Function `*PackagesListByTestBaseAccountPager.Err` has been removed
+- Function `*TestBaseAccountsDeletePoller.ResumeToken` has been removed
+- Function `*CustomerEventsCreatePoller.Poll` has been removed
+- Function `*EmailEventsListPager.NextPage` has been removed
+- Function `*PackagesDeletePoller.ResumeToken` has been removed
+- Function `*OSUpdateResource.UnmarshalJSON` has been removed
+- Function `*TestBaseAccountsDeletePoller.Done` has been removed
+- Function `*AnalysisResultSingletonResourceProperties.UnmarshalJSON` has been removed
+- Function `*TestBaseAccountsClient.BeginOffboard` has been removed
+- Function `*TestBaseAccountsListByResourceGroupPager.Err` has been removed
+- Function `AvailableOSResource.MarshalJSON` has been removed
+- Function `*CustomerEventResource.UnmarshalJSON` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*TestSummariesListPager.PageResponse` has been removed
+- Function `CustomerEventsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*TestBaseAccountsClient.CheckPackageNameAvailability` has been removed
+- Function `*TestResultResource.UnmarshalJSON` has been removed
+- Function `*TestBaseAccountResource.UnmarshalJSON` has been removed
+- Function `*TestTypesListPager.PageResponse` has been removed
+- Function `CustomerEventResource.MarshalJSON` has been removed
+- Function `*PackageResource.UnmarshalJSON` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*TestBaseAccountsCreatePoller.Poll` has been removed
+- Function `*TestTypeResource.UnmarshalJSON` has been removed
+- Function `PackagesCreatePollerResponse.PollUntilDone` has been removed
+- Function `TestTypeResource.MarshalJSON` has been removed
+- Function `TestBaseAccountUpdateParameters.MarshalJSON` has been removed
+- Function `*TestBaseAccountsListBySubscriptionPager.PageResponse` has been removed
+- Function `TestBaseAccountResource.MarshalJSON` has been removed
+- Function `TestBaseAccountSKUListResult.MarshalJSON` has been removed
+- Function `*PackagesUpdatePoller.ResumeToken` has been removed
+- Function `*TestBaseAccountsClient.ListByResourceGroup` has been removed
+- Function `*TestBaseAccountsListBySubscriptionPager.Err` has been removed
+- Function `EmailEventResource.MarshalJSON` has been removed
+- Function `*TestBaseAccountsUpdatePollerResponse.Resume` has been removed
+- Function `*PackagesListByTestBaseAccountPager.PageResponse` has been removed
+- Function `*SKUsListPager.PageResponse` has been removed
+- Function `*CustomerEventsDeletePoller.FinalResponse` has been removed
+- Function `TestBaseAccountsOffboardPollerResponse.PollUntilDone` has been removed
+- Function `*TestSummariesListPager.Err` has been removed
+- Function `*TestBaseAccountsClient.BeginCreate` has been removed
+- Function `*CustomerEventsCreatePoller.ResumeToken` has been removed
+- Function `*CustomerEventsListByTestBaseAccountPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*TestBaseAccountsOffboardPoller.Done` has been removed
+- Function `*AvailableOSListPager.PageResponse` has been removed
+- Function `*TestBaseAccountsClient.Get` has been removed
+- Function `TestBaseAccountsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AvailableOSResource.UnmarshalJSON` has been removed
+- Function `*PackagesHardDeletePoller.Done` has been removed
+- Function `*PackagesHardDeletePoller.ResumeToken` has been removed
+- Function `*PackagesCreatePoller.FinalResponse` has been removed
+- Function `*FlightingRingsListPager.NextPage` has been removed
+- Function `*TestTypesListPager.NextPage` has been removed
+- Function `*PackagesUpdatePoller.Done` has been removed
+- Function `*PackagesUpdatePoller.FinalResponse` has been removed
+- Function `*UsageListPager.NextPage` has been removed
+- Function `*CustomerEventsCreatePoller.Done` has been removed
+- Function `*TestBaseAccountsUpdatePoller.Poll` has been removed
+- Function `*PackagesDeletePoller.Done` has been removed
+- Function `*TestBaseAccountsDeletePollerResponse.Resume` has been removed
+- Function `*PackagesCreatePollerResponse.Resume` has been removed
+- Function `*TestBaseAccountsCreatePoller.FinalResponse` has been removed
+- Function `*TestBaseAccountsDeletePoller.FinalResponse` has been removed
+- Function `*UsageListPager.PageResponse` has been removed
+- Function `*PackagesUpdatePollerResponse.Resume` has been removed
+- Function `*TestSummaryResource.UnmarshalJSON` has been removed
+- Function `*EmailEventsListPager.Err` has been removed
+- Struct `AnalysisResultsGetOptions` has been removed
+- Struct `AnalysisResultsGetResponse` has been removed
+- Struct `AnalysisResultsGetResult` has been removed
+- Struct `AnalysisResultsListOptions` has been removed
+- Struct `AnalysisResultsListResponse` has been removed
+- Struct `AnalysisResultsListResult` has been removed
+- Struct `AvailableOSGetOptions` has been removed
+- Struct `AvailableOSGetResponse` has been removed
+- Struct `AvailableOSGetResult` has been removed
+- Struct `AvailableOSListOptions` has been removed
+- Struct `AvailableOSListPager` has been removed
+- Struct `AvailableOSListResponse` has been removed
+- Struct `AvailableOSListResultEnvelope` has been removed
+- Struct `CustomerEventsBeginCreateOptions` has been removed
+- Struct `CustomerEventsBeginDeleteOptions` has been removed
+- Struct `CustomerEventsCreatePoller` has been removed
+- Struct `CustomerEventsCreatePollerResponse` has been removed
+- Struct `CustomerEventsCreateResponse` has been removed
+- Struct `CustomerEventsCreateResult` has been removed
+- Struct `CustomerEventsDeletePoller` has been removed
+- Struct `CustomerEventsDeletePollerResponse` has been removed
+- Struct `CustomerEventsDeleteResponse` has been removed
+- Struct `CustomerEventsGetOptions` has been removed
+- Struct `CustomerEventsGetResponse` has been removed
+- Struct `CustomerEventsGetResult` has been removed
+- Struct `CustomerEventsListByTestBaseAccountOptions` has been removed
+- Struct `CustomerEventsListByTestBaseAccountPager` has been removed
+- Struct `CustomerEventsListByTestBaseAccountResponse` has been removed
+- Struct `CustomerEventsListByTestBaseAccountResult` has been removed
+- Struct `EmailEventsGetOptions` has been removed
+- Struct `EmailEventsGetResponse` has been removed
+- Struct `EmailEventsGetResult` has been removed
+- Struct `EmailEventsListOptions` has been removed
+- Struct `EmailEventsListPager` has been removed
+- Struct `EmailEventsListResponse` has been removed
+- Struct `EmailEventsListResult` has been removed
+- Struct `FavoriteProcessesCreateOptions` has been removed
+- Struct `FavoriteProcessesCreateResponse` has been removed
+- Struct `FavoriteProcessesCreateResult` has been removed
+- Struct `FavoriteProcessesDeleteOptions` has been removed
+- Struct `FavoriteProcessesDeleteResponse` has been removed
+- Struct `FavoriteProcessesGetOptions` has been removed
+- Struct `FavoriteProcessesGetResponse` has been removed
+- Struct `FavoriteProcessesGetResult` has been removed
+- Struct `FavoriteProcessesListOptions` has been removed
+- Struct `FavoriteProcessesListPager` has been removed
+- Struct `FavoriteProcessesListResponse` has been removed
+- Struct `FavoriteProcessesListResult` has been removed
+- Struct `FlightingRingsGetOptions` has been removed
+- Struct `FlightingRingsGetResponse` has been removed
+- Struct `FlightingRingsGetResult` has been removed
+- Struct `FlightingRingsListOptions` has been removed
+- Struct `FlightingRingsListPager` has been removed
+- Struct `FlightingRingsListResponse` has been removed
+- Struct `FlightingRingsListResult` has been removed
+- Struct `OSUpdatesGetOptions` has been removed
+- Struct `OSUpdatesGetResponse` has been removed
+- Struct `OSUpdatesGetResult` has been removed
+- Struct `OSUpdatesListOptions` has been removed
+- Struct `OSUpdatesListPager` has been removed
+- Struct `OSUpdatesListResponse` has been removed
+- Struct `OSUpdatesListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PackagesBeginCreateOptions` has been removed
+- Struct `PackagesBeginDeleteOptions` has been removed
+- Struct `PackagesBeginHardDeleteOptions` has been removed
+- Struct `PackagesBeginUpdateOptions` has been removed
+- Struct `PackagesCreatePoller` has been removed
+- Struct `PackagesCreatePollerResponse` has been removed
+- Struct `PackagesCreateResponse` has been removed
+- Struct `PackagesCreateResult` has been removed
+- Struct `PackagesDeletePoller` has been removed
+- Struct `PackagesDeletePollerResponse` has been removed
+- Struct `PackagesDeleteResponse` has been removed
+- Struct `PackagesGetDownloadURLOptions` has been removed
+- Struct `PackagesGetDownloadURLResponse` has been removed
+- Struct `PackagesGetDownloadURLResult` has been removed
+- Struct `PackagesGetOptions` has been removed
+- Struct `PackagesGetResponse` has been removed
+- Struct `PackagesGetResult` has been removed
+- Struct `PackagesHardDeletePoller` has been removed
+- Struct `PackagesHardDeletePollerResponse` has been removed
+- Struct `PackagesHardDeleteResponse` has been removed
+- Struct `PackagesListByTestBaseAccountOptions` has been removed
+- Struct `PackagesListByTestBaseAccountPager` has been removed
+- Struct `PackagesListByTestBaseAccountResponse` has been removed
+- Struct `PackagesListByTestBaseAccountResult` has been removed
+- Struct `PackagesUpdatePoller` has been removed
+- Struct `PackagesUpdatePollerResponse` has been removed
+- Struct `PackagesUpdateResponse` has been removed
+- Struct `PackagesUpdateResult` has been removed
+- Struct `SKUsListOptions` has been removed
+- Struct `SKUsListPager` has been removed
+- Struct `SKUsListResponse` has been removed
+- Struct `SKUsListResult` has been removed
+- Struct `TestBaseAccountListResult` has been removed
+- Struct `TestBaseAccountResource` has been removed
+- Struct `TestBaseAccountResourceProperties` has been removed
+- Struct `TestBaseAccountSKU` has been removed
+- Struct `TestBaseAccountSKUCapability` has been removed
+- Struct `TestBaseAccountSKUListResult` has been removed
+- Struct `TestBaseAccountUpdateParameterProperties` has been removed
+- Struct `TestBaseAccountUpdateParameters` has been removed
+- Struct `TestBaseAccountUsageData` has been removed
+- Struct `TestBaseAccountUsageDataList` has been removed
+- Struct `TestBaseAccountUsageName` has been removed
+- Struct `TestBaseAccountsBeginCreateOptions` has been removed
+- Struct `TestBaseAccountsBeginDeleteOptions` has been removed
+- Struct `TestBaseAccountsBeginOffboardOptions` has been removed
+- Struct `TestBaseAccountsBeginUpdateOptions` has been removed
+- Struct `TestBaseAccountsCheckPackageNameAvailabilityOptions` has been removed
+- Struct `TestBaseAccountsCheckPackageNameAvailabilityResponse` has been removed
+- Struct `TestBaseAccountsCheckPackageNameAvailabilityResult` has been removed
+- Struct `TestBaseAccountsClient` has been removed
+- Struct `TestBaseAccountsCreatePoller` has been removed
+- Struct `TestBaseAccountsCreatePollerResponse` has been removed
+- Struct `TestBaseAccountsCreateResponse` has been removed
+- Struct `TestBaseAccountsCreateResult` has been removed
+- Struct `TestBaseAccountsDeletePoller` has been removed
+- Struct `TestBaseAccountsDeletePollerResponse` has been removed
+- Struct `TestBaseAccountsDeleteResponse` has been removed
+- Struct `TestBaseAccountsGetFileUploadURLOptions` has been removed
+- Struct `TestBaseAccountsGetFileUploadURLResponse` has been removed
+- Struct `TestBaseAccountsGetFileUploadURLResult` has been removed
+- Struct `TestBaseAccountsGetOptions` has been removed
+- Struct `TestBaseAccountsGetResponse` has been removed
+- Struct `TestBaseAccountsGetResult` has been removed
+- Struct `TestBaseAccountsListByResourceGroupOptions` has been removed
+- Struct `TestBaseAccountsListByResourceGroupPager` has been removed
+- Struct `TestBaseAccountsListByResourceGroupResponse` has been removed
+- Struct `TestBaseAccountsListByResourceGroupResult` has been removed
+- Struct `TestBaseAccountsListBySubscriptionOptions` has been removed
+- Struct `TestBaseAccountsListBySubscriptionPager` has been removed
+- Struct `TestBaseAccountsListBySubscriptionResponse` has been removed
+- Struct `TestBaseAccountsListBySubscriptionResult` has been removed
+- Struct `TestBaseAccountsOffboardPoller` has been removed
+- Struct `TestBaseAccountsOffboardPollerResponse` has been removed
+- Struct `TestBaseAccountsOffboardResponse` has been removed
+- Struct `TestBaseAccountsUpdatePoller` has been removed
+- Struct `TestBaseAccountsUpdatePollerResponse` has been removed
+- Struct `TestBaseAccountsUpdateResponse` has been removed
+- Struct `TestBaseAccountsUpdateResult` has been removed
+- Struct `TestResultsGetDownloadURLOptions` has been removed
+- Struct `TestResultsGetDownloadURLResponse` has been removed
+- Struct `TestResultsGetDownloadURLResult` has been removed
+- Struct `TestResultsGetOptions` has been removed
+- Struct `TestResultsGetResponse` has been removed
+- Struct `TestResultsGetResult` has been removed
+- Struct `TestResultsGetVideoDownloadURLOptions` has been removed
+- Struct `TestResultsGetVideoDownloadURLResponse` has been removed
+- Struct `TestResultsGetVideoDownloadURLResult` has been removed
+- Struct `TestResultsListOptions` has been removed
+- Struct `TestResultsListPager` has been removed
+- Struct `TestResultsListResponse` has been removed
+- Struct `TestResultsListResult` has been removed
+- Struct `TestSummariesGetOptions` has been removed
+- Struct `TestSummariesGetResponse` has been removed
+- Struct `TestSummariesGetResult` has been removed
+- Struct `TestSummariesListOptions` has been removed
+- Struct `TestSummariesListPager` has been removed
+- Struct `TestSummariesListResponse` has been removed
+- Struct `TestSummariesListResult` has been removed
+- Struct `TestTypesGetOptions` has been removed
+- Struct `TestTypesGetResponse` has been removed
+- Struct `TestTypesGetResult` has been removed
+- Struct `TestTypesListOptions` has been removed
+- Struct `TestTypesListPager` has been removed
+- Struct `TestTypesListResponse` has been removed
+- Struct `TestTypesListResult` has been removed
+- Struct `UsageListOptions` has been removed
+- Struct `UsageListPager` has been removed
+- Struct `UsageListResponse` has been removed
+- Struct `UsageListResult` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `ProxyResource` of struct `AvailableOSResource` has been removed
+- Field `ProxyResource` of struct `EmailEventResource` has been removed
+- Field `ProxyResource` of struct `FavoriteProcessResource` has been removed
+- Field `TrackedResource` of struct `PackageResource` has been removed
+- Field `ProxyResource` of struct `TestSummaryResource` has been removed
+- Field `AnalysisResultSingletonResourceProperties` of struct `ReliabilityResultSingletonResourceProperties` has been removed
+- Field `AnalysisResultSingletonResourceProperties` of struct `CPURegressionResultSingletonResourceProperties` has been removed
+- Field `AnalysisResultSingletonResourceProperties` of struct `CPUUtilizationResultSingletonResourceProperties` has been removed
+- Field `ProxyResource` of struct `OSUpdateResource` has been removed
+- Field `AnalysisResultSingletonResourceProperties` of struct `TestAnalysisResultSingletonResourceProperties` has been removed
+- Field `ProxyResource` of struct `TestResultResource` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ProxyResource` of struct `TestTypeResource` has been removed
+- Field `ProxyResource` of struct `CustomerEventResource` has been removed
+- Field `AnalysisResultSingletonResourceProperties` of struct `ScriptExecutionResultSingletonResourceProperties` has been removed
+- Field `AnalysisResultSingletonResourceProperties` of struct `MemoryRegressionResultSingletonResourceProperties` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `ProxyResource` of struct `FlightingRingResource` has been removed
+- Field `ProxyResource` of struct `AnalysisResultSingletonResource` has been removed
+- Field `AnalysisResultSingletonResourceProperties` of struct `MemoryUtilizationResultSingletonResourceProperties` has been removed
+
+### Features Added
+
+- New function `*CustomerEventsClientDeletePoller.Done() bool`
+- New function `*AccountsClientOffboardPoller.Done() bool`
+- New function `*AccountsClientCreatePoller.FinalResponse(context.Context) (AccountsClientCreateResponse, error)`
+- New function `*AccountsClientListByResourceGroupPager.Err() error`
+- New function `*AccountsClient.CheckPackageNameAvailability(context.Context, string, string, PackageCheckNameAvailabilityParameters, *AccountsClientCheckPackageNameAvailabilityOptions) (AccountsClientCheckPackageNameAvailabilityResponse, error)`
+- New function `AccountSKUListResult.MarshalJSON() ([]byte, error)`
+- New function `*PackagesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*AccountsClientOffboardPoller.ResumeToken() (string, error)`
+- New function `*AccountsClientListBySubscriptionPager.PageResponse() AccountsClientListBySubscriptionResponse`
+- New function `*AccountsClient.ListBySubscription(*AccountsClientListBySubscriptionOptions) *AccountsClientListBySubscriptionPager`
+- New function `*AccountsClientUpdatePoller.Done() bool`
+- New function `*TestResultsClientListPager.NextPage(context.Context) bool`
+- New function `*TestTypesClientListPager.PageResponse() TestTypesClientListResponse`
+- New function `*PackagesClientUpdatePollerResponse.Resume(context.Context, *PackagesClient, string) error`
+- New function `*PackagesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OSUpdatesClientListPager.PageResponse() OSUpdatesClientListResponse`
+- New function `AccountsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientUpdateResponse, error)`
+- New function `*AvailableOSClientListPager.Err() error`
+- New function `*AccountsClient.ListByResourceGroup(string, *AccountsClientListByResourceGroupOptions) *AccountsClientListByResourceGroupPager`
+- New function `*PackagesClientDeletePollerResponse.Resume(context.Context, *PackagesClient, string) error`
+- New function `*TestSummariesClientListPager.PageResponse() TestSummariesClientListResponse`
+- New function `*AccountsClient.BeginUpdate(context.Context, string, string, AccountUpdateParameters, *AccountsClientBeginUpdateOptions) (AccountsClientUpdatePollerResponse, error)`
+- New function `*AccountsClientCreatePoller.Done() bool`
+- New function `*PackagesClientListByTestBaseAccountPager.PageResponse() PackagesClientListByTestBaseAccountResponse`
+- New function `*PackagesClientUpdatePoller.FinalResponse(context.Context) (PackagesClientUpdateResponse, error)`
+- New function `PackagesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PackagesClientDeleteResponse, error)`
+- New function `*ReliabilityResultSingletonResourceProperties.GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties`
+- New function `*AccountsClient.BeginOffboard(context.Context, string, string, *AccountsClientBeginOffboardOptions) (AccountsClientOffboardPollerResponse, error)`
+- New function `*AccountsClientUpdatePoller.FinalResponse(context.Context) (AccountsClientUpdateResponse, error)`
+- New function `*TestSummariesClientListPager.NextPage(context.Context) bool`
+- New function `PackagesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PackagesClientUpdateResponse, error)`
+- New function `*CustomerEventsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientOffboardPollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `PackagesClientHardDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PackagesClientHardDeleteResponse, error)`
+- New function `NewAccountsClient(string, azcore.TokenCredential, *arm.ClientOptions) *AccountsClient`
+- New function `*AccountsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PackagesClientDeletePoller.FinalResponse(context.Context) (PackagesClientDeleteResponse, error)`
+- New function `*PackagesClientHardDeletePoller.FinalResponse(context.Context) (PackagesClientHardDeleteResponse, error)`
+- New function `*AccountsClientListBySubscriptionPager.Err() error`
+- New function `*AccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*PackagesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PackagesClientHardDeletePoller.ResumeToken() (string, error)`
+- New function `*AccountsClientUpdatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*AccountsClientOffboardPoller.FinalResponse(context.Context) (AccountsClientOffboardResponse, error)`
+- New function `*CPURegressionResultSingletonResourceProperties.GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties`
+- New function `AccountsClientOffboardPollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientOffboardResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*AccountsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*AccountsClient.BeginCreate(context.Context, string, string, AccountResource, *AccountsClientBeginCreateOptions) (AccountsClientCreatePollerResponse, error)`
+- New function `*OSUpdatesClientListPager.NextPage(context.Context) bool`
+- New function `*FlightingRingsClientListPager.NextPage(context.Context) bool`
+- New function `AccountListResult.MarshalJSON() ([]byte, error)`
+- New function `AccountsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientDeleteResponse, error)`
+- New function `*UsageClientListPager.NextPage(context.Context) bool`
+- New function `*AccountsClient.BeginDelete(context.Context, string, string, *AccountsClientBeginDeleteOptions) (AccountsClientDeletePollerResponse, error)`
+- New function `*AvailableOSClientListPager.PageResponse() AvailableOSClientListResponse`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*MemoryUtilizationResultSingletonResourceProperties.GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties`
+- New function `AccountUsageDataList.MarshalJSON() ([]byte, error)`
+- New function `*PackagesClientCreatePollerResponse.Resume(context.Context, *PackagesClient, string) error`
+- New function `*AccountsClientDeletePoller.ResumeToken() (string, error)`
+- New function `AccountSKU.MarshalJSON() ([]byte, error)`
+- New function `*SKUsClientListPager.PageResponse() SKUsClientListResponse`
+- New function `*AccountsClient.GetFileUploadURL(context.Context, string, string, *AccountsClientGetFileUploadURLOptions) (AccountsClientGetFileUploadURLResponse, error)`
+- New function `CustomerEventsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (CustomerEventsClientCreateResponse, error)`
+- New function `*ScriptExecutionResultSingletonResourceProperties.GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties`
+- New function `*MemoryRegressionResultSingletonResourceProperties.GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties`
+- New function `*PackagesClientHardDeletePoller.Done() bool`
+- New function `*CustomerEventsClientDeletePollerResponse.Resume(context.Context, *CustomerEventsClient, string) error`
+- New function `*AccountsClient.Get(context.Context, string, string, *AccountsClientGetOptions) (AccountsClientGetResponse, error)`
+- New function `*AccountsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientCreatePoller.ResumeToken() (string, error)`
+- New function `PackagesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (PackagesClientCreateResponse, error)`
+- New function `*CustomerEventsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*TestAnalysisResultSingletonResourceProperties.GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties`
+- New function `*AccountsClientListByResourceGroupPager.PageResponse() AccountsClientListByResourceGroupResponse`
+- New function `*PackagesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CPUUtilizationResultSingletonResourceProperties.GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties`
+- New function `*TestResultsClientListPager.Err() error`
+- New function `*PackagesClientListByTestBaseAccountPager.Err() error`
+- New function `*AccountsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomerEventsClientListByTestBaseAccountPager.PageResponse() CustomerEventsClientListByTestBaseAccountResponse`
+- New function `*CustomerEventsClientListByTestBaseAccountPager.Err() error`
+- New function `*CustomerEventsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AvailableOSClientListPager.NextPage(context.Context) bool`
+- New function `*CustomerEventsClientDeletePoller.FinalResponse(context.Context) (CustomerEventsClientDeleteResponse, error)`
+- New function `*FavoriteProcessesClientListPager.PageResponse() FavoriteProcessesClientListResponse`
+- New function `CustomerEventsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CustomerEventsClientDeleteResponse, error)`
+- New function `*EmailEventsClientListPager.NextPage(context.Context) bool`
+- New function `*AccountsClientDeletePoller.FinalResponse(context.Context) (AccountsClientDeleteResponse, error)`
+- New function `*SKUsClientListPager.Err() error`
+- New function `*PackagesClientCreatePoller.Done() bool`
+- New function `*EmailEventsClientListPager.Err() error`
+- New function `*FavoriteProcessesClientListPager.NextPage(context.Context) bool`
+- New function `*PackagesClientUpdatePoller.Done() bool`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*FlightingRingsClientListPager.Err() error`
+- New function `AccountsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientCreateResponse, error)`
+- New function `*CustomerEventsClientCreatePollerResponse.Resume(context.Context, *CustomerEventsClient, string) error`
+- New function `*OSUpdatesClientListPager.Err() error`
+- New function `*CustomerEventsClientListByTestBaseAccountPager.NextPage(context.Context) bool`
+- New function `*PackagesClientListByTestBaseAccountPager.NextPage(context.Context) bool`
+- New function `*PackagesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*TestTypesClientListPager.Err() error`
+- New function `*TestTypesClientListPager.NextPage(context.Context) bool`
+- New function `*TestSummariesClientListPager.Err() error`
+- New function `*PackagesClientDeletePoller.Done() bool`
+- New function `*PackagesClientHardDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `AccountResource.MarshalJSON() ([]byte, error)`
+- New function `*UsageClientListPager.Err() error`
+- New function `*PackagesClientHardDeletePollerResponse.Resume(context.Context, *PackagesClient, string) error`
+- New function `*FlightingRingsClientListPager.PageResponse() FlightingRingsClientListResponse`
+- New function `*AccountsClientDeletePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*TestResultsClientListPager.PageResponse() TestResultsClientListResponse`
+- New function `*SKUsClientListPager.NextPage(context.Context) bool`
+- New function `*AccountsClientOffboardPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientCreatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*PackagesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*UsageClientListPager.PageResponse() UsageClientListResponse`
+- New function `*FavoriteProcessesClientListPager.Err() error`
+- New function `*CustomerEventsClientCreatePoller.Done() bool`
+- New function `*CustomerEventsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PackagesClientCreatePoller.FinalResponse(context.Context) (PackagesClientCreateResponse, error)`
+- New function `AccountUpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*AccountsClientDeletePoller.Done() bool`
+- New function `*EmailEventsClientListPager.PageResponse() EmailEventsClientListResponse`
+- New function `*CustomerEventsClientCreatePoller.FinalResponse(context.Context) (CustomerEventsClientCreateResponse, error)`
+- New struct `AccountListResult`
+- New struct `AccountResource`
+- New struct `AccountResourceProperties`
+- New struct `AccountSKU`
+- New struct `AccountSKUCapability`
+- New struct `AccountSKUListResult`
+- New struct `AccountUpdateParameterProperties`
+- New struct `AccountUpdateParameters`
+- New struct `AccountUsageData`
+- New struct `AccountUsageDataList`
+- New struct `AccountUsageName`
+- New struct `AccountsClient`
+- New struct `AccountsClientBeginCreateOptions`
+- New struct `AccountsClientBeginDeleteOptions`
+- New struct `AccountsClientBeginOffboardOptions`
+- New struct `AccountsClientBeginUpdateOptions`
+- New struct `AccountsClientCheckPackageNameAvailabilityOptions`
+- New struct `AccountsClientCheckPackageNameAvailabilityResponse`
+- New struct `AccountsClientCheckPackageNameAvailabilityResult`
+- New struct `AccountsClientCreatePoller`
+- New struct `AccountsClientCreatePollerResponse`
+- New struct `AccountsClientCreateResponse`
+- New struct `AccountsClientCreateResult`
+- New struct `AccountsClientDeletePoller`
+- New struct `AccountsClientDeletePollerResponse`
+- New struct `AccountsClientDeleteResponse`
+- New struct `AccountsClientGetFileUploadURLOptions`
+- New struct `AccountsClientGetFileUploadURLResponse`
+- New struct `AccountsClientGetFileUploadURLResult`
+- New struct `AccountsClientGetOptions`
+- New struct `AccountsClientGetResponse`
+- New struct `AccountsClientGetResult`
+- New struct `AccountsClientListByResourceGroupOptions`
+- New struct `AccountsClientListByResourceGroupPager`
+- New struct `AccountsClientListByResourceGroupResponse`
+- New struct `AccountsClientListByResourceGroupResult`
+- New struct `AccountsClientListBySubscriptionOptions`
+- New struct `AccountsClientListBySubscriptionPager`
+- New struct `AccountsClientListBySubscriptionResponse`
+- New struct `AccountsClientListBySubscriptionResult`
+- New struct `AccountsClientOffboardPoller`
+- New struct `AccountsClientOffboardPollerResponse`
+- New struct `AccountsClientOffboardResponse`
+- New struct `AccountsClientUpdatePoller`
+- New struct `AccountsClientUpdatePollerResponse`
+- New struct `AccountsClientUpdateResponse`
+- New struct `AccountsClientUpdateResult`
+- New struct `AnalysisResultsClientGetOptions`
+- New struct `AnalysisResultsClientGetResponse`
+- New struct `AnalysisResultsClientGetResult`
+- New struct `AnalysisResultsClientListOptions`
+- New struct `AnalysisResultsClientListResponse`
+- New struct `AnalysisResultsClientListResult`
+- New struct `AvailableOSClientGetOptions`
+- New struct `AvailableOSClientGetResponse`
+- New struct `AvailableOSClientGetResult`
+- New struct `AvailableOSClientListOptions`
+- New struct `AvailableOSClientListPager`
+- New struct `AvailableOSClientListResponse`
+- New struct `AvailableOSClientListResult`
+- New struct `CustomerEventsClientBeginCreateOptions`
+- New struct `CustomerEventsClientBeginDeleteOptions`
+- New struct `CustomerEventsClientCreatePoller`
+- New struct `CustomerEventsClientCreatePollerResponse`
+- New struct `CustomerEventsClientCreateResponse`
+- New struct `CustomerEventsClientCreateResult`
+- New struct `CustomerEventsClientDeletePoller`
+- New struct `CustomerEventsClientDeletePollerResponse`
+- New struct `CustomerEventsClientDeleteResponse`
+- New struct `CustomerEventsClientGetOptions`
+- New struct `CustomerEventsClientGetResponse`
+- New struct `CustomerEventsClientGetResult`
+- New struct `CustomerEventsClientListByTestBaseAccountOptions`
+- New struct `CustomerEventsClientListByTestBaseAccountPager`
+- New struct `CustomerEventsClientListByTestBaseAccountResponse`
+- New struct `CustomerEventsClientListByTestBaseAccountResult`
+- New struct `EmailEventsClientGetOptions`
+- New struct `EmailEventsClientGetResponse`
+- New struct `EmailEventsClientGetResult`
+- New struct `EmailEventsClientListOptions`
+- New struct `EmailEventsClientListPager`
+- New struct `EmailEventsClientListResponse`
+- New struct `EmailEventsClientListResult`
+- New struct `FavoriteProcessesClientCreateOptions`
+- New struct `FavoriteProcessesClientCreateResponse`
+- New struct `FavoriteProcessesClientCreateResult`
+- New struct `FavoriteProcessesClientDeleteOptions`
+- New struct `FavoriteProcessesClientDeleteResponse`
+- New struct `FavoriteProcessesClientGetOptions`
+- New struct `FavoriteProcessesClientGetResponse`
+- New struct `FavoriteProcessesClientGetResult`
+- New struct `FavoriteProcessesClientListOptions`
+- New struct `FavoriteProcessesClientListPager`
+- New struct `FavoriteProcessesClientListResponse`
+- New struct `FavoriteProcessesClientListResult`
+- New struct `FlightingRingsClientGetOptions`
+- New struct `FlightingRingsClientGetResponse`
+- New struct `FlightingRingsClientGetResult`
+- New struct `FlightingRingsClientListOptions`
+- New struct `FlightingRingsClientListPager`
+- New struct `FlightingRingsClientListResponse`
+- New struct `FlightingRingsClientListResult`
+- New struct `OSUpdatesClientGetOptions`
+- New struct `OSUpdatesClientGetResponse`
+- New struct `OSUpdatesClientGetResult`
+- New struct `OSUpdatesClientListOptions`
+- New struct `OSUpdatesClientListPager`
+- New struct `OSUpdatesClientListResponse`
+- New struct `OSUpdatesClientListResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PackagesClientBeginCreateOptions`
+- New struct `PackagesClientBeginDeleteOptions`
+- New struct `PackagesClientBeginHardDeleteOptions`
+- New struct `PackagesClientBeginUpdateOptions`
+- New struct `PackagesClientCreatePoller`
+- New struct `PackagesClientCreatePollerResponse`
+- New struct `PackagesClientCreateResponse`
+- New struct `PackagesClientCreateResult`
+- New struct `PackagesClientDeletePoller`
+- New struct `PackagesClientDeletePollerResponse`
+- New struct `PackagesClientDeleteResponse`
+- New struct `PackagesClientGetDownloadURLOptions`
+- New struct `PackagesClientGetDownloadURLResponse`
+- New struct `PackagesClientGetDownloadURLResult`
+- New struct `PackagesClientGetOptions`
+- New struct `PackagesClientGetResponse`
+- New struct `PackagesClientGetResult`
+- New struct `PackagesClientHardDeletePoller`
+- New struct `PackagesClientHardDeletePollerResponse`
+- New struct `PackagesClientHardDeleteResponse`
+- New struct `PackagesClientListByTestBaseAccountOptions`
+- New struct `PackagesClientListByTestBaseAccountPager`
+- New struct `PackagesClientListByTestBaseAccountResponse`
+- New struct `PackagesClientListByTestBaseAccountResult`
+- New struct `PackagesClientUpdatePoller`
+- New struct `PackagesClientUpdatePollerResponse`
+- New struct `PackagesClientUpdateResponse`
+- New struct `PackagesClientUpdateResult`
+- New struct `SKUsClientListOptions`
+- New struct `SKUsClientListPager`
+- New struct `SKUsClientListResponse`
+- New struct `SKUsClientListResult`
+- New struct `TestResultsClientGetDownloadURLOptions`
+- New struct `TestResultsClientGetDownloadURLResponse`
+- New struct `TestResultsClientGetDownloadURLResult`
+- New struct `TestResultsClientGetOptions`
+- New struct `TestResultsClientGetResponse`
+- New struct `TestResultsClientGetResult`
+- New struct `TestResultsClientGetVideoDownloadURLOptions`
+- New struct `TestResultsClientGetVideoDownloadURLResponse`
+- New struct `TestResultsClientGetVideoDownloadURLResult`
+- New struct `TestResultsClientListOptions`
+- New struct `TestResultsClientListPager`
+- New struct `TestResultsClientListResponse`
+- New struct `TestResultsClientListResult`
+- New struct `TestSummariesClientGetOptions`
+- New struct `TestSummariesClientGetResponse`
+- New struct `TestSummariesClientGetResult`
+- New struct `TestSummariesClientListOptions`
+- New struct `TestSummariesClientListPager`
+- New struct `TestSummariesClientListResponse`
+- New struct `TestSummariesClientListResult`
+- New struct `TestTypesClientGetOptions`
+- New struct `TestTypesClientGetResponse`
+- New struct `TestTypesClientGetResult`
+- New struct `TestTypesClientListOptions`
+- New struct `TestTypesClientListPager`
+- New struct `TestTypesClientListResponse`
+- New struct `TestTypesClientListResult`
+- New struct `UsageClientListOptions`
+- New struct `UsageClientListPager`
+- New struct `UsageClientListResponse`
+- New struct `UsageClientListResult`
+- New field `AnalysisResultType` in struct `TestAnalysisResultSingletonResourceProperties`
+- New field `Grade` in struct `TestAnalysisResultSingletonResourceProperties`
+- New field `AnalysisResultType` in struct `MemoryRegressionResultSingletonResourceProperties`
+- New field `Grade` in struct `MemoryRegressionResultSingletonResourceProperties`
+- New field `Name` in struct `TestResultResource`
+- New field `Type` in struct `TestResultResource`
+- New field `ID` in struct `TestResultResource`
+- New field `Type` in struct `TestTypeResource`
+- New field `ID` in struct `TestTypeResource`
+- New field `Name` in struct `TestTypeResource`
+- New field `ID` in struct `AvailableOSResource`
+- New field `Name` in struct `AvailableOSResource`
+- New field `Type` in struct `AvailableOSResource`
+- New field `AnalysisResultType` in struct `ScriptExecutionResultSingletonResourceProperties`
+- New field `Grade` in struct `ScriptExecutionResultSingletonResourceProperties`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `ID` in struct `AnalysisResultSingletonResource`
+- New field `Name` in struct `AnalysisResultSingletonResource`
+- New field `Type` in struct `AnalysisResultSingletonResource`
+- New field `AnalysisResultType` in struct `ReliabilityResultSingletonResourceProperties`
+- New field `Grade` in struct `ReliabilityResultSingletonResourceProperties`
+- New field `Name` in struct `CustomerEventResource`
+- New field `Type` in struct `CustomerEventResource`
+- New field `ID` in struct `CustomerEventResource`
+- New field `ID` in struct `TestSummaryResource`
+- New field `Name` in struct `TestSummaryResource`
+- New field `Type` in struct `TestSummaryResource`
+- New field `Type` in struct `OSUpdateResource`
+- New field `ID` in struct `OSUpdateResource`
+- New field `Name` in struct `OSUpdateResource`
+- New field `Type` in struct `EmailEventResource`
+- New field `ID` in struct `EmailEventResource`
+- New field `Name` in struct `EmailEventResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Grade` in struct `CPURegressionResultSingletonResourceProperties`
+- New field `AnalysisResultType` in struct `CPURegressionResultSingletonResourceProperties`
+- New field `ID` in struct `FlightingRingResource`
+- New field `Name` in struct `FlightingRingResource`
+- New field `Type` in struct `FlightingRingResource`
+- New field `AnalysisResultType` in struct `MemoryUtilizationResultSingletonResourceProperties`
+- New field `Grade` in struct `MemoryUtilizationResultSingletonResourceProperties`
+- New field `AnalysisResultType` in struct `CPUUtilizationResultSingletonResourceProperties`
+- New field `Grade` in struct `CPUUtilizationResultSingletonResourceProperties`
+- New field `Tags` in struct `PackageResource`
+- New field `Etag` in struct `PackageResource`
+- New field `ID` in struct `PackageResource`
+- New field `Name` in struct `PackageResource`
+- New field `Type` in struct `PackageResource`
+- New field `Location` in struct `PackageResource`
+- New field `Name` in struct `FavoriteProcessResource`
+- New field `Type` in struct `FavoriteProcessResource`
+- New field `ID` in struct `FavoriteProcessResource`
+- New field `Error` in struct `ErrorResponse`
+
+
+## 0.1.0 (2021-12-24)
+
+- Init release.

@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// AccountsCheckNameAvailabilityResponse contains the response from method Accounts.CheckNameAvailability.
-type AccountsCheckNameAvailabilityResponse struct {
-	AccountsCheckNameAvailabilityResult
+// AccountsClientCheckNameAvailabilityResponse contains the response from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResponse struct {
+	AccountsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsCheckNameAvailabilityResult contains the result from method Accounts.CheckNameAvailability.
-type AccountsCheckNameAvailabilityResult struct {
+// AccountsClientCheckNameAvailabilityResult contains the result from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResult struct {
 	NameAvailabilityInformation
 }
 
-// AccountsCreatePollerResponse contains the response from method Accounts.Create.
-type AccountsCreatePollerResponse struct {
+// AccountsClientCreatePollerResponse contains the response from method AccountsClient.Create.
+type AccountsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AccountsCreatePoller
+	Poller *AccountsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,9 +39,9 @@ type AccountsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AccountsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsCreateResponse, error) {
-	respType := AccountsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DataLakeAnalyticsAccount)
+func (l AccountsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientCreateResponse, error) {
+	respType := AccountsClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Account)
 	if err != nil {
 		return respType, err
 	}
@@ -49,13 +49,13 @@ func (l AccountsCreatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a AccountsCreatePollerResponse from the provided client and resume token.
-func (l *AccountsCreatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a AccountsClientCreatePollerResponse from the provided client and resume token.
+func (l *AccountsClientCreatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AccountsCreatePoller{
+	poller := &AccountsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,22 +67,22 @@ func (l *AccountsCreatePollerResponse) Resume(ctx context.Context, client *Accou
 	return nil
 }
 
-// AccountsCreateResponse contains the response from method Accounts.Create.
-type AccountsCreateResponse struct {
-	AccountsCreateResult
+// AccountsClientCreateResponse contains the response from method AccountsClient.Create.
+type AccountsClientCreateResponse struct {
+	AccountsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsCreateResult contains the result from method Accounts.Create.
-type AccountsCreateResult struct {
-	DataLakeAnalyticsAccount
+// AccountsClientCreateResult contains the result from method AccountsClient.Create.
+type AccountsClientCreateResult struct {
+	Account
 }
 
-// AccountsDeletePollerResponse contains the response from method Accounts.Delete.
-type AccountsDeletePollerResponse struct {
+// AccountsClientDeletePollerResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AccountsDeletePoller
+	Poller *AccountsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -91,8 +91,8 @@ type AccountsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AccountsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsDeleteResponse, error) {
-	respType := AccountsDeleteResponse{}
+func (l AccountsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientDeleteResponse, error) {
+	respType := AccountsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -101,13 +101,13 @@ func (l AccountsDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a AccountsDeletePollerResponse from the provided client and resume token.
-func (l *AccountsDeletePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a AccountsClientDeletePollerResponse from the provided client and resume token.
+func (l *AccountsClientDeletePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AccountsDeletePoller{
+	poller := &AccountsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -119,52 +119,52 @@ func (l *AccountsDeletePollerResponse) Resume(ctx context.Context, client *Accou
 	return nil
 }
 
-// AccountsDeleteResponse contains the response from method Accounts.Delete.
-type AccountsDeleteResponse struct {
+// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResponse contains the response from method Accounts.Get.
-type AccountsGetResponse struct {
-	AccountsGetResult
+// AccountsClientGetResponse contains the response from method AccountsClient.Get.
+type AccountsClientGetResponse struct {
+	AccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResult contains the result from method Accounts.Get.
-type AccountsGetResult struct {
-	DataLakeAnalyticsAccount
+// AccountsClientGetResult contains the result from method AccountsClient.Get.
+type AccountsClientGetResult struct {
+	Account
 }
 
-// AccountsListByResourceGroupResponse contains the response from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResponse struct {
-	AccountsListByResourceGroupResult
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResponse struct {
+	AccountsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListByResourceGroupResult contains the result from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResult struct {
-	DataLakeAnalyticsAccountListResult
+// AccountsClientListByResourceGroupResult contains the result from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResult struct {
+	AccountListResult
 }
 
-// AccountsListResponse contains the response from method Accounts.List.
-type AccountsListResponse struct {
-	AccountsListResult
+// AccountsClientListResponse contains the response from method AccountsClient.List.
+type AccountsClientListResponse struct {
+	AccountsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListResult contains the result from method Accounts.List.
-type AccountsListResult struct {
-	DataLakeAnalyticsAccountListResult
+// AccountsClientListResult contains the result from method AccountsClient.List.
+type AccountsClientListResult struct {
+	AccountListResult
 }
 
-// AccountsUpdatePollerResponse contains the response from method Accounts.Update.
-type AccountsUpdatePollerResponse struct {
+// AccountsClientUpdatePollerResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AccountsUpdatePoller
+	Poller *AccountsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -173,9 +173,9 @@ type AccountsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AccountsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsUpdateResponse, error) {
-	respType := AccountsUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DataLakeAnalyticsAccount)
+func (l AccountsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientUpdateResponse, error) {
+	respType := AccountsClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Account)
 	if err != nil {
 		return respType, err
 	}
@@ -183,13 +183,13 @@ func (l AccountsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a AccountsUpdatePollerResponse from the provided client and resume token.
-func (l *AccountsUpdatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a AccountsClientUpdatePollerResponse from the provided client and resume token.
+func (l *AccountsClientUpdatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AccountsUpdatePoller{
+	poller := &AccountsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -201,260 +201,260 @@ func (l *AccountsUpdatePollerResponse) Resume(ctx context.Context, client *Accou
 	return nil
 }
 
-// AccountsUpdateResponse contains the response from method Accounts.Update.
-type AccountsUpdateResponse struct {
-	AccountsUpdateResult
+// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdateResponse struct {
+	AccountsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsUpdateResult contains the result from method Accounts.Update.
-type AccountsUpdateResult struct {
-	DataLakeAnalyticsAccount
+// AccountsClientUpdateResult contains the result from method AccountsClient.Update.
+type AccountsClientUpdateResult struct {
+	Account
 }
 
-// ComputePoliciesCreateOrUpdateResponse contains the response from method ComputePolicies.CreateOrUpdate.
-type ComputePoliciesCreateOrUpdateResponse struct {
-	ComputePoliciesCreateOrUpdateResult
+// ComputePoliciesClientCreateOrUpdateResponse contains the response from method ComputePoliciesClient.CreateOrUpdate.
+type ComputePoliciesClientCreateOrUpdateResponse struct {
+	ComputePoliciesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComputePoliciesCreateOrUpdateResult contains the result from method ComputePolicies.CreateOrUpdate.
-type ComputePoliciesCreateOrUpdateResult struct {
+// ComputePoliciesClientCreateOrUpdateResult contains the result from method ComputePoliciesClient.CreateOrUpdate.
+type ComputePoliciesClientCreateOrUpdateResult struct {
 	ComputePolicy
 }
 
-// ComputePoliciesDeleteResponse contains the response from method ComputePolicies.Delete.
-type ComputePoliciesDeleteResponse struct {
+// ComputePoliciesClientDeleteResponse contains the response from method ComputePoliciesClient.Delete.
+type ComputePoliciesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComputePoliciesGetResponse contains the response from method ComputePolicies.Get.
-type ComputePoliciesGetResponse struct {
-	ComputePoliciesGetResult
+// ComputePoliciesClientGetResponse contains the response from method ComputePoliciesClient.Get.
+type ComputePoliciesClientGetResponse struct {
+	ComputePoliciesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComputePoliciesGetResult contains the result from method ComputePolicies.Get.
-type ComputePoliciesGetResult struct {
+// ComputePoliciesClientGetResult contains the result from method ComputePoliciesClient.Get.
+type ComputePoliciesClientGetResult struct {
 	ComputePolicy
 }
 
-// ComputePoliciesListByAccountResponse contains the response from method ComputePolicies.ListByAccount.
-type ComputePoliciesListByAccountResponse struct {
-	ComputePoliciesListByAccountResult
+// ComputePoliciesClientListByAccountResponse contains the response from method ComputePoliciesClient.ListByAccount.
+type ComputePoliciesClientListByAccountResponse struct {
+	ComputePoliciesClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComputePoliciesListByAccountResult contains the result from method ComputePolicies.ListByAccount.
-type ComputePoliciesListByAccountResult struct {
+// ComputePoliciesClientListByAccountResult contains the result from method ComputePoliciesClient.ListByAccount.
+type ComputePoliciesClientListByAccountResult struct {
 	ComputePolicyListResult
 }
 
-// ComputePoliciesUpdateResponse contains the response from method ComputePolicies.Update.
-type ComputePoliciesUpdateResponse struct {
-	ComputePoliciesUpdateResult
+// ComputePoliciesClientUpdateResponse contains the response from method ComputePoliciesClient.Update.
+type ComputePoliciesClientUpdateResponse struct {
+	ComputePoliciesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComputePoliciesUpdateResult contains the result from method ComputePolicies.Update.
-type ComputePoliciesUpdateResult struct {
+// ComputePoliciesClientUpdateResult contains the result from method ComputePoliciesClient.Update.
+type ComputePoliciesClientUpdateResult struct {
 	ComputePolicy
 }
 
-// DataLakeStoreAccountsAddResponse contains the response from method DataLakeStoreAccounts.Add.
-type DataLakeStoreAccountsAddResponse struct {
+// DataLakeStoreAccountsClientAddResponse contains the response from method DataLakeStoreAccountsClient.Add.
+type DataLakeStoreAccountsClientAddResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataLakeStoreAccountsDeleteResponse contains the response from method DataLakeStoreAccounts.Delete.
-type DataLakeStoreAccountsDeleteResponse struct {
+// DataLakeStoreAccountsClientDeleteResponse contains the response from method DataLakeStoreAccountsClient.Delete.
+type DataLakeStoreAccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataLakeStoreAccountsGetResponse contains the response from method DataLakeStoreAccounts.Get.
-type DataLakeStoreAccountsGetResponse struct {
-	DataLakeStoreAccountsGetResult
+// DataLakeStoreAccountsClientGetResponse contains the response from method DataLakeStoreAccountsClient.Get.
+type DataLakeStoreAccountsClientGetResponse struct {
+	DataLakeStoreAccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataLakeStoreAccountsGetResult contains the result from method DataLakeStoreAccounts.Get.
-type DataLakeStoreAccountsGetResult struct {
+// DataLakeStoreAccountsClientGetResult contains the result from method DataLakeStoreAccountsClient.Get.
+type DataLakeStoreAccountsClientGetResult struct {
 	DataLakeStoreAccountInformation
 }
 
-// DataLakeStoreAccountsListByAccountResponse contains the response from method DataLakeStoreAccounts.ListByAccount.
-type DataLakeStoreAccountsListByAccountResponse struct {
-	DataLakeStoreAccountsListByAccountResult
+// DataLakeStoreAccountsClientListByAccountResponse contains the response from method DataLakeStoreAccountsClient.ListByAccount.
+type DataLakeStoreAccountsClientListByAccountResponse struct {
+	DataLakeStoreAccountsClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataLakeStoreAccountsListByAccountResult contains the result from method DataLakeStoreAccounts.ListByAccount.
-type DataLakeStoreAccountsListByAccountResult struct {
+// DataLakeStoreAccountsClientListByAccountResult contains the result from method DataLakeStoreAccountsClient.ListByAccount.
+type DataLakeStoreAccountsClientListByAccountResult struct {
 	DataLakeStoreAccountInformationListResult
 }
 
-// FirewallRulesCreateOrUpdateResponse contains the response from method FirewallRules.CreateOrUpdate.
-type FirewallRulesCreateOrUpdateResponse struct {
-	FirewallRulesCreateOrUpdateResult
+// FirewallRulesClientCreateOrUpdateResponse contains the response from method FirewallRulesClient.CreateOrUpdate.
+type FirewallRulesClientCreateOrUpdateResponse struct {
+	FirewallRulesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesCreateOrUpdateResult contains the result from method FirewallRules.CreateOrUpdate.
-type FirewallRulesCreateOrUpdateResult struct {
+// FirewallRulesClientCreateOrUpdateResult contains the result from method FirewallRulesClient.CreateOrUpdate.
+type FirewallRulesClientCreateOrUpdateResult struct {
 	FirewallRule
 }
 
-// FirewallRulesDeleteResponse contains the response from method FirewallRules.Delete.
-type FirewallRulesDeleteResponse struct {
+// FirewallRulesClientDeleteResponse contains the response from method FirewallRulesClient.Delete.
+type FirewallRulesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesGetResponse contains the response from method FirewallRules.Get.
-type FirewallRulesGetResponse struct {
-	FirewallRulesGetResult
+// FirewallRulesClientGetResponse contains the response from method FirewallRulesClient.Get.
+type FirewallRulesClientGetResponse struct {
+	FirewallRulesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesGetResult contains the result from method FirewallRules.Get.
-type FirewallRulesGetResult struct {
+// FirewallRulesClientGetResult contains the result from method FirewallRulesClient.Get.
+type FirewallRulesClientGetResult struct {
 	FirewallRule
 }
 
-// FirewallRulesListByAccountResponse contains the response from method FirewallRules.ListByAccount.
-type FirewallRulesListByAccountResponse struct {
-	FirewallRulesListByAccountResult
+// FirewallRulesClientListByAccountResponse contains the response from method FirewallRulesClient.ListByAccount.
+type FirewallRulesClientListByAccountResponse struct {
+	FirewallRulesClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesListByAccountResult contains the result from method FirewallRules.ListByAccount.
-type FirewallRulesListByAccountResult struct {
+// FirewallRulesClientListByAccountResult contains the result from method FirewallRulesClient.ListByAccount.
+type FirewallRulesClientListByAccountResult struct {
 	FirewallRuleListResult
 }
 
-// FirewallRulesUpdateResponse contains the response from method FirewallRules.Update.
-type FirewallRulesUpdateResponse struct {
-	FirewallRulesUpdateResult
+// FirewallRulesClientUpdateResponse contains the response from method FirewallRulesClient.Update.
+type FirewallRulesClientUpdateResponse struct {
+	FirewallRulesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesUpdateResult contains the result from method FirewallRules.Update.
-type FirewallRulesUpdateResult struct {
+// FirewallRulesClientUpdateResult contains the result from method FirewallRulesClient.Update.
+type FirewallRulesClientUpdateResult struct {
 	FirewallRule
 }
 
-// LocationsGetCapabilityResponse contains the response from method Locations.GetCapability.
-type LocationsGetCapabilityResponse struct {
-	LocationsGetCapabilityResult
+// LocationsClientGetCapabilityResponse contains the response from method LocationsClient.GetCapability.
+type LocationsClientGetCapabilityResponse struct {
+	LocationsClientGetCapabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsGetCapabilityResult contains the result from method Locations.GetCapability.
-type LocationsGetCapabilityResult struct {
+// LocationsClientGetCapabilityResult contains the result from method LocationsClient.GetCapability.
+type LocationsClientGetCapabilityResult struct {
 	CapabilityInformation
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// StorageAccountsAddResponse contains the response from method StorageAccounts.Add.
-type StorageAccountsAddResponse struct {
+// StorageAccountsClientAddResponse contains the response from method StorageAccountsClient.Add.
+type StorageAccountsClientAddResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsDeleteResponse contains the response from method StorageAccounts.Delete.
-type StorageAccountsDeleteResponse struct {
+// StorageAccountsClientDeleteResponse contains the response from method StorageAccountsClient.Delete.
+type StorageAccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsGetResponse contains the response from method StorageAccounts.Get.
-type StorageAccountsGetResponse struct {
-	StorageAccountsGetResult
+// StorageAccountsClientGetResponse contains the response from method StorageAccountsClient.Get.
+type StorageAccountsClientGetResponse struct {
+	StorageAccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsGetResult contains the result from method StorageAccounts.Get.
-type StorageAccountsGetResult struct {
+// StorageAccountsClientGetResult contains the result from method StorageAccountsClient.Get.
+type StorageAccountsClientGetResult struct {
 	StorageAccountInformation
 }
 
-// StorageAccountsGetStorageContainerResponse contains the response from method StorageAccounts.GetStorageContainer.
-type StorageAccountsGetStorageContainerResponse struct {
-	StorageAccountsGetStorageContainerResult
+// StorageAccountsClientGetStorageContainerResponse contains the response from method StorageAccountsClient.GetStorageContainer.
+type StorageAccountsClientGetStorageContainerResponse struct {
+	StorageAccountsClientGetStorageContainerResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsGetStorageContainerResult contains the result from method StorageAccounts.GetStorageContainer.
-type StorageAccountsGetStorageContainerResult struct {
+// StorageAccountsClientGetStorageContainerResult contains the result from method StorageAccountsClient.GetStorageContainer.
+type StorageAccountsClientGetStorageContainerResult struct {
 	StorageContainer
 }
 
-// StorageAccountsListByAccountResponse contains the response from method StorageAccounts.ListByAccount.
-type StorageAccountsListByAccountResponse struct {
-	StorageAccountsListByAccountResult
+// StorageAccountsClientListByAccountResponse contains the response from method StorageAccountsClient.ListByAccount.
+type StorageAccountsClientListByAccountResponse struct {
+	StorageAccountsClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListByAccountResult contains the result from method StorageAccounts.ListByAccount.
-type StorageAccountsListByAccountResult struct {
+// StorageAccountsClientListByAccountResult contains the result from method StorageAccountsClient.ListByAccount.
+type StorageAccountsClientListByAccountResult struct {
 	StorageAccountInformationListResult
 }
 
-// StorageAccountsListSasTokensResponse contains the response from method StorageAccounts.ListSasTokens.
-type StorageAccountsListSasTokensResponse struct {
-	StorageAccountsListSasTokensResult
+// StorageAccountsClientListSasTokensResponse contains the response from method StorageAccountsClient.ListSasTokens.
+type StorageAccountsClientListSasTokensResponse struct {
+	StorageAccountsClientListSasTokensResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListSasTokensResult contains the result from method StorageAccounts.ListSasTokens.
-type StorageAccountsListSasTokensResult struct {
+// StorageAccountsClientListSasTokensResult contains the result from method StorageAccountsClient.ListSasTokens.
+type StorageAccountsClientListSasTokensResult struct {
 	SasTokenInformationListResult
 }
 
-// StorageAccountsListStorageContainersResponse contains the response from method StorageAccounts.ListStorageContainers.
-type StorageAccountsListStorageContainersResponse struct {
-	StorageAccountsListStorageContainersResult
+// StorageAccountsClientListStorageContainersResponse contains the response from method StorageAccountsClient.ListStorageContainers.
+type StorageAccountsClientListStorageContainersResponse struct {
+	StorageAccountsClientListStorageContainersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageAccountsListStorageContainersResult contains the result from method StorageAccounts.ListStorageContainers.
-type StorageAccountsListStorageContainersResult struct {
+// StorageAccountsClientListStorageContainersResult contains the result from method StorageAccountsClient.ListStorageContainers.
+type StorageAccountsClientListStorageContainersResult struct {
 	StorageContainerListResult
 }
 
-// StorageAccountsUpdateResponse contains the response from method StorageAccounts.Update.
-type StorageAccountsUpdateResponse struct {
+// StorageAccountsClientUpdateResponse contains the response from method StorageAccountsClient.Update.
+type StorageAccountsClientUpdateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }

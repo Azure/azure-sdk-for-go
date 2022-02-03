@@ -9,11 +9,11 @@
 package armcontainerregistry
 
 const (
-	module  = "armcontainerregistry"
-	version = "v0.2.1"
+	moduleName    = "armcontainerregistry"
+	moduleVersion = "v0.3.0"
 )
 
-// Action - The action of virtual network rule.
+// Action - The action of IP ACL rule.
 type Action string
 
 const (
@@ -53,27 +53,6 @@ func (c ActionsRequired) ToPtr() *ActionsRequired {
 	return &c
 }
 
-// ActivationStatus - The activation status of the connected registry.
-type ActivationStatus string
-
-const (
-	ActivationStatusActive   ActivationStatus = "Active"
-	ActivationStatusInactive ActivationStatus = "Inactive"
-)
-
-// PossibleActivationStatusValues returns the possible values for the ActivationStatus const type.
-func PossibleActivationStatusValues() []ActivationStatus {
-	return []ActivationStatus{
-		ActivationStatusActive,
-		ActivationStatusInactive,
-	}
-}
-
-// ToPtr returns a *ActivationStatus pointing to the current value.
-func (c ActivationStatus) ToPtr() *ActivationStatus {
-	return &c
-}
-
 // Architecture - The OS architecture.
 type Architecture string
 
@@ -98,27 +77,6 @@ func PossibleArchitectureValues() []Architecture {
 
 // ToPtr returns a *Architecture pointing to the current value.
 func (c Architecture) ToPtr() *Architecture {
-	return &c
-}
-
-// AuditLogStatus - Indicates whether audit logs are enabled on the connected registry.
-type AuditLogStatus string
-
-const (
-	AuditLogStatusDisabled AuditLogStatus = "Disabled"
-	AuditLogStatusEnabled  AuditLogStatus = "Enabled"
-)
-
-// PossibleAuditLogStatusValues returns the possible values for the AuditLogStatus const type.
-func PossibleAuditLogStatusValues() []AuditLogStatus {
-	return []AuditLogStatus{
-		AuditLogStatusDisabled,
-		AuditLogStatusEnabled,
-	}
-}
-
-// ToPtr returns a *AuditLogStatus pointing to the current value.
-func (c AuditLogStatus) ToPtr() *AuditLogStatus {
 	return &c
 }
 
@@ -161,75 +119,6 @@ func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
 
 // ToPtr returns a *BaseImageTriggerType pointing to the current value.
 func (c BaseImageTriggerType) ToPtr() *BaseImageTriggerType {
-	return &c
-}
-
-// CertificateType - The type of certificate location.
-type CertificateType string
-
-const (
-	CertificateTypeLocalDirectory CertificateType = "LocalDirectory"
-)
-
-// PossibleCertificateTypeValues returns the possible values for the CertificateType const type.
-func PossibleCertificateTypeValues() []CertificateType {
-	return []CertificateType{
-		CertificateTypeLocalDirectory,
-	}
-}
-
-// ToPtr returns a *CertificateType pointing to the current value.
-func (c CertificateType) ToPtr() *CertificateType {
-	return &c
-}
-
-// ConnectedRegistryMode - The mode of the connected registry resource that indicates the permissions of the registry.
-type ConnectedRegistryMode string
-
-const (
-	ConnectedRegistryModeMirror    ConnectedRegistryMode = "Mirror"
-	ConnectedRegistryModeReadOnly  ConnectedRegistryMode = "ReadOnly"
-	ConnectedRegistryModeReadWrite ConnectedRegistryMode = "ReadWrite"
-	ConnectedRegistryModeRegistry  ConnectedRegistryMode = "Registry"
-)
-
-// PossibleConnectedRegistryModeValues returns the possible values for the ConnectedRegistryMode const type.
-func PossibleConnectedRegistryModeValues() []ConnectedRegistryMode {
-	return []ConnectedRegistryMode{
-		ConnectedRegistryModeMirror,
-		ConnectedRegistryModeReadOnly,
-		ConnectedRegistryModeReadWrite,
-		ConnectedRegistryModeRegistry,
-	}
-}
-
-// ToPtr returns a *ConnectedRegistryMode pointing to the current value.
-func (c ConnectedRegistryMode) ToPtr() *ConnectedRegistryMode {
-	return &c
-}
-
-// ConnectionState - The current connection state of the connected registry.
-type ConnectionState string
-
-const (
-	ConnectionStateOffline   ConnectionState = "Offline"
-	ConnectionStateOnline    ConnectionState = "Online"
-	ConnectionStateSyncing   ConnectionState = "Syncing"
-	ConnectionStateUnhealthy ConnectionState = "Unhealthy"
-)
-
-// PossibleConnectionStateValues returns the possible values for the ConnectionState const type.
-func PossibleConnectionStateValues() []ConnectionState {
-	return []ConnectionState{
-		ConnectionStateOffline,
-		ConnectionStateOnline,
-		ConnectionStateSyncing,
-		ConnectionStateUnhealthy,
-	}
-}
-
-// ToPtr returns a *ConnectionState pointing to the current value.
-func (c ConnectionState) ToPtr() *ConnectionState {
 	return &c
 }
 
@@ -346,8 +235,8 @@ func (c ExportPolicyStatus) ToPtr() *ExportPolicyStatus {
 	return &c
 }
 
-// ImportMode - When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the operation before any copying
-// begins.
+// ImportMode - When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail
+// the operation before any copying begins.
 type ImportMode string
 
 const (
@@ -390,33 +279,6 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 
 // ToPtr returns a *LastModifiedByType pointing to the current value.
 func (c LastModifiedByType) ToPtr() *LastModifiedByType {
-	return &c
-}
-
-// LogLevel - The verbosity of logs persisted on the connected registry.
-type LogLevel string
-
-const (
-	LogLevelDebug       LogLevel = "Debug"
-	LogLevelError       LogLevel = "Error"
-	LogLevelInformation LogLevel = "Information"
-	LogLevelNone        LogLevel = "None"
-	LogLevelWarning     LogLevel = "Warning"
-)
-
-// PossibleLogLevelValues returns the possible values for the LogLevel const type.
-func PossibleLogLevelValues() []LogLevel {
-	return []LogLevel{
-		LogLevelDebug,
-		LogLevelError,
-		LogLevelInformation,
-		LogLevelNone,
-		LogLevelWarning,
-	}
-}
-
-// ToPtr returns a *LogLevel pointing to the current value.
-func (c LogLevel) ToPtr() *LogLevel {
 	return &c
 }
 
@@ -480,87 +342,6 @@ func PossiblePasswordNameValues() []PasswordName {
 
 // ToPtr returns a *PasswordName pointing to the current value.
 func (c PasswordName) ToPtr() *PasswordName {
-	return &c
-}
-
-type PipelineOptions string
-
-const (
-	PipelineOptionsContinueOnErrors          PipelineOptions = "ContinueOnErrors"
-	PipelineOptionsDeleteSourceBlobOnSuccess PipelineOptions = "DeleteSourceBlobOnSuccess"
-	PipelineOptionsOverwriteBlobs            PipelineOptions = "OverwriteBlobs"
-	PipelineOptionsOverwriteTags             PipelineOptions = "OverwriteTags"
-)
-
-// PossiblePipelineOptionsValues returns the possible values for the PipelineOptions const type.
-func PossiblePipelineOptionsValues() []PipelineOptions {
-	return []PipelineOptions{
-		PipelineOptionsContinueOnErrors,
-		PipelineOptionsDeleteSourceBlobOnSuccess,
-		PipelineOptionsOverwriteBlobs,
-		PipelineOptionsOverwriteTags,
-	}
-}
-
-// ToPtr returns a *PipelineOptions pointing to the current value.
-func (c PipelineOptions) ToPtr() *PipelineOptions {
-	return &c
-}
-
-// PipelineRunSourceType - The type of the source.
-type PipelineRunSourceType string
-
-const (
-	PipelineRunSourceTypeAzureStorageBlob PipelineRunSourceType = "AzureStorageBlob"
-)
-
-// PossiblePipelineRunSourceTypeValues returns the possible values for the PipelineRunSourceType const type.
-func PossiblePipelineRunSourceTypeValues() []PipelineRunSourceType {
-	return []PipelineRunSourceType{
-		PipelineRunSourceTypeAzureStorageBlob,
-	}
-}
-
-// ToPtr returns a *PipelineRunSourceType pointing to the current value.
-func (c PipelineRunSourceType) ToPtr() *PipelineRunSourceType {
-	return &c
-}
-
-// PipelineRunTargetType - The type of the target.
-type PipelineRunTargetType string
-
-const (
-	PipelineRunTargetTypeAzureStorageBlob PipelineRunTargetType = "AzureStorageBlob"
-)
-
-// PossiblePipelineRunTargetTypeValues returns the possible values for the PipelineRunTargetType const type.
-func PossiblePipelineRunTargetTypeValues() []PipelineRunTargetType {
-	return []PipelineRunTargetType{
-		PipelineRunTargetTypeAzureStorageBlob,
-	}
-}
-
-// ToPtr returns a *PipelineRunTargetType pointing to the current value.
-func (c PipelineRunTargetType) ToPtr() *PipelineRunTargetType {
-	return &c
-}
-
-// PipelineSourceType - The type of source for the import pipeline.
-type PipelineSourceType string
-
-const (
-	PipelineSourceTypeAzureStorageBlobContainer PipelineSourceType = "AzureStorageBlobContainer"
-)
-
-// PossiblePipelineSourceTypeValues returns the possible values for the PipelineSourceType const type.
-func PossiblePipelineSourceTypeValues() []PipelineSourceType {
-	return []PipelineSourceType{
-		PipelineSourceTypeAzureStorageBlobContainer,
-	}
-}
-
-// ToPtr returns a *PipelineSourceType pointing to the current value.
-func (c PipelineSourceType) ToPtr() *PipelineSourceType {
 	return &c
 }
 
@@ -831,8 +612,8 @@ func (c SourceControlType) ToPtr() *SourceControlType {
 	return &c
 }
 
-// SourceRegistryLoginMode - The authentication mode which determines the source registry login scope. The credentials for the source registry will be generated
-// using the given scope. These credentials will be used to login to
+// SourceRegistryLoginMode - The authentication mode which determines the source registry login scope. The credentials for
+// the source registry will be generated using the given scope. These credentials will be used to login to
 // the source registry during the run.
 type SourceRegistryLoginMode string
 
@@ -897,27 +678,6 @@ func (c StepType) ToPtr() *StepType {
 	return &c
 }
 
-// TLSStatus - Indicates whether HTTPS is enabled for the login server.
-type TLSStatus string
-
-const (
-	TLSStatusDisabled TLSStatus = "Disabled"
-	TLSStatusEnabled  TLSStatus = "Enabled"
-)
-
-// PossibleTLSStatusValues returns the possible values for the TLSStatus const type.
-func PossibleTLSStatusValues() []TLSStatus {
-	return []TLSStatus{
-		TLSStatusDisabled,
-		TLSStatusEnabled,
-	}
-}
-
-// ToPtr returns a *TLSStatus pointing to the current value.
-func (c TLSStatus) ToPtr() *TLSStatus {
-	return &c
-}
-
 // TaskStatus - The current status of task.
 type TaskStatus string
 
@@ -936,68 +696,6 @@ func PossibleTaskStatusValues() []TaskStatus {
 
 // ToPtr returns a *TaskStatus pointing to the current value.
 func (c TaskStatus) ToPtr() *TaskStatus {
-	return &c
-}
-
-type TokenCertificateName string
-
-const (
-	TokenCertificateNameCertificate1 TokenCertificateName = "certificate1"
-	TokenCertificateNameCertificate2 TokenCertificateName = "certificate2"
-)
-
-// PossibleTokenCertificateNameValues returns the possible values for the TokenCertificateName const type.
-func PossibleTokenCertificateNameValues() []TokenCertificateName {
-	return []TokenCertificateName{
-		TokenCertificateNameCertificate1,
-		TokenCertificateNameCertificate2,
-	}
-}
-
-// ToPtr returns a *TokenCertificateName pointing to the current value.
-func (c TokenCertificateName) ToPtr() *TokenCertificateName {
-	return &c
-}
-
-// TokenPasswordName - The password name "password1" or "password2"
-type TokenPasswordName string
-
-const (
-	TokenPasswordNamePassword1 TokenPasswordName = "password1"
-	TokenPasswordNamePassword2 TokenPasswordName = "password2"
-)
-
-// PossibleTokenPasswordNameValues returns the possible values for the TokenPasswordName const type.
-func PossibleTokenPasswordNameValues() []TokenPasswordName {
-	return []TokenPasswordName{
-		TokenPasswordNamePassword1,
-		TokenPasswordNamePassword2,
-	}
-}
-
-// ToPtr returns a *TokenPasswordName pointing to the current value.
-func (c TokenPasswordName) ToPtr() *TokenPasswordName {
-	return &c
-}
-
-// TokenStatus - The status of the token example enabled or disabled.
-type TokenStatus string
-
-const (
-	TokenStatusDisabled TokenStatus = "disabled"
-	TokenStatusEnabled  TokenStatus = "enabled"
-)
-
-// PossibleTokenStatusValues returns the possible values for the TokenStatus const type.
-func PossibleTokenStatusValues() []TokenStatus {
-	return []TokenStatus{
-		TokenStatusDisabled,
-		TokenStatusEnabled,
-	}
-}
-
-// ToPtr returns a *TokenStatus pointing to the current value.
-func (c TokenStatus) ToPtr() *TokenStatus {
 	return &c
 }
 

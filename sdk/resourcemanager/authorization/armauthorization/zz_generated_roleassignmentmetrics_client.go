@@ -11,7 +11,6 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,58 @@ import (
 // RoleAssignmentMetricsClient contains the methods for the RoleAssignmentMetrics group.
 // Don't use this type directly, use NewRoleAssignmentMetricsClient() instead.
 type RoleAssignmentMetricsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRoleAssignmentMetricsClient creates a new instance of RoleAssignmentMetricsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRoleAssignmentMetricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentMetricsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RoleAssignmentMetricsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RoleAssignmentMetricsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetMetricsForSubscription - Get role assignment usage metrics for a subscription
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentMetricsClient) GetMetricsForSubscription(ctx context.Context, options *RoleAssignmentMetricsGetMetricsForSubscriptionOptions) (RoleAssignmentMetricsGetMetricsForSubscriptionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - RoleAssignmentMetricsClientGetMetricsForSubscriptionOptions contains the optional parameters for the RoleAssignmentMetricsClient.GetMetricsForSubscription
+// method.
+func (client *RoleAssignmentMetricsClient) GetMetricsForSubscription(ctx context.Context, options *RoleAssignmentMetricsClientGetMetricsForSubscriptionOptions) (RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse, error) {
 	req, err := client.getMetricsForSubscriptionCreateRequest(ctx, options)
 	if err != nil {
-		return RoleAssignmentMetricsGetMetricsForSubscriptionResponse{}, err
+		return RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentMetricsGetMetricsForSubscriptionResponse{}, err
+		return RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleAssignmentMetricsGetMetricsForSubscriptionResponse{}, client.getMetricsForSubscriptionHandleError(resp)
+		return RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getMetricsForSubscriptionHandleResponse(resp)
 }
 
 // getMetricsForSubscriptionCreateRequest creates the GetMetricsForSubscription request.
-func (client *RoleAssignmentMetricsClient) getMetricsForSubscriptionCreateRequest(ctx context.Context, options *RoleAssignmentMetricsGetMetricsForSubscriptionOptions) (*policy.Request, error) {
+func (client *RoleAssignmentMetricsClient) getMetricsForSubscriptionCreateRequest(ctx context.Context, options *RoleAssignmentMetricsClientGetMetricsForSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignmentsUsageMetrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,23 +87,10 @@ func (client *RoleAssignmentMetricsClient) getMetricsForSubscriptionCreateReques
 }
 
 // getMetricsForSubscriptionHandleResponse handles the GetMetricsForSubscription response.
-func (client *RoleAssignmentMetricsClient) getMetricsForSubscriptionHandleResponse(resp *http.Response) (RoleAssignmentMetricsGetMetricsForSubscriptionResponse, error) {
-	result := RoleAssignmentMetricsGetMetricsForSubscriptionResponse{RawResponse: resp}
+func (client *RoleAssignmentMetricsClient) getMetricsForSubscriptionHandleResponse(resp *http.Response) (RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse, error) {
+	result := RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentMetricsResult); err != nil {
-		return RoleAssignmentMetricsGetMetricsForSubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// getMetricsForSubscriptionHandleError handles the GetMetricsForSubscription error response.
-func (client *RoleAssignmentMetricsClient) getMetricsForSubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -10,7 +10,6 @@ package armconsumption
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,44 +22,63 @@ import (
 // ReservationRecommendationDetailsClient contains the methods for the ReservationRecommendationDetails group.
 // Don't use this type directly, use NewReservationRecommendationDetailsClient() instead.
 type ReservationRecommendationDetailsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewReservationRecommendationDetailsClient creates a new instance of ReservationRecommendationDetailsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReservationRecommendationDetailsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationRecommendationDetailsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReservationRecommendationDetailsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReservationRecommendationDetailsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Details of a reservation recommendation for what-if analysis of reserved instances.
-// If the operation fails it returns the *HighCasedErrorResponse error type.
-func (client *ReservationRecommendationDetailsClient) Get(ctx context.Context, scope string, region string, term Term, lookBackPeriod LookBackPeriod, product string, options *ReservationRecommendationDetailsGetOptions) (ReservationRecommendationDetailsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with reservation recommendation details operations. This includes '/subscriptions/{subscriptionId}/'
+// for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope, /providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
+// for BillingAccount scope, and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billingProfile
+// scope
+// region - Used to select the region the recommendation should be generated for.
+// term - Specify length of reservation recommendation term.
+// lookBackPeriod - Filter the time period on which reservation recommendation results are based.
+// product - Filter the products for which reservation recommendation results are generated. Examples: StandardDS1v2 (for
+// VM), PremiumSSDManagedDisksP30 (for Managed Disks)
+// options - ReservationRecommendationDetailsClientGetOptions contains the optional parameters for the ReservationRecommendationDetailsClient.Get
+// method.
+func (client *ReservationRecommendationDetailsClient) Get(ctx context.Context, scope string, region string, term Term, lookBackPeriod LookBackPeriod, product string, options *ReservationRecommendationDetailsClientGetOptions) (ReservationRecommendationDetailsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, region, term, lookBackPeriod, product, options)
 	if err != nil {
-		return ReservationRecommendationDetailsGetResponse{}, err
+		return ReservationRecommendationDetailsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReservationRecommendationDetailsGetResponse{}, err
+		return ReservationRecommendationDetailsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ReservationRecommendationDetailsGetResponse{}, client.getHandleError(resp)
+		return ReservationRecommendationDetailsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx context.Context, scope string, region string, term Term, lookBackPeriod LookBackPeriod, product string, options *ReservationRecommendationDetailsGetOptions) (*policy.Request, error) {
+func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx context.Context, scope string, region string, term Term, lookBackPeriod LookBackPeriod, product string, options *ReservationRecommendationDetailsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/reservationRecommendationDetails"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -76,23 +94,10 @@ func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReservationRecommendationDetailsClient) getHandleResponse(resp *http.Response) (ReservationRecommendationDetailsGetResponse, error) {
-	result := ReservationRecommendationDetailsGetResponse{RawResponse: resp}
+func (client *ReservationRecommendationDetailsClient) getHandleResponse(resp *http.Response) (ReservationRecommendationDetailsClientGetResponse, error) {
+	result := ReservationRecommendationDetailsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationRecommendationDetailsModel); err != nil {
-		return ReservationRecommendationDetailsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationRecommendationDetailsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ReservationRecommendationDetailsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := HighCasedErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

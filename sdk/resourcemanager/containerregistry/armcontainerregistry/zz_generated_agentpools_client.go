@@ -11,7 +11,6 @@ package armcontainerregistry
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // AgentPoolsClient contains the methods for the AgentPools group.
 // Don't use this type directly, use NewAgentPoolsClient() instead.
 type AgentPoolsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAgentPoolsClient creates a new instance of AgentPoolsClient with the specified values.
+// subscriptionID - The Microsoft Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AgentPoolsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AgentPoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AgentPoolsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates an agent pool for a container registry with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsBeginCreateOptions) (AgentPoolsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// agentPoolName - The name of the agent pool.
+// agentPool - The parameters of an agent pool that needs to scheduled.
+// options - AgentPoolsClientBeginCreateOptions contains the optional parameters for the AgentPoolsClient.BeginCreate method.
+func (client *AgentPoolsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsClientBeginCreateOptions) (AgentPoolsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, registryName, agentPoolName, agentPool, options)
 	if err != nil {
-		return AgentPoolsCreatePollerResponse{}, err
+		return AgentPoolsClientCreatePollerResponse{}, err
 	}
-	result := AgentPoolsCreatePollerResponse{
+	result := AgentPoolsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AgentPoolsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("AgentPoolsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return AgentPoolsCreatePollerResponse{}, err
+		return AgentPoolsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &AgentPoolsCreatePoller{
+	result.Poller = &AgentPoolsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates an agent pool for a container registry with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) create(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AgentPoolsClient) create(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, agentPool, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *AgentPoolsClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *AgentPoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsBeginCreateOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +110,7 @@ func (client *AgentPoolsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +121,33 @@ func (client *AgentPoolsClient) createCreateRequest(ctx context.Context, resourc
 	return req, runtime.MarshalAsJSON(req, agentPool)
 }
 
-// createHandleError handles the Create error response.
-func (client *AgentPoolsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a specified agent pool resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsBeginDeleteOptions) (AgentPoolsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// agentPoolName - The name of the agent pool.
+// options - AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
+func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (AgentPoolsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, agentPoolName, options)
 	if err != nil {
-		return AgentPoolsDeletePollerResponse{}, err
+		return AgentPoolsClientDeletePollerResponse{}, err
 	}
-	result := AgentPoolsDeletePollerResponse{
+	result := AgentPoolsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AgentPoolsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AgentPoolsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return AgentPoolsDeletePollerResponse{}, err
+		return AgentPoolsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AgentPoolsDeletePoller{
+	result.Poller = &AgentPoolsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a specified agent pool resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +157,13 @@ func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +181,7 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +192,29 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AgentPoolsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the detailed information for a given agent pool.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsGetOptions) (AgentPoolsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// agentPoolName - The name of the agent pool.
+// options - AgentPoolsClientGetOptions contains the optional parameters for the AgentPoolsClient.Get method.
+func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientGetOptions) (AgentPoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, options)
 	if err != nil {
-		return AgentPoolsGetResponse{}, err
+		return AgentPoolsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AgentPoolsGetResponse{}, err
+		return AgentPoolsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AgentPoolsGetResponse{}, client.getHandleError(resp)
+		return AgentPoolsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsGetOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +232,7 @@ func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,46 +244,38 @@ func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoolsGetResponse, error) {
-	result := AgentPoolsGetResponse{RawResponse: resp}
+func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoolsClientGetResponse, error) {
+	result := AgentPoolsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPool); err != nil {
-		return AgentPoolsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AgentPoolsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AgentPoolsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetQueueStatus - Gets the count of queued runs for a given agent pool.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) GetQueueStatus(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsGetQueueStatusOptions) (AgentPoolsGetQueueStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// agentPoolName - The name of the agent pool.
+// options - AgentPoolsClientGetQueueStatusOptions contains the optional parameters for the AgentPoolsClient.GetQueueStatus
+// method.
+func (client *AgentPoolsClient) GetQueueStatus(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientGetQueueStatusOptions) (AgentPoolsClientGetQueueStatusResponse, error) {
 	req, err := client.getQueueStatusCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, options)
 	if err != nil {
-		return AgentPoolsGetQueueStatusResponse{}, err
+		return AgentPoolsClientGetQueueStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AgentPoolsGetQueueStatusResponse{}, err
+		return AgentPoolsClientGetQueueStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AgentPoolsGetQueueStatusResponse{}, client.getQueueStatusHandleError(resp)
+		return AgentPoolsClientGetQueueStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getQueueStatusHandleResponse(resp)
 }
 
 // getQueueStatusCreateRequest creates the GetQueueStatus request.
-func (client *AgentPoolsClient) getQueueStatusCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsGetQueueStatusOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) getQueueStatusCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientGetQueueStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}/listQueueStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -307,7 +293,7 @@ func (client *AgentPoolsClient) getQueueStatusCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,43 +305,33 @@ func (client *AgentPoolsClient) getQueueStatusCreateRequest(ctx context.Context,
 }
 
 // getQueueStatusHandleResponse handles the GetQueueStatus response.
-func (client *AgentPoolsClient) getQueueStatusHandleResponse(resp *http.Response) (AgentPoolsGetQueueStatusResponse, error) {
-	result := AgentPoolsGetQueueStatusResponse{RawResponse: resp}
+func (client *AgentPoolsClient) getQueueStatusHandleResponse(resp *http.Response) (AgentPoolsClientGetQueueStatusResponse, error) {
+	result := AgentPoolsClientGetQueueStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPoolQueueStatus); err != nil {
-		return AgentPoolsGetQueueStatusResponse{}, runtime.NewResponseError(err, resp)
+		return AgentPoolsClientGetQueueStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getQueueStatusHandleError handles the GetQueueStatus error response.
-func (client *AgentPoolsClient) getQueueStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the agent pools for a specified container registry.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) List(resourceGroupName string, registryName string, options *AgentPoolsListOptions) *AgentPoolsListPager {
-	return &AgentPoolsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// options - AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.List method.
+func (client *AgentPoolsClient) List(resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) *AgentPoolsClientListPager {
+	return &AgentPoolsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
 		},
-		advancer: func(ctx context.Context, resp AgentPoolsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AgentPoolsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AgentPoolListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *AgentPoolsListOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -369,7 +345,7 @@ func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -381,50 +357,42 @@ func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceG
 }
 
 // listHandleResponse handles the List response.
-func (client *AgentPoolsClient) listHandleResponse(resp *http.Response) (AgentPoolsListResponse, error) {
-	result := AgentPoolsListResponse{RawResponse: resp}
+func (client *AgentPoolsClient) listHandleResponse(resp *http.Response) (AgentPoolsClientListResponse, error) {
+	result := AgentPoolsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPoolListResult); err != nil {
-		return AgentPoolsListResponse{}, runtime.NewResponseError(err, resp)
+		return AgentPoolsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AgentPoolsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates an agent pool with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsBeginUpdateOptions) (AgentPoolsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// agentPoolName - The name of the agent pool.
+// updateParameters - The parameters for updating an agent pool.
+// options - AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
+func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsClientBeginUpdateOptions) (AgentPoolsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, registryName, agentPoolName, updateParameters, options)
 	if err != nil {
-		return AgentPoolsUpdatePollerResponse{}, err
+		return AgentPoolsClientUpdatePollerResponse{}, err
 	}
-	result := AgentPoolsUpdatePollerResponse{
+	result := AgentPoolsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AgentPoolsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("AgentPoolsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return AgentPoolsUpdatePollerResponse{}, err
+		return AgentPoolsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &AgentPoolsUpdatePoller{
+	result.Poller = &AgentPoolsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates an agent pool with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, updateParameters, options)
 	if err != nil {
 		return nil, err
@@ -434,13 +402,13 @@ func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsBeginUpdateOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -458,7 +426,7 @@ func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter agentPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -467,17 +435,4 @@ func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *AgentPoolsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

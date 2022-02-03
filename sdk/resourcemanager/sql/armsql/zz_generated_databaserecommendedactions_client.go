@@ -24,42 +24,58 @@ import (
 // DatabaseRecommendedActionsClient contains the methods for the DatabaseRecommendedActions group.
 // Don't use this type directly, use NewDatabaseRecommendedActionsClient() instead.
 type DatabaseRecommendedActionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseRecommendedActionsClient creates a new instance of DatabaseRecommendedActionsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDatabaseRecommendedActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseRecommendedActionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DatabaseRecommendedActionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DatabaseRecommendedActionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a database recommended action.
-// If the operation fails it returns a generic error.
-func (client *DatabaseRecommendedActionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, options *DatabaseRecommendedActionsGetOptions) (DatabaseRecommendedActionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// advisorName - The name of the Database Advisor.
+// recommendedActionName - The name of Database Recommended Action.
+// options - DatabaseRecommendedActionsClientGetOptions contains the optional parameters for the DatabaseRecommendedActionsClient.Get
+// method.
+func (client *DatabaseRecommendedActionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, options *DatabaseRecommendedActionsClientGetOptions) (DatabaseRecommendedActionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, advisorName, recommendedActionName, options)
 	if err != nil {
-		return DatabaseRecommendedActionsGetResponse{}, err
+		return DatabaseRecommendedActionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseRecommendedActionsGetResponse{}, err
+		return DatabaseRecommendedActionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseRecommendedActionsGetResponse{}, client.getHandleError(resp)
+		return DatabaseRecommendedActionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseRecommendedActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, options *DatabaseRecommendedActionsGetOptions) (*policy.Request, error) {
+func (client *DatabaseRecommendedActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, options *DatabaseRecommendedActionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -85,7 +101,7 @@ func (client *DatabaseRecommendedActionsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,45 +113,40 @@ func (client *DatabaseRecommendedActionsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseRecommendedActionsClient) getHandleResponse(resp *http.Response) (DatabaseRecommendedActionsGetResponse, error) {
-	result := DatabaseRecommendedActionsGetResponse{RawResponse: resp}
+func (client *DatabaseRecommendedActionsClient) getHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientGetResponse, error) {
+	result := DatabaseRecommendedActionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedAction); err != nil {
-		return DatabaseRecommendedActionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseRecommendedActionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DatabaseRecommendedActionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabaseAdvisor - Gets list of Database Recommended Actions.
-// If the operation fails it returns a generic error.
-func (client *DatabaseRecommendedActionsClient) ListByDatabaseAdvisor(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseRecommendedActionsListByDatabaseAdvisorOptions) (DatabaseRecommendedActionsListByDatabaseAdvisorResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// advisorName - The name of the Database Advisor.
+// options - DatabaseRecommendedActionsClientListByDatabaseAdvisorOptions contains the optional parameters for the DatabaseRecommendedActionsClient.ListByDatabaseAdvisor
+// method.
+func (client *DatabaseRecommendedActionsClient) ListByDatabaseAdvisor(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseRecommendedActionsClientListByDatabaseAdvisorOptions) (DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse, error) {
 	req, err := client.listByDatabaseAdvisorCreateRequest(ctx, resourceGroupName, serverName, databaseName, advisorName, options)
 	if err != nil {
-		return DatabaseRecommendedActionsListByDatabaseAdvisorResponse{}, err
+		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseRecommendedActionsListByDatabaseAdvisorResponse{}, err
+		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseRecommendedActionsListByDatabaseAdvisorResponse{}, client.listByDatabaseAdvisorHandleError(resp)
+		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByDatabaseAdvisorHandleResponse(resp)
 }
 
 // listByDatabaseAdvisorCreateRequest creates the ListByDatabaseAdvisor request.
-func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseRecommendedActionsListByDatabaseAdvisorOptions) (*policy.Request, error) {
+func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseRecommendedActionsClientListByDatabaseAdvisorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -157,7 +168,7 @@ func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,45 +180,42 @@ func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorCreateReque
 }
 
 // listByDatabaseAdvisorHandleResponse handles the ListByDatabaseAdvisor response.
-func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleResponse(resp *http.Response) (DatabaseRecommendedActionsListByDatabaseAdvisorResponse, error) {
-	result := DatabaseRecommendedActionsListByDatabaseAdvisorResponse{RawResponse: resp}
+func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse, error) {
+	result := DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedActionArray); err != nil {
-		return DatabaseRecommendedActionsListByDatabaseAdvisorResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
 	}
 	return result, nil
 }
 
-// listByDatabaseAdvisorHandleError handles the ListByDatabaseAdvisor error response.
-func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates a database recommended action.
-// If the operation fails it returns a generic error.
-func (client *DatabaseRecommendedActionsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, parameters RecommendedAction, options *DatabaseRecommendedActionsUpdateOptions) (DatabaseRecommendedActionsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// advisorName - The name of the Database Advisor.
+// recommendedActionName - The name of Database Recommended Action.
+// parameters - The requested recommended action resource state.
+// options - DatabaseRecommendedActionsClientUpdateOptions contains the optional parameters for the DatabaseRecommendedActionsClient.Update
+// method.
+func (client *DatabaseRecommendedActionsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, parameters RecommendedAction, options *DatabaseRecommendedActionsClientUpdateOptions) (DatabaseRecommendedActionsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, advisorName, recommendedActionName, parameters, options)
 	if err != nil {
-		return DatabaseRecommendedActionsUpdateResponse{}, err
+		return DatabaseRecommendedActionsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseRecommendedActionsUpdateResponse{}, err
+		return DatabaseRecommendedActionsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseRecommendedActionsUpdateResponse{}, client.updateHandleError(resp)
+		return DatabaseRecommendedActionsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, parameters RecommendedAction, options *DatabaseRecommendedActionsUpdateOptions) (*policy.Request, error) {
+func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, recommendedActionName string, parameters RecommendedAction, options *DatabaseRecommendedActionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -233,7 +241,7 @@ func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -245,22 +253,10 @@ func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DatabaseRecommendedActionsClient) updateHandleResponse(resp *http.Response) (DatabaseRecommendedActionsUpdateResponse, error) {
-	result := DatabaseRecommendedActionsUpdateResponse{RawResponse: resp}
+func (client *DatabaseRecommendedActionsClient) updateHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientUpdateResponse, error) {
+	result := DatabaseRecommendedActionsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedAction); err != nil {
-		return DatabaseRecommendedActionsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseRecommendedActionsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DatabaseRecommendedActionsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

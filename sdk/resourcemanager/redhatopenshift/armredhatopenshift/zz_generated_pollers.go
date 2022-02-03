@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// OpenShiftClustersCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type OpenShiftClustersCreateOrUpdatePoller struct {
+// OpenShiftClustersClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type OpenShiftClustersClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *OpenShiftClustersCreateOrUpdatePoller) Done() bool {
+func (p *OpenShiftClustersClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *OpenShiftClustersCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *OpenShiftClustersCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *OpenShiftClustersClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final OpenShiftClustersCreateOrUpdateResponse will be returned.
-func (p *OpenShiftClustersCreateOrUpdatePoller) FinalResponse(ctx context.Context) (OpenShiftClustersCreateOrUpdateResponse, error) {
-	respType := OpenShiftClustersCreateOrUpdateResponse{}
+// If the final GET succeeded then the final OpenShiftClustersClientCreateOrUpdateResponse will be returned.
+func (p *OpenShiftClustersClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (OpenShiftClustersClientCreateOrUpdateResponse, error) {
+	respType := OpenShiftClustersClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.OpenShiftCluster)
 	if err != nil {
-		return OpenShiftClustersCreateOrUpdateResponse{}, err
+		return OpenShiftClustersClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *OpenShiftClustersCreateOrUpdatePoller) FinalResponse(ctx context.Contex
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *OpenShiftClustersCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *OpenShiftClustersClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// OpenShiftClustersDeletePoller provides polling facilities until the operation reaches a terminal state.
-type OpenShiftClustersDeletePoller struct {
+// OpenShiftClustersClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type OpenShiftClustersClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *OpenShiftClustersDeletePoller) Done() bool {
+func (p *OpenShiftClustersClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *OpenShiftClustersDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *OpenShiftClustersDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *OpenShiftClustersClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final OpenShiftClustersDeleteResponse will be returned.
-func (p *OpenShiftClustersDeletePoller) FinalResponse(ctx context.Context) (OpenShiftClustersDeleteResponse, error) {
-	respType := OpenShiftClustersDeleteResponse{}
+// If the final GET succeeded then the final OpenShiftClustersClientDeleteResponse will be returned.
+func (p *OpenShiftClustersClientDeletePoller) FinalResponse(ctx context.Context) (OpenShiftClustersClientDeleteResponse, error) {
+	respType := OpenShiftClustersClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return OpenShiftClustersDeleteResponse{}, err
+		return OpenShiftClustersClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *OpenShiftClustersDeletePoller) FinalResponse(ctx context.Context) (Open
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *OpenShiftClustersDeletePoller) ResumeToken() (string, error) {
+func (p *OpenShiftClustersClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// OpenShiftClustersUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type OpenShiftClustersUpdatePoller struct {
+// OpenShiftClustersClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type OpenShiftClustersClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *OpenShiftClustersUpdatePoller) Done() bool {
+func (p *OpenShiftClustersClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *OpenShiftClustersUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *OpenShiftClustersUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *OpenShiftClustersClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final OpenShiftClustersUpdateResponse will be returned.
-func (p *OpenShiftClustersUpdatePoller) FinalResponse(ctx context.Context) (OpenShiftClustersUpdateResponse, error) {
-	respType := OpenShiftClustersUpdateResponse{}
+// If the final GET succeeded then the final OpenShiftClustersClientUpdateResponse will be returned.
+func (p *OpenShiftClustersClientUpdatePoller) FinalResponse(ctx context.Context) (OpenShiftClustersClientUpdateResponse, error) {
+	respType := OpenShiftClustersClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.OpenShiftCluster)
 	if err != nil {
-		return OpenShiftClustersUpdateResponse{}, err
+		return OpenShiftClustersClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,6 +139,6 @@ func (p *OpenShiftClustersUpdatePoller) FinalResponse(ctx context.Context) (Open
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *OpenShiftClustersUpdatePoller) ResumeToken() (string, error) {
+func (p *OpenShiftClustersClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

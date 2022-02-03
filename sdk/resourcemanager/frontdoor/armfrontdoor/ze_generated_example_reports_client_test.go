@@ -30,14 +30,14 @@ func ExampleReportsClient_GetLatencyScorecards() {
 		"<resource-group-name>",
 		"<profile-name>",
 		"<experiment-name>",
-		armfrontdoor.LatencyScorecardAggregationIntervalDaily,
-		&armfrontdoor.ReportsGetLatencyScorecardsOptions{EndDateTimeUTC: nil,
+		armfrontdoor.LatencyScorecardAggregationInterval("Daily"),
+		&armfrontdoor.ReportsClientGetLatencyScorecardsOptions{EndDateTimeUTC: nil,
 			Country: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LatencyScorecard.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReportsClientGetLatencyScorecardsResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetTimeseries.json
@@ -54,13 +54,13 @@ func ExampleReportsClient_GetTimeseries() {
 		"<experiment-name>",
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-21T17:32:28Z"); return t }(),
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T17:32:28Z"); return t }(),
-		armfrontdoor.TimeseriesAggregationIntervalHourly,
-		armfrontdoor.TimeseriesTypeMeasurementCounts,
-		&armfrontdoor.ReportsGetTimeseriesOptions{Endpoint: nil,
+		armfrontdoor.TimeseriesAggregationInterval("Hourly"),
+		armfrontdoor.TimeseriesType("MeasurementCounts"),
+		&armfrontdoor.ReportsClientGetTimeseriesOptions{Endpoint: nil,
 			Country: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Timeseries.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReportsClientGetTimeseriesResult)
 }

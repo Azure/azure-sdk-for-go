@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// OpenShiftClustersListByResourceGroupPager provides operations for iterating over paged responses.
-type OpenShiftClustersListByResourceGroupPager struct {
+// OpenShiftClustersClientListByResourceGroupPager provides operations for iterating over paged responses.
+type OpenShiftClustersClientListByResourceGroupPager struct {
 	client    *OpenShiftClustersClient
-	current   OpenShiftClustersListByResourceGroupResponse
+	current   OpenShiftClustersClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OpenShiftClustersListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, OpenShiftClustersClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OpenShiftClustersListByResourceGroupPager) Err() error {
+func (p *OpenShiftClustersClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OpenShiftClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *OpenShiftClustersClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *OpenShiftClustersListByResourceGroupPager) NextPage(ctx context.Context
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *OpenShiftClustersListByResourceGroupPager) NextPage(ctx context.Context
 	return true
 }
 
-// PageResponse returns the current OpenShiftClustersListByResourceGroupResponse page.
-func (p *OpenShiftClustersListByResourceGroupPager) PageResponse() OpenShiftClustersListByResourceGroupResponse {
+// PageResponse returns the current OpenShiftClustersClientListByResourceGroupResponse page.
+func (p *OpenShiftClustersClientListByResourceGroupPager) PageResponse() OpenShiftClustersClientListByResourceGroupResponse {
 	return p.current
 }
 
-// OpenShiftClustersListPager provides operations for iterating over paged responses.
-type OpenShiftClustersListPager struct {
+// OpenShiftClustersClientListPager provides operations for iterating over paged responses.
+type OpenShiftClustersClientListPager struct {
 	client    *OpenShiftClustersClient
-	current   OpenShiftClustersListResponse
+	current   OpenShiftClustersClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OpenShiftClustersListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OpenShiftClustersClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OpenShiftClustersListPager) Err() error {
+func (p *OpenShiftClustersClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OpenShiftClustersListPager) NextPage(ctx context.Context) bool {
+func (p *OpenShiftClustersClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *OpenShiftClustersListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *OpenShiftClustersListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OpenShiftClustersListResponse page.
-func (p *OpenShiftClustersListPager) PageResponse() OpenShiftClustersListResponse {
+// PageResponse returns the current OpenShiftClustersClientListResponse page.
+func (p *OpenShiftClustersClientListPager) PageResponse() OpenShiftClustersClientListResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,7 +173,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }

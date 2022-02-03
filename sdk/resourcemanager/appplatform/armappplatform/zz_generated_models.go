@@ -15,9 +15,212 @@ import (
 	"time"
 )
 
+// APIPortalCustomDomainProperties - The properties of custom domain for API portal
+type APIPortalCustomDomainProperties struct {
+	// The thumbprint of bound certificate.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
+// APIPortalCustomDomainResource - Custom domain of the API portal
+type APIPortalCustomDomainResource struct {
+	// The properties of custom domain for API portal
+	Properties *APIPortalCustomDomainProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// APIPortalCustomDomainResourceCollection - Object that includes an array of API portal custom domain resources and a possible
+// link for next set
+type APIPortalCustomDomainResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of API portal custom domain resources
+	Value []*APIPortalCustomDomainResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type APIPortalCustomDomainResourceCollection.
+func (a APIPortalCustomDomainResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// APIPortalCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginCreateOrUpdate
+// method.
+type APIPortalCustomDomainsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalCustomDomainsClientBeginDeleteOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginDelete
+// method.
+type APIPortalCustomDomainsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalCustomDomainsClientGetOptions contains the optional parameters for the APIPortalCustomDomainsClient.Get method.
+type APIPortalCustomDomainsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.List method.
+type APIPortalCustomDomainsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalInstance - Collection of instances belong to the API portal
+type APIPortalInstance struct {
+	// READ-ONLY; Name of the API portal instance
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the API portal instance
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// APIPortalProperties - API portal properties payload
+type APIPortalProperties struct {
+	// The array of resource Ids of gateway to integrate with API portal.
+	GatewayIDs []*string `json:"gatewayIds,omitempty"`
+
+	// Indicate if only https is allowed.
+	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+
+	// Indicates whether the API portal exposes endpoint.
+	Public *bool `json:"public,omitempty"`
+
+	// Collection of OpenAPI source URL locations.
+	SourceUrls []*string `json:"sourceUrls,omitempty"`
+
+	// Single sign-on related configuration
+	SsoProperties *SsoProperties `json:"ssoProperties,omitempty"`
+
+	// READ-ONLY; Collection of instances belong to API portal.
+	Instances []*APIPortalInstance `json:"instances,omitempty" azure:"ro"`
+
+	// READ-ONLY; State of the API portal.
+	ProvisioningState *APIPortalProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *APIPortalResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+
+	// READ-ONLY; URL of the API portal, exposed when 'public' is true.
+	URL *string `json:"url,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type APIPortalProperties.
+func (a APIPortalProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "gatewayIds", a.GatewayIDs)
+	populate(objectMap, "httpsOnly", a.HTTPSOnly)
+	populate(objectMap, "instances", a.Instances)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "public", a.Public)
+	populate(objectMap, "resourceRequests", a.ResourceRequests)
+	populate(objectMap, "sourceUrls", a.SourceUrls)
+	populate(objectMap, "ssoProperties", a.SsoProperties)
+	populate(objectMap, "url", a.URL)
+	return json.Marshal(objectMap)
+}
+
+// APIPortalResource - API portal resource
+type APIPortalResource struct {
+	// API portal properties payload
+	Properties *APIPortalProperties `json:"properties,omitempty"`
+
+	// Sku of the API portal resource
+	SKU *SKU `json:"sku,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// APIPortalResourceCollection - Object that includes an array of API portal resources and a possible link for next set
+type APIPortalResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of API portal resources
+	Value []*APIPortalResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type APIPortalResourceCollection.
+func (a APIPortalResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// APIPortalResourceRequests - Resource requests of the API portal
+type APIPortalResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each API portal instance
+	CPU *string `json:"cpu,omitempty" azure:"ro"`
+
+	// READ-ONLY; Memory allocated to each API portal instance
+	Memory *string `json:"memory,omitempty" azure:"ro"`
+}
+
+// APIPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalsClient.BeginCreateOrUpdate
+// method.
+type APIPortalsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientBeginDeleteOptions contains the optional parameters for the APIPortalsClient.BeginDelete method.
+type APIPortalsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientGetOptions contains the optional parameters for the APIPortalsClient.Get method.
+type APIPortalsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.List method.
+type APIPortalsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientValidateDomainOptions contains the optional parameters for the APIPortalsClient.ValidateDomain method.
+type APIPortalsClientValidateDomainOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActiveDeploymentCollection - Object that includes an array of Deployment resource name and set them as active.
+type ActiveDeploymentCollection struct {
+	// Collection of Deployment name.
+	ActiveDeploymentNames []*string `json:"activeDeploymentNames,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ActiveDeploymentCollection.
+func (a ActiveDeploymentCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "activeDeploymentNames", a.ActiveDeploymentNames)
+	return json.Marshal(objectMap)
+}
+
 // AppResource - App resource payload
 type AppResource struct {
-	ProxyResource
 	// The Managed Identity type of the app resource
 	Identity *ManagedIdentityProperties `json:"identity,omitempty"`
 
@@ -26,45 +229,31 @@ type AppResource struct {
 
 	// Properties of the App resource
 	Properties *AppResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AppResource.
 func (a AppResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
 	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AppResource.
-func (a *AppResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &a.Identity)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &a.Location)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // AppResourceCollection - Object that includes an array of App resources and a possible link for next set
@@ -86,8 +275,8 @@ func (a AppResourceCollection) MarshalJSON() ([]byte, error) {
 
 // AppResourceProperties - App resource properties payload
 type AppResourceProperties struct {
-	// Name of the active deployment of the App
-	ActiveDeploymentName *string `json:"activeDeploymentName,omitempty"`
+	// Collection of addons
+	AddonConfigs map[string]map[string]map[string]interface{} `json:"addonConfigs,omitempty"`
 
 	// List of custom persistent disks
 	CustomPersistentDisks []*CustomPersistentDiskResource `json:"customPersistentDisks,omitempty"`
@@ -113,9 +302,6 @@ type AppResourceProperties struct {
 	// Temporary disk settings
 	TemporaryDisk *TemporaryDisk `json:"temporaryDisk,omitempty"`
 
-	// READ-ONLY; Date time when the resource is created
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
-
 	// READ-ONLY; Provisioning state of the App
 	ProvisioningState *AppResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
@@ -126,8 +312,7 @@ type AppResourceProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type AppResourceProperties.
 func (a AppResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "activeDeploymentName", a.ActiveDeploymentName)
-	populateTimeRFC3339(objectMap, "createdTime", a.CreatedTime)
+	populate(objectMap, "addonConfigs", a.AddonConfigs)
 	populate(objectMap, "customPersistentDisks", a.CustomPersistentDisks)
 	populate(objectMap, "enableEndToEndTLS", a.EnableEndToEndTLS)
 	populate(objectMap, "fqdn", a.Fqdn)
@@ -141,98 +326,51 @@ func (a AppResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AppResourceProperties.
-func (a *AppResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activeDeploymentName":
-			err = unpopulate(val, &a.ActiveDeploymentName)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &a.CreatedTime)
-			delete(rawMsg, key)
-		case "customPersistentDisks":
-			err = unpopulate(val, &a.CustomPersistentDisks)
-			delete(rawMsg, key)
-		case "enableEndToEndTLS":
-			err = unpopulate(val, &a.EnableEndToEndTLS)
-			delete(rawMsg, key)
-		case "fqdn":
-			err = unpopulate(val, &a.Fqdn)
-			delete(rawMsg, key)
-		case "httpsOnly":
-			err = unpopulate(val, &a.HTTPSOnly)
-			delete(rawMsg, key)
-		case "loadedCertificates":
-			err = unpopulate(val, &a.LoadedCertificates)
-			delete(rawMsg, key)
-		case "persistentDisk":
-			err = unpopulate(val, &a.PersistentDisk)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "public":
-			err = unpopulate(val, &a.Public)
-			delete(rawMsg, key)
-		case "temporaryDisk":
-			err = unpopulate(val, &a.TemporaryDisk)
-			delete(rawMsg, key)
-		case "url":
-			err = unpopulate(val, &a.URL)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ApplicationInsightsAgentVersions - Application Insights agent versions properties payload
 type ApplicationInsightsAgentVersions struct {
 	// READ-ONLY; Indicates the version of application insight java agent
 	Java *string `json:"java,omitempty" azure:"ro"`
 }
 
-// AppsBeginCreateOrUpdateOptions contains the optional parameters for the Apps.BeginCreateOrUpdate method.
-type AppsBeginCreateOrUpdateOptions struct {
+// AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate method.
+type AppsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsBeginDeleteOptions contains the optional parameters for the Apps.BeginDelete method.
-type AppsBeginDeleteOptions struct {
+// AppsClientBeginDeleteOptions contains the optional parameters for the AppsClient.BeginDelete method.
+type AppsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsBeginUpdateOptions contains the optional parameters for the Apps.BeginUpdate method.
-type AppsBeginUpdateOptions struct {
+// AppsClientBeginSetActiveDeploymentsOptions contains the optional parameters for the AppsClient.BeginSetActiveDeployments
+// method.
+type AppsClientBeginSetActiveDeploymentsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsGetOptions contains the optional parameters for the Apps.Get method.
-type AppsGetOptions struct {
+// AppsClientBeginUpdateOptions contains the optional parameters for the AppsClient.BeginUpdate method.
+type AppsClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AppsClientGetOptions contains the optional parameters for the AppsClient.Get method.
+type AppsClientGetOptions struct {
 	// Indicates whether sync status
 	SyncStatus *string
 }
 
-// AppsGetResourceUploadURLOptions contains the optional parameters for the Apps.GetResourceUploadURL method.
-type AppsGetResourceUploadURLOptions struct {
+// AppsClientGetResourceUploadURLOptions contains the optional parameters for the AppsClient.GetResourceUploadURL method.
+type AppsClientGetResourceUploadURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsListOptions contains the optional parameters for the Apps.List method.
-type AppsListOptions struct {
+// AppsClientListOptions contains the optional parameters for the AppsClient.List method.
+type AppsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsValidateDomainOptions contains the optional parameters for the Apps.ValidateDomain method.
-type AppsValidateDomainOptions struct {
+// AppsClientValidateDomainOptions contains the optional parameters for the AppsClient.ValidateDomain method.
+type AppsClientValidateDomainOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -267,16 +405,40 @@ func (a AvailableRuntimeVersions) MarshalJSON() ([]byte, error) {
 
 // AzureFileVolume - The properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
-	CustomPersistentDiskProperties
+	// REQUIRED; The mount path of the persistent disk.
+	MountPath *string `json:"mountPath,omitempty"`
+
 	// REQUIRED; The share name of the Azure File share.
 	ShareName *string `json:"shareName,omitempty"`
+
+	// REQUIRED; The type of the underlying resource to mount as a persistent disk.
+	Type *CustomPersistentDiskPropertiesType `json:"type,omitempty"`
+
+	// These are the mount options for a persistent disk.
+	MountOptions []*string `json:"mountOptions,omitempty"`
+
+	// Indicates whether the persistent disk is a readOnly one.
+	ReadOnly *bool `json:"readOnly,omitempty"`
+}
+
+// GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type AzureFileVolume.
+func (a *AzureFileVolume) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
+	return &CustomPersistentDiskProperties{
+		Type:         a.Type,
+		MountPath:    a.MountPath,
+		ReadOnly:     a.ReadOnly,
+		MountOptions: a.MountOptions,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureFileVolume.
 func (a AzureFileVolume) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.CustomPersistentDiskProperties.marshalInternal(objectMap, CustomPersistentDiskPropertiesTypeAzureFileVolume)
+	populate(objectMap, "mountOptions", a.MountOptions)
+	populate(objectMap, "mountPath", a.MountPath)
+	populate(objectMap, "readOnly", a.ReadOnly)
 	populate(objectMap, "shareName", a.ShareName)
+	objectMap["type"] = CustomPersistentDiskPropertiesTypeAzureFileVolume
 	return json.Marshal(objectMap)
 }
 
@@ -289,56 +451,56 @@ func (a *AzureFileVolume) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "mountOptions":
+			err = unpopulate(val, &a.MountOptions)
+			delete(rawMsg, key)
+		case "mountPath":
+			err = unpopulate(val, &a.MountPath)
+			delete(rawMsg, key)
+		case "readOnly":
+			err = unpopulate(val, &a.ReadOnly)
+			delete(rawMsg, key)
 		case "shareName":
 			err = unpopulate(val, &a.ShareName)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.CustomPersistentDiskProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // BindingResource - Binding resource payload
 type BindingResource struct {
-	ProxyResource
 	// Properties of the Binding resource
 	Properties *BindingResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BindingResource.
 func (b BindingResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "systemData", b.SystemData)
+	populate(objectMap, "type", b.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BindingResource.
-func (b *BindingResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // BindingResourceCollection - Object that includes an array of Binding resources and a possible link for next set
@@ -399,29 +561,617 @@ func (b BindingResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BindingsBeginCreateOrUpdateOptions contains the optional parameters for the Bindings.BeginCreateOrUpdate method.
-type BindingsBeginCreateOrUpdateOptions struct {
+// BindingsClientBeginCreateOrUpdateOptions contains the optional parameters for the BindingsClient.BeginCreateOrUpdate method.
+type BindingsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BindingsBeginDeleteOptions contains the optional parameters for the Bindings.BeginDelete method.
-type BindingsBeginDeleteOptions struct {
+// BindingsClientBeginDeleteOptions contains the optional parameters for the BindingsClient.BeginDelete method.
+type BindingsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BindingsBeginUpdateOptions contains the optional parameters for the Bindings.BeginUpdate method.
-type BindingsBeginUpdateOptions struct {
+// BindingsClientBeginUpdateOptions contains the optional parameters for the BindingsClient.BeginUpdate method.
+type BindingsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BindingsGetOptions contains the optional parameters for the Bindings.Get method.
-type BindingsGetOptions struct {
+// BindingsClientGetOptions contains the optional parameters for the BindingsClient.Get method.
+type BindingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BindingsListOptions contains the optional parameters for the Bindings.List method.
-type BindingsListOptions struct {
+// BindingsClientListOptions contains the optional parameters for the BindingsClient.List method.
+type BindingsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Build resource payload
+type Build struct {
+	// Properties of the build resource
+	Properties *BuildProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// BuildCollection - Object that includes an array of Build resources and a possible link for next set
+type BuildCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Build resources
+	Value []*Build `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildCollection.
+func (b BuildCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", b.NextLink)
+	populate(objectMap, "value", b.Value)
+	return json.Marshal(objectMap)
+}
+
+// BuildProperties - Build resource properties payload
+type BuildProperties struct {
+	// The resource id of agent pool
+	AgentPool *string `json:"agentPool,omitempty"`
+
+	// The resource id of builder to build the source code
+	Builder *string `json:"builder,omitempty"`
+
+	// The environment variables for this build
+	Env map[string]*string `json:"env,omitempty"`
+
+	// The relative path of source code
+	RelativePath *string `json:"relativePath,omitempty"`
+
+	// READ-ONLY; Provisioning state of the KPack build result
+	ProvisioningState *BuildProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The build result triggered by this build
+	TriggeredBuildResult *TriggeredBuildResult `json:"triggeredBuildResult,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildProperties.
+func (b BuildProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "agentPool", b.AgentPool)
+	populate(objectMap, "builder", b.Builder)
+	populate(objectMap, "env", b.Env)
+	populate(objectMap, "provisioningState", b.ProvisioningState)
+	populate(objectMap, "relativePath", b.RelativePath)
+	populate(objectMap, "triggeredBuildResult", b.TriggeredBuildResult)
+	return json.Marshal(objectMap)
+}
+
+// BuildResult - Build result resource payload
+type BuildResult struct {
+	// Properties of the build result resource
+	Properties *BuildResultProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// BuildResultCollection - Object that includes an array of Build result resources and a possible link for next set
+type BuildResultCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Build result resources
+	Value []*BuildResult `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildResultCollection.
+func (b BuildResultCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", b.NextLink)
+	populate(objectMap, "value", b.Value)
+	return json.Marshal(objectMap)
+}
+
+// BuildResultLog - Build result log resource properties payload
+type BuildResultLog struct {
+	// The public download URL of this build result log
+	BlobURL *string `json:"blobUrl,omitempty"`
+}
+
+// BuildResultProperties - Build result resource properties payload
+type BuildResultProperties struct {
+	// The build pod name which can be used to get the build log streaming.
+	BuildPodName *string `json:"buildPodName,omitempty"`
+
+	// The name of this build result
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; All of the build stage (init-container and container) resources in build pod.
+	BuildStages []*BuildStageProperties `json:"buildStages,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the KPack build result
+	ProvisioningState *BuildResultProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildResultProperties.
+func (b BuildResultProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "buildPodName", b.BuildPodName)
+	populate(objectMap, "buildStages", b.BuildStages)
+	populate(objectMap, "name", b.Name)
+	populate(objectMap, "provisioningState", b.ProvisioningState)
+	return json.Marshal(objectMap)
+}
+
+// BuildResultUserSourceInfo - Reference to a build result
+type BuildResultUserSourceInfo struct {
+	// REQUIRED; Type of the source uploaded
+	Type *string `json:"type,omitempty"`
+
+	// Resource id of an existing succeeded build result under the same Spring instance.
+	BuildResultID *string `json:"buildResultId,omitempty"`
+
+	// Version of the source
+	Version *string `json:"version,omitempty"`
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type BuildResultUserSourceInfo.
+func (b *BuildResultUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    b.Type,
+		Version: b.Version,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildResultUserSourceInfo.
+func (b BuildResultUserSourceInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "buildResultId", b.BuildResultID)
+	objectMap["type"] = "BuildResult"
+	populate(objectMap, "version", b.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BuildResultUserSourceInfo.
+func (b *BuildResultUserSourceInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "buildResultId":
+			err = unpopulate(val, &b.BuildResultID)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &b.Type)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, &b.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// BuildService - Build service resource payload
+type BuildService struct {
+	// Properties of the build resource
+	Properties *BuildServiceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// BuildServiceAgentPoolClientBeginUpdatePutOptions contains the optional parameters for the BuildServiceAgentPoolClient.BeginUpdatePut
+// method.
+type BuildServiceAgentPoolClientBeginUpdatePutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceAgentPoolClientGetOptions contains the optional parameters for the BuildServiceAgentPoolClient.Get method.
+type BuildServiceAgentPoolClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceAgentPoolClientListOptions contains the optional parameters for the BuildServiceAgentPoolClient.List method.
+type BuildServiceAgentPoolClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceAgentPoolProperties - Build service agent pool properties
+type BuildServiceAgentPoolProperties struct {
+	// build service agent pool size properties
+	PoolSize *BuildServiceAgentPoolSizeProperties `json:"poolSize,omitempty"`
+
+	// READ-ONLY; Provisioning state of the build service agent pool
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// BuildServiceAgentPoolResource - The build service agent pool resource
+type BuildServiceAgentPoolResource struct {
+	// build service agent pool properties
+	Properties *BuildServiceAgentPoolProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// BuildServiceAgentPoolResourceCollection - Object that includes an array of build service agent pool resources and a possible
+// link for next set
+type BuildServiceAgentPoolResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of build service agent pool resource
+	Value []*BuildServiceAgentPoolResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildServiceAgentPoolResourceCollection.
+func (b BuildServiceAgentPoolResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", b.NextLink)
+	populate(objectMap, "value", b.Value)
+	return json.Marshal(objectMap)
+}
+
+// BuildServiceAgentPoolSizeProperties - Build service agent pool size properties
+type BuildServiceAgentPoolSizeProperties struct {
+	// The name of build service agent pool size
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; The cpu property of build service agent pool size
+	CPU *string `json:"cpu,omitempty" azure:"ro"`
+
+	// READ-ONLY; The memory property of build service agent pool size
+	Memory *string `json:"memory,omitempty" azure:"ro"`
+}
+
+// BuildServiceBuilderClientBeginCreateOrUpdateOptions contains the optional parameters for the BuildServiceBuilderClient.BeginCreateOrUpdate
+// method.
+type BuildServiceBuilderClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceBuilderClientBeginDeleteOptions contains the optional parameters for the BuildServiceBuilderClient.BeginDelete
+// method.
+type BuildServiceBuilderClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceBuilderClientGetOptions contains the optional parameters for the BuildServiceBuilderClient.Get method.
+type BuildServiceBuilderClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceBuilderClientListOptions contains the optional parameters for the BuildServiceBuilderClient.List method.
+type BuildServiceBuilderClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientCreateOrUpdateBuildOptions contains the optional parameters for the BuildServiceClient.CreateOrUpdateBuild
+// method.
+type BuildServiceClientCreateOrUpdateBuildOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientGetBuildOptions contains the optional parameters for the BuildServiceClient.GetBuild method.
+type BuildServiceClientGetBuildOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientGetBuildResultLogOptions contains the optional parameters for the BuildServiceClient.GetBuildResultLog
+// method.
+type BuildServiceClientGetBuildResultLogOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientGetBuildResultOptions contains the optional parameters for the BuildServiceClient.GetBuildResult method.
+type BuildServiceClientGetBuildResultOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientGetBuildServiceOptions contains the optional parameters for the BuildServiceClient.GetBuildService method.
+type BuildServiceClientGetBuildServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientGetResourceUploadURLOptions contains the optional parameters for the BuildServiceClient.GetResourceUploadURL
+// method.
+type BuildServiceClientGetResourceUploadURLOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientGetSupportedBuildpackOptions contains the optional parameters for the BuildServiceClient.GetSupportedBuildpack
+// method.
+type BuildServiceClientGetSupportedBuildpackOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientGetSupportedStackOptions contains the optional parameters for the BuildServiceClient.GetSupportedStack
+// method.
+type BuildServiceClientGetSupportedStackOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientListBuildResultsOptions contains the optional parameters for the BuildServiceClient.ListBuildResults
+// method.
+type BuildServiceClientListBuildResultsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientListBuildServicesOptions contains the optional parameters for the BuildServiceClient.ListBuildServices
+// method.
+type BuildServiceClientListBuildServicesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientListBuildsOptions contains the optional parameters for the BuildServiceClient.ListBuilds method.
+type BuildServiceClientListBuildsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientListSupportedBuildpacksOptions contains the optional parameters for the BuildServiceClient.ListSupportedBuildpacks
+// method.
+type BuildServiceClientListSupportedBuildpacksOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceClientListSupportedStacksOptions contains the optional parameters for the BuildServiceClient.ListSupportedStacks
+// method.
+type BuildServiceClientListSupportedStacksOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildServiceCollection - Object that includes an array of Build service resources and a possible link for next set
+type BuildServiceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Build service resources
+	Value []*BuildService `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildServiceCollection.
+func (b BuildServiceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", b.NextLink)
+	populate(objectMap, "value", b.Value)
+	return json.Marshal(objectMap)
+}
+
+// BuildServiceProperties - Build service resource properties payload
+type BuildServiceProperties struct {
+	// The installed KPack version in this build service.
+	KPackVersion *string `json:"kPackVersion,omitempty"`
+
+	// The runtime resource configuration of this build service.
+	ResourceRequests *BuildServicePropertiesResourceRequests `json:"resourceRequests,omitempty"`
+
+	// READ-ONLY; Provisioning state of the KPack build result
+	ProvisioningState *BuildServiceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// BuildServicePropertiesResourceRequests - The runtime resource configuration of this build service.
+type BuildServicePropertiesResourceRequests struct {
+	// READ-ONLY; vCPU allocated to the entire build service node pool.
+	CPU *string `json:"cpu,omitempty" azure:"ro"`
+
+	// READ-ONLY; Memory allocated to the entire build service node pool.
+	Memory *string `json:"memory,omitempty" azure:"ro"`
+}
+
+// BuildStageProperties - The build stage (init-container and container) resources in build pod.
+type BuildStageProperties struct {
+	// READ-ONLY; The name of this build stage resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of this build stage resource.
+	Status *KPackBuildStageProvisioningState `json:"status,omitempty" azure:"ro"`
+}
+
+// BuilderProperties - KPack Builder properties payload
+type BuilderProperties struct {
+	// Builder buildpack groups.
+	BuildpackGroups []*BuildpacksGroupProperties `json:"buildpackGroups,omitempty"`
+
+	// Builder cluster stack property.
+	Stack *StackProperties `json:"stack,omitempty"`
+
+	// READ-ONLY; Builder provision status.
+	ProvisioningState *BuilderProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuilderProperties.
+func (b BuilderProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "buildpackGroups", b.BuildpackGroups)
+	populate(objectMap, "provisioningState", b.ProvisioningState)
+	populate(objectMap, "stack", b.Stack)
+	return json.Marshal(objectMap)
+}
+
+// BuilderResource - KPack Builder resource
+type BuilderResource struct {
+	// Property of the Builder resource.
+	Properties *BuilderProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// BuilderResourceCollection - Object that includes an array of Builder resources and a possible link for next set
+type BuilderResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Builder resources
+	Value []*BuilderResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuilderResourceCollection.
+func (b BuilderResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", b.NextLink)
+	populate(objectMap, "value", b.Value)
+	return json.Marshal(objectMap)
+}
+
+// BuildpackBindingClientBeginCreateOrUpdateOptions contains the optional parameters for the BuildpackBindingClient.BeginCreateOrUpdate
+// method.
+type BuildpackBindingClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildpackBindingClientBeginDeleteOptions contains the optional parameters for the BuildpackBindingClient.BeginDelete method.
+type BuildpackBindingClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildpackBindingClientGetOptions contains the optional parameters for the BuildpackBindingClient.Get method.
+type BuildpackBindingClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildpackBindingClientListOptions contains the optional parameters for the BuildpackBindingClient.List method.
+type BuildpackBindingClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildpackBindingLaunchProperties - Buildpack Binding Launch Properties
+type BuildpackBindingLaunchProperties struct {
+	// Non-sensitive properties for launchProperties
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Sensitive properties for launchProperties
+	Secrets map[string]*string `json:"secrets,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildpackBindingLaunchProperties.
+func (b BuildpackBindingLaunchProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "secrets", b.Secrets)
+	return json.Marshal(objectMap)
+}
+
+// BuildpackBindingProperties - Properties of a buildpack binding
+type BuildpackBindingProperties struct {
+	// Buildpack Binding Type
+	BindingType *BindingType `json:"bindingType,omitempty"`
+
+	// The object describes the buildpack binding launch properties
+	LaunchProperties *BuildpackBindingLaunchProperties `json:"launchProperties,omitempty"`
+
+	// READ-ONLY; State of the Buildpack Binding.
+	ProvisioningState *BuildpackBindingProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// BuildpackBindingResource - Buildpack Binding Resource object
+type BuildpackBindingResource struct {
+	// Properties of a buildpack binding
+	Properties *BuildpackBindingProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// BuildpackBindingResourceCollection - Object that includes an array of BuildpackBinding resources and a possible link for
+// next set
+type BuildpackBindingResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of BuildpackBinding resources
+	Value []*BuildpackBindingResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildpackBindingResourceCollection.
+func (b BuildpackBindingResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", b.NextLink)
+	populate(objectMap, "value", b.Value)
+	return json.Marshal(objectMap)
+}
+
+// BuildpackProperties - Buildpack properties payload
+type BuildpackProperties struct {
+	// Id of the buildpack
+	ID *string `json:"id,omitempty"`
+}
+
+// BuildpacksGroupProperties - Buildpack group properties of the Builder
+type BuildpacksGroupProperties struct {
+	// Buildpacks in the buildpack group
+	Buildpacks []*BuildpackProperties `json:"buildpacks,omitempty"`
+
+	// Buildpack group name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BuildpacksGroupProperties.
+func (b BuildpacksGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "buildpacks", b.Buildpacks)
+	populate(objectMap, "name", b.Name)
+	return json.Marshal(objectMap)
 }
 
 // CertificatePropertiesClassification provides polymorphic access to related types.
@@ -463,16 +1213,9 @@ type CertificateProperties struct {
 // GetCertificateProperties implements the CertificatePropertiesClassification interface for type CertificateProperties.
 func (c *CertificateProperties) GetCertificateProperties() *CertificateProperties { return c }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateProperties.
-func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c CertificateProperties) marshalInternal(objectMap map[string]interface{}, discValue string) {
+// MarshalJSON implements the json.Marshaller interface for type CertificateProperties.
+func (c CertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	populate(objectMap, "activateDate", c.ActivateDate)
 	populate(objectMap, "dnsNames", c.DNSNames)
 	populate(objectMap, "expirationDate", c.ExpirationDate)
@@ -480,58 +1223,36 @@ func (c CertificateProperties) marshalInternal(objectMap map[string]interface{},
 	populate(objectMap, "issuer", c.Issuer)
 	populate(objectMap, "subjectName", c.SubjectName)
 	populate(objectMap, "thumbprint", c.Thumbprint)
-	c.Type = &discValue
 	objectMap["type"] = c.Type
-}
-
-func (c *CertificateProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activateDate":
-			err = unpopulate(val, &c.ActivateDate)
-			delete(rawMsg, key)
-		case "dnsNames":
-			err = unpopulate(val, &c.DNSNames)
-			delete(rawMsg, key)
-		case "expirationDate":
-			err = unpopulate(val, &c.ExpirationDate)
-			delete(rawMsg, key)
-		case "issuedDate":
-			err = unpopulate(val, &c.IssuedDate)
-			delete(rawMsg, key)
-		case "issuer":
-			err = unpopulate(val, &c.Issuer)
-			delete(rawMsg, key)
-		case "subjectName":
-			err = unpopulate(val, &c.SubjectName)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &c.Thumbprint)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return json.Marshal(objectMap)
 }
 
 // CertificateResource - Certificate resource payload.
 type CertificateResource struct {
-	ProxyResource
 	// Properties of the certificate resource payload.
 	Properties CertificatePropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CertificateResource.
 func (c CertificateResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -544,16 +1265,25 @@ func (c *CertificateResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &c.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &c.Name)
+			delete(rawMsg, key)
 		case "properties":
 			c.Properties, err = unmarshalCertificatePropertiesClassification(val)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &c.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &c.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -575,38 +1305,31 @@ func (c CertificateResourceCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CertificatesBeginCreateOrUpdateOptions contains the optional parameters for the Certificates.BeginCreateOrUpdate method.
-type CertificatesBeginCreateOrUpdateOptions struct {
+// CertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.BeginCreateOrUpdate
+// method.
+type CertificatesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesBeginDeleteOptions contains the optional parameters for the Certificates.BeginDelete method.
-type CertificatesBeginDeleteOptions struct {
+// CertificatesClientBeginDeleteOptions contains the optional parameters for the CertificatesClient.BeginDelete method.
+type CertificatesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesGetOptions contains the optional parameters for the Certificates.Get method.
-type CertificatesGetOptions struct {
+// CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
+type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesListOptions contains the optional parameters for the Certificates.List method.
-type CertificatesListOptions struct {
+// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+type CertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // CloudError - An error response from the service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// An error response from the service.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the service.
@@ -638,6 +1361,10 @@ func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
 type ClusterResourceProperties struct {
 	// Network profile of the Service
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+	ZoneRedundant  *bool           `json:"zoneRedundant,omitempty"`
+
+	// READ-ONLY; Fully qualified dns name of the service instance
+	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
 
 	// READ-ONLY; Power state of the Service
 	PowerState *PowerState `json:"powerState,omitempty" azure:"ro"`
@@ -715,40 +1442,31 @@ type ConfigServerProperties struct {
 
 // ConfigServerResource - Config Server resource
 type ConfigServerResource struct {
-	ProxyResource
 	// Properties of the Config Server resource
 	Properties *ConfigServerProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ConfigServerResource.
 func (c ConfigServerResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConfigServerResource.
-func (c *ConfigServerResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ConfigServerSettings - The settings of config server.
@@ -795,38 +1513,294 @@ func (c ConfigServerSettingsValidateResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConfigServersBeginUpdatePatchOptions contains the optional parameters for the ConfigServers.BeginUpdatePatch method.
-type ConfigServersBeginUpdatePatchOptions struct {
+// ConfigServersClientBeginUpdatePatchOptions contains the optional parameters for the ConfigServersClient.BeginUpdatePatch
+// method.
+type ConfigServersClientBeginUpdatePatchOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigServersBeginUpdatePutOptions contains the optional parameters for the ConfigServers.BeginUpdatePut method.
-type ConfigServersBeginUpdatePutOptions struct {
+// ConfigServersClientBeginUpdatePutOptions contains the optional parameters for the ConfigServersClient.BeginUpdatePut method.
+type ConfigServersClientBeginUpdatePutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigServersBeginValidateOptions contains the optional parameters for the ConfigServers.BeginValidate method.
-type ConfigServersBeginValidateOptions struct {
+// ConfigServersClientBeginValidateOptions contains the optional parameters for the ConfigServersClient.BeginValidate method.
+type ConfigServersClientBeginValidateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigServersGetOptions contains the optional parameters for the ConfigServers.Get method.
-type ConfigServersGetOptions struct {
+// ConfigServersClientGetOptions contains the optional parameters for the ConfigServersClient.Get method.
+type ConfigServersClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ConfigurationServiceGitProperty - Property of git environment.
+type ConfigurationServiceGitProperty struct {
+	// Repositories of Application Configuration Service git property.
+	Repositories []*ConfigurationServiceGitRepository `json:"repositories,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationServiceGitProperty.
+func (c ConfigurationServiceGitProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "repositories", c.Repositories)
+	return json.Marshal(objectMap)
+}
+
+// ConfigurationServiceGitPropertyValidateResult - Validation result for configuration service settings
+type ConfigurationServiceGitPropertyValidateResult struct {
+	// The detail validation results
+	GitReposValidationResult []*ValidationMessages `json:"gitReposValidationResult,omitempty"`
+
+	// Indicate if the configuration service settings are valid
+	IsValid *bool `json:"isValid,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationServiceGitPropertyValidateResult.
+func (c ConfigurationServiceGitPropertyValidateResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "gitReposValidationResult", c.GitReposValidationResult)
+	populate(objectMap, "isValid", c.IsValid)
+	return json.Marshal(objectMap)
+}
+
+// ConfigurationServiceGitRepository - Git repository property payload for Application Configuration Service
+type ConfigurationServiceGitRepository struct {
+	// REQUIRED; Label of the repository
+	Label *string `json:"label,omitempty"`
+
+	// REQUIRED; Name of the repository
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; Collection of patterns of the repository
+	Patterns []*string `json:"patterns,omitempty"`
+
+	// REQUIRED; URI of the repository
+	URI *string `json:"uri,omitempty"`
+
+	// Public sshKey of git repository.
+	HostKey *string `json:"hostKey,omitempty"`
+
+	// SshKey algorithm of git repository.
+	HostKeyAlgorithm *string `json:"hostKeyAlgorithm,omitempty"`
+
+	// Password of git repository basic auth.
+	Password *string `json:"password,omitempty"`
+
+	// Private sshKey algorithm of git repository.
+	PrivateKey *string `json:"privateKey,omitempty"`
+
+	// Searching path of the repository
+	SearchPaths []*string `json:"searchPaths,omitempty"`
+
+	// Strict host key checking or not.
+	StrictHostKeyChecking *bool `json:"strictHostKeyChecking,omitempty"`
+
+	// Username of git repository basic auth.
+	Username *string `json:"username,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationServiceGitRepository.
+func (c ConfigurationServiceGitRepository) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "hostKey", c.HostKey)
+	populate(objectMap, "hostKeyAlgorithm", c.HostKeyAlgorithm)
+	populate(objectMap, "label", c.Label)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "password", c.Password)
+	populate(objectMap, "patterns", c.Patterns)
+	populate(objectMap, "privateKey", c.PrivateKey)
+	populate(objectMap, "searchPaths", c.SearchPaths)
+	populate(objectMap, "strictHostKeyChecking", c.StrictHostKeyChecking)
+	populate(objectMap, "uri", c.URI)
+	populate(objectMap, "username", c.Username)
+	return json.Marshal(objectMap)
+}
+
+// ConfigurationServiceInstance - Collection of instances belong to the Application Configuration Service
+type ConfigurationServiceInstance struct {
+	// READ-ONLY; Name of the Application Configuration Service instance
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the Application Configuration Service instance
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// ConfigurationServiceProperties - Application Configuration Service properties payload
+type ConfigurationServiceProperties struct {
+	// The settings of Application Configuration Service.
+	Settings *ConfigurationServiceSettings `json:"settings,omitempty"`
+
+	// READ-ONLY; Collection of instances belong to Application Configuration Service.
+	Instances []*ConfigurationServiceInstance `json:"instances,omitempty" azure:"ro"`
+
+	// READ-ONLY; State of the Application Configuration Service.
+	ProvisioningState *ConfigurationServiceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *ConfigurationServiceResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationServiceProperties.
+func (c ConfigurationServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "instances", c.Instances)
+	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "resourceRequests", c.ResourceRequests)
+	populate(objectMap, "settings", c.Settings)
+	return json.Marshal(objectMap)
+}
+
+// ConfigurationServiceResource - Application Configuration Service resource
+type ConfigurationServiceResource struct {
+	// Application Configuration Service properties payload
+	Properties *ConfigurationServiceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ConfigurationServiceResourceCollection - Object that includes an array of configuration service resources and a possible
+// link for next set
+type ConfigurationServiceResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of configuration service resources
+	Value []*ConfigurationServiceResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationServiceResourceCollection.
+func (c ConfigurationServiceResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// ConfigurationServiceResourceRequests - Resource request payload of Application Configuration Service
+type ConfigurationServiceResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each Application Configuration Service instance
+	CPU *string `json:"cpu,omitempty" azure:"ro"`
+
+	// READ-ONLY; Instance count of the Application Configuration Service
+	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; Memory allocated to each Application Configuration Service instance
+	Memory *string `json:"memory,omitempty" azure:"ro"`
+}
+
+// ConfigurationServiceSettings - The settings of Application Configuration Service.
+type ConfigurationServiceSettings struct {
+	// Property of git environment.
+	GitProperty *ConfigurationServiceGitProperty `json:"gitProperty,omitempty"`
+}
+
+// ConfigurationServiceSettingsValidateResult - Validation result for configuration service settings
+type ConfigurationServiceSettingsValidateResult struct {
+	// Validation result for configuration service settings
+	GitPropertyValidationResult *ConfigurationServiceGitPropertyValidateResult `json:"gitPropertyValidationResult,omitempty"`
+}
+
+// ConfigurationServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationServicesClient.BeginCreateOrUpdate
+// method.
+type ConfigurationServicesClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationServicesClientBeginDeleteOptions contains the optional parameters for the ConfigurationServicesClient.BeginDelete
+// method.
+type ConfigurationServicesClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationServicesClientBeginValidateOptions contains the optional parameters for the ConfigurationServicesClient.BeginValidate
+// method.
+type ConfigurationServicesClientBeginValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationServicesClientGetOptions contains the optional parameters for the ConfigurationServicesClient.Get method.
+type ConfigurationServicesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationServicesClientListOptions contains the optional parameters for the ConfigurationServicesClient.List method.
+type ConfigurationServicesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerProbeSettings - Container liveness and readiness probe settings
+type ContainerProbeSettings struct {
+	// Indicates whether disable the liveness and readiness probe
+	DisableProbe *bool `json:"disableProbe,omitempty"`
 }
 
 // ContentCertificateProperties - Properties of certificate imported from key vault.
 type ContentCertificateProperties struct {
-	CertificateProperties
-	// REQUIRED; The content of uploaded certificate.
+	// REQUIRED; The type of the certificate source.
+	Type *string `json:"type,omitempty"`
+
+	// The content of uploaded certificate.
 	Content *string `json:"content,omitempty"`
+
+	// READ-ONLY; The activate date of certificate.
+	ActivateDate *string `json:"activateDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The domain list of certificate.
+	DNSNames []*string `json:"dnsNames,omitempty" azure:"ro"`
+
+	// READ-ONLY; The expiration date of certificate.
+	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The issue date of certificate.
+	IssuedDate *string `json:"issuedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The issuer of certificate.
+	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subject name of certificate.
+	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The thumbprint of certificate.
+	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+}
+
+// GetCertificateProperties implements the CertificatePropertiesClassification interface for type ContentCertificateProperties.
+func (c *ContentCertificateProperties) GetCertificateProperties() *CertificateProperties {
+	return &CertificateProperties{
+		Type:           c.Type,
+		Thumbprint:     c.Thumbprint,
+		Issuer:         c.Issuer,
+		IssuedDate:     c.IssuedDate,
+		ExpirationDate: c.ExpirationDate,
+		ActivateDate:   c.ActivateDate,
+		SubjectName:    c.SubjectName,
+		DNSNames:       c.DNSNames,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentCertificateProperties.
 func (c ContentCertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.CertificateProperties.marshalInternal(objectMap, "ContentCertificate")
+	populate(objectMap, "activateDate", c.ActivateDate)
 	populate(objectMap, "content", c.Content)
+	populate(objectMap, "dnsNames", c.DNSNames)
+	populate(objectMap, "expirationDate", c.ExpirationDate)
+	populate(objectMap, "issuedDate", c.IssuedDate)
+	populate(objectMap, "issuer", c.Issuer)
+	populate(objectMap, "subjectName", c.SubjectName)
+	populate(objectMap, "thumbprint", c.Thumbprint)
+	objectMap["type"] = "ContentCertificate"
 	return json.Marshal(objectMap)
 }
 
@@ -839,16 +1813,37 @@ func (c *ContentCertificateProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "activateDate":
+			err = unpopulate(val, &c.ActivateDate)
+			delete(rawMsg, key)
 		case "content":
 			err = unpopulate(val, &c.Content)
+			delete(rawMsg, key)
+		case "dnsNames":
+			err = unpopulate(val, &c.DNSNames)
+			delete(rawMsg, key)
+		case "expirationDate":
+			err = unpopulate(val, &c.ExpirationDate)
+			delete(rawMsg, key)
+		case "issuedDate":
+			err = unpopulate(val, &c.IssuedDate)
+			delete(rawMsg, key)
+		case "issuer":
+			err = unpopulate(val, &c.Issuer)
+			delete(rawMsg, key)
+		case "subjectName":
+			err = unpopulate(val, &c.SubjectName)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &c.Thumbprint)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &c.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.CertificateProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -882,6 +1877,61 @@ func (c CustomContainer) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// CustomContainerUserSourceInfo - Custom container user source info
+type CustomContainerUserSourceInfo struct {
+	// REQUIRED; Type of the source uploaded
+	Type *string `json:"type,omitempty"`
+
+	// Custom container payload
+	CustomContainer *CustomContainer `json:"customContainer,omitempty"`
+
+	// Version of the source
+	Version *string `json:"version,omitempty"`
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type CustomContainerUserSourceInfo.
+func (c *CustomContainerUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    c.Type,
+		Version: c.Version,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomContainerUserSourceInfo.
+func (c CustomContainerUserSourceInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "customContainer", c.CustomContainer)
+	objectMap["type"] = "Container"
+	populate(objectMap, "version", c.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomContainerUserSourceInfo.
+func (c *CustomContainerUserSourceInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "customContainer":
+			err = unpopulate(val, &c.CustomContainer)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &c.Type)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, &c.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // CustomDomainProperties - Custom domain of app resource payload.
 type CustomDomainProperties struct {
 	// The bound certificate name of domain.
@@ -896,40 +1946,31 @@ type CustomDomainProperties struct {
 
 // CustomDomainResource - Custom domain resource payload.
 type CustomDomainResource struct {
-	ProxyResource
 	// Properties of the custom domain resource.
 	Properties *CustomDomainProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CustomDomainResource.
 func (c CustomDomainResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CustomDomainResource.
-func (c *CustomDomainResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // CustomDomainResourceCollection - Collection compose of a custom domain resources list and a possible link for next page.
@@ -964,28 +2005,29 @@ type CustomDomainValidateResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// CustomDomainsBeginCreateOrUpdateOptions contains the optional parameters for the CustomDomains.BeginCreateOrUpdate method.
-type CustomDomainsBeginCreateOrUpdateOptions struct {
+// CustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomDomainsClient.BeginCreateOrUpdate
+// method.
+type CustomDomainsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsBeginDeleteOptions contains the optional parameters for the CustomDomains.BeginDelete method.
-type CustomDomainsBeginDeleteOptions struct {
+// CustomDomainsClientBeginDeleteOptions contains the optional parameters for the CustomDomainsClient.BeginDelete method.
+type CustomDomainsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsBeginUpdateOptions contains the optional parameters for the CustomDomains.BeginUpdate method.
-type CustomDomainsBeginUpdateOptions struct {
+// CustomDomainsClientBeginUpdateOptions contains the optional parameters for the CustomDomainsClient.BeginUpdate method.
+type CustomDomainsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsGetOptions contains the optional parameters for the CustomDomains.Get method.
-type CustomDomainsGetOptions struct {
+// CustomDomainsClientGetOptions contains the optional parameters for the CustomDomainsClient.Get method.
+type CustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsListOptions contains the optional parameters for the CustomDomains.List method.
-type CustomDomainsListOptions struct {
+// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
+type CustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1018,45 +2060,14 @@ func (c *CustomPersistentDiskProperties) GetCustomPersistentDiskProperties() *Cu
 	return c
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CustomPersistentDiskProperties.
-func (c *CustomPersistentDiskProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c CustomPersistentDiskProperties) marshalInternal(objectMap map[string]interface{}, discValue CustomPersistentDiskPropertiesType) {
+// MarshalJSON implements the json.Marshaller interface for type CustomPersistentDiskProperties.
+func (c CustomPersistentDiskProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	populate(objectMap, "mountOptions", c.MountOptions)
 	populate(objectMap, "mountPath", c.MountPath)
 	populate(objectMap, "readOnly", c.ReadOnly)
-	c.Type = &discValue
 	objectMap["type"] = c.Type
-}
-
-func (c *CustomPersistentDiskProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "mountOptions":
-			err = unpopulate(val, &c.MountOptions)
-			delete(rawMsg, key)
-		case "mountPath":
-			err = unpopulate(val, &c.MountPath)
-			delete(rawMsg, key)
-		case "readOnly":
-			err = unpopulate(val, &c.ReadOnly)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return json.Marshal(objectMap)
 }
 
 // CustomPersistentDiskResource - Custom persistent disk resource payload.
@@ -1115,51 +2126,42 @@ type DeploymentInstance struct {
 
 	// READ-ONLY; Status of the deployment instance
 	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; Availability zone information of the deployment instance
+	Zone *string `json:"zone,omitempty" azure:"ro"`
 }
 
 // DeploymentResource - Deployment resource payload
 type DeploymentResource struct {
-	ProxyResource
 	// Properties of the Deployment resource
 	Properties *DeploymentResourceProperties `json:"properties,omitempty"`
 
 	// Sku of the Deployment resource
 	SKU *SKU `json:"sku,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DeploymentResource.
 func (d DeploymentResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "sku", d.SKU)
+	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentResource.
-func (d *DeploymentResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &d.SKU)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // DeploymentResourceCollection - Object that includes an array of App resources and a possible link for next set
@@ -1181,20 +2183,14 @@ func (d DeploymentResourceCollection) MarshalJSON() ([]byte, error) {
 
 // DeploymentResourceProperties - Deployment resource properties payload
 type DeploymentResourceProperties struct {
+	// Indicates whether the Deployment is active
+	Active *bool `json:"active,omitempty"`
+
 	// Deployment settings of the Deployment
 	DeploymentSettings *DeploymentSettings `json:"deploymentSettings,omitempty"`
 
 	// Uploaded source information of the deployment.
-	Source *UserSourceInfo `json:"source,omitempty"`
-
-	// READ-ONLY; Indicates whether the Deployment is active
-	Active *bool `json:"active,omitempty" azure:"ro"`
-
-	// READ-ONLY; App name of the deployment
-	AppName *string `json:"appName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Date time when the resource is created
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	Source UserSourceInfoClassification `json:"source,omitempty"`
 
 	// READ-ONLY; Collection of instances belong to the Deployment
 	Instances []*DeploymentInstance `json:"instances,omitempty" azure:"ro"`
@@ -1210,8 +2206,6 @@ type DeploymentResourceProperties struct {
 func (d DeploymentResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "active", d.Active)
-	populate(objectMap, "appName", d.AppName)
-	populateTimeRFC3339(objectMap, "createdTime", d.CreatedTime)
 	populate(objectMap, "deploymentSettings", d.DeploymentSettings)
 	populate(objectMap, "instances", d.Instances)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -1232,12 +2226,6 @@ func (d *DeploymentResourceProperties) UnmarshalJSON(data []byte) error {
 		case "active":
 			err = unpopulate(val, &d.Active)
 			delete(rawMsg, key)
-		case "appName":
-			err = unpopulate(val, &d.AppName)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &d.CreatedTime)
-			delete(rawMsg, key)
 		case "deploymentSettings":
 			err = unpopulate(val, &d.DeploymentSettings)
 			delete(rawMsg, key)
@@ -1248,7 +2236,7 @@ func (d *DeploymentResourceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &d.ProvisioningState)
 			delete(rawMsg, key)
 		case "source":
-			err = unpopulate(val, &d.Source)
+			d.Source, err = unmarshalUserSourceInfoClassification(val)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &d.Status)
@@ -1263,120 +2251,97 @@ func (d *DeploymentResourceProperties) UnmarshalJSON(data []byte) error {
 
 // DeploymentSettings - Deployment settings payload
 type DeploymentSettings struct {
-	// Required CPU. This should be 1 for Basic tier, and in range [1, 4] for Standard tier. This is deprecated starting from API version 2021-09-01-preview.
-	// Please use the resourceRequests field to set the
-	// CPU size.
-	CPU *int32 `json:"cpu,omitempty"`
+	// Collection of addons
+	AddonConfigs map[string]map[string]map[string]interface{} `json:"addonConfigs,omitempty"`
 
 	// Container liveness and readiness probe settings
-	ContainerProbeSettings *DeploymentSettingsContainerProbeSettings `json:"containerProbeSettings,omitempty"`
+	ContainerProbeSettings *ContainerProbeSettings `json:"containerProbeSettings,omitempty"`
 
 	// Collection of environment variables
 	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
 
-	// JVM parameter
-	JvmOptions *string `json:"jvmOptions,omitempty"`
-
-	// Required Memory size in GB. This should be in range [1, 2] for Basic tier, and in range [1, 8] for Standard tier. This is deprecated starting from API
-	// version 2021-09-01-preview. Please use the
-	// resourceRequests field to set the the memory size.
-	MemoryInGB *int32 `json:"memoryInGB,omitempty"`
-
-	// The path to the .NET executable relative to zip root
-	NetCoreMainEntryPath *string `json:"netCoreMainEntryPath,omitempty"`
-
-	// The requested resource quantity for required CPU and Memory. It is recommended that using this field to represent the required CPU and Memory, the old
-	// field cpu and memoryInGB will be deprecated
+	// The requested resource quantity for required CPU and Memory. It is recommended that using this field to represent the required
+	// CPU and Memory, the old field cpu and memoryInGB will be deprecated
 	// later.
 	ResourceRequests *ResourceRequests `json:"resourceRequests,omitempty"`
-
-	// Runtime version
-	RuntimeVersion *RuntimeVersion `json:"runtimeVersion,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DeploymentSettings.
 func (d DeploymentSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "cpu", d.CPU)
+	populate(objectMap, "addonConfigs", d.AddonConfigs)
 	populate(objectMap, "containerProbeSettings", d.ContainerProbeSettings)
 	populate(objectMap, "environmentVariables", d.EnvironmentVariables)
-	populate(objectMap, "jvmOptions", d.JvmOptions)
-	populate(objectMap, "memoryInGB", d.MemoryInGB)
-	populate(objectMap, "netCoreMainEntryPath", d.NetCoreMainEntryPath)
 	populate(objectMap, "resourceRequests", d.ResourceRequests)
-	populate(objectMap, "runtimeVersion", d.RuntimeVersion)
 	return json.Marshal(objectMap)
 }
 
-// DeploymentSettingsContainerProbeSettings - Container liveness and readiness probe settings
-type DeploymentSettingsContainerProbeSettings struct {
-	// Indicates whether disable the liveness and readiness probe
-	DisableProbe *bool `json:"disableProbe,omitempty"`
-}
-
-// DeploymentsBeginCreateOrUpdateOptions contains the optional parameters for the Deployments.BeginCreateOrUpdate method.
-type DeploymentsBeginCreateOrUpdateOptions struct {
+// DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
+// method.
+type DeploymentsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginDeleteOptions contains the optional parameters for the Deployments.BeginDelete method.
-type DeploymentsBeginDeleteOptions struct {
+// DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
+type DeploymentsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginGenerateHeapDumpOptions contains the optional parameters for the Deployments.BeginGenerateHeapDump method.
-type DeploymentsBeginGenerateHeapDumpOptions struct {
+// DeploymentsClientBeginGenerateHeapDumpOptions contains the optional parameters for the DeploymentsClient.BeginGenerateHeapDump
+// method.
+type DeploymentsClientBeginGenerateHeapDumpOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginGenerateThreadDumpOptions contains the optional parameters for the Deployments.BeginGenerateThreadDump method.
-type DeploymentsBeginGenerateThreadDumpOptions struct {
+// DeploymentsClientBeginGenerateThreadDumpOptions contains the optional parameters for the DeploymentsClient.BeginGenerateThreadDump
+// method.
+type DeploymentsClientBeginGenerateThreadDumpOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginRestartOptions contains the optional parameters for the Deployments.BeginRestart method.
-type DeploymentsBeginRestartOptions struct {
+// DeploymentsClientBeginRestartOptions contains the optional parameters for the DeploymentsClient.BeginRestart method.
+type DeploymentsClientBeginRestartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginStartJFROptions contains the optional parameters for the Deployments.BeginStartJFR method.
-type DeploymentsBeginStartJFROptions struct {
+// DeploymentsClientBeginStartJFROptions contains the optional parameters for the DeploymentsClient.BeginStartJFR method.
+type DeploymentsClientBeginStartJFROptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginStartOptions contains the optional parameters for the Deployments.BeginStart method.
-type DeploymentsBeginStartOptions struct {
+// DeploymentsClientBeginStartOptions contains the optional parameters for the DeploymentsClient.BeginStart method.
+type DeploymentsClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginStopOptions contains the optional parameters for the Deployments.BeginStop method.
-type DeploymentsBeginStopOptions struct {
+// DeploymentsClientBeginStopOptions contains the optional parameters for the DeploymentsClient.BeginStop method.
+type DeploymentsClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsBeginUpdateOptions contains the optional parameters for the Deployments.BeginUpdate method.
-type DeploymentsBeginUpdateOptions struct {
+// DeploymentsClientBeginUpdateOptions contains the optional parameters for the DeploymentsClient.BeginUpdate method.
+type DeploymentsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsGetLogFileURLOptions contains the optional parameters for the Deployments.GetLogFileURL method.
-type DeploymentsGetLogFileURLOptions struct {
+// DeploymentsClientGetLogFileURLOptions contains the optional parameters for the DeploymentsClient.GetLogFileURL method.
+type DeploymentsClientGetLogFileURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsGetOptions contains the optional parameters for the Deployments.Get method.
-type DeploymentsGetOptions struct {
+// DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
+type DeploymentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsListForClusterOptions contains the optional parameters for the Deployments.ListForCluster method.
-type DeploymentsListForClusterOptions struct {
+// DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.ListForCluster method.
+type DeploymentsClientListForClusterOptions struct {
 	// Version of the deployments to be listed
 	Version []string
 }
 
-// DeploymentsListOptions contains the optional parameters for the Deployments.List method.
-type DeploymentsListOptions struct {
+// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
+type DeploymentsClientListOptions struct {
 	// Version of the deployments to be listed
 	Version []string
 }
@@ -1402,7 +2367,409 @@ type Error struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// GitPatternRepository - Git repository property payload
+// GatewayAPIMetadataProperties - API metadata property for Spring Cloud Gateway
+type GatewayAPIMetadataProperties struct {
+	// Detailed description of the APIs available on the Gateway instance (default: Generated OpenAPI 3 document that describes
+	// the API routes configured.)
+	Description *string `json:"description,omitempty"`
+
+	// Location of additional documentation for the APIs available on the Gateway instance
+	Documentation *string `json:"documentation,omitempty"`
+
+	// Base URL that API consumers will use to access APIs on the Gateway instance.
+	ServerURL *string `json:"serverUrl,omitempty"`
+
+	// Title describing the context of the APIs available on the Gateway instance (default: Spring Cloud Gateway for K8S)
+	Title *string `json:"title,omitempty"`
+
+	// Version of APIs available on this Gateway instance (default: unspecified).
+	Version *string `json:"version,omitempty"`
+}
+
+// GatewayAPIRoute - API route config of the Spring Cloud Gateway
+type GatewayAPIRoute struct {
+	// A description, will be applied to methods in the generated OpenAPI documentation.
+	Description *string `json:"description,omitempty"`
+
+	// To modify the request before sending it to the target endpoint, or the received response.
+	Filters []*string `json:"filters,omitempty"`
+
+	// Route processing order.
+	Order *int32 `json:"order,omitempty"`
+
+	// A number of conditions to evaluate a route for each request. Each predicate may be evaluated against request headers and
+	// parameter values. All of the predicates associated with a route must evaluate
+	// to true for the route to be matched to the request.
+	Predicates []*string `json:"predicates,omitempty"`
+
+	// Enable sso validation.
+	SsoEnabled *bool `json:"ssoEnabled,omitempty"`
+
+	// Classification tags, will be applied to methods in the generated OpenAPI documentation.
+	Tags []*string `json:"tags,omitempty"`
+
+	// A title, will be applied to methods in the generated OpenAPI documentation.
+	Title *string `json:"title,omitempty"`
+
+	// Pass currently-authenticated user's identity token to application service, default is 'false'
+	TokenRelay *bool `json:"tokenRelay,omitempty"`
+
+	// Full uri, will override appName.
+	URI *string `json:"uri,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GatewayAPIRoute.
+func (g GatewayAPIRoute) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "description", g.Description)
+	populate(objectMap, "filters", g.Filters)
+	populate(objectMap, "order", g.Order)
+	populate(objectMap, "predicates", g.Predicates)
+	populate(objectMap, "ssoEnabled", g.SsoEnabled)
+	populate(objectMap, "tags", g.Tags)
+	populate(objectMap, "title", g.Title)
+	populate(objectMap, "tokenRelay", g.TokenRelay)
+	populate(objectMap, "uri", g.URI)
+	return json.Marshal(objectMap)
+}
+
+// GatewayCorsProperties - Cross-Origin Resource Sharing property
+type GatewayCorsProperties struct {
+	// Whether user credentials are supported on cross-site requests. Valid values: true, false.
+	AllowCredentials *bool `json:"allowCredentials,omitempty"`
+
+	// Allowed headers in cross-site requests. The special value * allows actual requests to send any header.
+	AllowedHeaders []*string `json:"allowedHeaders,omitempty"`
+
+	// Allowed HTTP methods on cross-site requests. The special value * allows all methods. If not set, GET and HEAD are allowed
+	// by default.
+	AllowedMethods []*string `json:"allowedMethods,omitempty"`
+
+	// Allowed origins to make cross-site requests. The special value * allows all domains.
+	AllowedOrigins []*string `json:"allowedOrigins,omitempty"`
+
+	// HTTP response headers to expose for cross-site requests.
+	ExposedHeaders []*string `json:"exposedHeaders,omitempty"`
+
+	// How long, in seconds, the response from a pre-flight request can be cached by clients.
+	MaxAge *int32 `json:"maxAge,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GatewayCorsProperties.
+func (g GatewayCorsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "allowCredentials", g.AllowCredentials)
+	populate(objectMap, "allowedHeaders", g.AllowedHeaders)
+	populate(objectMap, "allowedMethods", g.AllowedMethods)
+	populate(objectMap, "allowedOrigins", g.AllowedOrigins)
+	populate(objectMap, "exposedHeaders", g.ExposedHeaders)
+	populate(objectMap, "maxAge", g.MaxAge)
+	return json.Marshal(objectMap)
+}
+
+// GatewayCustomDomainProperties - The properties of custom domain for Spring Cloud Gateway
+type GatewayCustomDomainProperties struct {
+	// The thumbprint of bound certificate.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
+// GatewayCustomDomainResource - Custom domain of the Spring Cloud Gateway
+type GatewayCustomDomainResource struct {
+	// The properties of custom domain for Spring Cloud Gateway
+	Properties *GatewayCustomDomainProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GatewayCustomDomainResourceCollection - Object that includes an array of Spring Cloud Gateway custom domain resources and
+// a possible link for next set
+type GatewayCustomDomainResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Spring Cloud Gateway custom domain resources
+	Value []*GatewayCustomDomainResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GatewayCustomDomainResourceCollection.
+func (g GatewayCustomDomainResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", g.NextLink)
+	populate(objectMap, "value", g.Value)
+	return json.Marshal(objectMap)
+}
+
+// GatewayCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginCreateOrUpdate
+// method.
+type GatewayCustomDomainsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCustomDomainsClientBeginDeleteOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginDelete
+// method.
+type GatewayCustomDomainsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCustomDomainsClientGetOptions contains the optional parameters for the GatewayCustomDomainsClient.Get method.
+type GatewayCustomDomainsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.List method.
+type GatewayCustomDomainsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayInstance - Collection of instances belong to the Spring Cloud Gateway
+type GatewayInstance struct {
+	// READ-ONLY; Name of the Spring Cloud Gateway instance
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the Spring Cloud Gateway instance
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// GatewayOperatorProperties - Properties of the Spring Cloud Gateway Operator.
+type GatewayOperatorProperties struct {
+	// READ-ONLY; Collection of instances belong to Spring Cloud Gateway operator.
+	Instances []*GatewayInstance `json:"instances,omitempty" azure:"ro"`
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *GatewayOperatorResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GatewayOperatorProperties.
+func (g GatewayOperatorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "instances", g.Instances)
+	populate(objectMap, "resourceRequests", g.ResourceRequests)
+	return json.Marshal(objectMap)
+}
+
+// GatewayOperatorResourceRequests - Properties of the Spring Cloud Gateway Operator.
+type GatewayOperatorResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each Spring Cloud Gateway Operator instance.
+	CPU *string `json:"cpu,omitempty" azure:"ro"`
+
+	// READ-ONLY; Instance count of the Spring Cloud Gateway Operator.
+	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; Memory allocated to each Spring Cloud Gateway Operator instance.
+	Memory *string `json:"memory,omitempty" azure:"ro"`
+}
+
+// GatewayProperties - Spring Cloud Gateway properties payload
+type GatewayProperties struct {
+	// API metadata property for Spring Cloud Gateway
+	APIMetadataProperties *GatewayAPIMetadataProperties `json:"apiMetadataProperties,omitempty"`
+
+	// Cross-Origin Resource Sharing property
+	CorsProperties *GatewayCorsProperties `json:"corsProperties,omitempty"`
+
+	// Indicate if only https is allowed.
+	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+
+	// Indicates whether the Spring Cloud Gateway exposes endpoint.
+	Public *bool `json:"public,omitempty"`
+
+	// The requested resource quantity for required CPU and Memory.
+	ResourceRequests *GatewayResourceRequests `json:"resourceRequests,omitempty"`
+
+	// Single sign-on related configuration
+	SsoProperties *SsoProperties `json:"ssoProperties,omitempty"`
+
+	// READ-ONLY; Collection of instances belong to Spring Cloud Gateway.
+	Instances []*GatewayInstance `json:"instances,omitempty" azure:"ro"`
+
+	// READ-ONLY; Properties of the Spring Cloud Gateway Operator.
+	OperatorProperties *GatewayOperatorProperties `json:"operatorProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; State of the Spring Cloud Gateway.
+	ProvisioningState *GatewayProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; URL of the Spring Cloud Gateway, exposed when 'public' is true.
+	URL *string `json:"url,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GatewayProperties.
+func (g GatewayProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "apiMetadataProperties", g.APIMetadataProperties)
+	populate(objectMap, "corsProperties", g.CorsProperties)
+	populate(objectMap, "httpsOnly", g.HTTPSOnly)
+	populate(objectMap, "instances", g.Instances)
+	populate(objectMap, "operatorProperties", g.OperatorProperties)
+	populate(objectMap, "provisioningState", g.ProvisioningState)
+	populate(objectMap, "public", g.Public)
+	populate(objectMap, "resourceRequests", g.ResourceRequests)
+	populate(objectMap, "ssoProperties", g.SsoProperties)
+	populate(objectMap, "url", g.URL)
+	return json.Marshal(objectMap)
+}
+
+// GatewayResource - Spring Cloud Gateway resource
+type GatewayResource struct {
+	// Spring Cloud Gateway properties payload
+	Properties *GatewayProperties `json:"properties,omitempty"`
+
+	// Sku of the Spring Cloud Gateway resource
+	SKU *SKU `json:"sku,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GatewayResourceCollection - Object that includes an array of gateway resources and a possible link for next set
+type GatewayResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of gateway resources
+	Value []*GatewayResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GatewayResourceCollection.
+func (g GatewayResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", g.NextLink)
+	populate(objectMap, "value", g.Value)
+	return json.Marshal(objectMap)
+}
+
+// GatewayResourceRequests - Resource request payload of Spring Cloud Gateway.
+type GatewayResourceRequests struct {
+	// Cpu allocated to each Spring Cloud Gateway instance.
+	CPU *string `json:"cpu,omitempty"`
+
+	// Memory allocated to each Spring Cloud Gateway instance.
+	Memory *string `json:"memory,omitempty"`
+}
+
+// GatewayRouteConfigProperties - API route config of the Spring Cloud Gateway
+type GatewayRouteConfigProperties struct {
+	// The resource Id of the Azure Spring Cloud app, required unless route defines uri.
+	AppResourceID *string `json:"appResourceId,omitempty"`
+
+	// Array of API routes, each route contains properties such as title, uri, ssoEnabled, predicates, filters.
+	Routes []*GatewayAPIRoute `json:"routes,omitempty"`
+
+	// READ-ONLY; State of the Spring Cloud Gateway route config.
+	ProvisioningState *GatewayProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GatewayRouteConfigProperties.
+func (g GatewayRouteConfigProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "appResourceId", g.AppResourceID)
+	populate(objectMap, "provisioningState", g.ProvisioningState)
+	populate(objectMap, "routes", g.Routes)
+	return json.Marshal(objectMap)
+}
+
+// GatewayRouteConfigResource - Spring Cloud Gateway route config resource
+type GatewayRouteConfigResource struct {
+	// API route config of the Spring Cloud Gateway
+	Properties *GatewayRouteConfigProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GatewayRouteConfigResourceCollection - Object that includes an array of Spring Cloud Gateway route config resources and
+// a possible link for next set
+type GatewayRouteConfigResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Spring Cloud Gateway route config resources
+	Value []*GatewayRouteConfigResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GatewayRouteConfigResourceCollection.
+func (g GatewayRouteConfigResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", g.NextLink)
+	populate(objectMap, "value", g.Value)
+	return json.Marshal(objectMap)
+}
+
+// GatewayRouteConfigsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayRouteConfigsClient.BeginCreateOrUpdate
+// method.
+type GatewayRouteConfigsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayRouteConfigsClientBeginDeleteOptions contains the optional parameters for the GatewayRouteConfigsClient.BeginDelete
+// method.
+type GatewayRouteConfigsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayRouteConfigsClientGetOptions contains the optional parameters for the GatewayRouteConfigsClient.Get method.
+type GatewayRouteConfigsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayRouteConfigsClientListOptions contains the optional parameters for the GatewayRouteConfigsClient.List method.
+type GatewayRouteConfigsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewaysClient.BeginCreateOrUpdate method.
+type GatewaysClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientBeginDeleteOptions contains the optional parameters for the GatewaysClient.BeginDelete method.
+type GatewaysClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientGetOptions contains the optional parameters for the GatewaysClient.Get method.
+type GatewaysClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientListOptions contains the optional parameters for the GatewaysClient.List method.
+type GatewaysClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientValidateDomainOptions contains the optional parameters for the GatewaysClient.ValidateDomain method.
+type GatewaysClientValidateDomainOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GitPatternRepository - Git repository property payload for config server
 type GitPatternRepository struct {
 	// REQUIRED; Name of the repository
 	Name *string `json:"name,omitempty"`
@@ -1464,11 +2831,91 @@ type ImageRegistryCredential struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// JarUploadedUserSourceInfo - Uploaded Jar binary for a deployment
+type JarUploadedUserSourceInfo struct {
+	// REQUIRED; Type of the source uploaded
+	Type *string `json:"type,omitempty"`
+
+	// JVM parameter
+	JvmOptions *string `json:"jvmOptions,omitempty"`
+
+	// Relative path of the storage which stores the source
+	RelativePath *string `json:"relativePath,omitempty"`
+
+	// Runtime version of the Jar file
+	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+
+	// Version of the source
+	Version *string `json:"version,omitempty"`
+}
+
+// GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type JarUploadedUserSourceInfo.
+func (j *JarUploadedUserSourceInfo) GetUploadedUserSourceInfo() *UploadedUserSourceInfo {
+	return &UploadedUserSourceInfo{
+		RelativePath: j.RelativePath,
+		Type:         j.Type,
+		Version:      j.Version,
+	}
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type JarUploadedUserSourceInfo.
+func (j *JarUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    j.Type,
+		Version: j.Version,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type JarUploadedUserSourceInfo.
+func (j JarUploadedUserSourceInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "jvmOptions", j.JvmOptions)
+	populate(objectMap, "relativePath", j.RelativePath)
+	populate(objectMap, "runtimeVersion", j.RuntimeVersion)
+	objectMap["type"] = "Jar"
+	populate(objectMap, "version", j.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type JarUploadedUserSourceInfo.
+func (j *JarUploadedUserSourceInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "jvmOptions":
+			err = unpopulate(val, &j.JvmOptions)
+			delete(rawMsg, key)
+		case "relativePath":
+			err = unpopulate(val, &j.RelativePath)
+			delete(rawMsg, key)
+		case "runtimeVersion":
+			err = unpopulate(val, &j.RuntimeVersion)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &j.Type)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, &j.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // KeyVaultCertificateProperties - Properties of certificate imported from key vault.
 type KeyVaultCertificateProperties struct {
-	CertificateProperties
 	// REQUIRED; The certificate name of key vault.
 	KeyVaultCertName *string `json:"keyVaultCertName,omitempty"`
+
+	// REQUIRED; The type of the certificate source.
+	Type *string `json:"type,omitempty"`
 
 	// REQUIRED; The vault uri of user key vault.
 	VaultURI *string `json:"vaultUri,omitempty"`
@@ -1478,15 +2925,57 @@ type KeyVaultCertificateProperties struct {
 
 	// Optional. If set to true, it will not import private key from key vault.
 	ExcludePrivateKey *bool `json:"excludePrivateKey,omitempty"`
+
+	// READ-ONLY; The activate date of certificate.
+	ActivateDate *string `json:"activateDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The domain list of certificate.
+	DNSNames []*string `json:"dnsNames,omitempty" azure:"ro"`
+
+	// READ-ONLY; The expiration date of certificate.
+	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The issue date of certificate.
+	IssuedDate *string `json:"issuedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The issuer of certificate.
+	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subject name of certificate.
+	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The thumbprint of certificate.
+	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+}
+
+// GetCertificateProperties implements the CertificatePropertiesClassification interface for type KeyVaultCertificateProperties.
+func (k *KeyVaultCertificateProperties) GetCertificateProperties() *CertificateProperties {
+	return &CertificateProperties{
+		Type:           k.Type,
+		Thumbprint:     k.Thumbprint,
+		Issuer:         k.Issuer,
+		IssuedDate:     k.IssuedDate,
+		ExpirationDate: k.ExpirationDate,
+		ActivateDate:   k.ActivateDate,
+		SubjectName:    k.SubjectName,
+		DNSNames:       k.DNSNames,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KeyVaultCertificateProperties.
 func (k KeyVaultCertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	k.CertificateProperties.marshalInternal(objectMap, "KeyVaultCertificate")
+	populate(objectMap, "activateDate", k.ActivateDate)
 	populate(objectMap, "certVersion", k.CertVersion)
+	populate(objectMap, "dnsNames", k.DNSNames)
 	populate(objectMap, "excludePrivateKey", k.ExcludePrivateKey)
+	populate(objectMap, "expirationDate", k.ExpirationDate)
+	populate(objectMap, "issuedDate", k.IssuedDate)
+	populate(objectMap, "issuer", k.Issuer)
 	populate(objectMap, "keyVaultCertName", k.KeyVaultCertName)
+	populate(objectMap, "subjectName", k.SubjectName)
+	populate(objectMap, "thumbprint", k.Thumbprint)
+	objectMap["type"] = "KeyVaultCertificate"
 	populate(objectMap, "vaultUri", k.VaultURI)
 	return json.Marshal(objectMap)
 }
@@ -1500,14 +2989,38 @@ func (k *KeyVaultCertificateProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "activateDate":
+			err = unpopulate(val, &k.ActivateDate)
+			delete(rawMsg, key)
 		case "certVersion":
 			err = unpopulate(val, &k.CertVersion)
+			delete(rawMsg, key)
+		case "dnsNames":
+			err = unpopulate(val, &k.DNSNames)
 			delete(rawMsg, key)
 		case "excludePrivateKey":
 			err = unpopulate(val, &k.ExcludePrivateKey)
 			delete(rawMsg, key)
+		case "expirationDate":
+			err = unpopulate(val, &k.ExpirationDate)
+			delete(rawMsg, key)
+		case "issuedDate":
+			err = unpopulate(val, &k.IssuedDate)
+			delete(rawMsg, key)
+		case "issuer":
+			err = unpopulate(val, &k.Issuer)
+			delete(rawMsg, key)
 		case "keyVaultCertName":
 			err = unpopulate(val, &k.KeyVaultCertName)
+			delete(rawMsg, key)
+		case "subjectName":
+			err = unpopulate(val, &k.SubjectName)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &k.Thumbprint)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &k.Type)
 			delete(rawMsg, key)
 		case "vaultUri":
 			err = unpopulate(val, &k.VaultURI)
@@ -1516,9 +3029,6 @@ func (k *KeyVaultCertificateProperties) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := k.CertificateProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1641,8 +3151,8 @@ type MonitoringSettingProperties struct {
 	// Error when apply Monitoring Setting changes.
 	Error *Error `json:"error,omitempty"`
 
-	// Indicates whether enable the trace functionality, which will be deprecated since api version 2020-11-01-preview. Please leverage appInsightsInstrumentationKey
-	// to indicate if monitoringSettings enabled
+	// Indicates whether enable the trace functionality, which will be deprecated since api version 2020-11-01-preview. Please
+	// leverage appInsightsInstrumentationKey to indicate if monitoringSettings enabled
 	// or not
 	TraceEnabled *bool `json:"traceEnabled,omitempty"`
 
@@ -1652,54 +3162,47 @@ type MonitoringSettingProperties struct {
 
 // MonitoringSettingResource - Monitoring Setting resource
 type MonitoringSettingResource struct {
-	ProxyResource
 	// Properties of the Monitoring Setting resource
 	Properties *MonitoringSettingProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MonitoringSettingResource.
 func (m MonitoringSettingResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "name", m.Name)
 	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "systemData", m.SystemData)
+	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type MonitoringSettingResource.
-func (m *MonitoringSettingResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MonitoringSettingsBeginUpdatePatchOptions contains the optional parameters for the MonitoringSettings.BeginUpdatePatch method.
-type MonitoringSettingsBeginUpdatePatchOptions struct {
+// MonitoringSettingsClientBeginUpdatePatchOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePatch
+// method.
+type MonitoringSettingsClientBeginUpdatePatchOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitoringSettingsBeginUpdatePutOptions contains the optional parameters for the MonitoringSettings.BeginUpdatePut method.
-type MonitoringSettingsBeginUpdatePutOptions struct {
+// MonitoringSettingsClientBeginUpdatePutOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePut
+// method.
+type MonitoringSettingsClientBeginUpdatePutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitoringSettingsGetOptions contains the optional parameters for the MonitoringSettings.Get method.
-type MonitoringSettingsGetOptions struct {
+// MonitoringSettingsClientGetOptions contains the optional parameters for the MonitoringSettingsClient.Get method.
+type MonitoringSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1722,6 +3225,84 @@ type NameAvailabilityParameters struct {
 
 	// REQUIRED; Type of the resource to check name availability
 	Type *string `json:"type,omitempty"`
+}
+
+// NetCoreZipUploadedUserSourceInfo - Uploaded Jar binary for a deployment
+type NetCoreZipUploadedUserSourceInfo struct {
+	// REQUIRED; Type of the source uploaded
+	Type *string `json:"type,omitempty"`
+
+	// The path to the .NET executable relative to zip root
+	NetCoreMainEntryPath *string `json:"netCoreMainEntryPath,omitempty"`
+
+	// Relative path of the storage which stores the source
+	RelativePath *string `json:"relativePath,omitempty"`
+
+	// Runtime version of the .Net file
+	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+
+	// Version of the source
+	Version *string `json:"version,omitempty"`
+}
+
+// GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type NetCoreZipUploadedUserSourceInfo.
+func (n *NetCoreZipUploadedUserSourceInfo) GetUploadedUserSourceInfo() *UploadedUserSourceInfo {
+	return &UploadedUserSourceInfo{
+		RelativePath: n.RelativePath,
+		Type:         n.Type,
+		Version:      n.Version,
+	}
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type NetCoreZipUploadedUserSourceInfo.
+func (n *NetCoreZipUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    n.Type,
+		Version: n.Version,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NetCoreZipUploadedUserSourceInfo.
+func (n NetCoreZipUploadedUserSourceInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "netCoreMainEntryPath", n.NetCoreMainEntryPath)
+	populate(objectMap, "relativePath", n.RelativePath)
+	populate(objectMap, "runtimeVersion", n.RuntimeVersion)
+	objectMap["type"] = "NetCoreZip"
+	populate(objectMap, "version", n.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type NetCoreZipUploadedUserSourceInfo.
+func (n *NetCoreZipUploadedUserSourceInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "netCoreMainEntryPath":
+			err = unpopulate(val, &n.NetCoreMainEntryPath)
+			delete(rawMsg, key)
+		case "relativePath":
+			err = unpopulate(val, &n.RelativePath)
+			delete(rawMsg, key)
+		case "runtimeVersion":
+			err = unpopulate(val, &n.RuntimeVersion)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &n.Type)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, &n.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // NetworkProfile - Service network profile payload
@@ -1813,8 +3394,8 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1830,20 +3411,20 @@ type PersistentDisk struct {
 	UsedInGB *int32 `json:"usedInGB,omitempty" azure:"ro"`
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location and tags.
+// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
+// and tags.
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
-}
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
 
-func (p *ProxyResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RegenerateTestKeyRequestPayload - Regenerate test key request payload
@@ -1889,60 +3470,21 @@ type Resource struct {
 	// READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ResourceRequests - Deployment resource request payload
 type ResourceRequests struct {
-	// Required CPU. 1 core can be represented by 1 or 1000m. This should be 500m or 1 for Basic tier, and {500m, 1, 2, 3, 4} for Standard tier.
+	// Required CPU. 1 core can be represented by 1 or 1000m. This should be 500m or 1 for Basic tier, and {500m, 1, 2, 3, 4}
+	// for Standard tier.
 	CPU *string `json:"cpu,omitempty"`
 
-	// Required memory. 1 GB can be represented by 1Gi or 1024Mi. This should be {512Mi, 1Gi, 2Gi} for Basic tier, and {512Mi, 1Gi, 2Gi, …, 8Gi} for Standard
-	// tier.
+	// Required memory. 1 GB can be represented by 1Gi or 1024Mi. This should be {512Mi, 1Gi, 2Gi} for Basic tier, and {512Mi,
+	// 1Gi, 2Gi, …, 8Gi} for Standard tier.
 	Memory *string `json:"memory,omitempty"`
 }
 
@@ -2057,7 +3599,8 @@ type ResourceSKURestrictions struct {
 	// Gets the type of restrictions. Possible values include: 'Location', 'Zone'
 	Type *ResourceSKURestrictionsType `json:"type,omitempty"`
 
-	// Gets the value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	// Gets the value of restrictions. If the restriction type is set to location. This would be different locations where the
+	// SKU is restricted.
 	Values []*string `json:"values,omitempty"`
 }
 
@@ -2097,8 +3640,9 @@ type ResourceUploadDefinition struct {
 	UploadURL *string `json:"uploadUrl,omitempty"`
 }
 
-// RuntimeVersionsListRuntimeVersionsOptions contains the optional parameters for the RuntimeVersions.ListRuntimeVersions method.
-type RuntimeVersionsListRuntimeVersionsOptions struct {
+// RuntimeVersionsClientListRuntimeVersionsOptions contains the optional parameters for the RuntimeVersionsClient.ListRuntimeVersions
+// method.
+type RuntimeVersionsClientListRuntimeVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2129,54 +3673,150 @@ type SKUCapacity struct {
 	ScaleType *SKUScaleType `json:"scaleType,omitempty"`
 }
 
-// SKUsListOptions contains the optional parameters for the SKUs.List method.
-type SKUsListOptions struct {
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ServiceRegistriesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceRegistriesClient.BeginCreateOrUpdate
+// method.
+type ServiceRegistriesClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceRegistriesClientBeginDeleteOptions contains the optional parameters for the ServiceRegistriesClient.BeginDelete
+// method.
+type ServiceRegistriesClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceRegistriesClientGetOptions contains the optional parameters for the ServiceRegistriesClient.Get method.
+type ServiceRegistriesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceRegistriesClientListOptions contains the optional parameters for the ServiceRegistriesClient.List method.
+type ServiceRegistriesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceRegistryInstance - Collection of instances belong to the Service Registry
+type ServiceRegistryInstance struct {
+	// READ-ONLY; Name of the Service Registry instance
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the Service Registry instance
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// ServiceRegistryProperties - Service Registry properties payload
+type ServiceRegistryProperties struct {
+	// READ-ONLY; Collection of instances belong to Service Registry.
+	Instances []*ServiceRegistryInstance `json:"instances,omitempty" azure:"ro"`
+
+	// READ-ONLY; State of the Service Registry.
+	ProvisioningState *ServiceRegistryProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *ServiceRegistryResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceRegistryProperties.
+func (s ServiceRegistryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "instances", s.Instances)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "resourceRequests", s.ResourceRequests)
+	return json.Marshal(objectMap)
+}
+
+// ServiceRegistryResource - Service Registry resource
+type ServiceRegistryResource struct {
+	// Service Registry properties payload
+	Properties *ServiceRegistryProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServiceRegistryResourceCollection - Object that includes an array of Service Registry resources and a possible link for
+// next set
+type ServiceRegistryResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Service Registry resources
+	Value []*ServiceRegistryResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceRegistryResourceCollection.
+func (s ServiceRegistryResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// ServiceRegistryResourceRequests - Resource request payload of Service Registry
+type ServiceRegistryResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each Service Registry instance
+	CPU *string `json:"cpu,omitempty" azure:"ro"`
+
+	// READ-ONLY; Instance count of the Service Registry
+	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; Memory allocated to each Service Registry instance
+	Memory *string `json:"memory,omitempty" azure:"ro"`
 }
 
 // ServiceResource - Service resource
 type ServiceResource struct {
-	TrackedResource
+	// The GEO location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the Service resource
 	Properties *ClusterResourceProperties `json:"properties,omitempty"`
 
 	// Sku of the Service resource
 	SKU *SKU `json:"sku,omitempty"`
+
+	// Tags of the service which is a list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceResource.
 func (s ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "sku", s.SKU)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResource.
-func (s *ServiceResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &s.SKU)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.TrackedResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ServiceResourceList - Object that includes an array of Service resources and a possible link for next set
@@ -2213,87 +3853,210 @@ func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServicesBeginCreateOrUpdateOptions contains the optional parameters for the Services.BeginCreateOrUpdate method.
-type ServicesBeginCreateOrUpdateOptions struct {
+// ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
+type ServicesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesBeginDeleteOptions contains the optional parameters for the Services.BeginDelete method.
-type ServicesBeginDeleteOptions struct {
+// ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
+type ServicesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesBeginStartOptions contains the optional parameters for the Services.BeginStart method.
-type ServicesBeginStartOptions struct {
+// ServicesClientBeginStartOptions contains the optional parameters for the ServicesClient.BeginStart method.
+type ServicesClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesBeginStopOptions contains the optional parameters for the Services.BeginStop method.
-type ServicesBeginStopOptions struct {
+// ServicesClientBeginStopOptions contains the optional parameters for the ServicesClient.BeginStop method.
+type ServicesClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesBeginUpdateOptions contains the optional parameters for the Services.BeginUpdate method.
-type ServicesBeginUpdateOptions struct {
+// ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
+type ServicesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesCheckNameAvailabilityOptions contains the optional parameters for the Services.CheckNameAvailability method.
-type ServicesCheckNameAvailabilityOptions struct {
+// ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
+// method.
+type ServicesClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesDisableTestEndpointOptions contains the optional parameters for the Services.DisableTestEndpoint method.
-type ServicesDisableTestEndpointOptions struct {
+// ServicesClientDisableTestEndpointOptions contains the optional parameters for the ServicesClient.DisableTestEndpoint method.
+type ServicesClientDisableTestEndpointOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesEnableTestEndpointOptions contains the optional parameters for the Services.EnableTestEndpoint method.
-type ServicesEnableTestEndpointOptions struct {
+// ServicesClientEnableTestEndpointOptions contains the optional parameters for the ServicesClient.EnableTestEndpoint method.
+type ServicesClientEnableTestEndpointOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesGetOptions contains the optional parameters for the Services.Get method.
-type ServicesGetOptions struct {
+// ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesListBySubscriptionOptions contains the optional parameters for the Services.ListBySubscription method.
-type ServicesListBySubscriptionOptions struct {
+// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription method.
+type ServicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesListOptions contains the optional parameters for the Services.List method.
-type ServicesListOptions struct {
+// ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesListTestKeysOptions contains the optional parameters for the Services.ListTestKeys method.
-type ServicesListTestKeysOptions struct {
+// ServicesClientListTestKeysOptions contains the optional parameters for the ServicesClient.ListTestKeys method.
+type ServicesClientListTestKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesRegenerateTestKeyOptions contains the optional parameters for the Services.RegenerateTestKey method.
-type ServicesRegenerateTestKeyOptions struct {
+// ServicesClientRegenerateTestKeyOptions contains the optional parameters for the ServicesClient.RegenerateTestKey method.
+type ServicesClientRegenerateTestKeyOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SourceUploadedUserSourceInfo - Uploaded Java source code binary for a deployment
+type SourceUploadedUserSourceInfo struct {
+	// REQUIRED; Type of the source uploaded
+	Type *string `json:"type,omitempty"`
+
+	// Selector for the artifact to be used for the deployment for multi-module projects. This should be the relative path to
+	// the target module/project.
+	ArtifactSelector *string `json:"artifactSelector,omitempty"`
+
+	// Relative path of the storage which stores the source
+	RelativePath *string `json:"relativePath,omitempty"`
+
+	// Runtime version of the source file
+	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+
+	// Version of the source
+	Version *string `json:"version,omitempty"`
+}
+
+// GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type SourceUploadedUserSourceInfo.
+func (s *SourceUploadedUserSourceInfo) GetUploadedUserSourceInfo() *UploadedUserSourceInfo {
+	return &UploadedUserSourceInfo{
+		RelativePath: s.RelativePath,
+		Type:         s.Type,
+		Version:      s.Version,
+	}
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type SourceUploadedUserSourceInfo.
+func (s *SourceUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    s.Type,
+		Version: s.Version,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SourceUploadedUserSourceInfo.
+func (s SourceUploadedUserSourceInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "artifactSelector", s.ArtifactSelector)
+	populate(objectMap, "relativePath", s.RelativePath)
+	populate(objectMap, "runtimeVersion", s.RuntimeVersion)
+	objectMap["type"] = "Source"
+	populate(objectMap, "version", s.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SourceUploadedUserSourceInfo.
+func (s *SourceUploadedUserSourceInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "artifactSelector":
+			err = unpopulate(val, &s.ArtifactSelector)
+			delete(rawMsg, key)
+		case "relativePath":
+			err = unpopulate(val, &s.RelativePath)
+			delete(rawMsg, key)
+		case "runtimeVersion":
+			err = unpopulate(val, &s.RuntimeVersion)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &s.Type)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, &s.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// SsoProperties - Single sign-on related configuration
+type SsoProperties struct {
+	// The public identifier for the application
+	ClientID *string `json:"clientId,omitempty"`
+
+	// The secret known only to the application and the authorization server
+	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// The URI of Issuer Identifier
+	IssuerURI *string `json:"issuerUri,omitempty"`
+
+	// It defines the specific actions applications can be allowed to do on a user's behalf
+	Scope []*string `json:"scope,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SsoProperties.
+func (s SsoProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "clientId", s.ClientID)
+	populate(objectMap, "clientSecret", s.ClientSecret)
+	populate(objectMap, "issuerUri", s.IssuerURI)
+	populate(objectMap, "scope", s.Scope)
+	return json.Marshal(objectMap)
+}
+
+// StackProperties - KPack ClusterStack properties payload
+type StackProperties struct {
+	// Id of the ClusterStack.
+	ID *string `json:"id,omitempty"`
+
+	// Version of the ClusterStack
+	Version *string `json:"version,omitempty"`
 }
 
 // StorageAccount - storage resource of type Azure Storage Account.
 type StorageAccount struct {
-	StorageProperties
 	// REQUIRED; The account key of the Azure Storage Account.
 	AccountKey *string `json:"accountKey,omitempty"`
 
 	// REQUIRED; The account name of the Azure Storage Account.
 	AccountName *string `json:"accountName,omitempty"`
+
+	// REQUIRED; The type of the storage.
+	StorageType *StoragePropertiesStorageType `json:"storageType,omitempty"`
+}
+
+// GetStorageProperties implements the StoragePropertiesClassification interface for type StorageAccount.
+func (s *StorageAccount) GetStorageProperties() *StorageProperties {
+	return &StorageProperties{
+		StorageType: s.StorageType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StorageAccount.
 func (s StorageAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.StorageProperties.marshalInternal(objectMap, StoragePropertiesStorageTypeStorageAccount)
 	populate(objectMap, "accountKey", s.AccountKey)
 	populate(objectMap, "accountName", s.AccountName)
+	objectMap["storageType"] = StoragePropertiesStorageTypeStorageAccount
 	return json.Marshal(objectMap)
 }
 
@@ -2312,13 +4075,13 @@ func (s *StorageAccount) UnmarshalJSON(data []byte) error {
 		case "accountName":
 			err = unpopulate(val, &s.AccountName)
 			delete(rawMsg, key)
+		case "storageType":
+			err = unpopulate(val, &s.StorageType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.StorageProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2341,51 +4104,32 @@ type StorageProperties struct {
 // GetStorageProperties implements the StoragePropertiesClassification interface for type StorageProperties.
 func (s *StorageProperties) GetStorageProperties() *StorageProperties { return s }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type StorageProperties.
-func (s *StorageProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return s.unmarshalInternal(rawMsg)
-}
-
-func (s StorageProperties) marshalInternal(objectMap map[string]interface{}, discValue StoragePropertiesStorageType) {
-	s.StorageType = &discValue
-	objectMap["storageType"] = s.StorageType
-}
-
-func (s *StorageProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "storageType":
-			err = unpopulate(val, &s.StorageType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // StorageResource - Storage resource payload.
 type StorageResource struct {
-	ProxyResource
 	// Properties of the storage resource payload.
 	Properties StoragePropertiesClassification `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StorageResource.
 func (s StorageResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2398,19 +4142,25 @@ func (s *StorageResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &s.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &s.Name)
+			delete(rawMsg, key)
 		case "properties":
 			s.Properties, err = unmarshalStoragePropertiesClassification(val)
 			delete(rawMsg, key)
 		case "systemData":
 			err = unpopulate(val, &s.SystemData)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &s.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2432,24 +4182,66 @@ func (s StorageResourceCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// StoragesBeginCreateOrUpdateOptions contains the optional parameters for the Storages.BeginCreateOrUpdate method.
-type StoragesBeginCreateOrUpdateOptions struct {
+// StoragesClientBeginCreateOrUpdateOptions contains the optional parameters for the StoragesClient.BeginCreateOrUpdate method.
+type StoragesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StoragesBeginDeleteOptions contains the optional parameters for the Storages.BeginDelete method.
-type StoragesBeginDeleteOptions struct {
+// StoragesClientBeginDeleteOptions contains the optional parameters for the StoragesClient.BeginDelete method.
+type StoragesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StoragesGetOptions contains the optional parameters for the Storages.Get method.
-type StoragesGetOptions struct {
+// StoragesClientGetOptions contains the optional parameters for the StoragesClient.Get method.
+type StoragesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StoragesListOptions contains the optional parameters for the Storages.List method.
-type StoragesListOptions struct {
+// StoragesClientListOptions contains the optional parameters for the StoragesClient.List method.
+type StoragesClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SupportedBuildpackResource - Supported buildpack resource payload
+type SupportedBuildpackResource struct {
+	// Supported buildpack resource properties
+	Properties *SupportedBuildpackResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SupportedBuildpackResourceProperties - Supported buildpack resource properties
+type SupportedBuildpackResourceProperties struct {
+	// The id of supported buildpack
+	BuildpackID *string `json:"buildpackId,omitempty"`
+}
+
+// SupportedBuildpacksCollection - Object that includes an array of supported buildpacks resources and a possible link for
+// next set
+type SupportedBuildpacksCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of supported buildpacks resources
+	Value []*SupportedBuildpackResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SupportedBuildpacksCollection.
+func (s SupportedBuildpacksCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
 }
 
 // SupportedRuntimeVersion - Supported deployment runtime version descriptor.
@@ -2464,6 +4256,50 @@ type SupportedRuntimeVersion struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// SupportedStackResource - Supported stack resource payload
+type SupportedStackResource struct {
+	// Supported stack resource properties
+	Properties *SupportedStackResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SupportedStackResourceProperties - Supported stack resource properties
+type SupportedStackResourceProperties struct {
+	// The id of supported stack
+	StackID *string `json:"stackId,omitempty"`
+
+	// The version of supported stack
+	Version *string `json:"version,omitempty"`
+}
+
+// SupportedStacksCollection - Object that includes an array of supported stacks resources and a possible link for next set
+type SupportedStacksCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of supported stacks resources
+	Value []*SupportedStackResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SupportedStacksCollection.
+func (s SupportedStacksCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -2475,14 +4311,14 @@ type SystemData struct {
 	// The type of identity that created the resource.
 	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
 
-	// The timestamp of resource last modification (UTC)
+	// The timestamp of resource modification (UTC).
 	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
 
 	// The identity that last modified the resource.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
@@ -2561,73 +4397,148 @@ type TestKeys struct {
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource.
 type TrackedResource struct {
-	Resource
 	// The GEO location of the resource.
 	Location *string `json:"location,omitempty"`
 
 	// Tags of the service which is a list of key value pairs that describe the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type TrackedResource.
-func (t *TrackedResource) UnmarshalJSON(data []byte) error {
+// TriggeredBuildResult - The build result triggered by a build
+type TriggeredBuildResult struct {
+	// The unique build id of this build result
+	ID *string `json:"id,omitempty"`
+}
+
+// UploadedUserSourceInfoClassification provides polymorphic access to related types.
+// Call the interface's GetUploadedUserSourceInfo() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *JarUploadedUserSourceInfo, *NetCoreZipUploadedUserSourceInfo, *SourceUploadedUserSourceInfo, *UploadedUserSourceInfo
+type UploadedUserSourceInfoClassification interface {
+	UserSourceInfoClassification
+	// GetUploadedUserSourceInfo returns the UploadedUserSourceInfo content of the underlying type.
+	GetUploadedUserSourceInfo() *UploadedUserSourceInfo
+}
+
+// UploadedUserSourceInfo - Source with uploaded location
+type UploadedUserSourceInfo struct {
+	// REQUIRED; Type of the source uploaded
+	Type *string `json:"type,omitempty"`
+
+	// Relative path of the storage which stores the source
+	RelativePath *string `json:"relativePath,omitempty"`
+
+	// Version of the source
+	Version *string `json:"version,omitempty"`
+}
+
+// GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type UploadedUserSourceInfo.
+func (u *UploadedUserSourceInfo) GetUploadedUserSourceInfo() *UploadedUserSourceInfo { return u }
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type UploadedUserSourceInfo.
+func (u *UploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    u.Type,
+		Version: u.Version,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UploadedUserSourceInfo.
+func (u UploadedUserSourceInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "relativePath", u.RelativePath)
+	objectMap["type"] = "UploadedUserSourceInfo"
+	populate(objectMap, "version", u.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UploadedUserSourceInfo.
+func (u *UploadedUserSourceInfo) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return t.unmarshalInternal(rawMsg)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
-}
-
-func (t *TrackedResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "location":
-			err = unpopulate(val, &t.Location)
+		case "relativePath":
+			err = unpopulate(val, &u.RelativePath)
 			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &t.Tags)
+		case "type":
+			err = unpopulate(val, &u.Type)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, &u.Version)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := t.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
+}
+
+// UserSourceInfoClassification provides polymorphic access to related types.
+// Call the interface's GetUserSourceInfo() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BuildResultUserSourceInfo, *CustomContainerUserSourceInfo, *JarUploadedUserSourceInfo, *NetCoreZipUploadedUserSourceInfo,
+// - *SourceUploadedUserSourceInfo, *UploadedUserSourceInfo, *UserSourceInfo
+type UserSourceInfoClassification interface {
+	// GetUserSourceInfo returns the UserSourceInfo content of the underlying type.
+	GetUserSourceInfo() *UserSourceInfo
 }
 
 // UserSourceInfo - Source information for a deployment
 type UserSourceInfo struct {
-	// Selector for the artifact to be used for the deployment for multi-module projects. This should be the relative path to the target module/project.
-	ArtifactSelector *string `json:"artifactSelector,omitempty"`
-
-	// Custom container payload
-	CustomContainer *CustomContainer `json:"customContainer,omitempty"`
-
-	// Relative path of the storage which stores the source
-	RelativePath *string `json:"relativePath,omitempty"`
-
-	// Type of the source uploaded
-	Type *UserSourceType `json:"type,omitempty"`
+	// REQUIRED; Type of the source uploaded
+	Type *string `json:"type,omitempty"`
 
 	// Version of the source
 	Version *string `json:"version,omitempty"`
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type UserSourceInfo.
+func (u *UserSourceInfo) GetUserSourceInfo() *UserSourceInfo { return u }
+
+// ValidationMessages - Validate messages of the configuration service git repositories
+type ValidationMessages struct {
+	// Detailed validation messages.
+	Messages []*string `json:"messages,omitempty"`
+
+	// The name of the configuration service git repository.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ValidationMessages.
+func (v ValidationMessages) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "messages", v.Messages)
+	populate(objectMap, "name", v.Name)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

@@ -24,14 +24,15 @@ func ExampleCodePackageClient_GetContainerLogs() {
 	}
 	ctx := context.Background()
 	client := armservicefabricmesh.NewCodePackageClient("<subscription-id>", cred, nil)
-	_, err = client.GetContainerLogs(ctx,
+	res, err := client.GetContainerLogs(ctx,
 		"<resource-group-name>",
 		"<application-resource-name>",
 		"<service-resource-name>",
 		"<replica-name>",
 		"<code-package-name>",
-		&armservicefabricmesh.CodePackageGetContainerLogsOptions{Tail: nil})
+		&armservicefabricmesh.CodePackageClientGetContainerLogsOptions{Tail: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.CodePackageClientGetContainerLogsResult)
 }

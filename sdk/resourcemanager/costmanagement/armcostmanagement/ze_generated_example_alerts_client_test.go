@@ -24,12 +24,13 @@ func ExampleAlertsClient_List() {
 	}
 	ctx := context.Background()
 	client := armcostmanagement.NewAlertsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<scope>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AlertsClientListResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/SingleResourceGroupAlert.json
@@ -47,7 +48,7 @@ func ExampleAlertsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Alert.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AlertsClientGetResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/DismissResourceGroupAlerts.json
@@ -63,14 +64,14 @@ func ExampleAlertsClient_Dismiss() {
 		"<alert-id>",
 		armcostmanagement.DismissAlertPayload{
 			Properties: &armcostmanagement.AlertProperties{
-				Status: armcostmanagement.AlertStatusDismissed.ToPtr(),
+				Status: armcostmanagement.AlertStatus("Dismissed").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Alert.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AlertsClientDismissResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalBillingAccountAlerts.json
@@ -81,11 +82,12 @@ func ExampleAlertsClient_ListExternal() {
 	}
 	ctx := context.Background()
 	client := armcostmanagement.NewAlertsClient(cred, nil)
-	_, err = client.ListExternal(ctx,
-		armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
+	res, err := client.ListExternal(ctx,
+		armcostmanagement.ExternalCloudProviderType("externalBillingAccounts"),
 		"<external-cloud-provider-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AlertsClientListExternalResult)
 }

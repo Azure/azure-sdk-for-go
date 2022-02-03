@@ -11,7 +11,6 @@ package armreservations
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,20 +24,26 @@ import (
 // QuotaClient contains the methods for the Quota group.
 // Don't use this type directly, use NewQuotaClient() instead.
 type QuotaClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewQuotaClient creates a new instance of QuotaClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOptions) *QuotaClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &QuotaClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &QuotaClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update the quota (service limits) of a resource to the requested value. Steps:
@@ -48,22 +53,30 @@ func NewQuotaClient(credential azcore.TokenCredential, options *arm.ClientOption
 // 2. To increase the quota, update the limit field in the response from Get request to new value.
 //
 //
-// 3. Submit the JSON to the quota request API to update the quota. The Create quota request may be constructed as follows. The PUT operation can be used
-// to update the quota.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *QuotaClient) BeginCreateOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaBeginCreateOrUpdateOptions) (QuotaCreateOrUpdatePollerResponse, error) {
+// 3. Submit the JSON to the quota request API to update the quota. The Create quota request may be constructed as follows.
+// The PUT operation can be used to update the quota.
+// If the operation fails it returns an *azcore.ResponseError type.
+// subscriptionID - Azure subscription ID.
+// providerID - Azure resource provider ID.
+// location - Azure region.
+// resourceName - The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or TotalLowPriorityCores
+// for Microsoft.MachineLearningServices
+// createQuotaRequest - Quota requests payload.
+// options - QuotaClientBeginCreateOrUpdateOptions contains the optional parameters for the QuotaClient.BeginCreateOrUpdate
+// method.
+func (client *QuotaClient) BeginCreateOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (QuotaClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
 	if err != nil {
-		return QuotaCreateOrUpdatePollerResponse{}, err
+		return QuotaClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := QuotaCreateOrUpdatePollerResponse{
+	result := QuotaClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("QuotaClient.CreateOrUpdate", "location", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("QuotaClient.CreateOrUpdate", "location", resp, client.pl)
 	if err != nil {
-		return QuotaCreateOrUpdatePollerResponse{}, err
+		return QuotaClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &QuotaCreateOrUpdatePoller{
+	result.Poller = &QuotaClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
@@ -76,10 +89,10 @@ func (client *QuotaClient) BeginCreateOrUpdate(ctx context.Context, subscription
 // 2. To increase the quota, update the limit field in the response from Get request to new value.
 //
 //
-// 3. Submit the JSON to the quota request API to update the quota. The Create quota request may be constructed as follows. The PUT operation can be used
-// to update the quota.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *QuotaClient) createOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaBeginCreateOrUpdateOptions) (*http.Response, error) {
+// 3. Submit the JSON to the quota request API to update the quota. The Create quota request may be constructed as follows.
+// The PUT operation can be used to update the quota.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *QuotaClient) createOrUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
 	if err != nil {
 		return nil, err
@@ -89,13 +102,13 @@ func (client *QuotaClient) createOrUpdate(ctx context.Context, subscriptionID st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *QuotaClient) createOrUpdateCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *QuotaClient) createOrUpdateCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -113,7 +126,7 @@ func (client *QuotaClient) createOrUpdateCreateRequest(ctx context.Context, subs
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,38 +137,32 @@ func (client *QuotaClient) createOrUpdateCreateRequest(ctx context.Context, subs
 	return req, runtime.MarshalAsJSON(req, createQuotaRequest)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *QuotaClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to submit quota update request.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *QuotaClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, options *QuotaGetOptions) (QuotaGetResponse, error) {
+// Get - Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
+// submit quota update request.
+// If the operation fails it returns an *azcore.ResponseError type.
+// subscriptionID - Azure subscription ID.
+// providerID - Azure resource provider ID.
+// location - Azure region.
+// resourceName - The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or TotalLowPriorityCores
+// for Microsoft.MachineLearningServices
+// options - QuotaClientGetOptions contains the optional parameters for the QuotaClient.Get method.
+func (client *QuotaClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, options *QuotaClientGetOptions) (QuotaClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, subscriptionID, providerID, location, resourceName, options)
 	if err != nil {
-		return QuotaGetResponse{}, err
+		return QuotaClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QuotaGetResponse{}, err
+		return QuotaClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QuotaGetResponse{}, client.getHandleError(resp)
+		return QuotaClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *QuotaClient) getCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, options *QuotaGetOptions) (*policy.Request, error) {
+func (client *QuotaClient) getCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, options *QuotaClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -173,7 +180,7 @@ func (client *QuotaClient) getCreateRequest(ctx context.Context, subscriptionID 
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -185,47 +192,38 @@ func (client *QuotaClient) getCreateRequest(ctx context.Context, subscriptionID 
 }
 
 // getHandleResponse handles the Get response.
-func (client *QuotaClient) getHandleResponse(resp *http.Response) (QuotaGetResponse, error) {
-	result := QuotaGetResponse{RawResponse: resp}
+func (client *QuotaClient) getHandleResponse(resp *http.Response) (QuotaClientGetResponse, error) {
+	result := QuotaClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CurrentQuotaLimitBase); err != nil {
-		return QuotaGetResponse{}, runtime.NewResponseError(err, resp)
+		return QuotaClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *QuotaClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota operation can be leveraged to request
-// quota updates.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *QuotaClient) List(subscriptionID string, providerID string, location string, options *QuotaListOptions) *QuotaListPager {
-	return &QuotaListPager{
+// List - Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota operation
+// can be leveraged to request quota updates.
+// If the operation fails it returns an *azcore.ResponseError type.
+// subscriptionID - Azure subscription ID.
+// providerID - Azure resource provider ID.
+// location - Azure region.
+// options - QuotaClientListOptions contains the optional parameters for the QuotaClient.List method.
+func (client *QuotaClient) List(subscriptionID string, providerID string, location string, options *QuotaClientListOptions) *QuotaClientListPager {
+	return &QuotaClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, subscriptionID, providerID, location, options)
 		},
-		advancer: func(ctx context.Context, resp QuotaListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp QuotaClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.QuotaLimits.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *QuotaClient) listCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, options *QuotaListOptions) (*policy.Request, error) {
+func (client *QuotaClient) listCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, options *QuotaClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -239,7 +237,7 @@ func (client *QuotaClient) listCreateRequest(ctx context.Context, subscriptionID
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,48 +249,43 @@ func (client *QuotaClient) listCreateRequest(ctx context.Context, subscriptionID
 }
 
 // listHandleResponse handles the List response.
-func (client *QuotaClient) listHandleResponse(resp *http.Response) (QuotaListResponse, error) {
-	result := QuotaListResponse{RawResponse: resp}
+func (client *QuotaClient) listHandleResponse(resp *http.Response) (QuotaClientListResponse, error) {
+	result := QuotaClientListResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaLimits); err != nil {
-		return QuotaListResponse{}, runtime.NewResponseError(err, resp)
+		return QuotaClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *QuotaClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Update the quota (service limits) of this resource to the requested value.
 // • To get the quota information for specific resource, send a GET request.
 // • To increase the quota, update the limit field from the GET response to a new value.
-// • To update the quota value, submit the JSON response to the quota request API to update the quota. • To update the quota. use the PATCH operation.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *QuotaClient) BeginUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaBeginUpdateOptions) (QuotaUpdatePollerResponse, error) {
+// • To update the quota value, submit the JSON response to the quota request API to update the quota. • To update the quota.
+// use the PATCH operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+// subscriptionID - Azure subscription ID.
+// providerID - Azure resource provider ID.
+// location - Azure region.
+// resourceName - The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or TotalLowPriorityCores
+// for Microsoft.MachineLearningServices
+// createQuotaRequest - Payload for the quota request.
+// options - QuotaClientBeginUpdateOptions contains the optional parameters for the QuotaClient.BeginUpdate method.
+func (client *QuotaClient) BeginUpdate(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (QuotaClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
 	if err != nil {
-		return QuotaUpdatePollerResponse{}, err
+		return QuotaClientUpdatePollerResponse{}, err
 	}
-	result := QuotaUpdatePollerResponse{
+	result := QuotaClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("QuotaClient.Update", "location", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("QuotaClient.Update", "location", resp, client.pl)
 	if err != nil {
-		return QuotaUpdatePollerResponse{}, err
+		return QuotaClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &QuotaUpdatePoller{
+	result.Poller = &QuotaClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
@@ -301,9 +294,10 @@ func (client *QuotaClient) BeginUpdate(ctx context.Context, subscriptionID strin
 // Update - Update the quota (service limits) of this resource to the requested value.
 // • To get the quota information for specific resource, send a GET request.
 // • To increase the quota, update the limit field from the GET response to a new value.
-// • To update the quota value, submit the JSON response to the quota request API to update the quota. • To update the quota. use the PATCH operation.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *QuotaClient) update(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaBeginUpdateOptions) (*http.Response, error) {
+// • To update the quota value, submit the JSON response to the quota request API to update the quota. • To update the quota.
+// use the PATCH operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *QuotaClient) update(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, subscriptionID, providerID, location, resourceName, createQuotaRequest, options)
 	if err != nil {
 		return nil, err
@@ -313,13 +307,13 @@ func (client *QuotaClient) update(ctx context.Context, subscriptionID string, pr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *QuotaClient) updateCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaBeginUpdateOptions) (*policy.Request, error) {
+func (client *QuotaClient) updateCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *QuotaClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -337,7 +331,7 @@ func (client *QuotaClient) updateCreateRequest(ctx context.Context, subscription
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -346,17 +340,4 @@ func (client *QuotaClient) updateCreateRequest(ctx context.Context, subscription
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createQuotaRequest)
-}
-
-// updateHandleError handles the Update error response.
-func (client *QuotaClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

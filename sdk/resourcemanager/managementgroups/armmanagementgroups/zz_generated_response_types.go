@@ -15,154 +15,46 @@ import (
 	"time"
 )
 
-// EntitiesListResponse contains the response from method Entities.List.
-type EntitiesListResponse struct {
-	EntitiesListResult
+// APIClientCheckNameAvailabilityResponse contains the response from method APIClient.CheckNameAvailability.
+type APIClientCheckNameAvailabilityResponse struct {
+	APIClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EntitiesListResult contains the result from method Entities.List.
-type EntitiesListResult struct {
-	EntityListResult
-}
-
-// HierarchySettingsCreateOrUpdateResponse contains the response from method HierarchySettings.CreateOrUpdate.
-type HierarchySettingsCreateOrUpdateResponse struct {
-	HierarchySettingsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HierarchySettingsCreateOrUpdateResult contains the result from method HierarchySettings.CreateOrUpdate.
-type HierarchySettingsCreateOrUpdateResult struct {
-	HierarchySettings
-}
-
-// HierarchySettingsDeleteResponse contains the response from method HierarchySettings.Delete.
-type HierarchySettingsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HierarchySettingsGetResponse contains the response from method HierarchySettings.Get.
-type HierarchySettingsGetResponse struct {
-	HierarchySettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HierarchySettingsGetResult contains the result from method HierarchySettings.Get.
-type HierarchySettingsGetResult struct {
-	HierarchySettings
-}
-
-// HierarchySettingsListResponse contains the response from method HierarchySettings.List.
-type HierarchySettingsListResponse struct {
-	HierarchySettingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HierarchySettingsListResult contains the result from method HierarchySettings.List.
-type HierarchySettingsListResult struct {
-	HierarchySettingsList
-}
-
-// HierarchySettingsUpdateResponse contains the response from method HierarchySettings.Update.
-type HierarchySettingsUpdateResponse struct {
-	HierarchySettingsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HierarchySettingsUpdateResult contains the result from method HierarchySettings.Update.
-type HierarchySettingsUpdateResult struct {
-	HierarchySettings
-}
-
-// ManagementGroupSubscriptionsCreateResponse contains the response from method ManagementGroupSubscriptions.Create.
-type ManagementGroupSubscriptionsCreateResponse struct {
-	ManagementGroupSubscriptionsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementGroupSubscriptionsCreateResult contains the result from method ManagementGroupSubscriptions.Create.
-type ManagementGroupSubscriptionsCreateResult struct {
-	SubscriptionUnderManagementGroup
-}
-
-// ManagementGroupSubscriptionsDeleteResponse contains the response from method ManagementGroupSubscriptions.Delete.
-type ManagementGroupSubscriptionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementGroupSubscriptionsGetSubscriptionResponse contains the response from method ManagementGroupSubscriptions.GetSubscription.
-type ManagementGroupSubscriptionsGetSubscriptionResponse struct {
-	ManagementGroupSubscriptionsGetSubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementGroupSubscriptionsGetSubscriptionResult contains the result from method ManagementGroupSubscriptions.GetSubscription.
-type ManagementGroupSubscriptionsGetSubscriptionResult struct {
-	SubscriptionUnderManagementGroup
-}
-
-// ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResponse contains the response from method ManagementGroupSubscriptions.GetSubscriptionsUnderManagementGroup.
-type ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResponse struct {
-	ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResult contains the result from method ManagementGroupSubscriptions.GetSubscriptionsUnderManagementGroup.
-type ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResult struct {
-	ListSubscriptionUnderManagementGroup
-}
-
-// ManagementGroupsAPICheckNameAvailabilityResponse contains the response from method ManagementGroupsAPI.CheckNameAvailability.
-type ManagementGroupsAPICheckNameAvailabilityResponse struct {
-	ManagementGroupsAPICheckNameAvailabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ManagementGroupsAPICheckNameAvailabilityResult contains the result from method ManagementGroupsAPI.CheckNameAvailability.
-type ManagementGroupsAPICheckNameAvailabilityResult struct {
+// APIClientCheckNameAvailabilityResult contains the result from method APIClient.CheckNameAvailability.
+type APIClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// ManagementGroupsAPIStartTenantBackfillResponse contains the response from method ManagementGroupsAPI.StartTenantBackfill.
-type ManagementGroupsAPIStartTenantBackfillResponse struct {
-	ManagementGroupsAPIStartTenantBackfillResult
+// APIClientStartTenantBackfillResponse contains the response from method APIClient.StartTenantBackfill.
+type APIClientStartTenantBackfillResponse struct {
+	APIClientStartTenantBackfillResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsAPIStartTenantBackfillResult contains the result from method ManagementGroupsAPI.StartTenantBackfill.
-type ManagementGroupsAPIStartTenantBackfillResult struct {
+// APIClientStartTenantBackfillResult contains the result from method APIClient.StartTenantBackfill.
+type APIClientStartTenantBackfillResult struct {
 	TenantBackfillStatusResult
 }
 
-// ManagementGroupsAPITenantBackfillStatusResponse contains the response from method ManagementGroupsAPI.TenantBackfillStatus.
-type ManagementGroupsAPITenantBackfillStatusResponse struct {
-	ManagementGroupsAPITenantBackfillStatusResult
+// APIClientTenantBackfillStatusResponse contains the response from method APIClient.TenantBackfillStatus.
+type APIClientTenantBackfillStatusResponse struct {
+	APIClientTenantBackfillStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsAPITenantBackfillStatusResult contains the result from method ManagementGroupsAPI.TenantBackfillStatus.
-type ManagementGroupsAPITenantBackfillStatusResult struct {
+// APIClientTenantBackfillStatusResult contains the result from method APIClient.TenantBackfillStatus.
+type APIClientTenantBackfillStatusResult struct {
 	TenantBackfillStatusResult
 }
 
-// ManagementGroupsCreateOrUpdatePollerResponse contains the response from method ManagementGroups.CreateOrUpdate.
-type ManagementGroupsCreateOrUpdatePollerResponse struct {
+// ClientCreateOrUpdatePollerResponse contains the response from method Client.CreateOrUpdate.
+type ClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagementGroupsCreateOrUpdatePoller
+	Poller *ClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -171,8 +63,8 @@ type ManagementGroupsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagementGroupsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementGroupsCreateOrUpdateResponse, error) {
-	respType := ManagementGroupsCreateOrUpdateResponse{}
+func (l ClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientCreateOrUpdateResponse, error) {
+	respType := ClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagementGroup)
 	if err != nil {
 		return respType, err
@@ -181,13 +73,13 @@ func (l ManagementGroupsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a ManagementGroupsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ManagementGroupsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ManagementGroupsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagementGroupsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagementGroupsCreateOrUpdatePoller{
+	poller := &ClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -199,22 +91,22 @@ func (l *ManagementGroupsCreateOrUpdatePollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// ManagementGroupsCreateOrUpdateResponse contains the response from method ManagementGroups.CreateOrUpdate.
-type ManagementGroupsCreateOrUpdateResponse struct {
-	ManagementGroupsCreateOrUpdateResult
+// ClientCreateOrUpdateResponse contains the response from method Client.CreateOrUpdate.
+type ClientCreateOrUpdateResponse struct {
+	ClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsCreateOrUpdateResult contains the result from method ManagementGroups.CreateOrUpdate.
-type ManagementGroupsCreateOrUpdateResult struct {
+// ClientCreateOrUpdateResult contains the result from method Client.CreateOrUpdate.
+type ClientCreateOrUpdateResult struct {
 	ManagementGroup
 }
 
-// ManagementGroupsDeletePollerResponse contains the response from method ManagementGroups.Delete.
-type ManagementGroupsDeletePollerResponse struct {
+// ClientDeletePollerResponse contains the response from method Client.Delete.
+type ClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagementGroupsDeletePoller
+	Poller *ClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -223,8 +115,8 @@ type ManagementGroupsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagementGroupsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementGroupsDeleteResponse, error) {
-	respType := ManagementGroupsDeleteResponse{}
+func (l ClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientDeleteResponse, error) {
+	respType := ClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AzureAsyncOperationResults)
 	if err != nil {
 		return respType, err
@@ -233,13 +125,13 @@ func (l ManagementGroupsDeletePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a ManagementGroupsDeletePollerResponse from the provided client and resume token.
-func (l *ManagementGroupsDeletePollerResponse) Resume(ctx context.Context, client *ManagementGroupsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagementGroupsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ClientDeletePollerResponse from the provided client and resume token.
+func (l *ClientDeletePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagementGroupsDeletePoller{
+	poller := &ClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -251,74 +143,182 @@ func (l *ManagementGroupsDeletePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// ManagementGroupsDeleteResponse contains the response from method ManagementGroups.Delete.
-type ManagementGroupsDeleteResponse struct {
-	ManagementGroupsDeleteResult
+// ClientDeleteResponse contains the response from method Client.Delete.
+type ClientDeleteResponse struct {
+	ClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsDeleteResult contains the result from method ManagementGroups.Delete.
-type ManagementGroupsDeleteResult struct {
+// ClientDeleteResult contains the result from method Client.Delete.
+type ClientDeleteResult struct {
 	AzureAsyncOperationResults
 }
 
-// ManagementGroupsGetDescendantsResponse contains the response from method ManagementGroups.GetDescendants.
-type ManagementGroupsGetDescendantsResponse struct {
-	ManagementGroupsGetDescendantsResult
+// ClientGetDescendantsResponse contains the response from method Client.GetDescendants.
+type ClientGetDescendantsResponse struct {
+	ClientGetDescendantsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsGetDescendantsResult contains the result from method ManagementGroups.GetDescendants.
-type ManagementGroupsGetDescendantsResult struct {
+// ClientGetDescendantsResult contains the result from method Client.GetDescendants.
+type ClientGetDescendantsResult struct {
 	DescendantListResult
 }
 
-// ManagementGroupsGetResponse contains the response from method ManagementGroups.Get.
-type ManagementGroupsGetResponse struct {
-	ManagementGroupsGetResult
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
+	ClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsGetResult contains the result from method ManagementGroups.Get.
-type ManagementGroupsGetResult struct {
+// ClientGetResult contains the result from method Client.Get.
+type ClientGetResult struct {
 	ManagementGroup
 }
 
-// ManagementGroupsListResponse contains the response from method ManagementGroups.List.
-type ManagementGroupsListResponse struct {
-	ManagementGroupsListResult
+// ClientListResponse contains the response from method Client.List.
+type ClientListResponse struct {
+	ClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsListResult contains the result from method ManagementGroups.List.
-type ManagementGroupsListResult struct {
+// ClientListResult contains the result from method Client.List.
+type ClientListResult struct {
 	ManagementGroupListResult
 }
 
-// ManagementGroupsUpdateResponse contains the response from method ManagementGroups.Update.
-type ManagementGroupsUpdateResponse struct {
-	ManagementGroupsUpdateResult
+// ClientUpdateResponse contains the response from method Client.Update.
+type ClientUpdateResponse struct {
+	ClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsUpdateResult contains the result from method ManagementGroups.Update.
-type ManagementGroupsUpdateResult struct {
+// ClientUpdateResult contains the result from method Client.Update.
+type ClientUpdateResult struct {
 	ManagementGroup
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// EntitiesClientListResponse contains the response from method EntitiesClient.List.
+type EntitiesClientListResponse struct {
+	EntitiesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// EntitiesClientListResult contains the result from method EntitiesClient.List.
+type EntitiesClientListResult struct {
+	EntityListResult
+}
+
+// HierarchySettingsClientCreateOrUpdateResponse contains the response from method HierarchySettingsClient.CreateOrUpdate.
+type HierarchySettingsClientCreateOrUpdateResponse struct {
+	HierarchySettingsClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// HierarchySettingsClientCreateOrUpdateResult contains the result from method HierarchySettingsClient.CreateOrUpdate.
+type HierarchySettingsClientCreateOrUpdateResult struct {
+	HierarchySettings
+}
+
+// HierarchySettingsClientDeleteResponse contains the response from method HierarchySettingsClient.Delete.
+type HierarchySettingsClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// HierarchySettingsClientGetResponse contains the response from method HierarchySettingsClient.Get.
+type HierarchySettingsClientGetResponse struct {
+	HierarchySettingsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// HierarchySettingsClientGetResult contains the result from method HierarchySettingsClient.Get.
+type HierarchySettingsClientGetResult struct {
+	HierarchySettings
+}
+
+// HierarchySettingsClientListResponse contains the response from method HierarchySettingsClient.List.
+type HierarchySettingsClientListResponse struct {
+	HierarchySettingsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// HierarchySettingsClientListResult contains the result from method HierarchySettingsClient.List.
+type HierarchySettingsClientListResult struct {
+	HierarchySettingsList
+}
+
+// HierarchySettingsClientUpdateResponse contains the response from method HierarchySettingsClient.Update.
+type HierarchySettingsClientUpdateResponse struct {
+	HierarchySettingsClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// HierarchySettingsClientUpdateResult contains the result from method HierarchySettingsClient.Update.
+type HierarchySettingsClientUpdateResult struct {
+	HierarchySettings
+}
+
+// ManagementGroupSubscriptionsClientCreateResponse contains the response from method ManagementGroupSubscriptionsClient.Create.
+type ManagementGroupSubscriptionsClientCreateResponse struct {
+	ManagementGroupSubscriptionsClientCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagementGroupSubscriptionsClientCreateResult contains the result from method ManagementGroupSubscriptionsClient.Create.
+type ManagementGroupSubscriptionsClientCreateResult struct {
+	SubscriptionUnderManagementGroup
+}
+
+// ManagementGroupSubscriptionsClientDeleteResponse contains the response from method ManagementGroupSubscriptionsClient.Delete.
+type ManagementGroupSubscriptionsClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagementGroupSubscriptionsClientGetSubscriptionResponse contains the response from method ManagementGroupSubscriptionsClient.GetSubscription.
+type ManagementGroupSubscriptionsClientGetSubscriptionResponse struct {
+	ManagementGroupSubscriptionsClientGetSubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagementGroupSubscriptionsClientGetSubscriptionResult contains the result from method ManagementGroupSubscriptionsClient.GetSubscription.
+type ManagementGroupSubscriptionsClientGetSubscriptionResult struct {
+	SubscriptionUnderManagementGroup
+}
+
+// ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse contains the response from method ManagementGroupSubscriptionsClient.GetSubscriptionsUnderManagementGroup.
+type ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse struct {
+	ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResult contains the result from method ManagementGroupSubscriptionsClient.GetSubscriptionsUnderManagementGroup.
+type ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResult struct {
+	ListSubscriptionUnderManagementGroup
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

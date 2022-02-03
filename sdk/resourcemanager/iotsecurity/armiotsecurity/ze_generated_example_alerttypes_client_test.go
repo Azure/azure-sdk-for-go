@@ -24,11 +24,12 @@ func ExampleAlertTypesClient_List() {
 	}
 	ctx := context.Background()
 	client := armiotsecurity.NewAlertTypesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AlertTypesClientListResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-07-01-preview/examples/AlertTypes/GetAlertType.json
@@ -45,5 +46,5 @@ func ExampleAlertTypesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertType.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AlertTypesClientGetResult)
 }

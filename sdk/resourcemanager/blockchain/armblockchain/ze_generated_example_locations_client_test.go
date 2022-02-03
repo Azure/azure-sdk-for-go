@@ -25,9 +25,9 @@ func ExampleLocationsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armblockchain.NewLocationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<location-name>",
-		&armblockchain.LocationsCheckNameAvailabilityOptions{NameAvailabilityRequest: &armblockchain.NameAvailabilityRequest{
+		&armblockchain.LocationsClientCheckNameAvailabilityOptions{NameAvailabilityRequest: &armblockchain.NameAvailabilityRequest{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
 		},
@@ -35,6 +35,7 @@ func ExampleLocationsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LocationsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/Locations_ListConsortiums.json
@@ -45,10 +46,11 @@ func ExampleLocationsClient_ListConsortiums() {
 	}
 	ctx := context.Background()
 	client := armblockchain.NewLocationsClient("<subscription-id>", cred, nil)
-	_, err = client.ListConsortiums(ctx,
+	res, err := client.ListConsortiums(ctx,
 		"<location-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LocationsClientListConsortiumsResult)
 }

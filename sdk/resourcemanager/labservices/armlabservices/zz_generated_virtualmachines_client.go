@@ -11,7 +11,6 @@ package armlabservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // VirtualMachinesClient contains the methods for the VirtualMachines group.
 // Don't use this type directly, use NewVirtualMachinesClient() instead.
 type VirtualMachinesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachinesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &VirtualMachinesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachinesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Get - Returns the properties for a lab virtual machine.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesGetOptions) (VirtualMachinesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
+// virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
+// URIs.
+// options - VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
+func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientGetOptions) (VirtualMachinesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
-		return VirtualMachinesGetResponse{}, err
+		return VirtualMachinesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachinesGetResponse{}, err
+		return VirtualMachinesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualMachinesGetResponse{}, client.getHandleError(resp)
+		return VirtualMachinesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesGetOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/virtualMachines/{virtualMachineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +102,34 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (VirtualMachinesGetResponse, error) {
-	result := VirtualMachinesGetResponse{RawResponse: resp}
+func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (VirtualMachinesClientGetResponse, error) {
+	result := VirtualMachinesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachine); err != nil {
-		return VirtualMachinesGetResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachinesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VirtualMachinesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByLab - Returns a list of all virtual machines for a lab.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) ListByLab(resourceGroupName string, labName string, options *VirtualMachinesListByLabOptions) *VirtualMachinesListByLabPager {
-	return &VirtualMachinesListByLabPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
+// options - VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.ListByLab
+// method.
+func (client *VirtualMachinesClient) ListByLab(resourceGroupName string, labName string, options *VirtualMachinesClientListByLabOptions) *VirtualMachinesClientListByLabPager {
+	return &VirtualMachinesClientListByLabPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLabCreateRequest(ctx, resourceGroupName, labName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualMachinesListByLabResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualMachinesClientListByLabResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedVirtualMachines.NextLink)
 		},
 	}
 }
 
 // listByLabCreateRequest creates the ListByLab request.
-func (client *VirtualMachinesClient) listByLabCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *VirtualMachinesListByLabOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) listByLabCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *VirtualMachinesClientListByLabOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/virtualMachines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +143,7 @@ func (client *VirtualMachinesClient) listByLabCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,50 +158,43 @@ func (client *VirtualMachinesClient) listByLabCreateRequest(ctx context.Context,
 }
 
 // listByLabHandleResponse handles the ListByLab response.
-func (client *VirtualMachinesClient) listByLabHandleResponse(resp *http.Response) (VirtualMachinesListByLabResponse, error) {
-	result := VirtualMachinesListByLabResponse{RawResponse: resp}
+func (client *VirtualMachinesClient) listByLabHandleResponse(resp *http.Response) (VirtualMachinesClientListByLabResponse, error) {
+	result := VirtualMachinesClientListByLabResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedVirtualMachines); err != nil {
-		return VirtualMachinesListByLabResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachinesClientListByLabResponse{}, err
 	}
 	return result, nil
 }
 
-// listByLabHandleError handles the ListByLab error response.
-func (client *VirtualMachinesClient) listByLabHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRedeploy - Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginRedeployOptions) (VirtualMachinesRedeployPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
+// virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
+// URIs.
+// options - VirtualMachinesClientBeginRedeployOptions contains the optional parameters for the VirtualMachinesClient.BeginRedeploy
+// method.
+func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginRedeployOptions) (VirtualMachinesClientRedeployPollerResponse, error) {
 	resp, err := client.redeploy(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
-		return VirtualMachinesRedeployPollerResponse{}, err
+		return VirtualMachinesClientRedeployPollerResponse{}, err
 	}
-	result := VirtualMachinesRedeployPollerResponse{
+	result := VirtualMachinesClientRedeployPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.Redeploy", "location", resp, client.pl, client.redeployHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Redeploy", "location", resp, client.pl)
 	if err != nil {
-		return VirtualMachinesRedeployPollerResponse{}, err
+		return VirtualMachinesClientRedeployPollerResponse{}, err
 	}
-	result.Poller = &VirtualMachinesRedeployPoller{
+	result.Poller = &VirtualMachinesClientRedeployPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Redeploy - Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginRedeployOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginRedeployOptions) (*http.Response, error) {
 	req, err := client.redeployCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
 		return nil, err
@@ -208,13 +204,13 @@ func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.redeployHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // redeployCreateRequest creates the Redeploy request.
-func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginRedeployOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginRedeployOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/virtualMachines/{virtualMachineName}/redeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -232,7 +228,7 @@ func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,44 +239,37 @@ func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// redeployHandleError handles the Redeploy error response.
-func (client *VirtualMachinesClient) redeployHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginReimage - Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published snapshot of the reference
-// environment of the lab.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginReimageOptions) (VirtualMachinesReimagePollerResponse, error) {
+// BeginReimage - Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
+// snapshot of the reference environment of the lab.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
+// virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
+// URIs.
+// options - VirtualMachinesClientBeginReimageOptions contains the optional parameters for the VirtualMachinesClient.BeginReimage
+// method.
+func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (VirtualMachinesClientReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
-		return VirtualMachinesReimagePollerResponse{}, err
+		return VirtualMachinesClientReimagePollerResponse{}, err
 	}
-	result := VirtualMachinesReimagePollerResponse{
+	result := VirtualMachinesClientReimagePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.Reimage", "location", resp, client.pl, client.reimageHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Reimage", "location", resp, client.pl)
 	if err != nil {
-		return VirtualMachinesReimagePollerResponse{}, err
+		return VirtualMachinesClientReimagePollerResponse{}, err
 	}
-	result.Poller = &VirtualMachinesReimagePoller{
+	result.Poller = &VirtualMachinesClientReimagePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Reimage - Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published snapshot of the reference environment
-// of the lab.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginReimageOptions) (*http.Response, error) {
+// Reimage - Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
+// snapshot of the reference environment of the lab.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (*http.Response, error) {
 	req, err := client.reimageCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
 		return nil, err
@@ -290,13 +279,13 @@ func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.reimageHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // reimageCreateRequest creates the Reimage request.
-func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginReimageOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/virtualMachines/{virtualMachineName}/reimage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -314,7 +303,7 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,42 +314,36 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// reimageHandleError handles the Reimage error response.
-func (client *VirtualMachinesClient) reimageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginResetPassword - Resets a lab virtual machine password.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) BeginResetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesBeginResetPasswordOptions) (VirtualMachinesResetPasswordPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
+// virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
+// URIs.
+// body - The request body.
+// options - VirtualMachinesClientBeginResetPasswordOptions contains the optional parameters for the VirtualMachinesClient.BeginResetPassword
+// method.
+func (client *VirtualMachinesClient) BeginResetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesClientBeginResetPasswordOptions) (VirtualMachinesClientResetPasswordPollerResponse, error) {
 	resp, err := client.resetPassword(ctx, resourceGroupName, labName, virtualMachineName, body, options)
 	if err != nil {
-		return VirtualMachinesResetPasswordPollerResponse{}, err
+		return VirtualMachinesClientResetPasswordPollerResponse{}, err
 	}
-	result := VirtualMachinesResetPasswordPollerResponse{
+	result := VirtualMachinesClientResetPasswordPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.ResetPassword", "location", resp, client.pl, client.resetPasswordHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.ResetPassword", "location", resp, client.pl)
 	if err != nil {
-		return VirtualMachinesResetPasswordPollerResponse{}, err
+		return VirtualMachinesClientResetPasswordPollerResponse{}, err
 	}
-	result.Poller = &VirtualMachinesResetPasswordPoller{
+	result.Poller = &VirtualMachinesClientResetPasswordPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ResetPassword - Resets a lab virtual machine password.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) resetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesBeginResetPasswordOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachinesClient) resetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesClientBeginResetPasswordOptions) (*http.Response, error) {
 	req, err := client.resetPasswordCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, body, options)
 	if err != nil {
 		return nil, err
@@ -370,13 +353,13 @@ func (client *VirtualMachinesClient) resetPassword(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.resetPasswordHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resetPasswordCreateRequest creates the ResetPassword request.
-func (client *VirtualMachinesClient) resetPasswordCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesBeginResetPasswordOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) resetPasswordCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesClientBeginResetPasswordOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/virtualMachines/{virtualMachineName}/resetPassword"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -394,7 +377,7 @@ func (client *VirtualMachinesClient) resetPasswordCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -405,42 +388,35 @@ func (client *VirtualMachinesClient) resetPasswordCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// resetPasswordHandleError handles the ResetPassword error response.
-func (client *VirtualMachinesClient) resetPasswordHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Action to start a lab virtual machine.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginStartOptions) (VirtualMachinesStartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
+// virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
+// URIs.
+// options - VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart
+// method.
+func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (VirtualMachinesClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
-		return VirtualMachinesStartPollerResponse{}, err
+		return VirtualMachinesClientStartPollerResponse{}, err
 	}
-	result := VirtualMachinesStartPollerResponse{
+	result := VirtualMachinesClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.Start", "location", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Start", "location", resp, client.pl)
 	if err != nil {
-		return VirtualMachinesStartPollerResponse{}, err
+		return VirtualMachinesClientStartPollerResponse{}, err
 	}
-	result.Poller = &VirtualMachinesStartPoller{
+	result.Poller = &VirtualMachinesClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Action to start a lab virtual machine.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
 		return nil, err
@@ -450,13 +426,13 @@ func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginStartOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/virtualMachines/{virtualMachineName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -474,7 +450,7 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -485,42 +461,35 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *VirtualMachinesClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStop - Action to stop a lab virtual machine.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginStopOptions) (VirtualMachinesStopPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
+// virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
+// URIs.
+// options - VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop
+// method.
+func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (VirtualMachinesClientStopPollerResponse, error) {
 	resp, err := client.stop(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
-		return VirtualMachinesStopPollerResponse{}, err
+		return VirtualMachinesClientStopPollerResponse{}, err
 	}
-	result := VirtualMachinesStopPollerResponse{
+	result := VirtualMachinesClientStopPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachinesClient.Stop", "location", resp, client.pl, client.stopHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Stop", "location", resp, client.pl)
 	if err != nil {
-		return VirtualMachinesStopPollerResponse{}, err
+		return VirtualMachinesClientStopPollerResponse{}, err
 	}
-	result.Poller = &VirtualMachinesStopPoller{
+	result.Poller = &VirtualMachinesClientStopPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Stop - Action to stop a lab virtual machine.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualMachinesClient) stop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginStopOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachinesClient) stop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
 		return nil, err
@@ -530,13 +499,13 @@ func (client *VirtualMachinesClient) stop(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.stopHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesBeginStopOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/virtualMachines/{virtualMachineName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -554,7 +523,7 @@ func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -563,17 +532,4 @@ func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// stopHandleError handles the Stop error response.
-func (client *VirtualMachinesClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

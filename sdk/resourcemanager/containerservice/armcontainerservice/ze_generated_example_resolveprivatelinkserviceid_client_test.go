@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
 )
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ResolvePrivateLinkServiceId.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ResolvePrivateLinkServiceId.json
 func ExampleResolvePrivateLinkServiceIDClient_POST() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,5 +35,5 @@ func ExampleResolvePrivateLinkServiceIDClient_POST() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResolvePrivateLinkServiceIDClientPOSTResult)
 }

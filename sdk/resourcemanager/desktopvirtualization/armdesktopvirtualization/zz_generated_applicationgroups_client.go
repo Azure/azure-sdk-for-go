@@ -11,7 +11,6 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // ApplicationGroupsClient contains the methods for the ApplicationGroups group.
 // Don't use this type directly, use NewApplicationGroupsClient() instead.
 type ApplicationGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplicationGroupsClient creates a new instance of ApplicationGroupsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplicationGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplicationGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplicationGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update an applicationGroup.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationGroup ApplicationGroup, options *ApplicationGroupsCreateOrUpdateOptions) (ApplicationGroupsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// applicationGroup - Object containing ApplicationGroup definitions.
+// options - ApplicationGroupsClientCreateOrUpdateOptions contains the optional parameters for the ApplicationGroupsClient.CreateOrUpdate
+// method.
+func (client *ApplicationGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationGroup ApplicationGroup, options *ApplicationGroupsClientCreateOrUpdateOptions) (ApplicationGroupsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationGroupName, applicationGroup, options)
 	if err != nil {
-		return ApplicationGroupsCreateOrUpdateResponse{}, err
+		return ApplicationGroupsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationGroupsCreateOrUpdateResponse{}, err
+		return ApplicationGroupsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ApplicationGroupsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ApplicationGroupsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ApplicationGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationGroup ApplicationGroup, options *ApplicationGroupsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationGroup ApplicationGroup, options *ApplicationGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +86,7 @@ func (client *ApplicationGroupsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +98,37 @@ func (client *ApplicationGroupsClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ApplicationGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ApplicationGroupsCreateOrUpdateResponse, error) {
-	result := ApplicationGroupsCreateOrUpdateResponse{RawResponse: resp}
+func (client *ApplicationGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ApplicationGroupsClientCreateOrUpdateResponse, error) {
+	result := ApplicationGroupsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGroup); err != nil {
-		return ApplicationGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationGroupsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ApplicationGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Remove an applicationGroup.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGroupsClient) Delete(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsDeleteOptions) (ApplicationGroupsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// options - ApplicationGroupsClientDeleteOptions contains the optional parameters for the ApplicationGroupsClient.Delete
+// method.
+func (client *ApplicationGroupsClient) Delete(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientDeleteOptions) (ApplicationGroupsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
 	if err != nil {
-		return ApplicationGroupsDeleteResponse{}, err
+		return ApplicationGroupsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationGroupsDeleteResponse{}, err
+		return ApplicationGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ApplicationGroupsDeleteResponse{}, client.deleteHandleError(resp)
+		return ApplicationGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ApplicationGroupsDeleteResponse{RawResponse: resp}, nil
+	return ApplicationGroupsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +142,7 @@ func (client *ApplicationGroupsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +153,28 @@ func (client *ApplicationGroupsClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ApplicationGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get an application group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGroupsClient) Get(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsGetOptions) (ApplicationGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// options - ApplicationGroupsClientGetOptions contains the optional parameters for the ApplicationGroupsClient.Get method.
+func (client *ApplicationGroupsClient) Get(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientGetOptions) (ApplicationGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
 	if err != nil {
-		return ApplicationGroupsGetResponse{}, err
+		return ApplicationGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationGroupsGetResponse{}, err
+		return ApplicationGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationGroupsGetResponse{}, client.getHandleError(resp)
+		return ApplicationGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsGetOptions) (*policy.Request, error) {
+func (client *ApplicationGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +188,7 @@ func (client *ApplicationGroupsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,43 +200,33 @@ func (client *ApplicationGroupsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationGroupsClient) getHandleResponse(resp *http.Response) (ApplicationGroupsGetResponse, error) {
-	result := ApplicationGroupsGetResponse{RawResponse: resp}
+func (client *ApplicationGroupsClient) getHandleResponse(resp *http.Response) (ApplicationGroupsClientGetResponse, error) {
+	result := ApplicationGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGroup); err != nil {
-		return ApplicationGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ApplicationGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - List applicationGroups.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGroupsClient) ListByResourceGroup(resourceGroupName string, options *ApplicationGroupsListByResourceGroupOptions) *ApplicationGroupsListByResourceGroupPager {
-	return &ApplicationGroupsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ApplicationGroupsClientListByResourceGroupOptions contains the optional parameters for the ApplicationGroupsClient.ListByResourceGroup
+// method.
+func (client *ApplicationGroupsClient) ListByResourceGroup(resourceGroupName string, options *ApplicationGroupsClientListByResourceGroupOptions) *ApplicationGroupsClientListByResourceGroupPager {
+	return &ApplicationGroupsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationGroupsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationGroupsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationGroupList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ApplicationGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ApplicationGroupsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ApplicationGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ApplicationGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -253,7 +236,7 @@ func (client *ApplicationGroupsClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,49 +251,38 @@ func (client *ApplicationGroupsClient) listByResourceGroupCreateRequest(ctx cont
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ApplicationGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ApplicationGroupsListByResourceGroupResponse, error) {
-	result := ApplicationGroupsListByResourceGroupResponse{RawResponse: resp}
+func (client *ApplicationGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ApplicationGroupsClientListByResourceGroupResponse, error) {
+	result := ApplicationGroupsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGroupList); err != nil {
-		return ApplicationGroupsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationGroupsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ApplicationGroupsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - List applicationGroups in subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGroupsClient) ListBySubscription(options *ApplicationGroupsListBySubscriptionOptions) *ApplicationGroupsListBySubscriptionPager {
-	return &ApplicationGroupsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ApplicationGroupsClientListBySubscriptionOptions contains the optional parameters for the ApplicationGroupsClient.ListBySubscription
+// method.
+func (client *ApplicationGroupsClient) ListBySubscription(options *ApplicationGroupsClientListBySubscriptionOptions) *ApplicationGroupsClientListBySubscriptionPager {
+	return &ApplicationGroupsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationGroupsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationGroupsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationGroupList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ApplicationGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ApplicationGroupsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ApplicationGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ApplicationGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DesktopVirtualization/applicationGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,46 +297,37 @@ func (client *ApplicationGroupsClient) listBySubscriptionCreateRequest(ctx conte
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ApplicationGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (ApplicationGroupsListBySubscriptionResponse, error) {
-	result := ApplicationGroupsListBySubscriptionResponse{RawResponse: resp}
+func (client *ApplicationGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (ApplicationGroupsClientListBySubscriptionResponse, error) {
+	result := ApplicationGroupsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGroupList); err != nil {
-		return ApplicationGroupsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationGroupsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ApplicationGroupsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update an applicationGroup.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGroupsClient) Update(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsUpdateOptions) (ApplicationGroupsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// options - ApplicationGroupsClientUpdateOptions contains the optional parameters for the ApplicationGroupsClient.Update
+// method.
+func (client *ApplicationGroupsClient) Update(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientUpdateOptions) (ApplicationGroupsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
 	if err != nil {
-		return ApplicationGroupsUpdateResponse{}, err
+		return ApplicationGroupsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationGroupsUpdateResponse{}, err
+		return ApplicationGroupsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationGroupsUpdateResponse{}, client.updateHandleError(resp)
+		return ApplicationGroupsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ApplicationGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -378,7 +341,7 @@ func (client *ApplicationGroupsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -393,23 +356,10 @@ func (client *ApplicationGroupsClient) updateCreateRequest(ctx context.Context, 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ApplicationGroupsClient) updateHandleResponse(resp *http.Response) (ApplicationGroupsUpdateResponse, error) {
-	result := ApplicationGroupsUpdateResponse{RawResponse: resp}
+func (client *ApplicationGroupsClient) updateHandleResponse(resp *http.Response) (ApplicationGroupsClientUpdateResponse, error) {
+	result := ApplicationGroupsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGroup); err != nil {
-		return ApplicationGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationGroupsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ApplicationGroupsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -39,18 +39,17 @@ func ExampleCalculateExchangeClient_BeginPost() {
 					{
 						Location: to.StringPtr("<location>"),
 						Properties: &armreservations.PurchaseRequestProperties{
-							AppliedScopeType: armreservations.AppliedScopeTypeShared.ToPtr(),
-							AppliedScopes:    []*string{},
-							BillingPlan:      armreservations.ReservationBillingPlanUpfront.ToPtr(),
+							AppliedScopeType: armreservations.AppliedScopeType("Shared").ToPtr(),
+							BillingPlan:      armreservations.ReservationBillingPlan("Upfront").ToPtr(),
 							BillingScopeID:   to.StringPtr("<billing-scope-id>"),
 							DisplayName:      to.StringPtr("<display-name>"),
 							Quantity:         to.Int32Ptr(1),
 							Renew:            to.BoolPtr(false),
 							ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
-								InstanceFlexibility: armreservations.InstanceFlexibilityOn.ToPtr(),
+								InstanceFlexibility: armreservations.InstanceFlexibility("On").ToPtr(),
 							},
-							ReservedResourceType: armreservations.ReservedResourceTypeVirtualMachines.ToPtr(),
-							Term:                 armreservations.ReservationTermP1Y.ToPtr(),
+							ReservedResourceType: armreservations.ReservedResourceType("VirtualMachines").ToPtr(),
+							Term:                 armreservations.ReservationTerm("P1Y").ToPtr(),
 						},
 						SKU: &armreservations.SKUName{
 							Name: to.StringPtr("<name>"),
@@ -66,5 +65,5 @@ func ExampleCalculateExchangeClient_BeginPost() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CalculateExchangeOperationResultResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CalculateExchangeClientPostResult)
 }

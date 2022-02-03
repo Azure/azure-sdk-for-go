@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,57 @@ import (
 // VirtualMachineSchedulesClient contains the methods for the VirtualMachineSchedules group.
 // Don't use this type directly, use NewVirtualMachineSchedulesClient() instead.
 type VirtualMachineSchedulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineSchedulesClient creates a new instance of VirtualMachineSchedulesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineSchedulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VirtualMachineSchedulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineSchedulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or replace an existing schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineSchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule Schedule, options *VirtualMachineSchedulesCreateOrUpdateOptions) (VirtualMachineSchedulesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// virtualMachineName - The name of the virtual machine.
+// name - The name of the schedule.
+// schedule - A schedule.
+// options - VirtualMachineSchedulesClientCreateOrUpdateOptions contains the optional parameters for the VirtualMachineSchedulesClient.CreateOrUpdate
+// method.
+func (client *VirtualMachineSchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule Schedule, options *VirtualMachineSchedulesClientCreateOrUpdateOptions) (VirtualMachineSchedulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, name, schedule, options)
 	if err != nil {
-		return VirtualMachineSchedulesCreateOrUpdateResponse{}, err
+		return VirtualMachineSchedulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineSchedulesCreateOrUpdateResponse{}, err
+		return VirtualMachineSchedulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return VirtualMachineSchedulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return VirtualMachineSchedulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualMachineSchedulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule Schedule, options *VirtualMachineSchedulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VirtualMachineSchedulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule Schedule, options *VirtualMachineSchedulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,7 +97,7 @@ func (client *VirtualMachineSchedulesClient) createOrUpdateCreateRequest(ctx con
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,46 +109,39 @@ func (client *VirtualMachineSchedulesClient) createOrUpdateCreateRequest(ctx con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VirtualMachineSchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (VirtualMachineSchedulesCreateOrUpdateResponse, error) {
-	result := VirtualMachineSchedulesCreateOrUpdateResponse{RawResponse: resp}
+func (client *VirtualMachineSchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (VirtualMachineSchedulesClientCreateOrUpdateResponse, error) {
+	result := VirtualMachineSchedulesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return VirtualMachineSchedulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineSchedulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualMachineSchedulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineSchedulesClient) Delete(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesDeleteOptions) (VirtualMachineSchedulesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// virtualMachineName - The name of the virtual machine.
+// name - The name of the schedule.
+// options - VirtualMachineSchedulesClientDeleteOptions contains the optional parameters for the VirtualMachineSchedulesClient.Delete
+// method.
+func (client *VirtualMachineSchedulesClient) Delete(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientDeleteOptions) (VirtualMachineSchedulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, name, options)
 	if err != nil {
-		return VirtualMachineSchedulesDeleteResponse{}, err
+		return VirtualMachineSchedulesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineSchedulesDeleteResponse{}, err
+		return VirtualMachineSchedulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return VirtualMachineSchedulesDeleteResponse{}, client.deleteHandleError(resp)
+		return VirtualMachineSchedulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VirtualMachineSchedulesDeleteResponse{RawResponse: resp}, nil
+	return VirtualMachineSchedulesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualMachineSchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesDeleteOptions) (*policy.Request, error) {
+func (client *VirtualMachineSchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,7 +163,7 @@ func (client *VirtualMachineSchedulesClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,42 +174,35 @@ func (client *VirtualMachineSchedulesClient) deleteCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VirtualMachineSchedulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginExecute - Execute a schedule. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesBeginExecuteOptions) (VirtualMachineSchedulesExecutePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// virtualMachineName - The name of the virtual machine.
+// name - The name of the schedule.
+// options - VirtualMachineSchedulesClientBeginExecuteOptions contains the optional parameters for the VirtualMachineSchedulesClient.BeginExecute
+// method.
+func (client *VirtualMachineSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientBeginExecuteOptions) (VirtualMachineSchedulesClientExecutePollerResponse, error) {
 	resp, err := client.execute(ctx, resourceGroupName, labName, virtualMachineName, name, options)
 	if err != nil {
-		return VirtualMachineSchedulesExecutePollerResponse{}, err
+		return VirtualMachineSchedulesClientExecutePollerResponse{}, err
 	}
-	result := VirtualMachineSchedulesExecutePollerResponse{
+	result := VirtualMachineSchedulesClientExecutePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachineSchedulesClient.Execute", "", resp, client.pl, client.executeHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachineSchedulesClient.Execute", "", resp, client.pl)
 	if err != nil {
-		return VirtualMachineSchedulesExecutePollerResponse{}, err
+		return VirtualMachineSchedulesClientExecutePollerResponse{}, err
 	}
-	result.Poller = &VirtualMachineSchedulesExecutePoller{
+	result.Poller = &VirtualMachineSchedulesClientExecutePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Execute - Execute a schedule. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineSchedulesClient) execute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesBeginExecuteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineSchedulesClient) execute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientBeginExecuteOptions) (*http.Response, error) {
 	req, err := client.executeCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, name, options)
 	if err != nil {
 		return nil, err
@@ -212,13 +212,13 @@ func (client *VirtualMachineSchedulesClient) execute(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.executeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *VirtualMachineSchedulesClient) executeCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesBeginExecuteOptions) (*policy.Request, error) {
+func (client *VirtualMachineSchedulesClient) executeCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientBeginExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}/execute"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -240,7 +240,7 @@ func (client *VirtualMachineSchedulesClient) executeCreateRequest(ctx context.Co
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,38 +251,31 @@ func (client *VirtualMachineSchedulesClient) executeCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// executeHandleError handles the Execute error response.
-func (client *VirtualMachineSchedulesClient) executeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineSchedulesClient) Get(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesGetOptions) (VirtualMachineSchedulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// virtualMachineName - The name of the virtual machine.
+// name - The name of the schedule.
+// options - VirtualMachineSchedulesClientGetOptions contains the optional parameters for the VirtualMachineSchedulesClient.Get
+// method.
+func (client *VirtualMachineSchedulesClient) Get(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientGetOptions) (VirtualMachineSchedulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, name, options)
 	if err != nil {
-		return VirtualMachineSchedulesGetResponse{}, err
+		return VirtualMachineSchedulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineSchedulesGetResponse{}, err
+		return VirtualMachineSchedulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualMachineSchedulesGetResponse{}, client.getHandleError(resp)
+		return VirtualMachineSchedulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualMachineSchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesGetOptions) (*policy.Request, error) {
+func (client *VirtualMachineSchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -304,7 +297,7 @@ func (client *VirtualMachineSchedulesClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,43 +312,35 @@ func (client *VirtualMachineSchedulesClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineSchedulesClient) getHandleResponse(resp *http.Response) (VirtualMachineSchedulesGetResponse, error) {
-	result := VirtualMachineSchedulesGetResponse{RawResponse: resp}
+func (client *VirtualMachineSchedulesClient) getHandleResponse(resp *http.Response) (VirtualMachineSchedulesClientGetResponse, error) {
+	result := VirtualMachineSchedulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return VirtualMachineSchedulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineSchedulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VirtualMachineSchedulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List schedules in a given virtual machine.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineSchedulesClient) List(resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesListOptions) *VirtualMachineSchedulesListPager {
-	return &VirtualMachineSchedulesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// virtualMachineName - The name of the virtual machine.
+// options - VirtualMachineSchedulesClientListOptions contains the optional parameters for the VirtualMachineSchedulesClient.List
+// method.
+func (client *VirtualMachineSchedulesClient) List(resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesClientListOptions) *VirtualMachineSchedulesClientListPager {
+	return &VirtualMachineSchedulesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualMachineSchedulesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualMachineSchedulesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScheduleList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualMachineSchedulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesListOptions) (*policy.Request, error) {
+func (client *VirtualMachineSchedulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -373,7 +358,7 @@ func (client *VirtualMachineSchedulesClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -397,46 +382,40 @@ func (client *VirtualMachineSchedulesClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineSchedulesClient) listHandleResponse(resp *http.Response) (VirtualMachineSchedulesListResponse, error) {
-	result := VirtualMachineSchedulesListResponse{RawResponse: resp}
+func (client *VirtualMachineSchedulesClient) listHandleResponse(resp *http.Response) (VirtualMachineSchedulesClientListResponse, error) {
+	result := VirtualMachineSchedulesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduleList); err != nil {
-		return VirtualMachineSchedulesListResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineSchedulesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *VirtualMachineSchedulesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of schedules. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineSchedulesClient) Update(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule ScheduleFragment, options *VirtualMachineSchedulesUpdateOptions) (VirtualMachineSchedulesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// virtualMachineName - The name of the virtual machine.
+// name - The name of the schedule.
+// schedule - A schedule.
+// options - VirtualMachineSchedulesClientUpdateOptions contains the optional parameters for the VirtualMachineSchedulesClient.Update
+// method.
+func (client *VirtualMachineSchedulesClient) Update(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule ScheduleFragment, options *VirtualMachineSchedulesClientUpdateOptions) (VirtualMachineSchedulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, name, schedule, options)
 	if err != nil {
-		return VirtualMachineSchedulesUpdateResponse{}, err
+		return VirtualMachineSchedulesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineSchedulesUpdateResponse{}, err
+		return VirtualMachineSchedulesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualMachineSchedulesUpdateResponse{}, client.updateHandleError(resp)
+		return VirtualMachineSchedulesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VirtualMachineSchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule ScheduleFragment, options *VirtualMachineSchedulesUpdateOptions) (*policy.Request, error) {
+func (client *VirtualMachineSchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, schedule ScheduleFragment, options *VirtualMachineSchedulesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -458,7 +437,7 @@ func (client *VirtualMachineSchedulesClient) updateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -470,23 +449,10 @@ func (client *VirtualMachineSchedulesClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *VirtualMachineSchedulesClient) updateHandleResponse(resp *http.Response) (VirtualMachineSchedulesUpdateResponse, error) {
-	result := VirtualMachineSchedulesUpdateResponse{RawResponse: resp}
+func (client *VirtualMachineSchedulesClient) updateHandleResponse(resp *http.Response) (VirtualMachineSchedulesClientUpdateResponse, error) {
+	result := VirtualMachineSchedulesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return VirtualMachineSchedulesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineSchedulesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *VirtualMachineSchedulesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

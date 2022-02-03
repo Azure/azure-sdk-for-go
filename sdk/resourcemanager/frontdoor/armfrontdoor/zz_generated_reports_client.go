@@ -11,7 +11,6 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,57 @@ import (
 // ReportsClient contains the methods for the Reports group.
 // Don't use this type directly, use NewReportsClient() instead.
 type ReportsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewReportsClient creates a new instance of ReportsClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReportsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReportsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReportsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetLatencyScorecards - Gets a Latency Scorecard for a given Experiment
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) GetLatencyScorecards(ctx context.Context, resourceGroupName string, profileName string, experimentName string, aggregationInterval LatencyScorecardAggregationInterval, options *ReportsGetLatencyScorecardsOptions) (ReportsGetLatencyScorecardsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - The Profile identifier associated with the Tenant and Partner
+// experimentName - The Experiment identifier associated with the Experiment
+// aggregationInterval - The aggregation interval of the Latency Scorecard
+// options - ReportsClientGetLatencyScorecardsOptions contains the optional parameters for the ReportsClient.GetLatencyScorecards
+// method.
+func (client *ReportsClient) GetLatencyScorecards(ctx context.Context, resourceGroupName string, profileName string, experimentName string, aggregationInterval LatencyScorecardAggregationInterval, options *ReportsClientGetLatencyScorecardsOptions) (ReportsClientGetLatencyScorecardsResponse, error) {
 	req, err := client.getLatencyScorecardsCreateRequest(ctx, resourceGroupName, profileName, experimentName, aggregationInterval, options)
 	if err != nil {
-		return ReportsGetLatencyScorecardsResponse{}, err
+		return ReportsClientGetLatencyScorecardsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReportsGetLatencyScorecardsResponse{}, err
+		return ReportsClientGetLatencyScorecardsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReportsGetLatencyScorecardsResponse{}, client.getLatencyScorecardsHandleError(resp)
+		return ReportsClientGetLatencyScorecardsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getLatencyScorecardsHandleResponse(resp)
 }
 
 // getLatencyScorecardsCreateRequest creates the GetLatencyScorecards request.
-func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, aggregationInterval LatencyScorecardAggregationInterval, options *ReportsGetLatencyScorecardsOptions) (*policy.Request, error) {
+func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, aggregationInterval LatencyScorecardAggregationInterval, options *ReportsClientGetLatencyScorecardsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}/LatencyScorecard"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +93,7 @@ func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter experimentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{experimentName}", url.PathEscape(experimentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,46 +112,41 @@ func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Conte
 }
 
 // getLatencyScorecardsHandleResponse handles the GetLatencyScorecards response.
-func (client *ReportsClient) getLatencyScorecardsHandleResponse(resp *http.Response) (ReportsGetLatencyScorecardsResponse, error) {
-	result := ReportsGetLatencyScorecardsResponse{RawResponse: resp}
+func (client *ReportsClient) getLatencyScorecardsHandleResponse(resp *http.Response) (ReportsClientGetLatencyScorecardsResponse, error) {
+	result := ReportsClientGetLatencyScorecardsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LatencyScorecard); err != nil {
-		return ReportsGetLatencyScorecardsResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientGetLatencyScorecardsResponse{}, err
 	}
 	return result, nil
 }
 
-// getLatencyScorecardsHandleError handles the GetLatencyScorecards error response.
-func (client *ReportsClient) getLatencyScorecardsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetTimeseries - Gets a Timeseries for a given Experiment
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) GetTimeseries(ctx context.Context, resourceGroupName string, profileName string, experimentName string, startDateTimeUTC time.Time, endDateTimeUTC time.Time, aggregationInterval TimeseriesAggregationInterval, timeseriesType TimeseriesType, options *ReportsGetTimeseriesOptions) (ReportsGetTimeseriesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - The Profile identifier associated with the Tenant and Partner
+// experimentName - The Experiment identifier associated with the Experiment
+// startDateTimeUTC - The start DateTime of the Timeseries in UTC
+// endDateTimeUTC - The end DateTime of the Timeseries in UTC
+// aggregationInterval - The aggregation interval of the Timeseries
+// timeseriesType - The type of Timeseries
+// options - ReportsClientGetTimeseriesOptions contains the optional parameters for the ReportsClient.GetTimeseries method.
+func (client *ReportsClient) GetTimeseries(ctx context.Context, resourceGroupName string, profileName string, experimentName string, startDateTimeUTC time.Time, endDateTimeUTC time.Time, aggregationInterval TimeseriesAggregationInterval, timeseriesType TimeseriesType, options *ReportsClientGetTimeseriesOptions) (ReportsClientGetTimeseriesResponse, error) {
 	req, err := client.getTimeseriesCreateRequest(ctx, resourceGroupName, profileName, experimentName, startDateTimeUTC, endDateTimeUTC, aggregationInterval, timeseriesType, options)
 	if err != nil {
-		return ReportsGetTimeseriesResponse{}, err
+		return ReportsClientGetTimeseriesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReportsGetTimeseriesResponse{}, err
+		return ReportsClientGetTimeseriesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReportsGetTimeseriesResponse{}, client.getTimeseriesHandleError(resp)
+		return ReportsClientGetTimeseriesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getTimeseriesHandleResponse(resp)
 }
 
 // getTimeseriesCreateRequest creates the GetTimeseries request.
-func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, startDateTimeUTC time.Time, endDateTimeUTC time.Time, aggregationInterval TimeseriesAggregationInterval, timeseriesType TimeseriesType, options *ReportsGetTimeseriesOptions) (*policy.Request, error) {
+func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, startDateTimeUTC time.Time, endDateTimeUTC time.Time, aggregationInterval TimeseriesAggregationInterval, timeseriesType TimeseriesType, options *ReportsClientGetTimeseriesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}/Timeseries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +164,7 @@ func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter experimentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{experimentName}", url.PathEscape(experimentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -177,23 +186,10 @@ func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, res
 }
 
 // getTimeseriesHandleResponse handles the GetTimeseries response.
-func (client *ReportsClient) getTimeseriesHandleResponse(resp *http.Response) (ReportsGetTimeseriesResponse, error) {
-	result := ReportsGetTimeseriesResponse{RawResponse: resp}
+func (client *ReportsClient) getTimeseriesHandleResponse(resp *http.Response) (ReportsClientGetTimeseriesResponse, error) {
+	result := ReportsClientGetTimeseriesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Timeseries); err != nil {
-		return ReportsGetTimeseriesResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientGetTimeseriesResponse{}, err
 	}
 	return result, nil
-}
-
-// getTimeseriesHandleError handles the GetTimeseries error response.
-func (client *ReportsClient) getTimeseriesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

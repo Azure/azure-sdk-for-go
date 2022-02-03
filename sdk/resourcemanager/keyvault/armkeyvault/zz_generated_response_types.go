@@ -15,70 +15,70 @@ import (
 	"time"
 )
 
-// KeysCreateIfNotExistResponse contains the response from method Keys.CreateIfNotExist.
-type KeysCreateIfNotExistResponse struct {
-	KeysCreateIfNotExistResult
+// KeysClientCreateIfNotExistResponse contains the response from method KeysClient.CreateIfNotExist.
+type KeysClientCreateIfNotExistResponse struct {
+	KeysClientCreateIfNotExistResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KeysCreateIfNotExistResult contains the result from method Keys.CreateIfNotExist.
-type KeysCreateIfNotExistResult struct {
+// KeysClientCreateIfNotExistResult contains the result from method KeysClient.CreateIfNotExist.
+type KeysClientCreateIfNotExistResult struct {
 	Key
 }
 
-// KeysGetResponse contains the response from method Keys.Get.
-type KeysGetResponse struct {
-	KeysGetResult
+// KeysClientGetResponse contains the response from method KeysClient.Get.
+type KeysClientGetResponse struct {
+	KeysClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KeysGetResult contains the result from method Keys.Get.
-type KeysGetResult struct {
+// KeysClientGetResult contains the result from method KeysClient.Get.
+type KeysClientGetResult struct {
 	Key
 }
 
-// KeysGetVersionResponse contains the response from method Keys.GetVersion.
-type KeysGetVersionResponse struct {
-	KeysGetVersionResult
+// KeysClientGetVersionResponse contains the response from method KeysClient.GetVersion.
+type KeysClientGetVersionResponse struct {
+	KeysClientGetVersionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KeysGetVersionResult contains the result from method Keys.GetVersion.
-type KeysGetVersionResult struct {
+// KeysClientGetVersionResult contains the result from method KeysClient.GetVersion.
+type KeysClientGetVersionResult struct {
 	Key
 }
 
-// KeysListResponse contains the response from method Keys.List.
-type KeysListResponse struct {
-	KeysListResult
+// KeysClientListResponse contains the response from method KeysClient.List.
+type KeysClientListResponse struct {
+	KeysClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KeysListResult contains the result from method Keys.List.
-type KeysListResult struct {
+// KeysClientListResult contains the result from method KeysClient.List.
+type KeysClientListResult struct {
 	KeyListResult
 }
 
-// KeysListVersionsResponse contains the response from method Keys.ListVersions.
-type KeysListVersionsResponse struct {
-	KeysListVersionsResult
+// KeysClientListVersionsResponse contains the response from method KeysClient.ListVersions.
+type KeysClientListVersionsResponse struct {
+	KeysClientListVersionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KeysListVersionsResult contains the result from method Keys.ListVersions.
-type KeysListVersionsResult struct {
+// KeysClientListVersionsResult contains the result from method KeysClient.ListVersions.
+type KeysClientListVersionsResult struct {
 	KeyListResult
 }
 
-// MHSMPrivateEndpointConnectionsDeletePollerResponse contains the response from method MHSMPrivateEndpointConnections.Delete.
-type MHSMPrivateEndpointConnectionsDeletePollerResponse struct {
+// MHSMPrivateEndpointConnectionsClientDeletePollerResponse contains the response from method MHSMPrivateEndpointConnectionsClient.Delete.
+type MHSMPrivateEndpointConnectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MHSMPrivateEndpointConnectionsDeletePoller
+	Poller *MHSMPrivateEndpointConnectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -87,8 +87,8 @@ type MHSMPrivateEndpointConnectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MHSMPrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MHSMPrivateEndpointConnectionsDeleteResponse, error) {
-	respType := MHSMPrivateEndpointConnectionsDeleteResponse{}
+func (l MHSMPrivateEndpointConnectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MHSMPrivateEndpointConnectionsClientDeleteResponse, error) {
+	respType := MHSMPrivateEndpointConnectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MHSMPrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -97,13 +97,13 @@ func (l MHSMPrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx co
 	return respType, nil
 }
 
-// Resume rehydrates a MHSMPrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *MHSMPrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *MHSMPrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MHSMPrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a MHSMPrivateEndpointConnectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *MHSMPrivateEndpointConnectionsClientDeletePollerResponse) Resume(ctx context.Context, client *MHSMPrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MHSMPrivateEndpointConnectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MHSMPrivateEndpointConnectionsDeletePoller{
+	poller := &MHSMPrivateEndpointConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -115,51 +115,51 @@ func (l *MHSMPrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.
 	return nil
 }
 
-// MHSMPrivateEndpointConnectionsDeleteResponse contains the response from method MHSMPrivateEndpointConnections.Delete.
-type MHSMPrivateEndpointConnectionsDeleteResponse struct {
-	MHSMPrivateEndpointConnectionsDeleteResult
+// MHSMPrivateEndpointConnectionsClientDeleteResponse contains the response from method MHSMPrivateEndpointConnectionsClient.Delete.
+type MHSMPrivateEndpointConnectionsClientDeleteResponse struct {
+	MHSMPrivateEndpointConnectionsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MHSMPrivateEndpointConnectionsDeleteResult contains the result from method MHSMPrivateEndpointConnections.Delete.
-type MHSMPrivateEndpointConnectionsDeleteResult struct {
+// MHSMPrivateEndpointConnectionsClientDeleteResult contains the result from method MHSMPrivateEndpointConnectionsClient.Delete.
+type MHSMPrivateEndpointConnectionsClientDeleteResult struct {
 	MHSMPrivateEndpointConnection
 }
 
-// MHSMPrivateEndpointConnectionsGetResponse contains the response from method MHSMPrivateEndpointConnections.Get.
-type MHSMPrivateEndpointConnectionsGetResponse struct {
-	MHSMPrivateEndpointConnectionsGetResult
+// MHSMPrivateEndpointConnectionsClientGetResponse contains the response from method MHSMPrivateEndpointConnectionsClient.Get.
+type MHSMPrivateEndpointConnectionsClientGetResponse struct {
+	MHSMPrivateEndpointConnectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MHSMPrivateEndpointConnectionsGetResult contains the result from method MHSMPrivateEndpointConnections.Get.
-type MHSMPrivateEndpointConnectionsGetResult struct {
+// MHSMPrivateEndpointConnectionsClientGetResult contains the result from method MHSMPrivateEndpointConnectionsClient.Get.
+type MHSMPrivateEndpointConnectionsClientGetResult struct {
 	MHSMPrivateEndpointConnection
 }
 
-// MHSMPrivateEndpointConnectionsListByResourceResponse contains the response from method MHSMPrivateEndpointConnections.ListByResource.
-type MHSMPrivateEndpointConnectionsListByResourceResponse struct {
-	MHSMPrivateEndpointConnectionsListByResourceResult
+// MHSMPrivateEndpointConnectionsClientListByResourceResponse contains the response from method MHSMPrivateEndpointConnectionsClient.ListByResource.
+type MHSMPrivateEndpointConnectionsClientListByResourceResponse struct {
+	MHSMPrivateEndpointConnectionsClientListByResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MHSMPrivateEndpointConnectionsListByResourceResult contains the result from method MHSMPrivateEndpointConnections.ListByResource.
-type MHSMPrivateEndpointConnectionsListByResourceResult struct {
+// MHSMPrivateEndpointConnectionsClientListByResourceResult contains the result from method MHSMPrivateEndpointConnectionsClient.ListByResource.
+type MHSMPrivateEndpointConnectionsClientListByResourceResult struct {
 	MHSMPrivateEndpointConnectionsListResult
 }
 
-// MHSMPrivateEndpointConnectionsPutResponse contains the response from method MHSMPrivateEndpointConnections.Put.
-type MHSMPrivateEndpointConnectionsPutResponse struct {
-	MHSMPrivateEndpointConnectionsPutResult
+// MHSMPrivateEndpointConnectionsClientPutResponse contains the response from method MHSMPrivateEndpointConnectionsClient.Put.
+type MHSMPrivateEndpointConnectionsClientPutResponse struct {
+	MHSMPrivateEndpointConnectionsClientPutResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MHSMPrivateEndpointConnectionsPutResult contains the result from method MHSMPrivateEndpointConnections.Put.
-type MHSMPrivateEndpointConnectionsPutResult struct {
+// MHSMPrivateEndpointConnectionsClientPutResult contains the result from method MHSMPrivateEndpointConnectionsClient.Put.
+type MHSMPrivateEndpointConnectionsClientPutResult struct {
 	MHSMPrivateEndpointConnection
 	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
 	AzureAsyncOperation *string
@@ -168,22 +168,22 @@ type MHSMPrivateEndpointConnectionsPutResult struct {
 	RetryAfter *int32
 }
 
-// MHSMPrivateLinkResourcesListByMHSMResourceResponse contains the response from method MHSMPrivateLinkResources.ListByMHSMResource.
-type MHSMPrivateLinkResourcesListByMHSMResourceResponse struct {
-	MHSMPrivateLinkResourcesListByMHSMResourceResult
+// MHSMPrivateLinkResourcesClientListByMHSMResourceResponse contains the response from method MHSMPrivateLinkResourcesClient.ListByMHSMResource.
+type MHSMPrivateLinkResourcesClientListByMHSMResourceResponse struct {
+	MHSMPrivateLinkResourcesClientListByMHSMResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MHSMPrivateLinkResourcesListByMHSMResourceResult contains the result from method MHSMPrivateLinkResources.ListByMHSMResource.
-type MHSMPrivateLinkResourcesListByMHSMResourceResult struct {
+// MHSMPrivateLinkResourcesClientListByMHSMResourceResult contains the result from method MHSMPrivateLinkResourcesClient.ListByMHSMResource.
+type MHSMPrivateLinkResourcesClientListByMHSMResourceResult struct {
 	MHSMPrivateLinkResourceListResult
 }
 
-// ManagedHsmsCreateOrUpdatePollerResponse contains the response from method ManagedHsms.CreateOrUpdate.
-type ManagedHsmsCreateOrUpdatePollerResponse struct {
+// ManagedHsmsClientCreateOrUpdatePollerResponse contains the response from method ManagedHsmsClient.CreateOrUpdate.
+type ManagedHsmsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedHsmsCreateOrUpdatePoller
+	Poller *ManagedHsmsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -192,8 +192,8 @@ type ManagedHsmsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedHsmsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmsCreateOrUpdateResponse, error) {
-	respType := ManagedHsmsCreateOrUpdateResponse{}
+func (l ManagedHsmsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmsClientCreateOrUpdateResponse, error) {
+	respType := ManagedHsmsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagedHsm)
 	if err != nil {
 		return respType, err
@@ -202,13 +202,13 @@ func (l ManagedHsmsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedHsmsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ManagedHsmsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ManagedHsmsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedHsmsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ManagedHsmsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ManagedHsmsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ManagedHsmsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedHsmsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedHsmsCreateOrUpdatePoller{
+	poller := &ManagedHsmsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -220,22 +220,22 @@ func (l *ManagedHsmsCreateOrUpdatePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ManagedHsmsCreateOrUpdateResponse contains the response from method ManagedHsms.CreateOrUpdate.
-type ManagedHsmsCreateOrUpdateResponse struct {
-	ManagedHsmsCreateOrUpdateResult
+// ManagedHsmsClientCreateOrUpdateResponse contains the response from method ManagedHsmsClient.CreateOrUpdate.
+type ManagedHsmsClientCreateOrUpdateResponse struct {
+	ManagedHsmsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsCreateOrUpdateResult contains the result from method ManagedHsms.CreateOrUpdate.
-type ManagedHsmsCreateOrUpdateResult struct {
+// ManagedHsmsClientCreateOrUpdateResult contains the result from method ManagedHsmsClient.CreateOrUpdate.
+type ManagedHsmsClientCreateOrUpdateResult struct {
 	ManagedHsm
 }
 
-// ManagedHsmsDeletePollerResponse contains the response from method ManagedHsms.Delete.
-type ManagedHsmsDeletePollerResponse struct {
+// ManagedHsmsClientDeletePollerResponse contains the response from method ManagedHsmsClient.Delete.
+type ManagedHsmsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedHsmsDeletePoller
+	Poller *ManagedHsmsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -244,8 +244,8 @@ type ManagedHsmsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedHsmsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmsDeleteResponse, error) {
-	respType := ManagedHsmsDeleteResponse{}
+func (l ManagedHsmsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmsClientDeleteResponse, error) {
+	respType := ManagedHsmsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -254,13 +254,13 @@ func (l ManagedHsmsDeletePollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedHsmsDeletePollerResponse from the provided client and resume token.
-func (l *ManagedHsmsDeletePollerResponse) Resume(ctx context.Context, client *ManagedHsmsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedHsmsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ManagedHsmsClientDeletePollerResponse from the provided client and resume token.
+func (l *ManagedHsmsClientDeletePollerResponse) Resume(ctx context.Context, client *ManagedHsmsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedHsmsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedHsmsDeletePoller{
+	poller := &ManagedHsmsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -272,76 +272,76 @@ func (l *ManagedHsmsDeletePollerResponse) Resume(ctx context.Context, client *Ma
 	return nil
 }
 
-// ManagedHsmsDeleteResponse contains the response from method ManagedHsms.Delete.
-type ManagedHsmsDeleteResponse struct {
+// ManagedHsmsClientDeleteResponse contains the response from method ManagedHsmsClient.Delete.
+type ManagedHsmsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsGetDeletedResponse contains the response from method ManagedHsms.GetDeleted.
-type ManagedHsmsGetDeletedResponse struct {
-	ManagedHsmsGetDeletedResult
+// ManagedHsmsClientGetDeletedResponse contains the response from method ManagedHsmsClient.GetDeleted.
+type ManagedHsmsClientGetDeletedResponse struct {
+	ManagedHsmsClientGetDeletedResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsGetDeletedResult contains the result from method ManagedHsms.GetDeleted.
-type ManagedHsmsGetDeletedResult struct {
+// ManagedHsmsClientGetDeletedResult contains the result from method ManagedHsmsClient.GetDeleted.
+type ManagedHsmsClientGetDeletedResult struct {
 	DeletedManagedHsm
 }
 
-// ManagedHsmsGetResponse contains the response from method ManagedHsms.Get.
-type ManagedHsmsGetResponse struct {
-	ManagedHsmsGetResult
+// ManagedHsmsClientGetResponse contains the response from method ManagedHsmsClient.Get.
+type ManagedHsmsClientGetResponse struct {
+	ManagedHsmsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsGetResult contains the result from method ManagedHsms.Get.
-type ManagedHsmsGetResult struct {
+// ManagedHsmsClientGetResult contains the result from method ManagedHsmsClient.Get.
+type ManagedHsmsClientGetResult struct {
 	ManagedHsm
 }
 
-// ManagedHsmsListByResourceGroupResponse contains the response from method ManagedHsms.ListByResourceGroup.
-type ManagedHsmsListByResourceGroupResponse struct {
-	ManagedHsmsListByResourceGroupResult
+// ManagedHsmsClientListByResourceGroupResponse contains the response from method ManagedHsmsClient.ListByResourceGroup.
+type ManagedHsmsClientListByResourceGroupResponse struct {
+	ManagedHsmsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsListByResourceGroupResult contains the result from method ManagedHsms.ListByResourceGroup.
-type ManagedHsmsListByResourceGroupResult struct {
+// ManagedHsmsClientListByResourceGroupResult contains the result from method ManagedHsmsClient.ListByResourceGroup.
+type ManagedHsmsClientListByResourceGroupResult struct {
 	ManagedHsmListResult
 }
 
-// ManagedHsmsListBySubscriptionResponse contains the response from method ManagedHsms.ListBySubscription.
-type ManagedHsmsListBySubscriptionResponse struct {
-	ManagedHsmsListBySubscriptionResult
+// ManagedHsmsClientListBySubscriptionResponse contains the response from method ManagedHsmsClient.ListBySubscription.
+type ManagedHsmsClientListBySubscriptionResponse struct {
+	ManagedHsmsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsListBySubscriptionResult contains the result from method ManagedHsms.ListBySubscription.
-type ManagedHsmsListBySubscriptionResult struct {
+// ManagedHsmsClientListBySubscriptionResult contains the result from method ManagedHsmsClient.ListBySubscription.
+type ManagedHsmsClientListBySubscriptionResult struct {
 	ManagedHsmListResult
 }
 
-// ManagedHsmsListDeletedResponse contains the response from method ManagedHsms.ListDeleted.
-type ManagedHsmsListDeletedResponse struct {
-	ManagedHsmsListDeletedResult
+// ManagedHsmsClientListDeletedResponse contains the response from method ManagedHsmsClient.ListDeleted.
+type ManagedHsmsClientListDeletedResponse struct {
+	ManagedHsmsClientListDeletedResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsListDeletedResult contains the result from method ManagedHsms.ListDeleted.
-type ManagedHsmsListDeletedResult struct {
+// ManagedHsmsClientListDeletedResult contains the result from method ManagedHsmsClient.ListDeleted.
+type ManagedHsmsClientListDeletedResult struct {
 	DeletedManagedHsmListResult
 }
 
-// ManagedHsmsPurgeDeletedPollerResponse contains the response from method ManagedHsms.PurgeDeleted.
-type ManagedHsmsPurgeDeletedPollerResponse struct {
+// ManagedHsmsClientPurgeDeletedPollerResponse contains the response from method ManagedHsmsClient.PurgeDeleted.
+type ManagedHsmsClientPurgeDeletedPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedHsmsPurgeDeletedPoller
+	Poller *ManagedHsmsClientPurgeDeletedPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -350,8 +350,8 @@ type ManagedHsmsPurgeDeletedPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedHsmsPurgeDeletedPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmsPurgeDeletedResponse, error) {
-	respType := ManagedHsmsPurgeDeletedResponse{}
+func (l ManagedHsmsClientPurgeDeletedPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmsClientPurgeDeletedResponse, error) {
+	respType := ManagedHsmsClientPurgeDeletedResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -360,13 +360,13 @@ func (l ManagedHsmsPurgeDeletedPollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedHsmsPurgeDeletedPollerResponse from the provided client and resume token.
-func (l *ManagedHsmsPurgeDeletedPollerResponse) Resume(ctx context.Context, client *ManagedHsmsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedHsmsClient.PurgeDeleted", token, client.pl, client.purgeDeletedHandleError)
+// Resume rehydrates a ManagedHsmsClientPurgeDeletedPollerResponse from the provided client and resume token.
+func (l *ManagedHsmsClientPurgeDeletedPollerResponse) Resume(ctx context.Context, client *ManagedHsmsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedHsmsClient.PurgeDeleted", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedHsmsPurgeDeletedPoller{
+	poller := &ManagedHsmsClientPurgeDeletedPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -378,16 +378,16 @@ func (l *ManagedHsmsPurgeDeletedPollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// ManagedHsmsPurgeDeletedResponse contains the response from method ManagedHsms.PurgeDeleted.
-type ManagedHsmsPurgeDeletedResponse struct {
+// ManagedHsmsClientPurgeDeletedResponse contains the response from method ManagedHsmsClient.PurgeDeleted.
+type ManagedHsmsClientPurgeDeletedResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsUpdatePollerResponse contains the response from method ManagedHsms.Update.
-type ManagedHsmsUpdatePollerResponse struct {
+// ManagedHsmsClientUpdatePollerResponse contains the response from method ManagedHsmsClient.Update.
+type ManagedHsmsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedHsmsUpdatePoller
+	Poller *ManagedHsmsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -396,8 +396,8 @@ type ManagedHsmsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedHsmsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmsUpdateResponse, error) {
-	respType := ManagedHsmsUpdateResponse{}
+func (l ManagedHsmsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmsClientUpdateResponse, error) {
+	respType := ManagedHsmsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagedHsm)
 	if err != nil {
 		return respType, err
@@ -406,13 +406,13 @@ func (l ManagedHsmsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedHsmsUpdatePollerResponse from the provided client and resume token.
-func (l *ManagedHsmsUpdatePollerResponse) Resume(ctx context.Context, client *ManagedHsmsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedHsmsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ManagedHsmsClientUpdatePollerResponse from the provided client and resume token.
+func (l *ManagedHsmsClientUpdatePollerResponse) Resume(ctx context.Context, client *ManagedHsmsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedHsmsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedHsmsUpdatePoller{
+	poller := &ManagedHsmsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -424,34 +424,34 @@ func (l *ManagedHsmsUpdatePollerResponse) Resume(ctx context.Context, client *Ma
 	return nil
 }
 
-// ManagedHsmsUpdateResponse contains the response from method ManagedHsms.Update.
-type ManagedHsmsUpdateResponse struct {
-	ManagedHsmsUpdateResult
+// ManagedHsmsClientUpdateResponse contains the response from method ManagedHsmsClient.Update.
+type ManagedHsmsClientUpdateResponse struct {
+	ManagedHsmsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedHsmsUpdateResult contains the result from method ManagedHsms.Update.
-type ManagedHsmsUpdateResult struct {
+// ManagedHsmsClientUpdateResult contains the result from method ManagedHsmsClient.Update.
+type ManagedHsmsClientUpdateResult struct {
 	ManagedHsm
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
+// PrivateEndpointConnectionsClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
+	Poller *PrivateEndpointConnectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -460,8 +460,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
+func (l PrivateEndpointConnectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -470,13 +470,13 @@ func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
+	poller := &PrivateEndpointConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -488,51 +488,51 @@ func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	PrivateEndpointConnectionsDeleteResult
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	PrivateEndpointConnectionsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsDeleteResult contains the result from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResult struct {
+// PrivateEndpointConnectionsClientDeleteResult contains the result from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListByResourceResponse contains the response from method PrivateEndpointConnections.ListByResource.
-type PrivateEndpointConnectionsListByResourceResponse struct {
-	PrivateEndpointConnectionsListByResourceResult
+// PrivateEndpointConnectionsClientListByResourceResponse contains the response from method PrivateEndpointConnectionsClient.ListByResource.
+type PrivateEndpointConnectionsClientListByResourceResponse struct {
+	PrivateEndpointConnectionsClientListByResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsListByResourceResult contains the result from method PrivateEndpointConnections.ListByResource.
-type PrivateEndpointConnectionsListByResourceResult struct {
+// PrivateEndpointConnectionsClientListByResourceResult contains the result from method PrivateEndpointConnectionsClient.ListByResource.
+type PrivateEndpointConnectionsClientListByResourceResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionsPutResponse contains the response from method PrivateEndpointConnections.Put.
-type PrivateEndpointConnectionsPutResponse struct {
-	PrivateEndpointConnectionsPutResult
+// PrivateEndpointConnectionsClientPutResponse contains the response from method PrivateEndpointConnectionsClient.Put.
+type PrivateEndpointConnectionsClientPutResponse struct {
+	PrivateEndpointConnectionsClientPutResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsPutResult contains the result from method PrivateEndpointConnections.Put.
-type PrivateEndpointConnectionsPutResult struct {
+// PrivateEndpointConnectionsClientPutResult contains the result from method PrivateEndpointConnectionsClient.Put.
+type PrivateEndpointConnectionsClientPutResult struct {
 	PrivateEndpointConnection
 	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
 	AzureAsyncOperation *string
@@ -541,82 +541,82 @@ type PrivateEndpointConnectionsPutResult struct {
 	RetryAfter *int32
 }
 
-// PrivateLinkResourcesListByVaultResponse contains the response from method PrivateLinkResources.ListByVault.
-type PrivateLinkResourcesListByVaultResponse struct {
-	PrivateLinkResourcesListByVaultResult
+// PrivateLinkResourcesClientListByVaultResponse contains the response from method PrivateLinkResourcesClient.ListByVault.
+type PrivateLinkResourcesClientListByVaultResponse struct {
+	PrivateLinkResourcesClientListByVaultResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesListByVaultResult contains the result from method PrivateLinkResources.ListByVault.
-type PrivateLinkResourcesListByVaultResult struct {
+// PrivateLinkResourcesClientListByVaultResult contains the result from method PrivateLinkResourcesClient.ListByVault.
+type PrivateLinkResourcesClientListByVaultResult struct {
 	PrivateLinkResourceListResult
 }
 
-// SecretsCreateOrUpdateResponse contains the response from method Secrets.CreateOrUpdate.
-type SecretsCreateOrUpdateResponse struct {
-	SecretsCreateOrUpdateResult
+// SecretsClientCreateOrUpdateResponse contains the response from method SecretsClient.CreateOrUpdate.
+type SecretsClientCreateOrUpdateResponse struct {
+	SecretsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretsCreateOrUpdateResult contains the result from method Secrets.CreateOrUpdate.
-type SecretsCreateOrUpdateResult struct {
+// SecretsClientCreateOrUpdateResult contains the result from method SecretsClient.CreateOrUpdate.
+type SecretsClientCreateOrUpdateResult struct {
 	Secret
 }
 
-// SecretsGetResponse contains the response from method Secrets.Get.
-type SecretsGetResponse struct {
-	SecretsGetResult
+// SecretsClientGetResponse contains the response from method SecretsClient.Get.
+type SecretsClientGetResponse struct {
+	SecretsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretsGetResult contains the result from method Secrets.Get.
-type SecretsGetResult struct {
+// SecretsClientGetResult contains the result from method SecretsClient.Get.
+type SecretsClientGetResult struct {
 	Secret
 }
 
-// SecretsListResponse contains the response from method Secrets.List.
-type SecretsListResponse struct {
-	SecretsListResult
+// SecretsClientListResponse contains the response from method SecretsClient.List.
+type SecretsClientListResponse struct {
+	SecretsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretsListResult contains the result from method Secrets.List.
-type SecretsListResult struct {
+// SecretsClientListResult contains the result from method SecretsClient.List.
+type SecretsClientListResult struct {
 	SecretListResult
 }
 
-// SecretsUpdateResponse contains the response from method Secrets.Update.
-type SecretsUpdateResponse struct {
-	SecretsUpdateResult
+// SecretsClientUpdateResponse contains the response from method SecretsClient.Update.
+type SecretsClientUpdateResponse struct {
+	SecretsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretsUpdateResult contains the result from method Secrets.Update.
-type SecretsUpdateResult struct {
+// SecretsClientUpdateResult contains the result from method SecretsClient.Update.
+type SecretsClientUpdateResult struct {
 	Secret
 }
 
-// VaultsCheckNameAvailabilityResponse contains the response from method Vaults.CheckNameAvailability.
-type VaultsCheckNameAvailabilityResponse struct {
-	VaultsCheckNameAvailabilityResult
+// VaultsClientCheckNameAvailabilityResponse contains the response from method VaultsClient.CheckNameAvailability.
+type VaultsClientCheckNameAvailabilityResponse struct {
+	VaultsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsCheckNameAvailabilityResult contains the result from method Vaults.CheckNameAvailability.
-type VaultsCheckNameAvailabilityResult struct {
+// VaultsClientCheckNameAvailabilityResult contains the result from method VaultsClient.CheckNameAvailability.
+type VaultsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// VaultsCreateOrUpdatePollerResponse contains the response from method Vaults.CreateOrUpdate.
-type VaultsCreateOrUpdatePollerResponse struct {
+// VaultsClientCreateOrUpdatePollerResponse contains the response from method VaultsClient.CreateOrUpdate.
+type VaultsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VaultsCreateOrUpdatePoller
+	Poller *VaultsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -625,8 +625,8 @@ type VaultsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VaultsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsCreateOrUpdateResponse, error) {
-	respType := VaultsCreateOrUpdateResponse{}
+func (l VaultsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsClientCreateOrUpdateResponse, error) {
+	respType := VaultsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Vault)
 	if err != nil {
 		return respType, err
@@ -635,13 +635,13 @@ func (l VaultsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a VaultsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *VaultsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a VaultsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *VaultsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VaultsCreateOrUpdatePoller{
+	poller := &VaultsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -653,100 +653,100 @@ func (l *VaultsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// VaultsCreateOrUpdateResponse contains the response from method Vaults.CreateOrUpdate.
-type VaultsCreateOrUpdateResponse struct {
-	VaultsCreateOrUpdateResult
+// VaultsClientCreateOrUpdateResponse contains the response from method VaultsClient.CreateOrUpdate.
+type VaultsClientCreateOrUpdateResponse struct {
+	VaultsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsCreateOrUpdateResult contains the result from method Vaults.CreateOrUpdate.
-type VaultsCreateOrUpdateResult struct {
+// VaultsClientCreateOrUpdateResult contains the result from method VaultsClient.CreateOrUpdate.
+type VaultsClientCreateOrUpdateResult struct {
 	Vault
 }
 
-// VaultsDeleteResponse contains the response from method Vaults.Delete.
-type VaultsDeleteResponse struct {
+// VaultsClientDeleteResponse contains the response from method VaultsClient.Delete.
+type VaultsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsGetDeletedResponse contains the response from method Vaults.GetDeleted.
-type VaultsGetDeletedResponse struct {
-	VaultsGetDeletedResult
+// VaultsClientGetDeletedResponse contains the response from method VaultsClient.GetDeleted.
+type VaultsClientGetDeletedResponse struct {
+	VaultsClientGetDeletedResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsGetDeletedResult contains the result from method Vaults.GetDeleted.
-type VaultsGetDeletedResult struct {
+// VaultsClientGetDeletedResult contains the result from method VaultsClient.GetDeleted.
+type VaultsClientGetDeletedResult struct {
 	DeletedVault
 }
 
-// VaultsGetResponse contains the response from method Vaults.Get.
-type VaultsGetResponse struct {
-	VaultsGetResult
+// VaultsClientGetResponse contains the response from method VaultsClient.Get.
+type VaultsClientGetResponse struct {
+	VaultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsGetResult contains the result from method Vaults.Get.
-type VaultsGetResult struct {
+// VaultsClientGetResult contains the result from method VaultsClient.Get.
+type VaultsClientGetResult struct {
 	Vault
 }
 
-// VaultsListByResourceGroupResponse contains the response from method Vaults.ListByResourceGroup.
-type VaultsListByResourceGroupResponse struct {
-	VaultsListByResourceGroupResult
+// VaultsClientListByResourceGroupResponse contains the response from method VaultsClient.ListByResourceGroup.
+type VaultsClientListByResourceGroupResponse struct {
+	VaultsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsListByResourceGroupResult contains the result from method Vaults.ListByResourceGroup.
-type VaultsListByResourceGroupResult struct {
+// VaultsClientListByResourceGroupResult contains the result from method VaultsClient.ListByResourceGroup.
+type VaultsClientListByResourceGroupResult struct {
 	VaultListResult
 }
 
-// VaultsListBySubscriptionResponse contains the response from method Vaults.ListBySubscription.
-type VaultsListBySubscriptionResponse struct {
-	VaultsListBySubscriptionResult
+// VaultsClientListBySubscriptionResponse contains the response from method VaultsClient.ListBySubscription.
+type VaultsClientListBySubscriptionResponse struct {
+	VaultsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsListBySubscriptionResult contains the result from method Vaults.ListBySubscription.
-type VaultsListBySubscriptionResult struct {
+// VaultsClientListBySubscriptionResult contains the result from method VaultsClient.ListBySubscription.
+type VaultsClientListBySubscriptionResult struct {
 	VaultListResult
 }
 
-// VaultsListDeletedResponse contains the response from method Vaults.ListDeleted.
-type VaultsListDeletedResponse struct {
-	VaultsListDeletedResult
+// VaultsClientListDeletedResponse contains the response from method VaultsClient.ListDeleted.
+type VaultsClientListDeletedResponse struct {
+	VaultsClientListDeletedResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsListDeletedResult contains the result from method Vaults.ListDeleted.
-type VaultsListDeletedResult struct {
+// VaultsClientListDeletedResult contains the result from method VaultsClient.ListDeleted.
+type VaultsClientListDeletedResult struct {
 	DeletedVaultListResult
 }
 
-// VaultsListResponse contains the response from method Vaults.List.
-type VaultsListResponse struct {
-	VaultsListResult
+// VaultsClientListResponse contains the response from method VaultsClient.List.
+type VaultsClientListResponse struct {
+	VaultsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsListResult contains the result from method Vaults.List.
-type VaultsListResult struct {
+// VaultsClientListResult contains the result from method VaultsClient.List.
+type VaultsClientListResult struct {
 	ResourceListResult
 }
 
-// VaultsPurgeDeletedPollerResponse contains the response from method Vaults.PurgeDeleted.
-type VaultsPurgeDeletedPollerResponse struct {
+// VaultsClientPurgeDeletedPollerResponse contains the response from method VaultsClient.PurgeDeleted.
+type VaultsClientPurgeDeletedPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VaultsPurgeDeletedPoller
+	Poller *VaultsClientPurgeDeletedPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -755,8 +755,8 @@ type VaultsPurgeDeletedPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VaultsPurgeDeletedPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsPurgeDeletedResponse, error) {
-	respType := VaultsPurgeDeletedResponse{}
+func (l VaultsClientPurgeDeletedPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsClientPurgeDeletedResponse, error) {
+	respType := VaultsClientPurgeDeletedResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -765,13 +765,13 @@ func (l VaultsPurgeDeletedPollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a VaultsPurgeDeletedPollerResponse from the provided client and resume token.
-func (l *VaultsPurgeDeletedPollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.PurgeDeleted", token, client.pl, client.purgeDeletedHandleError)
+// Resume rehydrates a VaultsClientPurgeDeletedPollerResponse from the provided client and resume token.
+func (l *VaultsClientPurgeDeletedPollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.PurgeDeleted", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VaultsPurgeDeletedPoller{
+	poller := &VaultsClientPurgeDeletedPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -783,32 +783,32 @@ func (l *VaultsPurgeDeletedPollerResponse) Resume(ctx context.Context, client *V
 	return nil
 }
 
-// VaultsPurgeDeletedResponse contains the response from method Vaults.PurgeDeleted.
-type VaultsPurgeDeletedResponse struct {
+// VaultsClientPurgeDeletedResponse contains the response from method VaultsClient.PurgeDeleted.
+type VaultsClientPurgeDeletedResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsUpdateAccessPolicyResponse contains the response from method Vaults.UpdateAccessPolicy.
-type VaultsUpdateAccessPolicyResponse struct {
-	VaultsUpdateAccessPolicyResult
+// VaultsClientUpdateAccessPolicyResponse contains the response from method VaultsClient.UpdateAccessPolicy.
+type VaultsClientUpdateAccessPolicyResponse struct {
+	VaultsClientUpdateAccessPolicyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsUpdateAccessPolicyResult contains the result from method Vaults.UpdateAccessPolicy.
-type VaultsUpdateAccessPolicyResult struct {
+// VaultsClientUpdateAccessPolicyResult contains the result from method VaultsClient.UpdateAccessPolicy.
+type VaultsClientUpdateAccessPolicyResult struct {
 	VaultAccessPolicyParameters
 }
 
-// VaultsUpdateResponse contains the response from method Vaults.Update.
-type VaultsUpdateResponse struct {
-	VaultsUpdateResult
+// VaultsClientUpdateResponse contains the response from method VaultsClient.Update.
+type VaultsClientUpdateResponse struct {
+	VaultsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsUpdateResult contains the result from method Vaults.Update.
-type VaultsUpdateResult struct {
+// VaultsClientUpdateResult contains the result from method VaultsClient.Update.
+type VaultsClientUpdateResult struct {
 	Vault
 }

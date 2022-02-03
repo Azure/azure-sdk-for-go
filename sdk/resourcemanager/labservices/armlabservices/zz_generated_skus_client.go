@@ -11,7 +11,6 @@ package armlabservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,54 @@ import (
 // SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
 type SKUsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSKUsClient creates a new instance of SKUsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SKUsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &SKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SKUsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // List - Returns a list of all the Azure Lab Services resource SKUs.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SKUsClient) List(options *SKUsListOptions) *SKUsListPager {
-	return &SKUsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+func (client *SKUsClient) List(options *SKUsClientListOptions) *SKUsClientListPager {
+	return &SKUsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SKUsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedLabServicesSKUs.NextLink)
+		advancer: func(ctx context.Context, resp SKUsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedSKUInfos.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsListOptions) (*policy.Request, error) {
+func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,23 +86,10 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsLi
 }
 
 // listHandleResponse handles the List response.
-func (client *SKUsClient) listHandleResponse(resp *http.Response) (SKUsListResponse, error) {
-	result := SKUsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PagedLabServicesSKUs); err != nil {
-		return SKUsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *SKUsClient) listHandleResponse(resp *http.Response) (SKUsClientListResponse, error) {
+	result := SKUsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PagedSKUInfos); err != nil {
+		return SKUsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SKUsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

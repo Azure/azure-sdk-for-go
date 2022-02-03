@@ -1,16 +1,24 @@
 # Release History
 
-## 0.3.3 (Unreleased)
-
-### Features Added
-
-- Support the pass-through of an Application ID when constructing an Azure Service Bus Client.
-
-### Breaking Changes
+## 0.3.4 (Unreleased)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix. (#16847)
+- Multiple fixes to address connection/link recovery (#16831)
+- Fixing panic() when the links haven't been initialized (early cancellation) (#16941)
+- Handle 500 as a retryable code (no recovery needed) (#16925)
+
+## 0.3.3 (2022-01-12)
+
+### Features Added
+
+- Support the pass-through of an Application ID when constructing an Azure Service Bus Client. PR#16558 (thanks halspang!)
+
+### Bugs Fixed 
+
+- Fixing connection/link recovery in Sender.SendMessages() and Sender.SendMessageBatch(). PR#16790
+- Fixing bug in the management link which could cause it to panic during recovery. PR#16790
 
 ## 0.3.2 (2021-12-08)
 

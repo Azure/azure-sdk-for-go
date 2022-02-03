@@ -1,0 +1,410 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PeerAsnsClient.Delete` parameter(s) have been changed from `(context.Context, string, *PeerAsnsDeleteOptions)` to `(context.Context, string, *PeerAsnsClientDeleteOptions)`
+- Function `*PeerAsnsClient.Delete` return value(s) have been changed from `(PeerAsnsDeleteResponse, error)` to `(PeerAsnsClientDeleteResponse, error)`
+- Function `*PeeringsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *PeeringsListByResourceGroupOptions)` to `(string, *PeeringsClientListByResourceGroupOptions)`
+- Function `*PeeringsClient.ListByResourceGroup` return value(s) have been changed from `(*PeeringsListByResourceGroupPager)` to `(*PeeringsClientListByResourceGroupPager)`
+- Function `*LegacyPeeringsClient.List` parameter(s) have been changed from `(string, Enum1, *LegacyPeeringsListOptions)` to `(string, Enum1, *LegacyPeeringsClientListOptions)`
+- Function `*LegacyPeeringsClient.List` return value(s) have been changed from `(*LegacyPeeringsListPager)` to `(*LegacyPeeringsClientListPager)`
+- Function `*PeeringsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *PeeringsDeleteOptions)` to `(context.Context, string, string, *PeeringsClientDeleteOptions)`
+- Function `*PeeringsClient.Delete` return value(s) have been changed from `(PeeringsDeleteResponse, error)` to `(PeeringsClientDeleteResponse, error)`
+- Function `*PrefixesClient.ListByPeeringService` parameter(s) have been changed from `(string, string, *PrefixesListByPeeringServiceOptions)` to `(string, string, *PrefixesClientListByPeeringServiceOptions)`
+- Function `*PrefixesClient.ListByPeeringService` return value(s) have been changed from `(*PrefixesListByPeeringServicePager)` to `(*PrefixesClientListByPeeringServicePager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*PeerAsnsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, PeerAsn, *PeerAsnsCreateOrUpdateOptions)` to `(context.Context, string, PeerAsn, *PeerAsnsClientCreateOrUpdateOptions)`
+- Function `*PeerAsnsClient.CreateOrUpdate` return value(s) have been changed from `(PeerAsnsCreateOrUpdateResponse, error)` to `(PeerAsnsClientCreateOrUpdateResponse, error)`
+- Function `*PeeringsClient.Update` parameter(s) have been changed from `(context.Context, string, string, ResourceTags, *PeeringsUpdateOptions)` to `(context.Context, string, string, ResourceTags, *PeeringsClientUpdateOptions)`
+- Function `*PeeringsClient.Update` return value(s) have been changed from `(PeeringsUpdateResponse, error)` to `(PeeringsClientUpdateResponse, error)`
+- Function `*PeeringsClient.ListBySubscription` parameter(s) have been changed from `(*PeeringsListBySubscriptionOptions)` to `(*PeeringsClientListBySubscriptionOptions)`
+- Function `*PeeringsClient.ListBySubscription` return value(s) have been changed from `(*PeeringsListBySubscriptionPager)` to `(*PeeringsClientListBySubscriptionPager)`
+- Function `*PeerAsnsClient.ListBySubscription` parameter(s) have been changed from `(*PeerAsnsListBySubscriptionOptions)` to `(*PeerAsnsClientListBySubscriptionOptions)`
+- Function `*PeerAsnsClient.ListBySubscription` return value(s) have been changed from `(*PeerAsnsListBySubscriptionPager)` to `(*PeerAsnsClientListBySubscriptionPager)`
+- Function `*PeeringsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Peering, *PeeringsCreateOrUpdateOptions)` to `(context.Context, string, string, Peering, *PeeringsClientCreateOrUpdateOptions)`
+- Function `*PeeringsClient.CreateOrUpdate` return value(s) have been changed from `(PeeringsCreateOrUpdateResponse, error)` to `(PeeringsClientCreateOrUpdateResponse, error)`
+- Function `*PeeringsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PeeringsGetOptions)` to `(context.Context, string, string, *PeeringsClientGetOptions)`
+- Function `*PeeringsClient.Get` return value(s) have been changed from `(PeeringsGetResponse, error)` to `(PeeringsClientGetResponse, error)`
+- Function `*PeerAsnsClient.Get` parameter(s) have been changed from `(context.Context, string, *PeerAsnsGetOptions)` to `(context.Context, string, *PeerAsnsClientGetOptions)`
+- Function `*PeerAsnsClient.Get` return value(s) have been changed from `(PeerAsnsGetResponse, error)` to `(PeerAsnsClientGetResponse, error)`
+- Type of `Peering.SKU` has been changed from `*PeeringSKU` to `*SKU`
+- Type of `Peering.Properties` has been changed from `*PeeringProperties` to `*Properties`
+- Function `*PeeringServicesListBySubscriptionPager.NextPage` has been removed
+- Function `NewPeeringServiceLocationsClient` has been removed
+- Function `*PeeringServicesClient.ListByResourceGroup` has been removed
+- Function `*PeeringServicePrefixesClient.Delete` has been removed
+- Function `*PeerAsnsListBySubscriptionPager.NextPage` has been removed
+- Function `*PeeringServicesClient.Update` has been removed
+- Function `*PeeringServiceProvidersClient.List` has been removed
+- Function `*PeeringServicesListBySubscriptionPager.Err` has been removed
+- Function `*PeeringLocationsClient.List` has been removed
+- Function `*PeeringServiceLocationsListPager.PageResponse` has been removed
+- Function `*PeeringServicesListBySubscriptionPager.PageResponse` has been removed
+- Function `*PeeringServiceLocationsListPager.NextPage` has been removed
+- Function `*PrefixesListByPeeringServicePager.NextPage` has been removed
+- Function `*PeeringServiceProvidersListPager.PageResponse` has been removed
+- Function `*PeeringServiceProvidersListPager.Err` has been removed
+- Function `PeeringServiceLocationListResult.MarshalJSON` has been removed
+- Function `*PeeringServicesClient.CreateOrUpdate` has been removed
+- Function `NewPeeringLocationsClient` has been removed
+- Function `PeerAsn.MarshalJSON` has been removed
+- Function `*PeeringServiceLocationsListPager.Err` has been removed
+- Function `PeeringServiceProviderListResult.MarshalJSON` has been removed
+- Function `*PeeringsListByResourceGroupPager.NextPage` has been removed
+- Function `*PeeringsListByResourceGroupPager.PageResponse` has been removed
+- Function `*LegacyPeeringsListPager.Err` has been removed
+- Function `PeeringLocation.MarshalJSON` has been removed
+- Function `PeeringServiceListResult.MarshalJSON` has been removed
+- Function `NewPeeringServiceProvidersClient` has been removed
+- Function `PeeringServicePrefix.MarshalJSON` has been removed
+- Function `*PeeringsListBySubscriptionPager.NextPage` has been removed
+- Function `PeeringLocationListResult.MarshalJSON` has been removed
+- Function `*PeeringLocationsListPager.Err` has been removed
+- Function `*PeeringServicePrefixesClient.CreateOrUpdate` has been removed
+- Function `*PeeringServicesClient.Delete` has been removed
+- Function `*PeeringServicesClient.ListBySubscription` has been removed
+- Function `PeeringServiceProvider.MarshalJSON` has been removed
+- Function `PeeringServicePrefixListResult.MarshalJSON` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*LegacyPeeringsListPager.PageResponse` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*PeerAsnsListBySubscriptionPager.PageResponse` has been removed
+- Function `*PeeringServicesListByResourceGroupPager.NextPage` has been removed
+- Function `PeeringLocationPropertiesDirect.MarshalJSON` has been removed
+- Function `PeeringLocationPropertiesExchange.MarshalJSON` has been removed
+- Function `*PeeringLocationsListPager.PageResponse` has been removed
+- Function `*PrefixesListByPeeringServicePager.PageResponse` has been removed
+- Function `*LegacyPeeringsListPager.NextPage` has been removed
+- Function `*PeeringsListByResourceGroupPager.Err` has been removed
+- Function `*PeeringServicePrefixesClient.Get` has been removed
+- Function `NewPeeringManagementClient` has been removed
+- Function `*PeeringsListBySubscriptionPager.PageResponse` has been removed
+- Function `*PeerAsnsListBySubscriptionPager.Err` has been removed
+- Function `PeeringServiceLocation.MarshalJSON` has been removed
+- Function `PeeringService.MarshalJSON` has been removed
+- Function `*PeeringManagementClient.CheckServiceProviderAvailability` has been removed
+- Function `PeeringListResult.MarshalJSON` has been removed
+- Function `*PeeringServiceProvidersListPager.NextPage` has been removed
+- Function `*PeeringServiceLocationsClient.List` has been removed
+- Function `*PrefixesListByPeeringServicePager.Err` has been removed
+- Function `NewPeeringServicesClient` has been removed
+- Function `*PeeringServicesListByResourceGroupPager.PageResponse` has been removed
+- Function `*PeeringServicesListByResourceGroupPager.Err` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `PeeringPropertiesExchange.MarshalJSON` has been removed
+- Function `*PeeringsListBySubscriptionPager.Err` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*PeeringServicesClient.Get` has been removed
+- Function `*PeeringLocationsListPager.NextPage` has been removed
+- Function `NewPeeringServicePrefixesClient` has been removed
+- Function `PeeringPropertiesDirect.MarshalJSON` has been removed
+- Struct `LegacyPeeringsListOptions` has been removed
+- Struct `LegacyPeeringsListPager` has been removed
+- Struct `LegacyPeeringsListResponse` has been removed
+- Struct `LegacyPeeringsListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PeerAsnsCreateOrUpdateOptions` has been removed
+- Struct `PeerAsnsCreateOrUpdateResponse` has been removed
+- Struct `PeerAsnsCreateOrUpdateResult` has been removed
+- Struct `PeerAsnsDeleteOptions` has been removed
+- Struct `PeerAsnsDeleteResponse` has been removed
+- Struct `PeerAsnsGetOptions` has been removed
+- Struct `PeerAsnsGetResponse` has been removed
+- Struct `PeerAsnsGetResult` has been removed
+- Struct `PeerAsnsListBySubscriptionOptions` has been removed
+- Struct `PeerAsnsListBySubscriptionPager` has been removed
+- Struct `PeerAsnsListBySubscriptionResponse` has been removed
+- Struct `PeerAsnsListBySubscriptionResult` has been removed
+- Struct `PeeringBandwidthOffer` has been removed
+- Struct `PeeringListResult` has been removed
+- Struct `PeeringLocation` has been removed
+- Struct `PeeringLocationListResult` has been removed
+- Struct `PeeringLocationProperties` has been removed
+- Struct `PeeringLocationPropertiesDirect` has been removed
+- Struct `PeeringLocationPropertiesExchange` has been removed
+- Struct `PeeringLocationsClient` has been removed
+- Struct `PeeringLocationsListOptions` has been removed
+- Struct `PeeringLocationsListPager` has been removed
+- Struct `PeeringLocationsListResponse` has been removed
+- Struct `PeeringLocationsListResult` has been removed
+- Struct `PeeringManagementClient` has been removed
+- Struct `PeeringManagementClientCheckServiceProviderAvailabilityOptions` has been removed
+- Struct `PeeringManagementClientCheckServiceProviderAvailabilityResponse` has been removed
+- Struct `PeeringManagementClientCheckServiceProviderAvailabilityResult` has been removed
+- Struct `PeeringProperties` has been removed
+- Struct `PeeringPropertiesDirect` has been removed
+- Struct `PeeringPropertiesExchange` has been removed
+- Struct `PeeringSKU` has been removed
+- Struct `PeeringService` has been removed
+- Struct `PeeringServiceListResult` has been removed
+- Struct `PeeringServiceLocation` has been removed
+- Struct `PeeringServiceLocationListResult` has been removed
+- Struct `PeeringServiceLocationProperties` has been removed
+- Struct `PeeringServiceLocationsClient` has been removed
+- Struct `PeeringServiceLocationsListOptions` has been removed
+- Struct `PeeringServiceLocationsListPager` has been removed
+- Struct `PeeringServiceLocationsListResponse` has been removed
+- Struct `PeeringServiceLocationsListResult` has been removed
+- Struct `PeeringServicePrefix` has been removed
+- Struct `PeeringServicePrefixListResult` has been removed
+- Struct `PeeringServicePrefixProperties` has been removed
+- Struct `PeeringServicePrefixesClient` has been removed
+- Struct `PeeringServicePrefixesCreateOrUpdateOptions` has been removed
+- Struct `PeeringServicePrefixesCreateOrUpdateResponse` has been removed
+- Struct `PeeringServicePrefixesCreateOrUpdateResult` has been removed
+- Struct `PeeringServicePrefixesDeleteOptions` has been removed
+- Struct `PeeringServicePrefixesDeleteResponse` has been removed
+- Struct `PeeringServicePrefixesGetOptions` has been removed
+- Struct `PeeringServicePrefixesGetResponse` has been removed
+- Struct `PeeringServicePrefixesGetResult` has been removed
+- Struct `PeeringServiceProperties` has been removed
+- Struct `PeeringServiceProvider` has been removed
+- Struct `PeeringServiceProviderListResult` has been removed
+- Struct `PeeringServiceProviderProperties` has been removed
+- Struct `PeeringServiceProvidersClient` has been removed
+- Struct `PeeringServiceProvidersListOptions` has been removed
+- Struct `PeeringServiceProvidersListPager` has been removed
+- Struct `PeeringServiceProvidersListResponse` has been removed
+- Struct `PeeringServiceProvidersListResult` has been removed
+- Struct `PeeringServicesClient` has been removed
+- Struct `PeeringServicesCreateOrUpdateOptions` has been removed
+- Struct `PeeringServicesCreateOrUpdateResponse` has been removed
+- Struct `PeeringServicesCreateOrUpdateResult` has been removed
+- Struct `PeeringServicesDeleteOptions` has been removed
+- Struct `PeeringServicesDeleteResponse` has been removed
+- Struct `PeeringServicesGetOptions` has been removed
+- Struct `PeeringServicesGetResponse` has been removed
+- Struct `PeeringServicesGetResult` has been removed
+- Struct `PeeringServicesListByResourceGroupOptions` has been removed
+- Struct `PeeringServicesListByResourceGroupPager` has been removed
+- Struct `PeeringServicesListByResourceGroupResponse` has been removed
+- Struct `PeeringServicesListByResourceGroupResult` has been removed
+- Struct `PeeringServicesListBySubscriptionOptions` has been removed
+- Struct `PeeringServicesListBySubscriptionPager` has been removed
+- Struct `PeeringServicesListBySubscriptionResponse` has been removed
+- Struct `PeeringServicesListBySubscriptionResult` has been removed
+- Struct `PeeringServicesUpdateOptions` has been removed
+- Struct `PeeringServicesUpdateResponse` has been removed
+- Struct `PeeringServicesUpdateResult` has been removed
+- Struct `PeeringsCreateOrUpdateOptions` has been removed
+- Struct `PeeringsCreateOrUpdateResponse` has been removed
+- Struct `PeeringsCreateOrUpdateResult` has been removed
+- Struct `PeeringsDeleteOptions` has been removed
+- Struct `PeeringsDeleteResponse` has been removed
+- Struct `PeeringsGetOptions` has been removed
+- Struct `PeeringsGetResponse` has been removed
+- Struct `PeeringsGetResult` has been removed
+- Struct `PeeringsListByResourceGroupOptions` has been removed
+- Struct `PeeringsListByResourceGroupPager` has been removed
+- Struct `PeeringsListByResourceGroupResponse` has been removed
+- Struct `PeeringsListByResourceGroupResult` has been removed
+- Struct `PeeringsListBySubscriptionOptions` has been removed
+- Struct `PeeringsListBySubscriptionPager` has been removed
+- Struct `PeeringsListBySubscriptionResponse` has been removed
+- Struct `PeeringsListBySubscriptionResult` has been removed
+- Struct `PeeringsUpdateOptions` has been removed
+- Struct `PeeringsUpdateResponse` has been removed
+- Struct `PeeringsUpdateResult` has been removed
+- Struct `PrefixesListByPeeringServiceOptions` has been removed
+- Struct `PrefixesListByPeeringServicePager` has been removed
+- Struct `PrefixesListByPeeringServiceResponse` has been removed
+- Struct `PrefixesListByPeeringServiceResult` has been removed
+- Field `Resource` of struct `PeerAsn` has been removed
+- Field `Resource` of struct `Peering` has been removed
+
+### Features Added
+
+- New function `LocationListResult.MarshalJSON() ([]byte, error)`
+- New function `ListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClient.Delete(context.Context, string, string, *ServicesClientDeleteOptions) (ServicesClientDeleteResponse, error)`
+- New function `Service.MarshalJSON() ([]byte, error)`
+- New function `PropertiesExchange.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClientListBySubscriptionPager.Err() error`
+- New function `*ServiceLocationsClientListPager.PageResponse() ServiceLocationsClientListResponse`
+- New function `*ServicesClient.ListBySubscription(*ServicesClientListBySubscriptionOptions) *ServicesClientListBySubscriptionPager`
+- New function `*LocationsClientListPager.PageResponse() LocationsClientListResponse`
+- New function `*ServicesClientListBySubscriptionPager.PageResponse() ServicesClientListBySubscriptionResponse`
+- New function `*LegacyPeeringsClientListPager.NextPage(context.Context) bool`
+- New function `LocationPropertiesDirect.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClient.Get(context.Context, string, string, *ServicesClientGetOptions) (ServicesClientGetResponse, error)`
+- New function `ServiceProviderListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClient.CreateOrUpdate(context.Context, string, string, Service, *ServicesClientCreateOrUpdateOptions) (ServicesClientCreateOrUpdateResponse, error)`
+- New function `NewServicesClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServicesClient`
+- New function `LocationPropertiesExchange.MarshalJSON() ([]byte, error)`
+- New function `ServiceListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServiceProvidersClient.List(*ServiceProvidersClientListOptions) *ServiceProvidersClientListPager`
+- New function `*ServicePrefixesClient.Delete(context.Context, string, string, string, *ServicePrefixesClientDeleteOptions) (ServicePrefixesClientDeleteResponse, error)`
+- New function `*ServicePrefixesClient.CreateOrUpdate(context.Context, string, string, string, ServicePrefix, *ServicePrefixesClientCreateOrUpdateOptions) (ServicePrefixesClientCreateOrUpdateResponse, error)`
+- New function `*PeerAsnsClientListBySubscriptionPager.Err() error`
+- New function `*PeeringsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ServicesClientListByResourceGroupPager.Err() error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*PeeringsClientListByResourceGroupPager.Err() error`
+- New function `*ServiceProvidersClientListPager.NextPage(context.Context) bool`
+- New function `NewLocationsClient(string, azcore.TokenCredential, *arm.ClientOptions) *LocationsClient`
+- New function `*ServiceProvidersClientListPager.Err() error`
+- New function `NewServicePrefixesClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServicePrefixesClient`
+- New function `*PrefixesClientListByPeeringServicePager.NextPage(context.Context) bool`
+- New function `*PrefixesClientListByPeeringServicePager.PageResponse() PrefixesClientListByPeeringServiceResponse`
+- New function `*PeerAsnsClientListBySubscriptionPager.PageResponse() PeerAsnsClientListBySubscriptionResponse`
+- New function `PropertiesDirect.MarshalJSON() ([]byte, error)`
+- New function `NewServiceProvidersClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServiceProvidersClient`
+- New function `*PeeringsClientListBySubscriptionPager.PageResponse() PeeringsClientListBySubscriptionResponse`
+- New function `ServiceLocationListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServiceLocationsClient.List(*ServiceLocationsClientListOptions) *ServiceLocationsClientListPager`
+- New function `*ServiceProvidersClientListPager.PageResponse() ServiceProvidersClientListResponse`
+- New function `*LegacyPeeringsClientListPager.Err() error`
+- New function `*PrefixesClientListByPeeringServicePager.Err() error`
+- New function `*PeeringsClientListByResourceGroupPager.PageResponse() PeeringsClientListByResourceGroupResponse`
+- New function `ServicePrefixListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClientListByResourceGroupPager.PageResponse() ServicesClientListByResourceGroupResponse`
+- New function `*LocationsClientListPager.Err() error`
+- New function `*ServiceLocationsClientListPager.NextPage(context.Context) bool`
+- New function `*PeeringsClientListBySubscriptionPager.Err() error`
+- New function `*ServiceLocationsClientListPager.Err() error`
+- New function `*ServicesClient.ListByResourceGroup(string, *ServicesClientListByResourceGroupOptions) *ServicesClientListByResourceGroupPager`
+- New function `NewServiceLocationsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServiceLocationsClient`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) *ManagementClient`
+- New function `*PeerAsnsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*PeeringsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*LegacyPeeringsClientListPager.PageResponse() LegacyPeeringsClientListResponse`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*ServicePrefixesClient.Get(context.Context, string, string, string, *ServicePrefixesClientGetOptions) (ServicePrefixesClientGetResponse, error)`
+- New function `*ServicesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*LocationsClient.List(Enum14, *LocationsClientListOptions) *LocationsClientListPager`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ManagementClient.CheckServiceProviderAvailability(context.Context, CheckServiceProviderAvailabilityInput, *ManagementClientCheckServiceProviderAvailabilityOptions) (ManagementClientCheckServiceProviderAvailabilityResponse, error)`
+- New function `*ServicesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ServicesClient.Update(context.Context, string, string, ResourceTags, *ServicesClientUpdateOptions) (ServicesClientUpdateResponse, error)`
+- New function `*LocationsClientListPager.NextPage(context.Context) bool`
+- New struct `BandwidthOffer`
+- New struct `LegacyPeeringsClientListOptions`
+- New struct `LegacyPeeringsClientListPager`
+- New struct `LegacyPeeringsClientListResponse`
+- New struct `LegacyPeeringsClientListResult`
+- New struct `ListResult`
+- New struct `Location`
+- New struct `LocationListResult`
+- New struct `LocationProperties`
+- New struct `LocationPropertiesDirect`
+- New struct `LocationPropertiesExchange`
+- New struct `LocationsClient`
+- New struct `LocationsClientListOptions`
+- New struct `LocationsClientListPager`
+- New struct `LocationsClientListResponse`
+- New struct `LocationsClientListResult`
+- New struct `ManagementClient`
+- New struct `ManagementClientCheckServiceProviderAvailabilityOptions`
+- New struct `ManagementClientCheckServiceProviderAvailabilityResponse`
+- New struct `ManagementClientCheckServiceProviderAvailabilityResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PeerAsnsClientCreateOrUpdateOptions`
+- New struct `PeerAsnsClientCreateOrUpdateResponse`
+- New struct `PeerAsnsClientCreateOrUpdateResult`
+- New struct `PeerAsnsClientDeleteOptions`
+- New struct `PeerAsnsClientDeleteResponse`
+- New struct `PeerAsnsClientGetOptions`
+- New struct `PeerAsnsClientGetResponse`
+- New struct `PeerAsnsClientGetResult`
+- New struct `PeerAsnsClientListBySubscriptionOptions`
+- New struct `PeerAsnsClientListBySubscriptionPager`
+- New struct `PeerAsnsClientListBySubscriptionResponse`
+- New struct `PeerAsnsClientListBySubscriptionResult`
+- New struct `PeeringsClientCreateOrUpdateOptions`
+- New struct `PeeringsClientCreateOrUpdateResponse`
+- New struct `PeeringsClientCreateOrUpdateResult`
+- New struct `PeeringsClientDeleteOptions`
+- New struct `PeeringsClientDeleteResponse`
+- New struct `PeeringsClientGetOptions`
+- New struct `PeeringsClientGetResponse`
+- New struct `PeeringsClientGetResult`
+- New struct `PeeringsClientListByResourceGroupOptions`
+- New struct `PeeringsClientListByResourceGroupPager`
+- New struct `PeeringsClientListByResourceGroupResponse`
+- New struct `PeeringsClientListByResourceGroupResult`
+- New struct `PeeringsClientListBySubscriptionOptions`
+- New struct `PeeringsClientListBySubscriptionPager`
+- New struct `PeeringsClientListBySubscriptionResponse`
+- New struct `PeeringsClientListBySubscriptionResult`
+- New struct `PeeringsClientUpdateOptions`
+- New struct `PeeringsClientUpdateResponse`
+- New struct `PeeringsClientUpdateResult`
+- New struct `PrefixesClientListByPeeringServiceOptions`
+- New struct `PrefixesClientListByPeeringServicePager`
+- New struct `PrefixesClientListByPeeringServiceResponse`
+- New struct `PrefixesClientListByPeeringServiceResult`
+- New struct `Properties`
+- New struct `PropertiesDirect`
+- New struct `PropertiesExchange`
+- New struct `SKU`
+- New struct `Service`
+- New struct `ServiceListResult`
+- New struct `ServiceLocation`
+- New struct `ServiceLocationListResult`
+- New struct `ServiceLocationProperties`
+- New struct `ServiceLocationsClient`
+- New struct `ServiceLocationsClientListOptions`
+- New struct `ServiceLocationsClientListPager`
+- New struct `ServiceLocationsClientListResponse`
+- New struct `ServiceLocationsClientListResult`
+- New struct `ServicePrefix`
+- New struct `ServicePrefixListResult`
+- New struct `ServicePrefixProperties`
+- New struct `ServicePrefixesClient`
+- New struct `ServicePrefixesClientCreateOrUpdateOptions`
+- New struct `ServicePrefixesClientCreateOrUpdateResponse`
+- New struct `ServicePrefixesClientCreateOrUpdateResult`
+- New struct `ServicePrefixesClientDeleteOptions`
+- New struct `ServicePrefixesClientDeleteResponse`
+- New struct `ServicePrefixesClientGetOptions`
+- New struct `ServicePrefixesClientGetResponse`
+- New struct `ServicePrefixesClientGetResult`
+- New struct `ServiceProperties`
+- New struct `ServiceProvider`
+- New struct `ServiceProviderListResult`
+- New struct `ServiceProviderProperties`
+- New struct `ServiceProvidersClient`
+- New struct `ServiceProvidersClientListOptions`
+- New struct `ServiceProvidersClientListPager`
+- New struct `ServiceProvidersClientListResponse`
+- New struct `ServiceProvidersClientListResult`
+- New struct `ServicesClient`
+- New struct `ServicesClientCreateOrUpdateOptions`
+- New struct `ServicesClientCreateOrUpdateResponse`
+- New struct `ServicesClientCreateOrUpdateResult`
+- New struct `ServicesClientDeleteOptions`
+- New struct `ServicesClientDeleteResponse`
+- New struct `ServicesClientGetOptions`
+- New struct `ServicesClientGetResponse`
+- New struct `ServicesClientGetResult`
+- New struct `ServicesClientListByResourceGroupOptions`
+- New struct `ServicesClientListByResourceGroupPager`
+- New struct `ServicesClientListByResourceGroupResponse`
+- New struct `ServicesClientListByResourceGroupResult`
+- New struct `ServicesClientListBySubscriptionOptions`
+- New struct `ServicesClientListBySubscriptionPager`
+- New struct `ServicesClientListBySubscriptionResponse`
+- New struct `ServicesClientListBySubscriptionResult`
+- New struct `ServicesClientUpdateOptions`
+- New struct `ServicesClientUpdateResponse`
+- New struct `ServicesClientUpdateResult`
+- New field `Name` in struct `PeerAsn`
+- New field `Type` in struct `PeerAsn`
+- New field `ID` in struct `PeerAsn`
+- New field `Name` in struct `Peering`
+- New field `Type` in struct `Peering`
+- New field `ID` in struct `Peering`
+
+
+## 0.1.0 (2021-12-16)
+
+- Init release.

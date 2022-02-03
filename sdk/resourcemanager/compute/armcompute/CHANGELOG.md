@@ -1,5 +1,4885 @@
 # Release History
 
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*VirtualMachineScaleSetsClient.ListAll` parameter(s) have been changed from `(*VirtualMachineScaleSetsListAllOptions)` to `(*VirtualMachineScaleSetsClientListAllOptions)`
+- Function `*VirtualMachineScaleSetsClient.ListAll` return value(s) have been changed from `(*VirtualMachineScaleSetsListAllPager)` to `(*VirtualMachineScaleSetsClientListAllPager)`
+- Function `*VirtualMachinesClient.Generalize` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesGeneralizeOptions)` to `(context.Context, string, string, *VirtualMachinesClientGeneralizeOptions)`
+- Function `*VirtualMachinesClient.Generalize` return value(s) have been changed from `(VirtualMachinesGeneralizeResponse, error)` to `(VirtualMachinesClientGeneralizeResponse, error)`
+- Function `*DedicatedHostsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DedicatedHostsGetOptions)` to `(context.Context, string, string, string, *DedicatedHostsClientGetOptions)`
+- Function `*DedicatedHostsClient.Get` return value(s) have been changed from `(DedicatedHostsGetResponse, error)` to `(DedicatedHostsClientGetResponse, error)`
+- Function `*ProximityPlacementGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ProximityPlacementGroupsGetOptions)` to `(context.Context, string, string, *ProximityPlacementGroupsClientGetOptions)`
+- Function `*ProximityPlacementGroupsClient.Get` return value(s) have been changed from `(ProximityPlacementGroupsGetResponse, error)` to `(ProximityPlacementGroupsClientGetResponse, error)`
+- Function `*VirtualMachinesClient.ListByLocation` parameter(s) have been changed from `(string, *VirtualMachinesListByLocationOptions)` to `(string, *VirtualMachinesClientListByLocationOptions)`
+- Function `*VirtualMachinesClient.ListByLocation` return value(s) have been changed from `(*VirtualMachinesListByLocationPager)` to `(*VirtualMachinesClientListByLocationPager)`
+- Function `*DiskEncryptionSetsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *DiskEncryptionSetsBeginDeleteOptions)` to `(context.Context, string, string, *DiskEncryptionSetsClientBeginDeleteOptions)`
+- Function `*DiskEncryptionSetsClient.BeginDelete` return value(s) have been changed from `(DiskEncryptionSetsDeletePollerResponse, error)` to `(DiskEncryptionSetsClientDeletePollerResponse, error)`
+- Function `*AvailabilitySetsClient.List` parameter(s) have been changed from `(string, *AvailabilitySetsListOptions)` to `(string, *AvailabilitySetsClientListOptions)`
+- Function `*AvailabilitySetsClient.List` return value(s) have been changed from `(*AvailabilitySetsListPager)` to `(*AvailabilitySetsClientListPager)`
+- Function `*VirtualMachinesClient.SimulateEviction` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesSimulateEvictionOptions)` to `(context.Context, string, string, *VirtualMachinesClientSimulateEvictionOptions)`
+- Function `*VirtualMachinesClient.SimulateEviction` return value(s) have been changed from `(VirtualMachinesSimulateEvictionResponse, error)` to `(VirtualMachinesClientSimulateEvictionResponse, error)`
+- Function `*VirtualMachineImagesClient.ListOffers` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineImagesListOffersOptions)` to `(context.Context, string, string, *VirtualMachineImagesClientListOffersOptions)`
+- Function `*VirtualMachineImagesClient.ListOffers` return value(s) have been changed from `(VirtualMachineImagesListOffersResponse, error)` to `(VirtualMachineImagesClientListOffersResponse, error)`
+- Function `*CloudServiceOperatingSystemsClient.GetOSVersion` parameter(s) have been changed from `(context.Context, string, string, *CloudServiceOperatingSystemsGetOSVersionOptions)` to `(context.Context, string, string, *CloudServiceOperatingSystemsClientGetOSVersionOptions)`
+- Function `*CloudServiceOperatingSystemsClient.GetOSVersion` return value(s) have been changed from `(CloudServiceOperatingSystemsGetOSVersionResponse, error)` to `(CloudServiceOperatingSystemsClientGetOSVersionResponse, error)`
+- Function `*VirtualMachinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesGetOptions)` to `(context.Context, string, string, *VirtualMachinesClientGetOptions)`
+- Function `*VirtualMachinesClient.Get` return value(s) have been changed from `(VirtualMachinesGetResponse, error)` to `(VirtualMachinesClientGetResponse, error)`
+- Function `*VirtualMachinesClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginRestartOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginRestartOptions)`
+- Function `*VirtualMachinesClient.BeginRestart` return value(s) have been changed from `(VirtualMachinesRestartPollerResponse, error)` to `(VirtualMachinesClientRestartPollerResponse, error)`
+- Function `*DedicatedHostsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DedicatedHost, *DedicatedHostsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, DedicatedHost, *DedicatedHostsClientBeginCreateOrUpdateOptions)`
+- Function `*DedicatedHostsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DedicatedHostsCreateOrUpdatePollerResponse, error)` to `(DedicatedHostsClientCreateOrUpdatePollerResponse, error)`
+- Function `*SharedGalleriesClient.List` parameter(s) have been changed from `(string, *SharedGalleriesListOptions)` to `(string, *SharedGalleriesClientListOptions)`
+- Function `*SharedGalleriesClient.List` return value(s) have been changed from `(*SharedGalleriesListPager)` to `(*SharedGalleriesClientListPager)`
+- Function `*VirtualMachinesClient.BeginRunCommand` parameter(s) have been changed from `(context.Context, string, string, RunCommandInput, *VirtualMachinesBeginRunCommandOptions)` to `(context.Context, string, string, RunCommandInput, *VirtualMachinesClientBeginRunCommandOptions)`
+- Function `*VirtualMachinesClient.BeginRunCommand` return value(s) have been changed from `(VirtualMachinesRunCommandPollerResponse, error)` to `(VirtualMachinesClientRunCommandPollerResponse, error)`
+- Function `*CloudServicesClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginRestartOptions)` to `(context.Context, string, string, *CloudServicesClientBeginRestartOptions)`
+- Function `*CloudServicesClient.BeginRestart` return value(s) have been changed from `(CloudServicesRestartPollerResponse, error)` to `(CloudServicesClientRestartPollerResponse, error)`
+- Function `*DiskRestorePointClient.ListByRestorePoint` parameter(s) have been changed from `(string, string, string, *DiskRestorePointListByRestorePointOptions)` to `(string, string, string, *DiskRestorePointClientListByRestorePointOptions)`
+- Function `*DiskRestorePointClient.ListByRestorePoint` return value(s) have been changed from `(*DiskRestorePointListByRestorePointPager)` to `(*DiskRestorePointClientListByRestorePointPager)`
+- Function `*VirtualMachinesClient.BeginReapply` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginReapplyOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginReapplyOptions)`
+- Function `*VirtualMachinesClient.BeginReapply` return value(s) have been changed from `(VirtualMachinesReapplyPollerResponse, error)` to `(VirtualMachinesClientReapplyPollerResponse, error)`
+- Function `*SnapshotsClient.BeginGrantAccess` parameter(s) have been changed from `(context.Context, string, string, GrantAccessData, *SnapshotsBeginGrantAccessOptions)` to `(context.Context, string, string, GrantAccessData, *SnapshotsClientBeginGrantAccessOptions)`
+- Function `*SnapshotsClient.BeginGrantAccess` return value(s) have been changed from `(SnapshotsGrantAccessPollerResponse, error)` to `(SnapshotsClientGrantAccessPollerResponse, error)`
+- Function `*VirtualMachinesClient.ListAvailableSizes` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesListAvailableSizesOptions)` to `(context.Context, string, string, *VirtualMachinesClientListAvailableSizesOptions)`
+- Function `*VirtualMachinesClient.ListAvailableSizes` return value(s) have been changed from `(VirtualMachinesListAvailableSizesResponse, error)` to `(VirtualMachinesClientListAvailableSizesResponse, error)`
+- Function `*CloudServicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesGetOptions)` to `(context.Context, string, string, *CloudServicesClientGetOptions)`
+- Function `*CloudServicesClient.Get` return value(s) have been changed from `(CloudServicesGetResponse, error)` to `(CloudServicesClientGetResponse, error)`
+- Function `*GalleryImageVersionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, GalleryImageVersionUpdate, *GalleryImageVersionsBeginUpdateOptions)` to `(context.Context, string, string, string, string, GalleryImageVersionUpdate, *GalleryImageVersionsClientBeginUpdateOptions)`
+- Function `*GalleryImageVersionsClient.BeginUpdate` return value(s) have been changed from `(GalleryImageVersionsUpdatePollerResponse, error)` to `(GalleryImageVersionsClientUpdatePollerResponse, error)`
+- Function `*CloudServicesClient.ListAll` parameter(s) have been changed from `(*CloudServicesListAllOptions)` to `(*CloudServicesClientListAllOptions)`
+- Function `*CloudServicesClient.ListAll` return value(s) have been changed from `(*CloudServicesListAllPager)` to `(*CloudServicesClientListAllPager)`
+- Function `*SharedGalleryImagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SharedGalleryImagesGetOptions)` to `(context.Context, string, string, string, *SharedGalleryImagesClientGetOptions)`
+- Function `*SharedGalleryImagesClient.Get` return value(s) have been changed from `(SharedGalleryImagesGetResponse, error)` to `(SharedGalleryImagesClientGetResponse, error)`
+- Function `*CapacityReservationGroupsClient.ListBySubscription` parameter(s) have been changed from `(*CapacityReservationGroupsListBySubscriptionOptions)` to `(*CapacityReservationGroupsClientListBySubscriptionOptions)`
+- Function `*CapacityReservationGroupsClient.ListBySubscription` return value(s) have been changed from `(*CapacityReservationGroupsListBySubscriptionPager)` to `(*CapacityReservationGroupsClientListBySubscriptionPager)`
+- Function `*CloudServiceOperatingSystemsClient.ListOSFamilies` parameter(s) have been changed from `(string, *CloudServiceOperatingSystemsListOSFamiliesOptions)` to `(string, *CloudServiceOperatingSystemsClientListOSFamiliesOptions)`
+- Function `*CloudServiceOperatingSystemsClient.ListOSFamilies` return value(s) have been changed from `(*CloudServiceOperatingSystemsListOSFamiliesPager)` to `(*CloudServiceOperatingSystemsClientListOSFamiliesPager)`
+- Function `*VirtualMachinesClient.BeginCapture` parameter(s) have been changed from `(context.Context, string, string, VirtualMachineCaptureParameters, *VirtualMachinesBeginCaptureOptions)` to `(context.Context, string, string, VirtualMachineCaptureParameters, *VirtualMachinesClientBeginCaptureOptions)`
+- Function `*VirtualMachinesClient.BeginCapture` return value(s) have been changed from `(VirtualMachinesCapturePollerResponse, error)` to `(VirtualMachinesClientCapturePollerResponse, error)`
+- Function `*CapacityReservationGroupsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *CapacityReservationGroupsDeleteOptions)` to `(context.Context, string, string, *CapacityReservationGroupsClientDeleteOptions)`
+- Function `*CapacityReservationGroupsClient.Delete` return value(s) have been changed from `(CapacityReservationGroupsDeleteResponse, error)` to `(CapacityReservationGroupsClientDeleteResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimageAll` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginReimageAllOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginReimageAllOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimageAll` return value(s) have been changed from `(VirtualMachineScaleSetVMsReimageAllPollerResponse, error)` to `(VirtualMachineScaleSetVMsClientReimageAllPollerResponse, error)`
+- Function `*DisksClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DisksListByResourceGroupOptions)` to `(string, *DisksClientListByResourceGroupOptions)`
+- Function `*DisksClient.ListByResourceGroup` return value(s) have been changed from `(*DisksListByResourceGroupPager)` to `(*DisksClientListByResourceGroupPager)`
+- Function `*VirtualMachinesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, VirtualMachineUpdate, *VirtualMachinesBeginUpdateOptions)` to `(context.Context, string, string, VirtualMachineUpdate, *VirtualMachinesClientBeginUpdateOptions)`
+- Function `*VirtualMachinesClient.BeginUpdate` return value(s) have been changed from `(VirtualMachinesUpdatePollerResponse, error)` to `(VirtualMachinesClientUpdatePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginRestartOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginRestartOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRestart` return value(s) have been changed from `(VirtualMachineScaleSetVMsRestartPollerResponse, error)` to `(VirtualMachineScaleSetVMsClientRestartPollerResponse, error)`
+- Function `*VirtualMachineImagesEdgeZoneClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *VirtualMachineImagesEdgeZoneListOptions)` to `(context.Context, string, string, string, string, string, *VirtualMachineImagesEdgeZoneClientListOptions)`
+- Function `*VirtualMachineImagesEdgeZoneClient.List` return value(s) have been changed from `(VirtualMachineImagesEdgeZoneListResponse, error)` to `(VirtualMachineImagesEdgeZoneClientListResponse, error)`
+- Function `*DisksClient.List` parameter(s) have been changed from `(*DisksListOptions)` to `(*DisksClientListOptions)`
+- Function `*DisksClient.List` return value(s) have been changed from `(*DisksListPager)` to `(*DisksClientListPager)`
+- Function `*VirtualMachineScaleSetsClient.GetOSUpgradeHistory` parameter(s) have been changed from `(string, string, *VirtualMachineScaleSetsGetOSUpgradeHistoryOptions)` to `(string, string, *VirtualMachineScaleSetsClientGetOSUpgradeHistoryOptions)`
+- Function `*VirtualMachineScaleSetsClient.GetOSUpgradeHistory` return value(s) have been changed from `(*VirtualMachineScaleSetsGetOSUpgradeHistoryPager)` to `(*VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager)`
+- Function `*GalleryApplicationVersionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *GalleryApplicationVersionsGetOptions)` to `(context.Context, string, string, string, string, *GalleryApplicationVersionsClientGetOptions)`
+- Function `*GalleryApplicationVersionsClient.Get` return value(s) have been changed from `(GalleryApplicationVersionsGetResponse, error)` to `(GalleryApplicationVersionsClientGetResponse, error)`
+- Function `*VirtualMachineImagesEdgeZoneClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *VirtualMachineImagesEdgeZoneGetOptions)` to `(context.Context, string, string, string, string, string, string, *VirtualMachineImagesEdgeZoneClientGetOptions)`
+- Function `*VirtualMachineImagesEdgeZoneClient.Get` return value(s) have been changed from `(VirtualMachineImagesEdgeZoneGetResponse, error)` to `(VirtualMachineImagesEdgeZoneClientGetResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsGetOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientGetOptions)`
+- Function `*VirtualMachineScaleSetsClient.Get` return value(s) have been changed from `(VirtualMachineScaleSetsGetResponse, error)` to `(VirtualMachineScaleSetsClientGetResponse, error)`
+- Function `*LogAnalyticsClient.BeginExportThrottledRequests` parameter(s) have been changed from `(context.Context, string, ThrottledRequestsInput, *LogAnalyticsBeginExportThrottledRequestsOptions)` to `(context.Context, string, ThrottledRequestsInput, *LogAnalyticsClientBeginExportThrottledRequestsOptions)`
+- Function `*LogAnalyticsClient.BeginExportThrottledRequests` return value(s) have been changed from `(LogAnalyticsExportThrottledRequestsPollerResponse, error)` to `(LogAnalyticsClientExportThrottledRequestsPollerResponse, error)`
+- Function `*VirtualMachineImagesEdgeZoneClient.ListPublishers` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineImagesEdgeZoneListPublishersOptions)` to `(context.Context, string, string, *VirtualMachineImagesEdgeZoneClientListPublishersOptions)`
+- Function `*VirtualMachineImagesEdgeZoneClient.ListPublishers` return value(s) have been changed from `(VirtualMachineImagesEdgeZoneListPublishersResponse, error)` to `(VirtualMachineImagesEdgeZoneClientListPublishersResponse, error)`
+- Function `*CloudServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, *CloudServicesClientBeginCreateOrUpdateOptions)`
+- Function `*CloudServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(CloudServicesCreateOrUpdatePollerResponse, error)` to `(CloudServicesClientCreateOrUpdatePollerResponse, error)`
+- Function `*CapacityReservationGroupsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, CapacityReservationGroup, *CapacityReservationGroupsCreateOrUpdateOptions)` to `(context.Context, string, string, CapacityReservationGroup, *CapacityReservationGroupsClientCreateOrUpdateOptions)`
+- Function `*CapacityReservationGroupsClient.CreateOrUpdate` return value(s) have been changed from `(CapacityReservationGroupsCreateOrUpdateResponse, error)` to `(CapacityReservationGroupsClientCreateOrUpdateResponse, error)`
+- Function `*VirtualMachinesClient.List` parameter(s) have been changed from `(string, *VirtualMachinesListOptions)` to `(string, *VirtualMachinesClientListOptions)`
+- Function `*VirtualMachinesClient.List` return value(s) have been changed from `(*VirtualMachinesListPager)` to `(*VirtualMachinesClientListPager)`
+- Function `*DiskAccessesClient.BeginDeleteAPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, *DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, *DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions)`
+- Function `*DiskAccessesClient.BeginDeleteAPrivateEndpointConnection` return value(s) have been changed from `(DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse, error)` to `(DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse, error)`
+- Function `*LogAnalyticsClient.BeginExportRequestRateByInterval` parameter(s) have been changed from `(context.Context, string, RequestRateByIntervalInput, *LogAnalyticsBeginExportRequestRateByIntervalOptions)` to `(context.Context, string, RequestRateByIntervalInput, *LogAnalyticsClientBeginExportRequestRateByIntervalOptions)`
+- Function `*LogAnalyticsClient.BeginExportRequestRateByInterval` return value(s) have been changed from `(LogAnalyticsExportRequestRateByIntervalPollerResponse, error)` to `(LogAnalyticsClientExportRequestRateByIntervalPollerResponse, error)`
+- Function `*AvailabilitySetsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *AvailabilitySetsDeleteOptions)` to `(context.Context, string, string, *AvailabilitySetsClientDeleteOptions)`
+- Function `*AvailabilitySetsClient.Delete` return value(s) have been changed from `(AvailabilitySetsDeleteResponse, error)` to `(AvailabilitySetsClientDeleteResponse, error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *VirtualMachineScaleSetVMExtensionsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *VirtualMachineScaleSetVMExtensionsClientBeginDeleteOptions)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetVMExtensionsDeletePollerResponse, error)` to `(VirtualMachineScaleSetVMExtensionsClientDeletePollerResponse, error)`
+- Function `*ImagesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Image, *ImagesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Image, *ImagesClientBeginCreateOrUpdateOptions)`
+- Function `*ImagesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ImagesCreateOrUpdatePollerResponse, error)` to `(ImagesClientCreateOrUpdatePollerResponse, error)`
+- Function `*ProximityPlacementGroupsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ProximityPlacementGroupsListByResourceGroupOptions)` to `(string, *ProximityPlacementGroupsClientListByResourceGroupOptions)`
+- Function `*ProximityPlacementGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*ProximityPlacementGroupsListByResourceGroupPager)` to `(*ProximityPlacementGroupsClientListByResourceGroupPager)`
+- Function `*AvailabilitySetsClient.ListAvailableSizes` parameter(s) have been changed from `(context.Context, string, string, *AvailabilitySetsListAvailableSizesOptions)` to `(context.Context, string, string, *AvailabilitySetsClientListAvailableSizesOptions)`
+- Function `*AvailabilitySetsClient.ListAvailableSizes` return value(s) have been changed from `(AvailabilitySetsListAvailableSizesResponse, error)` to `(AvailabilitySetsClientListAvailableSizesResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginPowerOff` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginPowerOffOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginPowerOffOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginPowerOff` return value(s) have been changed from `(VirtualMachineScaleSetsPowerOffPollerResponse, error)` to `(VirtualMachineScaleSetsClientPowerOffPollerResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.ConvertToSinglePlacementGroup` parameter(s) have been changed from `(context.Context, string, string, VMScaleSetConvertToSinglePlacementGroupInput, *VirtualMachineScaleSetsConvertToSinglePlacementGroupOptions)` to `(context.Context, string, string, VMScaleSetConvertToSinglePlacementGroupInput, *VirtualMachineScaleSetsClientConvertToSinglePlacementGroupOptions)`
+- Function `*VirtualMachineScaleSetsClient.ConvertToSinglePlacementGroup` return value(s) have been changed from `(VirtualMachineScaleSetsConvertToSinglePlacementGroupResponse, error)` to `(VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse, error)`
+- Function `*CapacityReservationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CapacityReservationsGetOptions)` to `(context.Context, string, string, string, *CapacityReservationsClientGetOptions)`
+- Function `*CapacityReservationsClient.Get` return value(s) have been changed from `(CapacityReservationsGetResponse, error)` to `(CapacityReservationsClientGetResponse, error)`
+- Function `*SnapshotsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SnapshotsGetOptions)` to `(context.Context, string, string, *SnapshotsClientGetOptions)`
+- Function `*SnapshotsClient.Get` return value(s) have been changed from `(SnapshotsGetResponse, error)` to `(SnapshotsClientGetResponse, error)`
+- Function `*GalleryImagesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, GalleryImage, *GalleryImagesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, GalleryImage, *GalleryImagesClientBeginCreateOrUpdateOptions)`
+- Function `*GalleryImagesClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleryImagesCreateOrUpdatePollerResponse, error)` to `(GalleryImagesClientCreateOrUpdatePollerResponse, error)`
+- Function `*AvailabilitySetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AvailabilitySetsGetOptions)` to `(context.Context, string, string, *AvailabilitySetsClientGetOptions)`
+- Function `*AvailabilitySetsClient.Get` return value(s) have been changed from `(AvailabilitySetsGetResponse, error)` to `(AvailabilitySetsClientGetResponse, error)`
+- Function `*CloudServicesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginUpdateOptions)` to `(context.Context, string, string, *CloudServicesClientBeginUpdateOptions)`
+- Function `*CloudServicesClient.BeginUpdate` return value(s) have been changed from `(CloudServicesUpdatePollerResponse, error)` to `(CloudServicesClientUpdatePollerResponse, error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartExtensionUpgrade` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetRollingUpgradesBeginStartExtensionUpgradeOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetRollingUpgradesClientBeginStartExtensionUpgradeOptions)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartExtensionUpgrade` return value(s) have been changed from `(VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse, error)` to `(VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePollerResponse, error)`
+- Function `*VirtualMachineExtensionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineExtensionsListOptions)` to `(context.Context, string, string, *VirtualMachineExtensionsClientListOptions)`
+- Function `*VirtualMachineExtensionsClient.List` return value(s) have been changed from `(VirtualMachineExtensionsListResponse, error)` to `(VirtualMachineExtensionsClientListResponse, error)`
+- Function `*GalleriesClient.List` parameter(s) have been changed from `(*GalleriesListOptions)` to `(*GalleriesClientListOptions)`
+- Function `*GalleriesClient.List` return value(s) have been changed from `(*GalleriesListPager)` to `(*GalleriesClientListPager)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimage` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginReimageOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginReimageOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimage` return value(s) have been changed from `(VirtualMachineScaleSetVMsReimagePollerResponse, error)` to `(VirtualMachineScaleSetVMsClientReimagePollerResponse, error)`
+- Function `*ImagesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ImageUpdate, *ImagesBeginUpdateOptions)` to `(context.Context, string, string, ImageUpdate, *ImagesClientBeginUpdateOptions)`
+- Function `*ImagesClient.BeginUpdate` return value(s) have been changed from `(ImagesUpdatePollerResponse, error)` to `(ImagesClientUpdatePollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginInstallPatches` parameter(s) have been changed from `(context.Context, string, string, VirtualMachineInstallPatchesParameters, *VirtualMachinesBeginInstallPatchesOptions)` to `(context.Context, string, string, VirtualMachineInstallPatchesParameters, *VirtualMachinesClientBeginInstallPatchesOptions)`
+- Function `*VirtualMachinesClient.BeginInstallPatches` return value(s) have been changed from `(VirtualMachinesInstallPatchesPollerResponse, error)` to `(VirtualMachinesClientInstallPatchesPollerResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.ForceRecoveryServiceFabricPlatformUpdateDomainWalk` parameter(s) have been changed from `(context.Context, string, string, int32, *VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkOptions)` to `(context.Context, string, string, int32, *VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkOptions)`
+- Function `*VirtualMachineScaleSetsClient.ForceRecoveryServiceFabricPlatformUpdateDomainWalk` return value(s) have been changed from `(VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse, error)` to `(VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.ListByLocation` parameter(s) have been changed from `(string, *VirtualMachineScaleSetsListByLocationOptions)` to `(string, *VirtualMachineScaleSetsClientListByLocationOptions)`
+- Function `*VirtualMachineScaleSetsClient.ListByLocation` return value(s) have been changed from `(*VirtualMachineScaleSetsListByLocationPager)` to `(*VirtualMachineScaleSetsClientListByLocationPager)`
+- Function `*VirtualMachineScaleSetVMsClient.List` parameter(s) have been changed from `(string, string, *VirtualMachineScaleSetVMsListOptions)` to `(string, string, *VirtualMachineScaleSetVMsClientListOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.List` return value(s) have been changed from `(*VirtualMachineScaleSetVMsListPager)` to `(*VirtualMachineScaleSetVMsClientListPager)`
+- Function `*GalleryImagesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *GalleryImagesBeginDeleteOptions)` to `(context.Context, string, string, string, *GalleryImagesClientBeginDeleteOptions)`
+- Function `*GalleryImagesClient.BeginDelete` return value(s) have been changed from `(GalleryImagesDeletePollerResponse, error)` to `(GalleryImagesClientDeletePollerResponse, error)`
+- Function `*GalleryImageVersionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *GalleryImageVersionsGetOptions)` to `(context.Context, string, string, string, string, *GalleryImageVersionsClientGetOptions)`
+- Function `*GalleryImageVersionsClient.Get` return value(s) have been changed from `(GalleryImageVersionsGetResponse, error)` to `(GalleryImageVersionsClientGetResponse, error)`
+- Function `*GalleryApplicationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, GalleryApplication, *GalleryApplicationsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, GalleryApplication, *GalleryApplicationsClientBeginCreateOrUpdateOptions)`
+- Function `*GalleryApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleryApplicationsCreateOrUpdatePollerResponse, error)` to `(GalleryApplicationsClientCreateOrUpdatePollerResponse, error)`
+- Function `*CloudServiceRoleInstancesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *CloudServiceRoleInstancesBeginDeleteOptions)` to `(context.Context, string, string, string, *CloudServiceRoleInstancesClientBeginDeleteOptions)`
+- Function `*CloudServiceRoleInstancesClient.BeginDelete` return value(s) have been changed from `(CloudServiceRoleInstancesDeletePollerResponse, error)` to `(CloudServiceRoleInstancesClientDeletePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsGetOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientGetOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.Get` return value(s) have been changed from `(VirtualMachineScaleSetVMsGetResponse, error)` to `(VirtualMachineScaleSetVMsClientGetResponse, error)`
+- Function `*GalleriesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *GalleriesGetOptions)` to `(context.Context, string, string, *GalleriesClientGetOptions)`
+- Function `*GalleriesClient.Get` return value(s) have been changed from `(GalleriesGetResponse, error)` to `(GalleriesClientGetResponse, error)`
+- Function `*VirtualMachineRunCommandsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineRunCommandsBeginDeleteOptions)` to `(context.Context, string, string, string, *VirtualMachineRunCommandsClientBeginDeleteOptions)`
+- Function `*VirtualMachineRunCommandsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineRunCommandsDeletePollerResponse, error)` to `(VirtualMachineRunCommandsClientDeletePollerResponse, error)`
+- Function `*GalleryApplicationVersionsClient.ListByGalleryApplication` parameter(s) have been changed from `(string, string, string, *GalleryApplicationVersionsListByGalleryApplicationOptions)` to `(string, string, string, *GalleryApplicationVersionsClientListByGalleryApplicationOptions)`
+- Function `*GalleryApplicationVersionsClient.ListByGalleryApplication` return value(s) have been changed from `(*GalleryApplicationVersionsListByGalleryApplicationPager)` to `(*GalleryApplicationVersionsClientListByGalleryApplicationPager)`
+- Function `*DedicatedHostGroupsClient.Update` parameter(s) have been changed from `(context.Context, string, string, DedicatedHostGroupUpdate, *DedicatedHostGroupsUpdateOptions)` to `(context.Context, string, string, DedicatedHostGroupUpdate, *DedicatedHostGroupsClientUpdateOptions)`
+- Function `*DedicatedHostGroupsClient.Update` return value(s) have been changed from `(DedicatedHostGroupsUpdateResponse, error)` to `(DedicatedHostGroupsClientUpdateResponse, error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMExtensionsListOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMExtensionsClientListOptions)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.List` return value(s) have been changed from `(VirtualMachineScaleSetVMExtensionsListResponse, error)` to `(VirtualMachineScaleSetVMExtensionsClientListResponse, error)`
+- Function `*RestorePointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *RestorePointsGetOptions)` to `(context.Context, string, string, string, *RestorePointsClientGetOptions)`
+- Function `*RestorePointsClient.Get` return value(s) have been changed from `(RestorePointsGetResponse, error)` to `(RestorePointsClientGetResponse, error)`
+- Function `*GalleriesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Gallery, *GalleriesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Gallery, *GalleriesClientBeginCreateOrUpdateOptions)`
+- Function `*GalleriesClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleriesCreateOrUpdatePollerResponse, error)` to `(GalleriesClientCreateOrUpdatePollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginDeallocate` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginDeallocateOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginDeallocateOptions)`
+- Function `*VirtualMachinesClient.BeginDeallocate` return value(s) have been changed from `(VirtualMachinesDeallocatePollerResponse, error)` to `(VirtualMachinesClientDeallocatePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, VirtualMachineRunCommand, *VirtualMachineScaleSetVMRunCommandsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, VirtualMachineRunCommand, *VirtualMachineScaleSetVMRunCommandsClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse, error)` to `(VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginStartOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginStartOptions)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(VirtualMachinesStartPollerResponse, error)` to `(VirtualMachinesClientStartPollerResponse, error)`
+- Function `*SharedGalleryImageVersionsClient.List` parameter(s) have been changed from `(string, string, string, *SharedGalleryImageVersionsListOptions)` to `(string, string, string, *SharedGalleryImageVersionsClientListOptions)`
+- Function `*SharedGalleryImageVersionsClient.List` return value(s) have been changed from `(*SharedGalleryImageVersionsListPager)` to `(*SharedGalleryImageVersionsClientListPager)`
+- Function `*DiskEncryptionSetsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, DiskEncryptionSetUpdate, *DiskEncryptionSetsBeginUpdateOptions)` to `(context.Context, string, string, DiskEncryptionSetUpdate, *DiskEncryptionSetsClientBeginUpdateOptions)`
+- Function `*DiskEncryptionSetsClient.BeginUpdate` return value(s) have been changed from `(DiskEncryptionSetsUpdatePollerResponse, error)` to `(DiskEncryptionSetsClientUpdatePollerResponse, error)`
+- Function `*DiskEncryptionSetsClient.ListAssociatedResources` parameter(s) have been changed from `(string, string, *DiskEncryptionSetsListAssociatedResourcesOptions)` to `(string, string, *DiskEncryptionSetsClientListAssociatedResourcesOptions)`
+- Function `*DiskEncryptionSetsClient.ListAssociatedResources` return value(s) have been changed from `(*DiskEncryptionSetsListAssociatedResourcesPager)` to `(*DiskEncryptionSetsClientListAssociatedResourcesPager)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginDeleteOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginDeleteOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetVMsDeletePollerResponse, error)` to `(VirtualMachineScaleSetVMsClientDeletePollerResponse, error)`
+- Function `*SnapshotsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, SnapshotUpdate, *SnapshotsBeginUpdateOptions)` to `(context.Context, string, string, SnapshotUpdate, *SnapshotsClientBeginUpdateOptions)`
+- Function `*SnapshotsClient.BeginUpdate` return value(s) have been changed from `(SnapshotsUpdatePollerResponse, error)` to `(SnapshotsClientUpdatePollerResponse, error)`
+- Function `*DedicatedHostsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DedicatedHostUpdate, *DedicatedHostsBeginUpdateOptions)` to `(context.Context, string, string, string, DedicatedHostUpdate, *DedicatedHostsClientBeginUpdateOptions)`
+- Function `*DedicatedHostsClient.BeginUpdate` return value(s) have been changed from `(DedicatedHostsUpdatePollerResponse, error)` to `(DedicatedHostsClientUpdatePollerResponse, error)`
+- Function `*VirtualMachinesClient.InstanceView` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesInstanceViewOptions)` to `(context.Context, string, string, *VirtualMachinesClientInstanceViewOptions)`
+- Function `*VirtualMachinesClient.InstanceView` return value(s) have been changed from `(VirtualMachinesInstanceViewResponse, error)` to `(VirtualMachinesClientInstanceViewResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, VirtualMachineScaleSetVMExtension, *VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, VirtualMachineScaleSetVMExtension, *VirtualMachineScaleSetVMExtensionsClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse, error)` to `(VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*GalleryImageVersionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, GalleryImageVersion, *GalleryImageVersionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, GalleryImageVersion, *GalleryImageVersionsClientBeginCreateOrUpdateOptions)`
+- Function `*GalleryImageVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleryImageVersionsCreateOrUpdatePollerResponse, error)` to `(GalleryImageVersionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DiskAccessesClient.GetAPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, *DiskAccessesGetAPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, *DiskAccessesClientGetAPrivateEndpointConnectionOptions)`
+- Function `*DiskAccessesClient.GetAPrivateEndpointConnection` return value(s) have been changed from `(DiskAccessesGetAPrivateEndpointConnectionResponse, error)` to `(DiskAccessesClientGetAPrivateEndpointConnectionResponse, error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *VirtualMachineScaleSetVMRunCommandsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *VirtualMachineScaleSetVMRunCommandsClientBeginDeleteOptions)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetVMRunCommandsDeletePollerResponse, error)` to `(VirtualMachineScaleSetVMRunCommandsClientDeletePollerResponse, error)`
+- Function `*VirtualMachineRunCommandsClient.GetByVirtualMachine` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineRunCommandsGetByVirtualMachineOptions)` to `(context.Context, string, string, string, *VirtualMachineRunCommandsClientGetByVirtualMachineOptions)`
+- Function `*VirtualMachineRunCommandsClient.GetByVirtualMachine` return value(s) have been changed from `(VirtualMachineRunCommandsGetByVirtualMachineResponse, error)` to `(VirtualMachineRunCommandsClientGetByVirtualMachineResponse, error)`
+- Function `*SnapshotsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *SnapshotsBeginDeleteOptions)` to `(context.Context, string, string, *SnapshotsClientBeginDeleteOptions)`
+- Function `*SnapshotsClient.BeginDelete` return value(s) have been changed from `(SnapshotsDeletePollerResponse, error)` to `(SnapshotsClientDeletePollerResponse, error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginCancel` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetRollingUpgradesBeginCancelOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetRollingUpgradesClientBeginCancelOptions)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginCancel` return value(s) have been changed from `(VirtualMachineScaleSetRollingUpgradesCancelPollerResponse, error)` to `(VirtualMachineScaleSetRollingUpgradesClientCancelPollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginPowerOff` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginPowerOffOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginPowerOffOptions)`
+- Function `*VirtualMachinesClient.BeginPowerOff` return value(s) have been changed from `(VirtualMachinesPowerOffPollerResponse, error)` to `(VirtualMachinesClientPowerOffPollerResponse, error)`
+- Function `*VirtualMachineExtensionImagesClient.ListTypes` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineExtensionImagesListTypesOptions)` to `(context.Context, string, string, *VirtualMachineExtensionImagesClientListTypesOptions)`
+- Function `*VirtualMachineExtensionImagesClient.ListTypes` return value(s) have been changed from `(VirtualMachineExtensionImagesListTypesResponse, error)` to `(VirtualMachineExtensionImagesClientListTypesResponse, error)`
+- Function `*SSHPublicKeysClient.ListBySubscription` parameter(s) have been changed from `(*SSHPublicKeysListBySubscriptionOptions)` to `(*SSHPublicKeysClientListBySubscriptionOptions)`
+- Function `*SSHPublicKeysClient.ListBySubscription` return value(s) have been changed from `(*SSHPublicKeysListBySubscriptionPager)` to `(*SSHPublicKeysClientListBySubscriptionPager)`
+- Function `*VirtualMachineImagesClient.ListSKUs` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineImagesListSKUsOptions)` to `(context.Context, string, string, string, *VirtualMachineImagesClientListSKUsOptions)`
+- Function `*VirtualMachineImagesClient.ListSKUs` return value(s) have been changed from `(VirtualMachineImagesListSKUsResponse, error)` to `(VirtualMachineImagesClientListSKUsResponse, error)`
+- Function `*RestorePointCollectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *RestorePointCollectionsBeginDeleteOptions)` to `(context.Context, string, string, *RestorePointCollectionsClientBeginDeleteOptions)`
+- Function `*RestorePointCollectionsClient.BeginDelete` return value(s) have been changed from `(RestorePointCollectionsDeletePollerResponse, error)` to `(RestorePointCollectionsClientDeletePollerResponse, error)`
+- Function `*VirtualMachineExtensionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualMachineExtensionUpdate, *VirtualMachineExtensionsBeginUpdateOptions)` to `(context.Context, string, string, string, VirtualMachineExtensionUpdate, *VirtualMachineExtensionsClientBeginUpdateOptions)`
+- Function `*VirtualMachineExtensionsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineExtensionsUpdatePollerResponse, error)` to `(VirtualMachineExtensionsClientUpdatePollerResponse, error)`
+- Function `*DisksClient.BeginGrantAccess` parameter(s) have been changed from `(context.Context, string, string, GrantAccessData, *DisksBeginGrantAccessOptions)` to `(context.Context, string, string, GrantAccessData, *DisksClientBeginGrantAccessOptions)`
+- Function `*DisksClient.BeginGrantAccess` return value(s) have been changed from `(DisksGrantAccessPollerResponse, error)` to `(DisksClientGrantAccessPollerResponse, error)`
+- Function `*SharedGalleriesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SharedGalleriesGetOptions)` to `(context.Context, string, string, *SharedGalleriesClientGetOptions)`
+- Function `*SharedGalleriesClient.Get` return value(s) have been changed from `(SharedGalleriesGetResponse, error)` to `(SharedGalleriesClientGetResponse, error)`
+- Function `*VirtualMachineExtensionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineExtensionsBeginDeleteOptions)` to `(context.Context, string, string, string, *VirtualMachineExtensionsClientBeginDeleteOptions)`
+- Function `*VirtualMachineExtensionsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineExtensionsDeletePollerResponse, error)` to `(VirtualMachineExtensionsClientDeletePollerResponse, error)`
+- Function `*CloudServiceRoleInstancesClient.GetInstanceView` parameter(s) have been changed from `(context.Context, string, string, string, *CloudServiceRoleInstancesGetInstanceViewOptions)` to `(context.Context, string, string, string, *CloudServiceRoleInstancesClientGetInstanceViewOptions)`
+- Function `*CloudServiceRoleInstancesClient.GetInstanceView` return value(s) have been changed from `(CloudServiceRoleInstancesGetInstanceViewResponse, error)` to `(CloudServiceRoleInstancesClientGetInstanceViewResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.List` parameter(s) have been changed from `(string, *VirtualMachineScaleSetsListOptions)` to `(string, *VirtualMachineScaleSetsClientListOptions)`
+- Function `*VirtualMachineScaleSetsClient.List` return value(s) have been changed from `(*VirtualMachineScaleSetsListPager)` to `(*VirtualMachineScaleSetsClientListPager)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, VirtualMachineRunCommandUpdate, *VirtualMachineScaleSetVMRunCommandsBeginUpdateOptions)` to `(context.Context, string, string, string, string, VirtualMachineRunCommandUpdate, *VirtualMachineScaleSetVMRunCommandsClientBeginUpdateOptions)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMRunCommandsUpdatePollerResponse, error)` to `(VirtualMachineScaleSetVMRunCommandsClientUpdatePollerResponse, error)`
+- Function `*DedicatedHostGroupsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DedicatedHostGroupsListByResourceGroupOptions)` to `(string, *DedicatedHostGroupsClientListByResourceGroupOptions)`
+- Function `*DedicatedHostGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*DedicatedHostGroupsListByResourceGroupPager)` to `(*DedicatedHostGroupsClientListByResourceGroupPager)`
+- Function `*CommunityGalleriesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CommunityGalleriesGetOptions)` to `(context.Context, string, string, *CommunityGalleriesClientGetOptions)`
+- Function `*CommunityGalleriesClient.Get` return value(s) have been changed from `(CommunityGalleriesGetResponse, error)` to `(CommunityGalleriesClientGetResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRunCommand` parameter(s) have been changed from `(context.Context, string, string, string, RunCommandInput, *VirtualMachineScaleSetVMsBeginRunCommandOptions)` to `(context.Context, string, string, string, RunCommandInput, *VirtualMachineScaleSetVMsClientBeginRunCommandOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRunCommand` return value(s) have been changed from `(VirtualMachineScaleSetVMsRunCommandPollerResponse, error)` to `(VirtualMachineScaleSetVMsClientRunCommandPollerResponse, error)`
+- Function `*CapacityReservationGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CapacityReservationGroupsGetOptions)` to `(context.Context, string, string, *CapacityReservationGroupsClientGetOptions)`
+- Function `*CapacityReservationGroupsClient.Get` return value(s) have been changed from `(CapacityReservationGroupsGetResponse, error)` to `(CapacityReservationGroupsClientGetResponse, error)`
+- Function `*AvailabilitySetsClient.ListBySubscription` parameter(s) have been changed from `(*AvailabilitySetsListBySubscriptionOptions)` to `(*AvailabilitySetsClientListBySubscriptionOptions)`
+- Function `*AvailabilitySetsClient.ListBySubscription` return value(s) have been changed from `(*AvailabilitySetsListBySubscriptionPager)` to `(*AvailabilitySetsClientListBySubscriptionPager)`
+- Function `*VirtualMachineScaleSetsClient.BeginReimage` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginReimageOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginReimageOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginReimage` return value(s) have been changed from `(VirtualMachineScaleSetsReimagePollerResponse, error)` to `(VirtualMachineScaleSetsClientReimagePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRedeploy` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginRedeployOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginRedeployOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachineScaleSetVMsRedeployPollerResponse, error)` to `(VirtualMachineScaleSetVMsClientRedeployPollerResponse, error)`
+- Function `*VirtualMachineExtensionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualMachineExtension, *VirtualMachineExtensionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, VirtualMachineExtension, *VirtualMachineExtensionsClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachineExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineExtensionsCreateOrUpdatePollerResponse, error)` to `(VirtualMachineExtensionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*RestorePointCollectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RestorePointCollectionsGetOptions)` to `(context.Context, string, string, *RestorePointCollectionsClientGetOptions)`
+- Function `*RestorePointCollectionsClient.Get` return value(s) have been changed from `(RestorePointCollectionsGetResponse, error)` to `(RestorePointCollectionsClientGetResponse, error)`
+- Function `*VirtualMachinesClient.BeginAssessPatches` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginAssessPatchesOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginAssessPatchesOptions)`
+- Function `*VirtualMachinesClient.BeginAssessPatches` return value(s) have been changed from `(VirtualMachinesAssessPatchesPollerResponse, error)` to `(VirtualMachinesClientAssessPatchesPollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.List` parameter(s) have been changed from `(string, string, string, *VirtualMachineScaleSetVMRunCommandsListOptions)` to `(string, string, string, *VirtualMachineScaleSetVMRunCommandsClientListOptions)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.List` return value(s) have been changed from `(*VirtualMachineScaleSetVMRunCommandsListPager)` to `(*VirtualMachineScaleSetVMRunCommandsClientListPager)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualMachineScaleSetExtension, *VirtualMachineScaleSetExtensionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, VirtualMachineScaleSetExtension, *VirtualMachineScaleSetExtensionsClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineScaleSetExtensionsCreateOrUpdatePollerResponse, error)` to `(VirtualMachineScaleSetExtensionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*CloudServiceOperatingSystemsClient.ListOSVersions` parameter(s) have been changed from `(string, *CloudServiceOperatingSystemsListOSVersionsOptions)` to `(string, *CloudServiceOperatingSystemsClientListOSVersionsOptions)`
+- Function `*CloudServiceOperatingSystemsClient.ListOSVersions` return value(s) have been changed from `(*CloudServiceOperatingSystemsListOSVersionsPager)` to `(*CloudServiceOperatingSystemsClientListOSVersionsPager)`
+- Function `*VirtualMachinesClient.BeginPerformMaintenance` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginPerformMaintenanceOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginPerformMaintenanceOptions)`
+- Function `*VirtualMachinesClient.BeginPerformMaintenance` return value(s) have been changed from `(VirtualMachinesPerformMaintenancePollerResponse, error)` to `(VirtualMachinesClientPerformMaintenancePollerResponse, error)`
+- Function `*VirtualMachineScaleSetExtensionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetExtensionsGetOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetExtensionsClientGetOptions)`
+- Function `*VirtualMachineScaleSetExtensionsClient.Get` return value(s) have been changed from `(VirtualMachineScaleSetExtensionsGetResponse, error)` to `(VirtualMachineScaleSetExtensionsClientGetResponse, error)`
+- Function `*CapacityReservationsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *CapacityReservationsBeginDeleteOptions)` to `(context.Context, string, string, string, *CapacityReservationsClientBeginDeleteOptions)`
+- Function `*CapacityReservationsClient.BeginDelete` return value(s) have been changed from `(CapacityReservationsDeletePollerResponse, error)` to `(CapacityReservationsClientDeletePollerResponse, error)`
+- Function `*GalleryApplicationsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, GalleryApplicationUpdate, *GalleryApplicationsBeginUpdateOptions)` to `(context.Context, string, string, string, GalleryApplicationUpdate, *GalleryApplicationsClientBeginUpdateOptions)`
+- Function `*GalleryApplicationsClient.BeginUpdate` return value(s) have been changed from `(GalleryApplicationsUpdatePollerResponse, error)` to `(GalleryApplicationsClientUpdatePollerResponse, error)`
+- Function `*VirtualMachineExtensionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineExtensionsGetOptions)` to `(context.Context, string, string, string, *VirtualMachineExtensionsClientGetOptions)`
+- Function `*VirtualMachineExtensionsClient.Get` return value(s) have been changed from `(VirtualMachineExtensionsGetResponse, error)` to `(VirtualMachineExtensionsClientGetResponse, error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *VirtualMachineScaleSetVMRunCommandsGetOptions)` to `(context.Context, string, string, string, string, *VirtualMachineScaleSetVMRunCommandsClientGetOptions)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.Get` return value(s) have been changed from `(VirtualMachineScaleSetVMRunCommandsGetResponse, error)` to `(VirtualMachineScaleSetVMRunCommandsClientGetResponse, error)`
+- Function `*DiskAccessesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DiskAccess, *DiskAccessesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, DiskAccess, *DiskAccessesClientBeginCreateOrUpdateOptions)`
+- Function `*DiskAccessesClient.BeginCreateOrUpdate` return value(s) have been changed from `(DiskAccessesCreateOrUpdatePollerResponse, error)` to `(DiskAccessesClientCreateOrUpdatePollerResponse, error)`
+- Function `*SSHPublicKeysClient.GenerateKeyPair` parameter(s) have been changed from `(context.Context, string, string, *SSHPublicKeysGenerateKeyPairOptions)` to `(context.Context, string, string, *SSHPublicKeysClientGenerateKeyPairOptions)`
+- Function `*SSHPublicKeysClient.GenerateKeyPair` return value(s) have been changed from `(SSHPublicKeysGenerateKeyPairResponse, error)` to `(SSHPublicKeysClientGenerateKeyPairResponse, error)`
+- Function `*VirtualMachineRunCommandsClient.ListByVirtualMachine` parameter(s) have been changed from `(string, string, *VirtualMachineRunCommandsListByVirtualMachineOptions)` to `(string, string, *VirtualMachineRunCommandsClientListByVirtualMachineOptions)`
+- Function `*VirtualMachineRunCommandsClient.ListByVirtualMachine` return value(s) have been changed from `(*VirtualMachineRunCommandsListByVirtualMachinePager)` to `(*VirtualMachineRunCommandsClientListByVirtualMachinePager)`
+- Function `*VirtualMachinesClient.ListAll` parameter(s) have been changed from `(*VirtualMachinesListAllOptions)` to `(*VirtualMachinesClientListAllOptions)`
+- Function `*VirtualMachinesClient.ListAll` return value(s) have been changed from `(*VirtualMachinesListAllPager)` to `(*VirtualMachinesClientListAllPager)`
+- Function `*SSHPublicKeysClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *SSHPublicKeysDeleteOptions)` to `(context.Context, string, string, *SSHPublicKeysClientDeleteOptions)`
+- Function `*SSHPublicKeysClient.Delete` return value(s) have been changed from `(SSHPublicKeysDeleteResponse, error)` to `(SSHPublicKeysClientDeleteResponse, error)`
+- Function `*SnapshotsClient.List` parameter(s) have been changed from `(*SnapshotsListOptions)` to `(*SnapshotsClientListOptions)`
+- Function `*SnapshotsClient.List` return value(s) have been changed from `(*SnapshotsListPager)` to `(*SnapshotsClientListPager)`
+- Function `*SnapshotsClient.BeginRevokeAccess` parameter(s) have been changed from `(context.Context, string, string, *SnapshotsBeginRevokeAccessOptions)` to `(context.Context, string, string, *SnapshotsClientBeginRevokeAccessOptions)`
+- Function `*SnapshotsClient.BeginRevokeAccess` return value(s) have been changed from `(SnapshotsRevokeAccessPollerResponse, error)` to `(SnapshotsClientRevokeAccessPollerResponse, error)`
+- Function `*CapacityReservationsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CapacityReservationUpdate, *CapacityReservationsBeginUpdateOptions)` to `(context.Context, string, string, string, CapacityReservationUpdate, *CapacityReservationsClientBeginUpdateOptions)`
+- Function `*CapacityReservationsClient.BeginUpdate` return value(s) have been changed from `(CapacityReservationsUpdatePollerResponse, error)` to `(CapacityReservationsClientUpdatePollerResponse, error)`
+- Function `*CloudServiceRolesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CloudServiceRolesGetOptions)` to `(context.Context, string, string, string, *CloudServiceRolesClientGetOptions)`
+- Function `*CloudServiceRolesClient.Get` return value(s) have been changed from `(CloudServiceRolesGetResponse, error)` to `(CloudServiceRolesClientGetResponse, error)`
+- Function `*ImagesClient.List` parameter(s) have been changed from `(*ImagesListOptions)` to `(*ImagesClientListOptions)`
+- Function `*ImagesClient.List` return value(s) have been changed from `(*ImagesListPager)` to `(*ImagesClientListPager)`
+- Function `*RestorePointCollectionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, RestorePointCollection, *RestorePointCollectionsCreateOrUpdateOptions)` to `(context.Context, string, string, RestorePointCollection, *RestorePointCollectionsClientCreateOrUpdateOptions)`
+- Function `*RestorePointCollectionsClient.CreateOrUpdate` return value(s) have been changed from `(RestorePointCollectionsCreateOrUpdateResponse, error)` to `(RestorePointCollectionsClientCreateOrUpdateResponse, error)`
+- Function `*ProximityPlacementGroupsClient.Update` parameter(s) have been changed from `(context.Context, string, string, ProximityPlacementGroupUpdate, *ProximityPlacementGroupsUpdateOptions)` to `(context.Context, string, string, ProximityPlacementGroupUpdate, *ProximityPlacementGroupsClientUpdateOptions)`
+- Function `*ProximityPlacementGroupsClient.Update` return value(s) have been changed from `(ProximityPlacementGroupsUpdateResponse, error)` to `(ProximityPlacementGroupsClientUpdateResponse, error)`
+- Function `*RestorePointsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *RestorePointsBeginDeleteOptions)` to `(context.Context, string, string, string, *RestorePointsClientBeginDeleteOptions)`
+- Function `*RestorePointsClient.BeginDelete` return value(s) have been changed from `(RestorePointsDeletePollerResponse, error)` to `(RestorePointsClientDeletePollerResponse, error)`
+- Function `*DiskAccessesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DiskAccessesListByResourceGroupOptions)` to `(string, *DiskAccessesClientListByResourceGroupOptions)`
+- Function `*DiskAccessesClient.ListByResourceGroup` return value(s) have been changed from `(*DiskAccessesListByResourceGroupPager)` to `(*DiskAccessesClientListByResourceGroupPager)`
+- Function `*GallerySharingProfileClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, SharingUpdate, *GallerySharingProfileBeginUpdateOptions)` to `(context.Context, string, string, SharingUpdate, *GallerySharingProfileClientBeginUpdateOptions)`
+- Function `*GallerySharingProfileClient.BeginUpdate` return value(s) have been changed from `(GallerySharingProfileUpdatePollerResponse, error)` to `(GallerySharingProfileClientUpdatePollerResponse, error)`
+- Function `*GalleryApplicationsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *GalleryApplicationsBeginDeleteOptions)` to `(context.Context, string, string, string, *GalleryApplicationsClientBeginDeleteOptions)`
+- Function `*GalleryApplicationsClient.BeginDelete` return value(s) have been changed from `(GalleryApplicationsDeletePollerResponse, error)` to `(GalleryApplicationsClientDeletePollerResponse, error)`
+- Function `*ProximityPlacementGroupsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ProximityPlacementGroupsDeleteOptions)` to `(context.Context, string, string, *ProximityPlacementGroupsClientDeleteOptions)`
+- Function `*ProximityPlacementGroupsClient.Delete` return value(s) have been changed from `(ProximityPlacementGroupsDeleteResponse, error)` to `(ProximityPlacementGroupsClientDeleteResponse, error)`
+- Function `*DiskAccessesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, DiskAccessUpdate, *DiskAccessesBeginUpdateOptions)` to `(context.Context, string, string, DiskAccessUpdate, *DiskAccessesClientBeginUpdateOptions)`
+- Function `*DiskAccessesClient.BeginUpdate` return value(s) have been changed from `(DiskAccessesUpdatePollerResponse, error)` to `(DiskAccessesClientUpdatePollerResponse, error)`
+- Function `*DedicatedHostGroupsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DedicatedHostGroup, *DedicatedHostGroupsCreateOrUpdateOptions)` to `(context.Context, string, string, DedicatedHostGroup, *DedicatedHostGroupsClientCreateOrUpdateOptions)`
+- Function `*DedicatedHostGroupsClient.CreateOrUpdate` return value(s) have been changed from `(DedicatedHostGroupsCreateOrUpdateResponse, error)` to `(DedicatedHostGroupsClientCreateOrUpdateResponse, error)`
+- Function `*RestorePointCollectionsClient.ListAll` parameter(s) have been changed from `(*RestorePointCollectionsListAllOptions)` to `(*RestorePointCollectionsClientListAllOptions)`
+- Function `*RestorePointCollectionsClient.ListAll` return value(s) have been changed from `(*RestorePointCollectionsListAllPager)` to `(*RestorePointCollectionsClientListAllPager)`
+- Function `*VirtualMachineScaleSetExtensionsClient.List` parameter(s) have been changed from `(string, string, *VirtualMachineScaleSetExtensionsListOptions)` to `(string, string, *VirtualMachineScaleSetExtensionsClientListOptions)`
+- Function `*VirtualMachineScaleSetExtensionsClient.List` return value(s) have been changed from `(*VirtualMachineScaleSetExtensionsListPager)` to `(*VirtualMachineScaleSetExtensionsClientListPager)`
+- Function `*CloudServicesClient.BeginReimage` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginReimageOptions)` to `(context.Context, string, string, *CloudServicesClientBeginReimageOptions)`
+- Function `*CloudServicesClient.BeginReimage` return value(s) have been changed from `(CloudServicesReimagePollerResponse, error)` to `(CloudServicesClientReimagePollerResponse, error)`
+- Function `*GalleryApplicationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *GalleryApplicationsGetOptions)` to `(context.Context, string, string, string, *GalleryApplicationsClientGetOptions)`
+- Function `*GalleryApplicationsClient.Get` return value(s) have been changed from `(GalleryApplicationsGetResponse, error)` to `(GalleryApplicationsClientGetResponse, error)`
+- Function `*RestorePointsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, RestorePoint, *RestorePointsBeginCreateOptions)` to `(context.Context, string, string, string, RestorePoint, *RestorePointsClientBeginCreateOptions)`
+- Function `*RestorePointsClient.BeginCreate` return value(s) have been changed from `(RestorePointsCreatePollerResponse, error)` to `(RestorePointsClientCreatePollerResponse, error)`
+- Function `*DiskRestorePointClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiskRestorePointGetOptions)` to `(context.Context, string, string, string, string, *DiskRestorePointClientGetOptions)`
+- Function `*DiskRestorePointClient.Get` return value(s) have been changed from `(DiskRestorePointGetResponse, error)` to `(DiskRestorePointClientGetResponse, error)`
+- Function `*GalleryApplicationsClient.ListByGallery` parameter(s) have been changed from `(string, string, *GalleryApplicationsListByGalleryOptions)` to `(string, string, *GalleryApplicationsClientListByGalleryOptions)`
+- Function `*GalleryApplicationsClient.ListByGallery` return value(s) have been changed from `(*GalleryApplicationsListByGalleryPager)` to `(*GalleryApplicationsClientListByGalleryPager)`
+- Function `*DedicatedHostsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *DedicatedHostsBeginDeleteOptions)` to `(context.Context, string, string, string, *DedicatedHostsClientBeginDeleteOptions)`
+- Function `*DedicatedHostsClient.BeginDelete` return value(s) have been changed from `(DedicatedHostsDeletePollerResponse, error)` to `(DedicatedHostsClientDeletePollerResponse, error)`
+- Function `*VirtualMachineImagesEdgeZoneClient.ListOffers` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineImagesEdgeZoneListOffersOptions)` to `(context.Context, string, string, string, *VirtualMachineImagesEdgeZoneClientListOffersOptions)`
+- Function `*VirtualMachineImagesEdgeZoneClient.ListOffers` return value(s) have been changed from `(VirtualMachineImagesEdgeZoneListOffersResponse, error)` to `(VirtualMachineImagesEdgeZoneClientListOffersResponse, error)`
+- Function `*CloudServicesUpdateDomainClient.ListUpdateDomains` parameter(s) have been changed from `(string, string, *CloudServicesUpdateDomainListUpdateDomainsOptions)` to `(string, string, *CloudServicesUpdateDomainClientListUpdateDomainsOptions)`
+- Function `*CloudServicesUpdateDomainClient.ListUpdateDomains` return value(s) have been changed from `(*CloudServicesUpdateDomainListUpdateDomainsPager)` to `(*CloudServicesUpdateDomainClientListUpdateDomainsPager)`
+- Function `*ResourceSKUsClient.List` parameter(s) have been changed from `(*ResourceSKUsListOptions)` to `(*ResourceSKUsClientListOptions)`
+- Function `*ResourceSKUsClient.List` return value(s) have been changed from `(*ResourceSKUsListPager)` to `(*ResourceSKUsClientListPager)`
+- Function `*VirtualMachineScaleSetVMsClient.GetInstanceView` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsGetInstanceViewOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientGetInstanceViewOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.GetInstanceView` return value(s) have been changed from `(VirtualMachineScaleSetVMsGetInstanceViewResponse, error)` to `(VirtualMachineScaleSetVMsClientGetInstanceViewResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.ListSKUs` parameter(s) have been changed from `(string, string, *VirtualMachineScaleSetsListSKUsOptions)` to `(string, string, *VirtualMachineScaleSetsClientListSKUsOptions)`
+- Function `*VirtualMachineScaleSetsClient.ListSKUs` return value(s) have been changed from `(*VirtualMachineScaleSetsListSKUsPager)` to `(*VirtualMachineScaleSetsClientListSKUsPager)`
+- Function `*SnapshotsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *SnapshotsListByResourceGroupOptions)` to `(string, *SnapshotsClientListByResourceGroupOptions)`
+- Function `*SnapshotsClient.ListByResourceGroup` return value(s) have been changed from `(*SnapshotsListByResourceGroupPager)` to `(*SnapshotsClientListByResourceGroupPager)`
+- Function `*VirtualMachineScaleSetsClient.BeginUpdateInstances` parameter(s) have been changed from `(context.Context, string, string, VirtualMachineScaleSetVMInstanceRequiredIDs, *VirtualMachineScaleSetsBeginUpdateInstancesOptions)` to `(context.Context, string, string, VirtualMachineScaleSetVMInstanceRequiredIDs, *VirtualMachineScaleSetsClientBeginUpdateInstancesOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginUpdateInstances` return value(s) have been changed from `(VirtualMachineScaleSetsUpdateInstancesPollerResponse, error)` to `(VirtualMachineScaleSetsClientUpdateInstancesPollerResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginPerformMaintenance` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginPerformMaintenanceOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginPerformMaintenanceOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginPerformMaintenance` return value(s) have been changed from `(VirtualMachineScaleSetsPerformMaintenancePollerResponse, error)` to `(VirtualMachineScaleSetsClientPerformMaintenancePollerResponse, error)`
+- Function `*DiskAccessesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DiskAccessesGetOptions)` to `(context.Context, string, string, *DiskAccessesClientGetOptions)`
+- Function `*DiskAccessesClient.Get` return value(s) have been changed from `(DiskAccessesGetResponse, error)` to `(DiskAccessesClientGetResponse, error)`
+- Function `*CapacityReservationGroupsClient.Update` parameter(s) have been changed from `(context.Context, string, string, CapacityReservationGroupUpdate, *CapacityReservationGroupsUpdateOptions)` to `(context.Context, string, string, CapacityReservationGroupUpdate, *CapacityReservationGroupsClientUpdateOptions)`
+- Function `*CapacityReservationGroupsClient.Update` return value(s) have been changed from `(CapacityReservationGroupsUpdateResponse, error)` to `(CapacityReservationGroupsClientUpdateResponse, error)`
+- Function `*CloudServicesClient.GetInstanceView` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesGetInstanceViewOptions)` to `(context.Context, string, string, *CloudServicesClientGetInstanceViewOptions)`
+- Function `*CloudServicesClient.GetInstanceView` return value(s) have been changed from `(CloudServicesGetInstanceViewResponse, error)` to `(CloudServicesClientGetInstanceViewResponse, error)`
+- Function `*VirtualMachinesClient.BeginRedeploy` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginRedeployOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginRedeployOptions)`
+- Function `*VirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachinesRedeployPollerResponse, error)` to `(VirtualMachinesClientRedeployPollerResponse, error)`
+- Function `*SSHPublicKeysClient.ListByResourceGroup` parameter(s) have been changed from `(string, *SSHPublicKeysListByResourceGroupOptions)` to `(string, *SSHPublicKeysClientListByResourceGroupOptions)`
+- Function `*SSHPublicKeysClient.ListByResourceGroup` return value(s) have been changed from `(*SSHPublicKeysListByResourceGroupPager)` to `(*SSHPublicKeysClientListByResourceGroupPager)`
+- Function `*VirtualMachineImagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *VirtualMachineImagesGetOptions)` to `(context.Context, string, string, string, string, string, *VirtualMachineImagesClientGetOptions)`
+- Function `*VirtualMachineImagesClient.Get` return value(s) have been changed from `(VirtualMachineImagesGetResponse, error)` to `(VirtualMachineImagesClientGetResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginDeleteInstances` parameter(s) have been changed from `(context.Context, string, string, VirtualMachineScaleSetVMInstanceRequiredIDs, *VirtualMachineScaleSetsBeginDeleteInstancesOptions)` to `(context.Context, string, string, VirtualMachineScaleSetVMInstanceRequiredIDs, *VirtualMachineScaleSetsClientBeginDeleteInstancesOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginDeleteInstances` return value(s) have been changed from `(VirtualMachineScaleSetsDeleteInstancesPollerResponse, error)` to `(VirtualMachineScaleSetsClientDeleteInstancesPollerResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginStartOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginStartOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginStart` return value(s) have been changed from `(VirtualMachineScaleSetsStartPollerResponse, error)` to `(VirtualMachineScaleSetsClientStartPollerResponse, error)`
+- Function `*GalleryImagesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, GalleryImageUpdate, *GalleryImagesBeginUpdateOptions)` to `(context.Context, string, string, string, GalleryImageUpdate, *GalleryImagesClientBeginUpdateOptions)`
+- Function `*GalleryImagesClient.BeginUpdate` return value(s) have been changed from `(GalleryImagesUpdatePollerResponse, error)` to `(GalleryImagesClientUpdatePollerResponse, error)`
+- Function `*DiskRestorePointClient.BeginRevokeAccess` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiskRestorePointBeginRevokeAccessOptions)` to `(context.Context, string, string, string, string, *DiskRestorePointClientBeginRevokeAccessOptions)`
+- Function `*DiskRestorePointClient.BeginRevokeAccess` return value(s) have been changed from `(DiskRestorePointRevokeAccessPollerResponse, error)` to `(DiskRestorePointClientRevokeAccessPollerResponse, error)`
+- Function `*VirtualMachineExtensionImagesClient.ListVersions` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineExtensionImagesListVersionsOptions)` to `(context.Context, string, string, string, *VirtualMachineExtensionImagesClientListVersionsOptions)`
+- Function `*VirtualMachineExtensionImagesClient.ListVersions` return value(s) have been changed from `(VirtualMachineExtensionImagesListVersionsResponse, error)` to `(VirtualMachineExtensionImagesClientListVersionsResponse, error)`
+- Function `*DiskEncryptionSetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DiskEncryptionSetsGetOptions)` to `(context.Context, string, string, *DiskEncryptionSetsClientGetOptions)`
+- Function `*DiskEncryptionSetsClient.Get` return value(s) have been changed from `(DiskEncryptionSetsGetResponse, error)` to `(DiskEncryptionSetsClientGetResponse, error)`
+- Function `*GalleriesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *GalleriesListByResourceGroupOptions)` to `(string, *GalleriesClientListByResourceGroupOptions)`
+- Function `*GalleriesClient.ListByResourceGroup` return value(s) have been changed from `(*GalleriesListByResourceGroupPager)` to `(*GalleriesClientListByResourceGroupPager)`
+- Function `*VirtualMachineRunCommandsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineRunCommandsGetOptions)` to `(context.Context, string, string, *VirtualMachineRunCommandsClientGetOptions)`
+- Function `*VirtualMachineRunCommandsClient.Get` return value(s) have been changed from `(VirtualMachineRunCommandsGetResponse, error)` to `(VirtualMachineRunCommandsClientGetResponse, error)`
+- Function `*GalleriesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *GalleriesBeginDeleteOptions)` to `(context.Context, string, string, *GalleriesClientBeginDeleteOptions)`
+- Function `*GalleriesClient.BeginDelete` return value(s) have been changed from `(GalleriesDeletePollerResponse, error)` to `(GalleriesClientDeletePollerResponse, error)`
+- Function `*SnapshotsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Snapshot, *SnapshotsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Snapshot, *SnapshotsClientBeginCreateOrUpdateOptions)`
+- Function `*SnapshotsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SnapshotsCreateOrUpdatePollerResponse, error)` to `(SnapshotsClientCreateOrUpdatePollerResponse, error)`
+- Function `*CapacityReservationsClient.ListByCapacityReservationGroup` parameter(s) have been changed from `(string, string, *CapacityReservationsListByCapacityReservationGroupOptions)` to `(string, string, *CapacityReservationsClientListByCapacityReservationGroupOptions)`
+- Function `*CapacityReservationsClient.ListByCapacityReservationGroup` return value(s) have been changed from `(*CapacityReservationsListByCapacityReservationGroupPager)` to `(*CapacityReservationsClientListByCapacityReservationGroupPager)`
+- Function `*VirtualMachinesClient.BeginReimage` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginReimageOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginReimageOptions)`
+- Function `*VirtualMachinesClient.BeginReimage` return value(s) have been changed from `(VirtualMachinesReimagePollerResponse, error)` to `(VirtualMachinesClientReimagePollerResponse, error)`
+- Function `*VirtualMachineExtensionImagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *VirtualMachineExtensionImagesGetOptions)` to `(context.Context, string, string, string, string, *VirtualMachineExtensionImagesClientGetOptions)`
+- Function `*VirtualMachineExtensionImagesClient.Get` return value(s) have been changed from `(VirtualMachineExtensionImagesGetResponse, error)` to `(VirtualMachineExtensionImagesClientGetResponse, error)`
+- Function `*CloudServiceRoleInstancesClient.BeginReimage` parameter(s) have been changed from `(context.Context, string, string, string, *CloudServiceRoleInstancesBeginReimageOptions)` to `(context.Context, string, string, string, *CloudServiceRoleInstancesClientBeginReimageOptions)`
+- Function `*CloudServiceRoleInstancesClient.BeginReimage` return value(s) have been changed from `(CloudServiceRoleInstancesReimagePollerResponse, error)` to `(CloudServiceRoleInstancesClientReimagePollerResponse, error)`
+- Function `*ImagesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ImagesBeginDeleteOptions)` to `(context.Context, string, string, *ImagesClientBeginDeleteOptions)`
+- Function `*ImagesClient.BeginDelete` return value(s) have been changed from `(ImagesDeletePollerResponse, error)` to `(ImagesClientDeletePollerResponse, error)`
+- Function `*GalleryImagesClient.ListByGallery` parameter(s) have been changed from `(string, string, *GalleryImagesListByGalleryOptions)` to `(string, string, *GalleryImagesClientListByGalleryOptions)`
+- Function `*GalleryImagesClient.ListByGallery` return value(s) have been changed from `(*GalleryImagesListByGalleryPager)` to `(*GalleryImagesClientListByGalleryPager)`
+- Function `*VirtualMachineScaleSetsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, VirtualMachineScaleSet, *VirtualMachineScaleSetsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, VirtualMachineScaleSet, *VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineScaleSetsCreateOrUpdatePollerResponse, error)` to `(VirtualMachineScaleSetsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DiskEncryptionSetsClient.List` parameter(s) have been changed from `(*DiskEncryptionSetsListOptions)` to `(*DiskEncryptionSetsClientListOptions)`
+- Function `*DiskEncryptionSetsClient.List` return value(s) have been changed from `(*DiskEncryptionSetsListPager)` to `(*DiskEncryptionSetsClientListPager)`
+- Function `*VirtualMachineScaleSetsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, VirtualMachineScaleSetUpdate, *VirtualMachineScaleSetsBeginUpdateOptions)` to `(context.Context, string, string, VirtualMachineScaleSetUpdate, *VirtualMachineScaleSetsClientBeginUpdateOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetsUpdatePollerResponse, error)` to `(VirtualMachineScaleSetsClientUpdatePollerResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginReimageAll` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginReimageAllOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginReimageAllOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginReimageAll` return value(s) have been changed from `(VirtualMachineScaleSetsReimageAllPollerResponse, error)` to `(VirtualMachineScaleSetsClientReimageAllPollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginStartOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginStartOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginStart` return value(s) have been changed from `(VirtualMachineScaleSetVMsStartPollerResponse, error)` to `(VirtualMachineScaleSetVMsClientStartPollerResponse, error)`
+- Function `*CloudServicesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginDeleteOptions)` to `(context.Context, string, string, *CloudServicesClientBeginDeleteOptions)`
+- Function `*CloudServicesClient.BeginDelete` return value(s) have been changed from `(CloudServicesDeletePollerResponse, error)` to `(CloudServicesClientDeletePollerResponse, error)`
+- Function `*CommunityGalleryImagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CommunityGalleryImagesGetOptions)` to `(context.Context, string, string, string, *CommunityGalleryImagesClientGetOptions)`
+- Function `*CommunityGalleryImagesClient.Get` return value(s) have been changed from `(CommunityGalleryImagesGetResponse, error)` to `(CommunityGalleryImagesClientGetResponse, error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *VirtualMachineScaleSetVMExtensionsGetOptions)` to `(context.Context, string, string, string, string, *VirtualMachineScaleSetVMExtensionsClientGetOptions)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.Get` return value(s) have been changed from `(VirtualMachineScaleSetVMExtensionsGetResponse, error)` to `(VirtualMachineScaleSetVMExtensionsClientGetResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.SimulateEviction` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsSimulateEvictionOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientSimulateEvictionOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.SimulateEviction` return value(s) have been changed from `(VirtualMachineScaleSetVMsSimulateEvictionResponse, error)` to `(VirtualMachineScaleSetVMsClientSimulateEvictionResponse, error)`
+- Function `*ProximityPlacementGroupsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ProximityPlacementGroup, *ProximityPlacementGroupsCreateOrUpdateOptions)` to `(context.Context, string, string, ProximityPlacementGroup, *ProximityPlacementGroupsClientCreateOrUpdateOptions)`
+- Function `*ProximityPlacementGroupsClient.CreateOrUpdate` return value(s) have been changed from `(ProximityPlacementGroupsCreateOrUpdateResponse, error)` to `(ProximityPlacementGroupsClientCreateOrUpdateResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.GetInstanceView` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsGetInstanceViewOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientGetInstanceViewOptions)`
+- Function `*VirtualMachineScaleSetsClient.GetInstanceView` return value(s) have been changed from `(VirtualMachineScaleSetsGetInstanceViewResponse, error)` to `(VirtualMachineScaleSetsClientGetInstanceViewResponse, error)`
+- Function `*ProximityPlacementGroupsClient.ListBySubscription` parameter(s) have been changed from `(*ProximityPlacementGroupsListBySubscriptionOptions)` to `(*ProximityPlacementGroupsClientListBySubscriptionOptions)`
+- Function `*ProximityPlacementGroupsClient.ListBySubscription` return value(s) have been changed from `(*ProximityPlacementGroupsListBySubscriptionPager)` to `(*ProximityPlacementGroupsClientListBySubscriptionPager)`
+- Function `*DiskEncryptionSetsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DiskEncryptionSet, *DiskEncryptionSetsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, DiskEncryptionSet, *DiskEncryptionSetsClientBeginCreateOrUpdateOptions)`
+- Function `*DiskEncryptionSetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DiskEncryptionSetsCreateOrUpdatePollerResponse, error)` to `(DiskEncryptionSetsClientCreateOrUpdatePollerResponse, error)`
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` parameter(s) have been changed from `(context.Context, string, string, int32, *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions)` to `(context.Context, string, string, int32, *CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions)`
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` return value(s) have been changed from `(CloudServicesUpdateDomainWalkUpdateDomainPollerResponse, error)` to `(CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginDeleteOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginDeleteOptions)`
+- Function `*VirtualMachinesClient.BeginDelete` return value(s) have been changed from `(VirtualMachinesDeletePollerResponse, error)` to `(VirtualMachinesClientDeletePollerResponse, error)`
+- Function `*DiskAccessesClient.BeginUpdateAPrivateEndpointConnection` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions)`
+- Function `*DiskAccessesClient.BeginUpdateAPrivateEndpointConnection` return value(s) have been changed from `(DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse, error)` to `(DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse, error)`
+- Function `*CloudServiceRolesClient.List` parameter(s) have been changed from `(string, string, *CloudServiceRolesListOptions)` to `(string, string, *CloudServiceRolesClientListOptions)`
+- Function `*CloudServiceRolesClient.List` return value(s) have been changed from `(*CloudServiceRolesListPager)` to `(*CloudServiceRolesClientListPager)`
+- Function `*CloudServicesClient.BeginDeleteInstances` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginDeleteInstancesOptions)` to `(context.Context, string, string, *CloudServicesClientBeginDeleteInstancesOptions)`
+- Function `*CloudServicesClient.BeginDeleteInstances` return value(s) have been changed from `(CloudServicesDeleteInstancesPollerResponse, error)` to `(CloudServicesClientDeleteInstancesPollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, VirtualMachineScaleSetVMExtensionUpdate, *VirtualMachineScaleSetVMExtensionsBeginUpdateOptions)` to `(context.Context, string, string, string, string, VirtualMachineScaleSetVMExtensionUpdate, *VirtualMachineScaleSetVMExtensionsClientBeginUpdateOptions)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMExtensionsUpdatePollerResponse, error)` to `(VirtualMachineScaleSetVMExtensionsClientUpdatePollerResponse, error)`
+- Function `*CommunityGalleryImageVersionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *CommunityGalleryImageVersionsGetOptions)` to `(context.Context, string, string, string, string, *CommunityGalleryImageVersionsClientGetOptions)`
+- Function `*CommunityGalleryImageVersionsClient.Get` return value(s) have been changed from `(CommunityGalleryImageVersionsGetResponse, error)` to `(CommunityGalleryImageVersionsClientGetResponse, error)`
+- Function `*GalleryApplicationVersionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, GalleryApplicationVersion, *GalleryApplicationVersionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, GalleryApplicationVersion, *GalleryApplicationVersionsClientBeginCreateOrUpdateOptions)`
+- Function `*GalleryApplicationVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(GalleryApplicationVersionsCreateOrUpdatePollerResponse, error)` to `(GalleryApplicationVersionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DisksClient.BeginRevokeAccess` parameter(s) have been changed from `(context.Context, string, string, *DisksBeginRevokeAccessOptions)` to `(context.Context, string, string, *DisksClientBeginRevokeAccessOptions)`
+- Function `*DisksClient.BeginRevokeAccess` return value(s) have been changed from `(DisksRevokeAccessPollerResponse, error)` to `(DisksClientRevokeAccessPollerResponse, error)`
+- Function `*CloudServiceOperatingSystemsClient.GetOSFamily` parameter(s) have been changed from `(context.Context, string, string, *CloudServiceOperatingSystemsGetOSFamilyOptions)` to `(context.Context, string, string, *CloudServiceOperatingSystemsClientGetOSFamilyOptions)`
+- Function `*CloudServiceOperatingSystemsClient.GetOSFamily` return value(s) have been changed from `(CloudServiceOperatingSystemsGetOSFamilyResponse, error)` to `(CloudServiceOperatingSystemsClientGetOSFamilyResponse, error)`
+- Function `*SSHPublicKeysClient.Create` parameter(s) have been changed from `(context.Context, string, string, SSHPublicKeyResource, *SSHPublicKeysCreateOptions)` to `(context.Context, string, string, SSHPublicKeyResource, *SSHPublicKeysClientCreateOptions)`
+- Function `*SSHPublicKeysClient.Create` return value(s) have been changed from `(SSHPublicKeysCreateResponse, error)` to `(SSHPublicKeysClientCreateResponse, error)`
+- Function `*DedicatedHostGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DedicatedHostGroupsGetOptions)` to `(context.Context, string, string, *DedicatedHostGroupsClientGetOptions)`
+- Function `*DedicatedHostGroupsClient.Get` return value(s) have been changed from `(DedicatedHostGroupsGetResponse, error)` to `(DedicatedHostGroupsClientGetResponse, error)`
+- Function `*GalleryApplicationVersionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, GalleryApplicationVersionUpdate, *GalleryApplicationVersionsBeginUpdateOptions)` to `(context.Context, string, string, string, string, GalleryApplicationVersionUpdate, *GalleryApplicationVersionsClientBeginUpdateOptions)`
+- Function `*GalleryApplicationVersionsClient.BeginUpdate` return value(s) have been changed from `(GalleryApplicationVersionsUpdatePollerResponse, error)` to `(GalleryApplicationVersionsClientUpdatePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginPerformMaintenance` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginPerformMaintenanceOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginPerformMaintenance` return value(s) have been changed from `(VirtualMachineScaleSetVMsPerformMaintenancePollerResponse, error)` to `(VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse, error)`
+- Function `*DedicatedHostsClient.ListByHostGroup` parameter(s) have been changed from `(string, string, *DedicatedHostsListByHostGroupOptions)` to `(string, string, *DedicatedHostsClientListByHostGroupOptions)`
+- Function `*DedicatedHostsClient.ListByHostGroup` return value(s) have been changed from `(*DedicatedHostsListByHostGroupPager)` to `(*DedicatedHostsClientListByHostGroupPager)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.GetLatest` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetRollingUpgradesGetLatestOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetRollingUpgradesClientGetLatestOptions)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.GetLatest` return value(s) have been changed from `(VirtualMachineScaleSetRollingUpgradesGetLatestResponse, error)` to `(VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse, error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetRollingUpgradesBeginStartOSUpgradeOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetRollingUpgradesClientBeginStartOSUpgradeOptions)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade` return value(s) have been changed from `(VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse, error)` to `(VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.RetrieveBootDiagnosticsData` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.RetrieveBootDiagnosticsData` return value(s) have been changed from `(VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse, error)` to `(VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse, error)`
+- Function `*UsageClient.List` parameter(s) have been changed from `(string, *UsageListOptions)` to `(string, *UsageClientListOptions)`
+- Function `*UsageClient.List` return value(s) have been changed from `(*UsageListPager)` to `(*UsageClientListPager)`
+- Function `*VirtualMachineImagesClient.ListPublishers` parameter(s) have been changed from `(context.Context, string, *VirtualMachineImagesListPublishersOptions)` to `(context.Context, string, *VirtualMachineImagesClientListPublishersOptions)`
+- Function `*VirtualMachineImagesClient.ListPublishers` return value(s) have been changed from `(VirtualMachineImagesListPublishersResponse, error)` to `(VirtualMachineImagesClientListPublishersResponse, error)`
+- Function `*DisksClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, DiskUpdate, *DisksBeginUpdateOptions)` to `(context.Context, string, string, DiskUpdate, *DisksClientBeginUpdateOptions)`
+- Function `*DisksClient.BeginUpdate` return value(s) have been changed from `(DisksUpdatePollerResponse, error)` to `(DisksClientUpdatePollerResponse, error)`
+- Function `*CloudServiceRoleInstancesClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, string, string, *CloudServiceRoleInstancesBeginRestartOptions)` to `(context.Context, string, string, string, *CloudServiceRoleInstancesClientBeginRestartOptions)`
+- Function `*CloudServiceRoleInstancesClient.BeginRestart` return value(s) have been changed from `(CloudServiceRoleInstancesRestartPollerResponse, error)` to `(CloudServiceRoleInstancesClientRestartPollerResponse, error)`
+- Function `*DiskEncryptionSetsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DiskEncryptionSetsListByResourceGroupOptions)` to `(string, *DiskEncryptionSetsClientListByResourceGroupOptions)`
+- Function `*DiskEncryptionSetsClient.ListByResourceGroup` return value(s) have been changed from `(*DiskEncryptionSetsListByResourceGroupPager)` to `(*DiskEncryptionSetsClientListByResourceGroupPager)`
+- Function `*VirtualMachineScaleSetsClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginRestartOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginRestartOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginRestart` return value(s) have been changed from `(VirtualMachineScaleSetsRestartPollerResponse, error)` to `(VirtualMachineScaleSetsClientRestartPollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, VirtualMachine, *VirtualMachinesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, VirtualMachine, *VirtualMachinesClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachinesCreateOrUpdatePollerResponse, error)` to `(VirtualMachinesClientCreateOrUpdatePollerResponse, error)`
+- Function `*CapacityReservationGroupsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *CapacityReservationGroupsListByResourceGroupOptions)` to `(string, *CapacityReservationGroupsClientListByResourceGroupOptions)`
+- Function `*CapacityReservationGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*CapacityReservationGroupsListByResourceGroupPager)` to `(*CapacityReservationGroupsClientListByResourceGroupPager)`
+- Function `*GalleryImagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *GalleryImagesGetOptions)` to `(context.Context, string, string, string, *GalleryImagesClientGetOptions)`
+- Function `*GalleryImagesClient.Get` return value(s) have been changed from `(GalleryImagesGetResponse, error)` to `(GalleryImagesClientGetResponse, error)`
+- Function `*CloudServicesClient.List` parameter(s) have been changed from `(string, *CloudServicesListOptions)` to `(string, *CloudServicesClientListOptions)`
+- Function `*CloudServicesClient.List` return value(s) have been changed from `(*CloudServicesListPager)` to `(*CloudServicesClientListPager)`
+- Function `*CloudServiceRoleInstancesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CloudServiceRoleInstancesGetOptions)` to `(context.Context, string, string, string, *CloudServiceRoleInstancesClientGetOptions)`
+- Function `*CloudServiceRoleInstancesClient.Get` return value(s) have been changed from `(CloudServiceRoleInstancesGetResponse, error)` to `(CloudServiceRoleInstancesClientGetResponse, error)`
+- Function `*DiskAccessesClient.GetPrivateLinkResources` parameter(s) have been changed from `(context.Context, string, string, *DiskAccessesGetPrivateLinkResourcesOptions)` to `(context.Context, string, string, *DiskAccessesClientGetPrivateLinkResourcesOptions)`
+- Function `*DiskAccessesClient.GetPrivateLinkResources` return value(s) have been changed from `(DiskAccessesGetPrivateLinkResourcesResponse, error)` to `(DiskAccessesClientGetPrivateLinkResourcesResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginRedeploy` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginRedeployOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginRedeployOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachineScaleSetsRedeployPollerResponse, error)` to `(VirtualMachineScaleSetsClientRedeployPollerResponse, error)`
+- Function `*DedicatedHostGroupsClient.ListBySubscription` parameter(s) have been changed from `(*DedicatedHostGroupsListBySubscriptionOptions)` to `(*DedicatedHostGroupsClientListBySubscriptionOptions)`
+- Function `*DedicatedHostGroupsClient.ListBySubscription` return value(s) have been changed from `(*DedicatedHostGroupsListBySubscriptionPager)` to `(*DedicatedHostGroupsClientListBySubscriptionPager)`
+- Function `*ImagesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ImagesListByResourceGroupOptions)` to `(string, *ImagesClientListByResourceGroupOptions)`
+- Function `*ImagesClient.ListByResourceGroup` return value(s) have been changed from `(*ImagesListByResourceGroupPager)` to `(*ImagesClientListByResourceGroupPager)`
+- Function `*DiskRestorePointClient.BeginGrantAccess` parameter(s) have been changed from `(context.Context, string, string, string, string, GrantAccessData, *DiskRestorePointBeginGrantAccessOptions)` to `(context.Context, string, string, string, string, GrantAccessData, *DiskRestorePointClientBeginGrantAccessOptions)`
+- Function `*DiskRestorePointClient.BeginGrantAccess` return value(s) have been changed from `(DiskRestorePointGrantAccessPollerResponse, error)` to `(DiskRestorePointClientGrantAccessPollerResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginDeallocate` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginDeallocateOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginDeallocateOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginDeallocate` return value(s) have been changed from `(VirtualMachineScaleSetsDeallocatePollerResponse, error)` to `(VirtualMachineScaleSetsClientDeallocatePollerResponse, error)`
+- Function `*ImagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ImagesGetOptions)` to `(context.Context, string, string, *ImagesClientGetOptions)`
+- Function `*ImagesClient.Get` return value(s) have been changed from `(ImagesGetResponse, error)` to `(ImagesClientGetResponse, error)`
+- Function `*DisksClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Disk, *DisksBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Disk, *DisksClientBeginCreateOrUpdateOptions)`
+- Function `*DisksClient.BeginCreateOrUpdate` return value(s) have been changed from `(DisksCreateOrUpdatePollerResponse, error)` to `(DisksClientCreateOrUpdatePollerResponse, error)`
+- Function `*CloudServiceRoleInstancesClient.BeginRebuild` parameter(s) have been changed from `(context.Context, string, string, string, *CloudServiceRoleInstancesBeginRebuildOptions)` to `(context.Context, string, string, string, *CloudServiceRoleInstancesClientBeginRebuildOptions)`
+- Function `*CloudServiceRoleInstancesClient.BeginRebuild` return value(s) have been changed from `(CloudServiceRoleInstancesRebuildPollerResponse, error)` to `(CloudServiceRoleInstancesClientRebuildPollerResponse, error)`
+- Function `*CloudServicesClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginStartOptions)` to `(context.Context, string, string, *CloudServicesClientBeginStartOptions)`
+- Function `*CloudServicesClient.BeginStart` return value(s) have been changed from `(CloudServicesStartPollerResponse, error)` to `(CloudServicesClientStartPollerResponse, error)`
+- Function `*DedicatedHostGroupsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DedicatedHostGroupsDeleteOptions)` to `(context.Context, string, string, *DedicatedHostGroupsClientDeleteOptions)`
+- Function `*DedicatedHostGroupsClient.Delete` return value(s) have been changed from `(DedicatedHostGroupsDeleteResponse, error)` to `(DedicatedHostGroupsClientDeleteResponse, error)`
+- Function `*DiskAccessesClient.ListPrivateEndpointConnections` parameter(s) have been changed from `(string, string, *DiskAccessesListPrivateEndpointConnectionsOptions)` to `(string, string, *DiskAccessesClientListPrivateEndpointConnectionsOptions)`
+- Function `*DiskAccessesClient.ListPrivateEndpointConnections` return value(s) have been changed from `(*DiskAccessesListPrivateEndpointConnectionsPager)` to `(*DiskAccessesClientListPrivateEndpointConnectionsPager)`
+- Function `*GalleryImageVersionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *GalleryImageVersionsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *GalleryImageVersionsClientBeginDeleteOptions)`
+- Function `*GalleryImageVersionsClient.BeginDelete` return value(s) have been changed from `(GalleryImageVersionsDeletePollerResponse, error)` to `(GalleryImageVersionsClientDeletePollerResponse, error)`
+- Function `*CloudServicesClient.BeginPowerOff` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginPowerOffOptions)` to `(context.Context, string, string, *CloudServicesClientBeginPowerOffOptions)`
+- Function `*CloudServicesClient.BeginPowerOff` return value(s) have been changed from `(CloudServicesPowerOffPollerResponse, error)` to `(CloudServicesClientPowerOffPollerResponse, error)`
+- Function `*GalleryApplicationVersionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *GalleryApplicationVersionsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *GalleryApplicationVersionsClientBeginDeleteOptions)`
+- Function `*GalleryApplicationVersionsClient.BeginDelete` return value(s) have been changed from `(GalleryApplicationVersionsDeletePollerResponse, error)` to `(GalleryApplicationVersionsClientDeletePollerResponse, error)`
+- Function `*CapacityReservationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CapacityReservation, *CapacityReservationsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, CapacityReservation, *CapacityReservationsClientBeginCreateOrUpdateOptions)`
+- Function `*CapacityReservationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(CapacityReservationsCreateOrUpdatePollerResponse, error)` to `(CapacityReservationsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DisksClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *DisksBeginDeleteOptions)` to `(context.Context, string, string, *DisksClientBeginDeleteOptions)`
+- Function `*DisksClient.BeginDelete` return value(s) have been changed from `(DisksDeletePollerResponse, error)` to `(DisksClientDeletePollerResponse, error)`
+- Function `*AvailabilitySetsClient.Update` parameter(s) have been changed from `(context.Context, string, string, AvailabilitySetUpdate, *AvailabilitySetsUpdateOptions)` to `(context.Context, string, string, AvailabilitySetUpdate, *AvailabilitySetsClientUpdateOptions)`
+- Function `*AvailabilitySetsClient.Update` return value(s) have been changed from `(AvailabilitySetsUpdateResponse, error)` to `(AvailabilitySetsClientUpdateResponse, error)`
+- Function `*SharedGalleryImageVersionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *SharedGalleryImageVersionsGetOptions)` to `(context.Context, string, string, string, string, *SharedGalleryImageVersionsClientGetOptions)`
+- Function `*SharedGalleryImageVersionsClient.Get` return value(s) have been changed from `(SharedGalleryImageVersionsGetResponse, error)` to `(SharedGalleryImageVersionsClientGetResponse, error)`
+- Function `*VirtualMachineSizesClient.List` parameter(s) have been changed from `(context.Context, string, *VirtualMachineSizesListOptions)` to `(context.Context, string, *VirtualMachineSizesClientListOptions)`
+- Function `*VirtualMachineSizesClient.List` return value(s) have been changed from `(VirtualMachineSizesListResponse, error)` to `(VirtualMachineSizesClientListResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachineScaleSetsBeginDeleteOptions)` to `(context.Context, string, string, *VirtualMachineScaleSetsClientBeginDeleteOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetsDeletePollerResponse, error)` to `(VirtualMachineScaleSetsClientDeletePollerResponse, error)`
+- Function `*VirtualMachineRunCommandsClient.List` parameter(s) have been changed from `(string, *VirtualMachineRunCommandsListOptions)` to `(string, *VirtualMachineRunCommandsClientListOptions)`
+- Function `*VirtualMachineRunCommandsClient.List` return value(s) have been changed from `(*VirtualMachineRunCommandsListPager)` to `(*VirtualMachineRunCommandsClientListPager)`
+- Function `*VirtualMachineRunCommandsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualMachineRunCommand, *VirtualMachineRunCommandsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, VirtualMachineRunCommand, *VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualMachineRunCommandsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualMachineRunCommandsCreateOrUpdatePollerResponse, error)` to `(VirtualMachineRunCommandsClientCreateOrUpdatePollerResponse, error)`
+- Function `*SSHPublicKeysClient.Update` parameter(s) have been changed from `(context.Context, string, string, SSHPublicKeyUpdateResource, *SSHPublicKeysUpdateOptions)` to `(context.Context, string, string, SSHPublicKeyUpdateResource, *SSHPublicKeysClientUpdateOptions)`
+- Function `*SSHPublicKeysClient.Update` return value(s) have been changed from `(SSHPublicKeysUpdateResponse, error)` to `(SSHPublicKeysClientUpdateResponse, error)`
+- Function `*VirtualMachineScaleSetsClient.BeginSetOrchestrationServiceState` parameter(s) have been changed from `(context.Context, string, string, OrchestrationServiceStateInput, *VirtualMachineScaleSetsBeginSetOrchestrationServiceStateOptions)` to `(context.Context, string, string, OrchestrationServiceStateInput, *VirtualMachineScaleSetsClientBeginSetOrchestrationServiceStateOptions)`
+- Function `*VirtualMachineScaleSetsClient.BeginSetOrchestrationServiceState` return value(s) have been changed from `(VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse, error)` to `(VirtualMachineScaleSetsClientSetOrchestrationServiceStatePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginPowerOff` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginPowerOffOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginPowerOffOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginPowerOff` return value(s) have been changed from `(VirtualMachineScaleSetVMsPowerOffPollerResponse, error)` to `(VirtualMachineScaleSetVMsClientPowerOffPollerResponse, error)`
+- Function `*AvailabilitySetsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, AvailabilitySet, *AvailabilitySetsCreateOrUpdateOptions)` to `(context.Context, string, string, AvailabilitySet, *AvailabilitySetsClientCreateOrUpdateOptions)`
+- Function `*AvailabilitySetsClient.CreateOrUpdate` return value(s) have been changed from `(AvailabilitySetsCreateOrUpdateResponse, error)` to `(AvailabilitySetsClientCreateOrUpdateResponse, error)`
+- Function `*CloudServiceRoleInstancesClient.GetRemoteDesktopFile` parameter(s) have been changed from `(context.Context, string, string, string, *CloudServiceRoleInstancesGetRemoteDesktopFileOptions)` to `(context.Context, string, string, string, *CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions)`
+- Function `*CloudServiceRoleInstancesClient.GetRemoteDesktopFile` return value(s) have been changed from `(CloudServiceRoleInstancesGetRemoteDesktopFileResponse, error)` to `(CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse, error)`
+- Function `*CloudServicesUpdateDomainClient.GetUpdateDomain` parameter(s) have been changed from `(context.Context, string, string, int32, *CloudServicesUpdateDomainGetUpdateDomainOptions)` to `(context.Context, string, string, int32, *CloudServicesUpdateDomainClientGetUpdateDomainOptions)`
+- Function `*CloudServicesUpdateDomainClient.GetUpdateDomain` return value(s) have been changed from `(CloudServicesUpdateDomainGetUpdateDomainResponse, error)` to `(CloudServicesUpdateDomainClientGetUpdateDomainResponse, error)`
+- Function `*RestorePointCollectionsClient.List` parameter(s) have been changed from `(string, *RestorePointCollectionsListOptions)` to `(string, *RestorePointCollectionsClientListOptions)`
+- Function `*RestorePointCollectionsClient.List` return value(s) have been changed from `(*RestorePointCollectionsListPager)` to `(*RestorePointCollectionsClientListPager)`
+- Function `*CloudServicesClient.BeginRebuild` parameter(s) have been changed from `(context.Context, string, string, *CloudServicesBeginRebuildOptions)` to `(context.Context, string, string, *CloudServicesClientBeginRebuildOptions)`
+- Function `*CloudServicesClient.BeginRebuild` return value(s) have been changed from `(CloudServicesRebuildPollerResponse, error)` to `(CloudServicesClientRebuildPollerResponse, error)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualMachineScaleSetExtensionUpdate, *VirtualMachineScaleSetExtensionsBeginUpdateOptions)` to `(context.Context, string, string, string, VirtualMachineScaleSetExtensionUpdate, *VirtualMachineScaleSetExtensionsClientBeginUpdateOptions)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetExtensionsUpdatePollerResponse, error)` to `(VirtualMachineScaleSetExtensionsClientUpdatePollerResponse, error)`
+- Function `*VirtualMachinesClient.RetrieveBootDiagnosticsData` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesRetrieveBootDiagnosticsDataOptions)` to `(context.Context, string, string, *VirtualMachinesClientRetrieveBootDiagnosticsDataOptions)`
+- Function `*VirtualMachinesClient.RetrieveBootDiagnosticsData` return value(s) have been changed from `(VirtualMachinesRetrieveBootDiagnosticsDataResponse, error)` to `(VirtualMachinesClientRetrieveBootDiagnosticsDataResponse, error)`
+- Function `*DiskAccessesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *DiskAccessesBeginDeleteOptions)` to `(context.Context, string, string, *DiskAccessesClientBeginDeleteOptions)`
+- Function `*DiskAccessesClient.BeginDelete` return value(s) have been changed from `(DiskAccessesDeletePollerResponse, error)` to `(DiskAccessesClientDeletePollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginConvertToManagedDisks` parameter(s) have been changed from `(context.Context, string, string, *VirtualMachinesBeginConvertToManagedDisksOptions)` to `(context.Context, string, string, *VirtualMachinesClientBeginConvertToManagedDisksOptions)`
+- Function `*VirtualMachinesClient.BeginConvertToManagedDisks` return value(s) have been changed from `(VirtualMachinesConvertToManagedDisksPollerResponse, error)` to `(VirtualMachinesClientConvertToManagedDisksPollerResponse, error)`
+- Function `*SSHPublicKeysClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SSHPublicKeysGetOptions)` to `(context.Context, string, string, *SSHPublicKeysClientGetOptions)`
+- Function `*SSHPublicKeysClient.Get` return value(s) have been changed from `(SSHPublicKeysGetResponse, error)` to `(SSHPublicKeysClientGetResponse, error)`
+- Function `*DisksClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DisksGetOptions)` to `(context.Context, string, string, *DisksClientGetOptions)`
+- Function `*DisksClient.Get` return value(s) have been changed from `(DisksGetResponse, error)` to `(DisksClientGetResponse, error)`
+- Function `*VirtualMachineImagesClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, *VirtualMachineImagesListOptions)` to `(context.Context, string, string, string, string, *VirtualMachineImagesClientListOptions)`
+- Function `*VirtualMachineImagesClient.List` return value(s) have been changed from `(VirtualMachineImagesListResponse, error)` to `(VirtualMachineImagesClientListResponse, error)`
+- Function `*SharedGalleryImagesClient.List` parameter(s) have been changed from `(string, string, *SharedGalleryImagesListOptions)` to `(string, string, *SharedGalleryImagesClientListOptions)`
+- Function `*SharedGalleryImagesClient.List` return value(s) have been changed from `(*SharedGalleryImagesListPager)` to `(*SharedGalleryImagesClientListPager)`
+- Function `*VirtualMachineRunCommandsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualMachineRunCommandUpdate, *VirtualMachineRunCommandsBeginUpdateOptions)` to `(context.Context, string, string, string, VirtualMachineRunCommandUpdate, *VirtualMachineRunCommandsClientBeginUpdateOptions)`
+- Function `*VirtualMachineRunCommandsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineRunCommandsUpdatePollerResponse, error)` to `(VirtualMachineRunCommandsClientUpdatePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginDeallocate` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetVMsBeginDeallocateOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginDeallocateOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginDeallocate` return value(s) have been changed from `(VirtualMachineScaleSetVMsDeallocatePollerResponse, error)` to `(VirtualMachineScaleSetVMsClientDeallocatePollerResponse, error)`
+- Function `*DiskAccessesClient.List` parameter(s) have been changed from `(*DiskAccessesListOptions)` to `(*DiskAccessesClientListOptions)`
+- Function `*DiskAccessesClient.List` return value(s) have been changed from `(*DiskAccessesListPager)` to `(*DiskAccessesClientListPager)`
+- Function `*CloudServiceRoleInstancesClient.List` parameter(s) have been changed from `(string, string, *CloudServiceRoleInstancesListOptions)` to `(string, string, *CloudServiceRoleInstancesClientListOptions)`
+- Function `*CloudServiceRoleInstancesClient.List` return value(s) have been changed from `(*CloudServiceRoleInstancesListPager)` to `(*CloudServiceRoleInstancesClientListPager)`
+- Function `*RestorePointCollectionsClient.Update` parameter(s) have been changed from `(context.Context, string, string, RestorePointCollectionUpdate, *RestorePointCollectionsUpdateOptions)` to `(context.Context, string, string, RestorePointCollectionUpdate, *RestorePointCollectionsClientUpdateOptions)`
+- Function `*RestorePointCollectionsClient.Update` return value(s) have been changed from `(RestorePointCollectionsUpdateResponse, error)` to `(RestorePointCollectionsClientUpdateResponse, error)`
+- Function `*GalleriesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, GalleryUpdate, *GalleriesBeginUpdateOptions)` to `(context.Context, string, string, GalleryUpdate, *GalleriesClientBeginUpdateOptions)`
+- Function `*GalleriesClient.BeginUpdate` return value(s) have been changed from `(GalleriesUpdatePollerResponse, error)` to `(GalleriesClientUpdatePollerResponse, error)`
+- Function `*GalleryImageVersionsClient.ListByGalleryImage` parameter(s) have been changed from `(string, string, string, *GalleryImageVersionsListByGalleryImageOptions)` to `(string, string, string, *GalleryImageVersionsClientListByGalleryImageOptions)`
+- Function `*GalleryImageVersionsClient.ListByGalleryImage` return value(s) have been changed from `(*GalleryImageVersionsListByGalleryImagePager)` to `(*GalleryImageVersionsClientListByGalleryImagePager)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachineScaleSetExtensionsBeginDeleteOptions)` to `(context.Context, string, string, string, *VirtualMachineScaleSetExtensionsClientBeginDeleteOptions)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginDelete` return value(s) have been changed from `(VirtualMachineScaleSetExtensionsDeletePollerResponse, error)` to `(VirtualMachineScaleSetExtensionsClientDeletePollerResponse, error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualMachineScaleSetVM, *VirtualMachineScaleSetVMsBeginUpdateOptions)` to `(context.Context, string, string, string, VirtualMachineScaleSetVM, *VirtualMachineScaleSetVMsClientBeginUpdateOptions)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginUpdate` return value(s) have been changed from `(VirtualMachineScaleSetVMsUpdatePollerResponse, error)` to `(VirtualMachineScaleSetVMsClientUpdatePollerResponse, error)`
+- Function `*VirtualMachineImagesEdgeZoneClient.ListSKUs` parameter(s) have been changed from `(context.Context, string, string, string, string, *VirtualMachineImagesEdgeZoneListSKUsOptions)` to `(context.Context, string, string, string, string, *VirtualMachineImagesEdgeZoneClientListSKUsOptions)`
+- Function `*VirtualMachineImagesEdgeZoneClient.ListSKUs` return value(s) have been changed from `(VirtualMachineImagesEdgeZoneListSKUsResponse, error)` to `(VirtualMachineImagesEdgeZoneClientListSKUsResponse, error)`
+- Function `VirtualMachinesPerformMaintenancePollerResponse.PollUntilDone` has been removed
+- Function `*CapacityReservationsUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsReimageAllPoller.Poll` has been removed
+- Function `*DedicatedHostsUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesListPager.Err` has been removed
+- Function `VirtualMachineScaleSetExtensionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesDeletePollerResponse.Resume` has been removed
+- Function `*CloudServiceRoleInstancesReimagePoller.ResumeToken` has been removed
+- Function `*SnapshotsUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetsRestartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesConvertToManagedDisksPoller.Poll` has been removed
+- Function `*GalleryImageVersionsListByGalleryImagePager.PageResponse` has been removed
+- Function `VirtualMachineScaleSetVMExtensionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RestorePointCollectionsListPager.PageResponse` has been removed
+- Function `*DedicatedHostsDeletePollerResponse.Resume` has been removed
+- Function `*ImagesListPager.Err` has been removed
+- Function `*VirtualMachinesReimagePoller.Poll` has been removed
+- Function `*DedicatedHostsCreateOrUpdatePoller.Done` has been removed
+- Function `VirtualMachinesReimagePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesReimagePoller.FinalResponse` has been removed
+- Function `*CloudServicesRebuildPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsRestartPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsStartPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesListAllPager.PageResponse` has been removed
+- Function `*VirtualMachineExtensionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineExtensionsUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller.Poll` has been removed
+- Function `VirtualMachinesAssessPatchesPollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesUpdateAPrivateEndpointConnectionPoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsDeletePollerResponse.Resume` has been removed
+- Function `ImagesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AvailabilitySetsListPager.PageResponse` has been removed
+- Function `*GalleryApplicationVersionsUpdatePoller.ResumeToken` has been removed
+- Function `*AvailabilitySetsListBySubscriptionPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsListByLocationPager.NextPage` has been removed
+- Function `*CloudServicesRestartPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsListAllPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsDeletePoller.ResumeToken` has been removed
+- Function `*GalleryImageVersionsDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse.Resume` has been removed
+- Function `*GalleriesUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsUpdatePollerResponse.Resume` has been removed
+- Function `*CapacityReservationGroupsListBySubscriptionPager.PageResponse` has been removed
+- Function `VirtualMachineScaleSetsStartPollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsListPager.NextPage` has been removed
+- Function `VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse.PollUntilDone` has been removed
+- Function `GalleryApplicationVersionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesReimagePoller.Done` has been removed
+- Function `*CloudServicesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CloudServicesRebuildPoller.FinalResponse` has been removed
+- Function `*VirtualMachineExtensionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetExtensionsListPager.NextPage` has been removed
+- Function `*RestorePointsCreatePoller.ResumeToken` has been removed
+- Function `*GalleryImagesUpdatePoller.Done` has been removed
+- Function `*DisksGrantAccessPollerResponse.Resume` has been removed
+- Function `*CloudServicesUpdateDomainWalkUpdateDomainPoller.ResumeToken` has been removed
+- Function `*ImagesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsUpdatePoller.ResumeToken` has been removed
+- Function `*RestorePointCollectionsListAllPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsSetOrchestrationServiceStatePoller.ResumeToken` has been removed
+- Function `*DiskAccessesUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesStartPoller.FinalResponse` has been removed
+- Function `*ImagesUpdatePoller.FinalResponse` has been removed
+- Function `*GalleriesUpdatePoller.FinalResponse` has been removed
+- Function `*SharedGalleryImageVersionsListPager.NextPage` has been removed
+- Function `*SnapshotsListPager.PageResponse` has been removed
+- Function `*GalleryImagesUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineRunCommandsListByVirtualMachinePager.Err` has been removed
+- Function `*VirtualMachineScaleSetsCreateOrUpdatePoller.Poll` has been removed
+- Function `*CloudServicesDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*GalleryImageVersionsCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesRestartPoller.ResumeToken` has been removed
+- Function `*GalleryApplicationVersionsDeletePoller.FinalResponse` has been removed
+- Function `*RestorePointCollectionsListAllPager.PageResponse` has been removed
+- Function `*CloudServiceRoleInstancesRestartPoller.ResumeToken` has been removed
+- Function `*CloudServiceRoleInstancesRestartPollerResponse.Resume` has been removed
+- Function `VirtualMachineScaleSetVMsDeallocatePollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostsUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsListAllPager.PageResponse` has been removed
+- Function `*DiskAccessesListPrivateEndpointConnectionsPager.PageResponse` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ResourceSKUsListPager.PageResponse` has been removed
+- Function `*CloudServiceRoleInstancesRebuildPoller.ResumeToken` has been removed
+- Function `*GalleryImagesListByGalleryPager.Err` has been removed
+- Function `*DedicatedHostGroupsListByResourceGroupPager.Err` has been removed
+- Function `*SnapshotsListByResourceGroupPager.NextPage` has been removed
+- Function `CloudError.Error` has been removed
+- Function `VirtualMachineScaleSetUpdateNetworkConfiguration.MarshalJSON` has been removed
+- Function `*CloudServicesDeleteInstancesPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsUpdatePoller.Done` has been removed
+- Function `*ImagesDeletePoller.ResumeToken` has been removed
+- Function `*DiskAccessesCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesListAllPager.Err` has been removed
+- Function `VirtualMachinesStartPollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesUpdateAPrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*CloudServicesUpdateDomainWalkUpdateDomainPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsDeletePoller.FinalResponse` has been removed
+- Function `VirtualMachineScaleSetsPowerOffPollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetUpdateIPConfiguration.MarshalJSON` has been removed
+- Function `*VirtualMachineExtensionsUpdatePoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsDeletePoller.ResumeToken` has been removed
+- Function `VirtualMachinesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsPowerOffPollerResponse.Resume` has been removed
+- Function `*SnapshotsDeletePoller.Done` has been removed
+- Function `VirtualMachineScaleSetNetworkConfiguration.MarshalJSON` has been removed
+- Function `*CapacityReservationsUpdatePoller.ResumeToken` has been removed
+- Function `*DedicatedHostsUpdatePoller.Poll` has been removed
+- Function `*CapacityReservationsUpdatePoller.Poll` has been removed
+- Function `*DiskEncryptionSetsCreateOrUpdatePoller.Done` has been removed
+- Function `*DiskRestorePointListByRestorePointPager.Err` has been removed
+- Function `VirtualMachineScaleSetsDeleteInstancesPollerResponse.PollUntilDone` has been removed
+- Function `*GalleriesUpdatePoller.Poll` has been removed
+- Function `VirtualMachineRunCommandsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesDeallocatePoller.FinalResponse` has been removed
+- Function `*GalleriesUpdatePoller.Done` has been removed
+- Function `VirtualMachineScaleSetVMExtensionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `CloudServiceRoleInstancesRestartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineRunCommandsCreateOrUpdatePoller.Done` has been removed
+- Function `*CapacityReservationsDeletePoller.Poll` has been removed
+- Function `*GalleriesListPager.NextPage` has been removed
+- Function `*DiskEncryptionSetsDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineRunCommandsDeletePoller.Done` has been removed
+- Function `*VirtualMachinesPowerOffPoller.Poll` has been removed
+- Function `*GalleryImagesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePoller.Poll` has been removed
+- Function `*ImagesDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesUpdatePoller.Poll` has been removed
+- Function `*GalleryApplicationsDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsGetOSUpgradeHistoryPager.PageResponse` has been removed
+- Function `*SharedGalleryImagesListPager.PageResponse` has been removed
+- Function `*GalleryImagesUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetExtensionsUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsReimageAllPollerResponse.Resume` has been removed
+- Function `*CloudServiceRoleInstancesDeletePoller.Done` has been removed
+- Function `CloudServicesPowerOffPollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesReimagePoller.ResumeToken` has been removed
+- Function `*CloudServicesUpdateDomainListUpdateDomainsPager.NextPage` has been removed
+- Function `*DedicatedHostsUpdatePoller.FinalResponse` has been removed
+- Function `ManagedDiskParameters.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetVMsPowerOffPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesRedeployPollerResponse.Resume` has been removed
+- Function `*DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `VirtualMachinesInstallPatchesPollerResponse.PollUntilDone` has been removed
+- Function `*DiskEncryptionSetsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesCapturePollerResponse.Resume` has been removed
+- Function `*DiskAccessesListPrivateEndpointConnectionsPager.Err` has been removed
+- Function `*DiskAccessesDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsListSKUsPager.PageResponse` has been removed
+- Function `VirtualMachineScaleSetsPerformMaintenancePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesDeletePollerResponse.Resume` has been removed
+- Function `*CloudServicesListAllPager.NextPage` has been removed
+- Function `*VirtualMachinesUpdatePoller.FinalResponse` has been removed
+- Function `*DisksUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsPowerOffPoller.ResumeToken` has been removed
+- Function `*DedicatedHostsDeletePoller.Poll` has been removed
+- Function `CapacityReservationsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsUpdatePoller.ResumeToken` has been removed
+- Function `*CloudServiceOperatingSystemsListOSFamiliesPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsRedeployPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsDeletePoller.Done` has been removed
+- Function `*LogAnalyticsExportThrottledRequestsPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsRunCommandPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesRunCommandPollerResponse.Resume` has been removed
+- Function `*ImagesListByResourceGroupPager.Err` has been removed
+- Function `*DisksGrantAccessPoller.ResumeToken` has been removed
+- Function `*DisksCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineExtensionsDeletePoller.FinalResponse` has been removed
+- Function `*DiskEncryptionSetsListAssociatedResourcesPager.PageResponse` has been removed
+- Function `*VirtualMachinesAssessPatchesPoller.ResumeToken` has been removed
+- Function `*GalleryImageVersionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*DiskEncryptionSetsUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsUpdatePollerResponse.Resume` has been removed
+- Function `*DiskAccessesUpdatePoller.FinalResponse` has been removed
+- Function `*DiskAccessesDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsRestartPoller.Poll` has been removed
+- Function `*CloudServicesDeleteInstancesPoller.ResumeToken` has been removed
+- Function `CapacityReservationsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsGetOSUpgradeHistoryPager.NextPage` has been removed
+- Function `*CloudServicesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `LogAnalyticsExportThrottledRequestsPollerResponse.PollUntilDone` has been removed
+- Function `*GalleriesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DiskAccessesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsUpdateInstancesPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsPowerOffPoller.Poll` has been removed
+- Function `*DisksCreateOrUpdatePoller.Done` has been removed
+- Function `*DisksUpdatePoller.Poll` has been removed
+- Function `*RestorePointsDeletePoller.FinalResponse` has been removed
+- Function `*CloudServicesStartPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesReapplyPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsReimagePoller.ResumeToken` has been removed
+- Function `*CloudServicesUpdateDomainListUpdateDomainsPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetsUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesRedeployPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesRedeployPoller.Done` has been removed
+- Function `GalleryApplicationsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsUpdatePoller.Poll` has been removed
+- Function `DisksDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsDeletePoller.ResumeToken` has been removed
+- Function `*DisksListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachinesConvertToManagedDisksPoller.ResumeToken` has been removed
+- Function `*CloudServicesCreateOrUpdatePoller.Done` has been removed
+- Function `*DisksCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsPowerOffPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsPowerOffPoller.FinalResponse` has been removed
+- Function `GalleriesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsUpdatePoller.Done` has been removed
+- Function `*ImagesListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachinesStartPoller.ResumeToken` has been removed
+- Function `*VirtualMachineRunCommandsListByVirtualMachinePager.NextPage` has been removed
+- Function `*DisksDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsDeallocatePoller.Poll` has been removed
+- Function `*VirtualMachinesCapturePoller.FinalResponse` has been removed
+- Function `*CloudServiceRoleInstancesDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesListByLocationPager.Err` has been removed
+- Function `*CloudServiceOperatingSystemsListOSVersionsPager.PageResponse` has been removed
+- Function `*SharedGalleryImageVersionsListPager.Err` has been removed
+- Function `VirtualMachineScaleSetVMExtension.MarshalJSON` has been removed
+- Function `*VirtualMachineScaleSetsSetOrchestrationServiceStatePoller.Done` has been removed
+- Function `*GalleryApplicationVersionsListByGalleryApplicationPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetsReimagePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsReimagePoller.Done` has been removed
+- Function `*AvailabilitySetsListPager.Err` has been removed
+- Function `VirtualMachineScaleSetVMRunCommandsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DisksDeletePoller.Done` has been removed
+- Function `VirtualMachineScaleSetExtensionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesRestartPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetExtensionsUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsReimageAllPoller.Done` has been removed
+- Function `NetworkInterfaceReference.MarshalJSON` has been removed
+- Function `*CloudServicesDeletePoller.FinalResponse` has been removed
+- Function `*DiskEncryptionSetsUpdatePoller.Poll` has been removed
+- Function `*VirtualMachinesConvertToManagedDisksPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetExtensionsDeletePoller.Done` has been removed
+- Function `GalleryApplicationsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DisksCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*AvailabilitySetsListBySubscriptionPager.PageResponse` has been removed
+- Function `*DiskEncryptionSetsListPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsReimagePoller.Poll` has been removed
+- Function `*VirtualMachineRunCommandsDeletePoller.Poll` has been removed
+- Function `*DiskRestorePointListByRestorePointPager.PageResponse` has been removed
+- Function `*VirtualMachineExtensionsCreateOrUpdatePoller.Done` has been removed
+- Function `*CapacityReservationsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesPerformMaintenancePoller.FinalResponse` has been removed
+- Function `*GalleryApplicationsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CloudServiceRoleInstancesDeletePoller.Poll` has been removed
+- Function `VirtualMachineExtensionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetExtensionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsRestartPoller.FinalResponse` has been removed
+- Function `*CloudServicesRebuildPoller.ResumeToken` has been removed
+- Function `GalleryApplicationVersionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsRunCommandPoller.ResumeToken` has been removed
+- Function `*DedicatedHostsListByHostGroupPager.Err` has been removed
+- Function `*CloudServicesUpdatePoller.ResumeToken` has been removed
+- Function `*SSHPublicKeysListByResourceGroupPager.PageResponse` has been removed
+- Function `*DisksRevokeAccessPoller.FinalResponse` has been removed
+- Function `*DisksDeletePoller.ResumeToken` has been removed
+- Function `*DedicatedHostGroupsListBySubscriptionPager.PageResponse` has been removed
+- Function `*DisksRevokeAccessPollerResponse.Resume` has been removed
+- Function `*CapacityReservationGroupsListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetsListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsDeleteInstancesPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsPerformMaintenancePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesAssessPatchesPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesRunCommandPoller.Done` has been removed
+- Function `DedicatedHostsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `GalleriesDeletePollerResponse.PollUntilDone` has been removed
+- Function `DedicatedHostsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImageVersionsDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesListPager.NextPage` has been removed
+- Function `*DiskRestorePointRevokeAccessPollerResponse.Resume` has been removed
+- Function `*CloudServicesUpdateDomainWalkUpdateDomainPollerResponse.Resume` has been removed
+- Function `*CapacityReservationsDeletePoller.Done` has been removed
+- Function `*CapacityReservationsListByCapacityReservationGroupPager.Err` has been removed
+- Function `*VirtualMachinesCapturePoller.Done` has been removed
+- Function `*CloudServiceRoleInstancesRebuildPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsListByLocationPager.Err` has been removed
+- Function `*GalleriesListByResourceGroupPager.NextPage` has been removed
+- Function `*CloudServicesPowerOffPoller.FinalResponse` has been removed
+- Function `*CloudServicesListAllPager.PageResponse` has been removed
+- Function `*SharedGalleryImageVersionsListPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetsReimagePoller.Done` has been removed
+- Function `VirtualMachineScaleSetRollingUpgradesCancelPollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachinesPerformMaintenancePoller.ResumeToken` has been removed
+- Function `CapacityReservationsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesConvertToManagedDisksPoller.FinalResponse` has been removed
+- Function `*DisksGrantAccessPoller.FinalResponse` has been removed
+- Function `*LogAnalyticsExportThrottledRequestsPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesCapturePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesRunCommandPoller.FinalResponse` has been removed
+- Function `*SharedGalleriesListPager.Err` has been removed
+- Function `*DiskRestorePointRevokeAccessPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsDeletePollerResponse.Resume` has been removed
+- Function `*RestorePointCollectionsListAllPager.NextPage` has been removed
+- Function `*VirtualMachineExtensionsUpdatePoller.Poll` has been removed
+- Function `*LogAnalyticsExportRequestRateByIntervalPoller.ResumeToken` has been removed
+- Function `*RestorePointCollectionsDeletePoller.FinalResponse` has been removed
+- Function `*CapacityReservationsListByCapacityReservationGroupPager.NextPage` has been removed
+- Function `CloudServiceRoleInstancesRebuildPollerResponse.PollUntilDone` has been removed
+- Function `*DiskEncryptionSetsDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesInstallPatchesPoller.FinalResponse` has been removed
+- Function `*CloudServicesPowerOffPoller.Done` has been removed
+- Function `*VirtualMachinesPerformMaintenancePoller.Done` has been removed
+- Function `*VirtualMachinesPerformMaintenancePoller.Poll` has been removed
+- Function `*ImagesDeletePoller.Done` has been removed
+- Function `*CloudServicesRestartPoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsListPager.NextPage` has been removed
+- Function `VirtualMachineScaleSetsRedeployPollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostsUpdatePoller.ResumeToken` has been removed
+- Function `*CapacityReservationGroupsListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsPerformMaintenancePoller.Done` has been removed
+- Function `*GalleryApplicationsDeletePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationVersionsListByGalleryApplicationPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsDeallocatePoller.Done` has been removed
+- Function `*DiskEncryptionSetsUpdatePoller.FinalResponse` has been removed
+- Function `LogAnalyticsExportRequestRateByIntervalPollerResponse.PollUntilDone` has been removed
+- Function `*DiskRestorePointGrantAccessPoller.Done` has been removed
+- Function `CloudServicesUpdateDomainWalkUpdateDomainPollerResponse.PollUntilDone` has been removed
+- Function `DiskAccessesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DedicatedHostsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SnapshotsRevokeAccessPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsPerformMaintenancePoller.Done` has been removed
+- Function `VirtualMachineExtensionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationVersionsUpdatePollerResponse.Resume` has been removed
+- Function `*AvailabilitySetsListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsRedeployPoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsUpdatePoller.FinalResponse` has been removed
+- Function `*GalleryApplicationVersionsDeletePollerResponse.Resume` has been removed
+- Function `*CloudServicesReimagePoller.Poll` has been removed
+- Function `*VirtualMachinesStartPoller.Poll` has been removed
+- Function `*SSHPublicKeysListBySubscriptionPager.NextPage` has been removed
+- Function `*CloudServicesRebuildPoller.Done` has been removed
+- Function `*GalleryApplicationVersionsUpdatePoller.Poll` has been removed
+- Function `*DedicatedHostsDeletePoller.ResumeToken` has been removed
+- Function `*DiskAccessesCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsPerformMaintenancePoller.Poll` has been removed
+- Function `*GalleriesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*GalleryApplicationsListByGalleryPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsStartPoller.Poll` has been removed
+- Function `ImageReference.MarshalJSON` has been removed
+- Function `DiskRestorePointGrantAccessPollerResponse.PollUntilDone` has been removed
+- Function `*DisksRevokeAccessPoller.Poll` has been removed
+- Function `*CloudServiceRoleInstancesRebuildPollerResponse.Resume` has been removed
+- Function `*CloudServicesUpdateDomainWalkUpdateDomainPoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesRedeployPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesUpdatePoller.Done` has been removed
+- Function `*SnapshotsRevokeAccessPoller.FinalResponse` has been removed
+- Function `*GalleryImagesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CapacityReservationGroupsListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachinesUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetExtensionsDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesListAllPager.NextPage` has been removed
+- Function `*DiskEncryptionSetsDeletePoller.FinalResponse` has been removed
+- Function `*CapacityReservationsUpdatePoller.Done` has been removed
+- Function `VirtualMachinesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImageVersionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DiskEncryptionSetsListAssociatedResourcesPager.NextPage` has been removed
+- Function `VirtualMachinesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DisksUpdatePoller.Done` has been removed
+- Function `*SnapshotsGrantAccessPoller.Done` has been removed
+- Function `*CloudServiceRoleInstancesDeletePoller.ResumeToken` has been removed
+- Function `*CloudServicesDeleteInstancesPoller.Poll` has been removed
+- Function `*DiskAccessesDeletePollerResponse.Resume` has been removed
+- Function `*GalleryImagesDeletePoller.ResumeToken` has been removed
+- Function `*GalleryImageVersionsDeletePoller.Done` has been removed
+- Function `*CapacityReservationsDeletePoller.ResumeToken` has been removed
+- Function `*DiskEncryptionSetsListAssociatedResourcesPager.Err` has been removed
+- Function `*CloudServiceRoleInstancesRebuildPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetVMsRunCommandPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationsUpdatePoller.FinalResponse` has been removed
+- Function `*DiskEncryptionSetsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsReimageAllPoller.FinalResponse` has been removed
+- Function `*GalleriesDeletePoller.FinalResponse` has been removed
+- Function `*ImagesCreateOrUpdatePoller.Poll` has been removed
+- Function `*GalleryApplicationVersionsListByGalleryApplicationPager.Err` has been removed
+- Function `*CloudServicesUpdatePoller.Poll` has been removed
+- Function `*GalleryImagesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsRunCommandPollerResponse.Resume` has been removed
+- Function `*CloudServiceRoleInstancesReimagePollerResponse.Resume` has been removed
+- Function `*CapacityReservationsUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesPowerOffPollerResponse.Resume` has been removed
+- Function `*DedicatedHostGroupsListByResourceGroupPager.NextPage` has been removed
+- Function `*GalleryImagesListByGalleryPager.PageResponse` has been removed
+- Function `*VirtualMachineRunCommandsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsDeletePoller.Poll` has been removed
+- Function `*DedicatedHostGroupsListBySubscriptionPager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMsRedeployPoller.Done` has been removed
+- Function `*GalleriesDeletePollerResponse.Resume` has been removed
+- Function `*DedicatedHostGroupsListByResourceGroupPager.PageResponse` has been removed
+- Function `*DisksDeletePoller.Poll` has been removed
+- Function `*DiskRestorePointRevokeAccessPoller.ResumeToken` has been removed
+- Function `*ImagesDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsPerformMaintenancePoller.FinalResponse` has been removed
+- Function `*DiskRestorePointRevokeAccessPoller.Poll` has been removed
+- Function `*DiskAccessesListPrivateEndpointConnectionsPager.NextPage` has been removed
+- Function `*SnapshotsCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsUpdateInstancesPoller.FinalResponse` has been removed
+- Function `*RestorePointsDeletePollerResponse.Resume` has been removed
+- Function `*CloudServiceOperatingSystemsListOSFamiliesPager.PageResponse` has been removed
+- Function `*SnapshotsDeletePollerResponse.Resume` has been removed
+- Function `*DedicatedHostsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsReimageAllPoller.FinalResponse` has been removed
+- Function `*CloudServiceRoleInstancesRestartPoller.Poll` has been removed
+- Function `*VirtualMachinesRestartPoller.Poll` has been removed
+- Function `CloudServicesDeleteInstancesPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsUpdatePollerResponse.Resume` has been removed
+- Function `*CapacityReservationGroupsListBySubscriptionPager.Err` has been removed
+- Function `*GalleryApplicationsDeletePoller.Poll` has been removed
+- Function `*GalleryImagesDeletePoller.Poll` has been removed
+- Function `*CloudServicesUpdateDomainWalkUpdateDomainPoller.FinalResponse` has been removed
+- Function `*CloudServiceRolesListPager.PageResponse` has been removed
+- Function `*DiskEncryptionSetsUpdatePoller.Done` has been removed
+- Function `*ImagesListPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsListPager.NextPage` has been removed
+- Function `VirtualMachineScaleSetVMRunCommandsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineRunCommandsDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesReimagePoller.FinalResponse` has been removed
+- Function `SnapshotsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsRunCommandPoller.Done` has been removed
+- Function `GalleriesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineRunCommandsUpdatePoller.Poll` has been removed
+- Function `*ImagesCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesRedeployPoller.Poll` has been removed
+- Function `*GalleriesListByResourceGroupPager.Err` has been removed
+- Function `*DiskEncryptionSetsDeletePoller.Poll` has been removed
+- Function `*SnapshotsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsUpdatePoller.FinalResponse` has been removed
+- Function `*DiskEncryptionSetsListByResourceGroupPager.PageResponse` has been removed
+- Function `*CloudServicesReimagePollerResponse.Resume` has been removed
+- Function `VirtualMachineScaleSetVMsStartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsUpdatePoller.Done` has been removed
+- Function `*SnapshotsListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsSetOrchestrationServiceStatePoller.Poll` has been removed
+- Function `*DiskAccessesListPager.Err` has been removed
+- Function `*DisksUpdatePoller.FinalResponse` has been removed
+- Function `*CloudServiceRolesListPager.NextPage` has been removed
+- Function `*CloudServiceRoleInstancesListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DiskRestorePointRevokeAccessPoller.Done` has been removed
+- Function `*VirtualMachinesReimagePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsDeleteInstancesPoller.Done` has been removed
+- Function `*RestorePointsCreatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsDeallocatePoller.FinalResponse` has been removed
+- Function `CloudServicesReimagePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceOperatingSystemsListOSVersionsPager.NextPage` has been removed
+- Function `*RestorePointsDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsReimageAllPollerResponse.Resume` has been removed
+- Function `*DisksUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationVersionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*GalleriesCreateOrUpdatePoller.Poll` has been removed
+- Function `*SnapshotsDeletePoller.FinalResponse` has been removed
+- Function `*GalleryImagesDeletePollerResponse.Resume` has been removed
+- Function `*GallerySharingProfileUpdatePoller.ResumeToken` has been removed
+- Function `*GallerySharingProfileUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsStartPollerResponse.Resume` has been removed
+- Function `VirtualMachinesRunCommandPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsStartPollerResponse.Resume` has been removed
+- Function `*VirtualMachinesDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsListPager.PageResponse` has been removed
+- Function `*DisksGrantAccessPoller.Poll` has been removed
+- Function `*CloudServicesUpdatePoller.Done` has been removed
+- Function `VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsDeallocatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineExtensionsDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsRedeployPoller.Poll` has been removed
+- Function `*GalleryImageVersionsDeletePoller.ResumeToken` has been removed
+- Function `SnapshotsRevokeAccessPollerResponse.PollUntilDone` has been removed
+- Function `*ResourceSKUsListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMsListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMsReimagePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsReimagePollerResponse.Resume` has been removed
+- Function `VirtualMachinesPowerOffPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationsCreateOrUpdatePoller.Poll` has been removed
+- Function `VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceRoleInstancesListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsSetOrchestrationServiceStatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsDeleteInstancesPollerResponse.Resume` has been removed
+- Function `GalleryImagesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsGrantAccessPoller.Poll` has been removed
+- Function `*GalleryImageVersionsListByGalleryImagePager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMsRedeployPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsPerformMaintenancePoller.ResumeToken` has been removed
+- Function `*RestorePointCollectionsListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsListByLocationPager.PageResponse` has been removed
+- Function `*GalleriesDeletePoller.Poll` has been removed
+- Function `*SnapshotsListByResourceGroupPager.PageResponse` has been removed
+- Function `*SharedGalleryImagesListPager.Err` has been removed
+- Function `*CloudServicesListPager.Err` has been removed
+- Function `*CloudServicesListPager.PageResponse` has been removed
+- Function `*DiskAccessesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `RunCommandDocumentBase.MarshalJSON` has been removed
+- Function `*VirtualMachineScaleSetsPowerOffPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsReimageAllPoller.ResumeToken` has been removed
+- Function `SnapshotsDeletePollerResponse.PollUntilDone` has been removed
+- Function `RestorePointsDeletePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineReimageParameters.MarshalJSON` has been removed
+- Function `DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceRoleInstancesReimagePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetExtensionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CapacityReservationsCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsReimagePoller.FinalResponse` has been removed
+- Function `*VirtualMachineExtensionsUpdatePoller.ResumeToken` has been removed
+- Function `*DisksListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMsDeallocatePollerResponse.Resume` has been removed
+- Function `*SnapshotsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `CloudServicesDeletePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetVMsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RestorePointsCreatePoller.Poll` has been removed
+- Function `*SnapshotsRevokeAccessPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller.Poll` has been removed
+- Function `*LogAnalyticsExportThrottledRequestsPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesReimagePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsStartPoller.ResumeToken` has been removed
+- Function `*CloudServiceRoleInstancesReimagePoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryImageVersionsUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesListByLocationPager.NextPage` has been removed
+- Function `*DiskAccessesListByResourceGroupPager.Err` has been removed
+- Function `*GalleryApplicationVersionsUpdatePoller.Done` has been removed
+- Function `*CloudServiceRoleInstancesDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller.Done` has been removed
+- Function `*DiskEncryptionSetsListByResourceGroupPager.Err` has been removed
+- Function `ImagesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RestorePointCollectionsDeletePoller.Done` has been removed
+- Function `*CloudServicesDeleteInstancesPollerResponse.Resume` has been removed
+- Function `VirtualMachineScaleSetsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CapacityReservationsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*CloudServicesStartPollerResponse.Resume` has been removed
+- Function `VirtualMachinesRestartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsDeletePoller.ResumeToken` has been removed
+- Function `RestorePointCollectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RestorePointsCreatePoller.Done` has been removed
+- Function `DisksCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ImagesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationVersionsDeletePoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetVMsReimageAllPollerResponse.PollUntilDone` has been removed
+- Function `*SnapshotsListByResourceGroupPager.Err` has been removed
+- Function `*CloudServiceRoleInstancesRestartPoller.FinalResponse` has been removed
+- Function `*DiskRestorePointGrantAccessPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsDeletePoller.Done` has been removed
+- Function `*GalleryApplicationsUpdatePoller.ResumeToken` has been removed
+- Function `*UsageListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsDeleteInstancesPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsDeletePoller.FinalResponse` has been removed
+- Function `*SnapshotsDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsDeallocatePoller.ResumeToken` has been removed
+- Function `*SSHPublicKeysListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachinesRestartPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsDeletePollerResponse.Resume` has been removed
+- Function `*DisksCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ImagesDeletePollerResponse.Resume` has been removed
+- Function `*ProximityPlacementGroupsListBySubscriptionPager.Err` has been removed
+- Function `*VirtualMachinesDeletePoller.Done` has been removed
+- Function `*CloudServicesRestartPollerResponse.Resume` has been removed
+- Function `*LogAnalyticsExportRequestRateByIntervalPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsUpdatePoller.ResumeToken` has been removed
+- Function `*DiskRestorePointGrantAccessPoller.ResumeToken` has been removed
+- Function `CloudServicesRebuildPollerResponse.PollUntilDone` has been removed
+- Function `*DisksListByResourceGroupPager.NextPage` has been removed
+- Function `*GalleryImageVersionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SSHPublicKeysListBySubscriptionPager.PageResponse` has been removed
+- Function `*CapacityReservationsListByCapacityReservationGroupPager.PageResponse` has been removed
+- Function `*VirtualMachineRunCommandsListByVirtualMachinePager.PageResponse` has been removed
+- Function `*DiskRestorePointListByRestorePointPager.NextPage` has been removed
+- Function `*VirtualMachinesConvertToManagedDisksPoller.Done` has been removed
+- Function `*DisksRevokeAccessPoller.ResumeToken` has been removed
+- Function `*CloudServicesUpdateDomainListUpdateDomainsPager.Err` has been removed
+- Function `*AvailabilitySetsListBySubscriptionPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsPowerOffPoller.Done` has been removed
+- Function `*GalleryApplicationsListByGalleryPager.Err` has been removed
+- Function `*ImagesUpdatePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsRestartPoller.FinalResponse` has been removed
+- Function `*GalleryImagesCreateOrUpdatePoller.Poll` has been removed
+- Function `*CloudServiceRoleInstancesReimagePoller.FinalResponse` has been removed
+- Function `*DiskAccessesUpdateAPrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsUpdateInstancesPoller.Poll` has been removed
+- Function `*DisksListPager.PageResponse` has been removed
+- Function `*ProximityPlacementGroupsListBySubscriptionPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsCreateOrUpdatePoller.Done` has been removed
+- Function `*GalleryApplicationVersionsDeletePoller.Done` has been removed
+- Function `*GalleryApplicationsCreateOrUpdatePoller.Done` has been removed
+- Function `*DisksListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetExtensionsListPager.Err` has been removed
+- Function `VirtualMachineScaleSetVMsRedeployPollerResponse.PollUntilDone` has been removed
+- Function `DiskAccessesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImageVersionsUpdatePoller.Done` has been removed
+- Function `*DiskEncryptionSetsUpdatePoller.ResumeToken` has been removed
+- Function `*GalleryApplicationsUpdatePoller.Done` has been removed
+- Function `*SnapshotsRevokeAccessPoller.Poll` has been removed
+- Function `*VirtualMachinesUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsStartPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsUpdatePoller.Poll` has been removed
+- Function `*VirtualMachinesRestartPollerResponse.Resume` has been removed
+- Function `CloudServicesStartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsRestartPoller.Done` has been removed
+- Function `*GalleryImageVersionsDeletePollerResponse.Resume` has been removed
+- Function `*DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse.Resume` has been removed
+- Function `*CloudServicesStartPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesCancelPoller.Poll` has been removed
+- Function `*VirtualMachinesReimagePoller.Done` has been removed
+- Function `*DiskAccessesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `GalleryImageVersionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ImagesUpdatePoller.ResumeToken` has been removed
+- Function `*RestorePointCollectionsDeletePoller.Poll` has been removed
+- Function `*DiskEncryptionSetsListByResourceGroupPager.NextPage` has been removed
+- Function `DisksGrantAccessPollerResponse.PollUntilDone` has been removed
+- Function `*CapacityReservationsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsUpdatePoller.Poll` has been removed
+- Function `*DiskAccessesListPager.PageResponse` has been removed
+- Function `*CapacityReservationsDeletePoller.FinalResponse` has been removed
+- Function `*SnapshotsUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsListPager.NextPage` has been removed
+- Function `GallerySharingProfileUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetExtensionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*GalleryImageVersionsUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachineRunCommandsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetIPConfiguration.MarshalJSON` has been removed
+- Function `GalleryApplicationsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `GalleryImageVersionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServiceRoleInstancesRebuildPoller.Done` has been removed
+- Function `VirtualMachinesRedeployPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesRunCommandPoller.Poll` has been removed
+- Function `*ProximityPlacementGroupsListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsListSKUsPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMsListPager.Err` has been removed
+- Function `*CloudServicesListAllPager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsListPager.Err` has been removed
+- Function `*CloudServicesPowerOffPollerResponse.Resume` has been removed
+- Function `*GalleriesListPager.PageResponse` has been removed
+- Function `*DiskAccessesDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesRestartPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsUpdateInstancesPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller.ResumeToken` has been removed
+- Function `*SnapshotsUpdatePoller.Poll` has been removed
+- Function `*GalleryImagesListByGalleryPager.NextPage` has been removed
+- Function `*SnapshotsUpdatePoller.Done` has been removed
+- Function `*GalleryImagesUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesDeletePoller.ResumeToken` has been removed
+- Function `*GalleryImageVersionsListByGalleryImagePager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMsDeallocatePoller.Done` has been removed
+- Function `*DiskEncryptionSetsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CloudServicesPowerOffPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DedicatedHostsCreateOrUpdatePoller.Poll` has been removed
+- Function `*SSHPublicKeysListBySubscriptionPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsReimageAllPoller.Done` has been removed
+- Function `DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsStartPoller.FinalResponse` has been removed
+- Function `*DiskAccessesUpdatePoller.Done` has been removed
+- Function `*VirtualMachinesInstallPatchesPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMsStartPoller.Done` has been removed
+- Function `ComputeOperationListResult.MarshalJSON` has been removed
+- Function `DisksUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*UsageListPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsPowerOffPoller.Done` has been removed
+- Function `*DisksGrantAccessPoller.Done` has been removed
+- Function `*GallerySharingProfileUpdatePoller.Done` has been removed
+- Function `*GalleryApplicationVersionsCreateOrUpdatePoller.Done` has been removed
+- Function `*LogAnalyticsExportThrottledRequestsPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsStartPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMsRestartPoller.Done` has been removed
+- Function `*DiskAccessesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `VirtualMachineScaleSetExtension.MarshalJSON` has been removed
+- Function `*CloudServicesPowerOffPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsListPager.PageResponse` has been removed
+- Function `*SnapshotsGrantAccessPoller.ResumeToken` has been removed
+- Function `DiskEncryptionSetsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachinesReapplyPoller.ResumeToken` has been removed
+- Function `*CloudServicesDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesInstallPatchesPoller.Poll` has been removed
+- Function `*LogAnalyticsExportRequestRateByIntervalPoller.FinalResponse` has been removed
+- Function `*VirtualMachineRunCommandsUpdatePoller.Done` has been removed
+- Function `VirtualMachineScaleSetsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesPowerOffPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsRestartPoller.ResumeToken` has been removed
+- Function `*GalleriesDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsListSKUsPager.Err` has been removed
+- Function `*VirtualMachinesAssessPatchesPoller.Done` has been removed
+- Function `*DedicatedHostsDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsUpdatePollerResponse.Resume` has been removed
+- Function `*LogAnalyticsExportRequestRateByIntervalPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsDeleteInstancesPoller.ResumeToken` has been removed
+- Function `*VirtualMachinesReapplyPoller.Done` has been removed
+- Function `*DiskAccessesUpdateAPrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*GalleryApplicationVersionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `RestorePointsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsReimageAllPoller.ResumeToken` has been removed
+- Function `*CapacityReservationsCreateOrUpdatePoller.Poll` has been removed
+- Function `VirtualMachineScaleSetVMsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*GalleriesListPager.Err` has been removed
+- Function `*RestorePointsDeletePoller.ResumeToken` has been removed
+- Function `*SnapshotsCreateOrUpdatePoller.Poll` has been removed
+- Function `SnapshotsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryImageVersionsUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsRedeployPoller.ResumeToken` has been removed
+- Function `*GalleryApplicationVersionsUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesRunCommandPoller.ResumeToken` has been removed
+- Function `*CloudServicesListPager.NextPage` has been removed
+- Function `*DiskAccessesListPager.NextPage` has been removed
+- Function `*VirtualMachinesPerformMaintenancePollerResponse.Resume` has been removed
+- Function `*DiskAccessesUpdatePoller.Poll` has been removed
+- Function `*VirtualMachinesReapplyPollerResponse.Resume` has been removed
+- Function `*GalleryApplicationsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ResourceSKUsListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetVMsDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesReapplyPoller.FinalResponse` has been removed
+- Function `*DedicatedHostsListByHostGroupPager.PageResponse` has been removed
+- Function `DiskEncryptionSetsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesListPager.PageResponse` has been removed
+- Function `*DedicatedHostsListByHostGroupPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetsRedeployPollerResponse.Resume` has been removed
+- Function `*SnapshotsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetExtensionsDeletePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsPerformMaintenancePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsReimageAllPoller.Poll` has been removed
+- Function `*ImagesUpdatePoller.Poll` has been removed
+- Function `*RestorePointsCreatePoller.FinalResponse` has been removed
+- Function `*GalleryApplicationsDeletePoller.ResumeToken` has been removed
+- Function `*SharedGalleryImagesListPager.NextPage` has been removed
+- Function `*SnapshotsGrantAccessPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsRedeployPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesCancelPollerResponse.Resume` has been removed
+- Function `*CloudServicesStartPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsReimagePoller.ResumeToken` has been removed
+- Function `CloudServicesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImagesDeletePoller.FinalResponse` has been removed
+- Function `VirtualMachineScaleSetsUpdateInstancesPollerResponse.PollUntilDone` has been removed
+- Function `*SSHPublicKeysListByResourceGroupPager.NextPage` has been removed
+- Function `*VirtualMachineExtensionsDeletePoller.Done` has been removed
+- Function `*VirtualMachineScaleSetsUpdateInstancesPollerResponse.Resume` has been removed
+- Function `DiskRestorePointRevokeAccessPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImagesUpdatePollerResponse.Resume` has been removed
+- Function `VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesDeleteAPrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*VirtualMachinesPowerOffPoller.Done` has been removed
+- Function `CloudServicesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `GalleryImagesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `DisksRevokeAccessPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineExtensionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsGetOSUpgradeHistoryPager.Err` has been removed
+- Function `*ProximityPlacementGroupsListByResourceGroupPager.PageResponse` has been removed
+- Function `*DiskEncryptionSetsCreateOrUpdatePoller.Poll` has been removed
+- Function `*GallerySharingProfileUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsPerformMaintenancePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsRestartPoller.ResumeToken` has been removed
+- Function `*ImagesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CloudServiceRoleInstancesListPager.PageResponse` has been removed
+- Function `*GalleryApplicationsDeletePoller.Done` has been removed
+- Function `*DedicatedHostsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*UsageListPager.Err` has been removed
+- Function `*VirtualMachinesDeallocatePoller.Poll` has been removed
+- Function `*LogAnalyticsExportThrottledRequestsPoller.ResumeToken` has been removed
+- Function `*DisksRevokeAccessPoller.Done` has been removed
+- Function `*VirtualMachineRunCommandsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DiskAccessesDeletePoller.Done` has been removed
+- Function `*CloudServiceOperatingSystemsListOSFamiliesPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMsPerformMaintenancePoller.ResumeToken` has been removed
+- Function `VirtualMachinesConvertToManagedDisksPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesListByLocationPager.PageResponse` has been removed
+- Function `VirtualMachinesCapturePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller.FinalResponse` has been removed
+- Function `*GalleryApplicationsUpdatePollerResponse.Resume` has been removed
+- Function `*SnapshotsUpdatePoller.FinalResponse` has been removed
+- Function `*GalleryApplicationsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetExtensionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DiskAccessesDeleteAPrivateEndpointConnectionPoller.Done` has been removed
+- Function `*LogAnalyticsExportRequestRateByIntervalPoller.Poll` has been removed
+- Function `SubResource.MarshalJSON` has been removed
+- Function `*VirtualMachineScaleSetVMsDeletePoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetsReimageAllPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationVersionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsRedeployPoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsUpdatePoller.FinalResponse` has been removed
+- Function `DedicatedHostsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CloudServicesDeleteInstancesPoller.Done` has been removed
+- Function `*VirtualMachineExtensionsDeletePoller.ResumeToken` has been removed
+- Function `*CapacityReservationsDeletePollerResponse.Resume` has been removed
+- Function `*RestorePointCollectionsDeletePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesInstallPatchesPoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsDeallocatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesAssessPatchesPoller.Poll` has been removed
+- Function `*VirtualMachinesDeallocatePoller.Done` has been removed
+- Function `VirtualMachineScaleSetVMsReimagePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsRunCommandPoller.Poll` has been removed
+- Function `*VirtualMachinesCreateOrUpdatePoller.Done` has been removed
+- Function `*DiskEncryptionSetsListPager.Err` has been removed
+- Function `*GalleriesCreateOrUpdatePoller.Done` has been removed
+- Function `DiskEncryptionSetsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryImageVersionsUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetVMsDeallocatePoller.FinalResponse` has been removed
+- Function `VirtualMachinesDeallocatePollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationsListByGalleryPager.NextPage` has been removed
+- Function `*DiskAccessesDeleteAPrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*GalleryImageVersionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsDeletePoller.Done` has been removed
+- Function `*DiskEncryptionSetsListPager.NextPage` has been removed
+- Function `*VirtualMachinesDeletePoller.Poll` has been removed
+- Function `*VirtualMachineExtensionsUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMsListPager.PageResponse` has been removed
+- Function `*CloudServicesUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsDeletePoller.Poll` has been removed
+- Function `*CapacityReservationGroupsListBySubscriptionPager.NextPage` has been removed
+- Function `*CloudServiceOperatingSystemsListOSVersionsPager.Err` has been removed
+- Function `*VirtualMachinesStartPoller.Done` has been removed
+- Function `*CloudServicesStartPoller.Done` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SharedGalleriesListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesPowerOffPoller.ResumeToken` has been removed
+- Function `*DisksDeletePollerResponse.Resume` has been removed
+- Function `*GalleryImagesCreateOrUpdatePoller.Done` has been removed
+- Function `SubResourceWithColocationStatus.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetVMsRestartPollerResponse.PollUntilDone` has been removed
+- Function `*GalleryApplicationVersionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ImagesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetsPowerOffPoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesCancelPoller.ResumeToken` has been removed
+- Function `*ImagesListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualMachinesCapturePoller.Poll` has been removed
+- Function `*ProximityPlacementGroupsListByResourceGroupPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsRedeployPoller.Poll` has been removed
+- Function `*SnapshotsRevokeAccessPoller.Done` has been removed
+- Function `CloudServicesRestartPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetVMRunCommandsDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachineRunCommandsListPager.PageResponse` has been removed
+- Function `*GalleriesUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetVMsPerformMaintenancePoller.Poll` has been removed
+- Function `CloudServiceRoleInstancesReimagePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetExtensionsUpdatePoller.Poll` has been removed
+- Function `*VirtualMachineScaleSetsReimagePoller.Poll` has been removed
+- Function `*DedicatedHostsDeletePoller.FinalResponse` has been removed
+- Function `*VirtualMachineScaleSetsListPager.PageResponse` has been removed
+- Function `*DiskAccessesUpdatePoller.ResumeToken` has been removed
+- Function `*SharedGalleriesListPager.PageResponse` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesCancelPoller.FinalResponse` has been removed
+- Function `*DisksListByResourceGroupPager.PageResponse` has been removed
+- Function `*VirtualMachineRunCommandsCreateOrUpdatePoller.Poll` has been removed
+- Function `*ImagesUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineExtensionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*RestorePointsDeletePoller.Poll` has been removed
+- Function `*DiskAccessesDeleteAPrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `VirtualMachineScaleSetVMsPerformMaintenancePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsRestartPollerResponse.Resume` has been removed
+- Function `GalleryImagesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesInstallPatchesPoller.Done` has been removed
+- Function `*VirtualMachinesStartPollerResponse.Resume` has been removed
+- Function `SnapshotsGrantAccessPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineScaleSetVMsPowerOffPoller.FinalResponse` has been removed
+- Function `*DedicatedHostGroupsListBySubscriptionPager.NextPage` has been removed
+- Function `*ImagesListPager.NextPage` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller.Done` has been removed
+- Function `*DiskAccessesListByResourceGroupPager.PageResponse` has been removed
+- Function `GalleryImageVersionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesAssessPatchesPollerResponse.Resume` has been removed
+- Function `*CloudServiceRoleInstancesRestartPoller.Done` has been removed
+- Function `*CloudServicesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineRunCommandsListPager.Err` has been removed
+- Function `*GalleriesListByResourceGroupPager.PageResponse` has been removed
+- Function `*GalleriesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*GalleryApplicationVersionsDeletePoller.Poll` has been removed
+- Function `*CloudServicesRestartPoller.ResumeToken` has been removed
+- Function `*DiskRestorePointGrantAccessPoller.FinalResponse` has been removed
+- Function `*GalleryApplicationsUpdatePoller.Poll` has been removed
+- Function `*GalleryImagesDeletePoller.Done` has been removed
+- Function `*SnapshotsGrantAccessPollerResponse.Resume` has been removed
+- Function `*CloudServiceRolesListPager.Err` has been removed
+- Function `*VirtualMachinesDeallocatePollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsRestartPoller.Poll` has been removed
+- Function `*VirtualMachinesDeallocatePoller.ResumeToken` has been removed
+- Function `*VirtualMachineScaleSetsListAllPager.Err` has been removed
+- Function `VirtualMachineScaleSetsReimagePollerResponse.PollUntilDone` has been removed
+- Function `CloudServiceRoleInstancesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DiskEncryptionSetsDeletePoller.Done` has been removed
+- Function `*RestorePointCollectionsDeletePoller.ResumeToken` has been removed
+- Function `GalleryApplicationVersionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetsDeletePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachinesReapplyPollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineExtensionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachineScaleSetsDeallocatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachineExtensionsDeletePollerResponse.Resume` has been removed
+- Function `*GalleriesDeletePoller.Done` has been removed
+- Function `*CloudServicesRebuildPollerResponse.Resume` has been removed
+- Function `*RestorePointCollectionsListPager.Err` has been removed
+- Function `*VirtualMachineScaleSetsDeallocatePoller.Poll` has been removed
+- Function `*DiskRestorePointGrantAccessPollerResponse.Resume` has been removed
+- Function `*VirtualMachineScaleSetsStartPoller.FinalResponse` has been removed
+- Function `*GallerySharingProfileUpdatePoller.FinalResponse` has been removed
+- Function `*ProximityPlacementGroupsListBySubscriptionPager.NextPage` has been removed
+- Function `VirtualMachineRunCommandsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `SubResourceReadOnly.MarshalJSON` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesCancelPoller.Done` has been removed
+- Struct `AvailabilitySetsCreateOrUpdateOptions` has been removed
+- Struct `AvailabilitySetsCreateOrUpdateResponse` has been removed
+- Struct `AvailabilitySetsCreateOrUpdateResult` has been removed
+- Struct `AvailabilitySetsDeleteOptions` has been removed
+- Struct `AvailabilitySetsDeleteResponse` has been removed
+- Struct `AvailabilitySetsGetOptions` has been removed
+- Struct `AvailabilitySetsGetResponse` has been removed
+- Struct `AvailabilitySetsGetResult` has been removed
+- Struct `AvailabilitySetsListAvailableSizesOptions` has been removed
+- Struct `AvailabilitySetsListAvailableSizesResponse` has been removed
+- Struct `AvailabilitySetsListAvailableSizesResult` has been removed
+- Struct `AvailabilitySetsListBySubscriptionOptions` has been removed
+- Struct `AvailabilitySetsListBySubscriptionPager` has been removed
+- Struct `AvailabilitySetsListBySubscriptionResponse` has been removed
+- Struct `AvailabilitySetsListBySubscriptionResult` has been removed
+- Struct `AvailabilitySetsListOptions` has been removed
+- Struct `AvailabilitySetsListPager` has been removed
+- Struct `AvailabilitySetsListResponse` has been removed
+- Struct `AvailabilitySetsListResult` has been removed
+- Struct `AvailabilitySetsUpdateOptions` has been removed
+- Struct `AvailabilitySetsUpdateResponse` has been removed
+- Struct `AvailabilitySetsUpdateResult` has been removed
+- Struct `CapacityReservationGroupsCreateOrUpdateOptions` has been removed
+- Struct `CapacityReservationGroupsCreateOrUpdateResponse` has been removed
+- Struct `CapacityReservationGroupsCreateOrUpdateResult` has been removed
+- Struct `CapacityReservationGroupsDeleteOptions` has been removed
+- Struct `CapacityReservationGroupsDeleteResponse` has been removed
+- Struct `CapacityReservationGroupsGetOptions` has been removed
+- Struct `CapacityReservationGroupsGetResponse` has been removed
+- Struct `CapacityReservationGroupsGetResult` has been removed
+- Struct `CapacityReservationGroupsListByResourceGroupOptions` has been removed
+- Struct `CapacityReservationGroupsListByResourceGroupPager` has been removed
+- Struct `CapacityReservationGroupsListByResourceGroupResponse` has been removed
+- Struct `CapacityReservationGroupsListByResourceGroupResult` has been removed
+- Struct `CapacityReservationGroupsListBySubscriptionOptions` has been removed
+- Struct `CapacityReservationGroupsListBySubscriptionPager` has been removed
+- Struct `CapacityReservationGroupsListBySubscriptionResponse` has been removed
+- Struct `CapacityReservationGroupsListBySubscriptionResult` has been removed
+- Struct `CapacityReservationGroupsUpdateOptions` has been removed
+- Struct `CapacityReservationGroupsUpdateResponse` has been removed
+- Struct `CapacityReservationGroupsUpdateResult` has been removed
+- Struct `CapacityReservationsBeginCreateOrUpdateOptions` has been removed
+- Struct `CapacityReservationsBeginDeleteOptions` has been removed
+- Struct `CapacityReservationsBeginUpdateOptions` has been removed
+- Struct `CapacityReservationsCreateOrUpdatePoller` has been removed
+- Struct `CapacityReservationsCreateOrUpdatePollerResponse` has been removed
+- Struct `CapacityReservationsCreateOrUpdateResponse` has been removed
+- Struct `CapacityReservationsCreateOrUpdateResult` has been removed
+- Struct `CapacityReservationsDeletePoller` has been removed
+- Struct `CapacityReservationsDeletePollerResponse` has been removed
+- Struct `CapacityReservationsDeleteResponse` has been removed
+- Struct `CapacityReservationsGetOptions` has been removed
+- Struct `CapacityReservationsGetResponse` has been removed
+- Struct `CapacityReservationsGetResult` has been removed
+- Struct `CapacityReservationsListByCapacityReservationGroupOptions` has been removed
+- Struct `CapacityReservationsListByCapacityReservationGroupPager` has been removed
+- Struct `CapacityReservationsListByCapacityReservationGroupResponse` has been removed
+- Struct `CapacityReservationsListByCapacityReservationGroupResult` has been removed
+- Struct `CapacityReservationsUpdatePoller` has been removed
+- Struct `CapacityReservationsUpdatePollerResponse` has been removed
+- Struct `CapacityReservationsUpdateResponse` has been removed
+- Struct `CapacityReservationsUpdateResult` has been removed
+- Struct `CloudServiceOperatingSystemsGetOSFamilyOptions` has been removed
+- Struct `CloudServiceOperatingSystemsGetOSFamilyResponse` has been removed
+- Struct `CloudServiceOperatingSystemsGetOSFamilyResult` has been removed
+- Struct `CloudServiceOperatingSystemsGetOSVersionOptions` has been removed
+- Struct `CloudServiceOperatingSystemsGetOSVersionResponse` has been removed
+- Struct `CloudServiceOperatingSystemsGetOSVersionResult` has been removed
+- Struct `CloudServiceOperatingSystemsListOSFamiliesOptions` has been removed
+- Struct `CloudServiceOperatingSystemsListOSFamiliesPager` has been removed
+- Struct `CloudServiceOperatingSystemsListOSFamiliesResponse` has been removed
+- Struct `CloudServiceOperatingSystemsListOSFamiliesResult` has been removed
+- Struct `CloudServiceOperatingSystemsListOSVersionsOptions` has been removed
+- Struct `CloudServiceOperatingSystemsListOSVersionsPager` has been removed
+- Struct `CloudServiceOperatingSystemsListOSVersionsResponse` has been removed
+- Struct `CloudServiceOperatingSystemsListOSVersionsResult` has been removed
+- Struct `CloudServiceRoleInstancesBeginDeleteOptions` has been removed
+- Struct `CloudServiceRoleInstancesBeginRebuildOptions` has been removed
+- Struct `CloudServiceRoleInstancesBeginReimageOptions` has been removed
+- Struct `CloudServiceRoleInstancesBeginRestartOptions` has been removed
+- Struct `CloudServiceRoleInstancesDeletePoller` has been removed
+- Struct `CloudServiceRoleInstancesDeletePollerResponse` has been removed
+- Struct `CloudServiceRoleInstancesDeleteResponse` has been removed
+- Struct `CloudServiceRoleInstancesGetInstanceViewOptions` has been removed
+- Struct `CloudServiceRoleInstancesGetInstanceViewResponse` has been removed
+- Struct `CloudServiceRoleInstancesGetInstanceViewResult` has been removed
+- Struct `CloudServiceRoleInstancesGetOptions` has been removed
+- Struct `CloudServiceRoleInstancesGetRemoteDesktopFileOptions` has been removed
+- Struct `CloudServiceRoleInstancesGetRemoteDesktopFileResponse` has been removed
+- Struct `CloudServiceRoleInstancesGetResponse` has been removed
+- Struct `CloudServiceRoleInstancesGetResult` has been removed
+- Struct `CloudServiceRoleInstancesListOptions` has been removed
+- Struct `CloudServiceRoleInstancesListPager` has been removed
+- Struct `CloudServiceRoleInstancesListResponse` has been removed
+- Struct `CloudServiceRoleInstancesListResult` has been removed
+- Struct `CloudServiceRoleInstancesRebuildPoller` has been removed
+- Struct `CloudServiceRoleInstancesRebuildPollerResponse` has been removed
+- Struct `CloudServiceRoleInstancesRebuildResponse` has been removed
+- Struct `CloudServiceRoleInstancesReimagePoller` has been removed
+- Struct `CloudServiceRoleInstancesReimagePollerResponse` has been removed
+- Struct `CloudServiceRoleInstancesReimageResponse` has been removed
+- Struct `CloudServiceRoleInstancesRestartPoller` has been removed
+- Struct `CloudServiceRoleInstancesRestartPollerResponse` has been removed
+- Struct `CloudServiceRoleInstancesRestartResponse` has been removed
+- Struct `CloudServiceRolesGetOptions` has been removed
+- Struct `CloudServiceRolesGetResponse` has been removed
+- Struct `CloudServiceRolesGetResult` has been removed
+- Struct `CloudServiceRolesListOptions` has been removed
+- Struct `CloudServiceRolesListPager` has been removed
+- Struct `CloudServiceRolesListResponse` has been removed
+- Struct `CloudServiceRolesListResult` has been removed
+- Struct `CloudServicesBeginCreateOrUpdateOptions` has been removed
+- Struct `CloudServicesBeginDeleteInstancesOptions` has been removed
+- Struct `CloudServicesBeginDeleteOptions` has been removed
+- Struct `CloudServicesBeginPowerOffOptions` has been removed
+- Struct `CloudServicesBeginRebuildOptions` has been removed
+- Struct `CloudServicesBeginReimageOptions` has been removed
+- Struct `CloudServicesBeginRestartOptions` has been removed
+- Struct `CloudServicesBeginStartOptions` has been removed
+- Struct `CloudServicesBeginUpdateOptions` has been removed
+- Struct `CloudServicesCreateOrUpdatePoller` has been removed
+- Struct `CloudServicesCreateOrUpdatePollerResponse` has been removed
+- Struct `CloudServicesCreateOrUpdateResponse` has been removed
+- Struct `CloudServicesCreateOrUpdateResult` has been removed
+- Struct `CloudServicesDeleteInstancesPoller` has been removed
+- Struct `CloudServicesDeleteInstancesPollerResponse` has been removed
+- Struct `CloudServicesDeleteInstancesResponse` has been removed
+- Struct `CloudServicesDeletePoller` has been removed
+- Struct `CloudServicesDeletePollerResponse` has been removed
+- Struct `CloudServicesDeleteResponse` has been removed
+- Struct `CloudServicesGetInstanceViewOptions` has been removed
+- Struct `CloudServicesGetInstanceViewResponse` has been removed
+- Struct `CloudServicesGetInstanceViewResult` has been removed
+- Struct `CloudServicesGetOptions` has been removed
+- Struct `CloudServicesGetResponse` has been removed
+- Struct `CloudServicesGetResult` has been removed
+- Struct `CloudServicesListAllOptions` has been removed
+- Struct `CloudServicesListAllPager` has been removed
+- Struct `CloudServicesListAllResponse` has been removed
+- Struct `CloudServicesListAllResult` has been removed
+- Struct `CloudServicesListOptions` has been removed
+- Struct `CloudServicesListPager` has been removed
+- Struct `CloudServicesListResponse` has been removed
+- Struct `CloudServicesListResult` has been removed
+- Struct `CloudServicesPowerOffPoller` has been removed
+- Struct `CloudServicesPowerOffPollerResponse` has been removed
+- Struct `CloudServicesPowerOffResponse` has been removed
+- Struct `CloudServicesRebuildPoller` has been removed
+- Struct `CloudServicesRebuildPollerResponse` has been removed
+- Struct `CloudServicesRebuildResponse` has been removed
+- Struct `CloudServicesReimagePoller` has been removed
+- Struct `CloudServicesReimagePollerResponse` has been removed
+- Struct `CloudServicesReimageResponse` has been removed
+- Struct `CloudServicesRestartPoller` has been removed
+- Struct `CloudServicesRestartPollerResponse` has been removed
+- Struct `CloudServicesRestartResponse` has been removed
+- Struct `CloudServicesStartPoller` has been removed
+- Struct `CloudServicesStartPollerResponse` has been removed
+- Struct `CloudServicesStartResponse` has been removed
+- Struct `CloudServicesUpdateDomainBeginWalkUpdateDomainOptions` has been removed
+- Struct `CloudServicesUpdateDomainGetUpdateDomainOptions` has been removed
+- Struct `CloudServicesUpdateDomainGetUpdateDomainResponse` has been removed
+- Struct `CloudServicesUpdateDomainGetUpdateDomainResult` has been removed
+- Struct `CloudServicesUpdateDomainListUpdateDomainsOptions` has been removed
+- Struct `CloudServicesUpdateDomainListUpdateDomainsPager` has been removed
+- Struct `CloudServicesUpdateDomainListUpdateDomainsResponse` has been removed
+- Struct `CloudServicesUpdateDomainListUpdateDomainsResult` has been removed
+- Struct `CloudServicesUpdateDomainWalkUpdateDomainPoller` has been removed
+- Struct `CloudServicesUpdateDomainWalkUpdateDomainPollerResponse` has been removed
+- Struct `CloudServicesUpdateDomainWalkUpdateDomainResponse` has been removed
+- Struct `CloudServicesUpdatePoller` has been removed
+- Struct `CloudServicesUpdatePollerResponse` has been removed
+- Struct `CloudServicesUpdateResponse` has been removed
+- Struct `CloudServicesUpdateResult` has been removed
+- Struct `CommunityGalleriesGetOptions` has been removed
+- Struct `CommunityGalleriesGetResponse` has been removed
+- Struct `CommunityGalleriesGetResult` has been removed
+- Struct `CommunityGalleryImageVersionsGetOptions` has been removed
+- Struct `CommunityGalleryImageVersionsGetResponse` has been removed
+- Struct `CommunityGalleryImageVersionsGetResult` has been removed
+- Struct `CommunityGalleryImagesGetOptions` has been removed
+- Struct `CommunityGalleryImagesGetResponse` has been removed
+- Struct `CommunityGalleryImagesGetResult` has been removed
+- Struct `ComputeOperationListResult` has been removed
+- Struct `ComputeOperationValue` has been removed
+- Struct `ComputeOperationValueDisplay` has been removed
+- Struct `DedicatedHostGroupsCreateOrUpdateOptions` has been removed
+- Struct `DedicatedHostGroupsCreateOrUpdateResponse` has been removed
+- Struct `DedicatedHostGroupsCreateOrUpdateResult` has been removed
+- Struct `DedicatedHostGroupsDeleteOptions` has been removed
+- Struct `DedicatedHostGroupsDeleteResponse` has been removed
+- Struct `DedicatedHostGroupsGetOptions` has been removed
+- Struct `DedicatedHostGroupsGetResponse` has been removed
+- Struct `DedicatedHostGroupsGetResult` has been removed
+- Struct `DedicatedHostGroupsListByResourceGroupOptions` has been removed
+- Struct `DedicatedHostGroupsListByResourceGroupPager` has been removed
+- Struct `DedicatedHostGroupsListByResourceGroupResponse` has been removed
+- Struct `DedicatedHostGroupsListByResourceGroupResult` has been removed
+- Struct `DedicatedHostGroupsListBySubscriptionOptions` has been removed
+- Struct `DedicatedHostGroupsListBySubscriptionPager` has been removed
+- Struct `DedicatedHostGroupsListBySubscriptionResponse` has been removed
+- Struct `DedicatedHostGroupsListBySubscriptionResult` has been removed
+- Struct `DedicatedHostGroupsUpdateOptions` has been removed
+- Struct `DedicatedHostGroupsUpdateResponse` has been removed
+- Struct `DedicatedHostGroupsUpdateResult` has been removed
+- Struct `DedicatedHostsBeginCreateOrUpdateOptions` has been removed
+- Struct `DedicatedHostsBeginDeleteOptions` has been removed
+- Struct `DedicatedHostsBeginUpdateOptions` has been removed
+- Struct `DedicatedHostsCreateOrUpdatePoller` has been removed
+- Struct `DedicatedHostsCreateOrUpdatePollerResponse` has been removed
+- Struct `DedicatedHostsCreateOrUpdateResponse` has been removed
+- Struct `DedicatedHostsCreateOrUpdateResult` has been removed
+- Struct `DedicatedHostsDeletePoller` has been removed
+- Struct `DedicatedHostsDeletePollerResponse` has been removed
+- Struct `DedicatedHostsDeleteResponse` has been removed
+- Struct `DedicatedHostsGetOptions` has been removed
+- Struct `DedicatedHostsGetResponse` has been removed
+- Struct `DedicatedHostsGetResult` has been removed
+- Struct `DedicatedHostsListByHostGroupOptions` has been removed
+- Struct `DedicatedHostsListByHostGroupPager` has been removed
+- Struct `DedicatedHostsListByHostGroupResponse` has been removed
+- Struct `DedicatedHostsListByHostGroupResult` has been removed
+- Struct `DedicatedHostsUpdatePoller` has been removed
+- Struct `DedicatedHostsUpdatePollerResponse` has been removed
+- Struct `DedicatedHostsUpdateResponse` has been removed
+- Struct `DedicatedHostsUpdateResult` has been removed
+- Struct `DiskAccessesBeginCreateOrUpdateOptions` has been removed
+- Struct `DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions` has been removed
+- Struct `DiskAccessesBeginDeleteOptions` has been removed
+- Struct `DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions` has been removed
+- Struct `DiskAccessesBeginUpdateOptions` has been removed
+- Struct `DiskAccessesCreateOrUpdatePoller` has been removed
+- Struct `DiskAccessesCreateOrUpdatePollerResponse` has been removed
+- Struct `DiskAccessesCreateOrUpdateResponse` has been removed
+- Struct `DiskAccessesCreateOrUpdateResult` has been removed
+- Struct `DiskAccessesDeleteAPrivateEndpointConnectionPoller` has been removed
+- Struct `DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse` has been removed
+- Struct `DiskAccessesDeleteAPrivateEndpointConnectionResponse` has been removed
+- Struct `DiskAccessesDeletePoller` has been removed
+- Struct `DiskAccessesDeletePollerResponse` has been removed
+- Struct `DiskAccessesDeleteResponse` has been removed
+- Struct `DiskAccessesGetAPrivateEndpointConnectionOptions` has been removed
+- Struct `DiskAccessesGetAPrivateEndpointConnectionResponse` has been removed
+- Struct `DiskAccessesGetAPrivateEndpointConnectionResult` has been removed
+- Struct `DiskAccessesGetOptions` has been removed
+- Struct `DiskAccessesGetPrivateLinkResourcesOptions` has been removed
+- Struct `DiskAccessesGetPrivateLinkResourcesResponse` has been removed
+- Struct `DiskAccessesGetPrivateLinkResourcesResult` has been removed
+- Struct `DiskAccessesGetResponse` has been removed
+- Struct `DiskAccessesGetResult` has been removed
+- Struct `DiskAccessesListByResourceGroupOptions` has been removed
+- Struct `DiskAccessesListByResourceGroupPager` has been removed
+- Struct `DiskAccessesListByResourceGroupResponse` has been removed
+- Struct `DiskAccessesListByResourceGroupResult` has been removed
+- Struct `DiskAccessesListOptions` has been removed
+- Struct `DiskAccessesListPager` has been removed
+- Struct `DiskAccessesListPrivateEndpointConnectionsOptions` has been removed
+- Struct `DiskAccessesListPrivateEndpointConnectionsPager` has been removed
+- Struct `DiskAccessesListPrivateEndpointConnectionsResponse` has been removed
+- Struct `DiskAccessesListPrivateEndpointConnectionsResult` has been removed
+- Struct `DiskAccessesListResponse` has been removed
+- Struct `DiskAccessesListResult` has been removed
+- Struct `DiskAccessesUpdateAPrivateEndpointConnectionPoller` has been removed
+- Struct `DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse` has been removed
+- Struct `DiskAccessesUpdateAPrivateEndpointConnectionResponse` has been removed
+- Struct `DiskAccessesUpdateAPrivateEndpointConnectionResult` has been removed
+- Struct `DiskAccessesUpdatePoller` has been removed
+- Struct `DiskAccessesUpdatePollerResponse` has been removed
+- Struct `DiskAccessesUpdateResponse` has been removed
+- Struct `DiskAccessesUpdateResult` has been removed
+- Struct `DiskEncryptionSetsBeginCreateOrUpdateOptions` has been removed
+- Struct `DiskEncryptionSetsBeginDeleteOptions` has been removed
+- Struct `DiskEncryptionSetsBeginUpdateOptions` has been removed
+- Struct `DiskEncryptionSetsCreateOrUpdatePoller` has been removed
+- Struct `DiskEncryptionSetsCreateOrUpdatePollerResponse` has been removed
+- Struct `DiskEncryptionSetsCreateOrUpdateResponse` has been removed
+- Struct `DiskEncryptionSetsCreateOrUpdateResult` has been removed
+- Struct `DiskEncryptionSetsDeletePoller` has been removed
+- Struct `DiskEncryptionSetsDeletePollerResponse` has been removed
+- Struct `DiskEncryptionSetsDeleteResponse` has been removed
+- Struct `DiskEncryptionSetsGetOptions` has been removed
+- Struct `DiskEncryptionSetsGetResponse` has been removed
+- Struct `DiskEncryptionSetsGetResult` has been removed
+- Struct `DiskEncryptionSetsListAssociatedResourcesOptions` has been removed
+- Struct `DiskEncryptionSetsListAssociatedResourcesPager` has been removed
+- Struct `DiskEncryptionSetsListAssociatedResourcesResponse` has been removed
+- Struct `DiskEncryptionSetsListAssociatedResourcesResult` has been removed
+- Struct `DiskEncryptionSetsListByResourceGroupOptions` has been removed
+- Struct `DiskEncryptionSetsListByResourceGroupPager` has been removed
+- Struct `DiskEncryptionSetsListByResourceGroupResponse` has been removed
+- Struct `DiskEncryptionSetsListByResourceGroupResult` has been removed
+- Struct `DiskEncryptionSetsListOptions` has been removed
+- Struct `DiskEncryptionSetsListPager` has been removed
+- Struct `DiskEncryptionSetsListResponse` has been removed
+- Struct `DiskEncryptionSetsListResult` has been removed
+- Struct `DiskEncryptionSetsUpdatePoller` has been removed
+- Struct `DiskEncryptionSetsUpdatePollerResponse` has been removed
+- Struct `DiskEncryptionSetsUpdateResponse` has been removed
+- Struct `DiskEncryptionSetsUpdateResult` has been removed
+- Struct `DiskRestorePointBeginGrantAccessOptions` has been removed
+- Struct `DiskRestorePointBeginRevokeAccessOptions` has been removed
+- Struct `DiskRestorePointGetOptions` has been removed
+- Struct `DiskRestorePointGetResponse` has been removed
+- Struct `DiskRestorePointGetResult` has been removed
+- Struct `DiskRestorePointGrantAccessPoller` has been removed
+- Struct `DiskRestorePointGrantAccessPollerResponse` has been removed
+- Struct `DiskRestorePointGrantAccessResponse` has been removed
+- Struct `DiskRestorePointGrantAccessResult` has been removed
+- Struct `DiskRestorePointListByRestorePointOptions` has been removed
+- Struct `DiskRestorePointListByRestorePointPager` has been removed
+- Struct `DiskRestorePointListByRestorePointResponse` has been removed
+- Struct `DiskRestorePointListByRestorePointResult` has been removed
+- Struct `DiskRestorePointRevokeAccessPoller` has been removed
+- Struct `DiskRestorePointRevokeAccessPollerResponse` has been removed
+- Struct `DiskRestorePointRevokeAccessResponse` has been removed
+- Struct `DisksBeginCreateOrUpdateOptions` has been removed
+- Struct `DisksBeginDeleteOptions` has been removed
+- Struct `DisksBeginGrantAccessOptions` has been removed
+- Struct `DisksBeginRevokeAccessOptions` has been removed
+- Struct `DisksBeginUpdateOptions` has been removed
+- Struct `DisksCreateOrUpdatePoller` has been removed
+- Struct `DisksCreateOrUpdatePollerResponse` has been removed
+- Struct `DisksCreateOrUpdateResponse` has been removed
+- Struct `DisksCreateOrUpdateResult` has been removed
+- Struct `DisksDeletePoller` has been removed
+- Struct `DisksDeletePollerResponse` has been removed
+- Struct `DisksDeleteResponse` has been removed
+- Struct `DisksGetOptions` has been removed
+- Struct `DisksGetResponse` has been removed
+- Struct `DisksGetResult` has been removed
+- Struct `DisksGrantAccessPoller` has been removed
+- Struct `DisksGrantAccessPollerResponse` has been removed
+- Struct `DisksGrantAccessResponse` has been removed
+- Struct `DisksGrantAccessResult` has been removed
+- Struct `DisksListByResourceGroupOptions` has been removed
+- Struct `DisksListByResourceGroupPager` has been removed
+- Struct `DisksListByResourceGroupResponse` has been removed
+- Struct `DisksListByResourceGroupResult` has been removed
+- Struct `DisksListOptions` has been removed
+- Struct `DisksListPager` has been removed
+- Struct `DisksListResponse` has been removed
+- Struct `DisksListResult` has been removed
+- Struct `DisksRevokeAccessPoller` has been removed
+- Struct `DisksRevokeAccessPollerResponse` has been removed
+- Struct `DisksRevokeAccessResponse` has been removed
+- Struct `DisksUpdatePoller` has been removed
+- Struct `DisksUpdatePollerResponse` has been removed
+- Struct `DisksUpdateResponse` has been removed
+- Struct `DisksUpdateResult` has been removed
+- Struct `GalleriesBeginCreateOrUpdateOptions` has been removed
+- Struct `GalleriesBeginDeleteOptions` has been removed
+- Struct `GalleriesBeginUpdateOptions` has been removed
+- Struct `GalleriesCreateOrUpdatePoller` has been removed
+- Struct `GalleriesCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleriesCreateOrUpdateResponse` has been removed
+- Struct `GalleriesCreateOrUpdateResult` has been removed
+- Struct `GalleriesDeletePoller` has been removed
+- Struct `GalleriesDeletePollerResponse` has been removed
+- Struct `GalleriesDeleteResponse` has been removed
+- Struct `GalleriesGetOptions` has been removed
+- Struct `GalleriesGetResponse` has been removed
+- Struct `GalleriesGetResult` has been removed
+- Struct `GalleriesListByResourceGroupOptions` has been removed
+- Struct `GalleriesListByResourceGroupPager` has been removed
+- Struct `GalleriesListByResourceGroupResponse` has been removed
+- Struct `GalleriesListByResourceGroupResult` has been removed
+- Struct `GalleriesListOptions` has been removed
+- Struct `GalleriesListPager` has been removed
+- Struct `GalleriesListResponse` has been removed
+- Struct `GalleriesListResult` has been removed
+- Struct `GalleriesUpdatePoller` has been removed
+- Struct `GalleriesUpdatePollerResponse` has been removed
+- Struct `GalleriesUpdateResponse` has been removed
+- Struct `GalleriesUpdateResult` has been removed
+- Struct `GalleryApplicationVersionsBeginCreateOrUpdateOptions` has been removed
+- Struct `GalleryApplicationVersionsBeginDeleteOptions` has been removed
+- Struct `GalleryApplicationVersionsBeginUpdateOptions` has been removed
+- Struct `GalleryApplicationVersionsCreateOrUpdatePoller` has been removed
+- Struct `GalleryApplicationVersionsCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleryApplicationVersionsCreateOrUpdateResponse` has been removed
+- Struct `GalleryApplicationVersionsCreateOrUpdateResult` has been removed
+- Struct `GalleryApplicationVersionsDeletePoller` has been removed
+- Struct `GalleryApplicationVersionsDeletePollerResponse` has been removed
+- Struct `GalleryApplicationVersionsDeleteResponse` has been removed
+- Struct `GalleryApplicationVersionsGetOptions` has been removed
+- Struct `GalleryApplicationVersionsGetResponse` has been removed
+- Struct `GalleryApplicationVersionsGetResult` has been removed
+- Struct `GalleryApplicationVersionsListByGalleryApplicationOptions` has been removed
+- Struct `GalleryApplicationVersionsListByGalleryApplicationPager` has been removed
+- Struct `GalleryApplicationVersionsListByGalleryApplicationResponse` has been removed
+- Struct `GalleryApplicationVersionsListByGalleryApplicationResult` has been removed
+- Struct `GalleryApplicationVersionsUpdatePoller` has been removed
+- Struct `GalleryApplicationVersionsUpdatePollerResponse` has been removed
+- Struct `GalleryApplicationVersionsUpdateResponse` has been removed
+- Struct `GalleryApplicationVersionsUpdateResult` has been removed
+- Struct `GalleryApplicationsBeginCreateOrUpdateOptions` has been removed
+- Struct `GalleryApplicationsBeginDeleteOptions` has been removed
+- Struct `GalleryApplicationsBeginUpdateOptions` has been removed
+- Struct `GalleryApplicationsCreateOrUpdatePoller` has been removed
+- Struct `GalleryApplicationsCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleryApplicationsCreateOrUpdateResponse` has been removed
+- Struct `GalleryApplicationsCreateOrUpdateResult` has been removed
+- Struct `GalleryApplicationsDeletePoller` has been removed
+- Struct `GalleryApplicationsDeletePollerResponse` has been removed
+- Struct `GalleryApplicationsDeleteResponse` has been removed
+- Struct `GalleryApplicationsGetOptions` has been removed
+- Struct `GalleryApplicationsGetResponse` has been removed
+- Struct `GalleryApplicationsGetResult` has been removed
+- Struct `GalleryApplicationsListByGalleryOptions` has been removed
+- Struct `GalleryApplicationsListByGalleryPager` has been removed
+- Struct `GalleryApplicationsListByGalleryResponse` has been removed
+- Struct `GalleryApplicationsListByGalleryResult` has been removed
+- Struct `GalleryApplicationsUpdatePoller` has been removed
+- Struct `GalleryApplicationsUpdatePollerResponse` has been removed
+- Struct `GalleryApplicationsUpdateResponse` has been removed
+- Struct `GalleryApplicationsUpdateResult` has been removed
+- Struct `GalleryImageVersionsBeginCreateOrUpdateOptions` has been removed
+- Struct `GalleryImageVersionsBeginDeleteOptions` has been removed
+- Struct `GalleryImageVersionsBeginUpdateOptions` has been removed
+- Struct `GalleryImageVersionsCreateOrUpdatePoller` has been removed
+- Struct `GalleryImageVersionsCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleryImageVersionsCreateOrUpdateResponse` has been removed
+- Struct `GalleryImageVersionsCreateOrUpdateResult` has been removed
+- Struct `GalleryImageVersionsDeletePoller` has been removed
+- Struct `GalleryImageVersionsDeletePollerResponse` has been removed
+- Struct `GalleryImageVersionsDeleteResponse` has been removed
+- Struct `GalleryImageVersionsGetOptions` has been removed
+- Struct `GalleryImageVersionsGetResponse` has been removed
+- Struct `GalleryImageVersionsGetResult` has been removed
+- Struct `GalleryImageVersionsListByGalleryImageOptions` has been removed
+- Struct `GalleryImageVersionsListByGalleryImagePager` has been removed
+- Struct `GalleryImageVersionsListByGalleryImageResponse` has been removed
+- Struct `GalleryImageVersionsListByGalleryImageResult` has been removed
+- Struct `GalleryImageVersionsUpdatePoller` has been removed
+- Struct `GalleryImageVersionsUpdatePollerResponse` has been removed
+- Struct `GalleryImageVersionsUpdateResponse` has been removed
+- Struct `GalleryImageVersionsUpdateResult` has been removed
+- Struct `GalleryImagesBeginCreateOrUpdateOptions` has been removed
+- Struct `GalleryImagesBeginDeleteOptions` has been removed
+- Struct `GalleryImagesBeginUpdateOptions` has been removed
+- Struct `GalleryImagesCreateOrUpdatePoller` has been removed
+- Struct `GalleryImagesCreateOrUpdatePollerResponse` has been removed
+- Struct `GalleryImagesCreateOrUpdateResponse` has been removed
+- Struct `GalleryImagesCreateOrUpdateResult` has been removed
+- Struct `GalleryImagesDeletePoller` has been removed
+- Struct `GalleryImagesDeletePollerResponse` has been removed
+- Struct `GalleryImagesDeleteResponse` has been removed
+- Struct `GalleryImagesGetOptions` has been removed
+- Struct `GalleryImagesGetResponse` has been removed
+- Struct `GalleryImagesGetResult` has been removed
+- Struct `GalleryImagesListByGalleryOptions` has been removed
+- Struct `GalleryImagesListByGalleryPager` has been removed
+- Struct `GalleryImagesListByGalleryResponse` has been removed
+- Struct `GalleryImagesListByGalleryResult` has been removed
+- Struct `GalleryImagesUpdatePoller` has been removed
+- Struct `GalleryImagesUpdatePollerResponse` has been removed
+- Struct `GalleryImagesUpdateResponse` has been removed
+- Struct `GalleryImagesUpdateResult` has been removed
+- Struct `GallerySharingProfileBeginUpdateOptions` has been removed
+- Struct `GallerySharingProfileUpdatePoller` has been removed
+- Struct `GallerySharingProfileUpdatePollerResponse` has been removed
+- Struct `GallerySharingProfileUpdateResponse` has been removed
+- Struct `GallerySharingProfileUpdateResult` has been removed
+- Struct `ImagesBeginCreateOrUpdateOptions` has been removed
+- Struct `ImagesBeginDeleteOptions` has been removed
+- Struct `ImagesBeginUpdateOptions` has been removed
+- Struct `ImagesCreateOrUpdatePoller` has been removed
+- Struct `ImagesCreateOrUpdatePollerResponse` has been removed
+- Struct `ImagesCreateOrUpdateResponse` has been removed
+- Struct `ImagesCreateOrUpdateResult` has been removed
+- Struct `ImagesDeletePoller` has been removed
+- Struct `ImagesDeletePollerResponse` has been removed
+- Struct `ImagesDeleteResponse` has been removed
+- Struct `ImagesGetOptions` has been removed
+- Struct `ImagesGetResponse` has been removed
+- Struct `ImagesGetResult` has been removed
+- Struct `ImagesListByResourceGroupOptions` has been removed
+- Struct `ImagesListByResourceGroupPager` has been removed
+- Struct `ImagesListByResourceGroupResponse` has been removed
+- Struct `ImagesListByResourceGroupResult` has been removed
+- Struct `ImagesListOptions` has been removed
+- Struct `ImagesListPager` has been removed
+- Struct `ImagesListResponse` has been removed
+- Struct `ImagesListResult` has been removed
+- Struct `ImagesUpdatePoller` has been removed
+- Struct `ImagesUpdatePollerResponse` has been removed
+- Struct `ImagesUpdateResponse` has been removed
+- Struct `ImagesUpdateResult` has been removed
+- Struct `LogAnalyticsBeginExportRequestRateByIntervalOptions` has been removed
+- Struct `LogAnalyticsBeginExportThrottledRequestsOptions` has been removed
+- Struct `LogAnalyticsExportRequestRateByIntervalPoller` has been removed
+- Struct `LogAnalyticsExportRequestRateByIntervalPollerResponse` has been removed
+- Struct `LogAnalyticsExportRequestRateByIntervalResponse` has been removed
+- Struct `LogAnalyticsExportRequestRateByIntervalResult` has been removed
+- Struct `LogAnalyticsExportThrottledRequestsPoller` has been removed
+- Struct `LogAnalyticsExportThrottledRequestsPollerResponse` has been removed
+- Struct `LogAnalyticsExportThrottledRequestsResponse` has been removed
+- Struct `LogAnalyticsExportThrottledRequestsResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `ProximityPlacementGroupsCreateOrUpdateOptions` has been removed
+- Struct `ProximityPlacementGroupsCreateOrUpdateResponse` has been removed
+- Struct `ProximityPlacementGroupsCreateOrUpdateResult` has been removed
+- Struct `ProximityPlacementGroupsDeleteOptions` has been removed
+- Struct `ProximityPlacementGroupsDeleteResponse` has been removed
+- Struct `ProximityPlacementGroupsGetOptions` has been removed
+- Struct `ProximityPlacementGroupsGetResponse` has been removed
+- Struct `ProximityPlacementGroupsGetResult` has been removed
+- Struct `ProximityPlacementGroupsListByResourceGroupOptions` has been removed
+- Struct `ProximityPlacementGroupsListByResourceGroupPager` has been removed
+- Struct `ProximityPlacementGroupsListByResourceGroupResponse` has been removed
+- Struct `ProximityPlacementGroupsListByResourceGroupResult` has been removed
+- Struct `ProximityPlacementGroupsListBySubscriptionOptions` has been removed
+- Struct `ProximityPlacementGroupsListBySubscriptionPager` has been removed
+- Struct `ProximityPlacementGroupsListBySubscriptionResponse` has been removed
+- Struct `ProximityPlacementGroupsListBySubscriptionResult` has been removed
+- Struct `ProximityPlacementGroupsUpdateOptions` has been removed
+- Struct `ProximityPlacementGroupsUpdateResponse` has been removed
+- Struct `ProximityPlacementGroupsUpdateResult` has been removed
+- Struct `ResourceSKUsListOptions` has been removed
+- Struct `ResourceSKUsListPager` has been removed
+- Struct `ResourceSKUsListResponse` has been removed
+- Struct `ResourceSKUsListResult` has been removed
+- Struct `RestorePointCollectionsBeginDeleteOptions` has been removed
+- Struct `RestorePointCollectionsCreateOrUpdateOptions` has been removed
+- Struct `RestorePointCollectionsCreateOrUpdateResponse` has been removed
+- Struct `RestorePointCollectionsCreateOrUpdateResult` has been removed
+- Struct `RestorePointCollectionsDeletePoller` has been removed
+- Struct `RestorePointCollectionsDeletePollerResponse` has been removed
+- Struct `RestorePointCollectionsDeleteResponse` has been removed
+- Struct `RestorePointCollectionsGetOptions` has been removed
+- Struct `RestorePointCollectionsGetResponse` has been removed
+- Struct `RestorePointCollectionsGetResult` has been removed
+- Struct `RestorePointCollectionsListAllOptions` has been removed
+- Struct `RestorePointCollectionsListAllPager` has been removed
+- Struct `RestorePointCollectionsListAllResponse` has been removed
+- Struct `RestorePointCollectionsListAllResult` has been removed
+- Struct `RestorePointCollectionsListOptions` has been removed
+- Struct `RestorePointCollectionsListPager` has been removed
+- Struct `RestorePointCollectionsListResponse` has been removed
+- Struct `RestorePointCollectionsListResult` has been removed
+- Struct `RestorePointCollectionsUpdateOptions` has been removed
+- Struct `RestorePointCollectionsUpdateResponse` has been removed
+- Struct `RestorePointCollectionsUpdateResult` has been removed
+- Struct `RestorePointsBeginCreateOptions` has been removed
+- Struct `RestorePointsBeginDeleteOptions` has been removed
+- Struct `RestorePointsCreatePoller` has been removed
+- Struct `RestorePointsCreatePollerResponse` has been removed
+- Struct `RestorePointsCreateResponse` has been removed
+- Struct `RestorePointsCreateResult` has been removed
+- Struct `RestorePointsDeletePoller` has been removed
+- Struct `RestorePointsDeletePollerResponse` has been removed
+- Struct `RestorePointsDeleteResponse` has been removed
+- Struct `RestorePointsGetOptions` has been removed
+- Struct `RestorePointsGetResponse` has been removed
+- Struct `RestorePointsGetResult` has been removed
+- Struct `SSHPublicKeysCreateOptions` has been removed
+- Struct `SSHPublicKeysCreateResponse` has been removed
+- Struct `SSHPublicKeysCreateResult` has been removed
+- Struct `SSHPublicKeysDeleteOptions` has been removed
+- Struct `SSHPublicKeysDeleteResponse` has been removed
+- Struct `SSHPublicKeysGenerateKeyPairOptions` has been removed
+- Struct `SSHPublicKeysGenerateKeyPairResponse` has been removed
+- Struct `SSHPublicKeysGenerateKeyPairResult` has been removed
+- Struct `SSHPublicKeysGetOptions` has been removed
+- Struct `SSHPublicKeysGetResponse` has been removed
+- Struct `SSHPublicKeysGetResult` has been removed
+- Struct `SSHPublicKeysListByResourceGroupOptions` has been removed
+- Struct `SSHPublicKeysListByResourceGroupPager` has been removed
+- Struct `SSHPublicKeysListByResourceGroupResponse` has been removed
+- Struct `SSHPublicKeysListByResourceGroupResult` has been removed
+- Struct `SSHPublicKeysListBySubscriptionOptions` has been removed
+- Struct `SSHPublicKeysListBySubscriptionPager` has been removed
+- Struct `SSHPublicKeysListBySubscriptionResponse` has been removed
+- Struct `SSHPublicKeysListBySubscriptionResult` has been removed
+- Struct `SSHPublicKeysUpdateOptions` has been removed
+- Struct `SSHPublicKeysUpdateResponse` has been removed
+- Struct `SSHPublicKeysUpdateResult` has been removed
+- Struct `SharedGalleriesGetOptions` has been removed
+- Struct `SharedGalleriesGetResponse` has been removed
+- Struct `SharedGalleriesGetResult` has been removed
+- Struct `SharedGalleriesListOptions` has been removed
+- Struct `SharedGalleriesListPager` has been removed
+- Struct `SharedGalleriesListResponse` has been removed
+- Struct `SharedGalleriesListResult` has been removed
+- Struct `SharedGalleryImageVersionsGetOptions` has been removed
+- Struct `SharedGalleryImageVersionsGetResponse` has been removed
+- Struct `SharedGalleryImageVersionsGetResult` has been removed
+- Struct `SharedGalleryImageVersionsListOptions` has been removed
+- Struct `SharedGalleryImageVersionsListPager` has been removed
+- Struct `SharedGalleryImageVersionsListResponse` has been removed
+- Struct `SharedGalleryImageVersionsListResult` has been removed
+- Struct `SharedGalleryImagesGetOptions` has been removed
+- Struct `SharedGalleryImagesGetResponse` has been removed
+- Struct `SharedGalleryImagesGetResult` has been removed
+- Struct `SharedGalleryImagesListOptions` has been removed
+- Struct `SharedGalleryImagesListPager` has been removed
+- Struct `SharedGalleryImagesListResponse` has been removed
+- Struct `SharedGalleryImagesListResult` has been removed
+- Struct `SnapshotsBeginCreateOrUpdateOptions` has been removed
+- Struct `SnapshotsBeginDeleteOptions` has been removed
+- Struct `SnapshotsBeginGrantAccessOptions` has been removed
+- Struct `SnapshotsBeginRevokeAccessOptions` has been removed
+- Struct `SnapshotsBeginUpdateOptions` has been removed
+- Struct `SnapshotsCreateOrUpdatePoller` has been removed
+- Struct `SnapshotsCreateOrUpdatePollerResponse` has been removed
+- Struct `SnapshotsCreateOrUpdateResponse` has been removed
+- Struct `SnapshotsCreateOrUpdateResult` has been removed
+- Struct `SnapshotsDeletePoller` has been removed
+- Struct `SnapshotsDeletePollerResponse` has been removed
+- Struct `SnapshotsDeleteResponse` has been removed
+- Struct `SnapshotsGetOptions` has been removed
+- Struct `SnapshotsGetResponse` has been removed
+- Struct `SnapshotsGetResult` has been removed
+- Struct `SnapshotsGrantAccessPoller` has been removed
+- Struct `SnapshotsGrantAccessPollerResponse` has been removed
+- Struct `SnapshotsGrantAccessResponse` has been removed
+- Struct `SnapshotsGrantAccessResult` has been removed
+- Struct `SnapshotsListByResourceGroupOptions` has been removed
+- Struct `SnapshotsListByResourceGroupPager` has been removed
+- Struct `SnapshotsListByResourceGroupResponse` has been removed
+- Struct `SnapshotsListByResourceGroupResult` has been removed
+- Struct `SnapshotsListOptions` has been removed
+- Struct `SnapshotsListPager` has been removed
+- Struct `SnapshotsListResponse` has been removed
+- Struct `SnapshotsListResult` has been removed
+- Struct `SnapshotsRevokeAccessPoller` has been removed
+- Struct `SnapshotsRevokeAccessPollerResponse` has been removed
+- Struct `SnapshotsRevokeAccessResponse` has been removed
+- Struct `SnapshotsUpdatePoller` has been removed
+- Struct `SnapshotsUpdatePollerResponse` has been removed
+- Struct `SnapshotsUpdateResponse` has been removed
+- Struct `SnapshotsUpdateResult` has been removed
+- Struct `UsageListOptions` has been removed
+- Struct `UsageListPager` has been removed
+- Struct `UsageListResponse` has been removed
+- Struct `UsageListResult` has been removed
+- Struct `VirtualMachineExtensionImagesGetOptions` has been removed
+- Struct `VirtualMachineExtensionImagesGetResponse` has been removed
+- Struct `VirtualMachineExtensionImagesGetResult` has been removed
+- Struct `VirtualMachineExtensionImagesListTypesOptions` has been removed
+- Struct `VirtualMachineExtensionImagesListTypesResponse` has been removed
+- Struct `VirtualMachineExtensionImagesListTypesResult` has been removed
+- Struct `VirtualMachineExtensionImagesListVersionsOptions` has been removed
+- Struct `VirtualMachineExtensionImagesListVersionsResponse` has been removed
+- Struct `VirtualMachineExtensionImagesListVersionsResult` has been removed
+- Struct `VirtualMachineExtensionsBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachineExtensionsBeginDeleteOptions` has been removed
+- Struct `VirtualMachineExtensionsBeginUpdateOptions` has been removed
+- Struct `VirtualMachineExtensionsCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineExtensionsCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineExtensionsCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachineExtensionsCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineExtensionsDeletePoller` has been removed
+- Struct `VirtualMachineExtensionsDeletePollerResponse` has been removed
+- Struct `VirtualMachineExtensionsDeleteResponse` has been removed
+- Struct `VirtualMachineExtensionsGetOptions` has been removed
+- Struct `VirtualMachineExtensionsGetResponse` has been removed
+- Struct `VirtualMachineExtensionsGetResult` has been removed
+- Struct `VirtualMachineExtensionsListOptions` has been removed
+- Struct `VirtualMachineExtensionsListResponse` has been removed
+- Struct `VirtualMachineExtensionsListResultEnvelope` has been removed
+- Struct `VirtualMachineExtensionsUpdatePoller` has been removed
+- Struct `VirtualMachineExtensionsUpdatePollerResponse` has been removed
+- Struct `VirtualMachineExtensionsUpdateResponse` has been removed
+- Struct `VirtualMachineExtensionsUpdateResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneGetOptions` has been removed
+- Struct `VirtualMachineImagesEdgeZoneGetResponse` has been removed
+- Struct `VirtualMachineImagesEdgeZoneGetResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListOffersOptions` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListOffersResponse` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListOffersResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListOptions` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListPublishersOptions` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListPublishersResponse` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListPublishersResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListResponse` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListResult` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListSKUsOptions` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListSKUsResponse` has been removed
+- Struct `VirtualMachineImagesEdgeZoneListSKUsResult` has been removed
+- Struct `VirtualMachineImagesGetOptions` has been removed
+- Struct `VirtualMachineImagesGetResponse` has been removed
+- Struct `VirtualMachineImagesGetResult` has been removed
+- Struct `VirtualMachineImagesListOffersOptions` has been removed
+- Struct `VirtualMachineImagesListOffersResponse` has been removed
+- Struct `VirtualMachineImagesListOffersResult` has been removed
+- Struct `VirtualMachineImagesListOptions` has been removed
+- Struct `VirtualMachineImagesListPublishersOptions` has been removed
+- Struct `VirtualMachineImagesListPublishersResponse` has been removed
+- Struct `VirtualMachineImagesListPublishersResult` has been removed
+- Struct `VirtualMachineImagesListResponse` has been removed
+- Struct `VirtualMachineImagesListResult` has been removed
+- Struct `VirtualMachineImagesListSKUsOptions` has been removed
+- Struct `VirtualMachineImagesListSKUsResponse` has been removed
+- Struct `VirtualMachineImagesListSKUsResult` has been removed
+- Struct `VirtualMachineRunCommandsBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachineRunCommandsBeginDeleteOptions` has been removed
+- Struct `VirtualMachineRunCommandsBeginUpdateOptions` has been removed
+- Struct `VirtualMachineRunCommandsCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineRunCommandsCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineRunCommandsCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachineRunCommandsCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineRunCommandsDeletePoller` has been removed
+- Struct `VirtualMachineRunCommandsDeletePollerResponse` has been removed
+- Struct `VirtualMachineRunCommandsDeleteResponse` has been removed
+- Struct `VirtualMachineRunCommandsGetByVirtualMachineOptions` has been removed
+- Struct `VirtualMachineRunCommandsGetByVirtualMachineResponse` has been removed
+- Struct `VirtualMachineRunCommandsGetByVirtualMachineResult` has been removed
+- Struct `VirtualMachineRunCommandsGetOptions` has been removed
+- Struct `VirtualMachineRunCommandsGetResponse` has been removed
+- Struct `VirtualMachineRunCommandsGetResult` has been removed
+- Struct `VirtualMachineRunCommandsListByVirtualMachineOptions` has been removed
+- Struct `VirtualMachineRunCommandsListByVirtualMachinePager` has been removed
+- Struct `VirtualMachineRunCommandsListByVirtualMachineResponse` has been removed
+- Struct `VirtualMachineRunCommandsListByVirtualMachineResult` has been removed
+- Struct `VirtualMachineRunCommandsListOptions` has been removed
+- Struct `VirtualMachineRunCommandsListPager` has been removed
+- Struct `VirtualMachineRunCommandsListResponse` has been removed
+- Struct `VirtualMachineRunCommandsListResultEnvelope` has been removed
+- Struct `VirtualMachineRunCommandsUpdatePoller` has been removed
+- Struct `VirtualMachineRunCommandsUpdatePollerResponse` has been removed
+- Struct `VirtualMachineRunCommandsUpdateResponse` has been removed
+- Struct `VirtualMachineRunCommandsUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetExtensionsBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetExtensionsBeginDeleteOptions` has been removed
+- Struct `VirtualMachineScaleSetExtensionsBeginUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetExtensionsCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetExtensionsCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetExtensionsDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetExtensionsDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsDeleteResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsGetOptions` has been removed
+- Struct `VirtualMachineScaleSetExtensionsGetResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsGetResult` has been removed
+- Struct `VirtualMachineScaleSetExtensionsListOptions` has been removed
+- Struct `VirtualMachineScaleSetExtensionsListPager` has been removed
+- Struct `VirtualMachineScaleSetExtensionsListResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsListResult` has been removed
+- Struct `VirtualMachineScaleSetExtensionsUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetExtensionsUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetExtensionsUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesBeginCancelOptions` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesBeginStartExtensionUpgradeOptions` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesBeginStartOSUpgradeOptions` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesCancelPoller` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesCancelPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesCancelResponse` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesGetLatestOptions` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesGetLatestResponse` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesGetLatestResult` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsBeginDeleteOptions` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsBeginUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsDeleteResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsGetOptions` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsGetResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsGetResult` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsListOptions` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsListResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsListResultEnvelope` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetVMExtensionsUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsBeginDeleteOptions` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsBeginUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsDeleteResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsGetOptions` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsGetResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsGetResult` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsListOptions` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsListPager` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsListResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsListResult` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetVMRunCommandsUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginDeallocateOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginDeleteOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginPerformMaintenanceOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginPowerOffOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginRedeployOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginReimageAllOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginReimageOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginRestartOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginRunCommandOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginStartOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsBeginUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsDeallocatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsDeallocatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsDeallocateResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsDeleteResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsGetInstanceViewOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsGetInstanceViewResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsGetInstanceViewResult` has been removed
+- Struct `VirtualMachineScaleSetVMsGetOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsGetResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsGetResult` has been removed
+- Struct `VirtualMachineScaleSetVMsListOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsListPager` has been removed
+- Struct `VirtualMachineScaleSetVMsListResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsListResult` has been removed
+- Struct `VirtualMachineScaleSetVMsPerformMaintenancePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsPerformMaintenancePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsPerformMaintenanceResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsPowerOffPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsPowerOffPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsPowerOffResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsRedeployPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsRedeployPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsRedeployResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsReimageAllPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsReimageAllPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsReimageAllResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsReimagePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsReimagePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsReimageResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsRestartPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsRestartPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsRestartResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResult` has been removed
+- Struct `VirtualMachineScaleSetVMsRunCommandPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsRunCommandPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsRunCommandResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsRunCommandResult` has been removed
+- Struct `VirtualMachineScaleSetVMsSimulateEvictionOptions` has been removed
+- Struct `VirtualMachineScaleSetVMsSimulateEvictionResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsStartPoller` has been removed
+- Struct `VirtualMachineScaleSetVMsStartPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsStartResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetVMsUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetVMsUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetsBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginDeallocateOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginDeleteInstancesOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginDeleteOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginPerformMaintenanceOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginPowerOffOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginRedeployOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginReimageAllOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginReimageOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginRestartOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginSetOrchestrationServiceStateOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginStartOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginUpdateInstancesOptions` has been removed
+- Struct `VirtualMachineScaleSetsBeginUpdateOptions` has been removed
+- Struct `VirtualMachineScaleSetsConvertToSinglePlacementGroupOptions` has been removed
+- Struct `VirtualMachineScaleSetsConvertToSinglePlacementGroupResponse` has been removed
+- Struct `VirtualMachineScaleSetsCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetsCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetsCreateOrUpdateResult` has been removed
+- Struct `VirtualMachineScaleSetsDeallocatePoller` has been removed
+- Struct `VirtualMachineScaleSetsDeallocatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsDeallocateResponse` has been removed
+- Struct `VirtualMachineScaleSetsDeleteInstancesPoller` has been removed
+- Struct `VirtualMachineScaleSetsDeleteInstancesPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsDeleteInstancesResponse` has been removed
+- Struct `VirtualMachineScaleSetsDeletePoller` has been removed
+- Struct `VirtualMachineScaleSetsDeletePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsDeleteResponse` has been removed
+- Struct `VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkOptions` has been removed
+- Struct `VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse` has been removed
+- Struct `VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkResult` has been removed
+- Struct `VirtualMachineScaleSetsGetInstanceViewOptions` has been removed
+- Struct `VirtualMachineScaleSetsGetInstanceViewResponse` has been removed
+- Struct `VirtualMachineScaleSetsGetInstanceViewResult` has been removed
+- Struct `VirtualMachineScaleSetsGetOSUpgradeHistoryOptions` has been removed
+- Struct `VirtualMachineScaleSetsGetOSUpgradeHistoryPager` has been removed
+- Struct `VirtualMachineScaleSetsGetOSUpgradeHistoryResponse` has been removed
+- Struct `VirtualMachineScaleSetsGetOSUpgradeHistoryResult` has been removed
+- Struct `VirtualMachineScaleSetsGetOptions` has been removed
+- Struct `VirtualMachineScaleSetsGetResponse` has been removed
+- Struct `VirtualMachineScaleSetsGetResult` has been removed
+- Struct `VirtualMachineScaleSetsListAllOptions` has been removed
+- Struct `VirtualMachineScaleSetsListAllPager` has been removed
+- Struct `VirtualMachineScaleSetsListAllResponse` has been removed
+- Struct `VirtualMachineScaleSetsListAllResult` has been removed
+- Struct `VirtualMachineScaleSetsListByLocationOptions` has been removed
+- Struct `VirtualMachineScaleSetsListByLocationPager` has been removed
+- Struct `VirtualMachineScaleSetsListByLocationResponse` has been removed
+- Struct `VirtualMachineScaleSetsListByLocationResult` has been removed
+- Struct `VirtualMachineScaleSetsListOptions` has been removed
+- Struct `VirtualMachineScaleSetsListPager` has been removed
+- Struct `VirtualMachineScaleSetsListResponse` has been removed
+- Struct `VirtualMachineScaleSetsListResult` has been removed
+- Struct `VirtualMachineScaleSetsListSKUsOptions` has been removed
+- Struct `VirtualMachineScaleSetsListSKUsPager` has been removed
+- Struct `VirtualMachineScaleSetsListSKUsResponse` has been removed
+- Struct `VirtualMachineScaleSetsListSKUsResult` has been removed
+- Struct `VirtualMachineScaleSetsPerformMaintenancePoller` has been removed
+- Struct `VirtualMachineScaleSetsPerformMaintenancePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsPerformMaintenanceResponse` has been removed
+- Struct `VirtualMachineScaleSetsPowerOffPoller` has been removed
+- Struct `VirtualMachineScaleSetsPowerOffPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsPowerOffResponse` has been removed
+- Struct `VirtualMachineScaleSetsRedeployPoller` has been removed
+- Struct `VirtualMachineScaleSetsRedeployPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsRedeployResponse` has been removed
+- Struct `VirtualMachineScaleSetsReimageAllPoller` has been removed
+- Struct `VirtualMachineScaleSetsReimageAllPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsReimageAllResponse` has been removed
+- Struct `VirtualMachineScaleSetsReimagePoller` has been removed
+- Struct `VirtualMachineScaleSetsReimagePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsReimageResponse` has been removed
+- Struct `VirtualMachineScaleSetsRestartPoller` has been removed
+- Struct `VirtualMachineScaleSetsRestartPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsRestartResponse` has been removed
+- Struct `VirtualMachineScaleSetsSetOrchestrationServiceStatePoller` has been removed
+- Struct `VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsSetOrchestrationServiceStateResponse` has been removed
+- Struct `VirtualMachineScaleSetsStartPoller` has been removed
+- Struct `VirtualMachineScaleSetsStartPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsStartResponse` has been removed
+- Struct `VirtualMachineScaleSetsUpdateInstancesPoller` has been removed
+- Struct `VirtualMachineScaleSetsUpdateInstancesPollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsUpdateInstancesResponse` has been removed
+- Struct `VirtualMachineScaleSetsUpdatePoller` has been removed
+- Struct `VirtualMachineScaleSetsUpdatePollerResponse` has been removed
+- Struct `VirtualMachineScaleSetsUpdateResponse` has been removed
+- Struct `VirtualMachineScaleSetsUpdateResult` has been removed
+- Struct `VirtualMachineSizesListOptions` has been removed
+- Struct `VirtualMachineSizesListResponse` has been removed
+- Struct `VirtualMachineSizesListResult` has been removed
+- Struct `VirtualMachinesAssessPatchesPoller` has been removed
+- Struct `VirtualMachinesAssessPatchesPollerResponse` has been removed
+- Struct `VirtualMachinesAssessPatchesResponse` has been removed
+- Struct `VirtualMachinesAssessPatchesResult` has been removed
+- Struct `VirtualMachinesBeginAssessPatchesOptions` has been removed
+- Struct `VirtualMachinesBeginCaptureOptions` has been removed
+- Struct `VirtualMachinesBeginConvertToManagedDisksOptions` has been removed
+- Struct `VirtualMachinesBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualMachinesBeginDeallocateOptions` has been removed
+- Struct `VirtualMachinesBeginDeleteOptions` has been removed
+- Struct `VirtualMachinesBeginInstallPatchesOptions` has been removed
+- Struct `VirtualMachinesBeginPerformMaintenanceOptions` has been removed
+- Struct `VirtualMachinesBeginPowerOffOptions` has been removed
+- Struct `VirtualMachinesBeginReapplyOptions` has been removed
+- Struct `VirtualMachinesBeginRedeployOptions` has been removed
+- Struct `VirtualMachinesBeginReimageOptions` has been removed
+- Struct `VirtualMachinesBeginRestartOptions` has been removed
+- Struct `VirtualMachinesBeginRunCommandOptions` has been removed
+- Struct `VirtualMachinesBeginStartOptions` has been removed
+- Struct `VirtualMachinesBeginUpdateOptions` has been removed
+- Struct `VirtualMachinesCapturePoller` has been removed
+- Struct `VirtualMachinesCapturePollerResponse` has been removed
+- Struct `VirtualMachinesCaptureResponse` has been removed
+- Struct `VirtualMachinesCaptureResult` has been removed
+- Struct `VirtualMachinesConvertToManagedDisksPoller` has been removed
+- Struct `VirtualMachinesConvertToManagedDisksPollerResponse` has been removed
+- Struct `VirtualMachinesConvertToManagedDisksResponse` has been removed
+- Struct `VirtualMachinesCreateOrUpdatePoller` has been removed
+- Struct `VirtualMachinesCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualMachinesCreateOrUpdateResponse` has been removed
+- Struct `VirtualMachinesCreateOrUpdateResult` has been removed
+- Struct `VirtualMachinesDeallocatePoller` has been removed
+- Struct `VirtualMachinesDeallocatePollerResponse` has been removed
+- Struct `VirtualMachinesDeallocateResponse` has been removed
+- Struct `VirtualMachinesDeletePoller` has been removed
+- Struct `VirtualMachinesDeletePollerResponse` has been removed
+- Struct `VirtualMachinesDeleteResponse` has been removed
+- Struct `VirtualMachinesGeneralizeOptions` has been removed
+- Struct `VirtualMachinesGeneralizeResponse` has been removed
+- Struct `VirtualMachinesGetOptions` has been removed
+- Struct `VirtualMachinesGetResponse` has been removed
+- Struct `VirtualMachinesGetResult` has been removed
+- Struct `VirtualMachinesInstallPatchesPoller` has been removed
+- Struct `VirtualMachinesInstallPatchesPollerResponse` has been removed
+- Struct `VirtualMachinesInstallPatchesResponse` has been removed
+- Struct `VirtualMachinesInstallPatchesResult` has been removed
+- Struct `VirtualMachinesInstanceViewOptions` has been removed
+- Struct `VirtualMachinesInstanceViewResponse` has been removed
+- Struct `VirtualMachinesInstanceViewResult` has been removed
+- Struct `VirtualMachinesListAllOptions` has been removed
+- Struct `VirtualMachinesListAllPager` has been removed
+- Struct `VirtualMachinesListAllResponse` has been removed
+- Struct `VirtualMachinesListAllResult` has been removed
+- Struct `VirtualMachinesListAvailableSizesOptions` has been removed
+- Struct `VirtualMachinesListAvailableSizesResponse` has been removed
+- Struct `VirtualMachinesListAvailableSizesResult` has been removed
+- Struct `VirtualMachinesListByLocationOptions` has been removed
+- Struct `VirtualMachinesListByLocationPager` has been removed
+- Struct `VirtualMachinesListByLocationResponse` has been removed
+- Struct `VirtualMachinesListByLocationResult` has been removed
+- Struct `VirtualMachinesListOptions` has been removed
+- Struct `VirtualMachinesListPager` has been removed
+- Struct `VirtualMachinesListResponse` has been removed
+- Struct `VirtualMachinesListResult` has been removed
+- Struct `VirtualMachinesPerformMaintenancePoller` has been removed
+- Struct `VirtualMachinesPerformMaintenancePollerResponse` has been removed
+- Struct `VirtualMachinesPerformMaintenanceResponse` has been removed
+- Struct `VirtualMachinesPowerOffPoller` has been removed
+- Struct `VirtualMachinesPowerOffPollerResponse` has been removed
+- Struct `VirtualMachinesPowerOffResponse` has been removed
+- Struct `VirtualMachinesReapplyPoller` has been removed
+- Struct `VirtualMachinesReapplyPollerResponse` has been removed
+- Struct `VirtualMachinesReapplyResponse` has been removed
+- Struct `VirtualMachinesRedeployPoller` has been removed
+- Struct `VirtualMachinesRedeployPollerResponse` has been removed
+- Struct `VirtualMachinesRedeployResponse` has been removed
+- Struct `VirtualMachinesReimagePoller` has been removed
+- Struct `VirtualMachinesReimagePollerResponse` has been removed
+- Struct `VirtualMachinesReimageResponse` has been removed
+- Struct `VirtualMachinesRestartPoller` has been removed
+- Struct `VirtualMachinesRestartPollerResponse` has been removed
+- Struct `VirtualMachinesRestartResponse` has been removed
+- Struct `VirtualMachinesRetrieveBootDiagnosticsDataOptions` has been removed
+- Struct `VirtualMachinesRetrieveBootDiagnosticsDataResponse` has been removed
+- Struct `VirtualMachinesRetrieveBootDiagnosticsDataResult` has been removed
+- Struct `VirtualMachinesRunCommandPoller` has been removed
+- Struct `VirtualMachinesRunCommandPollerResponse` has been removed
+- Struct `VirtualMachinesRunCommandResponse` has been removed
+- Struct `VirtualMachinesRunCommandResult` has been removed
+- Struct `VirtualMachinesSimulateEvictionOptions` has been removed
+- Struct `VirtualMachinesSimulateEvictionResponse` has been removed
+- Struct `VirtualMachinesStartPoller` has been removed
+- Struct `VirtualMachinesStartPollerResponse` has been removed
+- Struct `VirtualMachinesStartResponse` has been removed
+- Struct `VirtualMachinesUpdatePoller` has been removed
+- Struct `VirtualMachinesUpdatePollerResponse` has been removed
+- Struct `VirtualMachinesUpdateResponse` has been removed
+- Struct `VirtualMachinesUpdateResult` has been removed
+- Field `GalleryDiskImage` of struct `GalleryDataDiskImage` has been removed
+- Field `UpdateResource` of struct `DedicatedHostUpdate` has been removed
+- Field `GalleryArtifactPublishingProfileBase` of struct `GalleryApplicationVersionPublishingProfile` has been removed
+- Field `Resource` of struct `CapacityReservation` has been removed
+- Field `SubResource` of struct `VirtualMachineScaleSetNetworkConfiguration` has been removed
+- Field `Resource` of struct `Snapshot` has been removed
+- Field `PirCommunityGalleryResource` of struct `CommunityGalleryImage` has been removed
+- Field `UpdateResource` of struct `RestorePointCollectionUpdate` has been removed
+- Field `DedicatedHostInstanceView` of struct `DedicatedHostInstanceViewWithName` has been removed
+- Field `UpdateResource` of struct `AvailabilitySetUpdate` has been removed
+- Field `Resource` of struct `SSHPublicKeyResource` has been removed
+- Field `ProxyOnlyResource` of struct `DiskRestorePoint` has been removed
+- Field `GalleryArtifactPublishingProfileBase` of struct `GalleryImageVersionPublishingProfile` has been removed
+- Field `Resource` of struct `DedicatedHost` has been removed
+- Field `PirCommunityGalleryResource` of struct `CommunityGallery` has been removed
+- Field `Resource` of struct `Image` has been removed
+- Field `UpdateResource` of struct `ProximityPlacementGroupUpdate` has been removed
+- Field `Resource` of struct `GalleryImageVersion` has been removed
+- Field `ImageDisk` of struct `ImageOSDisk` has been removed
+- Field `UpdateResource` of struct `VirtualMachineRunCommandUpdate` has been removed
+- Field `RunCommandDocumentBase` of struct `RunCommandDocument` has been removed
+- Field `Resource` of struct `VirtualMachineRunCommand` has been removed
+- Field `Resource` of struct `GalleryImage` has been removed
+- Field `SubResource` of struct `SubResourceWithColocationStatus` has been removed
+- Field `SubResource` of struct `VirtualMachineCaptureResult` has been removed
+- Field `SubResource` of struct `ManagedDiskParameters` has been removed
+- Field `UpdateResource` of struct `VirtualMachineUpdate` has been removed
+- Field `UpdateResource` of struct `SSHPublicKeyUpdateResource` has been removed
+- Field `Resource` of struct `DedicatedHostGroup` has been removed
+- Field `VirtualMachineImageResource` of struct `VirtualMachineImage` has been removed
+- Field `SubResource` of struct `DiskEncryptionSetParameters` has been removed
+- Field `Resource` of struct `DiskEncryptionSet` has been removed
+- Field `SubResourceReadOnly` of struct `VirtualMachineScaleSetExtensionUpdate` has been removed
+- Field `UpdateResourceDefinition` of struct `GalleryUpdate` has been removed
+- Field `Resource` of struct `VirtualMachineScaleSet` has been removed
+- Field `UpdateResource` of struct `CapacityReservationGroupUpdate` has been removed
+- Field `UpdateResourceDefinition` of struct `GalleryImageVersionUpdate` has been removed
+- Field `ProxyResource` of struct `RestorePoint` has been removed
+- Field `UpdateResourceDefinition` of struct `GalleryImageUpdate` has been removed
+- Field `UpdateResource` of struct `VirtualMachineExtensionUpdate` has been removed
+- Field `Resource` of struct `AvailabilitySet` has been removed
+- Field `VirtualMachineReimageParameters` of struct `VirtualMachineScaleSetVMReimageParameters` has been removed
+- Field `UpdateResource` of struct `VirtualMachineScaleSetUpdate` has been removed
+- Field `Resource` of struct `RollingUpgradeStatusInfo` has been removed
+- Field `DiskImageEncryption` of struct `OSDiskImageEncryption` has been removed
+- Field `SubResource` of struct `ImageReference` has been removed
+- Field `Resource` of struct `Gallery` has been removed
+- Field `GalleryDiskImage` of struct `GalleryOSDiskImage` has been removed
+- Field `PirResource` of struct `PirSharedGalleryResource` has been removed
+- Field `Resource` of struct `GalleryApplicationVersion` has been removed
+- Field `PirSharedGalleryResource` of struct `SharedGalleryImage` has been removed
+- Field `UpdateResource` of struct `DedicatedHostGroupUpdate` has been removed
+- Field `SubResourceReadOnly` of struct `VirtualMachineScaleSetVMExtension` has been removed
+- Field `UpdateResource` of struct `ImageUpdate` has been removed
+- Field `Resource` of struct `VirtualMachine` has been removed
+- Field `Resource` of struct `CapacityReservationGroup` has been removed
+- Field `UpdateResourceDefinition` of struct `GalleryApplicationVersionUpdate` has been removed
+- Field `Resource` of struct `VirtualMachineExtensionImage` has been removed
+- Field `UpdateResourceDefinition` of struct `GalleryApplicationUpdate` has been removed
+- Field `SubResource` of struct `NetworkInterfaceReference` has been removed
+- Field `SubResource` of struct `VirtualMachineScaleSetIPConfiguration` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `ImageDisk` of struct `ImageDataDisk` has been removed
+- Field `Resource` of struct `RestorePointCollection` has been removed
+- Field `Resource` of struct `DiskAccess` has been removed
+- Field `Resource` of struct `VirtualMachineExtension` has been removed
+- Field `Resource` of struct `VirtualMachineScaleSetVM` has been removed
+- Field `LogAnalyticsInputBase` of struct `ThrottledRequestsInput` has been removed
+- Field `SubResourceReadOnly` of struct `VirtualMachineScaleSetVMExtensionUpdate` has been removed
+- Field `SubResource` of struct `VirtualMachineScaleSetUpdateNetworkConfiguration` has been removed
+- Field `SubResource` of struct `VirtualMachineScaleSetUpdateIPConfiguration` has been removed
+- Field `PirSharedGalleryResource` of struct `SharedGallery` has been removed
+- Field `LogAnalyticsInputBase` of struct `RequestRateByIntervalInput` has been removed
+- Field `DiskImageEncryption` of struct `DataDiskImageEncryption` has been removed
+- Field `SubResource` of struct `VirtualMachineImageResource` has been removed
+- Field `Resource` of struct `Disk` has been removed
+- Field `PirSharedGalleryResource` of struct `SharedGalleryImageVersion` has been removed
+- Field `PirCommunityGalleryResource` of struct `CommunityGalleryImageVersion` has been removed
+- Field `VirtualMachineScaleSetVMReimageParameters` of struct `VirtualMachineScaleSetReimageParameters` has been removed
+- Field `CapacityReservationInstanceView` of struct `CapacityReservationInstanceViewWithName` has been removed
+- Field `Resource` of struct `ProximityPlacementGroup` has been removed
+- Field `Resource` of struct `GalleryApplication` has been removed
+- Field `SubResourceReadOnly` of struct `VirtualMachineScaleSetExtension` has been removed
+- Field `UpdateResource` of struct `CapacityReservationUpdate` has been removed
+
+### Features Added
+
+- New const `DiskCreateOptionUploadPreparedSecure`
+- New const `DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey`
+- New const `DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey`
+- New const `DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey`
+- New const `DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey`
+- New const `DiskCreateOptionImportSecure`
+- New function `*UsageClientListPager.PageResponse() UsageClientListResponse`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller.FinalResponse(context.Context) (VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse, error)`
+- New function `*ProximityPlacementGroupsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*GalleryApplicationsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*DedicatedHostsClientListByHostGroupPager.PageResponse() DedicatedHostsClientListByHostGroupResponse`
+- New function `*GallerySharingProfileClientUpdatePollerResponse.Resume(context.Context, *GallerySharingProfileClient, string) error`
+- New function `*DiskEncryptionSetsClientDeletePollerResponse.Resume(context.Context, *DiskEncryptionSetsClient, string) error`
+- New function `*VirtualMachineExtensionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*GalleryImagesClientListByGalleryPager.NextPage(context.Context) bool`
+- New function `*DisksClientGrantAccessPollerResponse.Resume(context.Context, *DisksClient, string) error`
+- New function `*GalleryApplicationVersionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientPerformMaintenanceResponse, error)`
+- New function `VirtualMachinesClientPowerOffPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientPowerOffResponse, error)`
+- New function `*VirtualMachineScaleSetsClientListSKUsPager.NextPage(context.Context) bool`
+- New function `*SnapshotsClientRevokeAccessPoller.Done() bool`
+- New function `*VirtualMachineScaleSetExtensionsClientUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetExtensionsClient, string) error`
+- New function `*GalleryApplicationsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineRunCommandsClientListPager.NextPage(context.Context) bool`
+- New function `*CloudServicesClientListAllPager.Err() error`
+- New function `*UsageClientListPager.Err() error`
+- New function `*ResourceSKUsClientListPager.Err() error`
+- New function `*CloudServicesClientPowerOffPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientListByLocationPager.NextPage(context.Context) bool`
+- New function `ImagesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ImagesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetsClientListSKUsPager.PageResponse() VirtualMachineScaleSetsClientListSKUsResponse`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller.FinalResponse(context.Context) (VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse, error)`
+- New function `*VirtualMachineScaleSetsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientCancelPoller.Done() bool`
+- New function `*UsageClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachinesClientCreateOrUpdateResponse, error)`
+- New function `*CapacityReservationsClientUpdatePoller.Done() bool`
+- New function `*GalleriesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientUpdatePoller.Done() bool`
+- New function `CloudServicesClientRebuildPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientRebuildResponse, error)`
+- New function `*CloudServicesClientPowerOffPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientCancelPoller.ResumeToken() (string, error)`
+- New function `*CloudServicesClientReimagePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientPerformMaintenancePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientListByLocationPager.Err() error`
+- New function `*VirtualMachineScaleSetsClientCreateOrUpdatePoller.Done() bool`
+- New function `*AvailabilitySetsClientListPager.PageResponse() AvailabilitySetsClientListResponse`
+- New function `*GalleryImagesClientCreateOrUpdatePoller.FinalResponse(context.Context) (GalleryImagesClientCreateOrUpdateResponse, error)`
+- New function `VirtualMachineScaleSetRollingUpgradesClientCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetRollingUpgradesClientCancelResponse, error)`
+- New function `*CapacityReservationsClientListByCapacityReservationGroupPager.PageResponse() CapacityReservationsClientListByCapacityReservationGroupResponse`
+- New function `*CloudServiceRoleInstancesClientDeletePollerResponse.Resume(context.Context, *CloudServiceRoleInstancesClient, string) error`
+- New function `CapacityReservationsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CapacityReservationsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientListPager.PageResponse() VirtualMachineScaleSetVMRunCommandsClientListResponse`
+- New function `VirtualMachineScaleSetVMsClientRunCommandPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientRunCommandResponse, error)`
+- New function `*VirtualMachinesClientDeletePoller.FinalResponse(context.Context) (VirtualMachinesClientDeleteResponse, error)`
+- New function `*DiskRestorePointClientGrantAccessPoller.FinalResponse(context.Context) (DiskRestorePointClientGrantAccessResponse, error)`
+- New function `*CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse.Resume(context.Context, *CloudServicesUpdateDomainClient, string) error`
+- New function `OperationListResult.MarshalJSON() ([]byte, error)`
+- New function `*GalleriesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*GallerySharingProfileClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientDeleteInstancesPoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientDeleteInstancesResponse, error)`
+- New function `*VirtualMachineExtensionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientCapturePoller.Done() bool`
+- New function `*CloudServicesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ImagesClientListByResourceGroupPager.Err() error`
+- New function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*DiskEncryptionSetsClientListAssociatedResourcesPager.PageResponse() DiskEncryptionSetsClientListAssociatedResourcesResponse`
+- New function `*VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager.PageResponse() VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse`
+- New function `*ResourceSKUsClientListPager.NextPage(context.Context) bool`
+- New function `*DiskAccessesClientUpdatePoller.Done() bool`
+- New function `*CapacityReservationsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*GalleriesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `DiskEncryptionSetsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DiskEncryptionSetsClientUpdateResponse, error)`
+- New function `*DiskRestorePointClientRevokeAccessPoller.Done() bool`
+- New function `VirtualMachinesClientRedeployPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientRedeployResponse, error)`
+- New function `*VirtualMachinesClientRunCommandPoller.FinalResponse(context.Context) (VirtualMachinesClientRunCommandResponse, error)`
+- New function `*SnapshotsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DedicatedHostGroupsClientListBySubscriptionPager.PageResponse() DedicatedHostGroupsClientListBySubscriptionResponse`
+- New function `*RestorePointCollectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachineScaleSetVMExtensionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMExtensionsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetsClientStartPoller.Done() bool`
+- New function `VirtualMachineScaleSetsClientReimageAllPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientReimageAllResponse, error)`
+- New function `*DedicatedHostsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientUpdateInstancesPollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*RestorePointsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientReimagePollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*DiskEncryptionSetsClientUpdatePollerResponse.Resume(context.Context, *DiskEncryptionSetsClient, string) error`
+- New function `*DisksClientDeletePoller.FinalResponse(context.Context) (DisksClientDeleteResponse, error)`
+- New function `*GalleryApplicationsClientUpdatePoller.Done() bool`
+- New function `*DedicatedHostGroupsClientListByResourceGroupPager.Err() error`
+- New function `*CloudServicesClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskEncryptionSetsClientListPager.PageResponse() DiskEncryptionSetsClientListResponse`
+- New function `*DiskAccessesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientPowerOffPoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientPowerOffResponse, error)`
+- New function `*VirtualMachineScaleSetsClientReimagePoller.Done() bool`
+- New function `*DiskEncryptionSetsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DedicatedHostsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ImagesClientCreateOrUpdatePollerResponse.Resume(context.Context, *ImagesClient, string) error`
+- New function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetExtensionsClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientRedeployPoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientRedeployResponse, error)`
+- New function `*VirtualMachinesClientPerformMaintenancePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager.Err() error`
+- New function `*VirtualMachineScaleSetsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientStartPollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `VirtualMachinesClientRunCommandPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientRunCommandResponse, error)`
+- New function `*RestorePointCollectionsClientDeletePollerResponse.Resume(context.Context, *RestorePointCollectionsClient, string) error`
+- New function `VirtualMachineScaleSetVMsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientUpdateResponse, error)`
+- New function `*DiskRestorePointClientGrantAccessPollerResponse.Resume(context.Context, *DiskRestorePointClient, string) error`
+- New function `*GalleryApplicationsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachinesClientDeallocatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientDeallocateResponse, error)`
+- New function `GalleryImagesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryImagesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineRunCommandsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientReimagePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*VirtualMachineScaleSetsClientPowerOffPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DedicatedHostsClientUpdatePoller.Done() bool`
+- New function `*VirtualMachineScaleSetsClientPerformMaintenancePollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*CapacityReservationsClientUpdatePoller.FinalResponse(context.Context) (CapacityReservationsClientUpdateResponse, error)`
+- New function `VirtualMachineRunCommandsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineRunCommandsClientDeleteResponse, error)`
+- New function `*CloudServiceRoleInstancesClientRebuildPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMsClientListPager.PageResponse() VirtualMachineScaleSetVMsClientListResponse`
+- New function `GalleryImageVersionPublishingProfile.MarshalJSON() ([]byte, error)`
+- New function `*DedicatedHostsClientUpdatePollerResponse.Resume(context.Context, *DedicatedHostsClient, string) error`
+- New function `*DiskRestorePointClientRevokeAccessPollerResponse.Resume(context.Context, *DiskRestorePointClient, string) error`
+- New function `*ProximityPlacementGroupsClientListByResourceGroupPager.Err() error`
+- New function `*GalleryImageVersionsClientListByGalleryImagePager.Err() error`
+- New function `*DisksClientRevokeAccessPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientReapplyPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*VirtualMachineScaleSetExtensionsClientDeletePollerResponse.Resume(context.Context, *VirtualMachineScaleSetExtensionsClient, string) error`
+- New function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMExtensionsClient, string) error`
+- New function `*VirtualMachineRunCommandsClientUpdatePoller.Done() bool`
+- New function `*DisksClientDeletePollerResponse.Resume(context.Context, *DisksClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientPerformMaintenancePoller.Done() bool`
+- New function `*VirtualMachineRunCommandsClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachineRunCommandsClientCreateOrUpdateResponse, error)`
+- New function `VirtualMachineScaleSetsClientUpdateInstancesPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientUpdateInstancesResponse, error)`
+- New function `*RestorePointCollectionsClientListPager.NextPage(context.Context) bool`
+- New function `*CloudServiceOperatingSystemsClientListOSFamiliesPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetsClientUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*VirtualMachinesClientCreateOrUpdatePoller.Done() bool`
+- New function `DisksClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DisksClientCreateOrUpdateResponse, error)`
+- New function `*DiskEncryptionSetsClientUpdatePoller.Done() bool`
+- New function `*DiskEncryptionSetsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientStartPoller.FinalResponse(context.Context) (VirtualMachinesClientStartResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientRunCommandPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RestorePointCollectionsClientListAllPager.PageResponse() RestorePointCollectionsClientListAllResponse`
+- New function `*VirtualMachinesClientStartPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*SnapshotsClientUpdatePoller.FinalResponse(context.Context) (SnapshotsClientUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePollerResponse.Resume(context.Context, *VirtualMachineScaleSetRollingUpgradesClient, string) error`
+- New function `DisksClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DisksClientUpdateResponse, error)`
+- New function `*GalleryApplicationVersionsClientListByGalleryApplicationPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetVMsClientListPager.NextPage(context.Context) bool`
+- New function `*AvailabilitySetsClientListBySubscriptionPager.Err() error`
+- New function `*DiskRestorePointClientRevokeAccessPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientCapturePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `GalleryApplicationVersionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryApplicationVersionsClientUpdateResponse, error)`
+- New function `*VirtualMachineExtensionsClientDeletePoller.FinalResponse(context.Context) (VirtualMachineExtensionsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetsClientListPager.Err() error`
+- New function `CloudServicesClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientStartResponse, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServiceRoleInstancesClientReimagePoller.Done() bool`
+- New function `*CloudServicesUpdateDomainClientWalkUpdateDomainPoller.Done() bool`
+- New function `*ImagesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientDeleteInstancesPoller.Done() bool`
+- New function `*CloudServicesClientDeleteInstancesPoller.ResumeToken() (string, error)`
+- New function `*GalleryApplicationVersionsClientListByGalleryApplicationPager.PageResponse() GalleryApplicationVersionsClientListByGalleryApplicationResponse`
+- New function `*DisksClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*CloudServicesClientDeleteInstancesPoller.Done() bool`
+- New function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientListPager.PageResponse() CloudServicesClientListResponse`
+- New function `*VirtualMachineRunCommandsClientDeletePollerResponse.Resume(context.Context, *VirtualMachineRunCommandsClient, string) error`
+- New function `*CapacityReservationGroupsClientListByResourceGroupPager.PageResponse() CapacityReservationGroupsClientListByResourceGroupResponse`
+- New function `*VirtualMachinesClientReimagePoller.FinalResponse(context.Context) (VirtualMachinesClientReimageResponse, error)`
+- New function `*VirtualMachinesClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleriesClientDeletePoller.FinalResponse(context.Context) (GalleriesClientDeleteResponse, error)`
+- New function `*CapacityReservationsClientCreateOrUpdatePollerResponse.Resume(context.Context, *CapacityReservationsClient, string) error`
+- New function `*DiskRestorePointClientListByRestorePointPager.NextPage(context.Context) bool`
+- New function `GalleryImagesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryImagesClientDeleteResponse, error)`
+- New function `*GalleriesClientCreateOrUpdatePollerResponse.Resume(context.Context, *GalleriesClient, string) error`
+- New function `*SharedGalleryImagesClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetVMExtensionsClientUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMExtensionsClient, string) error`
+- New function `*ProximityPlacementGroupsClientListBySubscriptionPager.Err() error`
+- New function `*GalleryImageVersionsClientUpdatePollerResponse.Resume(context.Context, *GalleryImageVersionsClient, string) error`
+- New function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPoller.ResumeToken() (string, error)`
+- New function `*DisksClientListPager.Err() error`
+- New function `*DisksClientListByResourceGroupPager.Err() error`
+- New function `*VirtualMachineScaleSetsClientUpdateInstancesPoller.Done() bool`
+- New function `*CloudServicesClientRestartPoller.Done() bool`
+- New function `*GalleriesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `VirtualMachineScaleSetVMsClientPowerOffPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientPowerOffResponse, error)`
+- New function `*VirtualMachinesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ImagesClientDeletePollerResponse.Resume(context.Context, *ImagesClient, string) error`
+- New function `*DiskAccessesClientCreateOrUpdatePoller.FinalResponse(context.Context) (DiskAccessesClientCreateOrUpdateResponse, error)`
+- New function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPoller.FinalResponse(context.Context) (DiskAccessesClientDeleteAPrivateEndpointConnectionResponse, error)`
+- New function `*VirtualMachinesClientListAllPager.PageResponse() VirtualMachinesClientListAllResponse`
+- New function `*DiskRestorePointClientGrantAccessPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleryImageVersionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DisksClientGrantAccessPoller.Done() bool`
+- New function `*GalleryImageVersionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePollerResponse.Resume(context.Context, *VirtualMachineScaleSetRollingUpgradesClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientPowerOffPoller.ResumeToken() (string, error)`
+- New function `*SnapshotsClientRevokeAccessPoller.FinalResponse(context.Context) (SnapshotsClientRevokeAccessResponse, error)`
+- New function `*VirtualMachinesClientRunCommandPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*CapacityReservationsClientListByCapacityReservationGroupPager.NextPage(context.Context) bool`
+- New function `*GalleryApplicationVersionsClientDeletePollerResponse.Resume(context.Context, *GalleryApplicationVersionsClient, string) error`
+- New function `*LogAnalyticsClientExportThrottledRequestsPoller.ResumeToken() (string, error)`
+- New function `*CloudServiceRoleInstancesClientListPager.Err() error`
+- New function `*CloudServicesUpdateDomainClientListUpdateDomainsPager.PageResponse() CloudServicesUpdateDomainClientListUpdateDomainsResponse`
+- New function `*CloudServiceRoleInstancesClientRestartPoller.FinalResponse(context.Context) (CloudServiceRoleInstancesClientRestartResponse, error)`
+- New function `*RestorePointsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientUpdatePoller.Done() bool`
+- New function `GalleriesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleriesClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientListAllPager.PageResponse() CloudServicesClientListAllResponse`
+- New function `VirtualMachineScaleSetVMRunCommandsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMRunCommandsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetsClientStartPollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*VirtualMachineScaleSetsClientDeallocatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientRedeployPoller.Done() bool`
+- New function `*VirtualMachineScaleSetsClientReimageAllPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineExtensionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineRunCommandsClientDeletePoller.Done() bool`
+- New function `*ImagesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*CloudServicesClientDeleteInstancesPoller.FinalResponse(context.Context) (CloudServicesClientDeleteInstancesResponse, error)`
+- New function `GalleryImageVersionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryImageVersionsClientDeleteResponse, error)`
+- New function `*GalleryApplicationVersionsClientUpdatePoller.Done() bool`
+- New function `*SSHPublicKeysClientListByResourceGroupPager.Err() error`
+- New function `*SharedGalleryImageVersionsClientListPager.PageResponse() SharedGalleryImageVersionsClientListResponse`
+- New function `*DiskAccessesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*CloudServiceOperatingSystemsClientListOSVersionsPager.PageResponse() CloudServiceOperatingSystemsClientListOSVersionsResponse`
+- New function `*VirtualMachinesClientPerformMaintenancePoller.ResumeToken() (string, error)`
+- New function `*ImagesClientCreateOrUpdatePoller.Done() bool`
+- New function `*ImagesClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetsClientUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientUpdateResponse, error)`
+- New function `*CloudServicesClientRestartPollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `*DisksClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientPowerOffPoller.FinalResponse(context.Context) (VirtualMachinesClientPowerOffResponse, error)`
+- New function `*VirtualMachinesClientDeletePoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientDeletePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMRunCommandsClient, string) error`
+- New function `*ProximityPlacementGroupsClientListBySubscriptionPager.PageResponse() ProximityPlacementGroupsClientListBySubscriptionResponse`
+- New function `*DiskEncryptionSetsClientListByResourceGroupPager.Err() error`
+- New function `*VirtualMachinesClientPerformMaintenancePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServiceRoleInstancesClientReimagePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskRestorePointClientListByRestorePointPager.Err() error`
+- New function `*GalleryImageVersionsClientDeletePoller.Done() bool`
+- New function `*VirtualMachinesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientDeleteInstancesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientRestartPoller.Done() bool`
+- New function `*DisksClientUpdatePoller.FinalResponse(context.Context) (DisksClientUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse, error)`
+- New function `*CloudServiceRoleInstancesClientRebuildPollerResponse.Resume(context.Context, *CloudServiceRoleInstancesClient, string) error`
+- New function `DedicatedHostsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DedicatedHostsClientDeleteResponse, error)`
+- New function `*GalleryImageVersionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*GalleryApplicationVersionsClientUpdatePollerResponse.Resume(context.Context, *GalleryApplicationVersionsClient, string) error`
+- New function `*DiskAccessesClientCreateOrUpdatePollerResponse.Resume(context.Context, *DiskAccessesClient, string) error`
+- New function `*VirtualMachineRunCommandsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SharedGalleriesClientListPager.NextPage(context.Context) bool`
+- New function `*GalleryImagesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SharedGalleriesClientListPager.PageResponse() SharedGalleriesClientListResponse`
+- New function `*GalleryApplicationsClientListByGalleryPager.PageResponse() GalleryApplicationsClientListByGalleryResponse`
+- New function `VirtualMachineScaleSetsClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientStartResponse, error)`
+- New function `*CapacityReservationsClientCreateOrUpdatePoller.FinalResponse(context.Context) (CapacityReservationsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientPerformMaintenancePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientPerformMaintenanceResponse, error)`
+- New function `*GalleriesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*GalleriesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DedicatedHostsClientCreateOrUpdatePoller.FinalResponse(context.Context) (DedicatedHostsClientCreateOrUpdateResponse, error)`
+- New function `*CloudServiceRolesClientListPager.PageResponse() CloudServiceRolesClientListResponse`
+- New function `VirtualMachineRunCommandsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineRunCommandsClientCreateOrUpdateResponse, error)`
+- New function `LogAnalyticsClientExportThrottledRequestsPollerResponse.PollUntilDone(context.Context, time.Duration) (LogAnalyticsClientExportThrottledRequestsResponse, error)`
+- New function `*VirtualMachinesClientListPager.PageResponse() VirtualMachinesClientListResponse`
+- New function `*VirtualMachineScaleSetVMsClientRunCommandPoller.Done() bool`
+- New function `*CapacityReservationsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMsClientReimagePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleryApplicationVersionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleriesClientListByResourceGroupPager.Err() error`
+- New function `RestorePointsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (RestorePointsClientDeleteResponse, error)`
+- New function `*VirtualMachinesClientListByLocationPager.PageResponse() VirtualMachinesClientListByLocationResponse`
+- New function `*SharedGalleriesClientListPager.Err() error`
+- New function `*VirtualMachinesClientPowerOffPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `VirtualMachineScaleSetsClientSetOrchestrationServiceStatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientSetOrchestrationServiceStateResponse, error)`
+- New function `*VirtualMachinesClientAssessPatchesPoller.FinalResponse(context.Context) (VirtualMachinesClientAssessPatchesResponse, error)`
+- New function `*SnapshotsClientGrantAccessPoller.Done() bool`
+- New function `*SSHPublicKeysClientListBySubscriptionPager.PageResponse() SSHPublicKeysClientListBySubscriptionResponse`
+- New function `DiskAccessesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DiskAccessesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientDeletePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMRunCommandsClientDeleteResponse, error)`
+- New function `VirtualMachineScaleSetVMsClientDeallocatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientDeallocateResponse, error)`
+- New function `*SnapshotsClientCreateOrUpdatePoller.FinalResponse(context.Context) (SnapshotsClientCreateOrUpdateResponse, error)`
+- New function `*DiskAccessesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientReapplyPoller.ResumeToken() (string, error)`
+- New function `*DisksClientRevokeAccessPoller.Done() bool`
+- New function `*VirtualMachineRunCommandsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnapshotsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*GalleryApplicationsClientDeletePollerResponse.Resume(context.Context, *GalleryApplicationsClient, string) error`
+- New function `*VirtualMachinesClientConvertToManagedDisksPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientRebuildPoller.ResumeToken() (string, error)`
+- New function `*SnapshotsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachineRunCommandsClientUpdatePoller.FinalResponse(context.Context) (VirtualMachineRunCommandsClientUpdateResponse, error)`
+- New function `*DiskAccessesClientListPager.Err() error`
+- New function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineRunCommandsClientListByVirtualMachinePager.PageResponse() VirtualMachineRunCommandsClientListByVirtualMachineResponse`
+- New function `*VirtualMachinesClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `VirtualMachineScaleSetVMRunCommandsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMRunCommandsClientUpdateResponse, error)`
+- New function `DedicatedHostsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DedicatedHostsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientUpdatePoller.Done() bool`
+- New function `*GalleryImageVersionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*DisksClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `CloudServicesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetsClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `CloudServiceRoleInstancesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServiceRoleInstancesClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller.Done() bool`
+- New function `*ImagesClientUpdatePoller.Done() bool`
+- New function `*VirtualMachinesClientListPager.Err() error`
+- New function `*GalleryApplicationsClientCreateOrUpdatePollerResponse.Resume(context.Context, *GalleryApplicationsClient, string) error`
+- New function `*CloudServicesClientRebuildPollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `*DisksClientGrantAccessPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineRunCommandsClientDeletePoller.FinalResponse(context.Context) (VirtualMachineRunCommandsClientDeleteResponse, error)`
+- New function `*SnapshotsClientGrantAccessPoller.ResumeToken() (string, error)`
+- New function `*CapacityReservationsClientListByCapacityReservationGroupPager.Err() error`
+- New function `*VirtualMachineScaleSetVMsClientRestartPoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientRestartResponse, error)`
+- New function `*CloudServiceRoleInstancesClientRestartPollerResponse.Resume(context.Context, *CloudServiceRoleInstancesClient, string) error`
+- New function `*VirtualMachineScaleSetsClientRestartPoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientRestartResponse, error)`
+- New function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskAccessesClientCreateOrUpdatePoller.Done() bool`
+- New function `*GalleryImagesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskAccessesClientDeletePoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePoller.Done() bool`
+- New function `CloudServiceRoleInstancesClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServiceRoleInstancesClientRestartResponse, error)`
+- New function `*VirtualMachineScaleSetsClientPerformMaintenancePoller.ResumeToken() (string, error)`
+- New function `SnapshotsClientGrantAccessPollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotsClientGrantAccessResponse, error)`
+- New function `*VirtualMachineScaleSetsClientStartPoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientStartResponse, error)`
+- New function `*ImagesClientDeletePoller.Done() bool`
+- New function `*GalleryApplicationsClientDeletePoller.FinalResponse(context.Context) (GalleryApplicationsClientDeleteResponse, error)`
+- New function `*VirtualMachinesClientPerformMaintenancePoller.Done() bool`
+- New function `*CapacityReservationGroupsClientListBySubscriptionPager.PageResponse() CapacityReservationGroupsClientListBySubscriptionResponse`
+- New function `*RestorePointCollectionsClientListAllPager.Err() error`
+- New function `*VirtualMachineExtensionsClientUpdatePollerResponse.Resume(context.Context, *VirtualMachineExtensionsClient, string) error`
+- New function `*VirtualMachinesClientRunCommandPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CapacityReservationsClientDeletePoller.Done() bool`
+- New function `*DedicatedHostGroupsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*GalleryImagesClientUpdatePoller.FinalResponse(context.Context) (GalleryImagesClientUpdateResponse, error)`
+- New function `*CloudServicesClientListPager.NextPage(context.Context) bool`
+- New function `*DiskAccessesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*RestorePointsClientCreatePoller.Done() bool`
+- New function `*DiskEncryptionSetsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ProximityPlacementGroupsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*CloudServicesUpdateDomainClientWalkUpdateDomainPoller.FinalResponse(context.Context) (CloudServicesUpdateDomainClientWalkUpdateDomainResponse, error)`
+- New function `VirtualMachineScaleSetsClientPerformMaintenancePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientPerformMaintenanceResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientRestartPollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*DedicatedHostsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DiskEncryptionSetsClientDeletePoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMsClientReimagePoller.Done() bool`
+- New function `VirtualMachineScaleSetsClientRedeployPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientRedeployResponse, error)`
+- New function `DiskAccessesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DiskAccessesClientUpdateResponse, error)`
+- New function `*DiskAccessesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskRestorePointClientRevokeAccessPoller.FinalResponse(context.Context) (DiskRestorePointClientRevokeAccessResponse, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientDeallocatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleryImagesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SSHPublicKeysClientListBySubscriptionPager.Err() error`
+- New function `GalleryApplicationsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryApplicationsClientCreateOrUpdateResponse, error)`
+- New function `*ImagesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientRestartPoller.ResumeToken() (string, error)`
+- New function `*DisksClientRevokeAccessPollerResponse.Resume(context.Context, *DisksClient, string) error`
+- New function `*VirtualMachinesClientDeletePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `VirtualMachineScaleSetsClientPowerOffPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientPowerOffResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientReimageAllPollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientPowerOffPollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*RestorePointCollectionsClientListPager.Err() error`
+- New function `*SnapshotsClientDeletePoller.FinalResponse(context.Context) (SnapshotsClientDeleteResponse, error)`
+- New function `*LogAnalyticsClientExportRequestRateByIntervalPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientReimagePoller.Done() bool`
+- New function `GalleryApplicationVersionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryApplicationVersionsClientDeleteResponse, error)`
+- New function `*GalleryImagesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*GalleryImageVersionsClientListByGalleryImagePager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetsClientRedeployPoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientRedeployResponse, error)`
+- New function `*VirtualMachineScaleSetsClientDeleteInstancesPoller.ResumeToken() (string, error)`
+- New function `*GalleryImageVersionsClientDeletePoller.FinalResponse(context.Context) (GalleryImageVersionsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientDeletePoller.FinalResponse(context.Context) (VirtualMachineScaleSetExtensionsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientStartPoller.Done() bool`
+- New function `*VirtualMachineScaleSetsClientDeleteInstancesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleryImagesClientListByGalleryPager.PageResponse() GalleryImagesClientListByGalleryResponse`
+- New function `*VirtualMachinesClientStartPoller.Done() bool`
+- New function `VirtualMachinesClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientRestartResponse, error)`
+- New function `*SnapshotsClientGrantAccessPoller.FinalResponse(context.Context) (SnapshotsClientGrantAccessResponse, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientListPager.Err() error`
+- New function `*VirtualMachinesClientInstallPatchesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientRedeployPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientDeletePoller.FinalResponse(context.Context) (CloudServicesClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientRebuildPoller.Done() bool`
+- New function `*GalleryApplicationsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*CloudServicesClientRebuildPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMsClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskAccessesClientDeletePollerResponse.Resume(context.Context, *DiskAccessesClient, string) error`
+- New function `*GallerySharingProfileClientUpdatePoller.FinalResponse(context.Context) (GallerySharingProfileClientUpdateResponse, error)`
+- New function `*GalleryImagesClientListByGalleryPager.Err() error`
+- New function `*VirtualMachineScaleSetVMExtensionsClientDeletePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMExtensionsClientDeleteResponse, error)`
+- New function `DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse.PollUntilDone(context.Context, time.Duration) (DiskAccessesClientDeleteAPrivateEndpointConnectionResponse, error)`
+- New function `*VirtualMachineScaleSetsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientRunCommandPoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientRunCommandResponse, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMRunCommandsClient, string) error`
+- New function `*VirtualMachineScaleSetsClientDeletePoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientDeleteResponse, error)`
+- New function `*GalleryImageVersionPublishingProfile.UnmarshalJSON([]byte) error`
+- New function `*VirtualMachinesClientDeallocatePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*GalleryImageVersionsClientDeletePollerResponse.Resume(context.Context, *GalleryImageVersionsClient, string) error`
+- New function `*DedicatedHostsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*CloudServicesClientReimagePollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `*GalleryImagesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientUpdateInstancesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnapshotsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientConvertToManagedDisksPoller.FinalResponse(context.Context) (VirtualMachinesClientConvertToManagedDisksResponse, error)`
+- New function `*VirtualMachinesClientReapplyPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskEncryptionSetsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DiskRestorePointClientGrantAccessPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientReimagePoller.ResumeToken() (string, error)`
+- New function `*DiskEncryptionSetsClientUpdatePoller.FinalResponse(context.Context) (DiskEncryptionSetsClientUpdateResponse, error)`
+- New function `*VirtualMachineRunCommandsClientListPager.PageResponse() VirtualMachineRunCommandsClientListResponse`
+- New function `*SSHPublicKeysClientListByResourceGroupPager.PageResponse() SSHPublicKeysClientListByResourceGroupResponse`
+- New function `*GalleryApplicationVersionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DedicatedHostsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientCreateOrUpdateResponse, error)`
+- New function `DiskAccessesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DiskAccessesClientDeleteResponse, error)`
+- New function `*VirtualMachineExtensionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachineExtensionsClientCreateOrUpdateResponse, error)`
+- New function `SnapshotsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotsClientDeleteResponse, error)`
+- New function `*ImagesClientCreateOrUpdatePoller.FinalResponse(context.Context) (ImagesClientCreateOrUpdateResponse, error)`
+- New function `*LogAnalyticsClientExportThrottledRequestsPollerResponse.Resume(context.Context, *LogAnalyticsClient, string) error`
+- New function `*GalleryImageVersionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*LogAnalyticsClientExportThrottledRequestsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientDeleteInstancesPollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `*CapacityReservationGroupsClientListBySubscriptionPager.Err() error`
+- New function `*GalleryApplicationVersionsClientDeletePoller.FinalResponse(context.Context) (GalleryApplicationVersionsClientDeleteResponse, error)`
+- New function `*LogAnalyticsClientExportRequestRateByIntervalPoller.ResumeToken() (string, error)`
+- New function `VirtualMachineExtensionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineExtensionsClientUpdateResponse, error)`
+- New function `*VirtualMachinesClientInstallPatchesPoller.ResumeToken() (string, error)`
+- New function `*CapacityReservationsClientUpdatePollerResponse.Resume(context.Context, *CapacityReservationsClient, string) error`
+- New function `*GalleriesClientDeletePollerResponse.Resume(context.Context, *GalleriesClient, string) error`
+- New function `*GalleryImageVersionsClientUpdatePoller.Done() bool`
+- New function `*CloudServicesClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ImagesClientListByResourceGroupPager.PageResponse() ImagesClientListByResourceGroupResponse`
+- New function `*VirtualMachineScaleSetsClientPowerOffPollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*CloudServicesClientRebuildPoller.FinalResponse(context.Context) (CloudServicesClientRebuildResponse, error)`
+- New function `*VirtualMachinesClientDeallocatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientDeletePoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMsClientDeletePoller.Done() bool`
+- New function `*GalleryImageVersionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineExtensionsClientDeletePoller.Done() bool`
+- New function `*CloudServicesClientListAllPager.NextPage(context.Context) bool`
+- New function `*SnapshotsClientListPager.NextPage(context.Context) bool`
+- New function `RestorePointsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (RestorePointsClientCreateResponse, error)`
+- New function `*DiskAccessesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DedicatedHostGroupsClientListBySubscriptionPager.Err() error`
+- New function `*DiskEncryptionSetsClientListAssociatedResourcesPager.Err() error`
+- New function `*GalleryApplicationsClientUpdatePollerResponse.Resume(context.Context, *GalleryApplicationsClient, string) error`
+- New function `*DedicatedHostsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AvailabilitySetsClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientPowerOffPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServiceRoleInstancesClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientListSKUsPager.Err() error`
+- New function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPoller.Done() bool`
+- New function `*GalleryApplicationVersionsClientCreateOrUpdatePoller.Done() bool`
+- New function `VirtualMachineScaleSetExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse, error)`
+- New function `CapacityReservationsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CapacityReservationsClientUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientDeletePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMExtensionsClient, string) error`
+- New function `*DiskAccessesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientPowerOffPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientAssessPatchesPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*GalleryImagesClientCreateOrUpdatePollerResponse.Resume(context.Context, *GalleryImagesClient, string) error`
+- New function `ImagesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ImagesClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller.Done() bool`
+- New function `*CapacityReservationsClientDeletePollerResponse.Resume(context.Context, *CapacityReservationsClient, string) error`
+- New function `*VirtualMachineScaleSetsClientPowerOffPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*RestorePointCollectionsClientListPager.PageResponse() RestorePointCollectionsClientListResponse`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientDeletePoller.Done() bool`
+- New function `*SSHPublicKeysClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SnapshotsClientRevokeAccessPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleryApplicationVersionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *GalleryApplicationVersionsClient, string) error`
+- New function `*GalleryImageVersionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientRedeployPoller.ResumeToken() (string, error)`
+- New function `LogAnalyticsClientExportRequestRateByIntervalPollerResponse.PollUntilDone(context.Context, time.Duration) (LogAnalyticsClientExportRequestRateByIntervalResponse, error)`
+- New function `*VirtualMachineRunCommandsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachinesClientRunCommandPoller.ResumeToken() (string, error)`
+- New function `*SnapshotsClientCreateOrUpdatePollerResponse.Resume(context.Context, *SnapshotsClient, string) error`
+- New function `CapacityReservationsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CapacityReservationsClientCreateOrUpdateResponse, error)`
+- New function `*DisksClientRevokeAccessPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientReimageAllPoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientReimageAllResponse, error)`
+- New function `*GalleryApplicationsClientListByGalleryPager.Err() error`
+- New function `*VirtualMachinesClientConvertToManagedDisksPoller.ResumeToken() (string, error)`
+- New function `DisksClientGrantAccessPollerResponse.PollUntilDone(context.Context, time.Duration) (DisksClientGrantAccessResponse, error)`
+- New function `*LogAnalyticsClientExportThrottledRequestsPoller.Done() bool`
+- New function `*DedicatedHostsClientListByHostGroupPager.NextPage(context.Context) bool`
+- New function `*DedicatedHostsClientCreateOrUpdatePollerResponse.Resume(context.Context, *DedicatedHostsClient, string) error`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientListPager.NextPage(context.Context) bool`
+- New function `*LogAnalyticsClientExportRequestRateByIntervalPoller.Done() bool`
+- New function `*VirtualMachineScaleSetExtensionsClientUpdatePoller.Done() bool`
+- New function `*CloudServicesClientStartPoller.Done() bool`
+- New function `*GalleriesClientCreateOrUpdatePoller.FinalResponse(context.Context) (GalleriesClientCreateOrUpdateResponse, error)`
+- New function `*CloudServiceRoleInstancesClientReimagePoller.FinalResponse(context.Context) (CloudServiceRoleInstancesClientReimageResponse, error)`
+- New function `*CloudServiceRoleInstancesClientRebuildPoller.Done() bool`
+- New function `*VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager.NextPage(context.Context) bool`
+- New function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPoller.Done() bool`
+- New function `*SnapshotsClientDeletePoller.Done() bool`
+- New function `*CloudServiceOperatingSystemsClientListOSFamiliesPager.Err() error`
+- New function `*VirtualMachineRunCommandsClientUpdatePollerResponse.Resume(context.Context, *VirtualMachineRunCommandsClient, string) error`
+- New function `*VirtualMachineScaleSetVMExtensionsClientUpdatePoller.Done() bool`
+- New function `VirtualMachineScaleSetsClientDeallocatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientDeallocateResponse, error)`
+- New function `*DiskEncryptionSetsClientDeletePoller.FinalResponse(context.Context) (DiskEncryptionSetsClientDeleteResponse, error)`
+- New function `*SnapshotsClientRevokeAccessPoller.ResumeToken() (string, error)`
+- New function `CloudServicesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineExtensionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*GalleryApplicationVersionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (GalleryApplicationVersionsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetsClientReimageAllPoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientReimageAllResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientRedeployPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientPowerOffPoller.Done() bool`
+- New function `VirtualMachineScaleSetVMExtensionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMExtensionsClientUpdateResponse, error)`
+- New function `*DedicatedHostsClientUpdatePoller.FinalResponse(context.Context) (DedicatedHostsClientUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetsClientListByLocationPager.NextPage(context.Context) bool`
+- New function `*ImagesClientListPager.PageResponse() ImagesClientListResponse`
+- New function `*DedicatedHostsClientListByHostGroupPager.Err() error`
+- New function `*VirtualMachinesClientDeallocatePoller.ResumeToken() (string, error)`
+- New function `*CloudServicesClientUpdatePollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `*RestorePointCollectionsClientDeletePoller.Done() bool`
+- New function `*DisksClientGrantAccessPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientStartPoller.ResumeToken() (string, error)`
+- New function `*ImagesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `SnapshotsClientRevokeAccessPollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotsClientRevokeAccessResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientReimageAllPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPoller.FinalResponse(context.Context) (DiskAccessesClientUpdateAPrivateEndpointConnectionResponse, error)`
+- New function `*VirtualMachinesClientReimagePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachineScaleSetVMsClientRedeployPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientRedeployResponse, error)`
+- New function `RestorePointCollectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (RestorePointCollectionsClientDeleteResponse, error)`
+- New function `VirtualMachineScaleSetExtensionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetExtensionsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetsClientReimageAllPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `DisksClientRevokeAccessPollerResponse.PollUntilDone(context.Context, time.Duration) (DisksClientRevokeAccessResponse, error)`
+- New function `*VirtualMachineScaleSetsClientDeallocatePoller.Done() bool`
+- New function `*VirtualMachineScaleSetsClientDeletePollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*DisksClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnapshotsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleryApplicationVersionsClientListByGalleryApplicationPager.Err() error`
+- New function `*CapacityReservationGroupsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetsClientReimagePoller.ResumeToken() (string, error)`
+- New function `*CloudServicesClientCreateOrUpdatePoller.Done() bool`
+- New function `*AvailabilitySetsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetVMsClientDeallocatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMsClientRedeployPoller.Done() bool`
+- New function `ProximityPlacementGroupUpdate.MarshalJSON() ([]byte, error)`
+- New function `*SnapshotsClientGrantAccessPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GallerySharingProfileClientUpdatePoller.Done() bool`
+- New function `*VirtualMachinesClientReapplyPoller.Done() bool`
+- New function `VirtualMachineScaleSetVMsClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientRestartResponse, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMsClientReimagePoller.ResumeToken() (string, error)`
+- New function `VirtualMachineScaleSetVMsClientReimagePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientReimageResponse, error)`
+- New function `*CloudServicesClientRestartPoller.FinalResponse(context.Context) (CloudServicesClientRestartResponse, error)`
+- New function `*CloudServicesClientDeletePollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientDeallocatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*DiskEncryptionSetsClientListAssociatedResourcesPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetVMsClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientDeallocatePoller.Done() bool`
+- New function `*GalleryApplicationsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMExtensionsClientUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMExtensionsClientUpdateResponse, error)`
+- New function `*SnapshotsClientListByResourceGroupPager.PageResponse() SnapshotsClientListByResourceGroupResponse`
+- New function `*SnapshotsClientListPager.Err() error`
+- New function `*VirtualMachineScaleSetVMsClientRestartPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineRunCommandsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DiskAccessesClientUpdatePoller.FinalResponse(context.Context) (DiskAccessesClientUpdateResponse, error)`
+- New function `*CloudServiceRoleInstancesClientListPager.PageResponse() CloudServiceRoleInstancesClientListResponse`
+- New function `*VirtualMachineScaleSetVMsClientDeallocatePoller.Done() bool`
+- New function `*SnapshotsClientUpdatePoller.Done() bool`
+- New function `*GalleryApplicationsClientUpdatePoller.FinalResponse(context.Context) (GalleryApplicationsClientUpdateResponse, error)`
+- New function `*DiskEncryptionSetsClientCreateOrUpdatePoller.FinalResponse(context.Context) (DiskEncryptionSetsClientCreateOrUpdateResponse, error)`
+- New function `*SnapshotsClientListByResourceGroupPager.Err() error`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller.Done() bool`
+- New function `*CloudServicesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*GallerySharingProfileClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DedicatedHostGroupsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*CloudServicesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleryApplicationVersionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientPerformMaintenancePoller.FinalResponse(context.Context) (VirtualMachinesClientPerformMaintenanceResponse, error)`
+- New function `*ProximityPlacementGroupsClientListByResourceGroupPager.PageResponse() ProximityPlacementGroupsClientListByResourceGroupResponse`
+- New function `*GalleriesClientUpdatePollerResponse.Resume(context.Context, *GalleriesClient, string) error`
+- New function `*VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `VirtualMachineScaleSetsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientUpdateResponse, error)`
+- New function `*DisksClientUpdatePollerResponse.Resume(context.Context, *DisksClient, string) error`
+- New function `VirtualMachineScaleSetsClientDeleteInstancesPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientDeleteInstancesResponse, error)`
+- New function `VirtualMachineScaleSetsClientReimagePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientReimageResponse, error)`
+- New function `*ImagesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientRedeployPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMsClientStartPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientDeletePoller.Done() bool`
+- New function `*SnapshotsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientRestartPoller.ResumeToken() (string, error)`
+- New function `*DiskAccessesClientListPager.NextPage(context.Context) bool`
+- New function `*GalleriesClientListPager.Err() error`
+- New function `*CapacityReservationsClientDeletePoller.FinalResponse(context.Context) (CapacityReservationsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller.ResumeToken() (string, error)`
+- New function `*GalleryImageVersionsClientListByGalleryImagePager.PageResponse() GalleryImageVersionsClientListByGalleryImageResponse`
+- New function `*VirtualMachinesClientRedeployPoller.Done() bool`
+- New function `VirtualMachinesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientDeleteResponse, error)`
+- New function `DiskRestorePointClientRevokeAccessPollerResponse.PollUntilDone(context.Context, time.Duration) (DiskRestorePointClientRevokeAccessResponse, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientCreateOrUpdatePoller.FinalResponse(context.Context) (CloudServicesClientCreateOrUpdateResponse, error)`
+- New function `*DiskAccessesClientListPrivateEndpointConnectionsPager.PageResponse() DiskAccessesClientListPrivateEndpointConnectionsResponse`
+- New function `*CapacityReservationsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ImagesClientDeletePoller.FinalResponse(context.Context) (ImagesClientDeleteResponse, error)`
+- New function `*CapacityReservationGroupsClientListByResourceGroupPager.Err() error`
+- New function `*CloudServiceOperatingSystemsClientListOSVersionsPager.Err() error`
+- New function `*GalleryApplicationsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesClientReimagePoller.Done() bool`
+- New function `*VirtualMachinesClientRestartPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `ImagesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ImagesClientUpdateResponse, error)`
+- New function `ThrottledRequestsInput.MarshalJSON() ([]byte, error)`
+- New function `*VirtualMachinesClientConvertToManagedDisksPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*SharedGalleryImagesClientListPager.PageResponse() SharedGalleryImagesClientListResponse`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientCancelPoller.FinalResponse(context.Context) (VirtualMachineScaleSetRollingUpgradesClientCancelResponse, error)`
+- New function `*VirtualMachineScaleSetsClientPowerOffPoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientPowerOffResponse, error)`
+- New function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientRedeployPoller.ResumeToken() (string, error)`
+- New function `*DiskEncryptionSetsClientCreateOrUpdatePollerResponse.Resume(context.Context, *DiskEncryptionSetsClient, string) error`
+- New function `*GalleryImageVersionsClientUpdatePoller.FinalResponse(context.Context) (GalleryImageVersionsClientUpdateResponse, error)`
+- New function `*RestorePointCollectionsClientDeletePoller.FinalResponse(context.Context) (RestorePointCollectionsClientDeleteResponse, error)`
+- New function `GalleryApplicationsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryApplicationsClientUpdateResponse, error)`
+- New function `*CapacityReservationsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientReimagePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientReimageResponse, error)`
+- New function `*CloudServicesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServicesUpdateDomainClientListUpdateDomainsPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskRestorePointClientListByRestorePointPager.PageResponse() DiskRestorePointClientListByRestorePointResponse`
+- New function `*VirtualMachinesClientInstallPatchesPoller.Done() bool`
+- New function `*VirtualMachinesClientRedeployPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*VirtualMachineScaleSetsClientDeleteInstancesPollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*CloudServiceRoleInstancesClientRestartPoller.Done() bool`
+- New function `*VirtualMachineScaleSetsClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*SharedGalleryImageVersionsClientListPager.NextPage(context.Context) bool`
+- New function `*CloudServiceRoleInstancesClientRebuildPoller.FinalResponse(context.Context) (CloudServiceRoleInstancesClientRebuildResponse, error)`
+- New function `*GalleryImageVersionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (GalleryImageVersionsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller.ResumeToken() (string, error)`
+- New function `*ImagesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientListAllPager.NextPage(context.Context) bool`
+- New function `*DiskEncryptionSetsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientListPager.NextPage(context.Context) bool`
+- New function `*GalleryImagesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientStartPoller.ResumeToken() (string, error)`
+- New function `*CloudServiceRoleInstancesClientRestartPoller.ResumeToken() (string, error)`
+- New function `VirtualMachinesClientAssessPatchesPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientAssessPatchesResponse, error)`
+- New function `*RestorePointsClientCreatePollerResponse.Resume(context.Context, *RestorePointsClient, string) error`
+- New function `CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesUpdateDomainClientWalkUpdateDomainResponse, error)`
+- New function `*SnapshotsClientDeletePollerResponse.Resume(context.Context, *SnapshotsClient, string) error`
+- New function `*CapacityReservationsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DedicatedHostsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientRunCommandPollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*DisksClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DisksClientCreateOrUpdatePoller.FinalResponse(context.Context) (DisksClientCreateOrUpdateResponse, error)`
+- New function `*CloudServiceRoleInstancesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientPowerOffPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineRunCommandsClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachineRunCommandsClient, string) error`
+- New function `*CloudServiceOperatingSystemsClientListOSFamiliesPager.PageResponse() CloudServiceOperatingSystemsClientListOSFamiliesResponse`
+- New function `SnapshotsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotsClientUpdateResponse, error)`
+- New function `*CloudServicesClientCreateOrUpdatePollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `DiskEncryptionSetsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DiskEncryptionSetsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `GalleryImageVersionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryImageVersionsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientReimageAllPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientRunCommandPoller.Done() bool`
+- New function `*RestorePointsClientDeletePollerResponse.Resume(context.Context, *RestorePointsClient, string) error`
+- New function `*DisksClientDeletePoller.Done() bool`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientDeallocatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientDeallocateResponse, error)`
+- New function `*LogAnalyticsClientExportThrottledRequestsPoller.FinalResponse(context.Context) (LogAnalyticsClientExportThrottledRequestsResponse, error)`
+- New function `*VirtualMachineExtensionsClientUpdatePoller.Done() bool`
+- New function `*VirtualMachineScaleSetsClientDeallocatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DisksClientUpdatePoller.Done() bool`
+- New function `*CloudServiceRoleInstancesClientDeletePoller.Done() bool`
+- New function `*LogAnalyticsClientExportRequestRateByIntervalPoller.FinalResponse(context.Context) (LogAnalyticsClientExportRequestRateByIntervalResponse, error)`
+- New function `VirtualMachineScaleSetsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientCreateOrUpdateResponse, error)`
+- New function `*CloudServicesClientReimagePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachinesClientRestartPoller.FinalResponse(context.Context) (VirtualMachinesClientRestartResponse, error)`
+- New function `*VirtualMachinesClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CloudServiceRoleInstancesClientRebuildPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientDeallocatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMRunCommandsClientUpdateResponse, error)`
+- New function `*CloudServiceRolesClientListPager.Err() error`
+- New function `*VirtualMachineScaleSetVMsClientRedeployPollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*GalleryApplicationsClientDeletePoller.Done() bool`
+- New function `*VirtualMachineRunCommandsClientListPager.Err() error`
+- New function `*ImagesClientUpdatePoller.FinalResponse(context.Context) (ImagesClientUpdateResponse, error)`
+- New function `*VirtualMachineExtensionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*GalleriesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*CloudServiceRolesClientListPager.NextPage(context.Context) bool`
+- New function `*CloudServicesClientPowerOffPoller.Done() bool`
+- New function `*GalleryImagesClientDeletePoller.Done() bool`
+- New function `VirtualMachinesClientReapplyPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientReapplyResponse, error)`
+- New function `*VirtualMachinesClientDeallocatePoller.FinalResponse(context.Context) (VirtualMachinesClientDeallocateResponse, error)`
+- New function `*GalleryImagesClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachinesClientListAllPager.NextPage(context.Context) bool`
+- New function `*GalleryApplicationsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DedicatedHostGroupsClientListByResourceGroupPager.PageResponse() DedicatedHostGroupsClientListByResourceGroupResponse`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineRunCommandsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachinesClientConvertToManagedDisksPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientConvertToManagedDisksResponse, error)`
+- New function `*CloudServiceRoleInstancesClientReimagePoller.ResumeToken() (string, error)`
+- New function `VirtualMachinesClientPerformMaintenancePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientPerformMaintenanceResponse, error)`
+- New function `*VirtualMachineScaleSetVMExtensionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DiskAccessesClientListPrivateEndpointConnectionsPager.Err() error`
+- New function `VirtualMachinesClientReimagePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientReimageResponse, error)`
+- New function `VirtualMachineScaleSetVMsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientDeleteResponse, error)`
+- New function `CloudServiceRoleInstancesClientRebuildPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServiceRoleInstancesClientRebuildResponse, error)`
+- New function `*GalleryImagesClientUpdatePoller.Done() bool`
+- New function `*VirtualMachineExtensionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `DiskEncryptionSetsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DiskEncryptionSetsClientCreateOrUpdateResponse, error)`
+- New function `*DisksClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `GallerySharingProfileClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GallerySharingProfileClientUpdateResponse, error)`
+- New function `*DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse.Resume(context.Context, *DiskAccessesClient, string) error`
+- New function `*VirtualMachinesClientCapturePoller.FinalResponse(context.Context) (VirtualMachinesClientCaptureResponse, error)`
+- New function `*VirtualMachinesClientUpdatePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*CloudServiceRoleInstancesClientListPager.NextPage(context.Context) bool`
+- New function `VirtualMachineScaleSetVMsClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientStartResponse, error)`
+- New function `DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse.PollUntilDone(context.Context, time.Duration) (DiskAccessesClientUpdateAPrivateEndpointConnectionResponse, error)`
+- New function `*RestorePointsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientListByLocationPager.Err() error`
+- New function `VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse, error)`
+- New function `CloudServicesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientUpdateResponse, error)`
+- New function `*CloudServicesUpdateDomainClientWalkUpdateDomainPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientRestartPoller.Done() bool`
+- New function `*DiskEncryptionSetsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SnapshotsClientUpdatePollerResponse.Resume(context.Context, *SnapshotsClient, string) error`
+- New function `*GalleriesClientListPager.PageResponse() GalleriesClientListResponse`
+- New function `VirtualMachinesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientUpdateResponse, error)`
+- New function `*CloudServicesUpdateDomainClientWalkUpdateDomainPoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachinesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientCreateOrUpdateResponse, error)`
+- New function `*CloudServicesClientPowerOffPollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `*RestorePointCollectionsClientListAllPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetsClientReimageAllPoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMsClientUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*VirtualMachinesClientRedeployPoller.FinalResponse(context.Context) (VirtualMachinesClientRedeployResponse, error)`
+- New function `CloudServiceRoleInstancesClientReimagePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServiceRoleInstancesClientReimageResponse, error)`
+- New function `VirtualMachinesClientInstallPatchesPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientInstallPatchesResponse, error)`
+- New function `*GalleryImagesClientUpdatePollerResponse.Resume(context.Context, *GalleryImagesClient, string) error`
+- New function `*CloudServicesClientListPager.Err() error`
+- New function `*GalleryApplicationVersionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachinesClientReapplyPoller.FinalResponse(context.Context) (VirtualMachinesClientReapplyResponse, error)`
+- New function `*GalleryApplicationVersionsClientDeletePoller.Done() bool`
+- New function `*VirtualMachineScaleSetExtensionsClientListPager.PageResponse() VirtualMachineScaleSetExtensionsClientListResponse`
+- New function `VirtualMachineRunCommandsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineRunCommandsClientUpdateResponse, error)`
+- New function `*SSHPublicKeysClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetsClientReimagePoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientReimageResponse, error)`
+- New function `*CloudServicesUpdateDomainClientListUpdateDomainsPager.Err() error`
+- New function `GalleryImageVersionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryImageVersionsClientUpdateResponse, error)`
+- New function `*GalleriesClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `CloudServicesClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientRestartResponse, error)`
+- New function `*DiskEncryptionSetsClientListPager.NextPage(context.Context) bool`
+- New function `*CapacityReservationsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachineExtensionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachineExtensionsClient, string) error`
+- New function `*CloudServicesClientUpdatePoller.FinalResponse(context.Context) (CloudServicesClientUpdateResponse, error)`
+- New function `*CloudServicesClientPowerOffPoller.FinalResponse(context.Context) (CloudServicesClientPowerOffResponse, error)`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMRunCommandsClient, string) error`
+- New function `*DisksClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineExtensionsClientUpdatePoller.FinalResponse(context.Context) (VirtualMachineExtensionsClientUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientDeletePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetsClientUpdateInstancesPoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientUpdateInstancesResponse, error)`
+- New function `*VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientSetOrchestrationServiceStateResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientReimagePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*SnapshotsClientRevokeAccessPollerResponse.Resume(context.Context, *SnapshotsClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientListPager.Err() error`
+- New function `*VirtualMachineScaleSetsClientListAllPager.Err() error`
+- New function `*CloudServicesClientRestartPoller.ResumeToken() (string, error)`
+- New function `*DisksClientListPager.PageResponse() DisksClientListResponse`
+- New function `*DisksClientRevokeAccessPoller.FinalResponse(context.Context) (DisksClientRevokeAccessResponse, error)`
+- New function `*VirtualMachineScaleSetsClientListByLocationPager.PageResponse() VirtualMachineScaleSetsClientListByLocationResponse`
+- New function `*VirtualMachinesClientConvertToManagedDisksPoller.Done() bool`
+- New function `*GalleryApplicationVersionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMsClientRedeployPoller.ResumeToken() (string, error)`
+- New function `GalleriesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleriesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetsClientPowerOffPoller.Done() bool`
+- New function `*GalleriesClientDeletePoller.Done() bool`
+- New function `*VirtualMachineScaleSetVMsClientDeallocatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientDeallocateResponse, error)`
+- New function `*VirtualMachineScaleSetsClientRedeployPollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientUpdateResponse, error)`
+- New function `*GalleryImagesClientDeletePollerResponse.Resume(context.Context, *GalleryImagesClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientRunCommandPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientListPager.PageResponse() VirtualMachineScaleSetsClientListResponse`
+- New function `*VirtualMachinesClientListAllPager.Err() error`
+- New function `*VirtualMachineScaleSetVMsClientPerformMaintenancePoller.Done() bool`
+- New function `GalleryImagesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryImagesClientUpdateResponse, error)`
+- New function `*VirtualMachinesClientInstallPatchesPoller.FinalResponse(context.Context) (VirtualMachinesClientInstallPatchesResponse, error)`
+- New function `*VirtualMachineScaleSetsClientReimageAllPollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetVMsClientPerformMaintenancePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DisksClientGrantAccessPoller.FinalResponse(context.Context) (DisksClientGrantAccessResponse, error)`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller.ResumeToken() (string, error)`
+- New function `*SnapshotsClientGrantAccessPollerResponse.Resume(context.Context, *SnapshotsClient, string) error`
+- New function `*DiskEncryptionSetsClientListByResourceGroupPager.PageResponse() DiskEncryptionSetsClientListByResourceGroupResponse`
+- New function `*CloudServicesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*DiskEncryptionSetsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetVMsClientPerformMaintenancePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientRestartPollerResponse.Resume(context.Context, *VirtualMachineScaleSetsClient, string) error`
+- New function `*DiskAccessesClientListPager.PageResponse() DiskAccessesClientListResponse`
+- New function `*RestorePointsClientDeletePoller.Done() bool`
+- New function `*DiskAccessesClientUpdatePollerResponse.Resume(context.Context, *DiskAccessesClient, string) error`
+- New function `*RestorePointsClientDeletePoller.FinalResponse(context.Context) (RestorePointsClientDeleteResponse, error)`
+- New function `GalleryApplicationVersionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryApplicationVersionsClientCreateOrUpdateResponse, error)`
+- New function `VirtualMachineScaleSetsClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientRestartResponse, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetExtensionsClientUpdateResponse, error)`
+- New function `*DiskAccessesClientDeletePoller.FinalResponse(context.Context) (DiskAccessesClientDeleteResponse, error)`
+- New function `*VirtualMachinesClientAssessPatchesPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientAssessPatchesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineRunCommandsClientListByVirtualMachinePager.Err() error`
+- New function `GalleriesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleriesClientUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientRestartPoller.Done() bool`
+- New function `*DisksClientDeletePoller.ResumeToken() (string, error)`
+- New function `*GalleriesClientCreateOrUpdatePoller.Done() bool`
+- New function `*DiskEncryptionSetsClientListPager.Err() error`
+- New function `*ImagesClientListPager.Err() error`
+- New function `*VirtualMachineScaleSetExtensionsClientListPager.NextPage(context.Context) bool`
+- New function `*CloudServicesClientStartPollerResponse.Resume(context.Context, *CloudServicesClient, string) error`
+- New function `*CloudServiceOperatingSystemsClientListOSVersionsPager.NextPage(context.Context) bool`
+- New function `*VirtualMachineScaleSetsClientListAllPager.PageResponse() VirtualMachineScaleSetsClientListAllResponse`
+- New function `*DedicatedHostsClientDeletePollerResponse.Resume(context.Context, *DedicatedHostsClient, string) error`
+- New function `*VirtualMachineRunCommandsClientListByVirtualMachinePager.NextPage(context.Context) bool`
+- New function `*ImagesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DiskAccessesClientListByResourceGroupPager.PageResponse() DiskAccessesClientListByResourceGroupResponse`
+- New function `*VirtualMachineScaleSetVMsClientReimageAllPoller.Done() bool`
+- New function `*ResourceSKUsClientListPager.PageResponse() ResourceSKUsClientListResponse`
+- New function `*LogAnalyticsClientExportRequestRateByIntervalPollerResponse.Resume(context.Context, *LogAnalyticsClient, string) error`
+- New function `VirtualMachineScaleSetsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetsClientDeleteResponse, error)`
+- New function `*DiskRestorePointClientGrantAccessPoller.Done() bool`
+- New function `*VirtualMachinesClientInstallPatchesPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*AvailabilitySetsClientListBySubscriptionPager.PageResponse() AvailabilitySetsClientListBySubscriptionResponse`
+- New function `VirtualMachineScaleSetExtensionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetExtensionsClientUpdateResponse, error)`
+- New function `*VirtualMachinesClientCapturePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientUpdatePoller.Done() bool`
+- New function `*ImagesClientUpdatePollerResponse.Resume(context.Context, *ImagesClient, string) error`
+- New function `*VirtualMachineScaleSetsClientDeletePoller.Done() bool`
+- New function `*DiskEncryptionSetsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DedicatedHostsClientDeletePoller.FinalResponse(context.Context) (DedicatedHostsClientDeleteResponse, error)`
+- New function `*CloudServiceRoleInstancesClientReimagePollerResponse.Resume(context.Context, *CloudServiceRoleInstancesClient, string) error`
+- New function `*RestorePointsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DisksClientCreateOrUpdatePollerResponse.Resume(context.Context, *DisksClient, string) error`
+- New function `*VirtualMachineScaleSetVMsClientDeletePollerResponse.Resume(context.Context, *VirtualMachineScaleSetVMsClient, string) error`
+- New function `*RestorePointsClientCreatePoller.FinalResponse(context.Context) (RestorePointsClientCreateResponse, error)`
+- New function `*GalleryImageVersionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *GalleryImageVersionsClient, string) error`
+- New function `VirtualMachinesClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientStartResponse, error)`
+- New function `DisksClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DisksClientDeleteResponse, error)`
+- New function `*VirtualMachineScaleSetExtensionsClientListPager.Err() error`
+- New function `*GalleriesClientUpdatePoller.FinalResponse(context.Context) (GalleriesClientUpdateResponse, error)`
+- New function `*GalleriesClientListByResourceGroupPager.PageResponse() GalleriesClientListByResourceGroupResponse`
+- New function `*SnapshotsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DedicatedHostsClientDeletePoller.Done() bool`
+- New function `VirtualMachineExtensionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineExtensionsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineExtensionsClientDeletePollerResponse.Resume(context.Context, *VirtualMachineExtensionsClient, string) error`
+- New function `*SharedGalleryImagesClientListPager.Err() error`
+- New function `*DisksClientCreateOrUpdatePoller.Done() bool`
+- New function `VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse, error)`
+- New function `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachineScaleSetsClientUpdateInstancesPoller.ResumeToken() (string, error)`
+- New function `*CloudServicesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `DiskRestorePointClientGrantAccessPollerResponse.PollUntilDone(context.Context, time.Duration) (DiskRestorePointClientGrantAccessResponse, error)`
+- New function `VirtualMachineScaleSetVMsClientReimageAllPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineScaleSetVMsClientReimageAllResponse, error)`
+- New function `VirtualMachinesClientCapturePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientCaptureResponse, error)`
+- New function `*CloudServicesClientReimagePoller.FinalResponse(context.Context) (CloudServicesClientReimageResponse, error)`
+- New function `SnapshotsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SnapshotsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachinesClientCapturePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientReimagePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetsClientListPager.NextPage(context.Context) bool`
+- New function `*ThrottledRequestsInput.UnmarshalJSON([]byte) error`
+- New function `*VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse, error)`
+- New function `*VirtualMachinesClientUpdatePoller.FinalResponse(context.Context) (VirtualMachinesClientUpdateResponse, error)`
+- New function `*VirtualMachinesClientPowerOffPoller.Done() bool`
+- New function `*VirtualMachineExtensionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DiskAccessesClientListPrivateEndpointConnectionsPager.NextPage(context.Context) bool`
+- New function `CloudServicesClientDeleteInstancesPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientDeleteInstancesResponse, error)`
+- New function `*GalleryApplicationsClientCreateOrUpdatePoller.FinalResponse(context.Context) (GalleryApplicationsClientCreateOrUpdateResponse, error)`
+- New function `*SnapshotsClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachineScaleSetsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*GalleryApplicationVersionsClientUpdatePoller.FinalResponse(context.Context) (GalleryApplicationVersionsClientUpdateResponse, error)`
+- New function `GalleryApplicationsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GalleryApplicationsClientDeleteResponse, error)`
+- New function `*DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse.Resume(context.Context, *DiskAccessesClient, string) error`
+- New function `*CloudServicesClientDeletePoller.Done() bool`
+- New function `*VirtualMachinesClientAssessPatchesPoller.Done() bool`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller.Done() bool`
+- New function `*VirtualMachineRunCommandsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GalleryImagesClientDeletePoller.FinalResponse(context.Context) (GalleryImagesClientDeleteResponse, error)`
+- New function `*CloudServiceRoleInstancesClientDeletePoller.FinalResponse(context.Context) (CloudServiceRoleInstancesClientDeleteResponse, error)`
+- New function `CloudServicesClientPowerOffPollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientPowerOffResponse, error)`
+- New function `DedicatedHostsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DedicatedHostsClientUpdateResponse, error)`
+- New function `*DisksClientListByResourceGroupPager.PageResponse() DisksClientListByResourceGroupResponse`
+- New function `*AvailabilitySetsClientListPager.Err() error`
+- New function `*CloudServicesClientStartPoller.FinalResponse(context.Context) (CloudServicesClientStartResponse, error)`
+- New function `*CloudServiceRoleInstancesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachineScaleSetsClientPerformMaintenancePoller.FinalResponse(context.Context) (VirtualMachineScaleSetsClientPerformMaintenanceResponse, error)`
+- New function `*VirtualMachineScaleSetVMsClientStartPoller.FinalResponse(context.Context) (VirtualMachineScaleSetVMsClientStartResponse, error)`
+- New function `*DiskRestorePointClientRevokeAccessPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CapacityReservationGroupsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SharedGalleryImageVersionsClientListPager.Err() error`
+- New function `CloudServicesClientReimagePollerResponse.PollUntilDone(context.Context, time.Duration) (CloudServicesClientReimageResponse, error)`
+- New function `*GalleryApplicationsClientListByGalleryPager.NextPage(context.Context) bool`
+- New function `*DiskAccessesClientListByResourceGroupPager.Err() error`
+- New function `*SnapshotsClientListPager.PageResponse() SnapshotsClientListResponse`
+- New function `VirtualMachineExtensionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachineExtensionsClientDeleteResponse, error)`
+- New function `*CapacityReservationsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualMachineScaleSetRollingUpgradesClientCancelPollerResponse.Resume(context.Context, *VirtualMachineScaleSetRollingUpgradesClient, string) error`
+- New function `*GalleriesClientUpdatePoller.Done() bool`
+- New function `*CloudServicesClientStartPoller.ResumeToken() (string, error)`
+- New function `*RestorePointCollectionsClientDeletePoller.ResumeToken() (string, error)`
+- New struct `AvailabilitySetsClientCreateOrUpdateOptions`
+- New struct `AvailabilitySetsClientCreateOrUpdateResponse`
+- New struct `AvailabilitySetsClientCreateOrUpdateResult`
+- New struct `AvailabilitySetsClientDeleteOptions`
+- New struct `AvailabilitySetsClientDeleteResponse`
+- New struct `AvailabilitySetsClientGetOptions`
+- New struct `AvailabilitySetsClientGetResponse`
+- New struct `AvailabilitySetsClientGetResult`
+- New struct `AvailabilitySetsClientListAvailableSizesOptions`
+- New struct `AvailabilitySetsClientListAvailableSizesResponse`
+- New struct `AvailabilitySetsClientListAvailableSizesResult`
+- New struct `AvailabilitySetsClientListBySubscriptionOptions`
+- New struct `AvailabilitySetsClientListBySubscriptionPager`
+- New struct `AvailabilitySetsClientListBySubscriptionResponse`
+- New struct `AvailabilitySetsClientListBySubscriptionResult`
+- New struct `AvailabilitySetsClientListOptions`
+- New struct `AvailabilitySetsClientListPager`
+- New struct `AvailabilitySetsClientListResponse`
+- New struct `AvailabilitySetsClientListResult`
+- New struct `AvailabilitySetsClientUpdateOptions`
+- New struct `AvailabilitySetsClientUpdateResponse`
+- New struct `AvailabilitySetsClientUpdateResult`
+- New struct `CapacityReservationGroupsClientCreateOrUpdateOptions`
+- New struct `CapacityReservationGroupsClientCreateOrUpdateResponse`
+- New struct `CapacityReservationGroupsClientCreateOrUpdateResult`
+- New struct `CapacityReservationGroupsClientDeleteOptions`
+- New struct `CapacityReservationGroupsClientDeleteResponse`
+- New struct `CapacityReservationGroupsClientGetOptions`
+- New struct `CapacityReservationGroupsClientGetResponse`
+- New struct `CapacityReservationGroupsClientGetResult`
+- New struct `CapacityReservationGroupsClientListByResourceGroupOptions`
+- New struct `CapacityReservationGroupsClientListByResourceGroupPager`
+- New struct `CapacityReservationGroupsClientListByResourceGroupResponse`
+- New struct `CapacityReservationGroupsClientListByResourceGroupResult`
+- New struct `CapacityReservationGroupsClientListBySubscriptionOptions`
+- New struct `CapacityReservationGroupsClientListBySubscriptionPager`
+- New struct `CapacityReservationGroupsClientListBySubscriptionResponse`
+- New struct `CapacityReservationGroupsClientListBySubscriptionResult`
+- New struct `CapacityReservationGroupsClientUpdateOptions`
+- New struct `CapacityReservationGroupsClientUpdateResponse`
+- New struct `CapacityReservationGroupsClientUpdateResult`
+- New struct `CapacityReservationsClientBeginCreateOrUpdateOptions`
+- New struct `CapacityReservationsClientBeginDeleteOptions`
+- New struct `CapacityReservationsClientBeginUpdateOptions`
+- New struct `CapacityReservationsClientCreateOrUpdatePoller`
+- New struct `CapacityReservationsClientCreateOrUpdatePollerResponse`
+- New struct `CapacityReservationsClientCreateOrUpdateResponse`
+- New struct `CapacityReservationsClientCreateOrUpdateResult`
+- New struct `CapacityReservationsClientDeletePoller`
+- New struct `CapacityReservationsClientDeletePollerResponse`
+- New struct `CapacityReservationsClientDeleteResponse`
+- New struct `CapacityReservationsClientGetOptions`
+- New struct `CapacityReservationsClientGetResponse`
+- New struct `CapacityReservationsClientGetResult`
+- New struct `CapacityReservationsClientListByCapacityReservationGroupOptions`
+- New struct `CapacityReservationsClientListByCapacityReservationGroupPager`
+- New struct `CapacityReservationsClientListByCapacityReservationGroupResponse`
+- New struct `CapacityReservationsClientListByCapacityReservationGroupResult`
+- New struct `CapacityReservationsClientUpdatePoller`
+- New struct `CapacityReservationsClientUpdatePollerResponse`
+- New struct `CapacityReservationsClientUpdateResponse`
+- New struct `CapacityReservationsClientUpdateResult`
+- New struct `CloudServiceOperatingSystemsClientGetOSFamilyOptions`
+- New struct `CloudServiceOperatingSystemsClientGetOSFamilyResponse`
+- New struct `CloudServiceOperatingSystemsClientGetOSFamilyResult`
+- New struct `CloudServiceOperatingSystemsClientGetOSVersionOptions`
+- New struct `CloudServiceOperatingSystemsClientGetOSVersionResponse`
+- New struct `CloudServiceOperatingSystemsClientGetOSVersionResult`
+- New struct `CloudServiceOperatingSystemsClientListOSFamiliesOptions`
+- New struct `CloudServiceOperatingSystemsClientListOSFamiliesPager`
+- New struct `CloudServiceOperatingSystemsClientListOSFamiliesResponse`
+- New struct `CloudServiceOperatingSystemsClientListOSFamiliesResult`
+- New struct `CloudServiceOperatingSystemsClientListOSVersionsOptions`
+- New struct `CloudServiceOperatingSystemsClientListOSVersionsPager`
+- New struct `CloudServiceOperatingSystemsClientListOSVersionsResponse`
+- New struct `CloudServiceOperatingSystemsClientListOSVersionsResult`
+- New struct `CloudServiceRoleInstancesClientBeginDeleteOptions`
+- New struct `CloudServiceRoleInstancesClientBeginRebuildOptions`
+- New struct `CloudServiceRoleInstancesClientBeginReimageOptions`
+- New struct `CloudServiceRoleInstancesClientBeginRestartOptions`
+- New struct `CloudServiceRoleInstancesClientDeletePoller`
+- New struct `CloudServiceRoleInstancesClientDeletePollerResponse`
+- New struct `CloudServiceRoleInstancesClientDeleteResponse`
+- New struct `CloudServiceRoleInstancesClientGetInstanceViewOptions`
+- New struct `CloudServiceRoleInstancesClientGetInstanceViewResponse`
+- New struct `CloudServiceRoleInstancesClientGetInstanceViewResult`
+- New struct `CloudServiceRoleInstancesClientGetOptions`
+- New struct `CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions`
+- New struct `CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse`
+- New struct `CloudServiceRoleInstancesClientGetResponse`
+- New struct `CloudServiceRoleInstancesClientGetResult`
+- New struct `CloudServiceRoleInstancesClientListOptions`
+- New struct `CloudServiceRoleInstancesClientListPager`
+- New struct `CloudServiceRoleInstancesClientListResponse`
+- New struct `CloudServiceRoleInstancesClientListResult`
+- New struct `CloudServiceRoleInstancesClientRebuildPoller`
+- New struct `CloudServiceRoleInstancesClientRebuildPollerResponse`
+- New struct `CloudServiceRoleInstancesClientRebuildResponse`
+- New struct `CloudServiceRoleInstancesClientReimagePoller`
+- New struct `CloudServiceRoleInstancesClientReimagePollerResponse`
+- New struct `CloudServiceRoleInstancesClientReimageResponse`
+- New struct `CloudServiceRoleInstancesClientRestartPoller`
+- New struct `CloudServiceRoleInstancesClientRestartPollerResponse`
+- New struct `CloudServiceRoleInstancesClientRestartResponse`
+- New struct `CloudServiceRolesClientGetOptions`
+- New struct `CloudServiceRolesClientGetResponse`
+- New struct `CloudServiceRolesClientGetResult`
+- New struct `CloudServiceRolesClientListOptions`
+- New struct `CloudServiceRolesClientListPager`
+- New struct `CloudServiceRolesClientListResponse`
+- New struct `CloudServiceRolesClientListResult`
+- New struct `CloudServicesClientBeginCreateOrUpdateOptions`
+- New struct `CloudServicesClientBeginDeleteInstancesOptions`
+- New struct `CloudServicesClientBeginDeleteOptions`
+- New struct `CloudServicesClientBeginPowerOffOptions`
+- New struct `CloudServicesClientBeginRebuildOptions`
+- New struct `CloudServicesClientBeginReimageOptions`
+- New struct `CloudServicesClientBeginRestartOptions`
+- New struct `CloudServicesClientBeginStartOptions`
+- New struct `CloudServicesClientBeginUpdateOptions`
+- New struct `CloudServicesClientCreateOrUpdatePoller`
+- New struct `CloudServicesClientCreateOrUpdatePollerResponse`
+- New struct `CloudServicesClientCreateOrUpdateResponse`
+- New struct `CloudServicesClientCreateOrUpdateResult`
+- New struct `CloudServicesClientDeleteInstancesPoller`
+- New struct `CloudServicesClientDeleteInstancesPollerResponse`
+- New struct `CloudServicesClientDeleteInstancesResponse`
+- New struct `CloudServicesClientDeletePoller`
+- New struct `CloudServicesClientDeletePollerResponse`
+- New struct `CloudServicesClientDeleteResponse`
+- New struct `CloudServicesClientGetInstanceViewOptions`
+- New struct `CloudServicesClientGetInstanceViewResponse`
+- New struct `CloudServicesClientGetInstanceViewResult`
+- New struct `CloudServicesClientGetOptions`
+- New struct `CloudServicesClientGetResponse`
+- New struct `CloudServicesClientGetResult`
+- New struct `CloudServicesClientListAllOptions`
+- New struct `CloudServicesClientListAllPager`
+- New struct `CloudServicesClientListAllResponse`
+- New struct `CloudServicesClientListAllResult`
+- New struct `CloudServicesClientListOptions`
+- New struct `CloudServicesClientListPager`
+- New struct `CloudServicesClientListResponse`
+- New struct `CloudServicesClientListResult`
+- New struct `CloudServicesClientPowerOffPoller`
+- New struct `CloudServicesClientPowerOffPollerResponse`
+- New struct `CloudServicesClientPowerOffResponse`
+- New struct `CloudServicesClientRebuildPoller`
+- New struct `CloudServicesClientRebuildPollerResponse`
+- New struct `CloudServicesClientRebuildResponse`
+- New struct `CloudServicesClientReimagePoller`
+- New struct `CloudServicesClientReimagePollerResponse`
+- New struct `CloudServicesClientReimageResponse`
+- New struct `CloudServicesClientRestartPoller`
+- New struct `CloudServicesClientRestartPollerResponse`
+- New struct `CloudServicesClientRestartResponse`
+- New struct `CloudServicesClientStartPoller`
+- New struct `CloudServicesClientStartPollerResponse`
+- New struct `CloudServicesClientStartResponse`
+- New struct `CloudServicesClientUpdatePoller`
+- New struct `CloudServicesClientUpdatePollerResponse`
+- New struct `CloudServicesClientUpdateResponse`
+- New struct `CloudServicesClientUpdateResult`
+- New struct `CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions`
+- New struct `CloudServicesUpdateDomainClientGetUpdateDomainOptions`
+- New struct `CloudServicesUpdateDomainClientGetUpdateDomainResponse`
+- New struct `CloudServicesUpdateDomainClientGetUpdateDomainResult`
+- New struct `CloudServicesUpdateDomainClientListUpdateDomainsOptions`
+- New struct `CloudServicesUpdateDomainClientListUpdateDomainsPager`
+- New struct `CloudServicesUpdateDomainClientListUpdateDomainsResponse`
+- New struct `CloudServicesUpdateDomainClientListUpdateDomainsResult`
+- New struct `CloudServicesUpdateDomainClientWalkUpdateDomainPoller`
+- New struct `CloudServicesUpdateDomainClientWalkUpdateDomainPollerResponse`
+- New struct `CloudServicesUpdateDomainClientWalkUpdateDomainResponse`
+- New struct `CommunityGalleriesClientGetOptions`
+- New struct `CommunityGalleriesClientGetResponse`
+- New struct `CommunityGalleriesClientGetResult`
+- New struct `CommunityGalleryImageVersionsClientGetOptions`
+- New struct `CommunityGalleryImageVersionsClientGetResponse`
+- New struct `CommunityGalleryImageVersionsClientGetResult`
+- New struct `CommunityGalleryImagesClientGetOptions`
+- New struct `CommunityGalleryImagesClientGetResponse`
+- New struct `CommunityGalleryImagesClientGetResult`
+- New struct `DedicatedHostGroupsClientCreateOrUpdateOptions`
+- New struct `DedicatedHostGroupsClientCreateOrUpdateResponse`
+- New struct `DedicatedHostGroupsClientCreateOrUpdateResult`
+- New struct `DedicatedHostGroupsClientDeleteOptions`
+- New struct `DedicatedHostGroupsClientDeleteResponse`
+- New struct `DedicatedHostGroupsClientGetOptions`
+- New struct `DedicatedHostGroupsClientGetResponse`
+- New struct `DedicatedHostGroupsClientGetResult`
+- New struct `DedicatedHostGroupsClientListByResourceGroupOptions`
+- New struct `DedicatedHostGroupsClientListByResourceGroupPager`
+- New struct `DedicatedHostGroupsClientListByResourceGroupResponse`
+- New struct `DedicatedHostGroupsClientListByResourceGroupResult`
+- New struct `DedicatedHostGroupsClientListBySubscriptionOptions`
+- New struct `DedicatedHostGroupsClientListBySubscriptionPager`
+- New struct `DedicatedHostGroupsClientListBySubscriptionResponse`
+- New struct `DedicatedHostGroupsClientListBySubscriptionResult`
+- New struct `DedicatedHostGroupsClientUpdateOptions`
+- New struct `DedicatedHostGroupsClientUpdateResponse`
+- New struct `DedicatedHostGroupsClientUpdateResult`
+- New struct `DedicatedHostsClientBeginCreateOrUpdateOptions`
+- New struct `DedicatedHostsClientBeginDeleteOptions`
+- New struct `DedicatedHostsClientBeginUpdateOptions`
+- New struct `DedicatedHostsClientCreateOrUpdatePoller`
+- New struct `DedicatedHostsClientCreateOrUpdatePollerResponse`
+- New struct `DedicatedHostsClientCreateOrUpdateResponse`
+- New struct `DedicatedHostsClientCreateOrUpdateResult`
+- New struct `DedicatedHostsClientDeletePoller`
+- New struct `DedicatedHostsClientDeletePollerResponse`
+- New struct `DedicatedHostsClientDeleteResponse`
+- New struct `DedicatedHostsClientGetOptions`
+- New struct `DedicatedHostsClientGetResponse`
+- New struct `DedicatedHostsClientGetResult`
+- New struct `DedicatedHostsClientListByHostGroupOptions`
+- New struct `DedicatedHostsClientListByHostGroupPager`
+- New struct `DedicatedHostsClientListByHostGroupResponse`
+- New struct `DedicatedHostsClientListByHostGroupResult`
+- New struct `DedicatedHostsClientUpdatePoller`
+- New struct `DedicatedHostsClientUpdatePollerResponse`
+- New struct `DedicatedHostsClientUpdateResponse`
+- New struct `DedicatedHostsClientUpdateResult`
+- New struct `DiskAccessesClientBeginCreateOrUpdateOptions`
+- New struct `DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions`
+- New struct `DiskAccessesClientBeginDeleteOptions`
+- New struct `DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions`
+- New struct `DiskAccessesClientBeginUpdateOptions`
+- New struct `DiskAccessesClientCreateOrUpdatePoller`
+- New struct `DiskAccessesClientCreateOrUpdatePollerResponse`
+- New struct `DiskAccessesClientCreateOrUpdateResponse`
+- New struct `DiskAccessesClientCreateOrUpdateResult`
+- New struct `DiskAccessesClientDeleteAPrivateEndpointConnectionPoller`
+- New struct `DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse`
+- New struct `DiskAccessesClientDeleteAPrivateEndpointConnectionResponse`
+- New struct `DiskAccessesClientDeletePoller`
+- New struct `DiskAccessesClientDeletePollerResponse`
+- New struct `DiskAccessesClientDeleteResponse`
+- New struct `DiskAccessesClientGetAPrivateEndpointConnectionOptions`
+- New struct `DiskAccessesClientGetAPrivateEndpointConnectionResponse`
+- New struct `DiskAccessesClientGetAPrivateEndpointConnectionResult`
+- New struct `DiskAccessesClientGetOptions`
+- New struct `DiskAccessesClientGetPrivateLinkResourcesOptions`
+- New struct `DiskAccessesClientGetPrivateLinkResourcesResponse`
+- New struct `DiskAccessesClientGetPrivateLinkResourcesResult`
+- New struct `DiskAccessesClientGetResponse`
+- New struct `DiskAccessesClientGetResult`
+- New struct `DiskAccessesClientListByResourceGroupOptions`
+- New struct `DiskAccessesClientListByResourceGroupPager`
+- New struct `DiskAccessesClientListByResourceGroupResponse`
+- New struct `DiskAccessesClientListByResourceGroupResult`
+- New struct `DiskAccessesClientListOptions`
+- New struct `DiskAccessesClientListPager`
+- New struct `DiskAccessesClientListPrivateEndpointConnectionsOptions`
+- New struct `DiskAccessesClientListPrivateEndpointConnectionsPager`
+- New struct `DiskAccessesClientListPrivateEndpointConnectionsResponse`
+- New struct `DiskAccessesClientListPrivateEndpointConnectionsResult`
+- New struct `DiskAccessesClientListResponse`
+- New struct `DiskAccessesClientListResult`
+- New struct `DiskAccessesClientUpdateAPrivateEndpointConnectionPoller`
+- New struct `DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse`
+- New struct `DiskAccessesClientUpdateAPrivateEndpointConnectionResponse`
+- New struct `DiskAccessesClientUpdateAPrivateEndpointConnectionResult`
+- New struct `DiskAccessesClientUpdatePoller`
+- New struct `DiskAccessesClientUpdatePollerResponse`
+- New struct `DiskAccessesClientUpdateResponse`
+- New struct `DiskAccessesClientUpdateResult`
+- New struct `DiskEncryptionSetsClientBeginCreateOrUpdateOptions`
+- New struct `DiskEncryptionSetsClientBeginDeleteOptions`
+- New struct `DiskEncryptionSetsClientBeginUpdateOptions`
+- New struct `DiskEncryptionSetsClientCreateOrUpdatePoller`
+- New struct `DiskEncryptionSetsClientCreateOrUpdatePollerResponse`
+- New struct `DiskEncryptionSetsClientCreateOrUpdateResponse`
+- New struct `DiskEncryptionSetsClientCreateOrUpdateResult`
+- New struct `DiskEncryptionSetsClientDeletePoller`
+- New struct `DiskEncryptionSetsClientDeletePollerResponse`
+- New struct `DiskEncryptionSetsClientDeleteResponse`
+- New struct `DiskEncryptionSetsClientGetOptions`
+- New struct `DiskEncryptionSetsClientGetResponse`
+- New struct `DiskEncryptionSetsClientGetResult`
+- New struct `DiskEncryptionSetsClientListAssociatedResourcesOptions`
+- New struct `DiskEncryptionSetsClientListAssociatedResourcesPager`
+- New struct `DiskEncryptionSetsClientListAssociatedResourcesResponse`
+- New struct `DiskEncryptionSetsClientListAssociatedResourcesResult`
+- New struct `DiskEncryptionSetsClientListByResourceGroupOptions`
+- New struct `DiskEncryptionSetsClientListByResourceGroupPager`
+- New struct `DiskEncryptionSetsClientListByResourceGroupResponse`
+- New struct `DiskEncryptionSetsClientListByResourceGroupResult`
+- New struct `DiskEncryptionSetsClientListOptions`
+- New struct `DiskEncryptionSetsClientListPager`
+- New struct `DiskEncryptionSetsClientListResponse`
+- New struct `DiskEncryptionSetsClientListResult`
+- New struct `DiskEncryptionSetsClientUpdatePoller`
+- New struct `DiskEncryptionSetsClientUpdatePollerResponse`
+- New struct `DiskEncryptionSetsClientUpdateResponse`
+- New struct `DiskEncryptionSetsClientUpdateResult`
+- New struct `DiskRestorePointClientBeginGrantAccessOptions`
+- New struct `DiskRestorePointClientBeginRevokeAccessOptions`
+- New struct `DiskRestorePointClientGetOptions`
+- New struct `DiskRestorePointClientGetResponse`
+- New struct `DiskRestorePointClientGetResult`
+- New struct `DiskRestorePointClientGrantAccessPoller`
+- New struct `DiskRestorePointClientGrantAccessPollerResponse`
+- New struct `DiskRestorePointClientGrantAccessResponse`
+- New struct `DiskRestorePointClientGrantAccessResult`
+- New struct `DiskRestorePointClientListByRestorePointOptions`
+- New struct `DiskRestorePointClientListByRestorePointPager`
+- New struct `DiskRestorePointClientListByRestorePointResponse`
+- New struct `DiskRestorePointClientListByRestorePointResult`
+- New struct `DiskRestorePointClientRevokeAccessPoller`
+- New struct `DiskRestorePointClientRevokeAccessPollerResponse`
+- New struct `DiskRestorePointClientRevokeAccessResponse`
+- New struct `DisksClientBeginCreateOrUpdateOptions`
+- New struct `DisksClientBeginDeleteOptions`
+- New struct `DisksClientBeginGrantAccessOptions`
+- New struct `DisksClientBeginRevokeAccessOptions`
+- New struct `DisksClientBeginUpdateOptions`
+- New struct `DisksClientCreateOrUpdatePoller`
+- New struct `DisksClientCreateOrUpdatePollerResponse`
+- New struct `DisksClientCreateOrUpdateResponse`
+- New struct `DisksClientCreateOrUpdateResult`
+- New struct `DisksClientDeletePoller`
+- New struct `DisksClientDeletePollerResponse`
+- New struct `DisksClientDeleteResponse`
+- New struct `DisksClientGetOptions`
+- New struct `DisksClientGetResponse`
+- New struct `DisksClientGetResult`
+- New struct `DisksClientGrantAccessPoller`
+- New struct `DisksClientGrantAccessPollerResponse`
+- New struct `DisksClientGrantAccessResponse`
+- New struct `DisksClientGrantAccessResult`
+- New struct `DisksClientListByResourceGroupOptions`
+- New struct `DisksClientListByResourceGroupPager`
+- New struct `DisksClientListByResourceGroupResponse`
+- New struct `DisksClientListByResourceGroupResult`
+- New struct `DisksClientListOptions`
+- New struct `DisksClientListPager`
+- New struct `DisksClientListResponse`
+- New struct `DisksClientListResult`
+- New struct `DisksClientRevokeAccessPoller`
+- New struct `DisksClientRevokeAccessPollerResponse`
+- New struct `DisksClientRevokeAccessResponse`
+- New struct `DisksClientUpdatePoller`
+- New struct `DisksClientUpdatePollerResponse`
+- New struct `DisksClientUpdateResponse`
+- New struct `DisksClientUpdateResult`
+- New struct `GalleriesClientBeginCreateOrUpdateOptions`
+- New struct `GalleriesClientBeginDeleteOptions`
+- New struct `GalleriesClientBeginUpdateOptions`
+- New struct `GalleriesClientCreateOrUpdatePoller`
+- New struct `GalleriesClientCreateOrUpdatePollerResponse`
+- New struct `GalleriesClientCreateOrUpdateResponse`
+- New struct `GalleriesClientCreateOrUpdateResult`
+- New struct `GalleriesClientDeletePoller`
+- New struct `GalleriesClientDeletePollerResponse`
+- New struct `GalleriesClientDeleteResponse`
+- New struct `GalleriesClientGetOptions`
+- New struct `GalleriesClientGetResponse`
+- New struct `GalleriesClientGetResult`
+- New struct `GalleriesClientListByResourceGroupOptions`
+- New struct `GalleriesClientListByResourceGroupPager`
+- New struct `GalleriesClientListByResourceGroupResponse`
+- New struct `GalleriesClientListByResourceGroupResult`
+- New struct `GalleriesClientListOptions`
+- New struct `GalleriesClientListPager`
+- New struct `GalleriesClientListResponse`
+- New struct `GalleriesClientListResult`
+- New struct `GalleriesClientUpdatePoller`
+- New struct `GalleriesClientUpdatePollerResponse`
+- New struct `GalleriesClientUpdateResponse`
+- New struct `GalleriesClientUpdateResult`
+- New struct `GalleryApplicationVersionsClientBeginCreateOrUpdateOptions`
+- New struct `GalleryApplicationVersionsClientBeginDeleteOptions`
+- New struct `GalleryApplicationVersionsClientBeginUpdateOptions`
+- New struct `GalleryApplicationVersionsClientCreateOrUpdatePoller`
+- New struct `GalleryApplicationVersionsClientCreateOrUpdatePollerResponse`
+- New struct `GalleryApplicationVersionsClientCreateOrUpdateResponse`
+- New struct `GalleryApplicationVersionsClientCreateOrUpdateResult`
+- New struct `GalleryApplicationVersionsClientDeletePoller`
+- New struct `GalleryApplicationVersionsClientDeletePollerResponse`
+- New struct `GalleryApplicationVersionsClientDeleteResponse`
+- New struct `GalleryApplicationVersionsClientGetOptions`
+- New struct `GalleryApplicationVersionsClientGetResponse`
+- New struct `GalleryApplicationVersionsClientGetResult`
+- New struct `GalleryApplicationVersionsClientListByGalleryApplicationOptions`
+- New struct `GalleryApplicationVersionsClientListByGalleryApplicationPager`
+- New struct `GalleryApplicationVersionsClientListByGalleryApplicationResponse`
+- New struct `GalleryApplicationVersionsClientListByGalleryApplicationResult`
+- New struct `GalleryApplicationVersionsClientUpdatePoller`
+- New struct `GalleryApplicationVersionsClientUpdatePollerResponse`
+- New struct `GalleryApplicationVersionsClientUpdateResponse`
+- New struct `GalleryApplicationVersionsClientUpdateResult`
+- New struct `GalleryApplicationsClientBeginCreateOrUpdateOptions`
+- New struct `GalleryApplicationsClientBeginDeleteOptions`
+- New struct `GalleryApplicationsClientBeginUpdateOptions`
+- New struct `GalleryApplicationsClientCreateOrUpdatePoller`
+- New struct `GalleryApplicationsClientCreateOrUpdatePollerResponse`
+- New struct `GalleryApplicationsClientCreateOrUpdateResponse`
+- New struct `GalleryApplicationsClientCreateOrUpdateResult`
+- New struct `GalleryApplicationsClientDeletePoller`
+- New struct `GalleryApplicationsClientDeletePollerResponse`
+- New struct `GalleryApplicationsClientDeleteResponse`
+- New struct `GalleryApplicationsClientGetOptions`
+- New struct `GalleryApplicationsClientGetResponse`
+- New struct `GalleryApplicationsClientGetResult`
+- New struct `GalleryApplicationsClientListByGalleryOptions`
+- New struct `GalleryApplicationsClientListByGalleryPager`
+- New struct `GalleryApplicationsClientListByGalleryResponse`
+- New struct `GalleryApplicationsClientListByGalleryResult`
+- New struct `GalleryApplicationsClientUpdatePoller`
+- New struct `GalleryApplicationsClientUpdatePollerResponse`
+- New struct `GalleryApplicationsClientUpdateResponse`
+- New struct `GalleryApplicationsClientUpdateResult`
+- New struct `GalleryImageVersionsClientBeginCreateOrUpdateOptions`
+- New struct `GalleryImageVersionsClientBeginDeleteOptions`
+- New struct `GalleryImageVersionsClientBeginUpdateOptions`
+- New struct `GalleryImageVersionsClientCreateOrUpdatePoller`
+- New struct `GalleryImageVersionsClientCreateOrUpdatePollerResponse`
+- New struct `GalleryImageVersionsClientCreateOrUpdateResponse`
+- New struct `GalleryImageVersionsClientCreateOrUpdateResult`
+- New struct `GalleryImageVersionsClientDeletePoller`
+- New struct `GalleryImageVersionsClientDeletePollerResponse`
+- New struct `GalleryImageVersionsClientDeleteResponse`
+- New struct `GalleryImageVersionsClientGetOptions`
+- New struct `GalleryImageVersionsClientGetResponse`
+- New struct `GalleryImageVersionsClientGetResult`
+- New struct `GalleryImageVersionsClientListByGalleryImageOptions`
+- New struct `GalleryImageVersionsClientListByGalleryImagePager`
+- New struct `GalleryImageVersionsClientListByGalleryImageResponse`
+- New struct `GalleryImageVersionsClientListByGalleryImageResult`
+- New struct `GalleryImageVersionsClientUpdatePoller`
+- New struct `GalleryImageVersionsClientUpdatePollerResponse`
+- New struct `GalleryImageVersionsClientUpdateResponse`
+- New struct `GalleryImageVersionsClientUpdateResult`
+- New struct `GalleryImagesClientBeginCreateOrUpdateOptions`
+- New struct `GalleryImagesClientBeginDeleteOptions`
+- New struct `GalleryImagesClientBeginUpdateOptions`
+- New struct `GalleryImagesClientCreateOrUpdatePoller`
+- New struct `GalleryImagesClientCreateOrUpdatePollerResponse`
+- New struct `GalleryImagesClientCreateOrUpdateResponse`
+- New struct `GalleryImagesClientCreateOrUpdateResult`
+- New struct `GalleryImagesClientDeletePoller`
+- New struct `GalleryImagesClientDeletePollerResponse`
+- New struct `GalleryImagesClientDeleteResponse`
+- New struct `GalleryImagesClientGetOptions`
+- New struct `GalleryImagesClientGetResponse`
+- New struct `GalleryImagesClientGetResult`
+- New struct `GalleryImagesClientListByGalleryOptions`
+- New struct `GalleryImagesClientListByGalleryPager`
+- New struct `GalleryImagesClientListByGalleryResponse`
+- New struct `GalleryImagesClientListByGalleryResult`
+- New struct `GalleryImagesClientUpdatePoller`
+- New struct `GalleryImagesClientUpdatePollerResponse`
+- New struct `GalleryImagesClientUpdateResponse`
+- New struct `GalleryImagesClientUpdateResult`
+- New struct `GallerySharingProfileClientBeginUpdateOptions`
+- New struct `GallerySharingProfileClientUpdatePoller`
+- New struct `GallerySharingProfileClientUpdatePollerResponse`
+- New struct `GallerySharingProfileClientUpdateResponse`
+- New struct `GallerySharingProfileClientUpdateResult`
+- New struct `ImagesClientBeginCreateOrUpdateOptions`
+- New struct `ImagesClientBeginDeleteOptions`
+- New struct `ImagesClientBeginUpdateOptions`
+- New struct `ImagesClientCreateOrUpdatePoller`
+- New struct `ImagesClientCreateOrUpdatePollerResponse`
+- New struct `ImagesClientCreateOrUpdateResponse`
+- New struct `ImagesClientCreateOrUpdateResult`
+- New struct `ImagesClientDeletePoller`
+- New struct `ImagesClientDeletePollerResponse`
+- New struct `ImagesClientDeleteResponse`
+- New struct `ImagesClientGetOptions`
+- New struct `ImagesClientGetResponse`
+- New struct `ImagesClientGetResult`
+- New struct `ImagesClientListByResourceGroupOptions`
+- New struct `ImagesClientListByResourceGroupPager`
+- New struct `ImagesClientListByResourceGroupResponse`
+- New struct `ImagesClientListByResourceGroupResult`
+- New struct `ImagesClientListOptions`
+- New struct `ImagesClientListPager`
+- New struct `ImagesClientListResponse`
+- New struct `ImagesClientListResult`
+- New struct `ImagesClientUpdatePoller`
+- New struct `ImagesClientUpdatePollerResponse`
+- New struct `ImagesClientUpdateResponse`
+- New struct `ImagesClientUpdateResult`
+- New struct `LogAnalyticsClientBeginExportRequestRateByIntervalOptions`
+- New struct `LogAnalyticsClientBeginExportThrottledRequestsOptions`
+- New struct `LogAnalyticsClientExportRequestRateByIntervalPoller`
+- New struct `LogAnalyticsClientExportRequestRateByIntervalPollerResponse`
+- New struct `LogAnalyticsClientExportRequestRateByIntervalResponse`
+- New struct `LogAnalyticsClientExportRequestRateByIntervalResult`
+- New struct `LogAnalyticsClientExportThrottledRequestsPoller`
+- New struct `LogAnalyticsClientExportThrottledRequestsPollerResponse`
+- New struct `LogAnalyticsClientExportThrottledRequestsResponse`
+- New struct `LogAnalyticsClientExportThrottledRequestsResult`
+- New struct `OperationListResult`
+- New struct `OperationValue`
+- New struct `OperationValueDisplay`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `ProximityPlacementGroupsClientCreateOrUpdateOptions`
+- New struct `ProximityPlacementGroupsClientCreateOrUpdateResponse`
+- New struct `ProximityPlacementGroupsClientCreateOrUpdateResult`
+- New struct `ProximityPlacementGroupsClientDeleteOptions`
+- New struct `ProximityPlacementGroupsClientDeleteResponse`
+- New struct `ProximityPlacementGroupsClientGetOptions`
+- New struct `ProximityPlacementGroupsClientGetResponse`
+- New struct `ProximityPlacementGroupsClientGetResult`
+- New struct `ProximityPlacementGroupsClientListByResourceGroupOptions`
+- New struct `ProximityPlacementGroupsClientListByResourceGroupPager`
+- New struct `ProximityPlacementGroupsClientListByResourceGroupResponse`
+- New struct `ProximityPlacementGroupsClientListByResourceGroupResult`
+- New struct `ProximityPlacementGroupsClientListBySubscriptionOptions`
+- New struct `ProximityPlacementGroupsClientListBySubscriptionPager`
+- New struct `ProximityPlacementGroupsClientListBySubscriptionResponse`
+- New struct `ProximityPlacementGroupsClientListBySubscriptionResult`
+- New struct `ProximityPlacementGroupsClientUpdateOptions`
+- New struct `ProximityPlacementGroupsClientUpdateResponse`
+- New struct `ProximityPlacementGroupsClientUpdateResult`
+- New struct `ResourceSKUsClientListOptions`
+- New struct `ResourceSKUsClientListPager`
+- New struct `ResourceSKUsClientListResponse`
+- New struct `ResourceSKUsClientListResult`
+- New struct `RestorePointCollectionsClientBeginDeleteOptions`
+- New struct `RestorePointCollectionsClientCreateOrUpdateOptions`
+- New struct `RestorePointCollectionsClientCreateOrUpdateResponse`
+- New struct `RestorePointCollectionsClientCreateOrUpdateResult`
+- New struct `RestorePointCollectionsClientDeletePoller`
+- New struct `RestorePointCollectionsClientDeletePollerResponse`
+- New struct `RestorePointCollectionsClientDeleteResponse`
+- New struct `RestorePointCollectionsClientGetOptions`
+- New struct `RestorePointCollectionsClientGetResponse`
+- New struct `RestorePointCollectionsClientGetResult`
+- New struct `RestorePointCollectionsClientListAllOptions`
+- New struct `RestorePointCollectionsClientListAllPager`
+- New struct `RestorePointCollectionsClientListAllResponse`
+- New struct `RestorePointCollectionsClientListAllResult`
+- New struct `RestorePointCollectionsClientListOptions`
+- New struct `RestorePointCollectionsClientListPager`
+- New struct `RestorePointCollectionsClientListResponse`
+- New struct `RestorePointCollectionsClientListResult`
+- New struct `RestorePointCollectionsClientUpdateOptions`
+- New struct `RestorePointCollectionsClientUpdateResponse`
+- New struct `RestorePointCollectionsClientUpdateResult`
+- New struct `RestorePointsClientBeginCreateOptions`
+- New struct `RestorePointsClientBeginDeleteOptions`
+- New struct `RestorePointsClientCreatePoller`
+- New struct `RestorePointsClientCreatePollerResponse`
+- New struct `RestorePointsClientCreateResponse`
+- New struct `RestorePointsClientCreateResult`
+- New struct `RestorePointsClientDeletePoller`
+- New struct `RestorePointsClientDeletePollerResponse`
+- New struct `RestorePointsClientDeleteResponse`
+- New struct `RestorePointsClientGetOptions`
+- New struct `RestorePointsClientGetResponse`
+- New struct `RestorePointsClientGetResult`
+- New struct `SSHPublicKeysClientCreateOptions`
+- New struct `SSHPublicKeysClientCreateResponse`
+- New struct `SSHPublicKeysClientCreateResult`
+- New struct `SSHPublicKeysClientDeleteOptions`
+- New struct `SSHPublicKeysClientDeleteResponse`
+- New struct `SSHPublicKeysClientGenerateKeyPairOptions`
+- New struct `SSHPublicKeysClientGenerateKeyPairResponse`
+- New struct `SSHPublicKeysClientGenerateKeyPairResult`
+- New struct `SSHPublicKeysClientGetOptions`
+- New struct `SSHPublicKeysClientGetResponse`
+- New struct `SSHPublicKeysClientGetResult`
+- New struct `SSHPublicKeysClientListByResourceGroupOptions`
+- New struct `SSHPublicKeysClientListByResourceGroupPager`
+- New struct `SSHPublicKeysClientListByResourceGroupResponse`
+- New struct `SSHPublicKeysClientListByResourceGroupResult`
+- New struct `SSHPublicKeysClientListBySubscriptionOptions`
+- New struct `SSHPublicKeysClientListBySubscriptionPager`
+- New struct `SSHPublicKeysClientListBySubscriptionResponse`
+- New struct `SSHPublicKeysClientListBySubscriptionResult`
+- New struct `SSHPublicKeysClientUpdateOptions`
+- New struct `SSHPublicKeysClientUpdateResponse`
+- New struct `SSHPublicKeysClientUpdateResult`
+- New struct `SharedGalleriesClientGetOptions`
+- New struct `SharedGalleriesClientGetResponse`
+- New struct `SharedGalleriesClientGetResult`
+- New struct `SharedGalleriesClientListOptions`
+- New struct `SharedGalleriesClientListPager`
+- New struct `SharedGalleriesClientListResponse`
+- New struct `SharedGalleriesClientListResult`
+- New struct `SharedGalleryImageVersionsClientGetOptions`
+- New struct `SharedGalleryImageVersionsClientGetResponse`
+- New struct `SharedGalleryImageVersionsClientGetResult`
+- New struct `SharedGalleryImageVersionsClientListOptions`
+- New struct `SharedGalleryImageVersionsClientListPager`
+- New struct `SharedGalleryImageVersionsClientListResponse`
+- New struct `SharedGalleryImageVersionsClientListResult`
+- New struct `SharedGalleryImagesClientGetOptions`
+- New struct `SharedGalleryImagesClientGetResponse`
+- New struct `SharedGalleryImagesClientGetResult`
+- New struct `SharedGalleryImagesClientListOptions`
+- New struct `SharedGalleryImagesClientListPager`
+- New struct `SharedGalleryImagesClientListResponse`
+- New struct `SharedGalleryImagesClientListResult`
+- New struct `SnapshotsClientBeginCreateOrUpdateOptions`
+- New struct `SnapshotsClientBeginDeleteOptions`
+- New struct `SnapshotsClientBeginGrantAccessOptions`
+- New struct `SnapshotsClientBeginRevokeAccessOptions`
+- New struct `SnapshotsClientBeginUpdateOptions`
+- New struct `SnapshotsClientCreateOrUpdatePoller`
+- New struct `SnapshotsClientCreateOrUpdatePollerResponse`
+- New struct `SnapshotsClientCreateOrUpdateResponse`
+- New struct `SnapshotsClientCreateOrUpdateResult`
+- New struct `SnapshotsClientDeletePoller`
+- New struct `SnapshotsClientDeletePollerResponse`
+- New struct `SnapshotsClientDeleteResponse`
+- New struct `SnapshotsClientGetOptions`
+- New struct `SnapshotsClientGetResponse`
+- New struct `SnapshotsClientGetResult`
+- New struct `SnapshotsClientGrantAccessPoller`
+- New struct `SnapshotsClientGrantAccessPollerResponse`
+- New struct `SnapshotsClientGrantAccessResponse`
+- New struct `SnapshotsClientGrantAccessResult`
+- New struct `SnapshotsClientListByResourceGroupOptions`
+- New struct `SnapshotsClientListByResourceGroupPager`
+- New struct `SnapshotsClientListByResourceGroupResponse`
+- New struct `SnapshotsClientListByResourceGroupResult`
+- New struct `SnapshotsClientListOptions`
+- New struct `SnapshotsClientListPager`
+- New struct `SnapshotsClientListResponse`
+- New struct `SnapshotsClientListResult`
+- New struct `SnapshotsClientRevokeAccessPoller`
+- New struct `SnapshotsClientRevokeAccessPollerResponse`
+- New struct `SnapshotsClientRevokeAccessResponse`
+- New struct `SnapshotsClientUpdatePoller`
+- New struct `SnapshotsClientUpdatePollerResponse`
+- New struct `SnapshotsClientUpdateResponse`
+- New struct `SnapshotsClientUpdateResult`
+- New struct `UsageClientListOptions`
+- New struct `UsageClientListPager`
+- New struct `UsageClientListResponse`
+- New struct `UsageClientListResult`
+- New struct `VirtualMachineExtensionImagesClientGetOptions`
+- New struct `VirtualMachineExtensionImagesClientGetResponse`
+- New struct `VirtualMachineExtensionImagesClientGetResult`
+- New struct `VirtualMachineExtensionImagesClientListTypesOptions`
+- New struct `VirtualMachineExtensionImagesClientListTypesResponse`
+- New struct `VirtualMachineExtensionImagesClientListTypesResult`
+- New struct `VirtualMachineExtensionImagesClientListVersionsOptions`
+- New struct `VirtualMachineExtensionImagesClientListVersionsResponse`
+- New struct `VirtualMachineExtensionImagesClientListVersionsResult`
+- New struct `VirtualMachineExtensionsClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachineExtensionsClientBeginDeleteOptions`
+- New struct `VirtualMachineExtensionsClientBeginUpdateOptions`
+- New struct `VirtualMachineExtensionsClientCreateOrUpdatePoller`
+- New struct `VirtualMachineExtensionsClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachineExtensionsClientCreateOrUpdateResponse`
+- New struct `VirtualMachineExtensionsClientCreateOrUpdateResult`
+- New struct `VirtualMachineExtensionsClientDeletePoller`
+- New struct `VirtualMachineExtensionsClientDeletePollerResponse`
+- New struct `VirtualMachineExtensionsClientDeleteResponse`
+- New struct `VirtualMachineExtensionsClientGetOptions`
+- New struct `VirtualMachineExtensionsClientGetResponse`
+- New struct `VirtualMachineExtensionsClientGetResult`
+- New struct `VirtualMachineExtensionsClientListOptions`
+- New struct `VirtualMachineExtensionsClientListResponse`
+- New struct `VirtualMachineExtensionsClientListResult`
+- New struct `VirtualMachineExtensionsClientUpdatePoller`
+- New struct `VirtualMachineExtensionsClientUpdatePollerResponse`
+- New struct `VirtualMachineExtensionsClientUpdateResponse`
+- New struct `VirtualMachineExtensionsClientUpdateResult`
+- New struct `VirtualMachineImagesClientGetOptions`
+- New struct `VirtualMachineImagesClientGetResponse`
+- New struct `VirtualMachineImagesClientGetResult`
+- New struct `VirtualMachineImagesClientListOffersOptions`
+- New struct `VirtualMachineImagesClientListOffersResponse`
+- New struct `VirtualMachineImagesClientListOffersResult`
+- New struct `VirtualMachineImagesClientListOptions`
+- New struct `VirtualMachineImagesClientListPublishersOptions`
+- New struct `VirtualMachineImagesClientListPublishersResponse`
+- New struct `VirtualMachineImagesClientListPublishersResult`
+- New struct `VirtualMachineImagesClientListResponse`
+- New struct `VirtualMachineImagesClientListResult`
+- New struct `VirtualMachineImagesClientListSKUsOptions`
+- New struct `VirtualMachineImagesClientListSKUsResponse`
+- New struct `VirtualMachineImagesClientListSKUsResult`
+- New struct `VirtualMachineImagesEdgeZoneClientGetOptions`
+- New struct `VirtualMachineImagesEdgeZoneClientGetResponse`
+- New struct `VirtualMachineImagesEdgeZoneClientGetResult`
+- New struct `VirtualMachineImagesEdgeZoneClientListOffersOptions`
+- New struct `VirtualMachineImagesEdgeZoneClientListOffersResponse`
+- New struct `VirtualMachineImagesEdgeZoneClientListOffersResult`
+- New struct `VirtualMachineImagesEdgeZoneClientListOptions`
+- New struct `VirtualMachineImagesEdgeZoneClientListPublishersOptions`
+- New struct `VirtualMachineImagesEdgeZoneClientListPublishersResponse`
+- New struct `VirtualMachineImagesEdgeZoneClientListPublishersResult`
+- New struct `VirtualMachineImagesEdgeZoneClientListResponse`
+- New struct `VirtualMachineImagesEdgeZoneClientListResult`
+- New struct `VirtualMachineImagesEdgeZoneClientListSKUsOptions`
+- New struct `VirtualMachineImagesEdgeZoneClientListSKUsResponse`
+- New struct `VirtualMachineImagesEdgeZoneClientListSKUsResult`
+- New struct `VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachineRunCommandsClientBeginDeleteOptions`
+- New struct `VirtualMachineRunCommandsClientBeginUpdateOptions`
+- New struct `VirtualMachineRunCommandsClientCreateOrUpdatePoller`
+- New struct `VirtualMachineRunCommandsClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachineRunCommandsClientCreateOrUpdateResponse`
+- New struct `VirtualMachineRunCommandsClientCreateOrUpdateResult`
+- New struct `VirtualMachineRunCommandsClientDeletePoller`
+- New struct `VirtualMachineRunCommandsClientDeletePollerResponse`
+- New struct `VirtualMachineRunCommandsClientDeleteResponse`
+- New struct `VirtualMachineRunCommandsClientGetByVirtualMachineOptions`
+- New struct `VirtualMachineRunCommandsClientGetByVirtualMachineResponse`
+- New struct `VirtualMachineRunCommandsClientGetByVirtualMachineResult`
+- New struct `VirtualMachineRunCommandsClientGetOptions`
+- New struct `VirtualMachineRunCommandsClientGetResponse`
+- New struct `VirtualMachineRunCommandsClientGetResult`
+- New struct `VirtualMachineRunCommandsClientListByVirtualMachineOptions`
+- New struct `VirtualMachineRunCommandsClientListByVirtualMachinePager`
+- New struct `VirtualMachineRunCommandsClientListByVirtualMachineResponse`
+- New struct `VirtualMachineRunCommandsClientListByVirtualMachineResult`
+- New struct `VirtualMachineRunCommandsClientListOptions`
+- New struct `VirtualMachineRunCommandsClientListPager`
+- New struct `VirtualMachineRunCommandsClientListResponse`
+- New struct `VirtualMachineRunCommandsClientListResult`
+- New struct `VirtualMachineRunCommandsClientUpdatePoller`
+- New struct `VirtualMachineRunCommandsClientUpdatePollerResponse`
+- New struct `VirtualMachineRunCommandsClientUpdateResponse`
+- New struct `VirtualMachineRunCommandsClientUpdateResult`
+- New struct `VirtualMachineScaleSetExtensionsClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachineScaleSetExtensionsClientBeginDeleteOptions`
+- New struct `VirtualMachineScaleSetExtensionsClientBeginUpdateOptions`
+- New struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdatePoller`
+- New struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse`
+- New struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdateResult`
+- New struct `VirtualMachineScaleSetExtensionsClientDeletePoller`
+- New struct `VirtualMachineScaleSetExtensionsClientDeletePollerResponse`
+- New struct `VirtualMachineScaleSetExtensionsClientDeleteResponse`
+- New struct `VirtualMachineScaleSetExtensionsClientGetOptions`
+- New struct `VirtualMachineScaleSetExtensionsClientGetResponse`
+- New struct `VirtualMachineScaleSetExtensionsClientGetResult`
+- New struct `VirtualMachineScaleSetExtensionsClientListOptions`
+- New struct `VirtualMachineScaleSetExtensionsClientListPager`
+- New struct `VirtualMachineScaleSetExtensionsClientListResponse`
+- New struct `VirtualMachineScaleSetExtensionsClientListResult`
+- New struct `VirtualMachineScaleSetExtensionsClientUpdatePoller`
+- New struct `VirtualMachineScaleSetExtensionsClientUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetExtensionsClientUpdateResponse`
+- New struct `VirtualMachineScaleSetExtensionsClientUpdateResult`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientBeginCancelOptions`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientBeginStartExtensionUpgradeOptions`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientBeginStartOSUpgradeOptions`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientCancelPoller`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientCancelPollerResponse`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientCancelResponse`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientGetLatestOptions`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientGetLatestResult`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePoller`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradePollerResponse`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePoller`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradePollerResponse`
+- New struct `VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachineScaleSetVMExtensionsClientBeginDeleteOptions`
+- New struct `VirtualMachineScaleSetVMExtensionsClientBeginUpdateOptions`
+- New struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePoller`
+- New struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResult`
+- New struct `VirtualMachineScaleSetVMExtensionsClientDeletePoller`
+- New struct `VirtualMachineScaleSetVMExtensionsClientDeletePollerResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientDeleteResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientGetOptions`
+- New struct `VirtualMachineScaleSetVMExtensionsClientGetResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientGetResult`
+- New struct `VirtualMachineScaleSetVMExtensionsClientListOptions`
+- New struct `VirtualMachineScaleSetVMExtensionsClientListResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientListResult`
+- New struct `VirtualMachineScaleSetVMExtensionsClientUpdatePoller`
+- New struct `VirtualMachineScaleSetVMExtensionsClientUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientUpdateResponse`
+- New struct `VirtualMachineScaleSetVMExtensionsClientUpdateResult`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientBeginDeleteOptions`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientBeginUpdateOptions`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePoller`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResult`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientDeletePoller`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientDeletePollerResponse`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientDeleteResponse`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientGetOptions`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientGetResponse`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientGetResult`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientListOptions`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientListPager`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientListResponse`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientListResult`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientUpdatePoller`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientUpdateResponse`
+- New struct `VirtualMachineScaleSetVMRunCommandsClientUpdateResult`
+- New struct `VirtualMachineScaleSetVMsClientBeginDeallocateOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginDeleteOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginPowerOffOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginRedeployOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginReimageAllOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginReimageOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginRestartOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginRunCommandOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginStartOptions`
+- New struct `VirtualMachineScaleSetVMsClientBeginUpdateOptions`
+- New struct `VirtualMachineScaleSetVMsClientDeallocatePoller`
+- New struct `VirtualMachineScaleSetVMsClientDeallocatePollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientDeallocateResponse`
+- New struct `VirtualMachineScaleSetVMsClientDeletePoller`
+- New struct `VirtualMachineScaleSetVMsClientDeletePollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientDeleteResponse`
+- New struct `VirtualMachineScaleSetVMsClientGetInstanceViewOptions`
+- New struct `VirtualMachineScaleSetVMsClientGetInstanceViewResponse`
+- New struct `VirtualMachineScaleSetVMsClientGetInstanceViewResult`
+- New struct `VirtualMachineScaleSetVMsClientGetOptions`
+- New struct `VirtualMachineScaleSetVMsClientGetResponse`
+- New struct `VirtualMachineScaleSetVMsClientGetResult`
+- New struct `VirtualMachineScaleSetVMsClientListOptions`
+- New struct `VirtualMachineScaleSetVMsClientListPager`
+- New struct `VirtualMachineScaleSetVMsClientListResponse`
+- New struct `VirtualMachineScaleSetVMsClientListResult`
+- New struct `VirtualMachineScaleSetVMsClientPerformMaintenancePoller`
+- New struct `VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientPerformMaintenanceResponse`
+- New struct `VirtualMachineScaleSetVMsClientPowerOffPoller`
+- New struct `VirtualMachineScaleSetVMsClientPowerOffPollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientPowerOffResponse`
+- New struct `VirtualMachineScaleSetVMsClientRedeployPoller`
+- New struct `VirtualMachineScaleSetVMsClientRedeployPollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientRedeployResponse`
+- New struct `VirtualMachineScaleSetVMsClientReimageAllPoller`
+- New struct `VirtualMachineScaleSetVMsClientReimageAllPollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientReimageAllResponse`
+- New struct `VirtualMachineScaleSetVMsClientReimagePoller`
+- New struct `VirtualMachineScaleSetVMsClientReimagePollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientReimageResponse`
+- New struct `VirtualMachineScaleSetVMsClientRestartPoller`
+- New struct `VirtualMachineScaleSetVMsClientRestartPollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientRestartResponse`
+- New struct `VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataOptions`
+- New struct `VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse`
+- New struct `VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResult`
+- New struct `VirtualMachineScaleSetVMsClientRunCommandPoller`
+- New struct `VirtualMachineScaleSetVMsClientRunCommandPollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientRunCommandResponse`
+- New struct `VirtualMachineScaleSetVMsClientRunCommandResult`
+- New struct `VirtualMachineScaleSetVMsClientSimulateEvictionOptions`
+- New struct `VirtualMachineScaleSetVMsClientSimulateEvictionResponse`
+- New struct `VirtualMachineScaleSetVMsClientStartPoller`
+- New struct `VirtualMachineScaleSetVMsClientStartPollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientStartResponse`
+- New struct `VirtualMachineScaleSetVMsClientUpdatePoller`
+- New struct `VirtualMachineScaleSetVMsClientUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetVMsClientUpdateResponse`
+- New struct `VirtualMachineScaleSetVMsClientUpdateResult`
+- New struct `VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachineScaleSetsClientBeginDeallocateOptions`
+- New struct `VirtualMachineScaleSetsClientBeginDeleteInstancesOptions`
+- New struct `VirtualMachineScaleSetsClientBeginDeleteOptions`
+- New struct `VirtualMachineScaleSetsClientBeginPerformMaintenanceOptions`
+- New struct `VirtualMachineScaleSetsClientBeginPowerOffOptions`
+- New struct `VirtualMachineScaleSetsClientBeginRedeployOptions`
+- New struct `VirtualMachineScaleSetsClientBeginReimageAllOptions`
+- New struct `VirtualMachineScaleSetsClientBeginReimageOptions`
+- New struct `VirtualMachineScaleSetsClientBeginRestartOptions`
+- New struct `VirtualMachineScaleSetsClientBeginSetOrchestrationServiceStateOptions`
+- New struct `VirtualMachineScaleSetsClientBeginStartOptions`
+- New struct `VirtualMachineScaleSetsClientBeginUpdateInstancesOptions`
+- New struct `VirtualMachineScaleSetsClientBeginUpdateOptions`
+- New struct `VirtualMachineScaleSetsClientConvertToSinglePlacementGroupOptions`
+- New struct `VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse`
+- New struct `VirtualMachineScaleSetsClientCreateOrUpdatePoller`
+- New struct `VirtualMachineScaleSetsClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetsClientCreateOrUpdateResponse`
+- New struct `VirtualMachineScaleSetsClientCreateOrUpdateResult`
+- New struct `VirtualMachineScaleSetsClientDeallocatePoller`
+- New struct `VirtualMachineScaleSetsClientDeallocatePollerResponse`
+- New struct `VirtualMachineScaleSetsClientDeallocateResponse`
+- New struct `VirtualMachineScaleSetsClientDeleteInstancesPoller`
+- New struct `VirtualMachineScaleSetsClientDeleteInstancesPollerResponse`
+- New struct `VirtualMachineScaleSetsClientDeleteInstancesResponse`
+- New struct `VirtualMachineScaleSetsClientDeletePoller`
+- New struct `VirtualMachineScaleSetsClientDeletePollerResponse`
+- New struct `VirtualMachineScaleSetsClientDeleteResponse`
+- New struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkOptions`
+- New struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse`
+- New struct `VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResult`
+- New struct `VirtualMachineScaleSetsClientGetInstanceViewOptions`
+- New struct `VirtualMachineScaleSetsClientGetInstanceViewResponse`
+- New struct `VirtualMachineScaleSetsClientGetInstanceViewResult`
+- New struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryOptions`
+- New struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryPager`
+- New struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse`
+- New struct `VirtualMachineScaleSetsClientGetOSUpgradeHistoryResult`
+- New struct `VirtualMachineScaleSetsClientGetOptions`
+- New struct `VirtualMachineScaleSetsClientGetResponse`
+- New struct `VirtualMachineScaleSetsClientGetResult`
+- New struct `VirtualMachineScaleSetsClientListAllOptions`
+- New struct `VirtualMachineScaleSetsClientListAllPager`
+- New struct `VirtualMachineScaleSetsClientListAllResponse`
+- New struct `VirtualMachineScaleSetsClientListAllResult`
+- New struct `VirtualMachineScaleSetsClientListByLocationOptions`
+- New struct `VirtualMachineScaleSetsClientListByLocationPager`
+- New struct `VirtualMachineScaleSetsClientListByLocationResponse`
+- New struct `VirtualMachineScaleSetsClientListByLocationResult`
+- New struct `VirtualMachineScaleSetsClientListOptions`
+- New struct `VirtualMachineScaleSetsClientListPager`
+- New struct `VirtualMachineScaleSetsClientListResponse`
+- New struct `VirtualMachineScaleSetsClientListResult`
+- New struct `VirtualMachineScaleSetsClientListSKUsOptions`
+- New struct `VirtualMachineScaleSetsClientListSKUsPager`
+- New struct `VirtualMachineScaleSetsClientListSKUsResponse`
+- New struct `VirtualMachineScaleSetsClientListSKUsResult`
+- New struct `VirtualMachineScaleSetsClientPerformMaintenancePoller`
+- New struct `VirtualMachineScaleSetsClientPerformMaintenancePollerResponse`
+- New struct `VirtualMachineScaleSetsClientPerformMaintenanceResponse`
+- New struct `VirtualMachineScaleSetsClientPowerOffPoller`
+- New struct `VirtualMachineScaleSetsClientPowerOffPollerResponse`
+- New struct `VirtualMachineScaleSetsClientPowerOffResponse`
+- New struct `VirtualMachineScaleSetsClientRedeployPoller`
+- New struct `VirtualMachineScaleSetsClientRedeployPollerResponse`
+- New struct `VirtualMachineScaleSetsClientRedeployResponse`
+- New struct `VirtualMachineScaleSetsClientReimageAllPoller`
+- New struct `VirtualMachineScaleSetsClientReimageAllPollerResponse`
+- New struct `VirtualMachineScaleSetsClientReimageAllResponse`
+- New struct `VirtualMachineScaleSetsClientReimagePoller`
+- New struct `VirtualMachineScaleSetsClientReimagePollerResponse`
+- New struct `VirtualMachineScaleSetsClientReimageResponse`
+- New struct `VirtualMachineScaleSetsClientRestartPoller`
+- New struct `VirtualMachineScaleSetsClientRestartPollerResponse`
+- New struct `VirtualMachineScaleSetsClientRestartResponse`
+- New struct `VirtualMachineScaleSetsClientSetOrchestrationServiceStatePoller`
+- New struct `VirtualMachineScaleSetsClientSetOrchestrationServiceStatePollerResponse`
+- New struct `VirtualMachineScaleSetsClientSetOrchestrationServiceStateResponse`
+- New struct `VirtualMachineScaleSetsClientStartPoller`
+- New struct `VirtualMachineScaleSetsClientStartPollerResponse`
+- New struct `VirtualMachineScaleSetsClientStartResponse`
+- New struct `VirtualMachineScaleSetsClientUpdateInstancesPoller`
+- New struct `VirtualMachineScaleSetsClientUpdateInstancesPollerResponse`
+- New struct `VirtualMachineScaleSetsClientUpdateInstancesResponse`
+- New struct `VirtualMachineScaleSetsClientUpdatePoller`
+- New struct `VirtualMachineScaleSetsClientUpdatePollerResponse`
+- New struct `VirtualMachineScaleSetsClientUpdateResponse`
+- New struct `VirtualMachineScaleSetsClientUpdateResult`
+- New struct `VirtualMachineSizesClientListOptions`
+- New struct `VirtualMachineSizesClientListResponse`
+- New struct `VirtualMachineSizesClientListResult`
+- New struct `VirtualMachinesClientAssessPatchesPoller`
+- New struct `VirtualMachinesClientAssessPatchesPollerResponse`
+- New struct `VirtualMachinesClientAssessPatchesResponse`
+- New struct `VirtualMachinesClientAssessPatchesResult`
+- New struct `VirtualMachinesClientBeginAssessPatchesOptions`
+- New struct `VirtualMachinesClientBeginCaptureOptions`
+- New struct `VirtualMachinesClientBeginConvertToManagedDisksOptions`
+- New struct `VirtualMachinesClientBeginCreateOrUpdateOptions`
+- New struct `VirtualMachinesClientBeginDeallocateOptions`
+- New struct `VirtualMachinesClientBeginDeleteOptions`
+- New struct `VirtualMachinesClientBeginInstallPatchesOptions`
+- New struct `VirtualMachinesClientBeginPerformMaintenanceOptions`
+- New struct `VirtualMachinesClientBeginPowerOffOptions`
+- New struct `VirtualMachinesClientBeginReapplyOptions`
+- New struct `VirtualMachinesClientBeginRedeployOptions`
+- New struct `VirtualMachinesClientBeginReimageOptions`
+- New struct `VirtualMachinesClientBeginRestartOptions`
+- New struct `VirtualMachinesClientBeginRunCommandOptions`
+- New struct `VirtualMachinesClientBeginStartOptions`
+- New struct `VirtualMachinesClientBeginUpdateOptions`
+- New struct `VirtualMachinesClientCapturePoller`
+- New struct `VirtualMachinesClientCapturePollerResponse`
+- New struct `VirtualMachinesClientCaptureResponse`
+- New struct `VirtualMachinesClientCaptureResult`
+- New struct `VirtualMachinesClientConvertToManagedDisksPoller`
+- New struct `VirtualMachinesClientConvertToManagedDisksPollerResponse`
+- New struct `VirtualMachinesClientConvertToManagedDisksResponse`
+- New struct `VirtualMachinesClientCreateOrUpdatePoller`
+- New struct `VirtualMachinesClientCreateOrUpdatePollerResponse`
+- New struct `VirtualMachinesClientCreateOrUpdateResponse`
+- New struct `VirtualMachinesClientCreateOrUpdateResult`
+- New struct `VirtualMachinesClientDeallocatePoller`
+- New struct `VirtualMachinesClientDeallocatePollerResponse`
+- New struct `VirtualMachinesClientDeallocateResponse`
+- New struct `VirtualMachinesClientDeletePoller`
+- New struct `VirtualMachinesClientDeletePollerResponse`
+- New struct `VirtualMachinesClientDeleteResponse`
+- New struct `VirtualMachinesClientGeneralizeOptions`
+- New struct `VirtualMachinesClientGeneralizeResponse`
+- New struct `VirtualMachinesClientGetOptions`
+- New struct `VirtualMachinesClientGetResponse`
+- New struct `VirtualMachinesClientGetResult`
+- New struct `VirtualMachinesClientInstallPatchesPoller`
+- New struct `VirtualMachinesClientInstallPatchesPollerResponse`
+- New struct `VirtualMachinesClientInstallPatchesResponse`
+- New struct `VirtualMachinesClientInstallPatchesResult`
+- New struct `VirtualMachinesClientInstanceViewOptions`
+- New struct `VirtualMachinesClientInstanceViewResponse`
+- New struct `VirtualMachinesClientInstanceViewResult`
+- New struct `VirtualMachinesClientListAllOptions`
+- New struct `VirtualMachinesClientListAllPager`
+- New struct `VirtualMachinesClientListAllResponse`
+- New struct `VirtualMachinesClientListAllResult`
+- New struct `VirtualMachinesClientListAvailableSizesOptions`
+- New struct `VirtualMachinesClientListAvailableSizesResponse`
+- New struct `VirtualMachinesClientListAvailableSizesResult`
+- New struct `VirtualMachinesClientListByLocationOptions`
+- New struct `VirtualMachinesClientListByLocationPager`
+- New struct `VirtualMachinesClientListByLocationResponse`
+- New struct `VirtualMachinesClientListByLocationResult`
+- New struct `VirtualMachinesClientListOptions`
+- New struct `VirtualMachinesClientListPager`
+- New struct `VirtualMachinesClientListResponse`
+- New struct `VirtualMachinesClientListResult`
+- New struct `VirtualMachinesClientPerformMaintenancePoller`
+- New struct `VirtualMachinesClientPerformMaintenancePollerResponse`
+- New struct `VirtualMachinesClientPerformMaintenanceResponse`
+- New struct `VirtualMachinesClientPowerOffPoller`
+- New struct `VirtualMachinesClientPowerOffPollerResponse`
+- New struct `VirtualMachinesClientPowerOffResponse`
+- New struct `VirtualMachinesClientReapplyPoller`
+- New struct `VirtualMachinesClientReapplyPollerResponse`
+- New struct `VirtualMachinesClientReapplyResponse`
+- New struct `VirtualMachinesClientRedeployPoller`
+- New struct `VirtualMachinesClientRedeployPollerResponse`
+- New struct `VirtualMachinesClientRedeployResponse`
+- New struct `VirtualMachinesClientReimagePoller`
+- New struct `VirtualMachinesClientReimagePollerResponse`
+- New struct `VirtualMachinesClientReimageResponse`
+- New struct `VirtualMachinesClientRestartPoller`
+- New struct `VirtualMachinesClientRestartPollerResponse`
+- New struct `VirtualMachinesClientRestartResponse`
+- New struct `VirtualMachinesClientRetrieveBootDiagnosticsDataOptions`
+- New struct `VirtualMachinesClientRetrieveBootDiagnosticsDataResponse`
+- New struct `VirtualMachinesClientRetrieveBootDiagnosticsDataResult`
+- New struct `VirtualMachinesClientRunCommandPoller`
+- New struct `VirtualMachinesClientRunCommandPollerResponse`
+- New struct `VirtualMachinesClientRunCommandResponse`
+- New struct `VirtualMachinesClientRunCommandResult`
+- New struct `VirtualMachinesClientSimulateEvictionOptions`
+- New struct `VirtualMachinesClientSimulateEvictionResponse`
+- New struct `VirtualMachinesClientStartPoller`
+- New struct `VirtualMachinesClientStartPollerResponse`
+- New struct `VirtualMachinesClientStartResponse`
+- New struct `VirtualMachinesClientUpdatePoller`
+- New struct `VirtualMachinesClientUpdatePollerResponse`
+- New struct `VirtualMachinesClientUpdateResponse`
+- New struct `VirtualMachinesClientUpdateResult`
+- New field `Tags` in struct `CapacityReservationUpdate`
+- New field `SupportedCapabilities` in struct `SnapshotUpdateProperties`
+- New field `Tags` in struct `AvailabilitySetUpdate`
+- New field `Location` in struct `Image`
+- New field `Tags` in struct `Image`
+- New field `ID` in struct `Image`
+- New field `Name` in struct `Image`
+- New field `Type` in struct `Image`
+- New field `Name` in struct `RestorePoint`
+- New field `Type` in struct `RestorePoint`
+- New field `ID` in struct `RestorePoint`
+- New field `Location` in struct `SSHPublicKeyResource`
+- New field `Tags` in struct `SSHPublicKeyResource`
+- New field `ID` in struct `SSHPublicKeyResource`
+- New field `Name` in struct `SSHPublicKeyResource`
+- New field `Type` in struct `SSHPublicKeyResource`
+- New field `Tags` in struct `SSHPublicKeyUpdateResource`
+- New field `ID` in struct `VirtualMachineImageResource`
+- New field `BlobContainerSasURI` in struct `RequestRateByIntervalInput`
+- New field `FromTime` in struct `RequestRateByIntervalInput`
+- New field `ToTime` in struct `RequestRateByIntervalInput`
+- New field `GroupByOperationName` in struct `RequestRateByIntervalInput`
+- New field `GroupByClientApplicationID` in struct `RequestRateByIntervalInput`
+- New field `GroupByResourceName` in struct `RequestRateByIntervalInput`
+- New field `GroupByThrottlePolicy` in struct `RequestRateByIntervalInput`
+- New field `GroupByUserAgent` in struct `RequestRateByIntervalInput`
+- New field `Tags` in struct `DedicatedHostGroupUpdate`
+- New field `Name` in struct `VirtualMachineScaleSet`
+- New field `Location` in struct `VirtualMachineScaleSet`
+- New field `ID` in struct `VirtualMachineScaleSet`
+- New field `Type` in struct `VirtualMachineScaleSet`
+- New field `Tags` in struct `VirtualMachineScaleSet`
+- New field `Location` in struct `Gallery`
+- New field `Tags` in struct `Gallery`
+- New field `ID` in struct `Gallery`
+- New field `Name` in struct `Gallery`
+- New field `Type` in struct `Gallery`
+- New field `ID` in struct `SubResourceWithColocationStatus`
+- New field `SecurityProfile` in struct `SnapshotProperties`
+- New field `Tags` in struct `CapacityReservationGroupUpdate`
+- New field `Name` in struct `CapacityReservationGroup`
+- New field `Type` in struct `CapacityReservationGroup`
+- New field `Location` in struct `CapacityReservationGroup`
+- New field `Tags` in struct `CapacityReservationGroup`
+- New field `ID` in struct `CapacityReservationGroup`
+- New field `Tags` in struct `ProximityPlacementGroupUpdate`
+- New field `Tags` in struct `VirtualMachineExtensionUpdate`
+- New field `Tags` in struct `VirtualMachineRunCommandUpdate`
+- New field `ID` in struct `VirtualMachineScaleSetExtension`
+- New field `TempDisk` in struct `VirtualMachineScaleSetReimageParameters`
+- New field `Type` in struct `RollingUpgradeStatusInfo`
+- New field `Location` in struct `RollingUpgradeStatusInfo`
+- New field `Tags` in struct `RollingUpgradeStatusInfo`
+- New field `ID` in struct `RollingUpgradeStatusInfo`
+- New field `Name` in struct `RollingUpgradeStatusInfo`
+- New field `Tags` in struct `GalleryApplicationVersionUpdate`
+- New field `ID` in struct `GalleryApplicationVersionUpdate`
+- New field `Name` in struct `GalleryApplicationVersionUpdate`
+- New field `Type` in struct `GalleryApplicationVersionUpdate`
+- New field `SecurityDataURI` in struct `CreationData`
+- New field `StorageAccountType` in struct `ImageOSDisk`
+- New field `BlobURI` in struct `ImageOSDisk`
+- New field `Caching` in struct `ImageOSDisk`
+- New field `DiskEncryptionSet` in struct `ImageOSDisk`
+- New field `DiskSizeGB` in struct `ImageOSDisk`
+- New field `Snapshot` in struct `ImageOSDisk`
+- New field `ManagedDisk` in struct `ImageOSDisk`
+- New field `UtilizationInfo` in struct `CapacityReservationInstanceViewWithName`
+- New field `Statuses` in struct `CapacityReservationInstanceViewWithName`
+- New field `Location` in struct `Snapshot`
+- New field `ID` in struct `Snapshot`
+- New field `Type` in struct `Snapshot`
+- New field `Tags` in struct `Snapshot`
+- New field `Name` in struct `Snapshot`
+- New field `HostCaching` in struct `GalleryDataDiskImage`
+- New field `Source` in struct `GalleryDataDiskImage`
+- New field `SizeInGB` in struct `GalleryDataDiskImage`
+- New field `ID` in struct `GalleryImageVersion`
+- New field `Name` in struct `GalleryImageVersion`
+- New field `Type` in struct `GalleryImageVersion`
+- New field `Location` in struct `GalleryImageVersion`
+- New field `Tags` in struct `GalleryImageVersion`
+- New field `Location` in struct `DedicatedHost`
+- New field `Tags` in struct `DedicatedHost`
+- New field `ID` in struct `DedicatedHost`
+- New field `Name` in struct `DedicatedHost`
+- New field `Type` in struct `DedicatedHost`
+- New field `ID` in struct `VirtualMachineCaptureResult`
+- New field `ID` in struct `GalleryApplicationUpdate`
+- New field `Name` in struct `GalleryApplicationUpdate`
+- New field `Type` in struct `GalleryApplicationUpdate`
+- New field `Tags` in struct `GalleryApplicationUpdate`
+- New field `ID` in struct `GalleryImageVersionUpdate`
+- New field `Name` in struct `GalleryImageVersionUpdate`
+- New field `Type` in struct `GalleryImageVersionUpdate`
+- New field `Tags` in struct `GalleryImageVersionUpdate`
+- New field `ID` in struct `VirtualMachineScaleSetVMExtensionUpdate`
+- New field `ID` in struct `VirtualMachineScaleSetNetworkConfiguration`
+- New field `Tags` in struct `RestorePointCollectionUpdate`
+- New field `ID` in struct `DiskEncryptionSetParameters`
+- New field `ID` in struct `VirtualMachineScaleSetVMExtension`
+- New field `Type` in struct `VirtualMachine`
+- New field `Tags` in struct `VirtualMachine`
+- New field `Location` in struct `VirtualMachine`
+- New field `ID` in struct `VirtualMachine`
+- New field `Name` in struct `VirtualMachine`
+- New field `ID` in struct `DiskEncryptionSet`
+- New field `Name` in struct `DiskEncryptionSet`
+- New field `Type` in struct `DiskEncryptionSet`
+- New field `Location` in struct `DiskEncryptionSet`
+- New field `Tags` in struct `DiskEncryptionSet`
+- New field `Tags` in struct `ImageUpdate`
+- New field `DiskEncryptionSetID` in struct `OSDiskImageEncryption`
+- New field `Tags` in struct `GalleryUpdate`
+- New field `ID` in struct `GalleryUpdate`
+- New field `Name` in struct `GalleryUpdate`
+- New field `Type` in struct `GalleryUpdate`
+- New field `Name` in struct `CapacityReservation`
+- New field `Type` in struct `CapacityReservation`
+- New field `Location` in struct `CapacityReservation`
+- New field `Tags` in struct `CapacityReservation`
+- New field `ID` in struct `CapacityReservation`
+- New field `Tags` in struct `VirtualMachineUpdate`
+- New field `ID` in struct `ManagedDiskParameters`
+- New field `Identifier` in struct `CommunityGallery`
+- New field `Location` in struct `CommunityGallery`
+- New field `Name` in struct `CommunityGallery`
+- New field `Type` in struct `CommunityGallery`
+- New field `DiskSizeGB` in struct `ImageDataDisk`
+- New field `ManagedDisk` in struct `ImageDataDisk`
+- New field `Snapshot` in struct `ImageDataDisk`
+- New field `StorageAccountType` in struct `ImageDataDisk`
+- New field `BlobURI` in struct `ImageDataDisk`
+- New field `Caching` in struct `ImageDataDisk`
+- New field `DiskEncryptionSet` in struct `ImageDataDisk`
+- New field `HostCaching` in struct `GalleryOSDiskImage`
+- New field `Source` in struct `GalleryOSDiskImage`
+- New field `SizeInGB` in struct `GalleryOSDiskImage`
+- New field `GetSecureVMGuestStateSAS` in struct `GrantAccessData`
+- New field `ID` in struct `VirtualMachineScaleSetUpdateIPConfiguration`
+- New field `Name` in struct `VirtualMachineExtensionImage`
+- New field `Type` in struct `VirtualMachineExtensionImage`
+- New field `Location` in struct `VirtualMachineExtensionImage`
+- New field `Tags` in struct `VirtualMachineExtensionImage`
+- New field `ID` in struct `VirtualMachineExtensionImage`
+- New field `ID` in struct `VirtualMachineScaleSetIPConfiguration`
+- New field `Location` in struct `PirSharedGalleryResource`
+- New field `Name` in struct `PirSharedGalleryResource`
+- New field `SecurityDataAccessSAS` in struct `AccessURI`
+- New field `Tags` in struct `VirtualMachineExtension`
+- New field `ID` in struct `VirtualMachineExtension`
+- New field `Name` in struct `VirtualMachineExtension`
+- New field `Type` in struct `VirtualMachineExtension`
+- New field `Location` in struct `VirtualMachineExtension`
+- New field `Name` in struct `DedicatedHostGroup`
+- New field `Type` in struct `DedicatedHostGroup`
+- New field `Location` in struct `DedicatedHostGroup`
+- New field `Tags` in struct `DedicatedHostGroup`
+- New field `ID` in struct `DedicatedHostGroup`
+- New field `Tags` in struct `GalleryImageUpdate`
+- New field `ID` in struct `GalleryImageUpdate`
+- New field `Name` in struct `GalleryImageUpdate`
+- New field `Type` in struct `GalleryImageUpdate`
+- New field `Tags` in struct `VirtualMachineScaleSetVM`
+- New field `ID` in struct `VirtualMachineScaleSetVM`
+- New field `Location` in struct `VirtualMachineScaleSetVM`
+- New field `Name` in struct `VirtualMachineScaleSetVM`
+- New field `Type` in struct `VirtualMachineScaleSetVM`
+- New field `ExtendedLocation` in struct `VirtualMachineImage`
+- New field `ID` in struct `VirtualMachineImage`
+- New field `Tags` in struct `VirtualMachineImage`
+- New field `Location` in struct `VirtualMachineImage`
+- New field `Name` in struct `VirtualMachineImage`
+- New field `ID` in struct `ProximityPlacementGroup`
+- New field `Name` in struct `ProximityPlacementGroup`
+- New field `Type` in struct `ProximityPlacementGroup`
+- New field `Location` in struct `ProximityPlacementGroup`
+- New field `Tags` in struct `ProximityPlacementGroup`
+- New field `Type` in struct `VirtualMachineRunCommand`
+- New field `Location` in struct `VirtualMachineRunCommand`
+- New field `Tags` in struct `VirtualMachineRunCommand`
+- New field `ID` in struct `VirtualMachineRunCommand`
+- New field `Name` in struct `VirtualMachineRunCommand`
+- New field `ID` in struct `RunCommandDocument`
+- New field `Label` in struct `RunCommandDocument`
+- New field `OSType` in struct `RunCommandDocument`
+- New field `Schema` in struct `RunCommandDocument`
+- New field `Description` in struct `RunCommandDocument`
+- New field `ReplicationMode` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `StorageAccountType` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `TargetRegions` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `ExcludeFromLatest` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `PublishedDate` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `EndOfLifeDate` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `ReplicaCount` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `ID` in struct `ImageReference`
+- New field `Tags` in struct `DedicatedHostUpdate`
+- New field `Location` in struct `AvailabilitySet`
+- New field `Tags` in struct `AvailabilitySet`
+- New field `ID` in struct `AvailabilitySet`
+- New field `Name` in struct `AvailabilitySet`
+- New field `Type` in struct `AvailabilitySet`
+- New field `DiskEncryptionSetID` in struct `DataDiskImageEncryption`
+- New field `Identifier` in struct `SharedGallery`
+- New field `Location` in struct `SharedGallery`
+- New field `Name` in struct `SharedGallery`
+- New field `ID` in struct `DiskRestorePoint`
+- New field `Name` in struct `DiskRestorePoint`
+- New field `Type` in struct `DiskRestorePoint`
+- New field `SourceResourceLocation` in struct `DiskRestorePointProperties`
+- New field `ReplicationState` in struct `DiskRestorePointProperties`
+- New field `Error` in struct `CloudError`
+- New field `EndOfLifeDate` in struct `GalleryImageVersionPublishingProfile`
+- New field `ExcludeFromLatest` in struct `GalleryImageVersionPublishingProfile`
+- New field `ReplicaCount` in struct `GalleryImageVersionPublishingProfile`
+- New field `ReplicationMode` in struct `GalleryImageVersionPublishingProfile`
+- New field `StorageAccountType` in struct `GalleryImageVersionPublishingProfile`
+- New field `TargetRegions` in struct `GalleryImageVersionPublishingProfile`
+- New field `PublishedDate` in struct `GalleryImageVersionPublishingProfile`
+- New field `ID` in struct `RestorePointCollection`
+- New field `Name` in struct `RestorePointCollection`
+- New field `Type` in struct `RestorePointCollection`
+- New field `Location` in struct `RestorePointCollection`
+- New field `Tags` in struct `RestorePointCollection`
+- New field `SecureVMDiskEncryptionSetID` in struct `DiskSecurityProfile`
+- New field `Tags` in struct `VirtualMachineScaleSetUpdate`
+- New field `Identifier` in struct `SharedGalleryImage`
+- New field `Location` in struct `SharedGalleryImage`
+- New field `Name` in struct `SharedGalleryImage`
+- New field `Location` in struct `GalleryApplication`
+- New field `Tags` in struct `GalleryApplication`
+- New field `ID` in struct `GalleryApplication`
+- New field `Name` in struct `GalleryApplication`
+- New field `Type` in struct `GalleryApplication`
+- New field `Location` in struct `CommunityGalleryImage`
+- New field `Name` in struct `CommunityGalleryImage`
+- New field `Type` in struct `CommunityGalleryImage`
+- New field `Identifier` in struct `CommunityGalleryImage`
+- New field `ID` in struct `VirtualMachineScaleSetExtensionUpdate`
+- New field `Location` in struct `DiskAccess`
+- New field `Tags` in struct `DiskAccess`
+- New field `ID` in struct `DiskAccess`
+- New field `Name` in struct `DiskAccess`
+- New field `Type` in struct `DiskAccess`
+- New field `ToTime` in struct `ThrottledRequestsInput`
+- New field `GroupByClientApplicationID` in struct `ThrottledRequestsInput`
+- New field `GroupByOperationName` in struct `ThrottledRequestsInput`
+- New field `GroupByResourceName` in struct `ThrottledRequestsInput`
+- New field `GroupByThrottlePolicy` in struct `ThrottledRequestsInput`
+- New field `GroupByUserAgent` in struct `ThrottledRequestsInput`
+- New field `BlobContainerSasURI` in struct `ThrottledRequestsInput`
+- New field `FromTime` in struct `ThrottledRequestsInput`
+- New field `ID` in struct `NetworkInterfaceReference`
+- New field `TempDisk` in struct `VirtualMachineScaleSetVMReimageParameters`
+- New field `Identifier` in struct `SharedGalleryImageVersion`
+- New field `Location` in struct `SharedGalleryImageVersion`
+- New field `Name` in struct `SharedGalleryImageVersion`
+- New field `AssetID` in struct `DedicatedHostInstanceViewWithName`
+- New field `AvailableCapacity` in struct `DedicatedHostInstanceViewWithName`
+- New field `Statuses` in struct `DedicatedHostInstanceViewWithName`
+- New field `Tags` in struct `GalleryImage`
+- New field `ID` in struct `GalleryImage`
+- New field `Name` in struct `GalleryImage`
+- New field `Type` in struct `GalleryImage`
+- New field `Location` in struct `GalleryImage`
+- New field `Type` in struct `GalleryApplicationVersion`
+- New field `Location` in struct `GalleryApplicationVersion`
+- New field `Tags` in struct `GalleryApplicationVersion`
+- New field `ID` in struct `GalleryApplicationVersion`
+- New field `Name` in struct `GalleryApplicationVersion`
+- New field `Identifier` in struct `CommunityGalleryImageVersion`
+- New field `Location` in struct `CommunityGalleryImageVersion`
+- New field `Name` in struct `CommunityGalleryImageVersion`
+- New field `Type` in struct `CommunityGalleryImageVersion`
+- New field `Location` in struct `Disk`
+- New field `ID` in struct `Disk`
+- New field `Type` in struct `Disk`
+- New field `Tags` in struct `Disk`
+- New field `Name` in struct `Disk`
+- New field `ID` in struct `VirtualMachineScaleSetUpdateNetworkConfiguration`
+
+
 ## 0.2.1 (2021-11-26)
 
 ### Other Changes

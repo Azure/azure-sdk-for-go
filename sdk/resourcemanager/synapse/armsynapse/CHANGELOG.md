@@ -1,0 +1,3489 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*KustoPoolDataConnectionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, DataConnectionClassification, *KustoPoolDataConnectionsBeginUpdateOptions)` to `(context.Context, string, string, string, string, string, DataConnectionClassification, *KustoPoolDataConnectionsClientBeginUpdateOptions)`
+- Function `*KustoPoolDataConnectionsClient.BeginUpdate` return value(s) have been changed from `(KustoPoolDataConnectionsUpdatePollerResponse, error)` to `(KustoPoolDataConnectionsClientUpdatePollerResponse, error)`
+- Function `*SQLPoolBlobAuditingPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Enum11, SQLPoolBlobAuditingPolicy, *SQLPoolBlobAuditingPoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, string, Enum11, SQLPoolBlobAuditingPolicy, *SQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions)`
+- Function `*SQLPoolBlobAuditingPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse, error)` to `(SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*IPFirewallRulesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *IPFirewallRulesBeginDeleteOptions)` to `(context.Context, string, string, string, *IPFirewallRulesClientBeginDeleteOptions)`
+- Function `*IPFirewallRulesClient.BeginDelete` return value(s) have been changed from `(IPFirewallRulesDeletePollerResponse, error)` to `(IPFirewallRulesClientDeletePollerResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.BeginInitiateScan` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, string, *SQLPoolVulnerabilityAssessmentScansBeginInitiateScanOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, string, *SQLPoolVulnerabilityAssessmentScansClientBeginInitiateScanOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.BeginInitiateScan` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentScansInitiateScanPollerResponse, error)` to `(SQLPoolVulnerabilityAssessmentScansClientInitiateScanPollerResponse, error)`
+- Function `*SQLPoolSensitivityLabelsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, SensitivityLabelUpdateList, *SQLPoolSensitivityLabelsUpdateOptions)` to `(context.Context, string, string, string, SensitivityLabelUpdateList, *SQLPoolSensitivityLabelsClientUpdateOptions)`
+- Function `*SQLPoolSensitivityLabelsClient.Update` return value(s) have been changed from `(SQLPoolSensitivityLabelsUpdateResponse, error)` to `(SQLPoolSensitivityLabelsClientUpdateResponse, error)`
+- Function `*KeysClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *KeysGetOptions)` to `(context.Context, string, string, string, *KeysClientGetOptions)`
+- Function `*KeysClient.Get` return value(s) have been changed from `(KeysGetResponse, error)` to `(KeysClientGetResponse, error)`
+- Function `*AzureADOnlyAuthenticationsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, AzureADOnlyAuthenticationName, AzureADOnlyAuthentication, *AzureADOnlyAuthenticationsBeginCreateOptions)` to `(context.Context, string, string, AzureADOnlyAuthenticationName, AzureADOnlyAuthentication, *AzureADOnlyAuthenticationsClientBeginCreateOptions)`
+- Function `*AzureADOnlyAuthenticationsClient.BeginCreate` return value(s) have been changed from `(AzureADOnlyAuthenticationsCreatePollerResponse, error)` to `(AzureADOnlyAuthenticationsClientCreatePollerResponse, error)`
+- Function `*SQLPoolMaintenanceWindowsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolMaintenanceWindowsGetOptions)` to `(context.Context, string, string, string, string, *SQLPoolMaintenanceWindowsClientGetOptions)`
+- Function `*SQLPoolMaintenanceWindowsClient.Get` return value(s) have been changed from `(SQLPoolMaintenanceWindowsGetResponse, error)` to `(SQLPoolMaintenanceWindowsClientGetResponse, error)`
+- Function `*SQLPoolReplicationLinksClient.GetByName` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolReplicationLinksGetByNameOptions)` to `(context.Context, string, string, string, string, *SQLPoolReplicationLinksClientGetByNameOptions)`
+- Function `*SQLPoolReplicationLinksClient.GetByName` return value(s) have been changed from `(SQLPoolReplicationLinksGetByNameResponse, error)` to `(SQLPoolReplicationLinksClientGetByNameResponse, error)`
+- Function `*WorkspaceAADAdminsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, WorkspaceAADAdminInfo, *WorkspaceAADAdminsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, WorkspaceAADAdminInfo, *WorkspaceAADAdminsClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspaceAADAdminsClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspaceAADAdminsCreateOrUpdatePollerResponse, error)` to `(WorkspaceAADAdminsClientCreateOrUpdatePollerResponse, error)`
+- Function `*SQLPoolWorkloadGroupClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolWorkloadGroupBeginDeleteOptions)` to `(context.Context, string, string, string, string, *SQLPoolWorkloadGroupClientBeginDeleteOptions)`
+- Function `*SQLPoolWorkloadGroupClient.BeginDelete` return value(s) have been changed from `(SQLPoolWorkloadGroupDeletePollerResponse, error)` to `(SQLPoolWorkloadGroupClientDeletePollerResponse, error)`
+- Function `*WorkspacesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesBeginDeleteOptions)` to `(context.Context, string, string, *WorkspacesClientBeginDeleteOptions)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(WorkspacesDeletePollerResponse, error)` to `(WorkspacesClientDeletePollerResponse, error)`
+- Function `*IntegrationRuntimesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, IntegrationRuntimeResource, *IntegrationRuntimesBeginCreateOptions)` to `(context.Context, string, string, string, IntegrationRuntimeResource, *IntegrationRuntimesClientBeginCreateOptions)`
+- Function `*IntegrationRuntimesClient.BeginCreate` return value(s) have been changed from `(IntegrationRuntimesCreatePollerResponse, error)` to `(IntegrationRuntimesClientCreatePollerResponse, error)`
+- Function `*KustoPoolPrincipalAssignmentsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *KustoPoolPrincipalAssignmentsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *KustoPoolPrincipalAssignmentsClientBeginDeleteOptions)`
+- Function `*KustoPoolPrincipalAssignmentsClient.BeginDelete` return value(s) have been changed from `(KustoPoolPrincipalAssignmentsDeletePollerResponse, error)` to `(KustoPoolPrincipalAssignmentsClientDeletePollerResponse, error)`
+- Function `*PrivateLinkHubPrivateLinkResourcesClient.List` parameter(s) have been changed from `(string, string, *PrivateLinkHubPrivateLinkResourcesListOptions)` to `(string, string, *PrivateLinkHubPrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkHubPrivateLinkResourcesClient.List` return value(s) have been changed from `(*PrivateLinkHubPrivateLinkResourcesListPager)` to `(*PrivateLinkHubPrivateLinkResourcesClientListPager)`
+- Function `*IntegrationRuntimeNodesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *IntegrationRuntimeNodesDeleteOptions)` to `(context.Context, string, string, string, string, *IntegrationRuntimeNodesClientDeleteOptions)`
+- Function `*IntegrationRuntimeNodesClient.Delete` return value(s) have been changed from `(IntegrationRuntimeNodesDeleteResponse, error)` to `(IntegrationRuntimeNodesClientDeleteResponse, error)`
+- Function `*SQLPoolRestorePointsClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolRestorePointsListOptions)` to `(string, string, string, *SQLPoolRestorePointsClientListOptions)`
+- Function `*SQLPoolRestorePointsClient.List` return value(s) have been changed from `(*SQLPoolRestorePointsListPager)` to `(*SQLPoolRestorePointsClientListPager)`
+- Function `*KustoPoolPrincipalAssignmentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, ClusterPrincipalAssignment, *KustoPoolPrincipalAssignmentsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, ClusterPrincipalAssignment, *KustoPoolPrincipalAssignmentsClientBeginCreateOrUpdateOptions)`
+- Function `*KustoPoolPrincipalAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(KustoPoolPrincipalAssignmentsCreateOrUpdatePollerResponse, error)` to `(KustoPoolPrincipalAssignmentsClientCreateOrUpdatePollerResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentRuleBaselinesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, string, VulnerabilityAssessmentPolicyBaselineName, *SQLPoolVulnerabilityAssessmentRuleBaselinesDeleteOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, string, VulnerabilityAssessmentPolicyBaselineName, *SQLPoolVulnerabilityAssessmentRuleBaselinesClientDeleteOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentRuleBaselinesClient.Delete` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentRuleBaselinesDeleteResponse, error)` to `(SQLPoolVulnerabilityAssessmentRuleBaselinesClientDeleteResponse, error)`
+- Function `*SQLPoolMetadataSyncConfigsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, MetadataSyncConfig, *SQLPoolMetadataSyncConfigsCreateOptions)` to `(context.Context, string, string, string, MetadataSyncConfig, *SQLPoolMetadataSyncConfigsClientCreateOptions)`
+- Function `*SQLPoolMetadataSyncConfigsClient.Create` return value(s) have been changed from `(SQLPoolMetadataSyncConfigsCreateResponse, error)` to `(SQLPoolMetadataSyncConfigsClientCreateResponse, error)`
+- Function `*SQLPoolBlobAuditingPoliciesClient.ListBySQLPool` parameter(s) have been changed from `(string, string, string, *SQLPoolBlobAuditingPoliciesListBySQLPoolOptions)` to `(string, string, string, *SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions)`
+- Function `*SQLPoolBlobAuditingPoliciesClient.ListBySQLPool` return value(s) have been changed from `(*SQLPoolBlobAuditingPoliciesListBySQLPoolPager)` to `(*SQLPoolBlobAuditingPoliciesClientListBySQLPoolPager)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *KustoPoolDatabasePrincipalAssignmentsGetOptions)` to `(context.Context, string, string, string, string, string, *KustoPoolDatabasePrincipalAssignmentsClientGetOptions)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.Get` return value(s) have been changed from `(KustoPoolDatabasePrincipalAssignmentsGetResponse, error)` to `(KustoPoolDatabasePrincipalAssignmentsClientGetResponse, error)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.List` parameter(s) have been changed from `(string, string, string, VulnerabilityAssessmentName, *SQLPoolVulnerabilityAssessmentScansListOptions)` to `(string, string, string, VulnerabilityAssessmentName, *SQLPoolVulnerabilityAssessmentScansClientListOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.List` return value(s) have been changed from `(*SQLPoolVulnerabilityAssessmentScansListPager)` to `(*SQLPoolVulnerabilityAssessmentScansClientListPager)`
+- Function `*KustoPoolsClient.ListSKUsByResource` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolsListSKUsByResourceOptions)` to `(context.Context, string, string, string, *KustoPoolsClientListSKUsByResourceOptions)`
+- Function `*KustoPoolsClient.ListSKUsByResource` return value(s) have been changed from `(KustoPoolsListSKUsByResourceResponse, error)` to `(KustoPoolsClientListSKUsByResourceResponse, error)`
+- Function `*IntegrationRuntimeConnectionInfosClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeConnectionInfosGetOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeConnectionInfosClientGetOptions)`
+- Function `*IntegrationRuntimeConnectionInfosClient.Get` return value(s) have been changed from `(IntegrationRuntimeConnectionInfosGetResponse, error)` to `(IntegrationRuntimeConnectionInfosClientGetResponse, error)`
+- Function `*SQLPoolOperationsClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolOperationsListOptions)` to `(string, string, string, *SQLPoolOperationsClientListOptions)`
+- Function `*SQLPoolOperationsClient.List` return value(s) have been changed from `(*SQLPoolOperationsListPager)` to `(*SQLPoolOperationsClientListPager)`
+- Function `*PrivateEndpointConnectionsPrivateLinkHubClient.List` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionsPrivateLinkHubListOptions)` to `(string, string, *PrivateEndpointConnectionsPrivateLinkHubClientListOptions)`
+- Function `*PrivateEndpointConnectionsPrivateLinkHubClient.List` return value(s) have been changed from `(*PrivateEndpointConnectionsPrivateLinkHubListPager)` to `(*PrivateEndpointConnectionsPrivateLinkHubClientListPager)`
+- Function `*KeysClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Key, *KeysCreateOrUpdateOptions)` to `(context.Context, string, string, string, Key, *KeysClientCreateOrUpdateOptions)`
+- Function `*KeysClient.CreateOrUpdate` return value(s) have been changed from `(KeysCreateOrUpdateResponse, error)` to `(KeysClientCreateOrUpdateResponse, error)`
+- Function `*KustoPoolsClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolsBeginStopOptions)` to `(context.Context, string, string, string, *KustoPoolsClientBeginStopOptions)`
+- Function `*KustoPoolsClient.BeginStop` return value(s) have been changed from `(KustoPoolsStopPollerResponse, error)` to `(KustoPoolsClientStopPollerResponse, error)`
+- Function `*WorkspaceManagedIdentitySQLControlSettingsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ManagedIdentitySQLControlSettingsModel, *WorkspaceManagedIdentitySQLControlSettingsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, ManagedIdentitySQLControlSettingsModel, *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspaceManagedIdentitySQLControlSettingsClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePollerResponse, error)` to `(WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse, error)`
+- Function `*WorkspaceAADAdminsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *WorkspaceAADAdminsGetOptions)` to `(context.Context, string, string, *WorkspaceAADAdminsClientGetOptions)`
+- Function `*WorkspaceAADAdminsClient.Get` return value(s) have been changed from `(WorkspaceAADAdminsGetResponse, error)` to `(WorkspaceAADAdminsClientGetResponse, error)`
+- Function `*DataMaskingPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DataMaskingPolicy, *DataMaskingPoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, string, DataMaskingPolicy, *DataMaskingPoliciesClientCreateOrUpdateOptions)`
+- Function `*DataMaskingPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(DataMaskingPoliciesCreateOrUpdateResponse, error)` to `(DataMaskingPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*SQLPoolRestorePointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolRestorePointsGetOptions)` to `(context.Context, string, string, string, string, *SQLPoolRestorePointsClientGetOptions)`
+- Function `*SQLPoolRestorePointsClient.Get` return value(s) have been changed from `(SQLPoolRestorePointsGetResponse, error)` to `(SQLPoolRestorePointsClientGetResponse, error)`
+- Function `*SQLPoolSensitivityLabelsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, SensitivityLabelSource, *SQLPoolSensitivityLabelsGetOptions)` to `(context.Context, string, string, string, string, string, string, SensitivityLabelSource, *SQLPoolSensitivityLabelsClientGetOptions)`
+- Function `*SQLPoolSensitivityLabelsClient.Get` return value(s) have been changed from `(SQLPoolSensitivityLabelsGetResponse, error)` to `(SQLPoolSensitivityLabelsClientGetResponse, error)`
+- Function `*PrivateLinkHubsClient.List` parameter(s) have been changed from `(*PrivateLinkHubsListOptions)` to `(*PrivateLinkHubsClientListOptions)`
+- Function `*PrivateLinkHubsClient.List` return value(s) have been changed from `(*PrivateLinkHubsListPager)` to `(*PrivateLinkHubsClientListPager)`
+- Function `*BigDataPoolsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *BigDataPoolsGetOptions)` to `(context.Context, string, string, string, *BigDataPoolsClientGetOptions)`
+- Function `*BigDataPoolsClient.Get` return value(s) have been changed from `(BigDataPoolsGetResponse, error)` to `(BigDataPoolsClientGetResponse, error)`
+- Function `*LibrariesClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *LibrariesListByWorkspaceOptions)` to `(string, string, *LibrariesClientListByWorkspaceOptions)`
+- Function `*LibrariesClient.ListByWorkspace` return value(s) have been changed from `(*LibrariesListByWorkspacePager)` to `(*LibrariesClientListByWorkspacePager)`
+- Function `*SQLPoolGeoBackupPoliciesClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *SQLPoolGeoBackupPoliciesListOptions)` to `(context.Context, string, string, string, *SQLPoolGeoBackupPoliciesClientListOptions)`
+- Function `*SQLPoolGeoBackupPoliciesClient.List` return value(s) have been changed from `(SQLPoolGeoBackupPoliciesListResponse, error)` to `(SQLPoolGeoBackupPoliciesClientListResponse, error)`
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.Get` parameter(s) have been changed from `(context.Context, string, string, SecurityAlertPolicyNameAutoGenerated, *WorkspaceManagedSQLServerSecurityAlertPolicyGetOptions)` to `(context.Context, string, string, SecurityAlertPolicyNameAutoGenerated, *WorkspaceManagedSQLServerSecurityAlertPolicyClientGetOptions)`
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.Get` return value(s) have been changed from `(WorkspaceManagedSQLServerSecurityAlertPolicyGetResponse, error)` to `(WorkspaceManagedSQLServerSecurityAlertPolicyClientGetResponse, error)`
+- Function `*IntegrationRuntimesClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesBeginStopOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientBeginStopOptions)`
+- Function `*IntegrationRuntimesClient.BeginStop` return value(s) have been changed from `(IntegrationRuntimesStopPollerResponse, error)` to `(IntegrationRuntimesClientStopPollerResponse, error)`
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspaceOptions)` to `(string, string, *WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceOptions)`
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspace` return value(s) have been changed from `(*WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspacePager)` to `(*WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspacePager)`
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.List` parameter(s) have been changed from `(string, string, *WorkspaceManagedSQLServerVulnerabilityAssessmentsListOptions)` to `(string, string, *WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListOptions)`
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.List` return value(s) have been changed from `(*WorkspaceManagedSQLServerVulnerabilityAssessmentsListPager)` to `(*WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListPager)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionsListOptions)` to `(string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(*PrivateEndpointConnectionsListPager)` to `(*PrivateEndpointConnectionsClientListPager)`
+- Function `*KustoPoolDatabasesClient.ListByKustoPool` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolDatabasesListByKustoPoolOptions)` to `(context.Context, string, string, string, *KustoPoolDatabasesClientListByKustoPoolOptions)`
+- Function `*KustoPoolDatabasesClient.ListByKustoPool` return value(s) have been changed from `(KustoPoolDatabasesListByKustoPoolResponse, error)` to `(KustoPoolDatabasesClientListByKustoPoolResponse, error)`
+- Function `*AzureADOnlyAuthenticationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, AzureADOnlyAuthenticationName, *AzureADOnlyAuthenticationsGetOptions)` to `(context.Context, string, string, AzureADOnlyAuthenticationName, *AzureADOnlyAuthenticationsClientGetOptions)`
+- Function `*AzureADOnlyAuthenticationsClient.Get` return value(s) have been changed from `(AzureADOnlyAuthenticationsGetResponse, error)` to `(AzureADOnlyAuthenticationsClientGetResponse, error)`
+- Function `*BigDataPoolsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, BigDataPoolResourceInfo, *BigDataPoolsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, BigDataPoolResourceInfo, *BigDataPoolsClientBeginCreateOrUpdateOptions)`
+- Function `*BigDataPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(BigDataPoolsCreateOrUpdatePollerResponse, error)` to `(BigDataPoolsClientCreateOrUpdatePollerResponse, error)`
+- Function `*WorkspacesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesGetOptions)` to `(context.Context, string, string, *WorkspacesClientGetOptions)`
+- Function `*WorkspacesClient.Get` return value(s) have been changed from `(WorkspacesGetResponse, error)` to `(WorkspacesClientGetResponse, error)`
+- Function `*SQLPoolMaintenanceWindowsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, MaintenanceWindows, *SQLPoolMaintenanceWindowsCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, MaintenanceWindows, *SQLPoolMaintenanceWindowsClientCreateOrUpdateOptions)`
+- Function `*SQLPoolMaintenanceWindowsClient.CreateOrUpdate` return value(s) have been changed from `(SQLPoolMaintenanceWindowsCreateOrUpdateResponse, error)` to `(SQLPoolMaintenanceWindowsClientCreateOrUpdateResponse, error)`
+- Function `*PrivateLinkHubsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkHubsBeginDeleteOptions)` to `(context.Context, string, string, *PrivateLinkHubsClientBeginDeleteOptions)`
+- Function `*PrivateLinkHubsClient.BeginDelete` return value(s) have been changed from `(PrivateLinkHubsDeletePollerResponse, error)` to `(PrivateLinkHubsClientDeletePollerResponse, error)`
+- Function `*IPFirewallRulesClient.BeginReplaceAll` parameter(s) have been changed from `(context.Context, string, string, ReplaceAllIPFirewallRulesRequest, *IPFirewallRulesBeginReplaceAllOptions)` to `(context.Context, string, string, ReplaceAllIPFirewallRulesRequest, *IPFirewallRulesClientBeginReplaceAllOptions)`
+- Function `*IPFirewallRulesClient.BeginReplaceAll` return value(s) have been changed from `(IPFirewallRulesReplaceAllPollerResponse, error)` to `(IPFirewallRulesClientReplaceAllPollerResponse, error)`
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, Enum11, *ExtendedSQLPoolBlobAuditingPoliciesGetOptions)` to `(context.Context, string, string, string, Enum11, *ExtendedSQLPoolBlobAuditingPoliciesClientGetOptions)`
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesClient.Get` return value(s) have been changed from `(ExtendedSQLPoolBlobAuditingPoliciesGetResponse, error)` to `(ExtendedSQLPoolBlobAuditingPoliciesClientGetResponse, error)`
+- Function `*SQLPoolSecurityAlertPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, SecurityAlertPolicyName, *SQLPoolSecurityAlertPoliciesGetOptions)` to `(context.Context, string, string, string, SecurityAlertPolicyName, *SQLPoolSecurityAlertPoliciesClientGetOptions)`
+- Function `*SQLPoolSecurityAlertPoliciesClient.Get` return value(s) have been changed from `(SQLPoolSecurityAlertPoliciesGetResponse, error)` to `(SQLPoolSecurityAlertPoliciesClientGetResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, string, *SQLPoolVulnerabilityAssessmentScansGetOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, string, *SQLPoolVulnerabilityAssessmentScansClientGetOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.Get` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentScansGetResponse, error)` to `(SQLPoolVulnerabilityAssessmentScansClientGetResponse, error)`
+- Function `*SQLPoolRestorePointsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, CreateSQLPoolRestorePointDefinition, *SQLPoolRestorePointsBeginCreateOptions)` to `(context.Context, string, string, string, CreateSQLPoolRestorePointDefinition, *SQLPoolRestorePointsClientBeginCreateOptions)`
+- Function `*SQLPoolRestorePointsClient.BeginCreate` return value(s) have been changed from `(SQLPoolRestorePointsCreatePollerResponse, error)` to `(SQLPoolRestorePointsClientCreatePollerResponse, error)`
+- Function `*SQLPoolsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, SQLPoolPatchInfo, *SQLPoolsUpdateOptions)` to `(context.Context, string, string, string, SQLPoolPatchInfo, *SQLPoolsClientUpdateOptions)`
+- Function `*SQLPoolsClient.Update` return value(s) have been changed from `(SQLPoolsUpdateResponse, error)` to `(SQLPoolsClientUpdateResponse, error)`
+- Function `*KustoPoolsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, KustoPool, *KustoPoolsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, KustoPool, *KustoPoolsClientBeginCreateOrUpdateOptions)`
+- Function `*KustoPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(KustoPoolsCreateOrUpdatePollerResponse, error)` to `(KustoPoolsClientCreateOrUpdatePollerResponse, error)`
+- Function `*KustoPoolPrincipalAssignmentsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, string, string, ClusterPrincipalAssignmentCheckNameRequest, *KustoPoolPrincipalAssignmentsCheckNameAvailabilityOptions)` to `(context.Context, string, string, string, ClusterPrincipalAssignmentCheckNameRequest, *KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityOptions)`
+- Function `*KustoPoolPrincipalAssignmentsClient.CheckNameAvailability` return value(s) have been changed from `(KustoPoolPrincipalAssignmentsCheckNameAvailabilityResponse, error)` to `(KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityResponse, error)`
+- Function `*SQLPoolSensitivityLabelsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *SQLPoolSensitivityLabelsDeleteOptions)` to `(context.Context, string, string, string, string, string, string, *SQLPoolSensitivityLabelsClientDeleteOptions)`
+- Function `*SQLPoolSensitivityLabelsClient.Delete` return value(s) have been changed from `(SQLPoolSensitivityLabelsDeleteResponse, error)` to `(SQLPoolSensitivityLabelsClientDeleteResponse, error)`
+- Function `*IntegrationRuntimeNodeIPAddressClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *IntegrationRuntimeNodeIPAddressGetOptions)` to `(context.Context, string, string, string, string, *IntegrationRuntimeNodeIPAddressClientGetOptions)`
+- Function `*IntegrationRuntimeNodeIPAddressClient.Get` return value(s) have been changed from `(IntegrationRuntimeNodeIPAddressGetResponse, error)` to `(IntegrationRuntimeNodeIPAddressClientGetResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, *SQLPoolVulnerabilityAssessmentsGetOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, *SQLPoolVulnerabilityAssessmentsClientGetOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentsClient.Get` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentsGetResponse, error)` to `(SQLPoolVulnerabilityAssessmentsClientGetResponse, error)`
+- Function `*KustoPoolsClient.ListFollowerDatabases` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolsListFollowerDatabasesOptions)` to `(context.Context, string, string, string, *KustoPoolsClientListFollowerDatabasesOptions)`
+- Function `*KustoPoolsClient.ListFollowerDatabases` return value(s) have been changed from `(KustoPoolsListFollowerDatabasesResponse, error)` to `(KustoPoolsClientListFollowerDatabasesResponse, error)`
+- Function `*KeysClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *KeysListByWorkspaceOptions)` to `(string, string, *KeysClientListByWorkspaceOptions)`
+- Function `*KeysClient.ListByWorkspace` return value(s) have been changed from `(*KeysListByWorkspacePager)` to `(*KeysClientListByWorkspacePager)`
+- Function `*KustoPoolDataConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, DataConnectionClassification, *KustoPoolDataConnectionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, DataConnectionClassification, *KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions)`
+- Function `*KustoPoolDataConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(KustoPoolDataConnectionsCreateOrUpdatePollerResponse, error)` to `(KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, BlobAuditingPolicyName, *WorkspaceManagedSQLServerBlobAuditingPoliciesGetOptions)` to `(context.Context, string, string, BlobAuditingPolicyName, *WorkspaceManagedSQLServerBlobAuditingPoliciesClientGetOptions)`
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.Get` return value(s) have been changed from `(WorkspaceManagedSQLServerBlobAuditingPoliciesGetResponse, error)` to `(WorkspaceManagedSQLServerBlobAuditingPoliciesClientGetResponse, error)`
+- Function `*PrivateLinkHubPrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkHubPrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkHubPrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkHubPrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkHubPrivateLinkResourcesGetResponse, error)` to `(PrivateLinkHubPrivateLinkResourcesClientGetResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, *SQLPoolVulnerabilityAssessmentsDeleteOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, *SQLPoolVulnerabilityAssessmentsClientDeleteOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentsClient.Delete` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentsDeleteResponse, error)` to `(SQLPoolVulnerabilityAssessmentsClientDeleteResponse, error)`
+- Function `*KustoPoolsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, KustoPoolUpdate, *KustoPoolsBeginUpdateOptions)` to `(context.Context, string, string, string, KustoPoolUpdate, *KustoPoolsClientBeginUpdateOptions)`
+- Function `*KustoPoolsClient.BeginUpdate` return value(s) have been changed from `(KustoPoolsUpdatePollerResponse, error)` to `(KustoPoolsClientUpdatePollerResponse, error)`
+- Function `*SQLPoolWorkloadClassifierClient.List` parameter(s) have been changed from `(string, string, string, string, *SQLPoolWorkloadClassifierListOptions)` to `(string, string, string, string, *SQLPoolWorkloadClassifierClientListOptions)`
+- Function `*SQLPoolWorkloadClassifierClient.List` return value(s) have been changed from `(*SQLPoolWorkloadClassifierListPager)` to `(*SQLPoolWorkloadClassifierClientListPager)`
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, SecurityAlertPolicyNameAutoGenerated, ServerSecurityAlertPolicy, *WorkspaceManagedSQLServerSecurityAlertPolicyBeginCreateOrUpdateOptions)` to `(context.Context, string, string, SecurityAlertPolicyNameAutoGenerated, ServerSecurityAlertPolicy, *WorkspaceManagedSQLServerSecurityAlertPolicyClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePollerResponse, error)` to `(WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePollerResponse, error)`
+- Function `*KustoPoolDatabasesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, DatabaseClassification, *KustoPoolDatabasesBeginUpdateOptions)` to `(context.Context, string, string, string, string, DatabaseClassification, *KustoPoolDatabasesClientBeginUpdateOptions)`
+- Function `*KustoPoolDatabasesClient.BeginUpdate` return value(s) have been changed from `(KustoPoolDatabasesUpdatePollerResponse, error)` to `(KustoPoolDatabasesClientUpdatePollerResponse, error)`
+- Function `*SQLPoolGeoBackupPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, GeoBackupPolicyName, *SQLPoolGeoBackupPoliciesGetOptions)` to `(context.Context, string, string, string, GeoBackupPolicyName, *SQLPoolGeoBackupPoliciesClientGetOptions)`
+- Function `*SQLPoolGeoBackupPoliciesClient.Get` return value(s) have been changed from `(SQLPoolGeoBackupPoliciesGetResponse, error)` to `(SQLPoolGeoBackupPoliciesClientGetResponse, error)`
+- Function `*SQLPoolRecommendedSensitivityLabelsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, RecommendedSensitivityLabelUpdateList, *SQLPoolRecommendedSensitivityLabelsUpdateOptions)` to `(context.Context, string, string, string, RecommendedSensitivityLabelUpdateList, *SQLPoolRecommendedSensitivityLabelsClientUpdateOptions)`
+- Function `*SQLPoolRecommendedSensitivityLabelsClient.Update` return value(s) have been changed from `(SQLPoolRecommendedSensitivityLabelsUpdateResponse, error)` to `(SQLPoolRecommendedSensitivityLabelsClientUpdateResponse, error)`
+- Function `*SQLPoolWorkloadGroupClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolWorkloadGroupGetOptions)` to `(context.Context, string, string, string, string, *SQLPoolWorkloadGroupClientGetOptions)`
+- Function `*SQLPoolWorkloadGroupClient.Get` return value(s) have been changed from `(SQLPoolWorkloadGroupGetResponse, error)` to `(SQLPoolWorkloadGroupClientGetResponse, error)`
+- Function `*SQLPoolOperationResultsClient.GetLocationHeaderResult` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolOperationResultsGetLocationHeaderResultOptions)` to `(context.Context, string, string, string, string, *SQLPoolOperationResultsClientGetLocationHeaderResultOptions)`
+- Function `*SQLPoolOperationResultsClient.GetLocationHeaderResult` return value(s) have been changed from `(SQLPoolOperationResultsGetLocationHeaderResultResponse, error)` to `(SQLPoolOperationResultsClientGetLocationHeaderResultResponse, error)`
+- Function `*SQLPoolUsagesClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolUsagesListOptions)` to `(string, string, string, *SQLPoolUsagesClientListOptions)`
+- Function `*SQLPoolUsagesClient.List` return value(s) have been changed from `(*SQLPoolUsagesListPager)` to `(*SQLPoolUsagesClientListPager)`
+- Function `*SQLPoolTableColumnsClient.ListByTableName` parameter(s) have been changed from `(string, string, string, string, string, *SQLPoolTableColumnsListByTableNameOptions)` to `(string, string, string, string, string, *SQLPoolTableColumnsClientListByTableNameOptions)`
+- Function `*SQLPoolTableColumnsClient.ListByTableName` return value(s) have been changed from `(*SQLPoolTableColumnsListByTableNamePager)` to `(*SQLPoolTableColumnsClientListByTableNamePager)`
+- Function `*IntegrationRuntimesClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesBeginStartOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientBeginStartOptions)`
+- Function `*IntegrationRuntimesClient.BeginStart` return value(s) have been changed from `(IntegrationRuntimesStartPollerResponse, error)` to `(IntegrationRuntimesClientStartPollerResponse, error)`
+- Function `*IntegrationRuntimeStatusClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeStatusGetOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeStatusClientGetOptions)`
+- Function `*IntegrationRuntimeStatusClient.Get` return value(s) have been changed from `(IntegrationRuntimeStatusGetResponse, error)` to `(IntegrationRuntimeStatusClientGetResponse, error)`
+- Function `*SQLPoolMaintenanceWindowOptionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolMaintenanceWindowOptionsGetOptions)` to `(context.Context, string, string, string, string, *SQLPoolMaintenanceWindowOptionsClientGetOptions)`
+- Function `*SQLPoolMaintenanceWindowOptionsClient.Get` return value(s) have been changed from `(SQLPoolMaintenanceWindowOptionsGetResponse, error)` to `(SQLPoolMaintenanceWindowOptionsClientGetResponse, error)`
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPool` parameter(s) have been changed from `(string, string, string, *ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolOptions)` to `(string, string, string, *ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions)`
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPool` return value(s) have been changed from `(*ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolPager)` to `(*ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolPager)`
+- Function `*SQLPoolSecurityAlertPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, SecurityAlertPolicyName, SQLPoolSecurityAlertPolicy, *SQLPoolSecurityAlertPoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, string, SecurityAlertPolicyName, SQLPoolSecurityAlertPolicy, *SQLPoolSecurityAlertPoliciesClientCreateOrUpdateOptions)`
+- Function `*SQLPoolSecurityAlertPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse, error)` to `(SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginCreateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` return value(s) have been changed from `(PrivateEndpointConnectionsCreatePollerResponse, error)` to `(PrivateEndpointConnectionsClientCreatePollerResponse, error)`
+- Function `*IntegrationRuntimeCredentialsClient.Sync` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeCredentialsSyncOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeCredentialsClientSyncOptions)`
+- Function `*IntegrationRuntimeCredentialsClient.Sync` return value(s) have been changed from `(IntegrationRuntimeCredentialsSyncResponse, error)` to `(IntegrationRuntimeCredentialsClientSyncResponse, error)`
+- Function `*KustoPoolsClient.ListByWorkspace` parameter(s) have been changed from `(context.Context, string, string, *KustoPoolsListByWorkspaceOptions)` to `(context.Context, string, string, *KustoPoolsClientListByWorkspaceOptions)`
+- Function `*KustoPoolsClient.ListByWorkspace` return value(s) have been changed from `(KustoPoolsListByWorkspaceResponse, error)` to `(KustoPoolsClientListByWorkspaceResponse, error)`
+- Function `*IntegrationRuntimeAuthKeysClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeAuthKeysListOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeAuthKeysClientListOptions)`
+- Function `*IntegrationRuntimeAuthKeysClient.List` return value(s) have been changed from `(IntegrationRuntimeAuthKeysListResponse, error)` to `(IntegrationRuntimeAuthKeysClientListResponse, error)`
+- Function `*SQLPoolsClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *SQLPoolsListByWorkspaceOptions)` to `(string, string, *SQLPoolsClientListByWorkspaceOptions)`
+- Function `*SQLPoolsClient.ListByWorkspace` return value(s) have been changed from `(*SQLPoolsListByWorkspacePager)` to `(*SQLPoolsClientListByWorkspacePager)`
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspaceOptions)` to `(string, string, *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspaceOptions)`
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.ListByWorkspace` return value(s) have been changed from `(*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspacePager)` to `(*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspacePager)`
+- Function `*RestorableDroppedSQLPoolsClient.ListByWorkspace` parameter(s) have been changed from `(context.Context, string, string, *RestorableDroppedSQLPoolsListByWorkspaceOptions)` to `(context.Context, string, string, *RestorableDroppedSQLPoolsClientListByWorkspaceOptions)`
+- Function `*RestorableDroppedSQLPoolsClient.ListByWorkspace` return value(s) have been changed from `(RestorableDroppedSQLPoolsListByWorkspaceResponse, error)` to `(RestorableDroppedSQLPoolsClientListByWorkspaceResponse, error)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, DatabasePrincipalAssignment, *KustoPoolDatabasePrincipalAssignmentsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, DatabasePrincipalAssignment, *KustoPoolDatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePollerResponse, error)` to `(KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePollerResponse, error)`
+- Function `*KustoPoolsClient.BeginAddLanguageExtensions` parameter(s) have been changed from `(context.Context, string, string, string, LanguageExtensionsList, *KustoPoolsBeginAddLanguageExtensionsOptions)` to `(context.Context, string, string, string, LanguageExtensionsList, *KustoPoolsClientBeginAddLanguageExtensionsOptions)`
+- Function `*KustoPoolsClient.BeginAddLanguageExtensions` return value(s) have been changed from `(KustoPoolsAddLanguageExtensionsPollerResponse, error)` to `(KustoPoolsClientAddLanguageExtensionsPollerResponse, error)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *KustoPoolDatabasePrincipalAssignmentsBeginDeleteOptions)` to `(context.Context, string, string, string, string, string, *KustoPoolDatabasePrincipalAssignmentsClientBeginDeleteOptions)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.BeginDelete` return value(s) have been changed from `(KustoPoolDatabasePrincipalAssignmentsDeletePollerResponse, error)` to `(KustoPoolDatabasePrincipalAssignmentsClientDeletePollerResponse, error)`
+- Function `*IntegrationRuntimeAuthKeysClient.Regenerate` parameter(s) have been changed from `(context.Context, string, string, string, IntegrationRuntimeRegenerateKeyParameters, *IntegrationRuntimeAuthKeysRegenerateOptions)` to `(context.Context, string, string, string, IntegrationRuntimeRegenerateKeyParameters, *IntegrationRuntimeAuthKeysClientRegenerateOptions)`
+- Function `*IntegrationRuntimeAuthKeysClient.Regenerate` return value(s) have been changed from `(IntegrationRuntimeAuthKeysRegenerateResponse, error)` to `(IntegrationRuntimeAuthKeysClientRegenerateResponse, error)`
+- Function `*KustoPoolsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolsBeginDeleteOptions)` to `(context.Context, string, string, string, *KustoPoolsClientBeginDeleteOptions)`
+- Function `*KustoPoolsClient.BeginDelete` return value(s) have been changed from `(KustoPoolsDeletePollerResponse, error)` to `(KustoPoolsClientDeletePollerResponse, error)`
+- Function `*IntegrationRuntimesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesBeginDeleteOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientBeginDeleteOptions)`
+- Function `*IntegrationRuntimesClient.BeginDelete` return value(s) have been changed from `(IntegrationRuntimesDeletePollerResponse, error)` to `(IntegrationRuntimesClientDeletePollerResponse, error)`
+- Function `*SQLPoolSensitivityLabelsClient.EnableRecommendation` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *SQLPoolSensitivityLabelsEnableRecommendationOptions)` to `(context.Context, string, string, string, string, string, string, *SQLPoolSensitivityLabelsClientEnableRecommendationOptions)`
+- Function `*SQLPoolSensitivityLabelsClient.EnableRecommendation` return value(s) have been changed from `(SQLPoolSensitivityLabelsEnableRecommendationResponse, error)` to `(SQLPoolSensitivityLabelsClientEnableRecommendationResponse, error)`
+- Function `*IntegrationRuntimesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, UpdateIntegrationRuntimeRequest, *IntegrationRuntimesUpdateOptions)` to `(context.Context, string, string, string, UpdateIntegrationRuntimeRequest, *IntegrationRuntimesClientUpdateOptions)`
+- Function `*IntegrationRuntimesClient.Update` return value(s) have been changed from `(IntegrationRuntimesUpdateResponse, error)` to `(IntegrationRuntimesClientUpdateResponse, error)`
+- Function `*SQLPoolSchemasClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolSchemasGetOptions)` to `(context.Context, string, string, string, string, *SQLPoolSchemasClientGetOptions)`
+- Function `*SQLPoolSchemasClient.Get` return value(s) have been changed from `(SQLPoolSchemasGetResponse, error)` to `(SQLPoolSchemasClientGetResponse, error)`
+- Function `*DataMaskingRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, DataMaskingRule, *DataMaskingRulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, DataMaskingRule, *DataMaskingRulesClientCreateOrUpdateOptions)`
+- Function `*DataMaskingRulesClient.CreateOrUpdate` return value(s) have been changed from `(DataMaskingRulesCreateOrUpdateResponse, error)` to `(DataMaskingRulesClientCreateOrUpdateResponse, error)`
+- Function `*KustoPoolDataConnectionsClient.BeginDataConnectionValidation` parameter(s) have been changed from `(context.Context, string, string, string, string, DataConnectionValidation, *KustoPoolDataConnectionsBeginDataConnectionValidationOptions)` to `(context.Context, string, string, string, string, DataConnectionValidation, *KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions)`
+- Function `*KustoPoolDataConnectionsClient.BeginDataConnectionValidation` return value(s) have been changed from `(KustoPoolDataConnectionsDataConnectionValidationPollerResponse, error)` to `(KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse, error)`
+- Function `*DataMaskingPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataMaskingPoliciesGetOptions)` to `(context.Context, string, string, string, *DataMaskingPoliciesClientGetOptions)`
+- Function `*DataMaskingPoliciesClient.Get` return value(s) have been changed from `(DataMaskingPoliciesGetResponse, error)` to `(DataMaskingPoliciesClientGetResponse, error)`
+- Function `*AzureADOnlyAuthenticationsClient.List` parameter(s) have been changed from `(string, string, *AzureADOnlyAuthenticationsListOptions)` to `(string, string, *AzureADOnlyAuthenticationsClientListOptions)`
+- Function `*AzureADOnlyAuthenticationsClient.List` return value(s) have been changed from `(*AzureADOnlyAuthenticationsListPager)` to `(*AzureADOnlyAuthenticationsClientListPager)`
+- Function `*SQLPoolWorkloadClassifierClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *SQLPoolWorkloadClassifierBeginDeleteOptions)` to `(context.Context, string, string, string, string, string, *SQLPoolWorkloadClassifierClientBeginDeleteOptions)`
+- Function `*SQLPoolWorkloadClassifierClient.BeginDelete` return value(s) have been changed from `(SQLPoolWorkloadClassifierDeletePollerResponse, error)` to `(SQLPoolWorkloadClassifierClientDeletePollerResponse, error)`
+- Function `*IntegrationRuntimesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesGetOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientGetOptions)`
+- Function `*IntegrationRuntimesClient.Get` return value(s) have been changed from `(IntegrationRuntimesGetResponse, error)` to `(IntegrationRuntimesClientGetResponse, error)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, EncryptionProtectorName, EncryptionProtector, *WorkspaceManagedSQLServerEncryptionProtectorBeginCreateOrUpdateOptions)` to `(context.Context, string, string, EncryptionProtectorName, EncryptionProtector, *WorkspaceManagedSQLServerEncryptionProtectorClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePollerResponse, error)` to `(WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePollerResponse, error)`
+- Function `*SQLPoolTablesClient.ListBySchema` parameter(s) have been changed from `(string, string, string, string, *SQLPoolTablesListBySchemaOptions)` to `(string, string, string, string, *SQLPoolTablesClientListBySchemaOptions)`
+- Function `*SQLPoolTablesClient.ListBySchema` return value(s) have been changed from `(*SQLPoolTablesListBySchemaPager)` to `(*SQLPoolTablesClientListBySchemaPager)`
+- Function `*SQLPoolSensitivityLabelsClient.ListCurrent` parameter(s) have been changed from `(string, string, string, *SQLPoolSensitivityLabelsListCurrentOptions)` to `(string, string, string, *SQLPoolSensitivityLabelsClientListCurrentOptions)`
+- Function `*SQLPoolSensitivityLabelsClient.ListCurrent` return value(s) have been changed from `(*SQLPoolSensitivityLabelsListCurrentPager)` to `(*SQLPoolSensitivityLabelsClientListCurrentPager)`
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, VulnerabilityAssessmentName, *WorkspaceManagedSQLServerVulnerabilityAssessmentsDeleteOptions)` to `(context.Context, string, string, VulnerabilityAssessmentName, *WorkspaceManagedSQLServerVulnerabilityAssessmentsClientDeleteOptions)`
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.Delete` return value(s) have been changed from `(WorkspaceManagedSQLServerVulnerabilityAssessmentsDeleteResponse, error)` to `(WorkspaceManagedSQLServerVulnerabilityAssessmentsClientDeleteResponse, error)`
+- Function `*KustoPoolsClient.BeginDetachFollowerDatabases` parameter(s) have been changed from `(context.Context, string, string, string, FollowerDatabaseDefinition, *KustoPoolsBeginDetachFollowerDatabasesOptions)` to `(context.Context, string, string, string, FollowerDatabaseDefinition, *KustoPoolsClientBeginDetachFollowerDatabasesOptions)`
+- Function `*KustoPoolsClient.BeginDetachFollowerDatabases` return value(s) have been changed from `(KustoPoolsDetachFollowerDatabasesPollerResponse, error)` to `(KustoPoolsClientDetachFollowerDatabasesPollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*IntegrationRuntimeMonitoringDataClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeMonitoringDataListOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeMonitoringDataClientListOptions)`
+- Function `*IntegrationRuntimeMonitoringDataClient.List` return value(s) have been changed from `(IntegrationRuntimeMonitoringDataListResponse, error)` to `(IntegrationRuntimeMonitoringDataClientListResponse, error)`
+- Function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClient.List` parameter(s) have been changed from `(string, string, *WorkspaceManagedSQLServerRecoverableSQLPoolsListOptions)` to `(string, string, *WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions)`
+- Function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClient.List` return value(s) have been changed from `(*WorkspaceManagedSQLServerRecoverableSQLPoolsListPager)` to `(*WorkspaceManagedSQLServerRecoverableSQLPoolsClientListPager)`
+- Function `*KustoPoolsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolsGetOptions)` to `(context.Context, string, string, string, *KustoPoolsClientGetOptions)`
+- Function `*KustoPoolsClient.Get` return value(s) have been changed from `(KustoPoolsGetResponse, error)` to `(KustoPoolsClientGetResponse, error)`
+- Function `*WorkspaceSQLAADAdminsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, WorkspaceAADAdminInfo, *WorkspaceSQLAADAdminsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, WorkspaceAADAdminInfo, *WorkspaceSQLAADAdminsClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspaceSQLAADAdminsClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspaceSQLAADAdminsCreateOrUpdatePollerResponse, error)` to `(WorkspaceSQLAADAdminsClientCreateOrUpdatePollerResponse, error)`
+- Function `*LibraryClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *LibraryGetOptions)` to `(context.Context, string, string, string, *LibraryClientGetOptions)`
+- Function `*LibraryClient.Get` return value(s) have been changed from `(LibraryGetResponse, error)` to `(LibraryClientGetResponse, error)`
+- Function `*KustoPoolsClient.BeginRemoveLanguageExtensions` parameter(s) have been changed from `(context.Context, string, string, string, LanguageExtensionsList, *KustoPoolsBeginRemoveLanguageExtensionsOptions)` to `(context.Context, string, string, string, LanguageExtensionsList, *KustoPoolsClientBeginRemoveLanguageExtensionsOptions)`
+- Function `*KustoPoolsClient.BeginRemoveLanguageExtensions` return value(s) have been changed from `(KustoPoolsRemoveLanguageExtensionsPollerResponse, error)` to `(KustoPoolsClientRemoveLanguageExtensionsPollerResponse, error)`
+- Function `*IPFirewallRulesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, IPFirewallRuleInfo, *IPFirewallRulesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, IPFirewallRuleInfo, *IPFirewallRulesClientBeginCreateOrUpdateOptions)`
+- Function `*IPFirewallRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(IPFirewallRulesCreateOrUpdatePollerResponse, error)` to `(IPFirewallRulesClientCreateOrUpdatePollerResponse, error)`
+- Function `*KustoPoolDataConnectionsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, string, string, string, DataConnectionCheckNameRequest, *KustoPoolDataConnectionsCheckNameAvailabilityOptions)` to `(context.Context, string, string, string, string, DataConnectionCheckNameRequest, *KustoPoolDataConnectionsClientCheckNameAvailabilityOptions)`
+- Function `*KustoPoolDataConnectionsClient.CheckNameAvailability` return value(s) have been changed from `(KustoPoolDataConnectionsCheckNameAvailabilityResponse, error)` to `(KustoPoolDataConnectionsClientCheckNameAvailabilityResponse, error)`
+- Function `*SQLPoolTransparentDataEncryptionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, TransparentDataEncryptionName, TransparentDataEncryption, *SQLPoolTransparentDataEncryptionsCreateOrUpdateOptions)` to `(context.Context, string, string, string, TransparentDataEncryptionName, TransparentDataEncryption, *SQLPoolTransparentDataEncryptionsClientCreateOrUpdateOptions)`
+- Function `*SQLPoolTransparentDataEncryptionsClient.CreateOrUpdate` return value(s) have been changed from `(SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse, error)` to `(SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionsPrivateLinkHubClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsPrivateLinkHubGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsPrivateLinkHubClientGetOptions)`
+- Function `*PrivateEndpointConnectionsPrivateLinkHubClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsPrivateLinkHubGetResponse, error)` to `(PrivateEndpointConnectionsPrivateLinkHubClientGetResponse, error)`
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, BlobAuditingPolicyName, ExtendedServerBlobAuditingPolicy, *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, BlobAuditingPolicyName, ExtendedServerBlobAuditingPolicy, *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePollerResponse, error)` to `(WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePollerResponse, error)`
+- Function `*WorkspaceSQLAADAdminsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *WorkspaceSQLAADAdminsBeginDeleteOptions)` to `(context.Context, string, string, *WorkspaceSQLAADAdminsClientBeginDeleteOptions)`
+- Function `*WorkspaceSQLAADAdminsClient.BeginDelete` return value(s) have been changed from `(WorkspaceSQLAADAdminsDeletePollerResponse, error)` to `(WorkspaceSQLAADAdminsClientDeletePollerResponse, error)`
+- Function `*WorkspacesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *WorkspacesListByResourceGroupOptions)` to `(string, *WorkspacesClientListByResourceGroupOptions)`
+- Function `*WorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(*WorkspacesListByResourceGroupPager)` to `(*WorkspacesClientListByResourceGroupPager)`
+- Function `*SQLPoolGeoBackupPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, GeoBackupPolicyName, GeoBackupPolicy, *SQLPoolGeoBackupPoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, string, GeoBackupPolicyName, GeoBackupPolicy, *SQLPoolGeoBackupPoliciesClientCreateOrUpdateOptions)`
+- Function `*SQLPoolGeoBackupPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(SQLPoolGeoBackupPoliciesCreateOrUpdateResponse, error)` to `(SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*DataMaskingRulesClient.ListBySQLPool` parameter(s) have been changed from `(context.Context, string, string, string, *DataMaskingRulesListBySQLPoolOptions)` to `(context.Context, string, string, string, *DataMaskingRulesClientListBySQLPoolOptions)`
+- Function `*DataMaskingRulesClient.ListBySQLPool` return value(s) have been changed from `(DataMaskingRulesListBySQLPoolResponse, error)` to `(DataMaskingRulesClientListBySQLPoolResponse, error)`
+- Function `*PrivateLinkHubsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkHubsGetOptions)` to `(context.Context, string, string, *PrivateLinkHubsClientGetOptions)`
+- Function `*PrivateLinkHubsClient.Get` return value(s) have been changed from `(PrivateLinkHubsGetResponse, error)` to `(PrivateLinkHubsClientGetResponse, error)`
+- Function `*KustoPoolDataConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *KustoPoolDataConnectionsGetOptions)` to `(context.Context, string, string, string, string, string, *KustoPoolDataConnectionsClientGetOptions)`
+- Function `*KustoPoolDataConnectionsClient.Get` return value(s) have been changed from `(KustoPoolDataConnectionsGetResponse, error)` to `(KustoPoolDataConnectionsClientGetResponse, error)`
+- Function `*KustoPoolsClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolsBeginStartOptions)` to `(context.Context, string, string, string, *KustoPoolsClientBeginStartOptions)`
+- Function `*KustoPoolsClient.BeginStart` return value(s) have been changed from `(KustoPoolsStartPollerResponse, error)` to `(KustoPoolsClientStartPollerResponse, error)`
+- Function `*SparkConfigurationClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SparkConfigurationGetOptions)` to `(context.Context, string, string, string, *SparkConfigurationClientGetOptions)`
+- Function `*SparkConfigurationClient.Get` return value(s) have been changed from `(SparkConfigurationGetResponse, error)` to `(SparkConfigurationClientGetResponse, error)`
+- Function `*SQLPoolTransparentDataEncryptionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, TransparentDataEncryptionName, *SQLPoolTransparentDataEncryptionsGetOptions)` to `(context.Context, string, string, string, TransparentDataEncryptionName, *SQLPoolTransparentDataEncryptionsClientGetOptions)`
+- Function `*SQLPoolTransparentDataEncryptionsClient.Get` return value(s) have been changed from `(SQLPoolTransparentDataEncryptionsGetResponse, error)` to `(SQLPoolTransparentDataEncryptionsClientGetResponse, error)`
+- Function `*SQLPoolWorkloadGroupClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolWorkloadGroupListOptions)` to `(string, string, string, *SQLPoolWorkloadGroupClientListOptions)`
+- Function `*SQLPoolWorkloadGroupClient.List` return value(s) have been changed from `(*SQLPoolWorkloadGroupListPager)` to `(*SQLPoolWorkloadGroupClientListPager)`
+- Function `*WorkspaceManagedSQLServerUsagesClient.List` parameter(s) have been changed from `(string, string, *WorkspaceManagedSQLServerUsagesListOptions)` to `(string, string, *WorkspaceManagedSQLServerUsagesClientListOptions)`
+- Function `*WorkspaceManagedSQLServerUsagesClient.List` return value(s) have been changed from `(*WorkspaceManagedSQLServerUsagesListPager)` to `(*WorkspaceManagedSQLServerUsagesClientListPager)`
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, VulnerabilityAssessmentName, *WorkspaceManagedSQLServerVulnerabilityAssessmentsGetOptions)` to `(context.Context, string, string, VulnerabilityAssessmentName, *WorkspaceManagedSQLServerVulnerabilityAssessmentsClientGetOptions)`
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.Get` return value(s) have been changed from `(WorkspaceManagedSQLServerVulnerabilityAssessmentsGetResponse, error)` to `(WorkspaceManagedSQLServerVulnerabilityAssessmentsClientGetResponse, error)`
+- Function `*IntegrationRuntimesClient.Upgrade` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesUpgradeOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientUpgradeOptions)`
+- Function `*IntegrationRuntimesClient.Upgrade` return value(s) have been changed from `(IntegrationRuntimesUpgradeResponse, error)` to `(IntegrationRuntimesClientUpgradeResponse, error)`
+- Function `*IntegrationRuntimesClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *IntegrationRuntimesListByWorkspaceOptions)` to `(string, string, *IntegrationRuntimesClientListByWorkspaceOptions)`
+- Function `*IntegrationRuntimesClient.ListByWorkspace` return value(s) have been changed from `(*IntegrationRuntimesListByWorkspacePager)` to `(*IntegrationRuntimesClientListByWorkspacePager)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.ListByKustoPool` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolAttachedDatabaseConfigurationsListByKustoPoolOptions)` to `(context.Context, string, string, string, *KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolOptions)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.ListByKustoPool` return value(s) have been changed from `(KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse, error)` to `(KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse, error)`
+- Function `*SQLPoolWorkloadClassifierClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *SQLPoolWorkloadClassifierGetOptions)` to `(context.Context, string, string, string, string, string, *SQLPoolWorkloadClassifierClientGetOptions)`
+- Function `*SQLPoolWorkloadClassifierClient.Get` return value(s) have been changed from `(SQLPoolWorkloadClassifierGetResponse, error)` to `(SQLPoolWorkloadClassifierClientGetResponse, error)`
+- Function `*SparkConfigurationsClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *SparkConfigurationsListByWorkspaceOptions)` to `(string, string, *SparkConfigurationsClientListByWorkspaceOptions)`
+- Function `*SparkConfigurationsClient.ListByWorkspace` return value(s) have been changed from `(*SparkConfigurationsListByWorkspacePager)` to `(*SparkConfigurationsClientListByWorkspacePager)`
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, BlobAuditingPolicyName, ServerBlobAuditingPolicy, *WorkspaceManagedSQLServerBlobAuditingPoliciesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, BlobAuditingPolicyName, ServerBlobAuditingPolicy, *WorkspaceManagedSQLServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePollerResponse, error)` to `(WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse, error)`
+- Function `*KustoPoolChildResourceClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, string, string, DatabaseCheckNameRequest, *KustoPoolChildResourceCheckNameAvailabilityOptions)` to `(context.Context, string, string, string, DatabaseCheckNameRequest, *KustoPoolChildResourceClientCheckNameAvailabilityOptions)`
+- Function `*KustoPoolChildResourceClient.CheckNameAvailability` return value(s) have been changed from `(KustoPoolChildResourceCheckNameAvailabilityResponse, error)` to `(KustoPoolChildResourceClientCheckNameAvailabilityResponse, error)`
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.List` parameter(s) have been changed from `(string, string, *WorkspaceManagedSQLServerSecurityAlertPolicyListOptions)` to `(string, string, *WorkspaceManagedSQLServerSecurityAlertPolicyClientListOptions)`
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.List` return value(s) have been changed from `(*WorkspaceManagedSQLServerSecurityAlertPolicyListPager)` to `(*WorkspaceManagedSQLServerSecurityAlertPolicyClientListPager)`
+- Function `*PrivateLinkResourcesClient.List` parameter(s) have been changed from `(string, string, *PrivateLinkResourcesListOptions)` to `(string, string, *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(*PrivateLinkResourcesListPager)` to `(*PrivateLinkResourcesClientListPager)`
+- Function `*WorkspacesClient.List` parameter(s) have been changed from `(*WorkspacesListOptions)` to `(*WorkspacesClientListOptions)`
+- Function `*WorkspacesClient.List` return value(s) have been changed from `(*WorkspacesListPager)` to `(*WorkspacesClientListPager)`
+- Function `*SQLPoolVulnerabilityAssessmentsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, SQLPoolVulnerabilityAssessment, *SQLPoolVulnerabilityAssessmentsCreateOrUpdateOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, SQLPoolVulnerabilityAssessment, *SQLPoolVulnerabilityAssessmentsClientCreateOrUpdateOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentsClient.CreateOrUpdate` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentsCreateOrUpdateResponse, error)` to `(SQLPoolVulnerabilityAssessmentsClientCreateOrUpdateResponse, error)`
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, VulnerabilityAssessmentName, ServerVulnerabilityAssessment, *WorkspaceManagedSQLServerVulnerabilityAssessmentsCreateOrUpdateOptions)` to `(context.Context, string, string, VulnerabilityAssessmentName, ServerVulnerabilityAssessment, *WorkspaceManagedSQLServerVulnerabilityAssessmentsClientCreateOrUpdateOptions)`
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClient.CreateOrUpdate` return value(s) have been changed from `(WorkspaceManagedSQLServerVulnerabilityAssessmentsCreateOrUpdateResponse, error)` to `(WorkspaceManagedSQLServerVulnerabilityAssessmentsClientCreateOrUpdateResponse, error)`
+- Function `*SQLPoolsClient.BeginPause` parameter(s) have been changed from `(context.Context, string, string, string, *SQLPoolsBeginPauseOptions)` to `(context.Context, string, string, string, *SQLPoolsClientBeginPauseOptions)`
+- Function `*SQLPoolsClient.BeginPause` return value(s) have been changed from `(SQLPoolsPausePollerResponse, error)` to `(SQLPoolsClientPausePollerResponse, error)`
+- Function `*SQLPoolSensitivityLabelsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, SensitivityLabel, *SQLPoolSensitivityLabelsCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, string, SensitivityLabel, *SQLPoolSensitivityLabelsClientCreateOrUpdateOptions)`
+- Function `*SQLPoolSensitivityLabelsClient.CreateOrUpdate` return value(s) have been changed from `(SQLPoolSensitivityLabelsCreateOrUpdateResponse, error)` to `(SQLPoolSensitivityLabelsClientCreateOrUpdateResponse, error)`
+- Function `*BigDataPoolsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *BigDataPoolsBeginDeleteOptions)` to `(context.Context, string, string, string, *BigDataPoolsClientBeginDeleteOptions)`
+- Function `*BigDataPoolsClient.BeginDelete` return value(s) have been changed from `(BigDataPoolsDeletePollerResponse, error)` to `(BigDataPoolsClientDeletePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, BlobAuditingPolicyName, *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesGetOptions)` to `(context.Context, string, string, BlobAuditingPolicyName, *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientGetOptions)`
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.Get` return value(s) have been changed from `(WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesGetResponse, error)` to `(WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientGetResponse, error)`
+- Function `*IntegrationRuntimeObjectMetadataClient.BeginRefresh` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeObjectMetadataBeginRefreshOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions)`
+- Function `*IntegrationRuntimeObjectMetadataClient.BeginRefresh` return value(s) have been changed from `(IntegrationRuntimeObjectMetadataRefreshPollerResponse, error)` to `(IntegrationRuntimeObjectMetadataClientRefreshPollerResponse, error)`
+- Function `*IPFirewallRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IPFirewallRulesGetOptions)` to `(context.Context, string, string, string, *IPFirewallRulesClientGetOptions)`
+- Function `*IPFirewallRulesClient.Get` return value(s) have been changed from `(IPFirewallRulesGetResponse, error)` to `(IPFirewallRulesClientGetResponse, error)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *KustoPoolAttachedDatabaseConfigurationsGetOptions)` to `(context.Context, string, string, string, string, *KustoPoolAttachedDatabaseConfigurationsClientGetOptions)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.Get` return value(s) have been changed from `(KustoPoolAttachedDatabaseConfigurationsGetResponse, error)` to `(KustoPoolAttachedDatabaseConfigurationsClientGetResponse, error)`
+- Function `*KustoPoolDataConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *KustoPoolDataConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, string, string, *KustoPoolDataConnectionsClientBeginDeleteOptions)`
+- Function `*KustoPoolDataConnectionsClient.BeginDelete` return value(s) have been changed from `(KustoPoolDataConnectionsDeletePollerResponse, error)` to `(KustoPoolDataConnectionsClientDeletePollerResponse, error)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, string, string, string, DatabasePrincipalAssignmentCheckNameRequest, *KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityOptions)` to `(context.Context, string, string, string, string, DatabasePrincipalAssignmentCheckNameRequest, *KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.CheckNameAvailability` return value(s) have been changed from `(KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse, error)` to `(KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse, error)`
+- Function `*DataMaskingRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *DataMaskingRulesGetOptions)` to `(context.Context, string, string, string, string, *DataMaskingRulesClientGetOptions)`
+- Function `*DataMaskingRulesClient.Get` return value(s) have been changed from `(DataMaskingRulesGetResponse, error)` to `(DataMaskingRulesClientGetResponse, error)`
+- Function `*SQLPoolDataWarehouseUserActivitiesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, DataWarehouseUserActivityName, *SQLPoolDataWarehouseUserActivitiesGetOptions)` to `(context.Context, string, string, string, DataWarehouseUserActivityName, *SQLPoolDataWarehouseUserActivitiesClientGetOptions)`
+- Function `*SQLPoolDataWarehouseUserActivitiesClient.Get` return value(s) have been changed from `(SQLPoolDataWarehouseUserActivitiesGetResponse, error)` to `(SQLPoolDataWarehouseUserActivitiesClientGetResponse, error)`
+- Function `*WorkspaceAADAdminsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *WorkspaceAADAdminsBeginDeleteOptions)` to `(context.Context, string, string, *WorkspaceAADAdminsClientBeginDeleteOptions)`
+- Function `*WorkspaceAADAdminsClient.BeginDelete` return value(s) have been changed from `(WorkspaceAADAdminsDeletePollerResponse, error)` to `(WorkspaceAADAdminsClientDeletePollerResponse, error)`
+- Function `*BigDataPoolsClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *BigDataPoolsListByWorkspaceOptions)` to `(string, string, *BigDataPoolsClientListByWorkspaceOptions)`
+- Function `*BigDataPoolsClient.ListByWorkspace` return value(s) have been changed from `(*BigDataPoolsListByWorkspacePager)` to `(*BigDataPoolsClientListByWorkspacePager)`
+- Function `*IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesListOutboundNetworkDependenciesEndpointsOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions)`
+- Function `*IntegrationRuntimesClient.ListOutboundNetworkDependenciesEndpoints` return value(s) have been changed from `(IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse, error)` to `(IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse, error)`
+- Function `*OperationsClient.GetLocationHeaderResult` parameter(s) have been changed from `(context.Context, string, string, string, *OperationsGetLocationHeaderResultOptions)` to `(context.Context, string, string, string, *OperationsClientGetLocationHeaderResultOptions)`
+- Function `*OperationsClient.GetLocationHeaderResult` return value(s) have been changed from `(OperationsGetLocationHeaderResultResponse, error)` to `(OperationsClientGetLocationHeaderResultResponse, error)`
+- Function `*SQLPoolConnectionPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, ConnectionPolicyName, *SQLPoolConnectionPoliciesGetOptions)` to `(context.Context, string, string, string, ConnectionPolicyName, *SQLPoolConnectionPoliciesClientGetOptions)`
+- Function `*SQLPoolConnectionPoliciesClient.Get` return value(s) have been changed from `(SQLPoolConnectionPoliciesGetResponse, error)` to `(SQLPoolConnectionPoliciesClientGetResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.Export` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, string, *SQLPoolVulnerabilityAssessmentScansExportOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, string, *SQLPoolVulnerabilityAssessmentScansClientExportOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.Export` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentScansExportResponse, error)` to `(SQLPoolVulnerabilityAssessmentScansClientExportResponse, error)`
+- Function `*KustoPoolDatabasesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *KustoPoolDatabasesGetOptions)` to `(context.Context, string, string, string, string, *KustoPoolDatabasesClientGetOptions)`
+- Function `*KustoPoolDatabasesClient.Get` return value(s) have been changed from `(KustoPoolDatabasesGetResponse, error)` to `(KustoPoolDatabasesClientGetResponse, error)`
+- Function `*PrivateLinkHubsClient.Update` parameter(s) have been changed from `(context.Context, string, string, PrivateLinkHubPatchInfo, *PrivateLinkHubsUpdateOptions)` to `(context.Context, string, string, PrivateLinkHubPatchInfo, *PrivateLinkHubsClientUpdateOptions)`
+- Function `*PrivateLinkHubsClient.Update` return value(s) have been changed from `(PrivateLinkHubsUpdateResponse, error)` to `(PrivateLinkHubsClientUpdateResponse, error)`
+- Function `*SQLPoolWorkloadGroupClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, WorkloadGroup, *SQLPoolWorkloadGroupBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, WorkloadGroup, *SQLPoolWorkloadGroupClientBeginCreateOrUpdateOptions)`
+- Function `*SQLPoolWorkloadGroupClient.BeginCreateOrUpdate` return value(s) have been changed from `(SQLPoolWorkloadGroupCreateOrUpdatePollerResponse, error)` to `(SQLPoolWorkloadGroupClientCreateOrUpdatePollerResponse, error)`
+- Function `*SQLPoolSecurityAlertPoliciesClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolSecurityAlertPoliciesListOptions)` to `(string, string, string, *SQLPoolSecurityAlertPoliciesClientListOptions)`
+- Function `*SQLPoolSecurityAlertPoliciesClient.List` return value(s) have been changed from `(*SQLPoolSecurityAlertPoliciesListPager)` to `(*SQLPoolSecurityAlertPoliciesClientListPager)`
+- Function `*SQLPoolsClient.BeginResume` parameter(s) have been changed from `(context.Context, string, string, string, *SQLPoolsBeginResumeOptions)` to `(context.Context, string, string, string, *SQLPoolsClientBeginResumeOptions)`
+- Function `*SQLPoolsClient.BeginResume` return value(s) have been changed from `(SQLPoolsResumePollerResponse, error)` to `(SQLPoolsClientResumePollerResponse, error)`
+- Function `*SQLPoolRestorePointsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLPoolRestorePointsDeleteOptions)` to `(context.Context, string, string, string, string, *SQLPoolRestorePointsClientDeleteOptions)`
+- Function `*SQLPoolRestorePointsClient.Delete` return value(s) have been changed from `(SQLPoolRestorePointsDeleteResponse, error)` to `(SQLPoolRestorePointsClientDeleteResponse, error)`
+- Function `*WorkspaceManagedIdentitySQLControlSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *WorkspaceManagedIdentitySQLControlSettingsGetOptions)` to `(context.Context, string, string, *WorkspaceManagedIdentitySQLControlSettingsClientGetOptions)`
+- Function `*WorkspaceManagedIdentitySQLControlSettingsClient.Get` return value(s) have been changed from `(WorkspaceManagedIdentitySQLControlSettingsGetResponse, error)` to `(WorkspaceManagedIdentitySQLControlSettingsClientGetResponse, error)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *KustoPoolAttachedDatabaseConfigurationsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *KustoPoolAttachedDatabaseConfigurationsClientBeginDeleteOptions)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.BeginDelete` return value(s) have been changed from `(KustoPoolAttachedDatabaseConfigurationsDeletePollerResponse, error)` to `(KustoPoolAttachedDatabaseConfigurationsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, CheckNameAvailabilityRequest, *OperationsCheckNameAvailabilityOptions)` to `(context.Context, CheckNameAvailabilityRequest, *OperationsClientCheckNameAvailabilityOptions)`
+- Function `*OperationsClient.CheckNameAvailability` return value(s) have been changed from `(OperationsCheckNameAvailabilityResponse, error)` to `(OperationsClientCheckNameAvailabilityResponse, error)`
+- Function `*SQLPoolSensitivityLabelsClient.ListRecommended` parameter(s) have been changed from `(string, string, string, *SQLPoolSensitivityLabelsListRecommendedOptions)` to `(string, string, string, *SQLPoolSensitivityLabelsClientListRecommendedOptions)`
+- Function `*SQLPoolSensitivityLabelsClient.ListRecommended` return value(s) have been changed from `(*SQLPoolSensitivityLabelsListRecommendedPager)` to `(*SQLPoolSensitivityLabelsClientListRecommendedPager)`
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Enum11, ExtendedSQLPoolBlobAuditingPolicy, *ExtendedSQLPoolBlobAuditingPoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, string, Enum11, ExtendedSQLPoolBlobAuditingPolicy, *ExtendedSQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions)`
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(ExtendedSQLPoolBlobAuditingPoliciesCreateOrUpdateResponse, error)` to `(ExtendedSQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*IntegrationRuntimeNodesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *IntegrationRuntimeNodesGetOptions)` to `(context.Context, string, string, string, string, *IntegrationRuntimeNodesClientGetOptions)`
+- Function `*IntegrationRuntimeNodesClient.Get` return value(s) have been changed from `(IntegrationRuntimeNodesGetResponse, error)` to `(IntegrationRuntimeNodesClientGetResponse, error)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, string, *KustoPoolDatabasePrincipalAssignmentsListOptions)` to `(context.Context, string, string, string, string, *KustoPoolDatabasePrincipalAssignmentsClientListOptions)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.List` return value(s) have been changed from `(KustoPoolDatabasePrincipalAssignmentsListResponse, error)` to `(KustoPoolDatabasePrincipalAssignmentsClientListResponse, error)`
+- Function `*OperationsClient.GetAzureAsyncHeaderResult` parameter(s) have been changed from `(context.Context, string, string, string, *OperationsGetAzureAsyncHeaderResultOptions)` to `(context.Context, string, string, string, *OperationsClientGetAzureAsyncHeaderResultOptions)`
+- Function `*OperationsClient.GetAzureAsyncHeaderResult` return value(s) have been changed from `(OperationsGetAzureAsyncHeaderResultResponse, error)` to `(OperationsClientGetAzureAsyncHeaderResultResponse, error)`
+- Function `*KustoPoolDataConnectionsClient.ListByDatabase` parameter(s) have been changed from `(context.Context, string, string, string, string, *KustoPoolDataConnectionsListByDatabaseOptions)` to `(context.Context, string, string, string, string, *KustoPoolDataConnectionsClientListByDatabaseOptions)`
+- Function `*KustoPoolDataConnectionsClient.ListByDatabase` return value(s) have been changed from `(KustoPoolDataConnectionsListByDatabaseResponse, error)` to `(KustoPoolDataConnectionsClientListByDatabaseResponse, error)`
+- Function `*IntegrationRuntimeObjectMetadataClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimeObjectMetadataListOptions)` to `(context.Context, string, string, string, *IntegrationRuntimeObjectMetadataClientListOptions)`
+- Function `*IntegrationRuntimeObjectMetadataClient.List` return value(s) have been changed from `(IntegrationRuntimeObjectMetadataListResponse, error)` to `(IntegrationRuntimeObjectMetadataClientListResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentRuleBaselinesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, string, VulnerabilityAssessmentPolicyBaselineName, SQLPoolVulnerabilityAssessmentRuleBaseline, *SQLPoolVulnerabilityAssessmentRuleBaselinesCreateOrUpdateOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, string, VulnerabilityAssessmentPolicyBaselineName, SQLPoolVulnerabilityAssessmentRuleBaseline, *SQLPoolVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentRuleBaselinesClient.CreateOrUpdate` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentRuleBaselinesCreateOrUpdateResponse, error)` to `(SQLPoolVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse, error)`
+- Function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *WorkspaceManagedSQLServerRecoverableSQLPoolsGetOptions)` to `(context.Context, string, string, string, *WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetOptions)`
+- Function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClient.Get` return value(s) have been changed from `(WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse, error)` to `(WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse, error)`
+- Function `*SQLPoolBlobAuditingPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, Enum11, *SQLPoolBlobAuditingPoliciesGetOptions)` to `(context.Context, string, string, string, Enum11, *SQLPoolBlobAuditingPoliciesClientGetOptions)`
+- Function `*SQLPoolBlobAuditingPoliciesClient.Get` return value(s) have been changed from `(SQLPoolBlobAuditingPoliciesGetResponse, error)` to `(SQLPoolBlobAuditingPoliciesClientGetResponse, error)`
+- Function `*IntegrationRuntimesClient.BeginEnableInteractiveQuery` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesBeginEnableInteractiveQueryOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientBeginEnableInteractiveQueryOptions)`
+- Function `*IntegrationRuntimesClient.BeginEnableInteractiveQuery` return value(s) have been changed from `(IntegrationRuntimesEnableInteractiveQueryPollerResponse, error)` to `(IntegrationRuntimesClientEnableInteractiveQueryPollerResponse, error)`
+- Function `*KustoPoolDatabasesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, DatabaseClassification, *KustoPoolDatabasesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, DatabaseClassification, *KustoPoolDatabasesClientBeginCreateOrUpdateOptions)`
+- Function `*KustoPoolDatabasesClient.BeginCreateOrUpdate` return value(s) have been changed from `(KustoPoolDatabasesCreateOrUpdatePollerResponse, error)` to `(KustoPoolDatabasesClientCreateOrUpdatePollerResponse, error)`
+- Function `*WorkspacesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, WorkspacePatchInfo, *WorkspacesBeginUpdateOptions)` to `(context.Context, string, string, WorkspacePatchInfo, *WorkspacesClientBeginUpdateOptions)`
+- Function `*WorkspacesClient.BeginUpdate` return value(s) have been changed from `(WorkspacesUpdatePollerResponse, error)` to `(WorkspacesClientUpdatePollerResponse, error)`
+- Function `*SQLPoolsClient.Rename` parameter(s) have been changed from `(context.Context, string, string, string, ResourceMoveDefinition, *SQLPoolsRenameOptions)` to `(context.Context, string, string, string, ResourceMoveDefinition, *SQLPoolsClientRenameOptions)`
+- Function `*SQLPoolsClient.Rename` return value(s) have been changed from `(SQLPoolsRenameResponse, error)` to `(SQLPoolsClientRenameResponse, error)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.List` parameter(s) have been changed from `(string, string, *WorkspaceManagedSQLServerEncryptionProtectorListOptions)` to `(string, string, *WorkspaceManagedSQLServerEncryptionProtectorClientListOptions)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.List` return value(s) have been changed from `(*WorkspaceManagedSQLServerEncryptionProtectorListPager)` to `(*WorkspaceManagedSQLServerEncryptionProtectorClientListPager)`
+- Function `*KeysClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *KeysDeleteOptions)` to `(context.Context, string, string, string, *KeysClientDeleteOptions)`
+- Function `*KeysClient.Delete` return value(s) have been changed from `(KeysDeleteResponse, error)` to `(KeysClientDeleteResponse, error)`
+- Function `*RestorableDroppedSQLPoolsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *RestorableDroppedSQLPoolsGetOptions)` to `(context.Context, string, string, string, *RestorableDroppedSQLPoolsClientGetOptions)`
+- Function `*RestorableDroppedSQLPoolsClient.Get` return value(s) have been changed from `(RestorableDroppedSQLPoolsGetResponse, error)` to `(RestorableDroppedSQLPoolsClientGetResponse, error)`
+- Function `*KustoOperationsClient.List` parameter(s) have been changed from `(*KustoOperationsListOptions)` to `(*KustoOperationsClientListOptions)`
+- Function `*KustoOperationsClient.List` return value(s) have been changed from `(*KustoOperationsListPager)` to `(*KustoOperationsClientListPager)`
+- Function `*SQLPoolsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SQLPoolsGetOptions)` to `(context.Context, string, string, string, *SQLPoolsClientGetOptions)`
+- Function `*SQLPoolsClient.Get` return value(s) have been changed from `(SQLPoolsGetResponse, error)` to `(SQLPoolsClientGetResponse, error)`
+- Function `*PrivateLinkHubsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, PrivateLinkHub, *PrivateLinkHubsCreateOrUpdateOptions)` to `(context.Context, string, string, PrivateLinkHub, *PrivateLinkHubsClientCreateOrUpdateOptions)`
+- Function `*PrivateLinkHubsClient.CreateOrUpdate` return value(s) have been changed from `(PrivateLinkHubsCreateOrUpdateResponse, error)` to `(PrivateLinkHubsClientCreateOrUpdateResponse, error)`
+- Function `*KustoPoolsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, KustoPoolCheckNameRequest, *KustoPoolsCheckNameAvailabilityOptions)` to `(context.Context, string, KustoPoolCheckNameRequest, *KustoPoolsClientCheckNameAvailabilityOptions)`
+- Function `*KustoPoolsClient.CheckNameAvailability` return value(s) have been changed from `(KustoPoolsCheckNameAvailabilityResponse, error)` to `(KustoPoolsClientCheckNameAvailabilityResponse, error)`
+- Function `*SQLPoolsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, SQLPool, *SQLPoolsBeginCreateOptions)` to `(context.Context, string, string, string, SQLPool, *SQLPoolsClientBeginCreateOptions)`
+- Function `*SQLPoolsClient.BeginCreate` return value(s) have been changed from `(SQLPoolsCreatePollerResponse, error)` to `(SQLPoolsClientCreatePollerResponse, error)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, AttachedDatabaseConfiguration, *KustoPoolAttachedDatabaseConfigurationsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, AttachedDatabaseConfiguration, *KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePollerResponse, error)` to `(KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentsClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolVulnerabilityAssessmentsListOptions)` to `(string, string, string, *SQLPoolVulnerabilityAssessmentsClientListOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentsClient.List` return value(s) have been changed from `(*SQLPoolVulnerabilityAssessmentsListPager)` to `(*SQLPoolVulnerabilityAssessmentsClientListPager)`
+- Function `*KustoPoolPrincipalAssignmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *KustoPoolPrincipalAssignmentsGetOptions)` to `(context.Context, string, string, string, string, *KustoPoolPrincipalAssignmentsClientGetOptions)`
+- Function `*KustoPoolPrincipalAssignmentsClient.Get` return value(s) have been changed from `(KustoPoolPrincipalAssignmentsGetResponse, error)` to `(KustoPoolPrincipalAssignmentsClientGetResponse, error)`
+- Function `*IPFirewallRulesClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *IPFirewallRulesListByWorkspaceOptions)` to `(string, string, *IPFirewallRulesClientListByWorkspaceOptions)`
+- Function `*IPFirewallRulesClient.ListByWorkspace` return value(s) have been changed from `(*IPFirewallRulesListByWorkspacePager)` to `(*IPFirewallRulesClientListByWorkspacePager)`
+- Function `*BigDataPoolsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, BigDataPoolPatchInfo, *BigDataPoolsUpdateOptions)` to `(context.Context, string, string, string, BigDataPoolPatchInfo, *BigDataPoolsClientUpdateOptions)`
+- Function `*BigDataPoolsClient.Update` return value(s) have been changed from `(BigDataPoolsUpdateResponse, error)` to `(BigDataPoolsClientUpdateResponse, error)`
+- Function `*SQLPoolWorkloadClassifierClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, WorkloadClassifier, *SQLPoolWorkloadClassifierBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, WorkloadClassifier, *SQLPoolWorkloadClassifierClientBeginCreateOrUpdateOptions)`
+- Function `*SQLPoolWorkloadClassifierClient.BeginCreateOrUpdate` return value(s) have been changed from `(SQLPoolWorkloadClassifierCreateOrUpdatePollerResponse, error)` to `(SQLPoolWorkloadClassifierClientCreateOrUpdatePollerResponse, error)`
+- Function `*SQLPoolMetadataSyncConfigsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SQLPoolMetadataSyncConfigsGetOptions)` to `(context.Context, string, string, string, *SQLPoolMetadataSyncConfigsClientGetOptions)`
+- Function `*SQLPoolMetadataSyncConfigsClient.Get` return value(s) have been changed from `(SQLPoolMetadataSyncConfigsGetResponse, error)` to `(SQLPoolMetadataSyncConfigsClientGetResponse, error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Workspace, *WorkspacesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Workspace, *WorkspacesClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspacesCreateOrUpdatePollerResponse, error)` to `(WorkspacesClientCreateOrUpdatePollerResponse, error)`
+- Function `*SQLPoolVulnerabilityAssessmentRuleBaselinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, VulnerabilityAssessmentName, string, VulnerabilityAssessmentPolicyBaselineName, *SQLPoolVulnerabilityAssessmentRuleBaselinesGetOptions)` to `(context.Context, string, string, string, VulnerabilityAssessmentName, string, VulnerabilityAssessmentPolicyBaselineName, *SQLPoolVulnerabilityAssessmentRuleBaselinesClientGetOptions)`
+- Function `*SQLPoolVulnerabilityAssessmentRuleBaselinesClient.Get` return value(s) have been changed from `(SQLPoolVulnerabilityAssessmentRuleBaselinesGetResponse, error)` to `(SQLPoolVulnerabilityAssessmentRuleBaselinesClientGetResponse, error)`
+- Function `*KustoPoolDatabasesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *KustoPoolDatabasesBeginDeleteOptions)` to `(context.Context, string, string, string, string, *KustoPoolDatabasesClientBeginDeleteOptions)`
+- Function `*KustoPoolDatabasesClient.BeginDelete` return value(s) have been changed from `(KustoPoolDatabasesDeletePollerResponse, error)` to `(KustoPoolDatabasesClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*SQLPoolTablesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *SQLPoolTablesGetOptions)` to `(context.Context, string, string, string, string, string, *SQLPoolTablesClientGetOptions)`
+- Function `*SQLPoolTablesClient.Get` return value(s) have been changed from `(SQLPoolTablesGetResponse, error)` to `(SQLPoolTablesClientGetResponse, error)`
+- Function `*SQLPoolsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *SQLPoolsBeginDeleteOptions)` to `(context.Context, string, string, string, *SQLPoolsClientBeginDeleteOptions)`
+- Function `*SQLPoolsClient.BeginDelete` return value(s) have been changed from `(SQLPoolsDeletePollerResponse, error)` to `(SQLPoolsClientDeletePollerResponse, error)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.BeginRevalidate` parameter(s) have been changed from `(context.Context, string, string, EncryptionProtectorName, *WorkspaceManagedSQLServerEncryptionProtectorBeginRevalidateOptions)` to `(context.Context, string, string, EncryptionProtectorName, *WorkspaceManagedSQLServerEncryptionProtectorClientBeginRevalidateOptions)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.BeginRevalidate` return value(s) have been changed from `(WorkspaceManagedSQLServerEncryptionProtectorRevalidatePollerResponse, error)` to `(WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePollerResponse, error)`
+- Function `*IntegrationRuntimesClient.BeginDisableInteractiveQuery` parameter(s) have been changed from `(context.Context, string, string, string, *IntegrationRuntimesBeginDisableInteractiveQueryOptions)` to `(context.Context, string, string, string, *IntegrationRuntimesClientBeginDisableInteractiveQueryOptions)`
+- Function `*IntegrationRuntimesClient.BeginDisableInteractiveQuery` return value(s) have been changed from `(IntegrationRuntimesDisableInteractiveQueryPollerResponse, error)` to `(IntegrationRuntimesClientDisableInteractiveQueryPollerResponse, error)`
+- Function `*IntegrationRuntimeNodesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, UpdateIntegrationRuntimeNodeRequest, *IntegrationRuntimeNodesUpdateOptions)` to `(context.Context, string, string, string, string, UpdateIntegrationRuntimeNodeRequest, *IntegrationRuntimeNodesClientUpdateOptions)`
+- Function `*IntegrationRuntimeNodesClient.Update` return value(s) have been changed from `(IntegrationRuntimeNodesUpdateResponse, error)` to `(IntegrationRuntimeNodesClientUpdateResponse, error)`
+- Function `*KustoPoolsClient.ListSKUs` parameter(s) have been changed from `(context.Context, *KustoPoolsListSKUsOptions)` to `(context.Context, *KustoPoolsClientListSKUsOptions)`
+- Function `*KustoPoolsClient.ListSKUs` return value(s) have been changed from `(KustoPoolsListSKUsResponse, error)` to `(KustoPoolsClientListSKUsResponse, error)`
+- Function `*SQLPoolColumnsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *SQLPoolColumnsGetOptions)` to `(context.Context, string, string, string, string, string, string, *SQLPoolColumnsClientGetOptions)`
+- Function `*SQLPoolColumnsClient.Get` return value(s) have been changed from `(SQLPoolColumnsGetResponse, error)` to `(SQLPoolColumnsClientGetResponse, error)`
+- Function `*SQLPoolReplicationLinksClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolReplicationLinksListOptions)` to `(string, string, string, *SQLPoolReplicationLinksClientListOptions)`
+- Function `*SQLPoolReplicationLinksClient.List` return value(s) have been changed from `(*SQLPoolReplicationLinksListPager)` to `(*SQLPoolReplicationLinksClientListPager)`
+- Function `*KustoPoolsClient.ListLanguageExtensions` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolsListLanguageExtensionsOptions)` to `(context.Context, string, string, string, *KustoPoolsClientListLanguageExtensionsOptions)`
+- Function `*KustoPoolsClient.ListLanguageExtensions` return value(s) have been changed from `(KustoPoolsListLanguageExtensionsResponse, error)` to `(KustoPoolsClientListLanguageExtensionsResponse, error)`
+- Function `*SQLPoolSchemasClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolSchemasListOptions)` to `(string, string, string, *SQLPoolSchemasClientListOptions)`
+- Function `*SQLPoolSchemasClient.List` return value(s) have been changed from `(*SQLPoolSchemasListPager)` to `(*SQLPoolSchemasClientListPager)`
+- Function `*PrivateLinkHubsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *PrivateLinkHubsListByResourceGroupOptions)` to `(string, *PrivateLinkHubsClientListByResourceGroupOptions)`
+- Function `*PrivateLinkHubsClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkHubsListByResourceGroupPager)` to `(*PrivateLinkHubsClientListByResourceGroupPager)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.Get` parameter(s) have been changed from `(context.Context, string, string, EncryptionProtectorName, *WorkspaceManagedSQLServerEncryptionProtectorGetOptions)` to `(context.Context, string, string, EncryptionProtectorName, *WorkspaceManagedSQLServerEncryptionProtectorClientGetOptions)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.Get` return value(s) have been changed from `(WorkspaceManagedSQLServerEncryptionProtectorGetResponse, error)` to `(WorkspaceManagedSQLServerEncryptionProtectorClientGetResponse, error)`
+- Function `*WorkspaceSQLAADAdminsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *WorkspaceSQLAADAdminsGetOptions)` to `(context.Context, string, string, *WorkspaceSQLAADAdminsClientGetOptions)`
+- Function `*WorkspaceSQLAADAdminsClient.Get` return value(s) have been changed from `(WorkspaceSQLAADAdminsGetResponse, error)` to `(WorkspaceSQLAADAdminsClientGetResponse, error)`
+- Function `*SQLPoolTransparentDataEncryptionsClient.List` parameter(s) have been changed from `(string, string, string, *SQLPoolTransparentDataEncryptionsListOptions)` to `(string, string, string, *SQLPoolTransparentDataEncryptionsClientListOptions)`
+- Function `*SQLPoolTransparentDataEncryptionsClient.List` return value(s) have been changed from `(*SQLPoolTransparentDataEncryptionsListPager)` to `(*SQLPoolTransparentDataEncryptionsClientListPager)`
+- Function `*KustoPoolPrincipalAssignmentsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *KustoPoolPrincipalAssignmentsListOptions)` to `(context.Context, string, string, string, *KustoPoolPrincipalAssignmentsClientListOptions)`
+- Function `*KustoPoolPrincipalAssignmentsClient.List` return value(s) have been changed from `(KustoPoolPrincipalAssignmentsListResponse, error)` to `(KustoPoolPrincipalAssignmentsClientListResponse, error)`
+- Function `*SQLPoolSensitivityLabelsClient.DisableRecommendation` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *SQLPoolSensitivityLabelsDisableRecommendationOptions)` to `(context.Context, string, string, string, string, string, string, *SQLPoolSensitivityLabelsClientDisableRecommendationOptions)`
+- Function `*SQLPoolSensitivityLabelsClient.DisableRecommendation` return value(s) have been changed from `(SQLPoolSensitivityLabelsDisableRecommendationResponse, error)` to `(SQLPoolSensitivityLabelsClientDisableRecommendationResponse, error)`
+- Const `StorageAccountTypeZRS` has been removed
+- Function `DatabasePrincipalAssignment.MarshalJSON` has been removed
+- Function `*SQLPoolWorkloadGroupListPager.NextPage` has been removed
+- Function `*DataConnection.UnmarshalJSON` has been removed
+- Function `*WorkspaceManagedSQLServerRecoverableSQLPoolsListPager.PageResponse` has been removed
+- Function `*IntegrationRuntimesStopPoller.ResumeToken` has been removed
+- Function `*SQLPoolSensitivityLabelsListCurrentPager.Err` has been removed
+- Function `*KustoPoolDataConnectionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DataMaskingPolicy.UnmarshalJSON` has been removed
+- Function `*WorkloadClassifier.UnmarshalJSON` has been removed
+- Function `*SQLPoolWorkloadGroupDeletePoller.FinalResponse` has been removed
+- Function `*MaintenanceWindows.UnmarshalJSON` has been removed
+- Function `KustoPoolDataConnectionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolWorkloadGroupDeletePoller.Poll` has been removed
+- Function `WorkloadClassifier.MarshalJSON` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsDeletePoller.ResumeToken` has been removed
+- Function `*KustoPoolsAddLanguageExtensionsPoller.ResumeToken` has been removed
+- Function `*KustoPoolDatabasesUpdatePoller.ResumeToken` has been removed
+- Function `*LibrariesListByWorkspacePager.Err` has been removed
+- Function `*IntegrationRuntimesDisableInteractiveQueryPollerResponse.Resume` has been removed
+- Function `IPFirewallRulesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*Key.UnmarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsPrivateLinkHubListPager.PageResponse` has been removed
+- Function `*SQLPoolWorkloadGroupListPager.Err` has been removed
+- Function `*WorkspaceSQLAADAdminsCreateOrUpdatePoller.Done` has been removed
+- Function `*KustoPoolPrincipalAssignmentsCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkspacesListByResourceGroupPager.Err` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsDeletePoller.FinalResponse` has been removed
+- Function `*WorkspacesListByResourceGroupPager.PageResponse` has been removed
+- Function `*AzureADOnlyAuthenticationsListPager.PageResponse` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SQLPoolsPausePoller.FinalResponse` has been removed
+- Function `*SQLPoolSchemasListPager.Err` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPollerResponse.Resume` has been removed
+- Function `*KustoPoolsRemoveLanguageExtensionsPoller.FinalResponse` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspacePager.Err` has been removed
+- Function `*LibrariesListByWorkspacePager.PageResponse` has been removed
+- Function `*KustoPoolsStopPoller.ResumeToken` has been removed
+- Function `*WorkspaceAADAdminsDeletePollerResponse.Resume` has been removed
+- Function `*SparkConfigurationsListByWorkspacePager.PageResponse` has been removed
+- Function `MaintenanceWindowOptions.MarshalJSON` has been removed
+- Function `*IPFirewallRuleInfo.UnmarshalJSON` has been removed
+- Function `*SQLPoolsResumePoller.FinalResponse` has been removed
+- Function `*IPFirewallRulesListByWorkspacePager.PageResponse` has been removed
+- Function `AzureADOnlyAuthentication.MarshalJSON` has been removed
+- Function `*KustoPoolDatabasesUpdateResult.UnmarshalJSON` has been removed
+- Function `*KustoPoolDatabasesUpdatePoller.Done` has been removed
+- Function `SQLPoolsCreatePollerResponse.PollUntilDone` has been removed
+- Function `BigDataPoolsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyListPager.NextPage` has been removed
+- Function `*SQLPoolTableColumnsListByTableNamePager.Err` has been removed
+- Function `RecoverableSQLPool.MarshalJSON` has been removed
+- Function `*IntegrationRuntimesDisableInteractiveQueryPoller.FinalResponse` has been removed
+- Function `*WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePoller.Done` has been removed
+- Function `WorkspaceAADAdminInfo.MarshalJSON` has been removed
+- Function `IPFirewallRulesReplaceAllPollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolDataConnectionsDeletePoller.Done` has been removed
+- Function `DataMaskingPolicy.MarshalJSON` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorRevalidatePoller.Poll` has been removed
+- Function `*SQLPoolsCreatePollerResponse.Resume` has been removed
+- Function `KustoPoolsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateLinkHubPrivateLinkResourcesListPager.PageResponse` has been removed
+- Function `IntegrationRuntimesEnableInteractiveQueryPollerResponse.PollUntilDone` has been removed
+- Function `IntegrationRuntimeObjectMetadataRefreshPollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesListPager.PageResponse` has been removed
+- Function `SQLPoolVulnerabilityAssessmentScansExport.MarshalJSON` has been removed
+- Function `ClusterPrincipalAssignment.MarshalJSON` has been removed
+- Function `*KustoPoolDataConnectionsCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `*SQLPoolWorkloadClassifierDeletePoller.Poll` has been removed
+- Function `*RecommendedSensitivityLabelUpdate.UnmarshalJSON` has been removed
+- Function `*IntegrationRuntimesEnableInteractiveQueryPoller.Poll` has been removed
+- Function `*KustoPoolDataConnectionsDeletePollerResponse.Resume` has been removed
+- Function `IPFirewallRuleInfo.MarshalJSON` has been removed
+- Function `*SQLPoolWorkloadGroupDeletePoller.Done` has been removed
+- Function `*SQLPoolWorkloadClassifierCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsListPager.NextPage` has been removed
+- Function `*KustoPoolDatabasesDeletePollerResponse.Resume` has been removed
+- Function `*SQLPoolRestorePointsCreatePoller.ResumeToken` has been removed
+- Function `*IPFirewallRulesReplaceAllPoller.FinalResponse` has been removed
+- Function `*SQLPoolSecurityAlertPoliciesListPager.PageResponse` has been removed
+- Function `*KustoPoolsRemoveLanguageExtensionsPoller.Done` has been removed
+- Function `*KustoPoolDatabasesUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*TrackedResource.UnmarshalJSON` has been removed
+- Function `*WorkspacesListPager.NextPage` has been removed
+- Function `*WorkspacesUpdatePoller.Poll` has been removed
+- Function `*KustoPoolPrincipalAssignmentsDeletePollerResponse.Resume` has been removed
+- Function `KustoPoolsStopPollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `SQLPoolWorkloadGroupCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspacePager.PageResponse` has been removed
+- Function `*PrivateLinkHubsDeletePoller.ResumeToken` has been removed
+- Function `*SQLPoolsCreatePoller.Poll` has been removed
+- Function `*KustoPoolDatabasesDeletePoller.FinalResponse` has been removed
+- Function `*BigDataPoolResourceInfo.UnmarshalJSON` has been removed
+- Function `*SQLPoolOperationsListPager.Err` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorRevalidatePoller.Done` has been removed
+- Function `*SQLPoolWorkloadClassifierCreateOrUpdatePoller.Poll` has been removed
+- Function `*KustoPoolDataConnectionsUpdatePoller.ResumeToken` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*RestorePoint.UnmarshalJSON` has been removed
+- Function `SQLPoolsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*IPFirewallRulesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WorkspacesDeletePoller.Done` has been removed
+- Function `*BigDataPoolsDeletePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*IntegrationRuntimesDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkHubsListPager.Err` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsDeletePoller.ResumeToken` has been removed
+- Function `*Workspace.UnmarshalJSON` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SQLPoolRestorePointsCreatePoller.FinalResponse` has been removed
+- Function `*KustoPoolDatabasesCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkspaceAADAdminInfo.UnmarshalJSON` has been removed
+- Function `*IPFirewallRulesListByWorkspacePager.NextPage` has been removed
+- Function `*WorkspaceSQLAADAdminsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkHubPrivateLinkResourcesListPager.Err` has been removed
+- Function `*SQLPool.UnmarshalJSON` has been removed
+- Function `*PrivateLinkHubsDeletePoller.Done` has been removed
+- Function `*SQLPoolWorkloadGroupCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPoller.FinalResponse` has been removed
+- Function `*ServerVulnerabilityAssessment.UnmarshalJSON` has been removed
+- Function `*SparkConfigurationsListByWorkspacePager.Err` has been removed
+- Function `*IntegrationRuntimesCreatePoller.FinalResponse` has been removed
+- Function `*KustoPoolDatabasesUpdatePoller.FinalResponse` has been removed
+- Function `*KustoPoolDatabasesDeletePoller.ResumeToken` has been removed
+- Function `SQLPoolBlobAuditingPolicy.MarshalJSON` has been removed
+- Function `*IPFirewallRulesListByWorkspacePager.Err` has been removed
+- Function `KustoPoolDataConnectionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansListPager.PageResponse` has been removed
+- Function `WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansInitiateScanPoller.FinalResponse` has been removed
+- Function `*KustoPoolsStopPollerResponse.Resume` has been removed
+- Function `*KustoPoolUpdate.UnmarshalJSON` has been removed
+- Function `*IPFirewallRulesReplaceAllPoller.Poll` has been removed
+- Function `*SQLPoolOperationsListPager.PageResponse` has been removed
+- Function `WorkloadGroup.MarshalJSON` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentRuleBaseline.UnmarshalJSON` has been removed
+- Function `*KustoPoolsAddLanguageExtensionsPoller.Poll` has been removed
+- Function `*KustoPoolsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspaceSQLAADAdminsDeletePoller.ResumeToken` has been removed
+- Function `*IPFirewallRulesCreateOrUpdatePoller.Done` has been removed
+- Function `*KustoOperationsListPager.NextPage` has been removed
+- Function `RestorableDroppedSQLPool.MarshalJSON` has been removed
+- Function `*SQLPoolTransparentDataEncryptionsListPager.Err` has been removed
+- Function `*KustoPoolsStartPoller.FinalResponse` has been removed
+- Function `*SQLPoolSecurityAlertPoliciesListPager.NextPage` has been removed
+- Function `IntegrationRuntimesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolDatabasesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SQLPoolUsagesListPager.NextPage` has been removed
+- Function `*WorkspaceAADAdminsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `WorkspacesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolSchemasListPager.NextPage` has been removed
+- Function `*KustoPool.UnmarshalJSON` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorRevalidatePoller.FinalResponse` has been removed
+- Function `*ExtendedSQLPoolBlobAuditingPolicy.UnmarshalJSON` has been removed
+- Function `ServerBlobAuditingPolicy.MarshalJSON` has been removed
+- Function `KustoPoolsStartPollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolsUpdatePoller.Done` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `IntegrationRuntimesStartPollerResponse.PollUntilDone` has been removed
+- Function `*IntegrationRuntimesStartPoller.FinalResponse` has been removed
+- Function `*RecoverableSQLPool.UnmarshalJSON` has been removed
+- Function `*SQLPoolWorkloadClassifierCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*IntegrationRuntimesDeletePoller.Poll` has been removed
+- Function `*SQLPoolSensitivityLabelsListRecommendedPager.Err` has been removed
+- Function `*KustoPoolPrincipalAssignmentsDeletePoller.Poll` has been removed
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolPager.NextPage` has been removed
+- Function `ExtendedServerBlobAuditingPolicy.MarshalJSON` has been removed
+- Function `*KustoPoolsUpdatePoller.FinalResponse` has been removed
+- Function `*KustoPoolsDeletePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePoller.Done` has been removed
+- Function `WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkHubsListPager.PageResponse` has been removed
+- Function `*ClusterPrincipalAssignment.UnmarshalJSON` has been removed
+- Function `*KustoPoolsStopPoller.Poll` has been removed
+- Function `SQLPoolsPausePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsListPager.PageResponse` has been removed
+- Function `*KustoPoolDataConnectionsDataConnectionValidationPoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*KustoPoolsStartPoller.Poll` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsDeletePoller.Done` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorListPager.PageResponse` has been removed
+- Function `LibraryResource.MarshalJSON` has been removed
+- Function `WorkspacesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspacePager.NextPage` has been removed
+- Function `*KustoPoolDataConnectionsUpdatePoller.Poll` has been removed
+- Function `*KustoPoolsDetachFollowerDatabasesPollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePoller.Poll` has been removed
+- Function `*AzureADOnlyAuthenticationsListPager.Err` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkHubsListByResourceGroupPager.PageResponse` has been removed
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolPager.Err` has been removed
+- Function `*KustoPoolsAddLanguageExtensionsPollerResponse.Resume` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.Poll` has been removed
+- Function `*SQLPoolWorkloadClassifierDeletePoller.Done` has been removed
+- Function `*BigDataPoolsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SQLPoolsResumePoller.ResumeToken` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ExtendedServerBlobAuditingPolicy.UnmarshalJSON` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SQLPoolConnectionPolicy.UnmarshalJSON` has been removed
+- Function `KustoPoolDatabasesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolsDeletePoller.Done` has been removed
+- Function `*KustoPoolDataConnectionsDataConnectionValidationPollerResponse.Resume` has been removed
+- Function `*PrivateLinkResourcesListPager.PageResponse` has been removed
+- Function `*KustoPoolPrincipalAssignmentsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SensitivityLabel.UnmarshalJSON` has been removed
+- Function `*SQLPoolOperation.UnmarshalJSON` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentsListPager.Err` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*SQLPoolBlobAuditingPoliciesListBySQLPoolPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*SQLPoolWorkloadClassifierListPager.PageResponse` has been removed
+- Function `*KustoPoolsUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*KustoPoolDatabasesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CustomSetupBase.UnmarshalJSON` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*KustoPoolDataConnectionsCreateOrUpdatePoller.Done` has been removed
+- Function `*IntegrationRuntimesCreatePoller.Done` has been removed
+- Function `*SQLPoolRestorePointsListPager.NextPage` has been removed
+- Function `*IntegrationRuntimesDeletePoller.Done` has been removed
+- Function `*ReplicationLink.UnmarshalJSON` has been removed
+- Function `AzureEntityResource.MarshalJSON` has been removed
+- Function `*IPFirewallRulesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WorkspaceSQLAADAdminsDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkResource.UnmarshalJSON` has been removed
+- Function `SQLPoolConnectionPolicy.MarshalJSON` has been removed
+- Function `DataWarehouseUserActivities.MarshalJSON` has been removed
+- Function `*PrivateLinkHubsDeletePollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPoller.Done` has been removed
+- Function `*ServerSecurityAlertPolicy.UnmarshalJSON` has been removed
+- Function `*VulnerabilityAssessmentScanRecord.UnmarshalJSON` has been removed
+- Function `*KustoPoolDatabasesDeletePoller.Done` has been removed
+- Function `*SQLPoolWorkloadClassifierDeletePollerResponse.Resume` has been removed
+- Function `KustoPoolDataConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceSQLAADAdminsDeletePoller.FinalResponse` has been removed
+- Function `*SQLPoolsPausePoller.Poll` has been removed
+- Function `*SQLPoolsCreatePoller.ResumeToken` has been removed
+- Function `*KustoPoolsUpdatePoller.ResumeToken` has been removed
+- Function `*KustoPoolsRemoveLanguageExtensionsPollerResponse.Resume` has been removed
+- Function `*SQLPoolTablesListBySchemaPager.PageResponse` has been removed
+- Function `*KustoPoolsCreateOrUpdatePoller.Done` has been removed
+- Function `*KustoPoolsRemoveLanguageExtensionsPoller.Poll` has been removed
+- Function `*KustoPoolPrincipalAssignmentsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*WorkspacesListPager.Err` has been removed
+- Function `*SQLPoolWorkloadGroupCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SQLPoolSensitivityLabelsListRecommendedPager.PageResponse` has been removed
+- Function `SQLPoolVulnerabilityAssessment.MarshalJSON` has been removed
+- Function `SQLPoolSecurityAlertPolicy.MarshalJSON` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansListPager.Err` has been removed
+- Function `WorkspaceSQLAADAdminsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IntegrationRuntimesDisableInteractiveQueryPoller.Done` has been removed
+- Function `*KustoPoolDatabasesGetResult.UnmarshalJSON` has been removed
+- Function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolWorkloadGroupDeletePollerResponse.Resume` has been removed
+- Function `KustoPoolsRemoveLanguageExtensionsPollerResponse.PollUntilDone` has been removed
+- Function `*IPFirewallRulesDeletePoller.Poll` has been removed
+- Function `*SQLPoolReplicationLinksListPager.NextPage` has been removed
+- Function `*SQLPoolsDeletePoller.ResumeToken` has been removed
+- Function `*IntegrationRuntimesListByWorkspacePager.NextPage` has been removed
+- Function `*MaintenanceWindowOptions.UnmarshalJSON` has been removed
+- Function `*SQLPoolWorkloadGroupDeletePoller.ResumeToken` has been removed
+- Function `*ServerBlobAuditingPolicy.UnmarshalJSON` has been removed
+- Function `*PrivateLinkHubsListPager.NextPage` has been removed
+- Function `*RestorableDroppedSQLPool.UnmarshalJSON` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SQLPoolRestorePointsListPager.Err` has been removed
+- Function `ManagedIdentitySQLControlSettingsModel.MarshalJSON` has been removed
+- Function `*WorkspaceAADAdminsCreateOrUpdatePoller.Poll` has been removed
+- Function `IPFirewallRulesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolsDeletePoller.FinalResponse` has been removed
+- Function `*KustoPoolDataConnectionsUpdatePoller.FinalResponse` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansListPager.NextPage` has been removed
+- Function `*WorkspaceSQLAADAdminsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WorkspaceSQLAADAdminsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*EncryptionProtector.UnmarshalJSON` has been removed
+- Function `*IPFirewallRulesDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnection.UnmarshalJSON` has been removed
+- Function `*KustoPoolDatabasesDeletePoller.Poll` has been removed
+- Function `SQLPoolsResumePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspacesDeletePoller.Poll` has been removed
+- Function `*WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BigDataPoolsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*KustoPoolPrincipalAssignmentsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimesStartPoller.ResumeToken` has been removed
+- Function `*SQLPoolsCreatePoller.FinalResponse` has been removed
+- Function `KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolsStartPoller.Done` has been removed
+- Function `*KeysListByWorkspacePager.PageResponse` has been removed
+- Function `*SQLPoolSensitivityLabelsListCurrentPager.NextPage` has been removed
+- Function `*SQLPoolsResumePoller.Poll` has been removed
+- Function `*Database.UnmarshalJSON` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansInitiateScanPoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsCreatePoller.FinalResponse` has been removed
+- Function `*KustoPoolsDetachFollowerDatabasesPoller.Done` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*KustoPoolDataConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `KustoPoolsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolDataConnectionsUpdatePollerResponse.Resume` has been removed
+- Function `*SQLPoolsResumePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*KustoPoolDataConnectionsUpdateResult.UnmarshalJSON` has been removed
+- Function `BigDataPoolsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*IPFirewallRulesDeletePoller.ResumeToken` has been removed
+- Function `*AzureADOnlyAuthenticationsCreatePoller.Poll` has been removed
+- Function `*SQLPoolReplicationLinksListPager.Err` has been removed
+- Function `TransparentDataEncryption.MarshalJSON` has been removed
+- Function `*WorkspacesUpdatePollerResponse.Resume` has been removed
+- Function `*BigDataPoolsListByWorkspacePager.NextPage` has been removed
+- Function `*SQLPoolBlobAuditingPoliciesListBySQLPoolPager.Err` has been removed
+- Function `*WorkspaceAADAdminsDeletePoller.Done` has been removed
+- Function `*KustoPoolsDeletePoller.FinalResponse` has been removed
+- Function `WorkspaceAADAdminsDeletePollerResponse.PollUntilDone` has been removed
+- Function `RestorePoint.MarshalJSON` has been removed
+- Function `*SQLPoolsDeletePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspacePager.NextPage` has been removed
+- Function `ServerSecurityAlertPolicy.MarshalJSON` has been removed
+- Function `*IntegrationRuntimesStartPollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimesStopPoller.FinalResponse` has been removed
+- Function `*KustoPoolsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsDeletePoller.FinalResponse` has been removed
+- Function `*IntegrationRuntimesCreatePoller.ResumeToken` has been removed
+- Function `*KustoPoolDataConnectionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*IntegrationRuntimesEnableInteractiveQueryPollerResponse.Resume` has been removed
+- Function `*SQLPoolWorkloadClassifierListPager.NextPage` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePoller.Poll` has been removed
+- Function `*BigDataPoolsDeletePollerResponse.Resume` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentsListPager.PageResponse` has been removed
+- Function `*WorkspaceSQLAADAdminsDeletePoller.Done` has been removed
+- Function `*IPFirewallRulesReplaceAllPoller.ResumeToken` has been removed
+- Function `MaintenanceWindows.MarshalJSON` has been removed
+- Function `*IntegrationRuntimesEnableInteractiveQueryPoller.FinalResponse` has been removed
+- Function `*SQLPoolBlobAuditingPoliciesListBySQLPoolPager.PageResponse` has been removed
+- Function `MetadataSyncConfig.MarshalJSON` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansInitiateScanPoller.Poll` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*BigDataPoolsDeletePoller.Poll` has been removed
+- Function `*WorkspaceSQLAADAdminsDeletePoller.Poll` has been removed
+- Function `*WorkspacesUpdatePoller.Done` has been removed
+- Function `*SQLPoolTransparentDataEncryptionsListPager.PageResponse` has been removed
+- Function `AttachedDatabaseConfiguration.MarshalJSON` has been removed
+- Function `*AzureADOnlyAuthenticationsCreatePollerResponse.Resume` has been removed
+- Function `*AzureADOnlyAuthenticationsCreatePoller.Done` has been removed
+- Function `*PrivateLinkResourcesListPager.NextPage` has been removed
+- Function `*BigDataPoolsCreateOrUpdatePoller.Poll` has been removed
+- Function `SensitivityLabel.MarshalJSON` has been removed
+- Function `*BigDataPoolsListByWorkspacePager.Err` has been removed
+- Function `*SQLPoolVulnerabilityAssessment.UnmarshalJSON` has been removed
+- Function `*SQLPoolRestorePointsListPager.PageResponse` has been removed
+- Function `*SQLPoolsCreatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsPrivateLinkHubListPager.NextPage` has been removed
+- Function `*SQLPoolRestorePointsCreatePollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimesDeletePoller.ResumeToken` has been removed
+- Function `*WorkspaceAADAdminsDeletePoller.Poll` has been removed
+- Function `*IPFirewallRulesCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspacePager.Err` has been removed
+- Function `*SQLPoolsListByWorkspacePager.NextPage` has been removed
+- Function `*SQLPoolSecurityAlertPolicy.UnmarshalJSON` has been removed
+- Function `*SparkConfigurationResource.UnmarshalJSON` has been removed
+- Function `Key.MarshalJSON` has been removed
+- Function `*SQLPoolsPausePollerResponse.Resume` has been removed
+- Function `*SQLPoolTablesListBySchemaPager.Err` has been removed
+- Function `*KustoPoolsStartPoller.ResumeToken` has been removed
+- Function `*SQLPoolUsagesListPager.Err` has been removed
+- Function `PrivateLinkHubsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolDataConnectionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePoller.Done` has been removed
+- Function `SQLPoolWorkloadGroupDeletePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolDataConnectionsDataConnectionValidationPoller.Done` has been removed
+- Function `*DataMaskingRule.UnmarshalJSON` has been removed
+- Function `*SQLPoolWorkloadClassifierCreateOrUpdatePoller.Done` has been removed
+- Function `*KustoPoolsDetachFollowerDatabasesPoller.ResumeToken` has been removed
+- Function `*WorkspaceManagedSQLServerUsagesListPager.Err` has been removed
+- Function `*WorkspacesListByResourceGroupPager.NextPage` has been removed
+- Function `*SQLPoolOperationsListPager.NextPage` has been removed
+- Function `*SQLPoolSensitivityLabelsListRecommendedPager.NextPage` has been removed
+- Function `*SQLPoolsResumePoller.Done` has been removed
+- Function `*KustoPoolsStartPollerResponse.Resume` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsDeletePoller.Poll` has been removed
+- Function `*SQLPoolReplicationLinksListPager.PageResponse` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePoller.Poll` has been removed
+- Function `*KustoPoolDatabasesCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorListPager.NextPage` has been removed
+- Function `WorkspacesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkHubPrivateLinkResourcesListPager.NextPage` has been removed
+- Function `WorkspaceSQLAADAdminsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SsisObjectMetadata.UnmarshalJSON` has been removed
+- Function `*IntegrationRuntimesDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsCreatePoller.Poll` has been removed
+- Function `*SparkConfigurationsListByWorkspacePager.NextPage` has been removed
+- Function `*SQLPoolsListByWorkspacePager.Err` has been removed
+- Function `WorkspaceAADAdminsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentsListPager.NextPage` has been removed
+- Function `*LibrariesListByWorkspacePager.NextPage` has been removed
+- Function `EncryptionProtector.MarshalJSON` has been removed
+- Function `*SQLPoolWorkloadGroupCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspacePager.PageResponse` has been removed
+- Function `SQLPoolColumn.MarshalJSON` has been removed
+- Function `SQLPoolVulnerabilityAssessmentRuleBaseline.MarshalJSON` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ReplicationLink.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsCreatePoller.Done` has been removed
+- Function `*AzureADOnlyAuthenticationsCreatePoller.FinalResponse` has been removed
+- Function `*WorkspaceManagedSQLServerRecoverableSQLPoolsListPager.NextPage` has been removed
+- Function `*WorkspaceManagedSQLServerUsagesListPager.PageResponse` has been removed
+- Function `*WorkspacesUpdatePoller.FinalResponse` has been removed
+- Function `KustoPoolsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BigDataPoolsListByWorkspacePager.PageResponse` has been removed
+- Function `*WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePoller.Poll` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*KustoPoolsCreateOrUpdatePoller.Poll` has been removed
+- Function `SQLPoolVulnerabilityAssessmentScansInitiateScanPollerResponse.PollUntilDone` has been removed
+- Function `*KeysListByWorkspacePager.NextPage` has been removed
+- Function `*SQLPoolWorkloadClassifierCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*KustoPoolPrincipalAssignmentsDeletePoller.Done` has been removed
+- Function `*PrivateLinkHubsListByResourceGroupPager.NextPage` has been removed
+- Function `AzureADOnlyAuthenticationsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkResourcesListPager.Err` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `IntegrationRuntimesStopPollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolPrincipalAssignmentsCreateOrUpdatePoller.Done` has been removed
+- Function `*IPFirewallRulesDeletePoller.Done` has been removed
+- Function `*IntegrationRuntimesDisableInteractiveQueryPoller.ResumeToken` has been removed
+- Function `*SQLPoolsPausePoller.ResumeToken` has been removed
+- Function `*KustoPoolsAddLanguageExtensionsPoller.FinalResponse` has been removed
+- Function `*WorkspaceAADAdminsDeletePoller.FinalResponse` has been removed
+- Function `*WorkspacesDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsListPager.PageResponse` has been removed
+- Function `*KustoPoolsStopPoller.Done` has been removed
+- Function `*LibraryResource.UnmarshalJSON` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansExport.UnmarshalJSON` has been removed
+- Function `WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolsRemoveLanguageExtensionsPoller.ResumeToken` has been removed
+- Function `*KustoOperationsListPager.PageResponse` has been removed
+- Function `*IntegrationRuntimesCreatePoller.Poll` has been removed
+- Function `SQLPoolRestorePointsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolWorkloadClassifierDeletePoller.ResumeToken` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*KustoPoolsDeletePoller.ResumeToken` has been removed
+- Function `*KustoPoolsDetachFollowerDatabasesPoller.FinalResponse` has been removed
+- Function `*BigDataPoolsCreateOrUpdatePoller.Done` has been removed
+- Function `*SQLPoolRestorePointsCreatePoller.Poll` has been removed
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsListPager.Err` has been removed
+- Function `*KustoPoolPrincipalAssignmentsDeletePoller.ResumeToken` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsDeletePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedSQLServerUsagesListPager.NextPage` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyListPager.Err` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkspaceAADAdminsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimesListByWorkspacePager.PageResponse` has been removed
+- Function `*KustoPoolsStopPoller.FinalResponse` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansInitiateScanPollerResponse.Resume` has been removed
+- Function `*MetadataSyncConfig.UnmarshalJSON` has been removed
+- Function `*BigDataPoolsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspacesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*KustoPoolDataConnectionsDataConnectionValidationPoller.ResumeToken` has been removed
+- Function `*SQLPoolWorkloadGroupCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsCreatePollerResponse.Resume` has been removed
+- Function `*WorkspacesDeletePoller.ResumeToken` has been removed
+- Function `KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IPFirewallRulesReplaceAllPoller.Done` has been removed
+- Function `KustoPoolDatabasesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolsPausePoller.Done` has been removed
+- Function `SQLPoolWorkloadClassifierDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolTableColumnsListByTableNamePager.NextPage` has been removed
+- Function `*IntegrationRuntimesCreatePollerResponse.Resume` has been removed
+- Function `*AzureEntityResource.UnmarshalJSON` has been removed
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsListPager.NextPage` has been removed
+- Function `*BigDataPoolsDeletePoller.FinalResponse` has been removed
+- Function `KustoPoolPrincipalAssignmentsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPoller.ResumeToken` has been removed
+- Function `*SQLPoolTransparentDataEncryptionsListPager.NextPage` has been removed
+- Function `*IntegrationRuntimesEnableInteractiveQueryPoller.ResumeToken` has been removed
+- Function `*SQLPoolTableColumnsListByTableNamePager.PageResponse` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolDataConnectionsUpdatePoller.Done` has been removed
+- Function `*KustoPoolsDetachFollowerDatabasesPoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsListPager.Err` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyListPager.PageResponse` has been removed
+- Function `*ManagedIdentitySQLControlSettingsModel.UnmarshalJSON` has been removed
+- Function `*PrivateLinkHubsDeletePoller.FinalResponse` has been removed
+- Function `*KustoPoolAttachedDatabaseConfigurationsDeletePoller.Poll` has been removed
+- Function `*IntegrationRuntimesStopPoller.Poll` has been removed
+- Function `KustoPoolsAddLanguageExtensionsPollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolDataConnectionsGetResult.UnmarshalJSON` has been removed
+- Function `*IPFirewallRulesDeletePoller.FinalResponse` has been removed
+- Function `*GeoBackupPolicy.UnmarshalJSON` has been removed
+- Function `*DatabasePrincipalAssignment.UnmarshalJSON` has been removed
+- Function `*SQLPoolsListByWorkspacePager.PageResponse` has been removed
+- Function `SQLPoolOperation.MarshalJSON` has been removed
+- Function `*WorkspaceAADAdminsDeletePoller.ResumeToken` has been removed
+- Function `*SQLPoolRestorePointsCreatePoller.Done` has been removed
+- Function `*WorkspaceAADAdminsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `SparkConfigurationResource.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsPrivateLinkHubListPager.Err` has been removed
+- Function `*WorkspacesDeletePoller.FinalResponse` has been removed
+- Function `*KustoPoolPrincipalAssignmentsDeletePoller.FinalResponse` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*IntegrationRuntimesListByWorkspacePager.Err` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsDeletePollerResponse.Resume` has been removed
+- Function `KustoPoolDataConnectionsDataConnectionValidationPollerResponse.PollUntilDone` has been removed
+- Function `*DataWarehouseUserActivities.UnmarshalJSON` has been removed
+- Function `KustoPoolDatabasePrincipalAssignmentsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorListPager.Err` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePoller.Poll` has been removed
+- Function `*WorkspaceSQLAADAdminsCreateOrUpdatePoller.Poll` has been removed
+- Function `*KustoPoolDataConnectionsDeletePoller.Poll` has been removed
+- Function `SQLPoolWorkloadClassifierCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*KustoPoolDatabasesUpdatePoller.Poll` has been removed
+- Function `*WorkspacesUpdatePoller.ResumeToken` has been removed
+- Function `*IPFirewallRulesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `IntegrationRuntimesDisableInteractiveQueryPollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceAADAdminsCreateOrUpdatePoller.Done` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePoller.Done` has been removed
+- Function `ServerVulnerabilityAssessment.MarshalJSON` has been removed
+- Function `*IntegrationRuntimesDisableInteractiveQueryPoller.Poll` has been removed
+- Function `IntegrationRuntimesCreatePollerResponse.PollUntilDone` has been removed
+- Function `KustoPoolsDetachFollowerDatabasesPollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `WorkspaceManagedSQLServerEncryptionProtectorRevalidatePollerResponse.PollUntilDone` has been removed
+- Function `*TransparentDataEncryption.UnmarshalJSON` has been removed
+- Function `*SQLPoolSchemasListPager.PageResponse` has been removed
+- Function `*SQLPoolWorkloadClassifierListPager.Err` has been removed
+- Function `*SQLPoolsDeletePoller.Poll` has been removed
+- Function `*KustoPoolDataConnectionsDataConnectionValidationPoller.FinalResponse` has been removed
+- Function `*KustoPoolDatabasesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsCreatePoller.ResumeToken` has been removed
+- Function `*IntegrationRuntimeObjectMetadataRefreshPoller.Poll` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePoller.Done` has been removed
+- Function `*AzureADOnlyAuthenticationsListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*WorkspaceManagedSQLServerRecoverableSQLPoolsListPager.Err` has been removed
+- Function `*KustoPoolDatabasesCreateOrUpdateResult.UnmarshalJSON` has been removed
+- Function `*AzureADOnlyAuthentication.UnmarshalJSON` has been removed
+- Function `KustoPoolDatabasesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*KustoPoolsUpdatePoller.Poll` has been removed
+- Function `*BigDataPoolsDeletePoller.ResumeToken` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorRevalidatePollerResponse.Resume` has been removed
+- Function `*LinkedIntegrationRuntimeType.UnmarshalJSON` has been removed
+- Function `GeoBackupPolicy.MarshalJSON` has been removed
+- Function `*AttachedDatabaseConfiguration.UnmarshalJSON` has been removed
+- Function `*SQLPoolWorkloadClassifierDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkHubsDeletePoller.Poll` has been removed
+- Function `*SQLPoolWorkloadGroupListPager.PageResponse` has been removed
+- Function `*SQLPoolsDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolPager.PageResponse` has been removed
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorRevalidatePoller.ResumeToken` has been removed
+- Function `*KustoPoolsAddLanguageExtensionsPoller.Done` has been removed
+- Function `*KustoPoolDataConnectionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SecretBase.UnmarshalJSON` has been removed
+- Function `WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `KustoPoolAttachedDatabaseConfigurationsDeletePollerResponse.PollUntilDone` has been removed
+- Function `VulnerabilityAssessmentScanRecord.MarshalJSON` has been removed
+- Function `*PrivateLinkHub.UnmarshalJSON` has been removed
+- Function `*AzureADOnlyAuthenticationsCreatePoller.ResumeToken` has been removed
+- Function `*IPFirewallRulesReplaceAllPollerResponse.Resume` has been removed
+- Function `*SQLPoolVulnerabilityAssessmentScansInitiateScanPoller.ResumeToken` has been removed
+- Function `SensitivityLabelUpdate.MarshalJSON` has been removed
+- Function `KustoPoolPrincipalAssignmentsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SQLPoolSensitivityLabelsListCurrentPager.PageResponse` has been removed
+- Function `*SQLPoolColumn.UnmarshalJSON` has been removed
+- Function `RecommendedSensitivityLabelUpdate.MarshalJSON` has been removed
+- Function `*SensitivityLabelUpdate.UnmarshalJSON` has been removed
+- Function `*SQLPoolUsagesListPager.PageResponse` has been removed
+- Function `*PrivateLinkHubsListByResourceGroupPager.Err` has been removed
+- Function `*SQLPoolBlobAuditingPolicy.UnmarshalJSON` has been removed
+- Function `*IntegrationRuntimesStopPoller.Done` has been removed
+- Function `DataMaskingRule.MarshalJSON` has been removed
+- Function `*KeysListByWorkspacePager.Err` has been removed
+- Function `*SQLPoolSecurityAlertPoliciesListPager.Err` has been removed
+- Function `*KustoOperationsListPager.Err` has been removed
+- Function `ExtendedSQLPoolBlobAuditingPolicy.MarshalJSON` has been removed
+- Function `*KustoPoolDatabasePrincipalAssignmentsDeletePoller.Done` has been removed
+- Function `*WorkloadGroup.UnmarshalJSON` has been removed
+- Function `*IntegrationRuntimesEnableInteractiveQueryPoller.Done` has been removed
+- Function `*KustoPoolsDeletePoller.Poll` has been removed
+- Function `*SQLPoolWorkloadGroupCreateOrUpdatePoller.Poll` has been removed
+- Function `*IntegrationRuntimesStopPollerResponse.Resume` has been removed
+- Function `*IntegrationRuntimesStartPoller.Done` has been removed
+- Function `*IntegrationRuntimesStartPoller.Poll` has been removed
+- Function `*KustoPoolDataConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*SQLPoolTablesListBySchemaPager.NextPage` has been removed
+- Struct `AzureADOnlyAuthenticationsBeginCreateOptions` has been removed
+- Struct `AzureADOnlyAuthenticationsCreatePoller` has been removed
+- Struct `AzureADOnlyAuthenticationsCreatePollerResponse` has been removed
+- Struct `AzureADOnlyAuthenticationsCreateResponse` has been removed
+- Struct `AzureADOnlyAuthenticationsCreateResult` has been removed
+- Struct `AzureADOnlyAuthenticationsGetOptions` has been removed
+- Struct `AzureADOnlyAuthenticationsGetResponse` has been removed
+- Struct `AzureADOnlyAuthenticationsGetResult` has been removed
+- Struct `AzureADOnlyAuthenticationsListOptions` has been removed
+- Struct `AzureADOnlyAuthenticationsListPager` has been removed
+- Struct `AzureADOnlyAuthenticationsListResponse` has been removed
+- Struct `AzureADOnlyAuthenticationsListResult` has been removed
+- Struct `BigDataPoolsBeginCreateOrUpdateOptions` has been removed
+- Struct `BigDataPoolsBeginDeleteOptions` has been removed
+- Struct `BigDataPoolsCreateOrUpdatePoller` has been removed
+- Struct `BigDataPoolsCreateOrUpdatePollerResponse` has been removed
+- Struct `BigDataPoolsCreateOrUpdateResponse` has been removed
+- Struct `BigDataPoolsCreateOrUpdateResult` has been removed
+- Struct `BigDataPoolsDeletePoller` has been removed
+- Struct `BigDataPoolsDeletePollerResponse` has been removed
+- Struct `BigDataPoolsDeleteResponse` has been removed
+- Struct `BigDataPoolsDeleteResult` has been removed
+- Struct `BigDataPoolsGetOptions` has been removed
+- Struct `BigDataPoolsGetResponse` has been removed
+- Struct `BigDataPoolsGetResult` has been removed
+- Struct `BigDataPoolsListByWorkspaceOptions` has been removed
+- Struct `BigDataPoolsListByWorkspacePager` has been removed
+- Struct `BigDataPoolsListByWorkspaceResponse` has been removed
+- Struct `BigDataPoolsListByWorkspaceResult` has been removed
+- Struct `BigDataPoolsUpdateOptions` has been removed
+- Struct `BigDataPoolsUpdateResponse` has been removed
+- Struct `BigDataPoolsUpdateResult` has been removed
+- Struct `DataMaskingPoliciesCreateOrUpdateOptions` has been removed
+- Struct `DataMaskingPoliciesCreateOrUpdateResponse` has been removed
+- Struct `DataMaskingPoliciesCreateOrUpdateResult` has been removed
+- Struct `DataMaskingPoliciesGetOptions` has been removed
+- Struct `DataMaskingPoliciesGetResponse` has been removed
+- Struct `DataMaskingPoliciesGetResult` has been removed
+- Struct `DataMaskingRulesCreateOrUpdateOptions` has been removed
+- Struct `DataMaskingRulesCreateOrUpdateResponse` has been removed
+- Struct `DataMaskingRulesCreateOrUpdateResult` has been removed
+- Struct `DataMaskingRulesGetOptions` has been removed
+- Struct `DataMaskingRulesGetResponse` has been removed
+- Struct `DataMaskingRulesGetResult` has been removed
+- Struct `DataMaskingRulesListBySQLPoolOptions` has been removed
+- Struct `DataMaskingRulesListBySQLPoolResponse` has been removed
+- Struct `DataMaskingRulesListBySQLPoolResult` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesCreateOrUpdateOptions` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesCreateOrUpdateResponse` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesCreateOrUpdateResult` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesGetOptions` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesGetResponse` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesGetResult` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolOptions` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolPager` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolResponse` has been removed
+- Struct `ExtendedSQLPoolBlobAuditingPoliciesListBySQLPoolResult` has been removed
+- Struct `IPFirewallRulesBeginCreateOrUpdateOptions` has been removed
+- Struct `IPFirewallRulesBeginDeleteOptions` has been removed
+- Struct `IPFirewallRulesBeginReplaceAllOptions` has been removed
+- Struct `IPFirewallRulesCreateOrUpdatePoller` has been removed
+- Struct `IPFirewallRulesCreateOrUpdatePollerResponse` has been removed
+- Struct `IPFirewallRulesCreateOrUpdateResponse` has been removed
+- Struct `IPFirewallRulesCreateOrUpdateResult` has been removed
+- Struct `IPFirewallRulesDeletePoller` has been removed
+- Struct `IPFirewallRulesDeletePollerResponse` has been removed
+- Struct `IPFirewallRulesDeleteResponse` has been removed
+- Struct `IPFirewallRulesDeleteResult` has been removed
+- Struct `IPFirewallRulesGetOptions` has been removed
+- Struct `IPFirewallRulesGetResponse` has been removed
+- Struct `IPFirewallRulesGetResult` has been removed
+- Struct `IPFirewallRulesListByWorkspaceOptions` has been removed
+- Struct `IPFirewallRulesListByWorkspacePager` has been removed
+- Struct `IPFirewallRulesListByWorkspaceResponse` has been removed
+- Struct `IPFirewallRulesListByWorkspaceResult` has been removed
+- Struct `IPFirewallRulesReplaceAllPoller` has been removed
+- Struct `IPFirewallRulesReplaceAllPollerResponse` has been removed
+- Struct `IPFirewallRulesReplaceAllResponse` has been removed
+- Struct `IPFirewallRulesReplaceAllResult` has been removed
+- Struct `IntegrationRuntimeAuthKeysListOptions` has been removed
+- Struct `IntegrationRuntimeAuthKeysListResponse` has been removed
+- Struct `IntegrationRuntimeAuthKeysListResult` has been removed
+- Struct `IntegrationRuntimeAuthKeysRegenerateOptions` has been removed
+- Struct `IntegrationRuntimeAuthKeysRegenerateResponse` has been removed
+- Struct `IntegrationRuntimeAuthKeysRegenerateResult` has been removed
+- Struct `IntegrationRuntimeConnectionInfosGetOptions` has been removed
+- Struct `IntegrationRuntimeConnectionInfosGetResponse` has been removed
+- Struct `IntegrationRuntimeConnectionInfosGetResult` has been removed
+- Struct `IntegrationRuntimeCredentialsSyncOptions` has been removed
+- Struct `IntegrationRuntimeCredentialsSyncResponse` has been removed
+- Struct `IntegrationRuntimeMonitoringDataListOptions` has been removed
+- Struct `IntegrationRuntimeMonitoringDataListResponse` has been removed
+- Struct `IntegrationRuntimeMonitoringDataListResult` has been removed
+- Struct `IntegrationRuntimeNodeIPAddressGetOptions` has been removed
+- Struct `IntegrationRuntimeNodeIPAddressGetResponse` has been removed
+- Struct `IntegrationRuntimeNodeIPAddressGetResult` has been removed
+- Struct `IntegrationRuntimeNodesDeleteOptions` has been removed
+- Struct `IntegrationRuntimeNodesDeleteResponse` has been removed
+- Struct `IntegrationRuntimeNodesGetOptions` has been removed
+- Struct `IntegrationRuntimeNodesGetResponse` has been removed
+- Struct `IntegrationRuntimeNodesGetResult` has been removed
+- Struct `IntegrationRuntimeNodesUpdateOptions` has been removed
+- Struct `IntegrationRuntimeNodesUpdateResponse` has been removed
+- Struct `IntegrationRuntimeNodesUpdateResult` has been removed
+- Struct `IntegrationRuntimeObjectMetadataBeginRefreshOptions` has been removed
+- Struct `IntegrationRuntimeObjectMetadataListOptions` has been removed
+- Struct `IntegrationRuntimeObjectMetadataListResponse` has been removed
+- Struct `IntegrationRuntimeObjectMetadataListResult` has been removed
+- Struct `IntegrationRuntimeObjectMetadataRefreshPoller` has been removed
+- Struct `IntegrationRuntimeObjectMetadataRefreshPollerResponse` has been removed
+- Struct `IntegrationRuntimeObjectMetadataRefreshResponse` has been removed
+- Struct `IntegrationRuntimeObjectMetadataRefreshResult` has been removed
+- Struct `IntegrationRuntimeStatusGetOptions` has been removed
+- Struct `IntegrationRuntimeStatusGetResponse` has been removed
+- Struct `IntegrationRuntimeStatusGetResult` has been removed
+- Struct `IntegrationRuntimesBeginCreateOptions` has been removed
+- Struct `IntegrationRuntimesBeginDeleteOptions` has been removed
+- Struct `IntegrationRuntimesBeginDisableInteractiveQueryOptions` has been removed
+- Struct `IntegrationRuntimesBeginEnableInteractiveQueryOptions` has been removed
+- Struct `IntegrationRuntimesBeginStartOptions` has been removed
+- Struct `IntegrationRuntimesBeginStopOptions` has been removed
+- Struct `IntegrationRuntimesCreatePoller` has been removed
+- Struct `IntegrationRuntimesCreatePollerResponse` has been removed
+- Struct `IntegrationRuntimesCreateResponse` has been removed
+- Struct `IntegrationRuntimesCreateResult` has been removed
+- Struct `IntegrationRuntimesDeletePoller` has been removed
+- Struct `IntegrationRuntimesDeletePollerResponse` has been removed
+- Struct `IntegrationRuntimesDeleteResponse` has been removed
+- Struct `IntegrationRuntimesDisableInteractiveQueryPoller` has been removed
+- Struct `IntegrationRuntimesDisableInteractiveQueryPollerResponse` has been removed
+- Struct `IntegrationRuntimesDisableInteractiveQueryResponse` has been removed
+- Struct `IntegrationRuntimesEnableInteractiveQueryPoller` has been removed
+- Struct `IntegrationRuntimesEnableInteractiveQueryPollerResponse` has been removed
+- Struct `IntegrationRuntimesEnableInteractiveQueryResponse` has been removed
+- Struct `IntegrationRuntimesGetOptions` has been removed
+- Struct `IntegrationRuntimesGetResponse` has been removed
+- Struct `IntegrationRuntimesGetResult` has been removed
+- Struct `IntegrationRuntimesListByWorkspaceOptions` has been removed
+- Struct `IntegrationRuntimesListByWorkspacePager` has been removed
+- Struct `IntegrationRuntimesListByWorkspaceResponse` has been removed
+- Struct `IntegrationRuntimesListByWorkspaceResult` has been removed
+- Struct `IntegrationRuntimesListOutboundNetworkDependenciesEndpointsOptions` has been removed
+- Struct `IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Struct `IntegrationRuntimesListOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `IntegrationRuntimesStartPoller` has been removed
+- Struct `IntegrationRuntimesStartPollerResponse` has been removed
+- Struct `IntegrationRuntimesStartResponse` has been removed
+- Struct `IntegrationRuntimesStartResult` has been removed
+- Struct `IntegrationRuntimesStopPoller` has been removed
+- Struct `IntegrationRuntimesStopPollerResponse` has been removed
+- Struct `IntegrationRuntimesStopResponse` has been removed
+- Struct `IntegrationRuntimesUpdateOptions` has been removed
+- Struct `IntegrationRuntimesUpdateResponse` has been removed
+- Struct `IntegrationRuntimesUpdateResult` has been removed
+- Struct `IntegrationRuntimesUpgradeOptions` has been removed
+- Struct `IntegrationRuntimesUpgradeResponse` has been removed
+- Struct `KeysCreateOrUpdateOptions` has been removed
+- Struct `KeysCreateOrUpdateResponse` has been removed
+- Struct `KeysCreateOrUpdateResult` has been removed
+- Struct `KeysDeleteOptions` has been removed
+- Struct `KeysDeleteResponse` has been removed
+- Struct `KeysDeleteResult` has been removed
+- Struct `KeysGetOptions` has been removed
+- Struct `KeysGetResponse` has been removed
+- Struct `KeysGetResult` has been removed
+- Struct `KeysListByWorkspaceOptions` has been removed
+- Struct `KeysListByWorkspacePager` has been removed
+- Struct `KeysListByWorkspaceResponse` has been removed
+- Struct `KeysListByWorkspaceResult` has been removed
+- Struct `KustoOperationsListOptions` has been removed
+- Struct `KustoOperationsListPager` has been removed
+- Struct `KustoOperationsListResponse` has been removed
+- Struct `KustoOperationsListResult` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsBeginCreateOrUpdateOptions` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsBeginDeleteOptions` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePoller` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePollerResponse` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateResponse` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateResult` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsDeletePoller` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsDeletePollerResponse` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsDeleteResponse` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsGetOptions` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsGetResponse` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsGetResult` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsListByKustoPoolOptions` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse` has been removed
+- Struct `KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResult` has been removed
+- Struct `KustoPoolChildResourceCheckNameAvailabilityOptions` has been removed
+- Struct `KustoPoolChildResourceCheckNameAvailabilityResponse` has been removed
+- Struct `KustoPoolChildResourceCheckNameAvailabilityResult` has been removed
+- Struct `KustoPoolDataConnectionsBeginCreateOrUpdateOptions` has been removed
+- Struct `KustoPoolDataConnectionsBeginDataConnectionValidationOptions` has been removed
+- Struct `KustoPoolDataConnectionsBeginDeleteOptions` has been removed
+- Struct `KustoPoolDataConnectionsBeginUpdateOptions` has been removed
+- Struct `KustoPoolDataConnectionsCheckNameAvailabilityOptions` has been removed
+- Struct `KustoPoolDataConnectionsCheckNameAvailabilityResponse` has been removed
+- Struct `KustoPoolDataConnectionsCheckNameAvailabilityResult` has been removed
+- Struct `KustoPoolDataConnectionsCreateOrUpdatePoller` has been removed
+- Struct `KustoPoolDataConnectionsCreateOrUpdatePollerResponse` has been removed
+- Struct `KustoPoolDataConnectionsCreateOrUpdateResponse` has been removed
+- Struct `KustoPoolDataConnectionsCreateOrUpdateResult` has been removed
+- Struct `KustoPoolDataConnectionsDataConnectionValidationPoller` has been removed
+- Struct `KustoPoolDataConnectionsDataConnectionValidationPollerResponse` has been removed
+- Struct `KustoPoolDataConnectionsDataConnectionValidationResponse` has been removed
+- Struct `KustoPoolDataConnectionsDataConnectionValidationResult` has been removed
+- Struct `KustoPoolDataConnectionsDeletePoller` has been removed
+- Struct `KustoPoolDataConnectionsDeletePollerResponse` has been removed
+- Struct `KustoPoolDataConnectionsDeleteResponse` has been removed
+- Struct `KustoPoolDataConnectionsGetOptions` has been removed
+- Struct `KustoPoolDataConnectionsGetResponse` has been removed
+- Struct `KustoPoolDataConnectionsGetResult` has been removed
+- Struct `KustoPoolDataConnectionsListByDatabaseOptions` has been removed
+- Struct `KustoPoolDataConnectionsListByDatabaseResponse` has been removed
+- Struct `KustoPoolDataConnectionsListByDatabaseResult` has been removed
+- Struct `KustoPoolDataConnectionsUpdatePoller` has been removed
+- Struct `KustoPoolDataConnectionsUpdatePollerResponse` has been removed
+- Struct `KustoPoolDataConnectionsUpdateResponse` has been removed
+- Struct `KustoPoolDataConnectionsUpdateResult` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsBeginCreateOrUpdateOptions` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsBeginDeleteOptions` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityOptions` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResult` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePoller` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePollerResponse` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsCreateOrUpdateResponse` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsCreateOrUpdateResult` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsDeletePoller` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsDeletePollerResponse` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsDeleteResponse` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsGetOptions` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsGetResponse` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsGetResult` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsListOptions` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsListResponse` has been removed
+- Struct `KustoPoolDatabasePrincipalAssignmentsListResult` has been removed
+- Struct `KustoPoolDatabasesBeginCreateOrUpdateOptions` has been removed
+- Struct `KustoPoolDatabasesBeginDeleteOptions` has been removed
+- Struct `KustoPoolDatabasesBeginUpdateOptions` has been removed
+- Struct `KustoPoolDatabasesCreateOrUpdatePoller` has been removed
+- Struct `KustoPoolDatabasesCreateOrUpdatePollerResponse` has been removed
+- Struct `KustoPoolDatabasesCreateOrUpdateResponse` has been removed
+- Struct `KustoPoolDatabasesCreateOrUpdateResult` has been removed
+- Struct `KustoPoolDatabasesDeletePoller` has been removed
+- Struct `KustoPoolDatabasesDeletePollerResponse` has been removed
+- Struct `KustoPoolDatabasesDeleteResponse` has been removed
+- Struct `KustoPoolDatabasesGetOptions` has been removed
+- Struct `KustoPoolDatabasesGetResponse` has been removed
+- Struct `KustoPoolDatabasesGetResult` has been removed
+- Struct `KustoPoolDatabasesListByKustoPoolOptions` has been removed
+- Struct `KustoPoolDatabasesListByKustoPoolResponse` has been removed
+- Struct `KustoPoolDatabasesListByKustoPoolResult` has been removed
+- Struct `KustoPoolDatabasesUpdatePoller` has been removed
+- Struct `KustoPoolDatabasesUpdatePollerResponse` has been removed
+- Struct `KustoPoolDatabasesUpdateResponse` has been removed
+- Struct `KustoPoolDatabasesUpdateResult` has been removed
+- Struct `KustoPoolPrincipalAssignmentsBeginCreateOrUpdateOptions` has been removed
+- Struct `KustoPoolPrincipalAssignmentsBeginDeleteOptions` has been removed
+- Struct `KustoPoolPrincipalAssignmentsCheckNameAvailabilityOptions` has been removed
+- Struct `KustoPoolPrincipalAssignmentsCheckNameAvailabilityResponse` has been removed
+- Struct `KustoPoolPrincipalAssignmentsCheckNameAvailabilityResult` has been removed
+- Struct `KustoPoolPrincipalAssignmentsCreateOrUpdatePoller` has been removed
+- Struct `KustoPoolPrincipalAssignmentsCreateOrUpdatePollerResponse` has been removed
+- Struct `KustoPoolPrincipalAssignmentsCreateOrUpdateResponse` has been removed
+- Struct `KustoPoolPrincipalAssignmentsCreateOrUpdateResult` has been removed
+- Struct `KustoPoolPrincipalAssignmentsDeletePoller` has been removed
+- Struct `KustoPoolPrincipalAssignmentsDeletePollerResponse` has been removed
+- Struct `KustoPoolPrincipalAssignmentsDeleteResponse` has been removed
+- Struct `KustoPoolPrincipalAssignmentsGetOptions` has been removed
+- Struct `KustoPoolPrincipalAssignmentsGetResponse` has been removed
+- Struct `KustoPoolPrincipalAssignmentsGetResult` has been removed
+- Struct `KustoPoolPrincipalAssignmentsListOptions` has been removed
+- Struct `KustoPoolPrincipalAssignmentsListResponse` has been removed
+- Struct `KustoPoolPrincipalAssignmentsListResult` has been removed
+- Struct `KustoPoolsAddLanguageExtensionsPoller` has been removed
+- Struct `KustoPoolsAddLanguageExtensionsPollerResponse` has been removed
+- Struct `KustoPoolsAddLanguageExtensionsResponse` has been removed
+- Struct `KustoPoolsBeginAddLanguageExtensionsOptions` has been removed
+- Struct `KustoPoolsBeginCreateOrUpdateOptions` has been removed
+- Struct `KustoPoolsBeginDeleteOptions` has been removed
+- Struct `KustoPoolsBeginDetachFollowerDatabasesOptions` has been removed
+- Struct `KustoPoolsBeginRemoveLanguageExtensionsOptions` has been removed
+- Struct `KustoPoolsBeginStartOptions` has been removed
+- Struct `KustoPoolsBeginStopOptions` has been removed
+- Struct `KustoPoolsBeginUpdateOptions` has been removed
+- Struct `KustoPoolsCheckNameAvailabilityOptions` has been removed
+- Struct `KustoPoolsCheckNameAvailabilityResponse` has been removed
+- Struct `KustoPoolsCheckNameAvailabilityResult` has been removed
+- Struct `KustoPoolsCreateOrUpdatePoller` has been removed
+- Struct `KustoPoolsCreateOrUpdatePollerResponse` has been removed
+- Struct `KustoPoolsCreateOrUpdateResponse` has been removed
+- Struct `KustoPoolsCreateOrUpdateResult` has been removed
+- Struct `KustoPoolsDeletePoller` has been removed
+- Struct `KustoPoolsDeletePollerResponse` has been removed
+- Struct `KustoPoolsDeleteResponse` has been removed
+- Struct `KustoPoolsDetachFollowerDatabasesPoller` has been removed
+- Struct `KustoPoolsDetachFollowerDatabasesPollerResponse` has been removed
+- Struct `KustoPoolsDetachFollowerDatabasesResponse` has been removed
+- Struct `KustoPoolsGetOptions` has been removed
+- Struct `KustoPoolsGetResponse` has been removed
+- Struct `KustoPoolsGetResult` has been removed
+- Struct `KustoPoolsListByWorkspaceOptions` has been removed
+- Struct `KustoPoolsListByWorkspaceResponse` has been removed
+- Struct `KustoPoolsListByWorkspaceResult` has been removed
+- Struct `KustoPoolsListFollowerDatabasesOptions` has been removed
+- Struct `KustoPoolsListFollowerDatabasesResponse` has been removed
+- Struct `KustoPoolsListFollowerDatabasesResult` has been removed
+- Struct `KustoPoolsListLanguageExtensionsOptions` has been removed
+- Struct `KustoPoolsListLanguageExtensionsResponse` has been removed
+- Struct `KustoPoolsListLanguageExtensionsResult` has been removed
+- Struct `KustoPoolsListSKUsByResourceOptions` has been removed
+- Struct `KustoPoolsListSKUsByResourceResponse` has been removed
+- Struct `KustoPoolsListSKUsByResourceResult` has been removed
+- Struct `KustoPoolsListSKUsOptions` has been removed
+- Struct `KustoPoolsListSKUsResponse` has been removed
+- Struct `KustoPoolsListSKUsResult` has been removed
+- Struct `KustoPoolsRemoveLanguageExtensionsPoller` has been removed
+- Struct `KustoPoolsRemoveLanguageExtensionsPollerResponse` has been removed
+- Struct `KustoPoolsRemoveLanguageExtensionsResponse` has been removed
+- Struct `KustoPoolsStartPoller` has been removed
+- Struct `KustoPoolsStartPollerResponse` has been removed
+- Struct `KustoPoolsStartResponse` has been removed
+- Struct `KustoPoolsStopPoller` has been removed
+- Struct `KustoPoolsStopPollerResponse` has been removed
+- Struct `KustoPoolsStopResponse` has been removed
+- Struct `KustoPoolsUpdatePoller` has been removed
+- Struct `KustoPoolsUpdatePollerResponse` has been removed
+- Struct `KustoPoolsUpdateResponse` has been removed
+- Struct `KustoPoolsUpdateResult` has been removed
+- Struct `LibrariesListByWorkspaceOptions` has been removed
+- Struct `LibrariesListByWorkspacePager` has been removed
+- Struct `LibrariesListByWorkspaceResponse` has been removed
+- Struct `LibrariesListByWorkspaceResult` has been removed
+- Struct `LibraryGetOptions` has been removed
+- Struct `LibraryGetResponse` has been removed
+- Struct `LibraryGetResult` has been removed
+- Struct `OperationsCheckNameAvailabilityOptions` has been removed
+- Struct `OperationsCheckNameAvailabilityResponse` has been removed
+- Struct `OperationsCheckNameAvailabilityResult` has been removed
+- Struct `OperationsGetAzureAsyncHeaderResultOptions` has been removed
+- Struct `OperationsGetAzureAsyncHeaderResultResponse` has been removed
+- Struct `OperationsGetAzureAsyncHeaderResultResult` has been removed
+- Struct `OperationsGetLocationHeaderResultOptions` has been removed
+- Struct `OperationsGetLocationHeaderResultResponse` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginCreateOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCreatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResult` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListPager` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateEndpointConnectionsPrivateLinkHubGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsPrivateLinkHubGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsPrivateLinkHubGetResult` has been removed
+- Struct `PrivateEndpointConnectionsPrivateLinkHubListOptions` has been removed
+- Struct `PrivateEndpointConnectionsPrivateLinkHubListPager` has been removed
+- Struct `PrivateEndpointConnectionsPrivateLinkHubListResponse` has been removed
+- Struct `PrivateEndpointConnectionsPrivateLinkHubListResult` has been removed
+- Struct `PrivateLinkHubPrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkHubPrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkHubPrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkHubPrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkHubPrivateLinkResourcesListPager` has been removed
+- Struct `PrivateLinkHubPrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkHubPrivateLinkResourcesListResult` has been removed
+- Struct `PrivateLinkHubsBeginDeleteOptions` has been removed
+- Struct `PrivateLinkHubsCreateOrUpdateOptions` has been removed
+- Struct `PrivateLinkHubsCreateOrUpdateResponse` has been removed
+- Struct `PrivateLinkHubsCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkHubsDeletePoller` has been removed
+- Struct `PrivateLinkHubsDeletePollerResponse` has been removed
+- Struct `PrivateLinkHubsDeleteResponse` has been removed
+- Struct `PrivateLinkHubsGetOptions` has been removed
+- Struct `PrivateLinkHubsGetResponse` has been removed
+- Struct `PrivateLinkHubsGetResult` has been removed
+- Struct `PrivateLinkHubsListByResourceGroupOptions` has been removed
+- Struct `PrivateLinkHubsListByResourceGroupPager` has been removed
+- Struct `PrivateLinkHubsListByResourceGroupResponse` has been removed
+- Struct `PrivateLinkHubsListByResourceGroupResult` has been removed
+- Struct `PrivateLinkHubsListOptions` has been removed
+- Struct `PrivateLinkHubsListPager` has been removed
+- Struct `PrivateLinkHubsListResponse` has been removed
+- Struct `PrivateLinkHubsListResult` has been removed
+- Struct `PrivateLinkHubsUpdateOptions` has been removed
+- Struct `PrivateLinkHubsUpdateResponse` has been removed
+- Struct `PrivateLinkHubsUpdateResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkResourcesListPager` has been removed
+- Struct `PrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Struct `RestorableDroppedSQLPoolsGetOptions` has been removed
+- Struct `RestorableDroppedSQLPoolsGetResponse` has been removed
+- Struct `RestorableDroppedSQLPoolsGetResult` has been removed
+- Struct `RestorableDroppedSQLPoolsListByWorkspaceOptions` has been removed
+- Struct `RestorableDroppedSQLPoolsListByWorkspaceResponse` has been removed
+- Struct `RestorableDroppedSQLPoolsListByWorkspaceResult` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesCreateOrUpdateResult` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesGetOptions` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesGetResponse` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesGetResult` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesListBySQLPoolOptions` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesListBySQLPoolPager` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesListBySQLPoolResponse` has been removed
+- Struct `SQLPoolBlobAuditingPoliciesListBySQLPoolResult` has been removed
+- Struct `SQLPoolColumnsGetOptions` has been removed
+- Struct `SQLPoolColumnsGetResponse` has been removed
+- Struct `SQLPoolColumnsGetResult` has been removed
+- Struct `SQLPoolConnectionPoliciesGetOptions` has been removed
+- Struct `SQLPoolConnectionPoliciesGetResponse` has been removed
+- Struct `SQLPoolConnectionPoliciesGetResult` has been removed
+- Struct `SQLPoolDataWarehouseUserActivitiesGetOptions` has been removed
+- Struct `SQLPoolDataWarehouseUserActivitiesGetResponse` has been removed
+- Struct `SQLPoolDataWarehouseUserActivitiesGetResult` has been removed
+- Struct `SQLPoolGeoBackupPoliciesCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolGeoBackupPoliciesCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolGeoBackupPoliciesCreateOrUpdateResult` has been removed
+- Struct `SQLPoolGeoBackupPoliciesGetOptions` has been removed
+- Struct `SQLPoolGeoBackupPoliciesGetResponse` has been removed
+- Struct `SQLPoolGeoBackupPoliciesGetResult` has been removed
+- Struct `SQLPoolGeoBackupPoliciesListOptions` has been removed
+- Struct `SQLPoolGeoBackupPoliciesListResponse` has been removed
+- Struct `SQLPoolGeoBackupPoliciesListResult` has been removed
+- Struct `SQLPoolMaintenanceWindowOptionsGetOptions` has been removed
+- Struct `SQLPoolMaintenanceWindowOptionsGetResponse` has been removed
+- Struct `SQLPoolMaintenanceWindowOptionsGetResult` has been removed
+- Struct `SQLPoolMaintenanceWindowsCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolMaintenanceWindowsCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolMaintenanceWindowsGetOptions` has been removed
+- Struct `SQLPoolMaintenanceWindowsGetResponse` has been removed
+- Struct `SQLPoolMaintenanceWindowsGetResult` has been removed
+- Struct `SQLPoolMetadataSyncConfigsCreateOptions` has been removed
+- Struct `SQLPoolMetadataSyncConfigsCreateResponse` has been removed
+- Struct `SQLPoolMetadataSyncConfigsCreateResult` has been removed
+- Struct `SQLPoolMetadataSyncConfigsGetOptions` has been removed
+- Struct `SQLPoolMetadataSyncConfigsGetResponse` has been removed
+- Struct `SQLPoolMetadataSyncConfigsGetResult` has been removed
+- Struct `SQLPoolOperationResultsGetLocationHeaderResultOptions` has been removed
+- Struct `SQLPoolOperationResultsGetLocationHeaderResultResponse` has been removed
+- Struct `SQLPoolOperationResultsGetLocationHeaderResultResult` has been removed
+- Struct `SQLPoolOperationsListOptions` has been removed
+- Struct `SQLPoolOperationsListPager` has been removed
+- Struct `SQLPoolOperationsListResponse` has been removed
+- Struct `SQLPoolOperationsListResult` has been removed
+- Struct `SQLPoolRecommendedSensitivityLabelsUpdateOptions` has been removed
+- Struct `SQLPoolRecommendedSensitivityLabelsUpdateResponse` has been removed
+- Struct `SQLPoolReplicationLinksGetByNameOptions` has been removed
+- Struct `SQLPoolReplicationLinksGetByNameResponse` has been removed
+- Struct `SQLPoolReplicationLinksGetByNameResult` has been removed
+- Struct `SQLPoolReplicationLinksListOptions` has been removed
+- Struct `SQLPoolReplicationLinksListPager` has been removed
+- Struct `SQLPoolReplicationLinksListResponse` has been removed
+- Struct `SQLPoolReplicationLinksListResult` has been removed
+- Struct `SQLPoolRestorePointsBeginCreateOptions` has been removed
+- Struct `SQLPoolRestorePointsCreatePoller` has been removed
+- Struct `SQLPoolRestorePointsCreatePollerResponse` has been removed
+- Struct `SQLPoolRestorePointsCreateResponse` has been removed
+- Struct `SQLPoolRestorePointsCreateResult` has been removed
+- Struct `SQLPoolRestorePointsDeleteOptions` has been removed
+- Struct `SQLPoolRestorePointsDeleteResponse` has been removed
+- Struct `SQLPoolRestorePointsGetOptions` has been removed
+- Struct `SQLPoolRestorePointsGetResponse` has been removed
+- Struct `SQLPoolRestorePointsGetResult` has been removed
+- Struct `SQLPoolRestorePointsListOptions` has been removed
+- Struct `SQLPoolRestorePointsListPager` has been removed
+- Struct `SQLPoolRestorePointsListResponse` has been removed
+- Struct `SQLPoolRestorePointsListResult` has been removed
+- Struct `SQLPoolSchemasGetOptions` has been removed
+- Struct `SQLPoolSchemasGetResponse` has been removed
+- Struct `SQLPoolSchemasGetResult` has been removed
+- Struct `SQLPoolSchemasListOptions` has been removed
+- Struct `SQLPoolSchemasListPager` has been removed
+- Struct `SQLPoolSchemasListResponse` has been removed
+- Struct `SQLPoolSchemasListResult` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesCreateOrUpdateResult` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesGetOptions` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesGetResponse` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesGetResult` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesListOptions` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesListPager` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesListResponse` has been removed
+- Struct `SQLPoolSecurityAlertPoliciesListResult` has been removed
+- Struct `SQLPoolSensitivityLabelsCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolSensitivityLabelsCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolSensitivityLabelsCreateOrUpdateResult` has been removed
+- Struct `SQLPoolSensitivityLabelsDeleteOptions` has been removed
+- Struct `SQLPoolSensitivityLabelsDeleteResponse` has been removed
+- Struct `SQLPoolSensitivityLabelsDisableRecommendationOptions` has been removed
+- Struct `SQLPoolSensitivityLabelsDisableRecommendationResponse` has been removed
+- Struct `SQLPoolSensitivityLabelsEnableRecommendationOptions` has been removed
+- Struct `SQLPoolSensitivityLabelsEnableRecommendationResponse` has been removed
+- Struct `SQLPoolSensitivityLabelsGetOptions` has been removed
+- Struct `SQLPoolSensitivityLabelsGetResponse` has been removed
+- Struct `SQLPoolSensitivityLabelsGetResult` has been removed
+- Struct `SQLPoolSensitivityLabelsListCurrentOptions` has been removed
+- Struct `SQLPoolSensitivityLabelsListCurrentPager` has been removed
+- Struct `SQLPoolSensitivityLabelsListCurrentResponse` has been removed
+- Struct `SQLPoolSensitivityLabelsListCurrentResult` has been removed
+- Struct `SQLPoolSensitivityLabelsListRecommendedOptions` has been removed
+- Struct `SQLPoolSensitivityLabelsListRecommendedPager` has been removed
+- Struct `SQLPoolSensitivityLabelsListRecommendedResponse` has been removed
+- Struct `SQLPoolSensitivityLabelsListRecommendedResult` has been removed
+- Struct `SQLPoolSensitivityLabelsUpdateOptions` has been removed
+- Struct `SQLPoolSensitivityLabelsUpdateResponse` has been removed
+- Struct `SQLPoolTableColumnsListByTableNameOptions` has been removed
+- Struct `SQLPoolTableColumnsListByTableNamePager` has been removed
+- Struct `SQLPoolTableColumnsListByTableNameResponse` has been removed
+- Struct `SQLPoolTableColumnsListByTableNameResult` has been removed
+- Struct `SQLPoolTablesGetOptions` has been removed
+- Struct `SQLPoolTablesGetResponse` has been removed
+- Struct `SQLPoolTablesGetResult` has been removed
+- Struct `SQLPoolTablesListBySchemaOptions` has been removed
+- Struct `SQLPoolTablesListBySchemaPager` has been removed
+- Struct `SQLPoolTablesListBySchemaResponse` has been removed
+- Struct `SQLPoolTablesListBySchemaResult` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsCreateOrUpdateResult` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsGetOptions` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsGetResponse` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsGetResult` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsListOptions` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsListPager` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsListResponse` has been removed
+- Struct `SQLPoolTransparentDataEncryptionsListResult` has been removed
+- Struct `SQLPoolUsagesListOptions` has been removed
+- Struct `SQLPoolUsagesListPager` has been removed
+- Struct `SQLPoolUsagesListResponse` has been removed
+- Struct `SQLPoolUsagesListResult` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentRuleBaselinesCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentRuleBaselinesCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentRuleBaselinesCreateOrUpdateResult` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentRuleBaselinesDeleteOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentRuleBaselinesDeleteResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentRuleBaselinesGetOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentRuleBaselinesGetResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentRuleBaselinesGetResult` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansBeginInitiateScanOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansExportOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansExportResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansExportResult` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansGetOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansGetResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansGetResult` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansInitiateScanPoller` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansInitiateScanPollerResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansInitiateScanResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansListOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansListPager` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansListResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentScansListResult` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsCreateOrUpdateResult` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsDeleteOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsDeleteResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsGetOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsGetResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsGetResult` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsListOptions` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsListPager` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsListResponse` has been removed
+- Struct `SQLPoolVulnerabilityAssessmentsListResult` has been removed
+- Struct `SQLPoolWorkloadClassifierBeginCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolWorkloadClassifierBeginDeleteOptions` has been removed
+- Struct `SQLPoolWorkloadClassifierCreateOrUpdatePoller` has been removed
+- Struct `SQLPoolWorkloadClassifierCreateOrUpdatePollerResponse` has been removed
+- Struct `SQLPoolWorkloadClassifierCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolWorkloadClassifierCreateOrUpdateResult` has been removed
+- Struct `SQLPoolWorkloadClassifierDeletePoller` has been removed
+- Struct `SQLPoolWorkloadClassifierDeletePollerResponse` has been removed
+- Struct `SQLPoolWorkloadClassifierDeleteResponse` has been removed
+- Struct `SQLPoolWorkloadClassifierGetOptions` has been removed
+- Struct `SQLPoolWorkloadClassifierGetResponse` has been removed
+- Struct `SQLPoolWorkloadClassifierGetResult` has been removed
+- Struct `SQLPoolWorkloadClassifierListOptions` has been removed
+- Struct `SQLPoolWorkloadClassifierListPager` has been removed
+- Struct `SQLPoolWorkloadClassifierListResponse` has been removed
+- Struct `SQLPoolWorkloadClassifierListResult` has been removed
+- Struct `SQLPoolWorkloadGroupBeginCreateOrUpdateOptions` has been removed
+- Struct `SQLPoolWorkloadGroupBeginDeleteOptions` has been removed
+- Struct `SQLPoolWorkloadGroupCreateOrUpdatePoller` has been removed
+- Struct `SQLPoolWorkloadGroupCreateOrUpdatePollerResponse` has been removed
+- Struct `SQLPoolWorkloadGroupCreateOrUpdateResponse` has been removed
+- Struct `SQLPoolWorkloadGroupCreateOrUpdateResult` has been removed
+- Struct `SQLPoolWorkloadGroupDeletePoller` has been removed
+- Struct `SQLPoolWorkloadGroupDeletePollerResponse` has been removed
+- Struct `SQLPoolWorkloadGroupDeleteResponse` has been removed
+- Struct `SQLPoolWorkloadGroupGetOptions` has been removed
+- Struct `SQLPoolWorkloadGroupGetResponse` has been removed
+- Struct `SQLPoolWorkloadGroupGetResult` has been removed
+- Struct `SQLPoolWorkloadGroupListOptions` has been removed
+- Struct `SQLPoolWorkloadGroupListPager` has been removed
+- Struct `SQLPoolWorkloadGroupListResponse` has been removed
+- Struct `SQLPoolWorkloadGroupListResult` has been removed
+- Struct `SQLPoolsBeginCreateOptions` has been removed
+- Struct `SQLPoolsBeginDeleteOptions` has been removed
+- Struct `SQLPoolsBeginPauseOptions` has been removed
+- Struct `SQLPoolsBeginResumeOptions` has been removed
+- Struct `SQLPoolsCreatePoller` has been removed
+- Struct `SQLPoolsCreatePollerResponse` has been removed
+- Struct `SQLPoolsCreateResponse` has been removed
+- Struct `SQLPoolsCreateResult` has been removed
+- Struct `SQLPoolsDeletePoller` has been removed
+- Struct `SQLPoolsDeletePollerResponse` has been removed
+- Struct `SQLPoolsDeleteResponse` has been removed
+- Struct `SQLPoolsDeleteResult` has been removed
+- Struct `SQLPoolsGetOptions` has been removed
+- Struct `SQLPoolsGetResponse` has been removed
+- Struct `SQLPoolsGetResult` has been removed
+- Struct `SQLPoolsListByWorkspaceOptions` has been removed
+- Struct `SQLPoolsListByWorkspacePager` has been removed
+- Struct `SQLPoolsListByWorkspaceResponse` has been removed
+- Struct `SQLPoolsListByWorkspaceResult` has been removed
+- Struct `SQLPoolsPausePoller` has been removed
+- Struct `SQLPoolsPausePollerResponse` has been removed
+- Struct `SQLPoolsPauseResponse` has been removed
+- Struct `SQLPoolsPauseResult` has been removed
+- Struct `SQLPoolsRenameOptions` has been removed
+- Struct `SQLPoolsRenameResponse` has been removed
+- Struct `SQLPoolsResumePoller` has been removed
+- Struct `SQLPoolsResumePollerResponse` has been removed
+- Struct `SQLPoolsResumeResponse` has been removed
+- Struct `SQLPoolsResumeResult` has been removed
+- Struct `SQLPoolsUpdateOptions` has been removed
+- Struct `SQLPoolsUpdateResponse` has been removed
+- Struct `SQLPoolsUpdateResult` has been removed
+- Struct `SparkConfigurationGetOptions` has been removed
+- Struct `SparkConfigurationGetResponse` has been removed
+- Struct `SparkConfigurationGetResult` has been removed
+- Struct `SparkConfigurationsListByWorkspaceOptions` has been removed
+- Struct `SparkConfigurationsListByWorkspacePager` has been removed
+- Struct `SparkConfigurationsListByWorkspaceResponse` has been removed
+- Struct `SparkConfigurationsListByWorkspaceResult` has been removed
+- Struct `WorkspaceAADAdminsBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspaceAADAdminsBeginDeleteOptions` has been removed
+- Struct `WorkspaceAADAdminsCreateOrUpdatePoller` has been removed
+- Struct `WorkspaceAADAdminsCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspaceAADAdminsCreateOrUpdateResponse` has been removed
+- Struct `WorkspaceAADAdminsCreateOrUpdateResult` has been removed
+- Struct `WorkspaceAADAdminsDeletePoller` has been removed
+- Struct `WorkspaceAADAdminsDeletePollerResponse` has been removed
+- Struct `WorkspaceAADAdminsDeleteResponse` has been removed
+- Struct `WorkspaceAADAdminsGetOptions` has been removed
+- Struct `WorkspaceAADAdminsGetResponse` has been removed
+- Struct `WorkspaceAADAdminsGetResult` has been removed
+- Struct `WorkspaceManagedIdentitySQLControlSettingsBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePoller` has been removed
+- Struct `WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateResponse` has been removed
+- Struct `WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateResult` has been removed
+- Struct `WorkspaceManagedIdentitySQLControlSettingsGetOptions` has been removed
+- Struct `WorkspaceManagedIdentitySQLControlSettingsGetResponse` has been removed
+- Struct `WorkspaceManagedIdentitySQLControlSettingsGetResult` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePoller` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateResponse` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateResult` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesGetOptions` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesGetResponse` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesGetResult` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspaceOptions` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspacePager` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspaceResponse` has been removed
+- Struct `WorkspaceManagedSQLServerBlobAuditingPoliciesListByWorkspaceResult` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorBeginRevalidateOptions` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePoller` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdateResponse` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdateResult` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorGetOptions` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorGetResponse` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorGetResult` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorListOptions` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorListPager` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorListResponse` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorListResult` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorRevalidatePoller` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorRevalidatePollerResponse` has been removed
+- Struct `WorkspaceManagedSQLServerEncryptionProtectorRevalidateResponse` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePoller` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateResponse` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateResult` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesGetOptions` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesGetResponse` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesGetResult` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspaceOptions` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspacePager` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspaceResponse` has been removed
+- Struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesListByWorkspaceResult` has been removed
+- Struct `WorkspaceManagedSQLServerRecoverableSQLPoolsGetOptions` has been removed
+- Struct `WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse` has been removed
+- Struct `WorkspaceManagedSQLServerRecoverableSQLPoolsGetResult` has been removed
+- Struct `WorkspaceManagedSQLServerRecoverableSQLPoolsListOptions` has been removed
+- Struct `WorkspaceManagedSQLServerRecoverableSQLPoolsListPager` has been removed
+- Struct `WorkspaceManagedSQLServerRecoverableSQLPoolsListResponse` has been removed
+- Struct `WorkspaceManagedSQLServerRecoverableSQLPoolsListResult` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePoller` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateResponse` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateResult` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyGetOptions` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyGetResponse` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyGetResult` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyListOptions` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyListPager` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyListResponse` has been removed
+- Struct `WorkspaceManagedSQLServerSecurityAlertPolicyListResult` has been removed
+- Struct `WorkspaceManagedSQLServerUsagesListOptions` has been removed
+- Struct `WorkspaceManagedSQLServerUsagesListPager` has been removed
+- Struct `WorkspaceManagedSQLServerUsagesListResponse` has been removed
+- Struct `WorkspaceManagedSQLServerUsagesListResult` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsCreateOrUpdateOptions` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsCreateOrUpdateResponse` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsCreateOrUpdateResult` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsDeleteOptions` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsDeleteResponse` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsGetOptions` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsGetResponse` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsGetResult` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsListOptions` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsListPager` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsListResponse` has been removed
+- Struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsListResult` has been removed
+- Struct `WorkspaceSQLAADAdminsBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspaceSQLAADAdminsBeginDeleteOptions` has been removed
+- Struct `WorkspaceSQLAADAdminsCreateOrUpdatePoller` has been removed
+- Struct `WorkspaceSQLAADAdminsCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspaceSQLAADAdminsCreateOrUpdateResponse` has been removed
+- Struct `WorkspaceSQLAADAdminsCreateOrUpdateResult` has been removed
+- Struct `WorkspaceSQLAADAdminsDeletePoller` has been removed
+- Struct `WorkspaceSQLAADAdminsDeletePollerResponse` has been removed
+- Struct `WorkspaceSQLAADAdminsDeleteResponse` has been removed
+- Struct `WorkspaceSQLAADAdminsGetOptions` has been removed
+- Struct `WorkspaceSQLAADAdminsGetResponse` has been removed
+- Struct `WorkspaceSQLAADAdminsGetResult` has been removed
+- Struct `WorkspacesBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspacesBeginDeleteOptions` has been removed
+- Struct `WorkspacesBeginUpdateOptions` has been removed
+- Struct `WorkspacesCreateOrUpdatePoller` has been removed
+- Struct `WorkspacesCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspacesCreateOrUpdateResponse` has been removed
+- Struct `WorkspacesCreateOrUpdateResult` has been removed
+- Struct `WorkspacesDeletePoller` has been removed
+- Struct `WorkspacesDeletePollerResponse` has been removed
+- Struct `WorkspacesDeleteResponse` has been removed
+- Struct `WorkspacesDeleteResult` has been removed
+- Struct `WorkspacesGetOptions` has been removed
+- Struct `WorkspacesGetResponse` has been removed
+- Struct `WorkspacesGetResult` has been removed
+- Struct `WorkspacesListByResourceGroupOptions` has been removed
+- Struct `WorkspacesListByResourceGroupPager` has been removed
+- Struct `WorkspacesListByResourceGroupResponse` has been removed
+- Struct `WorkspacesListByResourceGroupResult` has been removed
+- Struct `WorkspacesListOptions` has been removed
+- Struct `WorkspacesListPager` has been removed
+- Struct `WorkspacesListResponse` has been removed
+- Struct `WorkspacesListResult` has been removed
+- Struct `WorkspacesUpdatePoller` has been removed
+- Struct `WorkspacesUpdatePollerResponse` has been removed
+- Struct `WorkspacesUpdateResponse` has been removed
+- Struct `WorkspacesUpdateResult` has been removed
+- Field `ProxyResource` of struct `PrivateLinkResource` has been removed
+- Field `LinkedIntegrationRuntimeType` of struct `LinkedIntegrationRuntimeKeyAuthorization` has been removed
+- Field `DataConnection` of struct `EventHubDataConnection` has been removed
+- Field `SsisObjectMetadata` of struct `SsisEnvironment` has been removed
+- Field `SsisObjectMetadata` of struct `SsisPackage` has been removed
+- Field `ProxyResource` of struct `SQLPoolTable` has been removed
+- Field `DataConnection` of struct `EventGridDataConnection` has been removed
+- Field `ProxyResource` of struct `DataMaskingRule` has been removed
+- Field `ProxyResource` of struct `RecommendedSensitivityLabelUpdate` has been removed
+- Field `ProxyResource` of struct `VulnerabilityAssessmentScanRecord` has been removed
+- Field `ProxyResource` of struct `SensitivityLabelUpdate` has been removed
+- Field `IntegrationRuntimeStatus` of struct `SelfHostedIntegrationRuntimeStatus` has been removed
+- Field `TrackedResource` of struct `PrivateLinkHub` has been removed
+- Field `ProxyResource` of struct `SQLPoolBlobAuditingPolicy` has been removed
+- Field `CustomSetupBase` of struct `EnvironmentVariableSetup` has been removed
+- Field `ProxyResource` of struct `DataMaskingPolicy` has been removed
+- Field `SubResource` of struct `SparkConfigurationResource` has been removed
+- Field `IntegrationRuntime` of struct `SelfHostedIntegrationRuntime` has been removed
+- Field `ProxyResource` of struct `MetadataSyncConfig` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `ProxyResource` of struct `ReplicationLink` has been removed
+- Field `ProxyResource` of struct `SQLPoolVulnerabilityAssessmentScansExport` has been removed
+- Field `ProxyResource` of struct `ServerSecurityAlertPolicy` has been removed
+- Field `ProxyResource` of struct `SQLPoolSchema` has been removed
+- Field `ProxyResource` of struct `AttachedDatabaseConfiguration` has been removed
+- Field `ProxyResource` of struct `IPFirewallRuleInfo` has been removed
+- Field `IntegrationRuntimeStatus` of struct `ManagedIntegrationRuntimeStatus` has been removed
+- Field `PrivateEndpointConnectionForPrivateLinkHubBasicAutoGenerated` of struct `PrivateEndpointConnectionForPrivateLinkHub` has been removed
+- Field `ProxyResource` of struct `ServerVulnerabilityAssessment` has been removed
+- Field `IntegrationRuntime` of struct `ManagedIntegrationRuntime` has been removed
+- Field `TrackedResource` of struct `SQLPool` has been removed
+- Field `TrackedResource` of struct `BigDataPoolResourceInfo` has been removed
+- Field `ProxyResource` of struct `MaintenanceWindowOptions` has been removed
+- Field `ProxyResource` of struct `SQLPoolVulnerabilityAssessment` has been removed
+- Field `ProxyResource` of struct `DataConnection` has been removed
+- Field `ProxyResource` of struct `TransparentDataEncryption` has been removed
+- Field `ProxyResource` of struct `WorkloadGroup` has been removed
+- Field `Database` of struct `ReadWriteDatabase` has been removed
+- Field `ProxyResource` of struct `RestorePoint` has been removed
+- Field `ProxyResource` of struct `WorkspaceAADAdminInfo` has been removed
+- Field `ProxyResource` of struct `Database` has been removed
+- Field `ProxyResource` of struct `RecoverableSQLPool` has been removed
+- Field `CustomSetupBase` of struct `ComponentSetup` has been removed
+- Field `SubResource` of struct `IntegrationRuntimeResource` has been removed
+- Field `ProxyResource` of struct `AzureADOnlyAuthentication` has been removed
+- Field `ProxyResource` of struct `GeoBackupPolicy` has been removed
+- Field `ProxyResource` of struct `DatabasePrincipalAssignment` has been removed
+- Field `SsisObjectMetadata` of struct `SsisFolder` has been removed
+- Field `ProxyResource` of struct `PrivateEndpointConnection` has been removed
+- Field `ProxyResource` of struct `Key` has been removed
+- Field `Resource` of struct `KustoPoolUpdate` has been removed
+- Field `ProxyResource` of struct `ClusterPrincipalAssignment` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ProxyResource` of struct `ExtendedSQLPoolBlobAuditingPolicy` has been removed
+- Field `SubResource` of struct `LibraryResource` has been removed
+- Field `ProxyResource` of struct `DataWarehouseUserActivities` has been removed
+- Field `TrackedResource` of struct `Workspace` has been removed
+- Field `Resource` of struct `AzureEntityResource` has been removed
+- Field `DataConnection` of struct `IotHubDataConnection` has been removed
+- Field `CustomSetupBase` of struct `CmdkeySetup` has been removed
+- Field `ProxyResource` of struct `ServerBlobAuditingPolicy` has been removed
+- Field `ProxyResource` of struct `SensitivityLabel` has been removed
+- Field `ProxyResource` of struct `SQLPoolSecurityAlertPolicy` has been removed
+- Field `ProxyResource` of struct `WorkloadClassifier` has been removed
+- Field `ProxyResource` of struct `ExtendedServerBlobAuditingPolicy` has been removed
+- Field `TrackedResource` of struct `KustoPool` has been removed
+- Field `SsisObjectMetadata` of struct `SsisProject` has been removed
+- Field `ProxyResource` of struct `ManagedIdentitySQLControlSettingsModel` has been removed
+- Field `ProxyResource` of struct `SQLPoolVulnerabilityAssessmentRuleBaseline` has been removed
+- Field `LinkedIntegrationRuntimeType` of struct `LinkedIntegrationRuntimeRbacAuthorization` has been removed
+- Field `ProxyResource` of struct `MaintenanceWindows` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `AzureEntityResource` of struct `SubResource` has been removed
+- Field `ProxyResource` of struct `SQLPoolConnectionPolicy` has been removed
+- Field `ProxyResource` of struct `SQLPoolColumn` has been removed
+- Field `ProxyResource` of struct `RestorableDroppedSQLPool` has been removed
+- Field `SecretBase` of struct `SecureString` has been removed
+- Field `ProxyResource` of struct `SQLPoolOperation` has been removed
+- Field `ProxyResource` of struct `EncryptionProtector` has been removed
+
+### Features Added
+
+- New const `PrincipalsModificationKindUnion`
+- New const `PrincipalsModificationKindNone`
+- New const `PrincipalsModificationKindReplace`
+- New function `*SQLPoolsClientResumePoller.FinalResponse(context.Context) (SQLPoolsClientResumeResponse, error)`
+- New function `*SQLPoolVulnerabilityAssessmentScansClientInitiateScanPoller.ResumeToken() (string, error)`
+- New function `*KustoPoolPrincipalAssignmentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (KustoPoolPrincipalAssignmentsClientCreateOrUpdateResponse, error)`
+- New function `*SQLPoolWorkloadGroupClientCreateOrUpdatePollerResponse.Resume(context.Context, *SQLPoolWorkloadGroupClient, string) error`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *KustoPoolDatabasePrincipalAssignmentsClient, string) error`
+- New function `SQLPoolsClientPausePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolsClientPauseResponse, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePoller.Done() bool`
+- New function `*ManagedIntegrationRuntimeStatus.GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus`
+- New function `*KeysClientListByWorkspacePager.PageResponse() KeysClientListByWorkspaceResponse`
+- New function `*KustoPoolDatabasesClientUpdatePoller.FinalResponse(context.Context) (KustoPoolDatabasesClientUpdateResponse, error)`
+- New function `*IntegrationRuntimesClientStartPoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientCreatePoller.Done() bool`
+- New function `*WorkspaceManagedSQLServerUsagesClientListPager.NextPage(context.Context) bool`
+- New function `*SQLPoolReplicationLinksClientListPager.Err() error`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse, error)`
+- New function `*SQLPoolsClientPausePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolDataConnectionsClientDataConnectionValidationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolTransparentDataEncryptionsClientListPager.NextPage(context.Context) bool`
+- New function `*ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolPager.NextPage(context.Context) bool`
+- New function `*BigDataPoolsClientDeletePollerResponse.Resume(context.Context, *BigDataPoolsClient, string) error`
+- New function `*KustoPoolPrincipalAssignmentsClientDeletePoller.Done() bool`
+- New function `*SQLPoolWorkloadGroupClientDeletePoller.FinalResponse(context.Context) (SQLPoolWorkloadGroupClientDeleteResponse, error)`
+- New function `*BigDataPoolsClientDeletePoller.ResumeToken() (string, error)`
+- New function `IntegrationRuntimesClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimesClientStopResponse, error)`
+- New function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClientListPager.NextPage(context.Context) bool`
+- New function `*SQLPoolsClientPausePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspacesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SQLPoolsClientPausePoller.FinalResponse(context.Context) (SQLPoolsClientPauseResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolWorkloadClassifierClientDeletePoller.FinalResponse(context.Context) (SQLPoolWorkloadClassifierClientDeleteResponse, error)`
+- New function `*KustoPoolDataConnectionsClientUpdateResult.UnmarshalJSON([]byte) error`
+- New function `*SQLPoolsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsPrivateLinkHubClientListPager.Err() error`
+- New function `PossiblePrincipalsModificationKindValues() []PrincipalsModificationKind`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolDataConnectionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*IPFirewallRulesClientReplaceAllPoller.Done() bool`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspacePager.PageResponse() WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse`
+- New function `KustoPoolDataConnectionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDataConnectionsClientUpdateResponse, error)`
+- New function `*SecureString.GetSecretBase() *SecretBase`
+- New function `*WorkspacesClientUpdatePoller.Done() bool`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspacePager.PageResponse() WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspaceResponse`
+- New function `*WorkspaceAADAdminsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SQLPoolsClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*PrivateLinkHubsClientListPager.Err() error`
+- New function `*BigDataPoolsClientDeletePoller.Done() bool`
+- New function `SQLPoolWorkloadClassifierClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolWorkloadClassifierClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientDeletePollerResponse.Resume(context.Context, *KustoPoolDatabasePrincipalAssignmentsClient, string) error`
+- New function `IntegrationRuntimeObjectMetadataClientRefreshPollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimeObjectMetadataClientRefreshResponse, error)`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientDeletePoller.FinalResponse(context.Context) (KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse, error)`
+- New function `*SsisProject.GetSsisObjectMetadata() *SsisObjectMetadata`
+- New function `*KeysClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateLinkHubsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspacePager.Err() error`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*SQLPoolWorkloadClassifierClientListPager.NextPage(context.Context) bool`
+- New function `*WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspaceManagedIdentitySQLControlSettingsClient, string) error`
+- New function `*PrivateLinkHubsClientListByResourceGroupPager.Err() error`
+- New function `*KustoPoolDataConnectionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolOperationsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkHubPrivateLinkResourcesClientListPager.NextPage(context.Context) bool`
+- New function `*SQLPoolWorkloadClassifierClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ComponentSetup.GetCustomSetupBase() *CustomSetupBase`
+- New function `*SQLPoolRestorePointsClientListPager.NextPage(context.Context) bool`
+- New function `*WorkspaceSQLAADAdminsClientCreateOrUpdatePoller.Done() bool`
+- New function `*EventHubDataConnection.GetDataConnection() *DataConnection`
+- New function `*SQLPoolSchemasClientListPager.Err() error`
+- New function `*SQLPoolTablesClientListBySchemaPager.NextPage(context.Context) bool`
+- New function `*SQLPoolVulnerabilityAssessmentsClientListPager.NextPage(context.Context) bool`
+- New function `*KustoPoolPrincipalAssignmentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*SQLPoolBlobAuditingPoliciesClientListBySQLPoolPager.PageResponse() SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse.Resume(context.Context, *KustoPoolAttachedDatabaseConfigurationsClient, string) error`
+- New function `*SQLPoolWorkloadClassifierClientCreateOrUpdatePoller.FinalResponse(context.Context) (SQLPoolWorkloadClassifierClientCreateOrUpdateResponse, error)`
+- New function `*KeysClientListByWorkspacePager.Err() error`
+- New function `*KustoPoolPrincipalAssignmentsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsPrivateLinkHubClientListPager.NextPage(context.Context) bool`
+- New function `KustoPoolsClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolsClientStopResponse, error)`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient, string) error`
+- New function `*LibrariesClientListByWorkspacePager.PageResponse() LibrariesClientListByWorkspaceResponse`
+- New function `*SsisPackage.GetSsisObjectMetadata() *SsisObjectMetadata`
+- New function `*AzureADOnlyAuthenticationsClientListPager.Err() error`
+- New function `AzureADOnlyAuthenticationsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AzureADOnlyAuthenticationsClientCreateResponse, error)`
+- New function `*KustoPoolsClientRemoveLanguageExtensionsPollerResponse.Resume(context.Context, *KustoPoolsClient, string) error`
+- New function `*WorkspaceSQLAADAdminsClientDeletePoller.FinalResponse(context.Context) (WorkspaceSQLAADAdminsClientDeleteResponse, error)`
+- New function `*SQLPoolRestorePointsClientListPager.PageResponse() SQLPoolRestorePointsClientListResponse`
+- New function `*BigDataPoolsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `DataConnection.MarshalJSON() ([]byte, error)`
+- New function `*PrivateLinkHubsClientDeletePoller.FinalResponse(context.Context) (PrivateLinkHubsClientDeleteResponse, error)`
+- New function `*WorkspacesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KustoPoolsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `WorkspaceSQLAADAdminsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceSQLAADAdminsClientDeleteResponse, error)`
+- New function `KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse, error)`
+- New function `*BigDataPoolsClientCreateOrUpdatePollerResponse.Resume(context.Context, *BigDataPoolsClient, string) error`
+- New function `*WorkspaceAADAdminsClientCreateOrUpdatePoller.Done() bool`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientListPager.Err() error`
+- New function `*SQLPoolsClientCreatePoller.Done() bool`
+- New function `*PrivateLinkHubsClientDeletePoller.Done() bool`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*SQLPoolWorkloadGroupClientCreateOrUpdatePoller.FinalResponse(context.Context) (SQLPoolWorkloadGroupClientCreateOrUpdateResponse, error)`
+- New function `*SQLPoolsClientCreatePoller.FinalResponse(context.Context) (SQLPoolsClientCreateResponse, error)`
+- New function `IntegrationRuntimesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimesClientCreateResponse, error)`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePoller.Done() bool`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePoller.Done() bool`
+- New function `*KustoOperationsClientListPager.PageResponse() KustoOperationsClientListResponse`
+- New function `*IPFirewallRulesClientDeletePollerResponse.Resume(context.Context, *IPFirewallRulesClient, string) error`
+- New function `*IntegrationRuntimesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolDatabasesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IntegrationRuntimesClientEnableInteractiveQueryPollerResponse.Resume(context.Context, *IntegrationRuntimesClient, string) error`
+- New function `*IPFirewallRulesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPollerResponse.Resume(context.Context, *IntegrationRuntimeObjectMetadataClient, string) error`
+- New function `*PrivateEndpointConnectionsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolDataConnectionsClientUpdatePoller.Done() bool`
+- New function `*KustoPoolPrincipalAssignmentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*IntegrationRuntimesClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClientListPager.PageResponse() WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse`
+- New function `*BigDataPoolsClientCreateOrUpdatePoller.FinalResponse(context.Context) (BigDataPoolsClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolsClientUpdatePoller.Done() bool`
+- New function `*KustoPoolsClientCreateOrUpdatePollerResponse.Resume(context.Context, *KustoPoolsClient, string) error`
+- New function `*SparkConfigurationsClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*WorkspacesClientListByResourceGroupPager.PageResponse() WorkspacesClientListByResourceGroupResponse`
+- New function `KustoPoolDataConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDataConnectionsClientDeleteResponse, error)`
+- New function `*ReadOnlyFollowingDatabase.UnmarshalJSON([]byte) error`
+- New function `*IntegrationRuntimesClientStartPoller.ResumeToken() (string, error)`
+- New function `*KustoPoolsClientCreateOrUpdatePoller.FinalResponse(context.Context) (KustoPoolsClientCreateOrUpdateResponse, error)`
+- New function `*IntegrationRuntimesClientEnableInteractiveQueryPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspacesClientListByResourceGroupPager.Err() error`
+- New function `*KustoPoolDataConnectionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateLinkHubsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolPager.Err() error`
+- New function `*SQLPoolSecurityAlertPoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*KustoPoolsClientStartPoller.ResumeToken() (string, error)`
+- New function `*LibrariesClientListByWorkspacePager.Err() error`
+- New function `*SQLPoolTableColumnsClientListByTableNamePager.Err() error`
+- New function `*SsisEnvironment.GetSsisObjectMetadata() *SsisObjectMetadata`
+- New function `*WorkspaceSQLAADAdminsClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspaceSQLAADAdminsClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspaceManagedSQLServerEncryptionProtectorClient, string) error`
+- New function `*IntegrationRuntimesClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*IntegrationRuntimesClientStopPollerResponse.Resume(context.Context, *IntegrationRuntimesClient, string) error`
+- New function `*IPFirewallRulesClientCreateOrUpdatePoller.Done() bool`
+- New function `*SsisFolder.UnmarshalJSON([]byte) error`
+- New function `*SQLPoolSecurityAlertPoliciesClientListPager.PageResponse() SQLPoolSecurityAlertPoliciesClientListResponse`
+- New function `*KustoPoolDatabasesClientCreateOrUpdatePoller.Done() bool`
+- New function `*WorkspaceAADAdminsClientDeletePollerResponse.Resume(context.Context, *WorkspaceAADAdminsClient, string) error`
+- New function `*SQLPoolWorkloadGroupClientListPager.NextPage(context.Context) bool`
+- New function `*SQLPoolTableColumnsClientListByTableNamePager.NextPage(context.Context) bool`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientDeletePoller.ResumeToken() (string, error)`
+- New function `KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDataConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolsClientAddLanguageExtensionsPoller.Done() bool`
+- New function `*SQLPoolReplicationLinksClientListPager.PageResponse() SQLPoolReplicationLinksClientListResponse`
+- New function `*WorkspaceAADAdminsClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspaceAADAdminsClient, string) error`
+- New function `KustoPoolsClientRemoveLanguageExtensionsPollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolsClientRemoveLanguageExtensionsResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `IntegrationRuntimesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimesClientDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*KustoPoolPrincipalAssignmentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *KustoPoolPrincipalAssignmentsClient, string) error`
+- New function `*SQLPoolBlobAuditingPoliciesClientListBySQLPoolPager.NextPage(context.Context) bool`
+- New function `*KustoPoolsClientStopPollerResponse.Resume(context.Context, *KustoPoolsClient, string) error`
+- New function `*PrivateLinkResourcesClientListPager.PageResponse() PrivateLinkResourcesClientListResponse`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.ResumeToken() (string, error)`
+- New function `*ReadOnlyFollowingDatabase.GetDatabase() *Database`
+- New function `*WorkspacesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspaceManagedSQLServerBlobAuditingPoliciesClient, string) error`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePoller.Done() bool`
+- New function `*KustoPoolsClientAddLanguageExtensionsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspacesClientUpdatePollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `*IntegrationRuntimesClientDeletePoller.Done() bool`
+- New function `*SQLPoolsClientPausePoller.Done() bool`
+- New function `*IPFirewallRulesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolVulnerabilityAssessmentScansClientInitiateScanPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EnvironmentVariableSetup.GetCustomSetupBase() *CustomSetupBase`
+- New function `SQLPoolRestorePointsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolRestorePointsClientCreateResponse, error)`
+- New function `*KustoPoolsClientStopPoller.Done() bool`
+- New function `*WorkspaceAADAdminsClientDeletePoller.FinalResponse(context.Context) (WorkspaceAADAdminsClientDeleteResponse, error)`
+- New function `*SparkConfigurationsClientListByWorkspacePager.PageResponse() SparkConfigurationsClientListByWorkspaceResponse`
+- New function `*KustoPoolDatabasesClientUpdateResult.UnmarshalJSON([]byte) error`
+- New function `*PrivateLinkResourcesClientListPager.Err() error`
+- New function `*KustoPoolDataConnectionsClientDeletePollerResponse.Resume(context.Context, *KustoPoolDataConnectionsClient, string) error`
+- New function `*SQLPoolWorkloadGroupClientCreateOrUpdatePoller.Done() bool`
+- New function `*KustoPoolsClientDeletePoller.FinalResponse(context.Context) (KustoPoolsClientDeleteResponse, error)`
+- New function `KustoPoolsClientDetachFollowerDatabasesPollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolsClientDetachFollowerDatabasesResponse, error)`
+- New function `KustoPoolDatabasesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDatabasesClientDeleteResponse, error)`
+- New function `IntegrationRuntimesClientEnableInteractiveQueryPollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimesClientEnableInteractiveQueryResponse, error)`
+- New function `*SQLPoolWorkloadClassifierClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*WorkspacesClientDeletePoller.Done() bool`
+- New function `*CmdkeySetup.GetCustomSetupBase() *CustomSetupBase`
+- New function `*SQLPoolTablesClientListBySchemaPager.Err() error`
+- New function `*KustoPoolDataConnectionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IntegrationRuntimesClientCreatePoller.Done() bool`
+- New function `*ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolPager.PageResponse() ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse`
+- New function `*EventGridDataConnection.GetDataConnection() *DataConnection`
+- New function `*BigDataPoolsClientDeletePoller.FinalResponse(context.Context) (BigDataPoolsClientDeleteResponse, error)`
+- New function `IPFirewallRulesClientReplaceAllPollerResponse.PollUntilDone(context.Context, time.Duration) (IPFirewallRulesClientReplaceAllResponse, error)`
+- New function `*KustoPoolDatabasesClientGetResult.UnmarshalJSON([]byte) error`
+- New function `*WorkspaceAADAdminsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*WorkspaceAADAdminsClientDeletePoller.Done() bool`
+- New function `PrivateLinkHubsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateLinkHubsClientDeleteResponse, error)`
+- New function `*AzureADOnlyAuthenticationsClientCreatePoller.ResumeToken() (string, error)`
+- New function `Database.MarshalJSON() ([]byte, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IPFirewallRulesClientDeletePoller.Done() bool`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientDeletePollerResponse.Resume(context.Context, *KustoPoolAttachedDatabaseConfigurationsClient, string) error`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceSQLAADAdminsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `WorkspacesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientUpdateResponse, error)`
+- New function `*WorkspacesClientDeletePollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `*WorkspacesClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `KustoPoolsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolsClientCreateOrUpdateResponse, error)`
+- New function `*BigDataPoolsClientCreateOrUpdatePoller.Done() bool`
+- New function `*KustoPoolsClientStartPoller.FinalResponse(context.Context) (KustoPoolsClientStartResponse, error)`
+- New function `*WorkspacesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KustoPoolDatabasesClientUpdatePoller.Done() bool`
+- New function `*BigDataPoolsClientListByWorkspacePager.Err() error`
+- New function `*KustoPoolsClientDetachFollowerDatabasesPoller.ResumeToken() (string, error)`
+- New function `*SQLPoolSchemasClientListPager.PageResponse() SQLPoolSchemasClientListResponse`
+- New function `WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse, error)`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientDeletePoller.Done() bool`
+- New function `*SQLPoolSensitivityLabelsClientListCurrentPager.Err() error`
+- New function `*SQLPoolWorkloadGroupClientDeletePollerResponse.Resume(context.Context, *SQLPoolWorkloadGroupClient, string) error`
+- New function `*WorkspacesClientListPager.PageResponse() WorkspacesClientListResponse`
+- New function `IntegrationRuntimeStatus.MarshalJSON() ([]byte, error)`
+- New function `*SQLPoolSensitivityLabelsClientListCurrentPager.NextPage(context.Context) bool`
+- New function `*SQLPoolWorkloadClassifierClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDataConnectionsClientDataConnectionValidationResponse, error)`
+- New function `*IntegrationRuntimesClientStopPoller.FinalResponse(context.Context) (IntegrationRuntimesClientStopResponse, error)`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClientListPager.NextPage(context.Context) bool`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolsClientPausePollerResponse.Resume(context.Context, *SQLPoolsClient, string) error`
+- New function `*WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse, error)`
+- New function `*IPFirewallRulesClientDeletePoller.FinalResponse(context.Context) (IPFirewallRulesClientDeleteResponse, error)`
+- New function `*KustoPoolDataConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolWorkloadClassifierClientDeletePoller.Done() bool`
+- New function `*SQLPoolTransparentDataEncryptionsClientListPager.PageResponse() SQLPoolTransparentDataEncryptionsClientListResponse`
+- New function `*WorkspaceAADAdminsClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspaceAADAdminsClientCreateOrUpdateResponse, error)`
+- New function `*IntegrationRuntimesClientDisableInteractiveQueryPoller.Done() bool`
+- New function `*SQLPoolsClientResumePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse, error)`
+- New function `*SQLPoolWorkloadGroupClientDeletePoller.ResumeToken() (string, error)`
+- New function `*WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SQLPoolSensitivityLabelsClientListCurrentPager.PageResponse() SQLPoolSensitivityLabelsClientListCurrentResponse`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.Done() bool`
+- New function `IntegrationRuntime.MarshalJSON() ([]byte, error)`
+- New function `*KustoPoolsClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateLinkHubsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SQLPoolRestorePointsClientListPager.Err() error`
+- New function `KustoPoolsClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolsClientStartResponse, error)`
+- New function `*KustoPoolDatabasesClientCreateOrUpdatePollerResponse.Resume(context.Context, *KustoPoolDatabasesClient, string) error`
+- New function `*SsisFolder.GetSsisObjectMetadata() *SsisObjectMetadata`
+- New function `*SQLPoolBlobAuditingPoliciesClientListBySQLPoolPager.Err() error`
+- New function `*SQLPoolWorkloadClassifierClientCreateOrUpdatePollerResponse.Resume(context.Context, *SQLPoolWorkloadClassifierClient, string) error`
+- New function `SQLPoolWorkloadGroupClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolWorkloadGroupClientCreateOrUpdateResponse, error)`
+- New function `*IPFirewallRulesClientReplaceAllPoller.ResumeToken() (string, error)`
+- New function `*KustoPoolsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolDatabasesClientDeletePollerResponse.Resume(context.Context, *KustoPoolDatabasesClient, string) error`
+- New function `PrivateEndpointConnectionsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientCreateResponse, error)`
+- New function `*SQLPoolVulnerabilityAssessmentsClientListPager.Err() error`
+- New function `BigDataPoolsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (BigDataPoolsClientDeleteResponse, error)`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SQLPoolVulnerabilityAssessmentScansClientListPager.NextPage(context.Context) bool`
+- New function `WorkspaceSQLAADAdminsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceSQLAADAdminsClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolDataConnectionsClientDataConnectionValidationPoller.FinalResponse(context.Context) (KustoPoolDataConnectionsClientDataConnectionValidationResponse, error)`
+- New function `*SQLPoolSensitivityLabelsClientListRecommendedPager.NextPage(context.Context) bool`
+- New function `*AzureADOnlyAuthenticationsClientListPager.NextPage(context.Context) bool`
+- New function `*KustoPoolDatabasesClientUpdatePollerResponse.Resume(context.Context, *KustoPoolDatabasesClient, string) error`
+- New function `*IntegrationRuntimesClientDisableInteractiveQueryPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePoller.Done() bool`
+- New function `KustoPoolPrincipalAssignmentsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolPrincipalAssignmentsClientDeleteResponse, error)`
+- New function `*KustoPoolPrincipalAssignmentsClientDeletePollerResponse.Resume(context.Context, *KustoPoolPrincipalAssignmentsClient, string) error`
+- New function `*WorkspacesClientUpdatePoller.FinalResponse(context.Context) (WorkspacesClientUpdateResponse, error)`
+- New function `*KustoPoolDataConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolPrincipalAssignmentsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientListPager.PageResponse() PrivateEndpointConnectionsClientListResponse`
+- New function `IntegrationRuntimesClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimesClientStartResponse, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePollerResponse.Resume(context.Context, *WorkspaceManagedSQLServerEncryptionProtectorClient, string) error`
+- New function `KustoPoolDatabasePrincipalAssignmentsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse, error)`
+- New function `*KustoPoolDataConnectionsClientDeletePoller.FinalResponse(context.Context) (KustoPoolDataConnectionsClientDeleteResponse, error)`
+- New function `*KustoPoolsClientAddLanguageExtensionsPoller.FinalResponse(context.Context) (KustoPoolsClientAddLanguageExtensionsResponse, error)`
+- New function `*IPFirewallRulesClientReplaceAllPollerResponse.Resume(context.Context, *IPFirewallRulesClient, string) error`
+- New function `SQLPoolsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolsClientDeleteResponse, error)`
+- New function `*KustoPoolDataConnectionsClientUpdatePollerResponse.Resume(context.Context, *KustoPoolDataConnectionsClient, string) error`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspaceManagedSQLServerSecurityAlertPolicyClient, string) error`
+- New function `*SQLPoolsClientListByWorkspacePager.PageResponse() SQLPoolsClientListByWorkspaceResponse`
+- New function `*SQLPoolWorkloadGroupClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolTablesClientListBySchemaPager.PageResponse() SQLPoolTablesClientListBySchemaResponse`
+- New function `*WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateLinkResourcesClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkHubsClientDeletePollerResponse.Resume(context.Context, *PrivateLinkHubsClient, string) error`
+- New function `*WorkspaceSQLAADAdminsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolDatabasesClientCreateOrUpdatePoller.FinalResponse(context.Context) (KustoPoolDatabasesClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolsClientUpdatePollerResponse.Resume(context.Context, *KustoPoolsClient, string) error`
+- New function `*IPFirewallRulesClientListByWorkspacePager.Err() error`
+- New function `SQLPoolsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolsClientCreateResponse, error)`
+- New function `*SQLPoolOperationsClientListPager.PageResponse() SQLPoolOperationsClientListResponse`
+- New function `*KustoPoolsClientRemoveLanguageExtensionsPoller.ResumeToken() (string, error)`
+- New function `*IotHubDataConnection.GetDataConnection() *DataConnection`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*AzureADOnlyAuthenticationsClientCreatePoller.FinalResponse(context.Context) (AzureADOnlyAuthenticationsClientCreateResponse, error)`
+- New function `*ReadWriteDatabase.GetDatabase() *Database`
+- New function `WorkspacesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientCreateOrUpdateResponse, error)`
+- New function `SQLPoolWorkloadGroupClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolWorkloadGroupClientDeleteResponse, error)`
+- New function `*KustoPoolDatabasesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolsClientDetachFollowerDatabasesPollerResponse.Resume(context.Context, *KustoPoolsClient, string) error`
+- New function `*SQLPoolRestorePointsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolVulnerabilityAssessmentScansClientListPager.Err() error`
+- New function `*SQLPoolUsagesClientListPager.Err() error`
+- New function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListPager.Err() error`
+- New function `KustoPoolsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolsClientUpdateResponse, error)`
+- New function `*WorkspacesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IntegrationRuntimesClientCreatePollerResponse.Resume(context.Context, *IntegrationRuntimesClient, string) error`
+- New function `*KustoPoolsClientDetachFollowerDatabasesPoller.FinalResponse(context.Context) (KustoPoolsClientDetachFollowerDatabasesResponse, error)`
+- New function `ReadOnlyFollowingDatabase.MarshalJSON() ([]byte, error)`
+- New function `*IntegrationRuntimesClientDeletePoller.ResumeToken() (string, error)`
+- New function `WorkspaceAADAdminsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceAADAdminsClientCreateOrUpdateResponse, error)`
+- New function `*IntegrationRuntimesClientEnableInteractiveQueryPoller.ResumeToken() (string, error)`
+- New function `*KustoPoolsClientDeletePoller.Done() bool`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientDeletePoller.FinalResponse(context.Context) (KustoPoolAttachedDatabaseConfigurationsClientDeleteResponse, error)`
+- New function `*SQLPoolVulnerabilityAssessmentScansClientInitiateScanPoller.Done() bool`
+- New function `*SQLPoolWorkloadClassifierClientListPager.PageResponse() SQLPoolWorkloadClassifierClientListResponse`
+- New function `*PrivateEndpointConnectionsClientListPager.NextPage(context.Context) bool`
+- New function `*KustoPoolsClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IntegrationRuntimesClientDisableInteractiveQueryPoller.FinalResponse(context.Context) (IntegrationRuntimesClientDisableInteractiveQueryResponse, error)`
+- New function `*KustoPoolsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AzureADOnlyAuthenticationsClientCreatePollerResponse.Resume(context.Context, *AzureADOnlyAuthenticationsClient, string) error`
+- New function `*PrivateEndpointConnectionsClientCreatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientCreateResponse, error)`
+- New function `*KustoPoolsClientStartPollerResponse.Resume(context.Context, *KustoPoolsClient, string) error`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspaceSQLAADAdminsClientDeletePoller.Done() bool`
+- New function `*SQLPoolSensitivityLabelsClientListRecommendedPager.PageResponse() SQLPoolSensitivityLabelsClientListRecommendedResponse`
+- New function `*KustoPoolsClientStopPoller.FinalResponse(context.Context) (KustoPoolsClientStopResponse, error)`
+- New function `*KustoPoolsClientDeletePollerResponse.Resume(context.Context, *KustoPoolsClient, string) error`
+- New function `*WorkspacesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*WorkspacesClientListPager.Err() error`
+- New function `*SQLPoolTableColumnsClientListByTableNamePager.PageResponse() SQLPoolTableColumnsClientListByTableNameResponse`
+- New function `*BigDataPoolsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `SQLPoolVulnerabilityAssessmentScansClientInitiateScanPollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolVulnerabilityAssessmentScansClientInitiateScanResponse, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePoller.FinalResponse(context.Context) (WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse, error)`
+- New function `*IPFirewallRulesClientReplaceAllPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolWorkloadGroupClientDeletePoller.Done() bool`
+- New function `*SQLPoolWorkloadGroupClientListPager.PageResponse() SQLPoolWorkloadGroupClientListResponse`
+- New function `*IntegrationRuntimesClientStartPoller.FinalResponse(context.Context) (IntegrationRuntimesClientStartResponse, error)`
+- New function `*SQLPoolsClientResumePollerResponse.Resume(context.Context, *SQLPoolsClient, string) error`
+- New function `*WorkspaceManagedSQLServerUsagesClientListPager.PageResponse() WorkspaceManagedSQLServerUsagesClientListResponse`
+- New function `*KustoPoolDataConnectionsClientDataConnectionValidationPoller.Done() bool`
+- New function `*KustoPoolDataConnectionsClientDeletePoller.Done() bool`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolsClientDeletePoller.FinalResponse(context.Context) (SQLPoolsClientDeleteResponse, error)`
+- New function `*KustoPoolsClientRemoveLanguageExtensionsPoller.FinalResponse(context.Context) (KustoPoolsClientRemoveLanguageExtensionsResponse, error)`
+- New function `*SQLPoolsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ManagedIntegrationRuntime.GetIntegrationRuntime() *IntegrationRuntime`
+- New function `*SQLPoolOperationsClientListPager.Err() error`
+- New function `*PrivateLinkHubPrivateLinkResourcesClientListPager.PageResponse() PrivateLinkHubPrivateLinkResourcesClientListResponse`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*WorkspacesClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspacesClientCreateOrUpdateResponse, error)`
+- New function `*SQLPoolWorkloadClassifierClientDeletePollerResponse.Resume(context.Context, *SQLPoolWorkloadClassifierClient, string) error`
+- New function `KustoPoolAttachedDatabaseConfigurationsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolAttachedDatabaseConfigurationsClientDeleteResponse, error)`
+- New function `*KustoOperationsClientListPager.Err() error`
+- New function `*KustoPoolDatabasesClientDeletePoller.Done() bool`
+- New function `*SQLPoolRestorePointsClientCreatePollerResponse.Resume(context.Context, *SQLPoolRestorePointsClient, string) error`
+- New function `WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse, error)`
+- New function `*AzureADOnlyAuthenticationsClientListPager.PageResponse() AzureADOnlyAuthenticationsClientListResponse`
+- New function `KustoPoolDatabasesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDatabasesClientUpdateResponse, error)`
+- New function `WorkspacesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientDeleteResponse, error)`
+- New function `*WorkspaceSQLAADAdminsClientDeletePollerResponse.Resume(context.Context, *WorkspaceSQLAADAdminsClient, string) error`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KustoPoolDataConnectionsClientGetResult.UnmarshalJSON([]byte) error`
+- New function `*KustoPoolDatabasesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*SQLPoolsClientDeletePollerResponse.Resume(context.Context, *SQLPoolsClient, string) error`
+- New function `*IPFirewallRulesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolsClientAddLanguageExtensionsPoller.ResumeToken() (string, error)`
+- New function `*WorkspaceSQLAADAdminsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsPrivateLinkHubClientListPager.PageResponse() PrivateEndpointConnectionsPrivateLinkHubClientListResponse`
+- New function `*SQLPoolVulnerabilityAssessmentsClientListPager.PageResponse() SQLPoolVulnerabilityAssessmentsClientListResponse`
+- New function `*SelfHostedIntegrationRuntimeStatus.GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus`
+- New function `*IPFirewallRulesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientListPager.NextPage(context.Context) bool`
+- New function `*IntegrationRuntimesClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientCreatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*KustoPoolsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IntegrationRuntimesClientListByWorkspacePager.PageResponse() IntegrationRuntimesClientListByWorkspaceResponse`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `IntegrationRuntimesClientDisableInteractiveQueryPollerResponse.PollUntilDone(context.Context, time.Duration) (IntegrationRuntimesClientDisableInteractiveQueryResponse, error)`
+- New function `*KustoPoolsClientStartPoller.Done() bool`
+- New function `*WorkspacesClientListPager.NextPage(context.Context) bool`
+- New function `*WorkspaceManagedSQLServerRecoverableSQLPoolsClientListPager.Err() error`
+- New function `*SQLPoolVulnerabilityAssessmentScansClientInitiateScanPoller.FinalResponse(context.Context) (SQLPoolVulnerabilityAssessmentScansClientInitiateScanResponse, error)`
+- New function `*IntegrationRuntimesClientDeletePoller.FinalResponse(context.Context) (IntegrationRuntimesClientDeleteResponse, error)`
+- New function `*KustoPoolsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SQLPoolWorkloadGroupClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KustoPoolDatabasesClientDeletePoller.FinalResponse(context.Context) (KustoPoolDatabasesClientDeleteResponse, error)`
+- New function `*IntegrationRuntimesClientListByWorkspacePager.Err() error`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePoller.ResumeToken() (string, error)`
+- New function `*KustoOperationsClientListPager.NextPage(context.Context) bool`
+- New function `*KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse.Resume(context.Context, *KustoPoolDataConnectionsClient, string) error`
+- New function `IPFirewallRulesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (IPFirewallRulesClientCreateOrUpdateResponse, error)`
+- New function `*IntegrationRuntimesClientEnableInteractiveQueryPoller.Done() bool`
+- New function `*SQLPoolWorkloadGroupClientListPager.Err() error`
+- New function `*SQLPoolsClientDeletePoller.Done() bool`
+- New function `*KustoPoolDatabasesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientListPager.Err() error`
+- New function `*WorkspacesClientCreateOrUpdatePoller.Done() bool`
+- New function `*KustoPoolsClientCreateOrUpdatePoller.Done() bool`
+- New function `*WorkspaceAADAdminsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KustoPoolDataConnectionsClientCreateOrUpdateResult.UnmarshalJSON([]byte) error`
+- New function `*KustoPoolsClientUpdatePoller.FinalResponse(context.Context) (KustoPoolsClientUpdateResponse, error)`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse, error)`
+- New function `*IPFirewallRulesClientCreateOrUpdatePollerResponse.Resume(context.Context, *IPFirewallRulesClient, string) error`
+- New function `*IntegrationRuntimesClientDeletePollerResponse.Resume(context.Context, *IntegrationRuntimesClient, string) error`
+- New function `*PrivateLinkHubsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkHubsClientListPager.PageResponse() PrivateLinkHubsClientListResponse`
+- New function `WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse, error)`
+- New function `*SQLPoolsClientCreatePollerResponse.Resume(context.Context, *SQLPoolsClient, string) error`
+- New function `*KustoPoolDatabasesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse, error)`
+- New function `PrincipalsModificationKind.ToPtr() *PrincipalsModificationKind`
+- New function `*SQLPoolRestorePointsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*IPFirewallRulesClientListByWorkspacePager.PageResponse() IPFirewallRulesClientListByWorkspaceResponse`
+- New function `*IntegrationRuntimesClientDisableInteractiveQueryPollerResponse.Resume(context.Context, *IntegrationRuntimesClient, string) error`
+- New function `*SQLPoolSecurityAlertPoliciesClientListPager.Err() error`
+- New function `*SQLPoolRestorePointsClientCreatePoller.Done() bool`
+- New function `*SQLPoolWorkloadClassifierClientListPager.Err() error`
+- New function `WorkspaceAADAdminsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceAADAdminsClientDeleteResponse, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientListPager.PageResponse() WorkspaceManagedSQLServerEncryptionProtectorClientListResponse`
+- New function `*SQLPoolVulnerabilityAssessmentScansClientInitiateScanPollerResponse.Resume(context.Context, *SQLPoolVulnerabilityAssessmentScansClient, string) error`
+- New function `*KustoPoolDatabasesClientCreateOrUpdateResult.UnmarshalJSON([]byte) error`
+- New function `*WorkspaceSQLAADAdminsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *KustoPoolDataConnectionsClient, string) error`
+- New function `*IntegrationRuntimesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolUsagesClientListPager.PageResponse() SQLPoolUsagesClientListResponse`
+- New function `SQLPoolsClientResumePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolsClientResumeResponse, error)`
+- New function `*KustoPoolsClientRemoveLanguageExtensionsPoller.Done() bool`
+- New function `*SparkConfigurationsClientListByWorkspacePager.Err() error`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateLinkHubPrivateLinkResourcesClientListPager.Err() error`
+- New function `*KustoPoolDataConnectionsClientUpdatePoller.FinalResponse(context.Context) (KustoPoolDataConnectionsClientUpdateResponse, error)`
+- New function `KustoPoolDatabasesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolDatabasesClientCreateOrUpdateResponse, error)`
+- New function `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdateResponse, error)`
+- New function `*IPFirewallRulesClientReplaceAllPoller.FinalResponse(context.Context) (IPFirewallRulesClientReplaceAllResponse, error)`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClientListPager.Err() error`
+- New function `*IntegrationRuntimeObjectMetadataClientRefreshPoller.FinalResponse(context.Context) (IntegrationRuntimeObjectMetadataClientRefreshResponse, error)`
+- New function `*WorkspaceManagedSQLServerUsagesClientListPager.Err() error`
+- New function `*SelfHostedIntegrationRuntime.GetIntegrationRuntime() *IntegrationRuntime`
+- New function `SQLPoolWorkloadClassifierClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLPoolWorkloadClassifierClientDeleteResponse, error)`
+- New function `*BigDataPoolsClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*IntegrationRuntimesClientDisableInteractiveQueryPoller.ResumeToken() (string, error)`
+- New function `*SQLPoolWorkloadGroupClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*WorkspaceAADAdminsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolsClientResumePoller.Done() bool`
+- New function `KustoPoolPrincipalAssignmentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolPrincipalAssignmentsClientCreateOrUpdateResponse, error)`
+- New function `*IntegrationRuntimesClientStopPoller.ResumeToken() (string, error)`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspacePager.Err() error`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePoller.FinalResponse(context.Context) (KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolDatabasesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IntegrationRuntimesClientStartPollerResponse.Resume(context.Context, *IntegrationRuntimesClient, string) error`
+- New function `KustoPoolsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolsClientDeleteResponse, error)`
+- New function `*KustoPoolDataConnectionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (KustoPoolDataConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*WorkspacesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*LibrariesClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*KustoPoolsClientAddLanguageExtensionsPollerResponse.Resume(context.Context, *KustoPoolsClient, string) error`
+- New function `*AzureADOnlyAuthenticationsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*IntegrationRuntimesClientStopPoller.Done() bool`
+- New function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListPager.NextPage(context.Context) bool`
+- New function `*SQLPoolReplicationLinksClientListPager.NextPage(context.Context) bool`
+- New function `*WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListPager.PageResponse() WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListResponse`
+- New function `*IntegrationRuntimesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KustoPoolsClientDetachFollowerDatabasesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AzureADOnlyAuthenticationsClientCreatePoller.Done() bool`
+- New function `*KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KustoPoolsClientRemoveLanguageExtensionsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLPoolSchemasClientListPager.NextPage(context.Context) bool`
+- New function `*BigDataPoolsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*SQLPoolRestorePointsClientCreatePoller.FinalResponse(context.Context) (SQLPoolRestorePointsClientCreateResponse, error)`
+- New function `*SQLPoolTransparentDataEncryptionsClientListPager.Err() error`
+- New function `*PrivateLinkHubsClientListByResourceGroupPager.PageResponse() PrivateLinkHubsClientListByResourceGroupResponse`
+- New function `*SQLPoolVulnerabilityAssessmentScansClientListPager.PageResponse() SQLPoolVulnerabilityAssessmentScansClientListResponse`
+- New function `*KustoPoolPrincipalAssignmentsClientDeletePoller.FinalResponse(context.Context) (KustoPoolPrincipalAssignmentsClientDeleteResponse, error)`
+- New function `*KustoPoolPrincipalAssignmentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `BigDataPoolsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (BigDataPoolsClientCreateOrUpdateResponse, error)`
+- New function `*IntegrationRuntimesClientCreatePoller.FinalResponse(context.Context) (IntegrationRuntimesClientCreateResponse, error)`
+- New function `*KustoPoolDataConnectionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse, error)`
+- New function `*KustoPoolsClientDetachFollowerDatabasesPoller.Done() bool`
+- New function `*SQLPoolsClientResumePoller.ResumeToken() (string, error)`
+- New function `*KustoPoolDataConnectionsClientDataConnectionValidationPoller.ResumeToken() (string, error)`
+- New function `*SQLPoolWorkloadClassifierClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePoller.Done() bool`
+- New function `*KustoPoolsClientStopPoller.ResumeToken() (string, error)`
+- New function `*WorkspacesClientDeletePoller.FinalResponse(context.Context) (WorkspacesClientDeleteResponse, error)`
+- New function `*IntegrationRuntimesClientEnableInteractiveQueryPoller.FinalResponse(context.Context) (IntegrationRuntimesClientEnableInteractiveQueryResponse, error)`
+- New function `*SQLPoolUsagesClientListPager.NextPage(context.Context) bool`
+- New function `*BigDataPoolsClientListByWorkspacePager.PageResponse() BigDataPoolsClientListByWorkspaceResponse`
+- New function `*SQLPoolSensitivityLabelsClientListRecommendedPager.Err() error`
+- New function `KustoPoolsClientAddLanguageExtensionsPollerResponse.PollUntilDone(context.Context, time.Duration) (KustoPoolsClientAddLanguageExtensionsResponse, error)`
+- New function `*WorkspaceManagedSQLServerSecurityAlertPolicyClientListPager.PageResponse() WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse`
+- New function `*LinkedIntegrationRuntimeRbacAuthorization.GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType`
+- New function `*KustoPoolDatabasePrincipalAssignmentsClientDeletePoller.Done() bool`
+- New function `*SQLPoolsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*IPFirewallRulesClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*SQLPoolsClientListByWorkspacePager.Err() error`
+- New function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `IPFirewallRulesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (IPFirewallRulesClientDeleteResponse, error)`
+- New function `*SQLPoolWorkloadClassifierClientCreateOrUpdatePoller.Done() bool`
+- New function `*IPFirewallRulesClientCreateOrUpdatePoller.FinalResponse(context.Context) (IPFirewallRulesClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceSQLAADAdminsClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspaceSQLAADAdminsClient, string) error`
+- New function `*LinkedIntegrationRuntimeKeyAuthorization.GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType`
+- New struct `AzureADOnlyAuthenticationsClientBeginCreateOptions`
+- New struct `AzureADOnlyAuthenticationsClientCreatePoller`
+- New struct `AzureADOnlyAuthenticationsClientCreatePollerResponse`
+- New struct `AzureADOnlyAuthenticationsClientCreateResponse`
+- New struct `AzureADOnlyAuthenticationsClientCreateResult`
+- New struct `AzureADOnlyAuthenticationsClientGetOptions`
+- New struct `AzureADOnlyAuthenticationsClientGetResponse`
+- New struct `AzureADOnlyAuthenticationsClientGetResult`
+- New struct `AzureADOnlyAuthenticationsClientListOptions`
+- New struct `AzureADOnlyAuthenticationsClientListPager`
+- New struct `AzureADOnlyAuthenticationsClientListResponse`
+- New struct `AzureADOnlyAuthenticationsClientListResult`
+- New struct `BigDataPoolsClientBeginCreateOrUpdateOptions`
+- New struct `BigDataPoolsClientBeginDeleteOptions`
+- New struct `BigDataPoolsClientCreateOrUpdatePoller`
+- New struct `BigDataPoolsClientCreateOrUpdatePollerResponse`
+- New struct `BigDataPoolsClientCreateOrUpdateResponse`
+- New struct `BigDataPoolsClientCreateOrUpdateResult`
+- New struct `BigDataPoolsClientDeletePoller`
+- New struct `BigDataPoolsClientDeletePollerResponse`
+- New struct `BigDataPoolsClientDeleteResponse`
+- New struct `BigDataPoolsClientDeleteResult`
+- New struct `BigDataPoolsClientGetOptions`
+- New struct `BigDataPoolsClientGetResponse`
+- New struct `BigDataPoolsClientGetResult`
+- New struct `BigDataPoolsClientListByWorkspaceOptions`
+- New struct `BigDataPoolsClientListByWorkspacePager`
+- New struct `BigDataPoolsClientListByWorkspaceResponse`
+- New struct `BigDataPoolsClientListByWorkspaceResult`
+- New struct `BigDataPoolsClientUpdateOptions`
+- New struct `BigDataPoolsClientUpdateResponse`
+- New struct `BigDataPoolsClientUpdateResult`
+- New struct `DataMaskingPoliciesClientCreateOrUpdateOptions`
+- New struct `DataMaskingPoliciesClientCreateOrUpdateResponse`
+- New struct `DataMaskingPoliciesClientCreateOrUpdateResult`
+- New struct `DataMaskingPoliciesClientGetOptions`
+- New struct `DataMaskingPoliciesClientGetResponse`
+- New struct `DataMaskingPoliciesClientGetResult`
+- New struct `DataMaskingRulesClientCreateOrUpdateOptions`
+- New struct `DataMaskingRulesClientCreateOrUpdateResponse`
+- New struct `DataMaskingRulesClientCreateOrUpdateResult`
+- New struct `DataMaskingRulesClientGetOptions`
+- New struct `DataMaskingRulesClientGetResponse`
+- New struct `DataMaskingRulesClientGetResult`
+- New struct `DataMaskingRulesClientListBySQLPoolOptions`
+- New struct `DataMaskingRulesClientListBySQLPoolResponse`
+- New struct `DataMaskingRulesClientListBySQLPoolResult`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientCreateOrUpdateResult`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientGetOptions`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientGetResponse`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientGetResult`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolPager`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse`
+- New struct `ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolResult`
+- New struct `IPFirewallRulesClientBeginCreateOrUpdateOptions`
+- New struct `IPFirewallRulesClientBeginDeleteOptions`
+- New struct `IPFirewallRulesClientBeginReplaceAllOptions`
+- New struct `IPFirewallRulesClientCreateOrUpdatePoller`
+- New struct `IPFirewallRulesClientCreateOrUpdatePollerResponse`
+- New struct `IPFirewallRulesClientCreateOrUpdateResponse`
+- New struct `IPFirewallRulesClientCreateOrUpdateResult`
+- New struct `IPFirewallRulesClientDeletePoller`
+- New struct `IPFirewallRulesClientDeletePollerResponse`
+- New struct `IPFirewallRulesClientDeleteResponse`
+- New struct `IPFirewallRulesClientDeleteResult`
+- New struct `IPFirewallRulesClientGetOptions`
+- New struct `IPFirewallRulesClientGetResponse`
+- New struct `IPFirewallRulesClientGetResult`
+- New struct `IPFirewallRulesClientListByWorkspaceOptions`
+- New struct `IPFirewallRulesClientListByWorkspacePager`
+- New struct `IPFirewallRulesClientListByWorkspaceResponse`
+- New struct `IPFirewallRulesClientListByWorkspaceResult`
+- New struct `IPFirewallRulesClientReplaceAllPoller`
+- New struct `IPFirewallRulesClientReplaceAllPollerResponse`
+- New struct `IPFirewallRulesClientReplaceAllResponse`
+- New struct `IPFirewallRulesClientReplaceAllResult`
+- New struct `IntegrationRuntimeAuthKeysClientListOptions`
+- New struct `IntegrationRuntimeAuthKeysClientListResponse`
+- New struct `IntegrationRuntimeAuthKeysClientListResult`
+- New struct `IntegrationRuntimeAuthKeysClientRegenerateOptions`
+- New struct `IntegrationRuntimeAuthKeysClientRegenerateResponse`
+- New struct `IntegrationRuntimeAuthKeysClientRegenerateResult`
+- New struct `IntegrationRuntimeConnectionInfosClientGetOptions`
+- New struct `IntegrationRuntimeConnectionInfosClientGetResponse`
+- New struct `IntegrationRuntimeConnectionInfosClientGetResult`
+- New struct `IntegrationRuntimeCredentialsClientSyncOptions`
+- New struct `IntegrationRuntimeCredentialsClientSyncResponse`
+- New struct `IntegrationRuntimeMonitoringDataClientListOptions`
+- New struct `IntegrationRuntimeMonitoringDataClientListResponse`
+- New struct `IntegrationRuntimeMonitoringDataClientListResult`
+- New struct `IntegrationRuntimeNodeIPAddressClientGetOptions`
+- New struct `IntegrationRuntimeNodeIPAddressClientGetResponse`
+- New struct `IntegrationRuntimeNodeIPAddressClientGetResult`
+- New struct `IntegrationRuntimeNodesClientDeleteOptions`
+- New struct `IntegrationRuntimeNodesClientDeleteResponse`
+- New struct `IntegrationRuntimeNodesClientGetOptions`
+- New struct `IntegrationRuntimeNodesClientGetResponse`
+- New struct `IntegrationRuntimeNodesClientGetResult`
+- New struct `IntegrationRuntimeNodesClientUpdateOptions`
+- New struct `IntegrationRuntimeNodesClientUpdateResponse`
+- New struct `IntegrationRuntimeNodesClientUpdateResult`
+- New struct `IntegrationRuntimeObjectMetadataClientBeginRefreshOptions`
+- New struct `IntegrationRuntimeObjectMetadataClientListOptions`
+- New struct `IntegrationRuntimeObjectMetadataClientListResponse`
+- New struct `IntegrationRuntimeObjectMetadataClientListResult`
+- New struct `IntegrationRuntimeObjectMetadataClientRefreshPoller`
+- New struct `IntegrationRuntimeObjectMetadataClientRefreshPollerResponse`
+- New struct `IntegrationRuntimeObjectMetadataClientRefreshResponse`
+- New struct `IntegrationRuntimeObjectMetadataClientRefreshResult`
+- New struct `IntegrationRuntimeStatusClientGetOptions`
+- New struct `IntegrationRuntimeStatusClientGetResponse`
+- New struct `IntegrationRuntimeStatusClientGetResult`
+- New struct `IntegrationRuntimesClientBeginCreateOptions`
+- New struct `IntegrationRuntimesClientBeginDeleteOptions`
+- New struct `IntegrationRuntimesClientBeginDisableInteractiveQueryOptions`
+- New struct `IntegrationRuntimesClientBeginEnableInteractiveQueryOptions`
+- New struct `IntegrationRuntimesClientBeginStartOptions`
+- New struct `IntegrationRuntimesClientBeginStopOptions`
+- New struct `IntegrationRuntimesClientCreatePoller`
+- New struct `IntegrationRuntimesClientCreatePollerResponse`
+- New struct `IntegrationRuntimesClientCreateResponse`
+- New struct `IntegrationRuntimesClientCreateResult`
+- New struct `IntegrationRuntimesClientDeletePoller`
+- New struct `IntegrationRuntimesClientDeletePollerResponse`
+- New struct `IntegrationRuntimesClientDeleteResponse`
+- New struct `IntegrationRuntimesClientDisableInteractiveQueryPoller`
+- New struct `IntegrationRuntimesClientDisableInteractiveQueryPollerResponse`
+- New struct `IntegrationRuntimesClientDisableInteractiveQueryResponse`
+- New struct `IntegrationRuntimesClientEnableInteractiveQueryPoller`
+- New struct `IntegrationRuntimesClientEnableInteractiveQueryPollerResponse`
+- New struct `IntegrationRuntimesClientEnableInteractiveQueryResponse`
+- New struct `IntegrationRuntimesClientGetOptions`
+- New struct `IntegrationRuntimesClientGetResponse`
+- New struct `IntegrationRuntimesClientGetResult`
+- New struct `IntegrationRuntimesClientListByWorkspaceOptions`
+- New struct `IntegrationRuntimesClientListByWorkspacePager`
+- New struct `IntegrationRuntimesClientListByWorkspaceResponse`
+- New struct `IntegrationRuntimesClientListByWorkspaceResult`
+- New struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsOptions`
+- New struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse`
+- New struct `IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResult`
+- New struct `IntegrationRuntimesClientStartPoller`
+- New struct `IntegrationRuntimesClientStartPollerResponse`
+- New struct `IntegrationRuntimesClientStartResponse`
+- New struct `IntegrationRuntimesClientStartResult`
+- New struct `IntegrationRuntimesClientStopPoller`
+- New struct `IntegrationRuntimesClientStopPollerResponse`
+- New struct `IntegrationRuntimesClientStopResponse`
+- New struct `IntegrationRuntimesClientUpdateOptions`
+- New struct `IntegrationRuntimesClientUpdateResponse`
+- New struct `IntegrationRuntimesClientUpdateResult`
+- New struct `IntegrationRuntimesClientUpgradeOptions`
+- New struct `IntegrationRuntimesClientUpgradeResponse`
+- New struct `KeysClientCreateOrUpdateOptions`
+- New struct `KeysClientCreateOrUpdateResponse`
+- New struct `KeysClientCreateOrUpdateResult`
+- New struct `KeysClientDeleteOptions`
+- New struct `KeysClientDeleteResponse`
+- New struct `KeysClientDeleteResult`
+- New struct `KeysClientGetOptions`
+- New struct `KeysClientGetResponse`
+- New struct `KeysClientGetResult`
+- New struct `KeysClientListByWorkspaceOptions`
+- New struct `KeysClientListByWorkspacePager`
+- New struct `KeysClientListByWorkspaceResponse`
+- New struct `KeysClientListByWorkspaceResult`
+- New struct `KustoOperationsClientListOptions`
+- New struct `KustoOperationsClientListPager`
+- New struct `KustoOperationsClientListResponse`
+- New struct `KustoOperationsClientListResult`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientBeginDeleteOptions`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePoller`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdateResponse`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdateResult`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientDeletePoller`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientDeletePollerResponse`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientDeleteResponse`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientGetOptions`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientGetResponse`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientGetResult`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolOptions`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse`
+- New struct `KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResult`
+- New struct `KustoPoolChildResourceClientCheckNameAvailabilityOptions`
+- New struct `KustoPoolChildResourceClientCheckNameAvailabilityResponse`
+- New struct `KustoPoolChildResourceClientCheckNameAvailabilityResult`
+- New struct `KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions`
+- New struct `KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions`
+- New struct `KustoPoolDataConnectionsClientBeginDeleteOptions`
+- New struct `KustoPoolDataConnectionsClientBeginUpdateOptions`
+- New struct `KustoPoolDataConnectionsClientCheckNameAvailabilityOptions`
+- New struct `KustoPoolDataConnectionsClientCheckNameAvailabilityResponse`
+- New struct `KustoPoolDataConnectionsClientCheckNameAvailabilityResult`
+- New struct `KustoPoolDataConnectionsClientCreateOrUpdatePoller`
+- New struct `KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse`
+- New struct `KustoPoolDataConnectionsClientCreateOrUpdateResponse`
+- New struct `KustoPoolDataConnectionsClientCreateOrUpdateResult`
+- New struct `KustoPoolDataConnectionsClientDataConnectionValidationPoller`
+- New struct `KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse`
+- New struct `KustoPoolDataConnectionsClientDataConnectionValidationResponse`
+- New struct `KustoPoolDataConnectionsClientDataConnectionValidationResult`
+- New struct `KustoPoolDataConnectionsClientDeletePoller`
+- New struct `KustoPoolDataConnectionsClientDeletePollerResponse`
+- New struct `KustoPoolDataConnectionsClientDeleteResponse`
+- New struct `KustoPoolDataConnectionsClientGetOptions`
+- New struct `KustoPoolDataConnectionsClientGetResponse`
+- New struct `KustoPoolDataConnectionsClientGetResult`
+- New struct `KustoPoolDataConnectionsClientListByDatabaseOptions`
+- New struct `KustoPoolDataConnectionsClientListByDatabaseResponse`
+- New struct `KustoPoolDataConnectionsClientListByDatabaseResult`
+- New struct `KustoPoolDataConnectionsClientUpdatePoller`
+- New struct `KustoPoolDataConnectionsClientUpdatePollerResponse`
+- New struct `KustoPoolDataConnectionsClientUpdateResponse`
+- New struct `KustoPoolDataConnectionsClientUpdateResult`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientBeginDeleteOptions`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResult`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePoller`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePollerResponse`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResult`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientDeletePoller`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientDeletePollerResponse`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientGetOptions`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientGetResponse`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientGetResult`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientListOptions`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientListResponse`
+- New struct `KustoPoolDatabasePrincipalAssignmentsClientListResult`
+- New struct `KustoPoolDatabasesClientBeginCreateOrUpdateOptions`
+- New struct `KustoPoolDatabasesClientBeginDeleteOptions`
+- New struct `KustoPoolDatabasesClientBeginUpdateOptions`
+- New struct `KustoPoolDatabasesClientCreateOrUpdatePoller`
+- New struct `KustoPoolDatabasesClientCreateOrUpdatePollerResponse`
+- New struct `KustoPoolDatabasesClientCreateOrUpdateResponse`
+- New struct `KustoPoolDatabasesClientCreateOrUpdateResult`
+- New struct `KustoPoolDatabasesClientDeletePoller`
+- New struct `KustoPoolDatabasesClientDeletePollerResponse`
+- New struct `KustoPoolDatabasesClientDeleteResponse`
+- New struct `KustoPoolDatabasesClientGetOptions`
+- New struct `KustoPoolDatabasesClientGetResponse`
+- New struct `KustoPoolDatabasesClientGetResult`
+- New struct `KustoPoolDatabasesClientListByKustoPoolOptions`
+- New struct `KustoPoolDatabasesClientListByKustoPoolResponse`
+- New struct `KustoPoolDatabasesClientListByKustoPoolResult`
+- New struct `KustoPoolDatabasesClientUpdatePoller`
+- New struct `KustoPoolDatabasesClientUpdatePollerResponse`
+- New struct `KustoPoolDatabasesClientUpdateResponse`
+- New struct `KustoPoolDatabasesClientUpdateResult`
+- New struct `KustoPoolPrincipalAssignmentsClientBeginCreateOrUpdateOptions`
+- New struct `KustoPoolPrincipalAssignmentsClientBeginDeleteOptions`
+- New struct `KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityOptions`
+- New struct `KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityResponse`
+- New struct `KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityResult`
+- New struct `KustoPoolPrincipalAssignmentsClientCreateOrUpdatePoller`
+- New struct `KustoPoolPrincipalAssignmentsClientCreateOrUpdatePollerResponse`
+- New struct `KustoPoolPrincipalAssignmentsClientCreateOrUpdateResponse`
+- New struct `KustoPoolPrincipalAssignmentsClientCreateOrUpdateResult`
+- New struct `KustoPoolPrincipalAssignmentsClientDeletePoller`
+- New struct `KustoPoolPrincipalAssignmentsClientDeletePollerResponse`
+- New struct `KustoPoolPrincipalAssignmentsClientDeleteResponse`
+- New struct `KustoPoolPrincipalAssignmentsClientGetOptions`
+- New struct `KustoPoolPrincipalAssignmentsClientGetResponse`
+- New struct `KustoPoolPrincipalAssignmentsClientGetResult`
+- New struct `KustoPoolPrincipalAssignmentsClientListOptions`
+- New struct `KustoPoolPrincipalAssignmentsClientListResponse`
+- New struct `KustoPoolPrincipalAssignmentsClientListResult`
+- New struct `KustoPoolsClientAddLanguageExtensionsPoller`
+- New struct `KustoPoolsClientAddLanguageExtensionsPollerResponse`
+- New struct `KustoPoolsClientAddLanguageExtensionsResponse`
+- New struct `KustoPoolsClientBeginAddLanguageExtensionsOptions`
+- New struct `KustoPoolsClientBeginCreateOrUpdateOptions`
+- New struct `KustoPoolsClientBeginDeleteOptions`
+- New struct `KustoPoolsClientBeginDetachFollowerDatabasesOptions`
+- New struct `KustoPoolsClientBeginRemoveLanguageExtensionsOptions`
+- New struct `KustoPoolsClientBeginStartOptions`
+- New struct `KustoPoolsClientBeginStopOptions`
+- New struct `KustoPoolsClientBeginUpdateOptions`
+- New struct `KustoPoolsClientCheckNameAvailabilityOptions`
+- New struct `KustoPoolsClientCheckNameAvailabilityResponse`
+- New struct `KustoPoolsClientCheckNameAvailabilityResult`
+- New struct `KustoPoolsClientCreateOrUpdatePoller`
+- New struct `KustoPoolsClientCreateOrUpdatePollerResponse`
+- New struct `KustoPoolsClientCreateOrUpdateResponse`
+- New struct `KustoPoolsClientCreateOrUpdateResult`
+- New struct `KustoPoolsClientDeletePoller`
+- New struct `KustoPoolsClientDeletePollerResponse`
+- New struct `KustoPoolsClientDeleteResponse`
+- New struct `KustoPoolsClientDetachFollowerDatabasesPoller`
+- New struct `KustoPoolsClientDetachFollowerDatabasesPollerResponse`
+- New struct `KustoPoolsClientDetachFollowerDatabasesResponse`
+- New struct `KustoPoolsClientGetOptions`
+- New struct `KustoPoolsClientGetResponse`
+- New struct `KustoPoolsClientGetResult`
+- New struct `KustoPoolsClientListByWorkspaceOptions`
+- New struct `KustoPoolsClientListByWorkspaceResponse`
+- New struct `KustoPoolsClientListByWorkspaceResult`
+- New struct `KustoPoolsClientListFollowerDatabasesOptions`
+- New struct `KustoPoolsClientListFollowerDatabasesResponse`
+- New struct `KustoPoolsClientListFollowerDatabasesResult`
+- New struct `KustoPoolsClientListLanguageExtensionsOptions`
+- New struct `KustoPoolsClientListLanguageExtensionsResponse`
+- New struct `KustoPoolsClientListLanguageExtensionsResult`
+- New struct `KustoPoolsClientListSKUsByResourceOptions`
+- New struct `KustoPoolsClientListSKUsByResourceResponse`
+- New struct `KustoPoolsClientListSKUsByResourceResult`
+- New struct `KustoPoolsClientListSKUsOptions`
+- New struct `KustoPoolsClientListSKUsResponse`
+- New struct `KustoPoolsClientListSKUsResult`
+- New struct `KustoPoolsClientRemoveLanguageExtensionsPoller`
+- New struct `KustoPoolsClientRemoveLanguageExtensionsPollerResponse`
+- New struct `KustoPoolsClientRemoveLanguageExtensionsResponse`
+- New struct `KustoPoolsClientStartPoller`
+- New struct `KustoPoolsClientStartPollerResponse`
+- New struct `KustoPoolsClientStartResponse`
+- New struct `KustoPoolsClientStopPoller`
+- New struct `KustoPoolsClientStopPollerResponse`
+- New struct `KustoPoolsClientStopResponse`
+- New struct `KustoPoolsClientUpdatePoller`
+- New struct `KustoPoolsClientUpdatePollerResponse`
+- New struct `KustoPoolsClientUpdateResponse`
+- New struct `KustoPoolsClientUpdateResult`
+- New struct `LibrariesClientListByWorkspaceOptions`
+- New struct `LibrariesClientListByWorkspacePager`
+- New struct `LibrariesClientListByWorkspaceResponse`
+- New struct `LibrariesClientListByWorkspaceResult`
+- New struct `LibraryClientGetOptions`
+- New struct `LibraryClientGetResponse`
+- New struct `LibraryClientGetResult`
+- New struct `ManagedIntegrationRuntimeManagedVirtualNetworkReference`
+- New struct `OperationsClientCheckNameAvailabilityOptions`
+- New struct `OperationsClientCheckNameAvailabilityResponse`
+- New struct `OperationsClientCheckNameAvailabilityResult`
+- New struct `OperationsClientGetAzureAsyncHeaderResultOptions`
+- New struct `OperationsClientGetAzureAsyncHeaderResultResponse`
+- New struct `OperationsClientGetAzureAsyncHeaderResultResult`
+- New struct `OperationsClientGetLocationHeaderResultOptions`
+- New struct `OperationsClientGetLocationHeaderResultResponse`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreatePoller`
+- New struct `PrivateEndpointConnectionsClientCreatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientCreateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResult`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListPager`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateEndpointConnectionsPrivateLinkHubClientGetOptions`
+- New struct `PrivateEndpointConnectionsPrivateLinkHubClientGetResponse`
+- New struct `PrivateEndpointConnectionsPrivateLinkHubClientGetResult`
+- New struct `PrivateEndpointConnectionsPrivateLinkHubClientListOptions`
+- New struct `PrivateEndpointConnectionsPrivateLinkHubClientListPager`
+- New struct `PrivateEndpointConnectionsPrivateLinkHubClientListResponse`
+- New struct `PrivateEndpointConnectionsPrivateLinkHubClientListResult`
+- New struct `PrivateLinkHubPrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkHubPrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkHubPrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkHubPrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkHubPrivateLinkResourcesClientListPager`
+- New struct `PrivateLinkHubPrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkHubPrivateLinkResourcesClientListResult`
+- New struct `PrivateLinkHubsClientBeginDeleteOptions`
+- New struct `PrivateLinkHubsClientCreateOrUpdateOptions`
+- New struct `PrivateLinkHubsClientCreateOrUpdateResponse`
+- New struct `PrivateLinkHubsClientCreateOrUpdateResult`
+- New struct `PrivateLinkHubsClientDeletePoller`
+- New struct `PrivateLinkHubsClientDeletePollerResponse`
+- New struct `PrivateLinkHubsClientDeleteResponse`
+- New struct `PrivateLinkHubsClientGetOptions`
+- New struct `PrivateLinkHubsClientGetResponse`
+- New struct `PrivateLinkHubsClientGetResult`
+- New struct `PrivateLinkHubsClientListByResourceGroupOptions`
+- New struct `PrivateLinkHubsClientListByResourceGroupPager`
+- New struct `PrivateLinkHubsClientListByResourceGroupResponse`
+- New struct `PrivateLinkHubsClientListByResourceGroupResult`
+- New struct `PrivateLinkHubsClientListOptions`
+- New struct `PrivateLinkHubsClientListPager`
+- New struct `PrivateLinkHubsClientListResponse`
+- New struct `PrivateLinkHubsClientListResult`
+- New struct `PrivateLinkHubsClientUpdateOptions`
+- New struct `PrivateLinkHubsClientUpdateResponse`
+- New struct `PrivateLinkHubsClientUpdateResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListPager`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `ReadOnlyFollowingDatabase`
+- New struct `ReadOnlyFollowingDatabaseProperties`
+- New struct `RestorableDroppedSQLPoolsClientGetOptions`
+- New struct `RestorableDroppedSQLPoolsClientGetResponse`
+- New struct `RestorableDroppedSQLPoolsClientGetResult`
+- New struct `RestorableDroppedSQLPoolsClientListByWorkspaceOptions`
+- New struct `RestorableDroppedSQLPoolsClientListByWorkspaceResponse`
+- New struct `RestorableDroppedSQLPoolsClientListByWorkspaceResult`
+- New struct `SQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions`
+- New struct `SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse`
+- New struct `SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResult`
+- New struct `SQLPoolBlobAuditingPoliciesClientGetOptions`
+- New struct `SQLPoolBlobAuditingPoliciesClientGetResponse`
+- New struct `SQLPoolBlobAuditingPoliciesClientGetResult`
+- New struct `SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions`
+- New struct `SQLPoolBlobAuditingPoliciesClientListBySQLPoolPager`
+- New struct `SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse`
+- New struct `SQLPoolBlobAuditingPoliciesClientListBySQLPoolResult`
+- New struct `SQLPoolColumnsClientGetOptions`
+- New struct `SQLPoolColumnsClientGetResponse`
+- New struct `SQLPoolColumnsClientGetResult`
+- New struct `SQLPoolConnectionPoliciesClientGetOptions`
+- New struct `SQLPoolConnectionPoliciesClientGetResponse`
+- New struct `SQLPoolConnectionPoliciesClientGetResult`
+- New struct `SQLPoolDataWarehouseUserActivitiesClientGetOptions`
+- New struct `SQLPoolDataWarehouseUserActivitiesClientGetResponse`
+- New struct `SQLPoolDataWarehouseUserActivitiesClientGetResult`
+- New struct `SQLPoolGeoBackupPoliciesClientCreateOrUpdateOptions`
+- New struct `SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse`
+- New struct `SQLPoolGeoBackupPoliciesClientCreateOrUpdateResult`
+- New struct `SQLPoolGeoBackupPoliciesClientGetOptions`
+- New struct `SQLPoolGeoBackupPoliciesClientGetResponse`
+- New struct `SQLPoolGeoBackupPoliciesClientGetResult`
+- New struct `SQLPoolGeoBackupPoliciesClientListOptions`
+- New struct `SQLPoolGeoBackupPoliciesClientListResponse`
+- New struct `SQLPoolGeoBackupPoliciesClientListResult`
+- New struct `SQLPoolMaintenanceWindowOptionsClientGetOptions`
+- New struct `SQLPoolMaintenanceWindowOptionsClientGetResponse`
+- New struct `SQLPoolMaintenanceWindowOptionsClientGetResult`
+- New struct `SQLPoolMaintenanceWindowsClientCreateOrUpdateOptions`
+- New struct `SQLPoolMaintenanceWindowsClientCreateOrUpdateResponse`
+- New struct `SQLPoolMaintenanceWindowsClientGetOptions`
+- New struct `SQLPoolMaintenanceWindowsClientGetResponse`
+- New struct `SQLPoolMaintenanceWindowsClientGetResult`
+- New struct `SQLPoolMetadataSyncConfigsClientCreateOptions`
+- New struct `SQLPoolMetadataSyncConfigsClientCreateResponse`
+- New struct `SQLPoolMetadataSyncConfigsClientCreateResult`
+- New struct `SQLPoolMetadataSyncConfigsClientGetOptions`
+- New struct `SQLPoolMetadataSyncConfigsClientGetResponse`
+- New struct `SQLPoolMetadataSyncConfigsClientGetResult`
+- New struct `SQLPoolOperationResultsClientGetLocationHeaderResultOptions`
+- New struct `SQLPoolOperationResultsClientGetLocationHeaderResultResponse`
+- New struct `SQLPoolOperationResultsClientGetLocationHeaderResultResult`
+- New struct `SQLPoolOperationsClientListOptions`
+- New struct `SQLPoolOperationsClientListPager`
+- New struct `SQLPoolOperationsClientListResponse`
+- New struct `SQLPoolOperationsClientListResult`
+- New struct `SQLPoolRecommendedSensitivityLabelsClientUpdateOptions`
+- New struct `SQLPoolRecommendedSensitivityLabelsClientUpdateResponse`
+- New struct `SQLPoolReplicationLinksClientGetByNameOptions`
+- New struct `SQLPoolReplicationLinksClientGetByNameResponse`
+- New struct `SQLPoolReplicationLinksClientGetByNameResult`
+- New struct `SQLPoolReplicationLinksClientListOptions`
+- New struct `SQLPoolReplicationLinksClientListPager`
+- New struct `SQLPoolReplicationLinksClientListResponse`
+- New struct `SQLPoolReplicationLinksClientListResult`
+- New struct `SQLPoolRestorePointsClientBeginCreateOptions`
+- New struct `SQLPoolRestorePointsClientCreatePoller`
+- New struct `SQLPoolRestorePointsClientCreatePollerResponse`
+- New struct `SQLPoolRestorePointsClientCreateResponse`
+- New struct `SQLPoolRestorePointsClientCreateResult`
+- New struct `SQLPoolRestorePointsClientDeleteOptions`
+- New struct `SQLPoolRestorePointsClientDeleteResponse`
+- New struct `SQLPoolRestorePointsClientGetOptions`
+- New struct `SQLPoolRestorePointsClientGetResponse`
+- New struct `SQLPoolRestorePointsClientGetResult`
+- New struct `SQLPoolRestorePointsClientListOptions`
+- New struct `SQLPoolRestorePointsClientListPager`
+- New struct `SQLPoolRestorePointsClientListResponse`
+- New struct `SQLPoolRestorePointsClientListResult`
+- New struct `SQLPoolSchemasClientGetOptions`
+- New struct `SQLPoolSchemasClientGetResponse`
+- New struct `SQLPoolSchemasClientGetResult`
+- New struct `SQLPoolSchemasClientListOptions`
+- New struct `SQLPoolSchemasClientListPager`
+- New struct `SQLPoolSchemasClientListResponse`
+- New struct `SQLPoolSchemasClientListResult`
+- New struct `SQLPoolSecurityAlertPoliciesClientCreateOrUpdateOptions`
+- New struct `SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse`
+- New struct `SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResult`
+- New struct `SQLPoolSecurityAlertPoliciesClientGetOptions`
+- New struct `SQLPoolSecurityAlertPoliciesClientGetResponse`
+- New struct `SQLPoolSecurityAlertPoliciesClientGetResult`
+- New struct `SQLPoolSecurityAlertPoliciesClientListOptions`
+- New struct `SQLPoolSecurityAlertPoliciesClientListPager`
+- New struct `SQLPoolSecurityAlertPoliciesClientListResponse`
+- New struct `SQLPoolSecurityAlertPoliciesClientListResult`
+- New struct `SQLPoolSensitivityLabelsClientCreateOrUpdateOptions`
+- New struct `SQLPoolSensitivityLabelsClientCreateOrUpdateResponse`
+- New struct `SQLPoolSensitivityLabelsClientCreateOrUpdateResult`
+- New struct `SQLPoolSensitivityLabelsClientDeleteOptions`
+- New struct `SQLPoolSensitivityLabelsClientDeleteResponse`
+- New struct `SQLPoolSensitivityLabelsClientDisableRecommendationOptions`
+- New struct `SQLPoolSensitivityLabelsClientDisableRecommendationResponse`
+- New struct `SQLPoolSensitivityLabelsClientEnableRecommendationOptions`
+- New struct `SQLPoolSensitivityLabelsClientEnableRecommendationResponse`
+- New struct `SQLPoolSensitivityLabelsClientGetOptions`
+- New struct `SQLPoolSensitivityLabelsClientGetResponse`
+- New struct `SQLPoolSensitivityLabelsClientGetResult`
+- New struct `SQLPoolSensitivityLabelsClientListCurrentOptions`
+- New struct `SQLPoolSensitivityLabelsClientListCurrentPager`
+- New struct `SQLPoolSensitivityLabelsClientListCurrentResponse`
+- New struct `SQLPoolSensitivityLabelsClientListCurrentResult`
+- New struct `SQLPoolSensitivityLabelsClientListRecommendedOptions`
+- New struct `SQLPoolSensitivityLabelsClientListRecommendedPager`
+- New struct `SQLPoolSensitivityLabelsClientListRecommendedResponse`
+- New struct `SQLPoolSensitivityLabelsClientListRecommendedResult`
+- New struct `SQLPoolSensitivityLabelsClientUpdateOptions`
+- New struct `SQLPoolSensitivityLabelsClientUpdateResponse`
+- New struct `SQLPoolTableColumnsClientListByTableNameOptions`
+- New struct `SQLPoolTableColumnsClientListByTableNamePager`
+- New struct `SQLPoolTableColumnsClientListByTableNameResponse`
+- New struct `SQLPoolTableColumnsClientListByTableNameResult`
+- New struct `SQLPoolTablesClientGetOptions`
+- New struct `SQLPoolTablesClientGetResponse`
+- New struct `SQLPoolTablesClientGetResult`
+- New struct `SQLPoolTablesClientListBySchemaOptions`
+- New struct `SQLPoolTablesClientListBySchemaPager`
+- New struct `SQLPoolTablesClientListBySchemaResponse`
+- New struct `SQLPoolTablesClientListBySchemaResult`
+- New struct `SQLPoolTransparentDataEncryptionsClientCreateOrUpdateOptions`
+- New struct `SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse`
+- New struct `SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResult`
+- New struct `SQLPoolTransparentDataEncryptionsClientGetOptions`
+- New struct `SQLPoolTransparentDataEncryptionsClientGetResponse`
+- New struct `SQLPoolTransparentDataEncryptionsClientGetResult`
+- New struct `SQLPoolTransparentDataEncryptionsClientListOptions`
+- New struct `SQLPoolTransparentDataEncryptionsClientListPager`
+- New struct `SQLPoolTransparentDataEncryptionsClientListResponse`
+- New struct `SQLPoolTransparentDataEncryptionsClientListResult`
+- New struct `SQLPoolUsagesClientListOptions`
+- New struct `SQLPoolUsagesClientListPager`
+- New struct `SQLPoolUsagesClientListResponse`
+- New struct `SQLPoolUsagesClientListResult`
+- New struct `SQLPoolVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateOptions`
+- New struct `SQLPoolVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse`
+- New struct `SQLPoolVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResult`
+- New struct `SQLPoolVulnerabilityAssessmentRuleBaselinesClientDeleteOptions`
+- New struct `SQLPoolVulnerabilityAssessmentRuleBaselinesClientDeleteResponse`
+- New struct `SQLPoolVulnerabilityAssessmentRuleBaselinesClientGetOptions`
+- New struct `SQLPoolVulnerabilityAssessmentRuleBaselinesClientGetResponse`
+- New struct `SQLPoolVulnerabilityAssessmentRuleBaselinesClientGetResult`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientBeginInitiateScanOptions`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientExportOptions`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientExportResponse`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientExportResult`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientGetOptions`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientGetResponse`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientGetResult`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientInitiateScanPoller`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientInitiateScanPollerResponse`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientInitiateScanResponse`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientListOptions`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientListPager`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientListResponse`
+- New struct `SQLPoolVulnerabilityAssessmentScansClientListResult`
+- New struct `SQLPoolVulnerabilityAssessmentsClientCreateOrUpdateOptions`
+- New struct `SQLPoolVulnerabilityAssessmentsClientCreateOrUpdateResponse`
+- New struct `SQLPoolVulnerabilityAssessmentsClientCreateOrUpdateResult`
+- New struct `SQLPoolVulnerabilityAssessmentsClientDeleteOptions`
+- New struct `SQLPoolVulnerabilityAssessmentsClientDeleteResponse`
+- New struct `SQLPoolVulnerabilityAssessmentsClientGetOptions`
+- New struct `SQLPoolVulnerabilityAssessmentsClientGetResponse`
+- New struct `SQLPoolVulnerabilityAssessmentsClientGetResult`
+- New struct `SQLPoolVulnerabilityAssessmentsClientListOptions`
+- New struct `SQLPoolVulnerabilityAssessmentsClientListPager`
+- New struct `SQLPoolVulnerabilityAssessmentsClientListResponse`
+- New struct `SQLPoolVulnerabilityAssessmentsClientListResult`
+- New struct `SQLPoolWorkloadClassifierClientBeginCreateOrUpdateOptions`
+- New struct `SQLPoolWorkloadClassifierClientBeginDeleteOptions`
+- New struct `SQLPoolWorkloadClassifierClientCreateOrUpdatePoller`
+- New struct `SQLPoolWorkloadClassifierClientCreateOrUpdatePollerResponse`
+- New struct `SQLPoolWorkloadClassifierClientCreateOrUpdateResponse`
+- New struct `SQLPoolWorkloadClassifierClientCreateOrUpdateResult`
+- New struct `SQLPoolWorkloadClassifierClientDeletePoller`
+- New struct `SQLPoolWorkloadClassifierClientDeletePollerResponse`
+- New struct `SQLPoolWorkloadClassifierClientDeleteResponse`
+- New struct `SQLPoolWorkloadClassifierClientGetOptions`
+- New struct `SQLPoolWorkloadClassifierClientGetResponse`
+- New struct `SQLPoolWorkloadClassifierClientGetResult`
+- New struct `SQLPoolWorkloadClassifierClientListOptions`
+- New struct `SQLPoolWorkloadClassifierClientListPager`
+- New struct `SQLPoolWorkloadClassifierClientListResponse`
+- New struct `SQLPoolWorkloadClassifierClientListResult`
+- New struct `SQLPoolWorkloadGroupClientBeginCreateOrUpdateOptions`
+- New struct `SQLPoolWorkloadGroupClientBeginDeleteOptions`
+- New struct `SQLPoolWorkloadGroupClientCreateOrUpdatePoller`
+- New struct `SQLPoolWorkloadGroupClientCreateOrUpdatePollerResponse`
+- New struct `SQLPoolWorkloadGroupClientCreateOrUpdateResponse`
+- New struct `SQLPoolWorkloadGroupClientCreateOrUpdateResult`
+- New struct `SQLPoolWorkloadGroupClientDeletePoller`
+- New struct `SQLPoolWorkloadGroupClientDeletePollerResponse`
+- New struct `SQLPoolWorkloadGroupClientDeleteResponse`
+- New struct `SQLPoolWorkloadGroupClientGetOptions`
+- New struct `SQLPoolWorkloadGroupClientGetResponse`
+- New struct `SQLPoolWorkloadGroupClientGetResult`
+- New struct `SQLPoolWorkloadGroupClientListOptions`
+- New struct `SQLPoolWorkloadGroupClientListPager`
+- New struct `SQLPoolWorkloadGroupClientListResponse`
+- New struct `SQLPoolWorkloadGroupClientListResult`
+- New struct `SQLPoolsClientBeginCreateOptions`
+- New struct `SQLPoolsClientBeginDeleteOptions`
+- New struct `SQLPoolsClientBeginPauseOptions`
+- New struct `SQLPoolsClientBeginResumeOptions`
+- New struct `SQLPoolsClientCreatePoller`
+- New struct `SQLPoolsClientCreatePollerResponse`
+- New struct `SQLPoolsClientCreateResponse`
+- New struct `SQLPoolsClientCreateResult`
+- New struct `SQLPoolsClientDeletePoller`
+- New struct `SQLPoolsClientDeletePollerResponse`
+- New struct `SQLPoolsClientDeleteResponse`
+- New struct `SQLPoolsClientDeleteResult`
+- New struct `SQLPoolsClientGetOptions`
+- New struct `SQLPoolsClientGetResponse`
+- New struct `SQLPoolsClientGetResult`
+- New struct `SQLPoolsClientListByWorkspaceOptions`
+- New struct `SQLPoolsClientListByWorkspacePager`
+- New struct `SQLPoolsClientListByWorkspaceResponse`
+- New struct `SQLPoolsClientListByWorkspaceResult`
+- New struct `SQLPoolsClientPausePoller`
+- New struct `SQLPoolsClientPausePollerResponse`
+- New struct `SQLPoolsClientPauseResponse`
+- New struct `SQLPoolsClientPauseResult`
+- New struct `SQLPoolsClientRenameOptions`
+- New struct `SQLPoolsClientRenameResponse`
+- New struct `SQLPoolsClientResumePoller`
+- New struct `SQLPoolsClientResumePollerResponse`
+- New struct `SQLPoolsClientResumeResponse`
+- New struct `SQLPoolsClientResumeResult`
+- New struct `SQLPoolsClientUpdateOptions`
+- New struct `SQLPoolsClientUpdateResponse`
+- New struct `SQLPoolsClientUpdateResult`
+- New struct `SparkConfigurationClientGetOptions`
+- New struct `SparkConfigurationClientGetResponse`
+- New struct `SparkConfigurationClientGetResult`
+- New struct `SparkConfigurationsClientListByWorkspaceOptions`
+- New struct `SparkConfigurationsClientListByWorkspacePager`
+- New struct `SparkConfigurationsClientListByWorkspaceResponse`
+- New struct `SparkConfigurationsClientListByWorkspaceResult`
+- New struct `WorkspaceAADAdminsClientBeginCreateOrUpdateOptions`
+- New struct `WorkspaceAADAdminsClientBeginDeleteOptions`
+- New struct `WorkspaceAADAdminsClientCreateOrUpdatePoller`
+- New struct `WorkspaceAADAdminsClientCreateOrUpdatePollerResponse`
+- New struct `WorkspaceAADAdminsClientCreateOrUpdateResponse`
+- New struct `WorkspaceAADAdminsClientCreateOrUpdateResult`
+- New struct `WorkspaceAADAdminsClientDeletePoller`
+- New struct `WorkspaceAADAdminsClientDeletePollerResponse`
+- New struct `WorkspaceAADAdminsClientDeleteResponse`
+- New struct `WorkspaceAADAdminsClientGetOptions`
+- New struct `WorkspaceAADAdminsClientGetResponse`
+- New struct `WorkspaceAADAdminsClientGetResult`
+- New struct `WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions`
+- New struct `WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePoller`
+- New struct `WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse`
+- New struct `WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse`
+- New struct `WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResult`
+- New struct `WorkspaceManagedIdentitySQLControlSettingsClientGetOptions`
+- New struct `WorkspaceManagedIdentitySQLControlSettingsClientGetResponse`
+- New struct `WorkspaceManagedIdentitySQLControlSettingsClientGetResult`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePoller`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdatePollerResponse`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResult`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientGetOptions`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientGetResponse`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientGetResult`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceOptions`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspacePager`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse`
+- New struct `WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResult`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientBeginCreateOrUpdateOptions`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientBeginRevalidateOptions`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePoller`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdatePollerResponse`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResult`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientGetOptions`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientGetResponse`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientGetResult`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientListOptions`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientListPager`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientListResponse`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientListResult`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePoller`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientRevalidatePollerResponse`
+- New struct `WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientBeginCreateOrUpdateOptions`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePoller`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdatePollerResponse`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdateResponse`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdateResult`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientGetOptions`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientGetResponse`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientGetResult`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspaceOptions`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspacePager`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspaceResponse`
+- New struct `WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientListByWorkspaceResult`
+- New struct `WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetOptions`
+- New struct `WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse`
+- New struct `WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResult`
+- New struct `WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions`
+- New struct `WorkspaceManagedSQLServerRecoverableSQLPoolsClientListPager`
+- New struct `WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse`
+- New struct `WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResult`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientBeginCreateOrUpdateOptions`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePoller`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdatePollerResponse`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResult`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientGetOptions`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientGetResponse`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientGetResult`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientListOptions`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientListPager`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientListResponse`
+- New struct `WorkspaceManagedSQLServerSecurityAlertPolicyClientListResult`
+- New struct `WorkspaceManagedSQLServerUsagesClientListOptions`
+- New struct `WorkspaceManagedSQLServerUsagesClientListPager`
+- New struct `WorkspaceManagedSQLServerUsagesClientListResponse`
+- New struct `WorkspaceManagedSQLServerUsagesClientListResult`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientCreateOrUpdateOptions`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientCreateOrUpdateResponse`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientCreateOrUpdateResult`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientDeleteOptions`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientDeleteResponse`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientGetOptions`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientGetResponse`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientGetResult`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListOptions`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListPager`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListResponse`
+- New struct `WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListResult`
+- New struct `WorkspaceSQLAADAdminsClientBeginCreateOrUpdateOptions`
+- New struct `WorkspaceSQLAADAdminsClientBeginDeleteOptions`
+- New struct `WorkspaceSQLAADAdminsClientCreateOrUpdatePoller`
+- New struct `WorkspaceSQLAADAdminsClientCreateOrUpdatePollerResponse`
+- New struct `WorkspaceSQLAADAdminsClientCreateOrUpdateResponse`
+- New struct `WorkspaceSQLAADAdminsClientCreateOrUpdateResult`
+- New struct `WorkspaceSQLAADAdminsClientDeletePoller`
+- New struct `WorkspaceSQLAADAdminsClientDeletePollerResponse`
+- New struct `WorkspaceSQLAADAdminsClientDeleteResponse`
+- New struct `WorkspaceSQLAADAdminsClientGetOptions`
+- New struct `WorkspaceSQLAADAdminsClientGetResponse`
+- New struct `WorkspaceSQLAADAdminsClientGetResult`
+- New struct `WorkspacesClientBeginCreateOrUpdateOptions`
+- New struct `WorkspacesClientBeginDeleteOptions`
+- New struct `WorkspacesClientBeginUpdateOptions`
+- New struct `WorkspacesClientCreateOrUpdatePoller`
+- New struct `WorkspacesClientCreateOrUpdatePollerResponse`
+- New struct `WorkspacesClientCreateOrUpdateResponse`
+- New struct `WorkspacesClientCreateOrUpdateResult`
+- New struct `WorkspacesClientDeletePoller`
+- New struct `WorkspacesClientDeletePollerResponse`
+- New struct `WorkspacesClientDeleteResponse`
+- New struct `WorkspacesClientDeleteResult`
+- New struct `WorkspacesClientGetOptions`
+- New struct `WorkspacesClientGetResponse`
+- New struct `WorkspacesClientGetResult`
+- New struct `WorkspacesClientListByResourceGroupOptions`
+- New struct `WorkspacesClientListByResourceGroupPager`
+- New struct `WorkspacesClientListByResourceGroupResponse`
+- New struct `WorkspacesClientListByResourceGroupResult`
+- New struct `WorkspacesClientListOptions`
+- New struct `WorkspacesClientListPager`
+- New struct `WorkspacesClientListResponse`
+- New struct `WorkspacesClientListResult`
+- New struct `WorkspacesClientUpdatePoller`
+- New struct `WorkspacesClientUpdatePollerResponse`
+- New struct `WorkspacesClientUpdateResponse`
+- New struct `WorkspacesClientUpdateResult`
+- New field `IsDevopsAuditEnabled` in struct `ExtendedServerBlobAuditingPolicyProperties`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `ID` in struct `AzureADOnlyAuthentication`
+- New field `Name` in struct `AzureADOnlyAuthentication`
+- New field `Type` in struct `AzureADOnlyAuthentication`
+- New field `ID` in struct `TransparentDataEncryption`
+- New field `Name` in struct `TransparentDataEncryption`
+- New field `Type` in struct `TransparentDataEncryption`
+- New field `Type` in struct `SelfHostedIntegrationRuntimeStatus`
+- New field `AdditionalProperties` in struct `SelfHostedIntegrationRuntimeStatus`
+- New field `DataFactoryName` in struct `SelfHostedIntegrationRuntimeStatus`
+- New field `State` in struct `SelfHostedIntegrationRuntimeStatus`
+- New field `Type` in struct `KustoPoolUpdate`
+- New field `ID` in struct `KustoPoolUpdate`
+- New field `Name` in struct `KustoPoolUpdate`
+- New field `ID` in struct `ReplicationLink`
+- New field `Name` in struct `ReplicationLink`
+- New field `Type` in struct `ReplicationLink`
+- New field `Kind` in struct `EventGridDataConnection`
+- New field `Location` in struct `EventGridDataConnection`
+- New field `ID` in struct `EventGridDataConnection`
+- New field `Name` in struct `EventGridDataConnection`
+- New field `SystemData` in struct `EventGridDataConnection`
+- New field `Type` in struct `EventGridDataConnection`
+- New field `NewerVersions` in struct `SelfHostedIntegrationRuntimeStatusTypeProperties`
+- New field `ServiceRegion` in struct `SelfHostedIntegrationRuntimeStatusTypeProperties`
+- New field `AuthorizationType` in struct `LinkedIntegrationRuntimeKeyAuthorization`
+- New field `Location` in struct `PrivateLinkHub`
+- New field `Tags` in struct `PrivateLinkHub`
+- New field `ID` in struct `PrivateLinkHub`
+- New field `Name` in struct `PrivateLinkHub`
+- New field `Type` in struct `PrivateLinkHub`
+- New field `SystemData` in struct `IotHubDataConnection`
+- New field `Type` in struct `IotHubDataConnection`
+- New field `Kind` in struct `IotHubDataConnection`
+- New field `Location` in struct `IotHubDataConnection`
+- New field `ID` in struct `IotHubDataConnection`
+- New field `Name` in struct `IotHubDataConnection`
+- New field `IsDevopsAuditEnabled` in struct `ServerBlobAuditingPolicyProperties`
+- New field `Type` in struct `GeoBackupPolicy`
+- New field `ID` in struct `GeoBackupPolicy`
+- New field `Name` in struct `GeoBackupPolicy`
+- New field `ID` in struct `ExtendedServerBlobAuditingPolicy`
+- New field `Name` in struct `ExtendedServerBlobAuditingPolicy`
+- New field `Type` in struct `ExtendedServerBlobAuditingPolicy`
+- New field `Type` in struct `SQLPoolSecurityAlertPolicy`
+- New field `ID` in struct `SQLPoolSecurityAlertPolicy`
+- New field `Name` in struct `SQLPoolSecurityAlertPolicy`
+- New field `ID` in struct `WorkspaceAADAdminInfo`
+- New field `Name` in struct `WorkspaceAADAdminInfo`
+- New field `Type` in struct `WorkspaceAADAdminInfo`
+- New field `Name` in struct `SsisPackage`
+- New field `Type` in struct `SsisPackage`
+- New field `Description` in struct `SsisPackage`
+- New field `ID` in struct `SsisPackage`
+- New field `ID` in struct `BigDataPoolResourceInfo`
+- New field `Name` in struct `BigDataPoolResourceInfo`
+- New field `Type` in struct `BigDataPoolResourceInfo`
+- New field `Location` in struct `BigDataPoolResourceInfo`
+- New field `Tags` in struct `BigDataPoolResourceInfo`
+- New field `ID` in struct `VulnerabilityAssessmentScanRecord`
+- New field `Name` in struct `VulnerabilityAssessmentScanRecord`
+- New field `Type` in struct `VulnerabilityAssessmentScanRecord`
+- New field `ID` in struct `ManagedIdentitySQLControlSettingsModel`
+- New field `Name` in struct `ManagedIdentitySQLControlSettingsModel`
+- New field `Type` in struct `ManagedIdentitySQLControlSettingsModel`
+- New field `AuthorizationType` in struct `LinkedIntegrationRuntimeRbacAuthorization`
+- New field `Type` in struct `SsisFolder`
+- New field `Description` in struct `SsisFolder`
+- New field `ID` in struct `SsisFolder`
+- New field `Name` in struct `SsisFolder`
+- New field `ID` in struct `SQLPoolOperation`
+- New field `Name` in struct `SQLPoolOperation`
+- New field `Type` in struct `SQLPoolOperation`
+- New field `Type` in struct `CmdkeySetup`
+- New field `Etag` in struct `LibraryResource`
+- New field `ID` in struct `LibraryResource`
+- New field `Name` in struct `LibraryResource`
+- New field `Type` in struct `LibraryResource`
+- New field `ID` in struct `KustoPool`
+- New field `Name` in struct `KustoPool`
+- New field `Tags` in struct `KustoPool`
+- New field `Location` in struct `KustoPool`
+- New field `Type` in struct `KustoPool`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `ID` in struct `EventHubDataConnection`
+- New field `Name` in struct `EventHubDataConnection`
+- New field `SystemData` in struct `EventHubDataConnection`
+- New field `Type` in struct `EventHubDataConnection`
+- New field `Kind` in struct `EventHubDataConnection`
+- New field `Location` in struct `EventHubDataConnection`
+- New field `Type` in struct `EncryptionProtector`
+- New field `ID` in struct `EncryptionProtector`
+- New field `Name` in struct `EncryptionProtector`
+- New field `ID` in struct `SensitivityLabelUpdate`
+- New field `Name` in struct `SensitivityLabelUpdate`
+- New field `Type` in struct `SensitivityLabelUpdate`
+- New field `ID` in struct `WorkloadClassifier`
+- New field `Name` in struct `WorkloadClassifier`
+- New field `Type` in struct `WorkloadClassifier`
+- New field `MaxExecutors` in struct `DynamicExecutorAllocation`
+- New field `MinExecutors` in struct `DynamicExecutorAllocation`
+- New field `ID` in struct `Workspace`
+- New field `Name` in struct `Workspace`
+- New field `Type` in struct `Workspace`
+- New field `Location` in struct `Workspace`
+- New field `Tags` in struct `Workspace`
+- New field `Description` in struct `SsisEnvironment`
+- New field `ID` in struct `SsisEnvironment`
+- New field `Name` in struct `SsisEnvironment`
+- New field `Type` in struct `SsisEnvironment`
+- New field `Type` in struct `SsisProject`
+- New field `Description` in struct `SsisProject`
+- New field `ID` in struct `SsisProject`
+- New field `Name` in struct `SsisProject`
+- New field `ID` in struct `MaintenanceWindowOptions`
+- New field `Name` in struct `MaintenanceWindowOptions`
+- New field `Type` in struct `MaintenanceWindowOptions`
+- New field `ID` in struct `SQLPoolVulnerabilityAssessmentScansExport`
+- New field `Name` in struct `SQLPoolVulnerabilityAssessmentScansExport`
+- New field `Type` in struct `SQLPoolVulnerabilityAssessmentScansExport`
+- New field `ID` in struct `AzureEntityResource`
+- New field `Name` in struct `AzureEntityResource`
+- New field `Type` in struct `AzureEntityResource`
+- New field `ID` in struct `SensitivityLabel`
+- New field `Name` in struct `SensitivityLabel`
+- New field `Type` in struct `SensitivityLabel`
+- New field `ID` in struct `RestorePoint`
+- New field `Name` in struct `RestorePoint`
+- New field `Type` in struct `RestorePoint`
+- New field `ID` in struct `AttachedDatabaseConfiguration`
+- New field `Name` in struct `AttachedDatabaseConfiguration`
+- New field `Type` in struct `AttachedDatabaseConfiguration`
+- New field `ID` in struct `SQLPoolTable`
+- New field `Name` in struct `SQLPoolTable`
+- New field `Type` in struct `SQLPoolTable`
+- New field `Location` in struct `SQLPool`
+- New field `Tags` in struct `SQLPool`
+- New field `ID` in struct `SQLPool`
+- New field `Name` in struct `SQLPool`
+- New field `Type` in struct `SQLPool`
+- New field `ID` in struct `RecommendedSensitivityLabelUpdate`
+- New field `Name` in struct `RecommendedSensitivityLabelUpdate`
+- New field `Type` in struct `RecommendedSensitivityLabelUpdate`
+- New field `ID` in struct `SQLPoolVulnerabilityAssessment`
+- New field `Name` in struct `SQLPoolVulnerabilityAssessment`
+- New field `Type` in struct `SQLPoolVulnerabilityAssessment`
+- New field `ID` in struct `IntegrationRuntimeResource`
+- New field `Name` in struct `IntegrationRuntimeResource`
+- New field `Type` in struct `IntegrationRuntimeResource`
+- New field `Etag` in struct `IntegrationRuntimeResource`
+- New field `ID` in struct `RestorableDroppedSQLPool`
+- New field `Name` in struct `RestorableDroppedSQLPool`
+- New field `Type` in struct `RestorableDroppedSQLPool`
+- New field `ID` in struct `ServerSecurityAlertPolicy`
+- New field `Name` in struct `ServerSecurityAlertPolicy`
+- New field `Type` in struct `ServerSecurityAlertPolicy`
+- New field `Type` in struct `DatabasePrincipalAssignment`
+- New field `ID` in struct `DatabasePrincipalAssignment`
+- New field `Name` in struct `DatabasePrincipalAssignment`
+- New field `AdditionalProperties` in struct `ManagedIntegrationRuntime`
+- New field `Description` in struct `ManagedIntegrationRuntime`
+- New field `ManagedVirtualNetwork` in struct `ManagedIntegrationRuntime`
+- New field `Type` in struct `ManagedIntegrationRuntime`
+- New field `Type` in struct `EnvironmentVariableSetup`
+- New field `Type` in struct `SecureString`
+- New field `Properties` in struct `PrivateEndpointConnectionForPrivateLinkHub`
+- New field `ID` in struct `PrivateEndpointConnectionForPrivateLinkHub`
+- New field `Name` in struct `IPFirewallRuleInfo`
+- New field `Type` in struct `IPFirewallRuleInfo`
+- New field `ID` in struct `IPFirewallRuleInfo`
+- New field `Type` in struct `ComponentSetup`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `DataMaskingRule`
+- New field `Type` in struct `DataMaskingRule`
+- New field `ID` in struct `DataMaskingRule`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `Name` in struct `SQLPoolConnectionPolicy`
+- New field `Type` in struct `SQLPoolConnectionPolicy`
+- New field `ID` in struct `SQLPoolConnectionPolicy`
+- New field `Type` in struct `MaintenanceWindows`
+- New field `ID` in struct `MaintenanceWindows`
+- New field `Name` in struct `MaintenanceWindows`
+- New field `AdditionalProperties` in struct `ManagedIntegrationRuntimeStatus`
+- New field `DataFactoryName` in struct `ManagedIntegrationRuntimeStatus`
+- New field `State` in struct `ManagedIntegrationRuntimeStatus`
+- New field `Type` in struct `ManagedIntegrationRuntimeStatus`
+- New field `Error` in struct `ErrorResponse`
+- New field `ID` in struct `SparkConfigurationResource`
+- New field `Name` in struct `SparkConfigurationResource`
+- New field `Type` in struct `SparkConfigurationResource`
+- New field `Etag` in struct `SparkConfigurationResource`
+- New field `Name` in struct `SQLPoolColumn`
+- New field `Type` in struct `SQLPoolColumn`
+- New field `ID` in struct `SQLPoolColumn`
+- New field `AdditionalProperties` in struct `SelfHostedIntegrationRuntime`
+- New field `Description` in struct `SelfHostedIntegrationRuntime`
+- New field `Type` in struct `SelfHostedIntegrationRuntime`
+- New field `Type` in struct `ClusterPrincipalAssignment`
+- New field `ID` in struct `ClusterPrincipalAssignment`
+- New field `Name` in struct `ClusterPrincipalAssignment`
+- New field `ID` in struct `DataWarehouseUserActivities`
+- New field `Name` in struct `DataWarehouseUserActivities`
+- New field `Type` in struct `DataWarehouseUserActivities`
+- New field `ID` in struct `SQLPoolSchema`
+- New field `Name` in struct `SQLPoolSchema`
+- New field `Type` in struct `SQLPoolSchema`
+- New field `ID` in struct `ReadWriteDatabase`
+- New field `Name` in struct `ReadWriteDatabase`
+- New field `SystemData` in struct `ReadWriteDatabase`
+- New field `Type` in struct `ReadWriteDatabase`
+- New field `Kind` in struct `ReadWriteDatabase`
+- New field `Location` in struct `ReadWriteDatabase`
+- New field `Type` in struct `ServerVulnerabilityAssessment`
+- New field `ID` in struct `ServerVulnerabilityAssessment`
+- New field `Name` in struct `ServerVulnerabilityAssessment`
+- New field `ID` in struct `DataConnection`
+- New field `Name` in struct `DataConnection`
+- New field `Type` in struct `DataConnection`
+- New field `Type` in struct `DataMaskingPolicy`
+- New field `ID` in struct `DataMaskingPolicy`
+- New field `Name` in struct `DataMaskingPolicy`
+- New field `TrustedServiceBypassEnabled` in struct `WorkspaceProperties`
+- New field `ID` in struct `Database`
+- New field `Name` in struct `Database`
+- New field `Type` in struct `Database`
+- New field `Type` in struct `RecoverableSQLPool`
+- New field `ID` in struct `RecoverableSQLPool`
+- New field `Name` in struct `RecoverableSQLPool`
+- New field `Etag` in struct `SubResource`
+- New field `ID` in struct `SubResource`
+- New field `Name` in struct `SubResource`
+- New field `Type` in struct `SubResource`
+- New field `ID` in struct `SQLPoolVulnerabilityAssessmentRuleBaseline`
+- New field `Name` in struct `SQLPoolVulnerabilityAssessmentRuleBaseline`
+- New field `Type` in struct `SQLPoolVulnerabilityAssessmentRuleBaseline`
+- New field `ID` in struct `WorkloadGroup`
+- New field `Name` in struct `WorkloadGroup`
+- New field `Type` in struct `WorkloadGroup`
+- New field `ID` in struct `SQLPoolBlobAuditingPolicy`
+- New field `Name` in struct `SQLPoolBlobAuditingPolicy`
+- New field `Type` in struct `SQLPoolBlobAuditingPolicy`
+- New field `Type` in struct `MetadataSyncConfig`
+- New field `ID` in struct `MetadataSyncConfig`
+- New field `Name` in struct `MetadataSyncConfig`
+- New field `Name` in struct `ServerBlobAuditingPolicy`
+- New field `Type` in struct `ServerBlobAuditingPolicy`
+- New field `ID` in struct `ServerBlobAuditingPolicy`
+- New field `Type` in struct `ExtendedSQLPoolBlobAuditingPolicy`
+- New field `ID` in struct `ExtendedSQLPoolBlobAuditingPolicy`
+- New field `Name` in struct `ExtendedSQLPoolBlobAuditingPolicy`
+- New field `ID` in struct `Key`
+- New field `Name` in struct `Key`
+- New field `Type` in struct `Key`
+
+
+## 0.1.0 (2021-12-22)
+
+- Init release.

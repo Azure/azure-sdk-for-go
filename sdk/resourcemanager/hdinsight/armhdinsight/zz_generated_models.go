@@ -41,7 +41,6 @@ type AaddsResourceDetails struct {
 
 // Application - The HDInsight cluster application
 type Application struct {
-	ProxyResource
 	// The ETag for the application
 	Etag *string `json:"etag,omitempty"`
 
@@ -51,18 +50,29 @@ type Application struct {
 	// The tags for the application.
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Application.
 func (a Application) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", a.Etag)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "systemData", a.SystemData)
 	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -118,7 +128,8 @@ func (a ApplicationGetHTTPSEndpoint) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ApplicationListResult - Result of the request to list cluster Applications. It contains a list of operations and a URL link to get the next set of results.
+// ApplicationListResult - Result of the request to list cluster Applications. It contains a list of operations and a URL
+// link to get the next set of results.
 type ApplicationListResult struct {
 	// The list of HDInsight applications installed on HDInsight cluster.
 	Value []*Application `json:"value,omitempty"`
@@ -192,28 +203,29 @@ func (a ApplicationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ApplicationsBeginCreateOptions contains the optional parameters for the Applications.BeginCreate method.
-type ApplicationsBeginCreateOptions struct {
+// ApplicationsClientBeginCreateOptions contains the optional parameters for the ApplicationsClient.BeginCreate method.
+type ApplicationsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsBeginDeleteOptions contains the optional parameters for the Applications.BeginDelete method.
-type ApplicationsBeginDeleteOptions struct {
+// ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete method.
+type ApplicationsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsGetAzureAsyncOperationStatusOptions contains the optional parameters for the Applications.GetAzureAsyncOperationStatus method.
-type ApplicationsGetAzureAsyncOperationStatusOptions struct {
+// ApplicationsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the ApplicationsClient.GetAzureAsyncOperationStatus
+// method.
+type ApplicationsClientGetAzureAsyncOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsGetOptions contains the optional parameters for the Applications.Get method.
-type ApplicationsGetOptions struct {
+// ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
+type ApplicationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsListByClusterOptions contains the optional parameters for the Applications.ListByCluster method.
-type ApplicationsListByClusterOptions struct {
+// ApplicationsClientListByClusterOptions contains the optional parameters for the ApplicationsClient.ListByCluster method.
+type ApplicationsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -385,7 +397,8 @@ type BillingResponseListResult struct {
 	// The billing and managed disk billing resources for a region.
 	BillingResources []*BillingResources `json:"billingResources,omitempty"`
 
-	// The virtual machine filtering mode. Effectively this can enabling or disabling the virtual machine sizes in a particular set.
+	// The virtual machine filtering mode. Effectively this can enabling or disabling the virtual machine sizes in a particular
+	// set.
 	VMSizeFilters []*VMSizeCompatibilityFilterV2 `json:"vmSizeFilters,omitempty"`
 
 	// The virtual machine sizes to include or exclude.
@@ -445,7 +458,9 @@ type ClientGroupInfo struct {
 
 // Cluster - The HDInsight cluster.
 type Cluster struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// The ETag for the resource
 	Etag *string `json:"etag,omitempty"`
 
@@ -455,21 +470,37 @@ type Cluster struct {
 	// The properties of the cluster.
 	Properties *ClusterGetProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
 	// The availability zones.
 	Zones []*string `json:"zones,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Cluster.
 func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", c.Etag)
+	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	populate(objectMap, "zones", c.Zones)
 	return json.Marshal(objectMap)
 }
@@ -508,16 +539,12 @@ type ClusterCreateParametersExtended struct {
 // MarshalJSON implements the json.Marshaller interface for type ClusterCreateParametersExtended.
 func (c ClusterCreateParametersExtended) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (c ClusterCreateParametersExtended) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "identity", c.Identity)
 	populate(objectMap, "location", c.Location)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "tags", c.Tags)
 	populate(objectMap, "zones", c.Zones)
+	return json.Marshal(objectMap)
 }
 
 // ClusterCreateProperties - The cluster create parameters.
@@ -587,28 +614,46 @@ func (c ClusterCreateProperties) MarshalJSON() ([]byte, error) {
 
 // ClusterCreateRequestValidationParameters - The cluster create request specification.
 type ClusterCreateRequestValidationParameters struct {
-	ClusterCreateParametersExtended
 	// This indicates whether fetch Aadds resource or not.
 	FetchAaddsResource *bool `json:"fetchAaddsResource,omitempty"`
 
+	// The identity of the cluster, if configured.
+	Identity *ClusterIdentity `json:"identity,omitempty"`
+
+	// The location of the cluster.
+	Location *string `json:"location,omitempty"`
+
 	// The cluster name.
 	Name *string `json:"name,omitempty"`
+
+	// The cluster create parameters.
+	Properties *ClusterCreateProperties `json:"properties,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// The tenant id.
 	TenantID *string `json:"tenantId,omitempty"`
 
 	// The resource type.
 	Type *string `json:"type,omitempty"`
+
+	// The availability zones.
+	Zones []*string `json:"zones,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ClusterCreateRequestValidationParameters.
 func (c ClusterCreateRequestValidationParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ClusterCreateParametersExtended.marshalInternal(objectMap)
 	populate(objectMap, "fetchAaddsResource", c.FetchAaddsResource)
+	populate(objectMap, "identity", c.Identity)
+	populate(objectMap, "location", c.Location)
 	populate(objectMap, "name", c.Name)
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "tags", c.Tags)
 	populate(objectMap, "tenantId", c.TenantID)
 	populate(objectMap, "type", c.Type)
+	populate(objectMap, "zones", c.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -781,11 +826,12 @@ func (c ClusterGetProperties) MarshalJSON() ([]byte, error) {
 
 // ClusterIdentity - Identity for the cluster.
 type ClusterIdentity struct {
-	// The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned
-	// identities.
+	// The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+	// identity and a set of user assigned identities.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the cluster. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the cluster. The user identity dictionary key references will be ARM resource
+	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 
@@ -877,73 +923,79 @@ type ClusterResizeParameters struct {
 	TargetInstanceCount *int32 `json:"targetInstanceCount,omitempty"`
 }
 
-// ClustersBeginCreateOptions contains the optional parameters for the Clusters.BeginCreate method.
-type ClustersBeginCreateOptions struct {
+// ClustersClientBeginCreateOptions contains the optional parameters for the ClustersClient.BeginCreate method.
+type ClustersClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginDeleteOptions contains the optional parameters for the Clusters.BeginDelete method.
-type ClustersBeginDeleteOptions struct {
+// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+type ClustersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginExecuteScriptActionsOptions contains the optional parameters for the Clusters.BeginExecuteScriptActions method.
-type ClustersBeginExecuteScriptActionsOptions struct {
+// ClustersClientBeginExecuteScriptActionsOptions contains the optional parameters for the ClustersClient.BeginExecuteScriptActions
+// method.
+type ClustersClientBeginExecuteScriptActionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginResizeOptions contains the optional parameters for the Clusters.BeginResize method.
-type ClustersBeginResizeOptions struct {
+// ClustersClientBeginResizeOptions contains the optional parameters for the ClustersClient.BeginResize method.
+type ClustersClientBeginResizeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginRotateDiskEncryptionKeyOptions contains the optional parameters for the Clusters.BeginRotateDiskEncryptionKey method.
-type ClustersBeginRotateDiskEncryptionKeyOptions struct {
+// ClustersClientBeginRotateDiskEncryptionKeyOptions contains the optional parameters for the ClustersClient.BeginRotateDiskEncryptionKey
+// method.
+type ClustersClientBeginRotateDiskEncryptionKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginUpdateAutoScaleConfigurationOptions contains the optional parameters for the Clusters.BeginUpdateAutoScaleConfiguration method.
-type ClustersBeginUpdateAutoScaleConfigurationOptions struct {
+// ClustersClientBeginUpdateAutoScaleConfigurationOptions contains the optional parameters for the ClustersClient.BeginUpdateAutoScaleConfiguration
+// method.
+type ClustersClientBeginUpdateAutoScaleConfigurationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginUpdateGatewaySettingsOptions contains the optional parameters for the Clusters.BeginUpdateGatewaySettings method.
-type ClustersBeginUpdateGatewaySettingsOptions struct {
+// ClustersClientBeginUpdateGatewaySettingsOptions contains the optional parameters for the ClustersClient.BeginUpdateGatewaySettings
+// method.
+type ClustersClientBeginUpdateGatewaySettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginUpdateIdentityCertificateOptions contains the optional parameters for the Clusters.BeginUpdateIdentityCertificate method.
-type ClustersBeginUpdateIdentityCertificateOptions struct {
+// ClustersClientBeginUpdateIdentityCertificateOptions contains the optional parameters for the ClustersClient.BeginUpdateIdentityCertificate
+// method.
+type ClustersClientBeginUpdateIdentityCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersGetAzureAsyncOperationStatusOptions contains the optional parameters for the Clusters.GetAzureAsyncOperationStatus method.
-type ClustersGetAzureAsyncOperationStatusOptions struct {
+// ClustersClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the ClustersClient.GetAzureAsyncOperationStatus
+// method.
+type ClustersClientGetAzureAsyncOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersGetGatewaySettingsOptions contains the optional parameters for the Clusters.GetGatewaySettings method.
-type ClustersGetGatewaySettingsOptions struct {
+// ClustersClientGetGatewaySettingsOptions contains the optional parameters for the ClustersClient.GetGatewaySettings method.
+type ClustersClientGetGatewaySettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersGetOptions contains the optional parameters for the Clusters.Get method.
-type ClustersGetOptions struct {
+// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListByResourceGroupOptions contains the optional parameters for the Clusters.ListByResourceGroup method.
-type ClustersListByResourceGroupOptions struct {
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListOptions contains the optional parameters for the Clusters.List method.
-type ClustersListOptions struct {
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersUpdateOptions contains the optional parameters for the Clusters.Update method.
-type ClustersUpdateOptions struct {
+// ClustersClientUpdateOptions contains the optional parameters for the ClustersClient.Update method.
+type ClustersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -969,18 +1021,18 @@ func (c ComputeProfile) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConfigurationsBeginUpdateOptions contains the optional parameters for the Configurations.BeginUpdate method.
-type ConfigurationsBeginUpdateOptions struct {
+// ConfigurationsClientBeginUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginUpdate method.
+type ConfigurationsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsGetOptions contains the optional parameters for the Configurations.Get method.
-type ConfigurationsGetOptions struct {
+// ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
+type ConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsListOptions contains the optional parameters for the Configurations.List method.
-type ConfigurationsListOptions struct {
+// ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
+type ConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1069,20 +1121,12 @@ type EncryptionInTransitProperties struct {
 }
 
 // ErrorResponse - Describes the format of Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// Error code
 	Code *string `json:"code,omitempty"`
 
 	// Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
 }
 
 // Errors - The error message associated with the cluster creation.
@@ -1129,53 +1173,60 @@ type Extension struct {
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 }
 
-// ExtensionsBeginCreateOptions contains the optional parameters for the Extensions.BeginCreate method.
-type ExtensionsBeginCreateOptions struct {
+// ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
+type ExtensionsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsBeginDeleteOptions contains the optional parameters for the Extensions.BeginDelete method.
-type ExtensionsBeginDeleteOptions struct {
+// ExtensionsClientBeginDeleteOptions contains the optional parameters for the ExtensionsClient.BeginDelete method.
+type ExtensionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsBeginDisableAzureMonitorOptions contains the optional parameters for the Extensions.BeginDisableAzureMonitor method.
-type ExtensionsBeginDisableAzureMonitorOptions struct {
+// ExtensionsClientBeginDisableAzureMonitorOptions contains the optional parameters for the ExtensionsClient.BeginDisableAzureMonitor
+// method.
+type ExtensionsClientBeginDisableAzureMonitorOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsBeginDisableMonitoringOptions contains the optional parameters for the Extensions.BeginDisableMonitoring method.
-type ExtensionsBeginDisableMonitoringOptions struct {
+// ExtensionsClientBeginDisableMonitoringOptions contains the optional parameters for the ExtensionsClient.BeginDisableMonitoring
+// method.
+type ExtensionsClientBeginDisableMonitoringOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsBeginEnableAzureMonitorOptions contains the optional parameters for the Extensions.BeginEnableAzureMonitor method.
-type ExtensionsBeginEnableAzureMonitorOptions struct {
+// ExtensionsClientBeginEnableAzureMonitorOptions contains the optional parameters for the ExtensionsClient.BeginEnableAzureMonitor
+// method.
+type ExtensionsClientBeginEnableAzureMonitorOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsBeginEnableMonitoringOptions contains the optional parameters for the Extensions.BeginEnableMonitoring method.
-type ExtensionsBeginEnableMonitoringOptions struct {
+// ExtensionsClientBeginEnableMonitoringOptions contains the optional parameters for the ExtensionsClient.BeginEnableMonitoring
+// method.
+type ExtensionsClientBeginEnableMonitoringOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsGetAzureAsyncOperationStatusOptions contains the optional parameters for the Extensions.GetAzureAsyncOperationStatus method.
-type ExtensionsGetAzureAsyncOperationStatusOptions struct {
+// ExtensionsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureAsyncOperationStatus
+// method.
+type ExtensionsClientGetAzureAsyncOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsGetAzureMonitorStatusOptions contains the optional parameters for the Extensions.GetAzureMonitorStatus method.
-type ExtensionsGetAzureMonitorStatusOptions struct {
+// ExtensionsClientGetAzureMonitorStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureMonitorStatus
+// method.
+type ExtensionsClientGetAzureMonitorStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsGetMonitoringStatusOptions contains the optional parameters for the Extensions.GetMonitoringStatus method.
-type ExtensionsGetMonitoringStatusOptions struct {
+// ExtensionsClientGetMonitoringStatusOptions contains the optional parameters for the ExtensionsClient.GetMonitoringStatus
+// method.
+type ExtensionsClientGetMonitoringStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsGetOptions contains the optional parameters for the Extensions.Get method.
-type ExtensionsGetOptions struct {
+// ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
+type ExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1280,33 +1331,36 @@ type LocalizedName struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// LocationsCheckNameAvailabilityOptions contains the optional parameters for the Locations.CheckNameAvailability method.
-type LocationsCheckNameAvailabilityOptions struct {
+// LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
+// method.
+type LocationsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationsGetAzureAsyncOperationStatusOptions contains the optional parameters for the Locations.GetAzureAsyncOperationStatus method.
-type LocationsGetAzureAsyncOperationStatusOptions struct {
+// LocationsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the LocationsClient.GetAzureAsyncOperationStatus
+// method.
+type LocationsClientGetAzureAsyncOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationsGetCapabilitiesOptions contains the optional parameters for the Locations.GetCapabilities method.
-type LocationsGetCapabilitiesOptions struct {
+// LocationsClientGetCapabilitiesOptions contains the optional parameters for the LocationsClient.GetCapabilities method.
+type LocationsClientGetCapabilitiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationsListBillingSpecsOptions contains the optional parameters for the Locations.ListBillingSpecs method.
-type LocationsListBillingSpecsOptions struct {
+// LocationsClientListBillingSpecsOptions contains the optional parameters for the LocationsClient.ListBillingSpecs method.
+type LocationsClientListBillingSpecsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationsListUsagesOptions contains the optional parameters for the Locations.ListUsages method.
-type LocationsListUsagesOptions struct {
+// LocationsClientListUsagesOptions contains the optional parameters for the LocationsClient.ListUsages method.
+type LocationsClientListUsagesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationsValidateClusterCreateRequestOptions contains the optional parameters for the Locations.ValidateClusterCreateRequest method.
-type LocationsValidateClusterCreateRequestOptions struct {
+// LocationsClientValidateClusterCreateRequestOptions contains the optional parameters for the LocationsClient.ValidateClusterCreateRequest
+// method.
+type LocationsClientValidateClusterCreateRequestOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1444,7 +1498,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list HDInsight operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list HDInsight operations. It contains a list of operations and a URL link
+// to get the next set of results.
 type OperationListResult struct {
 	// The URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1467,8 +1522,8 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1486,21 +1541,20 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The private endpoint connection.
 type PrivateEndpointConnection struct {
-	Resource
 	// REQUIRED; The private endpoint connection properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - The list private endpoint connections response.
@@ -1535,23 +1589,27 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsBeginCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListByClusterOptions contains the optional parameters for the PrivateEndpointConnections.ListByCluster method.
-type PrivateEndpointConnectionsListByClusterOptions struct {
+// PrivateEndpointConnectionsClientListByClusterOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByCluster
+// method.
+type PrivateEndpointConnectionsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1572,7 +1630,8 @@ type PrivateLinkConfiguration struct {
 
 // PrivateLinkConfigurationProperties - The private link configuration properties.
 type PrivateLinkConfigurationProperties struct {
-	// REQUIRED; The HDInsight private linkable sub-resource name to apply the private link configuration to. For example, 'headnode', 'gateway', 'edgenode'.
+	// REQUIRED; The HDInsight private linkable sub-resource name to apply the private link configuration to. For example, 'headnode',
+	// 'gateway', 'edgenode'.
 	GroupID *string `json:"groupId,omitempty"`
 
 	// REQUIRED; The IP configurations for the private link service.
@@ -1593,21 +1652,20 @@ func (p PrivateLinkConfigurationProperties) MarshalJSON() ([]byte, error) {
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -1644,13 +1702,14 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListByClusterOptions contains the optional parameters for the PrivateLinkResources.ListByCluster method.
-type PrivateLinkResourcesListByClusterOptions struct {
+// PrivateLinkResourcesClientListByClusterOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByCluster
+// method.
+type PrivateLinkResourcesClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1666,13 +1725,17 @@ type PrivateLinkServiceConnectionState struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // QuotaCapability - The regional quota capability.
@@ -1737,19 +1800,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourceID - The azure resource id.
@@ -1832,21 +1882,31 @@ type RuntimeScriptAction struct {
 // MarshalJSON implements the json.Marshaller interface for type RuntimeScriptAction.
 func (r RuntimeScriptAction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r RuntimeScriptAction) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "applicationName", r.ApplicationName)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "parameters", r.Parameters)
 	populate(objectMap, "roles", r.Roles)
 	populate(objectMap, "uri", r.URI)
+	return json.Marshal(objectMap)
 }
 
 // RuntimeScriptActionDetail - The execution details of a script action.
 type RuntimeScriptActionDetail struct {
-	RuntimeScriptAction
+	// REQUIRED; The name of the script action.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; The list of roles where script will be executed.
+	Roles []*string `json:"roles,omitempty"`
+
+	// REQUIRED; The URI to the script.
+	URI *string `json:"uri,omitempty"`
+
+	// The parameters for the script
+	Parameters *string `json:"parameters,omitempty"`
+
+	// READ-ONLY; The application name of the script action, if any.
+	ApplicationName *string `json:"applicationName,omitempty" azure:"ro"`
+
 	// READ-ONLY; The script action execution debug information.
 	DebugInformation *string `json:"debugInformation,omitempty" azure:"ro"`
 
@@ -1872,14 +1932,18 @@ type RuntimeScriptActionDetail struct {
 // MarshalJSON implements the json.Marshaller interface for type RuntimeScriptActionDetail.
 func (r RuntimeScriptActionDetail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.RuntimeScriptAction.marshalInternal(objectMap)
+	populate(objectMap, "applicationName", r.ApplicationName)
 	populate(objectMap, "debugInformation", r.DebugInformation)
 	populate(objectMap, "endTime", r.EndTime)
 	populate(objectMap, "executionSummary", r.ExecutionSummary)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "operation", r.Operation)
+	populate(objectMap, "parameters", r.Parameters)
+	populate(objectMap, "roles", r.Roles)
 	populate(objectMap, "scriptExecutionId", r.ScriptExecutionID)
 	populate(objectMap, "startTime", r.StartTime)
 	populate(objectMap, "status", r.Status)
+	populate(objectMap, "uri", r.URI)
 	return json.Marshal(objectMap)
 }
 
@@ -1969,18 +2033,25 @@ func (s ScriptActionPersistedGetResponseSpec) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ScriptActionsDeleteOptions contains the optional parameters for the ScriptActions.Delete method.
-type ScriptActionsDeleteOptions struct {
+// ScriptActionsClientDeleteOptions contains the optional parameters for the ScriptActionsClient.Delete method.
+type ScriptActionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptActionsGetExecutionAsyncOperationStatusOptions contains the optional parameters for the ScriptActions.GetExecutionAsyncOperationStatus method.
-type ScriptActionsGetExecutionAsyncOperationStatusOptions struct {
+// ScriptActionsClientGetExecutionAsyncOperationStatusOptions contains the optional parameters for the ScriptActionsClient.GetExecutionAsyncOperationStatus
+// method.
+type ScriptActionsClientGetExecutionAsyncOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptActionsGetExecutionDetailOptions contains the optional parameters for the ScriptActions.GetExecutionDetail method.
-type ScriptActionsGetExecutionDetailOptions struct {
+// ScriptActionsClientGetExecutionDetailOptions contains the optional parameters for the ScriptActionsClient.GetExecutionDetail
+// method.
+type ScriptActionsClientGetExecutionDetailOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScriptActionsClientListByClusterOptions contains the optional parameters for the ScriptActionsClient.ListByCluster method.
+type ScriptActionsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2001,18 +2072,15 @@ func (s ScriptActionsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ScriptActionsListByClusterOptions contains the optional parameters for the ScriptActions.ListByCluster method.
-type ScriptActionsListByClusterOptions struct {
+// ScriptExecutionHistoryClientListByClusterOptions contains the optional parameters for the ScriptExecutionHistoryClient.ListByCluster
+// method.
+type ScriptExecutionHistoryClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptExecutionHistoryListByClusterOptions contains the optional parameters for the ScriptExecutionHistory.ListByCluster method.
-type ScriptExecutionHistoryListByClusterOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScriptExecutionHistoryPromoteOptions contains the optional parameters for the ScriptExecutionHistory.Promote method.
-type ScriptExecutionHistoryPromoteOptions struct {
+// ScriptExecutionHistoryClientPromoteOptions contains the optional parameters for the ScriptExecutionHistoryClient.Promote
+// method.
+type ScriptExecutionHistoryClientPromoteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2091,7 +2159,8 @@ type StorageAccount struct {
 	// The storage account access key.
 	Key *string `json:"key,omitempty"`
 
-	// The managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data Lake Storage Gen 2.
+	// The managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data Lake Storage
+	// Gen 2.
 	MsiResourceID *string `json:"msiResourceId,omitempty"`
 
 	// The name of the storage account.
@@ -2185,27 +2254,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UpdateClusterIdentityCertificateParameters - The update cluster identity certificate request parameters.
@@ -2272,10 +2348,10 @@ type UserAssignedIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
-// VMSizeCompatibilityFilterV2 - This class represent a single filter object that defines a multidimensional set. The dimensions of this set are Regions,
-// ClusterFlavors, NodeTypes and ClusterVersions. The constraint should be defined
-// based on the following: FilterMode (Exclude vs Include), VMSizes (the vm sizes in affect of exclusion/inclusion) and the ordering of the Filters. Later
-// filters override previous settings if
+// VMSizeCompatibilityFilterV2 - This class represent a single filter object that defines a multidimensional set. The dimensions
+// of this set are Regions, ClusterFlavors, NodeTypes and ClusterVersions. The constraint should be defined
+// based on the following: FilterMode (Exclude vs Include), VMSizes (the vm sizes in affect of exclusion/inclusion) and the
+// ordering of the Filters. Later filters override previous settings if
 // conflicted.
 type VMSizeCompatibilityFilterV2 struct {
 	// The list of cluster flavors under the effect of the filter.
@@ -2287,7 +2363,8 @@ type VMSizeCompatibilityFilterV2 struct {
 	// Whether support compute isolation. 'true' means only for ComputeIsolationEnabled, 'false' means only for regular cluster.
 	ComputeIsolationSupported *string `json:"computeIsolationSupported,omitempty"`
 
-	// Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string or others mean for both.
+	// Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string or others
+	// mean for both.
 	EspApplied *string `json:"espApplied,omitempty"`
 
 	// The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
@@ -2417,18 +2494,20 @@ func (v VersionsCapability) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachinesBeginRestartHostsOptions contains the optional parameters for the VirtualMachines.BeginRestartHosts method.
-type VirtualMachinesBeginRestartHostsOptions struct {
+// VirtualMachinesClientBeginRestartHostsOptions contains the optional parameters for the VirtualMachinesClient.BeginRestartHosts
+// method.
+type VirtualMachinesClientBeginRestartHostsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesGetAsyncOperationStatusOptions contains the optional parameters for the VirtualMachines.GetAsyncOperationStatus method.
-type VirtualMachinesGetAsyncOperationStatusOptions struct {
+// VirtualMachinesClientGetAsyncOperationStatusOptions contains the optional parameters for the VirtualMachinesClient.GetAsyncOperationStatus
+// method.
+type VirtualMachinesClientGetAsyncOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesListHostsOptions contains the optional parameters for the VirtualMachines.ListHosts method.
-type VirtualMachinesListHostsOptions struct {
+// VirtualMachinesClientListHostsOptions contains the optional parameters for the VirtualMachinesClient.ListHosts method.
+type VirtualMachinesClientListHostsOptions struct {
 	// placeholder for future optional parameters
 }
 

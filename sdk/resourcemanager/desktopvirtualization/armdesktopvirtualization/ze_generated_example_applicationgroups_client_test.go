@@ -32,7 +32,7 @@ func ExampleApplicationGroupsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationGroupsClientGetResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Create.json
@@ -47,21 +47,19 @@ func ExampleApplicationGroupsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<application-group-name>",
 		armdesktopvirtualization.ApplicationGroup{
-			ResourceModelWithAllowedPropertySet: armdesktopvirtualization.ResourceModelWithAllowedPropertySet{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"tag1": to.StringPtr("value1"),
-					"tag2": to.StringPtr("value2"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"tag1": to.StringPtr("value1"),
+				"tag2": to.StringPtr("value2"),
 			},
 			Properties: &armdesktopvirtualization.ApplicationGroupProperties{
 				Description:          to.StringPtr("<description>"),
-				ApplicationGroupType: armdesktopvirtualization.ApplicationGroupTypeRemoteApp.ToPtr(),
+				ApplicationGroupType: armdesktopvirtualization.ApplicationGroupType("RemoteApp").ToPtr(),
 				FriendlyName:         to.StringPtr("<friendly-name>"),
 				HostPoolArmPath:      to.StringPtr("<host-pool-arm-path>"),
 				MigrationRequest: &armdesktopvirtualization.MigrationRequestProperties{
 					MigrationPath: to.StringPtr("<migration-path>"),
-					Operation:     armdesktopvirtualization.OperationStart.ToPtr(),
+					Operation:     armdesktopvirtualization.Operation("Start").ToPtr(),
 				},
 			},
 		},
@@ -69,7 +67,7 @@ func ExampleApplicationGroupsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationGroupsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Delete.json
@@ -100,7 +98,7 @@ func ExampleApplicationGroupsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<application-group-name>",
-		&armdesktopvirtualization.ApplicationGroupsUpdateOptions{ApplicationGroup: &armdesktopvirtualization.ApplicationGroupPatch{
+		&armdesktopvirtualization.ApplicationGroupsClientUpdateOptions{ApplicationGroup: &armdesktopvirtualization.ApplicationGroupPatch{
 			Properties: &armdesktopvirtualization.ApplicationGroupPatchProperties{
 				Description:  to.StringPtr("<description>"),
 				FriendlyName: to.StringPtr("<friendly-name>"),
@@ -114,7 +112,7 @@ func ExampleApplicationGroupsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationGroupsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_ListByResourceGroup.json
@@ -126,13 +124,17 @@ func ExampleApplicationGroupsClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armdesktopvirtualization.NewApplicationGroupsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armdesktopvirtualization.ApplicationGroupsListByResourceGroupOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
+		&armdesktopvirtualization.ApplicationGroupsClientListByResourceGroupOptions{Filter: to.StringPtr("<filter>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationGroup.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -145,13 +147,17 @@ func ExampleApplicationGroupsClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armdesktopvirtualization.NewApplicationGroupsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armdesktopvirtualization.ApplicationGroupsListBySubscriptionOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
+	pager := client.ListBySubscription(&armdesktopvirtualization.ApplicationGroupsClientListBySubscriptionOptions{Filter: to.StringPtr("<filter>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationGroup.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

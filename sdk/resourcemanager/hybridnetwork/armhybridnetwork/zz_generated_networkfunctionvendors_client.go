@@ -11,7 +11,6 @@ package armhybridnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,55 @@ import (
 // NetworkFunctionVendorsClient contains the methods for the NetworkFunctionVendors group.
 // Don't use this type directly, use NewNetworkFunctionVendorsClient() instead.
 type NetworkFunctionVendorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewNetworkFunctionVendorsClient creates a new instance of NetworkFunctionVendorsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewNetworkFunctionVendorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NetworkFunctionVendorsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &NetworkFunctionVendorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &NetworkFunctionVendorsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all the available vendor and sku information.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionVendorsClient) List(options *NetworkFunctionVendorsListOptions) *NetworkFunctionVendorsListPager {
-	return &NetworkFunctionVendorsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - NetworkFunctionVendorsClientListOptions contains the optional parameters for the NetworkFunctionVendorsClient.List
+// method.
+func (client *NetworkFunctionVendorsClient) List(options *NetworkFunctionVendorsClientListOptions) *NetworkFunctionVendorsClientListPager {
+	return &NetworkFunctionVendorsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp NetworkFunctionVendorsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp NetworkFunctionVendorsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkFunctionVendorListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *NetworkFunctionVendorsClient) listCreateRequest(ctx context.Context, options *NetworkFunctionVendorsListOptions) (*policy.Request, error) {
+func (client *NetworkFunctionVendorsClient) listCreateRequest(ctx context.Context, options *NetworkFunctionVendorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctionVendors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -75,23 +84,10 @@ func (client *NetworkFunctionVendorsClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *NetworkFunctionVendorsClient) listHandleResponse(resp *http.Response) (NetworkFunctionVendorsListResponse, error) {
-	result := NetworkFunctionVendorsListResponse{RawResponse: resp}
+func (client *NetworkFunctionVendorsClient) listHandleResponse(resp *http.Response) (NetworkFunctionVendorsClientListResponse, error) {
+	result := NetworkFunctionVendorsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFunctionVendorListResult); err != nil {
-		return NetworkFunctionVendorsListResponse{}, runtime.NewResponseError(err, resp)
+		return NetworkFunctionVendorsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *NetworkFunctionVendorsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

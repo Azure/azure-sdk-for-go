@@ -1,0 +1,349 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ExperimentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ExperimentsGetOptions)` to `(context.Context, string, string, *ExperimentsClientGetOptions)`
+- Function `*ExperimentsClient.Get` return value(s) have been changed from `(ExperimentsGetResponse, error)` to `(ExperimentsClientGetResponse, error)`
+- Function `*ExperimentsClient.GetExecutionDetails` parameter(s) have been changed from `(context.Context, string, string, string, *ExperimentsGetExecutionDetailsOptions)` to `(context.Context, string, string, string, *ExperimentsClientGetExecutionDetailsOptions)`
+- Function `*ExperimentsClient.GetExecutionDetails` return value(s) have been changed from `(ExperimentsGetExecutionDetailsResponse, error)` to `(ExperimentsClientGetExecutionDetailsResponse, error)`
+- Function `*ExperimentsClient.ListAll` parameter(s) have been changed from `(*ExperimentsListAllOptions)` to `(*ExperimentsClientListAllOptions)`
+- Function `*ExperimentsClient.ListAll` return value(s) have been changed from `(*ExperimentsListAllPager)` to `(*ExperimentsClientListAllPager)`
+- Function `*ExperimentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Experiment, *ExperimentsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Experiment, *ExperimentsClientBeginCreateOrUpdateOptions)`
+- Function `*ExperimentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExperimentsCreateOrUpdatePollerResponse, error)` to `(ExperimentsClientCreateOrUpdatePollerResponse, error)`
+- Function `*TargetsClient.List` parameter(s) have been changed from `(string, string, string, string, *TargetsListOptions)` to `(string, string, string, string, *TargetsClientListOptions)`
+- Function `*TargetsClient.List` return value(s) have been changed from `(*TargetsListPager)` to `(*TargetsClientListPager)`
+- Function `*CapabilitiesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *CapabilitiesGetOptions)` to `(context.Context, string, string, string, string, string, string, *CapabilitiesClientGetOptions)`
+- Function `*CapabilitiesClient.Get` return value(s) have been changed from `(CapabilitiesGetResponse, error)` to `(CapabilitiesClientGetResponse, error)`
+- Function `*CapabilitiesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, Capability, *CapabilitiesCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, string, Capability, *CapabilitiesClientCreateOrUpdateOptions)`
+- Function `*CapabilitiesClient.CreateOrUpdate` return value(s) have been changed from `(CapabilitiesCreateOrUpdateResponse, error)` to `(CapabilitiesClientCreateOrUpdateResponse, error)`
+- Function `*ExperimentsClient.GetStatus` parameter(s) have been changed from `(context.Context, string, string, string, *ExperimentsGetStatusOptions)` to `(context.Context, string, string, string, *ExperimentsClientGetStatusOptions)`
+- Function `*ExperimentsClient.GetStatus` return value(s) have been changed from `(ExperimentsGetStatusResponse, error)` to `(ExperimentsClientGetStatusResponse, error)`
+- Function `*CapabilitiesClient.List` parameter(s) have been changed from `(string, string, string, string, string, *CapabilitiesListOptions)` to `(string, string, string, string, string, *CapabilitiesClientListOptions)`
+- Function `*CapabilitiesClient.List` return value(s) have been changed from `(*CapabilitiesListPager)` to `(*CapabilitiesClientListPager)`
+- Function `*OperationsClient.ListAll` parameter(s) have been changed from `(*OperationsListAllOptions)` to `(*OperationsClientListAllOptions)`
+- Function `*OperationsClient.ListAll` return value(s) have been changed from `(*OperationsListAllPager)` to `(*OperationsClientListAllPager)`
+- Function `*ExperimentsClient.List` parameter(s) have been changed from `(string, *ExperimentsListOptions)` to `(string, *ExperimentsClientListOptions)`
+- Function `*ExperimentsClient.List` return value(s) have been changed from `(*ExperimentsListPager)` to `(*ExperimentsClientListPager)`
+- Function `*ExperimentsClient.BeginCancel` parameter(s) have been changed from `(context.Context, string, string, *ExperimentsBeginCancelOptions)` to `(context.Context, string, string, *ExperimentsClientBeginCancelOptions)`
+- Function `*ExperimentsClient.BeginCancel` return value(s) have been changed from `(ExperimentsCancelPollerResponse, error)` to `(ExperimentsClientCancelPollerResponse, error)`
+- Function `*ExperimentsClient.Start` parameter(s) have been changed from `(context.Context, string, string, *ExperimentsStartOptions)` to `(context.Context, string, string, *ExperimentsClientStartOptions)`
+- Function `*ExperimentsClient.Start` return value(s) have been changed from `(ExperimentsStartResponse, error)` to `(ExperimentsClientStartResponse, error)`
+- Function `*TargetsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, Target, *TargetsCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, Target, *TargetsClientCreateOrUpdateOptions)`
+- Function `*TargetsClient.CreateOrUpdate` return value(s) have been changed from `(TargetsCreateOrUpdateResponse, error)` to `(TargetsClientCreateOrUpdateResponse, error)`
+- Function `*CapabilityTypesClient.List` parameter(s) have been changed from `(string, string, *CapabilityTypesListOptions)` to `(string, string, *CapabilityTypesClientListOptions)`
+- Function `*CapabilityTypesClient.List` return value(s) have been changed from `(*CapabilityTypesListPager)` to `(*CapabilityTypesClientListPager)`
+- Function `*TargetTypesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *TargetTypesGetOptions)` to `(context.Context, string, string, *TargetTypesClientGetOptions)`
+- Function `*TargetTypesClient.Get` return value(s) have been changed from `(TargetTypesGetResponse, error)` to `(TargetTypesClientGetResponse, error)`
+- Function `*CapabilitiesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *CapabilitiesDeleteOptions)` to `(context.Context, string, string, string, string, string, string, *CapabilitiesClientDeleteOptions)`
+- Function `*CapabilitiesClient.Delete` return value(s) have been changed from `(CapabilitiesDeleteResponse, error)` to `(CapabilitiesClientDeleteResponse, error)`
+- Function `*TargetsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *TargetsDeleteOptions)` to `(context.Context, string, string, string, string, string, *TargetsClientDeleteOptions)`
+- Function `*TargetsClient.Delete` return value(s) have been changed from `(TargetsDeleteResponse, error)` to `(TargetsClientDeleteResponse, error)`
+- Function `*ExperimentsClient.ListAllStatuses` parameter(s) have been changed from `(string, string, *ExperimentsListAllStatusesOptions)` to `(string, string, *ExperimentsClientListAllStatusesOptions)`
+- Function `*ExperimentsClient.ListAllStatuses` return value(s) have been changed from `(*ExperimentsListAllStatusesPager)` to `(*ExperimentsClientListAllStatusesPager)`
+- Function `*TargetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *TargetsGetOptions)` to `(context.Context, string, string, string, string, string, *TargetsClientGetOptions)`
+- Function `*TargetsClient.Get` return value(s) have been changed from `(TargetsGetResponse, error)` to `(TargetsClientGetResponse, error)`
+- Function `*ExperimentsClient.ListExecutionDetails` parameter(s) have been changed from `(string, string, *ExperimentsListExecutionDetailsOptions)` to `(string, string, *ExperimentsClientListExecutionDetailsOptions)`
+- Function `*ExperimentsClient.ListExecutionDetails` return value(s) have been changed from `(*ExperimentsListExecutionDetailsPager)` to `(*ExperimentsClientListExecutionDetailsPager)`
+- Function `*TargetTypesClient.List` parameter(s) have been changed from `(string, *TargetTypesListOptions)` to `(string, *TargetTypesClientListOptions)`
+- Function `*TargetTypesClient.List` return value(s) have been changed from `(*TargetTypesListPager)` to `(*TargetTypesClientListPager)`
+- Function `*ExperimentsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ExperimentsDeleteOptions)` to `(context.Context, string, string, *ExperimentsClientDeleteOptions)`
+- Function `*ExperimentsClient.Delete` return value(s) have been changed from `(ExperimentsDeleteResponse, error)` to `(ExperimentsClientDeleteResponse, error)`
+- Function `*CapabilityTypesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CapabilityTypesGetOptions)` to `(context.Context, string, string, string, *CapabilityTypesClientGetOptions)`
+- Function `*CapabilityTypesClient.Get` return value(s) have been changed from `(CapabilityTypesGetResponse, error)` to `(CapabilityTypesClientGetResponse, error)`
+- Function `*ExperimentsListPager.Err` has been removed
+- Function `*ExperimentsCreateOrUpdatePoller.Done` has been removed
+- Function `*TargetsListPager.NextPage` has been removed
+- Function `*ExperimentsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListAllPager.Err` has been removed
+- Function `*ExperimentsListAllStatusesPager.PageResponse` has been removed
+- Function `TargetType.MarshalJSON` has been removed
+- Function `*ExperimentsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ExperimentsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExperimentsListPager.NextPage` has been removed
+- Function `*ExperimentsListExecutionDetailsPager.Err` has been removed
+- Function `*ExperimentsListAllStatusesPager.NextPage` has been removed
+- Function `*ExperimentsListAllPager.NextPage` has been removed
+- Function `*ExperimentsCancelPoller.Poll` has been removed
+- Function `*ExperimentsListExecutionDetailsPager.PageResponse` has been removed
+- Function `*CapabilitiesListPager.NextPage` has been removed
+- Function `*ExperimentsCancelPoller.FinalResponse` has been removed
+- Function `*OperationsListAllPager.NextPage` has been removed
+- Function `*TargetTypesListPager.Err` has been removed
+- Function `*TargetTypesListPager.NextPage` has been removed
+- Function `*ExperimentsListAllPager.Err` has been removed
+- Function `*CapabilityTypesListPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*TargetTypesListPager.PageResponse` has been removed
+- Function `*ExperimentsListPager.PageResponse` has been removed
+- Function `*CapabilitiesListPager.PageResponse` has been removed
+- Function `*ExperimentsCreateOrUpdatePoller.Poll` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*ExperimentsCancelPoller.Done` has been removed
+- Function `Capability.MarshalJSON` has been removed
+- Function `*CapabilityTypesListPager.PageResponse` has been removed
+- Function `*CapabilitiesListPager.Err` has been removed
+- Function `CapabilityType.MarshalJSON` has been removed
+- Function `*CapabilityTypesListPager.Err` has been removed
+- Function `*ExperimentsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ExperimentsCancelPollerResponse.Resume` has been removed
+- Function `*ExperimentsListAllPager.PageResponse` has been removed
+- Function `*ExperimentsCancelPoller.ResumeToken` has been removed
+- Function `*TargetsListPager.Err` has been removed
+- Function `*OperationsListAllPager.PageResponse` has been removed
+- Function `*ExperimentsListExecutionDetailsPager.NextPage` has been removed
+- Function `ExperimentsCancelPollerResponse.PollUntilDone` has been removed
+- Function `*ExperimentsListAllStatusesPager.Err` has been removed
+- Function `*TargetsListPager.PageResponse` has been removed
+- Struct `CapabilitiesCreateOrUpdateOptions` has been removed
+- Struct `CapabilitiesCreateOrUpdateResponse` has been removed
+- Struct `CapabilitiesCreateOrUpdateResult` has been removed
+- Struct `CapabilitiesDeleteOptions` has been removed
+- Struct `CapabilitiesDeleteResponse` has been removed
+- Struct `CapabilitiesGetOptions` has been removed
+- Struct `CapabilitiesGetResponse` has been removed
+- Struct `CapabilitiesGetResult` has been removed
+- Struct `CapabilitiesListOptions` has been removed
+- Struct `CapabilitiesListPager` has been removed
+- Struct `CapabilitiesListResponse` has been removed
+- Struct `CapabilitiesListResult` has been removed
+- Struct `CapabilityTypesGetOptions` has been removed
+- Struct `CapabilityTypesGetResponse` has been removed
+- Struct `CapabilityTypesGetResult` has been removed
+- Struct `CapabilityTypesListOptions` has been removed
+- Struct `CapabilityTypesListPager` has been removed
+- Struct `CapabilityTypesListResponse` has been removed
+- Struct `CapabilityTypesListResult` has been removed
+- Struct `ExperimentsBeginCancelOptions` has been removed
+- Struct `ExperimentsBeginCreateOrUpdateOptions` has been removed
+- Struct `ExperimentsCancelPoller` has been removed
+- Struct `ExperimentsCancelPollerResponse` has been removed
+- Struct `ExperimentsCancelResponse` has been removed
+- Struct `ExperimentsCancelResult` has been removed
+- Struct `ExperimentsCreateOrUpdatePoller` has been removed
+- Struct `ExperimentsCreateOrUpdatePollerResponse` has been removed
+- Struct `ExperimentsCreateOrUpdateResponse` has been removed
+- Struct `ExperimentsCreateOrUpdateResult` has been removed
+- Struct `ExperimentsDeleteOptions` has been removed
+- Struct `ExperimentsDeleteResponse` has been removed
+- Struct `ExperimentsGetExecutionDetailsOptions` has been removed
+- Struct `ExperimentsGetExecutionDetailsResponse` has been removed
+- Struct `ExperimentsGetExecutionDetailsResult` has been removed
+- Struct `ExperimentsGetOptions` has been removed
+- Struct `ExperimentsGetResponse` has been removed
+- Struct `ExperimentsGetResult` has been removed
+- Struct `ExperimentsGetStatusOptions` has been removed
+- Struct `ExperimentsGetStatusResponse` has been removed
+- Struct `ExperimentsGetStatusResult` has been removed
+- Struct `ExperimentsListAllOptions` has been removed
+- Struct `ExperimentsListAllPager` has been removed
+- Struct `ExperimentsListAllResponse` has been removed
+- Struct `ExperimentsListAllResult` has been removed
+- Struct `ExperimentsListAllStatusesOptions` has been removed
+- Struct `ExperimentsListAllStatusesPager` has been removed
+- Struct `ExperimentsListAllStatusesResponse` has been removed
+- Struct `ExperimentsListAllStatusesResult` has been removed
+- Struct `ExperimentsListExecutionDetailsOptions` has been removed
+- Struct `ExperimentsListExecutionDetailsPager` has been removed
+- Struct `ExperimentsListExecutionDetailsResponse` has been removed
+- Struct `ExperimentsListExecutionDetailsResult` has been removed
+- Struct `ExperimentsListOptions` has been removed
+- Struct `ExperimentsListPager` has been removed
+- Struct `ExperimentsListResponse` has been removed
+- Struct `ExperimentsListResult` has been removed
+- Struct `ExperimentsStartOptions` has been removed
+- Struct `ExperimentsStartResponse` has been removed
+- Struct `ExperimentsStartResult` has been removed
+- Struct `OperationsListAllOptions` has been removed
+- Struct `OperationsListAllPager` has been removed
+- Struct `OperationsListAllResponse` has been removed
+- Struct `OperationsListAllResult` has been removed
+- Struct `TargetTypesGetOptions` has been removed
+- Struct `TargetTypesGetResponse` has been removed
+- Struct `TargetTypesGetResult` has been removed
+- Struct `TargetTypesListOptions` has been removed
+- Struct `TargetTypesListPager` has been removed
+- Struct `TargetTypesListResponse` has been removed
+- Struct `TargetTypesListResult` has been removed
+- Struct `TargetsCreateOrUpdateOptions` has been removed
+- Struct `TargetsCreateOrUpdateResponse` has been removed
+- Struct `TargetsCreateOrUpdateResult` has been removed
+- Struct `TargetsDeleteOptions` has been removed
+- Struct `TargetsDeleteResponse` has been removed
+- Struct `TargetsGetOptions` has been removed
+- Struct `TargetsGetResponse` has been removed
+- Struct `TargetsGetResult` has been removed
+- Struct `TargetsListOptions` has been removed
+- Struct `TargetsListPager` has been removed
+- Struct `TargetsListResponse` has been removed
+- Struct `TargetsListResult` has been removed
+- Field `Resource` of struct `Target` has been removed
+- Field `TrackedResource` of struct `Experiment` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Resource` of struct `CapabilityType` has been removed
+- Field `Resource` of struct `TargetType` has been removed
+- Field `Resource` of struct `Capability` has been removed
+
+### Features Added
+
+- New function `*ContinuousAction.UnmarshalJSON([]byte) error`
+- New function `*CapabilitiesClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListAllPager.PageResponse() OperationsClientListAllResponse`
+- New function `DelayAction.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListAllPager.Err() error`
+- New function `*TargetTypesClientListPager.PageResponse() TargetTypesClientListResponse`
+- New function `*ExperimentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *ExperimentsClient, string) error`
+- New function `ContinuousAction.MarshalJSON() ([]byte, error)`
+- New function `*TargetTypesClientListPager.Err() error`
+- New function `*TargetsClientListPager.Err() error`
+- New function `*DelayAction.UnmarshalJSON([]byte) error`
+- New function `*CapabilitiesClientListPager.Err() error`
+- New function `*CapabilityTypesClientListPager.NextPage(context.Context) bool`
+- New function `*ExperimentsClientListPager.PageResponse() ExperimentsClientListResponse`
+- New function `*CapabilityTypesClientListPager.PageResponse() CapabilityTypesClientListResponse`
+- New function `*ExperimentsClientCancelPoller.ResumeToken() (string, error)`
+- New function `*ExperimentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ExperimentsClientListExecutionDetailsPager.Err() error`
+- New function `*TargetTypesClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListAllPager.NextPage(context.Context) bool`
+- New function `*ExperimentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExperimentsClientListAllPager.NextPage(context.Context) bool`
+- New function `*ExperimentsClientListAllStatusesPager.PageResponse() ExperimentsClientListAllStatusesResponse`
+- New function `*TargetsClientListPager.NextPage(context.Context) bool`
+- New function `*CapabilitiesClientListPager.PageResponse() CapabilitiesClientListResponse`
+- New function `ExperimentsClientCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (ExperimentsClientCancelResponse, error)`
+- New function `ExperimentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ExperimentsClientCreateOrUpdateResponse, error)`
+- New function `*ExperimentsClientListExecutionDetailsPager.NextPage(context.Context) bool`
+- New function `*ExperimentsClientListPager.Err() error`
+- New function `*ExperimentsClientListAllPager.Err() error`
+- New function `*ExperimentsClientListAllStatusesPager.Err() error`
+- New function `*ExperimentsClientListAllPager.PageResponse() ExperimentsClientListAllResponse`
+- New function `*DiscreteAction.GetAction() *Action`
+- New function `*ExperimentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*DelayAction.GetAction() *Action`
+- New function `*DiscreteAction.UnmarshalJSON([]byte) error`
+- New function `*TargetsClientListPager.PageResponse() TargetsClientListResponse`
+- New function `*ExperimentsClientListExecutionDetailsPager.PageResponse() ExperimentsClientListExecutionDetailsResponse`
+- New function `*ExperimentsClientCancelPoller.Done() bool`
+- New function `*CapabilityTypesClientListPager.Err() error`
+- New function `*ExperimentsClientCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExperimentsClientListPager.NextPage(context.Context) bool`
+- New function `DiscreteAction.MarshalJSON() ([]byte, error)`
+- New function `*ExperimentsClientCancelPoller.FinalResponse(context.Context) (ExperimentsClientCancelResponse, error)`
+- New function `*ExperimentsClientCancelPollerResponse.Resume(context.Context, *ExperimentsClient, string) error`
+- New function `*ContinuousAction.GetAction() *Action`
+- New function `*ExperimentsClientListAllStatusesPager.NextPage(context.Context) bool`
+- New function `*ExperimentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (ExperimentsClientCreateOrUpdateResponse, error)`
+- New struct `CapabilitiesClientCreateOrUpdateOptions`
+- New struct `CapabilitiesClientCreateOrUpdateResponse`
+- New struct `CapabilitiesClientCreateOrUpdateResult`
+- New struct `CapabilitiesClientDeleteOptions`
+- New struct `CapabilitiesClientDeleteResponse`
+- New struct `CapabilitiesClientGetOptions`
+- New struct `CapabilitiesClientGetResponse`
+- New struct `CapabilitiesClientGetResult`
+- New struct `CapabilitiesClientListOptions`
+- New struct `CapabilitiesClientListPager`
+- New struct `CapabilitiesClientListResponse`
+- New struct `CapabilitiesClientListResult`
+- New struct `CapabilityTypesClientGetOptions`
+- New struct `CapabilityTypesClientGetResponse`
+- New struct `CapabilityTypesClientGetResult`
+- New struct `CapabilityTypesClientListOptions`
+- New struct `CapabilityTypesClientListPager`
+- New struct `CapabilityTypesClientListResponse`
+- New struct `CapabilityTypesClientListResult`
+- New struct `ContinuousAction`
+- New struct `DelayAction`
+- New struct `DiscreteAction`
+- New struct `ExperimentsClientBeginCancelOptions`
+- New struct `ExperimentsClientBeginCreateOrUpdateOptions`
+- New struct `ExperimentsClientCancelPoller`
+- New struct `ExperimentsClientCancelPollerResponse`
+- New struct `ExperimentsClientCancelResponse`
+- New struct `ExperimentsClientCancelResult`
+- New struct `ExperimentsClientCreateOrUpdatePoller`
+- New struct `ExperimentsClientCreateOrUpdatePollerResponse`
+- New struct `ExperimentsClientCreateOrUpdateResponse`
+- New struct `ExperimentsClientCreateOrUpdateResult`
+- New struct `ExperimentsClientDeleteOptions`
+- New struct `ExperimentsClientDeleteResponse`
+- New struct `ExperimentsClientGetExecutionDetailsOptions`
+- New struct `ExperimentsClientGetExecutionDetailsResponse`
+- New struct `ExperimentsClientGetExecutionDetailsResult`
+- New struct `ExperimentsClientGetOptions`
+- New struct `ExperimentsClientGetResponse`
+- New struct `ExperimentsClientGetResult`
+- New struct `ExperimentsClientGetStatusOptions`
+- New struct `ExperimentsClientGetStatusResponse`
+- New struct `ExperimentsClientGetStatusResult`
+- New struct `ExperimentsClientListAllOptions`
+- New struct `ExperimentsClientListAllPager`
+- New struct `ExperimentsClientListAllResponse`
+- New struct `ExperimentsClientListAllResult`
+- New struct `ExperimentsClientListAllStatusesOptions`
+- New struct `ExperimentsClientListAllStatusesPager`
+- New struct `ExperimentsClientListAllStatusesResponse`
+- New struct `ExperimentsClientListAllStatusesResult`
+- New struct `ExperimentsClientListExecutionDetailsOptions`
+- New struct `ExperimentsClientListExecutionDetailsPager`
+- New struct `ExperimentsClientListExecutionDetailsResponse`
+- New struct `ExperimentsClientListExecutionDetailsResult`
+- New struct `ExperimentsClientListOptions`
+- New struct `ExperimentsClientListPager`
+- New struct `ExperimentsClientListResponse`
+- New struct `ExperimentsClientListResult`
+- New struct `ExperimentsClientStartOptions`
+- New struct `ExperimentsClientStartResponse`
+- New struct `ExperimentsClientStartResult`
+- New struct `KeyValuePair`
+- New struct `OperationsClientListAllOptions`
+- New struct `OperationsClientListAllPager`
+- New struct `OperationsClientListAllResponse`
+- New struct `OperationsClientListAllResult`
+- New struct `TargetTypesClientGetOptions`
+- New struct `TargetTypesClientGetResponse`
+- New struct `TargetTypesClientGetResult`
+- New struct `TargetTypesClientListOptions`
+- New struct `TargetTypesClientListPager`
+- New struct `TargetTypesClientListResponse`
+- New struct `TargetTypesClientListResult`
+- New struct `TargetsClientCreateOrUpdateOptions`
+- New struct `TargetsClientCreateOrUpdateResponse`
+- New struct `TargetsClientCreateOrUpdateResult`
+- New struct `TargetsClientDeleteOptions`
+- New struct `TargetsClientDeleteResponse`
+- New struct `TargetsClientGetOptions`
+- New struct `TargetsClientGetResponse`
+- New struct `TargetsClientGetResult`
+- New struct `TargetsClientListOptions`
+- New struct `TargetsClientListPager`
+- New struct `TargetsClientListResponse`
+- New struct `TargetsClientListResult`
+- New field `ID` in struct `TargetType`
+- New field `Name` in struct `TargetType`
+- New field `Type` in struct `TargetType`
+- New field `ID` in struct `CapabilityType`
+- New field `Name` in struct `CapabilityType`
+- New field `Type` in struct `CapabilityType`
+- New field `Name` in struct `Target`
+- New field `Type` in struct `Target`
+- New field `ID` in struct `Target`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Tags` in struct `Experiment`
+- New field `ID` in struct `Experiment`
+- New field `Name` in struct `Experiment`
+- New field `Type` in struct `Experiment`
+- New field `Location` in struct `Experiment`
+- New field `Type` in struct `Capability`
+- New field `ID` in struct `Capability`
+- New field `Name` in struct `Capability`
+- New field `Error` in struct `ErrorResponse`
+
+
+## 0.1.0 (2021-12-16)
+
+- Init release.

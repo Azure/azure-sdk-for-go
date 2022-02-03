@@ -31,9 +31,7 @@ func ExampleBotsClient_BeginCreate() {
 		"<resource-group-name>",
 		"<bot-name>",
 		armhealthbot.HealthBot{
-			TrackedResource: armhealthbot.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armhealthbot.Identity{
 				Type: armhealthbot.ResourceIdentityTypeSystemAssignedUserAssigned.ToPtr(),
 				UserAssignedIdentities: map[string]*armhealthbot.UserAssignedIdentity{
@@ -53,7 +51,7 @@ func ExampleBotsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HealthBot.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BotsClientCreateResult)
 }
 
 // x-ms-original-file: specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2021-06-10/examples/ResourceInfoGet.json
@@ -71,7 +69,7 @@ func ExampleBotsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HealthBot.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BotsClientGetResult)
 }
 
 // x-ms-original-file: specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2021-06-10/examples/ResourceUpdatePatch.json
@@ -85,7 +83,7 @@ func ExampleBotsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<bot-name>",
-		armhealthbot.HealthBotUpdateParameters{
+		armhealthbot.UpdateParameters{
 			SKU: &armhealthbot.SKU{
 				Name: armhealthbot.SKUNameF0.ToPtr(),
 			},
@@ -94,7 +92,7 @@ func ExampleBotsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HealthBot.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BotsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2021-06-10/examples/ResourceDeletionDelete.json
@@ -128,12 +126,16 @@ func ExampleBotsClient_ListByResourceGroup() {
 	client := armhealthbot.NewBotsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("HealthBot.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -147,12 +149,16 @@ func ExampleBotsClient_List() {
 	ctx := context.Background()
 	client := armhealthbot.NewBotsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("HealthBot.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// ConnectedClusterCreatePoller provides polling facilities until the operation reaches a terminal state.
-type ConnectedClusterCreatePoller struct {
+// ConnectedClusterClientCreatePoller provides polling facilities until the operation reaches a terminal state.
+type ConnectedClusterClientCreatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *ConnectedClusterCreatePoller) Done() bool {
+func (p *ConnectedClusterClientCreatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *ConnectedClusterCreatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *ConnectedClusterCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ConnectedClusterClientCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final ConnectedClusterCreateResponse will be returned.
-func (p *ConnectedClusterCreatePoller) FinalResponse(ctx context.Context) (ConnectedClusterCreateResponse, error) {
-	respType := ConnectedClusterCreateResponse{}
+// If the final GET succeeded then the final ConnectedClusterClientCreateResponse will be returned.
+func (p *ConnectedClusterClientCreatePoller) FinalResponse(ctx context.Context) (ConnectedClusterClientCreateResponse, error) {
+	respType := ConnectedClusterClientCreateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ConnectedCluster)
 	if err != nil {
-		return ConnectedClusterCreateResponse{}, err
+		return ConnectedClusterClientCreateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *ConnectedClusterCreatePoller) FinalResponse(ctx context.Context) (Conne
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *ConnectedClusterCreatePoller) ResumeToken() (string, error) {
+func (p *ConnectedClusterClientCreatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// ConnectedClusterDeletePoller provides polling facilities until the operation reaches a terminal state.
-type ConnectedClusterDeletePoller struct {
+// ConnectedClusterClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type ConnectedClusterClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *ConnectedClusterDeletePoller) Done() bool {
+func (p *ConnectedClusterClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *ConnectedClusterDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *ConnectedClusterDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ConnectedClusterClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final ConnectedClusterDeleteResponse will be returned.
-func (p *ConnectedClusterDeletePoller) FinalResponse(ctx context.Context) (ConnectedClusterDeleteResponse, error) {
-	respType := ConnectedClusterDeleteResponse{}
+// If the final GET succeeded then the final ConnectedClusterClientDeleteResponse will be returned.
+func (p *ConnectedClusterClientDeletePoller) FinalResponse(ctx context.Context) (ConnectedClusterClientDeleteResponse, error) {
+	respType := ConnectedClusterClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return ConnectedClusterDeleteResponse{}, err
+		return ConnectedClusterClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,6 +96,6 @@ func (p *ConnectedClusterDeletePoller) FinalResponse(ctx context.Context) (Conne
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *ConnectedClusterDeletePoller) ResumeToken() (string, error) {
+func (p *ConnectedClusterClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

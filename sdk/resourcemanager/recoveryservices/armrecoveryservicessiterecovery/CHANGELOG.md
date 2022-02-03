@@ -1,0 +1,3226 @@
+# Release History
+
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ReplicationNetworkMappingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationNetworkMappingsGetOptions)` to `(context.Context, string, string, string, *ReplicationNetworkMappingsClientGetOptions)`
+- Function `*ReplicationNetworkMappingsClient.Get` return value(s) have been changed from `(ReplicationNetworkMappingsGetResponse, error)` to `(ReplicationNetworkMappingsClientGetResponse, error)`
+- Function `*ReplicationFabricsClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationFabricsGetOptions)` to `(context.Context, string, *ReplicationFabricsClientGetOptions)`
+- Function `*ReplicationFabricsClient.Get` return value(s) have been changed from `(ReplicationFabricsGetResponse, error)` to `(ReplicationFabricsClientGetResponse, error)`
+- Function `*ReplicationStorageClassificationMappingsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, StorageClassificationMappingInput, *ReplicationStorageClassificationMappingsBeginCreateOptions)` to `(context.Context, string, string, string, StorageClassificationMappingInput, *ReplicationStorageClassificationMappingsClientBeginCreateOptions)`
+- Function `*ReplicationStorageClassificationMappingsClient.BeginCreate` return value(s) have been changed from `(ReplicationStorageClassificationMappingsCreatePollerResponse, error)` to `(ReplicationStorageClassificationMappingsClientCreatePollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.List` parameter(s) have been changed from `(*ReplicationProtectedItemsListOptions)` to `(*ReplicationProtectedItemsClientListOptions)`
+- Function `*ReplicationProtectedItemsClient.List` return value(s) have been changed from `(*ReplicationProtectedItemsListPager)` to `(*ReplicationProtectedItemsClientListPager)`
+- Function `*ReplicationProtectableItemsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationProtectableItemsGetOptions)` to `(context.Context, string, string, string, *ReplicationProtectableItemsClientGetOptions)`
+- Function `*ReplicationProtectableItemsClient.Get` return value(s) have been changed from `(ReplicationProtectableItemsGetResponse, error)` to `(ReplicationProtectableItemsClientGetResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdateMobilityService` parameter(s) have been changed from `(context.Context, string, string, string, UpdateMobilityServiceRequest, *ReplicationProtectedItemsBeginUpdateMobilityServiceOptions)` to `(context.Context, string, string, string, UpdateMobilityServiceRequest, *ReplicationProtectedItemsClientBeginUpdateMobilityServiceOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdateMobilityService` return value(s) have been changed from `(ReplicationProtectedItemsUpdateMobilityServicePollerResponse, error)` to `(ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse, error)`
+- Function `*ReplicationEligibilityResultsClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationEligibilityResultsGetOptions)` to `(context.Context, string, *ReplicationEligibilityResultsClientGetOptions)`
+- Function `*ReplicationEligibilityResultsClient.Get` return value(s) have been changed from `(ReplicationEligibilityResultsGetResponse, error)` to `(ReplicationEligibilityResultsClientGetResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.BeginFailoverCommit` parameter(s) have been changed from `(context.Context, string, *ReplicationRecoveryPlansBeginFailoverCommitOptions)` to `(context.Context, string, *ReplicationRecoveryPlansClientBeginFailoverCommitOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginFailoverCommit` return value(s) have been changed from `(ReplicationRecoveryPlansFailoverCommitPollerResponse, error)` to `(ReplicationRecoveryPlansClientFailoverCommitPollerResponse, error)`
+- Function `*ReplicationVaultHealthClient.BeginRefresh` parameter(s) have been changed from `(context.Context, *ReplicationVaultHealthBeginRefreshOptions)` to `(context.Context, *ReplicationVaultHealthClientBeginRefreshOptions)`
+- Function `*ReplicationVaultHealthClient.BeginRefresh` return value(s) have been changed from `(ReplicationVaultHealthRefreshPollerResponse, error)` to `(ReplicationVaultHealthClientRefreshPollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginTestFailover` parameter(s) have been changed from `(context.Context, string, string, string, TestFailoverInput, *ReplicationProtectedItemsBeginTestFailoverOptions)` to `(context.Context, string, string, string, TestFailoverInput, *ReplicationProtectedItemsClientBeginTestFailoverOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginTestFailover` return value(s) have been changed from `(ReplicationProtectedItemsTestFailoverPollerResponse, error)` to `(ReplicationProtectedItemsClientTestFailoverPollerResponse, error)`
+- Function `*ReplicationPoliciesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, *ReplicationPoliciesBeginDeleteOptions)` to `(context.Context, string, *ReplicationPoliciesClientBeginDeleteOptions)`
+- Function `*ReplicationPoliciesClient.BeginDelete` return value(s) have been changed from `(ReplicationPoliciesDeletePollerResponse, error)` to `(ReplicationPoliciesClientDeletePollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginPlannedFailover` parameter(s) have been changed from `(context.Context, string, string, string, PlannedFailoverInput, *ReplicationProtectedItemsBeginPlannedFailoverOptions)` to `(context.Context, string, string, string, PlannedFailoverInput, *ReplicationProtectedItemsClientBeginPlannedFailoverOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginPlannedFailover` return value(s) have been changed from `(ReplicationProtectedItemsPlannedFailoverPollerResponse, error)` to `(ReplicationProtectedItemsClientPlannedFailoverPollerResponse, error)`
+- Function `*MigrationRecoveryPointsClient.ListByReplicationMigrationItems` parameter(s) have been changed from `(string, string, string, *MigrationRecoveryPointsListByReplicationMigrationItemsOptions)` to `(string, string, string, *MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions)`
+- Function `*MigrationRecoveryPointsClient.ListByReplicationMigrationItems` return value(s) have been changed from `(*MigrationRecoveryPointsListByReplicationMigrationItemsPager)` to `(*MigrationRecoveryPointsClientListByReplicationMigrationItemsPager)`
+- Function `*ReplicationPoliciesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, UpdatePolicyInput, *ReplicationPoliciesBeginUpdateOptions)` to `(context.Context, string, UpdatePolicyInput, *ReplicationPoliciesClientBeginUpdateOptions)`
+- Function `*ReplicationPoliciesClient.BeginUpdate` return value(s) have been changed from `(ReplicationPoliciesUpdatePollerResponse, error)` to `(ReplicationPoliciesClientUpdatePollerResponse, error)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginPurge` parameter(s) have been changed from `(context.Context, string, string, *ReplicationRecoveryServicesProvidersBeginPurgeOptions)` to `(context.Context, string, string, *ReplicationRecoveryServicesProvidersClientBeginPurgeOptions)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginPurge` return value(s) have been changed from `(ReplicationRecoveryServicesProvidersPurgePollerResponse, error)` to `(ReplicationRecoveryServicesProvidersClientPurgePollerResponse, error)`
+- Function `*ReplicationProtectionIntentsClient.Create` parameter(s) have been changed from `(context.Context, string, CreateProtectionIntentInput, *ReplicationProtectionIntentsCreateOptions)` to `(context.Context, string, CreateProtectionIntentInput, *ReplicationProtectionIntentsClientCreateOptions)`
+- Function `*ReplicationProtectionIntentsClient.Create` return value(s) have been changed from `(ReplicationProtectionIntentsCreateResponse, error)` to `(ReplicationProtectionIntentsClientCreateResponse, error)`
+- Function `*ReplicationNetworkMappingsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, UpdateNetworkMappingInput, *ReplicationNetworkMappingsBeginUpdateOptions)` to `(context.Context, string, string, string, UpdateNetworkMappingInput, *ReplicationNetworkMappingsClientBeginUpdateOptions)`
+- Function `*ReplicationNetworkMappingsClient.BeginUpdate` return value(s) have been changed from `(ReplicationNetworkMappingsUpdatePollerResponse, error)` to `(ReplicationNetworkMappingsClientUpdatePollerResponse, error)`
+- Function `*ReplicationAlertSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationAlertSettingsGetOptions)` to `(context.Context, string, *ReplicationAlertSettingsClientGetOptions)`
+- Function `*ReplicationAlertSettingsClient.Get` return value(s) have been changed from `(ReplicationAlertSettingsGetResponse, error)` to `(ReplicationAlertSettingsClientGetResponse, error)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, UpdateProtectionContainerMappingInput, *ReplicationProtectionContainerMappingsBeginUpdateOptions)` to `(context.Context, string, string, string, UpdateProtectionContainerMappingInput, *ReplicationProtectionContainerMappingsClientBeginUpdateOptions)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginUpdate` return value(s) have been changed from `(ReplicationProtectionContainerMappingsUpdatePollerResponse, error)` to `(ReplicationProtectionContainerMappingsClientUpdatePollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginResolveHealthErrors` parameter(s) have been changed from `(context.Context, string, string, string, ResolveHealthInput, *ReplicationProtectedItemsBeginResolveHealthErrorsOptions)` to `(context.Context, string, string, string, ResolveHealthInput, *ReplicationProtectedItemsClientBeginResolveHealthErrorsOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginResolveHealthErrors` return value(s) have been changed from `(ReplicationProtectedItemsResolveHealthErrorsPollerResponse, error)` to `(ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse, error)`
+- Function `*ReplicationFabricsClient.List` parameter(s) have been changed from `(*ReplicationFabricsListOptions)` to `(*ReplicationFabricsClientListOptions)`
+- Function `*ReplicationFabricsClient.List` return value(s) have been changed from `(*ReplicationFabricsListPager)` to `(*ReplicationFabricsClientListPager)`
+- Function `*ReplicationJobsClient.BeginCancel` parameter(s) have been changed from `(context.Context, string, *ReplicationJobsBeginCancelOptions)` to `(context.Context, string, *ReplicationJobsClientBeginCancelOptions)`
+- Function `*ReplicationJobsClient.BeginCancel` return value(s) have been changed from `(ReplicationJobsCancelPollerResponse, error)` to `(ReplicationJobsClientCancelPollerResponse, error)`
+- Function `*ReplicationMigrationItemsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, UpdateMigrationItemInput, *ReplicationMigrationItemsBeginUpdateOptions)` to `(context.Context, string, string, string, UpdateMigrationItemInput, *ReplicationMigrationItemsClientBeginUpdateOptions)`
+- Function `*ReplicationMigrationItemsClient.BeginUpdate` return value(s) have been changed from `(ReplicationMigrationItemsUpdatePollerResponse, error)` to `(ReplicationMigrationItemsClientUpdatePollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginFailoverCancel` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationProtectedItemsBeginFailoverCancelOptions)` to `(context.Context, string, string, string, *ReplicationProtectedItemsClientBeginFailoverCancelOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginFailoverCancel` return value(s) have been changed from `(ReplicationProtectedItemsFailoverCancelPollerResponse, error)` to `(ReplicationProtectedItemsClientFailoverCancelPollerResponse, error)`
+- Function `*ReplicationFabricsClient.BeginCheckConsistency` parameter(s) have been changed from `(context.Context, string, *ReplicationFabricsBeginCheckConsistencyOptions)` to `(context.Context, string, *ReplicationFabricsClientBeginCheckConsistencyOptions)`
+- Function `*ReplicationFabricsClient.BeginCheckConsistency` return value(s) have been changed from `(ReplicationFabricsCheckConsistencyPollerResponse, error)` to `(ReplicationFabricsClientCheckConsistencyPollerResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.BeginTestFailoverCleanup` parameter(s) have been changed from `(context.Context, string, RecoveryPlanTestFailoverCleanupInput, *ReplicationRecoveryPlansBeginTestFailoverCleanupOptions)` to `(context.Context, string, RecoveryPlanTestFailoverCleanupInput, *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginTestFailoverCleanup` return value(s) have been changed from `(ReplicationRecoveryPlansTestFailoverCleanupPollerResponse, error)` to `(ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse, error)`
+- Function `*ReplicationProtectionContainersClient.List` parameter(s) have been changed from `(*ReplicationProtectionContainersListOptions)` to `(*ReplicationProtectionContainersClientListOptions)`
+- Function `*ReplicationProtectionContainersClient.List` return value(s) have been changed from `(*ReplicationProtectionContainersListPager)` to `(*ReplicationProtectionContainersClientListPager)`
+- Function `*ReplicationRecoveryPlansClient.BeginUnplannedFailover` parameter(s) have been changed from `(context.Context, string, RecoveryPlanUnplannedFailoverInput, *ReplicationRecoveryPlansBeginUnplannedFailoverOptions)` to `(context.Context, string, RecoveryPlanUnplannedFailoverInput, *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginUnplannedFailover` return value(s) have been changed from `(ReplicationRecoveryPlansUnplannedFailoverPollerResponse, error)` to `(ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse, error)`
+- Function `*ReplicationJobsClient.BeginExport` parameter(s) have been changed from `(context.Context, JobQueryParameter, *ReplicationJobsBeginExportOptions)` to `(context.Context, JobQueryParameter, *ReplicationJobsClientBeginExportOptions)`
+- Function `*ReplicationJobsClient.BeginExport` return value(s) have been changed from `(ReplicationJobsExportPollerResponse, error)` to `(ReplicationJobsClientExportPollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, EnableProtectionInput, *ReplicationProtectedItemsBeginCreateOptions)` to `(context.Context, string, string, string, EnableProtectionInput, *ReplicationProtectedItemsClientBeginCreateOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginCreate` return value(s) have been changed from `(ReplicationProtectedItemsCreatePollerResponse, error)` to `(ReplicationProtectedItemsClientCreatePollerResponse, error)`
+- Function `*ReplicationProtectionIntentsClient.List` parameter(s) have been changed from `(*ReplicationProtectionIntentsListOptions)` to `(*ReplicationProtectionIntentsClientListOptions)`
+- Function `*ReplicationProtectionIntentsClient.List` return value(s) have been changed from `(*ReplicationProtectionIntentsListPager)` to `(*ReplicationProtectionIntentsClientListPager)`
+- Function `*ReplicationProtectedItemsClient.BeginRepairReplication` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationProtectedItemsBeginRepairReplicationOptions)` to `(context.Context, string, string, string, *ReplicationProtectedItemsClientBeginRepairReplicationOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginRepairReplication` return value(s) have been changed from `(ReplicationProtectedItemsRepairReplicationPollerResponse, error)` to `(ReplicationProtectedItemsClientRepairReplicationPollerResponse, error)`
+- Function `*ReplicationStorageClassificationMappingsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationStorageClassificationMappingsBeginDeleteOptions)` to `(context.Context, string, string, string, *ReplicationStorageClassificationMappingsClientBeginDeleteOptions)`
+- Function `*ReplicationStorageClassificationMappingsClient.BeginDelete` return value(s) have been changed from `(ReplicationStorageClassificationMappingsDeletePollerResponse, error)` to `(ReplicationStorageClassificationMappingsClientDeletePollerResponse, error)`
+- Function `*ReplicationJobsClient.BeginResume` parameter(s) have been changed from `(context.Context, string, ResumeJobParams, *ReplicationJobsBeginResumeOptions)` to `(context.Context, string, ResumeJobParams, *ReplicationJobsClientBeginResumeOptions)`
+- Function `*ReplicationJobsClient.BeginResume` return value(s) have been changed from `(ReplicationJobsResumePollerResponse, error)` to `(ReplicationJobsClientResumePollerResponse, error)`
+- Function `*ReplicationMigrationItemsClient.BeginTestMigrateCleanup` parameter(s) have been changed from `(context.Context, string, string, string, TestMigrateCleanupInput, *ReplicationMigrationItemsBeginTestMigrateCleanupOptions)` to `(context.Context, string, string, string, TestMigrateCleanupInput, *ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions)`
+- Function `*ReplicationMigrationItemsClient.BeginTestMigrateCleanup` return value(s) have been changed from `(ReplicationMigrationItemsTestMigrateCleanupPollerResponse, error)` to `(ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse, error)`
+- Function `*ReplicationVaultSettingClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationVaultSettingGetOptions)` to `(context.Context, string, *ReplicationVaultSettingClientGetOptions)`
+- Function `*ReplicationVaultSettingClient.Get` return value(s) have been changed from `(ReplicationVaultSettingGetResponse, error)` to `(ReplicationVaultSettingClientGetResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, *ReplicationRecoveryPlansBeginDeleteOptions)` to `(context.Context, string, *ReplicationRecoveryPlansClientBeginDeleteOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginDelete` return value(s) have been changed from `(ReplicationRecoveryPlansDeletePollerResponse, error)` to `(ReplicationRecoveryPlansClientDeletePollerResponse, error)`
+- Function `*ReplicationRecoveryServicesProvidersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ReplicationRecoveryServicesProvidersGetOptions)` to `(context.Context, string, string, *ReplicationRecoveryServicesProvidersClientGetOptions)`
+- Function `*ReplicationRecoveryServicesProvidersClient.Get` return value(s) have been changed from `(ReplicationRecoveryServicesProvidersGetResponse, error)` to `(ReplicationRecoveryServicesProvidersClientGetResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginAddDisks` parameter(s) have been changed from `(context.Context, string, string, string, AddDisksInput, *ReplicationProtectedItemsBeginAddDisksOptions)` to `(context.Context, string, string, string, AddDisksInput, *ReplicationProtectedItemsClientBeginAddDisksOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginAddDisks` return value(s) have been changed from `(ReplicationProtectedItemsAddDisksPollerResponse, error)` to `(ReplicationProtectedItemsClientAddDisksPollerResponse, error)`
+- Function `*ReplicationProtectionIntentsClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationProtectionIntentsGetOptions)` to `(context.Context, string, *ReplicationProtectionIntentsClientGetOptions)`
+- Function `*ReplicationProtectionIntentsClient.Get` return value(s) have been changed from `(ReplicationProtectionIntentsGetResponse, error)` to `(ReplicationProtectionIntentsClientGetResponse, error)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, AddRecoveryServicesProviderInput, *ReplicationRecoveryServicesProvidersBeginCreateOptions)` to `(context.Context, string, string, AddRecoveryServicesProviderInput, *ReplicationRecoveryServicesProvidersClientBeginCreateOptions)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginCreate` return value(s) have been changed from `(ReplicationRecoveryServicesProvidersCreatePollerResponse, error)` to `(ReplicationRecoveryServicesProvidersClientCreatePollerResponse, error)`
+- Function `*ReplicationAlertSettingsClient.List` parameter(s) have been changed from `(*ReplicationAlertSettingsListOptions)` to `(*ReplicationAlertSettingsClientListOptions)`
+- Function `*ReplicationAlertSettingsClient.List` return value(s) have been changed from `(*ReplicationAlertSettingsListPager)` to `(*ReplicationAlertSettingsClientListPager)`
+- Function `*ReplicationStorageClassificationsClient.List` parameter(s) have been changed from `(*ReplicationStorageClassificationsListOptions)` to `(*ReplicationStorageClassificationsClientListOptions)`
+- Function `*ReplicationStorageClassificationsClient.List` return value(s) have been changed from `(*ReplicationStorageClassificationsListPager)` to `(*ReplicationStorageClassificationsClientListPager)`
+- Function `*ReplicationMigrationItemsClient.ListByReplicationProtectionContainers` parameter(s) have been changed from `(string, string, *ReplicationMigrationItemsListByReplicationProtectionContainersOptions)` to `(string, string, *ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions)`
+- Function `*ReplicationMigrationItemsClient.ListByReplicationProtectionContainers` return value(s) have been changed from `(*ReplicationMigrationItemsListByReplicationProtectionContainersPager)` to `(*ReplicationMigrationItemsClientListByReplicationProtectionContainersPager)`
+- Function `*ReplicationProtectedItemsClient.BeginReprotect` parameter(s) have been changed from `(context.Context, string, string, string, ReverseReplicationInput, *ReplicationProtectedItemsBeginReprotectOptions)` to `(context.Context, string, string, string, ReverseReplicationInput, *ReplicationProtectedItemsClientBeginReprotectOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginReprotect` return value(s) have been changed from `(ReplicationProtectedItemsReprotectPollerResponse, error)` to `(ReplicationProtectedItemsClientReprotectPollerResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.List` parameter(s) have been changed from `(*ReplicationRecoveryPlansListOptions)` to `(*ReplicationRecoveryPlansClientListOptions)`
+- Function `*ReplicationRecoveryPlansClient.List` return value(s) have been changed from `(*ReplicationRecoveryPlansListPager)` to `(*ReplicationRecoveryPlansClientListPager)`
+- Function `*ReplicationProtectedItemsClient.BeginFailoverCommit` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationProtectedItemsBeginFailoverCommitOptions)` to `(context.Context, string, string, string, *ReplicationProtectedItemsClientBeginFailoverCommitOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginFailoverCommit` return value(s) have been changed from `(ReplicationProtectedItemsFailoverCommitPollerResponse, error)` to `(ReplicationProtectedItemsClientFailoverCommitPollerResponse, error)`
+- Function `*ReplicationNetworksClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ReplicationNetworksGetOptions)` to `(context.Context, string, string, *ReplicationNetworksClientGetOptions)`
+- Function `*ReplicationNetworksClient.Get` return value(s) have been changed from `(ReplicationNetworksGetResponse, error)` to `(ReplicationNetworksClientGetResponse, error)`
+- Function `*ReplicationRecoveryServicesProvidersClient.List` parameter(s) have been changed from `(*ReplicationRecoveryServicesProvidersListOptions)` to `(*ReplicationRecoveryServicesProvidersClientListOptions)`
+- Function `*ReplicationRecoveryServicesProvidersClient.List` return value(s) have been changed from `(*ReplicationRecoveryServicesProvidersListPager)` to `(*ReplicationRecoveryServicesProvidersClientListPager)`
+- Function `*ReplicationRecoveryPlansClient.BeginFailoverCancel` parameter(s) have been changed from `(context.Context, string, *ReplicationRecoveryPlansBeginFailoverCancelOptions)` to `(context.Context, string, *ReplicationRecoveryPlansClientBeginFailoverCancelOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginFailoverCancel` return value(s) have been changed from `(ReplicationRecoveryPlansFailoverCancelPollerResponse, error)` to `(ReplicationRecoveryPlansClientFailoverCancelPollerResponse, error)`
+- Function `*ReplicationvCentersClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, AddVCenterRequest, *ReplicationvCentersBeginCreateOptions)` to `(context.Context, string, string, AddVCenterRequest, *ReplicationvCentersClientBeginCreateOptions)`
+- Function `*ReplicationvCentersClient.BeginCreate` return value(s) have been changed from `(ReplicationvCentersCreatePollerResponse, error)` to `(ReplicationvCentersClientCreatePollerResponse, error)`
+- Function `*ReplicationProtectionContainersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ReplicationProtectionContainersGetOptions)` to `(context.Context, string, string, *ReplicationProtectionContainersClientGetOptions)`
+- Function `*ReplicationProtectionContainersClient.Get` return value(s) have been changed from `(ReplicationProtectionContainersGetResponse, error)` to `(ReplicationProtectionContainersClientGetResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginApplyRecoveryPoint` parameter(s) have been changed from `(context.Context, string, string, string, ApplyRecoveryPointInput, *ReplicationProtectedItemsBeginApplyRecoveryPointOptions)` to `(context.Context, string, string, string, ApplyRecoveryPointInput, *ReplicationProtectedItemsClientBeginApplyRecoveryPointOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginApplyRecoveryPoint` return value(s) have been changed from `(ReplicationProtectedItemsApplyRecoveryPointPollerResponse, error)` to `(ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse, error)`
+- Function `*ReplicationFabricsClient.BeginMigrateToAAD` parameter(s) have been changed from `(context.Context, string, *ReplicationFabricsBeginMigrateToAADOptions)` to `(context.Context, string, *ReplicationFabricsClientBeginMigrateToAADOptions)`
+- Function `*ReplicationFabricsClient.BeginMigrateToAAD` return value(s) have been changed from `(ReplicationFabricsMigrateToAADPollerResponse, error)` to `(ReplicationFabricsClientMigrateToAADPollerResponse, error)`
+- Function `*ReplicationEventsClient.List` parameter(s) have been changed from `(*ReplicationEventsListOptions)` to `(*ReplicationEventsClientListOptions)`
+- Function `*ReplicationEventsClient.List` return value(s) have been changed from `(*ReplicationEventsListPager)` to `(*ReplicationEventsClientListPager)`
+- Function `*ReplicationRecoveryPlansClient.BeginReprotect` parameter(s) have been changed from `(context.Context, string, *ReplicationRecoveryPlansBeginReprotectOptions)` to `(context.Context, string, *ReplicationRecoveryPlansClientBeginReprotectOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginReprotect` return value(s) have been changed from `(ReplicationRecoveryPlansReprotectPollerResponse, error)` to `(ReplicationRecoveryPlansClientReprotectPollerResponse, error)`
+- Function `*ReplicationProtectionContainersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ReplicationProtectionContainersBeginDeleteOptions)` to `(context.Context, string, string, *ReplicationProtectionContainersClientBeginDeleteOptions)`
+- Function `*ReplicationProtectionContainersClient.BeginDelete` return value(s) have been changed from `(ReplicationProtectionContainersDeletePollerResponse, error)` to `(ReplicationProtectionContainersClientDeletePollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginTestFailoverCleanup` parameter(s) have been changed from `(context.Context, string, string, string, TestFailoverCleanupInput, *ReplicationProtectedItemsBeginTestFailoverCleanupOptions)` to `(context.Context, string, string, string, TestFailoverCleanupInput, *ReplicationProtectedItemsClientBeginTestFailoverCleanupOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginTestFailoverCleanup` return value(s) have been changed from `(ReplicationProtectedItemsTestFailoverCleanupPollerResponse, error)` to `(ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginRemoveDisks` parameter(s) have been changed from `(context.Context, string, string, string, RemoveDisksInput, *ReplicationProtectedItemsBeginRemoveDisksOptions)` to `(context.Context, string, string, string, RemoveDisksInput, *ReplicationProtectedItemsClientBeginRemoveDisksOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginRemoveDisks` return value(s) have been changed from `(ReplicationProtectedItemsRemoveDisksPollerResponse, error)` to `(ReplicationProtectedItemsClientRemoveDisksPollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationProtectedItemsGetOptions)` to `(context.Context, string, string, string, *ReplicationProtectedItemsClientGetOptions)`
+- Function `*ReplicationProtectedItemsClient.Get` return value(s) have been changed from `(ReplicationProtectedItemsGetResponse, error)` to `(ReplicationProtectedItemsClientGetResponse, error)`
+- Function `*ReplicationJobsClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, *ReplicationJobsBeginRestartOptions)` to `(context.Context, string, *ReplicationJobsClientBeginRestartOptions)`
+- Function `*ReplicationJobsClient.BeginRestart` return value(s) have been changed from `(ReplicationJobsRestartPollerResponse, error)` to `(ReplicationJobsClientRestartPollerResponse, error)`
+- Function `*TargetComputeSizesClient.ListByReplicationProtectedItems` parameter(s) have been changed from `(string, string, string, *TargetComputeSizesListByReplicationProtectedItemsOptions)` to `(string, string, string, *TargetComputeSizesClientListByReplicationProtectedItemsOptions)`
+- Function `*TargetComputeSizesClient.ListByReplicationProtectedItems` return value(s) have been changed from `(*TargetComputeSizesListByReplicationProtectedItemsPager)` to `(*TargetComputeSizesClientListByReplicationProtectedItemsPager)`
+- Function `*ReplicationNetworkMappingsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationNetworkMappingsBeginDeleteOptions)` to `(context.Context, string, string, string, *ReplicationNetworkMappingsClientBeginDeleteOptions)`
+- Function `*ReplicationNetworkMappingsClient.BeginDelete` return value(s) have been changed from `(ReplicationNetworkMappingsDeletePollerResponse, error)` to `(ReplicationNetworkMappingsClientDeletePollerResponse, error)`
+- Function `*ReplicationVaultHealthClient.Get` parameter(s) have been changed from `(context.Context, *ReplicationVaultHealthGetOptions)` to `(context.Context, *ReplicationVaultHealthClientGetOptions)`
+- Function `*ReplicationVaultHealthClient.Get` return value(s) have been changed from `(ReplicationVaultHealthGetResponse, error)` to `(ReplicationVaultHealthClientGetResponse, error)`
+- Function `*ReplicationProtectionContainersClient.BeginDiscoverProtectableItem` parameter(s) have been changed from `(context.Context, string, string, DiscoverProtectableItemRequest, *ReplicationProtectionContainersBeginDiscoverProtectableItemOptions)` to `(context.Context, string, string, DiscoverProtectableItemRequest, *ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions)`
+- Function `*ReplicationProtectionContainersClient.BeginDiscoverProtectableItem` return value(s) have been changed from `(ReplicationProtectionContainersDiscoverProtectableItemPollerResponse, error)` to `(ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse, error)`
+- Function `*ReplicationvCentersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ReplicationvCentersGetOptions)` to `(context.Context, string, string, *ReplicationvCentersClientGetOptions)`
+- Function `*ReplicationvCentersClient.Get` return value(s) have been changed from `(ReplicationvCentersGetResponse, error)` to `(ReplicationvCentersClientGetResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.BeginPlannedFailover` parameter(s) have been changed from `(context.Context, string, RecoveryPlanPlannedFailoverInput, *ReplicationRecoveryPlansBeginPlannedFailoverOptions)` to `(context.Context, string, RecoveryPlanPlannedFailoverInput, *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginPlannedFailover` return value(s) have been changed from `(ReplicationRecoveryPlansPlannedFailoverPollerResponse, error)` to `(ReplicationRecoveryPlansClientPlannedFailoverPollerResponse, error)`
+- Function `*ReplicationNetworksClient.List` parameter(s) have been changed from `(*ReplicationNetworksListOptions)` to `(*ReplicationNetworksClientListOptions)`
+- Function `*ReplicationNetworksClient.List` return value(s) have been changed from `(*ReplicationNetworksListPager)` to `(*ReplicationNetworksClientListPager)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginRefreshProvider` parameter(s) have been changed from `(context.Context, string, string, *ReplicationRecoveryServicesProvidersBeginRefreshProviderOptions)` to `(context.Context, string, string, *ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginRefreshProvider` return value(s) have been changed from `(ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse, error)` to `(ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse, error)`
+- Function `*SupportedOperatingSystemsClient.Get` parameter(s) have been changed from `(context.Context, *SupportedOperatingSystemsGetOptions)` to `(context.Context, *SupportedOperatingSystemsClientGetOptions)`
+- Function `*SupportedOperatingSystemsClient.Get` return value(s) have been changed from `(SupportedOperatingSystemsGetResponse, error)` to `(SupportedOperatingSystemsClientGetResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationRecoveryPlansGetOptions)` to `(context.Context, string, *ReplicationRecoveryPlansClientGetOptions)`
+- Function `*ReplicationRecoveryPlansClient.Get` return value(s) have been changed from `(ReplicationRecoveryPlansGetResponse, error)` to `(ReplicationRecoveryPlansClientGetResponse, error)`
+- Function `*ReplicationProtectionContainerMappingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationProtectionContainerMappingsGetOptions)` to `(context.Context, string, string, string, *ReplicationProtectionContainerMappingsClientGetOptions)`
+- Function `*ReplicationProtectionContainerMappingsClient.Get` return value(s) have been changed from `(ReplicationProtectionContainerMappingsGetResponse, error)` to `(ReplicationProtectionContainerMappingsClientGetResponse, error)`
+- Function `*RecoveryPointsClient.ListByReplicationProtectedItems` parameter(s) have been changed from `(string, string, string, *RecoveryPointsListByReplicationProtectedItemsOptions)` to `(string, string, string, *RecoveryPointsClientListByReplicationProtectedItemsOptions)`
+- Function `*RecoveryPointsClient.ListByReplicationProtectedItems` return value(s) have been changed from `(*RecoveryPointsListByReplicationProtectedItemsPager)` to `(*RecoveryPointsClientListByReplicationProtectedItemsPager)`
+- Function `*ReplicationProtectionContainersClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, CreateProtectionContainerInput, *ReplicationProtectionContainersBeginCreateOptions)` to `(context.Context, string, string, CreateProtectionContainerInput, *ReplicationProtectionContainersClientBeginCreateOptions)`
+- Function `*ReplicationProtectionContainersClient.BeginCreate` return value(s) have been changed from `(ReplicationProtectionContainersCreatePollerResponse, error)` to `(ReplicationProtectionContainersClientCreatePollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, DisableProtectionInput, *ReplicationProtectedItemsBeginDeleteOptions)` to `(context.Context, string, string, string, DisableProtectionInput, *ReplicationProtectedItemsClientBeginDeleteOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginDelete` return value(s) have been changed from `(ReplicationProtectedItemsDeletePollerResponse, error)` to `(ReplicationProtectedItemsClientDeletePollerResponse, error)`
+- Function `*ReplicationVaultSettingClient.List` parameter(s) have been changed from `(*ReplicationVaultSettingListOptions)` to `(*ReplicationVaultSettingClientListOptions)`
+- Function `*ReplicationVaultSettingClient.List` return value(s) have been changed from `(*ReplicationVaultSettingListPager)` to `(*ReplicationVaultSettingClientListPager)`
+- Function `*ReplicationvCentersClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, UpdateVCenterRequest, *ReplicationvCentersBeginUpdateOptions)` to `(context.Context, string, string, UpdateVCenterRequest, *ReplicationvCentersClientBeginUpdateOptions)`
+- Function `*ReplicationvCentersClient.BeginUpdate` return value(s) have been changed from `(ReplicationvCentersUpdatePollerResponse, error)` to `(ReplicationvCentersClientUpdatePollerResponse, error)`
+- Function `*ReplicationFabricsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, *ReplicationFabricsBeginDeleteOptions)` to `(context.Context, string, *ReplicationFabricsClientBeginDeleteOptions)`
+- Function `*ReplicationFabricsClient.BeginDelete` return value(s) have been changed from `(ReplicationFabricsDeletePollerResponse, error)` to `(ReplicationFabricsClientDeletePollerResponse, error)`
+- Function `*ReplicationvCentersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ReplicationvCentersBeginDeleteOptions)` to `(context.Context, string, string, *ReplicationvCentersClientBeginDeleteOptions)`
+- Function `*ReplicationvCentersClient.BeginDelete` return value(s) have been changed from `(ReplicationvCentersDeletePollerResponse, error)` to `(ReplicationvCentersClientDeletePollerResponse, error)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, RemoveProtectionContainerMappingInput, *ReplicationProtectionContainerMappingsBeginDeleteOptions)` to `(context.Context, string, string, string, RemoveProtectionContainerMappingInput, *ReplicationProtectionContainerMappingsClientBeginDeleteOptions)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginDelete` return value(s) have been changed from `(ReplicationProtectionContainerMappingsDeletePollerResponse, error)` to `(ReplicationProtectionContainerMappingsClientDeletePollerResponse, error)`
+- Function `*ReplicationProtectionContainersClient.BeginSwitchProtection` parameter(s) have been changed from `(context.Context, string, string, SwitchProtectionInput, *ReplicationProtectionContainersBeginSwitchProtectionOptions)` to `(context.Context, string, string, SwitchProtectionInput, *ReplicationProtectionContainersClientBeginSwitchProtectionOptions)`
+- Function `*ReplicationProtectionContainersClient.BeginSwitchProtection` return value(s) have been changed from `(ReplicationProtectionContainersSwitchProtectionPollerResponse, error)` to `(ReplicationProtectionContainersClientSwitchProtectionPollerResponse, error)`
+- Function `*ReplicationFabricsClient.BeginRenewCertificate` parameter(s) have been changed from `(context.Context, string, RenewCertificateInput, *ReplicationFabricsBeginRenewCertificateOptions)` to `(context.Context, string, RenewCertificateInput, *ReplicationFabricsClientBeginRenewCertificateOptions)`
+- Function `*ReplicationFabricsClient.BeginRenewCertificate` return value(s) have been changed from `(ReplicationFabricsRenewCertificatePollerResponse, error)` to `(ReplicationFabricsClientRenewCertificatePollerResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.BeginTestFailover` parameter(s) have been changed from `(context.Context, string, RecoveryPlanTestFailoverInput, *ReplicationRecoveryPlansBeginTestFailoverOptions)` to `(context.Context, string, RecoveryPlanTestFailoverInput, *ReplicationRecoveryPlansClientBeginTestFailoverOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginTestFailover` return value(s) have been changed from `(ReplicationRecoveryPlansTestFailoverPollerResponse, error)` to `(ReplicationRecoveryPlansClientTestFailoverPollerResponse, error)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginPurge` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationProtectionContainerMappingsBeginPurgeOptions)` to `(context.Context, string, string, string, *ReplicationProtectionContainerMappingsClientBeginPurgeOptions)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginPurge` return value(s) have been changed from `(ReplicationProtectionContainerMappingsPurgePollerResponse, error)` to `(ReplicationProtectionContainerMappingsClientPurgePollerResponse, error)`
+- Function `*ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications` parameter(s) have been changed from `(string, string, *ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsOptions)` to `(string, string, *ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions)`
+- Function `*ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications` return value(s) have been changed from `(*ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsPager)` to `(*ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsPager)`
+- Function `*ReplicationPoliciesClient.List` parameter(s) have been changed from `(*ReplicationPoliciesListOptions)` to `(*ReplicationPoliciesClientListOptions)`
+- Function `*ReplicationPoliciesClient.List` return value(s) have been changed from `(*ReplicationPoliciesListPager)` to `(*ReplicationPoliciesClientListPager)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdateAppliance` parameter(s) have been changed from `(context.Context, string, string, string, UpdateApplianceForReplicationProtectedItemInput, *ReplicationProtectedItemsBeginUpdateApplianceOptions)` to `(context.Context, string, string, string, UpdateApplianceForReplicationProtectedItemInput, *ReplicationProtectedItemsClientBeginUpdateApplianceOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdateAppliance` return value(s) have been changed from `(ReplicationProtectedItemsUpdateAppliancePollerResponse, error)` to `(ReplicationProtectedItemsClientUpdateAppliancePollerResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, CreateRecoveryPlanInput, *ReplicationRecoveryPlansBeginCreateOptions)` to `(context.Context, string, CreateRecoveryPlanInput, *ReplicationRecoveryPlansClientBeginCreateOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginCreate` return value(s) have been changed from `(ReplicationRecoveryPlansCreatePollerResponse, error)` to `(ReplicationRecoveryPlansClientCreatePollerResponse, error)`
+- Function `*ReplicationMigrationItemsClient.BeginMigrate` parameter(s) have been changed from `(context.Context, string, string, string, MigrateInput, *ReplicationMigrationItemsBeginMigrateOptions)` to `(context.Context, string, string, string, MigrateInput, *ReplicationMigrationItemsClientBeginMigrateOptions)`
+- Function `*ReplicationMigrationItemsClient.BeginMigrate` return value(s) have been changed from `(ReplicationMigrationItemsMigratePollerResponse, error)` to `(ReplicationMigrationItemsClientMigratePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*ReplicationJobsClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationJobsGetOptions)` to `(context.Context, string, *ReplicationJobsClientGetOptions)`
+- Function `*ReplicationJobsClient.Get` return value(s) have been changed from `(ReplicationJobsGetResponse, error)` to `(ReplicationJobsClientGetResponse, error)`
+- Function `*ReplicationNetworkMappingsClient.List` parameter(s) have been changed from `(*ReplicationNetworkMappingsListOptions)` to `(*ReplicationNetworkMappingsClientListOptions)`
+- Function `*ReplicationNetworkMappingsClient.List` return value(s) have been changed from `(*ReplicationNetworkMappingsListPager)` to `(*ReplicationNetworkMappingsClientListPager)`
+- Function `*ReplicationMigrationItemsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationMigrationItemsGetOptions)` to `(context.Context, string, string, string, *ReplicationMigrationItemsClientGetOptions)`
+- Function `*ReplicationMigrationItemsClient.Get` return value(s) have been changed from `(ReplicationMigrationItemsGetResponse, error)` to `(ReplicationMigrationItemsClientGetResponse, error)`
+- Function `*ReplicationMigrationItemsClient.BeginResync` parameter(s) have been changed from `(context.Context, string, string, string, ResyncInput, *ReplicationMigrationItemsBeginResyncOptions)` to `(context.Context, string, string, string, ResyncInput, *ReplicationMigrationItemsClientBeginResyncOptions)`
+- Function `*ReplicationMigrationItemsClient.BeginResync` return value(s) have been changed from `(ReplicationMigrationItemsResyncPollerResponse, error)` to `(ReplicationMigrationItemsClientResyncPollerResponse, error)`
+- Function `*ReplicationvCentersClient.ListByReplicationFabrics` parameter(s) have been changed from `(string, *ReplicationvCentersListByReplicationFabricsOptions)` to `(string, *ReplicationvCentersClientListByReplicationFabricsOptions)`
+- Function `*ReplicationvCentersClient.ListByReplicationFabrics` return value(s) have been changed from `(*ReplicationvCentersListByReplicationFabricsPager)` to `(*ReplicationvCentersClientListByReplicationFabricsPager)`
+- Function `*RecoveryPointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *RecoveryPointsGetOptions)` to `(context.Context, string, string, string, string, *RecoveryPointsClientGetOptions)`
+- Function `*RecoveryPointsClient.Get` return value(s) have been changed from `(RecoveryPointsGetResponse, error)` to `(RecoveryPointsClientGetResponse, error)`
+- Function `*ReplicationStorageClassificationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ReplicationStorageClassificationsGetOptions)` to `(context.Context, string, string, *ReplicationStorageClassificationsClientGetOptions)`
+- Function `*ReplicationStorageClassificationsClient.Get` return value(s) have been changed from `(ReplicationStorageClassificationsGetResponse, error)` to `(ReplicationStorageClassificationsClientGetResponse, error)`
+- Function `*ReplicationFabricsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, FabricCreationInput, *ReplicationFabricsBeginCreateOptions)` to `(context.Context, string, FabricCreationInput, *ReplicationFabricsClientBeginCreateOptions)`
+- Function `*ReplicationFabricsClient.BeginCreate` return value(s) have been changed from `(ReplicationFabricsCreatePollerResponse, error)` to `(ReplicationFabricsClientCreatePollerResponse, error)`
+- Function `*MigrationRecoveryPointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *MigrationRecoveryPointsGetOptions)` to `(context.Context, string, string, string, string, *MigrationRecoveryPointsClientGetOptions)`
+- Function `*MigrationRecoveryPointsClient.Get` return value(s) have been changed from `(MigrationRecoveryPointsGetResponse, error)` to `(MigrationRecoveryPointsClientGetResponse, error)`
+- Function `*ReplicationEventsClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationEventsGetOptions)` to `(context.Context, string, *ReplicationEventsClientGetOptions)`
+- Function `*ReplicationEventsClient.Get` return value(s) have been changed from `(ReplicationEventsGetResponse, error)` to `(ReplicationEventsClientGetResponse, error)`
+- Function `*ReplicationMigrationItemsClient.List` parameter(s) have been changed from `(*ReplicationMigrationItemsListOptions)` to `(*ReplicationMigrationItemsClientListOptions)`
+- Function `*ReplicationMigrationItemsClient.List` return value(s) have been changed from `(*ReplicationMigrationItemsListPager)` to `(*ReplicationMigrationItemsClientListPager)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, CreateProtectionContainerMappingInput, *ReplicationProtectionContainerMappingsBeginCreateOptions)` to `(context.Context, string, string, string, CreateProtectionContainerMappingInput, *ReplicationProtectionContainerMappingsClientBeginCreateOptions)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginCreate` return value(s) have been changed from `(ReplicationProtectionContainerMappingsCreatePollerResponse, error)` to `(ReplicationProtectionContainerMappingsClientCreatePollerResponse, error)`
+- Function `*ReplicationProtectableItemsClient.ListByReplicationProtectionContainers` parameter(s) have been changed from `(string, string, *ReplicationProtectableItemsListByReplicationProtectionContainersOptions)` to `(string, string, *ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions)`
+- Function `*ReplicationProtectableItemsClient.ListByReplicationProtectionContainers` return value(s) have been changed from `(*ReplicationProtectableItemsListByReplicationProtectionContainersPager)` to `(*ReplicationProtectableItemsClientListByReplicationProtectionContainersPager)`
+- Function `*ReplicationStorageClassificationMappingsClient.List` parameter(s) have been changed from `(*ReplicationStorageClassificationMappingsListOptions)` to `(*ReplicationStorageClassificationMappingsClientListOptions)`
+- Function `*ReplicationStorageClassificationMappingsClient.List` return value(s) have been changed from `(*ReplicationStorageClassificationMappingsListPager)` to `(*ReplicationStorageClassificationMappingsClientListPager)`
+- Function `*ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics` parameter(s) have been changed from `(string, *ReplicationRecoveryServicesProvidersListByReplicationFabricsOptions)` to `(string, *ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions)`
+- Function `*ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics` return value(s) have been changed from `(*ReplicationRecoveryServicesProvidersListByReplicationFabricsPager)` to `(*ReplicationRecoveryServicesProvidersClientListByReplicationFabricsPager)`
+- Function `*ReplicationStorageClassificationMappingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationStorageClassificationMappingsGetOptions)` to `(context.Context, string, string, string, *ReplicationStorageClassificationMappingsClientGetOptions)`
+- Function `*ReplicationStorageClassificationMappingsClient.Get` return value(s) have been changed from `(ReplicationStorageClassificationMappingsGetResponse, error)` to `(ReplicationStorageClassificationMappingsClientGetResponse, error)`
+- Function `*ReplicationNetworksClient.ListByReplicationFabrics` parameter(s) have been changed from `(string, *ReplicationNetworksListByReplicationFabricsOptions)` to `(string, *ReplicationNetworksClientListByReplicationFabricsOptions)`
+- Function `*ReplicationNetworksClient.ListByReplicationFabrics` return value(s) have been changed from `(*ReplicationNetworksListByReplicationFabricsPager)` to `(*ReplicationNetworksClientListByReplicationFabricsPager)`
+- Function `*ReplicationJobsClient.List` parameter(s) have been changed from `(*ReplicationJobsListOptions)` to `(*ReplicationJobsClientListOptions)`
+- Function `*ReplicationJobsClient.List` return value(s) have been changed from `(*ReplicationJobsListPager)` to `(*ReplicationJobsClientListPager)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ReplicationRecoveryServicesProvidersBeginDeleteOptions)` to `(context.Context, string, string, *ReplicationRecoveryServicesProvidersClientBeginDeleteOptions)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginDelete` return value(s) have been changed from `(ReplicationRecoveryServicesProvidersDeletePollerResponse, error)` to `(ReplicationRecoveryServicesProvidersClientDeletePollerResponse, error)`
+- Function `*ReplicationFabricsClient.BeginPurge` parameter(s) have been changed from `(context.Context, string, *ReplicationFabricsBeginPurgeOptions)` to `(context.Context, string, *ReplicationFabricsClientBeginPurgeOptions)`
+- Function `*ReplicationFabricsClient.BeginPurge` return value(s) have been changed from `(ReplicationFabricsPurgePollerResponse, error)` to `(ReplicationFabricsClientPurgePollerResponse, error)`
+- Function `*ReplicationStorageClassificationsClient.ListByReplicationFabrics` parameter(s) have been changed from `(string, *ReplicationStorageClassificationsListByReplicationFabricsOptions)` to `(string, *ReplicationStorageClassificationsClientListByReplicationFabricsOptions)`
+- Function `*ReplicationStorageClassificationsClient.ListByReplicationFabrics` return value(s) have been changed from `(*ReplicationStorageClassificationsListByReplicationFabricsPager)` to `(*ReplicationStorageClassificationsClientListByReplicationFabricsPager)`
+- Function `*ReplicationPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, *ReplicationPoliciesGetOptions)` to `(context.Context, string, *ReplicationPoliciesClientGetOptions)`
+- Function `*ReplicationPoliciesClient.Get` return value(s) have been changed from `(ReplicationPoliciesGetResponse, error)` to `(ReplicationPoliciesClientGetResponse, error)`
+- Function `*ReplicationLogicalNetworksClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ReplicationLogicalNetworksGetOptions)` to `(context.Context, string, string, *ReplicationLogicalNetworksClientGetOptions)`
+- Function `*ReplicationLogicalNetworksClient.Get` return value(s) have been changed from `(ReplicationLogicalNetworksGetResponse, error)` to `(ReplicationLogicalNetworksClientGetResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, UpdateReplicationProtectedItemInput, *ReplicationProtectedItemsBeginUpdateOptions)` to `(context.Context, string, string, string, UpdateReplicationProtectedItemInput, *ReplicationProtectedItemsClientBeginUpdateOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdate` return value(s) have been changed from `(ReplicationProtectedItemsUpdatePollerResponse, error)` to `(ReplicationProtectedItemsClientUpdatePollerResponse, error)`
+- Function `*ReplicationEligibilityResultsClient.List` parameter(s) have been changed from `(context.Context, string, *ReplicationEligibilityResultsListOptions)` to `(context.Context, string, *ReplicationEligibilityResultsClientListOptions)`
+- Function `*ReplicationEligibilityResultsClient.List` return value(s) have been changed from `(ReplicationEligibilityResultsListResponse, error)` to `(ReplicationEligibilityResultsClientListResponse, error)`
+- Function `*ReplicationNetworkMappingsClient.ListByReplicationNetworks` parameter(s) have been changed from `(string, string, *ReplicationNetworkMappingsListByReplicationNetworksOptions)` to `(string, string, *ReplicationNetworkMappingsClientListByReplicationNetworksOptions)`
+- Function `*ReplicationNetworkMappingsClient.ListByReplicationNetworks` return value(s) have been changed from `(*ReplicationNetworkMappingsListByReplicationNetworksPager)` to `(*ReplicationNetworkMappingsClientListByReplicationNetworksPager)`
+- Function `*ReplicationMigrationItemsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, EnableMigrationInput, *ReplicationMigrationItemsBeginCreateOptions)` to `(context.Context, string, string, string, EnableMigrationInput, *ReplicationMigrationItemsClientBeginCreateOptions)`
+- Function `*ReplicationMigrationItemsClient.BeginCreate` return value(s) have been changed from `(ReplicationMigrationItemsCreatePollerResponse, error)` to `(ReplicationMigrationItemsClientCreatePollerResponse, error)`
+- Function `*ReplicationProtectionContainerMappingsClient.List` parameter(s) have been changed from `(*ReplicationProtectionContainerMappingsListOptions)` to `(*ReplicationProtectionContainerMappingsClientListOptions)`
+- Function `*ReplicationProtectionContainerMappingsClient.List` return value(s) have been changed from `(*ReplicationProtectionContainerMappingsListPager)` to `(*ReplicationProtectionContainerMappingsClientListPager)`
+- Function `*ReplicationProtectedItemsClient.BeginPurge` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationProtectedItemsBeginPurgeOptions)` to `(context.Context, string, string, string, *ReplicationProtectedItemsClientBeginPurgeOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginPurge` return value(s) have been changed from `(ReplicationProtectedItemsPurgePollerResponse, error)` to `(ReplicationProtectedItemsClientPurgePollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.ListByReplicationProtectionContainers` parameter(s) have been changed from `(string, string, *ReplicationProtectedItemsListByReplicationProtectionContainersOptions)` to `(string, string, *ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions)`
+- Function `*ReplicationProtectedItemsClient.ListByReplicationProtectionContainers` return value(s) have been changed from `(*ReplicationProtectedItemsListByReplicationProtectionContainersPager)` to `(*ReplicationProtectedItemsClientListByReplicationProtectionContainersPager)`
+- Function `*ReplicationLogicalNetworksClient.ListByReplicationFabrics` parameter(s) have been changed from `(string, *ReplicationLogicalNetworksListByReplicationFabricsOptions)` to `(string, *ReplicationLogicalNetworksClientListByReplicationFabricsOptions)`
+- Function `*ReplicationLogicalNetworksClient.ListByReplicationFabrics` return value(s) have been changed from `(*ReplicationLogicalNetworksListByReplicationFabricsPager)` to `(*ReplicationLogicalNetworksClientListByReplicationFabricsPager)`
+- Function `*ReplicationPoliciesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, CreatePolicyInput, *ReplicationPoliciesBeginCreateOptions)` to `(context.Context, string, CreatePolicyInput, *ReplicationPoliciesClientBeginCreateOptions)`
+- Function `*ReplicationPoliciesClient.BeginCreate` return value(s) have been changed from `(ReplicationPoliciesCreatePollerResponse, error)` to `(ReplicationPoliciesClientCreatePollerResponse, error)`
+- Function `*ReplicationMigrationItemsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *ReplicationMigrationItemsBeginDeleteOptions)` to `(context.Context, string, string, string, *ReplicationMigrationItemsClientBeginDeleteOptions)`
+- Function `*ReplicationMigrationItemsClient.BeginDelete` return value(s) have been changed from `(ReplicationMigrationItemsDeletePollerResponse, error)` to `(ReplicationMigrationItemsClientDeletePollerResponse, error)`
+- Function `*ReplicationNetworkMappingsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, CreateNetworkMappingInput, *ReplicationNetworkMappingsBeginCreateOptions)` to `(context.Context, string, string, string, CreateNetworkMappingInput, *ReplicationNetworkMappingsClientBeginCreateOptions)`
+- Function `*ReplicationNetworkMappingsClient.BeginCreate` return value(s) have been changed from `(ReplicationNetworkMappingsCreatePollerResponse, error)` to `(ReplicationNetworkMappingsClientCreatePollerResponse, error)`
+- Function `*ReplicationFabricsClient.BeginReassociateGateway` parameter(s) have been changed from `(context.Context, string, FailoverProcessServerRequest, *ReplicationFabricsBeginReassociateGatewayOptions)` to `(context.Context, string, FailoverProcessServerRequest, *ReplicationFabricsClientBeginReassociateGatewayOptions)`
+- Function `*ReplicationFabricsClient.BeginReassociateGateway` return value(s) have been changed from `(ReplicationFabricsReassociateGatewayPollerResponse, error)` to `(ReplicationFabricsClientReassociateGatewayPollerResponse, error)`
+- Function `*ReplicationRecoveryPlansClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, UpdateRecoveryPlanInput, *ReplicationRecoveryPlansBeginUpdateOptions)` to `(context.Context, string, UpdateRecoveryPlanInput, *ReplicationRecoveryPlansClientBeginUpdateOptions)`
+- Function `*ReplicationRecoveryPlansClient.BeginUpdate` return value(s) have been changed from `(ReplicationRecoveryPlansUpdatePollerResponse, error)` to `(ReplicationRecoveryPlansClientUpdatePollerResponse, error)`
+- Function `*ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers` parameter(s) have been changed from `(string, string, *ReplicationProtectionContainerMappingsListByReplicationProtectionContainersOptions)` to `(string, string, *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions)`
+- Function `*ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers` return value(s) have been changed from `(*ReplicationProtectionContainerMappingsListByReplicationProtectionContainersPager)` to `(*ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersPager)`
+- Function `*ReplicationvCentersClient.List` parameter(s) have been changed from `(*ReplicationvCentersListOptions)` to `(*ReplicationvCentersClientListOptions)`
+- Function `*ReplicationvCentersClient.List` return value(s) have been changed from `(*ReplicationvCentersListPager)` to `(*ReplicationvCentersClientListPager)`
+- Function `*ReplicationMigrationItemsClient.BeginTestMigrate` parameter(s) have been changed from `(context.Context, string, string, string, TestMigrateInput, *ReplicationMigrationItemsBeginTestMigrateOptions)` to `(context.Context, string, string, string, TestMigrateInput, *ReplicationMigrationItemsClientBeginTestMigrateOptions)`
+- Function `*ReplicationMigrationItemsClient.BeginTestMigrate` return value(s) have been changed from `(ReplicationMigrationItemsTestMigratePollerResponse, error)` to `(ReplicationMigrationItemsClientTestMigratePollerResponse, error)`
+- Function `*ReplicationProtectionContainersClient.ListByReplicationFabrics` parameter(s) have been changed from `(string, *ReplicationProtectionContainersListByReplicationFabricsOptions)` to `(string, *ReplicationProtectionContainersClientListByReplicationFabricsOptions)`
+- Function `*ReplicationProtectionContainersClient.ListByReplicationFabrics` return value(s) have been changed from `(*ReplicationProtectionContainersListByReplicationFabricsPager)` to `(*ReplicationProtectionContainersClientListByReplicationFabricsPager)`
+- Function `*ReplicationVaultSettingClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, VaultSettingCreationInput, *ReplicationVaultSettingBeginCreateOptions)` to `(context.Context, string, VaultSettingCreationInput, *ReplicationVaultSettingClientBeginCreateOptions)`
+- Function `*ReplicationVaultSettingClient.BeginCreate` return value(s) have been changed from `(ReplicationVaultSettingCreatePollerResponse, error)` to `(ReplicationVaultSettingClientCreatePollerResponse, error)`
+- Function `*ReplicationProtectedItemsClient.BeginUnplannedFailover` parameter(s) have been changed from `(context.Context, string, string, string, UnplannedFailoverInput, *ReplicationProtectedItemsBeginUnplannedFailoverOptions)` to `(context.Context, string, string, string, UnplannedFailoverInput, *ReplicationProtectedItemsClientBeginUnplannedFailoverOptions)`
+- Function `*ReplicationProtectedItemsClient.BeginUnplannedFailover` return value(s) have been changed from `(ReplicationProtectedItemsUnplannedFailoverPollerResponse, error)` to `(ReplicationProtectedItemsClientUnplannedFailoverPollerResponse, error)`
+- Function `*ReplicationAlertSettingsClient.Create` parameter(s) have been changed from `(context.Context, string, ConfigureAlertRequest, *ReplicationAlertSettingsCreateOptions)` to `(context.Context, string, ConfigureAlertRequest, *ReplicationAlertSettingsClientCreateOptions)`
+- Function `*ReplicationAlertSettingsClient.Create` return value(s) have been changed from `(ReplicationAlertSettingsCreateResponse, error)` to `(ReplicationAlertSettingsClientCreateResponse, error)`
+- Function `*ReplicationProtectedItemsRemoveDisksPoller.FinalResponse` has been removed
+- Function `*ReplicationMigrationItemsListByReplicationProtectionContainersPager.PageResponse` has been removed
+- Function `*ReplicationStorageClassificationMappingsDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryServicesProvidersCreatePoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsPlannedFailoverPoller.Done` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverCleanupPoller.Poll` has been removed
+- Function `*ReplicationRecoveryPlansListPager.PageResponse` has been removed
+- Function `*ReplicationFabricsDeletePoller.Done` has been removed
+- Function `*ReplicationvCentersListByReplicationFabricsPager.PageResponse` has been removed
+- Function `*ReplicationProtectionContainersDiscoverProtectableItemPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsUpdatePoller.Poll` has been removed
+- Function `ReplicationProtectedItemsAddDisksPollerResponse.PollUntilDone` has been removed
+- Function `*FabricSpecificDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectedItemsUpdateMobilityServicePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectionContainersDiscoverProtectableItemPoller.Done` has been removed
+- Function `*ReplicationStorageClassificationMappingsDeletePoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsResolveHealthErrorsPoller.FinalResponse` has been removed
+- Function `*FabricSpecificUpdateNetworkMappingInput.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionContainersDeletePoller.ResumeToken` has been removed
+- Function `*ReplicationFabricsRenewCertificatePoller.Done` has been removed
+- Function `*ReplicationFabricsListPager.NextPage` has been removed
+- Function `*ReplicationFabricsReassociateGatewayPoller.ResumeToken` has been removed
+- Function `*ReplicationProtectionContainersSwitchProtectionPoller.Done` has been removed
+- Function `*UpdateMigrationItemProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectedItemsResolveHealthErrorsPoller.Done` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverCleanupPoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryPlansReprotectPoller.Poll` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainerMappingsPurgePoller.ResumeToken` has been removed
+- Function `*ReplicationNetworkMappingsCreatePoller.Done` has been removed
+- Function `*NetworkMappingFabricSpecificSettings.UnmarshalJSON` has been removed
+- Function `*ReplicationMigrationItemsResyncPoller.Done` has been removed
+- Function `*UpdateReplicationProtectedItemProviderInput.UnmarshalJSON` has been removed
+- Function `*ReplicationPoliciesCreatePoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsApplyRecoveryPointPoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryPlansUnplannedFailoverPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsAddDisksPoller.Done` has been removed
+- Function `*ReplicationStorageClassificationMappingsListPager.Err` has been removed
+- Function `*ReplicationProtectionContainersCreatePoller.Poll` has been removed
+- Function `*ReplicationRecoveryPlansUpdatePoller.Done` has been removed
+- Function `ReplicationMigrationItemsResyncPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryServicesProvidersDeletePoller.ResumeToken` has been removed
+- Function `*ProviderSpecificRecoveryPointDetails.UnmarshalJSON` has been removed
+- Function `ReplicationRecoveryPlansUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProviderSpecificSettings.UnmarshalJSON` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverCleanupPollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryServicesProvidersDeletePoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsFailoverCancelPoller.Poll` has been removed
+- Function `*ReplicationEventsListPager.Err` has been removed
+- Function `ReplicationProtectedItemsReprotectPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationFabricsDeletePollerResponse.Resume` has been removed
+- Function `*RecoveryPlanActionDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationStorageClassificationsListPager.Err` has been removed
+- Function `*ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsPager.PageResponse` has been removed
+- Function `*ReplicationProtectedItemsReprotectPoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverPoller.Poll` has been removed
+- Function `*ReplicationProtectionContainersCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryPlansDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationFabricsCreatePoller.Done` has been removed
+- Function `*ReplicationProtectedItemsRepairReplicationPoller.FinalResponse` has been removed
+- Function `*ReplicationMigrationItemsMigratePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsRemoveDisksPoller.Poll` has been removed
+- Function `ReplicationProtectedItemsRemoveDisksPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsRemoveDisksPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainerMappingsUpdatePoller.FinalResponse` has been removed
+- Function `*ReplicationvCentersUpdatePoller.Poll` has been removed
+- Function `*ReplicationPoliciesDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationJobsResumePoller.FinalResponse` has been removed
+- Function `*ReplicationMigrationItemsTestMigrateCleanupPollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryPlansUnplannedFailoverPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsUpdateAppliancePoller.Done` has been removed
+- Function `ReplicationMigrationItemsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*PlannedFailoverProviderSpecificFailoverInput.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionContainersSwitchProtectionPoller.ResumeToken` has been removed
+- Function `*ReplicationProviderSpecificUpdateContainerMappingInput.UnmarshalJSON` has been removed
+- Function `*ReplicationPoliciesUpdatePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsUnplannedFailoverPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectionIntentsListPager.Err` has been removed
+- Function `*ReplicationProtectionContainerMappingsListPager.PageResponse` has been removed
+- Function `*ReplicationFabricsCreatePoller.Poll` has been removed
+- Function `*RecoveryPlanProviderSpecificFailoverInput.UnmarshalJSON` has been removed
+- Function `*ReplicationMigrationItemsCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryServicesProvidersCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationFabricsRenewCertificatePoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverPoller.FinalResponse` has been removed
+- Function `ReplicationJobsRestartPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationFabricsListPager.Err` has been removed
+- Function `*ReplicationPoliciesListPager.Err` has been removed
+- Function `*ReplicationProtectedItemsPlannedFailoverPoller.ResumeToken` has been removed
+- Function `ReplicationFabricsRenewCertificatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsUpdateMobilityServicePoller.Poll` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverPoller.Poll` has been removed
+- Function `*ReplicationProtectionContainersSwitchProtectionPollerResponse.Resume` has been removed
+- Function `*ReplicationvCentersListPager.NextPage` has been removed
+- Function `*ReplicationProtectionContainersDeletePoller.Done` has been removed
+- Function `*ReplicationVaultSettingCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationEventsListPager.NextPage` has been removed
+- Function `*ReplicationProtectedItemsUpdateAppliancePollerResponse.Resume` has been removed
+- Function `ReplicationMigrationItemsMigratePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationMigrationItemsTestMigratePoller.Poll` has been removed
+- Function `*ProtectionContainerMappingProviderSpecificDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationMigrationItemsCreatePoller.Done` has been removed
+- Function `*ReplicationProtectionContainerMappingsUpdatePollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryPlansPlannedFailoverPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsRemoveDisksPoller.Done` has been removed
+- Function `*ReplicationProtectedItemsUpdatePoller.Done` has been removed
+- Function `*ReplicationFabricsListPager.PageResponse` has been removed
+- Function `*ReplicationJobsCancelPoller.Poll` has been removed
+- Function `ReplicationFabricsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationStorageClassificationMappingsCreatePoller.Poll` has been removed
+- Function `*ReplicationRecoveryPlansUpdatePoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryServicesProvidersPurgePoller.Poll` has been removed
+- Function `*ReplicationJobsExportPollerResponse.Resume` has been removed
+- Function `*ReplicationStorageClassificationMappingsListPager.PageResponse` has been removed
+- Function `*ReplicationProtectionContainersDiscoverProtectableItemPoller.FinalResponse` has been removed
+- Function `*ReplicationFabricsDeletePoller.Poll` has been removed
+- Function `*JobDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationNetworkMappingsUpdatePoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsUpdateMobilityServicePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainerMappingsPurgePoller.Poll` has been removed
+- Function `*TestFailoverProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionContainerMappingsCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationVaultHealthRefreshPoller.Poll` has been removed
+- Function `*ReplicationStorageClassificationMappingsCreatePoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryPlansPlannedFailoverPoller.Poll` has been removed
+- Function `*ReplicationNetworksListPager.NextPage` has been removed
+- Function `*ReplicationProtectedItemsCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainerMappingsPurgePoller.Done` has been removed
+- Function `*ReplicationPoliciesCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationFabricsPurgePoller.ResumeToken` has been removed
+- Function `*ReplicationProtectionContainersDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectionContainerMappingsUpdatePoller.Poll` has been removed
+- Function `*ReplicationNetworkMappingsUpdatePoller.Done` has been removed
+- Function `*ReplicationProtectionContainersDiscoverProtectableItemPoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryServicesProvidersRefreshProviderPoller.Done` has been removed
+- Function `ReplicationProtectedItemsPurgePollerResponse.PollUntilDone` has been removed
+- Function `ReplicationRecoveryPlansReprotectPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsPurgePoller.ResumeToken` has been removed
+- Function `*ReplicationMigrationItemsMigratePollerResponse.Resume` has been removed
+- Function `*ReplicationvCentersCreatePoller.Done` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverPoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsFailoverCommitPoller.FinalResponse` has been removed
+- Function `*ReplicationFabricsReassociateGatewayPoller.Done` has been removed
+- Function `*ReplicationProtectableItemsListByReplicationProtectionContainersPager.PageResponse` has been removed
+- Function `ReplicationJobsExportPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationMigrationItemsUpdatePoller.Done` has been removed
+- Function `ReplicationRecoveryPlansTestFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationNetworkMappingsCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsUpdateAppliancePoller.FinalResponse` has been removed
+- Function `ReplicationRecoveryServicesProvidersDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RecoveryPointsListByReplicationProtectedItemsPager.NextPage` has been removed
+- Function `*ReplicationProtectedItemsCreatePoller.FinalResponse` has been removed
+- Function `*PolicyProviderSpecificDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionIntentsListPager.NextPage` has been removed
+- Function `*ReplicationFabricsCheckConsistencyPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainerMappingsPurgePollerResponse.Resume` has been removed
+- Function `ReplicationJobsCancelPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryServicesProvidersListPager.Err` has been removed
+- Function `*ReplicationProtectedItemsPlannedFailoverPoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsFailoverCommitPoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsAddDisksPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsDeletePoller.Done` has been removed
+- Function `*ReplicationRecoveryServicesProvidersDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectionContainersCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationMigrationItemsResyncPoller.ResumeToken` has been removed
+- Function `*TargetComputeSizesListByReplicationProtectedItemsPager.Err` has been removed
+- Function `*ReplicationRecoveryPlansPlannedFailoverPoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCancelPoller.Poll` has been removed
+- Function `ReplicationProtectionContainerMappingsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationAlertSettingsListPager.NextPage` has been removed
+- Function `ReplicationRecoveryPlansFailoverCancelPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryPlansPlannedFailoverPoller.Done` has been removed
+- Function `*ReplicationProtectedItemsFailoverCancelPollerResponse.Resume` has been removed
+- Function `*ReplicationFabricsReassociateGatewayPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsListByReplicationProtectionContainersPager.NextPage` has been removed
+- Function `*ReplicationProtectionContainerMappingsDeletePoller.Done` has been removed
+- Function `*ReplicationFabricsPurgePoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverPoller.ResumeToken` has been removed
+- Function `*PolicyProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionContainerMappingsListByReplicationProtectionContainersPager.NextPage` has been removed
+- Function `*ReplicationMigrationItemsUpdatePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsResolveHealthErrorsPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainerMappingsDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationMigrationItemsUpdatePoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsUpdateAppliancePoller.Poll` has been removed
+- Function `*ReplicationNetworkMappingsDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsListByReplicationProtectionContainersPager.PageResponse` has been removed
+- Function `*ReplicationProtectedItemsFailoverCancelPoller.Done` has been removed
+- Function `*AddDisksProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationNetworkMappingsUpdatePoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryServicesProvidersRefreshProviderPoller.Poll` has been removed
+- Function `*ReplicationvCentersDeletePoller.Done` has been removed
+- Function `ReplicationProtectedItemsUpdateMobilityServicePollerResponse.PollUntilDone` has been removed
+- Function `*DisableProtectionProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationVaultHealthRefreshPoller.ResumeToken` has been removed
+- Function `*MigrationRecoveryPointsListByReplicationMigrationItemsPager.PageResponse` has been removed
+- Function `*ReplicationVaultSettingCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsApplyRecoveryPointPollerResponse.Resume` has been removed
+- Function `ReplicationPoliciesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsDeletePoller.FinalResponse` has been removed
+- Function `ReplicationMigrationItemsTestMigratePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryServicesProvidersListPager.NextPage` has been removed
+- Function `ReplicationProtectedItemsFailoverCommitPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationVaultHealthRefreshPoller.Done` has been removed
+- Function `*ReplicationFabricsRenewCertificatePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainerMappingsPurgePoller.FinalResponse` has been removed
+- Function `ReplicationRecoveryPlansCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionContainerMappingsListPager.Err` has been removed
+- Function `*ReplicationFabricsPurgePoller.Done` has been removed
+- Function `*ReplicationNetworkMappingsDeletePoller.Done` has been removed
+- Function `*ReplicationNetworksListPager.Err` has been removed
+- Function `*ReplicationProtectableItemsListByReplicationProtectionContainersPager.NextPage` has been removed
+- Function `*ReplicationProviderSpecificContainerCreationInput.UnmarshalJSON` has been removed
+- Function `*ReplicationPoliciesCreatePoller.Done` has been removed
+- Function `*ReplicationJobsRestartPoller.Done` has been removed
+- Function `*ReplicationMigrationItemsDeletePoller.ResumeToken` has been removed
+- Function `*ReplicationProtectionContainersListByReplicationFabricsPager.PageResponse` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCommitPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsPlannedFailoverPollerResponse.Resume` has been removed
+- Function `*ReplicationStorageClassificationMappingsDeletePollerResponse.Resume` has been removed
+- Function `ReplicationvCentersUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionContainersDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsFailoverCommitPoller.Done` has been removed
+- Function `*ReplicationNetworkMappingsUpdatePoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryPlansListPager.NextPage` has been removed
+- Function `ReplicationProtectedItemsApplyRecoveryPointPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryPlansReprotectPollerResponse.Resume` has been removed
+- Function `ReplicationvCentersCreatePollerResponse.PollUntilDone` has been removed
+- Function `ReplicationPoliciesCreatePollerResponse.PollUntilDone` has been removed
+- Function `ReplicationRecoveryPlansPlannedFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationMigrationItemsListPager.NextPage` has been removed
+- Function `ReplicationMigrationItemsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ReplicationRecoveryPlansTestFailoverCleanupPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverCleanupPoller.Done` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCommitPoller.Done` has been removed
+- Function `*ReplicationProtectionContainersSwitchProtectionPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsApplyRecoveryPointPoller.Done` has been removed
+- Function `*ReplicationProtectionContainersDiscoverProtectableItemPoller.Poll` has been removed
+- Function `*ReplicationLogicalNetworksListByReplicationFabricsPager.PageResponse` has been removed
+- Function `*ReplicationMigrationItemsListByReplicationProtectionContainersPager.NextPage` has been removed
+- Function `*ReplicationProtectionContainerMappingsCreatePoller.FinalResponse` has been removed
+- Function `*ReplicationStorageClassificationsListPager.NextPage` has been removed
+- Function `ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsResolveHealthErrorsPoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryServicesProvidersCreatePoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverCleanupPoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsReprotectPoller.Poll` has been removed
+- Function `*ReplicationNetworkMappingsCreatePoller.Poll` has been removed
+- Function `*ReplicationFabricsMigrateToAADPollerResponse.Resume` has been removed
+- Function `*ReplicationFabricsCheckConsistencyPoller.FinalResponse` has been removed
+- Function `*ReplicationPoliciesUpdatePoller.ResumeToken` has been removed
+- Function `*ReplicationPoliciesListPager.PageResponse` has been removed
+- Function `ReplicationFabricsCheckConsistencyPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionContainerMappingsCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationNetworkMappingsListPager.PageResponse` has been removed
+- Function `*ReplicationvCentersDeletePoller.ResumeToken` has been removed
+- Function `*ReplicationVaultSettingCreatePoller.FinalResponse` has been removed
+- Function `*RecoveryPointsListByReplicationProtectedItemsPager.PageResponse` has been removed
+- Function `*ReplicationNetworkMappingsListByReplicationNetworksPager.Err` has been removed
+- Function `*MigrationRecoveryPointsListByReplicationMigrationItemsPager.NextPage` has been removed
+- Function `*ReplicationProtectionIntentProviderSpecificSettings.UnmarshalJSON` has been removed
+- Function `*ReplicationRecoveryServicesProvidersListByReplicationFabricsPager.PageResponse` has been removed
+- Function `*ReplicationLogicalNetworksListByReplicationFabricsPager.Err` has been removed
+- Function `ReplicationProtectedItemsTestFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsUnplannedFailoverPollerResponse.Resume` has been removed
+- Function `*ReplicationFabricsMigrateToAADPoller.Poll` has been removed
+- Function `*ReplicationNetworkMappingsListByReplicationNetworksPager.PageResponse` has been removed
+- Function `*ReplicationRecoveryServicesProvidersPurgePoller.FinalResponse` has been removed
+- Function `*ReplicationJobsCancelPoller.Done` has been removed
+- Function `*ReplicationProviderSpecificContainerMappingInput.UnmarshalJSON` has been removed
+- Function `ReplicationNetworkMappingsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryServicesProvidersListByReplicationFabricsPager.NextPage` has been removed
+- Function `*ReplicationVaultSettingCreatePoller.Poll` has been removed
+- Function `*ReplicationRecoveryPlansCreatePoller.Done` has been removed
+- Function `*ReplicationProtectedItemsPlannedFailoverPoller.FinalResponse` has been removed
+- Function `ReplicationProtectedItemsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverCleanupPoller.Done` has been removed
+- Function `*ReplicationProtectionContainersDeletePoller.Poll` has been removed
+- Function `*ReplicationJobsExportPoller.Done` has been removed
+- Function `*ReplicationRecoveryPlansReprotectPoller.Done` has been removed
+- Function `*ReplicationMigrationItemsTestMigratePoller.Done` has been removed
+- Function `*ReplicationMigrationItemsTestMigrateCleanupPoller.FinalResponse` has been removed
+- Function `*ReplicationvCentersCreatePoller.FinalResponse` has been removed
+- Function `ReplicationMigrationItemsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationMigrationItemsTestMigrateCleanupPoller.ResumeToken` has been removed
+- Function `*ReplicationNetworksListByReplicationFabricsPager.Err` has been removed
+- Function `*ReplicationPoliciesUpdatePoller.Poll` has been removed
+- Function `*ReplicationPoliciesDeletePoller.Done` has been removed
+- Function `*ReplicationNetworkMappingsDeletePoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationLogicalNetworksListByReplicationFabricsPager.NextPage` has been removed
+- Function `ReplicationProtectionContainersDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationVaultHealthRefreshPoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryPlansReprotectPoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCancelPoller.Done` has been removed
+- Function `*ReplicationNetworkMappingsDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryPlansDeletePoller.Poll` has been removed
+- Function `*UpdateApplianceForReplicationProtectedItemProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationMigrationItemsDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainersListByReplicationFabricsPager.NextPage` has been removed
+- Function `*ReplicationJobsListPager.PageResponse` has been removed
+- Function `*ReplicationProtectedItemsListPager.PageResponse` has been removed
+- Function `*ReplicationProtectionContainersSwitchProtectionPoller.Poll` has been removed
+- Function `*GroupTaskDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionContainerMappingsDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsAddDisksPoller.FinalResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `ReplicationNetworkMappingsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryServicesProvidersPurgePollerResponse.Resume` has been removed
+- Function `*ReplicationPoliciesUpdatePollerResponse.Resume` has been removed
+- Function `*ReplicationJobsCancelPollerResponse.Resume` has been removed
+- Function `*ReplicationMigrationItemsResyncPollerResponse.Resume` has been removed
+- Function `*ReplicationvCentersUpdatePoller.Done` has been removed
+- Function `*RecoveryPointsListByReplicationProtectedItemsPager.Err` has been removed
+- Function `*ReplicationNetworkMappingsListByReplicationNetworksPager.NextPage` has been removed
+- Function `*ReplicationJobsExportPoller.FinalResponse` has been removed
+- Function `ReplicationRecoveryPlansUnplannedFailoverPollerResponse.PollUntilDone` has been removed
+- Function `ReplicationFabricsPurgePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsUpdateAppliancePoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryPlansDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsRepairReplicationPoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryServicesProvidersRefreshProviderPoller.FinalResponse` has been removed
+- Function `*ReplicationFabricsPurgePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsPurgePoller.Done` has been removed
+- Function `*ResyncProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectedItemsCreatePoller.Poll` has been removed
+- Function `ReplicationFabricsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationPoliciesCreatePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsRepairReplicationPoller.Poll` has been removed
+- Function `*ReplicationFabricsPurgePollerResponse.Resume` has been removed
+- Function `*ReplicationJobsExportPoller.ResumeToken` has been removed
+- Function `*ReplicationFabricsMigrateToAADPoller.FinalResponse` has been removed
+- Function `*ReplicationNetworkMappingsListPager.Err` has been removed
+- Function `*ReplicationRecoveryServicesProvidersDeletePoller.Done` has been removed
+- Function `*ReplicationMigrationItemsListPager.Err` has been removed
+- Function `*ReplicationProtectedItemsDeletePoller.Poll` has been removed
+- Function `*ReplicationProtectionContainerMappingsDeletePoller.ResumeToken` has been removed
+- Function `ReplicationRecoveryServicesProvidersCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionContainerMappingsListByReplicationProtectionContainersPager.Err` has been removed
+- Function `*ReplicationProtectableItemsListByReplicationProtectionContainersPager.Err` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCommitPollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCommitPoller.ResumeToken` has been removed
+- Function `*ReplicationvCentersCreatePoller.ResumeToken` has been removed
+- Function `ReplicationRecoveryServicesProvidersPurgePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationFabricsCheckConsistencyPoller.ResumeToken` has been removed
+- Function `ReplicationJobsResumePollerResponse.PollUntilDone` has been removed
+- Function `*TargetComputeSizesListByReplicationProtectedItemsPager.NextPage` has been removed
+- Function `ReplicationProtectedItemsPlannedFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionIntentsListPager.PageResponse` has been removed
+- Function `*ReplicationRecoveryPlansCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryServicesProvidersListPager.PageResponse` has been removed
+- Function `*ReplicationAlertSettingsListPager.Err` has been removed
+- Function `*ReplicationPoliciesDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationFabricsCheckConsistencyPoller.Poll` has been removed
+- Function `*ReplicationJobsResumePoller.Poll` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*ReplicationProtectedItemsFailoverCancelPoller.ResumeToken` has been removed
+- Function `*FabricSpecificCreateNetworkMappingInput.UnmarshalJSON` has been removed
+- Function `*StorageAccountCustomDetails.UnmarshalJSON` has been removed
+- Function `*RecoveryPlanProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationMigrationItemsTestMigrateCleanupPoller.Done` has been removed
+- Function `*ReplicationMigrationItemsMigratePoller.ResumeToken` has been removed
+- Function `*ReplicationFabricsMigrateToAADPoller.ResumeToken` has been removed
+- Function `*ReplicationStorageClassificationMappingsDeletePoller.Poll` has been removed
+- Function `*ReplicationMigrationItemsMigratePoller.Done` has been removed
+- Function `*ReplicationRecoveryPlansUnplannedFailoverPoller.Done` has been removed
+- Function `*ReplicationNetworksListByReplicationFabricsPager.NextPage` has been removed
+- Function `*ReplicationRecoveryPlansPlannedFailoverPollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryPlansUnplannedFailoverPoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryPlansUpdatePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsDeletePoller.ResumeToken` has been removed
+- Function `*EnableProtectionProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationVaultSettingListPager.Err` has been removed
+- Function `*ReplicationNetworksListByReplicationFabricsPager.PageResponse` has been removed
+- Function `*ReplicationJobsRestartPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsAddDisksPoller.Poll` has been removed
+- Function `*ReplicationVaultSettingListPager.NextPage` has been removed
+- Function `ReplicationStorageClassificationMappingsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*UnplannedFailoverProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationRecoveryServicesProvidersListByReplicationFabricsPager.Err` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverPoller.Done` has been removed
+- Function `*ReplicationProtectedItemsPurgePollerResponse.Resume` has been removed
+- Function `ReplicationProtectedItemsUnplannedFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryServicesProvidersPurgePoller.ResumeToken` has been removed
+- Function `*ReplicationMigrationItemsDeletePoller.Poll` has been removed
+- Function `*ReplicationStorageClassificationMappingsDeletePoller.Done` has been removed
+- Function `*ReplicationFabricsCreatePoller.FinalResponse` has been removed
+- Function `ReplicationProtectedItemsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionContainersListByReplicationFabricsPager.Err` has been removed
+- Function `*ReplicationvCentersListPager.Err` has been removed
+- Function `ReplicationRecoveryPlansDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionContainerMappingsUpdatePoller.Done` has been removed
+- Function `*ReplicationRecoveryPlansCreatePoller.Poll` has been removed
+- Function `*ReplicationFabricsCheckConsistencyPoller.Done` has been removed
+- Function `*ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsPager.NextPage` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverCleanupPollerResponse.Resume` has been removed
+- Function `ReplicationPoliciesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverCleanupPoller.FinalResponse` has been removed
+- Function `ReplicationFabricsMigrateToAADPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationNetworkMappingsUpdatePollerResponse.Resume` has been removed
+- Function `*ReplicationJobsCancelPoller.FinalResponse` has been removed
+- Function `*ReplicationMigrationItemsCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationJobsExportPoller.Poll` has been removed
+- Function `*ReplicationvCentersUpdatePollerResponse.Resume` has been removed
+- Function `*RemoveDisksProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*TaskTypeDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionContainersListPager.Err` has been removed
+- Function `*ReplicationJobsResumePoller.ResumeToken` has been removed
+- Function `*RecoveryAvailabilitySetCustomDetails.UnmarshalJSON` has been removed
+- Function `ReplicationProtectedItemsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsUpdatePollerResponse.Resume` has been removed
+- Function `*ReplicationvCentersListByReplicationFabricsPager.Err` has been removed
+- Function `*ReplicationJobsRestartPollerResponse.Resume` has been removed
+- Function `*ReplicationStorageClassificationMappingsCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationNetworkMappingsListPager.NextPage` has been removed
+- Function `*ReplicationProtectedItemsPurgePoller.Poll` has been removed
+- Function `*ReplicationFabricsDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationMigrationItemsTestMigratePoller.FinalResponse` has been removed
+- Function `*ProtectionProfileCustomDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionContainerMappingsUpdatePoller.ResumeToken` has been removed
+- Function `ReplicationProtectionContainersSwitchProtectionPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationvCentersDeletePollerResponse.Resume` has been removed
+- Function `*SwitchProtectionProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectedItemsApplyRecoveryPointPoller.Poll` has been removed
+- Function `*ReplicationStorageClassificationMappingsCreatePoller.ResumeToken` has been removed
+- Function `ReplicationProtectedItemsFailoverCancelPollerResponse.PollUntilDone` has been removed
+- Function `ReplicationVaultHealthRefreshPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryServicesProvidersPurgePoller.Done` has been removed
+- Function `*ReplicationProtectedItemsFailoverCommitPollerResponse.Resume` has been removed
+- Function `*ReplicationJobsResumePollerResponse.Resume` has been removed
+- Function `*MigrateProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCancelPoller.ResumeToken` has been removed
+- Function `*ReplicationMigrationItemsDeletePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsReprotectPoller.FinalResponse` has been removed
+- Function `*TestMigrateProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationJobsRestartPoller.ResumeToken` has been removed
+- Function `*ReplicationMigrationItemsTestMigratePoller.ResumeToken` has been removed
+- Function `*ReplicationProtectedItemsUpdateMobilityServicePoller.Done` has been removed
+- Function `*RecoveryProximityPlacementGroupCustomDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationStorageClassificationMappingsListPager.NextPage` has been removed
+- Function `*ReplicationMigrationItemsMigratePoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsUpdatePoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryPlansUnplannedFailoverPoller.Poll` has been removed
+- Function `*ReplicationFabricsRenewCertificatePoller.Poll` has been removed
+- Function `*ReplicationRecoveryPlansReprotectPoller.ResumeToken` has been removed
+- Function `*ReplicationPoliciesListPager.NextPage` has been removed
+- Function `*FabricSpecificCreationInput.UnmarshalJSON` has been removed
+- Function `ReplicationProtectionContainerMappingsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionContainerMappingsListPager.NextPage` has been removed
+- Function `*ReplicationStorageClassificationsListByReplicationFabricsPager.Err` has been removed
+- Function `*ReplicationNetworkMappingsCreatePoller.FinalResponse` has been removed
+- Function `*ReplicationJobsResumePoller.Done` has been removed
+- Function `*ReplicationProtectedItemsPurgePoller.FinalResponse` has been removed
+- Function `ReplicationProtectionContainerMappingsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsPager.Err` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverCleanupPoller.ResumeToken` has been removed
+- Function `ReplicationProtectedItemsRepairReplicationPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationStorageClassificationMappingsCreatePoller.Done` has been removed
+- Function `*ReplicationNetworkMappingsDeletePoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsCreatePoller.Done` has been removed
+- Function `*ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse.Resume` has been removed
+- Function `*ReplicationPoliciesDeletePoller.Poll` has been removed
+- Function `*ReplicationMigrationItemsResyncPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsRemoveDisksPoller.ResumeToken` has been removed
+- Function `*ReplicationProtectionContainersCreatePoller.FinalResponse` has been removed
+- Function `*ReplicationFabricsDeletePoller.ResumeToken` has been removed
+- Function `ReplicationFabricsReassociateGatewayPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationJobsListPager.NextPage` has been removed
+- Function `*ReplicationVaultSettingListPager.PageResponse` has been removed
+- Function `*RecoveryResourceGroupCustomDetails.UnmarshalJSON` has been removed
+- Function `*EventSpecificDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationvCentersDeletePoller.FinalResponse` has been removed
+- Function `*ConfigurationSettings.UnmarshalJSON` has been removed
+- Function `*ReplicationStorageClassificationsListByReplicationFabricsPager.PageResponse` has been removed
+- Function `*ReplicationProtectedItemsUnplannedFailoverPoller.ResumeToken` has been removed
+- Function `*TargetComputeSizesListByReplicationProtectedItemsPager.PageResponse` has been removed
+- Function `*CreateProtectionIntentProviderSpecificDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectedItemsListPager.NextPage` has been removed
+- Function `*ReplicationProtectionContainersCreatePoller.Done` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCancelPollerResponse.Resume` has been removed
+- Function `*ReplicationVaultHealthRefreshPollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryPlansDeletePoller.Done` has been removed
+- Function `*ReverseReplicationProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationFabricsMigrateToAADPoller.Done` has been removed
+- Function `*ReplicationMigrationItemsUpdatePoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsFailoverCancelPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectionContainerMappingsCreatePoller.Poll` has been removed
+- Function `ReplicationvCentersDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverPollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryPlansCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationEventsListPager.PageResponse` has been removed
+- Function `*ReplicationProtectedItemsReprotectPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsResolveHealthErrorsPoller.Poll` has been removed
+- Function `ReplicationStorageClassificationMappingsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationvCentersUpdatePoller.FinalResponse` has been removed
+- Function `*ReplicationPoliciesDeletePoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryServicesProvidersCreatePoller.Done` has been removed
+- Function `*ReplicationNetworksListPager.PageResponse` has been removed
+- Function `*ReplicationFabricsCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryServicesProvidersRefreshProviderPoller.ResumeToken` has been removed
+- Function `ReplicationRecoveryPlansFailoverCommitPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationFabricsReassociateGatewayPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectionContainerMappingsCreatePoller.Done` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverPoller.Done` has been removed
+- Function `*ReplicationMigrationItemsDeletePoller.Done` has been removed
+- Function `ReplicationProtectedItemsUpdateAppliancePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationvCentersListByReplicationFabricsPager.NextPage` has been removed
+- Function `*ReplicationMigrationItemsResyncPoller.Poll` has been removed
+- Function `*EnableMigrationProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationvCentersDeletePoller.Poll` has been removed
+- Function `*ReplicationStorageClassificationsListByReplicationFabricsPager.NextPage` has been removed
+- Function `*ReplicationProtectedItemsApplyRecoveryPointPoller.FinalResponse` has been removed
+- Function `*ReplicationProtectedItemsCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationMigrationItemsTestMigratePollerResponse.Resume` has been removed
+- Function `*ReplicationMigrationItemsTestMigrateCleanupPoller.Poll` has been removed
+- Function `*MigrationProviderSpecificSettings.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectedItemsRepairReplicationPoller.Done` has been removed
+- Function `*ReplicationProtectedItemsUnplannedFailoverPoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsRepairReplicationPollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsUpdatePoller.ResumeToken` has been removed
+- Function `*ReplicationStorageClassificationsListPager.PageResponse` has been removed
+- Function `*ReplicationMigrationItemsListPager.PageResponse` has been removed
+- Function `*ReplicationProtectedItemsTestFailoverCleanupPoller.Poll` has been removed
+- Function `*ReplicationPoliciesUpdatePoller.Done` has been removed
+- Function `*ReplicationProtectionContainersListPager.PageResponse` has been removed
+- Function `*ReplicationRecoveryPlansListPager.Err` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCancelPoller.FinalResponse` has been removed
+- Function `*ReplicationRecoveryPlansUpdatePoller.ResumeToken` has been removed
+- Function `ReplicationProtectionContainerMappingsPurgePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationJobsRestartPoller.Poll` has been removed
+- Function `*ReplicationMigrationItemsUpdatePoller.Poll` has been removed
+- Function `*ReplicationProtectedItemsListByReplicationProtectionContainersPager.Err` has been removed
+- Function `ReplicationProtectionContainersDiscoverProtectableItemPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationMigrationItemsListByReplicationProtectionContainersPager.Err` has been removed
+- Function `*ReplicationRecoveryServicesProvidersDeletePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsReprotectPoller.Done` has been removed
+- Function `*ReplicationMigrationItemsCreatePoller.Poll` has been removed
+- Function `*ReplicationProtectionContainerMappingsListByReplicationProtectionContainersPager.PageResponse` has been removed
+- Function `*ReplicationvCentersCreatePoller.Poll` has been removed
+- Function `*ReplicationVaultSettingCreatePoller.Done` has been removed
+- Function `*ReplicationProtectedItemsListPager.Err` has been removed
+- Function `*ReplicationProtectedItemsUnplannedFailoverPoller.Done` has been removed
+- Function `*ReplicationvCentersListPager.PageResponse` has been removed
+- Function `*ReplicationJobsListPager.Err` has been removed
+- Function `*ReplicationvCentersCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationProtectedItemsUpdateMobilityServicePoller.ResumeToken` has been removed
+- Function `*ReplicationFabricsCreatePollerResponse.Resume` has been removed
+- Function `ReplicationProtectionContainersCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsFailoverCommitPoller.Poll` has been removed
+- Function `*ReplicationRecoveryPlansDeletePoller.ResumeToken` has been removed
+- Function `*ApplyRecoveryPointProviderSpecificInput.UnmarshalJSON` has been removed
+- Function `*ReplicationRecoveryServicesProvidersCreatePoller.ResumeToken` has been removed
+- Function `*ReplicationAlertSettingsListPager.PageResponse` has been removed
+- Function `*ReplicationFabricsReassociateGatewayPoller.Poll` has been removed
+- Function `*ReplicationPoliciesCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationMigrationItemsCreatePoller.FinalResponse` has been removed
+- Function `*ReplicationJobsCancelPoller.ResumeToken` has been removed
+- Function `*RecoveryVirtualNetworkCustomDetails.UnmarshalJSON` has been removed
+- Function `ReplicationMigrationItemsTestMigrateCleanupPollerResponse.PollUntilDone` has been removed
+- Function `ReplicationProtectedItemsResolveHealthErrorsPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectionContainerMappingsDeletePoller.Poll` has been removed
+- Function `*ReplicationNetworkMappingsCreatePollerResponse.Resume` has been removed
+- Function `*ReplicationRecoveryPlansCreatePoller.FinalResponse` has been removed
+- Function `ReplicationNetworkMappingsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationProtectedItemsAddDisksPoller.ResumeToken` has been removed
+- Function `*ReplicationFabricsRenewCertificatePoller.FinalResponse` has been removed
+- Function `*MigrationRecoveryPointsListByReplicationMigrationItemsPager.Err` has been removed
+- Function `*ReplicationRecoveryPlansFailoverCommitPoller.Poll` has been removed
+- Function `*RecoveryPlanProviderSpecificDetails.UnmarshalJSON` has been removed
+- Function `ReplicationProtectedItemsTestFailoverCleanupPollerResponse.PollUntilDone` has been removed
+- Function `*ReplicationRecoveryPlansUpdatePoller.Poll` has been removed
+- Function `*EventProviderSpecificDetails.UnmarshalJSON` has been removed
+- Function `*ReplicationProtectionContainersListPager.NextPage` has been removed
+- Function `*ReplicationvCentersUpdatePoller.ResumeToken` has been removed
+- Function `*ReplicationRecoveryPlansTestFailoverPoller.FinalResponse` has been removed
+- Function `ReplicationVaultSettingCreatePollerResponse.PollUntilDone` has been removed
+- Struct `MigrationRecoveryPointsGetOptions` has been removed
+- Struct `MigrationRecoveryPointsGetResponse` has been removed
+- Struct `MigrationRecoveryPointsGetResult` has been removed
+- Struct `MigrationRecoveryPointsListByReplicationMigrationItemsOptions` has been removed
+- Struct `MigrationRecoveryPointsListByReplicationMigrationItemsPager` has been removed
+- Struct `MigrationRecoveryPointsListByReplicationMigrationItemsResponse` has been removed
+- Struct `MigrationRecoveryPointsListByReplicationMigrationItemsResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `RecoveryPointsGetOptions` has been removed
+- Struct `RecoveryPointsGetResponse` has been removed
+- Struct `RecoveryPointsGetResult` has been removed
+- Struct `RecoveryPointsListByReplicationProtectedItemsOptions` has been removed
+- Struct `RecoveryPointsListByReplicationProtectedItemsPager` has been removed
+- Struct `RecoveryPointsListByReplicationProtectedItemsResponse` has been removed
+- Struct `RecoveryPointsListByReplicationProtectedItemsResult` has been removed
+- Struct `ReplicationAlertSettingsCreateOptions` has been removed
+- Struct `ReplicationAlertSettingsCreateResponse` has been removed
+- Struct `ReplicationAlertSettingsCreateResult` has been removed
+- Struct `ReplicationAlertSettingsGetOptions` has been removed
+- Struct `ReplicationAlertSettingsGetResponse` has been removed
+- Struct `ReplicationAlertSettingsGetResult` has been removed
+- Struct `ReplicationAlertSettingsListOptions` has been removed
+- Struct `ReplicationAlertSettingsListPager` has been removed
+- Struct `ReplicationAlertSettingsListResponse` has been removed
+- Struct `ReplicationAlertSettingsListResult` has been removed
+- Struct `ReplicationEligibilityResultsGetOptions` has been removed
+- Struct `ReplicationEligibilityResultsGetResponse` has been removed
+- Struct `ReplicationEligibilityResultsGetResult` has been removed
+- Struct `ReplicationEligibilityResultsListOptions` has been removed
+- Struct `ReplicationEligibilityResultsListResponse` has been removed
+- Struct `ReplicationEligibilityResultsListResult` has been removed
+- Struct `ReplicationEventsGetOptions` has been removed
+- Struct `ReplicationEventsGetResponse` has been removed
+- Struct `ReplicationEventsGetResult` has been removed
+- Struct `ReplicationEventsListOptions` has been removed
+- Struct `ReplicationEventsListPager` has been removed
+- Struct `ReplicationEventsListResponse` has been removed
+- Struct `ReplicationEventsListResult` has been removed
+- Struct `ReplicationFabricsBeginCheckConsistencyOptions` has been removed
+- Struct `ReplicationFabricsBeginCreateOptions` has been removed
+- Struct `ReplicationFabricsBeginDeleteOptions` has been removed
+- Struct `ReplicationFabricsBeginMigrateToAADOptions` has been removed
+- Struct `ReplicationFabricsBeginPurgeOptions` has been removed
+- Struct `ReplicationFabricsBeginReassociateGatewayOptions` has been removed
+- Struct `ReplicationFabricsBeginRenewCertificateOptions` has been removed
+- Struct `ReplicationFabricsCheckConsistencyPoller` has been removed
+- Struct `ReplicationFabricsCheckConsistencyPollerResponse` has been removed
+- Struct `ReplicationFabricsCheckConsistencyResponse` has been removed
+- Struct `ReplicationFabricsCheckConsistencyResult` has been removed
+- Struct `ReplicationFabricsCreatePoller` has been removed
+- Struct `ReplicationFabricsCreatePollerResponse` has been removed
+- Struct `ReplicationFabricsCreateResponse` has been removed
+- Struct `ReplicationFabricsCreateResult` has been removed
+- Struct `ReplicationFabricsDeletePoller` has been removed
+- Struct `ReplicationFabricsDeletePollerResponse` has been removed
+- Struct `ReplicationFabricsDeleteResponse` has been removed
+- Struct `ReplicationFabricsGetOptions` has been removed
+- Struct `ReplicationFabricsGetResponse` has been removed
+- Struct `ReplicationFabricsGetResult` has been removed
+- Struct `ReplicationFabricsListOptions` has been removed
+- Struct `ReplicationFabricsListPager` has been removed
+- Struct `ReplicationFabricsListResponse` has been removed
+- Struct `ReplicationFabricsListResult` has been removed
+- Struct `ReplicationFabricsMigrateToAADPoller` has been removed
+- Struct `ReplicationFabricsMigrateToAADPollerResponse` has been removed
+- Struct `ReplicationFabricsMigrateToAADResponse` has been removed
+- Struct `ReplicationFabricsPurgePoller` has been removed
+- Struct `ReplicationFabricsPurgePollerResponse` has been removed
+- Struct `ReplicationFabricsPurgeResponse` has been removed
+- Struct `ReplicationFabricsReassociateGatewayPoller` has been removed
+- Struct `ReplicationFabricsReassociateGatewayPollerResponse` has been removed
+- Struct `ReplicationFabricsReassociateGatewayResponse` has been removed
+- Struct `ReplicationFabricsReassociateGatewayResult` has been removed
+- Struct `ReplicationFabricsRenewCertificatePoller` has been removed
+- Struct `ReplicationFabricsRenewCertificatePollerResponse` has been removed
+- Struct `ReplicationFabricsRenewCertificateResponse` has been removed
+- Struct `ReplicationFabricsRenewCertificateResult` has been removed
+- Struct `ReplicationJobsBeginCancelOptions` has been removed
+- Struct `ReplicationJobsBeginExportOptions` has been removed
+- Struct `ReplicationJobsBeginRestartOptions` has been removed
+- Struct `ReplicationJobsBeginResumeOptions` has been removed
+- Struct `ReplicationJobsCancelPoller` has been removed
+- Struct `ReplicationJobsCancelPollerResponse` has been removed
+- Struct `ReplicationJobsCancelResponse` has been removed
+- Struct `ReplicationJobsCancelResult` has been removed
+- Struct `ReplicationJobsExportPoller` has been removed
+- Struct `ReplicationJobsExportPollerResponse` has been removed
+- Struct `ReplicationJobsExportResponse` has been removed
+- Struct `ReplicationJobsExportResult` has been removed
+- Struct `ReplicationJobsGetOptions` has been removed
+- Struct `ReplicationJobsGetResponse` has been removed
+- Struct `ReplicationJobsGetResult` has been removed
+- Struct `ReplicationJobsListOptions` has been removed
+- Struct `ReplicationJobsListPager` has been removed
+- Struct `ReplicationJobsListResponse` has been removed
+- Struct `ReplicationJobsListResult` has been removed
+- Struct `ReplicationJobsRestartPoller` has been removed
+- Struct `ReplicationJobsRestartPollerResponse` has been removed
+- Struct `ReplicationJobsRestartResponse` has been removed
+- Struct `ReplicationJobsRestartResult` has been removed
+- Struct `ReplicationJobsResumePoller` has been removed
+- Struct `ReplicationJobsResumePollerResponse` has been removed
+- Struct `ReplicationJobsResumeResponse` has been removed
+- Struct `ReplicationJobsResumeResult` has been removed
+- Struct `ReplicationLogicalNetworksGetOptions` has been removed
+- Struct `ReplicationLogicalNetworksGetResponse` has been removed
+- Struct `ReplicationLogicalNetworksGetResult` has been removed
+- Struct `ReplicationLogicalNetworksListByReplicationFabricsOptions` has been removed
+- Struct `ReplicationLogicalNetworksListByReplicationFabricsPager` has been removed
+- Struct `ReplicationLogicalNetworksListByReplicationFabricsResponse` has been removed
+- Struct `ReplicationLogicalNetworksListByReplicationFabricsResult` has been removed
+- Struct `ReplicationMigrationItemsBeginCreateOptions` has been removed
+- Struct `ReplicationMigrationItemsBeginDeleteOptions` has been removed
+- Struct `ReplicationMigrationItemsBeginMigrateOptions` has been removed
+- Struct `ReplicationMigrationItemsBeginResyncOptions` has been removed
+- Struct `ReplicationMigrationItemsBeginTestMigrateCleanupOptions` has been removed
+- Struct `ReplicationMigrationItemsBeginTestMigrateOptions` has been removed
+- Struct `ReplicationMigrationItemsBeginUpdateOptions` has been removed
+- Struct `ReplicationMigrationItemsCreatePoller` has been removed
+- Struct `ReplicationMigrationItemsCreatePollerResponse` has been removed
+- Struct `ReplicationMigrationItemsCreateResponse` has been removed
+- Struct `ReplicationMigrationItemsCreateResult` has been removed
+- Struct `ReplicationMigrationItemsDeletePoller` has been removed
+- Struct `ReplicationMigrationItemsDeletePollerResponse` has been removed
+- Struct `ReplicationMigrationItemsDeleteResponse` has been removed
+- Struct `ReplicationMigrationItemsGetOptions` has been removed
+- Struct `ReplicationMigrationItemsGetResponse` has been removed
+- Struct `ReplicationMigrationItemsGetResult` has been removed
+- Struct `ReplicationMigrationItemsListByReplicationProtectionContainersOptions` has been removed
+- Struct `ReplicationMigrationItemsListByReplicationProtectionContainersPager` has been removed
+- Struct `ReplicationMigrationItemsListByReplicationProtectionContainersResponse` has been removed
+- Struct `ReplicationMigrationItemsListByReplicationProtectionContainersResult` has been removed
+- Struct `ReplicationMigrationItemsListOptions` has been removed
+- Struct `ReplicationMigrationItemsListPager` has been removed
+- Struct `ReplicationMigrationItemsListResponse` has been removed
+- Struct `ReplicationMigrationItemsListResult` has been removed
+- Struct `ReplicationMigrationItemsMigratePoller` has been removed
+- Struct `ReplicationMigrationItemsMigratePollerResponse` has been removed
+- Struct `ReplicationMigrationItemsMigrateResponse` has been removed
+- Struct `ReplicationMigrationItemsMigrateResult` has been removed
+- Struct `ReplicationMigrationItemsResyncPoller` has been removed
+- Struct `ReplicationMigrationItemsResyncPollerResponse` has been removed
+- Struct `ReplicationMigrationItemsResyncResponse` has been removed
+- Struct `ReplicationMigrationItemsResyncResult` has been removed
+- Struct `ReplicationMigrationItemsTestMigrateCleanupPoller` has been removed
+- Struct `ReplicationMigrationItemsTestMigrateCleanupPollerResponse` has been removed
+- Struct `ReplicationMigrationItemsTestMigrateCleanupResponse` has been removed
+- Struct `ReplicationMigrationItemsTestMigrateCleanupResult` has been removed
+- Struct `ReplicationMigrationItemsTestMigratePoller` has been removed
+- Struct `ReplicationMigrationItemsTestMigratePollerResponse` has been removed
+- Struct `ReplicationMigrationItemsTestMigrateResponse` has been removed
+- Struct `ReplicationMigrationItemsTestMigrateResult` has been removed
+- Struct `ReplicationMigrationItemsUpdatePoller` has been removed
+- Struct `ReplicationMigrationItemsUpdatePollerResponse` has been removed
+- Struct `ReplicationMigrationItemsUpdateResponse` has been removed
+- Struct `ReplicationMigrationItemsUpdateResult` has been removed
+- Struct `ReplicationNetworkMappingsBeginCreateOptions` has been removed
+- Struct `ReplicationNetworkMappingsBeginDeleteOptions` has been removed
+- Struct `ReplicationNetworkMappingsBeginUpdateOptions` has been removed
+- Struct `ReplicationNetworkMappingsCreatePoller` has been removed
+- Struct `ReplicationNetworkMappingsCreatePollerResponse` has been removed
+- Struct `ReplicationNetworkMappingsCreateResponse` has been removed
+- Struct `ReplicationNetworkMappingsCreateResult` has been removed
+- Struct `ReplicationNetworkMappingsDeletePoller` has been removed
+- Struct `ReplicationNetworkMappingsDeletePollerResponse` has been removed
+- Struct `ReplicationNetworkMappingsDeleteResponse` has been removed
+- Struct `ReplicationNetworkMappingsGetOptions` has been removed
+- Struct `ReplicationNetworkMappingsGetResponse` has been removed
+- Struct `ReplicationNetworkMappingsGetResult` has been removed
+- Struct `ReplicationNetworkMappingsListByReplicationNetworksOptions` has been removed
+- Struct `ReplicationNetworkMappingsListByReplicationNetworksPager` has been removed
+- Struct `ReplicationNetworkMappingsListByReplicationNetworksResponse` has been removed
+- Struct `ReplicationNetworkMappingsListByReplicationNetworksResult` has been removed
+- Struct `ReplicationNetworkMappingsListOptions` has been removed
+- Struct `ReplicationNetworkMappingsListPager` has been removed
+- Struct `ReplicationNetworkMappingsListResponse` has been removed
+- Struct `ReplicationNetworkMappingsListResult` has been removed
+- Struct `ReplicationNetworkMappingsUpdatePoller` has been removed
+- Struct `ReplicationNetworkMappingsUpdatePollerResponse` has been removed
+- Struct `ReplicationNetworkMappingsUpdateResponse` has been removed
+- Struct `ReplicationNetworkMappingsUpdateResult` has been removed
+- Struct `ReplicationNetworksGetOptions` has been removed
+- Struct `ReplicationNetworksGetResponse` has been removed
+- Struct `ReplicationNetworksGetResult` has been removed
+- Struct `ReplicationNetworksListByReplicationFabricsOptions` has been removed
+- Struct `ReplicationNetworksListByReplicationFabricsPager` has been removed
+- Struct `ReplicationNetworksListByReplicationFabricsResponse` has been removed
+- Struct `ReplicationNetworksListByReplicationFabricsResult` has been removed
+- Struct `ReplicationNetworksListOptions` has been removed
+- Struct `ReplicationNetworksListPager` has been removed
+- Struct `ReplicationNetworksListResponse` has been removed
+- Struct `ReplicationNetworksListResult` has been removed
+- Struct `ReplicationPoliciesBeginCreateOptions` has been removed
+- Struct `ReplicationPoliciesBeginDeleteOptions` has been removed
+- Struct `ReplicationPoliciesBeginUpdateOptions` has been removed
+- Struct `ReplicationPoliciesCreatePoller` has been removed
+- Struct `ReplicationPoliciesCreatePollerResponse` has been removed
+- Struct `ReplicationPoliciesCreateResponse` has been removed
+- Struct `ReplicationPoliciesCreateResult` has been removed
+- Struct `ReplicationPoliciesDeletePoller` has been removed
+- Struct `ReplicationPoliciesDeletePollerResponse` has been removed
+- Struct `ReplicationPoliciesDeleteResponse` has been removed
+- Struct `ReplicationPoliciesGetOptions` has been removed
+- Struct `ReplicationPoliciesGetResponse` has been removed
+- Struct `ReplicationPoliciesGetResult` has been removed
+- Struct `ReplicationPoliciesListOptions` has been removed
+- Struct `ReplicationPoliciesListPager` has been removed
+- Struct `ReplicationPoliciesListResponse` has been removed
+- Struct `ReplicationPoliciesListResult` has been removed
+- Struct `ReplicationPoliciesUpdatePoller` has been removed
+- Struct `ReplicationPoliciesUpdatePollerResponse` has been removed
+- Struct `ReplicationPoliciesUpdateResponse` has been removed
+- Struct `ReplicationPoliciesUpdateResult` has been removed
+- Struct `ReplicationProtectableItemsGetOptions` has been removed
+- Struct `ReplicationProtectableItemsGetResponse` has been removed
+- Struct `ReplicationProtectableItemsGetResult` has been removed
+- Struct `ReplicationProtectableItemsListByReplicationProtectionContainersOptions` has been removed
+- Struct `ReplicationProtectableItemsListByReplicationProtectionContainersPager` has been removed
+- Struct `ReplicationProtectableItemsListByReplicationProtectionContainersResponse` has been removed
+- Struct `ReplicationProtectableItemsListByReplicationProtectionContainersResult` has been removed
+- Struct `ReplicationProtectedItemsAddDisksPoller` has been removed
+- Struct `ReplicationProtectedItemsAddDisksPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsAddDisksResponse` has been removed
+- Struct `ReplicationProtectedItemsAddDisksResult` has been removed
+- Struct `ReplicationProtectedItemsApplyRecoveryPointPoller` has been removed
+- Struct `ReplicationProtectedItemsApplyRecoveryPointPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsApplyRecoveryPointResponse` has been removed
+- Struct `ReplicationProtectedItemsApplyRecoveryPointResult` has been removed
+- Struct `ReplicationProtectedItemsBeginAddDisksOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginApplyRecoveryPointOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginCreateOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginDeleteOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginFailoverCancelOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginFailoverCommitOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginPlannedFailoverOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginPurgeOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginRemoveDisksOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginRepairReplicationOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginReprotectOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginResolveHealthErrorsOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginTestFailoverCleanupOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginTestFailoverOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginUnplannedFailoverOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginUpdateApplianceOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginUpdateMobilityServiceOptions` has been removed
+- Struct `ReplicationProtectedItemsBeginUpdateOptions` has been removed
+- Struct `ReplicationProtectedItemsCreatePoller` has been removed
+- Struct `ReplicationProtectedItemsCreatePollerResponse` has been removed
+- Struct `ReplicationProtectedItemsCreateResponse` has been removed
+- Struct `ReplicationProtectedItemsCreateResult` has been removed
+- Struct `ReplicationProtectedItemsDeletePoller` has been removed
+- Struct `ReplicationProtectedItemsDeletePollerResponse` has been removed
+- Struct `ReplicationProtectedItemsDeleteResponse` has been removed
+- Struct `ReplicationProtectedItemsFailoverCancelPoller` has been removed
+- Struct `ReplicationProtectedItemsFailoverCancelPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsFailoverCancelResponse` has been removed
+- Struct `ReplicationProtectedItemsFailoverCancelResult` has been removed
+- Struct `ReplicationProtectedItemsFailoverCommitPoller` has been removed
+- Struct `ReplicationProtectedItemsFailoverCommitPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsFailoverCommitResponse` has been removed
+- Struct `ReplicationProtectedItemsFailoverCommitResult` has been removed
+- Struct `ReplicationProtectedItemsGetOptions` has been removed
+- Struct `ReplicationProtectedItemsGetResponse` has been removed
+- Struct `ReplicationProtectedItemsGetResult` has been removed
+- Struct `ReplicationProtectedItemsListByReplicationProtectionContainersOptions` has been removed
+- Struct `ReplicationProtectedItemsListByReplicationProtectionContainersPager` has been removed
+- Struct `ReplicationProtectedItemsListByReplicationProtectionContainersResponse` has been removed
+- Struct `ReplicationProtectedItemsListByReplicationProtectionContainersResult` has been removed
+- Struct `ReplicationProtectedItemsListOptions` has been removed
+- Struct `ReplicationProtectedItemsListPager` has been removed
+- Struct `ReplicationProtectedItemsListResponse` has been removed
+- Struct `ReplicationProtectedItemsListResult` has been removed
+- Struct `ReplicationProtectedItemsPlannedFailoverPoller` has been removed
+- Struct `ReplicationProtectedItemsPlannedFailoverPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsPlannedFailoverResponse` has been removed
+- Struct `ReplicationProtectedItemsPlannedFailoverResult` has been removed
+- Struct `ReplicationProtectedItemsPurgePoller` has been removed
+- Struct `ReplicationProtectedItemsPurgePollerResponse` has been removed
+- Struct `ReplicationProtectedItemsPurgeResponse` has been removed
+- Struct `ReplicationProtectedItemsRemoveDisksPoller` has been removed
+- Struct `ReplicationProtectedItemsRemoveDisksPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsRemoveDisksResponse` has been removed
+- Struct `ReplicationProtectedItemsRemoveDisksResult` has been removed
+- Struct `ReplicationProtectedItemsRepairReplicationPoller` has been removed
+- Struct `ReplicationProtectedItemsRepairReplicationPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsRepairReplicationResponse` has been removed
+- Struct `ReplicationProtectedItemsRepairReplicationResult` has been removed
+- Struct `ReplicationProtectedItemsReprotectPoller` has been removed
+- Struct `ReplicationProtectedItemsReprotectPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsReprotectResponse` has been removed
+- Struct `ReplicationProtectedItemsReprotectResult` has been removed
+- Struct `ReplicationProtectedItemsResolveHealthErrorsPoller` has been removed
+- Struct `ReplicationProtectedItemsResolveHealthErrorsPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsResolveHealthErrorsResponse` has been removed
+- Struct `ReplicationProtectedItemsResolveHealthErrorsResult` has been removed
+- Struct `ReplicationProtectedItemsTestFailoverCleanupPoller` has been removed
+- Struct `ReplicationProtectedItemsTestFailoverCleanupPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsTestFailoverCleanupResponse` has been removed
+- Struct `ReplicationProtectedItemsTestFailoverCleanupResult` has been removed
+- Struct `ReplicationProtectedItemsTestFailoverPoller` has been removed
+- Struct `ReplicationProtectedItemsTestFailoverPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsTestFailoverResponse` has been removed
+- Struct `ReplicationProtectedItemsTestFailoverResult` has been removed
+- Struct `ReplicationProtectedItemsUnplannedFailoverPoller` has been removed
+- Struct `ReplicationProtectedItemsUnplannedFailoverPollerResponse` has been removed
+- Struct `ReplicationProtectedItemsUnplannedFailoverResponse` has been removed
+- Struct `ReplicationProtectedItemsUnplannedFailoverResult` has been removed
+- Struct `ReplicationProtectedItemsUpdateAppliancePoller` has been removed
+- Struct `ReplicationProtectedItemsUpdateAppliancePollerResponse` has been removed
+- Struct `ReplicationProtectedItemsUpdateApplianceResponse` has been removed
+- Struct `ReplicationProtectedItemsUpdateApplianceResult` has been removed
+- Struct `ReplicationProtectedItemsUpdateMobilityServicePoller` has been removed
+- Struct `ReplicationProtectedItemsUpdateMobilityServicePollerResponse` has been removed
+- Struct `ReplicationProtectedItemsUpdateMobilityServiceResponse` has been removed
+- Struct `ReplicationProtectedItemsUpdateMobilityServiceResult` has been removed
+- Struct `ReplicationProtectedItemsUpdatePoller` has been removed
+- Struct `ReplicationProtectedItemsUpdatePollerResponse` has been removed
+- Struct `ReplicationProtectedItemsUpdateResponse` has been removed
+- Struct `ReplicationProtectedItemsUpdateResult` has been removed
+- Struct `ReplicationProtectionContainerMappingsBeginCreateOptions` has been removed
+- Struct `ReplicationProtectionContainerMappingsBeginDeleteOptions` has been removed
+- Struct `ReplicationProtectionContainerMappingsBeginPurgeOptions` has been removed
+- Struct `ReplicationProtectionContainerMappingsBeginUpdateOptions` has been removed
+- Struct `ReplicationProtectionContainerMappingsCreatePoller` has been removed
+- Struct `ReplicationProtectionContainerMappingsCreatePollerResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsCreateResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsCreateResult` has been removed
+- Struct `ReplicationProtectionContainerMappingsDeletePoller` has been removed
+- Struct `ReplicationProtectionContainerMappingsDeletePollerResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsDeleteResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsGetOptions` has been removed
+- Struct `ReplicationProtectionContainerMappingsGetResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsGetResult` has been removed
+- Struct `ReplicationProtectionContainerMappingsListByReplicationProtectionContainersOptions` has been removed
+- Struct `ReplicationProtectionContainerMappingsListByReplicationProtectionContainersPager` has been removed
+- Struct `ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResult` has been removed
+- Struct `ReplicationProtectionContainerMappingsListOptions` has been removed
+- Struct `ReplicationProtectionContainerMappingsListPager` has been removed
+- Struct `ReplicationProtectionContainerMappingsListResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsListResult` has been removed
+- Struct `ReplicationProtectionContainerMappingsPurgePoller` has been removed
+- Struct `ReplicationProtectionContainerMappingsPurgePollerResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsPurgeResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsUpdatePoller` has been removed
+- Struct `ReplicationProtectionContainerMappingsUpdatePollerResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsUpdateResponse` has been removed
+- Struct `ReplicationProtectionContainerMappingsUpdateResult` has been removed
+- Struct `ReplicationProtectionContainersBeginCreateOptions` has been removed
+- Struct `ReplicationProtectionContainersBeginDeleteOptions` has been removed
+- Struct `ReplicationProtectionContainersBeginDiscoverProtectableItemOptions` has been removed
+- Struct `ReplicationProtectionContainersBeginSwitchProtectionOptions` has been removed
+- Struct `ReplicationProtectionContainersCreatePoller` has been removed
+- Struct `ReplicationProtectionContainersCreatePollerResponse` has been removed
+- Struct `ReplicationProtectionContainersCreateResponse` has been removed
+- Struct `ReplicationProtectionContainersCreateResult` has been removed
+- Struct `ReplicationProtectionContainersDeletePoller` has been removed
+- Struct `ReplicationProtectionContainersDeletePollerResponse` has been removed
+- Struct `ReplicationProtectionContainersDeleteResponse` has been removed
+- Struct `ReplicationProtectionContainersDiscoverProtectableItemPoller` has been removed
+- Struct `ReplicationProtectionContainersDiscoverProtectableItemPollerResponse` has been removed
+- Struct `ReplicationProtectionContainersDiscoverProtectableItemResponse` has been removed
+- Struct `ReplicationProtectionContainersDiscoverProtectableItemResult` has been removed
+- Struct `ReplicationProtectionContainersGetOptions` has been removed
+- Struct `ReplicationProtectionContainersGetResponse` has been removed
+- Struct `ReplicationProtectionContainersGetResult` has been removed
+- Struct `ReplicationProtectionContainersListByReplicationFabricsOptions` has been removed
+- Struct `ReplicationProtectionContainersListByReplicationFabricsPager` has been removed
+- Struct `ReplicationProtectionContainersListByReplicationFabricsResponse` has been removed
+- Struct `ReplicationProtectionContainersListByReplicationFabricsResult` has been removed
+- Struct `ReplicationProtectionContainersListOptions` has been removed
+- Struct `ReplicationProtectionContainersListPager` has been removed
+- Struct `ReplicationProtectionContainersListResponse` has been removed
+- Struct `ReplicationProtectionContainersListResult` has been removed
+- Struct `ReplicationProtectionContainersSwitchProtectionPoller` has been removed
+- Struct `ReplicationProtectionContainersSwitchProtectionPollerResponse` has been removed
+- Struct `ReplicationProtectionContainersSwitchProtectionResponse` has been removed
+- Struct `ReplicationProtectionContainersSwitchProtectionResult` has been removed
+- Struct `ReplicationProtectionIntentsCreateOptions` has been removed
+- Struct `ReplicationProtectionIntentsCreateResponse` has been removed
+- Struct `ReplicationProtectionIntentsCreateResult` has been removed
+- Struct `ReplicationProtectionIntentsGetOptions` has been removed
+- Struct `ReplicationProtectionIntentsGetResponse` has been removed
+- Struct `ReplicationProtectionIntentsGetResult` has been removed
+- Struct `ReplicationProtectionIntentsListOptions` has been removed
+- Struct `ReplicationProtectionIntentsListPager` has been removed
+- Struct `ReplicationProtectionIntentsListResponse` has been removed
+- Struct `ReplicationProtectionIntentsListResult` has been removed
+- Struct `ReplicationRecoveryPlansBeginCreateOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginDeleteOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginFailoverCancelOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginFailoverCommitOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginPlannedFailoverOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginReprotectOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginTestFailoverCleanupOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginTestFailoverOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginUnplannedFailoverOptions` has been removed
+- Struct `ReplicationRecoveryPlansBeginUpdateOptions` has been removed
+- Struct `ReplicationRecoveryPlansCreatePoller` has been removed
+- Struct `ReplicationRecoveryPlansCreatePollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansCreateResponse` has been removed
+- Struct `ReplicationRecoveryPlansCreateResult` has been removed
+- Struct `ReplicationRecoveryPlansDeletePoller` has been removed
+- Struct `ReplicationRecoveryPlansDeletePollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansDeleteResponse` has been removed
+- Struct `ReplicationRecoveryPlansFailoverCancelPoller` has been removed
+- Struct `ReplicationRecoveryPlansFailoverCancelPollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansFailoverCancelResponse` has been removed
+- Struct `ReplicationRecoveryPlansFailoverCancelResult` has been removed
+- Struct `ReplicationRecoveryPlansFailoverCommitPoller` has been removed
+- Struct `ReplicationRecoveryPlansFailoverCommitPollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansFailoverCommitResponse` has been removed
+- Struct `ReplicationRecoveryPlansFailoverCommitResult` has been removed
+- Struct `ReplicationRecoveryPlansGetOptions` has been removed
+- Struct `ReplicationRecoveryPlansGetResponse` has been removed
+- Struct `ReplicationRecoveryPlansGetResult` has been removed
+- Struct `ReplicationRecoveryPlansListOptions` has been removed
+- Struct `ReplicationRecoveryPlansListPager` has been removed
+- Struct `ReplicationRecoveryPlansListResponse` has been removed
+- Struct `ReplicationRecoveryPlansListResult` has been removed
+- Struct `ReplicationRecoveryPlansPlannedFailoverPoller` has been removed
+- Struct `ReplicationRecoveryPlansPlannedFailoverPollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansPlannedFailoverResponse` has been removed
+- Struct `ReplicationRecoveryPlansPlannedFailoverResult` has been removed
+- Struct `ReplicationRecoveryPlansReprotectPoller` has been removed
+- Struct `ReplicationRecoveryPlansReprotectPollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansReprotectResponse` has been removed
+- Struct `ReplicationRecoveryPlansReprotectResult` has been removed
+- Struct `ReplicationRecoveryPlansTestFailoverCleanupPoller` has been removed
+- Struct `ReplicationRecoveryPlansTestFailoverCleanupPollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansTestFailoverCleanupResponse` has been removed
+- Struct `ReplicationRecoveryPlansTestFailoverCleanupResult` has been removed
+- Struct `ReplicationRecoveryPlansTestFailoverPoller` has been removed
+- Struct `ReplicationRecoveryPlansTestFailoverPollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansTestFailoverResponse` has been removed
+- Struct `ReplicationRecoveryPlansTestFailoverResult` has been removed
+- Struct `ReplicationRecoveryPlansUnplannedFailoverPoller` has been removed
+- Struct `ReplicationRecoveryPlansUnplannedFailoverPollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansUnplannedFailoverResponse` has been removed
+- Struct `ReplicationRecoveryPlansUnplannedFailoverResult` has been removed
+- Struct `ReplicationRecoveryPlansUpdatePoller` has been removed
+- Struct `ReplicationRecoveryPlansUpdatePollerResponse` has been removed
+- Struct `ReplicationRecoveryPlansUpdateResponse` has been removed
+- Struct `ReplicationRecoveryPlansUpdateResult` has been removed
+- Struct `ReplicationRecoveryServicesProvidersBeginCreateOptions` has been removed
+- Struct `ReplicationRecoveryServicesProvidersBeginDeleteOptions` has been removed
+- Struct `ReplicationRecoveryServicesProvidersBeginPurgeOptions` has been removed
+- Struct `ReplicationRecoveryServicesProvidersBeginRefreshProviderOptions` has been removed
+- Struct `ReplicationRecoveryServicesProvidersCreatePoller` has been removed
+- Struct `ReplicationRecoveryServicesProvidersCreatePollerResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersCreateResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersCreateResult` has been removed
+- Struct `ReplicationRecoveryServicesProvidersDeletePoller` has been removed
+- Struct `ReplicationRecoveryServicesProvidersDeletePollerResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersDeleteResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersGetOptions` has been removed
+- Struct `ReplicationRecoveryServicesProvidersGetResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersGetResult` has been removed
+- Struct `ReplicationRecoveryServicesProvidersListByReplicationFabricsOptions` has been removed
+- Struct `ReplicationRecoveryServicesProvidersListByReplicationFabricsPager` has been removed
+- Struct `ReplicationRecoveryServicesProvidersListByReplicationFabricsResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersListByReplicationFabricsResult` has been removed
+- Struct `ReplicationRecoveryServicesProvidersListOptions` has been removed
+- Struct `ReplicationRecoveryServicesProvidersListPager` has been removed
+- Struct `ReplicationRecoveryServicesProvidersListResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersListResult` has been removed
+- Struct `ReplicationRecoveryServicesProvidersPurgePoller` has been removed
+- Struct `ReplicationRecoveryServicesProvidersPurgePollerResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersPurgeResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersRefreshProviderPoller` has been removed
+- Struct `ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersRefreshProviderResponse` has been removed
+- Struct `ReplicationRecoveryServicesProvidersRefreshProviderResult` has been removed
+- Struct `ReplicationStorageClassificationMappingsBeginCreateOptions` has been removed
+- Struct `ReplicationStorageClassificationMappingsBeginDeleteOptions` has been removed
+- Struct `ReplicationStorageClassificationMappingsCreatePoller` has been removed
+- Struct `ReplicationStorageClassificationMappingsCreatePollerResponse` has been removed
+- Struct `ReplicationStorageClassificationMappingsCreateResponse` has been removed
+- Struct `ReplicationStorageClassificationMappingsCreateResult` has been removed
+- Struct `ReplicationStorageClassificationMappingsDeletePoller` has been removed
+- Struct `ReplicationStorageClassificationMappingsDeletePollerResponse` has been removed
+- Struct `ReplicationStorageClassificationMappingsDeleteResponse` has been removed
+- Struct `ReplicationStorageClassificationMappingsGetOptions` has been removed
+- Struct `ReplicationStorageClassificationMappingsGetResponse` has been removed
+- Struct `ReplicationStorageClassificationMappingsGetResult` has been removed
+- Struct `ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsOptions` has been removed
+- Struct `ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsPager` has been removed
+- Struct `ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsResponse` has been removed
+- Struct `ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsResult` has been removed
+- Struct `ReplicationStorageClassificationMappingsListOptions` has been removed
+- Struct `ReplicationStorageClassificationMappingsListPager` has been removed
+- Struct `ReplicationStorageClassificationMappingsListResponse` has been removed
+- Struct `ReplicationStorageClassificationMappingsListResult` has been removed
+- Struct `ReplicationStorageClassificationsGetOptions` has been removed
+- Struct `ReplicationStorageClassificationsGetResponse` has been removed
+- Struct `ReplicationStorageClassificationsGetResult` has been removed
+- Struct `ReplicationStorageClassificationsListByReplicationFabricsOptions` has been removed
+- Struct `ReplicationStorageClassificationsListByReplicationFabricsPager` has been removed
+- Struct `ReplicationStorageClassificationsListByReplicationFabricsResponse` has been removed
+- Struct `ReplicationStorageClassificationsListByReplicationFabricsResult` has been removed
+- Struct `ReplicationStorageClassificationsListOptions` has been removed
+- Struct `ReplicationStorageClassificationsListPager` has been removed
+- Struct `ReplicationStorageClassificationsListResponse` has been removed
+- Struct `ReplicationStorageClassificationsListResult` has been removed
+- Struct `ReplicationVaultHealthBeginRefreshOptions` has been removed
+- Struct `ReplicationVaultHealthGetOptions` has been removed
+- Struct `ReplicationVaultHealthGetResponse` has been removed
+- Struct `ReplicationVaultHealthGetResult` has been removed
+- Struct `ReplicationVaultHealthRefreshPoller` has been removed
+- Struct `ReplicationVaultHealthRefreshPollerResponse` has been removed
+- Struct `ReplicationVaultHealthRefreshResponse` has been removed
+- Struct `ReplicationVaultHealthRefreshResult` has been removed
+- Struct `ReplicationVaultSettingBeginCreateOptions` has been removed
+- Struct `ReplicationVaultSettingCreatePoller` has been removed
+- Struct `ReplicationVaultSettingCreatePollerResponse` has been removed
+- Struct `ReplicationVaultSettingCreateResponse` has been removed
+- Struct `ReplicationVaultSettingCreateResult` has been removed
+- Struct `ReplicationVaultSettingGetOptions` has been removed
+- Struct `ReplicationVaultSettingGetResponse` has been removed
+- Struct `ReplicationVaultSettingGetResult` has been removed
+- Struct `ReplicationVaultSettingListOptions` has been removed
+- Struct `ReplicationVaultSettingListPager` has been removed
+- Struct `ReplicationVaultSettingListResponse` has been removed
+- Struct `ReplicationVaultSettingListResult` has been removed
+- Struct `ReplicationvCentersBeginCreateOptions` has been removed
+- Struct `ReplicationvCentersBeginDeleteOptions` has been removed
+- Struct `ReplicationvCentersBeginUpdateOptions` has been removed
+- Struct `ReplicationvCentersCreatePoller` has been removed
+- Struct `ReplicationvCentersCreatePollerResponse` has been removed
+- Struct `ReplicationvCentersCreateResponse` has been removed
+- Struct `ReplicationvCentersCreateResult` has been removed
+- Struct `ReplicationvCentersDeletePoller` has been removed
+- Struct `ReplicationvCentersDeletePollerResponse` has been removed
+- Struct `ReplicationvCentersDeleteResponse` has been removed
+- Struct `ReplicationvCentersGetOptions` has been removed
+- Struct `ReplicationvCentersGetResponse` has been removed
+- Struct `ReplicationvCentersGetResult` has been removed
+- Struct `ReplicationvCentersListByReplicationFabricsOptions` has been removed
+- Struct `ReplicationvCentersListByReplicationFabricsPager` has been removed
+- Struct `ReplicationvCentersListByReplicationFabricsResponse` has been removed
+- Struct `ReplicationvCentersListByReplicationFabricsResult` has been removed
+- Struct `ReplicationvCentersListOptions` has been removed
+- Struct `ReplicationvCentersListPager` has been removed
+- Struct `ReplicationvCentersListResponse` has been removed
+- Struct `ReplicationvCentersListResult` has been removed
+- Struct `ReplicationvCentersUpdatePoller` has been removed
+- Struct `ReplicationvCentersUpdatePollerResponse` has been removed
+- Struct `ReplicationvCentersUpdateResponse` has been removed
+- Struct `ReplicationvCentersUpdateResult` has been removed
+- Struct `SupportedOperatingSystemsGetOptions` has been removed
+- Struct `SupportedOperatingSystemsGetResponse` has been removed
+- Struct `SupportedOperatingSystemsGetResult` has been removed
+- Struct `TargetComputeSizesListByReplicationProtectedItemsOptions` has been removed
+- Struct `TargetComputeSizesListByReplicationProtectedItemsPager` has been removed
+- Struct `TargetComputeSizesListByReplicationProtectedItemsResponse` has been removed
+- Struct `TargetComputeSizesListByReplicationProtectedItemsResult` has been removed
+- Field `RecoveryPlanActionDetails` of struct `RecoveryPlanScriptActionDetails` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `InMageAzureV2PolicyDetails` has been removed
+- Field `ReverseReplicationProviderSpecificInput` of struct `InMageRcmFailbackReprotectInput` has been removed
+- Field `JobDetails` of struct `SwitchProtectionJobDetails` has been removed
+- Field `JobTaskDetails` of struct `FabricReplicationGroupTaskDetails` has been removed
+- Field `EnableProtectionProviderSpecificInput` of struct `InMageAzureV2EnableProtectionInput` has been removed
+- Field `ReplicationProviderSpecificContainerMappingInput` of struct `VMwareCbtContainerMappingInput` has been removed
+- Field `Resource` of struct `ReplicationProtectedItem` has been removed
+- Field `ApplyRecoveryPointProviderSpecificInput` of struct `HyperVReplicaAzureApplyRecoveryPointInput` has been removed
+- Field `UnplannedFailoverProviderSpecificInput` of struct `A2AUnplannedFailoverInput` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `HyperVReplicaPolicyDetails` has been removed
+- Field `Resource` of struct `StorageClassificationMapping` has been removed
+- Field `EventProviderSpecificDetails` of struct `HyperVReplicaBaseEventDetails` has been removed
+- Field `MigrateProviderSpecificInput` of struct `VMwareCbtMigrateInput` has been removed
+- Field `ConfigurationSettings` of struct `VMwareVirtualMachineDetails` has been removed
+- Field `UnplannedFailoverProviderSpecificInput` of struct `InMageAzureV2UnplannedFailoverInput` has been removed
+- Field `Resource` of struct `LogicalNetwork` has been removed
+- Field `RecoveryPlanActionDetails` of struct `RecoveryPlanAutomationRunbookActionDetails` has been removed
+- Field `PlannedFailoverProviderSpecificFailoverInput` of struct `HyperVReplicaAzurePlannedFailoverProviderInput` has been removed
+- Field `ProtectionContainerMappingProviderSpecificDetails` of struct `InMageRcmProtectionContainerMappingDetails` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `A2APolicyDetails` has been removed
+- Field `Resource` of struct `MigrationItem` has been removed
+- Field `Resource` of struct `Policy` has been removed
+- Field `EventProviderSpecificDetails` of struct `InMageRcmFailbackEventDetails` has been removed
+- Field `TaskTypeDetails` of struct `AutomationRunbookTaskDetails` has been removed
+- Field `Resource` of struct `Alert` has been removed
+- Field `Resource` of struct `Network` has been removed
+- Field `RecoveryProximityPlacementGroupCustomDetails` of struct `ExistingRecoveryProximityPlacementGroup` has been removed
+- Field `FabricSpecificUpdateNetworkMappingInput` of struct `VmmToVmmUpdateNetworkMappingInput` has been removed
+- Field `DisableProtectionProviderSpecificInput` of struct `InMageDisableProtectionProviderSpecificInput` has been removed
+- Field `ApplyRecoveryPointProviderSpecificInput` of struct `InMageAzureV2ApplyRecoveryPointInput` has been removed
+- Field `FabricSpecificDetails` of struct `HyperVSiteDetails` has been removed
+- Field `ApplyRecoveryPointProviderSpecificInput` of struct `A2ACrossClusterMigrationApplyRecoveryPointInput` has been removed
+- Field `JobDetails` of struct `FailoverJobDetails` has been removed
+- Field `PolicyProviderSpecificInput` of struct `InMageRcmPolicyCreationInput` has been removed
+- Field `UnplannedFailoverProviderSpecificInput` of struct `HyperVReplicaAzureUnplannedFailoverInput` has been removed
+- Field `FabricSpecificDetails` of struct `VMwareDetails` has been removed
+- Field `NetworkMappingFabricSpecificSettings` of struct `AzureToAzureNetworkMappingSettings` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `HyperVReplicaReplicationDetails` has been removed
+- Field `RecoveryResourceGroupCustomDetails` of struct `ExistingRecoveryResourceGroup` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `HyperVReplicaAzurePolicyDetails` has been removed
+- Field `PlannedFailoverProviderSpecificFailoverInput` of struct `InMageRcmFailbackPlannedFailoverProviderInput` has been removed
+- Field `ProtectionProfileCustomDetails` of struct `NewProtectionProfile` has been removed
+- Field `StorageAccountCustomDetails` of struct `ExistingStorageAccount` has been removed
+- Field `UpdateReplicationProtectedItemProviderInput` of struct `A2AUpdateReplicationProtectedItemInput` has been removed
+- Field `ProviderSpecificRecoveryPointDetails` of struct `A2ARecoveryPointDetails` has been removed
+- Field `UpdateReplicationProtectedItemProviderInput` of struct `InMageAzureV2UpdateReplicationProtectedItemInput` has been removed
+- Field `RecoveryPlanProviderSpecificFailoverInput` of struct `RecoveryPlanInMageRcmFailbackFailoverInput` has been removed
+- Field `FabricSpecificUpdateNetworkMappingInput` of struct `VmmToAzureUpdateNetworkMappingInput` has been removed
+- Field `TaskTypeDetails` of struct `ManualActionTaskDetails` has been removed
+- Field `ReplicationProviderSpecificUpdateContainerMappingInput` of struct `InMageRcmUpdateContainerMappingInput` has been removed
+- Field `TaskTypeDetails` of struct `VMNicUpdatesTaskDetails` has been removed
+- Field `RecoveryPlanProviderSpecificInput` of struct `RecoveryPlanA2AInput` has been removed
+- Field `ProtectionContainerMappingProviderSpecificDetails` of struct `A2AProtectionContainerMappingDetails` has been removed
+- Field `ProtectionProfileCustomDetails` of struct `ExistingProtectionProfile` has been removed
+- Field `ProviderSpecificRecoveryPointDetails` of struct `InMageRcmRecoveryPointDetails` has been removed
+- Field `TestFailoverProviderSpecificInput` of struct `InMageTestFailoverInput` has been removed
+- Field `UpdateReplicationProtectedItemProviderInput` of struct `HyperVReplicaAzureUpdateReplicationProtectedItemInput` has been removed
+- Field `FabricSpecificCreateNetworkMappingInput` of struct `VmmToVmmCreateNetworkMappingInput` has been removed
+- Field `RecoveryAvailabilitySetCustomDetails` of struct `ExistingRecoveryAvailabilitySet` has been removed
+- Field `JobTaskDetails` of struct `VirtualMachineTaskDetails` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `HyperVReplicaBlueReplicationDetails` has been removed
+- Field `ReplicationProviderSpecificContainerCreationInput` of struct `A2ACrossClusterMigrationContainerCreationInput` has been removed
+- Field `SwitchProtectionProviderSpecificInput` of struct `A2ASwitchProtectionInput` has been removed
+- Field `CreateProtectionIntentProviderSpecificDetails` of struct `A2ACreateProtectionIntentInput` has been removed
+- Field `ReverseReplicationProviderSpecificInput` of struct `A2AReprotectInput` has been removed
+- Field `FabricSpecificDetails` of struct `AzureFabricSpecificDetails` has been removed
+- Field `Resource` of struct `VaultHealthDetails` has been removed
+- Field `GroupTaskDetails` of struct `InlineWorkflowTaskDetails` has been removed
+- Field `EventProviderSpecificDetails` of struct `InMageRcmEventDetails` has been removed
+- Field `RecoveryVirtualNetworkCustomDetails` of struct `ExistingRecoveryVirtualNetwork` has been removed
+- Field `PolicyProviderSpecificInput` of struct `HyperVReplicaPolicyInput` has been removed
+- Field `ReplicationProviderSpecificContainerCreationInput` of struct `A2AContainerCreationInput` has been removed
+- Field `Resource` of struct `RecoveryPlan` has been removed
+- Field `EnableProtectionProviderSpecificInput` of struct `InMageRcmEnableProtectionInput` has been removed
+- Field `PolicyProviderSpecificInput` of struct `InMageRcmFailbackPolicyCreationInput` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `InMageRcmFailbackPolicyDetails` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `InMageRcmPolicyDetails` has been removed
+- Field `EnableMigrationProviderSpecificInput` of struct `VMwareCbtEnableMigrationInput` has been removed
+- Field `EnableProtectionProviderSpecificInput` of struct `A2AEnableProtectionInput` has been removed
+- Field `MigrationProviderSpecificSettings` of struct `VMwareCbtMigrationDetails` has been removed
+- Field `TestMigrateProviderSpecificInput` of struct `VMwareCbtTestMigrateInput` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `HyperVReplicaBaseReplicationDetails` has been removed
+- Field `EventProviderSpecificDetails` of struct `HyperVReplica2012R2EventDetails` has been removed
+- Field `ReplicationProtectionIntentProviderSpecificSettings` of struct `A2AReplicationIntentDetails` has been removed
+- Field `EventProviderSpecificDetails` of struct `HyperVReplica2012EventDetails` has been removed
+- Field `EnableProtectionProviderSpecificInput` of struct `A2ACrossClusterMigrationEnableProtectionInput` has been removed
+- Field `RecoveryPlanProviderSpecificFailoverInput` of struct `RecoveryPlanHyperVReplicaAzureFailbackInput` has been removed
+- Field `EnableProtectionProviderSpecificInput` of struct `InMageEnableProtectionInput` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `VmwareCbtPolicyDetails` has been removed
+- Field `PolicyProviderSpecificInput` of struct `A2APolicyCreationInput` has been removed
+- Field `Resource` of struct `Event` has been removed
+- Field `RecoveryPlanProviderSpecificFailoverInput` of struct `RecoveryPlanHyperVReplicaAzureFailoverInput` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `InMagePolicyDetails` has been removed
+- Field `EventProviderSpecificDetails` of struct `A2AEventDetails` has been removed
+- Field `Resource` of struct `ReplicationProtectionIntent` has been removed
+- Field `ReverseReplicationProviderSpecificInput` of struct `InMageRcmReprotectInput` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `A2AReplicationDetails` has been removed
+- Field `FabricSpecificCreationInput` of struct `VMwareV2FabricCreationInput` has been removed
+- Field `HyperVReplicaPolicyInput` of struct `HyperVReplicaBluePolicyInput` has been removed
+- Field `FabricSpecificCreateNetworkMappingInput` of struct `AzureToAzureCreateNetworkMappingInput` has been removed
+- Field `JobDetails` of struct `ExportJobDetails` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `A2ACrossClusterMigrationReplicationDetails` has been removed
+- Field `TaskTypeDetails` of struct `ConsistencyCheckTaskDetails` has been removed
+- Field `ReplicationProviderSpecificContainerMappingInput` of struct `A2AContainerMappingInput` has been removed
+- Field `ConfigurationSettings` of struct `HyperVVirtualMachineDetails` has been removed
+- Field `FabricSpecificCreationInput` of struct `InMageRcmFabricCreationInput` has been removed
+- Field `ReverseReplicationProviderSpecificInput` of struct `HyperVReplicaAzureReprotectInput` has been removed
+- Field `Resource` of struct `ProtectionContainer` has been removed
+- Field `FabricSpecificCreateNetworkMappingInput` of struct `VmmToAzureCreateNetworkMappingInput` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `InMageBasePolicyDetails` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `InMageRcmFailbackReplicationDetails` has been removed
+- Field `TestFailoverProviderSpecificInput` of struct `HyperVReplicaAzureTestFailoverInput` has been removed
+- Field `Resource` of struct `RecoveryServicesProvider` has been removed
+- Field `PolicyProviderSpecificInput` of struct `VMwareCbtPolicyCreationInput` has been removed
+- Field `ReplicationProviderSpecificContainerCreationInput` of struct `VMwareCbtContainerCreationInput` has been removed
+- Field `ProviderSpecificRecoveryPointDetails` of struct `InMageAzureV2RecoveryPointDetails` has been removed
+- Field `GroupTaskDetails` of struct `RecoveryPlanGroupTaskDetails` has been removed
+- Field `TestFailoverProviderSpecificInput` of struct `A2ATestFailoverInput` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `HyperVReplicaBasePolicyDetails` has been removed
+- Field `RecoveryPlanProviderSpecificFailoverInput` of struct `RecoveryPlanA2AFailoverInput` has been removed
+- Field `ReverseReplicationProviderSpecificInput` of struct `InMageReprotectInput` has been removed
+- Field `FabricSpecificDetails` of struct `VMwareV2FabricSpecificDetails` has been removed
+- Field `UnplannedFailoverProviderSpecificInput` of struct `InMageUnplannedFailoverInput` has been removed
+- Field `HyperVVirtualMachineDetails` of struct `VmmVirtualMachineDetails` has been removed
+- Field `RecoveryPlanActionDetails` of struct `RecoveryPlanManualActionDetails` has been removed
+- Field `ConfigurationSettings` of struct `ReplicationGroupDetails` has been removed
+- Field `UpdateApplianceForReplicationProtectedItemProviderSpecificInput` of struct `InMageRcmUpdateApplianceForReplicationProtectedItemInput` has been removed
+- Field `UpdateReplicationProtectedItemProviderInput` of struct `InMageRcmUpdateReplicationProtectedItemInput` has been removed
+- Field `Resource` of struct `RecoveryPoint` has been removed
+- Field `EventProviderSpecificDetails` of struct `VMwareCbtEventDetails` has been removed
+- Field `ReverseReplicationProviderSpecificInput` of struct `InMageAzureV2ReprotectInput` has been removed
+- Field `RecoveryPlanProviderSpecificFailoverInput` of struct `RecoveryPlanInMageAzureV2FailoverInput` has been removed
+- Field `Resource` of struct `VCenter` has been removed
+- Field `PolicyProviderSpecificInput` of struct `InMagePolicyInput` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `InMageReplicationDetails` has been removed
+- Field `AddDisksProviderSpecificInput` of struct `A2AAddDisksInput` has been removed
+- Field `Resource` of struct `NetworkMapping` has been removed
+- Field `FabricSpecificDetails` of struct `VmmDetails` has been removed
+- Field `RecoveryPlanGroupTaskDetails` of struct `RecoveryPlanShutdownGroupTaskDetails` has been removed
+- Field `Resource` of struct `ProtectableItem` has been removed
+- Field `PlannedFailoverProviderSpecificFailoverInput` of struct `HyperVReplicaAzureFailbackProviderInput` has been removed
+- Field `RecoveryPlanProviderSpecificFailoverInput` of struct `RecoveryPlanInMageRcmFailoverInput` has been removed
+- Field `PolicyProviderSpecificInput` of struct `InMageAzureV2PolicyInput` has been removed
+- Field `Resource` of struct `Job` has been removed
+- Field `ProtectionContainerMappingProviderSpecificDetails` of struct `VMwareCbtProtectionContainerMappingDetails` has been removed
+- Field `EventProviderSpecificDetails` of struct `HyperVReplicaAzureEventDetails` has been removed
+- Field `PolicyProviderSpecificInput` of struct `HyperVReplicaAzurePolicyInput` has been removed
+- Field `Resource` of struct `Fabric` has been removed
+- Field `TestFailoverProviderSpecificInput` of struct `InMageAzureV2TestFailoverInput` has been removed
+- Field `EventProviderSpecificDetails` of struct `InMageAzureV2EventDetails` has been removed
+- Field `ApplyRecoveryPointProviderSpecificInput` of struct `InMageRcmApplyRecoveryPointInput` has been removed
+- Field `ApplyRecoveryPointProviderSpecificInput` of struct `A2AApplyRecoveryPointInput` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `InMageAzureV2ReplicationDetails` has been removed
+- Field `Resource` of struct `ProtectionContainerMapping` has been removed
+- Field `EnableProtectionProviderSpecificInput` of struct `HyperVReplicaAzureEnableProtectionInput` has been removed
+- Field `EventSpecificDetails` of struct `JobStatusEventDetails` has been removed
+- Field `ResyncProviderSpecificInput` of struct `VMwareCbtResyncInput` has been removed
+- Field `ReplicationProviderSpecificUpdateContainerMappingInput` of struct `A2AUpdateContainerMappingInput` has been removed
+- Field `FabricSpecificDetails` of struct `InMageRcmFabricSpecificDetails` has been removed
+- Field `UnplannedFailoverProviderSpecificInput` of struct `InMageRcmUnplannedFailoverInput` has been removed
+- Field `Resource` of struct `MigrationRecoveryPoint` has been removed
+- Field `Resource` of struct `SupportedOperatingSystems` has been removed
+- Field `RecoveryPlanProviderSpecificDetails` of struct `RecoveryPlanA2ADetails` has been removed
+- Field `FabricSpecificCreationInput` of struct `AzureFabricCreationInput` has been removed
+- Field `NetworkMappingFabricSpecificSettings` of struct `VmmToVmmNetworkMappingSettings` has been removed
+- Field `Resource` of struct `VaultSetting` has been removed
+- Field `PolicyProviderSpecificInput` of struct `A2ACrossClusterMigrationPolicyCreationInput` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `InMageRcmReplicationDetails` has been removed
+- Field `RemoveDisksProviderSpecificInput` of struct `A2ARemoveDisksInput` has been removed
+- Field `TaskTypeDetails` of struct `JobTaskDetails` has been removed
+- Field `TaskTypeDetails` of struct `ScriptActionTaskDetails` has been removed
+- Field `JobDetails` of struct `TestFailoverJobDetails` has been removed
+- Field `UpdateMigrationItemProviderSpecificInput` of struct `VMwareCbtUpdateMigrationItemInput` has been removed
+- Field `JobDetails` of struct `AsrJobDetails` has been removed
+- Field `RecoveryPlanProviderSpecificFailoverInput` of struct `RecoveryPlanInMageFailoverInput` has been removed
+- Field `ReplicationProviderSpecificSettings` of struct `HyperVReplicaAzureReplicationDetails` has been removed
+- Field `TestFailoverProviderSpecificInput` of struct `InMageRcmTestFailoverInput` has been removed
+- Field `NetworkMappingFabricSpecificSettings` of struct `VmmToAzureNetworkMappingSettings` has been removed
+- Field `PolicyProviderSpecificDetails` of struct `HyperVReplicaBluePolicyDetails` has been removed
+- Field `FabricSpecificUpdateNetworkMappingInput` of struct `AzureToAzureUpdateNetworkMappingInput` has been removed
+- Field `RecoveryVirtualNetworkCustomDetails` of struct `NewRecoveryVirtualNetwork` has been removed
+- Field `Resource` of struct `StorageClassification` has been removed
+
+### Features Added
+
+- New const `ExtendedLocationTypeEdgeZone`
+- New function `*VmmToVmmCreateNetworkMappingInput.GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput`
+- New function `*ReplicationProtectionContainersClientListByReplicationFabricsPager.NextPage(context.Context) bool`
+- New function `*TargetComputeSizesClientListByReplicationProtectedItemsPager.NextPage(context.Context) bool`
+- New function `*ReplicationNetworkMappingsClientListByReplicationNetworksPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectedItemsClientUpdateMobilityServicePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationMigrationItemsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationFabricsClientDeletePollerResponse.Resume(context.Context, *ReplicationFabricsClient, string) error`
+- New function `*ReplicationMigrationItemsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TestFailoverJobDetails.GetJobDetails() *JobDetails`
+- New function `*ReplicationRecoveryPlansClientReprotectPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationNetworkMappingsClientDeletePoller.FinalResponse(context.Context) (ReplicationNetworkMappingsClientDeleteResponse, error)`
+- New function `*ReplicationNetworkMappingsClientCreatePoller.FinalResponse(context.Context) (ReplicationNetworkMappingsClientCreateResponse, error)`
+- New function `*ReplicationProtectionContainerMappingsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationFabricsClientMigrateToAADPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationNetworkMappingsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientPurgePoller.Done() bool`
+- New function `*ReplicationProtectionContainerMappingsClientDeletePoller.FinalResponse(context.Context) (ReplicationProtectionContainerMappingsClientDeleteResponse, error)`
+- New function `*ReplicationMigrationItemsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationFabricsClientPurgePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainerMappingsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientUnplannedFailoverPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationNetworkMappingsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationRecoveryPlansClientUnplannedFailoverPoller.ResumeToken() (string, error)`
+- New function `*A2ACrossClusterMigrationApplyRecoveryPointInput.GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput`
+- New function `ReplicationProtectionContainerMappingsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectionContainerMappingsClientUpdateResponse, error)`
+- New function `*ReplicationEventsClientListPager.PageResponse() ReplicationEventsClientListResponse`
+- New function `*InMageBasePolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationRecoveryServicesProvidersClientDeletePollerResponse.Resume(context.Context, *ReplicationRecoveryServicesProvidersClient, string) error`
+- New function `*ReplicationRecoveryServicesProvidersClientRefreshProviderPoller.FinalResponse(context.Context) (ReplicationRecoveryServicesProvidersClientRefreshProviderResponse, error)`
+- New function `*ReplicationStorageClassificationMappingsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationRecoveryPlansClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationJobsClientCancelPollerResponse.Resume(context.Context, *ReplicationJobsClient, string) error`
+- New function `*VMNicUpdatesTaskDetails.GetTaskTypeDetails() *TaskTypeDetails`
+- New function `*InMageRcmUnplannedFailoverInput.GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput`
+- New function `*InMageRcmUpdateApplianceForReplicationProtectedItemInput.GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput() *UpdateApplianceForReplicationProtectedItemProviderSpecificInput`
+- New function `ReplicationStorageClassificationMappingsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationStorageClassificationMappingsClientCreateResponse, error)`
+- New function `*ExistingRecoveryProximityPlacementGroup.GetRecoveryProximityPlacementGroupCustomDetails() *RecoveryProximityPlacementGroupCustomDetails`
+- New function `ReplicationProtectedItemsClientPlannedFailoverPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientPlannedFailoverResponse, error)`
+- New function `*HyperVReplicaAzurePolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationFabricsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*HyperVReplicaBluePolicyInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*ReplicationProtectionContainerMappingsClientListPager.PageResponse() ReplicationProtectionContainerMappingsClientListResponse`
+- New function `*ReplicationRecoveryPlansClientReprotectPoller.ResumeToken() (string, error)`
+- New function `*SwitchProviderInputProperties.UnmarshalJSON([]byte) error`
+- New function `*ReplicationVaultHealthClientRefreshPoller.FinalResponse(context.Context) (ReplicationVaultHealthClientRefreshResponse, error)`
+- New function `*ReplicationProtectedItemsClientTestFailoverPoller.Done() bool`
+- New function `*ReplicationNetworkMappingsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationPoliciesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainersClientCreatePoller.Done() bool`
+- New function `*ReplicationMigrationItemsClientListByReplicationProtectionContainersPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectedItemsClientAddDisksPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationProtectedItemsClientReprotectPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientReprotectResponse, error)`
+- New function `*ReplicationProtectionContainersClientSwitchProtectionPollerResponse.Resume(context.Context, *ReplicationProtectionContainersClient, string) error`
+- New function `*ReplicationStorageClassificationMappingsClientCreatePoller.Done() bool`
+- New function `*VMwareCbtResyncInput.GetResyncProviderSpecificInput() *ResyncProviderSpecificInput`
+- New function `*ReplicationProtectionContainerMappingsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationJobsClientRestartPoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainerMappingsClientDeletePollerResponse.Resume(context.Context, *ReplicationProtectionContainerMappingsClient, string) error`
+- New function `ReplicationProtectedItemsClientPurgePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientPurgeResponse, error)`
+- New function `*VmmToVmmNetworkMappingSettings.UnmarshalJSON([]byte) error`
+- New function `*ReplicationvCentersClientUpdatePoller.FinalResponse(context.Context) (ReplicationvCentersClientUpdateResponse, error)`
+- New function `*ReplicationProtectedItemsClientUnplannedFailoverPoller.Done() bool`
+- New function `*ReplicationRecoveryPlansClientUpdatePoller.Done() bool`
+- New function `*ReplicationFabricsClientPurgePollerResponse.Resume(context.Context, *ReplicationFabricsClient, string) error`
+- New function `ReplicationJobsClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationJobsClientRestartResponse, error)`
+- New function `*ReplicationMigrationItemsClientListPager.Err() error`
+- New function `*ReplicationFabricsClientCreatePollerResponse.Resume(context.Context, *ReplicationFabricsClient, string) error`
+- New function `*RecoveryPlanInMageRcmFailbackFailoverInput.GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput`
+- New function `*ReplicationProtectedItemsClientReprotectPoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationFabricsClientCheckConsistencyPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationFabricsClientCheckConsistencyResponse, error)`
+- New function `*ReplicationNetworksClientListByReplicationFabricsPager.NextPage(context.Context) bool`
+- New function `ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientApplyRecoveryPointResponse, error)`
+- New function `*ReplicationNetworkMappingsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RecoveryPlanAutomationRunbookActionDetails.GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails`
+- New function `*ReplicationNetworkMappingsClientListPager.PageResponse() ReplicationNetworkMappingsClientListResponse`
+- New function `*ReplicationProtectedItemsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*A2AContainerMappingInput.GetReplicationProviderSpecificContainerMappingInput() *ReplicationProviderSpecificContainerMappingInput`
+- New function `*SwitchProtectionJobDetails.GetJobDetails() *JobDetails`
+- New function `*InMageUnplannedFailoverInput.GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput`
+- New function `*ReplicationRecoveryPlansClientTestFailoverPoller.ResumeToken() (string, error)`
+- New function `*ReplicationMigrationItemsClientMigratePoller.Done() bool`
+- New function `*ReplicationStorageClassificationMappingsClientDeletePollerResponse.Resume(context.Context, *ReplicationStorageClassificationMappingsClient, string) error`
+- New function `*InMageRcmApplyRecoveryPointInput.GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput`
+- New function `*ReplicationPoliciesClientCreatePoller.Done() bool`
+- New function `*ReplicationFabricsClientCheckConsistencyPoller.ResumeToken() (string, error)`
+- New function `*ReplicationNetworksClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectedItemsClientDeletePollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationProtectedItemsClientTestFailoverPoller.ResumeToken() (string, error)`
+- New function `*VMwareV2FabricSpecificDetails.GetFabricSpecificDetails() *FabricSpecificDetails`
+- New function `*InMageAzureV2ReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*ReplicationRecoveryPlansClientPlannedFailoverPoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientPlannedFailoverResponse, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientListPager.PageResponse() ReplicationRecoveryServicesProvidersClientListResponse`
+- New function `*RecoveryPointsClientListByReplicationProtectedItemsPager.PageResponse() RecoveryPointsClientListByReplicationProtectedItemsResponse`
+- New function `*A2AUnplannedFailoverInput.GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput`
+- New function `ReplicationMigrationItemsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationMigrationItemsClientUpdateResponse, error)`
+- New function `*InMageAzureV2SwitchProviderInput.GetSwitchProviderSpecificInput() *SwitchProviderSpecificInput`
+- New function `*ReplicationProtectedItemsClientApplyRecoveryPointPoller.Done() bool`
+- New function `*ReplicationProtectionContainerMappingsClientUpdatePollerResponse.Resume(context.Context, *ReplicationProtectionContainerMappingsClient, string) error`
+- New function `*VMwareCbtEnableMigrationInput.GetEnableMigrationProviderSpecificInput() *EnableMigrationProviderSpecificInput`
+- New function `*ReplicationPoliciesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientUpdatePoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientUpdateResponse, error)`
+- New function `*ReplicationProtectionContainerMappingsClientCreatePoller.FinalResponse(context.Context) (ReplicationProtectionContainerMappingsClientCreateResponse, error)`
+- New function `ReplicationFabricsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationFabricsClientCreateResponse, error)`
+- New function `*ReplicationProtectionContainerMappingsClientPurgePoller.Done() bool`
+- New function `*ReplicationFabricsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationRecoveryServicesProvidersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryServicesProvidersClientDeleteResponse, error)`
+- New function `*ReplicationProtectedItemsClientPlannedFailoverPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientPlannedFailoverResponse, error)`
+- New function `*ReplicationRecoveryPlansClientCreatePoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientCreateResponse, error)`
+- New function `*InMageRcmFailbackReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*ReplicationRecoveryServicesProvidersClientCreatePollerResponse.Resume(context.Context, *ReplicationRecoveryServicesProvidersClient, string) error`
+- New function `ReplicationRecoveryPlansClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientDeleteResponse, error)`
+- New function `NewReplicationAppliancesClient(string, string, string, azcore.TokenCredential, *arm.ClientOptions) *ReplicationAppliancesClient`
+- New function `*ReplicationStorageClassificationsClientListByReplicationFabricsPager.NextPage(context.Context) bool`
+- New function `*ReplicationAppliancesClient.List(*ReplicationAppliancesClientListOptions) *ReplicationAppliancesClientListPager`
+- New function `*HyperVSiteDetails.GetFabricSpecificDetails() *FabricSpecificDetails`
+- New function `*ReplicationRecoveryPlansClientPlannedFailoverPollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `*ReplicationFabricsClientMigrateToAADPoller.ResumeToken() (string, error)`
+- New function `*InMageRcmUpdateContainerMappingInput.GetReplicationProviderSpecificUpdateContainerMappingInput() *ReplicationProviderSpecificUpdateContainerMappingInput`
+- New function `*ReplicationProtectedItemsClientFailoverCommitPoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientUpdateAppliancePoller.ResumeToken() (string, error)`
+- New function `*InMageRcmReprotectInput.GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput`
+- New function `*ReplicationProtectedItemsClientTestFailoverPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientTestFailoverResponse, error)`
+- New function `*ReplicationProtectedItemsClientReprotectPoller.ResumeToken() (string, error)`
+- New function `*InMageRcmUpdateReplicationProtectedItemInput.GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput`
+- New function `*VMwareCbtProtectionContainerMappingDetails.GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails`
+- New function `ReplicationFabricsClientMigrateToAADPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationFabricsClientMigrateToAADResponse, error)`
+- New function `*A2AUpdateContainerMappingInput.GetReplicationProviderSpecificUpdateContainerMappingInput() *ReplicationProviderSpecificUpdateContainerMappingInput`
+- New function `*HyperVReplicaReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*ReplicationProtectedItemsClientListByReplicationProtectionContainersPager.NextPage(context.Context) bool`
+- New function `InMageAzureV2SwitchProviderInput.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationProtectedItemsClientListByReplicationProtectionContainersPager.PageResponse() ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse`
+- New function `*ReplicationFabricsClientRenewCertificatePoller.FinalResponse(context.Context) (ReplicationFabricsClientRenewCertificateResponse, error)`
+- New function `*ReplicationJobsClientExportPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientSwitchProviderPoller.Done() bool`
+- New function `*ReplicationRecoveryPlansClientTestFailoverPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*InMageRcmEventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `*AzureFabricCreationInput.GetFabricSpecificCreationInput() *FabricSpecificCreationInput`
+- New function `*ReplicationPoliciesClientCreatePollerResponse.Resume(context.Context, *ReplicationPoliciesClient, string) error`
+- New function `ReplicationPoliciesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationPoliciesClientCreateResponse, error)`
+- New function `*ReplicationNetworkMappingsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*InMageRcmReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*ReplicationRecoveryServicesProvidersClientListByReplicationFabricsPager.PageResponse() ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse`
+- New function `*ReplicationRecoveryPlansClientFailoverCommitPoller.Done() bool`
+- New function `*ReplicationRecoveryPlansClientPlannedFailoverPoller.Done() bool`
+- New function `*ReplicationStorageClassificationMappingsClientListPager.PageResponse() ReplicationStorageClassificationMappingsClientListResponse`
+- New function `*ReplicationRecoveryServicesProvidersClientListByReplicationFabricsPager.NextPage(context.Context) bool`
+- New function `ReplicationMigrationItemsClientMigratePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationMigrationItemsClientMigrateResponse, error)`
+- New function `ReplicationPoliciesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationPoliciesClientDeleteResponse, error)`
+- New function `*ReplicationStorageClassificationMappingsClientDeletePoller.Done() bool`
+- New function `*ReplicationProtectionContainersClientListByReplicationFabricsPager.Err() error`
+- New function `ReplicationRecoveryServicesProvidersClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryServicesProvidersClientCreateResponse, error)`
+- New function `*ReplicationProtectedItemsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationAppliancesClientListPager.PageResponse() ReplicationAppliancesClientListResponse`
+- New function `*ReplicationRecoveryPlansClientTestFailoverCleanupPoller.ResumeToken() (string, error)`
+- New function `*ReplicationRecoveryPlansClientListPager.Err() error`
+- New function `*AzureToAzureUpdateNetworkMappingInput.GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput`
+- New function `*ReplicationLogicalNetworksClientListByReplicationFabricsPager.PageResponse() ReplicationLogicalNetworksClientListByReplicationFabricsResponse`
+- New function `*RecoveryPlanInMageRcmFailoverInput.GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput`
+- New function `*A2ARemoveDisksInput.GetRemoveDisksProviderSpecificInput() *RemoveDisksProviderSpecificInput`
+- New function `*ReplicationMigrationItemsClientTestMigratePoller.ResumeToken() (string, error)`
+- New function `*ReplicationStorageClassificationsClientListByReplicationFabricsPager.PageResponse() ReplicationStorageClassificationsClientListByReplicationFabricsResponse`
+- New function `*ReplicationProtectedItemsClientDeletePoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientDeleteResponse, error)`
+- New function `*ReplicationFabricsClientRenewCertificatePollerResponse.Resume(context.Context, *ReplicationFabricsClient, string) error`
+- New function `*ReplicationProtectedItemsClientPurgePoller.Done() bool`
+- New function `*ReplicationPoliciesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectionContainersClientSwitchProtectionPoller.ResumeToken() (string, error)`
+- New function `*ReplicationMigrationItemsClientMigratePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExportJobDetails.GetJobDetails() *JobDetails`
+- New function `*ReplicationRecoveryPlansClientPlannedFailoverPoller.ResumeToken() (string, error)`
+- New function `ReplicationvCentersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationvCentersClientDeleteResponse, error)`
+- New function `*VmmToAzureNetworkMappingSettings.GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings`
+- New function `*ReplicationFabricsClientDeletePoller.FinalResponse(context.Context) (ReplicationFabricsClientDeleteResponse, error)`
+- New function `*RecoveryPointsClientListByReplicationProtectedItemsPager.Err() error`
+- New function `*AutomationRunbookTaskDetails.GetTaskTypeDetails() *TaskTypeDetails`
+- New function `*ReplicationRecoveryServicesProvidersClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectionContainersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ApplianceCollection.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationStorageClassificationMappingsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientPurgePoller.ResumeToken() (string, error)`
+- New function `*ReplicationMigrationItemsClientTestMigrateCleanupPoller.FinalResponse(context.Context) (ReplicationMigrationItemsClientTestMigrateCleanupResponse, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientRefreshProviderPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationAppliancesClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectedItemsClientResolveHealthErrorsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationFabricsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationFabricsClientDeleteResponse, error)`
+- New function `ReplicationJobsClientExportPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationJobsClientExportResponse, error)`
+- New function `*ReplicationJobsClientExportPollerResponse.Resume(context.Context, *ReplicationJobsClient, string) error`
+- New function `*ReplicationVaultSettingClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `SwitchProviderInputProperties.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationProtectionContainerMappingsClientDeletePoller.ResumeToken() (string, error)`
+- New function `ReplicationProtectionContainerMappingsClientPurgePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectionContainerMappingsClientPurgeResponse, error)`
+- New function `*ReplicationProtectedItemsClientResolveHealthErrorsPoller.Done() bool`
+- New function `ReplicationRecoveryPlansClientTestFailoverPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientTestFailoverResponse, error)`
+- New function `*ReplicationMigrationItemsClientTestMigrateCleanupPoller.Done() bool`
+- New function `*AzureToAzureNetworkMappingSettings.GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings`
+- New function `*ReplicationRecoveryPlansClientFailoverCommitPoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientFailoverCommitResponse, error)`
+- New function `*ReplicationProtectionContainersClientDeletePollerResponse.Resume(context.Context, *ReplicationProtectionContainersClient, string) error`
+- New function `InMageRcmApplianceSpecificDetails.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientDeletePoller.FinalResponse(context.Context) (ReplicationRecoveryServicesProvidersClientDeleteResponse, error)`
+- New function `*ReplicationJobsClientExportPoller.Done() bool`
+- New function `*RecoveryPlanA2ADetails.GetRecoveryPlanProviderSpecificDetails() *RecoveryPlanProviderSpecificDetails`
+- New function `*ReplicationProtectedItemsClientApplyRecoveryPointPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientApplyRecoveryPointResponse, error)`
+- New function `*ReplicationFabricsClientReassociateGatewayPoller.Done() bool`
+- New function `*ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationvCentersClientListPager.PageResponse() ReplicationvCentersClientListResponse`
+- New function `*ReplicationStorageClassificationMappingsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ReplicationPoliciesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*InMageRcmPolicyCreationInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*VmmVirtualMachineDetails.GetHyperVVirtualMachineDetails() *HyperVVirtualMachineDetails`
+- New function `*ReplicationNetworkMappingsClientUpdatePollerResponse.Resume(context.Context, *ReplicationNetworkMappingsClient, string) error`
+- New function `*ReplicationProtectionContainersClientDeletePoller.FinalResponse(context.Context) (ReplicationProtectionContainersClientDeleteResponse, error)`
+- New function `*ReplicationMigrationItemsClientUpdatePoller.Done() bool`
+- New function `ReplicationFabricsClientRenewCertificatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationFabricsClientRenewCertificateResponse, error)`
+- New function `*ReplicationvCentersClientDeletePoller.FinalResponse(context.Context) (ReplicationvCentersClientDeleteResponse, error)`
+- New function `ReplicationProtectedItemsClientAddDisksPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientAddDisksResponse, error)`
+- New function `*HyperVReplicaAzureTestFailoverInput.GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput`
+- New function `*InMageAzureV2UnplannedFailoverInput.GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput`
+- New function `*ReplicationvCentersClientDeletePoller.Done() bool`
+- New function `*ReplicationNetworksClientListByReplicationFabricsPager.PageResponse() ReplicationNetworksClientListByReplicationFabricsResponse`
+- New function `*ReplicationFabricsClientReassociateGatewayPoller.FinalResponse(context.Context) (ReplicationFabricsClientReassociateGatewayResponse, error)`
+- New function `InMageFabricSwitchProviderBlockingErrorDetails.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationvCentersClientCreatePoller.Done() bool`
+- New function `*A2AReprotectInput.GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput`
+- New function `*HyperVReplicaPolicyInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*ReplicationFabricsClientPurgePoller.FinalResponse(context.Context) (ReplicationFabricsClientPurgeResponse, error)`
+- New function `*ReplicationStorageClassificationMappingsClientCreatePollerResponse.Resume(context.Context, *ReplicationStorageClassificationMappingsClient, string) error`
+- New function `*ReplicationProtectedItemsClientPurgePoller.ResumeToken() (string, error)`
+- New function `*ReplicationVaultHealthClientRefreshPoller.ResumeToken() (string, error)`
+- New function `*ReplicationStorageClassificationsClientListPager.PageResponse() ReplicationStorageClassificationsClientListResponse`
+- New function `*VMwareCbtMigrateInput.GetMigrateProviderSpecificInput() *MigrateProviderSpecificInput`
+- New function `*ReplicationProtectedItemsClientAddDisksPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationRecoveryPlansClientFailoverCommitPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectionContainersClientListPager.Err() error`
+- New function `ReplicationProtectionContainerMappingsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectionContainerMappingsClientCreateResponse, error)`
+- New function `*ReplicationFabricsClientListPager.Err() error`
+- New function `*ReplicationRecoveryPlansClientTestFailoverCleanupPoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationFabricsClientPurgePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationFabricsClientPurgeResponse, error)`
+- New function `*VMwareCbtMigrationDetails.GetMigrationProviderSpecificSettings() *MigrationProviderSpecificSettings`
+- New function `ReplicationProtectedItemsClientSwitchProviderPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientSwitchProviderResponse, error)`
+- New function `*ReplicationProtectedItemsClientSwitchProviderPoller.ResumeToken() (string, error)`
+- New function `*A2AEventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `*ReplicationPoliciesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse.Resume(context.Context, *ReplicationMigrationItemsClient, string) error`
+- New function `*HyperVReplicaAzurePolicyInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*VMwareVirtualMachineDetails.GetConfigurationSettings() *ConfigurationSettings`
+- New function `*ReplicationJobsClientResumePollerResponse.Resume(context.Context, *ReplicationJobsClient, string) error`
+- New function `*ReplicationProtectedItemsClientFailoverCancelPoller.Done() bool`
+- New function `*ReplicationNetworkMappingsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientUpdateAppliancePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientResolveHealthErrorsPoller.ResumeToken() (string, error)`
+- New function `ReplicationProtectedItemsClientReprotectPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientReprotectResponse, error)`
+- New function `*VMwareCbtTestMigrateInput.GetTestMigrateProviderSpecificInput() *TestMigrateProviderSpecificInput`
+- New function `*ReplicationRecoveryPlansClientUnplannedFailoverPoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientUnplannedFailoverResponse, error)`
+- New function `*ReplicationRecoveryPlansClientTestFailoverCleanupPoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientTestFailoverCleanupResponse, error)`
+- New function `*ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `*ReplicationMigrationItemsClientResyncPoller.FinalResponse(context.Context) (ReplicationMigrationItemsClientResyncResponse, error)`
+- New function `*ReplicationNetworkMappingsClientDeletePollerResponse.Resume(context.Context, *ReplicationNetworkMappingsClient, string) error`
+- New function `*ReplicationRecoveryPlansClientDeletePollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `*A2AReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*A2ACrossClusterMigrationContainerCreationInput.UnmarshalJSON([]byte) error`
+- New function `*ReplicationNetworkMappingsClientUpdatePoller.Done() bool`
+- New function `*AzureToAzureCreateNetworkMappingInput.GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput`
+- New function `*RecoveryPlanHyperVReplicaAzureFailoverInput.GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput`
+- New function `*ReplicationProtectionContainersClientSwitchProtectionPoller.FinalResponse(context.Context) (ReplicationProtectionContainersClientSwitchProtectionResponse, error)`
+- New function `*InMagePolicyInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*InMageEnableProtectionInput.GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput`
+- New function `*MigrationRecoveryPointsClientListByReplicationMigrationItemsPager.NextPage(context.Context) bool`
+- New function `*ReplicationMigrationItemsClientTestMigratePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationVaultSettingClientCreatePoller.Done() bool`
+- New function `*HyperVReplicaAzureEnableProtectionInput.GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput`
+- New function `*InMageDisableProtectionProviderSpecificInput.GetDisableProtectionProviderSpecificInput() *DisableProtectionProviderSpecificInput`
+- New function `*ReplicationProtectionContainerMappingsClientPurgePollerResponse.Resume(context.Context, *ReplicationProtectionContainerMappingsClient, string) error`
+- New function `*ReplicationRecoveryPlansClientFailoverCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationFabricsClientReassociateGatewayPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationFabricsClientReassociateGatewayResponse, error)`
+- New function `*ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse.Resume(context.Context, *ReplicationProtectionContainersClient, string) error`
+- New function `*ReplicationFabricsClientRenewCertificatePoller.Done() bool`
+- New function `*InMageReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*ReplicationFabricsClientMigrateToAADPoller.FinalResponse(context.Context) (ReplicationFabricsClientMigrateToAADResponse, error)`
+- New function `*ReplicationJobsClientListPager.PageResponse() ReplicationJobsClientListResponse`
+- New function `ReplicationMigrationItemsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationMigrationItemsClientDeleteResponse, error)`
+- New function `*InMageRcmFailbackReprotectInput.GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput`
+- New function `*InMageReprotectInput.GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput`
+- New function `*ReplicationRecoveryPlansClientListPager.NextPage(context.Context) bool`
+- New function `*FabricReplicationGroupTaskDetails.GetTaskTypeDetails() *TaskTypeDetails`
+- New function `*ReplicationRecoveryPlansClientReprotectPoller.Done() bool`
+- New function `*ReplicationProtectedItemsClientListByReplicationProtectionContainersPager.Err() error`
+- New function `*ReplicationRecoveryPlansClientDeletePoller.Done() bool`
+- New function `*ReplicationRecoveryServicesProvidersClientPurgePoller.FinalResponse(context.Context) (ReplicationRecoveryServicesProvidersClientPurgeResponse, error)`
+- New function `*ReplicationProtectedItemsClientRepairReplicationPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ReplicationRecoveryPlansClientTestFailoverPoller.Done() bool`
+- New function `*InMageRcmFabricCreationInput.GetFabricSpecificCreationInput() *FabricSpecificCreationInput`
+- New function `*InMageAzureV2ApplyRecoveryPointInput.GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput`
+- New function `*ReplicationRecoveryPlansClientTestFailoverPoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientTestFailoverResponse, error)`
+- New function `*ReplicationNetworkMappingsClientDeletePoller.Done() bool`
+- New function `*ReplicationProtectedItemsClientFailoverCancelPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientFailoverCancelResponse, error)`
+- New function `*ReplicationJobsClientExportPoller.FinalResponse(context.Context) (ReplicationJobsClientExportResponse, error)`
+- New function `*ReplicationRecoveryPlansClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainerMappingsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationMigrationItemsClientMigratePoller.FinalResponse(context.Context) (ReplicationMigrationItemsClientMigrateResponse, error)`
+- New function `*ReplicationStorageClassificationMappingsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsPager.PageResponse() ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse`
+- New function `*ReplicationFabricsClientCreatePoller.Done() bool`
+- New function `*RecoveryPlanScriptActionDetails.GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails`
+- New function `*VMwareCbtContainerCreationInput.GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput`
+- New function `*ReplicationVaultHealthClientRefreshPoller.Done() bool`
+- New function `*ReplicationvCentersClientCreatePoller.FinalResponse(context.Context) (ReplicationvCentersClientCreateResponse, error)`
+- New function `*ReplicationPoliciesClientListPager.PageResponse() ReplicationPoliciesClientListResponse`
+- New function `*A2ACrossClusterMigrationPolicyCreationInput.UnmarshalJSON([]byte) error`
+- New function `*ReplicationVaultSettingClientListPager.Err() error`
+- New function `*A2ACreateProtectionIntentInput.GetCreateProtectionIntentProviderSpecificDetails() *CreateProtectionIntentProviderSpecificDetails`
+- New function `*HyperVReplicaBluePolicyInput.GetHyperVReplicaPolicyInput() *HyperVReplicaPolicyInput`
+- New function `*ReplicationRecoveryPlansClientUpdatePollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `JobDetails.MarshalJSON() ([]byte, error)`
+- New function `*A2AApplyRecoveryPointInput.GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput`
+- New function `ReplicationProtectedItemsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientUpdateResponse, error)`
+- New function `*ReplicationProtectableItemsClientListByReplicationProtectionContainersPager.NextPage(context.Context) bool`
+- New function `*ReplicationLogicalNetworksClientListByReplicationFabricsPager.Err() error`
+- New function `*ReplicationRecoveryPlansClientDeletePoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientDeleteResponse, error)`
+- New function `*ReplicationMigrationItemsClientResyncPoller.ResumeToken() (string, error)`
+- New function `*ExistingRecoveryAvailabilitySet.GetRecoveryAvailabilitySetCustomDetails() *RecoveryAvailabilitySetCustomDetails`
+- New function `*ReplicationProtectedItemsClientTestFailoverCleanupPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientListPager.PageResponse() ReplicationProtectedItemsClientListResponse`
+- New function `*A2ARecoveryPointDetails.GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails`
+- New function `*ReplicationvCentersClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainersClientSwitchProtectionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationProtectedItemsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientDeleteResponse, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientListPager.Err() error`
+- New function `*FabricReplicationGroupTaskDetails.GetJobTaskDetails() *JobTaskDetails`
+- New function `ReplicationNetworkMappingsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationNetworkMappingsClientUpdateResponse, error)`
+- New function `*ReplicationProtectionContainerMappingsClientPurgePoller.ResumeToken() (string, error)`
+- New function `*ReplicationStorageClassificationMappingsClientCreatePoller.FinalResponse(context.Context) (ReplicationStorageClassificationMappingsClientCreateResponse, error)`
+- New function `ReplicationProtectedItemsClientTestFailoverPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientTestFailoverResponse, error)`
+- New function `*ReplicationMigrationItemsClientUpdatePoller.FinalResponse(context.Context) (ReplicationMigrationItemsClientUpdateResponse, error)`
+- New function `*InMageRcmTestFailoverInput.GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput`
+- New function `*ReplicationStorageClassificationsClientListPager.Err() error`
+- New function `*ReplicationProtectionContainerMappingsClientPurgePoller.FinalResponse(context.Context) (ReplicationProtectionContainerMappingsClientPurgeResponse, error)`
+- New function `*ReplicationProtectionContainersClientCreatePoller.FinalResponse(context.Context) (ReplicationProtectionContainersClientCreateResponse, error)`
+- New function `*ReplicationMigrationItemsClientTestMigratePoller.FinalResponse(context.Context) (ReplicationMigrationItemsClientTestMigrateResponse, error)`
+- New function `*ReplicationRecoveryPlansClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersPager.PageResponse() ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse`
+- New function `*ReplicationRecoveryPlansClientListPager.PageResponse() ReplicationRecoveryPlansClientListResponse`
+- New function `*ReplicationProtectedItemsClientAddDisksPoller.Done() bool`
+- New function `*ReplicationProtectedItemsClientAddDisksPoller.ResumeToken() (string, error)`
+- New function `*ReplicationFabricsClientCheckConsistencyPoller.FinalResponse(context.Context) (ReplicationFabricsClientCheckConsistencyResponse, error)`
+- New function `*InMageRcmFabricSpecificDetails.GetFabricSpecificDetails() *FabricSpecificDetails`
+- New function `*ReplicationProtectedItemsClientPurgePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VmmToAzureUpdateNetworkMappingInput.GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput`
+- New function `*ReplicationProtectedItemsClientUpdateAppliancePollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationMigrationItemsClientTestMigratePollerResponse.Resume(context.Context, *ReplicationMigrationItemsClient, string) error`
+- New function `*RecoveryPlanHyperVReplicaAzureFailbackInput.GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput`
+- New function `*ReplicationStorageClassificationMappingsClientListPager.Err() error`
+- New function `*ReplicationProtectedItemsClientPurgePoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientPurgeResponse, error)`
+- New function `ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryServicesProvidersClientRefreshProviderResponse, error)`
+- New function `*ReplicationGroupDetails.UnmarshalJSON([]byte) error`
+- New function `*ReplicationProtectionContainersClientListPager.NextPage(context.Context) bool`
+- New function `*InMageAzureV2TestFailoverInput.GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput`
+- New function `ReplicationProtectedItemsClientFailoverCommitPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientFailoverCommitResponse, error)`
+- New function `*ReplicationvCentersClientListByReplicationFabricsPager.Err() error`
+- New function `*ReplicationJobsClientResumePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientUnplannedFailoverPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectionContainerMappingsClientUpdatePoller.Done() bool`
+- New function `*VmmVirtualMachineDetails.UnmarshalJSON([]byte) error`
+- New function `*ReplicationNetworkMappingsClientUpdatePoller.FinalResponse(context.Context) (ReplicationNetworkMappingsClientUpdateResponse, error)`
+- New function `*ReplicationVaultHealthClientRefreshPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectionContainerMappingsClientUpdatePoller.FinalResponse(context.Context) (ReplicationProtectionContainerMappingsClientUpdateResponse, error)`
+- New function `*ReplicationProtectedItemsClientReprotectPoller.Done() bool`
+- New function `*ReplicationMigrationItemsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*VmmToAzureUpdateNetworkMappingInput.UnmarshalJSON([]byte) error`
+- New function `*ReplicationProtectedItemsClientUnplannedFailoverPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientUnplannedFailoverResponse, error)`
+- New function `*VMwareCbtContainerMappingInput.GetReplicationProviderSpecificContainerMappingInput() *ReplicationProviderSpecificContainerMappingInput`
+- New function `*A2AContainerCreationInput.GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput`
+- New function `ExtendedLocationType.ToPtr() *ExtendedLocationType`
+- New function `*ReplicationProtectionContainerMappingsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TargetComputeSizesClientListByReplicationProtectedItemsPager.Err() error`
+- New function `*JobStatusEventDetails.GetEventSpecificDetails() *EventSpecificDetails`
+- New function `*ReplicationRecoveryServicesProvidersClientCreatePoller.ResumeToken() (string, error)`
+- New function `*A2ACrossClusterMigrationReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*ReplicationMigrationItemsClientDeletePoller.FinalResponse(context.Context) (ReplicationMigrationItemsClientDeleteResponse, error)`
+- New function `InMageRcmApplianceDetails.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationvCentersClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationFabricsClientListPager.PageResponse() ReplicationFabricsClientListResponse`
+- New function `*ReplicationvCentersClientListByReplicationFabricsPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectionContainersClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationMigrationItemsClientDeletePollerResponse.Resume(context.Context, *ReplicationMigrationItemsClient, string) error`
+- New function `*ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `*ReplicationApplianceProperties.UnmarshalJSON([]byte) error`
+- New function `*ReplicationJobsClientExportPoller.ResumeToken() (string, error)`
+- New function `*ReplicationNetworkMappingsClientCreatePollerResponse.Resume(context.Context, *ReplicationNetworkMappingsClient, string) error`
+- New function `*InMageAzureV2PolicyInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*VirtualMachineTaskDetails.GetTaskTypeDetails() *TaskTypeDetails`
+- New function `*ReplicationVaultSettingClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientUpdateMobilityServicePoller.Done() bool`
+- New function `ReplicationApplianceProperties.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationvCentersClientListByReplicationFabricsPager.PageResponse() ReplicationvCentersClientListByReplicationFabricsResponse`
+- New function `*ReplicationProtectedItemsClientApplyRecoveryPointPoller.ResumeToken() (string, error)`
+- New function `*HyperVReplicaAzureFailbackProviderInput.GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput`
+- New function `*RecoveryPlanShutdownGroupTaskDetails.UnmarshalJSON([]byte) error`
+- New function `*ReplicationProtectedItemsClientRepairReplicationPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientRepairReplicationResponse, error)`
+- New function `*InMageAzureV2ApplyRecoveryPointInput.UnmarshalJSON([]byte) error`
+- New function `*ReplicationPoliciesClientDeletePoller.FinalResponse(context.Context) (ReplicationPoliciesClientDeleteResponse, error)`
+- New function `*ReplicationFabricsClientCheckConsistencyPoller.Done() bool`
+- New function `*ReplicationFabricsClientPurgePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationRecoveryPlansClientCreatePoller.Done() bool`
+- New function `*ReplicationFabricsClientPurgePoller.Done() bool`
+- New function `*ReplicationRecoveryPlansClientCreatePollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `*ReplicationMigrationItemsClientTestMigrateCleanupPoller.ResumeToken() (string, error)`
+- New function `*ExistingRecoveryVirtualNetwork.GetRecoveryVirtualNetworkCustomDetails() *RecoveryVirtualNetworkCustomDetails`
+- New function `*VmmToAzureCreateNetworkMappingInput.UnmarshalJSON([]byte) error`
+- New function `*VMwareV2FabricCreationInput.GetFabricSpecificCreationInput() *FabricSpecificCreationInput`
+- New function `*AsrJobDetails.GetJobDetails() *JobDetails`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*InMageRcmFailbackPolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `ReplicationNetworkMappingsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationNetworkMappingsClientCreateResponse, error)`
+- New function `ReplicationMigrationItemsClientResyncPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationMigrationItemsClientResyncResponse, error)`
+- New function `*ReplicationProtectedItemsClientUpdatePoller.Done() bool`
+- New function `*ReplicationProtectedItemsClientSwitchProviderPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientFailoverCommitPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationVaultSettingClientCreatePoller.FinalResponse(context.Context) (ReplicationVaultSettingClientCreateResponse, error)`
+- New function `*RecoveryPlanInMageFailoverInput.GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput`
+- New function `*ReplicationProtectedItemsClient.BeginSwitchProvider(context.Context, string, string, string, SwitchProviderInput, *ReplicationProtectedItemsClientBeginSwitchProviderOptions) (ReplicationProtectedItemsClientSwitchProviderPollerResponse, error)`
+- New function `*VmmToVmmUpdateNetworkMappingInput.GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput`
+- New function `*InMageTestFailoverInput.GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput`
+- New function `*ReplicationMigrationItemsClientCreatePoller.Done() bool`
+- New function `*ReplicationJobsClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VmmDetails.UnmarshalJSON([]byte) error`
+- New function `*ReplicationMigrationItemsClientResyncPollerResponse.Resume(context.Context, *ReplicationMigrationItemsClient, string) error`
+- New function `*ReplicationProtectionIntentsClientListPager.Err() error`
+- New function `*ReplicationRecoveryPlansClientFailoverCancelPoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientFailoverCancelResponse, error)`
+- New function `*ReplicationStorageClassificationMappingsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientAddDisksPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientAddDisksResponse, error)`
+- New function `*ReplicationProtectionContainerMappingsClientListPager.Err() error`
+- New function `*ReplicationProtectedItemsClientRemoveDisksPoller.Done() bool`
+- New function `*HyperVReplicaAzureReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*ReplicationPoliciesClientUpdatePoller.Done() bool`
+- New function `*InMageAzureV2PolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationVaultSettingClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectedItemsClientRemoveDisksPoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientFailoverCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationStorageClassificationsClientListByReplicationFabricsPager.Err() error`
+- New function `*ReplicationRecoveryPlansClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientCreatePoller.ResumeToken() (string, error)`
+- New function `ReplicationRecoveryPlansClientPlannedFailoverPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientPlannedFailoverResponse, error)`
+- New function `*ReplicationJobsClientListPager.Err() error`
+- New function `InMageRcmFabricSwitchProviderBlockingErrorDetails.MarshalJSON() ([]byte, error)`
+- New function `ReplicationJobsClientCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationJobsClientCancelResponse, error)`
+- New function `ReplicationProtectedItemsClientUpdateAppliancePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientUpdateApplianceResponse, error)`
+- New function `*MigrationRecoveryPointsClientListByReplicationMigrationItemsPager.PageResponse() MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse`
+- New function `*ReplicationMigrationItemsClientDeletePoller.Done() bool`
+- New function `PossibleExtendedLocationTypeValues() []ExtendedLocationType`
+- New function `*ReplicationMigrationItemsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationNetworksClientListPager.Err() error`
+- New function `*VmmToVmmCreateNetworkMappingInput.UnmarshalJSON([]byte) error`
+- New function `*JobTaskDetails.GetTaskTypeDetails() *TaskTypeDetails`
+- New function `*InMageAzureV2UpdateReplicationProtectedItemInput.GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput`
+- New function `*ReplicationProtectedItemsClientListPager.Err() error`
+- New function `*ReplicationProtectedItemsClientFailoverCancelPoller.ResumeToken() (string, error)`
+- New function `*VMwareCbtPolicyCreationInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*InMageRcmApplianceSpecificDetails.UnmarshalJSON([]byte) error`
+- New function `*A2ASwitchProtectionInput.GetSwitchProtectionProviderSpecificInput() *SwitchProtectionProviderSpecificInput`
+- New function `*ReplicationVaultSettingClientCreatePollerResponse.Resume(context.Context, *ReplicationVaultSettingClient, string) error`
+- New function `*ReplicationProtectedItemsClientRepairReplicationPoller.ResumeToken() (string, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientCreatePoller.FinalResponse(context.Context) (ReplicationRecoveryServicesProvidersClientCreateResponse, error)`
+- New function `*InMageRcmFailbackEventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `*ReplicationFabricsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainersClientDiscoverProtectableItemPoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectableItemsClientListByReplicationProtectionContainersPager.PageResponse() ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse`
+- New function `ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientTestFailoverCleanupResponse, error)`
+- New function `*A2APolicyCreationInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*ManualActionTaskDetails.GetTaskTypeDetails() *TaskTypeDetails`
+- New function `*ReplicationMigrationItemsClientMigratePoller.ResumeToken() (string, error)`
+- New function `*HyperVReplicaBluePolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationProtectedItemsClientDeletePoller.Done() bool`
+- New function `*ReplicationProtectableItemsClientListByReplicationProtectionContainersPager.Err() error`
+- New function `*RecoveryPlanManualActionDetails.GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails`
+- New function `*ReplicationRecoveryServicesProvidersClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationFabricsClientRenewCertificatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationJobsClientCancelPoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersPager.Err() error`
+- New function `*ReplicationProtectedItemsClientTestFailoverCleanupPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientTestFailoverCleanupResponse, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientDeletePoller.Done() bool`
+- New function `*A2AReplicationIntentDetails.GetReplicationProtectionIntentProviderSpecificSettings() *ReplicationProtectionIntentProviderSpecificSettings`
+- New function `*ReplicationFabricsClientReassociateGatewayPollerResponse.Resume(context.Context, *ReplicationFabricsClient, string) error`
+- New function `ReplicationRecoveryPlansClientFailoverCommitPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientFailoverCommitResponse, error)`
+- New function `*ReplicationvCentersClientListPager.Err() error`
+- New function `*A2AContainerCreationInput.UnmarshalJSON([]byte) error`
+- New function `*TargetComputeSizesClientListByReplicationProtectedItemsPager.PageResponse() TargetComputeSizesClientListByReplicationProtectedItemsResponse`
+- New function `ReplicationRecoveryPlansClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientCreateResponse, error)`
+- New function `*ReplicationProtectionContainersClientListByReplicationFabricsPager.PageResponse() ReplicationProtectionContainersClientListByReplicationFabricsResponse`
+- New function `*ScriptActionTaskDetails.GetTaskTypeDetails() *TaskTypeDetails`
+- New function `*ReplicationLogicalNetworksClientListByReplicationFabricsPager.NextPage(context.Context) bool`
+- New function `*VmmToAzureNetworkMappingSettings.UnmarshalJSON([]byte) error`
+- New function `*ReplicationProtectedItemsClientCreatePoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientCreateResponse, error)`
+- New function `*ReplicationFabricsClientMigrateToAADPollerResponse.Resume(context.Context, *ReplicationFabricsClient, string) error`
+- New function `*HyperVReplicaAzureUpdateReplicationProtectedItemInput.GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput`
+- New function `*ReplicationProtectedItemsClientPlannedFailoverPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*HyperVReplicaAzureReprotectInput.GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput`
+- New function `ReplicationMigrationItemsClientTestMigratePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationMigrationItemsClientTestMigrateResponse, error)`
+- New function `*ExistingRecoveryResourceGroup.GetRecoveryResourceGroupCustomDetails() *RecoveryResourceGroupCustomDetails`
+- New function `*ReplicationvCentersClientCreatePollerResponse.Resume(context.Context, *ReplicationvCentersClient, string) error`
+- New function `*ReplicationRecoveryServicesProvidersClientRefreshProviderPoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainerMappingsClientCreatePollerResponse.Resume(context.Context, *ReplicationProtectionContainerMappingsClient, string) error`
+- New function `*ReplicationvCentersClientDeletePollerResponse.Resume(context.Context, *ReplicationvCentersClient, string) error`
+- New function `*HyperVReplicaAzureUnplannedFailoverInput.GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput`
+- New function `ReplicationStorageClassificationMappingsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationStorageClassificationMappingsClientDeleteResponse, error)`
+- New function `*ReplicationProtectedItemsClientCreatePollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*RecoveryPlanShutdownGroupTaskDetails.GetGroupTaskDetails() *GroupTaskDetails`
+- New function `*MigrationRecoveryPointsClientListByReplicationMigrationItemsPager.Err() error`
+- New function `*InMageRcmFailbackPlannedFailoverProviderInput.GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput`
+- New function `*ReplicationPoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersPager.NextPage(context.Context) bool`
+- New function `*ReplicationvCentersClientUpdatePoller.Done() bool`
+- New function `ReplicationJobsClientResumePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationJobsClientResumeResponse, error)`
+- New function `*ReplicationProtectedItemsClientListPager.NextPage(context.Context) bool`
+- New function `ReplicationProtectionContainersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectionContainersClientDeleteResponse, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse.Resume(context.Context, *ReplicationRecoveryServicesProvidersClient, string) error`
+- New function `*ReplicationProtectedItemsClientUpdateMobilityServicePoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientUpdateMobilityServiceResponse, error)`
+- New function `ReplicationRecoveryPlansClientFailoverCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientFailoverCancelResponse, error)`
+- New function `*ReplicationAlertSettingsClientListPager.Err() error`
+- New function `*ReplicationProtectedItemsClientTestFailoverPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*InMageRcmProtectionContainerMappingDetails.GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails`
+- New function `*ReplicationJobsClientResumePoller.FinalResponse(context.Context) (ReplicationJobsClientResumeResponse, error)`
+- New function `ReplicationVaultSettingClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationVaultSettingClientCreateResponse, error)`
+- New function `*ReplicationProtectedItemsClientPlannedFailoverPoller.Done() bool`
+- New function `*VmmToVmmNetworkMappingSettings.GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings`
+- New function `*ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*A2AAddDisksInput.GetAddDisksProviderSpecificInput() *AddDisksProviderSpecificInput`
+- New function `*AsrJobDetails.UnmarshalJSON([]byte) error`
+- New function `*SwitchProviderSpecificInput.GetSwitchProviderSpecificInput() *SwitchProviderSpecificInput`
+- New function `*RecoveryPlanGroupTaskDetails.GetGroupTaskDetails() *GroupTaskDetails`
+- New function `*ReplicationvCentersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationMigrationItemsClientResyncPoller.Done() bool`
+- New function `*ReplicationJobsClientCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*HyperVReplicaBlueReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*RecoveryPlanA2AFailoverInput.GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput`
+- New function `*ReplicationMigrationItemsClientTestMigrateCleanupPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientPurgePollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationAppliancesClientListPager.Err() error`
+- New function `*ReplicationMigrationItemsClientListPager.PageResponse() ReplicationMigrationItemsClientListResponse`
+- New function `*ReplicationProtectedItemsClientUnplannedFailoverPoller.ResumeToken() (string, error)`
+- New function `*ReplicationJobsClientResumePoller.Done() bool`
+- New function `*A2ACrossClusterMigrationEnableProtectionInput.GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput`
+- New function `*ReplicationMigrationItemsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientUpdatePollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*HyperVReplicaAzureApplyRecoveryPointInput.GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput`
+- New function `*InMageAzureV2ReprotectInput.GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput`
+- New function `*HyperVReplica2012R2EventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `*ReplicationProtectedItemsClientUpdateMobilityServicePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectionContainerMappingsClientCreatePoller.Done() bool`
+- New function `*ReplicationProtectedItemsClientTestFailoverPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*NewRecoveryVirtualNetwork.GetRecoveryVirtualNetworkCustomDetails() *RecoveryVirtualNetworkCustomDetails`
+- New function `*ReplicationProtectionContainersClientSwitchProtectionPoller.Done() bool`
+- New function `*ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsPager.Err() error`
+- New function `*RecoveryPlanInMageAzureV2FailoverInput.GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput`
+- New function `ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientTestFailoverCleanupResponse, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientRefreshProviderPoller.Done() bool`
+- New function `*ReplicationRecoveryPlansClientUpdatePoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientUpdateResponse, error)`
+- New function `*VMwareDetails.GetFabricSpecificDetails() *FabricSpecificDetails`
+- New function `ReplicationRecoveryServicesProvidersClientPurgePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryServicesProvidersClientPurgeResponse, error)`
+- New function `*ReplicationProtectedItemsClientSwitchProviderPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationRecoveryPlansClientTestFailoverCleanupPoller.Done() bool`
+- New function `*ReplicationProtectedItemsClientPlannedFailoverPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationMigrationItemsClientTestMigratePoller.Done() bool`
+- New function `ReplicationProtectionContainersClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectionContainersClientCreateResponse, error)`
+- New function `*ReplicationRecoveryPlansClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientFailoverCommitPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VMwareCbtUpdateMigrationItemInput.GetUpdateMigrationItemProviderSpecificInput() *UpdateMigrationItemProviderSpecificInput`
+- New function `*ReplicationFabricsClientDeletePoller.Done() bool`
+- New function `ReplicationRecoveryPlansClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientUpdateResponse, error)`
+- New function `ReplicationProtectedItemsClientUnplannedFailoverPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientUnplannedFailoverResponse, error)`
+- New function `*ReplicationEventsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectedItemsClientRepairReplicationPoller.Done() bool`
+- New function `*ReplicationProtectionContainersClientCreatePollerResponse.Resume(context.Context, *ReplicationProtectionContainersClient, string) error`
+- New function `*ReplicationFabricsClientMigrateToAADPoller.Done() bool`
+- New function `*ReplicationProtectionIntentsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationMigrationItemsClientListByReplicationProtectionContainersPager.Err() error`
+- New function `*ReplicationProtectedItemsClientReprotectPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `ReplicationProtectedItemsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientCreateResponse, error)`
+- New function `*ReplicationStorageClassificationMappingsClientDeletePoller.FinalResponse(context.Context) (ReplicationStorageClassificationMappingsClientDeleteResponse, error)`
+- New function `*ReplicationJobsClientRestartPoller.Done() bool`
+- New function `*ReplicationMigrationItemsClientCreatePollerResponse.Resume(context.Context, *ReplicationMigrationItemsClient, string) error`
+- New function `*ReplicationRecoveryPlansClientReprotectPoller.FinalResponse(context.Context) (ReplicationRecoveryPlansClientReprotectResponse, error)`
+- New function `ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientUpdateMobilityServiceResponse, error)`
+- New function `*ReplicationProtectedItemsClientRepairReplicationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationProtectionContainersClientSwitchProtectionPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectionContainersClientSwitchProtectionResponse, error)`
+- New function `*VirtualMachineTaskDetails.GetJobTaskDetails() *JobTaskDetails`
+- New function `*ReplicationProtectedItemsClientUpdateAppliancePoller.Done() bool`
+- New function `*ReplicationPoliciesClientDeletePoller.Done() bool`
+- New function `*ReplicationEventsClientListPager.Err() error`
+- New function `*ReplicationRecoveryPlansClientFailoverCommitPollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectionContainersClientDiscoverProtectableItemResponse, error)`
+- New function `*ReplicationProtectionContainersClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientCreatePoller.Done() bool`
+- New function `*ReplicationPoliciesClientUpdatePollerResponse.Resume(context.Context, *ReplicationPoliciesClient, string) error`
+- New function `*ReplicationvCentersClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationFabricsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*InMagePolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsPager.NextPage(context.Context) bool`
+- New function `*ReplicationRecoveryPlansClientTestFailoverPollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `*ReplicationRecoveryServicesProvidersClientDeletePoller.ResumeToken() (string, error)`
+- New function `ReplicationProtectedItemsClientRepairReplicationPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientRepairReplicationResponse, error)`
+- New function `*ReplicationNetworkMappingsClientListByReplicationNetworksPager.Err() error`
+- New function `*A2AProtectionContainerMappingDetails.GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails`
+- New function `*InMageRcmEnableProtectionInput.GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput`
+- New function `ReplicationMigrationItemsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationMigrationItemsClientCreateResponse, error)`
+- New function `*HyperVReplicaAzurePlannedFailoverProviderInput.GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput`
+- New function `*ReplicationJobsClientRestartPoller.FinalResponse(context.Context) (ReplicationJobsClientRestartResponse, error)`
+- New function `*ReplicationProtectedItemsClientApplyRecoveryPointPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VmmVirtualMachineDetails.GetConfigurationSettings() *ConfigurationSettings`
+- New function `*A2ACrossClusterMigrationPolicyCreationInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*ReplicationJobsClientCancelPoller.FinalResponse(context.Context) (ReplicationJobsClientCancelResponse, error)`
+- New function `*ReplicationProtectionContainersClientDiscoverProtectableItemPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExistingProtectionProfile.GetProtectionProfileCustomDetails() *ProtectionProfileCustomDetails`
+- New function `*HyperVReplicaBasePolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationFabricsClientReassociateGatewayPoller.ResumeToken() (string, error)`
+- New function `*VmmToVmmUpdateNetworkMappingInput.UnmarshalJSON([]byte) error`
+- New function `*VmwareCbtPolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `GroupTaskDetails.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationFabricsClientReassociateGatewayPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationMigrationItemsClientResyncPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*InlineWorkflowTaskDetails.GetGroupTaskDetails() *GroupTaskDetails`
+- New function `*ReplicationvCentersClientUpdatePollerResponse.Resume(context.Context, *ReplicationvCentersClient, string) error`
+- New function `*ReplicationMigrationItemsClientListByReplicationProtectionContainersPager.PageResponse() ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse`
+- New function `ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientUnplannedFailoverResponse, error)`
+- New function `ReplicationNetworkMappingsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationNetworkMappingsClientDeleteResponse, error)`
+- New function `*ReplicationRecoveryPlansClientFailoverCommitPoller.ResumeToken() (string, error)`
+- New function `*ReplicationProtectedItemsClientFailoverCommitPoller.Done() bool`
+- New function `*VmmToAzureCreateNetworkMappingInput.GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput`
+- New function `*ReplicationProtectedItemsClientResolveHealthErrorsPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientResolveHealthErrorsResponse, error)`
+- New function `*ReplicationFabricsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationMigrationItemsClientUpdatePollerResponse.Resume(context.Context, *ReplicationMigrationItemsClient, string) error`
+- New function `*ReplicationProtectionContainersClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationMigrationItemsClientTestMigrateCleanupResponse, error)`
+- New function `*ReplicationFabricsClientCheckConsistencyPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*HyperVReplicaAzureEventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `ReplicationVaultHealthClientRefreshPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationVaultHealthClientRefreshResponse, error)`
+- New function `ReplicationRecoveryPlansClientReprotectPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationRecoveryPlansClientReprotectResponse, error)`
+- New function `*A2AApplyRecoveryPointInput.UnmarshalJSON([]byte) error`
+- New function `*RecoveryPlanShutdownGroupTaskDetails.GetRecoveryPlanGroupTaskDetails() *RecoveryPlanGroupTaskDetails`
+- New function `*ReplicationProtectionContainersClientListPager.PageResponse() ReplicationProtectionContainersClientListResponse`
+- New function `*ReplicationRecoveryPlansClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationFabricsClientCheckConsistencyPollerResponse.Resume(context.Context, *ReplicationFabricsClient, string) error`
+- New function `*A2ACrossClusterMigrationContainerCreationInput.GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput`
+- New function `*ReplicationRecoveryServicesProvidersClientCreatePoller.Done() bool`
+- New function `*ReplicationJobsClientCancelPoller.Done() bool`
+- New function `*ReplicationAlertSettingsClientListPager.PageResponse() ReplicationAlertSettingsClientListResponse`
+- New function `*ReplicationJobsClientResumePoller.ResumeToken() (string, error)`
+- New function `*ReplicationvCentersClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationRecoveryPlansClientPlannedFailoverPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*InMageRcmApplianceSpecificDetails.GetApplianceSpecificDetails() *ApplianceSpecificDetails`
+- New function `*A2AUpdateReplicationProtectedItemInput.GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput`
+- New function `*ReplicationAlertSettingsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationFabricsClientRenewCertificatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationRecoveryPlansClientUnplannedFailoverPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientRemoveDisksPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*HyperVReplicaPolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationProtectionContainersClientDeletePoller.Done() bool`
+- New function `*ReplicationRecoveryPlansClientFailoverCancelPoller.Done() bool`
+- New function `ReplicationvCentersClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationvCentersClientCreateResponse, error)`
+- New function `*VmmDetails.GetFabricSpecificDetails() *FabricSpecificDetails`
+- New function `*ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationRecoveryServicesProvidersClientPurgePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*HyperVReplicaBaseReplicationDetails.GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings`
+- New function `*ReplicationProtectionContainersClientDiscoverProtectableItemPoller.Done() bool`
+- New function `*ReplicationNetworkMappingsClientListByReplicationNetworksPager.PageResponse() ReplicationNetworkMappingsClientListByReplicationNetworksResponse`
+- New function `*ReplicationNetworkMappingsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ApplianceSpecificDetails.GetApplianceSpecificDetails() *ApplianceSpecificDetails`
+- New function `*ReplicationPoliciesClientDeletePollerResponse.Resume(context.Context, *ReplicationPoliciesClient, string) error`
+- New function `*A2ACrossClusterMigrationApplyRecoveryPointInput.UnmarshalJSON([]byte) error`
+- New function `*ReplicationProtectedItemsClientFailoverCommitPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientFailoverCommitResponse, error)`
+- New function `*ReplicationvCentersClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationRecoveryPlansClientUnplannedFailoverPoller.Done() bool`
+- New function `ReplicationProtectedItemsClientFailoverCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientFailoverCancelResponse, error)`
+- New function `*RecoveryPlanA2AInput.GetRecoveryPlanProviderSpecificInput() *RecoveryPlanProviderSpecificInput`
+- New function `*InMageAzureV2RecoveryPointDetails.GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails`
+- New function `*HyperVReplica2012EventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `*ExistingStorageAccount.GetStorageAccountCustomDetails() *StorageAccountCustomDetails`
+- New function `*InMageAzureV2EventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `*ReplicationRecoveryPlansClientFailoverCancelPoller.ResumeToken() (string, error)`
+- New function `*RecoveryPointsClientListByReplicationProtectedItemsPager.NextPage(context.Context) bool`
+- New function `*ReplicationProtectedItemsClientTestFailoverCleanupPoller.ResumeToken() (string, error)`
+- New function `*A2APolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*A2ATestFailoverInput.GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput`
+- New function `InMageAzureV2SwitchProviderBlockingErrorDetails.MarshalJSON() ([]byte, error)`
+- New function `*ReplicationProtectionIntentsClientListPager.PageResponse() ReplicationProtectionIntentsClientListResponse`
+- New function `*ReplicationRecoveryPlansClientReprotectPollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `*InMageRcmPolicyDetails.GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails`
+- New function `*ReplicationProtectedItemsClientPlannedFailoverPoller.ResumeToken() (string, error)`
+- New function `ReplicationvCentersClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationvCentersClientUpdateResponse, error)`
+- New function `*ReplicationRecoveryServicesProvidersClientPurgePollerResponse.Resume(context.Context, *ReplicationRecoveryServicesProvidersClient, string) error`
+- New function `*ReplicationVaultHealthClientRefreshPollerResponse.Resume(context.Context, *ReplicationVaultHealthClient, string) error`
+- New function `*ConsistencyCheckTaskDetails.GetTaskTypeDetails() *TaskTypeDetails`
+- New function `*ReplicationJobsClientRestartPollerResponse.Resume(context.Context, *ReplicationJobsClient, string) error`
+- New function `*ReplicationProtectionContainerMappingsClientDeletePoller.Done() bool`
+- New function `*VMwareCbtContainerCreationInput.UnmarshalJSON([]byte) error`
+- New function `*HyperVVirtualMachineDetails.GetConfigurationSettings() *ConfigurationSettings`
+- New function `*InMageRcmFailbackPolicyCreationInput.GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput`
+- New function `*ReplicationProtectionContainerMappingsClientPurgePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientSwitchProviderPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientSwitchProviderResponse, error)`
+- New function `*AzureFabricSpecificDetails.GetFabricSpecificDetails() *FabricSpecificDetails`
+- New function `ReplicationProtectionContainerMappingsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectionContainerMappingsClientDeleteResponse, error)`
+- New function `*InMageAzureV2EnableProtectionInput.GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput`
+- New function `*ReplicationProtectionContainerMappingsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationNetworksClientListByReplicationFabricsPager.Err() error`
+- New function `*ReplicationVaultSettingClientListPager.PageResponse() ReplicationVaultSettingClientListResponse`
+- New function `*ReplicationProtectedItemsClientUpdateAppliancePoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientUpdateApplianceResponse, error)`
+- New function `*A2AEnableProtectionInput.GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput`
+- New function `*ReplicationNetworkMappingsClientListPager.Err() error`
+- New function `*ReplicationPoliciesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationMigrationItemsClientCreatePoller.FinalResponse(context.Context) (ReplicationMigrationItemsClientCreateResponse, error)`
+- New function `*ReplicationProtectedItemsClientRemoveDisksPoller.FinalResponse(context.Context) (ReplicationProtectedItemsClientRemoveDisksResponse, error)`
+- New function `*ReplicationProtectedItemsClientRemoveDisksPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationMigrationItemsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationProtectedItemsClientTestFailoverCleanupPoller.Done() bool`
+- New function `*HyperVReplicaBaseEventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `*ReplicationRecoveryServicesProvidersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FailoverJobDetails.GetJobDetails() *JobDetails`
+- New function `*ReplicationPoliciesClientUpdatePoller.FinalResponse(context.Context) (ReplicationPoliciesClientUpdateResponse, error)`
+- New function `*NewProtectionProfile.GetProtectionProfileCustomDetails() *ProtectionProfileCustomDetails`
+- New function `*ReplicationRecoveryServicesProvidersClientListByReplicationFabricsPager.Err() error`
+- New function `*InMageRcmRecoveryPointDetails.GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails`
+- New function `*ReplicationProtectedItemsClientFailoverCancelPollerResponse.Resume(context.Context, *ReplicationProtectedItemsClient, string) error`
+- New function `*ReplicationMigrationItemsClientMigratePollerResponse.Resume(context.Context, *ReplicationMigrationItemsClient, string) error`
+- New function `*ReplicationFabricsClientCreatePoller.FinalResponse(context.Context) (ReplicationFabricsClientCreateResponse, error)`
+- New function `*VMwareCbtEventDetails.GetEventProviderSpecificDetails() *EventProviderSpecificDetails`
+- New function `*ReplicationStorageClassificationsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationNetworksClientListPager.PageResponse() ReplicationNetworksClientListResponse`
+- New function `*ReplicationJobsClientListPager.NextPage(context.Context) bool`
+- New function `*ReplicationvCentersClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ReplicationRecoveryPlansClientFailoverCancelPollerResponse.Resume(context.Context, *ReplicationRecoveryPlansClient, string) error`
+- New function `*ReplicationPoliciesClientListPager.Err() error`
+- New function `*InMageAzureV2SwitchProviderInput.UnmarshalJSON([]byte) error`
+- New function `ReplicationPoliciesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationPoliciesClientUpdateResponse, error)`
+- New function `ReplicationProtectedItemsClientRemoveDisksPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientRemoveDisksResponse, error)`
+- New function `*ReplicationPoliciesClientCreatePoller.FinalResponse(context.Context) (ReplicationPoliciesClientCreateResponse, error)`
+- New function `*ReplicationNetworkMappingsClientCreatePoller.Done() bool`
+- New function `*ReplicationProtectionContainersClientDiscoverProtectableItemPoller.FinalResponse(context.Context) (ReplicationProtectionContainersClientDiscoverProtectableItemResponse, error)`
+- New function `*ReplicationGroupDetails.GetConfigurationSettings() *ConfigurationSettings`
+- New function `*ReplicationProtectedItemsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationProtectedItemsClientResolveHealthErrorsResponse, error)`
+- New struct `ApplianceCollection`
+- New struct `ApplianceQueryParameter`
+- New struct `ApplianceSpecificDetails`
+- New struct `ExtendedLocation`
+- New struct `InMageAzureV2SwitchProviderBlockingErrorDetails`
+- New struct `InMageAzureV2SwitchProviderDetails`
+- New struct `InMageAzureV2SwitchProviderInput`
+- New struct `InMageFabricSwitchProviderBlockingErrorDetails`
+- New struct `InMageRcmApplianceDetails`
+- New struct `InMageRcmApplianceSpecificDetails`
+- New struct `InMageRcmFabricSwitchProviderBlockingErrorDetails`
+- New struct `MigrationRecoveryPointsClientGetOptions`
+- New struct `MigrationRecoveryPointsClientGetResponse`
+- New struct `MigrationRecoveryPointsClientGetResult`
+- New struct `MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions`
+- New struct `MigrationRecoveryPointsClientListByReplicationMigrationItemsPager`
+- New struct `MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse`
+- New struct `MigrationRecoveryPointsClientListByReplicationMigrationItemsResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `RecoveryPointsClientGetOptions`
+- New struct `RecoveryPointsClientGetResponse`
+- New struct `RecoveryPointsClientGetResult`
+- New struct `RecoveryPointsClientListByReplicationProtectedItemsOptions`
+- New struct `RecoveryPointsClientListByReplicationProtectedItemsPager`
+- New struct `RecoveryPointsClientListByReplicationProtectedItemsResponse`
+- New struct `RecoveryPointsClientListByReplicationProtectedItemsResult`
+- New struct `ReplicationAlertSettingsClientCreateOptions`
+- New struct `ReplicationAlertSettingsClientCreateResponse`
+- New struct `ReplicationAlertSettingsClientCreateResult`
+- New struct `ReplicationAlertSettingsClientGetOptions`
+- New struct `ReplicationAlertSettingsClientGetResponse`
+- New struct `ReplicationAlertSettingsClientGetResult`
+- New struct `ReplicationAlertSettingsClientListOptions`
+- New struct `ReplicationAlertSettingsClientListPager`
+- New struct `ReplicationAlertSettingsClientListResponse`
+- New struct `ReplicationAlertSettingsClientListResult`
+- New struct `ReplicationAppliance`
+- New struct `ReplicationApplianceProperties`
+- New struct `ReplicationAppliancesClient`
+- New struct `ReplicationAppliancesClientListOptions`
+- New struct `ReplicationAppliancesClientListPager`
+- New struct `ReplicationAppliancesClientListResponse`
+- New struct `ReplicationAppliancesClientListResult`
+- New struct `ReplicationEligibilityResultsClientGetOptions`
+- New struct `ReplicationEligibilityResultsClientGetResponse`
+- New struct `ReplicationEligibilityResultsClientGetResult`
+- New struct `ReplicationEligibilityResultsClientListOptions`
+- New struct `ReplicationEligibilityResultsClientListResponse`
+- New struct `ReplicationEligibilityResultsClientListResult`
+- New struct `ReplicationEventsClientGetOptions`
+- New struct `ReplicationEventsClientGetResponse`
+- New struct `ReplicationEventsClientGetResult`
+- New struct `ReplicationEventsClientListOptions`
+- New struct `ReplicationEventsClientListPager`
+- New struct `ReplicationEventsClientListResponse`
+- New struct `ReplicationEventsClientListResult`
+- New struct `ReplicationFabricsClientBeginCheckConsistencyOptions`
+- New struct `ReplicationFabricsClientBeginCreateOptions`
+- New struct `ReplicationFabricsClientBeginDeleteOptions`
+- New struct `ReplicationFabricsClientBeginMigrateToAADOptions`
+- New struct `ReplicationFabricsClientBeginPurgeOptions`
+- New struct `ReplicationFabricsClientBeginReassociateGatewayOptions`
+- New struct `ReplicationFabricsClientBeginRenewCertificateOptions`
+- New struct `ReplicationFabricsClientCheckConsistencyPoller`
+- New struct `ReplicationFabricsClientCheckConsistencyPollerResponse`
+- New struct `ReplicationFabricsClientCheckConsistencyResponse`
+- New struct `ReplicationFabricsClientCheckConsistencyResult`
+- New struct `ReplicationFabricsClientCreatePoller`
+- New struct `ReplicationFabricsClientCreatePollerResponse`
+- New struct `ReplicationFabricsClientCreateResponse`
+- New struct `ReplicationFabricsClientCreateResult`
+- New struct `ReplicationFabricsClientDeletePoller`
+- New struct `ReplicationFabricsClientDeletePollerResponse`
+- New struct `ReplicationFabricsClientDeleteResponse`
+- New struct `ReplicationFabricsClientGetOptions`
+- New struct `ReplicationFabricsClientGetResponse`
+- New struct `ReplicationFabricsClientGetResult`
+- New struct `ReplicationFabricsClientListOptions`
+- New struct `ReplicationFabricsClientListPager`
+- New struct `ReplicationFabricsClientListResponse`
+- New struct `ReplicationFabricsClientListResult`
+- New struct `ReplicationFabricsClientMigrateToAADPoller`
+- New struct `ReplicationFabricsClientMigrateToAADPollerResponse`
+- New struct `ReplicationFabricsClientMigrateToAADResponse`
+- New struct `ReplicationFabricsClientPurgePoller`
+- New struct `ReplicationFabricsClientPurgePollerResponse`
+- New struct `ReplicationFabricsClientPurgeResponse`
+- New struct `ReplicationFabricsClientReassociateGatewayPoller`
+- New struct `ReplicationFabricsClientReassociateGatewayPollerResponse`
+- New struct `ReplicationFabricsClientReassociateGatewayResponse`
+- New struct `ReplicationFabricsClientReassociateGatewayResult`
+- New struct `ReplicationFabricsClientRenewCertificatePoller`
+- New struct `ReplicationFabricsClientRenewCertificatePollerResponse`
+- New struct `ReplicationFabricsClientRenewCertificateResponse`
+- New struct `ReplicationFabricsClientRenewCertificateResult`
+- New struct `ReplicationJobsClientBeginCancelOptions`
+- New struct `ReplicationJobsClientBeginExportOptions`
+- New struct `ReplicationJobsClientBeginRestartOptions`
+- New struct `ReplicationJobsClientBeginResumeOptions`
+- New struct `ReplicationJobsClientCancelPoller`
+- New struct `ReplicationJobsClientCancelPollerResponse`
+- New struct `ReplicationJobsClientCancelResponse`
+- New struct `ReplicationJobsClientCancelResult`
+- New struct `ReplicationJobsClientExportPoller`
+- New struct `ReplicationJobsClientExportPollerResponse`
+- New struct `ReplicationJobsClientExportResponse`
+- New struct `ReplicationJobsClientExportResult`
+- New struct `ReplicationJobsClientGetOptions`
+- New struct `ReplicationJobsClientGetResponse`
+- New struct `ReplicationJobsClientGetResult`
+- New struct `ReplicationJobsClientListOptions`
+- New struct `ReplicationJobsClientListPager`
+- New struct `ReplicationJobsClientListResponse`
+- New struct `ReplicationJobsClientListResult`
+- New struct `ReplicationJobsClientRestartPoller`
+- New struct `ReplicationJobsClientRestartPollerResponse`
+- New struct `ReplicationJobsClientRestartResponse`
+- New struct `ReplicationJobsClientRestartResult`
+- New struct `ReplicationJobsClientResumePoller`
+- New struct `ReplicationJobsClientResumePollerResponse`
+- New struct `ReplicationJobsClientResumeResponse`
+- New struct `ReplicationJobsClientResumeResult`
+- New struct `ReplicationLogicalNetworksClientGetOptions`
+- New struct `ReplicationLogicalNetworksClientGetResponse`
+- New struct `ReplicationLogicalNetworksClientGetResult`
+- New struct `ReplicationLogicalNetworksClientListByReplicationFabricsOptions`
+- New struct `ReplicationLogicalNetworksClientListByReplicationFabricsPager`
+- New struct `ReplicationLogicalNetworksClientListByReplicationFabricsResponse`
+- New struct `ReplicationLogicalNetworksClientListByReplicationFabricsResult`
+- New struct `ReplicationMigrationItemsClientBeginCreateOptions`
+- New struct `ReplicationMigrationItemsClientBeginDeleteOptions`
+- New struct `ReplicationMigrationItemsClientBeginMigrateOptions`
+- New struct `ReplicationMigrationItemsClientBeginResyncOptions`
+- New struct `ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions`
+- New struct `ReplicationMigrationItemsClientBeginTestMigrateOptions`
+- New struct `ReplicationMigrationItemsClientBeginUpdateOptions`
+- New struct `ReplicationMigrationItemsClientCreatePoller`
+- New struct `ReplicationMigrationItemsClientCreatePollerResponse`
+- New struct `ReplicationMigrationItemsClientCreateResponse`
+- New struct `ReplicationMigrationItemsClientCreateResult`
+- New struct `ReplicationMigrationItemsClientDeletePoller`
+- New struct `ReplicationMigrationItemsClientDeletePollerResponse`
+- New struct `ReplicationMigrationItemsClientDeleteResponse`
+- New struct `ReplicationMigrationItemsClientGetOptions`
+- New struct `ReplicationMigrationItemsClientGetResponse`
+- New struct `ReplicationMigrationItemsClientGetResult`
+- New struct `ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions`
+- New struct `ReplicationMigrationItemsClientListByReplicationProtectionContainersPager`
+- New struct `ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse`
+- New struct `ReplicationMigrationItemsClientListByReplicationProtectionContainersResult`
+- New struct `ReplicationMigrationItemsClientListOptions`
+- New struct `ReplicationMigrationItemsClientListPager`
+- New struct `ReplicationMigrationItemsClientListResponse`
+- New struct `ReplicationMigrationItemsClientListResult`
+- New struct `ReplicationMigrationItemsClientMigratePoller`
+- New struct `ReplicationMigrationItemsClientMigratePollerResponse`
+- New struct `ReplicationMigrationItemsClientMigrateResponse`
+- New struct `ReplicationMigrationItemsClientMigrateResult`
+- New struct `ReplicationMigrationItemsClientResyncPoller`
+- New struct `ReplicationMigrationItemsClientResyncPollerResponse`
+- New struct `ReplicationMigrationItemsClientResyncResponse`
+- New struct `ReplicationMigrationItemsClientResyncResult`
+- New struct `ReplicationMigrationItemsClientTestMigrateCleanupPoller`
+- New struct `ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse`
+- New struct `ReplicationMigrationItemsClientTestMigrateCleanupResponse`
+- New struct `ReplicationMigrationItemsClientTestMigrateCleanupResult`
+- New struct `ReplicationMigrationItemsClientTestMigratePoller`
+- New struct `ReplicationMigrationItemsClientTestMigratePollerResponse`
+- New struct `ReplicationMigrationItemsClientTestMigrateResponse`
+- New struct `ReplicationMigrationItemsClientTestMigrateResult`
+- New struct `ReplicationMigrationItemsClientUpdatePoller`
+- New struct `ReplicationMigrationItemsClientUpdatePollerResponse`
+- New struct `ReplicationMigrationItemsClientUpdateResponse`
+- New struct `ReplicationMigrationItemsClientUpdateResult`
+- New struct `ReplicationNetworkMappingsClientBeginCreateOptions`
+- New struct `ReplicationNetworkMappingsClientBeginDeleteOptions`
+- New struct `ReplicationNetworkMappingsClientBeginUpdateOptions`
+- New struct `ReplicationNetworkMappingsClientCreatePoller`
+- New struct `ReplicationNetworkMappingsClientCreatePollerResponse`
+- New struct `ReplicationNetworkMappingsClientCreateResponse`
+- New struct `ReplicationNetworkMappingsClientCreateResult`
+- New struct `ReplicationNetworkMappingsClientDeletePoller`
+- New struct `ReplicationNetworkMappingsClientDeletePollerResponse`
+- New struct `ReplicationNetworkMappingsClientDeleteResponse`
+- New struct `ReplicationNetworkMappingsClientGetOptions`
+- New struct `ReplicationNetworkMappingsClientGetResponse`
+- New struct `ReplicationNetworkMappingsClientGetResult`
+- New struct `ReplicationNetworkMappingsClientListByReplicationNetworksOptions`
+- New struct `ReplicationNetworkMappingsClientListByReplicationNetworksPager`
+- New struct `ReplicationNetworkMappingsClientListByReplicationNetworksResponse`
+- New struct `ReplicationNetworkMappingsClientListByReplicationNetworksResult`
+- New struct `ReplicationNetworkMappingsClientListOptions`
+- New struct `ReplicationNetworkMappingsClientListPager`
+- New struct `ReplicationNetworkMappingsClientListResponse`
+- New struct `ReplicationNetworkMappingsClientListResult`
+- New struct `ReplicationNetworkMappingsClientUpdatePoller`
+- New struct `ReplicationNetworkMappingsClientUpdatePollerResponse`
+- New struct `ReplicationNetworkMappingsClientUpdateResponse`
+- New struct `ReplicationNetworkMappingsClientUpdateResult`
+- New struct `ReplicationNetworksClientGetOptions`
+- New struct `ReplicationNetworksClientGetResponse`
+- New struct `ReplicationNetworksClientGetResult`
+- New struct `ReplicationNetworksClientListByReplicationFabricsOptions`
+- New struct `ReplicationNetworksClientListByReplicationFabricsPager`
+- New struct `ReplicationNetworksClientListByReplicationFabricsResponse`
+- New struct `ReplicationNetworksClientListByReplicationFabricsResult`
+- New struct `ReplicationNetworksClientListOptions`
+- New struct `ReplicationNetworksClientListPager`
+- New struct `ReplicationNetworksClientListResponse`
+- New struct `ReplicationNetworksClientListResult`
+- New struct `ReplicationPoliciesClientBeginCreateOptions`
+- New struct `ReplicationPoliciesClientBeginDeleteOptions`
+- New struct `ReplicationPoliciesClientBeginUpdateOptions`
+- New struct `ReplicationPoliciesClientCreatePoller`
+- New struct `ReplicationPoliciesClientCreatePollerResponse`
+- New struct `ReplicationPoliciesClientCreateResponse`
+- New struct `ReplicationPoliciesClientCreateResult`
+- New struct `ReplicationPoliciesClientDeletePoller`
+- New struct `ReplicationPoliciesClientDeletePollerResponse`
+- New struct `ReplicationPoliciesClientDeleteResponse`
+- New struct `ReplicationPoliciesClientGetOptions`
+- New struct `ReplicationPoliciesClientGetResponse`
+- New struct `ReplicationPoliciesClientGetResult`
+- New struct `ReplicationPoliciesClientListOptions`
+- New struct `ReplicationPoliciesClientListPager`
+- New struct `ReplicationPoliciesClientListResponse`
+- New struct `ReplicationPoliciesClientListResult`
+- New struct `ReplicationPoliciesClientUpdatePoller`
+- New struct `ReplicationPoliciesClientUpdatePollerResponse`
+- New struct `ReplicationPoliciesClientUpdateResponse`
+- New struct `ReplicationPoliciesClientUpdateResult`
+- New struct `ReplicationProtectableItemsClientGetOptions`
+- New struct `ReplicationProtectableItemsClientGetResponse`
+- New struct `ReplicationProtectableItemsClientGetResult`
+- New struct `ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions`
+- New struct `ReplicationProtectableItemsClientListByReplicationProtectionContainersPager`
+- New struct `ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse`
+- New struct `ReplicationProtectableItemsClientListByReplicationProtectionContainersResult`
+- New struct `ReplicationProtectedItemsClientAddDisksPoller`
+- New struct `ReplicationProtectedItemsClientAddDisksPollerResponse`
+- New struct `ReplicationProtectedItemsClientAddDisksResponse`
+- New struct `ReplicationProtectedItemsClientAddDisksResult`
+- New struct `ReplicationProtectedItemsClientApplyRecoveryPointPoller`
+- New struct `ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse`
+- New struct `ReplicationProtectedItemsClientApplyRecoveryPointResponse`
+- New struct `ReplicationProtectedItemsClientApplyRecoveryPointResult`
+- New struct `ReplicationProtectedItemsClientBeginAddDisksOptions`
+- New struct `ReplicationProtectedItemsClientBeginApplyRecoveryPointOptions`
+- New struct `ReplicationProtectedItemsClientBeginCreateOptions`
+- New struct `ReplicationProtectedItemsClientBeginDeleteOptions`
+- New struct `ReplicationProtectedItemsClientBeginFailoverCancelOptions`
+- New struct `ReplicationProtectedItemsClientBeginFailoverCommitOptions`
+- New struct `ReplicationProtectedItemsClientBeginPlannedFailoverOptions`
+- New struct `ReplicationProtectedItemsClientBeginPurgeOptions`
+- New struct `ReplicationProtectedItemsClientBeginRemoveDisksOptions`
+- New struct `ReplicationProtectedItemsClientBeginRepairReplicationOptions`
+- New struct `ReplicationProtectedItemsClientBeginReprotectOptions`
+- New struct `ReplicationProtectedItemsClientBeginResolveHealthErrorsOptions`
+- New struct `ReplicationProtectedItemsClientBeginSwitchProviderOptions`
+- New struct `ReplicationProtectedItemsClientBeginTestFailoverCleanupOptions`
+- New struct `ReplicationProtectedItemsClientBeginTestFailoverOptions`
+- New struct `ReplicationProtectedItemsClientBeginUnplannedFailoverOptions`
+- New struct `ReplicationProtectedItemsClientBeginUpdateApplianceOptions`
+- New struct `ReplicationProtectedItemsClientBeginUpdateMobilityServiceOptions`
+- New struct `ReplicationProtectedItemsClientBeginUpdateOptions`
+- New struct `ReplicationProtectedItemsClientCreatePoller`
+- New struct `ReplicationProtectedItemsClientCreatePollerResponse`
+- New struct `ReplicationProtectedItemsClientCreateResponse`
+- New struct `ReplicationProtectedItemsClientCreateResult`
+- New struct `ReplicationProtectedItemsClientDeletePoller`
+- New struct `ReplicationProtectedItemsClientDeletePollerResponse`
+- New struct `ReplicationProtectedItemsClientDeleteResponse`
+- New struct `ReplicationProtectedItemsClientFailoverCancelPoller`
+- New struct `ReplicationProtectedItemsClientFailoverCancelPollerResponse`
+- New struct `ReplicationProtectedItemsClientFailoverCancelResponse`
+- New struct `ReplicationProtectedItemsClientFailoverCancelResult`
+- New struct `ReplicationProtectedItemsClientFailoverCommitPoller`
+- New struct `ReplicationProtectedItemsClientFailoverCommitPollerResponse`
+- New struct `ReplicationProtectedItemsClientFailoverCommitResponse`
+- New struct `ReplicationProtectedItemsClientFailoverCommitResult`
+- New struct `ReplicationProtectedItemsClientGetOptions`
+- New struct `ReplicationProtectedItemsClientGetResponse`
+- New struct `ReplicationProtectedItemsClientGetResult`
+- New struct `ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions`
+- New struct `ReplicationProtectedItemsClientListByReplicationProtectionContainersPager`
+- New struct `ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse`
+- New struct `ReplicationProtectedItemsClientListByReplicationProtectionContainersResult`
+- New struct `ReplicationProtectedItemsClientListOptions`
+- New struct `ReplicationProtectedItemsClientListPager`
+- New struct `ReplicationProtectedItemsClientListResponse`
+- New struct `ReplicationProtectedItemsClientListResult`
+- New struct `ReplicationProtectedItemsClientPlannedFailoverPoller`
+- New struct `ReplicationProtectedItemsClientPlannedFailoverPollerResponse`
+- New struct `ReplicationProtectedItemsClientPlannedFailoverResponse`
+- New struct `ReplicationProtectedItemsClientPlannedFailoverResult`
+- New struct `ReplicationProtectedItemsClientPurgePoller`
+- New struct `ReplicationProtectedItemsClientPurgePollerResponse`
+- New struct `ReplicationProtectedItemsClientPurgeResponse`
+- New struct `ReplicationProtectedItemsClientRemoveDisksPoller`
+- New struct `ReplicationProtectedItemsClientRemoveDisksPollerResponse`
+- New struct `ReplicationProtectedItemsClientRemoveDisksResponse`
+- New struct `ReplicationProtectedItemsClientRemoveDisksResult`
+- New struct `ReplicationProtectedItemsClientRepairReplicationPoller`
+- New struct `ReplicationProtectedItemsClientRepairReplicationPollerResponse`
+- New struct `ReplicationProtectedItemsClientRepairReplicationResponse`
+- New struct `ReplicationProtectedItemsClientRepairReplicationResult`
+- New struct `ReplicationProtectedItemsClientReprotectPoller`
+- New struct `ReplicationProtectedItemsClientReprotectPollerResponse`
+- New struct `ReplicationProtectedItemsClientReprotectResponse`
+- New struct `ReplicationProtectedItemsClientReprotectResult`
+- New struct `ReplicationProtectedItemsClientResolveHealthErrorsPoller`
+- New struct `ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse`
+- New struct `ReplicationProtectedItemsClientResolveHealthErrorsResponse`
+- New struct `ReplicationProtectedItemsClientResolveHealthErrorsResult`
+- New struct `ReplicationProtectedItemsClientSwitchProviderPoller`
+- New struct `ReplicationProtectedItemsClientSwitchProviderPollerResponse`
+- New struct `ReplicationProtectedItemsClientSwitchProviderResponse`
+- New struct `ReplicationProtectedItemsClientSwitchProviderResult`
+- New struct `ReplicationProtectedItemsClientTestFailoverCleanupPoller`
+- New struct `ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse`
+- New struct `ReplicationProtectedItemsClientTestFailoverCleanupResponse`
+- New struct `ReplicationProtectedItemsClientTestFailoverCleanupResult`
+- New struct `ReplicationProtectedItemsClientTestFailoverPoller`
+- New struct `ReplicationProtectedItemsClientTestFailoverPollerResponse`
+- New struct `ReplicationProtectedItemsClientTestFailoverResponse`
+- New struct `ReplicationProtectedItemsClientTestFailoverResult`
+- New struct `ReplicationProtectedItemsClientUnplannedFailoverPoller`
+- New struct `ReplicationProtectedItemsClientUnplannedFailoverPollerResponse`
+- New struct `ReplicationProtectedItemsClientUnplannedFailoverResponse`
+- New struct `ReplicationProtectedItemsClientUnplannedFailoverResult`
+- New struct `ReplicationProtectedItemsClientUpdateAppliancePoller`
+- New struct `ReplicationProtectedItemsClientUpdateAppliancePollerResponse`
+- New struct `ReplicationProtectedItemsClientUpdateApplianceResponse`
+- New struct `ReplicationProtectedItemsClientUpdateApplianceResult`
+- New struct `ReplicationProtectedItemsClientUpdateMobilityServicePoller`
+- New struct `ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse`
+- New struct `ReplicationProtectedItemsClientUpdateMobilityServiceResponse`
+- New struct `ReplicationProtectedItemsClientUpdateMobilityServiceResult`
+- New struct `ReplicationProtectedItemsClientUpdatePoller`
+- New struct `ReplicationProtectedItemsClientUpdatePollerResponse`
+- New struct `ReplicationProtectedItemsClientUpdateResponse`
+- New struct `ReplicationProtectedItemsClientUpdateResult`
+- New struct `ReplicationProtectionContainerMappingsClientBeginCreateOptions`
+- New struct `ReplicationProtectionContainerMappingsClientBeginDeleteOptions`
+- New struct `ReplicationProtectionContainerMappingsClientBeginPurgeOptions`
+- New struct `ReplicationProtectionContainerMappingsClientBeginUpdateOptions`
+- New struct `ReplicationProtectionContainerMappingsClientCreatePoller`
+- New struct `ReplicationProtectionContainerMappingsClientCreatePollerResponse`
+- New struct `ReplicationProtectionContainerMappingsClientCreateResponse`
+- New struct `ReplicationProtectionContainerMappingsClientCreateResult`
+- New struct `ReplicationProtectionContainerMappingsClientDeletePoller`
+- New struct `ReplicationProtectionContainerMappingsClientDeletePollerResponse`
+- New struct `ReplicationProtectionContainerMappingsClientDeleteResponse`
+- New struct `ReplicationProtectionContainerMappingsClientGetOptions`
+- New struct `ReplicationProtectionContainerMappingsClientGetResponse`
+- New struct `ReplicationProtectionContainerMappingsClientGetResult`
+- New struct `ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions`
+- New struct `ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersPager`
+- New struct `ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse`
+- New struct `ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResult`
+- New struct `ReplicationProtectionContainerMappingsClientListOptions`
+- New struct `ReplicationProtectionContainerMappingsClientListPager`
+- New struct `ReplicationProtectionContainerMappingsClientListResponse`
+- New struct `ReplicationProtectionContainerMappingsClientListResult`
+- New struct `ReplicationProtectionContainerMappingsClientPurgePoller`
+- New struct `ReplicationProtectionContainerMappingsClientPurgePollerResponse`
+- New struct `ReplicationProtectionContainerMappingsClientPurgeResponse`
+- New struct `ReplicationProtectionContainerMappingsClientUpdatePoller`
+- New struct `ReplicationProtectionContainerMappingsClientUpdatePollerResponse`
+- New struct `ReplicationProtectionContainerMappingsClientUpdateResponse`
+- New struct `ReplicationProtectionContainerMappingsClientUpdateResult`
+- New struct `ReplicationProtectionContainersClientBeginCreateOptions`
+- New struct `ReplicationProtectionContainersClientBeginDeleteOptions`
+- New struct `ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions`
+- New struct `ReplicationProtectionContainersClientBeginSwitchProtectionOptions`
+- New struct `ReplicationProtectionContainersClientCreatePoller`
+- New struct `ReplicationProtectionContainersClientCreatePollerResponse`
+- New struct `ReplicationProtectionContainersClientCreateResponse`
+- New struct `ReplicationProtectionContainersClientCreateResult`
+- New struct `ReplicationProtectionContainersClientDeletePoller`
+- New struct `ReplicationProtectionContainersClientDeletePollerResponse`
+- New struct `ReplicationProtectionContainersClientDeleteResponse`
+- New struct `ReplicationProtectionContainersClientDiscoverProtectableItemPoller`
+- New struct `ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse`
+- New struct `ReplicationProtectionContainersClientDiscoverProtectableItemResponse`
+- New struct `ReplicationProtectionContainersClientDiscoverProtectableItemResult`
+- New struct `ReplicationProtectionContainersClientGetOptions`
+- New struct `ReplicationProtectionContainersClientGetResponse`
+- New struct `ReplicationProtectionContainersClientGetResult`
+- New struct `ReplicationProtectionContainersClientListByReplicationFabricsOptions`
+- New struct `ReplicationProtectionContainersClientListByReplicationFabricsPager`
+- New struct `ReplicationProtectionContainersClientListByReplicationFabricsResponse`
+- New struct `ReplicationProtectionContainersClientListByReplicationFabricsResult`
+- New struct `ReplicationProtectionContainersClientListOptions`
+- New struct `ReplicationProtectionContainersClientListPager`
+- New struct `ReplicationProtectionContainersClientListResponse`
+- New struct `ReplicationProtectionContainersClientListResult`
+- New struct `ReplicationProtectionContainersClientSwitchProtectionPoller`
+- New struct `ReplicationProtectionContainersClientSwitchProtectionPollerResponse`
+- New struct `ReplicationProtectionContainersClientSwitchProtectionResponse`
+- New struct `ReplicationProtectionContainersClientSwitchProtectionResult`
+- New struct `ReplicationProtectionIntentsClientCreateOptions`
+- New struct `ReplicationProtectionIntentsClientCreateResponse`
+- New struct `ReplicationProtectionIntentsClientCreateResult`
+- New struct `ReplicationProtectionIntentsClientGetOptions`
+- New struct `ReplicationProtectionIntentsClientGetResponse`
+- New struct `ReplicationProtectionIntentsClientGetResult`
+- New struct `ReplicationProtectionIntentsClientListOptions`
+- New struct `ReplicationProtectionIntentsClientListPager`
+- New struct `ReplicationProtectionIntentsClientListResponse`
+- New struct `ReplicationProtectionIntentsClientListResult`
+- New struct `ReplicationRecoveryPlansClientBeginCreateOptions`
+- New struct `ReplicationRecoveryPlansClientBeginDeleteOptions`
+- New struct `ReplicationRecoveryPlansClientBeginFailoverCancelOptions`
+- New struct `ReplicationRecoveryPlansClientBeginFailoverCommitOptions`
+- New struct `ReplicationRecoveryPlansClientBeginPlannedFailoverOptions`
+- New struct `ReplicationRecoveryPlansClientBeginReprotectOptions`
+- New struct `ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions`
+- New struct `ReplicationRecoveryPlansClientBeginTestFailoverOptions`
+- New struct `ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions`
+- New struct `ReplicationRecoveryPlansClientBeginUpdateOptions`
+- New struct `ReplicationRecoveryPlansClientCreatePoller`
+- New struct `ReplicationRecoveryPlansClientCreatePollerResponse`
+- New struct `ReplicationRecoveryPlansClientCreateResponse`
+- New struct `ReplicationRecoveryPlansClientCreateResult`
+- New struct `ReplicationRecoveryPlansClientDeletePoller`
+- New struct `ReplicationRecoveryPlansClientDeletePollerResponse`
+- New struct `ReplicationRecoveryPlansClientDeleteResponse`
+- New struct `ReplicationRecoveryPlansClientFailoverCancelPoller`
+- New struct `ReplicationRecoveryPlansClientFailoverCancelPollerResponse`
+- New struct `ReplicationRecoveryPlansClientFailoverCancelResponse`
+- New struct `ReplicationRecoveryPlansClientFailoverCancelResult`
+- New struct `ReplicationRecoveryPlansClientFailoverCommitPoller`
+- New struct `ReplicationRecoveryPlansClientFailoverCommitPollerResponse`
+- New struct `ReplicationRecoveryPlansClientFailoverCommitResponse`
+- New struct `ReplicationRecoveryPlansClientFailoverCommitResult`
+- New struct `ReplicationRecoveryPlansClientGetOptions`
+- New struct `ReplicationRecoveryPlansClientGetResponse`
+- New struct `ReplicationRecoveryPlansClientGetResult`
+- New struct `ReplicationRecoveryPlansClientListOptions`
+- New struct `ReplicationRecoveryPlansClientListPager`
+- New struct `ReplicationRecoveryPlansClientListResponse`
+- New struct `ReplicationRecoveryPlansClientListResult`
+- New struct `ReplicationRecoveryPlansClientPlannedFailoverPoller`
+- New struct `ReplicationRecoveryPlansClientPlannedFailoverPollerResponse`
+- New struct `ReplicationRecoveryPlansClientPlannedFailoverResponse`
+- New struct `ReplicationRecoveryPlansClientPlannedFailoverResult`
+- New struct `ReplicationRecoveryPlansClientReprotectPoller`
+- New struct `ReplicationRecoveryPlansClientReprotectPollerResponse`
+- New struct `ReplicationRecoveryPlansClientReprotectResponse`
+- New struct `ReplicationRecoveryPlansClientReprotectResult`
+- New struct `ReplicationRecoveryPlansClientTestFailoverCleanupPoller`
+- New struct `ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse`
+- New struct `ReplicationRecoveryPlansClientTestFailoverCleanupResponse`
+- New struct `ReplicationRecoveryPlansClientTestFailoverCleanupResult`
+- New struct `ReplicationRecoveryPlansClientTestFailoverPoller`
+- New struct `ReplicationRecoveryPlansClientTestFailoverPollerResponse`
+- New struct `ReplicationRecoveryPlansClientTestFailoverResponse`
+- New struct `ReplicationRecoveryPlansClientTestFailoverResult`
+- New struct `ReplicationRecoveryPlansClientUnplannedFailoverPoller`
+- New struct `ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse`
+- New struct `ReplicationRecoveryPlansClientUnplannedFailoverResponse`
+- New struct `ReplicationRecoveryPlansClientUnplannedFailoverResult`
+- New struct `ReplicationRecoveryPlansClientUpdatePoller`
+- New struct `ReplicationRecoveryPlansClientUpdatePollerResponse`
+- New struct `ReplicationRecoveryPlansClientUpdateResponse`
+- New struct `ReplicationRecoveryPlansClientUpdateResult`
+- New struct `ReplicationRecoveryServicesProvidersClientBeginCreateOptions`
+- New struct `ReplicationRecoveryServicesProvidersClientBeginDeleteOptions`
+- New struct `ReplicationRecoveryServicesProvidersClientBeginPurgeOptions`
+- New struct `ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions`
+- New struct `ReplicationRecoveryServicesProvidersClientCreatePoller`
+- New struct `ReplicationRecoveryServicesProvidersClientCreatePollerResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientCreateResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientCreateResult`
+- New struct `ReplicationRecoveryServicesProvidersClientDeletePoller`
+- New struct `ReplicationRecoveryServicesProvidersClientDeletePollerResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientDeleteResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientGetOptions`
+- New struct `ReplicationRecoveryServicesProvidersClientGetResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientGetResult`
+- New struct `ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions`
+- New struct `ReplicationRecoveryServicesProvidersClientListByReplicationFabricsPager`
+- New struct `ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResult`
+- New struct `ReplicationRecoveryServicesProvidersClientListOptions`
+- New struct `ReplicationRecoveryServicesProvidersClientListPager`
+- New struct `ReplicationRecoveryServicesProvidersClientListResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientListResult`
+- New struct `ReplicationRecoveryServicesProvidersClientPurgePoller`
+- New struct `ReplicationRecoveryServicesProvidersClientPurgePollerResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientPurgeResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientRefreshProviderPoller`
+- New struct `ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientRefreshProviderResponse`
+- New struct `ReplicationRecoveryServicesProvidersClientRefreshProviderResult`
+- New struct `ReplicationStorageClassificationMappingsClientBeginCreateOptions`
+- New struct `ReplicationStorageClassificationMappingsClientBeginDeleteOptions`
+- New struct `ReplicationStorageClassificationMappingsClientCreatePoller`
+- New struct `ReplicationStorageClassificationMappingsClientCreatePollerResponse`
+- New struct `ReplicationStorageClassificationMappingsClientCreateResponse`
+- New struct `ReplicationStorageClassificationMappingsClientCreateResult`
+- New struct `ReplicationStorageClassificationMappingsClientDeletePoller`
+- New struct `ReplicationStorageClassificationMappingsClientDeletePollerResponse`
+- New struct `ReplicationStorageClassificationMappingsClientDeleteResponse`
+- New struct `ReplicationStorageClassificationMappingsClientGetOptions`
+- New struct `ReplicationStorageClassificationMappingsClientGetResponse`
+- New struct `ReplicationStorageClassificationMappingsClientGetResult`
+- New struct `ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions`
+- New struct `ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsPager`
+- New struct `ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse`
+- New struct `ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResult`
+- New struct `ReplicationStorageClassificationMappingsClientListOptions`
+- New struct `ReplicationStorageClassificationMappingsClientListPager`
+- New struct `ReplicationStorageClassificationMappingsClientListResponse`
+- New struct `ReplicationStorageClassificationMappingsClientListResult`
+- New struct `ReplicationStorageClassificationsClientGetOptions`
+- New struct `ReplicationStorageClassificationsClientGetResponse`
+- New struct `ReplicationStorageClassificationsClientGetResult`
+- New struct `ReplicationStorageClassificationsClientListByReplicationFabricsOptions`
+- New struct `ReplicationStorageClassificationsClientListByReplicationFabricsPager`
+- New struct `ReplicationStorageClassificationsClientListByReplicationFabricsResponse`
+- New struct `ReplicationStorageClassificationsClientListByReplicationFabricsResult`
+- New struct `ReplicationStorageClassificationsClientListOptions`
+- New struct `ReplicationStorageClassificationsClientListPager`
+- New struct `ReplicationStorageClassificationsClientListResponse`
+- New struct `ReplicationStorageClassificationsClientListResult`
+- New struct `ReplicationVaultHealthClientBeginRefreshOptions`
+- New struct `ReplicationVaultHealthClientGetOptions`
+- New struct `ReplicationVaultHealthClientGetResponse`
+- New struct `ReplicationVaultHealthClientGetResult`
+- New struct `ReplicationVaultHealthClientRefreshPoller`
+- New struct `ReplicationVaultHealthClientRefreshPollerResponse`
+- New struct `ReplicationVaultHealthClientRefreshResponse`
+- New struct `ReplicationVaultHealthClientRefreshResult`
+- New struct `ReplicationVaultSettingClientBeginCreateOptions`
+- New struct `ReplicationVaultSettingClientCreatePoller`
+- New struct `ReplicationVaultSettingClientCreatePollerResponse`
+- New struct `ReplicationVaultSettingClientCreateResponse`
+- New struct `ReplicationVaultSettingClientCreateResult`
+- New struct `ReplicationVaultSettingClientGetOptions`
+- New struct `ReplicationVaultSettingClientGetResponse`
+- New struct `ReplicationVaultSettingClientGetResult`
+- New struct `ReplicationVaultSettingClientListOptions`
+- New struct `ReplicationVaultSettingClientListPager`
+- New struct `ReplicationVaultSettingClientListResponse`
+- New struct `ReplicationVaultSettingClientListResult`
+- New struct `ReplicationvCentersClientBeginCreateOptions`
+- New struct `ReplicationvCentersClientBeginDeleteOptions`
+- New struct `ReplicationvCentersClientBeginUpdateOptions`
+- New struct `ReplicationvCentersClientCreatePoller`
+- New struct `ReplicationvCentersClientCreatePollerResponse`
+- New struct `ReplicationvCentersClientCreateResponse`
+- New struct `ReplicationvCentersClientCreateResult`
+- New struct `ReplicationvCentersClientDeletePoller`
+- New struct `ReplicationvCentersClientDeletePollerResponse`
+- New struct `ReplicationvCentersClientDeleteResponse`
+- New struct `ReplicationvCentersClientGetOptions`
+- New struct `ReplicationvCentersClientGetResponse`
+- New struct `ReplicationvCentersClientGetResult`
+- New struct `ReplicationvCentersClientListByReplicationFabricsOptions`
+- New struct `ReplicationvCentersClientListByReplicationFabricsPager`
+- New struct `ReplicationvCentersClientListByReplicationFabricsResponse`
+- New struct `ReplicationvCentersClientListByReplicationFabricsResult`
+- New struct `ReplicationvCentersClientListOptions`
+- New struct `ReplicationvCentersClientListPager`
+- New struct `ReplicationvCentersClientListResponse`
+- New struct `ReplicationvCentersClientListResult`
+- New struct `ReplicationvCentersClientUpdatePoller`
+- New struct `ReplicationvCentersClientUpdatePollerResponse`
+- New struct `ReplicationvCentersClientUpdateResponse`
+- New struct `ReplicationvCentersClientUpdateResult`
+- New struct `SupportedOperatingSystemsClientGetOptions`
+- New struct `SupportedOperatingSystemsClientGetResponse`
+- New struct `SupportedOperatingSystemsClientGetResult`
+- New struct `SwitchProviderInput`
+- New struct `SwitchProviderInputProperties`
+- New struct `SwitchProviderSpecificInput`
+- New struct `TargetComputeSizesClientListByReplicationProtectedItemsOptions`
+- New struct `TargetComputeSizesClientListByReplicationProtectedItemsPager`
+- New struct `TargetComputeSizesClientListByReplicationProtectedItemsResponse`
+- New struct `TargetComputeSizesClientListByReplicationProtectedItemsResult`
+- New field `InstanceType` in struct `VMwareCbtResyncInput`
+- New field `InstanceType` in struct `SwitchProtectionJobDetails`
+- New field `AffectedObjectDetails` in struct `SwitchProtectionJobDetails`
+- New field `InstanceType` in struct `HyperVReplicaBaseEventDetails`
+- New field `ResourceType` in struct `NewRecoveryVirtualNetwork`
+- New field `InstanceType` in struct `VmmToVmmNetworkMappingSettings`
+- New field `ID` in struct `ProtectableItem`
+- New field `Name` in struct `ProtectableItem`
+- New field `Type` in struct `ProtectableItem`
+- New field `Location` in struct `ProtectableItem`
+- New field `InstanceType` in struct `VmmToAzureNetworkMappingSettings`
+- New field `InstanceType` in struct `InMageRcmProtectionContainerMappingDetails`
+- New field `InstanceType` in struct `HyperVReplicaAzureReprotectInput`
+- New field `InstanceType` in struct `A2AContainerMappingInput`
+- New field `ID` in struct `ProtectionContainerMapping`
+- New field `Name` in struct `ProtectionContainerMapping`
+- New field `Type` in struct `ProtectionContainerMapping`
+- New field `Location` in struct `ProtectionContainerMapping`
+- New field `InstanceType` in struct `InMageRcmTestFailoverInput`
+- New field `InstanceType` in struct `AzureToAzureUpdateNetworkMappingInput`
+- New field `Location` in struct `Alert`
+- New field `ID` in struct `Alert`
+- New field `Name` in struct `Alert`
+- New field `Type` in struct `Alert`
+- New field `InstanceType` in struct `HyperVReplicaAzureFailbackProviderInput`
+- New field `InstanceType` in struct `RecoveryPlanInMageRcmFailbackFailoverInput`
+- New field `InstanceType` in struct `HyperVReplicaAzurePolicyInput`
+- New field `InstanceType` in struct `InMageAzureV2UnplannedFailoverInput`
+- New field `InstanceType` in struct `FabricReplicationGroupTaskDetails`
+- New field `JobTask` in struct `FabricReplicationGroupTaskDetails`
+- New field `InstanceType` in struct `HyperVVirtualMachineDetails`
+- New field `InstanceType` in struct `InlineWorkflowTaskDetails`
+- New field `ChildTasks` in struct `InlineWorkflowTaskDetails`
+- New field `Location` in struct `RecoveryServicesProvider`
+- New field `ID` in struct `RecoveryServicesProvider`
+- New field `Name` in struct `RecoveryServicesProvider`
+- New field `Type` in struct `RecoveryServicesProvider`
+- New field `InstanceType` in struct `VmmToVmmCreateNetworkMappingInput`
+- New field `InstanceType` in struct `VmmToVmmUpdateNetworkMappingInput`
+- New field `ResourceType` in struct `ExistingProtectionProfile`
+- New field `Location` in struct `StorageClassification`
+- New field `ID` in struct `StorageClassification`
+- New field `Name` in struct `StorageClassification`
+- New field `Type` in struct `StorageClassification`
+- New field `Type` in struct `Network`
+- New field `Location` in struct `Network`
+- New field `ID` in struct `Network`
+- New field `Name` in struct `Network`
+- New field `InstanceType` in struct `HyperVReplicaAzureApplyRecoveryPointInput`
+- New field `InstanceType` in struct `VmwareCbtPolicyDetails`
+- New field `InstanceType` in struct `InMageRcmFailbackPlannedFailoverProviderInput`
+- New field `InstanceType` in struct `VMwareVirtualMachineDetails`
+- New field `InstanceType` in struct `ReplicationGroupDetails`
+- New field `InstanceType` in struct `A2ATestFailoverInput`
+- New field `InstanceType` in struct `A2ACrossClusterMigrationReplicationDetails`
+- New field `InstanceType` in struct `A2AContainerCreationInput`
+- New field `InstanceType` in struct `InMageUnplannedFailoverInput`
+- New field `InstanceType` in struct `RecoveryPlanInMageRcmFailoverInput`
+- New field `InstanceType` in struct `JobTaskDetails`
+- New field `InstanceType` in struct `HyperVReplicaBasePolicyDetails`
+- New field `ResourceType` in struct `NewProtectionProfile`
+- New field `InstanceType` in struct `AzureToAzureNetworkMappingSettings`
+- New field `InstanceType` in struct `InMageRcmUpdateContainerMappingInput`
+- New field `InstanceType` in struct `VmmDetails`
+- New field `InstanceType` in struct `InMageAzureV2EnableProtectionInput`
+- New field `InstanceType` in struct `InMageRcmFailbackPolicyCreationInput`
+- New field `InstanceType` in struct `RecoveryPlanGroupTaskDetails`
+- New field `ChildTasks` in struct `RecoveryPlanGroupTaskDetails`
+- New field `ResourceType` in struct `ExistingRecoveryAvailabilitySet`
+- New field `InstanceType` in struct `InMageDisableProtectionProviderSpecificInput`
+- New field `InstanceType` in struct `HyperVReplicaAzureEventDetails`
+- New field `InstanceType` in struct `InMageRcmReplicationDetails`
+- New field `InstanceType` in struct `A2AAddDisksInput`
+- New field `OnlineReplicationStartTime` in struct `HyperVReplicaBluePolicyInput`
+- New field `ReplicationPort` in struct `HyperVReplicaBluePolicyInput`
+- New field `ApplicationConsistentSnapshotFrequencyInHours` in struct `HyperVReplicaBluePolicyInput`
+- New field `Compression` in struct `HyperVReplicaBluePolicyInput`
+- New field `AllowedAuthenticationType` in struct `HyperVReplicaBluePolicyInput`
+- New field `RecoveryPoints` in struct `HyperVReplicaBluePolicyInput`
+- New field `ReplicaDeletion` in struct `HyperVReplicaBluePolicyInput`
+- New field `InitialReplicationMethod` in struct `HyperVReplicaBluePolicyInput`
+- New field `OfflineReplicationImportPath` in struct `HyperVReplicaBluePolicyInput`
+- New field `OfflineReplicationExportPath` in struct `HyperVReplicaBluePolicyInput`
+- New field `InstanceType` in struct `HyperVReplicaBluePolicyInput`
+- New field `InstanceType` in struct `InMageRcmFailbackEventDetails`
+- New field `InstanceType` in struct `AzureFabricSpecificDetails`
+- New field `InstanceType` in struct `A2ACrossClusterMigrationPolicyCreationInput`
+- New field `InstanceType` in struct `InMageAzureV2RecoveryPointDetails`
+- New field `InstanceType` in struct `InMageRcmEventDetails`
+- New field `InstanceType` in struct `A2ARemoveDisksInput`
+- New field `SwitchProviderBlockingErrorDetails` in struct `VMwareDetails`
+- New field `InstanceType` in struct `VMwareDetails`
+- New field `InstanceType` in struct `InMageReprotectInput`
+- New field `InstanceType` in struct `VMwareCbtEventDetails`
+- New field `InstanceType` in struct `InMagePolicyInput`
+- New field `InstanceType` in struct `A2ASwitchProtectionInput`
+- New field `InstanceType` in struct `RecoveryPlanA2AFailoverInput`
+- New field `InstanceType` in struct `InMageRcmEnableProtectionInput`
+- New field `InstanceType` in struct `RecoveryPlanInMageFailoverInput`
+- New field `InstanceType` in struct `VMwareCbtContainerCreationInput`
+- New field `InstanceType` in struct `A2AProtectionContainerMappingDetails`
+- New field `InstanceType` in struct `A2AApplyRecoveryPointInput`
+- New field `InstanceType` in struct `A2AUpdateContainerMappingInput`
+- New field `InstanceType` in struct `InMageAzureV2TestFailoverInput`
+- New field `Location` in struct `ReplicationProtectionIntent`
+- New field `ID` in struct `ReplicationProtectionIntent`
+- New field `Name` in struct `ReplicationProtectionIntent`
+- New field `Type` in struct `ReplicationProtectionIntent`
+- New field `InstanceType` in struct `VMwareV2FabricSpecificDetails`
+- New field `InstanceType` in struct `InMageRcmPolicyCreationInput`
+- New field `InstanceType` in struct `InMageRcmFabricSpecificDetails`
+- New field `InstanceType` in struct `VMwareCbtPolicyCreationInput`
+- New field `InstanceType` in struct `RecoveryPlanHyperVReplicaAzureFailbackInput`
+- New field `Location` in struct `Event`
+- New field `ID` in struct `Event`
+- New field `Name` in struct `Event`
+- New field `Type` in struct `Event`
+- New field `InstanceType` in struct `JobStatusEventDetails`
+- New field `InstanceType` in struct `VMwareCbtMigrateInput`
+- New field `InstanceType` in struct `HyperVReplicaPolicyInput`
+- New field `ID` in struct `Fabric`
+- New field `Name` in struct `Fabric`
+- New field `Type` in struct `Fabric`
+- New field `Location` in struct `Fabric`
+- New field `InstanceType` in struct `HyperVReplica2012EventDetails`
+- New field `PrimaryExtendedLocation` in struct `A2AReplicationDetails`
+- New field `InstanceType` in struct `A2AReplicationDetails`
+- New field `RecoveryExtendedLocation` in struct `A2AReplicationDetails`
+- New field `InitialRecoveryExtendedLocation` in struct `A2AReplicationDetails`
+- New field `InitialPrimaryExtendedLocation` in struct `A2AReplicationDetails`
+- New field `Location` in struct `ProtectionContainer`
+- New field `ID` in struct `ProtectionContainer`
+- New field `Name` in struct `ProtectionContainer`
+- New field `Type` in struct `ProtectionContainer`
+- New field `InstanceType` in struct `RecoveryPlanA2AInput`
+- New field `PrimaryExtendedLocation` in struct `RecoveryPlanA2AInput`
+- New field `RecoveryExtendedLocation` in struct `RecoveryPlanA2AInput`
+- New field `InstanceType` in struct `InMageAzureV2EventDetails`
+- New field `InstanceType` in struct `A2ACreateProtectionIntentInput`
+- New field `InstanceType` in struct `AzureFabricCreationInput`
+- New field `AffectedObjectDetails` in struct `FailoverJobDetails`
+- New field `InstanceType` in struct `FailoverJobDetails`
+- New field `Type` in struct `VaultHealthDetails`
+- New field `Location` in struct `VaultHealthDetails`
+- New field `ID` in struct `VaultHealthDetails`
+- New field `Name` in struct `VaultHealthDetails`
+- New field `InstanceType` in struct `A2AUnplannedFailoverInput`
+- New field `SwitchProviderStateDescription` in struct `ReplicationProtectedItemProperties`
+- New field `SwitchProviderState` in struct `ReplicationProtectedItemProperties`
+- New field `Type` in struct `NetworkMapping`
+- New field `Location` in struct `NetworkMapping`
+- New field `ID` in struct `NetworkMapping`
+- New field `Name` in struct `NetworkMapping`
+- New field `ResourceType` in struct `ExistingRecoveryProximityPlacementGroup`
+- New field `InstanceType` in struct `A2AReplicationIntentDetails`
+- New field `InstanceType` in struct `HyperVReplicaAzureUpdateReplicationProtectedItemInput`
+- New field `ID` in struct `MigrationRecoveryPoint`
+- New field `Name` in struct `MigrationRecoveryPoint`
+- New field `Type` in struct `MigrationRecoveryPoint`
+- New field `Location` in struct `MigrationRecoveryPoint`
+- New field `Location` in struct `Job`
+- New field `ID` in struct `Job`
+- New field `Name` in struct `Job`
+- New field `Type` in struct `Job`
+- New field `ID` in struct `ReplicationProtectedItem`
+- New field `Name` in struct `ReplicationProtectedItem`
+- New field `Type` in struct `ReplicationProtectedItem`
+- New field `Location` in struct `ReplicationProtectedItem`
+- New field `Type` in struct `RecoveryPlan`
+- New field `Location` in struct `RecoveryPlan`
+- New field `ID` in struct `RecoveryPlan`
+- New field `Name` in struct `RecoveryPlan`
+- New field `InstanceType` in struct `InMageRcmUnplannedFailoverInput`
+- New field `InstanceType` in struct `HyperVReplicaAzurePolicyDetails`
+- New field `InstanceType` in struct `VMwareCbtTestMigrateInput`
+- New field `InstanceType` in struct `HyperVReplicaAzureUnplannedFailoverInput`
+- New field `ResourceType` in struct `ExistingRecoveryVirtualNetwork`
+- New field `InstanceType` in struct `VMwareCbtContainerMappingInput`
+- New field `InstanceType` in struct `InMageRcmFailbackPolicyDetails`
+- New field `InstanceType` in struct `A2AUpdateReplicationProtectedItemInput`
+- New field `InstanceType` in struct `TestFailoverJobDetails`
+- New field `AffectedObjectDetails` in struct `TestFailoverJobDetails`
+- New field `InstanceType` in struct `HyperVReplicaAzureReplicationDetails`
+- New field `InstanceType` in struct `InMageReplicationDetails`
+- New field `Location` in struct `VaultSetting`
+- New field `ID` in struct `VaultSetting`
+- New field `Name` in struct `VaultSetting`
+- New field `Type` in struct `VaultSetting`
+- New field `InstanceType` in struct `A2AReprotectInput`
+- New field `InstanceType` in struct `InMageRcmPolicyDetails`
+- New field `InstanceType` in struct `InMageAzureV2ApplyRecoveryPointInput`
+- New field `InstanceType` in struct `InMagePolicyDetails`
+- New field `ChildTasks` in struct `RecoveryPlanShutdownGroupTaskDetails`
+- New field `GroupID` in struct `RecoveryPlanShutdownGroupTaskDetails`
+- New field `Name` in struct `RecoveryPlanShutdownGroupTaskDetails`
+- New field `RpGroupType` in struct `RecoveryPlanShutdownGroupTaskDetails`
+- New field `InstanceType` in struct `RecoveryPlanShutdownGroupTaskDetails`
+- New field `InstanceType` in struct `InMageEnableProtectionInput`
+- New field `InstanceType` in struct `HyperVReplicaAzureEnableProtectionInput`
+- New field `InstanceType` in struct `InMageTestFailoverInput`
+- New field `Location` in struct `RecoveryPoint`
+- New field `ID` in struct `RecoveryPoint`
+- New field `Name` in struct `RecoveryPoint`
+- New field `Type` in struct `RecoveryPoint`
+- New field `InstanceType` in struct `A2APolicyCreationInput`
+- New field `InstanceType` in struct `ExportJobDetails`
+- New field `AffectedObjectDetails` in struct `ExportJobDetails`
+- New field `InstanceType` in struct `VMwareV2FabricCreationInput`
+- New field `InstanceType` in struct `RecoveryPlanScriptActionDetails`
+- New field `InstanceType` in struct `VmmToAzureUpdateNetworkMappingInput`
+- New field `InstanceType` in struct `InMageBasePolicyDetails`
+- New field `InstanceType` in struct `InMageRcmFabricCreationInput`
+- New field `InstanceType` in struct `VirtualMachineTaskDetails`
+- New field `JobTask` in struct `VirtualMachineTaskDetails`
+- New field `InstanceType` in struct `InMageRcmUpdateReplicationProtectedItemInput`
+- New field `InstanceType` in struct `AutomationRunbookTaskDetails`
+- New field `InstanceType` in struct `InMageAzureV2UpdateReplicationProtectedItemInput`
+- New field `InstanceType` in struct `HyperVReplicaBluePolicyDetails`
+- New field `InstanceType` in struct `HyperVReplica2012R2EventDetails`
+- New field `InstanceType` in struct `VMwareCbtMigrationDetails`
+- New field `InstanceType` in struct `ManualActionTaskDetails`
+- New field `InstanceType` in struct `InMageAzureV2ReplicationDetails`
+- New field `SwitchProviderBlockingErrorDetails` in struct `InMageAzureV2ReplicationDetails`
+- New field `SwitchProviderDetails` in struct `InMageAzureV2ReplicationDetails`
+- New field `Name` in struct `LogicalNetwork`
+- New field `Type` in struct `LogicalNetwork`
+- New field `Location` in struct `LogicalNetwork`
+- New field `ID` in struct `LogicalNetwork`
+- New field `ResourceType` in struct `ExistingRecoveryResourceGroup`
+- New field `InstanceType` in struct `A2APolicyDetails`
+- New field `InstanceType` in struct `HyperVReplicaBlueReplicationDetails`
+- New field `Type` in struct `StorageClassificationMapping`
+- New field `Location` in struct `StorageClassificationMapping`
+- New field `ID` in struct `StorageClassificationMapping`
+- New field `Name` in struct `StorageClassificationMapping`
+- New field `InstanceType` in struct `A2ACrossClusterMigrationEnableProtectionInput`
+- New field `InstanceType` in struct `A2ARecoveryPointDetails`
+- New field `InstanceType` in struct `VMwareCbtEnableMigrationInput`
+- New field `InstanceType` in struct `HyperVReplicaBaseReplicationDetails`
+- New field `InstanceType` in struct `RecoveryPlanA2ADetails`
+- New field `InstanceType` in struct `A2AEventDetails`
+- New field `InstanceType` in struct `RecoveryPlanAutomationRunbookActionDetails`
+- New field `RecoveryExtendedLocation` in struct `A2AEnableProtectionInput`
+- New field `InstanceType` in struct `A2AEnableProtectionInput`
+- New field `InstanceType` in struct `VMwareCbtUpdateMigrationItemInput`
+- New field `Location` in struct `Policy`
+- New field `ID` in struct `Policy`
+- New field `Name` in struct `Policy`
+- New field `Type` in struct `Policy`
+- New field `InstanceType` in struct `VmmToAzureCreateNetworkMappingInput`
+- New field `InstanceType` in struct `ScriptActionTaskDetails`
+- New field `InstanceType` in struct `InMageAzureV2PolicyInput`
+- New field `ID` in struct `MigrationItem`
+- New field `Name` in struct `MigrationItem`
+- New field `Type` in struct `MigrationItem`
+- New field `Location` in struct `MigrationItem`
+- New field `InstanceType` in struct `InMageRcmRecoveryPointDetails`
+- New field `InstanceType` in struct `AzureToAzureCreateNetworkMappingInput`
+- New field `InstanceType` in struct `VMNicUpdatesTaskDetails`
+- New field `InstanceType` in struct `InMageRcmFailbackReprotectInput`
+- New field `InstanceType` in struct `HyperVReplicaAzurePlannedFailoverProviderInput`
+- New field `InstanceType` in struct `HyperVReplicaAzureTestFailoverInput`
+- New field `InstanceType` in struct `InMageAzureV2PolicyDetails`
+- New field `SecondsToTakeSwitchProvider` in struct `InMageAzureV2ProtectedDiskDetails`
+- New field `ID` in struct `VCenter`
+- New field `Name` in struct `VCenter`
+- New field `Type` in struct `VCenter`
+- New field `Location` in struct `VCenter`
+- New field `InstanceType` in struct `A2ACrossClusterMigrationApplyRecoveryPointInput`
+- New field `InstanceType` in struct `InMageRcmReprotectInput`
+- New field `InstanceType` in struct `RecoveryPlanInMageAzureV2FailoverInput`
+- New field `InstanceType` in struct `A2ACrossClusterMigrationContainerCreationInput`
+- New field `HyperVHostID` in struct `VmmVirtualMachineDetails`
+- New field `DiskDetails` in struct `VmmVirtualMachineDetails`
+- New field `InstanceType` in struct `VmmVirtualMachineDetails`
+- New field `Generation` in struct `VmmVirtualMachineDetails`
+- New field `HasPhysicalDisk` in struct `VmmVirtualMachineDetails`
+- New field `HasSharedVhd` in struct `VmmVirtualMachineDetails`
+- New field `HasFibreChannelAdapter` in struct `VmmVirtualMachineDetails`
+- New field `SourceItemID` in struct `VmmVirtualMachineDetails`
+- New field `OSDetails` in struct `VmmVirtualMachineDetails`
+- New field `Location` in struct `SupportedOperatingSystems`
+- New field `ID` in struct `SupportedOperatingSystems`
+- New field `Name` in struct `SupportedOperatingSystems`
+- New field `Type` in struct `SupportedOperatingSystems`
+- New field `InstanceType` in struct `HyperVSiteDetails`
+- New field `InstanceType` in struct `RecoveryPlanHyperVReplicaAzureFailoverInput`
+- New field `InstanceType` in struct `InMageAzureV2ReprotectInput`
+- New field `InstanceType` in struct `ConsistencyCheckTaskDetails`
+- New field `InstanceType` in struct `InMageRcmFailbackReplicationDetails`
+- New field `InstanceType` in struct `HyperVReplicaPolicyDetails`
+- New field `ResourceType` in struct `ExistingStorageAccount`
+- New field `InstanceType` in struct `InMageRcmApplyRecoveryPointInput`
+- New field `InstanceType` in struct `RecoveryPlanManualActionDetails`
+- New field `InstanceType` in struct `InMageRcmUpdateApplianceForReplicationProtectedItemInput`
+- New field `InstanceType` in struct `VMwareCbtProtectionContainerMappingDetails`
+- New field `InstanceType` in struct `AsrJobDetails`
+- New field `AffectedObjectDetails` in struct `AsrJobDetails`
+- New field `InstanceType` in struct `HyperVReplicaReplicationDetails`
+
+
+## 0.1.0 (2021-12-22)
+
+- Init release.

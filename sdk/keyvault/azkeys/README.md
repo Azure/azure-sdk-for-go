@@ -217,8 +217,8 @@ func ExampleClient_UpdateKeyProperties() {
 	}
 
 	resp, err := client.UpdateKeyProperties(context.TODO(), "key-to-update", &azkeys.UpdateKeyPropertiesOptions{
-		Tags: map[string]*string{
-			"Tag1": to.StringPtr("val1"),
+		Tags: map[string]string{
+			"Tag1": "val1",
 		},
 		KeyAttributes: &azkeys.KeyAttributes{
 			RecoveryLevel: azkeys.CustomizedRecoverablePurgeable.ToPtr(),
@@ -350,7 +350,7 @@ import (
 
 credential, err := azidentity.NewDefaultAzureCredential(nil)
 
-client, err = crypto.NewClient("https://my-key-vault.vault.azure.net/keys/<my-key>", credential, nil)
+client, err = crypto.NewClient("https://my-key-vault.vault.azure.net/keys/<my-key>/<key-version>", credential, nil)
 
 encryptResponse, err := cryptoClient.Encrypt(ctx, AlgorithmRSAOAEP, []byte("plaintext"), nil)
 ```

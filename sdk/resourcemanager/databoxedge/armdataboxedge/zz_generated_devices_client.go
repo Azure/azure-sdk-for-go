@@ -11,7 +11,6 @@ package armdataboxedge
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // DevicesClient contains the methods for the Devices group.
 // Don't use this type directly, use NewDevicesClient() instead.
 type DevicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDevicesClient creates a new instance of DevicesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DevicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &DevicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DevicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a Data Box Edge/Data Box Gateway resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) CreateOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, dataBoxEdgeDevice DataBoxEdgeDevice, options *DevicesCreateOrUpdateOptions) (DevicesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// dataBoxEdgeDevice - The resource object.
+// options - DevicesClientCreateOrUpdateOptions contains the optional parameters for the DevicesClient.CreateOrUpdate method.
+func (client *DevicesClient) CreateOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, dataBoxEdgeDevice Device, options *DevicesClientCreateOrUpdateOptions) (DevicesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, deviceName, resourceGroupName, dataBoxEdgeDevice, options)
 	if err != nil {
-		return DevicesCreateOrUpdateResponse{}, err
+		return DevicesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesCreateOrUpdateResponse{}, err
+		return DevicesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DevicesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, dataBoxEdgeDevice DataBoxEdgeDevice, options *DevicesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, dataBoxEdgeDevice Device, options *DevicesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -74,7 +85,7 @@ func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, de
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,50 +97,42 @@ func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, de
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DevicesClient) createOrUpdateHandleResponse(resp *http.Response) (DevicesCreateOrUpdateResponse, error) {
-	result := DevicesCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoxEdgeDevice); err != nil {
-		return DevicesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *DevicesClient) createOrUpdateHandleResponse(resp *http.Response) (DevicesClientCreateOrUpdateResponse, error) {
+	result := DevicesClientCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Device); err != nil {
+		return DevicesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DevicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdateSecuritySettings - Updates the security settings on a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) BeginCreateOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesBeginCreateOrUpdateSecuritySettingsOptions) (DevicesCreateOrUpdateSecuritySettingsPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// securitySettings - The security settings.
+// options - DevicesClientBeginCreateOrUpdateSecuritySettingsOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdateSecuritySettings
+// method.
+func (client *DevicesClient) BeginCreateOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (DevicesClientCreateOrUpdateSecuritySettingsPollerResponse, error) {
 	resp, err := client.createOrUpdateSecuritySettings(ctx, deviceName, resourceGroupName, securitySettings, options)
 	if err != nil {
-		return DevicesCreateOrUpdateSecuritySettingsPollerResponse{}, err
+		return DevicesClientCreateOrUpdateSecuritySettingsPollerResponse{}, err
 	}
-	result := DevicesCreateOrUpdateSecuritySettingsPollerResponse{
+	result := DevicesClientCreateOrUpdateSecuritySettingsPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DevicesClient.CreateOrUpdateSecuritySettings", "", resp, client.pl, client.createOrUpdateSecuritySettingsHandleError)
+	pt, err := armruntime.NewPoller("DevicesClient.CreateOrUpdateSecuritySettings", "", resp, client.pl)
 	if err != nil {
-		return DevicesCreateOrUpdateSecuritySettingsPollerResponse{}, err
+		return DevicesClientCreateOrUpdateSecuritySettingsPollerResponse{}, err
 	}
-	result.Poller = &DevicesCreateOrUpdateSecuritySettingsPoller{
+	result.Poller = &DevicesClientCreateOrUpdateSecuritySettingsPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdateSecuritySettings - Updates the security settings on a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) createOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesBeginCreateOrUpdateSecuritySettingsOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DevicesClient) createOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateSecuritySettingsCreateRequest(ctx, deviceName, resourceGroupName, securitySettings, options)
 	if err != nil {
 		return nil, err
@@ -139,13 +142,13 @@ func (client *DevicesClient) createOrUpdateSecuritySettings(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.createOrUpdateSecuritySettingsHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateSecuritySettingsCreateRequest creates the CreateOrUpdateSecuritySettings request.
-func (client *DevicesClient) createOrUpdateSecuritySettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesBeginCreateOrUpdateSecuritySettingsOptions) (*policy.Request, error) {
+func (client *DevicesClient) createOrUpdateSecuritySettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/securitySettings/default/update"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -159,7 +162,7 @@ func (client *DevicesClient) createOrUpdateSecuritySettingsCreateRequest(ctx con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -170,42 +173,32 @@ func (client *DevicesClient) createOrUpdateSecuritySettingsCreateRequest(ctx con
 	return req, runtime.MarshalAsJSON(req, securitySettings)
 }
 
-// createOrUpdateSecuritySettingsHandleError handles the CreateOrUpdateSecuritySettings error response.
-func (client *DevicesClient) createOrUpdateSecuritySettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginDeleteOptions) (DevicesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientBeginDeleteOptions contains the optional parameters for the DevicesClient.BeginDelete method.
+func (client *DevicesClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDeleteOptions) (DevicesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesDeletePollerResponse{}, err
+		return DevicesClientDeletePollerResponse{}, err
 	}
-	result := DevicesDeletePollerResponse{
+	result := DevicesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DevicesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DevicesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return DevicesDeletePollerResponse{}, err
+		return DevicesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DevicesDeletePoller{
+	result.Poller = &DevicesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) deleteOperation(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DevicesClient) deleteOperation(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -215,13 +208,13 @@ func (client *DevicesClient) deleteOperation(ctx context.Context, deviceName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DevicesClient) deleteCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginDeleteOptions) (*policy.Request, error) {
+func (client *DevicesClient) deleteCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -235,7 +228,7 @@ func (client *DevicesClient) deleteCreateRequest(ctx context.Context, deviceName
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,42 +239,33 @@ func (client *DevicesClient) deleteCreateRequest(ctx context.Context, deviceName
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DevicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDownloadUpdates - Downloads the updates on a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) BeginDownloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginDownloadUpdatesOptions) (DevicesDownloadUpdatesPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientBeginDownloadUpdatesOptions contains the optional parameters for the DevicesClient.BeginDownloadUpdates
+// method.
+func (client *DevicesClient) BeginDownloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDownloadUpdatesOptions) (DevicesClientDownloadUpdatesPollerResponse, error) {
 	resp, err := client.downloadUpdates(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesDownloadUpdatesPollerResponse{}, err
+		return DevicesClientDownloadUpdatesPollerResponse{}, err
 	}
-	result := DevicesDownloadUpdatesPollerResponse{
+	result := DevicesClientDownloadUpdatesPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DevicesClient.DownloadUpdates", "", resp, client.pl, client.downloadUpdatesHandleError)
+	pt, err := armruntime.NewPoller("DevicesClient.DownloadUpdates", "", resp, client.pl)
 	if err != nil {
-		return DevicesDownloadUpdatesPollerResponse{}, err
+		return DevicesClientDownloadUpdatesPollerResponse{}, err
 	}
-	result.Poller = &DevicesDownloadUpdatesPoller{
+	result.Poller = &DevicesClientDownloadUpdatesPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DownloadUpdates - Downloads the updates on a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) downloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginDownloadUpdatesOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DevicesClient) downloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDownloadUpdatesOptions) (*http.Response, error) {
 	req, err := client.downloadUpdatesCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -291,13 +275,13 @@ func (client *DevicesClient) downloadUpdates(ctx context.Context, deviceName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.downloadUpdatesHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // downloadUpdatesCreateRequest creates the DownloadUpdates request.
-func (client *DevicesClient) downloadUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginDownloadUpdatesOptions) (*policy.Request, error) {
+func (client *DevicesClient) downloadUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDownloadUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/downloadUpdates"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -311,7 +295,7 @@ func (client *DevicesClient) downloadUpdatesCreateRequest(ctx context.Context, d
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -322,38 +306,29 @@ func (client *DevicesClient) downloadUpdatesCreateRequest(ctx context.Context, d
 	return req, nil
 }
 
-// downloadUpdatesHandleError handles the DownloadUpdates error response.
-func (client *DevicesClient) downloadUpdatesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GenerateCertificate - Generates certificate for activation key.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) GenerateCertificate(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGenerateCertificateOptions) (DevicesGenerateCertificateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientGenerateCertificateOptions contains the optional parameters for the DevicesClient.GenerateCertificate
+// method.
+func (client *DevicesClient) GenerateCertificate(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGenerateCertificateOptions) (DevicesClientGenerateCertificateResponse, error) {
 	req, err := client.generateCertificateCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesGenerateCertificateResponse{}, err
+		return DevicesClientGenerateCertificateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesGenerateCertificateResponse{}, err
+		return DevicesClientGenerateCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesGenerateCertificateResponse{}, client.generateCertificateHandleError(resp)
+		return DevicesClientGenerateCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.generateCertificateHandleResponse(resp)
 }
 
 // generateCertificateCreateRequest creates the GenerateCertificate request.
-func (client *DevicesClient) generateCertificateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGenerateCertificateOptions) (*policy.Request, error) {
+func (client *DevicesClient) generateCertificateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGenerateCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/generateCertificate"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -367,7 +342,7 @@ func (client *DevicesClient) generateCertificateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -379,46 +354,36 @@ func (client *DevicesClient) generateCertificateCreateRequest(ctx context.Contex
 }
 
 // generateCertificateHandleResponse handles the GenerateCertificate response.
-func (client *DevicesClient) generateCertificateHandleResponse(resp *http.Response) (DevicesGenerateCertificateResponse, error) {
-	result := DevicesGenerateCertificateResponse{RawResponse: resp}
+func (client *DevicesClient) generateCertificateHandleResponse(resp *http.Response) (DevicesClientGenerateCertificateResponse, error) {
+	result := DevicesClientGenerateCertificateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateCertResponse); err != nil {
-		return DevicesGenerateCertificateResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientGenerateCertificateResponse{}, err
 	}
 	return result, nil
 }
 
-// generateCertificateHandleError handles the GenerateCertificate error response.
-func (client *DevicesClient) generateCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the properties of the Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) Get(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGetOptions) (DevicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
+func (client *DevicesClient) Get(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGetOptions) (DevicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesGetResponse{}, err
+		return DevicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesGetResponse{}, err
+		return DevicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesGetResponse{}, client.getHandleError(resp)
+		return DevicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGetOptions) (*policy.Request, error) {
+func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -432,7 +397,7 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceName st
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -444,46 +409,37 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceName st
 }
 
 // getHandleResponse handles the Get response.
-func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesGetResponse, error) {
-	result := DevicesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoxEdgeDevice); err != nil {
-		return DevicesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesClientGetResponse, error) {
+	result := DevicesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Device); err != nil {
+		return DevicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DevicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetExtendedInformation - Gets additional information for the specified Azure Stack Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) GetExtendedInformation(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGetExtendedInformationOptions) (DevicesGetExtendedInformationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientGetExtendedInformationOptions contains the optional parameters for the DevicesClient.GetExtendedInformation
+// method.
+func (client *DevicesClient) GetExtendedInformation(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGetExtendedInformationOptions) (DevicesClientGetExtendedInformationResponse, error) {
 	req, err := client.getExtendedInformationCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesGetExtendedInformationResponse{}, err
+		return DevicesClientGetExtendedInformationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesGetExtendedInformationResponse{}, err
+		return DevicesClientGetExtendedInformationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesGetExtendedInformationResponse{}, client.getExtendedInformationHandleError(resp)
+		return DevicesClientGetExtendedInformationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getExtendedInformationHandleResponse(resp)
 }
 
 // getExtendedInformationCreateRequest creates the GetExtendedInformation request.
-func (client *DevicesClient) getExtendedInformationCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGetExtendedInformationOptions) (*policy.Request, error) {
+func (client *DevicesClient) getExtendedInformationCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGetExtendedInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/getExtendedInformation"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -497,7 +453,7 @@ func (client *DevicesClient) getExtendedInformationCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -509,46 +465,37 @@ func (client *DevicesClient) getExtendedInformationCreateRequest(ctx context.Con
 }
 
 // getExtendedInformationHandleResponse handles the GetExtendedInformation response.
-func (client *DevicesClient) getExtendedInformationHandleResponse(resp *http.Response) (DevicesGetExtendedInformationResponse, error) {
-	result := DevicesGetExtendedInformationResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoxEdgeDeviceExtendedInfo); err != nil {
-		return DevicesGetExtendedInformationResponse{}, runtime.NewResponseError(err, resp)
+func (client *DevicesClient) getExtendedInformationHandleResponse(resp *http.Response) (DevicesClientGetExtendedInformationResponse, error) {
+	result := DevicesClientGetExtendedInformationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceExtendedInfo); err != nil {
+		return DevicesClientGetExtendedInformationResponse{}, err
 	}
 	return result, nil
 }
 
-// getExtendedInformationHandleError handles the GetExtendedInformation error response.
-func (client *DevicesClient) getExtendedInformationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetNetworkSettings - Gets the network settings of the specified Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) GetNetworkSettings(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGetNetworkSettingsOptions) (DevicesGetNetworkSettingsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientGetNetworkSettingsOptions contains the optional parameters for the DevicesClient.GetNetworkSettings
+// method.
+func (client *DevicesClient) GetNetworkSettings(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGetNetworkSettingsOptions) (DevicesClientGetNetworkSettingsResponse, error) {
 	req, err := client.getNetworkSettingsCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesGetNetworkSettingsResponse{}, err
+		return DevicesClientGetNetworkSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesGetNetworkSettingsResponse{}, err
+		return DevicesClientGetNetworkSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesGetNetworkSettingsResponse{}, client.getNetworkSettingsHandleError(resp)
+		return DevicesClientGetNetworkSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getNetworkSettingsHandleResponse(resp)
 }
 
 // getNetworkSettingsCreateRequest creates the GetNetworkSettings request.
-func (client *DevicesClient) getNetworkSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGetNetworkSettingsOptions) (*policy.Request, error) {
+func (client *DevicesClient) getNetworkSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGetNetworkSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/networkSettings/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -562,7 +509,7 @@ func (client *DevicesClient) getNetworkSettingsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -574,47 +521,38 @@ func (client *DevicesClient) getNetworkSettingsCreateRequest(ctx context.Context
 }
 
 // getNetworkSettingsHandleResponse handles the GetNetworkSettings response.
-func (client *DevicesClient) getNetworkSettingsHandleResponse(resp *http.Response) (DevicesGetNetworkSettingsResponse, error) {
-	result := DevicesGetNetworkSettingsResponse{RawResponse: resp}
+func (client *DevicesClient) getNetworkSettingsHandleResponse(resp *http.Response) (DevicesClientGetNetworkSettingsResponse, error) {
+	result := DevicesClientGetNetworkSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSettings); err != nil {
-		return DevicesGetNetworkSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientGetNetworkSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// getNetworkSettingsHandleError handles the GetNetworkSettings error response.
-func (client *DevicesClient) getNetworkSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetUpdateSummary - Gets information about the availability of updates based on the last scan of the device. It also gets information about any ongoing
-// download or install jobs on the device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) GetUpdateSummary(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGetUpdateSummaryOptions) (DevicesGetUpdateSummaryResponse, error) {
+// GetUpdateSummary - Gets information about the availability of updates based on the last scan of the device. It also gets
+// information about any ongoing download or install jobs on the device.
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientGetUpdateSummaryOptions contains the optional parameters for the DevicesClient.GetUpdateSummary
+// method.
+func (client *DevicesClient) GetUpdateSummary(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGetUpdateSummaryOptions) (DevicesClientGetUpdateSummaryResponse, error) {
 	req, err := client.getUpdateSummaryCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesGetUpdateSummaryResponse{}, err
+		return DevicesClientGetUpdateSummaryResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesGetUpdateSummaryResponse{}, err
+		return DevicesClientGetUpdateSummaryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesGetUpdateSummaryResponse{}, client.getUpdateSummaryHandleError(resp)
+		return DevicesClientGetUpdateSummaryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getUpdateSummaryHandleResponse(resp)
 }
 
 // getUpdateSummaryCreateRequest creates the GetUpdateSummary request.
-func (client *DevicesClient) getUpdateSummaryCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesGetUpdateSummaryOptions) (*policy.Request, error) {
+func (client *DevicesClient) getUpdateSummaryCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientGetUpdateSummaryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/updateSummary/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -628,7 +566,7 @@ func (client *DevicesClient) getUpdateSummaryCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -640,50 +578,41 @@ func (client *DevicesClient) getUpdateSummaryCreateRequest(ctx context.Context, 
 }
 
 // getUpdateSummaryHandleResponse handles the GetUpdateSummary response.
-func (client *DevicesClient) getUpdateSummaryHandleResponse(resp *http.Response) (DevicesGetUpdateSummaryResponse, error) {
-	result := DevicesGetUpdateSummaryResponse{RawResponse: resp}
+func (client *DevicesClient) getUpdateSummaryHandleResponse(resp *http.Response) (DevicesClientGetUpdateSummaryResponse, error) {
+	result := DevicesClientGetUpdateSummaryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateSummary); err != nil {
-		return DevicesGetUpdateSummaryResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientGetUpdateSummaryResponse{}, err
 	}
 	return result, nil
 }
 
-// getUpdateSummaryHandleError handles the GetUpdateSummary error response.
-func (client *DevicesClient) getUpdateSummaryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginInstallUpdates - Installs the updates on the Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) BeginInstallUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginInstallUpdatesOptions) (DevicesInstallUpdatesPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientBeginInstallUpdatesOptions contains the optional parameters for the DevicesClient.BeginInstallUpdates
+// method.
+func (client *DevicesClient) BeginInstallUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginInstallUpdatesOptions) (DevicesClientInstallUpdatesPollerResponse, error) {
 	resp, err := client.installUpdates(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesInstallUpdatesPollerResponse{}, err
+		return DevicesClientInstallUpdatesPollerResponse{}, err
 	}
-	result := DevicesInstallUpdatesPollerResponse{
+	result := DevicesClientInstallUpdatesPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DevicesClient.InstallUpdates", "", resp, client.pl, client.installUpdatesHandleError)
+	pt, err := armruntime.NewPoller("DevicesClient.InstallUpdates", "", resp, client.pl)
 	if err != nil {
-		return DevicesInstallUpdatesPollerResponse{}, err
+		return DevicesClientInstallUpdatesPollerResponse{}, err
 	}
-	result.Poller = &DevicesInstallUpdatesPoller{
+	result.Poller = &DevicesClientInstallUpdatesPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // InstallUpdates - Installs the updates on the Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) installUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginInstallUpdatesOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DevicesClient) installUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginInstallUpdatesOptions) (*http.Response, error) {
 	req, err := client.installUpdatesCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -693,13 +622,13 @@ func (client *DevicesClient) installUpdates(ctx context.Context, deviceName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.installUpdatesHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // installUpdatesCreateRequest creates the InstallUpdates request.
-func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginInstallUpdatesOptions) (*policy.Request, error) {
+func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginInstallUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/installUpdates"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -713,7 +642,7 @@ func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, de
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -724,35 +653,25 @@ func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, de
 	return req, nil
 }
 
-// installUpdatesHandleError handles the InstallUpdates error response.
-func (client *DevicesClient) installUpdatesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Gets all the Data Box Edge/Data Box Gateway devices in a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) ListByResourceGroup(resourceGroupName string, options *DevicesListByResourceGroupOptions) *DevicesListByResourceGroupPager {
-	return &DevicesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// options - DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup
+// method.
+func (client *DevicesClient) ListByResourceGroup(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *DevicesClientListByResourceGroupPager {
+	return &DevicesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DevicesListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataBoxEdgeDeviceList.NextLink)
+		advancer: func(ctx context.Context, resp DevicesClientListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DevicesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DevicesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -762,7 +681,7 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -777,49 +696,38 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Response) (DevicesListByResourceGroupResponse, error) {
-	result := DevicesListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoxEdgeDeviceList); err != nil {
-		return DevicesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Response) (DevicesClientListByResourceGroupResponse, error) {
+	result := DevicesClientListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceList); err != nil {
+		return DevicesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DevicesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Gets all the Data Box Edge/Data Box Gateway devices in a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) ListBySubscription(options *DevicesListBySubscriptionOptions) *DevicesListBySubscriptionPager {
-	return &DevicesListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription
+// method.
+func (client *DevicesClient) ListBySubscription(options *DevicesClientListBySubscriptionOptions) *DevicesClientListBySubscriptionPager {
+	return &DevicesClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DevicesListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataBoxEdgeDeviceList.NextLink)
+		advancer: func(ctx context.Context, resp DevicesClientListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *DevicesListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *DevicesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -834,50 +742,41 @@ func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DevicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DevicesListBySubscriptionResponse, error) {
-	result := DevicesListBySubscriptionResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoxEdgeDeviceList); err != nil {
-		return DevicesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+func (client *DevicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DevicesClientListBySubscriptionResponse, error) {
+	result := DevicesClientListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceList); err != nil {
+		return DevicesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *DevicesClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginScanForUpdates - Scans for updates on a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) BeginScanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginScanForUpdatesOptions) (DevicesScanForUpdatesPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - DevicesClientBeginScanForUpdatesOptions contains the optional parameters for the DevicesClient.BeginScanForUpdates
+// method.
+func (client *DevicesClient) BeginScanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginScanForUpdatesOptions) (DevicesClientScanForUpdatesPollerResponse, error) {
 	resp, err := client.scanForUpdates(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return DevicesScanForUpdatesPollerResponse{}, err
+		return DevicesClientScanForUpdatesPollerResponse{}, err
 	}
-	result := DevicesScanForUpdatesPollerResponse{
+	result := DevicesClientScanForUpdatesPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DevicesClient.ScanForUpdates", "", resp, client.pl, client.scanForUpdatesHandleError)
+	pt, err := armruntime.NewPoller("DevicesClient.ScanForUpdates", "", resp, client.pl)
 	if err != nil {
-		return DevicesScanForUpdatesPollerResponse{}, err
+		return DevicesClientScanForUpdatesPollerResponse{}, err
 	}
-	result.Poller = &DevicesScanForUpdatesPoller{
+	result.Poller = &DevicesClientScanForUpdatesPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ScanForUpdates - Scans for updates on a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) scanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginScanForUpdatesOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DevicesClient) scanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginScanForUpdatesOptions) (*http.Response, error) {
 	req, err := client.scanForUpdatesCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -887,13 +786,13 @@ func (client *DevicesClient) scanForUpdates(ctx context.Context, deviceName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.scanForUpdatesHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // scanForUpdatesCreateRequest creates the ScanForUpdates request.
-func (client *DevicesClient) scanForUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesBeginScanForUpdatesOptions) (*policy.Request, error) {
+func (client *DevicesClient) scanForUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginScanForUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/scanForUpdates"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -907,7 +806,7 @@ func (client *DevicesClient) scanForUpdatesCreateRequest(ctx context.Context, de
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -918,38 +817,29 @@ func (client *DevicesClient) scanForUpdatesCreateRequest(ctx context.Context, de
 	return req, nil
 }
 
-// scanForUpdatesHandleError handles the ScanForUpdates error response.
-func (client *DevicesClient) scanForUpdatesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Modifies a Data Box Edge/Data Box Gateway resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) Update(ctx context.Context, deviceName string, resourceGroupName string, parameters DataBoxEdgeDevicePatch, options *DevicesUpdateOptions) (DevicesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// parameters - The resource parameters.
+// options - DevicesClientUpdateOptions contains the optional parameters for the DevicesClient.Update method.
+func (client *DevicesClient) Update(ctx context.Context, deviceName string, resourceGroupName string, parameters DevicePatch, options *DevicesClientUpdateOptions) (DevicesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, deviceName, resourceGroupName, parameters, options)
 	if err != nil {
-		return DevicesUpdateResponse{}, err
+		return DevicesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesUpdateResponse{}, err
+		return DevicesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesUpdateResponse{}, client.updateHandleError(resp)
+		return DevicesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DevicesClient) updateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters DataBoxEdgeDevicePatch, options *DevicesUpdateOptions) (*policy.Request, error) {
+func (client *DevicesClient) updateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters DevicePatch, options *DevicesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -963,7 +853,7 @@ func (client *DevicesClient) updateCreateRequest(ctx context.Context, deviceName
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -975,46 +865,38 @@ func (client *DevicesClient) updateCreateRequest(ctx context.Context, deviceName
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DevicesClient) updateHandleResponse(resp *http.Response) (DevicesUpdateResponse, error) {
-	result := DevicesUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoxEdgeDevice); err != nil {
-		return DevicesUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *DevicesClient) updateHandleResponse(resp *http.Response) (DevicesClientUpdateResponse, error) {
+	result := DevicesClientUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Device); err != nil {
+		return DevicesClientUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// updateHandleError handles the Update error response.
-func (client *DevicesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateExtendedInformation - Gets additional information for the specified Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) UpdateExtendedInformation(ctx context.Context, deviceName string, resourceGroupName string, parameters DataBoxEdgeDeviceExtendedInfoPatch, options *DevicesUpdateExtendedInformationOptions) (DevicesUpdateExtendedInformationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// parameters - The patch object.
+// options - DevicesClientUpdateExtendedInformationOptions contains the optional parameters for the DevicesClient.UpdateExtendedInformation
+// method.
+func (client *DevicesClient) UpdateExtendedInformation(ctx context.Context, deviceName string, resourceGroupName string, parameters DeviceExtendedInfoPatch, options *DevicesClientUpdateExtendedInformationOptions) (DevicesClientUpdateExtendedInformationResponse, error) {
 	req, err := client.updateExtendedInformationCreateRequest(ctx, deviceName, resourceGroupName, parameters, options)
 	if err != nil {
-		return DevicesUpdateExtendedInformationResponse{}, err
+		return DevicesClientUpdateExtendedInformationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesUpdateExtendedInformationResponse{}, err
+		return DevicesClientUpdateExtendedInformationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesUpdateExtendedInformationResponse{}, client.updateExtendedInformationHandleError(resp)
+		return DevicesClientUpdateExtendedInformationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateExtendedInformationHandleResponse(resp)
 }
 
 // updateExtendedInformationCreateRequest creates the UpdateExtendedInformation request.
-func (client *DevicesClient) updateExtendedInformationCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters DataBoxEdgeDeviceExtendedInfoPatch, options *DevicesUpdateExtendedInformationOptions) (*policy.Request, error) {
+func (client *DevicesClient) updateExtendedInformationCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters DeviceExtendedInfoPatch, options *DevicesClientUpdateExtendedInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/updateExtendedInformation"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -1028,7 +910,7 @@ func (client *DevicesClient) updateExtendedInformationCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1040,46 +922,38 @@ func (client *DevicesClient) updateExtendedInformationCreateRequest(ctx context.
 }
 
 // updateExtendedInformationHandleResponse handles the UpdateExtendedInformation response.
-func (client *DevicesClient) updateExtendedInformationHandleResponse(resp *http.Response) (DevicesUpdateExtendedInformationResponse, error) {
-	result := DevicesUpdateExtendedInformationResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoxEdgeDeviceExtendedInfo); err != nil {
-		return DevicesUpdateExtendedInformationResponse{}, runtime.NewResponseError(err, resp)
+func (client *DevicesClient) updateExtendedInformationHandleResponse(resp *http.Response) (DevicesClientUpdateExtendedInformationResponse, error) {
+	result := DevicesClientUpdateExtendedInformationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceExtendedInfo); err != nil {
+		return DevicesClientUpdateExtendedInformationResponse{}, err
 	}
 	return result, nil
 }
 
-// updateExtendedInformationHandleError handles the UpdateExtendedInformation error response.
-func (client *DevicesClient) updateExtendedInformationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UploadCertificate - Uploads registration certificate for the device.
-// If the operation fails it returns the *CloudError error type.
-func (client *DevicesClient) UploadCertificate(ctx context.Context, deviceName string, resourceGroupName string, parameters UploadCertificateRequest, options *DevicesUploadCertificateOptions) (DevicesUploadCertificateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// parameters - The upload certificate request.
+// options - DevicesClientUploadCertificateOptions contains the optional parameters for the DevicesClient.UploadCertificate
+// method.
+func (client *DevicesClient) UploadCertificate(ctx context.Context, deviceName string, resourceGroupName string, parameters UploadCertificateRequest, options *DevicesClientUploadCertificateOptions) (DevicesClientUploadCertificateResponse, error) {
 	req, err := client.uploadCertificateCreateRequest(ctx, deviceName, resourceGroupName, parameters, options)
 	if err != nil {
-		return DevicesUploadCertificateResponse{}, err
+		return DevicesClientUploadCertificateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesUploadCertificateResponse{}, err
+		return DevicesClientUploadCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesUploadCertificateResponse{}, client.uploadCertificateHandleError(resp)
+		return DevicesClientUploadCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.uploadCertificateHandleResponse(resp)
 }
 
 // uploadCertificateCreateRequest creates the UploadCertificate request.
-func (client *DevicesClient) uploadCertificateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters UploadCertificateRequest, options *DevicesUploadCertificateOptions) (*policy.Request, error) {
+func (client *DevicesClient) uploadCertificateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters UploadCertificateRequest, options *DevicesClientUploadCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/uploadCertificate"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -1093,7 +967,7 @@ func (client *DevicesClient) uploadCertificateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1105,23 +979,10 @@ func (client *DevicesClient) uploadCertificateCreateRequest(ctx context.Context,
 }
 
 // uploadCertificateHandleResponse handles the UploadCertificate response.
-func (client *DevicesClient) uploadCertificateHandleResponse(resp *http.Response) (DevicesUploadCertificateResponse, error) {
-	result := DevicesUploadCertificateResponse{RawResponse: resp}
+func (client *DevicesClient) uploadCertificateHandleResponse(resp *http.Response) (DevicesClientUploadCertificateResponse, error) {
+	result := DevicesClientUploadCertificateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UploadCertificateResponse); err != nil {
-		return DevicesUploadCertificateResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientUploadCertificateResponse{}, err
 	}
 	return result, nil
-}
-
-// uploadCertificateHandleError handles the UploadCertificate error response.
-func (client *DevicesClient) uploadCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

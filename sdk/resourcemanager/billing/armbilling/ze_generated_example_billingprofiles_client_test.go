@@ -20,56 +20,60 @@ import (
 )
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilesListByBillingAccount.json
-func ExampleBillingProfilesClient_ListByBillingAccount() {
+func ExampleProfilesClient_ListByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingProfilesClient(cred, nil)
+	client := armbilling.NewProfilesClient(cred, nil)
 	pager := client.ListByBillingAccount("<billing-account-name>",
-		&armbilling.BillingProfilesListByBillingAccountOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+		&armbilling.ProfilesClientListByBillingAccountOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BillingProfile.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfile.json
-func ExampleBillingProfilesClient_Get() {
+func ExampleProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingProfilesClient(cred, nil)
+	client := armbilling.NewProfilesClient(cred, nil)
 	res, err := client.Get(ctx,
 		"<billing-account-name>",
 		"<billing-profile-name>",
-		&armbilling.BillingProfilesGetOptions{Expand: nil})
+		&armbilling.ProfilesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingProfile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProfilesClientGetResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/PutBillingProfile.json
-func ExampleBillingProfilesClient_BeginCreateOrUpdate() {
+func ExampleProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingProfilesClient(cred, nil)
+	client := armbilling.NewProfilesClient(cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<billing-account-name>",
 		"<billing-profile-name>",
-		armbilling.BillingProfile{
-			Properties: &armbilling.BillingProfileProperties{
+		armbilling.Profile{
+			Properties: &armbilling.ProfileProperties{
 				BillTo: &armbilling.AddressDetails{
 					AddressLine1: to.StringPtr("<address-line1>"),
 					City:         to.StringPtr("<city>"),
@@ -99,5 +103,5 @@ func ExampleBillingProfilesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingProfile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProfilesClientCreateOrUpdateResult)
 }

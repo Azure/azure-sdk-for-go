@@ -1,14 +1,411 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ComputePoliciesClient.ListByAccount` parameter(s) have been changed from `(string, string, *ComputePoliciesListByAccountOptions)` to `(string, string, *ComputePoliciesClientListByAccountOptions)`
+- Function `*ComputePoliciesClient.ListByAccount` return value(s) have been changed from `(*ComputePoliciesListByAccountPager)` to `(*ComputePoliciesClientListByAccountPager)`
+- Function `*AccountsClient.List` parameter(s) have been changed from `(*AccountsListOptions)` to `(*AccountsClientListOptions)`
+- Function `*AccountsClient.List` return value(s) have been changed from `(*AccountsListPager)` to `(*AccountsClientListPager)`
+- Function `*StorageAccountsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *StorageAccountsDeleteOptions)` to `(context.Context, string, string, string, *StorageAccountsClientDeleteOptions)`
+- Function `*StorageAccountsClient.Delete` return value(s) have been changed from `(StorageAccountsDeleteResponse, error)` to `(StorageAccountsClientDeleteResponse, error)`
+- Function `*ComputePoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CreateOrUpdateComputePolicyParameters, *ComputePoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, string, CreateOrUpdateComputePolicyParameters, *ComputePoliciesClientCreateOrUpdateOptions)`
+- Function `*ComputePoliciesClient.CreateOrUpdate` return value(s) have been changed from `(ComputePoliciesCreateOrUpdateResponse, error)` to `(ComputePoliciesClientCreateOrUpdateResponse, error)`
+- Function `*DataLakeStoreAccountsClient.ListByAccount` parameter(s) have been changed from `(string, string, *DataLakeStoreAccountsListByAccountOptions)` to `(string, string, *DataLakeStoreAccountsClientListByAccountOptions)`
+- Function `*DataLakeStoreAccountsClient.ListByAccount` return value(s) have been changed from `(*DataLakeStoreAccountsListByAccountPager)` to `(*DataLakeStoreAccountsClientListByAccountPager)`
+- Function `*DataLakeStoreAccountsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *DataLakeStoreAccountsDeleteOptions)` to `(context.Context, string, string, string, *DataLakeStoreAccountsClientDeleteOptions)`
+- Function `*DataLakeStoreAccountsClient.Delete` return value(s) have been changed from `(DataLakeStoreAccountsDeleteResponse, error)` to `(DataLakeStoreAccountsClientDeleteResponse, error)`
+- Function `*AccountsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, *AccountsBeginUpdateOptions)` to `(context.Context, string, string, *AccountsClientBeginUpdateOptions)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsUpdatePollerResponse, error)` to `(AccountsClientUpdatePollerResponse, error)`
+- Function `*StorageAccountsClient.ListByAccount` parameter(s) have been changed from `(string, string, *StorageAccountsListByAccountOptions)` to `(string, string, *StorageAccountsClientListByAccountOptions)`
+- Function `*StorageAccountsClient.ListByAccount` return value(s) have been changed from `(*StorageAccountsListByAccountPager)` to `(*StorageAccountsClientListByAccountPager)`
+- Function `*StorageAccountsClient.GetStorageContainer` parameter(s) have been changed from `(context.Context, string, string, string, string, *StorageAccountsGetStorageContainerOptions)` to `(context.Context, string, string, string, string, *StorageAccountsClientGetStorageContainerOptions)`
+- Function `*StorageAccountsClient.GetStorageContainer` return value(s) have been changed from `(StorageAccountsGetStorageContainerResponse, error)` to `(StorageAccountsClientGetStorageContainerResponse, error)`
+- Function `*AccountsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *AccountsBeginDeleteOptions)` to `(context.Context, string, string, *AccountsClientBeginDeleteOptions)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsDeletePollerResponse, error)` to `(AccountsClientDeletePollerResponse, error)`
+- Function `*StorageAccountsClient.ListStorageContainers` parameter(s) have been changed from `(string, string, string, *StorageAccountsListStorageContainersOptions)` to `(string, string, string, *StorageAccountsClientListStorageContainersOptions)`
+- Function `*StorageAccountsClient.ListStorageContainers` return value(s) have been changed from `(*StorageAccountsListStorageContainersPager)` to `(*StorageAccountsClientListStorageContainersPager)`
+- Function `*StorageAccountsClient.ListSasTokens` parameter(s) have been changed from `(string, string, string, string, *StorageAccountsListSasTokensOptions)` to `(string, string, string, string, *StorageAccountsClientListSasTokensOptions)`
+- Function `*StorageAccountsClient.ListSasTokens` return value(s) have been changed from `(*StorageAccountsListSasTokensPager)` to `(*StorageAccountsClientListSasTokensPager)`
+- Function `*AccountsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, CreateDataLakeAnalyticsAccountParameters, *AccountsBeginCreateOptions)` to `(context.Context, string, string, CreateDataLakeAnalyticsAccountParameters, *AccountsClientBeginCreateOptions)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsCreatePollerResponse, error)` to `(AccountsClientCreatePollerResponse, error)`
+- Function `*StorageAccountsClient.Add` parameter(s) have been changed from `(context.Context, string, string, string, AddStorageAccountParameters, *StorageAccountsAddOptions)` to `(context.Context, string, string, string, AddStorageAccountParameters, *StorageAccountsClientAddOptions)`
+- Function `*StorageAccountsClient.Add` return value(s) have been changed from `(StorageAccountsAddResponse, error)` to `(StorageAccountsClientAddResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*AccountsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, CheckNameAvailabilityParameters, *AccountsCheckNameAvailabilityOptions)` to `(context.Context, string, CheckNameAvailabilityParameters, *AccountsClientCheckNameAvailabilityOptions)`
+- Function `*AccountsClient.CheckNameAvailability` return value(s) have been changed from `(AccountsCheckNameAvailabilityResponse, error)` to `(AccountsClientCheckNameAvailabilityResponse, error)`
+- Function `*StorageAccountsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *StorageAccountsUpdateOptions)` to `(context.Context, string, string, string, *StorageAccountsClientUpdateOptions)`
+- Function `*StorageAccountsClient.Update` return value(s) have been changed from `(StorageAccountsUpdateResponse, error)` to `(StorageAccountsClientUpdateResponse, error)`
+- Function `*FirewallRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *FirewallRulesDeleteOptions)` to `(context.Context, string, string, string, *FirewallRulesClientDeleteOptions)`
+- Function `*FirewallRulesClient.Delete` return value(s) have been changed from `(FirewallRulesDeleteResponse, error)` to `(FirewallRulesClientDeleteResponse, error)`
+- Function `*AccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AccountsGetOptions)` to `(context.Context, string, string, *AccountsClientGetOptions)`
+- Function `*AccountsClient.Get` return value(s) have been changed from `(AccountsGetResponse, error)` to `(AccountsClientGetResponse, error)`
+- Function `*FirewallRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *FirewallRulesGetOptions)` to `(context.Context, string, string, string, *FirewallRulesClientGetOptions)`
+- Function `*FirewallRulesClient.Get` return value(s) have been changed from `(FirewallRulesGetResponse, error)` to `(FirewallRulesClientGetResponse, error)`
+- Function `*LocationsClient.GetCapability` parameter(s) have been changed from `(context.Context, string, *LocationsGetCapabilityOptions)` to `(context.Context, string, *LocationsClientGetCapabilityOptions)`
+- Function `*LocationsClient.GetCapability` return value(s) have been changed from `(LocationsGetCapabilityResponse, error)` to `(LocationsClientGetCapabilityResponse, error)`
+- Function `*ComputePoliciesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *ComputePoliciesDeleteOptions)` to `(context.Context, string, string, string, *ComputePoliciesClientDeleteOptions)`
+- Function `*ComputePoliciesClient.Delete` return value(s) have been changed from `(ComputePoliciesDeleteResponse, error)` to `(ComputePoliciesClientDeleteResponse, error)`
+- Function `*FirewallRulesClient.ListByAccount` parameter(s) have been changed from `(string, string, *FirewallRulesListByAccountOptions)` to `(string, string, *FirewallRulesClientListByAccountOptions)`
+- Function `*FirewallRulesClient.ListByAccount` return value(s) have been changed from `(*FirewallRulesListByAccountPager)` to `(*FirewallRulesClientListByAccountPager)`
+- Function `*ComputePoliciesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *ComputePoliciesUpdateOptions)` to `(context.Context, string, string, string, *ComputePoliciesClientUpdateOptions)`
+- Function `*ComputePoliciesClient.Update` return value(s) have been changed from `(ComputePoliciesUpdateResponse, error)` to `(ComputePoliciesClientUpdateResponse, error)`
+- Function `*FirewallRulesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *FirewallRulesUpdateOptions)` to `(context.Context, string, string, string, *FirewallRulesClientUpdateOptions)`
+- Function `*FirewallRulesClient.Update` return value(s) have been changed from `(FirewallRulesUpdateResponse, error)` to `(FirewallRulesClientUpdateResponse, error)`
+- Function `*AccountsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AccountsListByResourceGroupOptions)` to `(string, *AccountsClientListByResourceGroupOptions)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsListByResourceGroupPager)` to `(*AccountsClientListByResourceGroupPager)`
+- Function `*DataLakeStoreAccountsClient.Add` parameter(s) have been changed from `(context.Context, string, string, string, *DataLakeStoreAccountsAddOptions)` to `(context.Context, string, string, string, *DataLakeStoreAccountsClientAddOptions)`
+- Function `*DataLakeStoreAccountsClient.Add` return value(s) have been changed from `(DataLakeStoreAccountsAddResponse, error)` to `(DataLakeStoreAccountsClientAddResponse, error)`
+- Function `*ComputePoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ComputePoliciesGetOptions)` to `(context.Context, string, string, string, *ComputePoliciesClientGetOptions)`
+- Function `*ComputePoliciesClient.Get` return value(s) have been changed from `(ComputePoliciesGetResponse, error)` to `(ComputePoliciesClientGetResponse, error)`
+- Function `*DataLakeStoreAccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataLakeStoreAccountsGetOptions)` to `(context.Context, string, string, string, *DataLakeStoreAccountsClientGetOptions)`
+- Function `*DataLakeStoreAccountsClient.Get` return value(s) have been changed from `(DataLakeStoreAccountsGetResponse, error)` to `(DataLakeStoreAccountsClientGetResponse, error)`
+- Function `*FirewallRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CreateOrUpdateFirewallRuleParameters, *FirewallRulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, CreateOrUpdateFirewallRuleParameters, *FirewallRulesClientCreateOrUpdateOptions)`
+- Function `*FirewallRulesClient.CreateOrUpdate` return value(s) have been changed from `(FirewallRulesCreateOrUpdateResponse, error)` to `(FirewallRulesClientCreateOrUpdateResponse, error)`
+- Function `*StorageAccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *StorageAccountsGetOptions)` to `(context.Context, string, string, string, *StorageAccountsClientGetOptions)`
+- Function `*StorageAccountsClient.Get` return value(s) have been changed from `(StorageAccountsGetResponse, error)` to `(StorageAccountsClientGetResponse, error)`
+- Function `*DataLakeAnalyticsAccountPropertiesBasic.UnmarshalJSON` has been removed
+- Function `*AccountsCreatePoller.ResumeToken` has been removed
+- Function `*FirewallRulesListByAccountPager.PageResponse` has been removed
+- Function `*AccountsUpdatePoller.FinalResponse` has been removed
+- Function `*AccountsListByResourceGroupPager.Err` has been removed
+- Function `*StorageAccountsListSasTokensPager.Err` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*AccountsListPager.PageResponse` has been removed
+- Function `*AccountsListByResourceGroupPager.NextPage` has been removed
+- Function `*AccountsDeletePoller.Done` has been removed
+- Function `*AccountsDeletePoller.ResumeToken` has been removed
+- Function `*AccountsUpdatePoller.ResumeToken` has been removed
+- Function `*AccountsCreatePollerResponse.Resume` has been removed
+- Function `*DataLakeStoreAccountsListByAccountPager.PageResponse` has been removed
+- Function `AccountsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `*ComputePoliciesListByAccountPager.Err` has been removed
+- Function `*AccountsListPager.Err` has been removed
+- Function `*DataLakeStoreAccountsListByAccountPager.NextPage` has been removed
+- Function `*AccountsDeletePollerResponse.Resume` has been removed
+- Function `AccountsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsListPager.NextPage` has been removed
+- Function `DataLakeAnalyticsAccountProperties.MarshalJSON` has been removed
+- Function `*FirewallRulesListByAccountPager.Err` has been removed
+- Function `*StorageAccountsListStorageContainersPager.NextPage` has been removed
+- Function `DataLakeAnalyticsAccount.MarshalJSON` has been removed
+- Function `*AccountsDeletePoller.FinalResponse` has been removed
+- Function `*StorageAccountsListStorageContainersPager.PageResponse` has been removed
+- Function `*AccountsCreatePoller.Done` has been removed
+- Function `DataLakeAnalyticsAccountBasic.MarshalJSON` has been removed
+- Function `*StorageAccountsListStorageContainersPager.Err` has been removed
+- Function `*StorageAccountsListSasTokensPager.NextPage` has been removed
+- Function `*FirewallRulesListByAccountPager.NextPage` has been removed
+- Function `*StorageAccountsListSasTokensPager.PageResponse` has been removed
+- Function `*DataLakeAnalyticsAccountProperties.UnmarshalJSON` has been removed
+- Function `DataLakeAnalyticsAccountListResult.MarshalJSON` has been removed
+- Function `*StorageAccountsListByAccountPager.NextPage` has been removed
+- Function `*StorageAccountsListByAccountPager.Err` has been removed
+- Function `*AccountsUpdatePoller.Poll` has been removed
+- Function `*AccountsCreatePoller.Poll` has been removed
+- Function `*AccountsDeletePoller.Poll` has been removed
+- Function `DataLakeAnalyticsAccountPropertiesBasic.MarshalJSON` has been removed
+- Function `*AccountsUpdatePollerResponse.Resume` has been removed
+- Function `AccountsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ComputePoliciesListByAccountPager.NextPage` has been removed
+- Function `*DataLakeStoreAccountsListByAccountPager.Err` has been removed
+- Function `*ComputePoliciesListByAccountPager.PageResponse` has been removed
+- Function `*AccountsCreatePoller.FinalResponse` has been removed
+- Function `*StorageAccountsListByAccountPager.PageResponse` has been removed
+- Function `*AccountsUpdatePoller.Done` has been removed
+- Struct `AccountsBeginCreateOptions` has been removed
+- Struct `AccountsBeginDeleteOptions` has been removed
+- Struct `AccountsBeginUpdateOptions` has been removed
+- Struct `AccountsCheckNameAvailabilityOptions` has been removed
+- Struct `AccountsCheckNameAvailabilityResponse` has been removed
+- Struct `AccountsCheckNameAvailabilityResult` has been removed
+- Struct `AccountsCreatePoller` has been removed
+- Struct `AccountsCreatePollerResponse` has been removed
+- Struct `AccountsCreateResponse` has been removed
+- Struct `AccountsCreateResult` has been removed
+- Struct `AccountsDeletePoller` has been removed
+- Struct `AccountsDeletePollerResponse` has been removed
+- Struct `AccountsDeleteResponse` has been removed
+- Struct `AccountsGetOptions` has been removed
+- Struct `AccountsGetResponse` has been removed
+- Struct `AccountsGetResult` has been removed
+- Struct `AccountsListByResourceGroupOptions` has been removed
+- Struct `AccountsListByResourceGroupPager` has been removed
+- Struct `AccountsListByResourceGroupResponse` has been removed
+- Struct `AccountsListByResourceGroupResult` has been removed
+- Struct `AccountsListOptions` has been removed
+- Struct `AccountsListPager` has been removed
+- Struct `AccountsListResponse` has been removed
+- Struct `AccountsListResult` has been removed
+- Struct `AccountsUpdatePoller` has been removed
+- Struct `AccountsUpdatePollerResponse` has been removed
+- Struct `AccountsUpdateResponse` has been removed
+- Struct `AccountsUpdateResult` has been removed
+- Struct `ComputePoliciesCreateOrUpdateOptions` has been removed
+- Struct `ComputePoliciesCreateOrUpdateResponse` has been removed
+- Struct `ComputePoliciesCreateOrUpdateResult` has been removed
+- Struct `ComputePoliciesDeleteOptions` has been removed
+- Struct `ComputePoliciesDeleteResponse` has been removed
+- Struct `ComputePoliciesGetOptions` has been removed
+- Struct `ComputePoliciesGetResponse` has been removed
+- Struct `ComputePoliciesGetResult` has been removed
+- Struct `ComputePoliciesListByAccountOptions` has been removed
+- Struct `ComputePoliciesListByAccountPager` has been removed
+- Struct `ComputePoliciesListByAccountResponse` has been removed
+- Struct `ComputePoliciesListByAccountResult` has been removed
+- Struct `ComputePoliciesUpdateOptions` has been removed
+- Struct `ComputePoliciesUpdateResponse` has been removed
+- Struct `ComputePoliciesUpdateResult` has been removed
+- Struct `DataLakeAnalyticsAccount` has been removed
+- Struct `DataLakeAnalyticsAccountBasic` has been removed
+- Struct `DataLakeAnalyticsAccountListResult` has been removed
+- Struct `DataLakeAnalyticsAccountProperties` has been removed
+- Struct `DataLakeAnalyticsAccountPropertiesBasic` has been removed
+- Struct `DataLakeStoreAccountsAddOptions` has been removed
+- Struct `DataLakeStoreAccountsAddResponse` has been removed
+- Struct `DataLakeStoreAccountsDeleteOptions` has been removed
+- Struct `DataLakeStoreAccountsDeleteResponse` has been removed
+- Struct `DataLakeStoreAccountsGetOptions` has been removed
+- Struct `DataLakeStoreAccountsGetResponse` has been removed
+- Struct `DataLakeStoreAccountsGetResult` has been removed
+- Struct `DataLakeStoreAccountsListByAccountOptions` has been removed
+- Struct `DataLakeStoreAccountsListByAccountPager` has been removed
+- Struct `DataLakeStoreAccountsListByAccountResponse` has been removed
+- Struct `DataLakeStoreAccountsListByAccountResult` has been removed
+- Struct `FirewallRulesCreateOrUpdateOptions` has been removed
+- Struct `FirewallRulesCreateOrUpdateResponse` has been removed
+- Struct `FirewallRulesCreateOrUpdateResult` has been removed
+- Struct `FirewallRulesDeleteOptions` has been removed
+- Struct `FirewallRulesDeleteResponse` has been removed
+- Struct `FirewallRulesGetOptions` has been removed
+- Struct `FirewallRulesGetResponse` has been removed
+- Struct `FirewallRulesGetResult` has been removed
+- Struct `FirewallRulesListByAccountOptions` has been removed
+- Struct `FirewallRulesListByAccountPager` has been removed
+- Struct `FirewallRulesListByAccountResponse` has been removed
+- Struct `FirewallRulesListByAccountResult` has been removed
+- Struct `FirewallRulesUpdateOptions` has been removed
+- Struct `FirewallRulesUpdateResponse` has been removed
+- Struct `FirewallRulesUpdateResult` has been removed
+- Struct `LocationsGetCapabilityOptions` has been removed
+- Struct `LocationsGetCapabilityResponse` has been removed
+- Struct `LocationsGetCapabilityResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `StorageAccountsAddOptions` has been removed
+- Struct `StorageAccountsAddResponse` has been removed
+- Struct `StorageAccountsDeleteOptions` has been removed
+- Struct `StorageAccountsDeleteResponse` has been removed
+- Struct `StorageAccountsGetOptions` has been removed
+- Struct `StorageAccountsGetResponse` has been removed
+- Struct `StorageAccountsGetResult` has been removed
+- Struct `StorageAccountsGetStorageContainerOptions` has been removed
+- Struct `StorageAccountsGetStorageContainerResponse` has been removed
+- Struct `StorageAccountsGetStorageContainerResult` has been removed
+- Struct `StorageAccountsListByAccountOptions` has been removed
+- Struct `StorageAccountsListByAccountPager` has been removed
+- Struct `StorageAccountsListByAccountResponse` has been removed
+- Struct `StorageAccountsListByAccountResult` has been removed
+- Struct `StorageAccountsListSasTokensOptions` has been removed
+- Struct `StorageAccountsListSasTokensPager` has been removed
+- Struct `StorageAccountsListSasTokensResponse` has been removed
+- Struct `StorageAccountsListSasTokensResult` has been removed
+- Struct `StorageAccountsListStorageContainersOptions` has been removed
+- Struct `StorageAccountsListStorageContainersPager` has been removed
+- Struct `StorageAccountsListStorageContainersResponse` has been removed
+- Struct `StorageAccountsListStorageContainersResult` has been removed
+- Struct `StorageAccountsUpdateOptions` has been removed
+- Struct `StorageAccountsUpdateResponse` has been removed
+- Field `SubResource` of struct `StorageAccountInformation` has been removed
+- Field `SubResource` of struct `HiveMetastore` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `SubResource` of struct `DataLakeStoreAccountInformation` has been removed
+- Field `SubResource` of struct `StorageContainer` has been removed
+- Field `SubResource` of struct `ComputePolicy` has been removed
+- Field `SubResource` of struct `FirewallRule` has been removed
+- Field `SubResource` of struct `VirtualNetworkRule` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*AccountsClientListByResourceGroupPager.Err() error`
+- New function `*AccountsClientListByResourceGroupPager.PageResponse() AccountsClientListByResourceGroupResponse`
+- New function `*AccountsClientUpdatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*AccountsClientUpdatePoller.FinalResponse(context.Context) (AccountsClientUpdateResponse, error)`
+- New function `*AccountsClientUpdatePoller.Done() bool`
+- New function `AccountBasic.MarshalJSON() ([]byte, error)`
+- New function `AccountsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientCreateResponse, error)`
+- New function `*AccountsClientCreatePoller.Done() bool`
+- New function `*DataLakeStoreAccountsClientListByAccountPager.PageResponse() DataLakeStoreAccountsClientListByAccountResponse`
+- New function `*AccountsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `Account.MarshalJSON() ([]byte, error)`
+- New function `*StorageAccountsClientListStorageContainersPager.Err() error`
+- New function `*ComputePoliciesClientListByAccountPager.Err() error`
+- New function `*DataLakeStoreAccountsClientListByAccountPager.NextPage(context.Context) bool`
+- New function `*AccountsClientListPager.PageResponse() AccountsClientListResponse`
+- New function `*FirewallRulesClientListByAccountPager.Err() error`
+- New function `*AccountsClientDeletePoller.FinalResponse(context.Context) (AccountsClientDeleteResponse, error)`
+- New function `AccountPropertiesBasic.MarshalJSON() ([]byte, error)`
+- New function `*StorageAccountsClientListByAccountPager.NextPage(context.Context) bool`
+- New function `*StorageAccountsClientListByAccountPager.PageResponse() StorageAccountsClientListByAccountResponse`
+- New function `AccountsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientUpdateResponse, error)`
+- New function `*AccountsClientListPager.NextPage(context.Context) bool`
+- New function `*ComputePoliciesClientListByAccountPager.NextPage(context.Context) bool`
+- New function `*AccountsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `AccountsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientDeleteResponse, error)`
+- New function `*ComputePoliciesClientListByAccountPager.PageResponse() ComputePoliciesClientListByAccountResponse`
+- New function `*AccountsClientDeletePoller.Done() bool`
+- New function `*AccountsClientListPager.Err() error`
+- New function `*StorageAccountsClientListSasTokensPager.Err() error`
+- New function `*AccountsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*AccountProperties.UnmarshalJSON([]byte) error`
+- New function `AccountProperties.MarshalJSON() ([]byte, error)`
+- New function `*StorageAccountsClientListSasTokensPager.NextPage(context.Context) bool`
+- New function `*AccountsClientDeletePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*AccountsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*StorageAccountsClientListSasTokensPager.PageResponse() StorageAccountsClientListSasTokensResponse`
+- New function `*StorageAccountsClientListStorageContainersPager.PageResponse() StorageAccountsClientListStorageContainersResponse`
+- New function `AccountListResult.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*StorageAccountsClientListStorageContainersPager.NextPage(context.Context) bool`
+- New function `*StorageAccountsClientListByAccountPager.Err() error`
+- New function `*FirewallRulesClientListByAccountPager.NextPage(context.Context) bool`
+- New function `*DataLakeStoreAccountsClientListByAccountPager.Err() error`
+- New function `*FirewallRulesClientListByAccountPager.PageResponse() FirewallRulesClientListByAccountResponse`
+- New function `*AccountPropertiesBasic.UnmarshalJSON([]byte) error`
+- New function `*AccountsClientCreatePoller.FinalResponse(context.Context) (AccountsClientCreateResponse, error)`
+- New function `*AccountsClientCreatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New struct `Account`
+- New struct `AccountBasic`
+- New struct `AccountListResult`
+- New struct `AccountProperties`
+- New struct `AccountPropertiesBasic`
+- New struct `AccountsClientBeginCreateOptions`
+- New struct `AccountsClientBeginDeleteOptions`
+- New struct `AccountsClientBeginUpdateOptions`
+- New struct `AccountsClientCheckNameAvailabilityOptions`
+- New struct `AccountsClientCheckNameAvailabilityResponse`
+- New struct `AccountsClientCheckNameAvailabilityResult`
+- New struct `AccountsClientCreatePoller`
+- New struct `AccountsClientCreatePollerResponse`
+- New struct `AccountsClientCreateResponse`
+- New struct `AccountsClientCreateResult`
+- New struct `AccountsClientDeletePoller`
+- New struct `AccountsClientDeletePollerResponse`
+- New struct `AccountsClientDeleteResponse`
+- New struct `AccountsClientGetOptions`
+- New struct `AccountsClientGetResponse`
+- New struct `AccountsClientGetResult`
+- New struct `AccountsClientListByResourceGroupOptions`
+- New struct `AccountsClientListByResourceGroupPager`
+- New struct `AccountsClientListByResourceGroupResponse`
+- New struct `AccountsClientListByResourceGroupResult`
+- New struct `AccountsClientListOptions`
+- New struct `AccountsClientListPager`
+- New struct `AccountsClientListResponse`
+- New struct `AccountsClientListResult`
+- New struct `AccountsClientUpdatePoller`
+- New struct `AccountsClientUpdatePollerResponse`
+- New struct `AccountsClientUpdateResponse`
+- New struct `AccountsClientUpdateResult`
+- New struct `ComputePoliciesClientCreateOrUpdateOptions`
+- New struct `ComputePoliciesClientCreateOrUpdateResponse`
+- New struct `ComputePoliciesClientCreateOrUpdateResult`
+- New struct `ComputePoliciesClientDeleteOptions`
+- New struct `ComputePoliciesClientDeleteResponse`
+- New struct `ComputePoliciesClientGetOptions`
+- New struct `ComputePoliciesClientGetResponse`
+- New struct `ComputePoliciesClientGetResult`
+- New struct `ComputePoliciesClientListByAccountOptions`
+- New struct `ComputePoliciesClientListByAccountPager`
+- New struct `ComputePoliciesClientListByAccountResponse`
+- New struct `ComputePoliciesClientListByAccountResult`
+- New struct `ComputePoliciesClientUpdateOptions`
+- New struct `ComputePoliciesClientUpdateResponse`
+- New struct `ComputePoliciesClientUpdateResult`
+- New struct `DataLakeStoreAccountsClientAddOptions`
+- New struct `DataLakeStoreAccountsClientAddResponse`
+- New struct `DataLakeStoreAccountsClientDeleteOptions`
+- New struct `DataLakeStoreAccountsClientDeleteResponse`
+- New struct `DataLakeStoreAccountsClientGetOptions`
+- New struct `DataLakeStoreAccountsClientGetResponse`
+- New struct `DataLakeStoreAccountsClientGetResult`
+- New struct `DataLakeStoreAccountsClientListByAccountOptions`
+- New struct `DataLakeStoreAccountsClientListByAccountPager`
+- New struct `DataLakeStoreAccountsClientListByAccountResponse`
+- New struct `DataLakeStoreAccountsClientListByAccountResult`
+- New struct `FirewallRulesClientCreateOrUpdateOptions`
+- New struct `FirewallRulesClientCreateOrUpdateResponse`
+- New struct `FirewallRulesClientCreateOrUpdateResult`
+- New struct `FirewallRulesClientDeleteOptions`
+- New struct `FirewallRulesClientDeleteResponse`
+- New struct `FirewallRulesClientGetOptions`
+- New struct `FirewallRulesClientGetResponse`
+- New struct `FirewallRulesClientGetResult`
+- New struct `FirewallRulesClientListByAccountOptions`
+- New struct `FirewallRulesClientListByAccountPager`
+- New struct `FirewallRulesClientListByAccountResponse`
+- New struct `FirewallRulesClientListByAccountResult`
+- New struct `FirewallRulesClientUpdateOptions`
+- New struct `FirewallRulesClientUpdateResponse`
+- New struct `FirewallRulesClientUpdateResult`
+- New struct `LocationsClientGetCapabilityOptions`
+- New struct `LocationsClientGetCapabilityResponse`
+- New struct `LocationsClientGetCapabilityResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `StorageAccountsClientAddOptions`
+- New struct `StorageAccountsClientAddResponse`
+- New struct `StorageAccountsClientDeleteOptions`
+- New struct `StorageAccountsClientDeleteResponse`
+- New struct `StorageAccountsClientGetOptions`
+- New struct `StorageAccountsClientGetResponse`
+- New struct `StorageAccountsClientGetResult`
+- New struct `StorageAccountsClientGetStorageContainerOptions`
+- New struct `StorageAccountsClientGetStorageContainerResponse`
+- New struct `StorageAccountsClientGetStorageContainerResult`
+- New struct `StorageAccountsClientListByAccountOptions`
+- New struct `StorageAccountsClientListByAccountPager`
+- New struct `StorageAccountsClientListByAccountResponse`
+- New struct `StorageAccountsClientListByAccountResult`
+- New struct `StorageAccountsClientListSasTokensOptions`
+- New struct `StorageAccountsClientListSasTokensPager`
+- New struct `StorageAccountsClientListSasTokensResponse`
+- New struct `StorageAccountsClientListSasTokensResult`
+- New struct `StorageAccountsClientListStorageContainersOptions`
+- New struct `StorageAccountsClientListStorageContainersPager`
+- New struct `StorageAccountsClientListStorageContainersResponse`
+- New struct `StorageAccountsClientListStorageContainersResult`
+- New struct `StorageAccountsClientUpdateOptions`
+- New struct `StorageAccountsClientUpdateResponse`
+- New field `Name` in struct `ComputePolicy`
+- New field `Type` in struct `ComputePolicy`
+- New field `ID` in struct `ComputePolicy`
+- New field `Name` in struct `StorageContainer`
+- New field `Type` in struct `StorageContainer`
+- New field `ID` in struct `StorageContainer`
+- New field `Name` in struct `VirtualNetworkRule`
+- New field `Type` in struct `VirtualNetworkRule`
+- New field `ID` in struct `VirtualNetworkRule`
+- New field `ID` in struct `DataLakeStoreAccountInformation`
+- New field `Name` in struct `DataLakeStoreAccountInformation`
+- New field `Type` in struct `DataLakeStoreAccountInformation`
+- New field `ID` in struct `FirewallRule`
+- New field `Name` in struct `FirewallRule`
+- New field `Type` in struct `FirewallRule`
+- New field `Type` in struct `HiveMetastore`
+- New field `ID` in struct `HiveMetastore`
+- New field `Name` in struct `HiveMetastore`
+- New field `ID` in struct `StorageAccountInformation`
+- New field `Name` in struct `StorageAccountInformation`
+- New field `Type` in struct `StorageAccountInformation`
+- New field `Error` in struct `ErrorResponse`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

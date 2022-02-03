@@ -29,68 +29,64 @@ func ExampleGatewayClient_Create() {
 		"<resource-group-name>",
 		"<gateway-resource-name>",
 		armservicefabricmesh.GatewayResourceDescription{
-			TrackedResource: armservicefabricmesh.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.GatewayResourceProperties{
-				GatewayProperties: armservicefabricmesh.GatewayProperties{
-					Description: to.StringPtr("<description>"),
-					DestinationNetwork: &armservicefabricmesh.NetworkRef{
-						Name: to.StringPtr("<name>"),
-					},
-					SourceNetwork: &armservicefabricmesh.NetworkRef{
-						Name: to.StringPtr("<name>"),
-					},
-					TCP: []*armservicefabricmesh.TCPConfig{
-						{
-							Name: to.StringPtr("<name>"),
-							Destination: &armservicefabricmesh.GatewayDestination{
-								ApplicationName: to.StringPtr("<application-name>"),
-								EndpointName:    to.StringPtr("<endpoint-name>"),
-								ServiceName:     to.StringPtr("<service-name>"),
-							},
-							Port: to.Int32Ptr(80),
-						}},
-					HTTP: []*armservicefabricmesh.HTTPConfig{
-						{
-							Name: to.StringPtr("<name>"),
-							Hosts: []*armservicefabricmesh.HTTPHostConfig{
-								{
-									Name: to.StringPtr("<name>"),
-									Routes: []*armservicefabricmesh.HTTPRouteConfig{
-										{
-											Name: to.StringPtr("<name>"),
-											Destination: &armservicefabricmesh.GatewayDestination{
-												ApplicationName: to.StringPtr("<application-name>"),
-												EndpointName:    to.StringPtr("<endpoint-name>"),
-												ServiceName:     to.StringPtr("<service-name>"),
-											},
-											Match: &armservicefabricmesh.HTTPRouteMatchRule{
-												Path: &armservicefabricmesh.HTTPRouteMatchPath{
-													Type:    armservicefabricmesh.PathMatchTypePrefix.ToPtr(),
-													Rewrite: to.StringPtr("<rewrite>"),
-													Value:   to.StringPtr("<value>"),
-												},
-												Headers: []*armservicefabricmesh.HTTPRouteMatchHeader{
-													{
-														Name:  to.StringPtr("<name>"),
-														Type:  armservicefabricmesh.HeaderMatchTypeExact.ToPtr(),
-														Value: to.StringPtr("<value>"),
-													}},
-											},
-										}},
-								}},
-							Port: to.Int32Ptr(8081),
-						}},
+				Description: to.StringPtr("<description>"),
+				DestinationNetwork: &armservicefabricmesh.NetworkRef{
+					Name: to.StringPtr("<name>"),
 				},
+				SourceNetwork: &armservicefabricmesh.NetworkRef{
+					Name: to.StringPtr("<name>"),
+				},
+				TCP: []*armservicefabricmesh.TCPConfig{
+					{
+						Name: to.StringPtr("<name>"),
+						Destination: &armservicefabricmesh.GatewayDestination{
+							ApplicationName: to.StringPtr("<application-name>"),
+							EndpointName:    to.StringPtr("<endpoint-name>"),
+							ServiceName:     to.StringPtr("<service-name>"),
+						},
+						Port: to.Int32Ptr(80),
+					}},
+				HTTP: []*armservicefabricmesh.HTTPConfig{
+					{
+						Name: to.StringPtr("<name>"),
+						Hosts: []*armservicefabricmesh.HTTPHostConfig{
+							{
+								Name: to.StringPtr("<name>"),
+								Routes: []*armservicefabricmesh.HTTPRouteConfig{
+									{
+										Name: to.StringPtr("<name>"),
+										Destination: &armservicefabricmesh.GatewayDestination{
+											ApplicationName: to.StringPtr("<application-name>"),
+											EndpointName:    to.StringPtr("<endpoint-name>"),
+											ServiceName:     to.StringPtr("<service-name>"),
+										},
+										Match: &armservicefabricmesh.HTTPRouteMatchRule{
+											Path: &armservicefabricmesh.HTTPRouteMatchPath{
+												Type:    armservicefabricmesh.PathMatchType("prefix").ToPtr(),
+												Rewrite: to.StringPtr("<rewrite>"),
+												Value:   to.StringPtr("<value>"),
+											},
+											Headers: []*armservicefabricmesh.HTTPRouteMatchHeader{
+												{
+													Name:  to.StringPtr("<name>"),
+													Type:  armservicefabricmesh.HeaderMatchType("exact").ToPtr(),
+													Value: to.StringPtr("<value>"),
+												}},
+										},
+									}},
+							}},
+						Port: to.Int32Ptr(8081),
+					}},
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GatewayResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.GatewayClientCreateResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/get.json
@@ -108,7 +104,7 @@ func ExampleGatewayClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GatewayResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.GatewayClientGetResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/gateways/delete.json
@@ -138,12 +134,16 @@ func ExampleGatewayClient_ListByResourceGroup() {
 	client := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("GatewayResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -157,12 +157,16 @@ func ExampleGatewayClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("GatewayResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

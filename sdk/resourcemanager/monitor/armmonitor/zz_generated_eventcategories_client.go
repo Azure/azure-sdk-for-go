@@ -10,7 +10,6 @@ package armmonitor
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,44 +21,51 @@ import (
 // EventCategoriesClient contains the methods for the EventCategories group.
 // Don't use this type directly, use NewEventCategoriesClient() instead.
 type EventCategoriesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEventCategoriesClient creates a new instance of EventCategoriesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EventCategoriesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EventCategoriesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EventCategoriesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - Get the list of available event categories supported in the Activity Logs Service. The current list includes the following: Administrative, Security,
-// ServiceHealth, Alert, Recommendation, Policy.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EventCategoriesClient) List(ctx context.Context, options *EventCategoriesListOptions) (EventCategoriesListResponse, error) {
+// List - Get the list of available event categories supported in the Activity Logs Service. The current list includes the
+// following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.List method.
+func (client *EventCategoriesClient) List(ctx context.Context, options *EventCategoriesClientListOptions) (EventCategoriesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return EventCategoriesListResponse{}, err
+		return EventCategoriesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EventCategoriesListResponse{}, err
+		return EventCategoriesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EventCategoriesListResponse{}, client.listHandleError(resp)
+		return EventCategoriesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *EventCategoriesClient) listCreateRequest(ctx context.Context, options *EventCategoriesListOptions) (*policy.Request, error) {
+func (client *EventCategoriesClient) listCreateRequest(ctx context.Context, options *EventCategoriesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Insights/eventcategories"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -71,23 +77,10 @@ func (client *EventCategoriesClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *EventCategoriesClient) listHandleResponse(resp *http.Response) (EventCategoriesListResponse, error) {
-	result := EventCategoriesListResponse{RawResponse: resp}
+func (client *EventCategoriesClient) listHandleResponse(resp *http.Response) (EventCategoriesClientListResponse, error) {
+	result := EventCategoriesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventCategoryCollection); err != nil {
-		return EventCategoriesListResponse{}, runtime.NewResponseError(err, resp)
+		return EventCategoriesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *EventCategoriesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

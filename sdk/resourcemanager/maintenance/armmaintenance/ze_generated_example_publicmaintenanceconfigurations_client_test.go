@@ -24,11 +24,12 @@ func ExamplePublicMaintenanceConfigurationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armmaintenance.NewPublicMaintenanceConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PublicMaintenanceConfigurationsClientListResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/PublicMaintenanceConfigurations_GetForResource.json
@@ -45,5 +46,5 @@ func ExamplePublicMaintenanceConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MaintenanceConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PublicMaintenanceConfigurationsClientGetResult)
 }

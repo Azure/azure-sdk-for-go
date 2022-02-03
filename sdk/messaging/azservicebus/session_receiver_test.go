@@ -6,12 +6,15 @@ package azservicebus
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -132,7 +135,9 @@ func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 	// You can address a session by name which makes lock contention possible (unlike
 	// messages where the lock token is not a predefined value)
 	receiver, err = client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
-	require.True(t, internal.IsSessionLockedError(err))
+
+	sbe := internal.GetSBErrInfo(err)
+	require.EqualValues(t, internal.RecoveryKindFatal, sbe.RecoveryKind)
 	require.Nil(t, receiver)
 }
 
@@ -254,19 +259,65 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, messages)
 
-	// surprisingly this works. Not sure what it accomplishes though. C# has a manual check for it.
-	// err = sessionReceiver.RenewMessageLock(context.Background(), messages[0])
-	// require.NoError(t, err)
-
 	orig := sessionReceiver.LockedUntil()
 	require.NoError(t, sessionReceiver.RenewSessionLock(context.Background()))
 	require.Greater(t, sessionReceiver.LockedUntil().UnixNano(), orig.UnixNano())
+}
 
-	// bogus renewal
-	sessionReceiver.sessionID = to.StringPtr("bogus")
+func TestSessionReceiver_Detach(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	})
+	defer cleanup()
 
-	err = sessionReceiver.RenewSessionLock(context.Background())
-	require.Contains(t, err.Error(), "status code 410 and description: The session lock has expired on the MessageSession")
+	azlog.SetListener(func(e azlog.Event, s string) {
+		fmt.Printf("%s %s\n", e, s)
+	})
+
+	defer azlog.SetListener(nil)
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.AcceptSessionForQueue(context.Background(), queueName, "test-session", nil)
+	require.NoError(t, err)
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body:      []byte("hello"),
+		SessionID: to.StringPtr("test-session"),
+	})
+	require.NoError(t, err)
+	require.NoError(t, sender.Close(context.Background()))
+
+	state, err := receiver.GetSessionState(context.Background())
+	require.NoError(t, err)
+	require.Nil(t, state)
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	}, nil)
+	require.NoError(t, err)
+
+	state, err = receiver.GetSessionState(context.Background())
+	require.NoError(t, err)
+	require.Nil(t, state)
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	}, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, messages)
+
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+	require.NoError(t, receiver.Close(context.Background()))
 }
 
 func Test_toReceiverOptions(t *testing.T) {

@@ -24,42 +24,58 @@ import (
 // ManagedDatabaseTransparentDataEncryptionClient contains the methods for the ManagedDatabaseTransparentDataEncryption group.
 // Don't use this type directly, use NewManagedDatabaseTransparentDataEncryptionClient() instead.
 type ManagedDatabaseTransparentDataEncryptionClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedDatabaseTransparentDataEncryptionClient creates a new instance of ManagedDatabaseTransparentDataEncryptionClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedDatabaseTransparentDataEncryptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseTransparentDataEncryptionClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedDatabaseTransparentDataEncryptionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedDatabaseTransparentDataEncryptionClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Updates a database's transparent data encryption configuration.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, parameters ManagedTransparentDataEncryption, options *ManagedDatabaseTransparentDataEncryptionCreateOrUpdateOptions) (ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database for which the security alert policy is defined.
+// tdeName - The name of the transparent data encryption configuration.
+// parameters - The database transparent data encryption.
+// options - ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateOptions contains the optional parameters for the
+// ManagedDatabaseTransparentDataEncryptionClient.CreateOrUpdate method.
+func (client *ManagedDatabaseTransparentDataEncryptionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, parameters ManagedTransparentDataEncryption, options *ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateOptions) (ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, tdeName, parameters, options)
 	if err != nil {
-		return ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{}, err
+		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{}, err
+		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, parameters ManagedTransparentDataEncryption, options *ManagedDatabaseTransparentDataEncryptionCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, parameters ManagedTransparentDataEncryption, options *ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/transparentDataEncryption/{tdeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,7 +97,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,45 +109,40 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCrea
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{RawResponse: resp}
+func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse, error) {
+	result := ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryption); err != nil {
-		return ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a managed database's transparent data encryption.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, options *ManagedDatabaseTransparentDataEncryptionGetOptions) (ManagedDatabaseTransparentDataEncryptionGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database for which the transparent data encryption is defined.
+// tdeName - The name of the transparent data encryption configuration.
+// options - ManagedDatabaseTransparentDataEncryptionClientGetOptions contains the optional parameters for the ManagedDatabaseTransparentDataEncryptionClient.Get
+// method.
+func (client *ManagedDatabaseTransparentDataEncryptionClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, options *ManagedDatabaseTransparentDataEncryptionClientGetOptions) (ManagedDatabaseTransparentDataEncryptionClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, tdeName, options)
 	if err != nil {
-		return ManagedDatabaseTransparentDataEncryptionGetResponse{}, err
+		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedDatabaseTransparentDataEncryptionGetResponse{}, err
+		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedDatabaseTransparentDataEncryptionGetResponse{}, client.getHandleError(resp)
+		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, options *ManagedDatabaseTransparentDataEncryptionGetOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, options *ManagedDatabaseTransparentDataEncryptionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/transparentDataEncryption/{tdeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,7 +164,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,42 +176,36 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(c
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionGetResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionGetResponse{RawResponse: resp}
+func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientGetResponse, error) {
+	result := ManagedDatabaseTransparentDataEncryptionClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryption); err != nil {
-		return ManagedDatabaseTransparentDataEncryptionGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabase - Gets a list of managed database's transparent data encryptions.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionListByDatabaseOptions) *ManagedDatabaseTransparentDataEncryptionListByDatabasePager {
-	return &ManagedDatabaseTransparentDataEncryptionListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database for which the transparent data encryption is defined.
+// options - ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions contains the optional parameters for the
+// ManagedDatabaseTransparentDataEncryptionClient.ListByDatabase method.
+func (client *ManagedDatabaseTransparentDataEncryptionClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) *ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager {
+	return &ManagedDatabaseTransparentDataEncryptionClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedTransparentDataEncryptionListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionListByDatabaseOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/transparentDataEncryption"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -218,7 +223,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,22 +235,10 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCrea
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse{RawResponse: resp}
+func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse, error) {
+	result := ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryptionListResult); err != nil {
-		return ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

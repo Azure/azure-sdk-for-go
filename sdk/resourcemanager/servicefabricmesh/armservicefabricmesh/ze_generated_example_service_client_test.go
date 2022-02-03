@@ -32,7 +32,7 @@ func ExampleServiceClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServiceResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServiceClientGetResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/applications/services/list.json
@@ -46,12 +46,16 @@ func ExampleServiceClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<application-resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServiceResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -30,7 +30,7 @@ stages:
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
     dependsOn: CheckRelease
     condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
-    jobs: 
+    jobs:
       - deployment: TagRepository
         displayName: "Create release tag"
         condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))

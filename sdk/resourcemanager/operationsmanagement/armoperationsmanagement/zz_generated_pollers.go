@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// SolutionsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type SolutionsCreateOrUpdatePoller struct {
+// SolutionsClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type SolutionsClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *SolutionsCreateOrUpdatePoller) Done() bool {
+func (p *SolutionsClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *SolutionsCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *SolutionsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *SolutionsClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final SolutionsCreateOrUpdateResponse will be returned.
-func (p *SolutionsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (SolutionsCreateOrUpdateResponse, error) {
-	respType := SolutionsCreateOrUpdateResponse{}
+// If the final GET succeeded then the final SolutionsClientCreateOrUpdateResponse will be returned.
+func (p *SolutionsClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (SolutionsClientCreateOrUpdateResponse, error) {
+	respType := SolutionsClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.Solution)
 	if err != nil {
-		return SolutionsCreateOrUpdateResponse{}, err
+		return SolutionsClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *SolutionsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (Solu
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *SolutionsCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *SolutionsClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// SolutionsDeletePoller provides polling facilities until the operation reaches a terminal state.
-type SolutionsDeletePoller struct {
+// SolutionsClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type SolutionsClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *SolutionsDeletePoller) Done() bool {
+func (p *SolutionsClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *SolutionsDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *SolutionsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *SolutionsClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final SolutionsDeleteResponse will be returned.
-func (p *SolutionsDeletePoller) FinalResponse(ctx context.Context) (SolutionsDeleteResponse, error) {
-	respType := SolutionsDeleteResponse{}
+// If the final GET succeeded then the final SolutionsClientDeleteResponse will be returned.
+func (p *SolutionsClientDeletePoller) FinalResponse(ctx context.Context) (SolutionsClientDeleteResponse, error) {
+	respType := SolutionsClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return SolutionsDeleteResponse{}, err
+		return SolutionsClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *SolutionsDeletePoller) FinalResponse(ctx context.Context) (SolutionsDel
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *SolutionsDeletePoller) ResumeToken() (string, error) {
+func (p *SolutionsClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// SolutionsUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type SolutionsUpdatePoller struct {
+// SolutionsClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type SolutionsClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *SolutionsUpdatePoller) Done() bool {
+func (p *SolutionsClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *SolutionsUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *SolutionsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *SolutionsClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final SolutionsUpdateResponse will be returned.
-func (p *SolutionsUpdatePoller) FinalResponse(ctx context.Context) (SolutionsUpdateResponse, error) {
-	respType := SolutionsUpdateResponse{}
+// If the final GET succeeded then the final SolutionsClientUpdateResponse will be returned.
+func (p *SolutionsClientUpdatePoller) FinalResponse(ctx context.Context) (SolutionsClientUpdateResponse, error) {
+	respType := SolutionsClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.Solution)
 	if err != nil {
-		return SolutionsUpdateResponse{}, err
+		return SolutionsClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,6 +139,6 @@ func (p *SolutionsUpdatePoller) FinalResponse(ctx context.Context) (SolutionsUpd
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *SolutionsUpdatePoller) ResumeToken() (string, error) {
+func (p *SolutionsClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

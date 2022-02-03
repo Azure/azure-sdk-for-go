@@ -15,46 +15,46 @@ import (
 	"time"
 )
 
-// ClusterExtensionTypeGetResponse contains the response from method ClusterExtensionType.Get.
-type ClusterExtensionTypeGetResponse struct {
-	ClusterExtensionTypeGetResult
+// ClusterExtensionTypeClientGetResponse contains the response from method ClusterExtensionTypeClient.Get.
+type ClusterExtensionTypeClientGetResponse struct {
+	ClusterExtensionTypeClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClusterExtensionTypeGetResult contains the result from method ClusterExtensionType.Get.
-type ClusterExtensionTypeGetResult struct {
+// ClusterExtensionTypeClientGetResult contains the result from method ClusterExtensionTypeClient.Get.
+type ClusterExtensionTypeClientGetResult struct {
 	ExtensionType
 }
 
-// ClusterExtensionTypesListResponse contains the response from method ClusterExtensionTypes.List.
-type ClusterExtensionTypesListResponse struct {
-	ClusterExtensionTypesListResult
+// ClusterExtensionTypesClientListResponse contains the response from method ClusterExtensionTypesClient.List.
+type ClusterExtensionTypesClientListResponse struct {
+	ClusterExtensionTypesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClusterExtensionTypesListResult contains the result from method ClusterExtensionTypes.List.
-type ClusterExtensionTypesListResult struct {
+// ClusterExtensionTypesClientListResult contains the result from method ClusterExtensionTypesClient.List.
+type ClusterExtensionTypesClientListResult struct {
 	ExtensionTypeList
 }
 
-// ExtensionTypeVersionsListResponse contains the response from method ExtensionTypeVersions.List.
-type ExtensionTypeVersionsListResponse struct {
-	ExtensionTypeVersionsListResult
+// ExtensionTypeVersionsClientListResponse contains the response from method ExtensionTypeVersionsClient.List.
+type ExtensionTypeVersionsClientListResponse struct {
+	ExtensionTypeVersionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionTypeVersionsListResult contains the result from method ExtensionTypeVersions.List.
-type ExtensionTypeVersionsListResult struct {
+// ExtensionTypeVersionsClientListResult contains the result from method ExtensionTypeVersionsClient.List.
+type ExtensionTypeVersionsClientListResult struct {
 	ExtensionVersionList
 }
 
-// ExtensionsCreatePollerResponse contains the response from method Extensions.Create.
-type ExtensionsCreatePollerResponse struct {
+// ExtensionsClientCreatePollerResponse contains the response from method ExtensionsClient.Create.
+type ExtensionsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExtensionsCreatePoller
+	Poller *ExtensionsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -63,8 +63,8 @@ type ExtensionsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExtensionsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsCreateResponse, error) {
-	respType := ExtensionsCreateResponse{}
+func (l ExtensionsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsClientCreateResponse, error) {
+	respType := ExtensionsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Extension)
 	if err != nil {
 		return respType, err
@@ -73,13 +73,13 @@ func (l ExtensionsCreatePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a ExtensionsCreatePollerResponse from the provided client and resume token.
-func (l *ExtensionsCreatePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ExtensionsClientCreatePollerResponse from the provided client and resume token.
+func (l *ExtensionsClientCreatePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExtensionsCreatePoller{
+	poller := &ExtensionsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -91,22 +91,22 @@ func (l *ExtensionsCreatePollerResponse) Resume(ctx context.Context, client *Ext
 	return nil
 }
 
-// ExtensionsCreateResponse contains the response from method Extensions.Create.
-type ExtensionsCreateResponse struct {
-	ExtensionsCreateResult
+// ExtensionsClientCreateResponse contains the response from method ExtensionsClient.Create.
+type ExtensionsClientCreateResponse struct {
+	ExtensionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsCreateResult contains the result from method Extensions.Create.
-type ExtensionsCreateResult struct {
+// ExtensionsClientCreateResult contains the result from method ExtensionsClient.Create.
+type ExtensionsClientCreateResult struct {
 	Extension
 }
 
-// ExtensionsDeletePollerResponse contains the response from method Extensions.Delete.
-type ExtensionsDeletePollerResponse struct {
+// ExtensionsClientDeletePollerResponse contains the response from method ExtensionsClient.Delete.
+type ExtensionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExtensionsDeletePoller
+	Poller *ExtensionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -115,8 +115,8 @@ type ExtensionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExtensionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsDeleteResponse, error) {
-	respType := ExtensionsDeleteResponse{}
+func (l ExtensionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsClientDeleteResponse, error) {
+	respType := ExtensionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -125,13 +125,13 @@ func (l ExtensionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a ExtensionsDeletePollerResponse from the provided client and resume token.
-func (l *ExtensionsDeletePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ExtensionsClientDeletePollerResponse from the provided client and resume token.
+func (l *ExtensionsClientDeletePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExtensionsDeletePoller{
+	poller := &ExtensionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -143,40 +143,40 @@ func (l *ExtensionsDeletePollerResponse) Resume(ctx context.Context, client *Ext
 	return nil
 }
 
-// ExtensionsDeleteResponse contains the response from method Extensions.Delete.
-type ExtensionsDeleteResponse struct {
+// ExtensionsClientDeleteResponse contains the response from method ExtensionsClient.Delete.
+type ExtensionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsGetResponse contains the response from method Extensions.Get.
-type ExtensionsGetResponse struct {
-	ExtensionsGetResult
+// ExtensionsClientGetResponse contains the response from method ExtensionsClient.Get.
+type ExtensionsClientGetResponse struct {
+	ExtensionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsGetResult contains the result from method Extensions.Get.
-type ExtensionsGetResult struct {
+// ExtensionsClientGetResult contains the result from method ExtensionsClient.Get.
+type ExtensionsClientGetResult struct {
 	Extension
 }
 
-// ExtensionsListResponse contains the response from method Extensions.List.
-type ExtensionsListResponse struct {
-	ExtensionsListResult
+// ExtensionsClientListResponse contains the response from method ExtensionsClient.List.
+type ExtensionsClientListResponse struct {
+	ExtensionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsListResult contains the result from method Extensions.List.
-type ExtensionsListResult struct {
+// ExtensionsClientListResult contains the result from method ExtensionsClient.List.
+type ExtensionsClientListResult struct {
 	ExtensionsList
 }
 
-// ExtensionsUpdatePollerResponse contains the response from method Extensions.Update.
-type ExtensionsUpdatePollerResponse struct {
+// ExtensionsClientUpdatePollerResponse contains the response from method ExtensionsClient.Update.
+type ExtensionsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExtensionsUpdatePoller
+	Poller *ExtensionsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -185,8 +185,8 @@ type ExtensionsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExtensionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsUpdateResponse, error) {
-	respType := ExtensionsUpdateResponse{}
+func (l ExtensionsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsClientUpdateResponse, error) {
+	respType := ExtensionsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Extension)
 	if err != nil {
 		return respType, err
@@ -195,13 +195,13 @@ func (l ExtensionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a ExtensionsUpdatePollerResponse from the provided client and resume token.
-func (l *ExtensionsUpdatePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ExtensionsClientUpdatePollerResponse from the provided client and resume token.
+func (l *ExtensionsClientUpdatePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExtensionsUpdatePoller{
+	poller := &ExtensionsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -213,34 +213,34 @@ func (l *ExtensionsUpdatePollerResponse) Resume(ctx context.Context, client *Ext
 	return nil
 }
 
-// ExtensionsUpdateResponse contains the response from method Extensions.Update.
-type ExtensionsUpdateResponse struct {
-	ExtensionsUpdateResult
+// ExtensionsClientUpdateResponse contains the response from method ExtensionsClient.Update.
+type ExtensionsClientUpdateResponse struct {
+	ExtensionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsUpdateResult contains the result from method Extensions.Update.
-type ExtensionsUpdateResult struct {
+// ExtensionsClientUpdateResult contains the result from method ExtensionsClient.Update.
+type ExtensionsClientUpdateResult struct {
 	Extension
 }
 
-// FluxConfigOperationStatusGetResponse contains the response from method FluxConfigOperationStatus.Get.
-type FluxConfigOperationStatusGetResponse struct {
-	FluxConfigOperationStatusGetResult
+// FluxConfigOperationStatusClientGetResponse contains the response from method FluxConfigOperationStatusClient.Get.
+type FluxConfigOperationStatusClientGetResponse struct {
+	FluxConfigOperationStatusClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FluxConfigOperationStatusGetResult contains the result from method FluxConfigOperationStatus.Get.
-type FluxConfigOperationStatusGetResult struct {
+// FluxConfigOperationStatusClientGetResult contains the result from method FluxConfigOperationStatusClient.Get.
+type FluxConfigOperationStatusClientGetResult struct {
 	OperationStatusResult
 }
 
-// FluxConfigurationsCreateOrUpdatePollerResponse contains the response from method FluxConfigurations.CreateOrUpdate.
-type FluxConfigurationsCreateOrUpdatePollerResponse struct {
+// FluxConfigurationsClientCreateOrUpdatePollerResponse contains the response from method FluxConfigurationsClient.CreateOrUpdate.
+type FluxConfigurationsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *FluxConfigurationsCreateOrUpdatePoller
+	Poller *FluxConfigurationsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -249,8 +249,8 @@ type FluxConfigurationsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l FluxConfigurationsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (FluxConfigurationsCreateOrUpdateResponse, error) {
-	respType := FluxConfigurationsCreateOrUpdateResponse{}
+func (l FluxConfigurationsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (FluxConfigurationsClientCreateOrUpdateResponse, error) {
+	respType := FluxConfigurationsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.FluxConfiguration)
 	if err != nil {
 		return respType, err
@@ -259,13 +259,13 @@ func (l FluxConfigurationsCreateOrUpdatePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a FluxConfigurationsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *FluxConfigurationsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *FluxConfigurationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("FluxConfigurationsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a FluxConfigurationsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *FluxConfigurationsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *FluxConfigurationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("FluxConfigurationsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &FluxConfigurationsCreateOrUpdatePoller{
+	poller := &FluxConfigurationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -277,22 +277,22 @@ func (l *FluxConfigurationsCreateOrUpdatePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// FluxConfigurationsCreateOrUpdateResponse contains the response from method FluxConfigurations.CreateOrUpdate.
-type FluxConfigurationsCreateOrUpdateResponse struct {
-	FluxConfigurationsCreateOrUpdateResult
+// FluxConfigurationsClientCreateOrUpdateResponse contains the response from method FluxConfigurationsClient.CreateOrUpdate.
+type FluxConfigurationsClientCreateOrUpdateResponse struct {
+	FluxConfigurationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FluxConfigurationsCreateOrUpdateResult contains the result from method FluxConfigurations.CreateOrUpdate.
-type FluxConfigurationsCreateOrUpdateResult struct {
+// FluxConfigurationsClientCreateOrUpdateResult contains the result from method FluxConfigurationsClient.CreateOrUpdate.
+type FluxConfigurationsClientCreateOrUpdateResult struct {
 	FluxConfiguration
 }
 
-// FluxConfigurationsDeletePollerResponse contains the response from method FluxConfigurations.Delete.
-type FluxConfigurationsDeletePollerResponse struct {
+// FluxConfigurationsClientDeletePollerResponse contains the response from method FluxConfigurationsClient.Delete.
+type FluxConfigurationsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *FluxConfigurationsDeletePoller
+	Poller *FluxConfigurationsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -301,8 +301,8 @@ type FluxConfigurationsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l FluxConfigurationsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (FluxConfigurationsDeleteResponse, error) {
-	respType := FluxConfigurationsDeleteResponse{}
+func (l FluxConfigurationsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (FluxConfigurationsClientDeleteResponse, error) {
+	respType := FluxConfigurationsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -311,13 +311,13 @@ func (l FluxConfigurationsDeletePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a FluxConfigurationsDeletePollerResponse from the provided client and resume token.
-func (l *FluxConfigurationsDeletePollerResponse) Resume(ctx context.Context, client *FluxConfigurationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("FluxConfigurationsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a FluxConfigurationsClientDeletePollerResponse from the provided client and resume token.
+func (l *FluxConfigurationsClientDeletePollerResponse) Resume(ctx context.Context, client *FluxConfigurationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("FluxConfigurationsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &FluxConfigurationsDeletePoller{
+	poller := &FluxConfigurationsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -329,40 +329,40 @@ func (l *FluxConfigurationsDeletePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// FluxConfigurationsDeleteResponse contains the response from method FluxConfigurations.Delete.
-type FluxConfigurationsDeleteResponse struct {
+// FluxConfigurationsClientDeleteResponse contains the response from method FluxConfigurationsClient.Delete.
+type FluxConfigurationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FluxConfigurationsGetResponse contains the response from method FluxConfigurations.Get.
-type FluxConfigurationsGetResponse struct {
-	FluxConfigurationsGetResult
+// FluxConfigurationsClientGetResponse contains the response from method FluxConfigurationsClient.Get.
+type FluxConfigurationsClientGetResponse struct {
+	FluxConfigurationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FluxConfigurationsGetResult contains the result from method FluxConfigurations.Get.
-type FluxConfigurationsGetResult struct {
+// FluxConfigurationsClientGetResult contains the result from method FluxConfigurationsClient.Get.
+type FluxConfigurationsClientGetResult struct {
 	FluxConfiguration
 }
 
-// FluxConfigurationsListResponse contains the response from method FluxConfigurations.List.
-type FluxConfigurationsListResponse struct {
-	FluxConfigurationsListResult
+// FluxConfigurationsClientListResponse contains the response from method FluxConfigurationsClient.List.
+type FluxConfigurationsClientListResponse struct {
+	FluxConfigurationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FluxConfigurationsListResult contains the result from method FluxConfigurations.List.
-type FluxConfigurationsListResult struct {
+// FluxConfigurationsClientListResult contains the result from method FluxConfigurationsClient.List.
+type FluxConfigurationsClientListResult struct {
 	FluxConfigurationsList
 }
 
-// FluxConfigurationsUpdatePollerResponse contains the response from method FluxConfigurations.Update.
-type FluxConfigurationsUpdatePollerResponse struct {
+// FluxConfigurationsClientUpdatePollerResponse contains the response from method FluxConfigurationsClient.Update.
+type FluxConfigurationsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *FluxConfigurationsUpdatePoller
+	Poller *FluxConfigurationsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -371,8 +371,8 @@ type FluxConfigurationsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l FluxConfigurationsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (FluxConfigurationsUpdateResponse, error) {
-	respType := FluxConfigurationsUpdateResponse{}
+func (l FluxConfigurationsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (FluxConfigurationsClientUpdateResponse, error) {
+	respType := FluxConfigurationsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.FluxConfiguration)
 	if err != nil {
 		return respType, err
@@ -381,13 +381,13 @@ func (l FluxConfigurationsUpdatePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a FluxConfigurationsUpdatePollerResponse from the provided client and resume token.
-func (l *FluxConfigurationsUpdatePollerResponse) Resume(ctx context.Context, client *FluxConfigurationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("FluxConfigurationsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a FluxConfigurationsClientUpdatePollerResponse from the provided client and resume token.
+func (l *FluxConfigurationsClientUpdatePollerResponse) Resume(ctx context.Context, client *FluxConfigurationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("FluxConfigurationsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &FluxConfigurationsUpdatePoller{
+	poller := &FluxConfigurationsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -399,82 +399,82 @@ func (l *FluxConfigurationsUpdatePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// FluxConfigurationsUpdateResponse contains the response from method FluxConfigurations.Update.
-type FluxConfigurationsUpdateResponse struct {
-	FluxConfigurationsUpdateResult
+// FluxConfigurationsClientUpdateResponse contains the response from method FluxConfigurationsClient.Update.
+type FluxConfigurationsClientUpdateResponse struct {
+	FluxConfigurationsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FluxConfigurationsUpdateResult contains the result from method FluxConfigurations.Update.
-type FluxConfigurationsUpdateResult struct {
+// FluxConfigurationsClientUpdateResult contains the result from method FluxConfigurationsClient.Update.
+type FluxConfigurationsClientUpdateResult struct {
 	FluxConfiguration
 }
 
-// LocationExtensionTypesListResponse contains the response from method LocationExtensionTypes.List.
-type LocationExtensionTypesListResponse struct {
-	LocationExtensionTypesListResult
+// LocationExtensionTypesClientListResponse contains the response from method LocationExtensionTypesClient.List.
+type LocationExtensionTypesClientListResponse struct {
+	LocationExtensionTypesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationExtensionTypesListResult contains the result from method LocationExtensionTypes.List.
-type LocationExtensionTypesListResult struct {
+// LocationExtensionTypesClientListResult contains the result from method LocationExtensionTypesClient.List.
+type LocationExtensionTypesClientListResult struct {
 	ExtensionTypeList
 }
 
-// OperationStatusGetResponse contains the response from method OperationStatus.Get.
-type OperationStatusGetResponse struct {
-	OperationStatusGetResult
+// OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.
+type OperationStatusClientGetResponse struct {
+	OperationStatusClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationStatusGetResult contains the result from method OperationStatus.Get.
-type OperationStatusGetResult struct {
+// OperationStatusClientGetResult contains the result from method OperationStatusClient.Get.
+type OperationStatusClientGetResult struct {
 	OperationStatusResult
 }
 
-// OperationStatusListResponse contains the response from method OperationStatus.List.
-type OperationStatusListResponse struct {
-	OperationStatusListResult
+// OperationStatusClientListResponse contains the response from method OperationStatusClient.List.
+type OperationStatusClientListResponse struct {
+	OperationStatusClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationStatusListResult contains the result from method OperationStatus.List.
-type OperationStatusListResult struct {
+// OperationStatusClientListResult contains the result from method OperationStatusClient.List.
+type OperationStatusClientListResult struct {
 	OperationStatusList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	ResourceProviderOperationList
 }
 
-// SourceControlConfigurationsCreateOrUpdateResponse contains the response from method SourceControlConfigurations.CreateOrUpdate.
-type SourceControlConfigurationsCreateOrUpdateResponse struct {
-	SourceControlConfigurationsCreateOrUpdateResult
+// SourceControlConfigurationsClientCreateOrUpdateResponse contains the response from method SourceControlConfigurationsClient.CreateOrUpdate.
+type SourceControlConfigurationsClientCreateOrUpdateResponse struct {
+	SourceControlConfigurationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlConfigurationsCreateOrUpdateResult contains the result from method SourceControlConfigurations.CreateOrUpdate.
-type SourceControlConfigurationsCreateOrUpdateResult struct {
+// SourceControlConfigurationsClientCreateOrUpdateResult contains the result from method SourceControlConfigurationsClient.CreateOrUpdate.
+type SourceControlConfigurationsClientCreateOrUpdateResult struct {
 	SourceControlConfiguration
 }
 
-// SourceControlConfigurationsDeletePollerResponse contains the response from method SourceControlConfigurations.Delete.
-type SourceControlConfigurationsDeletePollerResponse struct {
+// SourceControlConfigurationsClientDeletePollerResponse contains the response from method SourceControlConfigurationsClient.Delete.
+type SourceControlConfigurationsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SourceControlConfigurationsDeletePoller
+	Poller *SourceControlConfigurationsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -483,8 +483,8 @@ type SourceControlConfigurationsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SourceControlConfigurationsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SourceControlConfigurationsDeleteResponse, error) {
-	respType := SourceControlConfigurationsDeleteResponse{}
+func (l SourceControlConfigurationsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SourceControlConfigurationsClientDeleteResponse, error) {
+	respType := SourceControlConfigurationsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -493,13 +493,13 @@ func (l SourceControlConfigurationsDeletePollerResponse) PollUntilDone(ctx conte
 	return respType, nil
 }
 
-// Resume rehydrates a SourceControlConfigurationsDeletePollerResponse from the provided client and resume token.
-func (l *SourceControlConfigurationsDeletePollerResponse) Resume(ctx context.Context, client *SourceControlConfigurationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SourceControlConfigurationsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SourceControlConfigurationsClientDeletePollerResponse from the provided client and resume token.
+func (l *SourceControlConfigurationsClientDeletePollerResponse) Resume(ctx context.Context, client *SourceControlConfigurationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SourceControlConfigurationsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SourceControlConfigurationsDeletePoller{
+	poller := &SourceControlConfigurationsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -511,32 +511,32 @@ func (l *SourceControlConfigurationsDeletePollerResponse) Resume(ctx context.Con
 	return nil
 }
 
-// SourceControlConfigurationsDeleteResponse contains the response from method SourceControlConfigurations.Delete.
-type SourceControlConfigurationsDeleteResponse struct {
+// SourceControlConfigurationsClientDeleteResponse contains the response from method SourceControlConfigurationsClient.Delete.
+type SourceControlConfigurationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlConfigurationsGetResponse contains the response from method SourceControlConfigurations.Get.
-type SourceControlConfigurationsGetResponse struct {
-	SourceControlConfigurationsGetResult
+// SourceControlConfigurationsClientGetResponse contains the response from method SourceControlConfigurationsClient.Get.
+type SourceControlConfigurationsClientGetResponse struct {
+	SourceControlConfigurationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlConfigurationsGetResult contains the result from method SourceControlConfigurations.Get.
-type SourceControlConfigurationsGetResult struct {
+// SourceControlConfigurationsClientGetResult contains the result from method SourceControlConfigurationsClient.Get.
+type SourceControlConfigurationsClientGetResult struct {
 	SourceControlConfiguration
 }
 
-// SourceControlConfigurationsListResponse contains the response from method SourceControlConfigurations.List.
-type SourceControlConfigurationsListResponse struct {
-	SourceControlConfigurationsListResult
+// SourceControlConfigurationsClientListResponse contains the response from method SourceControlConfigurationsClient.List.
+type SourceControlConfigurationsClientListResponse struct {
+	SourceControlConfigurationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlConfigurationsListResult contains the result from method SourceControlConfigurations.List.
-type SourceControlConfigurationsListResult struct {
+// SourceControlConfigurationsClientListResult contains the result from method SourceControlConfigurationsClient.List.
+type SourceControlConfigurationsClientListResult struct {
 	SourceControlConfigurationList
 }

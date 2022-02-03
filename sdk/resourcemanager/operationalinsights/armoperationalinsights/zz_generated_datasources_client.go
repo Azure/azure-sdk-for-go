@@ -24,42 +24,56 @@ import (
 // DataSourcesClient contains the methods for the DataSources group.
 // Don't use this type directly, use NewDataSourcesClient() instead.
 type DataSourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataSourcesClient creates a new instance of DataSourcesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataSourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataSourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataSourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataSourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a data source.
-// If the operation fails it returns a generic error.
-func (client *DataSourcesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource, options *DataSourcesCreateOrUpdateOptions) (DataSourcesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// dataSourceName - The name of the datasource resource.
+// parameters - The parameters required to create or update a datasource.
+// options - DataSourcesClientCreateOrUpdateOptions contains the optional parameters for the DataSourcesClient.CreateOrUpdate
+// method.
+func (client *DataSourcesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource, options *DataSourcesClientCreateOrUpdateOptions) (DataSourcesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, dataSourceName, parameters, options)
 	if err != nil {
-		return DataSourcesCreateOrUpdateResponse{}, err
+		return DataSourcesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataSourcesCreateOrUpdateResponse{}, err
+		return DataSourcesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DataSourcesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DataSourcesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataSourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource, options *DataSourcesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DataSourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource, options *DataSourcesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,7 +91,7 @@ func (client *DataSourcesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,45 +103,37 @@ func (client *DataSourcesClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataSourcesClient) createOrUpdateHandleResponse(resp *http.Response) (DataSourcesCreateOrUpdateResponse, error) {
-	result := DataSourcesCreateOrUpdateResponse{RawResponse: resp}
+func (client *DataSourcesClient) createOrUpdateHandleResponse(resp *http.Response) (DataSourcesClientCreateOrUpdateResponse, error) {
+	result := DataSourcesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataSource); err != nil {
-		return DataSourcesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DataSourcesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DataSourcesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes a data source instance.
-// If the operation fails it returns a generic error.
-func (client *DataSourcesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesDeleteOptions) (DataSourcesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// dataSourceName - Name of the datasource.
+// options - DataSourcesClientDeleteOptions contains the optional parameters for the DataSourcesClient.Delete method.
+func (client *DataSourcesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesClientDeleteOptions) (DataSourcesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, dataSourceName, options)
 	if err != nil {
-		return DataSourcesDeleteResponse{}, err
+		return DataSourcesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataSourcesDeleteResponse{}, err
+		return DataSourcesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DataSourcesDeleteResponse{}, client.deleteHandleError(resp)
+		return DataSourcesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataSourcesDeleteResponse{RawResponse: resp}, nil
+	return DataSourcesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataSourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesDeleteOptions) (*policy.Request, error) {
+func (client *DataSourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -145,7 +151,7 @@ func (client *DataSourcesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,37 +161,29 @@ func (client *DataSourcesClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DataSourcesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a datasource instance.
-// If the operation fails it returns a generic error.
-func (client *DataSourcesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesGetOptions) (DataSourcesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// dataSourceName - Name of the datasource
+// options - DataSourcesClientGetOptions contains the optional parameters for the DataSourcesClient.Get method.
+func (client *DataSourcesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesClientGetOptions) (DataSourcesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, dataSourceName, options)
 	if err != nil {
-		return DataSourcesGetResponse{}, err
+		return DataSourcesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataSourcesGetResponse{}, err
+		return DataSourcesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataSourcesGetResponse{}, client.getHandleError(resp)
+		return DataSourcesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataSourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesGetOptions) (*policy.Request, error) {
+func (client *DataSourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, options *DataSourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -203,7 +201,7 @@ func (client *DataSourcesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -215,42 +213,35 @@ func (client *DataSourcesClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataSourcesClient) getHandleResponse(resp *http.Response) (DataSourcesGetResponse, error) {
-	result := DataSourcesGetResponse{RawResponse: resp}
+func (client *DataSourcesClient) getHandleResponse(resp *http.Response) (DataSourcesClientGetResponse, error) {
+	result := DataSourcesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataSource); err != nil {
-		return DataSourcesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataSourcesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataSourcesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByWorkspace - Gets the first page of data source instances in a workspace with the link to the next page.
-// If the operation fails it returns a generic error.
-func (client *DataSourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, filter string, options *DataSourcesListByWorkspaceOptions) *DataSourcesListByWorkspacePager {
-	return &DataSourcesListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// filter - The filter to apply on the operation.
+// options - DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.ListByWorkspace
+// method.
+func (client *DataSourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, filter string, options *DataSourcesClientListByWorkspaceOptions) *DataSourcesClientListByWorkspacePager {
+	return &DataSourcesClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, filter, options)
 		},
-		advancer: func(ctx context.Context, resp DataSourcesListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DataSourcesClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataSourceListResult.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *DataSourcesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, filter string, options *DataSourcesListByWorkspaceOptions) (*policy.Request, error) {
+func (client *DataSourcesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, filter string, options *DataSourcesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -264,7 +255,7 @@ func (client *DataSourcesClient) listByWorkspaceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -280,22 +271,10 @@ func (client *DataSourcesClient) listByWorkspaceCreateRequest(ctx context.Contex
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *DataSourcesClient) listByWorkspaceHandleResponse(resp *http.Response) (DataSourcesListByWorkspaceResponse, error) {
-	result := DataSourcesListByWorkspaceResponse{RawResponse: resp}
+func (client *DataSourcesClient) listByWorkspaceHandleResponse(resp *http.Response) (DataSourcesClientListByWorkspaceResponse, error) {
+	result := DataSourcesClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataSourceListResult); err != nil {
-		return DataSourcesListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return DataSourcesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *DataSourcesClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

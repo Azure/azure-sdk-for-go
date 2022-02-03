@@ -24,42 +24,55 @@ import (
 // DataStoreTypesClient contains the methods for the DataStoreTypes group.
 // Don't use this type directly, use NewDataStoreTypesClient() instead.
 type DataStoreTypesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataStoreTypesClient creates a new instance of DataStoreTypesClient with the specified values.
+// subscriptionID - The Subscription Id
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataStoreTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataStoreTypesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataStoreTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataStoreTypesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the data store/repository type given its name.
-// If the operation fails it returns a generic error.
-func (client *DataStoreTypesClient) Get(ctx context.Context, dataStoreTypeName string, resourceGroupName string, dataManagerName string, options *DataStoreTypesGetOptions) (DataStoreTypesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// dataStoreTypeName - The data store/repository type name for which details are needed.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - DataStoreTypesClientGetOptions contains the optional parameters for the DataStoreTypesClient.Get method.
+func (client *DataStoreTypesClient) Get(ctx context.Context, dataStoreTypeName string, resourceGroupName string, dataManagerName string, options *DataStoreTypesClientGetOptions) (DataStoreTypesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, dataStoreTypeName, resourceGroupName, dataManagerName, options)
 	if err != nil {
-		return DataStoreTypesGetResponse{}, err
+		return DataStoreTypesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataStoreTypesGetResponse{}, err
+		return DataStoreTypesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataStoreTypesGetResponse{}, client.getHandleError(resp)
+		return DataStoreTypesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataStoreTypesClient) getCreateRequest(ctx context.Context, dataStoreTypeName string, resourceGroupName string, dataManagerName string, options *DataStoreTypesGetOptions) (*policy.Request, error) {
+func (client *DataStoreTypesClient) getCreateRequest(ctx context.Context, dataStoreTypeName string, resourceGroupName string, dataManagerName string, options *DataStoreTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/dataStoreTypes/{dataStoreTypeName}"
 	if dataStoreTypeName == "" {
 		return nil, errors.New("parameter dataStoreTypeName cannot be empty")
@@ -77,7 +90,7 @@ func (client *DataStoreTypesClient) getCreateRequest(ctx context.Context, dataSt
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,42 +102,35 @@ func (client *DataStoreTypesClient) getCreateRequest(ctx context.Context, dataSt
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataStoreTypesClient) getHandleResponse(resp *http.Response) (DataStoreTypesGetResponse, error) {
-	result := DataStoreTypesGetResponse{RawResponse: resp}
+func (client *DataStoreTypesClient) getHandleResponse(resp *http.Response) (DataStoreTypesClientGetResponse, error) {
+	result := DataStoreTypesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataStoreType); err != nil {
-		return DataStoreTypesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataStoreTypesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataStoreTypesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDataManager - Gets all the data store/repository types that the resource supports.
-// If the operation fails it returns a generic error.
-func (client *DataStoreTypesClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *DataStoreTypesListByDataManagerOptions) *DataStoreTypesListByDataManagerPager {
-	return &DataStoreTypesListByDataManagerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - DataStoreTypesClientListByDataManagerOptions contains the optional parameters for the DataStoreTypesClient.ListByDataManager
+// method.
+func (client *DataStoreTypesClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *DataStoreTypesClientListByDataManagerOptions) *DataStoreTypesClientListByDataManagerPager {
+	return &DataStoreTypesClientListByDataManagerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDataManagerCreateRequest(ctx, resourceGroupName, dataManagerName, options)
 		},
-		advancer: func(ctx context.Context, resp DataStoreTypesListByDataManagerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DataStoreTypesClientListByDataManagerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataStoreTypeList.NextLink)
 		},
 	}
 }
 
 // listByDataManagerCreateRequest creates the ListByDataManager request.
-func (client *DataStoreTypesClient) listByDataManagerCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataStoreTypesListByDataManagerOptions) (*policy.Request, error) {
+func (client *DataStoreTypesClient) listByDataManagerCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataStoreTypesClientListByDataManagerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/dataStoreTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,7 +144,7 @@ func (client *DataStoreTypesClient) listByDataManagerCreateRequest(ctx context.C
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,22 +156,10 @@ func (client *DataStoreTypesClient) listByDataManagerCreateRequest(ctx context.C
 }
 
 // listByDataManagerHandleResponse handles the ListByDataManager response.
-func (client *DataStoreTypesClient) listByDataManagerHandleResponse(resp *http.Response) (DataStoreTypesListByDataManagerResponse, error) {
-	result := DataStoreTypesListByDataManagerResponse{RawResponse: resp}
+func (client *DataStoreTypesClient) listByDataManagerHandleResponse(resp *http.Response) (DataStoreTypesClientListByDataManagerResponse, error) {
+	result := DataStoreTypesClientListByDataManagerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataStoreTypeList); err != nil {
-		return DataStoreTypesListByDataManagerResponse{}, runtime.NewResponseError(err, resp)
+		return DataStoreTypesClientListByDataManagerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDataManagerHandleError handles the ListByDataManager error response.
-func (client *DataStoreTypesClient) listByDataManagerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

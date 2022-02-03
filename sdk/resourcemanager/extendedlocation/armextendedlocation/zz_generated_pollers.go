@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// CustomLocationsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type CustomLocationsCreateOrUpdatePoller struct {
+// CustomLocationsClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type CustomLocationsClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *CustomLocationsCreateOrUpdatePoller) Done() bool {
+func (p *CustomLocationsClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *CustomLocationsCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *CustomLocationsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *CustomLocationsClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final CustomLocationsCreateOrUpdateResponse will be returned.
-func (p *CustomLocationsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (CustomLocationsCreateOrUpdateResponse, error) {
-	respType := CustomLocationsCreateOrUpdateResponse{}
+// If the final GET succeeded then the final CustomLocationsClientCreateOrUpdateResponse will be returned.
+func (p *CustomLocationsClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (CustomLocationsClientCreateOrUpdateResponse, error) {
+	respType := CustomLocationsClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.CustomLocation)
 	if err != nil {
-		return CustomLocationsCreateOrUpdateResponse{}, err
+		return CustomLocationsClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *CustomLocationsCreateOrUpdatePoller) FinalResponse(ctx context.Context)
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *CustomLocationsCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *CustomLocationsClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// CustomLocationsDeletePoller provides polling facilities until the operation reaches a terminal state.
-type CustomLocationsDeletePoller struct {
+// CustomLocationsClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type CustomLocationsClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *CustomLocationsDeletePoller) Done() bool {
+func (p *CustomLocationsClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *CustomLocationsDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *CustomLocationsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *CustomLocationsClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final CustomLocationsDeleteResponse will be returned.
-func (p *CustomLocationsDeletePoller) FinalResponse(ctx context.Context) (CustomLocationsDeleteResponse, error) {
-	respType := CustomLocationsDeleteResponse{}
+// If the final GET succeeded then the final CustomLocationsClientDeleteResponse will be returned.
+func (p *CustomLocationsClientDeletePoller) FinalResponse(ctx context.Context) (CustomLocationsClientDeleteResponse, error) {
+	respType := CustomLocationsClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return CustomLocationsDeleteResponse{}, err
+		return CustomLocationsClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,6 +96,6 @@ func (p *CustomLocationsDeletePoller) FinalResponse(ctx context.Context) (Custom
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *CustomLocationsDeletePoller) ResumeToken() (string, error) {
+func (p *CustomLocationsClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

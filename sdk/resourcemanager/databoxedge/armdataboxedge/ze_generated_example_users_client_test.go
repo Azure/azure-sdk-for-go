@@ -29,13 +29,17 @@ func ExampleUsersClient_ListByDataBoxEdgeDevice() {
 	client := armdataboxedge.NewUsersClient("<subscription-id>", cred, nil)
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
-		&armdataboxedge.UsersListByDataBoxEdgeDeviceOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armdataboxedge.UsersClientListByDataBoxEdgeDeviceOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("User.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleUsersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("User.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.UsersClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/UserPut.json
@@ -74,11 +78,11 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 		armdataboxedge.User{
 			Properties: &armdataboxedge.UserProperties{
 				EncryptedPassword: &armdataboxedge.AsymmetricEncryptedSecret{
-					EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithmNone.ToPtr(),
+					EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithm("None").ToPtr(),
 					EncryptionCertThumbprint: to.StringPtr("<encryption-cert-thumbprint>"),
 					Value:                    to.StringPtr("<value>"),
 				},
-				UserType: armdataboxedge.UserTypeShare.ToPtr(),
+				UserType: armdataboxedge.UserType("Share").ToPtr(),
 			},
 		},
 		nil)
@@ -89,7 +93,7 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("User.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.UsersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/UserDelete.json

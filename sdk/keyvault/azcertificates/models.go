@@ -118,13 +118,13 @@ type Certificate struct {
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The key id.
-	Kid *string `json:"kid,omitempty" azure:"ro"`
+	// READ-ONLY; The key ID.
+	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The management policy.
 	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
 
-	// READ-ONLY; The secret id.
+	// READ-ONLY; The secret ID.
 	SecretID *string `json:"sid,omitempty" azure:"ro"`
 
 	// READ-ONLY; Thumbprint of the certificate.
@@ -142,7 +142,7 @@ func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 		ContentType:    g.ContentType,
 		Tags:           convertGeneratedMap(g.Tags),
 		ID:             g.ID,
-		Kid:            g.Kid,
+		KeyID:            g.Kid,
 		Policy:         certificatePolicyFromGenerated(g.Policy),
 		SecretID:       g.Sid,
 		X509Thumbprint: g.X509Thumbprint,
@@ -258,7 +258,7 @@ type CertificatePolicy struct {
 	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
 
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *CertificateKeyCurveName `json:"crv,omitempty"`
+	KeyCurveName *CertificateKeyCurveName `json:"crv,omitempty"`
 
 	// Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
@@ -292,9 +292,9 @@ func (c *CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.
 	}
 
 	var keyProps *generated.KeyProperties
-	if c.Curve != nil || c.Exportable != nil || c.KeySize != nil || c.KeyType != nil || c.ReuseKey != nil {
+	if c.KeyCurveName != nil || c.Exportable != nil || c.KeySize != nil || c.KeyType != nil || c.ReuseKey != nil {
 		keyProps = &generated.KeyProperties{
-			Curve:      (*generated.JSONWebKeyCurveName)(c.Curve),
+			Curve:      (*generated.JSONWebKeyCurveName)(c.KeyCurveName),
 			Exportable: c.Exportable,
 			KeySize:    c.KeySize,
 			KeyType:    (*generated.JSONWebKeyType)(c.KeyType),
@@ -324,7 +324,7 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Certificate
 
 	c := &CertificatePolicy{}
 	if g.KeyProperties != nil {
-		c.Curve = (*CertificateKeyCurveName)(g.KeyProperties.Curve)
+		c.KeyCurveName = (*CertificateKeyCurveName)(g.KeyProperties.Curve)
 		c.Exportable = g.KeyProperties.Exportable
 		c.KeySize = g.KeyProperties.KeySize
 		c.KeyType = (*CertificateKeyType)(g.KeyProperties.KeyType)
@@ -415,8 +415,8 @@ type DeletedCertificate struct {
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The key id.
-	Kid *string `json:"kid,omitempty" azure:"ro"`
+	// READ-ONLY; The key ID.
+	KeyID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The management policy.
 	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
@@ -424,8 +424,8 @@ type DeletedCertificate struct {
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 
-	// READ-ONLY; The secret id.
-	Sid *string `json:"sid,omitempty" azure:"ro"`
+	// READ-ONLY; The secret ID.
+	SecretID *string `json:"sid,omitempty" azure:"ro"`
 
 	// READ-ONLY; Thumbprint of the certificate.
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`

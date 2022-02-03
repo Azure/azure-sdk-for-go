@@ -482,7 +482,7 @@ func TestPolicy(t *testing.T) {
 	// Update the policy
 	policy.KeyType = CertificateKeyTypeEC.ToPtr()
 	policy.KeySize = to.Int32Ptr(256)
-	policy.Curve = CertificateKeyCurveNameP256.ToPtr()
+	policy.KeyCurveName = CertificateKeyCurveNameP256.ToPtr()
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
@@ -492,7 +492,7 @@ func TestPolicy(t *testing.T) {
 	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
 	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
 	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
-	require.Equal(t, *policy.Curve, *updateResp.Curve)
+	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
 
 }
 
@@ -555,7 +555,7 @@ func TestCRUDOperations(t *testing.T) {
 	// Update the policy
 	policy.KeyType = CertificateKeyTypeEC.ToPtr()
 	policy.KeySize = to.Int32Ptr(256)
-	policy.Curve = CertificateKeyCurveNameP256.ToPtr()
+	policy.KeyCurveName = CertificateKeyCurveNameP256.ToPtr()
 
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
 	require.NoError(t, err)
@@ -565,7 +565,7 @@ func TestCRUDOperations(t *testing.T) {
 	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
 	require.Equal(t, *policy.KeyType, *updateResp.KeyType)
 	require.Equal(t, *policy.KeySize, *updateResp.KeySize)
-	require.Equal(t, *policy.Curve, *updateResp.Curve)
+	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
 
 	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, &UpdateCertificatePropertiesOptions{Tags: map[string]string{"tag1": "updated_values1"}})
 	require.NoError(t, err)

@@ -11,4 +11,5 @@ steps:
 
       # also prepend the path permanently to ensure access the newly installed tools
       Write-Host "##vso[task.prependpath]$(Build.SourcesDirectory)/../go/bin"
+      go version
     displayName: "Install Go Pre-release Version"

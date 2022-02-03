@@ -101,8 +101,8 @@ func certificateAttributesFromGenerated(g *generated.CertificateAttributes) *Cer
 	}
 }
 
-// Certificate - A certificate bundle consists of a certificate (X509) plus its properties.
-type Certificate struct {
+// KeyVaultCertificate - A certificate bundle consists of a certificate (X509) plus its properties.
+type KeyVaultCertificate struct {
 	// The certificate attributes.
 	Properties *CertificateProperties `json:"attributes,omitempty"`
 
@@ -131,12 +131,12 @@ type Certificate struct {
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
-func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
+func certificateFromGenerated(g *generated.CertificateBundle) KeyVaultCertificate {
 	if g == nil {
-		return Certificate{}
+		return KeyVaultCertificate{}
 	}
 
-	return Certificate{
+	return KeyVaultCertificate{
 		Properties:     certificateAttributesFromGenerated(g.Attributes),
 		Cer:            g.Cer,
 		ContentType:    g.ContentType,

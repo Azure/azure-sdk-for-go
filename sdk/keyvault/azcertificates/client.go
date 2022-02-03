@@ -216,7 +216,7 @@ type GetCertificateOptions struct {
 
 // GetCertificateResponse contains the result from method Client.GetCertificate.
 type GetCertificateResponse struct {
-	Certificate
+	KeyVaultCertificate
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -235,7 +235,7 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 
 	return GetCertificateResponse{
 		RawResponse: resp.RawResponse,
-		Certificate: Certificate{
+		KeyVaultCertificate: KeyVaultCertificate{
 			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
@@ -550,7 +550,7 @@ func (i *ImportCertificateOptions) toGenerated() *generated.KeyVaultClientImport
 
 // ImportCertificateResponse is the response struct for the Client.ImportCertificate function.
 type ImportCertificateResponse struct {
-	Certificate
+	KeyVaultCertificate
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -582,7 +582,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 
 	return ImportCertificateResponse{
 		RawResponse: resp.RawResponse,
-		Certificate: Certificate{
+		KeyVaultCertificate: KeyVaultCertificate{
 			Properties:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
@@ -1315,7 +1315,7 @@ func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultCl
 
 // UpdateCertificatePropertiesResponse contains the result from method Client.UpdateCertificateProperties.
 type UpdateCertificatePropertiesResponse struct {
-	Certificate
+	KeyVaultCertificate
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -1343,7 +1343,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 	}
 	return UpdateCertificatePropertiesResponse{
 		RawResponse: resp.RawResponse,
-		Certificate: certificateFromGenerated(&resp.CertificateBundle),
+		KeyVaultCertificate: certificateFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
 
@@ -1362,7 +1362,7 @@ func (m *MergeCertificateOptions) toGenerated() *generated.KeyVaultClientMergeCe
 
 // MergeCertificateResponse contains the response from method Client.MergeCertificate.
 type MergeCertificateResponse struct {
-	Certificate
+	KeyVaultCertificate
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1389,7 +1389,7 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 
 	return MergeCertificateResponse{
 		RawResponse: resp.RawResponse,
-		Certificate: certificateFromGenerated(&resp.CertificateBundle),
+		KeyVaultCertificate: certificateFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
 
@@ -1402,7 +1402,7 @@ func (r *RestoreCertificateBackupOptions) toGenerated() *generated.KeyVaultClien
 
 // RestoreCertificateBackupResponse contains the response from method Client.RestoreCertificateBackup
 type RestoreCertificateBackupResponse struct {
-	Certificate
+	KeyVaultCertificate
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1424,7 +1424,7 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 
 	return RestoreCertificateBackupResponse{
 		RawResponse: resp.RawResponse,
-		Certificate: certificateFromGenerated(&resp.CertificateBundle),
+		KeyVaultCertificate: certificateFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
 
@@ -1486,7 +1486,7 @@ func (b *RecoverDeletedCertificatePoller) pollUntilDone(ctx context.Context, t t
 
 // RecoverDeletedCertificateResponse is the response object for the Client.RecoverDeletedCertificate operation.
 type RecoverDeletedCertificateResponse struct {
-	Certificate
+	KeyVaultCertificate
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1495,7 +1495,7 @@ type RecoverDeletedCertificateResponse struct {
 // change recover deleted certificate reponse to the generated version.
 func recoverDeletedCertificateResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedCertificateResponse) RecoverDeletedCertificateResponse {
 	return RecoverDeletedCertificateResponse{
-		Certificate: certificateFromGenerated(&i.CertificateBundle),
+		KeyVaultCertificate: certificateFromGenerated(&i.CertificateBundle),
 		RawResponse: i.RawResponse,
 	}
 }

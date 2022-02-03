@@ -12,23 +12,10 @@ import (
 )
 
 func TestNullValue(t *testing.T) {
-	v := NullValue("")
-	if _, ok := v.(*string); !ok {
-		t.Fatalf("unexpected type %T", v)
-	}
-	vv := NullValue((*string)(nil))
-	if _, ok := vv.(*string); !ok {
-		t.Fatalf("unexpected type %T", vv)
-	}
+	v := NullValue[*string]()
+	vv := NullValue[*string]()
 	if v != vv {
 		t.Fatal("null values should match for the same types")
-	}
-	i := NullValue(1)
-	if _, ok := i.(*int); !ok {
-		t.Fatalf("unexpected type %T", v)
-	}
-	if v == i {
-		t.Fatal("null values for string and int should not match")
 	}
 }
 
@@ -44,7 +31,7 @@ func TestIsNullValue(t *testing.T) {
 	if IsNullValue(i) {
 		t.Fatal("i isn't a null value")
 	}
-	i = NullValue(0).(*int)
+	i = NullValue[*int]()
 	if !IsNullValue(i) {
 		t.Fatal("expected null value for i")
 	}
@@ -56,21 +43,12 @@ func TestIsNullValue(t *testing.T) {
 }
 
 func TestNullValueMapSlice(t *testing.T) {
-	v := NullValue([]string{})
-	if _, ok := v.([]string); !ok {
-		t.Fatalf("unexpected type %T", v)
-	}
-	vv := NullValue(([]string)(nil))
-	if _, ok := vv.([]string); !ok {
-		t.Fatalf("unexpected type %T", vv)
-	}
+	v := NullValue[[]string]()
+	vv := NullValue[[]string]()
 	if reflect.TypeOf(v) != reflect.TypeOf(vv) {
 		t.Fatal("null values should match for the same types")
 	}
-	m := NullValue(map[string]int{})
-	if _, ok := m.(map[string]int); !ok {
-		t.Fatalf("unexpected type %T", m)
-	}
+	m := NullValue[map[string]int]()
 	if reflect.TypeOf(v) == reflect.TypeOf(m) {
 		t.Fatal("null values for string and int should not match")
 	}
@@ -83,11 +61,11 @@ func TestIsNullValueMapSlice(t *testing.T) {
 	if IsNullValue(map[int]string{}) {
 		t.Fatal("map literal can't be a null value")
 	}
-	s := NullValue([]int{}).([]int)
+	s := NullValue[[]int]()
 	if !IsNullValue(s) {
 		t.Fatal("expected null value for s")
 	}
-	m := NullValue(map[string]interface{}{}).(map[string]interface{})
+	m := NullValue[map[string]interface{}]()
 	if !IsNullValue(m) {
 		t.Fatal("expected null value for s")
 	}
@@ -114,8 +92,8 @@ func TestIsNullValueMapSlice(t *testing.T) {
 		t.Fatal("unexpected null slice")
 	}
 
-	nf.Map = NullValue(map[string]int{}).(map[string]int)
-	nf.Slice = NullValue([]string{}).([]string)
+	nf.Map = NullValue[map[string]int]()
+	nf.Slice = NullValue[[]string]()
 	if !IsNullValue(nf.Map) {
 		t.Fatal("expected null map")
 	}

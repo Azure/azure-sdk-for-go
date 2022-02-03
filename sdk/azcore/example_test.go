@@ -56,7 +56,7 @@ func (w Widget) MarshalJSON() ([]byte, error) {
 
 func ExampleNullValue() {
 	w := Widget{
-		Count: azcore.NullValue(0).(*int),
+		Count: azcore.NullValue[*int](),
 	}
 	b, _ := json.Marshal(w)
 	fmt.Println(string(b))

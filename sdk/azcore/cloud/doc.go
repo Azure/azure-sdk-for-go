@@ -33,7 +33,7 @@ appropriate values:
 		Name: "private-cloud",
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
 			cloud.ResourceManager: {
-				Audiences: []string{"..."},
+				Audience: "...",
 				Endpoint: "https://...",
 			},
 		},

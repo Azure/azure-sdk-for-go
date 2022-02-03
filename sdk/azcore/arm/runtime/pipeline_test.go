@@ -154,7 +154,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	}
 }
 
-func TestPipelineAudiences(t *testing.T) {
+func TestPipelineAudience(t *testing.T) {
 	for _, c := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublicCloud} {
 		srv, close := mock.NewServer()
 		defer close()
@@ -168,10 +168,8 @@ func TestPipelineAudiences(t *testing.T) {
 			if n := len(options.Scopes); n != 1 {
 				t.Fatalf("expected 1 scope, got %d", n)
 			}
-			for _, a := range opts.Cloud.Services[cloud.ResourceManager].Audiences {
-				if options.Scopes[0] == a+"/.default" {
-					return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
-				}
+			if options.Scopes[0] == opts.Cloud.Services[cloud.ResourceManager].Audience+"/.default" {
+				return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 			}
 			t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
 			return nil, nil
@@ -197,7 +195,7 @@ func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
 		{Name: "..."},
 		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{"...": {Endpoint: "..."}}},
 		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-			cloud.ResourceManager: {Audiences: []string{"..."}},
+			cloud.ResourceManager: {Audience: "..."},
 		}},
 		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
 			cloud.ResourceManager: {Endpoint: "http://localhost"},

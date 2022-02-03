@@ -13,7 +13,7 @@ import (
 
 func TestPreconfiguredClouds(t *testing.T) {
 	for _, config := range []Configuration{AzureChina, AzurePublicCloud, AzureGovernment} {
-		if arm, ok := config.Services[ResourceManager]; !ok || len(arm.Audiences) == 0 || arm.Endpoint == "" {
+		if arm, ok := config.Services[ResourceManager]; !ok || arm.Audience == "" || arm.Endpoint == "" {
 			t.Fatalf("%s is missing ARM configuration", config.Name)
 		}
 	}
@@ -59,7 +59,7 @@ func TestGetConfigurations_Stack(t *testing.T) {
 	}
 	if v, ok := clouds[0].Services[ResourceManager]; !ok {
 		t.Fatal("no Resource Manager configuration")
-	} else if len(v.Audiences) != 1 || v.Audiences[0] != audience {
-		t.Fatalf(`unexpected audiences "%v"`, v.Audiences)
+	} else if v.Audience != audience {
+		t.Fatalf(`unexpected audience "%v"`, v.Audience)
 	}
 }

@@ -66,7 +66,7 @@ func testRPRegistrationOptions(srv *mock.Server) *armpolicy.RegistrationOptions 
 	def := armpolicy.RegistrationOptions{}
 	def.Cloud = cloud.Configuration{
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-			cloud.ResourceManager: {Endpoint: srv.URL(), Audiences: []string{srv.URL() + "//.default"}},
+			cloud.ResourceManager: {Endpoint: srv.URL(), Audience: srv.URL()},
 		}}
 	def.Transport = srv
 	def.PollingDelay = 100 * time.Millisecond
@@ -384,7 +384,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 	conf := cloud.Configuration{
 		LoginEndpoint: srv.URL(),
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-			cloud.ResourceManager: {Audiences: []string{audience}, Endpoint: srv.URL()},
+			cloud.ResourceManager: {Audience: audience, Endpoint: srv.URL()},
 		},
 	}
 	getTokenCalled := false
@@ -421,7 +421,7 @@ func TestRPRegistrationPolicyWithIncompleteCloudConfig(t *testing.T) {
 	// 	{Name: "..."},
 	// 	{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{"...": {Endpoint: "..."}}},
 	// 	{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-	// 		cloud.ResourceManager: {Audiences: []string{"..."}},
+	// 		cloud.ResourceManager: {Audience: "..."},
 	// 	}},
 	// 	{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
 	// 		cloud.ResourceManager: {Endpoint: "http://localhost"},

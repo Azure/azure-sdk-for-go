@@ -32,7 +32,7 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 		// TODO: return the error
 		panic(err)
 	}
-	scope := conf.Audiences[0] + "/.default"
+	scope := conf.Audience + "/.default"
 	ep := conf.Endpoint
 	if options.Endpoint != "" {
 		scope = shared.EndpointToScope(string(options.Endpoint))
@@ -60,7 +60,7 @@ func getConfiguration(o *azpolicy.ClientOptions) (cloud.ServiceConfiguration, er
 	if !reflect.ValueOf(o.Cloud).IsZero() {
 		c = o.Cloud
 	}
-	if conf, ok := c.Services[cloud.ResourceManager]; ok && conf.Endpoint != "" && len(conf.Audiences) > 0 {
+	if conf, ok := c.Services[cloud.ResourceManager]; ok && conf.Endpoint != "" && conf.Audience != "" {
 		return conf, nil
 	} else {
 		return conf, fmt.Errorf(`missing Azure Resource Manager configuration for cloud "%s"`, c.Name)

@@ -39,15 +39,15 @@ const ResourceManager ServiceName = "resourceManager"
 
 // ServiceConfiguration configures a specific cloud service such as Azure Resource Manager.
 type ServiceConfiguration struct {
-	// Audiences determine the authentication scope used to authorize access to the service.
-	Audiences []string
-	// Endpoint is the service's URL.
+	// Audience is the audience the client will request for its access tokens.
+	Audience string
+	// Endpoint is the service's base URL.
 	Endpoint string
 }
 
 // Configuration configures a cloud.
 type Configuration struct {
-	// LoginEndpoint is the URL of the cloud's Azure Active Directory.
+	// LoginEndpoint is the base URL of the cloud's Azure Active Directory.
 	LoginEndpoint string
 	// Name is the name of the cloud.
 	Name string
@@ -69,7 +69,8 @@ func getConfigurationsFromMetadata(b []byte) ([]Configuration, error) {
 			Name:          r.Name,
 			Services: map[ServiceName]ServiceConfiguration{
 				ResourceManager: {
-					Audiences: r.Authentication.Audiences, Endpoint: r.ResourceManager,
+					// ARM metadata contains 2 audiences having no functional distinction, so we arbitrarily choose one
+					Audience: r.Authentication.Audiences[0], Endpoint: r.ResourceManager,
 				},
 			},
 		}

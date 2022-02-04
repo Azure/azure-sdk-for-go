@@ -542,7 +542,7 @@ func ExampleContainerClient_SetMetadata() {
 	// NOTE: SetMetadata & SetProperties methods update the container's ETag & LastModified properties
 }
 
-// This examples shows how to create a blob with metadata, read blob metadata, and update a blob's read-only properties and metadata.
+// This example shows how to create a blob with metadata, read blob metadata, and update a blob's read-only properties and metadata.
 func ExampleBlobClient_SetMetadata() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 

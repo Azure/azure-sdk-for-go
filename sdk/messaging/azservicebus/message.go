@@ -46,6 +46,7 @@ type ReceivedMessage struct {
 	DeadLetterReason           *string
 	DeadLetterSource           *string
 
+	// State represents the current state of the message (Active, Scheduled, Deferred).
 	State MessageState
 
 	// available in the raw AMQP message, but not exported by default

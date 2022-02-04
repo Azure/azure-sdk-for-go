@@ -24,7 +24,7 @@ func TestETagEquals(t *testing.T) {
 	require.Equal(t, string(e2), "\"tag\"")
 
 	e3 := createETag("W/\"weakETag\"")
-	require.Equal(t, string(e3), "W/\"weakETag\"")
+	require.Equal(t, string(e3), "W/\"weak1ETag\"")
 	require.Truef(t, e3.IsWeak(), "ETag is expected to be weak")
 
 	strongETag := createETag("\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")

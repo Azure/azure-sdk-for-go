@@ -4,6 +4,7 @@
 
 ### Bugs Fixed
 * Restore response body after reading in `Poller.FinalResponse()`. (#16911)
+* Fixed bug in `NullValue` that could lead to incorrect comparisons for empty maps/slices (#16969)
 
 ### Other Changes
 * `BearerTokenPolicy` is more resilient to transient authentication failures. (#16789)

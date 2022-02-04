@@ -7,8 +7,6 @@ github.com/Azure/azure-sdk-for-go/sdk/internal v0.8.1/go.mod h1:KLF4gFr6DcKFZwSu
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.8.3/go.mod h1:KLF4gFr6DcKFZwSuH8w8yEK6DpFl3LP5rhdvAb7Yz5I=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.0 h1:HMbyI+KfvL+XyuWekow/nWbRxsAhB6+DVzgQTIABecU=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.0/go.mod h1:KLF4gFr6DcKFZwSuH8w8yEK6DpFl3LP5rhdvAb7Yz5I=
-github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.2.0 h1:gyGoG9FrTr5AQqpa7nPMMd2HewJGuVKdHFAe8x4tRAk=
-github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.2.0/go.mod h1:qKJHexVLI0iqKFeV/2WnqbRBQtJTPOMeBdmHOxs+E88=
 github.com/AzureAD/microsoft-authentication-library-for-go v0.4.0 h1:WVsrXCnHlDDX8ls+tootqRE87/hL9S/g4ewig9RsD/c=
 github.com/AzureAD/microsoft-authentication-library-for-go v0.4.0/go.mod h1:Vt9sXTKwMyGcOxSmLDMnGPgqsUg7m8pe215qMLrDXw4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

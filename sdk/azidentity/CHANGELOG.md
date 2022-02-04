@@ -7,8 +7,13 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `ManagedIdentityCredential.GetToken()` now returns an error when configured for
+   a user assigned identity in Azure Cloud Shell (which doesn't support such identities)
 
 ### Other Changes
+
+* Improved the diagnosability of the `DefaultAzureCredential` by logging failures by credentials when at least one credential succeeded at initialization.
+* Improved the diagnosability of the `DefaultAzureCredential` and `ChainedTokenCredential` aggregating all the errors that might have occurred on the credential chain during `GetToken` calls into a single message provided via logs and errors if the chain is finally unable to retrieve a token.
 
 ## 0.13.0 (2022-01-11)
 

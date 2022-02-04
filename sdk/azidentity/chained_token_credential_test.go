@@ -29,7 +29,7 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	if cred != nil {
 		if len(cred.sources) != 2 {
@@ -74,7 +74,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
@@ -98,7 +98,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err == nil {
@@ -110,6 +110,95 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	}
 	if len(err.Error()) == 0 {
 		t.Fatalf("Did not create an appropriate error message")
+	}
+}
+
+func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testing.T) {
+	credential1 := &TestCredential{responses: []testCredentialResponse{
+		{err: newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error")},
+	}}
+	credential2 := &TestCredential{responses: []testCredentialResponse{
+		{err: newCredentialUnavailableError("unavailableCredential2", "Unavailable expected error")},
+	}}
+	credential3 := &TestCredential{responses: []testCredentialResponse{
+		{err: newCredentialUnavailableError("unavailableCredential3", "Unavailable expected error")},
+	}}
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1, credential2, credential3}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	var authErr credentialUnavailableError
+	if !errors.As(err, &authErr) {
+		t.Fatalf("Expected CredentialUnavailableError, received %T", err)
+	}
+	expectedError := `ChainedTokenCredential: failed to acquire a token.
+Attempted credentials:
+	unavailableCredential1: Unavailable expected error
+	unavailableCredential2: Unavailable expected error
+	unavailableCredential3: Unavailable expected error`
+	if err.Error() != expectedError {
+		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
+	}
+}
+
+func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(t *testing.T) {
+	credential1 := &TestCredential{responses: []testCredentialResponse{
+		{err: newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error")},
+	}}
+	credential2 := &TestCredential{responses: []testCredentialResponse{
+		{err: newCredentialUnavailableError("unavailableCredential2", "Unavailable expected error")},
+	}}
+	credential3 := &TestCredential{responses: []testCredentialResponse{
+		{err: newAuthenticationFailedError(newCredentialUnavailableError("authenticationFailedCredential3", "Authentication failed expected error"), nil)},
+	}}
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1, credential2, credential3}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	var authErr AuthenticationFailedError
+	if !errors.As(err, &authErr) {
+		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
+	}
+	expectedError := `ChainedTokenCredential: failed to acquire a token.
+Attempted credentials:
+	unavailableCredential1: Unavailable expected error
+	unavailableCredential2: Unavailable expected error
+	authenticationFailedCredential3: Authentication failed expected error`
+	if err.Error() != expectedError {
+		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
+	}
+}
+
+func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing.T) {
+	credential1 := &TestCredential{responses: []testCredentialResponse{
+		{err: newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error")},
+	}}
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cred.name = "CustomNameCredential"
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	var authErr credentialUnavailableError
+	if !errors.As(err, &authErr) {
+		t.Fatalf("Expected credentialUnavailableError, received %T", err)
+	}
+	expectedError := `CustomNameCredential: failed to acquire a token.
+Attempted credentials:
+	unavailableCredential1: Unavailable expected error`
+	if err.Error() != expectedError {
+		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
 	}
 }
 
@@ -156,7 +245,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{failedCredential, successfulCredential}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 
 	getTokenOptions := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
@@ -191,7 +280,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{failedCredential, successfulCredential}, &ChainedTokenCredentialOptions{RetrySources: true})
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 
 	getTokenOptions := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}

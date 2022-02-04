@@ -502,6 +502,26 @@ func TestReceiverDeferUnitTests(t *testing.T) {
 	require.Nil(t, messages)
 }
 
+func TestReceiverCancellationUnitTests(t *testing.T) {
+	r := &Receiver{
+		amqpLinks: &internal.FakeAMQPLinks{
+			Receiver: &internal.FakeAMQPReceiver{
+				ReceiveResults: make(chan struct {
+					M *amqp.Message
+					E error
+				}),
+			},
+		},
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	msgs, err := r.ReceiveMessages(ctx, 95, nil)
+	require.Empty(t, msgs)
+	require.NoError(t, err)
+}
+
 type receivedMessageSlice []*ReceivedMessage
 
 func (messages receivedMessageSlice) Len() int {

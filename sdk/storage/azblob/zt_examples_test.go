@@ -196,7 +196,7 @@ func ExampleBlobURLParts() {
 	fmt.Printf("Host: %s\nContainerName: %s\nBlobName: %s\nSnapshot: %s\n", parts.Host, parts.ContainerName, parts.BlobName, parts.Snapshot)
 	fmt.Printf("Version: %s\nResource: %s\nStartTime: %s\nExpiryTime: %s\nPermissions: %s\n", parts.SAS.Version(), parts.SAS.Resource(), parts.SAS.StartTime(), parts.SAS.ExpiryTime(), parts.SAS.Permissions())
 
-	// You can alter fields toconstruct a new URL:
+	// You can alter fields to construct a new URL:
 	// Note: SAS tokens may be limited to a specific container or blob, be careful modifying SAS tokens, you might take them outside of their original scope accidentally.
 	parts.SAS = azblob.SASQueryParameters{}
 	parts.Snapshot = ""

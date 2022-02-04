@@ -60,11 +60,15 @@ type ReceivedMessage struct {
 	deferred bool
 }
 
+// MessageState represents the current state of a message (Active, Scheduled, Deferred).
 type MessageState int32
 
 const (
-	MessageStateActive    MessageState = 0
-	MessageStateDeferred  MessageState = 1
+	// MessageStateActive indicates the message is active.
+	MessageStateActive MessageState = 0
+	// MessageStateDeferred indicates the message is deferred.
+	MessageStateDeferred MessageState = 1
+	// MessageStateScheduled indicates the message is scheduled.
 	MessageStateScheduled MessageState = 2
 )
 

@@ -24,6 +24,7 @@ steps:
       golangci-lint --version
     displayName: 'Install GoLintCLI and dependencies.'
     workingDirectory: $(System.DefaultWorkingDirectory)
+    continueOnError: true
 
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'

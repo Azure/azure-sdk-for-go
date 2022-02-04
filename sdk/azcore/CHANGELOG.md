@@ -1,17 +1,13 @@
 # Release History
 
-## 0.21.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.21.1 (2022-02-04)
 
 ### Bugs Fixed
-* Restore response body after reading in `Poller.FinalResponse()`
-* Fixed bug in `NullValue` that could lead to incorrect comparisons for empty maps/slices
+* Restore response body after reading in `Poller.FinalResponse()`. (#16911)
+* Fixed bug in `NullValue` that could lead to incorrect comparisons for empty maps/slices (#16969)
 
 ### Other Changes
-* `BearerTokenPolicy` is more resilient to transient authentication failures
+* `BearerTokenPolicy` is more resilient to transient authentication failures. (#16789)
 
 ## 0.21.0 (2022-01-11)
 

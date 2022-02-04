@@ -50,11 +50,14 @@ type DownloadResponse struct {
 // while reading, it will make additional requests to reestablish a connection and
 // continue reading. Specifying a RetryReaderOption's with MaxRetryRequests set to 0
 // (the default), returns the original response body and no retries will be performed.
-func (r *DownloadResponse) Body(o RetryReaderOptions) io.ReadCloser {
+func (r *DownloadResponse) Body(o *RetryReaderOptions) io.ReadCloser {
+	if o == nil {
+		o = &RetryReaderOptions{}
+	}
 	if o.MaxRetryRequests == 0 { // No additional retries
 		return r.RawResponse.Body
 	}
-	return NewRetryReader(r.ctx, r.RawResponse, r.getInfo, o,
+	return NewRetryReader(r.ctx, r.RawResponse, r.getInfo, *o,
 		func(ctx context.Context, getInfo HTTPGetterInfo) (*http.Response, error) {
 			accessConditions := &BlobAccessConditions{
 				ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},

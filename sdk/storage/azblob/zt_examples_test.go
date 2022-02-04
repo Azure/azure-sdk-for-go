@@ -102,7 +102,7 @@ func Example() {
 
 	// Open a buffer, reader, and then download!
 	downloadedData := &bytes.Buffer{}
-	reader := get.Body(RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
+	reader := get.Body(nil) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 	_, err = downloadedData.ReadFrom(reader)
 	if err != nil {
 		return
@@ -438,7 +438,7 @@ func ExampleBlobAccessConditions() {
 				fmt.Print("Failure: " + stgErr.Error() + "\n")
 			}
 		} else {
-			err := response.Body(RetryReaderOptions{}).Close()
+			err := response.Body(nil).Close()
 			if err != nil {
 				return
 			} // The client must close the response body when finished with it
@@ -732,7 +732,7 @@ func ExampleBlockBlobClient() {
 		log.Fatal(err)
 	}
 	blobData := &bytes.Buffer{}
-	reader := get.Body(RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = blobData.ReadFrom(reader)
 	if err != nil {
 		return
@@ -781,7 +781,7 @@ func ExampleAppendBlobClient() {
 		log.Fatal(err)
 	}
 	b := bytes.Buffer{}
-	reader := get.Body(RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = b.ReadFrom(reader)
 	if err != nil {
 		return
@@ -856,7 +856,7 @@ func ExamplePageBlobClient() {
 		log.Fatal(err)
 	}
 	blobData := &bytes.Buffer{}
-	reader := get.Body(RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = blobData.ReadFrom(reader)
 	if err != nil {
 		return
@@ -914,7 +914,7 @@ func Example_blobSnapshots() {
 		log.Fatal(err)
 	}
 	b := bytes.Buffer{}
-	reader := get.Body(RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = b.ReadFrom(reader)
 	if err != nil {
 		return
@@ -932,7 +932,7 @@ func Example_blobSnapshots() {
 		log.Fatal(err)
 	}
 	b.Reset()
-	reader = get.Body(RetryReaderOptions{})
+	reader = get.Body(nil)
 	_, err = b.ReadFrom(reader)
 	if err != nil {
 		return
@@ -1024,7 +1024,7 @@ func Example_progressUploadDownload() {
 	}
 
 	// Wrap the response body in a ResponseBodyProgress and pass a callback function for progress reporting.
-	responseBody := streaming.NewResponseProgress(get.Body(RetryReaderOptions{}),
+	responseBody := streaming.NewResponseProgress(get.Body(nil),
 		func(bytesTransferred int64) {
 			fmt.Printf("Read %d of %d bytes.", bytesTransferred, *get.ContentLength)
 		})
@@ -1173,7 +1173,7 @@ func ExampleBlobClient_Download() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	rs := dr.Body(RetryReaderOptions{})
+	rs := dr.Body(nil)
 
 	// NewResponseBodyProgress wraps the GetRetryStream with progress reporting; it returns an io.ReadCloser.
 	stream := streaming.NewResponseProgress(rs,

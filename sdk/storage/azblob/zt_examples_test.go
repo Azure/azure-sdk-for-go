@@ -206,7 +206,7 @@ func ExampleBlobURLParts() {
 	fmt.Print(parts.URL())
 }
 
-// This example demonstrates how to use the SAS token generators, this example focuses on account SAS,
+// This example demonstrates how to use the SAS token generators, which exist across all clients (Service, Container, Blob, and specialized Blob clients).
 // these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
 func ExampleServiceClient_GetSASToken() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")

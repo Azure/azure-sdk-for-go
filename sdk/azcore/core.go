@@ -23,14 +23,16 @@ type TokenCredential = shared.TokenCredential
 // holds sentinel values used to send nulls
 var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}
 
+func typeOfT[T any]() reflect.Type {
+	// you can't, at present, obtain the type of
+	// a type parameter, so this is the trick
+	return reflect.TypeOf((*T)(nil)).Elem()
+}
+
 // NullValue is used to send an explicit 'null' within a request.
 // This is typically used in JSON-MERGE-PATCH operations to delete a value.
-func NullValue(v interface{}) interface{} {
-	t := reflect.TypeOf(v)
-	if k := t.Kind(); k != reflect.Ptr && k != reflect.Slice && k != reflect.Map {
-		// t is not of pointer type, make it be of pointer type
-		t = reflect.PtrTo(t)
-	}
+func NullValue[T any]() T {
+	t := typeOfT[T]()
 	v, found := nullables[t]
 	if !found {
 		var o reflect.Value
@@ -48,18 +50,14 @@ func NullValue(v interface{}) interface{} {
 		nullables[t] = v
 	}
 	// return the sentinel object
-	return v
+	return v.(T)
 }
 
 // IsNullValue returns true if the field contains a null sentinel value.
 // This is used by custom marshallers to properly encode a null value.
-func IsNullValue(v interface{}) bool {
+func IsNullValue[T any](v T) bool {
 	// see if our map has a sentinel object for this *T
 	t := reflect.TypeOf(v)
-	if k := t.Kind(); k != reflect.Ptr && k != reflect.Slice && k != reflect.Map {
-		// v isn't a pointer type so it can never be a null
-		return false
-	}
 	if o, found := nullables[t]; found {
 		o1 := reflect.ValueOf(o)
 		v1 := reflect.ValueOf(v)

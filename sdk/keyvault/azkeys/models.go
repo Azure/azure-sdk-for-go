@@ -86,10 +86,10 @@ func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyAttributes {
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
 		Enabled:         i.Enabled,
-		ExpiresOn:         i.Expires,
+		ExpiresOn:       i.Expires,
 		NotBefore:       i.NotBefore,
-		CreatedOn:         i.Created,
-		UpdatedOn:         i.Updated,
+		CreatedOn:       i.Created,
+		UpdatedOn:       i.Updated,
 		Exportable:      i.Exportable,
 	}
 }
@@ -305,10 +305,10 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		KeyItem: KeyItem{
 			Attributes: &KeyAttributes{
 				Enabled:         i.Attributes.Enabled,
-				ExpiresOn:         i.Attributes.Expires,
+				ExpiresOn:       i.Attributes.Expires,
 				NotBefore:       i.Attributes.NotBefore,
-				CreatedOn:         i.Attributes.Created,
-				UpdatedOn:         i.Attributes.Updated,
+				CreatedOn:       i.Attributes.Created,
+				UpdatedOn:       i.Attributes.Updated,
 				Exportable:      i.Attributes.Exportable,
 				RecoverableDays: i.Attributes.RecoverableDays,
 				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),

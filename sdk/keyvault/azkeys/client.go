@@ -72,7 +72,7 @@ type CreateKeyOptions struct {
 	Curve *KeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes   `json:"attributes,omitempty"`
+	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
 	KeyOps        []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -292,7 +292,7 @@ type CreateRSAKeyOptions struct {
 	Curve *KeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes   `json:"attributes,omitempty"`
+	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
 	KeyOps        []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The policy rules under which the key can be exported.

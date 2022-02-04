@@ -90,7 +90,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
-		err := errors.New("ManagedIdentityCredential.GetToken() requires exactly one scope")
+		err := errors.New(credNameManagedIdentity + ": GetToken() requires exactly one scope")
 		addGetTokenFailureLogs(credNameManagedIdentity, err, true)
 		return nil, err
 	}

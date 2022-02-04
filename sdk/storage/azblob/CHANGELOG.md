@@ -6,6 +6,7 @@
 
 ### Breaking Changes
 * Updated to latest `azcore`.  Public surface area is unchanged.
+* [#16978](https://github.com/Azure/azure-sdk-for-go/pull/16978): The `DownloadResponse.Body` parameter is now `*RetryReaderOptions`.
 
 ### Bugs Fixed
 

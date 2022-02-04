@@ -207,7 +207,7 @@ func ExampleBlobURLParts() {
 }
 
 // This example demonstrates how to use the SAS token generators, which exist across all clients (Service, Container, Blob, and specialized Blob clients).
-// these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
+// This example specifically generates an account SAS token. 
 func ExampleServiceClient_GetSASToken() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)

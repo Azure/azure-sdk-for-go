@@ -100,21 +100,21 @@ func (c KeyCurveName) ToPtr() *KeyCurveName {
 	return &c
 }
 
-// KeyOperations - JSON web key operations. For more information, see KeyOperations.
-type KeyOperations string
+// KeyOperation - JSON web key operations. For more information, see KeyOperation.
+type KeyOperation string
 
 const (
-	KeyOperationsDecrypt   KeyOperations = "decrypt"
-	KeyOperationsEncrypt   KeyOperations = "encrypt"
-	KeyOperationsImport    KeyOperations = "import"
-	KeyOperationsSign      KeyOperations = "sign"
-	KeyOperationsUnwrapKey KeyOperations = "unwrapKey"
-	KeyOperationsVerify    KeyOperations = "verify"
-	KeyOperationsWrapKey   KeyOperations = "wrapKey"
+	KeyOperationDecrypt   KeyOperation = "decrypt"
+	KeyOperationEncrypt   KeyOperation = "encrypt"
+	KeyOperationImport    KeyOperation = "import"
+	KeyOperationSign      KeyOperation = "sign"
+	KeyOperationUnwrapKey KeyOperation = "unwrapKey"
+	KeyOperationVerify    KeyOperation = "verify"
+	KeyOperationWrapKey   KeyOperation = "wrapKey"
 )
 
-// ToPtr returns a *KeyOperations pointing to the current value.
-func (c KeyOperations) ToPtr() *KeyOperations {
+// ToPtr returns a *KeyOperation pointing to the current value.
+func (c KeyOperation) ToPtr() *KeyOperation {
 	return &c
 }
 

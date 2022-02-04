@@ -19,7 +19,7 @@ func TestToPtrMethods(t *testing.T) {
 	j := KeyCurveNameP256
 	require.Equal(t, j.ToPtr(), &j)
 
-	o := KeyOperationsDecrypt
+	o := KeyOperationDecrypt
 	require.Equal(t, o.ToPtr(), &o)
 
 	a := KeyEncryptionAlgorithmRSAAESKEYWRAP256

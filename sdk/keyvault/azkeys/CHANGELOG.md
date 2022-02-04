@@ -10,7 +10,7 @@
 * Changed the `Data` to `EncodedPolicy` on the `KeyReleasePolicy` struct.
 * Changed the `Tags` properties from `map[string]*string` to `map[string]string`.
 * Changed the `Updated`, `Created`, and `Expires` properties to `UpdatedOn`, `CreatedOn`, and `ExpiresOn`.
-* Renamed `JSONWebKeyOperation` to `KeyOperations`.
+* Renamed `JSONWebKeyOperation` to `KeyOperation`.
 * Renamed `JSONWebKeyCurveName` to `KeyCurveName`
 
 ### Bugs Fixed

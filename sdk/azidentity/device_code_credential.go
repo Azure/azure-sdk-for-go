@@ -109,7 +109,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs(credNameDeviceCode, err, true)
-		return nil, newAuthenticationFailedError(credNameDeviceCode, err, nil)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
 	}
 	err = c.userPrompt(ctx, DeviceCodeMessage{
 		UserCode:        dc.Result.UserCode,
@@ -122,7 +122,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	ar, err = dc.AuthenticationResult(ctx)
 	if err != nil {
 		addGetTokenFailureLogs(credNameDeviceCode, err, true)
-		return nil, newAuthenticationFailedError(credNameDeviceCode, err, nil)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
 	}
 	c.account = ar.Account
 	logGetTokenSuccess(c, opts)

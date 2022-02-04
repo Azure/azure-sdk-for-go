@@ -18,27 +18,30 @@ import (
 // AuthenticationFailedError indicates an authentication request has failed.
 type AuthenticationFailedError struct {
 	credType string
-	err      error
+	message  string
 
 	// RawResponse is the HTTP response motivating the error, if available.
 	RawResponse *http.Response
 }
 
-func newAuthenticationFailedError(credType string, err error, resp *http.Response) AuthenticationFailedError {
-	if resp == nil {
-		var e msal.CallErr
-		if errors.As(err, &e) {
-			return AuthenticationFailedError{credType: credType, err: e, RawResponse: e.Resp}
-		}
+func newAuthenticationFailedError(credType string, message string, resp *http.Response) AuthenticationFailedError {
+	return AuthenticationFailedError{credType: credType, message: message, RawResponse: resp}
+}
+
+func newAuthenticationFailedErrorFromMSALError(credType string, err error) AuthenticationFailedError {
+	var resp *http.Response
+	var e msal.CallErr
+	if errors.As(err, &e) {
+		resp = e.Resp
 	}
-	return AuthenticationFailedError{credType: credType, err: err, RawResponse: resp}
+	return newAuthenticationFailedError(credType, err.Error(), resp)
 }
 
 // Error implements the error interface for type ResponseError.
 // Note that the message contents are not contractual and can change over time.
 func (e AuthenticationFailedError) Error() string {
 	if e.RawResponse == nil {
-		return e.credType + " authentication failed: " + e.err.Error()
+		return e.credType + ": " + e.message
 	}
 	msg := &bytes.Buffer{}
 	fmt.Fprintf(msg, e.credType+" authentication failed\n")

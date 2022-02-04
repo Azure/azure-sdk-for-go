@@ -72,7 +72,7 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts policy.Token
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs(credNameSecret, err, true)
-		return nil, newAuthenticationFailedError(credNameSecret, err, nil)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameSecret, err)
 	}
 	logGetTokenSuccess(c, opts)
 	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err

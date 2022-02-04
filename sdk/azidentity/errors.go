@@ -15,6 +15,20 @@ import (
 	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 )
 
+// getResponseFromError retrieves the response carried by
+// an AuthenticationFailedError or MSAL CallErr, if any
+func getResponseFromError(err error) *http.Response {
+	var a AuthenticationFailedError
+	var c msal.CallErr
+	var res *http.Response
+	if errors.As(err, &c) {
+		res = c.Resp
+	} else if errors.As(err, &a) {
+		res = a.RawResponse
+	}
+	return res
+}
+
 // AuthenticationFailedError indicates an authentication request has failed.
 type AuthenticationFailedError struct {
 	credType string
@@ -29,12 +43,8 @@ func newAuthenticationFailedError(credType string, message string, resp *http.Re
 }
 
 func newAuthenticationFailedErrorFromMSALError(credType string, err error) AuthenticationFailedError {
-	var resp *http.Response
-	var e msal.CallErr
-	if errors.As(err, &e) {
-		resp = e.Resp
-	}
-	return newAuthenticationFailedError(credType, err.Error(), resp)
+	res := getResponseFromError(err)
+	return newAuthenticationFailedError(credType, err.Error(), res)
 }
 
 // Error implements the error interface for type ResponseError.

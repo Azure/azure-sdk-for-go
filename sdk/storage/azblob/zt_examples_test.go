@@ -96,7 +96,7 @@ func Example() {
 		fmt.Printf("Downloaded data: %s\n", downloadedData.String())
 	}
 
-	// ===== 3. list blobs =====
+	// ===== 3. Listing blobs =====
 	// List methods returns a pager object which can be used to iterate over the results of a paging operation.
 	// To iterate over a page use the NextPage(context.Context) to fetch the next page of results.
 	// PageResponse() can be used to iterate over the results of the specific page.

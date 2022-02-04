@@ -3,7 +3,7 @@
 ## Introduction
 
 The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud storage.
-This SDK replaces the previously previewed [azblob package](https://github.com/azure/azure-storage-blob-go).
+This is the new beta client module for Azure Blob Storage, which follows our [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) and replaces the previous beta [azblob package](https://github.com/azure/azure-storage-blob-go).
 
 ## Getting Started
 

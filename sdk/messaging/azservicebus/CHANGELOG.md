@@ -2,6 +2,11 @@
 
 ## 0.3.4 (Unreleased)
 
+### Features Added
+
+- Allow RetryOptions to be configured in the options for azservicebus.Client as well and admin.Client(#16831)
+- Add in the MessageState property to the ReceivedMessage. (#TBD)
+
 ### Bugs Fixed
 
 - Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix. (#16847)

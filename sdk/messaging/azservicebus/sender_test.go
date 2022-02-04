@@ -35,6 +35,9 @@ func Test_Sender_MessageID(t *testing.T) {
 	})
 	require.NoError(t, err)
 
+	peekedMsg := peekSingleMessageForTest(t, receiver)
+	require.EqualValues(t, MessageStateActive, peekedMsg.State)
+
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, "message with a message ID", messages[0].MessageID)
@@ -250,6 +253,9 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 
 	require.NoError(t, err)
 	require.EqualValues(t, 2, len(sequenceNumbers))
+
+	peekedMsg := peekSingleMessageForTest(t, receiver)
+	require.EqualValues(t, MessageStateScheduled, peekedMsg.State)
 
 	// cancel one of the ones scheduled using `ScheduleMessages`
 	err = sender.CancelScheduledMessages(ctx, []int64{sequenceNumbers[0]})

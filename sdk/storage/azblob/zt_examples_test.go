@@ -155,7 +155,7 @@ func ExampleStorageError() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = container.Create(context.Background(), nil)
+	_, err = container.Create(context.TODO(), nil)
 
 	if err != nil {
 		var stgErr azblob.StorageError
@@ -1113,7 +1113,7 @@ func ExampleBlobClient_startCopy() {
 //	}(destFile)
 //
 //	// Perform download
-//	err = DownloadBlobToFile(context.Background(), blockBlobURL.BlobClient, 0, CountToEnd, destFile,
+//	err = DownloadBlobToFile(context.TODO(), blockBlobURL.BlobClient, 0, CountToEnd, destFile,
 //		HighLevelDownloadFromBlobOptions{
 //			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 //			Progress: func(bytesTransferred int64) {

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud storage. 
+The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud storage.
 This SDK replaces the previously previewed [azblob package](https://github.com/azure/azure-storage-blob-go).
 
 ## Getting Started
@@ -20,10 +20,10 @@ The Azure Blob SDK can access an Azure Storage account.
 
 ### Install the package
 * Install the Azure blob storage for Go with `go get`:
-  ```bash
-  go get github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
-  ```
-  
+```bash
+go get github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
+```
+
 #### Create the client
 
 `azblob` allows you to interact with three types of resources :-
@@ -32,8 +32,8 @@ The Azure Blob SDK can access an Azure Storage account.
 * [Containers](https://azure.microsoft.com/en-in/overview/what-is-a-container/#overview) within those storage accounts.
 * [Blobs](https://azure.microsoft.com/en-in/services/storage/blobs/#overview) (block blobs/ page blobs/ append blobs) within those containers.
 
-Interaction with these resources starts with an instance of a [client](#clients). 
-To create a client object, you will need the account's blob service endpoint URL and a credential that allows you to access the account. 
+Interaction with these resources starts with an instance of a [client](#clients).
+To create a client object, you will need the account's blob service endpoint URL and a credential that allows you to access the account.
 The `endpoint` can be found on the page for your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
 
 ```bash
@@ -53,7 +53,7 @@ For more information about blob service URL's and how to configure custom domain
 
 #### Types of credentials
 
-The azblob clients support authentication via Shared Key Credential, Connection String, Shared Access Signature, 
+The azblob clients support authentication via Shared Key Credential, Connection String, Shared Access Signature,
 or any of the `azidentity` types that implement the `azcore.TokenCredential` interface.
 
 ##### 1. Creating the client from a shared key
@@ -76,8 +76,8 @@ handle(err)
 
 ##### 2. Creating the client from a connection string
 
-You can use connection string, instead of providing the account URL and credential separately, for authentication as well. 
-To do this, pass the connection string to the client's `NewServiceClientFromConnectionString` method. 
+You can use connection string, instead of providing the account URL and credential separately, for authentication as well.
+To do this, pass the connection string to the client's `NewServiceClientFromConnectionString` method.
 The connection string can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or with the following Azure CLI command:
 
 ```bash
@@ -91,8 +91,8 @@ serviceClient, err := azblob.NewServiceClientFromConnectionString(connStr, nil)
 
 ##### 3. Creating the client from a SAS token
 
-To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. 
-If your account URL includes the SAS token, replace credential parameter with `azcore.NewAnonymousCredential()`.  
+To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string.
+If your account URL includes the SAS token, replace credential parameter with `azcore.NewAnonymousCredential()`.
 You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use
 the `ServiceClient.GetSASToken` or `ContainerClient.GetSASToken()` methods.
 
@@ -106,13 +106,10 @@ handle(err)
 accountSAS, err := serviceClient.GetSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
 AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
 handle(err)
-urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
-// You can hand off this URL to someone else via any mechanism you choose.
+sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
 
-// ******************************************
-
-// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-serviceClient, err = NewServiceClientWithNoCredential(urlToSend, nil)
+// The sasURL can be used to authenticate a client without need for a credential
+serviceClient, err = NewServiceClientWithNoCredential(sasURL, nil)
 handle(err)
 ```
 

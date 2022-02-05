@@ -105,7 +105,11 @@ jobs:
       failOnStderr: true
       condition: succeededOrFailed()
 
-    - script: gofmt -s -l -d $(find . -path ./vendor -prune -o -name '*.go' -print) >&2
+    - script: |
+        for dd in $(go.list.filter); do
+          cd $(sdkPath)/$dd
+          gofmt -s -l -d $(find . -name '*.go' -print) >&2
+        done
       workingDirectory: '$(sdkPath)'
       displayName: 'Format Check'
       failOnStderr: true

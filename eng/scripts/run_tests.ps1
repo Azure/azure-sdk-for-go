@@ -11,6 +11,8 @@ go test -run "^Test" -v -coverprofile coverage.txt ./... | Tee-Object -FilePath 
 if ($LASTEXITCODE) {
     exit $LASTEXITCODE
 }
+exit 0
+
 Get-Content outfile.txt | go-junit-report > report.xml
 
 # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report

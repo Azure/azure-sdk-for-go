@@ -382,7 +382,7 @@ func asInt64(v interface{}, defVal int64) int64 {
 		return int64(v2)
 	case int:
 		return int64(v2)
+	default:
+		return defVal
 	}
-
-	return defVal
 }

@@ -53,11 +53,7 @@ func TestMain(m *testing.M) {
 
 	}
 
-	// Run tests
-	exitVal := m.Run()
-
-	// 4. Error out if applicable
-	os.Exit(exitVal)
+	os.Exit(m.Run())
 }
 
 func startTest(t *testing.T) func() {

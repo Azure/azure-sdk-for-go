@@ -14,7 +14,7 @@ import (
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *shared.ExpiringResource
+	mainResource *shared.ExpiringResource[*shared.AccessToken, acquiringResourceState]
 	// the following fields are read-only
 	cred   shared.TokenCredential
 	scopes []string
@@ -27,9 +27,8 @@ type acquiringResourceState struct {
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
-func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
-	s := state.(acquiringResourceState)
-	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), shared.TokenRequestOptions{Scopes: s.p.scopes})
+func acquire(state acquiringResourceState) (newResource *shared.AccessToken, newExpiration time.Time, err error) {
+	tk, err := state.p.cred.GetToken(state.req.Raw().Context(), shared.TokenRequestOptions{Scopes: state.p.scopes})
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -58,8 +57,6 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	if token, ok := tk.(*shared.AccessToken); ok {
-		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+token.Token)
-	}
+	req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
 	return req.Next()
 }

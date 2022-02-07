@@ -15,15 +15,14 @@ import (
 )
 
 func TestNewExpiringResource(t *testing.T) {
-	er := NewExpiringResource(func(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
-		s := state.(string)
-		switch s {
+	er := NewExpiringResource(func(state string) (newResource string, newExpiration time.Time, err error) {
+		switch state {
 		case "initial":
 			return "updated", time.Now().Add(-time.Minute), nil
 		case "updated":
 			return "refreshed", time.Now().Add(1 * time.Hour), nil
 		default:
-			t.Fatalf("unexpected state %s", s)
+			t.Fatalf("unexpected state %s", state)
 			return "", time.Time{}, errors.New("unexpected")
 		}
 	})
@@ -42,7 +41,7 @@ func TestExpiringResourceError(t *testing.T) {
 	expectedState := "expected state"
 	expectedError := "expected error"
 	calls := 0
-	er := NewExpiringResource(func(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
+	er := NewExpiringResource(func(state string) (newResource string, newExpiration time.Time, err error) {
 		calls += 1
 		if calls == 1 {
 			return expectedState, time.Now().Add(time.Minute), nil

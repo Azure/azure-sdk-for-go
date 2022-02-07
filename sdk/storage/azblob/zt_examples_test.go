@@ -23,7 +23,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
-// This example shows you how to get started using the Azure Storage Blob SDK for Go.
+// This example shows you how to get started using the Azure Blob Storage SDK for Go.
 func Example() {
 	// Your account name and key can be obtained from the Azure Portal.
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")

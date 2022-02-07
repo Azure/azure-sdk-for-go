@@ -1,4 +1,4 @@
-# Azure Storage Blob SDK for Go
+# Azure Blob Storage SDK for Go
 
 ## Introduction
 
@@ -208,7 +208,7 @@ Three different clients are provided to interact with the various components of 
 	service, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
     handle(err)
 
-	// All operations in the Azure Storage Blob SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
+	// All operations in the Azure Blob Storage SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
 	ctx := context.Background() // This example has no expiry.
 
 	// This example showcases several common operations to help you get started, such as:

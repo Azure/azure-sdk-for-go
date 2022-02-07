@@ -3,7 +3,7 @@
 ## Introduction
 
 The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud storage.
-This SDK replaces the previously previewed [azblob package](https://github.com/azure/azure-storage-blob-go).
+This is the new beta client module for Azure Blob Storage, which follows our [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) and replaces the previous beta [azblob package](https://github.com/azure/azure-storage-blob-go).
 
 ## Getting Started
 
@@ -41,7 +41,7 @@ The Azure Blob SDK can access an Azure Storage account.
 * To create a new Storage account, you can use [Azure Portal][azure_portal_create_account], [Azure PowerShell][azure_powershell_create_account], or [Azure CLI][azure_cli_create_account].
 
 ### Install the package
-* Install the Azure blob storage for Go with `go get`:
+* Install the Azure Blob Storage client module for Go with `go get`:
 ```bash
 go get github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
 ```

@@ -45,13 +45,13 @@ func TestMain(m *testing.M) {
 		// 	panic(err)
 		// }
 	case recording.RecordingMode:
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
+		// err := recording.ResetProxy(nil)
+		// if err != nil {
+		// 	panic(err)
+		// }
 
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
 			panic(err)
 		}

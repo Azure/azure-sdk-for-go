@@ -2,15 +2,12 @@
 
 ## 0.3.4 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix.
-
-### Other Changes
+- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix. (#16847)
+- Multiple fixes to address connection/link recovery (#16831)
+- Fixing panic() when the links haven't been initialized (early cancellation) (#16941)
+- Handle 500 as a retryable code (no recovery needed) (#16925)
 
 ## 0.3.3 (2022-01-12)
 

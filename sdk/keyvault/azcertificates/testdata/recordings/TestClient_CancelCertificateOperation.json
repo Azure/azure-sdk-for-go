@@ -1,0 +1,247 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/create?api-version=7.3-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":method": "POST",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "97",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 31 Jan 2022 22:12:39 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.264.2",
+        "x-ms-request-id": "edb4ec1d-20a7-4cbc-928b-d4985717dee0",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Unauthorized",
+          "message": "AKV10000: Request is missing a Bearer or PoP token."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/create?api-version=7.3-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":method": "POST",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "91",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "policy": {
+          "issuer": {
+            "name": "Self"
+          },
+          "x509_props": {
+            "sans": {},
+            "subject": "CN=DefaultPolicy"
+          }
+        }
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1289",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 31 Jan 2022 22:12:40 GMT",
+        "Expires": "-1",
+        "Location": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending?api-version=7.3-preview\u0026request_id=77655566ffde4c16b1d52d8ee9839faf",
+        "Pragma": "no-cache",
+        "Retry-After": "10",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.264.2",
+        "x-ms-request-id": "0ec61a93-2909-4627-bf16-6981d1f9b8ee",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "id": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending",
+        "issuer": {
+          "name": "Self"
+        },
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKQ3rxV3AliqQ9\u002BInR3WQYQK\u002BV8Q0hEyz\u002BHxvtkB9TWNzUeAb3lfQl7YfOdGhabm5Npk8TIzTrtZxnT0zx/Ade4/39xzEE\u002BgU3Rk8w\u002B\u002B6GqNs9bDjW44oODCqA3\u002BO2KNs20UsuTe/NvvzzvZklyns/wt08jki9h5dC2z6lSK898vqJy8N6veZZGZ23Sf61unS6k6lR1KqKsyEY7\u002BBSNqb35g8PXejyxkI/BbaBuS3ZUnnnOcj4qLSvY1NWOryrrkpcaEE\u002Beu50nCSSBgRUlb1FMsIBMh/TrYECSSIpYfpKMlxOEpSjV4lADQ2cTZt\u002BaXJCuJ/FUa2ecHtNlEb\u002B2c0kkCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAMLPhRk1EPHkIeC9HVV3yYYDJ3av\u002Bicgy7cbaYoA\u002BoJ4HpIll7UnPHJpYMpMPtz\u002B/SiYn5NTTV0kfmGwdCyMEseibXCitznB4N9THtjo\u002BYJ3\u002Bs0s\u002B06NcFullvJ6d\u002B8PMvVTci2HVATlGj7hxbszVoxIYA6SNKARYJ1vjmbORqIuuvidQO842s0NfnoP25aV\u002BGqO\u002BGevFzhP5DkPjTAav6oe2r57UnUYNO8Ewf8L2TDfnnRKSPaKTklowoN0Ego9\u002BHsUcQpKI1Lo1MH\u002BlQwN0hD\u002BQaytGtTeZj5RjDpSzkScZAaNaQt9tK1LN\u002BvhtJ7piR5TqGMKYYf0L/En/M9AQl",
+        "cancellation_requested": false,
+        "status": "inProgress",
+        "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
+        "request_id": "77655566ffde4c16b1d52d8ee9839faf"
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending?api-version=7.3-preview",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "31",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "cancellation_requested": true
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1288",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 31 Jan 2022 22:12:40 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.264.2",
+        "x-ms-request-id": "8756557e-fffb-4c13-b317-055e5dffb308",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "id": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending",
+        "issuer": {
+          "name": "Self"
+        },
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKQ3rxV3AliqQ9\u002BInR3WQYQK\u002BV8Q0hEyz\u002BHxvtkB9TWNzUeAb3lfQl7YfOdGhabm5Npk8TIzTrtZxnT0zx/Ade4/39xzEE\u002BgU3Rk8w\u002B\u002B6GqNs9bDjW44oODCqA3\u002BO2KNs20UsuTe/NvvzzvZklyns/wt08jki9h5dC2z6lSK898vqJy8N6veZZGZ23Sf61unS6k6lR1KqKsyEY7\u002BBSNqb35g8PXejyxkI/BbaBuS3ZUnnnOcj4qLSvY1NWOryrrkpcaEE\u002Beu50nCSSBgRUlb1FMsIBMh/TrYECSSIpYfpKMlxOEpSjV4lADQ2cTZt\u002BaXJCuJ/FUa2ecHtNlEb\u002B2c0kkCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAMLPhRk1EPHkIeC9HVV3yYYDJ3av\u002Bicgy7cbaYoA\u002BoJ4HpIll7UnPHJpYMpMPtz\u002B/SiYn5NTTV0kfmGwdCyMEseibXCitznB4N9THtjo\u002BYJ3\u002Bs0s\u002B06NcFullvJ6d\u002B8PMvVTci2HVATlGj7hxbszVoxIYA6SNKARYJ1vjmbORqIuuvidQO842s0NfnoP25aV\u002BGqO\u002BGevFzhP5DkPjTAav6oe2r57UnUYNO8Ewf8L2TDfnnRKSPaKTklowoN0Ego9\u002BHsUcQpKI1Lo1MH\u002BlQwN0hD\u002BQaytGtTeZj5RjDpSzkScZAaNaQt9tK1LN\u002BvhtJ7piR5TqGMKYYf0L/En/M9AQl",
+        "cancellation_requested": true,
+        "status": "inProgress",
+        "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
+        "request_id": "77655566ffde4c16b1d52d8ee9839faf"
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":method": "GET",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1288",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 31 Jan 2022 22:12:40 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Retry-After": "10",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.264.2",
+        "x-ms-request-id": "b888229f-e487-427a-b991-1c2072bb04da",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "id": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending",
+        "issuer": {
+          "name": "Self"
+        },
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKQ3rxV3AliqQ9\u002BInR3WQYQK\u002BV8Q0hEyz\u002BHxvtkB9TWNzUeAb3lfQl7YfOdGhabm5Npk8TIzTrtZxnT0zx/Ade4/39xzEE\u002BgU3Rk8w\u002B\u002B6GqNs9bDjW44oODCqA3\u002BO2KNs20UsuTe/NvvzzvZklyns/wt08jki9h5dC2z6lSK898vqJy8N6veZZGZ23Sf61unS6k6lR1KqKsyEY7\u002BBSNqb35g8PXejyxkI/BbaBuS3ZUnnnOcj4qLSvY1NWOryrrkpcaEE\u002Beu50nCSSBgRUlb1FMsIBMh/TrYECSSIpYfpKMlxOEpSjV4lADQ2cTZt\u002BaXJCuJ/FUa2ecHtNlEb\u002B2c0kkCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAMLPhRk1EPHkIeC9HVV3yYYDJ3av\u002Bicgy7cbaYoA\u002BoJ4HpIll7UnPHJpYMpMPtz\u002B/SiYn5NTTV0kfmGwdCyMEseibXCitznB4N9THtjo\u002BYJ3\u002Bs0s\u002B06NcFullvJ6d\u002B8PMvVTci2HVATlGj7hxbszVoxIYA6SNKARYJ1vjmbORqIuuvidQO842s0NfnoP25aV\u002BGqO\u002BGevFzhP5DkPjTAav6oe2r57UnUYNO8Ewf8L2TDfnnRKSPaKTklowoN0Ego9\u002BHsUcQpKI1Lo1MH\u002BlQwN0hD\u002BQaytGtTeZj5RjDpSzkScZAaNaQt9tK1LN\u002BvhtJ7piR5TqGMKYYf0L/En/M9AQl",
+        "cancellation_requested": true,
+        "status": "inProgress",
+        "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
+        "request_id": "77655566ffde4c16b1d52d8ee9839faf"
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending?api-version=7.3-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1288",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 31 Jan 2022 22:12:40 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.264.2",
+        "x-ms-request-id": "a2771c77-f424-4aa5-8708-593bc0aa704a",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "id": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending",
+        "issuer": {
+          "name": "Self"
+        },
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKQ3rxV3AliqQ9\u002BInR3WQYQK\u002BV8Q0hEyz\u002BHxvtkB9TWNzUeAb3lfQl7YfOdGhabm5Npk8TIzTrtZxnT0zx/Ade4/39xzEE\u002BgU3Rk8w\u002B\u002B6GqNs9bDjW44oODCqA3\u002BO2KNs20UsuTe/NvvzzvZklyns/wt08jki9h5dC2z6lSK898vqJy8N6veZZGZ23Sf61unS6k6lR1KqKsyEY7\u002BBSNqb35g8PXejyxkI/BbaBuS3ZUnnnOcj4qLSvY1NWOryrrkpcaEE\u002Beu50nCSSBgRUlb1FMsIBMh/TrYECSSIpYfpKMlxOEpSjV4lADQ2cTZt\u002BaXJCuJ/FUa2ecHtNlEb\u002B2c0kkCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAMLPhRk1EPHkIeC9HVV3yYYDJ3av\u002Bicgy7cbaYoA\u002BoJ4HpIll7UnPHJpYMpMPtz\u002B/SiYn5NTTV0kfmGwdCyMEseibXCitznB4N9THtjo\u002BYJ3\u002Bs0s\u002B06NcFullvJ6d\u002B8PMvVTci2HVATlGj7hxbszVoxIYA6SNKARYJ1vjmbORqIuuvidQO842s0NfnoP25aV\u002BGqO\u002BGevFzhP5DkPjTAav6oe2r57UnUYNO8Ewf8L2TDfnnRKSPaKTklowoN0Ego9\u002BHsUcQpKI1Lo1MH\u002BlQwN0hD\u002BQaytGtTeZj5RjDpSzkScZAaNaQt9tK1LN\u002BvhtJ7piR5TqGMKYYf0L/En/M9AQl",
+        "cancellation_requested": true,
+        "status": "inProgress",
+        "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
+        "request_id": "77655566ffde4c16b1d52d8ee9839faf"
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/cert1291183961/pending?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":method": "GET",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "105",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 31 Jan 2022 22:12:40 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.264.2",
+        "x-ms-request-id": "d53b9c98-d925-4942-9cd6-31cc11a5d0d8",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "PendingCertificateNotFound",
+          "message": "Pending certificate not found: cert1291183961"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

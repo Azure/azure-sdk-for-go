@@ -78,7 +78,7 @@ func Example() {
 
 	// Use the bytes.Buffer object to read the downloaded data.
 	downloadedData := &bytes.Buffer{}
-	reader := get.Body(azblob.RetryReaderOptions{}) // RetryReaderOptions options for tuning downloads.
+	reader := get.Body(nil) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 	_, err = downloadedData.ReadFrom(reader)
 	if err != nil {
 		return
@@ -404,19 +404,24 @@ func ExampleBlobAccessConditions() {
 		if err != nil {
 			var stgErr *azblob.StorageError
 			if errors.As(err, &stgErr) {
-				log.Fatalf("Failure: " + stgErr.Error() + "\n")
+				log.Fatalf("Failure: %s\n", stgErr.Error())
 			} else {
 				log.Fatal(err) // Network failure
 			}
+		} else {
+			err := response.Body(nil).Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+			// The client must close the response body when finished with it
+			fmt.Printf("Success: %s\n", response.RawResponse.Status)
 		}
 
 		// Close the response
-		err = response.Body(azblob.RetryReaderOptions{}).Close()
 		if err != nil {
 			return
 		}
-		fmt.Print("Success: " + response.RawResponse.Status + "\n")
-
+		fmt.Printf("Success: %s\n", response.RawResponse.Status)
 	}
 
 	showResultUpload := func(upload azblob.BlockBlobUploadResponse, err error) {
@@ -711,7 +716,7 @@ func ExampleBlockBlobClient() {
 		log.Fatal(err)
 	}
 	blobData := &bytes.Buffer{}
-	reader := get.Body(azblob.RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = blobData.ReadFrom(reader)
 	if err != nil {
 		return
@@ -757,7 +762,7 @@ func ExampleAppendBlobClient() {
 		log.Fatal(err)
 	}
 	b := bytes.Buffer{}
-	reader := get.Body(azblob.RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = b.ReadFrom(reader)
 	if err != nil {
 		return
@@ -835,7 +840,7 @@ func ExamplePageBlobClient() {
 		log.Fatal(err)
 	}
 	blobData := &bytes.Buffer{}
-	reader := get.Body(azblob.RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = blobData.ReadFrom(reader)
 	if err != nil {
 		return
@@ -890,7 +895,7 @@ func Example_blobSnapshots() {
 		log.Fatal(err)
 	}
 	b := bytes.Buffer{}
-	reader := get.Body(azblob.RetryReaderOptions{})
+	reader := get.Body(nil)
 	_, err = b.ReadFrom(reader)
 	if err != nil {
 		return
@@ -908,7 +913,7 @@ func Example_blobSnapshots() {
 		log.Fatal(err)
 	}
 	b.Reset()
-	reader = get.Body(azblob.RetryReaderOptions{})
+	reader = get.Body(nil)
 	_, err = b.ReadFrom(reader)
 	if err != nil {
 		return
@@ -1003,7 +1008,7 @@ func Example_progressUploadDownload() {
 
 	// Wrap the response body in a ResponseBodyProgress and pass a callback function for progress reporting.
 	responseBody := streaming.NewResponseProgress(
-		get.Body(azblob.RetryReaderOptions{}),
+		get.Body(nil),
 		func(bytesTransferred int64) {
 			fmt.Printf("Read %d of %d bytes.", bytesTransferred, *get.ContentLength)
 		},
@@ -1148,7 +1153,7 @@ func ExampleBlobClient_Download() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	rs := dr.Body(azblob.RetryReaderOptions{})
+	rs := dr.Body(nil)
 
 	// NewResponseBodyProgress wraps the GetRetryStream with progress reporting; it returns an io.ReadCloser.
 	stream := streaming.NewResponseProgress(

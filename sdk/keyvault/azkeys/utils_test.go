@@ -33,13 +33,12 @@ func TestMain(m *testing.M) {
 	// Initialize
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
-		// err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
-		// 	ExcludedHeaders: []string{":path", ":authority", ":method", ":scheme"},
-		// 	IgnoredHeaders: []string{":path", ":authority", ":method", ":scheme"},
-		// })
-		// if err != nil {
-		// 	panic(err)
-		// }
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
+			ExcludedHeaders: []string{":path", ":authority", ":method", ":scheme"},
+		})
+		if err != nil {
+			panic(err)
+		}
 		// err = recording.AddRemoveHeaderSanitizer([]string{":path", ":authority", ":method", ":scheme"}, nil)
 		// if err != nil {
 		// 	panic(err)

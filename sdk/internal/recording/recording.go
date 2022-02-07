@@ -613,7 +613,6 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		}
 		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
 	}
-	fmt.Printf("Test Name: %s\tRecordingID: %s\n", t.Name(), recId)
 
 	// Unmarshal any variables returned by the proxy
 	var m map[string]interface{}

@@ -404,7 +404,6 @@ func ExampleBlobAccessConditions() {
 		if err != nil {
 			var stgErr *azblob.StorageError
 			if errors.As(err, &stgErr) {
-				// TODO: Port storage error
 				log.Fatalf("Failure: " + stgErr.Error() + "\n")
 			} else {
 				log.Fatal(err) // Network failure
@@ -424,7 +423,6 @@ func ExampleBlobAccessConditions() {
 		if err != nil {
 			var stgErr *azblob.StorageError
 			if errors.As(err, &stgErr) {
-				// TODO: Port storage error
 				log.Fatalf("Failure: " + stgErr.Error() + "\n")
 			} else {
 				log.Fatal(err) // Network failure

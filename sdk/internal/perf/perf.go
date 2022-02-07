@@ -148,12 +148,14 @@ func runTest(p PerfTest, c chan runResult) {
 
 	elapsed := time.Since(timeStart).Seconds()
 
-	// Stop the proxy now
-	err := stop(p.GetMetadata().Name, nil)
-	if err != nil {
-		c <- runResult{err: err}
+	if TestProxy != "" {
+		// Stop the proxy now
+		err := stop(p.GetMetadata().Name, nil)
+		if err != nil {
+			c <- runResult{err: err}
+		}
+		setRecordingMode("live")
 	}
-	setRecordingMode("live")
 	c <- runResult{count: totalCount, timeInSeconds: elapsed, err: nil}
 }
 
@@ -234,7 +236,7 @@ func runPerfTest(p NewPerfTest) error {
 	// Get the results from the channels
 	for _, channel := range channels {
 		result := <-channel
-		if err != nil {
+		if result.err != nil {
 			panic(err)
 		}
 

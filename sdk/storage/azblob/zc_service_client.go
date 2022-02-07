@@ -252,7 +252,7 @@ func (s ServiceClient) GetSASToken(resources AccountSASResourceTypes, permission
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
 func (s ServiceClient) FindBlobsByTags(ctx context.Context, options ServiceFilterBlobsByTagsOptions) (ServiceFilterBlobsResponse, error) {
-	// TODO: Use pager here? Missing support from zz_generated_pagera.go
+	// TODO: Use pager here? Missing support from zz_generated_pagers.go
 	serviceFilterBlobsOptions := options.pointer()
 	return s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)
 }

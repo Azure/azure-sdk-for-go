@@ -65,8 +65,8 @@ func (o *DownloadBlobOptions) pointers() (blobDownloadOptions *BlobDownloadOptio
 	basics := BlobDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
 		Range: HttpRange{
-			offset: offset,
-			count:  count,
+			Offset: offset,
+			Count:  count,
 		}.pointers(),
 	}
 	leaseAccessConditions, modifiedAccessConditions = o.BlobAccessConditions.pointers()

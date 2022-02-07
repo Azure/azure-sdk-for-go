@@ -8,6 +8,9 @@
 * Updated to latest `azcore`.  Public surface area is unchanged.
 
 ### Bugs Fixed
+* Fixed Issue #16816 : ContainerClient.GetSASToken doesn't allow list permission.
+* Fixed Issue #16193 : azblob.GetSASToken wrong singed resource. 
+* Fixed Issue #16223 : HttpRange does not expose its fields. 
 
 ### Other Changes
 

@@ -14,6 +14,7 @@
 * Fixed Issue #16542 : Empty StorageError in the Azurite environment
 * Fixed Issue #16679 : Unable to access Metadata when listing blobs
 * Fixed Issue #16816 : ContainerClient.GetSASToken doesn't allow list permission.
+* Fixed Issue #16988 : Too many arguments in call to `runtime.NewResponseError`
 
 ### Other Changes
 

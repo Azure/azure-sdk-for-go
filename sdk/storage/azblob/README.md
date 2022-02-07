@@ -27,8 +27,11 @@ The Azure Blob SDK can access an Azure Storage account.
 	az storage account show -n mystorageaccount -g my-resource-group --query "primaryEndpoints.blob"
 	```
 	You can set this as an environment variable with:
-	```pwsh
+	```bash
+	# PowerShell
 	$ENV:AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
+	# bash
+	export AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
 	```
 
 	Query your storage account keys:
@@ -54,8 +57,11 @@ The Azure Blob SDK can access an Azure Storage account.
 	]
 	```
 
-	```pwsh
+	```bash
+	# PowerShell
 	$ENV:AZURE_STORAGE_ACCOUNT_KEY="<mystorageaccountkey>"
+	# Bash
+	export AZURE_STORAGE_ACCOUNT_KEY="<mystorageaccountkey>"
 	```
 	> You can obtain your account key from the Azure Portal under the "Access Keys" section on the left-hand pane of your storage account.
 

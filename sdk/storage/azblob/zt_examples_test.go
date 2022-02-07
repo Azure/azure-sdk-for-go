@@ -40,13 +40,13 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	// The service URL for blobs endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
+	// The service URL for blob endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
 	service, err := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// ===== 1. Creating a container =====
+	// ===== 1. Create a container =====
 
 	// First, create a container client, and use the Create method to create a new container in your account
 	container := service.NewContainerClient("mycontainer")
@@ -58,7 +58,7 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	// ===== 2. Uploading/downloading a block blob =====
+	// ===== 2. Upload and Download a block blob =====
 	data := "Hello world!"
 
 	// Create a new BlockBlobClient from the ContainerClient
@@ -94,7 +94,7 @@ func Example() {
 		fmt.Printf("Downloaded data: %s\n", downloadedData.String())
 	}
 
-	// ===== 3. Listing blobs =====
+	// ===== 3. List blobs =====
 	// List methods returns a pager object which can be used to iterate over the results of a paging operation.
 	// To iterate over a page use the NextPage(context.Context) to fetch the next page of results.
 	// PageResponse() can be used to iterate over the results of the specific page.

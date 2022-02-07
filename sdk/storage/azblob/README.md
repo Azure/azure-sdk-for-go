@@ -12,29 +12,52 @@ The Azure Blob SDK can access an Azure Storage account.
 ### Prerequisites
 
 * Go versions 1.16 or higher
-* You must have an [Azure storage account][azure_storage_account]. If you need to create one, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with these commands (replace `"my-resource-group"` and `"myStorageAccount"` with your own unique names):
+* You must have an [Azure storage account][azure_storage_account]. If you need to create one, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with these commands (replace `"my-resource-group"` and `"mystorageaccount"` with your own unique names):
 	(Optional) if you want a new resource group to hold the Storage Account:
 	```
 	az group create --name my-resource-group --location westus2
 	```
 	Create the storage account:
 	```
-	az storage account create --resource-group my-resource-group --name my-storage-account
+	az storage account create --resource-group my-resource-group --name mystorageaccount
 	```
 
 	The storage account name can be queried with:
 	```
-	az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryEndpoints.blob"
+	az storage account show -n mystorageaccount -g my-resource-group --query "primaryEndpoints.blob"
 	```
 	You can set this as an environment variable with:
 	```pwsh
 	$ENV:AZURE_STORAGE_ACCOUNT_NAME="mystorageaccount"
 	```
 
-	You can obtain your account key from the Azure Portal under the "Access Keys" section on the left-hand pane of your storage account.
+	Query your storage account keys:
+	```
+	az storage account keys list --resource-group my-resource-group -n mystorageaccount
+	```
+
+	Output:
+	```json
+	[
+		{
+			"creationTime": "2022-02-07T17:18:44.088870+00:00",
+			"keyName": "key1",
+			"permissions": "FULL",
+			"value": "..."
+		},
+		{
+			"creationTime": "2022-02-07T17:18:44.088870+00:00",
+			"keyName": "key2",
+			"permissions": "FULL",
+			"value": "..."
+		}
+	]
+	```
+
 	```pwsh
 	$ENV:AZURE_STORAGE_ACCOUNT_KEY="<mystorageaccountkey>"
 	```
+	> You can obtain your account key from the Azure Portal under the "Access Keys" section on the left-hand pane of your storage account.
 
 #### Create account
 
@@ -44,6 +67,11 @@ The Azure Blob SDK can access an Azure Storage account.
 * Install the Azure Blob Storage client module for Go with `go get`:
 ```bash
 go get github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
+```
+
+> Optional: If you are going to use AAD authentication, install the `azidentity` package:
+```bash
+go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 
 #### Create the client
@@ -60,7 +88,7 @@ The `endpoint` can be found on the page for your storage account in the [Azure P
 
 ```bash
 # Get the blob service URL for the account
-az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryEndpoints.blob"
+az storage account show -n mystorageaccount -g my-resource-group --query "primaryEndpoints.blob"
 ```
 
 Once you have the account URL, it can be used to create the service client:
@@ -85,7 +113,7 @@ be found in your storage account in the [Azure Portal][azure_portal_account_url]
 running the following Azure CLI command:
 
 ```bash
-az storage account keys list -g MyResourceGroup -n MyStorageAccount
+az storage account keys list -g my-resource-group -n mystorageaccount
 ```
 
 Use Shared Key authentication as the credential parameter to authenticate the client:
@@ -103,7 +131,7 @@ To do this, pass the connection string to the client's `NewServiceClientFromConn
 The connection string can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or with the following Azure CLI command:
 
 ```bash
-az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
+az storage account show-connection-string -g my-resource-group -n mystorageaccount
 ```
 
 ```golang
@@ -114,7 +142,6 @@ serviceClient, err := azblob.NewServiceClientFromConnectionString(connStr, nil)
 ##### 3. Creating the client from a SAS token
 
 To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string.
-If your account URL includes the SAS token, replace credential parameter with `azcore.NewAnonymousCredential()`.
 You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use
 the `ServiceClient.GetSASToken` or `ContainerClient.GetSASToken()` methods.
 

@@ -29,11 +29,6 @@ var pathToPackage = "sdk/keyvault/azkeys/testdata"
 func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
-		// err := recording.ResetProxy(nil)
-		// if err != nil {
-		// 	panic(err)
-		// }
-
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
@@ -60,14 +55,6 @@ func TestMain(m *testing.M) {
 
 	// Run tests
 	exitVal := m.Run()
-
-	// 3. Reset
-	if recording.GetRecordMode() != "live" {
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-	}
 
 	// 4. Error out if applicable
 	os.Exit(exitVal)

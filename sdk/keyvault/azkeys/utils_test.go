@@ -39,16 +39,7 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		// err = recording.AddRemoveHeaderSanitizer([]string{":path", ":authority", ":method", ":scheme"}, nil)
-		// if err != nil {
-		// 	panic(err)
-		// }
 	case recording.RecordingMode:
-		// err := recording.ResetProxy(nil)
-		// if err != nil {
-		// 	panic(err)
-		// }
-
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
@@ -98,12 +89,6 @@ func TestMain(m *testing.M) {
 	exitVal := m.Run()
 
 	// 3. Reset
-	if recording.GetRecordMode() != "live" {
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-	}
 
 	// 4. Error out if applicable
 	os.Exit(exitVal)

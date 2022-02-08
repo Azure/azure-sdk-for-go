@@ -1,6 +1,11 @@
 # Release History
 
-## 0.3.4 (Unreleased)
+## 0.3.4 (2022-02-08)
+
+### Features Added
+
+- Allow RetryOptions to be configured in the options for azservicebus.Client as well and admin.Client(#16831)
+- Add in the MessageState property to the ReceivedMessage. (#16985)
 
 ### Bugs Fixed
 

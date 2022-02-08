@@ -24,7 +24,7 @@ const (
 	ContainerNameLogs = "$logs"
 )
 
-// A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.
+// A ServiceClient represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type ServiceClient struct {
 	client    *serviceClient
 	u         url.URL

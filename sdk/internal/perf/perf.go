@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"runtime"
 	"sync"
 	"text/tabwriter"
 	"time"
@@ -23,6 +24,8 @@ var (
 	Parallel  int
 	wg        sync.WaitGroup
 )
+
+var numProcesses int
 
 type PerfTest interface {
 	// GetMetadata returns the name of the test
@@ -70,7 +73,7 @@ func runSetup(p PerfTest) error {
 
 // runTest takes care of the semantics of running a single iteration. It returns the number of times the test ran as an int, the exact number
 // of seconds the test ran as a float64, and any errors.
-func runTest(p PerfTest, c chan runResult) {
+func runTest(p PerfTest, index int, c chan runResult) {
 	defer wg.Done()
 
 	// If we are using the test proxy need to set up the in-memory recording.
@@ -119,7 +122,7 @@ func runTest(p PerfTest, c chan runResult) {
 	totalCount := 0
 	lastPrint := 1.0
 	perSecondCount := make([]int, 0)
-	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight|tabwriter.Debug)
+	// w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight|tabwriter.Debug)
 	for time.Since(timeStart).Seconds() < float64(Duration) {
 		err := p.Run(context.Background())
 		if err != nil {
@@ -130,19 +133,14 @@ func runTest(p PerfTest, c chan runResult) {
 		// Every second (roughly) we print out an update
 		if time.Since(timeStart).Seconds() > float64(lastPrint) {
 			thisCount := totalCount - sumInts(perSecondCount)
-			perSecondCount = append(perSecondCount, thisCount)
-			_, err = fmt.Fprintf(
-				w,
-				"%s\t%s\t%.2f\t\n",
-				commaIze(thisCount),
-				commaIze(totalCount),
-				float64(sumInts(perSecondCount))/time.Since(timeStart).Seconds(),
-			)
-			if err != nil {
-				c <- runResult{err: err}
+			c <- runResult{
+				count:         thisCount,
+				parallelIndex: index,
+				completed:     false,
+				timeInSeconds: time.Since(timeStart).Seconds(),
 			}
 			lastPrint = time.Since(timeStart).Seconds() + 1.0
-			w.Flush()
+			perSecondCount = append(perSecondCount, thisCount)
 		}
 	}
 
@@ -156,7 +154,7 @@ func runTest(p PerfTest, c chan runResult) {
 		}
 		setRecordingMode("live")
 	}
-	c <- runResult{count: totalCount, timeInSeconds: elapsed, err: nil}
+	c <- runResult{count: totalCount, timeInSeconds: elapsed, err: nil, completed: true, parallelIndex: index}
 }
 
 // runCleanup takes care of the semantics for tearing down a single iteration of a performance test.
@@ -177,9 +175,24 @@ func runGlobalCleanup(p PerfTest) error {
 }
 
 type runResult struct {
-	count         int
+	// number of iterations completed since the previous message
+	count int
+
+	// The time the update comes from
 	timeInSeconds float64
-	err           error
+
+	// if there is an error it will be here
+	err error
+
+	// true when this is the last result from a go routine
+	completed bool
+
+	// Index of the goroutine
+	parallelIndex int
+}
+
+func (r runResult) String() string {
+	return fmt.Sprintf("{count: %d, timeInSeconds: %.2f, err: %v, complete: %v, parallelIndex: %d}", r.count, r.timeInSeconds, r.err, r.completed, r.parallelIndex)
 }
 
 func runPerfTest(p NewPerfTest) error {
@@ -188,18 +201,18 @@ func runPerfTest(p NewPerfTest) error {
 		panic(err)
 	}
 
-	var channels []chan runResult
 	var perfTests []PerfTest
 
 	fmt.Println("=== Test ===")
 
 	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight)
-	fmt.Fprintln(w, "Current\tTotal\tAverage\t")
+	fmt.Fprintln(w, "Time\tCurrent\tTotal\tAverage\t")
 	err = w.Flush()
 	if err != nil {
 		panic(err)
 	}
 
+	messages := make(chan runResult)
 	for idx := 0; idx < Parallel; idx++ {
 		options := &PerfTestOptions{}
 		if TestProxy != "" {
@@ -224,25 +237,23 @@ func runPerfTest(p NewPerfTest) error {
 
 		// Create a thread for running a single test
 		wg.Add(1)
-		c := make(chan runResult, 1) // Create a buffered channel
-		channels = append(channels, c)
-		go runTest(perfTest, c)
+		go runTest(perfTest, idx, messages)
 	}
 
-	wg.Wait()
+	// Add another goroutine to close the channel after completion
+	go func() {
+		wg.Wait()
+		close(messages)
+	}()
 
-	opsPerSecond := 0.0
-	totalOperations := 0
-	// Get the results from the channels
-	for _, channel := range channels {
-		result := <-channel
-		if result.err != nil {
+	for msg := range messages {
+		if msg.err != nil {
 			panic(err)
 		}
-
-		opsPerSecond += float64(result.count) / result.timeInSeconds
-		totalOperations += result.count
+		handleMessage(w, msg)
 	}
+
+	printFinalResults()
 
 	// Run Cleanup on each parallel instance
 	for _, pTest := range perfTests {
@@ -253,17 +264,6 @@ func runPerfTest(p NewPerfTest) error {
 	}
 
 	err = runGlobalCleanup(p(nil))
-
-	fmt.Println("\n=== Results ===")
-	secondsPerOp := 1.0 / opsPerSecond
-	weightedAvgSec := float64(totalOperations) / opsPerSecond
-	fmt.Printf(
-		"Completed %s operations in a weighted-average of %.2fs (%s ops/s, %.3f s/op)",
-		commaIze(totalOperations),
-		weightedAvgSec,
-		commaIze(int(opsPerSecond)),
-		secondsPerOp,
-	)
 
 	return err
 }
@@ -298,6 +298,7 @@ func Run(perfTests []NewPerfTest) {
 	pflag.StringVarP(&TestProxy, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
 	pflag.IntVarP(&WarmUp, "warmup", "w", 5, "Duration of warmup in seconds. Default is 5.")
 	pflag.IntVarP(&Parallel, "parallel", "p", 1, "Degree of parallelism to run with. Default is 1.")
+	pflag.IntVar(&numProcesses, "max-cpus", runtime.NumCPU(), "Number of CPUs to use.")
 
 	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
 	err := pflag.CommandLine.MarkHidden("debug")
@@ -309,6 +310,13 @@ func Run(perfTests []NewPerfTest) {
 
 	if !registerCalled && debug {
 		fmt.Println("There were no local flags added.")
+	}
+
+	if numProcesses > 0 {
+		val := runtime.GOMAXPROCS(numProcesses)
+		if debug {
+			fmt.Printf("Changed GOMAXPROCS from %d to %d\n", val, numProcesses)
+		}
 	}
 
 	perfTestToRun := testsToRun(perfTests)

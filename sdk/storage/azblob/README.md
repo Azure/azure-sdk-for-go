@@ -12,7 +12,7 @@ The Azure Blob SDK can access an Azure Storage account.
 ### Prerequisites
 
 * Go versions 1.16 or higher
-* You must have an [Azure storage account][azure_storage_account]. If you need to create one, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with these commands (replace `"my-resource-group"` and `"mystorageaccount"` with your own unique names):
+* You must have an [Azure storage account][azure_storage_account]. If you need to create one, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with these commands (replace `my-resource-group` and `mystorageaccount` with your own unique names):
 	(Optional) if you want a new resource group to hold the Storage Account:
 	```
 	az group create --name my-resource-group --location westus2

@@ -253,6 +253,7 @@ func runPerfTest(p NewPerfTest) error {
 		handleMessage(w, msg)
 	}
 
+	// Print before running the cleanup in case cleanup takes a while
 	printFinalResults()
 
 	// Run Cleanup on each parallel instance
@@ -298,7 +299,7 @@ func Run(perfTests []NewPerfTest) {
 	pflag.StringVarP(&TestProxy, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
 	pflag.IntVarP(&WarmUp, "warmup", "w", 5, "Duration of warmup in seconds. Default is 5.")
 	pflag.IntVarP(&Parallel, "parallel", "p", 1, "Degree of parallelism to run with. Default is 1.")
-	pflag.IntVar(&numProcesses, "max-cpus", runtime.NumCPU(), "Number of CPUs to use.")
+	pflag.IntVar(&numProcesses, "maxprocs", runtime.NumCPU(), "Number of CPUs to use.")
 
 	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
 	err := pflag.CommandLine.MarkHidden("debug")

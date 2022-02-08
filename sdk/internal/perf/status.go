@@ -6,6 +6,8 @@ package perf
 import (
 	"fmt"
 	"text/tabwriter"
+
+	"golang.org/x/text/message"
 )
 
 var perSecondCount [][]int
@@ -45,13 +47,15 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 
 		avg := computeAverageOpsPerSecond()
 
+		p := message.NewPrinter(message.MatchLanguage("en"))
+
 		_, err := fmt.Fprintf(
 			w,
-			"%d\t%s\t%s\t%.2f\t\n",
+			"%d\t%s\t%s\t%s\t\n",
 			updateSecond+1,
-			commaIze(thisCount),
-			commaIze(totalCount),
-			avg,
+			p.Sprintf("%d", thisCount),
+			p.Sprintf("%d", totalCount),
+			p.Sprintf("%.2f", avg),
 		)
 		if err != nil {
 			panic(err)
@@ -87,15 +91,16 @@ func printFinalResults() {
 	}
 
 	totalOperations := sumInts(opsPerRoutine)
+	p := message.NewPrinter(message.MatchLanguage("en"))
 
 	fmt.Println("\n=== Results ===")
 	secondsPerOp := 1.0 / opsPerSecond
 	weightedAvgSec := float64(totalOperations) / opsPerSecond
 	fmt.Printf(
 		"Completed %s operations in a weighted-average of %.2fs (%s ops/s, %.3f s/op)\n",
-		commaIze(totalOperations),
+		p.Sprintf("%d", totalOperations),
 		weightedAvgSec,
-		commaIze(int(opsPerSecond)),
+		p.Sprintf("%d", int(opsPerSecond)),
 		secondsPerOp,
 	)
 }

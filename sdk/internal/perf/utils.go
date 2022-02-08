@@ -3,7 +3,9 @@
 
 package perf
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Helper function to sum a slice of integers
 func sumInts(ints []int) int {
@@ -24,29 +26,6 @@ func leftPad(i int) string {
 		return fmt.Sprintf("00%d", i)
 	}
 	return "000"
-}
-
-// Convert an integer to a string with comma separation in the format 1234 -> 1,234
-func commaIze(i int) string {
-	if i < 1000 {
-		return fmt.Sprintf("%d", i)
-	}
-
-	copy := i
-	ret := leftPad(copy % 1000)
-	copy /= 1000
-	for copy >= 1000 {
-		temp := leftPad(copy % 1000)
-		ret = fmt.Sprintf("%s,%s", temp, ret)
-
-		copy /= 1000
-	}
-
-	if copy == 0 {
-		return ret
-	}
-
-	return fmt.Sprintf("%d,%s", copy, ret)
 }
 
 func min(a, b int) int {

@@ -22,7 +22,6 @@ func (s *sleepPerfTest) GlobalCleanup(ctx context.Context) error {
 }
 
 func (s *sleepPerfTest) Setup(ctx context.Context) error {
-	s.secondsPerOp = int(math.Pow(2.0, float64(s.ParallelIndex)))
 	return nil
 }
 
@@ -35,7 +34,6 @@ func (s *sleepPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
-
 func (s *sleepPerfTest) RegisterArguments(ctx context.Context) error {
 	return nil
 }
@@ -44,7 +42,6 @@ func (s *sleepPerfTest) GetMetadata() perf.PerfTestOptions {
 	return s.PerfTestOptions
 }
 
-
 func NewSleepTest(options *perf.PerfTestOptions) perf.PerfTest {
 	if options == nil {
 		options = &perf.PerfTestOptions{}
@@ -52,5 +49,6 @@ func NewSleepTest(options *perf.PerfTestOptions) perf.PerfTest {
 	options.Name = "SleepTest"
 	return &sleepPerfTest{
 		PerfTestOptions: *options,
+		secondsPerOp:    int(math.Pow(2.0, float64(options.ParallelIndex))),
 	}
 }

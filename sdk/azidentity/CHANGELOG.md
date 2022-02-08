@@ -7,8 +7,6 @@
   `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` is "true".
   ([#16851](https://github.com/Azure/azure-sdk-for-go/pull/16851))
 
-### Breaking Changes
-
 ### Bugs Fixed
 * `ManagedIdentityCredential.GetToken()` now returns an error when configured for
    a user assigned identity in Azure Cloud Shell (which doesn't support such identities)

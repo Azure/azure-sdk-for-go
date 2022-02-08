@@ -222,6 +222,41 @@ deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",
 
 To see some example code for receiving messages using the Receiver see the ["Receive messages"](#receive-messages) sample.
 
+## Troubleshooting
+
+### Logging
+
+This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. 
+
+Use the `azcore/log` package to control log event output or to enable logs for `azservicebus` only. For example:
+
+```go
+import (
+  "fmt"
+  azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+)
+
+// print log output to stdout
+azlog.SetListener(func(event azlog.Event, s string) {
+    fmt.Printf("[%s] %s\n", event, s)
+})
+
+// pick the set of events to log
+azlog.SetEvents(
+  // connection/reconnect related events)
+  "azsb.Conn",
+  // authentication events
+  "azsb.Auth",
+  // receiver specific events
+  "azsb.Receiver",
+  // management link related events
+  "azsb.Mgmt",
+  // retry related events
+  "azsb.Retry",
+)
+```
+
+
 ## Next steps
 
 Please take a look at the [samples][godoc_examples] for detailed examples on how to use this library to send and receive messages to/from [Service Bus Queues, Topics and Subscriptions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview).

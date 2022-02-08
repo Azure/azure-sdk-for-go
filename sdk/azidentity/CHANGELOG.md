@@ -1,19 +1,23 @@
 # Release History
 
-## 0.13.1 (Unreleased)
+## 0.13.1 (2022-02-08)
 
 ### Features Added
+* `EnvironmentCredential` supports certificate SNI authentication when
+  `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` is "true".
+  ([#16851](https://github.com/Azure/azure-sdk-for-go/pull/16851))
 
 ### Breaking Changes
 
 ### Bugs Fixed
 * `ManagedIdentityCredential.GetToken()` now returns an error when configured for
    a user assigned identity in Azure Cloud Shell (which doesn't support such identities)
+   ([#16946](https://github.com/Azure/azure-sdk-for-go/pull/16946))
 
 ### Other Changes
-
-* Improved the diagnosability of the `DefaultAzureCredential` by logging failures by credentials when at least one credential succeeded at initialization.
-* Improved the diagnosability of the `DefaultAzureCredential` and `ChainedTokenCredential` aggregating all the errors that might have occurred on the credential chain during `GetToken` calls into a single message provided via logs and errors if the chain is finally unable to retrieve a token.
+* `NewDefaultAzureCredential()` logs non-fatal errors. These errors are also included in the
+  error returned by `DefaultAzureCredential.GetToken()` when it's unable to acquire a token
+  from any source. ([#15923](https://github.com/Azure/azure-sdk-for-go/issues/15923))
 
 ## 0.13.0 (2022-01-11)
 

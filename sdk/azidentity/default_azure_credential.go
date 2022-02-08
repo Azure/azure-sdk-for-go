@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 
@@ -54,7 +53,8 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {
-		errorMessages = append(errorMessages, fmt.Sprintf("EnvironmentCredential: %s", err.Error()))
+		errorMessages = append(errorMessages, "EnvironmentCredential: "+err.Error())
+		creds = append(creds, &defaultCredentialErrorReporter{credType: "EnvironmentCredential", err: err})
 	}
 
 	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions})
@@ -62,14 +62,16 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, msiCred)
 		msiCred.client.imdsTimeout = time.Second
 	} else {
-		errorMessages = append(errorMessages, fmt.Sprintf("ManagedIdentityCredential: %s", err.Error()))
+		errorMessages = append(errorMessages, credNameManagedIdentity+": "+err.Error())
+		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameManagedIdentity, err: err})
 	}
 
 	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {
-		errorMessages = append(errorMessages, fmt.Sprintf("AzureCLICredential: %s", err.Error()))
+		errorMessages = append(errorMessages, credNameAzureCLI+": "+err.Error())
+		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameAzureCLI, err: err})
 	}
 
 	err = defaultAzureCredentialConstructorErrorHandler(len(creds), errorMessages)
@@ -92,6 +94,8 @@ func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.Token
 	return c.chain.GetToken(ctx, opts)
 }
 
+var _ azcore.TokenCredential = (*DefaultAzureCredential)(nil)
+
 func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
 	errorMessage := strings.Join(errorMessages, "\n\t")
 
@@ -107,3 +111,21 @@ func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials
 
 	return nil
 }
+
+// defaultCredentialErrorReporter is a substitute for credentials that couldn't be constructed.
+// Its GetToken method always returns a credentialUnavailableError having the same message as
+// the error that prevented constructing the credential. This ensures the message is present
+// in the error returned by ChainedTokenCredential.GetToken()
+type defaultCredentialErrorReporter struct {
+	credType string
+	err      error
+}
+
+func (d *defaultCredentialErrorReporter) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+	if _, ok := d.err.(credentialUnavailableError); ok {
+		return nil, d.err
+	}
+	return nil, newCredentialUnavailableError(d.credType, d.err.Error())
+}
+
+var _ azcore.TokenCredential = (*defaultCredentialErrorReporter)(nil)

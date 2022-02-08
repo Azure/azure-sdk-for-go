@@ -56,45 +56,39 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 // GetToken calls GetToken on the chained credentials in turn, stopping when one returns a token. This method is called automatically by Azure SDK clients.
 // ctx: Context controlling the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
-func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if c.successfulCredential != nil && !c.retrySources {
 		return c.successfulCredential.GetToken(ctx, opts)
 	}
-	var errList []credentialUnavailableError
+
+	var errs []error
 	for _, cred := range c.sources {
-		token, err = cred.GetToken(ctx, opts)
-		var credErr credentialUnavailableError
-		if errors.As(err, &credErr) {
-			errList = append(errList, credErr)
-		} else if err != nil {
-			var authFailed AuthenticationFailedError
-			if errors.As(err, &authFailed) {
-				err = fmt.Errorf("%s: %s\n\t%s", c.name, createChainedErrorMessage(errList), err)
-				authErr := newAuthenticationFailedError(err, authFailed.RawResponse)
-				return nil, authErr
-			}
-			return nil, err
-		} else {
+		token, err := cred.GetToken(ctx, opts)
+		if err == nil {
 			log.Writef(EventAuthentication, "Azure Identity => %s authenticated with %s", c.name, extractCredentialName(cred))
 			c.successfulCredential = cred
 			return token, nil
 		}
+		errs = append(errs, err)
+		if _, ok := err.(credentialUnavailableError); !ok {
+			res := getResponseFromError(err)
+			msg := createChainedErrorMessage(errs)
+			return nil, newAuthenticationFailedError(c.name, msg, res)
+		}
 	}
-
-	// if we reach this point it means that all of the credentials in the chain returned CredentialUnavailableError
-	credErr := newCredentialUnavailableError(c.name, createChainedErrorMessage(errList))
-
-	log.Writef(EventAuthentication, "Azure Identity => ERROR in GetToken() call for %s", credErr.Error())
-
-	return nil, credErr
+	// if we get here, all credentials returned credentialUnavailableError
+	msg := createChainedErrorMessage(errs)
+	err := newCredentialUnavailableError(c.name, msg)
+	log.Write(EventAuthentication, "Azure Identity => ERROR: "+err.Error())
+	return nil, err
 }
 
-func createChainedErrorMessage(errList []credentialUnavailableError) string {
-	msg := "failed to acquire a token.\nAttempted credentials:\n"
-	for _, err := range errList {
-		msg += fmt.Sprintf("\t%s\n", err.Error())
+func createChainedErrorMessage(errs []error) string {
+	msg := "failed to acquire a token.\nAttempted credentials:"
+	for _, err := range errs {
+		msg += fmt.Sprintf("\n\t%s", err.Error())
 	}
-	return msg[0 : len(msg)-1]
+	return msg
 }
 
 func extractCredentialName(credential azcore.TokenCredential) string {

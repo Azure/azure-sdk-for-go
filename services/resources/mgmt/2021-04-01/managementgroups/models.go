@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-05-01/managementgroups"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-04-01/managementgroups"
 
 // AzureAsyncOperationResults the results of Azure-AsyncOperation.
 type AzureAsyncOperationResults struct {
@@ -694,6 +694,10 @@ type Details struct {
 	Parent    *ParentGroupInfo `json:"parent,omitempty"`
 	// Path - The path from the root to the current group.
 	Path *[]PathElement `json:"path,omitempty"`
+	// ManagementGroupAncestors - The ancestors of the management group.
+	ManagementGroupAncestors *[]string `json:"managementGroupAncestors,omitempty"`
+	// ManagementGroupAncestorsChain - The ancestors of the management group displayed in reversed order, from immediate parent to the root.
+	ManagementGroupAncestorsChain *[]PathElement `json:"managementGroupAncestorsChain,omitempty"`
 }
 
 // EntityHierarchyItem the management group details for the hierarchy view.

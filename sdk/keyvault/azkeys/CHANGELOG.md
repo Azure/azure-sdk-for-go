@@ -1,16 +1,12 @@
 # Release History
 
-## 0.3.0 (Unreleased)
-
-### Features Added
+## 0.3.0 (2022-02-08)
 
 ### Breaking Changes
 * Changed the `Tags` properties from `map[string]*string` to `map[string]string`
 
 ### Bugs Fixed
 * Fixed a bug in `UpdateKeyProperties` where the `KeyOps` would be deleted if the `UpdateKeyProperties.KeyOps` value was left empty.
-
-### Other Changes
 
 ## 0.2.0 (2022-01-12)
 

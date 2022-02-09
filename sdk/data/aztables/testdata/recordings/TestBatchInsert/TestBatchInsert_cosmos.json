@@ -12,7 +12,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 21:03:16 GMT",
+        "x-ms-date": "Mon, 31 Jan 2022 20:48:05 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -21,15 +21,15 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 24 Jan 2022 21:03:18 GMT",
-        "ETag": "W/\u0022datetime\u00272022-01-24T21%3A03%3A18.1220872Z\u0027\u0022",
-        "Location": "https://rosebudprim.table.cosmos.azure.com/Tables(\u0027tableName1939530605\u0027)",
+        "Date": "Mon, 31 Jan 2022 20:48:06 GMT",
+        "ETag": "W/\u0022datetime\u00272022-01-31T20%3A48%3A07.0408200Z\u0027\u0022",
+        "Location": "https://fakeaccount.table.cosmos.azure.com/Tables(\u0027tableName1939530605\u0027)",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "26ff9878-9ce4-40ea-9831-6aa73e4b7b13"
+        "x-ms-request-id": "7abae789-99bc-4a50-a566-997eb2c11e8d"
       },
       "ResponseBody": {
         "TableName": "tableName1939530605",
-        "odata.metadata": "https://rosebudprim.table.cosmos.azure.com/$metadata#Tables/@Element"
+        "odata.metadata": "https://fakeaccount.table.cosmos.azure.com/$metadata#Tables/@Element"
       }
     },
     {
@@ -41,21 +41,21 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "822",
-        "Content-Type": "multipart/mixed; boundary=batch_8b709dc5-16e9-46a6-50db-d74d34052e96",
+        "Content-Type": "multipart/mixed; boundary=batch_00000000-0000-0000-0000-000000000000",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 21:03:17 GMT",
+        "x-ms-date": "Mon, 31 Jan 2022 20:48:06 GMT",
         "x-ms-version": "2019-02-02"
       },
-      "RequestBody": "LS1iYXRjaF84YjcwOWRjNS0xNmU5LTQ2YTYtNTBkYi1kNzRkMzQwNTJlOTYNCkNvbnRlbnQtVHlwZTogbXVsdGlwYXJ0L21peGVkOyBib3VuZGFyeT1jaGFuZ2VzZXRfYzdiNjkzMDEtN2EyOC00OTBjLTY0Y2ItNjg3ZTU2NjE5MTRjDQoNCi0tY2hhbmdlc2V0X2M3YjY5MzAxLTdhMjgtNDkwYy02NGNiLTY4N2U1NjYxOTE0Yw0KQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHANCg0KUE9TVCBodHRwczovL3Jvc2VidWRwcmltLnRhYmxlLmNvc21vcy5henVyZS5jb20vdGFibGVOYW1lMTkzOTUzMDYwNShQYXJ0aXRpb25LZXk9J3BhcnRpdGlvbicsUm93S2V5PScxJykgSFRUUC8xLjENCkFjY2VwdDogYXBwbGljYXRpb24vanNvbg0KQ29udGVudC1MZW5ndGg6IDE5NA0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uDQpEYXRhc2VydmljZXZlcnNpb246IDMuMA0KWC1IdHRwLU1ldGhvZDogTUVSR0UNClgtTXMtVmVyc2lvbjogMjAxOS0wMi0wMg0KDQp7IkJvb2wiOnRydWUsIkJ5dGUiOiJjMjl0WldKNWRHVnoiLCJEYXRlVGltZSI6IjIwMjEtMDctMTNUMDA6MDA6MDBaIiwiRmxvYXQiOjMuMTQxNTksIkludGVnZXIiOjEsIlBhcnRpdGlvbktleSI6InBhcnRpdGlvbiIsIlJvd0tleSI6IjEiLCJTdHJpbmciOiJzb21lU3RyaW5nIiwiVGltZXN0YW1wIjoiMDAwMS0wMS0wMVQwMDowMDowMFoifQ0KLS1jaGFuZ2VzZXRfYzdiNjkzMDEtN2EyOC00OTBjLTY0Y2ItNjg3ZTU2NjE5MTRjLS0NCg0KLS1iYXRjaF84YjcwOWRjNS0xNmU5LTQ2YTYtNTBkYi1kNzRkMzQwNTJlOTYtLQ0K",
+      "RequestBody": "LS1iYXRjaF8wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDANCkNvbnRlbnQtVHlwZTogbXVsdGlwYXJ0L21peGVkOyBib3VuZGFyeT1jaGFuZ2VzZXRfY2JkNTcyNjYtYmJhYS00NzdlLTQzY2UtZmM0MjE2Mjk0NTNlDQoNCi0tY2hhbmdlc2V0X2NiZDU3MjY2LWJiYWEtNDc3ZS00M2NlLWZjNDIxNjI5NDUzZQ0KQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHANCg0KUE9TVCBodHRwczovL2Zha2VhY2NvdW50LnRhYmxlLmNvc21vcy5henVyZS5jb20vdGFibGVOYW1lMTkzOTUzMDYwNShQYXJ0aXRpb25LZXk9J3BhcnRpdGlvbicsUm93S2V5PScxJykgSFRUUC8xLjENCkFjY2VwdDogYXBwbGljYXRpb24vanNvbg0KQ29udGVudC1MZW5ndGg6IDE5NA0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uDQpEYXRhc2VydmljZXZlcnNpb246IDMuMA0KWC1IdHRwLU1ldGhvZDogTUVSR0UNClgtTXMtVmVyc2lvbjogMjAxOS0wMi0wMg0KDQp7IkJvb2wiOnRydWUsIkJ5dGUiOiJjMjl0WldKNWRHVnoiLCJEYXRlVGltZSI6IjIwMjEtMDctMTNUMDA6MDA6MDBaIiwiRmxvYXQiOjMuMTQxNTksIkludGVnZXIiOjEsIlBhcnRpdGlvbktleSI6InBhcnRpdGlvbiIsIlJvd0tleSI6IjEiLCJTdHJpbmciOiJzb21lU3RyaW5nIiwiVGltZXN0YW1wIjoiMDAwMS0wMS0wMVQwMDowMDowMFoifQ0KLS1jaGFuZ2VzZXRfY2JkNTcyNjYtYmJhYS00NzdlLTQzY2UtZmM0MjE2Mjk0NTNlLS0NCg0KLS1iYXRjaF8wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAtLQ0K",
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Content-Type": "multipart/mixed; boundary=batchresponse_cfb1d1fb-3f29-4c9c-ba80-717cdb5557a1",
-        "Date": "Mon, 24 Jan 2022 21:03:18 GMT",
+        "Content-Type": "multipart/mixed; boundary=batchresponse_b24906dc-5156-4b28-ac81-69cb00cbdc7e",
+        "Date": "Mon, 31 Jan 2022 20:48:06 GMT",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "adaa605a-f26a-4563-ab9f-ab5788a4a72b"
+        "x-ms-request-id": "a23ac3bb-f22a-4a35-9c00-aad345d399f5"
       },
-      "ResponseBody": "LS1iYXRjaHJlc3BvbnNlX2NmYjFkMWZiLTNmMjktNGM5Yy1iYTgwLTcxN2NkYjU1NTdhMQ0KQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PWNoYW5nZXNldHJlc3BvbnNlX2Y5YmU3NmNiLTEyYTYtNGM2NS05OTUwLTJhZDIxZmRmNGE0Ng0KDQotLWNoYW5nZXNldHJlc3BvbnNlX2Y5YmU3NmNiLTEyYTYtNGM2NS05OTUwLTJhZDIxZmRmNGE0NgpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHAKQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5CgpIVFRQLzEuMSAyMDQgTm8gQ29udGVudA0KRVRhZzogVy8iZGF0ZXRpbWUnMjAyMi0wMS0yNFQyMSUzQTAzJTNBMTguNjMwNjA1NlonIg0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uDQpDb250ZW50LUlEOiAxDQoNCg0KLS1jaGFuZ2VzZXRyZXNwb25zZV9mOWJlNzZjYi0xMmE2LTRjNjUtOTk1MC0yYWQyMWZkZjRhNDYtLQotLWJhdGNocmVzcG9uc2VfY2ZiMWQxZmItM2YyOS00YzljLWJhODAtNzE3Y2RiNTU1N2ExLS0NCg=="
+      "ResponseBody": "LS1iYXRjaHJlc3BvbnNlX2IyNDkwNmRjLTUxNTYtNGIyOC1hYzgxLTY5Y2IwMGNiZGM3ZQ0KQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PWNoYW5nZXNldHJlc3BvbnNlX2I0NzFmMTQ5LWQ5NDQtNGI0NS04YzJmLWMxMDZlODY3MzI2OQ0KDQotLWNoYW5nZXNldHJlc3BvbnNlX2I0NzFmMTQ5LWQ5NDQtNGI0NS04YzJmLWMxMDZlODY3MzI2OQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHAKQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5CgpIVFRQLzEuMSAyMDQgTm8gQ29udGVudA0KRVRhZzogVy8iZGF0ZXRpbWUnMjAyMi0wMS0zMVQyMCUzQTQ4JTNBMDcuNTEyNjc5MlonIg0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uDQpDb250ZW50LUlEOiAxDQoNCg0KLS1jaGFuZ2VzZXRyZXNwb25zZV9iNDcxZjE0OS1kOTQ0LTRiNDUtOGMyZi1jMTA2ZTg2NzMyNjktLQotLWJhdGNocmVzcG9uc2VfYjI0OTA2ZGMtNTE1Ni00YjI4LWFjODEtNjljYjAwY2JkYzdlLS0NCg=="
     },
     {
       "RequestUri": "https://fakeaccount.table.cosmos.azure.com/tableName1939530605()?%24format=application%2Fjson%3Bodata%3Dminimalmetadata",
@@ -67,21 +67,21 @@
         "Authorization": "Sanitized",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 21:03:17 GMT",
+        "x-ms-date": "Mon, 31 Jan 2022 20:48:06 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 24 Jan 2022 21:03:18 GMT",
+        "Date": "Mon, 31 Jan 2022 20:48:06 GMT",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "c7d4d64d-aee9-46d2-9a23-9e68d837c9b1"
+        "x-ms-request-id": "bce75baa-304e-4625-b4fc-8f25a61d802a"
       },
       "ResponseBody": {
         "value": [
           {
-            "odata.etag": "W/\u0022datetime\u00272022-01-24T21%3A03%3A18.6306056Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272022-01-31T20%3A48%3A07.5126792Z\u0027\u0022",
             "PartitionKey": "partition",
             "RowKey": "1",
             "Bool": true,
@@ -90,10 +90,10 @@
             "Float": 3.14159,
             "Integer": 1,
             "String": "someString",
-            "Timestamp": "2022-01-24T21:03:18.6306056Z"
+            "Timestamp": "2022-01-31T20:48:07.5126792Z"
           }
         ],
-        "odata.metadata": "https://rosebudprim.table.cosmos.azure.com/$metadata#tableName1939530605"
+        "odata.metadata": "https://fakeaccount.table.cosmos.azure.com/$metadata#tableName1939530605"
       }
     },
     {
@@ -104,14 +104,14 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-internal/v0.5.1 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 24 Jan 2022 21:03:17 GMT",
+        "x-ms-date": "Mon, 31 Jan 2022 20:48:06 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Mon, 24 Jan 2022 21:03:18 GMT",
-        "x-ms-request-id": "a8941e1e-ef02-4248-85c6-c9cea11f80e6"
+        "Date": "Mon, 31 Jan 2022 20:48:07 GMT",
+        "x-ms-request-id": "8de19687-ff05-4528-a3f5-d2e72189fba1"
       },
       "ResponseBody": null
     }

@@ -230,7 +230,7 @@ To see some example code for receiving messages using the Receiver see the ["Rec
 
 ### Logging
 
-This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. 
+This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set the environment variable `AZURE_SDK_GO_LOGGING` to `all`. 
 
 Use the `azcore/log` package to control log event output or to enable logs for `azservicebus` only. For example:
 

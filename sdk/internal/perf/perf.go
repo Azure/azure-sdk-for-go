@@ -110,11 +110,42 @@ func runTest(p PerfTest, index int, c chan runResult) {
 
 	if WarmUp > 0 {
 		warmUpStart := time.Now()
+		warmUpLastPrint := 1.0
+		warmUpPerSecondCount := make([]int, 0)
+		warmupCount := 0
 		for time.Since(warmUpStart).Seconds() < float64(WarmUp) {
 			err := p.Run(context.Background())
 			if err != nil {
 				c <- runResult{err: err}
 			}
+			warmupCount += 1
+
+			if time.Since(warmUpStart).Seconds() > warmUpLastPrint {
+				thisSecondCount := warmupCount - sumInts(warmUpPerSecondCount)
+				c <- runResult{
+					warmup:        true,
+					count:         thisSecondCount,
+					parallelIndex: index,
+					timeInSeconds: time.Since(warmUpStart).Seconds(),
+				}
+
+				warmUpPerSecondCount = append(warmUpPerSecondCount, thisSecondCount)
+				warmUpLastPrint += 1.0
+				if int(warmUpLastPrint) == WarmUp {
+					// We can have odd scenarios where we send this
+					// message, and the final message below right after
+					warmUpLastPrint += 1.0
+				}
+			}
+		}
+
+		thisSecondCount := warmupCount - sumInts(warmUpPerSecondCount)
+		c <- runResult{
+			warmup:        true,
+			completed:     true,
+			count:         thisSecondCount,
+			parallelIndex: index,
+			timeInSeconds: time.Since(warmUpStart).Seconds(),
 		}
 	}
 
@@ -122,7 +153,6 @@ func runTest(p PerfTest, index int, c chan runResult) {
 	totalCount := 0
 	lastPrint := 1.0
 	perSecondCount := make([]int, 0)
-	// w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight|tabwriter.Debug)
 	for time.Since(timeStart).Seconds() < float64(Duration) {
 		err := p.Run(context.Background())
 		if err != nil {
@@ -130,8 +160,8 @@ func runTest(p PerfTest, index int, c chan runResult) {
 		}
 		totalCount += 1
 
-		// Every second (roughly) we print out an update
-		if time.Since(timeStart).Seconds() > float64(lastPrint) {
+		// Every second (roughly) we send an update through the channel
+		if time.Since(timeStart).Seconds() > lastPrint {
 			thisCount := totalCount - sumInts(perSecondCount)
 			c <- runResult{
 				count:         thisCount,
@@ -139,8 +169,11 @@ func runTest(p PerfTest, index int, c chan runResult) {
 				completed:     false,
 				timeInSeconds: time.Since(timeStart).Seconds(),
 			}
-			lastPrint = time.Since(timeStart).Seconds() + 1.0
+			lastPrint += 1.0
 			perSecondCount = append(perSecondCount, thisCount)
+			if int(lastPrint) == Duration {
+				lastPrint += 1.0
+			}
 		}
 	}
 
@@ -154,7 +187,7 @@ func runTest(p PerfTest, index int, c chan runResult) {
 		}
 		setRecordingMode("live")
 	}
-	c <- runResult{count: totalCount, timeInSeconds: elapsed, err: nil, completed: true, parallelIndex: index}
+	c <- runResult{count: totalCount, timeInSeconds: elapsed, completed: true, parallelIndex: index}
 }
 
 // runCleanup takes care of the semantics for tearing down a single iteration of a performance test.
@@ -189,10 +222,13 @@ type runResult struct {
 
 	// Index of the goroutine
 	parallelIndex int
+
+	// indicates if result is from a warmup start
+	warmup bool
 }
 
 func (r runResult) String() string {
-	return fmt.Sprintf("{count: %d, timeInSeconds: %.2f, err: %v, complete: %v, parallelIndex: %d}", r.count, r.timeInSeconds, r.err, r.completed, r.parallelIndex)
+	return fmt.Sprintf("{count: %d, timeInSeconds: %.2f, err: %v, complete: %v, parallelIndex: %d, warmup: %v}", r.count, r.timeInSeconds, r.err, r.completed, r.parallelIndex, r.warmup)
 }
 
 func runPerfTest(p NewPerfTest) error {
@@ -203,11 +239,7 @@ func runPerfTest(p NewPerfTest) error {
 
 	var perfTests []PerfTest
 
-	fmt.Println("=== Test ===")
-
 	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight)
-	fmt.Fprintln(w, "Time\tCurrent\tTotal\tAverage\t")
-	err = w.Flush()
 	if err != nil {
 		panic(err)
 	}
@@ -234,7 +266,9 @@ func runPerfTest(p NewPerfTest) error {
 		if err != nil {
 			return err
 		}
+	}
 
+	for idx, perfTest := range perfTests {
 		// Create a thread for running a single test
 		wg.Add(1)
 		go runTest(perfTest, idx, messages)
@@ -246,6 +280,7 @@ func runPerfTest(p NewPerfTest) error {
 		close(messages)
 	}()
 
+	// Read incoming messages and handle status updates
 	for msg := range messages {
 		if msg.err != nil {
 			panic(err)

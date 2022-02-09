@@ -153,7 +153,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 		{err: newCredentialUnavailableError("unavailableCredential2", "Unavailable expected error")},
 	}}
 	credential3 := &TestCredential{responses: []testCredentialResponse{
-		{err: newAuthenticationFailedError(newCredentialUnavailableError("authenticationFailedCredential3", "Authentication failed expected error"), nil)},
+		{err: newAuthenticationFailedError("authenticationFailedCredential3", "Authentication failed expected error", nil)},
 	}}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1, credential2, credential3}, nil)
 	if err != nil {

@@ -6,9 +6,8 @@
     "--go-sdk-folder=.",
     "--multiapi",
     "--use-onever",
-    "--version=V2",
-    "--go.license-header=MICROSOFT_MIT_NO_VERSION",
-    "--pass-thru:schema-validator-swagger"
+    "--version=2.0.4421",
+    "--go.license-header=MICROSOFT_MIT_NO_VERSION"
   ],
   "additionalOptions": [
     "--enum-prefix"

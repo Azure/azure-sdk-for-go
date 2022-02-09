@@ -13,10 +13,12 @@ import (
 var perSecondCount [][]int
 var elapsedTimes [][]float64
 
-var opsPerRoutine []int
-var secondsPerRoutine []float64
+var perSecondCountWarmup [][]int
+var elapsedTimesWarmup [][]float64
 
 var printedWarmupResults bool = false
+
+var messagePrinter *message.Printer = message.NewPrinter(message.MatchLanguage("en"))
 
 // helper function for handling status updates
 func handleMessage(w *tabwriter.Writer, msg runResult) {
@@ -25,9 +27,10 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 		return
 	}
 
-	// Check if we need to print out results from warmup
+	// Check if we need to print out results from warmup. Results come in a channel, so we
+	// need to check if all N channels (N = Parallel) have reported final results
 	if len(elapsedTimesWarmup[WarmUp-1]) == Parallel && !printedWarmupResults {
-		printFinalResultsWarmup()
+		printFinalResults(elapsedTimesWarmup, perSecondCountWarmup, true)
 		printedWarmupResults = true
 	}
 
@@ -37,13 +40,6 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 			perSecondCount = append(perSecondCount, []int{})
 			elapsedTimes = append(elapsedTimes, []float64{})
 		}
-		opsPerRoutine = make([]int, Parallel)
-		secondsPerRoutine = make([]float64, Parallel)
-	}
-
-	if msg.completed {
-		opsPerRoutine[msg.parallelIndex] = msg.count
-		secondsPerRoutine[msg.parallelIndex] = msg.timeInSeconds
 	}
 
 	updateSecond := int(msg.timeInSeconds) - 1
@@ -62,16 +58,14 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 			totalCount += sumInts(c)
 		}
 
-		avg := computeAverageOpsPerSecond()
-
-		p := message.NewPrinter(message.MatchLanguage("en"))
+		avg := computeAverageOpsPerSecond(perSecondCount, elapsedTimes)
 
 		_, err := fmt.Fprintf(
 			w,
 			"%s\t%s\t%s\t\n",
-			p.Sprintf("%d", thisCount),
-			p.Sprintf("%d", totalCount),
-			p.Sprintf("%.2f", avg),
+			messagePrinter.Sprintf("%d", thisCount),
+			messagePrinter.Sprintf("%d", totalCount),
+			messagePrinter.Sprintf("%.2f", avg),
 		)
 		if err != nil {
 			panic(err)
@@ -80,12 +74,6 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 	}
 }
 
-var perSecondCountWarmup [][]int
-var elapsedTimesWarmup [][]float64
-
-var opsPerRoutineWarmup []int
-var secondsPerRoutineWarmup []float64
-
 func handleWarmupMessage(w *tabwriter.Writer, msg runResult) {
 	if len(perSecondCountWarmup) == 0 {
 		// Initialize the slice of slices for warmups
@@ -93,8 +81,6 @@ func handleWarmupMessage(w *tabwriter.Writer, msg runResult) {
 			perSecondCountWarmup = append(perSecondCountWarmup, []int{})
 			elapsedTimesWarmup = append(elapsedTimesWarmup, []float64{})
 		}
-		opsPerRoutineWarmup = make([]int, Parallel)
-		secondsPerRoutineWarmup = make([]float64, Parallel)
 	}
 
 	updateSecond := int(msg.timeInSeconds) - 1
@@ -113,7 +99,7 @@ func handleWarmupMessage(w *tabwriter.Writer, msg runResult) {
 			totalCount += sumInts(c)
 		}
 
-		avg := computeAverageOpsPerSecondWarmup()
+		avg := computeAverageOpsPerSecond(perSecondCountWarmup, elapsedTimesWarmup)
 
 		p := message.NewPrinter(message.MatchLanguage("en"))
 
@@ -131,27 +117,7 @@ func handleWarmupMessage(w *tabwriter.Writer, msg runResult) {
 	}
 }
 
-func computeAverageOpsPerSecondWarmup() float64 {
-	var avg float64
-
-	for p := 0; p < Parallel; p++ {
-		threadOps := 0
-		timeElapsed := 0.0
-		for i := 0; i < len(perSecondCountWarmup); i++ {
-			if len(perSecondCountWarmup[i]) == 0 || len(elapsedTimesWarmup[i]) == 0 {
-				break
-			}
-			threadOps += perSecondCountWarmup[i][p]
-			timeElapsed = elapsedTimesWarmup[i][p]
-		}
-
-		avg += float64(threadOps) / timeElapsed
-	}
-
-	return avg
-}
-
-func computeAverageOpsPerSecond() float64 {
+func computeAverageOpsPerSecond(perSecondCount [][]int, elapsedTimes [][]float64) float64 {
 	var avg float64
 
 	for p := 0; p < Parallel; p++ {
@@ -171,54 +137,35 @@ func computeAverageOpsPerSecond() float64 {
 	return avg
 }
 
-func printFinalResultsWarmup() {
-	opsPerRoutineWarmup := make([]int, Parallel)
-	secondsPerRoutineWarmup := make([]float64, Parallel)
+func printFinalResults(elapsedTimes [][]float64, perSecondCount [][]int, warmup bool) {
+	opsPerRoutine := make([]int, Parallel)
+	secondsPerRoutine := make([]float64, Parallel)
+	innerLoop := Duration
+	if warmup {
+		innerLoop = WarmUp
+	}
 	for i := 0; i < Parallel; i++ {
-		secondsPerRoutineWarmup[i] = elapsedTimesWarmup[WarmUp-1][i]
-		for j := 0; j < WarmUp; j++ {
-			opsPerRoutineWarmup[i] += perSecondCountWarmup[j][i]
+		secondsPerRoutine[i] = elapsedTimes[innerLoop-1][i]
+		for j := 0; j < innerLoop; j++ {
+			opsPerRoutine[i] += perSecondCount[j][i]
 		}
 	}
 
-	opsPerSecond := 0.0
-	for i := 0; i < Parallel; i++ {
-		opsPerSecond += float64(opsPerRoutineWarmup[i]) / secondsPerRoutineWarmup[i]
-	}
-
-	totalOperations := sumInts(opsPerRoutineWarmup)
-
-	p := message.NewPrinter(message.MatchLanguage("en"))
-
-	fmt.Println("\n=== Results ===")
-	secondsPerOp := 1.0 / opsPerSecond
-	weightedAvgSec := float64(totalOperations) / opsPerSecond
-	fmt.Printf(
-		"Completed %s operations in a weighted-average of %.2fs (%s ops/s, %.3f s/op)\n",
-		p.Sprintf("%d", totalOperations),
-		weightedAvgSec,
-		p.Sprintf("%d", int(opsPerSecond)),
-		secondsPerOp,
-	)
-}
-
-func printFinalResults() {
 	opsPerSecond := 0.0
 	for i := 0; i < Parallel; i++ {
 		opsPerSecond += float64(opsPerRoutine[i]) / secondsPerRoutine[i]
 	}
 
 	totalOperations := sumInts(opsPerRoutine)
-	p := message.NewPrinter(message.MatchLanguage("en"))
 
 	fmt.Println("\n=== Results ===")
 	secondsPerOp := 1.0 / opsPerSecond
 	weightedAvgSec := float64(totalOperations) / opsPerSecond
 	fmt.Printf(
 		"Completed %s operations in a weighted-average of %.2fs (%s ops/s, %.3f s/op)\n",
-		p.Sprintf("%d", totalOperations),
+		messagePrinter.Sprintf("%d", totalOperations),
 		weightedAvgSec,
-		p.Sprintf("%d", int(opsPerSecond)),
+		messagePrinter.Sprintf("%d", int(opsPerSecond)),
 		secondsPerOp,
 	)
 }

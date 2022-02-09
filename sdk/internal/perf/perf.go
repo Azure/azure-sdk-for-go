@@ -28,30 +28,39 @@ var (
 var numProcesses int
 
 type PerfTest interface {
-	// GetMetadata returns the name of the test
+	// GetMetadata returns the metadta for a test.
 	GetMetadata() PerfTestOptions
 
+	// GlobalSetup is run one time per performance test, as the first method.
 	GlobalSetup(context.Context) error
 
+	// Setup is run once for each parallel instance.
 	Setup(context.Context) error
 
+	// Run is the function that is being measured.
 	Run(context.Context) error
 
+	// Cleanup is run once for each parallel instance.
 	Cleanup(context.Context) error
 
+	// GlobalCleanup is run one time per performance test, as the final method.
 	GlobalCleanup(context.Context) error
 }
 
+// HTTPClient is the same interface as azcore.Transporter
 type HTTPClient interface {
 	Do(*http.Request) (*http.Response, error)
 }
 
+// PerfTestOptions are the options for a performance test. Name and ProxyInstance can be
+// used by an individual performance test.
 type PerfTestOptions struct {
-	ParallelIndex int
+	parallelIndex int
 	ProxyInstance HTTPClient
 	Name          string
 }
 
+// NewPerfTest returns an instance of PerfTest and embeds the given `options` in the struct
 type NewPerfTest func(options *PerfTestOptions) PerfTest
 
 func runGlobalSetup(p PerfTest) error {
@@ -171,13 +180,23 @@ func runTest(p PerfTest, index int, c chan runResult) {
 			}
 			lastPrint += 1.0
 			perSecondCount = append(perSecondCount, thisCount)
+
 			if int(lastPrint) == Duration {
-				lastPrint += 1.0
+				// if we are w/in one second of the end time, we do not
+				// want to send any more results, we'll just send a final result
+				lastPrint += 10.0
 			}
 		}
 	}
 
 	elapsed := time.Since(timeStart).Seconds()
+	lastSecondCount := totalCount - sumInts(perSecondCount)
+	c <- runResult{
+		completed:     true,
+		count:         lastSecondCount,
+		parallelIndex: index,
+		timeInSeconds: elapsed,
+	}
 
 	if TestProxy != "" {
 		// Stop the proxy now
@@ -187,7 +206,6 @@ func runTest(p PerfTest, index int, c chan runResult) {
 		}
 		setRecordingMode("live")
 	}
-	c <- runResult{count: totalCount, timeInSeconds: elapsed, completed: true, parallelIndex: index}
 }
 
 // runCleanup takes care of the semantics for tearing down a single iteration of a performance test.
@@ -207,6 +225,7 @@ func runGlobalCleanup(p PerfTest) error {
 	return nil
 }
 
+// runResult is the result sent back through the channel for updates and final results
 type runResult struct {
 	// number of iterations completed since the previous message
 	count int
@@ -227,10 +246,7 @@ type runResult struct {
 	warmup bool
 }
 
-func (r runResult) String() string {
-	return fmt.Sprintf("{count: %d, timeInSeconds: %.2f, err: %v, complete: %v, parallelIndex: %d, warmup: %v}", r.count, r.timeInSeconds, r.err, r.completed, r.parallelIndex, r.warmup)
-}
-
+// Spins off each Parallel instance as a separate goroutine, reads messages and runs cleanup/setup methods.
 func runPerfTest(p NewPerfTest) error {
 	err := runGlobalSetup(p(nil))
 	if err != nil {
@@ -256,7 +272,7 @@ func runPerfTest(p NewPerfTest) error {
 		} else {
 			options.ProxyInstance = defaultHTTPClient
 		}
-		options.ParallelIndex = idx
+		options.parallelIndex = idx
 
 		perfTest := p(options)
 		perfTests = append(perfTests, perfTest)
@@ -289,7 +305,7 @@ func runPerfTest(p NewPerfTest) error {
 	}
 
 	// Print before running the cleanup in case cleanup takes a while
-	printFinalResults()
+	printFinalResults(elapsedTimes, perSecondCount, false)
 
 	// Run Cleanup on each parallel instance
 	for _, pTest := range perfTests {
@@ -319,12 +335,9 @@ func testsToRun(registered []NewPerfTest) NewPerfTest {
 	return nil
 }
 
-var registerCalled bool
-
-// RegisterArguments is used to
+// RegisterArguments is used to register local arguments. This is called before `pflag.Parse()`
 func RegisterArguments(f func()) {
 	f()
-	registerCalled = true
 }
 
 // Run runs all individual tests
@@ -343,10 +356,6 @@ func Run(perfTests []NewPerfTest) {
 	}
 
 	pflag.Parse()
-
-	if !registerCalled && debug {
-		fmt.Println("There were no local flags added.")
-	}
 
 	if numProcesses > 0 {
 		val := runtime.GOMAXPROCS(numProcesses)

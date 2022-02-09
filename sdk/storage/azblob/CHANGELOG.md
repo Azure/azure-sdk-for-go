@@ -16,8 +16,6 @@
 * Fixed Issue #16816 : `ContainerClient.GetSASToken` doesn't allow list permission.
 * Fixed Issue #16988 : Too many arguments in call to `runtime.NewResponseError`
 
-### Other Changes
-
 ## 0.2.0 (2021-11-03)
 
 ### Breaking Changes

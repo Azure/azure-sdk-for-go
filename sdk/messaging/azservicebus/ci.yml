@@ -26,6 +26,7 @@ stages:
   parameters:
     ServiceDirectory: 'messaging/azservicebus'
     RunLiveTests: true
+    SupportedClouds: 'Public,UsGov,China'
     EnvVars:
       AZURE_CLIENT_ID: $(AZSERVICEBUS_CLIENT_ID)
       AZURE_TENANT_ID: $(AZSERVICEBUS_TENANT_ID)

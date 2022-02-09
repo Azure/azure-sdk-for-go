@@ -47,7 +47,7 @@ func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 }
 
 // NewClient returns a pointer to a Client object affinitized to a vaultUrl.
-func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (Client, error) {
+func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -60,7 +60,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	)
 
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
-	return Client{
+	return &Client{
 		kvClient: generated.NewKeyVaultClient(pl),
 		vaultUrl: vaultUrl,
 	}, nil
@@ -164,7 +164,7 @@ type CreateECKeyOptions struct {
 // convert CreateECKeyOptions to generated.KeyCreateParameters
 func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	return generated.KeyCreateParameters{
-		Kty:   keyType.toGenerated(),
+		Kty: keyType.toGenerated(),
 	}
 }
 
@@ -356,13 +356,13 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 }
 
 type CreateOKPKeyOptions struct {
-	// Hardware Protected OCT Key
+	// Hardware Protected OKP Key
 	HardwareProtected bool
 
-	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+	// The key size in bits. For example: 2048, 3072, or 4096 for OKP.
 	KeySize *int32 `json:"key_size,omitempty"`
 
-	// The public exponent for a RSA key.
+	// The public exponent for an OKP key.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.

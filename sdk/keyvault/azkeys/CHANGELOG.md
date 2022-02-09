@@ -1,8 +1,5 @@
 # Release History
 
-### Features Added
-
-### Breaking Changes
 ## 0.3.1 (Unreleased)
 
 ### Features Added

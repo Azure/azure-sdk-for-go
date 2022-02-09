@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (Unreleased)
+## 0.3.0 (2022-02-09)
 
 ### Breaking Changes
 * Updated to latest `azcore`.  Public surface area is unchanged.

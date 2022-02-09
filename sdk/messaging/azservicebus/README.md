@@ -142,7 +142,7 @@ err = messageBatch.AddMessage(&azservicebus.Message{
     Body: []byte(fmt.Sprintf("hello world")),
 })
 
-if err == azservicebus.ErrMessageTooLarge {
+if errors.Is(err, azservicebus.ErrMessageTooLarge) {
   fmt.Printf("Message batch is full. We should send it and create a new one.\n")
 
   // send what we have since the batch is full

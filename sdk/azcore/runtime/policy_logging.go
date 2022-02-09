@@ -56,6 +56,7 @@ func NewLogPolicy(o *policy.LogOptions) policy.Policy {
 		"traceparent":                   {},
 		"transfer-encoding":             {},
 		"user-agent":                    {},
+		"www-authenticate":              {},
 		"x-ms-request-id":               {},
 		"x-ms-client-request-id":        {},
 		"x-ms-return-client-request-id": {},

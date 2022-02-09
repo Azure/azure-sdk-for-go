@@ -155,7 +155,10 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 // CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
 type CreateECKeyOptions struct {
 	// Elliptic curve name. For valid values, see KeyCurveName.
+	CurveName *KeyCurveName `json:"crv,omitempty"`
+
 	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// Whether to create an EC key with HSM protection
 	HardwareProtected bool
@@ -164,7 +167,9 @@ type CreateECKeyOptions struct {
 // convert CreateECKeyOptions to generated.KeyCreateParameters
 func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	return generated.KeyCreateParameters{
-		Kty: keyType.toGenerated(),
+		Kty:   keyType.toGenerated(),
+		Curve: (*generated.JSONWebKeyCurveName)(c.CurveName),
+		Tags:  convertToGeneratedMap(c.Tags),
 	}
 }
 

@@ -19,7 +19,7 @@ parameters:
     default: 'Public'
   - name: SupportedClouds
     type: string
-    default: 'Public,UsGov,China'
+    default: 'Public'
   - name: UnsupportedClouds
     type: string
     default: ''

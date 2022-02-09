@@ -18,40 +18,61 @@ type Attributes struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
+	ExpiresOn *time.Time `json:"exp,omitempty"`
 
 	// Not before date in UTC.
 	NotBefore *time.Time `json:"nbf,omitempty"`
 
 	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // KeyAttributes - The attributes of a key managed by the key vault service.
 type KeyAttributes struct {
-	Attributes
-	// READ-ONLY; softDelete data retention days.
+	// Determines whether the object is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Expiry date in UTC.
+	ExpiresOn *time.Time `json:"exp,omitempty"`
+
+	// Indicates if the private key can be exported.
+	Exportable *bool `json:"exportable,omitempty"`
+
+	// Not before date in UTC.
+	NotBefore *time.Time `json:"nbf,omitempty"`
+
+	// READ-ONLY; Creation time in UTC.
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
-	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently
-	// deleted by a privileged user; otherwise, only the system
+	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable'
+	// the key can be permanently deleted by a privileged user; otherwise, only the system
 	// can purge the key, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in UTC.
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // converts a KeyAttributes to *generated.KeyAttributes
-func (k KeyAttributes) toGenerated() *generated.KeyAttributes {
+func (k *KeyAttributes) toGenerated() *generated.KeyAttributes {
+	if k == nil {
+		return nil
+	}
 	return &generated.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
 		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
 		Enabled:         k.Enabled,
-		Expires:         k.Expires,
+		Expires:         k.ExpiresOn,
 		NotBefore:       k.NotBefore,
-		Created:         k.Created,
-		Updated:         k.Updated,
+		Created:         k.CreatedOn,
+		Updated:         k.UpdatedOn,
+		Exportable:      k.Exportable,
 	}
 }
 
@@ -64,13 +85,12 @@ func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyAttributes {
 	return &KeyAttributes{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
-		Attributes: Attributes{
-			Enabled:   i.Enabled,
-			Expires:   i.Expires,
-			NotBefore: i.NotBefore,
-			Created:   i.Created,
-			Updated:   i.Updated,
-		},
+		Enabled:         i.Enabled,
+		ExpiresOn:       i.Expires,
+		NotBefore:       i.NotBefore,
+		CreatedOn:       i.Created,
+		UpdatedOn:       i.Updated,
+		Exportable:      i.Exportable,
 	}
 }
 
@@ -94,8 +114,8 @@ type KeyBundle struct {
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Crv *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	Crv *KeyCurveName `json:"crv,omitempty"`
 
 	// RSA private exponent, or the D component of an EC private key.
 	D []byte `json:"d,omitempty"`
@@ -148,7 +168,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 	}
 
 	return &JSONWebKey{
-		Crv:     (*JSONWebKeyCurveName)(i.Crv),
+		Crv:     (*KeyCurveName)(i.Crv),
 		D:       i.D,
 		DP:      i.DP,
 		DQ:      i.DQ,
@@ -284,13 +304,12 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
 		KeyItem: KeyItem{
 			Attributes: &KeyAttributes{
-				Attributes: Attributes{
-					Enabled:   i.Attributes.Enabled,
-					Expires:   i.Attributes.Expires,
-					NotBefore: i.Attributes.NotBefore,
-					Created:   i.Attributes.Created,
-					Updated:   i.Attributes.Updated,
-				},
+				Enabled:         i.Attributes.Enabled,
+				ExpiresOn:       i.Attributes.Expires,
+				NotBefore:       i.Attributes.NotBefore,
+				CreatedOn:       i.Attributes.Created,
+				UpdatedOn:       i.Attributes.Updated,
+				Exportable:      i.Attributes.Exportable,
 				RecoverableDays: i.Attributes.RecoverableDays,
 				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 			},
@@ -306,7 +325,23 @@ type KeyReleasePolicy struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// Blob encoding the policy rules under which the key can be released.
-	Data []byte `json:"data,omitempty"`
+	EncodedPolicy []byte `json:"data,omitempty"`
+
+	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed
+	// under any circumstances.
+	Immutable *bool `json:"immutable,omitempty"`
+}
+
+func (k *KeyReleasePolicy) toGenerated() *generated.KeyReleasePolicy {
+	if k == nil {
+		return nil
+	}
+
+	return &generated.KeyReleasePolicy{
+		ContentType:   k.ContentType,
+		EncodedPolicy: k.EncodedPolicy,
+		Immutable:     k.Immutable,
+	}
 }
 
 func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePolicy {
@@ -314,8 +349,9 @@ func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePol
 		return nil
 	}
 	return &KeyReleasePolicy{
-		ContentType: i.ContentType,
-		Data:        i.Data,
+		ContentType:   i.ContentType,
+		EncodedPolicy: i.EncodedPolicy,
+		Immutable:     i.Immutable,
 	}
 }
 
@@ -363,7 +399,10 @@ type LifetimeActions struct {
 	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
 }
 
-func (l LifetimeActions) toGenerated() *generated.LifetimeActions {
+func (l *LifetimeActions) toGenerated() *generated.LifetimeActions {
+	if l == nil {
+		return nil
+	}
 	return &generated.LifetimeActions{
 		Action: &generated.LifetimeActionsType{
 			Type: (*generated.ActionType)(l.Action.Type),

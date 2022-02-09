@@ -8,6 +8,7 @@ package azkeys
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -52,7 +53,7 @@ func TestCreateKeyRSA(t *testing.T) {
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
 
-			resp2, err := client.CreateRSAKey(ctx, key+"hsm", &CreateRSAKeyOptions{HardwareProtected: true})
+			resp2, err := client.CreateRSAKey(ctx, key+"hsm", &CreateRSAKeyOptions{HardwareProtected: to.BoolPtr(true)})
 			require.NoError(t, err)
 			require.NotNil(t, resp2.Key)
 
@@ -386,7 +387,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			_, err = client.CreateRSAKey(ctx, key, nil)
+			_, err = client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{})
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
@@ -395,19 +396,89 @@ func TestUpdateKeyProperties(t *testing.T) {
 					"Tag1": "Val1",
 				},
 				KeyAttributes: &KeyAttributes{
-					Attributes: Attributes{
-						Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
-					},
+					ExpiresOn: to.TimePtr(time.Now().AddDate(1, 0, 0)),
 				},
 			})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Attributes)
 			require.Equal(t, resp.Tags["Tag1"], "Val1")
-			require.NotNil(t, resp.Attributes.Updated)
+			require.NotNil(t, resp.Attributes.UpdatedOn)
 
 			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)
 			require.Error(t, err)
 			require.Nil(t, invalid.Attributes)
+		})
+	}
+}
+
+func TestUpdateKeyPropertiesImmutable(t *testing.T) {
+	for _, testType := range testTypes {
+		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
+			if testType == HSMTEST {
+				t.Skip("HSM does not recognize immutable yet.")
+			}
+			stop := startTest(t)
+			defer stop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
+
+			client, err := createClient(t, testType)
+			require.NoError(t, err)
+
+			key, err := createRandomName(t, "immuta")
+			require.NoError(t, err)
+
+			marshalledPolicy, err := json.Marshal(map[string]interface{}{
+				"anyOf": []map[string]interface{}{
+					{
+						"anyOf": []map[string]interface{}{
+							{
+								"claim":  "sdk-test",
+								"equals": "true",
+							}},
+						"authority": os.Getenv("AZURE_KEYVAULT_ATTESTATION_URL"),
+					},
+				},
+				"version": "1.0.0",
+			})
+			require.NoError(t, err)
+
+			_, err = client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+				HardwareProtected: to.BoolPtr(true),
+				KeyAttributes: &KeyAttributes{
+					Exportable: to.BoolPtr(true),
+				},
+				ReleasePolicy: &KeyReleasePolicy{
+					Immutable:     to.BoolPtr(true),
+					EncodedPolicy: marshalledPolicy,
+				},
+				KeyOperations: []*KeyOperation{KeyOperationEncrypt.ToPtr(), KeyOperationDecrypt.ToPtr()},
+			})
+			require.NoError(t, err)
+			defer cleanUpKey(t, client, key)
+
+			newMarshalledPolicy, err := json.Marshal(map[string]interface{}{
+				"anyOf": []map[string]interface{}{
+					{
+						"anyOf": []map[string]interface{}{
+							{
+								"claim":  "sdk-test",
+								"equals": "false",
+							}},
+						"authority": os.Getenv("AZURE_KEYVAULT_ATTESTATION_URL"),
+					},
+				},
+				"version": "1.0.0",
+			})
+			require.NoError(t, err)
+
+			_, err = client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
+				ReleasePolicy: &KeyReleasePolicy{
+					Immutable:     to.BoolPtr(true),
+					EncodedPolicy: newMarshalledPolicy,
+				},
+			})
+			require.Error(t, err)
 		})
 	}
 }

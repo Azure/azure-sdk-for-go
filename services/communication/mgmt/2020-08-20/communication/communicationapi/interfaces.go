@@ -36,10 +36,3 @@ type ServiceClientAPI interface {
 }
 
 var _ ServiceClientAPI = (*communication.ServiceClient)(nil)
-
-// OperationStatusesClientAPI contains the set of methods on the OperationStatusesClient type.
-type OperationStatusesClientAPI interface {
-	Get(ctx context.Context, location string, operationID string) (result communication.OperationStatus, err error)
-}
-
-var _ OperationStatusesClientAPI = (*communication.OperationStatusesClient)(nil)

@@ -98,26 +98,3 @@ const (
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Moving, Running, Succeeded, Unknown, Updating}
 }
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// StatusCanceled ...
-	StatusCanceled Status = "Canceled"
-	// StatusCreating ...
-	StatusCreating Status = "Creating"
-	// StatusDeleting ...
-	StatusDeleting Status = "Deleting"
-	// StatusFailed ...
-	StatusFailed Status = "Failed"
-	// StatusMoving ...
-	StatusMoving Status = "Moving"
-	// StatusSucceeded ...
-	StatusSucceeded Status = "Succeeded"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{StatusCanceled, StatusCreating, StatusDeleting, StatusFailed, StatusMoving, StatusSucceeded}
-}

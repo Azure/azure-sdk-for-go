@@ -1584,9 +1584,11 @@ type VolumeProperties struct {
 	ServiceLevel VolumeServiceLevel `json:"serviceLevel,omitempty"`
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
+	// UsedBytes - READ-ONLY; Resource size in bytes, current storage usage for the volume in bytes
+	UsedBytes *int64 `json:"usedBytes,omitempty"`
 	// ExportPolicy - Set of export policy rules
 	ExportPolicy *VolumePropertiesExportPolicy `json:"exportPolicy,omitempty"`
-	// ProtocolTypes - Set of protocol types
+	// ProtocolTypes - Set of protocol types, default NFSv3, CIFS for SMB protocol
 	ProtocolTypes *[]string `json:"protocolTypes,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -1596,7 +1598,7 @@ type VolumeProperties struct {
 	BaremetalTenantID *string `json:"baremetalTenantId,omitempty"`
 	// SubnetID - The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string `json:"subnetId,omitempty"`
-	// MountTargets - List of mount targets
+	// MountTargets - READ-ONLY; List of mount targets
 	MountTargets *[]MountTargetProperties `json:"mountTargets,omitempty"`
 	// VolumeType - What type of volume is this
 	VolumeType *string `json:"volumeType,omitempty"`
@@ -1631,9 +1633,6 @@ func (vp VolumeProperties) MarshalJSON() ([]byte, error) {
 	}
 	if vp.SubnetID != nil {
 		objectMap["subnetId"] = vp.SubnetID
-	}
-	if vp.MountTargets != nil {
-		objectMap["mountTargets"] = vp.MountTargets
 	}
 	if vp.VolumeType != nil {
 		objectMap["volumeType"] = vp.VolumeType

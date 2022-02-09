@@ -87,6 +87,7 @@ func (client AccountsClient) CreateOrUpdatePreparer(ctx context.Context, body Ac
 
 	body.ID = nil
 	body.Name = nil
+	body.Etag = nil
 	body.Type = nil
 	body.SystemData = nil
 	preparer := autorest.CreatePreparer(
@@ -418,6 +419,119 @@ func (client AccountsClient) ListComplete(ctx context.Context, resourceGroupName
 		}()
 	}
 	result.page, err = client.List(ctx, resourceGroupName)
+	return
+}
+
+// ListBySubscription list and describe all NetApp accounts in the subscription.
+func (client AccountsClient) ListBySubscription(ctx context.Context) (result AccountListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.al.Response.Response != nil {
+				sc = result.al.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listBySubscriptionNextResults
+	req, err := client.ListBySubscriptionPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "netapp.AccountsClient", "ListBySubscription", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.al.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "netapp.AccountsClient", "ListBySubscription", resp, "Failure sending request")
+		return
+	}
+
+	result.al, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "netapp.AccountsClient", "ListBySubscription", resp, "Failure responding to request")
+		return
+	}
+	if result.al.hasNextLink() && result.al.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListBySubscriptionPreparer prepares the ListBySubscription request.
+func (client AccountsClient) ListBySubscriptionPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/netAppAccounts", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListBySubscriptionSender sends the ListBySubscription request. The method will close the
+// http.Response Body if it receives an error.
+func (client AccountsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
+// closes the http.Response Body.
+func (client AccountsClient) ListBySubscriptionResponder(resp *http.Response) (result AccountList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listBySubscriptionNextResults retrieves the next set of results, if any.
+func (client AccountsClient) listBySubscriptionNextResults(ctx context.Context, lastResults AccountList) (result AccountList, err error) {
+	req, err := lastResults.accountListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "netapp.AccountsClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "netapp.AccountsClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "netapp.AccountsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AccountsClient) ListBySubscriptionComplete(ctx context.Context) (result AccountListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListBySubscription(ctx)
 	return
 }
 

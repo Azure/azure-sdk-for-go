@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// SnapshotsClient is the microsoft NetApp Azure Resource Provider specification
+// SnapshotsClient is the microsoft NetApp Files Azure Resource Provider specification
 type SnapshotsClient struct {
 	BaseClient
 }
@@ -38,7 +38,7 @@ func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) Snapsh
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-// snapshotName - the name of the mount target
+// snapshotName - the name of the snapshot
 func (client SnapshotsClient) Create(ctx context.Context, body Snapshot, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (result SnapshotsCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Create")
@@ -150,7 +150,7 @@ func (client SnapshotsClient) CreateResponder(resp *http.Response) (result Snaps
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-// snapshotName - the name of the mount target
+// snapshotName - the name of the snapshot
 func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (result SnapshotsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Delete")
@@ -242,7 +242,7 @@ func (client SnapshotsClient) DeleteResponder(resp *http.Response) (result autor
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-// snapshotName - the name of the mount target
+// snapshotName - the name of the snapshot
 func (client SnapshotsClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (result Snapshot, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Get")
@@ -421,7 +421,7 @@ func (client SnapshotsClient) ListResponder(resp *http.Response) (result Snapsho
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-// snapshotName - the name of the mount target
+// snapshotName - the name of the snapshot
 func (client SnapshotsClient) Update(ctx context.Context, body SnapshotPatch, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (result Snapshot, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Update")

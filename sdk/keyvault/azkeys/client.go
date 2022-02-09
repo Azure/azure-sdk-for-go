@@ -657,7 +657,22 @@ func (s *startDeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duratio
 		}
 		time.Sleep(t)
 	}
-	return DeleteKeyResponse{}, nil
+
+	return DeleteKeyResponse{
+		RawResponse: s.RawResponse,
+		DeletedKeyBundle: DeletedKeyBundle{
+			RecoveryID:         s.deleteResponse.RecoveryID,
+			DeletedDate:        s.deleteResponse.DeletedDate,
+			ScheduledPurgeDate: s.deleteResponse.ScheduledPurgeDate,
+			KeyBundle: KeyBundle{
+				Managed:       s.deleteResponse.Managed,
+				ReleasePolicy: keyReleasePolicyFromGenerated(s.deleteResponse.ReleasePolicy),
+				Tags:          convertGeneratedMap(s.deleteResponse.Tags),
+				Attributes:    keyAttributesFromGenerated(s.deleteResponse.Attributes),
+				Key:           jsonWebKeyFromGenerated(s.deleteResponse.Key),
+			},
+		},
+	}, nil
 }
 
 // DeleteKeyPollerResponse contains the response from the Client.BeginDeleteKey method

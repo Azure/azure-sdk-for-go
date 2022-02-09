@@ -230,8 +230,10 @@ func TestDeleteKey(t *testing.T) {
 
 			resp, err := client.BeginDeleteKey(ctx, key, nil)
 			require.NoError(t, err)
-			_, err = resp.PollUntilDone(ctx, delay())
-			require.Nil(t, err)
+			deleteResp, err := resp.PollUntilDone(ctx, delay())
+			require.NoError(t, err)
+			require.NotNil(t, deleteResp.Key)
+			require.NotNil(t, deleteResp.Key.ID)
 
 			_, err = client.GetKey(ctx, key, nil)
 			require.Error(t, err)

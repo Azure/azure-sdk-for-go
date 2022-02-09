@@ -73,7 +73,7 @@ type CreateKeyOptions struct {
 
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
-	KeyOps        []*KeyOperation `json:"key_ops,omitempty"`
+	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -98,9 +98,9 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 	}
 
 	var ops []*generated.JSONWebKeyOperation
-	if c.KeyOps != nil {
-		ops = make([]*generated.JSONWebKeyOperation, len(c.KeyOps))
-		for i, o := range c.KeyOps {
+	if c.KeyOperations != nil {
+		ops = make([]*generated.JSONWebKeyOperation, len(c.KeyOperations))
+		for i, o := range c.KeyOperations {
 			ops[i] = (*generated.JSONWebKeyOperation)(o)
 		}
 	}
@@ -293,7 +293,7 @@ type CreateRSAKeyOptions struct {
 
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
-	KeyOps        []*KeyOperation `json:"key_ops,omitempty"`
+	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
@@ -302,9 +302,9 @@ type CreateRSAKeyOptions struct {
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
 func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreateParameters {
 	var keyOps []*generated.JSONWebKeyOperation
-	if c.KeyOps != nil {
-		keyOps = make([]*generated.JSONWebKeyOperation, len(c.KeyOps))
-		for i, k := range c.KeyOps {
+	if c.KeyOperations != nil {
+		keyOps = make([]*generated.JSONWebKeyOperation, len(c.KeyOperations))
+		for i, k := range c.KeyOperations {
 			keyOps[i] = (*generated.JSONWebKeyOperation)(k)
 		}
 	}

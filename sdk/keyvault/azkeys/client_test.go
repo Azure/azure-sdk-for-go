@@ -452,7 +452,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 					Immutable:     to.BoolPtr(true),
 					EncodedPolicy: marshalledPolicy,
 				},
-				KeyOps: []*KeyOperation{KeyOperationEncrypt.ToPtr(), KeyOperationDecrypt.ToPtr()},
+				KeyOperations: []*KeyOperation{KeyOperationEncrypt.ToPtr(), KeyOperationDecrypt.ToPtr()},
 			})
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)

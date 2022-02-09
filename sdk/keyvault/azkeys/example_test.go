@@ -107,14 +107,14 @@ func ExampleClient_UpdateKeyProperties() {
 		Tags: map[string]string{
 			"Tag1": "val1",
 		},
-		KeyAttributes: &azkeys.KeyAttributes{
+		KeyAttributes: &azkeys.KeyProperties{
 			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
 		},
 	})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Attributes.RecoveryLevel, resp.Tags["Tag1"])
+	fmt.Println(*resp.Properties.RecoveryLevel, resp.Tags["Tag1"])
 }
 
 func ExampleClient_BeginDeleteKey() {
@@ -152,7 +152,7 @@ func ExampleClient_ListKeys() {
 		panic(err)
 	}
 
-	pager := client.ListKeys(nil)
+	pager := client.ListPropertiesOfKeys(nil)
 	for pager.NextPage(context.TODO()) {
 		for _, key := range pager.PageResponse().Keys {
 			fmt.Println(*key.KID)

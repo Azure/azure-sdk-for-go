@@ -12,31 +12,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
-// Attributes - The object attributes managed by the KeyVault service.
-type Attributes struct {
+// KeyProperties - The properties of a key managed by the key vault service.
+type KeyProperties struct {
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
-
-	// Not before date in UTC.
-	NotBefore *time.Time `json:"nbf,omitempty"`
-
-	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
-}
-
-// KeyAttributes - The attributes of a key managed by the key vault service.
-type KeyAttributes struct {
-	// Determines whether the object is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
+	ExpiresOn *time.Time `json:"exp,omitempty"`
 
 	// Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
@@ -45,7 +27,7 @@ type KeyAttributes struct {
 	NotBefore *time.Time `json:"nbf,omitempty"`
 
 	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
@@ -56,43 +38,43 @@ type KeyAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // converts a KeyAttributes to *generated.KeyAttributes
-func (k KeyAttributes) toGenerated() *generated.KeyAttributes {
+func (k KeyProperties) toGenerated() *generated.KeyAttributes {
 	return &generated.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
 		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
 		Enabled:         k.Enabled,
-		Expires:         k.Expires,
+		Expires:         k.ExpiresOn,
 		NotBefore:       k.NotBefore,
-		Created:         k.Created,
-		Updated:         k.Updated,
+		Created:         k.CreatedOn,
+		Updated:         k.UpdatedOn,
 	}
 }
 
 // converts *generated.KeyAttributes to *KeyAttributes
-func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyAttributes {
+func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyProperties {
 	if i == nil {
-		return &KeyAttributes{}
+		return &KeyProperties{}
 	}
 
-	return &KeyAttributes{
+	return &KeyProperties{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
 		Enabled:         i.Enabled,
-		Expires:         i.Expires,
+		ExpiresOn:       i.Expires,
 		NotBefore:       i.NotBefore,
-		Created:         i.Created,
-		Updated:         i.Updated,
+		CreatedOn:       i.Created,
+		UpdatedOn:       i.Updated,
 	}
 }
 
-// KeyBundle - A KeyBundle consisting of a WebKey plus its attributes.
-type KeyBundle struct {
-	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
+// KeyVaultKey - A KeyVaultKey consists of a WebKey plus its attributes.
+type KeyVaultKey struct {
+	// The key management properties.
+	Properties *KeyProperties `json:"attributes,omitempty"`
 
 	// The Json web key.
 	Key *JSONWebKey `json:"key,omitempty"`
@@ -209,23 +191,27 @@ type KeyType string
 
 const (
 	// EC - Elliptic Curve.
-	EC KeyType = "EC"
+	KeyTypeEC KeyType = "EC"
 
 	// ECHSM - Elliptic Curve with a private key which is not exportable from the HSM.
-	ECHSM KeyType = "EC-HSM"
+	KeyTypeECHSM KeyType = "EC-HSM"
 
 	// Oct - Octet sequence (used to represent symmetric keys)
-	Oct KeyType = "oct"
+	KeyTypeOct KeyType = "oct"
 
 	// OctHSM - Octet sequence (used to represent symmetric keys) which is not exportable from the HSM.
-	OctHSM KeyType = "oct-HSM"
+	KeyTypeOctHSM KeyType = "oct-HSM"
 
 	// RSA - RSA (https://tools.ietf.org/html/rfc3447)
-	RSA KeyType = "RSA"
+	KeyTypeRSA KeyType = "RSA"
 
 	// RSAHSM - RSA with a private key which is not exportable from the HSM.
-	RSAHSM KeyType = "RSA-HSM"
+	KeyTypeRSAHSM KeyType = "RSA-HSM"
 )
+
+func (k KeyType) ToPtr() *KeyType {
+	return &k
+}
 
 // convert KeyType to *generated.JSONWebKeyType
 func (j KeyType) toGenerated() *generated.JSONWebKeyType {
@@ -235,7 +221,7 @@ func (j KeyType) toGenerated() *generated.JSONWebKeyType {
 // KeyItem - The key item containing key metadata.
 type KeyItem struct {
 	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
+	Attributes *KeyProperties `json:"attributes,omitempty"`
 
 	// Key identifier.
 	KID *string `json:"kid,omitempty"`
@@ -261,10 +247,10 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 	}
 }
 
-// DeletedKeyBundle - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
-type DeletedKeyBundle struct {
+// DeletedKey - A DeletedKey consisting of a WebKey plus its Attributes and deletion info
+type DeletedKey struct {
 	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
+	Attributes *KeyProperties `json:"attributes,omitempty"`
 
 	// The Json web key.
 	Key *JSONWebKey `json:"key,omitempty"`
@@ -292,7 +278,7 @@ type DeletedKeyBundle struct {
 // DeletedKeyItem - The deleted key item containing the deleted key metadata and information about deletion.
 type DeletedKeyItem struct {
 	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
+	Attributes *KeyProperties `json:"attributes,omitempty"`
 
 	// Key identifier.
 	KID *string `json:"kid,omitempty"`
@@ -324,12 +310,12 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Attributes: &KeyAttributes{
+		Attributes: &KeyProperties{
 			Enabled:         i.Attributes.Enabled,
-			Expires:         i.Attributes.Expires,
+			ExpiresOn:       i.Attributes.Expires,
 			NotBefore:       i.Attributes.NotBefore,
-			Created:         i.Attributes.Created,
-			Updated:         i.Attributes.Updated,
+			CreatedOn:       i.Attributes.Created,
+			UpdatedOn:       i.Attributes.Updated,
 			RecoverableDays: i.Attributes.RecoverableDays,
 			RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 		},

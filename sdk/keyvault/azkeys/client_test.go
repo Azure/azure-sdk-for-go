@@ -61,7 +61,7 @@ func TestCreateKeyRSA(t *testing.T) {
 
 			invalid, err := client.CreateRSAKey(ctx, "invalidName!@#$", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Attributes)
+			require.Nil(t, invalid.Properties)
 		})
 	}
 }
@@ -158,11 +158,11 @@ func TestListKeys(t *testing.T) {
 				key, err := createRandomName(t, fmt.Sprintf("key-%d", i))
 				require.NoError(t, err)
 
-				_, err = client.CreateKey(ctx, key, RSA, nil)
+				_, err = client.CreateKey(ctx, key, KeyTypeRSA, nil)
 				require.NoError(t, err)
 			}
 
-			pager := client.ListKeys(nil)
+			pager := client.ListPropertiesOfKeys(nil)
 			count := 0
 			for pager.NextPage(ctx) {
 				count += len(pager.PageResponse().Keys)
@@ -196,16 +196,16 @@ func TestGetKey(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			_, err = client.CreateKey(ctx, key, RSA, nil)
+			_, err = client.CreateKey(ctx, key, KeyTypeRSA, nil)
 			require.NoError(t, err)
 
 			resp, err := client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
 
-			invalid, err := client.CreateKey(ctx, "invalidkey[]()", RSA, nil)
+			invalid, err := client.CreateKey(ctx, "invalidkey[]()", KeyTypeRSA, nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Attributes)
+			require.Nil(t, invalid.Properties)
 		})
 	}
 }
@@ -224,7 +224,7 @@ func TestDeleteKey(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			_, err = client.CreateKey(ctx, key, RSA, nil)
+			_, err = client.CreateKey(ctx, key, KeyTypeRSA, nil)
 			require.NoError(t, err)
 
 			resp, err := client.BeginDeleteKey(ctx, key, nil)
@@ -394,18 +394,18 @@ func TestUpdateKeyProperties(t *testing.T) {
 				Tags: map[string]string{
 					"Tag1": "Val1",
 				},
-				KeyAttributes: &KeyAttributes{
-					Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
+				KeyAttributes: &KeyProperties{
+					ExpiresOn: to.TimePtr(time.Now().AddDate(1, 0, 0)),
 				},
 			})
 			require.NoError(t, err)
-			require.NotNil(t, resp.Attributes)
+			require.NotNil(t, resp.Properties)
 			require.Equal(t, resp.Tags["Tag1"], "Val1")
-			require.NotNil(t, resp.Attributes.Updated)
+			require.NotNil(t, resp.Properties.UpdatedOn)
 
 			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Attributes)
+			require.Nil(t, invalid.Properties)
 		})
 	}
 }
@@ -485,7 +485,7 @@ func TestListKeyVersions(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			pager := client.ListKeyVersions(key, nil)
+			pager := client.ListPropertiesOfKeyVersions(key, nil)
 			count := 0
 			for pager.NextPage(ctx) {
 				count += len(pager.PageResponse().Keys)
@@ -506,9 +506,8 @@ func TestImportKey(t *testing.T) {
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
-			r := RSA
 			jwk := JSONWebKey{
-				KeyType: &r,
+				KeyType: KeyTypeRSA.ToPtr(),
 				KeyOps:  to.StringPtrArray("encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"),
 				N:       toBytes("00a0914d00234ac683b21b4c15d5bed887bdc959c2e57af54ae734e8f00720d775d275e455207e3784ceeb60a50a4655dd72a7a94d271e8ee8f7959a669ca6e775bf0e23badae991b4529d978528b4bd90521d32dd2656796ba82b6bbfc7668c8f5eeb5053747fd199319d29a8440d08f4412d527ff9311eda71825920b47b1c46b11ab3e91d7316407e89c7f340f7b85a34042ce51743b27d4718403d34c7b438af6181be05e4d11eb985d38253d7fe9bf53fc2f1b002d22d2d793fa79a504b6ab42d0492804d7071d727a06cf3a8893aa542b1503f832b296371b6707d4dc6e372f8fe67d8ded1c908fde45ce03bc086a71487fa75e43aa0e0679aa0d20efe35", t),
 				E:       toBytes("10001", t),
@@ -526,7 +525,7 @@ func TestImportKey(t *testing.T) {
 
 			invalid, err := client.ImportKey(ctx, "invalid", JSONWebKey{}, nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Attributes)
+			require.Nil(t, invalid.Properties)
 		})
 	}
 }

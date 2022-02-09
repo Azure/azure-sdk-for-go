@@ -29,6 +29,6 @@ func TestToPtrMethods(t *testing.T) {
 //nolint
 func TestToGeneratedMethods(t *testing.T) {
 	// If done incorrectly, this will have a nil pointer reference
-	var l *ListKeyVersionsOptions = nil
+	var l *ListPropertiesOfKeyVersionsOptions = nil
 	_ = l.toGenerated()
 }

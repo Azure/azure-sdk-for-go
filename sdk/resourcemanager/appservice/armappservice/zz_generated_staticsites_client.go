@@ -11,7 +11,6 @@ package armappservice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,46 +25,60 @@ import (
 // StaticSitesClient contains the methods for the StaticSites group.
 // Don't use this type directly, use NewStaticSitesClient() instead.
 type StaticSitesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStaticSitesClient creates a new instance of StaticSitesClient with the specified values.
+// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStaticSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StaticSitesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &StaticSitesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StaticSitesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesBeginApproveOrRejectPrivateEndpointConnectionOptions) (StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// privateEndpointConnectionName - Name of the private endpoint connection.
+// privateEndpointWrapper - Request body.
+// options - StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the
+// StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection method.
+func (client *StaticSitesClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.approveOrRejectPrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 	if err != nil {
-		return StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
+		return StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse{
+	result := StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.ApproveOrRejectPrivateEndpointConnection", "", resp, client.pl, client.approveOrRejectPrivateEndpointConnectionHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.ApproveOrRejectPrivateEndpointConnection", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
+		return StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result.Poller = &StaticSitesApproveOrRejectPrivateEndpointConnectionPoller{
+	result.Poller = &StaticSitesClientApproveOrRejectPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.approveOrRejectPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +88,13 @@ func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnection(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.approveOrRejectPrivateEndpointConnectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // approveOrRejectPrivateEndpointConnectionCreateRequest creates the ApproveOrRejectPrivateEndpointConnection request.
-func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesBeginApproveOrRejectPrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -99,53 +112,47 @@ func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnectionCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
-// approveOrRejectPrivateEndpointConnectionHandleError handles the ApproveOrRejectPrivateEndpointConnection error response.
-func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginCreateOrUpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginCreateOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesBeginCreateOrUpdateStaticSiteOptions) (StaticSitesCreateOrUpdateStaticSitePollerResponse, error) {
+// BeginCreateOrUpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an
+// existing static site.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site to create or update.
+// staticSiteEnvelope - A JSON representation of the staticsite properties. See example.
+// options - StaticSitesClientBeginCreateOrUpdateStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginCreateOrUpdateStaticSite
+// method.
+func (client *StaticSitesClient) BeginCreateOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteOptions) (StaticSitesClientCreateOrUpdateStaticSitePollerResponse, error) {
 	resp, err := client.createOrUpdateStaticSite(ctx, resourceGroupName, name, staticSiteEnvelope, options)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSitePollerResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSitePollerResponse{}, err
 	}
-	result := StaticSitesCreateOrUpdateStaticSitePollerResponse{
+	result := StaticSitesClientCreateOrUpdateStaticSitePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.CreateOrUpdateStaticSite", "", resp, client.pl, client.createOrUpdateStaticSiteHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.CreateOrUpdateStaticSite", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSitePollerResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSitePollerResponse{}, err
 	}
-	result.Poller = &StaticSitesCreateOrUpdateStaticSitePoller{
+	result.Poller = &StaticSitesClientCreateOrUpdateStaticSitePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) createOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesBeginCreateOrUpdateStaticSiteOptions) (*http.Response, error) {
+// CreateOrUpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing
+// static site.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) createOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateStaticSiteCreateRequest(ctx, resourceGroupName, name, staticSiteEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -155,13 +162,13 @@ func (client *StaticSitesClient) createOrUpdateStaticSite(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateStaticSiteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateStaticSiteCreateRequest creates the CreateOrUpdateStaticSite request.
-func (client *StaticSitesClient) createOrUpdateStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesBeginCreateOrUpdateStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createOrUpdateStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -175,49 +182,41 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteEnvelope)
 }
 
-// createOrUpdateStaticSiteHandleError handles the CreateOrUpdateStaticSite error response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdateStaticSiteAppSettings - Description for Creates or updates the app settings of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) CreateOrUpdateStaticSiteAppSettings(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *StaticSitesCreateOrUpdateStaticSiteAppSettingsOptions) (StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// appSettings - The dictionary containing the static site app settings to update.
+// options - StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateStaticSiteAppSettings
+// method.
+func (client *StaticSitesClient) CreateOrUpdateStaticSiteAppSettings(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions) (StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse, error) {
 	req, err := client.createOrUpdateStaticSiteAppSettingsCreateRequest(ctx, resourceGroupName, name, appSettings, options)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse{}, client.createOrUpdateStaticSiteAppSettingsHandleError(resp)
+		return StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateStaticSiteAppSettingsHandleResponse(resp)
 }
 
 // createOrUpdateStaticSiteAppSettingsCreateRequest creates the CreateOrUpdateStaticSiteAppSettings request.
-func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *StaticSitesCreateOrUpdateStaticSiteAppSettingsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/config/appsettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -231,58 +230,51 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appSettings)
 }
 
 // createOrUpdateStaticSiteAppSettingsHandleResponse handles the CreateOrUpdateStaticSiteAppSettings response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsHandleResponse(resp *http.Response) (StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse, error) {
-	result := StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse{RawResponse: resp}
+func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsHandleResponse(resp *http.Response) (StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse, error) {
+	result := StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateStaticSiteAppSettingsHandleError handles the CreateOrUpdateStaticSiteAppSettings error response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdateStaticSiteBuildAppSettings - Description for Creates or updates the app settings of a static site build.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) CreateOrUpdateStaticSiteBuildAppSettings(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings StringDictionary, options *StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsOptions) (StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// appSettings - The dictionary containing the static site app settings to update.
+// options - StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings
+// method.
+func (client *StaticSitesClient) CreateOrUpdateStaticSiteBuildAppSettings(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings StringDictionary, options *StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions) (StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse, error) {
 	req, err := client.createOrUpdateStaticSiteBuildAppSettingsCreateRequest(ctx, resourceGroupName, name, environmentName, appSettings, options)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, client.createOrUpdateStaticSiteBuildAppSettingsHandleError(resp)
+		return StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateStaticSiteBuildAppSettingsHandleResponse(resp)
 }
 
 // createOrUpdateStaticSiteBuildAppSettingsCreateRequest creates the CreateOrUpdateStaticSiteBuildAppSettings request.
-func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings StringDictionary, options *StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings StringDictionary, options *StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/config/appsettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,58 +292,52 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appSettings)
 }
 
 // createOrUpdateStaticSiteBuildAppSettingsHandleResponse handles the CreateOrUpdateStaticSiteBuildAppSettings response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsHandleResponse(resp *http.Response) (StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse, error) {
-	result := StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse{RawResponse: resp}
+func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsHandleResponse(resp *http.Response) (StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse, error) {
+	result := StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateStaticSiteBuildAppSettingsHandleError handles the CreateOrUpdateStaticSiteBuildAppSettings error response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateOrUpdateStaticSiteBuildFunctionAppSettings - Description for Creates or updates the function app settings of a static site build.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) CreateOrUpdateStaticSiteBuildFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings StringDictionary, options *StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions) (StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse, error) {
+// CreateOrUpdateStaticSiteBuildFunctionAppSettings - Description for Creates or updates the function app settings of a static
+// site build.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// appSettings - The dictionary containing the static site function app settings to update.
+// options - StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions contains the optional parameters for
+// the StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings method.
+func (client *StaticSitesClient) CreateOrUpdateStaticSiteBuildFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings StringDictionary, options *StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions) (StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse, error) {
 	req, err := client.createOrUpdateStaticSiteBuildFunctionAppSettingsCreateRequest(ctx, resourceGroupName, name, environmentName, appSettings, options)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, client.createOrUpdateStaticSiteBuildFunctionAppSettingsHandleError(resp)
+		return StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateStaticSiteBuildFunctionAppSettingsHandleResponse(resp)
 }
 
 // createOrUpdateStaticSiteBuildFunctionAppSettingsCreateRequest creates the CreateOrUpdateStaticSiteBuildFunctionAppSettings request.
-func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings StringDictionary, options *StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings StringDictionary, options *StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/config/functionappsettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -369,62 +355,58 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSetting
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appSettings)
 }
 
 // createOrUpdateStaticSiteBuildFunctionAppSettingsHandleResponse handles the CreateOrUpdateStaticSiteBuildFunctionAppSettings response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse, error) {
-	result := StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{RawResponse: resp}
+func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse, error) {
+	result := StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateStaticSiteBuildFunctionAppSettingsHandleError handles the CreateOrUpdateStaticSiteBuildFunctionAppSettings error response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginCreateOrUpdateStaticSiteCustomDomain - Description for Creates a new static site custom domain in an existing resource group and static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginCreateOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesBeginCreateOrUpdateStaticSiteCustomDomainOptions) (StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse, error) {
+// BeginCreateOrUpdateStaticSiteCustomDomain - Description for Creates a new static site custom domain in an existing resource
+// group and static site.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// domainName - The custom domain to create.
+// staticSiteCustomDomainRequestPropertiesEnvelope - A JSON representation of the static site custom domain request properties.
+// See example.
+// options - StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions contains the optional parameters for the StaticSitesClient.BeginCreateOrUpdateStaticSiteCustomDomain
+// method.
+func (client *StaticSitesClient) BeginCreateOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions) (StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse, error) {
 	resp, err := client.createOrUpdateStaticSiteCustomDomain(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse{}, err
 	}
-	result := StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse{
+	result := StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.CreateOrUpdateStaticSiteCustomDomain", "", resp, client.pl, client.createOrUpdateStaticSiteCustomDomainHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.CreateOrUpdateStaticSiteCustomDomain", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse{}, err
 	}
-	result.Poller = &StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller{
+	result.Poller = &StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdateStaticSiteCustomDomain - Description for Creates a new static site custom domain in an existing resource group and static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesBeginCreateOrUpdateStaticSiteCustomDomainOptions) (*http.Response, error) {
+// CreateOrUpdateStaticSiteCustomDomain - Description for Creates a new static site custom domain in an existing resource
+// group and static site.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateStaticSiteCustomDomainCreateRequest(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -434,13 +416,13 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomain(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateStaticSiteCustomDomainHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateStaticSiteCustomDomainCreateRequest creates the CreateOrUpdateStaticSiteCustomDomain request.
-func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesBeginCreateOrUpdateStaticSiteCustomDomainOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -458,49 +440,42 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomainCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteCustomDomainRequestPropertiesEnvelope)
 }
 
-// createOrUpdateStaticSiteCustomDomainHandleError handles the CreateOrUpdateStaticSiteCustomDomain error response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomainHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateOrUpdateStaticSiteFunctionAppSettings - Description for Creates or updates the function app settings of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) CreateOrUpdateStaticSiteFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsOptions) (StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse, error) {
+// CreateOrUpdateStaticSiteFunctionAppSettings - Description for Creates or updates the function app settings of a static
+// site.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// appSettings - The dictionary containing the static site function app settings to update.
+// options - StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions contains the optional parameters for the
+// StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings method.
+func (client *StaticSitesClient) CreateOrUpdateStaticSiteFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions) (StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse, error) {
 	req, err := client.createOrUpdateStaticSiteFunctionAppSettingsCreateRequest(ctx, resourceGroupName, name, appSettings, options)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
+		return StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, client.createOrUpdateStaticSiteFunctionAppSettingsHandleError(resp)
+		return StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateStaticSiteFunctionAppSettingsHandleResponse(resp)
 }
 
 // createOrUpdateStaticSiteFunctionAppSettingsCreateRequest creates the CreateOrUpdateStaticSiteFunctionAppSettings request.
-func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/config/functionappsettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -514,58 +489,49 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appSettings)
 }
 
 // createOrUpdateStaticSiteFunctionAppSettingsHandleResponse handles the CreateOrUpdateStaticSiteFunctionAppSettings response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse, error) {
-	result := StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse{RawResponse: resp}
+func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse, error) {
+	result := StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateStaticSiteFunctionAppSettingsHandleError handles the CreateOrUpdateStaticSiteFunctionAppSettings error response.
-func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateUserRolesInvitationLink - Description for Creates an invitation link for a user with the role
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) CreateUserRolesInvitationLink(ctx context.Context, resourceGroupName string, name string, staticSiteUserRolesInvitationEnvelope StaticSiteUserInvitationRequestResource, options *StaticSitesCreateUserRolesInvitationLinkOptions) (StaticSitesCreateUserRolesInvitationLinkResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientCreateUserRolesInvitationLinkOptions contains the optional parameters for the StaticSitesClient.CreateUserRolesInvitationLink
+// method.
+func (client *StaticSitesClient) CreateUserRolesInvitationLink(ctx context.Context, resourceGroupName string, name string, staticSiteUserRolesInvitationEnvelope StaticSiteUserInvitationRequestResource, options *StaticSitesClientCreateUserRolesInvitationLinkOptions) (StaticSitesClientCreateUserRolesInvitationLinkResponse, error) {
 	req, err := client.createUserRolesInvitationLinkCreateRequest(ctx, resourceGroupName, name, staticSiteUserRolesInvitationEnvelope, options)
 	if err != nil {
-		return StaticSitesCreateUserRolesInvitationLinkResponse{}, err
+		return StaticSitesClientCreateUserRolesInvitationLinkResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesCreateUserRolesInvitationLinkResponse{}, err
+		return StaticSitesClientCreateUserRolesInvitationLinkResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesCreateUserRolesInvitationLinkResponse{}, client.createUserRolesInvitationLinkHandleError(resp)
+		return StaticSitesClientCreateUserRolesInvitationLinkResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createUserRolesInvitationLinkHandleResponse(resp)
 }
 
 // createUserRolesInvitationLinkCreateRequest creates the CreateUserRolesInvitationLink request.
-func (client *StaticSitesClient) createUserRolesInvitationLinkCreateRequest(ctx context.Context, resourceGroupName string, name string, staticSiteUserRolesInvitationEnvelope StaticSiteUserInvitationRequestResource, options *StaticSitesCreateUserRolesInvitationLinkOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createUserRolesInvitationLinkCreateRequest(ctx context.Context, resourceGroupName string, name string, staticSiteUserRolesInvitationEnvelope StaticSiteUserInvitationRequestResource, options *StaticSitesClientCreateUserRolesInvitationLinkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/createUserInvitation"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -579,62 +545,54 @@ func (client *StaticSitesClient) createUserRolesInvitationLinkCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteUserRolesInvitationEnvelope)
 }
 
 // createUserRolesInvitationLinkHandleResponse handles the CreateUserRolesInvitationLink response.
-func (client *StaticSitesClient) createUserRolesInvitationLinkHandleResponse(resp *http.Response) (StaticSitesCreateUserRolesInvitationLinkResponse, error) {
-	result := StaticSitesCreateUserRolesInvitationLinkResponse{RawResponse: resp}
+func (client *StaticSitesClient) createUserRolesInvitationLinkHandleResponse(resp *http.Response) (StaticSitesClientCreateUserRolesInvitationLinkResponse, error) {
+	result := StaticSitesClientCreateUserRolesInvitationLinkResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserInvitationResponseResource); err != nil {
-		return StaticSitesCreateUserRolesInvitationLinkResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientCreateUserRolesInvitationLinkResponse{}, err
 	}
 	return result, nil
 }
 
-// createUserRolesInvitationLinkHandleError handles the CreateUserRolesInvitationLink error response.
-func (client *StaticSitesClient) createUserRolesInvitationLinkHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateZipDeploymentForStaticSite - Description for Deploys zipped content to a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesBeginCreateZipDeploymentForStaticSiteOptions) (StaticSitesCreateZipDeploymentForStaticSitePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// staticSiteZipDeploymentEnvelope - A JSON representation of the StaticSiteZipDeployment properties. See example.
+// options - StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginCreateZipDeploymentForStaticSite
+// method.
+func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions) (StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse, error) {
 	resp, err := client.createZipDeploymentForStaticSite(ctx, resourceGroupName, name, staticSiteZipDeploymentEnvelope, options)
 	if err != nil {
-		return StaticSitesCreateZipDeploymentForStaticSitePollerResponse{}, err
+		return StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse{}, err
 	}
-	result := StaticSitesCreateZipDeploymentForStaticSitePollerResponse{
+	result := StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.CreateZipDeploymentForStaticSite", "", resp, client.pl, client.createZipDeploymentForStaticSiteHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.CreateZipDeploymentForStaticSite", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesCreateZipDeploymentForStaticSitePollerResponse{}, err
+		return StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse{}, err
 	}
-	result.Poller = &StaticSitesCreateZipDeploymentForStaticSitePoller{
+	result.Poller = &StaticSitesClientCreateZipDeploymentForStaticSitePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateZipDeploymentForStaticSite - Description for Deploys zipped content to a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) createZipDeploymentForStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesBeginCreateZipDeploymentForStaticSiteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) createZipDeploymentForStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions) (*http.Response, error) {
 	req, err := client.createZipDeploymentForStaticSiteCreateRequest(ctx, resourceGroupName, name, staticSiteZipDeploymentEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -644,13 +602,13 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSite(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createZipDeploymentForStaticSiteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createZipDeploymentForStaticSiteCreateRequest creates the CreateZipDeploymentForStaticSite request.
-func (client *StaticSitesClient) createZipDeploymentForStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesBeginCreateZipDeploymentForStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createZipDeploymentForStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/zipdeploy"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -664,53 +622,47 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteZipDeploymentEnvelope)
 }
 
-// createZipDeploymentForStaticSiteHandleError handles the CreateZipDeploymentForStaticSite error response.
-func (client *StaticSitesClient) createZipDeploymentForStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginCreateZipDeploymentForStaticSiteBuild - Description for Deploys zipped content to a specific environment of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesBeginCreateZipDeploymentForStaticSiteBuildOptions) (StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse, error) {
+// BeginCreateZipDeploymentForStaticSiteBuild - Description for Deploys zipped content to a specific environment of a static
+// site.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - Name of the environment.
+// staticSiteZipDeploymentEnvelope - A JSON representation of the StaticSiteZipDeployment properties. See example.
+// options - StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.BeginCreateZipDeploymentForStaticSiteBuild
+// method.
+func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions) (StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse, error) {
 	resp, err := client.createZipDeploymentForStaticSiteBuild(ctx, resourceGroupName, name, environmentName, staticSiteZipDeploymentEnvelope, options)
 	if err != nil {
-		return StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse{}, err
+		return StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse{}, err
 	}
-	result := StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse{
+	result := StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.CreateZipDeploymentForStaticSiteBuild", "", resp, client.pl, client.createZipDeploymentForStaticSiteBuildHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.CreateZipDeploymentForStaticSiteBuild", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse{}, err
+		return StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse{}, err
 	}
-	result.Poller = &StaticSitesCreateZipDeploymentForStaticSiteBuildPoller{
+	result.Poller = &StaticSitesClientCreateZipDeploymentForStaticSiteBuildPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateZipDeploymentForStaticSiteBuild - Description for Deploys zipped content to a specific environment of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesBeginCreateZipDeploymentForStaticSiteBuildOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.createZipDeploymentForStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, staticSiteZipDeploymentEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -720,13 +672,13 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuild(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createZipDeploymentForStaticSiteBuildHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createZipDeploymentForStaticSiteBuildCreateRequest creates the CreateZipDeploymentForStaticSiteBuild request.
-func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesBeginCreateZipDeploymentForStaticSiteBuildOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/zipdeploy"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -744,53 +696,45 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuildCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteZipDeploymentEnvelope)
 }
 
-// createZipDeploymentForStaticSiteBuildHandleError handles the CreateZipDeploymentForStaticSiteBuild error response.
-func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesBeginDeletePrivateEndpointConnectionOptions) (StaticSitesDeletePrivateEndpointConnectionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// privateEndpointConnectionName - Name of the private endpoint connection.
+// options - StaticSitesClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the StaticSitesClient.BeginDeletePrivateEndpointConnection
+// method.
+func (client *StaticSitesClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientBeginDeletePrivateEndpointConnectionOptions) (StaticSitesClientDeletePrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
-		return StaticSitesDeletePrivateEndpointConnectionPollerResponse{}, err
+		return StaticSitesClientDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := StaticSitesDeletePrivateEndpointConnectionPollerResponse{
+	result := StaticSitesClientDeletePrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.DeletePrivateEndpointConnection", "", resp, client.pl, client.deletePrivateEndpointConnectionHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.DeletePrivateEndpointConnection", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesDeletePrivateEndpointConnectionPollerResponse{}, err
+		return StaticSitesClientDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result.Poller = &StaticSitesDeletePrivateEndpointConnectionPoller{
+	result.Poller = &StaticSitesClientDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -800,13 +744,13 @@ func (client *StaticSitesClient) deletePrivateEndpointConnection(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deletePrivateEndpointConnectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deletePrivateEndpointConnectionCreateRequest creates the DeletePrivateEndpointConnection request.
-func (client *StaticSitesClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -824,53 +768,44 @@ func (client *StaticSitesClient) deletePrivateEndpointConnectionCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deletePrivateEndpointConnectionHandleError handles the DeletePrivateEndpointConnection error response.
-func (client *StaticSitesClient) deletePrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeleteStaticSite - Description for Deletes a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginDeleteStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesBeginDeleteStaticSiteOptions) (StaticSitesDeleteStaticSitePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site to delete.
+// options - StaticSitesClientBeginDeleteStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSite
+// method.
+func (client *StaticSitesClient) BeginDeleteStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDeleteStaticSiteOptions) (StaticSitesClientDeleteStaticSitePollerResponse, error) {
 	resp, err := client.deleteStaticSite(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StaticSitesDeleteStaticSitePollerResponse{}, err
+		return StaticSitesClientDeleteStaticSitePollerResponse{}, err
 	}
-	result := StaticSitesDeleteStaticSitePollerResponse{
+	result := StaticSitesClientDeleteStaticSitePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.DeleteStaticSite", "", resp, client.pl, client.deleteStaticSiteHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.DeleteStaticSite", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesDeleteStaticSitePollerResponse{}, err
+		return StaticSitesClientDeleteStaticSitePollerResponse{}, err
 	}
-	result.Poller = &StaticSitesDeleteStaticSitePoller{
+	result.Poller = &StaticSitesClientDeleteStaticSitePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteStaticSite - Description for Deletes a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) deleteStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesBeginDeleteStaticSiteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) deleteStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDeleteStaticSiteOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
@@ -880,13 +815,13 @@ func (client *StaticSitesClient) deleteStaticSite(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteStaticSiteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteStaticSiteCreateRequest creates the DeleteStaticSite request.
-func (client *StaticSitesClient) deleteStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesBeginDeleteStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) deleteStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDeleteStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -900,53 +835,45 @@ func (client *StaticSitesClient) deleteStaticSiteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteStaticSiteHandleError handles the DeleteStaticSite error response.
-func (client *StaticSitesClient) deleteStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeleteStaticSiteBuild - Description for Deletes a static site build.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginDeleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesBeginDeleteStaticSiteBuildOptions) (StaticSitesDeleteStaticSiteBuildPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// options - StaticSitesClientBeginDeleteStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSiteBuild
+// method.
+func (client *StaticSitesClient) BeginDeleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientBeginDeleteStaticSiteBuildOptions) (StaticSitesClientDeleteStaticSiteBuildPollerResponse, error) {
 	resp, err := client.deleteStaticSiteBuild(ctx, resourceGroupName, name, environmentName, options)
 	if err != nil {
-		return StaticSitesDeleteStaticSiteBuildPollerResponse{}, err
+		return StaticSitesClientDeleteStaticSiteBuildPollerResponse{}, err
 	}
-	result := StaticSitesDeleteStaticSiteBuildPollerResponse{
+	result := StaticSitesClientDeleteStaticSiteBuildPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.DeleteStaticSiteBuild", "", resp, client.pl, client.deleteStaticSiteBuildHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.DeleteStaticSiteBuild", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesDeleteStaticSiteBuildPollerResponse{}, err
+		return StaticSitesClientDeleteStaticSiteBuildPollerResponse{}, err
 	}
-	result.Poller = &StaticSitesDeleteStaticSiteBuildPoller{
+	result.Poller = &StaticSitesClientDeleteStaticSiteBuildPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteStaticSiteBuild - Description for Deletes a static site build.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) deleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesBeginDeleteStaticSiteBuildOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) deleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientBeginDeleteStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, options)
 	if err != nil {
 		return nil, err
@@ -956,13 +883,13 @@ func (client *StaticSitesClient) deleteStaticSiteBuild(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteStaticSiteBuildHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteStaticSiteBuildCreateRequest creates the DeleteStaticSiteBuild request.
-func (client *StaticSitesClient) deleteStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesBeginDeleteStaticSiteBuildOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) deleteStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientBeginDeleteStaticSiteBuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -980,53 +907,45 @@ func (client *StaticSitesClient) deleteStaticSiteBuildCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteStaticSiteBuildHandleError handles the DeleteStaticSiteBuild error response.
-func (client *StaticSitesClient) deleteStaticSiteBuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeleteStaticSiteCustomDomain - Description for Deletes a custom domain.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginDeleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesBeginDeleteStaticSiteCustomDomainOptions) (StaticSitesDeleteStaticSiteCustomDomainPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// domainName - The custom domain to delete.
+// options - StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSiteCustomDomain
+// method.
+func (client *StaticSitesClient) BeginDeleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions) (StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse, error) {
 	resp, err := client.deleteStaticSiteCustomDomain(ctx, resourceGroupName, name, domainName, options)
 	if err != nil {
-		return StaticSitesDeleteStaticSiteCustomDomainPollerResponse{}, err
+		return StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse{}, err
 	}
-	result := StaticSitesDeleteStaticSiteCustomDomainPollerResponse{
+	result := StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.DeleteStaticSiteCustomDomain", "", resp, client.pl, client.deleteStaticSiteCustomDomainHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.DeleteStaticSiteCustomDomain", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesDeleteStaticSiteCustomDomainPollerResponse{}, err
+		return StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse{}, err
 	}
-	result.Poller = &StaticSitesDeleteStaticSiteCustomDomainPoller{
+	result.Poller = &StaticSitesClientDeleteStaticSiteCustomDomainPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteStaticSiteCustomDomain - Description for Deletes a custom domain.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) deleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesBeginDeleteStaticSiteCustomDomainOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) deleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteCustomDomainCreateRequest(ctx, resourceGroupName, name, domainName, options)
 	if err != nil {
 		return nil, err
@@ -1036,13 +955,13 @@ func (client *StaticSitesClient) deleteStaticSiteCustomDomain(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteStaticSiteCustomDomainHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteStaticSiteCustomDomainCreateRequest creates the DeleteStaticSiteCustomDomain request.
-func (client *StaticSitesClient) deleteStaticSiteCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesBeginDeleteStaticSiteCustomDomainOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) deleteStaticSiteCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1060,49 +979,42 @@ func (client *StaticSitesClient) deleteStaticSiteCustomDomainCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteStaticSiteCustomDomainHandleError handles the DeleteStaticSiteCustomDomain error response.
-func (client *StaticSitesClient) deleteStaticSiteCustomDomainHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteStaticSiteUser - Description for Deletes the user entry from the static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) DeleteStaticSiteUser(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, options *StaticSitesDeleteStaticSiteUserOptions) (StaticSitesDeleteStaticSiteUserResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the staticsite.
+// authprovider - The auth provider for this user.
+// userid - The user id of the user.
+// options - StaticSitesClientDeleteStaticSiteUserOptions contains the optional parameters for the StaticSitesClient.DeleteStaticSiteUser
+// method.
+func (client *StaticSitesClient) DeleteStaticSiteUser(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, options *StaticSitesClientDeleteStaticSiteUserOptions) (StaticSitesClientDeleteStaticSiteUserResponse, error) {
 	req, err := client.deleteStaticSiteUserCreateRequest(ctx, resourceGroupName, name, authprovider, userid, options)
 	if err != nil {
-		return StaticSitesDeleteStaticSiteUserResponse{}, err
+		return StaticSitesClientDeleteStaticSiteUserResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesDeleteStaticSiteUserResponse{}, err
+		return StaticSitesClientDeleteStaticSiteUserResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesDeleteStaticSiteUserResponse{}, client.deleteStaticSiteUserHandleError(resp)
+		return StaticSitesClientDeleteStaticSiteUserResponse{}, runtime.NewResponseError(resp)
 	}
-	return StaticSitesDeleteStaticSiteUserResponse{RawResponse: resp}, nil
+	return StaticSitesClientDeleteStaticSiteUserResponse{RawResponse: resp}, nil
 }
 
 // deleteStaticSiteUserCreateRequest creates the DeleteStaticSiteUser request.
-func (client *StaticSitesClient) deleteStaticSiteUserCreateRequest(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, options *StaticSitesDeleteStaticSiteUserOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) deleteStaticSiteUserCreateRequest(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, options *StaticSitesClientDeleteStaticSiteUserOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1124,53 +1036,44 @@ func (client *StaticSitesClient) deleteStaticSiteUserCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteStaticSiteUserHandleError handles the DeleteStaticSiteUser error response.
-func (client *StaticSitesClient) deleteStaticSiteUserHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDetachStaticSite - Description for Detaches a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginDetachStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesBeginDetachStaticSiteOptions) (StaticSitesDetachStaticSitePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site to detach.
+// options - StaticSitesClientBeginDetachStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginDetachStaticSite
+// method.
+func (client *StaticSitesClient) BeginDetachStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDetachStaticSiteOptions) (StaticSitesClientDetachStaticSitePollerResponse, error) {
 	resp, err := client.detachStaticSite(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StaticSitesDetachStaticSitePollerResponse{}, err
+		return StaticSitesClientDetachStaticSitePollerResponse{}, err
 	}
-	result := StaticSitesDetachStaticSitePollerResponse{
+	result := StaticSitesClientDetachStaticSitePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.DetachStaticSite", "", resp, client.pl, client.detachStaticSiteHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.DetachStaticSite", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesDetachStaticSitePollerResponse{}, err
+		return StaticSitesClientDetachStaticSitePollerResponse{}, err
 	}
-	result.Poller = &StaticSitesDetachStaticSitePoller{
+	result.Poller = &StaticSitesClientDetachStaticSitePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DetachStaticSite - Description for Detaches a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) detachStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesBeginDetachStaticSiteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) detachStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDetachStaticSiteOptions) (*http.Response, error) {
 	req, err := client.detachStaticSiteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
@@ -1180,13 +1083,13 @@ func (client *StaticSitesClient) detachStaticSite(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.detachStaticSiteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // detachStaticSiteCreateRequest creates the DetachStaticSite request.
-func (client *StaticSitesClient) detachStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesBeginDetachStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) detachStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDetachStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/detach"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1200,49 +1103,41 @@ func (client *StaticSitesClient) detachStaticSiteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// detachStaticSiteHandleError handles the DetachStaticSite error response.
-func (client *StaticSitesClient) detachStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DetachUserProvidedFunctionAppFromStaticSite - Description for Detach the user provided function app from the static site
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) DetachUserProvidedFunctionAppFromStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, options *StaticSitesDetachUserProvidedFunctionAppFromStaticSiteOptions) (StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// functionAppName - Name of the function app registered with the static site.
+// options - StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteOptions contains the optional parameters for the
+// StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSite method.
+func (client *StaticSitesClient) DetachUserProvidedFunctionAppFromStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, options *StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteOptions) (StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse, error) {
 	req, err := client.detachUserProvidedFunctionAppFromStaticSiteCreateRequest(ctx, resourceGroupName, name, functionAppName, options)
 	if err != nil {
-		return StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse{}, err
+		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse{}, err
+		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse{}, client.detachUserProvidedFunctionAppFromStaticSiteHandleError(resp)
+		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, runtime.NewResponseError(resp)
 	}
-	return StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse{RawResponse: resp}, nil
+	return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{RawResponse: resp}, nil
 }
 
 // detachUserProvidedFunctionAppFromStaticSiteCreateRequest creates the DetachUserProvidedFunctionAppFromStaticSite request.
-func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, functionAppName string, options *StaticSitesDetachUserProvidedFunctionAppFromStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, functionAppName string, options *StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1260,49 +1155,43 @@ func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// detachUserProvidedFunctionAppFromStaticSiteHandleError handles the DetachUserProvidedFunctionAppFromStaticSite error response.
-func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DetachUserProvidedFunctionAppFromStaticSiteBuild - Description for Detach the user provided function app from the static site build
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) DetachUserProvidedFunctionAppFromStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildOptions) (StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse, error) {
+// DetachUserProvidedFunctionAppFromStaticSiteBuild - Description for Detach the user provided function app from the static
+// site build
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// functionAppName - Name of the function app registered with the static site build.
+// options - StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildOptions contains the optional parameters for
+// the StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSiteBuild method.
+func (client *StaticSitesClient) DetachUserProvidedFunctionAppFromStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildOptions) (StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse, error) {
 	req, err := client.detachUserProvidedFunctionAppFromStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, functionAppName, options)
 	if err != nil {
-		return StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, err
+		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, err
+		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, client.detachUserProvidedFunctionAppFromStaticSiteBuildHandleError(resp)
+		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, runtime.NewResponseError(resp)
 	}
-	return StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{RawResponse: resp}, nil
+	return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{RawResponse: resp}, nil
 }
 
 // detachUserProvidedFunctionAppFromStaticSiteBuildCreateRequest creates the DetachUserProvidedFunctionAppFromStaticSiteBuild request.
-func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1324,49 +1213,41 @@ func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteBuil
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// detachUserProvidedFunctionAppFromStaticSiteBuildHandleError handles the DetachUserProvidedFunctionAppFromStaticSiteBuild error response.
-func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteBuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetPrivateEndpointConnection - Description for Gets a private endpoint connection
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesGetPrivateEndpointConnectionOptions) (StaticSitesGetPrivateEndpointConnectionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// privateEndpointConnectionName - Name of the private endpoint connection.
+// options - StaticSitesClientGetPrivateEndpointConnectionOptions contains the optional parameters for the StaticSitesClient.GetPrivateEndpointConnection
+// method.
+func (client *StaticSitesClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientGetPrivateEndpointConnectionOptions) (StaticSitesClientGetPrivateEndpointConnectionResponse, error) {
 	req, err := client.getPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
-		return StaticSitesGetPrivateEndpointConnectionResponse{}, err
+		return StaticSitesClientGetPrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesGetPrivateEndpointConnectionResponse{}, err
+		return StaticSitesClientGetPrivateEndpointConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesGetPrivateEndpointConnectionResponse{}, client.getPrivateEndpointConnectionHandleError(resp)
+		return StaticSitesClientGetPrivateEndpointConnectionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPrivateEndpointConnectionHandleResponse(resp)
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
-func (client *StaticSitesClient) getPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesGetPrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientGetPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1384,55 +1265,47 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPrivateEndpointConnectionHandleResponse handles the GetPrivateEndpointConnection response.
-func (client *StaticSitesClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (StaticSitesGetPrivateEndpointConnectionResponse, error) {
-	result := StaticSitesGetPrivateEndpointConnectionResponse{RawResponse: resp}
+func (client *StaticSitesClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (StaticSitesClientGetPrivateEndpointConnectionResponse, error) {
+	result := StaticSitesClientGetPrivateEndpointConnectionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemotePrivateEndpointConnectionARMResource); err != nil {
-		return StaticSitesGetPrivateEndpointConnectionResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetPrivateEndpointConnectionResponse{}, err
 	}
 	return result, nil
 }
 
-// getPrivateEndpointConnectionHandleError handles the GetPrivateEndpointConnection error response.
-func (client *StaticSitesClient) getPrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetPrivateEndpointConnectionList - Description for Gets the list of private endpoint connections associated with a static site
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *StaticSitesGetPrivateEndpointConnectionListOptions) *StaticSitesGetPrivateEndpointConnectionListPager {
-	return &StaticSitesGetPrivateEndpointConnectionListPager{
+// GetPrivateEndpointConnectionList - Description for Gets the list of private endpoint connections associated with a static
+// site
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the StaticSitesClient.GetPrivateEndpointConnectionList
+// method.
+func (client *StaticSitesClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *StaticSitesClientGetPrivateEndpointConnectionListOptions) *StaticSitesClientGetPrivateEndpointConnectionListPager {
+	return &StaticSitesClientGetPrivateEndpointConnectionListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getPrivateEndpointConnectionListCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesGetPrivateEndpointConnectionListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientGetPrivateEndpointConnectionListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionCollection.NextLink)
 		},
 	}
 }
 
 // getPrivateEndpointConnectionListCreateRequest creates the GetPrivateEndpointConnectionList request.
-func (client *StaticSitesClient) getPrivateEndpointConnectionListCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesGetPrivateEndpointConnectionListOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getPrivateEndpointConnectionListCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientGetPrivateEndpointConnectionListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1446,58 +1319,49 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionListCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPrivateEndpointConnectionListHandleResponse handles the GetPrivateEndpointConnectionList response.
-func (client *StaticSitesClient) getPrivateEndpointConnectionListHandleResponse(resp *http.Response) (StaticSitesGetPrivateEndpointConnectionListResponse, error) {
-	result := StaticSitesGetPrivateEndpointConnectionListResponse{RawResponse: resp}
+func (client *StaticSitesClient) getPrivateEndpointConnectionListHandleResponse(resp *http.Response) (StaticSitesClientGetPrivateEndpointConnectionListResponse, error) {
+	result := StaticSitesClientGetPrivateEndpointConnectionListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionCollection); err != nil {
-		return StaticSitesGetPrivateEndpointConnectionListResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetPrivateEndpointConnectionListResponse{}, err
 	}
 	return result, nil
 }
 
-// getPrivateEndpointConnectionListHandleError handles the GetPrivateEndpointConnectionList error response.
-func (client *StaticSitesClient) getPrivateEndpointConnectionListHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetPrivateLinkResources - Description for Gets the private link resources
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, name string, options *StaticSitesGetPrivateLinkResourcesOptions) (StaticSitesGetPrivateLinkResourcesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the site.
+// options - StaticSitesClientGetPrivateLinkResourcesOptions contains the optional parameters for the StaticSitesClient.GetPrivateLinkResources
+// method.
+func (client *StaticSitesClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientGetPrivateLinkResourcesOptions) (StaticSitesClientGetPrivateLinkResourcesResponse, error) {
 	req, err := client.getPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StaticSitesGetPrivateLinkResourcesResponse{}, err
+		return StaticSitesClientGetPrivateLinkResourcesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesGetPrivateLinkResourcesResponse{}, err
+		return StaticSitesClientGetPrivateLinkResourcesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesGetPrivateLinkResourcesResponse{}, client.getPrivateLinkResourcesHandleError(resp)
+		return StaticSitesClientGetPrivateLinkResourcesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPrivateLinkResourcesHandleResponse(resp)
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
-func (client *StaticSitesClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesGetPrivateLinkResourcesOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientGetPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateLinkResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1511,58 +1375,49 @@ func (client *StaticSitesClient) getPrivateLinkResourcesCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *StaticSitesClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (StaticSitesGetPrivateLinkResourcesResponse, error) {
-	result := StaticSitesGetPrivateLinkResourcesResponse{RawResponse: resp}
+func (client *StaticSitesClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (StaticSitesClientGetPrivateLinkResourcesResponse, error) {
+	result := StaticSitesClientGetPrivateLinkResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesWrapper); err != nil {
-		return StaticSitesGetPrivateLinkResourcesResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetPrivateLinkResourcesResponse{}, err
 	}
 	return result, nil
 }
 
-// getPrivateLinkResourcesHandleError handles the GetPrivateLinkResources error response.
-func (client *StaticSitesClient) getPrivateLinkResourcesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetStaticSite - Description for Gets the details of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesGetStaticSiteOptions) (StaticSitesGetStaticSiteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientGetStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetStaticSite
+// method.
+func (client *StaticSitesClient) GetStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientGetStaticSiteOptions) (StaticSitesClientGetStaticSiteResponse, error) {
 	req, err := client.getStaticSiteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StaticSitesGetStaticSiteResponse{}, err
+		return StaticSitesClientGetStaticSiteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesGetStaticSiteResponse{}, err
+		return StaticSitesClientGetStaticSiteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesGetStaticSiteResponse{}, client.getStaticSiteHandleError(resp)
+		return StaticSitesClientGetStaticSiteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getStaticSiteHandleResponse(resp)
 }
 
 // getStaticSiteCreateRequest creates the GetStaticSite request.
-func (client *StaticSitesClient) getStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesGetStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientGetStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1576,58 +1431,50 @@ func (client *StaticSitesClient) getStaticSiteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getStaticSiteHandleResponse handles the GetStaticSite response.
-func (client *StaticSitesClient) getStaticSiteHandleResponse(resp *http.Response) (StaticSitesGetStaticSiteResponse, error) {
-	result := StaticSitesGetStaticSiteResponse{RawResponse: resp}
+func (client *StaticSitesClient) getStaticSiteHandleResponse(resp *http.Response) (StaticSitesClientGetStaticSiteResponse, error) {
+	result := StaticSitesClientGetStaticSiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteARMResource); err != nil {
-		return StaticSitesGetStaticSiteResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetStaticSiteResponse{}, err
 	}
 	return result, nil
 }
 
-// getStaticSiteHandleError handles the GetStaticSite error response.
-func (client *StaticSitesClient) getStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetStaticSiteBuild - Description for Gets the details of a static site build.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesGetStaticSiteBuildOptions) (StaticSitesGetStaticSiteBuildResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// options - StaticSitesClientGetStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteBuild
+// method.
+func (client *StaticSitesClient) GetStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientGetStaticSiteBuildOptions) (StaticSitesClientGetStaticSiteBuildResponse, error) {
 	req, err := client.getStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, options)
 	if err != nil {
-		return StaticSitesGetStaticSiteBuildResponse{}, err
+		return StaticSitesClientGetStaticSiteBuildResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesGetStaticSiteBuildResponse{}, err
+		return StaticSitesClientGetStaticSiteBuildResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesGetStaticSiteBuildResponse{}, client.getStaticSiteBuildHandleError(resp)
+		return StaticSitesClientGetStaticSiteBuildResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getStaticSiteBuildHandleResponse(resp)
 }
 
 // getStaticSiteBuildCreateRequest creates the GetStaticSiteBuild request.
-func (client *StaticSitesClient) getStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesGetStaticSiteBuildOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientGetStaticSiteBuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1645,55 +1492,46 @@ func (client *StaticSitesClient) getStaticSiteBuildCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getStaticSiteBuildHandleResponse handles the GetStaticSiteBuild response.
-func (client *StaticSitesClient) getStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesGetStaticSiteBuildResponse, error) {
-	result := StaticSitesGetStaticSiteBuildResponse{RawResponse: resp}
+func (client *StaticSitesClient) getStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesClientGetStaticSiteBuildResponse, error) {
+	result := StaticSitesClientGetStaticSiteBuildResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteBuildARMResource); err != nil {
-		return StaticSitesGetStaticSiteBuildResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetStaticSiteBuildResponse{}, err
 	}
 	return result, nil
 }
 
-// getStaticSiteBuildHandleError handles the GetStaticSiteBuild error response.
-func (client *StaticSitesClient) getStaticSiteBuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetStaticSiteBuilds - Description for Gets all static site builds for a particular static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetStaticSiteBuilds(resourceGroupName string, name string, options *StaticSitesGetStaticSiteBuildsOptions) *StaticSitesGetStaticSiteBuildsPager {
-	return &StaticSitesGetStaticSiteBuildsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientGetStaticSiteBuildsOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteBuilds
+// method.
+func (client *StaticSitesClient) GetStaticSiteBuilds(resourceGroupName string, name string, options *StaticSitesClientGetStaticSiteBuildsOptions) *StaticSitesClientGetStaticSiteBuildsPager {
+	return &StaticSitesClientGetStaticSiteBuildsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getStaticSiteBuildsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesGetStaticSiteBuildsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientGetStaticSiteBuildsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteBuildCollection.NextLink)
 		},
 	}
 }
 
 // getStaticSiteBuildsCreateRequest creates the GetStaticSiteBuilds request.
-func (client *StaticSitesClient) getStaticSiteBuildsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesGetStaticSiteBuildsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getStaticSiteBuildsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientGetStaticSiteBuildsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1707,58 +1545,50 @@ func (client *StaticSitesClient) getStaticSiteBuildsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getStaticSiteBuildsHandleResponse handles the GetStaticSiteBuilds response.
-func (client *StaticSitesClient) getStaticSiteBuildsHandleResponse(resp *http.Response) (StaticSitesGetStaticSiteBuildsResponse, error) {
-	result := StaticSitesGetStaticSiteBuildsResponse{RawResponse: resp}
+func (client *StaticSitesClient) getStaticSiteBuildsHandleResponse(resp *http.Response) (StaticSitesClientGetStaticSiteBuildsResponse, error) {
+	result := StaticSitesClientGetStaticSiteBuildsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteBuildCollection); err != nil {
-		return StaticSitesGetStaticSiteBuildsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetStaticSiteBuildsResponse{}, err
 	}
 	return result, nil
 }
 
-// getStaticSiteBuildsHandleError handles the GetStaticSiteBuilds error response.
-func (client *StaticSitesClient) getStaticSiteBuildsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetStaticSiteCustomDomain - Description for Gets an existing custom domain for a particular static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesGetStaticSiteCustomDomainOptions) (StaticSitesGetStaticSiteCustomDomainResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site resource to search in.
+// domainName - The custom domain name.
+// options - StaticSitesClientGetStaticSiteCustomDomainOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteCustomDomain
+// method.
+func (client *StaticSitesClient) GetStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientGetStaticSiteCustomDomainOptions) (StaticSitesClientGetStaticSiteCustomDomainResponse, error) {
 	req, err := client.getStaticSiteCustomDomainCreateRequest(ctx, resourceGroupName, name, domainName, options)
 	if err != nil {
-		return StaticSitesGetStaticSiteCustomDomainResponse{}, err
+		return StaticSitesClientGetStaticSiteCustomDomainResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesGetStaticSiteCustomDomainResponse{}, err
+		return StaticSitesClientGetStaticSiteCustomDomainResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesGetStaticSiteCustomDomainResponse{}, client.getStaticSiteCustomDomainHandleError(resp)
+		return StaticSitesClientGetStaticSiteCustomDomainResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getStaticSiteCustomDomainHandleResponse(resp)
 }
 
 // getStaticSiteCustomDomainCreateRequest creates the GetStaticSiteCustomDomain request.
-func (client *StaticSitesClient) getStaticSiteCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesGetStaticSiteCustomDomainOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getStaticSiteCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientGetStaticSiteCustomDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1776,55 +1606,45 @@ func (client *StaticSitesClient) getStaticSiteCustomDomainCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getStaticSiteCustomDomainHandleResponse handles the GetStaticSiteCustomDomain response.
-func (client *StaticSitesClient) getStaticSiteCustomDomainHandleResponse(resp *http.Response) (StaticSitesGetStaticSiteCustomDomainResponse, error) {
-	result := StaticSitesGetStaticSiteCustomDomainResponse{RawResponse: resp}
+func (client *StaticSitesClient) getStaticSiteCustomDomainHandleResponse(resp *http.Response) (StaticSitesClientGetStaticSiteCustomDomainResponse, error) {
+	result := StaticSitesClientGetStaticSiteCustomDomainResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteCustomDomainOverviewARMResource); err != nil {
-		return StaticSitesGetStaticSiteCustomDomainResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetStaticSiteCustomDomainResponse{}, err
 	}
 	return result, nil
 }
 
-// getStaticSiteCustomDomainHandleError handles the GetStaticSiteCustomDomain error response.
-func (client *StaticSitesClient) getStaticSiteCustomDomainHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetStaticSitesByResourceGroup - Description for Gets all static sites in the specified resource group.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetStaticSitesByResourceGroup(resourceGroupName string, options *StaticSitesGetStaticSitesByResourceGroupOptions) *StaticSitesGetStaticSitesByResourceGroupPager {
-	return &StaticSitesGetStaticSitesByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// options - StaticSitesClientGetStaticSitesByResourceGroupOptions contains the optional parameters for the StaticSitesClient.GetStaticSitesByResourceGroup
+// method.
+func (client *StaticSitesClient) GetStaticSitesByResourceGroup(resourceGroupName string, options *StaticSitesClientGetStaticSitesByResourceGroupOptions) *StaticSitesClientGetStaticSitesByResourceGroupPager {
+	return &StaticSitesClientGetStaticSitesByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getStaticSitesByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesGetStaticSitesByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientGetStaticSitesByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteCollection.NextLink)
 		},
 	}
 }
 
 // getStaticSitesByResourceGroupCreateRequest creates the GetStaticSitesByResourceGroup request.
-func (client *StaticSitesClient) getStaticSitesByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *StaticSitesGetStaticSitesByResourceGroupOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getStaticSitesByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *StaticSitesClientGetStaticSitesByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1834,58 +1654,51 @@ func (client *StaticSitesClient) getStaticSitesByResourceGroupCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getStaticSitesByResourceGroupHandleResponse handles the GetStaticSitesByResourceGroup response.
-func (client *StaticSitesClient) getStaticSitesByResourceGroupHandleResponse(resp *http.Response) (StaticSitesGetStaticSitesByResourceGroupResponse, error) {
-	result := StaticSitesGetStaticSitesByResourceGroupResponse{RawResponse: resp}
+func (client *StaticSitesClient) getStaticSitesByResourceGroupHandleResponse(resp *http.Response) (StaticSitesClientGetStaticSitesByResourceGroupResponse, error) {
+	result := StaticSitesClientGetStaticSitesByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteCollection); err != nil {
-		return StaticSitesGetStaticSitesByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetStaticSitesByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// getStaticSitesByResourceGroupHandleError handles the GetStaticSitesByResourceGroup error response.
-func (client *StaticSitesClient) getStaticSitesByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetUserProvidedFunctionAppForStaticSite - Description for Gets the details of the user provided function app registered with a static site
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetUserProvidedFunctionAppForStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, options *StaticSitesGetUserProvidedFunctionAppForStaticSiteOptions) (StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse, error) {
+// GetUserProvidedFunctionAppForStaticSite - Description for Gets the details of the user provided function app registered
+// with a static site
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// functionAppName - Name of the function app registered with the static site.
+// options - StaticSitesClientGetUserProvidedFunctionAppForStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppForStaticSite
+// method.
+func (client *StaticSitesClient) GetUserProvidedFunctionAppForStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, options *StaticSitesClientGetUserProvidedFunctionAppForStaticSiteOptions) (StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse, error) {
 	req, err := client.getUserProvidedFunctionAppForStaticSiteCreateRequest(ctx, resourceGroupName, name, functionAppName, options)
 	if err != nil {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse{}, err
+		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse{}, err
+		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse{}, client.getUserProvidedFunctionAppForStaticSiteHandleError(resp)
+		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getUserProvidedFunctionAppForStaticSiteHandleResponse(resp)
 }
 
 // getUserProvidedFunctionAppForStaticSiteCreateRequest creates the GetUserProvidedFunctionAppForStaticSite request.
-func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, functionAppName string, options *StaticSitesGetUserProvidedFunctionAppForStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, functionAppName string, options *StaticSitesClientGetUserProvidedFunctionAppForStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1903,58 +1716,52 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getUserProvidedFunctionAppForStaticSiteHandleResponse handles the GetUserProvidedFunctionAppForStaticSite response.
-func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteHandleResponse(resp *http.Response) (StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse, error) {
-	result := StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse{RawResponse: resp}
+func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteHandleResponse(resp *http.Response) (StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse, error) {
+	result := StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserProvidedFunctionAppARMResource); err != nil {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse{}, err
 	}
 	return result, nil
 }
 
-// getUserProvidedFunctionAppForStaticSiteHandleError handles the GetUserProvidedFunctionAppForStaticSite error response.
-func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetUserProvidedFunctionAppForStaticSiteBuild - Description for Gets the details of the user provided function app registered with a static site build
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetUserProvidedFunctionAppForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildOptions) (StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse, error) {
+// GetUserProvidedFunctionAppForStaticSiteBuild - Description for Gets the details of the user provided function app registered
+// with a static site build
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// functionAppName - Name of the function app registered with the static site build.
+// options - StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildOptions contains the optional parameters for the
+// StaticSitesClient.GetUserProvidedFunctionAppForStaticSiteBuild method.
+func (client *StaticSitesClient) GetUserProvidedFunctionAppForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildOptions) (StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse, error) {
 	req, err := client.getUserProvidedFunctionAppForStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, functionAppName, options)
 	if err != nil {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
+		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
+		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, client.getUserProvidedFunctionAppForStaticSiteBuildHandleError(resp)
+		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getUserProvidedFunctionAppForStaticSiteBuildHandleResponse(resp)
 }
 
 // getUserProvidedFunctionAppForStaticSiteBuildCreateRequest creates the GetUserProvidedFunctionAppForStaticSiteBuild request.
-func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1976,55 +1783,47 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildCre
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getUserProvidedFunctionAppForStaticSiteBuildHandleResponse handles the GetUserProvidedFunctionAppForStaticSiteBuild response.
-func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse, error) {
-	result := StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse{RawResponse: resp}
+func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse, error) {
+	result := StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserProvidedFunctionAppARMResource); err != nil {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
 	}
 	return result, nil
 }
 
-// getUserProvidedFunctionAppForStaticSiteBuildHandleError handles the GetUserProvidedFunctionAppForStaticSiteBuild error response.
-func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetUserProvidedFunctionAppsForStaticSite - Description for Gets the details of the user provided function apps registered with a static site
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetUserProvidedFunctionAppsForStaticSite(resourceGroupName string, name string, options *StaticSitesGetUserProvidedFunctionAppsForStaticSiteOptions) *StaticSitesGetUserProvidedFunctionAppsForStaticSitePager {
-	return &StaticSitesGetUserProvidedFunctionAppsForStaticSitePager{
+// GetUserProvidedFunctionAppsForStaticSite - Description for Gets the details of the user provided function apps registered
+// with a static site
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite
+// method.
+func (client *StaticSitesClient) GetUserProvidedFunctionAppsForStaticSite(resourceGroupName string, name string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions) *StaticSitesClientGetUserProvidedFunctionAppsForStaticSitePager {
+	return &StaticSitesClientGetUserProvidedFunctionAppsForStaticSitePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getUserProvidedFunctionAppsForStaticSiteCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteUserProvidedFunctionAppsCollection.NextLink)
 		},
 	}
 }
 
 // getUserProvidedFunctionAppsForStaticSiteCreateRequest creates the GetUserProvidedFunctionAppsForStaticSite request.
-func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesGetUserProvidedFunctionAppsForStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2038,55 +1837,48 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getUserProvidedFunctionAppsForStaticSiteHandleResponse handles the GetUserProvidedFunctionAppsForStaticSite response.
-func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteHandleResponse(resp *http.Response) (StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse, error) {
-	result := StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse{RawResponse: resp}
+func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteHandleResponse(resp *http.Response) (StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse, error) {
+	result := StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserProvidedFunctionAppsCollection); err != nil {
-		return StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse{}, err
 	}
 	return result, nil
 }
 
-// getUserProvidedFunctionAppsForStaticSiteHandleError handles the GetUserProvidedFunctionAppsForStaticSite error response.
-func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetUserProvidedFunctionAppsForStaticSiteBuild - Description for Gets the details of the user provided function apps registered with a static site build
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) GetUserProvidedFunctionAppsForStaticSiteBuild(resourceGroupName string, name string, environmentName string, options *StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildOptions) *StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager {
-	return &StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager{
+// GetUserProvidedFunctionAppsForStaticSiteBuild - Description for Gets the details of the user provided function apps registered
+// with a static site build
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// options - StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions contains the optional parameters for the
+// StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild method.
+func (client *StaticSitesClient) GetUserProvidedFunctionAppsForStaticSiteBuild(resourceGroupName string, name string, environmentName string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions) *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildPager {
+	return &StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getUserProvidedFunctionAppsForStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteUserProvidedFunctionAppsCollection.NextLink)
 		},
 	}
 }
 
 // getUserProvidedFunctionAppsForStaticSiteBuildCreateRequest creates the GetUserProvidedFunctionAppsForStaticSiteBuild request.
-func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2104,112 +1896,91 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getUserProvidedFunctionAppsForStaticSiteBuildHandleResponse handles the GetUserProvidedFunctionAppsForStaticSiteBuild response.
-func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse, error) {
-	result := StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse{RawResponse: resp}
+func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse, error) {
+	result := StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserProvidedFunctionAppsCollection); err != nil {
-		return StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse{}, err
 	}
 	return result, nil
 }
 
-// getUserProvidedFunctionAppsForStaticSiteBuildHandleError handles the GetUserProvidedFunctionAppsForStaticSiteBuild error response.
-func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Description for Get all Static Sites for a subscription.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) List(options *StaticSitesListOptions) *StaticSitesListPager {
-	return &StaticSitesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - StaticSitesClientListOptions contains the optional parameters for the StaticSitesClient.List method.
+func (client *StaticSitesClient) List(options *StaticSitesClientListOptions) *StaticSitesClientListPager {
+	return &StaticSitesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *StaticSitesClient) listCreateRequest(ctx context.Context, options *StaticSitesListOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listCreateRequest(ctx context.Context, options *StaticSitesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *StaticSitesClient) listHandleResponse(resp *http.Response) (StaticSitesListResponse, error) {
-	result := StaticSitesListResponse{RawResponse: resp}
+func (client *StaticSitesClient) listHandleResponse(resp *http.Response) (StaticSitesClientListResponse, error) {
+	result := StaticSitesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteCollection); err != nil {
-		return StaticSitesListResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *StaticSitesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteAppSettings - Description for Gets the application settings of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteAppSettings(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteAppSettingsOptions) (StaticSitesListStaticSiteAppSettingsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientListStaticSiteAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteAppSettings
+// method.
+func (client *StaticSitesClient) ListStaticSiteAppSettings(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteAppSettingsOptions) (StaticSitesClientListStaticSiteAppSettingsResponse, error) {
 	req, err := client.listStaticSiteAppSettingsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StaticSitesListStaticSiteAppSettingsResponse{}, err
+		return StaticSitesClientListStaticSiteAppSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesListStaticSiteAppSettingsResponse{}, err
+		return StaticSitesClientListStaticSiteAppSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesListStaticSiteAppSettingsResponse{}, client.listStaticSiteAppSettingsHandleError(resp)
+		return StaticSitesClientListStaticSiteAppSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listStaticSiteAppSettingsHandleResponse(resp)
 }
 
 // listStaticSiteAppSettingsCreateRequest creates the ListStaticSiteAppSettings request.
-func (client *StaticSitesClient) listStaticSiteAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteAppSettingsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteAppSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listAppSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2223,58 +1994,50 @@ func (client *StaticSitesClient) listStaticSiteAppSettingsCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteAppSettingsHandleResponse handles the ListStaticSiteAppSettings response.
-func (client *StaticSitesClient) listStaticSiteAppSettingsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteAppSettingsResponse, error) {
-	result := StaticSitesListStaticSiteAppSettingsResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteAppSettingsHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteAppSettingsResponse, error) {
+	result := StaticSitesClientListStaticSiteAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteAppSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteAppSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteAppSettingsHandleError handles the ListStaticSiteAppSettings error response.
-func (client *StaticSitesClient) listStaticSiteAppSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteBuildAppSettings - Description for Gets the application settings of a static site build.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteBuildAppSettings(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesListStaticSiteBuildAppSettingsOptions) (StaticSitesListStaticSiteBuildAppSettingsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// options - StaticSitesClientListStaticSiteBuildAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildAppSettings
+// method.
+func (client *StaticSitesClient) ListStaticSiteBuildAppSettings(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildAppSettingsOptions) (StaticSitesClientListStaticSiteBuildAppSettingsResponse, error) {
 	req, err := client.listStaticSiteBuildAppSettingsCreateRequest(ctx, resourceGroupName, name, environmentName, options)
 	if err != nil {
-		return StaticSitesListStaticSiteBuildAppSettingsResponse{}, err
+		return StaticSitesClientListStaticSiteBuildAppSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesListStaticSiteBuildAppSettingsResponse{}, err
+		return StaticSitesClientListStaticSiteBuildAppSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesListStaticSiteBuildAppSettingsResponse{}, client.listStaticSiteBuildAppSettingsHandleError(resp)
+		return StaticSitesClientListStaticSiteBuildAppSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listStaticSiteBuildAppSettingsHandleResponse(resp)
 }
 
 // listStaticSiteBuildAppSettingsCreateRequest creates the ListStaticSiteBuildAppSettings request.
-func (client *StaticSitesClient) listStaticSiteBuildAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesListStaticSiteBuildAppSettingsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteBuildAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildAppSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/listAppSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2292,58 +2055,50 @@ func (client *StaticSitesClient) listStaticSiteBuildAppSettingsCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteBuildAppSettingsHandleResponse handles the ListStaticSiteBuildAppSettings response.
-func (client *StaticSitesClient) listStaticSiteBuildAppSettingsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteBuildAppSettingsResponse, error) {
-	result := StaticSitesListStaticSiteBuildAppSettingsResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteBuildAppSettingsHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteBuildAppSettingsResponse, error) {
+	result := StaticSitesClientListStaticSiteBuildAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteBuildAppSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteBuildAppSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteBuildAppSettingsHandleError handles the ListStaticSiteBuildAppSettings error response.
-func (client *StaticSitesClient) listStaticSiteBuildAppSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteBuildFunctionAppSettings - Description for Gets the application settings of a static site build.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteBuildFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesListStaticSiteBuildFunctionAppSettingsOptions) (StaticSitesListStaticSiteBuildFunctionAppSettingsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// options - StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildFunctionAppSettings
+// method.
+func (client *StaticSitesClient) ListStaticSiteBuildFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions) (StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse, error) {
 	req, err := client.listStaticSiteBuildFunctionAppSettingsCreateRequest(ctx, resourceGroupName, name, environmentName, options)
 	if err != nil {
-		return StaticSitesListStaticSiteBuildFunctionAppSettingsResponse{}, err
+		return StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesListStaticSiteBuildFunctionAppSettingsResponse{}, err
+		return StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesListStaticSiteBuildFunctionAppSettingsResponse{}, client.listStaticSiteBuildFunctionAppSettingsHandleError(resp)
+		return StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listStaticSiteBuildFunctionAppSettingsHandleResponse(resp)
 }
 
 // listStaticSiteBuildFunctionAppSettingsCreateRequest creates the ListStaticSiteBuildFunctionAppSettings request.
-func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesListStaticSiteBuildFunctionAppSettingsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/listFunctionAppSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2361,55 +2116,47 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteBuildFunctionAppSettingsHandleResponse handles the ListStaticSiteBuildFunctionAppSettings response.
-func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteBuildFunctionAppSettingsResponse, error) {
-	result := StaticSitesListStaticSiteBuildFunctionAppSettingsResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse, error) {
+	result := StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteBuildFunctionAppSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteBuildFunctionAppSettingsHandleError handles the ListStaticSiteBuildFunctionAppSettings error response.
-func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteBuildFunctions - Description for Gets the functions of a particular static site build.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteBuildFunctions(resourceGroupName string, name string, environmentName string, options *StaticSitesListStaticSiteBuildFunctionsOptions) *StaticSitesListStaticSiteBuildFunctionsPager {
-	return &StaticSitesListStaticSiteBuildFunctionsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// options - StaticSitesClientListStaticSiteBuildFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildFunctions
+// method.
+func (client *StaticSitesClient) ListStaticSiteBuildFunctions(resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildFunctionsOptions) *StaticSitesClientListStaticSiteBuildFunctionsPager {
+	return &StaticSitesClientListStaticSiteBuildFunctionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listStaticSiteBuildFunctionsCreateRequest(ctx, resourceGroupName, name, environmentName, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesListStaticSiteBuildFunctionsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientListStaticSiteBuildFunctionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteFunctionOverviewCollection.NextLink)
 		},
 	}
 }
 
 // listStaticSiteBuildFunctionsCreateRequest creates the ListStaticSiteBuildFunctions request.
-func (client *StaticSitesClient) listStaticSiteBuildFunctionsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesListStaticSiteBuildFunctionsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteBuildFunctionsCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildFunctionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/functions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2427,58 +2174,49 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionsCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteBuildFunctionsHandleResponse handles the ListStaticSiteBuildFunctions response.
-func (client *StaticSitesClient) listStaticSiteBuildFunctionsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteBuildFunctionsResponse, error) {
-	result := StaticSitesListStaticSiteBuildFunctionsResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteBuildFunctionsHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteBuildFunctionsResponse, error) {
+	result := StaticSitesClientListStaticSiteBuildFunctionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteFunctionOverviewCollection); err != nil {
-		return StaticSitesListStaticSiteBuildFunctionsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteBuildFunctionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteBuildFunctionsHandleError handles the ListStaticSiteBuildFunctions error response.
-func (client *StaticSitesClient) listStaticSiteBuildFunctionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteConfiguredRoles - Description for Lists the roles configured for the static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteConfiguredRoles(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteConfiguredRolesOptions) (StaticSitesListStaticSiteConfiguredRolesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientListStaticSiteConfiguredRolesOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteConfiguredRoles
+// method.
+func (client *StaticSitesClient) ListStaticSiteConfiguredRoles(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteConfiguredRolesOptions) (StaticSitesClientListStaticSiteConfiguredRolesResponse, error) {
 	req, err := client.listStaticSiteConfiguredRolesCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StaticSitesListStaticSiteConfiguredRolesResponse{}, err
+		return StaticSitesClientListStaticSiteConfiguredRolesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesListStaticSiteConfiguredRolesResponse{}, err
+		return StaticSitesClientListStaticSiteConfiguredRolesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesListStaticSiteConfiguredRolesResponse{}, client.listStaticSiteConfiguredRolesHandleError(resp)
+		return StaticSitesClientListStaticSiteConfiguredRolesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listStaticSiteConfiguredRolesHandleResponse(resp)
 }
 
 // listStaticSiteConfiguredRolesCreateRequest creates the ListStaticSiteConfiguredRoles request.
-func (client *StaticSitesClient) listStaticSiteConfiguredRolesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteConfiguredRolesOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteConfiguredRolesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteConfiguredRolesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listConfiguredRoles"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2492,55 +2230,46 @@ func (client *StaticSitesClient) listStaticSiteConfiguredRolesCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteConfiguredRolesHandleResponse handles the ListStaticSiteConfiguredRoles response.
-func (client *StaticSitesClient) listStaticSiteConfiguredRolesHandleResponse(resp *http.Response) (StaticSitesListStaticSiteConfiguredRolesResponse, error) {
-	result := StaticSitesListStaticSiteConfiguredRolesResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteConfiguredRolesHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteConfiguredRolesResponse, error) {
+	result := StaticSitesClientListStaticSiteConfiguredRolesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringList); err != nil {
-		return StaticSitesListStaticSiteConfiguredRolesResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteConfiguredRolesResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteConfiguredRolesHandleError handles the ListStaticSiteConfiguredRoles error response.
-func (client *StaticSitesClient) listStaticSiteConfiguredRolesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteCustomDomains - Description for Gets all static site custom domains for a particular static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteCustomDomains(resourceGroupName string, name string, options *StaticSitesListStaticSiteCustomDomainsOptions) *StaticSitesListStaticSiteCustomDomainsPager {
-	return &StaticSitesListStaticSiteCustomDomainsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site resource to search in.
+// options - StaticSitesClientListStaticSiteCustomDomainsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteCustomDomains
+// method.
+func (client *StaticSitesClient) ListStaticSiteCustomDomains(resourceGroupName string, name string, options *StaticSitesClientListStaticSiteCustomDomainsOptions) *StaticSitesClientListStaticSiteCustomDomainsPager {
+	return &StaticSitesClientListStaticSiteCustomDomainsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listStaticSiteCustomDomainsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesListStaticSiteCustomDomainsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientListStaticSiteCustomDomainsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteCustomDomainOverviewCollection.NextLink)
 		},
 	}
 }
 
 // listStaticSiteCustomDomainsCreateRequest creates the ListStaticSiteCustomDomains request.
-func (client *StaticSitesClient) listStaticSiteCustomDomainsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteCustomDomainsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteCustomDomainsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteCustomDomainsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2554,58 +2283,49 @@ func (client *StaticSitesClient) listStaticSiteCustomDomainsCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteCustomDomainsHandleResponse handles the ListStaticSiteCustomDomains response.
-func (client *StaticSitesClient) listStaticSiteCustomDomainsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteCustomDomainsResponse, error) {
-	result := StaticSitesListStaticSiteCustomDomainsResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteCustomDomainsHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteCustomDomainsResponse, error) {
+	result := StaticSitesClientListStaticSiteCustomDomainsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteCustomDomainOverviewCollection); err != nil {
-		return StaticSitesListStaticSiteCustomDomainsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteCustomDomainsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteCustomDomainsHandleError handles the ListStaticSiteCustomDomains error response.
-func (client *StaticSitesClient) listStaticSiteCustomDomainsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteFunctionAppSettings - Description for Gets the application settings of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteFunctionAppSettingsOptions) (StaticSitesListStaticSiteFunctionAppSettingsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientListStaticSiteFunctionAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteFunctionAppSettings
+// method.
+func (client *StaticSitesClient) ListStaticSiteFunctionAppSettings(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteFunctionAppSettingsOptions) (StaticSitesClientListStaticSiteFunctionAppSettingsResponse, error) {
 	req, err := client.listStaticSiteFunctionAppSettingsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StaticSitesListStaticSiteFunctionAppSettingsResponse{}, err
+		return StaticSitesClientListStaticSiteFunctionAppSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesListStaticSiteFunctionAppSettingsResponse{}, err
+		return StaticSitesClientListStaticSiteFunctionAppSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesListStaticSiteFunctionAppSettingsResponse{}, client.listStaticSiteFunctionAppSettingsHandleError(resp)
+		return StaticSitesClientListStaticSiteFunctionAppSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listStaticSiteFunctionAppSettingsHandleResponse(resp)
 }
 
 // listStaticSiteFunctionAppSettingsCreateRequest creates the ListStaticSiteFunctionAppSettings request.
-func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteFunctionAppSettingsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteFunctionAppSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listFunctionAppSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2619,55 +2339,46 @@ func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteFunctionAppSettingsHandleResponse handles the ListStaticSiteFunctionAppSettings response.
-func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteFunctionAppSettingsResponse, error) {
-	result := StaticSitesListStaticSiteFunctionAppSettingsResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteFunctionAppSettingsResponse, error) {
+	result := StaticSitesClientListStaticSiteFunctionAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteFunctionAppSettingsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteFunctionAppSettingsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteFunctionAppSettingsHandleError handles the ListStaticSiteFunctionAppSettings error response.
-func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteFunctions - Description for Gets the functions of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteFunctions(resourceGroupName string, name string, options *StaticSitesListStaticSiteFunctionsOptions) *StaticSitesListStaticSiteFunctionsPager {
-	return &StaticSitesListStaticSiteFunctionsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientListStaticSiteFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteFunctions
+// method.
+func (client *StaticSitesClient) ListStaticSiteFunctions(resourceGroupName string, name string, options *StaticSitesClientListStaticSiteFunctionsOptions) *StaticSitesClientListStaticSiteFunctionsPager {
+	return &StaticSitesClientListStaticSiteFunctionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listStaticSiteFunctionsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesListStaticSiteFunctionsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientListStaticSiteFunctionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteFunctionOverviewCollection.NextLink)
 		},
 	}
 }
 
 // listStaticSiteFunctionsCreateRequest creates the ListStaticSiteFunctions request.
-func (client *StaticSitesClient) listStaticSiteFunctionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteFunctionsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteFunctionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteFunctionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/functions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2681,58 +2392,49 @@ func (client *StaticSitesClient) listStaticSiteFunctionsCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteFunctionsHandleResponse handles the ListStaticSiteFunctions response.
-func (client *StaticSitesClient) listStaticSiteFunctionsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteFunctionsResponse, error) {
-	result := StaticSitesListStaticSiteFunctionsResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteFunctionsHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteFunctionsResponse, error) {
+	result := StaticSitesClientListStaticSiteFunctionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteFunctionOverviewCollection); err != nil {
-		return StaticSitesListStaticSiteFunctionsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteFunctionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteFunctionsHandleError handles the ListStaticSiteFunctions error response.
-func (client *StaticSitesClient) listStaticSiteFunctionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteSecrets - Description for Lists the secrets for an existing static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteSecrets(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteSecretsOptions) (StaticSitesListStaticSiteSecretsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientListStaticSiteSecretsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteSecrets
+// method.
+func (client *StaticSitesClient) ListStaticSiteSecrets(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteSecretsOptions) (StaticSitesClientListStaticSiteSecretsResponse, error) {
 	req, err := client.listStaticSiteSecretsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StaticSitesListStaticSiteSecretsResponse{}, err
+		return StaticSitesClientListStaticSiteSecretsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesListStaticSiteSecretsResponse{}, err
+		return StaticSitesClientListStaticSiteSecretsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesListStaticSiteSecretsResponse{}, client.listStaticSiteSecretsHandleError(resp)
+		return StaticSitesClientListStaticSiteSecretsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listStaticSiteSecretsHandleResponse(resp)
 }
 
 // listStaticSiteSecretsCreateRequest creates the ListStaticSiteSecrets request.
-func (client *StaticSitesClient) listStaticSiteSecretsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesListStaticSiteSecretsOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteSecretsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientListStaticSiteSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listSecrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2746,55 +2448,47 @@ func (client *StaticSitesClient) listStaticSiteSecretsCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteSecretsHandleResponse handles the ListStaticSiteSecrets response.
-func (client *StaticSitesClient) listStaticSiteSecretsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteSecretsResponse, error) {
-	result := StaticSitesListStaticSiteSecretsResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteSecretsHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteSecretsResponse, error) {
+	result := StaticSitesClientListStaticSiteSecretsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteSecretsResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteSecretsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteSecretsHandleError handles the ListStaticSiteSecrets error response.
-func (client *StaticSitesClient) listStaticSiteSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStaticSiteUsers - Description for Gets the list of users of a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ListStaticSiteUsers(resourceGroupName string, name string, authprovider string, options *StaticSitesListStaticSiteUsersOptions) *StaticSitesListStaticSiteUsersPager {
-	return &StaticSitesListStaticSiteUsersPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// authprovider - The auth provider for the users.
+// options - StaticSitesClientListStaticSiteUsersOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteUsers
+// method.
+func (client *StaticSitesClient) ListStaticSiteUsers(resourceGroupName string, name string, authprovider string, options *StaticSitesClientListStaticSiteUsersOptions) *StaticSitesClientListStaticSiteUsersPager {
+	return &StaticSitesClientListStaticSiteUsersPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listStaticSiteUsersCreateRequest(ctx, resourceGroupName, name, authprovider, options)
 		},
-		advancer: func(ctx context.Context, resp StaticSitesListStaticSiteUsersResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StaticSitesClientListStaticSiteUsersResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StaticSiteUserCollection.NextLink)
 		},
 	}
 }
 
 // listStaticSiteUsersCreateRequest creates the ListStaticSiteUsers request.
-func (client *StaticSitesClient) listStaticSiteUsersCreateRequest(ctx context.Context, resourceGroupName string, name string, authprovider string, options *StaticSitesListStaticSiteUsersOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) listStaticSiteUsersCreateRequest(ctx context.Context, resourceGroupName string, name string, authprovider string, options *StaticSitesClientListStaticSiteUsersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/listUsers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2812,58 +2506,49 @@ func (client *StaticSitesClient) listStaticSiteUsersCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listStaticSiteUsersHandleResponse handles the ListStaticSiteUsers response.
-func (client *StaticSitesClient) listStaticSiteUsersHandleResponse(resp *http.Response) (StaticSitesListStaticSiteUsersResponse, error) {
-	result := StaticSitesListStaticSiteUsersResponse{RawResponse: resp}
+func (client *StaticSitesClient) listStaticSiteUsersHandleResponse(resp *http.Response) (StaticSitesClientListStaticSiteUsersResponse, error) {
+	result := StaticSitesClientListStaticSiteUsersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserCollection); err != nil {
-		return StaticSitesListStaticSiteUsersResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientListStaticSiteUsersResponse{}, err
 	}
 	return result, nil
 }
 
-// listStaticSiteUsersHandleError handles the ListStaticSiteUsers error response.
-func (client *StaticSitesClient) listStaticSiteUsersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // PreviewWorkflow - Description for Generates a preview workflow file for the static site
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) PreviewWorkflow(ctx context.Context, location string, staticSitesWorkflowPreviewRequest StaticSitesWorkflowPreviewRequest, options *StaticSitesPreviewWorkflowOptions) (StaticSitesPreviewWorkflowResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Location where you plan to create the static site.
+// staticSitesWorkflowPreviewRequest - A JSON representation of the StaticSitesWorkflowPreviewRequest properties. See example.
+// options - StaticSitesClientPreviewWorkflowOptions contains the optional parameters for the StaticSitesClient.PreviewWorkflow
+// method.
+func (client *StaticSitesClient) PreviewWorkflow(ctx context.Context, location string, staticSitesWorkflowPreviewRequest StaticSitesWorkflowPreviewRequest, options *StaticSitesClientPreviewWorkflowOptions) (StaticSitesClientPreviewWorkflowResponse, error) {
 	req, err := client.previewWorkflowCreateRequest(ctx, location, staticSitesWorkflowPreviewRequest, options)
 	if err != nil {
-		return StaticSitesPreviewWorkflowResponse{}, err
+		return StaticSitesClientPreviewWorkflowResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesPreviewWorkflowResponse{}, err
+		return StaticSitesClientPreviewWorkflowResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesPreviewWorkflowResponse{}, client.previewWorkflowHandleError(resp)
+		return StaticSitesClientPreviewWorkflowResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.previewWorkflowHandleResponse(resp)
 }
 
 // previewWorkflowCreateRequest creates the PreviewWorkflow request.
-func (client *StaticSitesClient) previewWorkflowCreateRequest(ctx context.Context, location string, staticSitesWorkflowPreviewRequest StaticSitesWorkflowPreviewRequest, options *StaticSitesPreviewWorkflowOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) previewWorkflowCreateRequest(ctx context.Context, location string, staticSitesWorkflowPreviewRequest StaticSitesWorkflowPreviewRequest, options *StaticSitesClientPreviewWorkflowOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/previewStaticSiteWorkflowFile"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -2873,62 +2558,56 @@ func (client *StaticSitesClient) previewWorkflowCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSitesWorkflowPreviewRequest)
 }
 
 // previewWorkflowHandleResponse handles the PreviewWorkflow response.
-func (client *StaticSitesClient) previewWorkflowHandleResponse(resp *http.Response) (StaticSitesPreviewWorkflowResponse, error) {
-	result := StaticSitesPreviewWorkflowResponse{RawResponse: resp}
+func (client *StaticSitesClient) previewWorkflowHandleResponse(resp *http.Response) (StaticSitesClientPreviewWorkflowResponse, error) {
+	result := StaticSitesClientPreviewWorkflowResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSitesWorkflowPreview); err != nil {
-		return StaticSitesPreviewWorkflowResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientPreviewWorkflowResponse{}, err
 	}
 	return result, nil
 }
 
-// previewWorkflowHandleError handles the PreviewWorkflow error response.
-func (client *StaticSitesClient) previewWorkflowHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginRegisterUserProvidedFunctionAppWithStaticSite - Description for Register a user provided function app with a static site
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse, error) {
+// BeginRegisterUserProvidedFunctionAppWithStaticSite - Description for Register a user provided function app with a static
+// site
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// functionAppName - Name of the function app to register with the static site.
+// staticSiteUserProvidedFunctionEnvelope - A JSON representation of the user provided function app properties. See example.
+// options - StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions contains the optional parameters for
+// the StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite method.
+func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse, error) {
 	resp, err := client.registerUserProvidedFunctionAppWithStaticSite(ctx, resourceGroupName, name, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
 	if err != nil {
-		return StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse{}, err
+		return StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse{}, err
 	}
-	result := StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse{
+	result := StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSite", "", resp, client.pl, client.registerUserProvidedFunctionAppWithStaticSiteHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSite", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse{}, err
+		return StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse{}, err
 	}
-	result.Poller = &StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller{
+	result.Poller = &StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RegisterUserProvidedFunctionAppWithStaticSite - Description for Register a user provided function app with a static site
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (*http.Response, error) {
 	req, err := client.registerUserProvidedFunctionAppWithStaticSiteCreateRequest(ctx, resourceGroupName, name, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -2938,13 +2617,13 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSite(c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.registerUserProvidedFunctionAppWithStaticSiteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // registerUserProvidedFunctionAppWithStaticSiteCreateRequest creates the RegisterUserProvidedFunctionAppWithStaticSite request.
-func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2962,7 +2641,7 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2970,48 +2649,44 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteCr
 	if options != nil && options.IsForced != nil {
 		reqQP.Set("isForced", strconv.FormatBool(*options.IsForced))
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteUserProvidedFunctionEnvelope)
 }
 
-// registerUserProvidedFunctionAppWithStaticSiteHandleError handles the RegisterUserProvidedFunctionAppWithStaticSite error response.
-func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild - Description for Register a user provided function app with a static site build
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse, error) {
+// BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild - Description for Register a user provided function app with a
+// static site build
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// environmentName - The stage site identifier.
+// functionAppName - Name of the function app to register with the static site build.
+// staticSiteUserProvidedFunctionEnvelope - A JSON representation of the user provided function app properties. See example.
+// options - StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions contains the optional parameters
+// for the StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild method.
+func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse, error) {
 	resp, err := client.registerUserProvidedFunctionAppWithStaticSiteBuild(ctx, resourceGroupName, name, environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
 	if err != nil {
-		return StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse{}, err
+		return StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse{}, err
 	}
-	result := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse{
+	result := StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSiteBuild", "", resp, client.pl, client.registerUserProvidedFunctionAppWithStaticSiteBuildHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSiteBuild", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse{}, err
+		return StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse{}, err
 	}
-	result.Poller = &StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller{
+	result.Poller = &StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// RegisterUserProvidedFunctionAppWithStaticSiteBuild - Description for Register a user provided function app with a static site build
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (*http.Response, error) {
+// RegisterUserProvidedFunctionAppWithStaticSiteBuild - Description for Register a user provided function app with a static
+// site build
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.registerUserProvidedFunctionAppWithStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -3021,13 +2696,13 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBu
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.registerUserProvidedFunctionAppWithStaticSiteBuildHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // registerUserProvidedFunctionAppWithStaticSiteBuildCreateRequest creates the RegisterUserProvidedFunctionAppWithStaticSiteBuild request.
-func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBuildCreateRequest(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3049,7 +2724,7 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBu
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3057,44 +2732,35 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBu
 	if options != nil && options.IsForced != nil {
 		reqQP.Set("isForced", strconv.FormatBool(*options.IsForced))
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteUserProvidedFunctionEnvelope)
 }
 
-// registerUserProvidedFunctionAppWithStaticSiteBuildHandleError handles the RegisterUserProvidedFunctionAppWithStaticSiteBuild error response.
-func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ResetStaticSiteAPIKey - Description for Resets the api key for an existing static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) ResetStaticSiteAPIKey(ctx context.Context, resourceGroupName string, name string, resetPropertiesEnvelope StaticSiteResetPropertiesARMResource, options *StaticSitesResetStaticSiteAPIKeyOptions) (StaticSitesResetStaticSiteAPIKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// options - StaticSitesClientResetStaticSiteAPIKeyOptions contains the optional parameters for the StaticSitesClient.ResetStaticSiteAPIKey
+// method.
+func (client *StaticSitesClient) ResetStaticSiteAPIKey(ctx context.Context, resourceGroupName string, name string, resetPropertiesEnvelope StaticSiteResetPropertiesARMResource, options *StaticSitesClientResetStaticSiteAPIKeyOptions) (StaticSitesClientResetStaticSiteAPIKeyResponse, error) {
 	req, err := client.resetStaticSiteAPIKeyCreateRequest(ctx, resourceGroupName, name, resetPropertiesEnvelope, options)
 	if err != nil {
-		return StaticSitesResetStaticSiteAPIKeyResponse{}, err
+		return StaticSitesClientResetStaticSiteAPIKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesResetStaticSiteAPIKeyResponse{}, err
+		return StaticSitesClientResetStaticSiteAPIKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesResetStaticSiteAPIKeyResponse{}, client.resetStaticSiteAPIKeyHandleError(resp)
+		return StaticSitesClientResetStaticSiteAPIKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return StaticSitesResetStaticSiteAPIKeyResponse{RawResponse: resp}, nil
+	return StaticSitesClientResetStaticSiteAPIKeyResponse{RawResponse: resp}, nil
 }
 
 // resetStaticSiteAPIKeyCreateRequest creates the ResetStaticSiteAPIKey request.
-func (client *StaticSitesClient) resetStaticSiteAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, name string, resetPropertiesEnvelope StaticSiteResetPropertiesARMResource, options *StaticSitesResetStaticSiteAPIKeyOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) resetStaticSiteAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, name string, resetPropertiesEnvelope StaticSiteResetPropertiesARMResource, options *StaticSitesClientResetStaticSiteAPIKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/resetapikey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3108,49 +2774,42 @@ func (client *StaticSitesClient) resetStaticSiteAPIKeyCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, resetPropertiesEnvelope)
 }
 
-// resetStaticSiteAPIKeyHandleError handles the ResetStaticSiteAPIKey error response.
-func (client *StaticSitesClient) resetStaticSiteAPIKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// UpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) UpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSitePatchResource, options *StaticSitesUpdateStaticSiteOptions) (StaticSitesUpdateStaticSiteResponse, error) {
+// UpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing static
+// site.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site to create or update.
+// staticSiteEnvelope - A JSON representation of the staticsite properties. See example.
+// options - StaticSitesClientUpdateStaticSiteOptions contains the optional parameters for the StaticSitesClient.UpdateStaticSite
+// method.
+func (client *StaticSitesClient) UpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSitePatchResource, options *StaticSitesClientUpdateStaticSiteOptions) (StaticSitesClientUpdateStaticSiteResponse, error) {
 	req, err := client.updateStaticSiteCreateRequest(ctx, resourceGroupName, name, staticSiteEnvelope, options)
 	if err != nil {
-		return StaticSitesUpdateStaticSiteResponse{}, err
+		return StaticSitesClientUpdateStaticSiteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesUpdateStaticSiteResponse{}, err
+		return StaticSitesClientUpdateStaticSiteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return StaticSitesUpdateStaticSiteResponse{}, client.updateStaticSiteHandleError(resp)
+		return StaticSitesClientUpdateStaticSiteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateStaticSiteHandleResponse(resp)
 }
 
 // updateStaticSiteCreateRequest creates the UpdateStaticSite request.
-func (client *StaticSitesClient) updateStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSitePatchResource, options *StaticSitesUpdateStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) updateStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSitePatchResource, options *StaticSitesClientUpdateStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3164,58 +2823,52 @@ func (client *StaticSitesClient) updateStaticSiteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteEnvelope)
 }
 
 // updateStaticSiteHandleResponse handles the UpdateStaticSite response.
-func (client *StaticSitesClient) updateStaticSiteHandleResponse(resp *http.Response) (StaticSitesUpdateStaticSiteResponse, error) {
-	result := StaticSitesUpdateStaticSiteResponse{RawResponse: resp}
+func (client *StaticSitesClient) updateStaticSiteHandleResponse(resp *http.Response) (StaticSitesClientUpdateStaticSiteResponse, error) {
+	result := StaticSitesClientUpdateStaticSiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteARMResource); err != nil {
-		return StaticSitesUpdateStaticSiteResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientUpdateStaticSiteResponse{}, err
 	}
 	return result, nil
 }
 
-// updateStaticSiteHandleError handles the UpdateStaticSite error response.
-func (client *StaticSitesClient) updateStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateStaticSiteUser - Description for Updates a user entry with the listed roles
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) UpdateStaticSiteUser(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, staticSiteUserEnvelope StaticSiteUserARMResource, options *StaticSitesUpdateStaticSiteUserOptions) (StaticSitesUpdateStaticSiteUserResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// authprovider - The auth provider for this user.
+// userid - The user id of the user.
+// staticSiteUserEnvelope - A JSON representation of the StaticSiteUser properties. See example.
+// options - StaticSitesClientUpdateStaticSiteUserOptions contains the optional parameters for the StaticSitesClient.UpdateStaticSiteUser
+// method.
+func (client *StaticSitesClient) UpdateStaticSiteUser(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, staticSiteUserEnvelope StaticSiteUserARMResource, options *StaticSitesClientUpdateStaticSiteUserOptions) (StaticSitesClientUpdateStaticSiteUserResponse, error) {
 	req, err := client.updateStaticSiteUserCreateRequest(ctx, resourceGroupName, name, authprovider, userid, staticSiteUserEnvelope, options)
 	if err != nil {
-		return StaticSitesUpdateStaticSiteUserResponse{}, err
+		return StaticSitesClientUpdateStaticSiteUserResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StaticSitesUpdateStaticSiteUserResponse{}, err
+		return StaticSitesClientUpdateStaticSiteUserResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StaticSitesUpdateStaticSiteUserResponse{}, client.updateStaticSiteUserHandleError(resp)
+		return StaticSitesClientUpdateStaticSiteUserResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateStaticSiteUserHandleResponse(resp)
 }
 
 // updateStaticSiteUserCreateRequest creates the UpdateStaticSiteUser request.
-func (client *StaticSitesClient) updateStaticSiteUserCreateRequest(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, staticSiteUserEnvelope StaticSiteUserARMResource, options *StaticSitesUpdateStaticSiteUserOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) updateStaticSiteUserCreateRequest(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, staticSiteUserEnvelope StaticSiteUserARMResource, options *StaticSitesClientUpdateStaticSiteUserOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3237,62 +2890,58 @@ func (client *StaticSitesClient) updateStaticSiteUserCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteUserEnvelope)
 }
 
 // updateStaticSiteUserHandleResponse handles the UpdateStaticSiteUser response.
-func (client *StaticSitesClient) updateStaticSiteUserHandleResponse(resp *http.Response) (StaticSitesUpdateStaticSiteUserResponse, error) {
-	result := StaticSitesUpdateStaticSiteUserResponse{RawResponse: resp}
+func (client *StaticSitesClient) updateStaticSiteUserHandleResponse(resp *http.Response) (StaticSitesClientUpdateStaticSiteUserResponse, error) {
+	result := StaticSitesClientUpdateStaticSiteUserResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserARMResource); err != nil {
-		return StaticSitesUpdateStaticSiteUserResponse{}, runtime.NewResponseError(err, resp)
+		return StaticSitesClientUpdateStaticSiteUserResponse{}, err
 	}
 	return result, nil
 }
 
-// updateStaticSiteUserHandleError handles the UpdateStaticSiteUser error response.
-func (client *StaticSitesClient) updateStaticSiteUserHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginValidateCustomDomainCanBeAddedToStaticSite - Description for Validates a particular custom domain can be added to a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) BeginValidateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse, error) {
+// BeginValidateCustomDomainCanBeAddedToStaticSite - Description for Validates a particular custom domain can be added to
+// a static site.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the static site.
+// domainName - The custom domain to validate.
+// staticSiteCustomDomainRequestPropertiesEnvelope - A JSON representation of the static site custom domain request properties.
+// See example.
+// options - StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions contains the optional parameters for
+// the StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite method.
+func (client *StaticSitesClient) BeginValidateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse, error) {
 	resp, err := client.validateCustomDomainCanBeAddedToStaticSite(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
 	if err != nil {
-		return StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse{}, err
+		return StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse{}, err
 	}
-	result := StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse{
+	result := StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StaticSitesClient.ValidateCustomDomainCanBeAddedToStaticSite", "", resp, client.pl, client.validateCustomDomainCanBeAddedToStaticSiteHandleError)
+	pt, err := armruntime.NewPoller("StaticSitesClient.ValidateCustomDomainCanBeAddedToStaticSite", "", resp, client.pl)
 	if err != nil {
-		return StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse{}, err
+		return StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse{}, err
 	}
-	result.Poller = &StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller{
+	result.Poller = &StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// ValidateCustomDomainCanBeAddedToStaticSite - Description for Validates a particular custom domain can be added to a static site.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (*http.Response, error) {
+// ValidateCustomDomainCanBeAddedToStaticSite - Description for Validates a particular custom domain can be added to a static
+// site.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (*http.Response, error) {
 	req, err := client.validateCustomDomainCanBeAddedToStaticSiteCreateRequest(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -3302,13 +2951,13 @@ func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSite(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.validateCustomDomainCanBeAddedToStaticSiteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // validateCustomDomainCanBeAddedToStaticSiteCreateRequest creates the ValidateCustomDomainCanBeAddedToStaticSite request.
-func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (*policy.Request, error) {
+func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSiteCreateRequest(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}/validate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3326,26 +2975,13 @@ func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSiteCreat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, staticSiteCustomDomainRequestPropertiesEnvelope)
-}
-
-// validateCustomDomainCanBeAddedToStaticSiteHandleError handles the ValidateCustomDomainCanBeAddedToStaticSite error response.
-func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSiteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,20 +1,36 @@
 # Release History
 
-## 0.3.0 (Unreleased)
+### Features Added
+
+### Breaking Changes
+## 0.3.1 (Unreleased)
 
 ### Features Added
+* Adds the `ReleasePolicy` parameter to the `UpdateKeyPropertiesOptions` struct.
+* Adds the `Immutable` boolean to the `KeyReleasePolicy` model.
 * Adds the `CreateOKPKey` method for creating OKP public keys
 * Adds the `Ed25519` `KeyCurveName`
 * Adds the `OKP` and `OKPHSM` `KeyType`s
 
 ### Breaking Changes
+* Changed the `Data` to `EncodedPolicy` on the `KeyReleasePolicy` struct.
+* Changed the `Tags` properties from `map[string]*string` to `map[string]string`.
+* Changed the `Updated`, `Created`, and `Expires` properties to `UpdatedOn`, `CreatedOn`, and `ExpiresOn`.
+* Renamed `JSONWebKeyOperation` to `KeyOperation`.
+* Renamed `JSONWebKeyCurveName` to `KeyCurveName`.
 * `NewClient` returns an instance of a `Client`, instead of a `*Client`
-* Changed the `JSONWebKeyCurveName` constant to `KeyCurveName`
-* Changed the `JSONWebKeyType` constant to `KeyType`
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.3.0 (2022-02-08)
+
+### Breaking Changes
+* Changed the `Tags` properties from `map[string]*string` to `map[string]string`
+
+### Bugs Fixed
+* Fixed a bug in `UpdateKeyProperties` where the `KeyOps` would be deleted if the `UpdateKeyProperties.KeyOps` value was left empty.
 
 ## 0.2.0 (2022-01-12)
 

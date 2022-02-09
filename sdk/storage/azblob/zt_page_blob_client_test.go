@@ -133,7 +133,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, sourceData)
 }
@@ -204,7 +204,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_assert.Nil(err)
-	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, sourceData)
 

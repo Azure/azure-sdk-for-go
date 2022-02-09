@@ -1,14 +1,2859 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-21)
+### Breaking Changes
+
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToDismiss` parameter(s) have been changed from `(context.Context, string, *AlertsUpdateSubscriptionLevelStateToDismissOptions)` to `(context.Context, string, *AlertsClientUpdateSubscriptionLevelStateToDismissOptions)`
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToDismiss` return value(s) have been changed from `(AlertsUpdateSubscriptionLevelStateToDismissResponse, error)` to `(AlertsClientUpdateSubscriptionLevelStateToDismissResponse, error)`
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IotSecuritySolutionsAnalyticsAggregatedAlertGetOptions)` to `(context.Context, string, string, string, *IotSecuritySolutionsAnalyticsAggregatedAlertClientGetOptions)`
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.Get` return value(s) have been changed from `(IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse, error)` to `(IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse, error)`
+- Function `*JitNetworkAccessPoliciesClient.List` parameter(s) have been changed from `(*JitNetworkAccessPoliciesListOptions)` to `(*JitNetworkAccessPoliciesClientListOptions)`
+- Function `*JitNetworkAccessPoliciesClient.List` return value(s) have been changed from `(*JitNetworkAccessPoliciesListPager)` to `(*JitNetworkAccessPoliciesClientListPager)`
+- Function `*TasksClient.UpdateSubscriptionLevelTaskState` parameter(s) have been changed from `(context.Context, string, Enum18, *TasksUpdateSubscriptionLevelTaskStateOptions)` to `(context.Context, string, Enum16, *TasksClientUpdateSubscriptionLevelTaskStateOptions)`
+- Function `*TasksClient.UpdateSubscriptionLevelTaskState` return value(s) have been changed from `(TasksUpdateSubscriptionLevelTaskStateResponse, error)` to `(TasksClientUpdateSubscriptionLevelTaskStateResponse, error)`
+- Function `*InformationProtectionPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, Enum20, InformationProtectionPolicy, *InformationProtectionPoliciesCreateOrUpdateOptions)` to `(context.Context, string, Enum18, InformationProtectionPolicy, *InformationProtectionPoliciesClientCreateOrUpdateOptions)`
+- Function `*InformationProtectionPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(InformationProtectionPoliciesCreateOrUpdateResponse, error)` to `(InformationProtectionPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.Dismiss` parameter(s) have been changed from `(context.Context, string, string, string, *IotSecuritySolutionsAnalyticsAggregatedAlertDismissOptions)` to `(context.Context, string, string, string, *IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissOptions)`
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.Dismiss` return value(s) have been changed from `(IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse, error)` to `(IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissResponse, error)`
+- Function `*AllowedConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, ConnectionType, *AllowedConnectionsGetOptions)` to `(context.Context, string, ConnectionType, *AllowedConnectionsClientGetOptions)`
+- Function `*AllowedConnectionsClient.Get` return value(s) have been changed from `(AllowedConnectionsGetResponse, error)` to `(AllowedConnectionsClientGetResponse, error)`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToDismiss` parameter(s) have been changed from `(context.Context, string, string, *AlertsUpdateResourceGroupLevelStateToDismissOptions)` to `(context.Context, string, string, *AlertsClientUpdateResourceGroupLevelStateToDismissOptions)`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToDismiss` return value(s) have been changed from `(AlertsUpdateResourceGroupLevelStateToDismissResponse, error)` to `(AlertsClientUpdateResourceGroupLevelStateToDismissResponse, error)`
+- Function `*AssessmentsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *AssessmentsDeleteOptions)` to `(context.Context, string, string, *AssessmentsClientDeleteOptions)`
+- Function `*AssessmentsClient.Delete` return value(s) have been changed from `(AssessmentsDeleteResponse, error)` to `(AssessmentsClientDeleteResponse, error)`
+- Function `*AllowedConnectionsClient.List` parameter(s) have been changed from `(*AllowedConnectionsListOptions)` to `(*AllowedConnectionsClientListOptions)`
+- Function `*AllowedConnectionsClient.List` return value(s) have been changed from `(*AllowedConnectionsListPager)` to `(*AllowedConnectionsClientListPager)`
+- Function `*CustomEntityStoreAssignmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CustomEntityStoreAssignmentsGetOptions)` to `(context.Context, string, string, *CustomEntityStoreAssignmentsClientGetOptions)`
+- Function `*CustomEntityStoreAssignmentsClient.Get` return value(s) have been changed from `(CustomEntityStoreAssignmentsGetResponse, error)` to `(CustomEntityStoreAssignmentsClientGetResponse, error)`
+- Function `*WorkspaceSettingsClient.Create` parameter(s) have been changed from `(context.Context, string, WorkspaceSetting, *WorkspaceSettingsCreateOptions)` to `(context.Context, string, WorkspaceSetting, *WorkspaceSettingsClientCreateOptions)`
+- Function `*WorkspaceSettingsClient.Create` return value(s) have been changed from `(WorkspaceSettingsCreateResponse, error)` to `(WorkspaceSettingsClientCreateResponse, error)`
+- Function `*SecureScoreControlsClient.List` parameter(s) have been changed from `(*SecureScoreControlsListOptions)` to `(*SecureScoreControlsClientListOptions)`
+- Function `*SecureScoreControlsClient.List` return value(s) have been changed from `(*SecureScoreControlsListPager)` to `(*SecureScoreControlsClientListPager)`
+- Function `*IotSecuritySolutionClient.ListBySubscription` parameter(s) have been changed from `(*IotSecuritySolutionListBySubscriptionOptions)` to `(*IotSecuritySolutionClientListBySubscriptionOptions)`
+- Function `*IotSecuritySolutionClient.ListBySubscription` return value(s) have been changed from `(*IotSecuritySolutionListBySubscriptionPager)` to `(*IotSecuritySolutionClientListBySubscriptionPager)`
+- Function `*SQLVulnerabilityAssessmentScanResultsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *SQLVulnerabilityAssessmentScanResultsListOptions)` to `(context.Context, string, string, string, *SQLVulnerabilityAssessmentScanResultsClientListOptions)`
+- Function `*SQLVulnerabilityAssessmentScanResultsClient.List` return value(s) have been changed from `(SQLVulnerabilityAssessmentScanResultsListResponse, error)` to `(SQLVulnerabilityAssessmentScanResultsClientListResponse, error)`
+- Function `*ConnectorsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, ConnectorSetting, *ConnectorsCreateOrUpdateOptions)` to `(context.Context, string, string, Connector, *ConnectorsClientCreateOrUpdateOptions)`
+- Function `*ConnectorsClient.CreateOrUpdate` return value(s) have been changed from `(ConnectorsCreateOrUpdateResponse, error)` to `(ConnectorsClientCreateOrUpdateResponse, error)`
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroupAndRegion` parameter(s) have been changed from `(string, *JitNetworkAccessPoliciesListByResourceGroupAndRegionOptions)` to `(string, *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions)`
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroupAndRegion` return value(s) have been changed from `(*JitNetworkAccessPoliciesListByResourceGroupAndRegionPager)` to `(*JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager)`
+- Function `*AdvancedThreatProtectionClient.Create` parameter(s) have been changed from `(context.Context, string, Enum7, AdvancedThreatProtectionSetting, *AdvancedThreatProtectionCreateOptions)` to `(context.Context, string, Enum5, AdvancedThreatProtectionSetting, *AdvancedThreatProtectionClientCreateOptions)`
+- Function `*AdvancedThreatProtectionClient.Create` return value(s) have been changed from `(AdvancedThreatProtectionCreateResponse, error)` to `(AdvancedThreatProtectionClientCreateResponse, error)`
+- Function `*AlertsClient.GetResourceGroupLevel` parameter(s) have been changed from `(context.Context, string, string, *AlertsGetResourceGroupLevelOptions)` to `(context.Context, string, string, *AlertsClientGetResourceGroupLevelOptions)`
+- Function `*AlertsClient.GetResourceGroupLevel` return value(s) have been changed from `(AlertsGetResourceGroupLevelResponse, error)` to `(AlertsClientGetResourceGroupLevelResponse, error)`
+- Function `*AssessmentsMetadataClient.List` parameter(s) have been changed from `(*AssessmentsMetadataListOptions)` to `(*AssessmentsMetadataClientListOptions)`
+- Function `*AssessmentsMetadataClient.List` return value(s) have been changed from `(*AssessmentsMetadataListPager)` to `(*AssessmentsMetadataClientListPager)`
+- Function `*AdvancedThreatProtectionClient.Get` parameter(s) have been changed from `(context.Context, string, Enum7, *AdvancedThreatProtectionGetOptions)` to `(context.Context, string, Enum5, *AdvancedThreatProtectionClientGetOptions)`
+- Function `*AdvancedThreatProtectionClient.Get` return value(s) have been changed from `(AdvancedThreatProtectionGetResponse, error)` to `(AdvancedThreatProtectionClientGetResponse, error)`
+- Function `*IngestionSettingsClient.ListConnectionStrings` parameter(s) have been changed from `(context.Context, string, *IngestionSettingsListConnectionStringsOptions)` to `(context.Context, string, *IngestionSettingsClientListConnectionStringsOptions)`
+- Function `*IngestionSettingsClient.ListConnectionStrings` return value(s) have been changed from `(IngestionSettingsListConnectionStringsResponse, error)` to `(IngestionSettingsClientListConnectionStringsResponse, error)`
+- Function `*SecureScoresClient.List` parameter(s) have been changed from `(*SecureScoresListOptions)` to `(*SecureScoresClientListOptions)`
+- Function `*SecureScoresClient.List` return value(s) have been changed from `(*SecureScoresListPager)` to `(*SecureScoresClientListPager)`
+- Function `*RegulatoryComplianceAssessmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *RegulatoryComplianceAssessmentsGetOptions)` to `(context.Context, string, string, string, *RegulatoryComplianceAssessmentsClientGetOptions)`
+- Function `*RegulatoryComplianceAssessmentsClient.Get` return value(s) have been changed from `(RegulatoryComplianceAssessmentsGetResponse, error)` to `(RegulatoryComplianceAssessmentsClientGetResponse, error)`
+- Function `*AdaptiveApplicationControlsClient.List` parameter(s) have been changed from `(context.Context, *AdaptiveApplicationControlsListOptions)` to `(context.Context, *AdaptiveApplicationControlsClientListOptions)`
+- Function `*AdaptiveApplicationControlsClient.List` return value(s) have been changed from `(AdaptiveApplicationControlsListResponse, error)` to `(AdaptiveApplicationControlsClientListResponse, error)`
+- Function `*AssessmentsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, SecurityAssessment, *AssessmentsCreateOrUpdateOptions)` to `(context.Context, string, string, Assessment, *AssessmentsClientCreateOrUpdateOptions)`
+- Function `*AssessmentsClient.CreateOrUpdate` return value(s) have been changed from `(AssessmentsCreateOrUpdateResponse, error)` to `(AssessmentsClientCreateOrUpdateResponse, error)`
+- Function `*TasksClient.GetResourceGroupLevelTask` parameter(s) have been changed from `(context.Context, string, string, *TasksGetResourceGroupLevelTaskOptions)` to `(context.Context, string, string, *TasksClientGetResourceGroupLevelTaskOptions)`
+- Function `*TasksClient.GetResourceGroupLevelTask` return value(s) have been changed from `(TasksGetResourceGroupLevelTaskResponse, error)` to `(TasksClientGetResourceGroupLevelTaskResponse, error)`
+- Function `*WorkspaceSettingsClient.List` parameter(s) have been changed from `(*WorkspaceSettingsListOptions)` to `(*WorkspaceSettingsClientListOptions)`
+- Function `*WorkspaceSettingsClient.List` return value(s) have been changed from `(*WorkspaceSettingsListPager)` to `(*WorkspaceSettingsClientListPager)`
+- Function `*IotSecuritySolutionAnalyticsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *IotSecuritySolutionAnalyticsGetOptions)` to `(context.Context, string, string, *IotSecuritySolutionAnalyticsClientGetOptions)`
+- Function `*IotSecuritySolutionAnalyticsClient.Get` return value(s) have been changed from `(IotSecuritySolutionAnalyticsGetResponse, error)` to `(IotSecuritySolutionAnalyticsClientGetResponse, error)`
+- Function `*AutomationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *AutomationsDeleteOptions)` to `(context.Context, string, string, *AutomationsClientDeleteOptions)`
+- Function `*AutomationsClient.Delete` return value(s) have been changed from `(AutomationsDeleteResponse, error)` to `(AutomationsClientDeleteResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*IotSecuritySolutionClient.Get` parameter(s) have been changed from `(context.Context, string, string, *IotSecuritySolutionGetOptions)` to `(context.Context, string, string, *IotSecuritySolutionClientGetOptions)`
+- Function `*IotSecuritySolutionClient.Get` return value(s) have been changed from `(IotSecuritySolutionGetResponse, error)` to `(IotSecuritySolutionClientGetResponse, error)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SQLVulnerabilityAssessmentBaselineRulesGetOptions)` to `(context.Context, string, string, string, *SQLVulnerabilityAssessmentBaselineRulesClientGetOptions)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.Get` return value(s) have been changed from `(SQLVulnerabilityAssessmentBaselineRulesGetResponse, error)` to `(SQLVulnerabilityAssessmentBaselineRulesClientGetResponse, error)`
+- Function `*CustomEntityStoreAssignmentsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *CustomEntityStoreAssignmentsListByResourceGroupOptions)` to `(string, *CustomEntityStoreAssignmentsClientListByResourceGroupOptions)`
+- Function `*CustomEntityStoreAssignmentsClient.ListByResourceGroup` return value(s) have been changed from `(*CustomEntityStoreAssignmentsListByResourceGroupPager)` to `(*CustomEntityStoreAssignmentsClientListByResourceGroupPager)`
+- Function `*AutoProvisioningSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, *AutoProvisioningSettingsGetOptions)` to `(context.Context, string, *AutoProvisioningSettingsClientGetOptions)`
+- Function `*AutoProvisioningSettingsClient.Get` return value(s) have been changed from `(AutoProvisioningSettingsGetResponse, error)` to `(AutoProvisioningSettingsClientGetResponse, error)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, *SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateOptions)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdate` return value(s) have been changed from `(SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateResponse, error)` to `(SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResponse, error)`
+- Function `*TasksClient.ListByResourceGroup` parameter(s) have been changed from `(string, *TasksListByResourceGroupOptions)` to `(string, *TasksClientListByResourceGroupOptions)`
+- Function `*TasksClient.ListByResourceGroup` return value(s) have been changed from `(*TasksListByResourceGroupPager)` to `(*TasksClientListByResourceGroupPager)`
+- Function `*CompliancesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CompliancesGetOptions)` to `(context.Context, string, string, *CompliancesClientGetOptions)`
+- Function `*CompliancesClient.Get` return value(s) have been changed from `(CompliancesGetResponse, error)` to `(CompliancesClientGetResponse, error)`
+- Function `*AssessmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AssessmentsGetOptions)` to `(context.Context, string, string, *AssessmentsClientGetOptions)`
+- Function `*AssessmentsClient.Get` return value(s) have been changed from `(AssessmentsGetResponse, error)` to `(AssessmentsClientGetResponse, error)`
+- Function `*AutoProvisioningSettingsClient.Create` parameter(s) have been changed from `(context.Context, string, AutoProvisioningSetting, *AutoProvisioningSettingsCreateOptions)` to `(context.Context, string, AutoProvisioningSetting, *AutoProvisioningSettingsClientCreateOptions)`
+- Function `*AutoProvisioningSettingsClient.Create` return value(s) have been changed from `(AutoProvisioningSettingsCreateResponse, error)` to `(AutoProvisioningSettingsClientCreateResponse, error)`
+- Function `*SQLVulnerabilityAssessmentScanResultsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *SQLVulnerabilityAssessmentScanResultsGetOptions)` to `(context.Context, string, string, string, string, *SQLVulnerabilityAssessmentScanResultsClientGetOptions)`
+- Function `*SQLVulnerabilityAssessmentScanResultsClient.Get` return value(s) have been changed from `(SQLVulnerabilityAssessmentScanResultsGetResponse, error)` to `(SQLVulnerabilityAssessmentScanResultsClientGetResponse, error)`
+- Function `*SecureScoreControlsClient.ListBySecureScore` parameter(s) have been changed from `(string, *SecureScoreControlsListBySecureScoreOptions)` to `(string, *SecureScoreControlsClientListBySecureScoreOptions)`
+- Function `*SecureScoreControlsClient.ListBySecureScore` return value(s) have been changed from `(*SecureScoreControlsListBySecureScorePager)` to `(*SecureScoreControlsClientListBySecureScorePager)`
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToActivate` parameter(s) have been changed from `(context.Context, string, *AlertsUpdateSubscriptionLevelStateToActivateOptions)` to `(context.Context, string, *AlertsClientUpdateSubscriptionLevelStateToActivateOptions)`
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToActivate` return value(s) have been changed from `(AlertsUpdateSubscriptionLevelStateToActivateResponse, error)` to `(AlertsClientUpdateSubscriptionLevelStateToActivateResponse, error)`
+- Function `*SecureScoreControlDefinitionsClient.ListBySubscription` parameter(s) have been changed from `(*SecureScoreControlDefinitionsListBySubscriptionOptions)` to `(*SecureScoreControlDefinitionsClientListBySubscriptionOptions)`
+- Function `*SecureScoreControlDefinitionsClient.ListBySubscription` return value(s) have been changed from `(*SecureScoreControlDefinitionsListBySubscriptionPager)` to `(*SecureScoreControlDefinitionsClientListBySubscriptionPager)`
+- Function `*TasksClient.List` parameter(s) have been changed from `(*TasksListOptions)` to `(*TasksClientListOptions)`
+- Function `*TasksClient.List` return value(s) have been changed from `(*TasksListPager)` to `(*TasksClientListPager)`
+- Function `*CustomAssessmentAutomationsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *CustomAssessmentAutomationsListByResourceGroupOptions)` to `(string, *CustomAssessmentAutomationsClientListByResourceGroupOptions)`
+- Function `*CustomAssessmentAutomationsClient.ListByResourceGroup` return value(s) have been changed from `(*CustomAssessmentAutomationsListByResourceGroupPager)` to `(*CustomAssessmentAutomationsClientListByResourceGroupPager)`
+- Function `*RegulatoryComplianceStandardsClient.Get` parameter(s) have been changed from `(context.Context, string, *RegulatoryComplianceStandardsGetOptions)` to `(context.Context, string, *RegulatoryComplianceStandardsClientGetOptions)`
+- Function `*RegulatoryComplianceStandardsClient.Get` return value(s) have been changed from `(RegulatoryComplianceStandardsGetResponse, error)` to `(RegulatoryComplianceStandardsClientGetResponse, error)`
+- Function `*IotSecuritySolutionClient.Update` parameter(s) have been changed from `(context.Context, string, string, UpdateIotSecuritySolutionData, *IotSecuritySolutionUpdateOptions)` to `(context.Context, string, string, UpdateIotSecuritySolutionData, *IotSecuritySolutionClientUpdateOptions)`
+- Function `*IotSecuritySolutionClient.Update` return value(s) have been changed from `(IotSecuritySolutionUpdateResponse, error)` to `(IotSecuritySolutionClientUpdateResponse, error)`
+- Function `*ConnectorsClient.Get` parameter(s) have been changed from `(context.Context, string, *ConnectorsGetOptions)` to `(context.Context, string, string, *ConnectorsClientGetOptions)`
+- Function `*ConnectorsClient.Get` return value(s) have been changed from `(ConnectorsGetResponse, error)` to `(ConnectorsClientGetResponse, error)`
+- Function `*AssessmentsClient.List` parameter(s) have been changed from `(string, *AssessmentsListOptions)` to `(string, *AssessmentsClientListOptions)`
+- Function `*AssessmentsClient.List` return value(s) have been changed from `(*AssessmentsListPager)` to `(*AssessmentsClientListPager)`
+- Function `*WorkspaceSettingsClient.Delete` parameter(s) have been changed from `(context.Context, string, *WorkspaceSettingsDeleteOptions)` to `(context.Context, string, *WorkspaceSettingsClientDeleteOptions)`
+- Function `*WorkspaceSettingsClient.Delete` return value(s) have been changed from `(WorkspaceSettingsDeleteResponse, error)` to `(WorkspaceSettingsClientDeleteResponse, error)`
+- Function `*SoftwareInventoriesClient.ListBySubscription` parameter(s) have been changed from `(*SoftwareInventoriesListBySubscriptionOptions)` to `(*SoftwareInventoriesClientListBySubscriptionOptions)`
+- Function `*SoftwareInventoriesClient.ListBySubscription` return value(s) have been changed from `(*SoftwareInventoriesListBySubscriptionPager)` to `(*SoftwareInventoriesClientListBySubscriptionPager)`
+- Function `*AlertsSuppressionRulesClient.Update` parameter(s) have been changed from `(context.Context, string, AlertsSuppressionRule, *AlertsSuppressionRulesUpdateOptions)` to `(context.Context, string, AlertsSuppressionRule, *AlertsSuppressionRulesClientUpdateOptions)`
+- Function `*AlertsSuppressionRulesClient.Update` return value(s) have been changed from `(AlertsSuppressionRulesUpdateResponse, error)` to `(AlertsSuppressionRulesClientUpdateResponse, error)`
+- Function `*SecureScoresClient.Get` parameter(s) have been changed from `(context.Context, string, *SecureScoresGetOptions)` to `(context.Context, string, *SecureScoresClientGetOptions)`
+- Function `*SecureScoresClient.Get` return value(s) have been changed from `(SecureScoresGetResponse, error)` to `(SecureScoresClientGetResponse, error)`
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToResolve` parameter(s) have been changed from `(context.Context, string, *AlertsUpdateSubscriptionLevelStateToResolveOptions)` to `(context.Context, string, *AlertsClientUpdateSubscriptionLevelStateToResolveOptions)`
+- Function `*AlertsClient.UpdateSubscriptionLevelStateToResolve` return value(s) have been changed from `(AlertsUpdateSubscriptionLevelStateToResolveResponse, error)` to `(AlertsClientUpdateSubscriptionLevelStateToResolveResponse, error)`
+- Function `*AlertsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AlertsListByResourceGroupOptions)` to `(string, *AlertsClientListByResourceGroupOptions)`
+- Function `*AlertsClient.ListByResourceGroup` return value(s) have been changed from `(*AlertsListByResourceGroupPager)` to `(*AlertsClientListByResourceGroupPager)`
+- Function `*AutoProvisioningSettingsClient.List` parameter(s) have been changed from `(*AutoProvisioningSettingsListOptions)` to `(*AutoProvisioningSettingsClientListOptions)`
+- Function `*AutoProvisioningSettingsClient.List` return value(s) have been changed from `(*AutoProvisioningSettingsListPager)` to `(*AutoProvisioningSettingsClientListPager)`
+- Function `*TasksClient.ListByHomeRegion` parameter(s) have been changed from `(*TasksListByHomeRegionOptions)` to `(*TasksClientListByHomeRegionOptions)`
+- Function `*TasksClient.ListByHomeRegion` return value(s) have been changed from `(*TasksListByHomeRegionPager)` to `(*TasksClientListByHomeRegionPager)`
+- Function `*SubAssessmentsClient.ListAll` parameter(s) have been changed from `(string, *SubAssessmentsListAllOptions)` to `(string, *SubAssessmentsClientListAllOptions)`
+- Function `*SubAssessmentsClient.ListAll` return value(s) have been changed from `(*SubAssessmentsListAllPager)` to `(*SubAssessmentsClientListAllPager)`
+- Function `*AssessmentsMetadataClient.GetInSubscription` parameter(s) have been changed from `(context.Context, string, *AssessmentsMetadataGetInSubscriptionOptions)` to `(context.Context, string, *AssessmentsMetadataClientGetInSubscriptionOptions)`
+- Function `*AssessmentsMetadataClient.GetInSubscription` return value(s) have been changed from `(AssessmentsMetadataGetInSubscriptionResponse, error)` to `(AssessmentsMetadataClientGetInSubscriptionResponse, error)`
+- Function `*TopologyClient.Get` parameter(s) have been changed from `(context.Context, string, string, *TopologyGetOptions)` to `(context.Context, string, string, *TopologyClientGetOptions)`
+- Function `*TopologyClient.Get` return value(s) have been changed from `(TopologyGetResponse, error)` to `(TopologyClientGetResponse, error)`
+- Function `*DiscoveredSecuritySolutionsClient.ListByHomeRegion` parameter(s) have been changed from `(*DiscoveredSecuritySolutionsListByHomeRegionOptions)` to `(*DiscoveredSecuritySolutionsClientListByHomeRegionOptions)`
+- Function `*DiscoveredSecuritySolutionsClient.ListByHomeRegion` return value(s) have been changed from `(*DiscoveredSecuritySolutionsListByHomeRegionPager)` to `(*DiscoveredSecuritySolutionsClientListByHomeRegionPager)`
+- Function `*JitNetworkAccessPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, JitNetworkAccessPolicy, *JitNetworkAccessPoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, JitNetworkAccessPolicy, *JitNetworkAccessPoliciesClientCreateOrUpdateOptions)`
+- Function `*JitNetworkAccessPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(JitNetworkAccessPoliciesCreateOrUpdateResponse, error)` to `(JitNetworkAccessPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*AssessmentsMetadataClient.CreateInSubscription` parameter(s) have been changed from `(context.Context, string, SecurityAssessmentMetadataResponse, *AssessmentsMetadataCreateInSubscriptionOptions)` to `(context.Context, string, AssessmentMetadataResponse, *AssessmentsMetadataClientCreateInSubscriptionOptions)`
+- Function `*AssessmentsMetadataClient.CreateInSubscription` return value(s) have been changed from `(AssessmentsMetadataCreateInSubscriptionResponse, error)` to `(AssessmentsMetadataClientCreateInSubscriptionResponse, error)`
+- Function `*JitNetworkAccessPoliciesClient.Initiate` parameter(s) have been changed from `(context.Context, string, string, Enum58, JitNetworkAccessPolicyInitiateRequest, *JitNetworkAccessPoliciesInitiateOptions)` to `(context.Context, string, string, Enum56, JitNetworkAccessPolicyInitiateRequest, *JitNetworkAccessPoliciesClientInitiateOptions)`
+- Function `*JitNetworkAccessPoliciesClient.Initiate` return value(s) have been changed from `(JitNetworkAccessPoliciesInitiateResponse, error)` to `(JitNetworkAccessPoliciesClientInitiateResponse, error)`
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClient.List` parameter(s) have been changed from `(string, string, *IotSecuritySolutionsAnalyticsRecommendationListOptions)` to `(string, string, *IotSecuritySolutionsAnalyticsRecommendationClientListOptions)`
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClient.List` return value(s) have been changed from `(*IotSecuritySolutionsAnalyticsRecommendationListPager)` to `(*IotSecuritySolutionsAnalyticsRecommendationClientListPager)`
+- Function `*ComplianceResultsClient.List` parameter(s) have been changed from `(string, *ComplianceResultsListOptions)` to `(string, *ComplianceResultsClientListOptions)`
+- Function `*ComplianceResultsClient.List` return value(s) have been changed from `(*ComplianceResultsListPager)` to `(*ComplianceResultsClientListPager)`
+- Function `*WorkspaceSettingsClient.Update` parameter(s) have been changed from `(context.Context, string, WorkspaceSetting, *WorkspaceSettingsUpdateOptions)` to `(context.Context, string, WorkspaceSetting, *WorkspaceSettingsClientUpdateOptions)`
+- Function `*WorkspaceSettingsClient.Update` return value(s) have been changed from `(WorkspaceSettingsUpdateResponse, error)` to `(WorkspaceSettingsClientUpdateResponse, error)`
+- Function `*AdaptiveApplicationControlsClient.Put` parameter(s) have been changed from `(context.Context, string, AdaptiveApplicationControlGroup, *AdaptiveApplicationControlsPutOptions)` to `(context.Context, string, AdaptiveApplicationControlGroup, *AdaptiveApplicationControlsClientPutOptions)`
+- Function `*AdaptiveApplicationControlsClient.Put` return value(s) have been changed from `(AdaptiveApplicationControlsPutResponse, error)` to `(AdaptiveApplicationControlsClientPutResponse, error)`
+- Function `*ExternalSecuritySolutionsClient.ListByHomeRegion` parameter(s) have been changed from `(*ExternalSecuritySolutionsListByHomeRegionOptions)` to `(*ExternalSecuritySolutionsClientListByHomeRegionOptions)`
+- Function `*ExternalSecuritySolutionsClient.ListByHomeRegion` return value(s) have been changed from `(*ExternalSecuritySolutionsListByHomeRegionPager)` to `(*ExternalSecuritySolutionsClientListByHomeRegionPager)`
+- Function `*JitNetworkAccessPoliciesClient.ListByRegion` parameter(s) have been changed from `(*JitNetworkAccessPoliciesListByRegionOptions)` to `(*JitNetworkAccessPoliciesClientListByRegionOptions)`
+- Function `*JitNetworkAccessPoliciesClient.ListByRegion` return value(s) have been changed from `(*JitNetworkAccessPoliciesListByRegionPager)` to `(*JitNetworkAccessPoliciesClientListByRegionPager)`
+- Function `*SQLVulnerabilityAssessmentScansClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SQLVulnerabilityAssessmentScansGetOptions)` to `(context.Context, string, string, string, *SQLVulnerabilityAssessmentScansClientGetOptions)`
+- Function `*SQLVulnerabilityAssessmentScansClient.Get` return value(s) have been changed from `(SQLVulnerabilityAssessmentScansGetResponse, error)` to `(SQLVulnerabilityAssessmentScansClientGetResponse, error)`
+- Function `*SoftwareInventoriesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *SoftwareInventoriesGetOptions)` to `(context.Context, string, string, string, string, string, *SoftwareInventoriesClientGetOptions)`
+- Function `*SoftwareInventoriesClient.Get` return value(s) have been changed from `(SoftwareInventoriesGetResponse, error)` to `(SoftwareInventoriesClientGetResponse, error)`
+- Function `*PricingsClient.List` parameter(s) have been changed from `(context.Context, *PricingsListOptions)` to `(context.Context, *PricingsClientListOptions)`
+- Function `*PricingsClient.List` return value(s) have been changed from `(PricingsListResponse, error)` to `(PricingsClientListResponse, error)`
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.List` parameter(s) have been changed from `(string, string, *IotSecuritySolutionsAnalyticsAggregatedAlertListOptions)` to `(string, string, *IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions)`
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertClient.List` return value(s) have been changed from `(*IotSecuritySolutionsAnalyticsAggregatedAlertListPager)` to `(*IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager)`
+- Function `*AlertsSuppressionRulesClient.Get` parameter(s) have been changed from `(context.Context, string, *AlertsSuppressionRulesGetOptions)` to `(context.Context, string, *AlertsSuppressionRulesClientGetOptions)`
+- Function `*AlertsSuppressionRulesClient.Get` return value(s) have been changed from `(AlertsSuppressionRulesGetResponse, error)` to `(AlertsSuppressionRulesClientGetResponse, error)`
+- Function `*AlertsSuppressionRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, *AlertsSuppressionRulesDeleteOptions)` to `(context.Context, string, *AlertsSuppressionRulesClientDeleteOptions)`
+- Function `*AlertsSuppressionRulesClient.Delete` return value(s) have been changed from `(AlertsSuppressionRulesDeleteResponse, error)` to `(AlertsSuppressionRulesClientDeleteResponse, error)`
+- Function `*IngestionSettingsClient.Create` parameter(s) have been changed from `(context.Context, string, IngestionSetting, *IngestionSettingsCreateOptions)` to `(context.Context, string, IngestionSetting, *IngestionSettingsClientCreateOptions)`
+- Function `*IngestionSettingsClient.Create` return value(s) have been changed from `(IngestionSettingsCreateResponse, error)` to `(IngestionSettingsClientCreateResponse, error)`
+- Function `*LocationsClient.Get` parameter(s) have been changed from `(context.Context, *LocationsGetOptions)` to `(context.Context, *LocationsClientGetOptions)`
+- Function `*LocationsClient.Get` return value(s) have been changed from `(LocationsGetResponse, error)` to `(LocationsClientGetResponse, error)`
+- Function `*SoftwareInventoriesClient.ListByExtendedResource` parameter(s) have been changed from `(string, string, string, string, *SoftwareInventoriesListByExtendedResourceOptions)` to `(string, string, string, string, *SoftwareInventoriesClientListByExtendedResourceOptions)`
+- Function `*SoftwareInventoriesClient.ListByExtendedResource` return value(s) have been changed from `(*SoftwareInventoriesListByExtendedResourcePager)` to `(*SoftwareInventoriesClientListByExtendedResourcePager)`
+- Function `*AdaptiveApplicationControlsClient.Delete` parameter(s) have been changed from `(context.Context, string, *AdaptiveApplicationControlsDeleteOptions)` to `(context.Context, string, *AdaptiveApplicationControlsClientDeleteOptions)`
+- Function `*AdaptiveApplicationControlsClient.Delete` return value(s) have been changed from `(AdaptiveApplicationControlsDeleteResponse, error)` to `(AdaptiveApplicationControlsClientDeleteResponse, error)`
+- Function `*SettingsClient.List` parameter(s) have been changed from `(*SettingsListOptions)` to `(*SettingsClientListOptions)`
+- Function `*SettingsClient.List` return value(s) have been changed from `(*SettingsListPager)` to `(*SettingsClientListPager)`
+- Function `*SubAssessmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SubAssessmentsGetOptions)` to `(context.Context, string, string, string, *SubAssessmentsClientGetOptions)`
+- Function `*SubAssessmentsClient.Get` return value(s) have been changed from `(SubAssessmentsGetResponse, error)` to `(SubAssessmentsClientGetResponse, error)`
+- Function `*ServerVulnerabilityAssessmentClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, Enum33, *ServerVulnerabilityAssessmentGetOptions)` to `(context.Context, string, string, string, string, Enum31, *ServerVulnerabilityAssessmentClientGetOptions)`
+- Function `*ServerVulnerabilityAssessmentClient.Get` return value(s) have been changed from `(ServerVulnerabilityAssessmentGetResponse, error)` to `(ServerVulnerabilityAssessmentClientGetResponse, error)`
+- Function `*AdaptiveNetworkHardeningsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *AdaptiveNetworkHardeningsGetOptions)` to `(context.Context, string, string, string, string, string, *AdaptiveNetworkHardeningsClientGetOptions)`
+- Function `*AdaptiveNetworkHardeningsClient.Get` return value(s) have been changed from `(AdaptiveNetworkHardeningsGetResponse, error)` to `(AdaptiveNetworkHardeningsClientGetResponse, error)`
+- Function `*TasksClient.UpdateResourceGroupLevelTaskState` parameter(s) have been changed from `(context.Context, string, string, Enum18, *TasksUpdateResourceGroupLevelTaskStateOptions)` to `(context.Context, string, string, Enum16, *TasksClientUpdateResourceGroupLevelTaskStateOptions)`
+- Function `*TasksClient.UpdateResourceGroupLevelTaskState` return value(s) have been changed from `(TasksUpdateResourceGroupLevelTaskStateResponse, error)` to `(TasksClientUpdateResourceGroupLevelTaskStateResponse, error)`
+- Function `*CustomAssessmentAutomationsClient.ListBySubscription` parameter(s) have been changed from `(*CustomAssessmentAutomationsListBySubscriptionOptions)` to `(*CustomAssessmentAutomationsClientListBySubscriptionOptions)`
+- Function `*CustomAssessmentAutomationsClient.ListBySubscription` return value(s) have been changed from `(*CustomAssessmentAutomationsListBySubscriptionPager)` to `(*CustomAssessmentAutomationsClientListBySubscriptionPager)`
+- Function `*IotSecuritySolutionClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, IoTSecuritySolutionModel, *IotSecuritySolutionCreateOrUpdateOptions)` to `(context.Context, string, string, IoTSecuritySolutionModel, *IotSecuritySolutionClientCreateOrUpdateOptions)`
+- Function `*IotSecuritySolutionClient.CreateOrUpdate` return value(s) have been changed from `(IotSecuritySolutionCreateOrUpdateResponse, error)` to `(IotSecuritySolutionClientCreateOrUpdateResponse, error)`
+- Function `*CustomAssessmentAutomationsClient.Create` parameter(s) have been changed from `(context.Context, string, string, CustomAssessmentAutomationRequest, *CustomAssessmentAutomationsCreateOptions)` to `(context.Context, string, string, CustomAssessmentAutomationRequest, *CustomAssessmentAutomationsClientCreateOptions)`
+- Function `*CustomAssessmentAutomationsClient.Create` return value(s) have been changed from `(CustomAssessmentAutomationsCreateResponse, error)` to `(CustomAssessmentAutomationsClientCreateResponse, error)`
+- Function `*AlertsClient.ListSubscriptionLevelByRegion` parameter(s) have been changed from `(*AlertsListSubscriptionLevelByRegionOptions)` to `(*AlertsClientListSubscriptionLevelByRegionOptions)`
+- Function `*AlertsClient.ListSubscriptionLevelByRegion` return value(s) have been changed from `(*AlertsListSubscriptionLevelByRegionPager)` to `(*AlertsClientListSubscriptionLevelByRegionPager)`
+- Function `*SecureScoreControlDefinitionsClient.List` parameter(s) have been changed from `(*SecureScoreControlDefinitionsListOptions)` to `(*SecureScoreControlDefinitionsClientListOptions)`
+- Function `*SecureScoreControlDefinitionsClient.List` return value(s) have been changed from `(*SecureScoreControlDefinitionsListPager)` to `(*SecureScoreControlDefinitionsClientListPager)`
+- Function `*AlertsClient.List` parameter(s) have been changed from `(*AlertsListOptions)` to `(*AlertsClientListOptions)`
+- Function `*AlertsClient.List` return value(s) have been changed from `(*AlertsListPager)` to `(*AlertsClientListPager)`
+- Function `*ExternalSecuritySolutionsClient.List` parameter(s) have been changed from `(*ExternalSecuritySolutionsListOptions)` to `(*ExternalSecuritySolutionsClientListOptions)`
+- Function `*ExternalSecuritySolutionsClient.List` return value(s) have been changed from `(*ExternalSecuritySolutionsListPager)` to `(*ExternalSecuritySolutionsClientListPager)`
+- Function `*SettingsClient.Get` parameter(s) have been changed from `(context.Context, Enum79, *SettingsGetOptions)` to `(context.Context, Enum77, *SettingsClientGetOptions)`
+- Function `*SettingsClient.Get` return value(s) have been changed from `(SettingsGetResponse, error)` to `(SettingsClientGetResponse, error)`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToResolve` parameter(s) have been changed from `(context.Context, string, string, *AlertsUpdateResourceGroupLevelStateToResolveOptions)` to `(context.Context, string, string, *AlertsClientUpdateResourceGroupLevelStateToResolveOptions)`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToResolve` return value(s) have been changed from `(AlertsUpdateResourceGroupLevelStateToResolveResponse, error)` to `(AlertsClientUpdateResourceGroupLevelStateToResolveResponse, error)`
+- Function `*ServerVulnerabilityAssessmentClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, Enum33, *ServerVulnerabilityAssessmentCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, Enum31, *ServerVulnerabilityAssessmentClientCreateOrUpdateOptions)`
+- Function `*ServerVulnerabilityAssessmentClient.CreateOrUpdate` return value(s) have been changed from `(ServerVulnerabilityAssessmentCreateOrUpdateResponse, error)` to `(ServerVulnerabilityAssessmentClientCreateOrUpdateResponse, error)`
+- Function `*CustomAssessmentAutomationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CustomAssessmentAutomationsGetOptions)` to `(context.Context, string, string, *CustomAssessmentAutomationsClientGetOptions)`
+- Function `*CustomAssessmentAutomationsClient.Get` return value(s) have been changed from `(CustomAssessmentAutomationsGetResponse, error)` to `(CustomAssessmentAutomationsClientGetResponse, error)`
+- Function `*CustomEntityStoreAssignmentsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *CustomEntityStoreAssignmentsDeleteOptions)` to `(context.Context, string, string, *CustomEntityStoreAssignmentsClientDeleteOptions)`
+- Function `*CustomEntityStoreAssignmentsClient.Delete` return value(s) have been changed from `(CustomEntityStoreAssignmentsDeleteResponse, error)` to `(CustomEntityStoreAssignmentsClientDeleteResponse, error)`
+- Function `*AssessmentsMetadataClient.Get` parameter(s) have been changed from `(context.Context, string, *AssessmentsMetadataGetOptions)` to `(context.Context, string, *AssessmentsMetadataClientGetOptions)`
+- Function `*AssessmentsMetadataClient.Get` return value(s) have been changed from `(AssessmentsMetadataGetResponse, error)` to `(AssessmentsMetadataClientGetResponse, error)`
+- Function `*ConnectorsClient.Delete` parameter(s) have been changed from `(context.Context, string, *ConnectorsDeleteOptions)` to `(context.Context, string, string, *ConnectorsClientDeleteOptions)`
+- Function `*ConnectorsClient.Delete` return value(s) have been changed from `(ConnectorsDeleteResponse, error)` to `(ConnectorsClientDeleteResponse, error)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.Add` parameter(s) have been changed from `(context.Context, string, string, *SQLVulnerabilityAssessmentBaselineRulesAddOptions)` to `(context.Context, string, string, *SQLVulnerabilityAssessmentBaselineRulesClientAddOptions)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.Add` return value(s) have been changed from `(SQLVulnerabilityAssessmentBaselineRulesAddResponse, error)` to `(SQLVulnerabilityAssessmentBaselineRulesClientAddResponse, error)`
+- Function `*InformationProtectionPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, Enum20, *InformationProtectionPoliciesGetOptions)` to `(context.Context, string, Enum18, *InformationProtectionPoliciesClientGetOptions)`
+- Function `*InformationProtectionPoliciesClient.Get` return value(s) have been changed from `(InformationProtectionPoliciesGetResponse, error)` to `(InformationProtectionPoliciesClientGetResponse, error)`
+- Function `*SubAssessmentsClient.List` parameter(s) have been changed from `(string, string, *SubAssessmentsListOptions)` to `(string, string, *SubAssessmentsClientListOptions)`
+- Function `*SubAssessmentsClient.List` return value(s) have been changed from `(*SubAssessmentsListPager)` to `(*SubAssessmentsClientListPager)`
+- Function `*RegulatoryComplianceControlsClient.List` parameter(s) have been changed from `(string, *RegulatoryComplianceControlsListOptions)` to `(string, *RegulatoryComplianceControlsClientListOptions)`
+- Function `*RegulatoryComplianceControlsClient.List` return value(s) have been changed from `(*RegulatoryComplianceControlsListPager)` to `(*RegulatoryComplianceControlsClientListPager)`
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IotSecuritySolutionsAnalyticsRecommendationGetOptions)` to `(context.Context, string, string, string, *IotSecuritySolutionsAnalyticsRecommendationClientGetOptions)`
+- Function `*IotSecuritySolutionsAnalyticsRecommendationClient.Get` return value(s) have been changed from `(IotSecuritySolutionsAnalyticsRecommendationGetResponse, error)` to `(IotSecuritySolutionsAnalyticsRecommendationClientGetResponse, error)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.List` parameter(s) have been changed from `(context.Context, string, string, *SQLVulnerabilityAssessmentBaselineRulesListOptions)` to `(context.Context, string, string, *SQLVulnerabilityAssessmentBaselineRulesClientListOptions)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.List` return value(s) have been changed from `(SQLVulnerabilityAssessmentBaselineRulesListResponse, error)` to `(SQLVulnerabilityAssessmentBaselineRulesClientListResponse, error)`
+- Function `*PricingsClient.Update` parameter(s) have been changed from `(context.Context, string, Pricing, *PricingsUpdateOptions)` to `(context.Context, string, Pricing, *PricingsClientUpdateOptions)`
+- Function `*PricingsClient.Update` return value(s) have been changed from `(PricingsUpdateResponse, error)` to `(PricingsClientUpdateResponse, error)`
+- Function `*AlertsSuppressionRulesClient.List` parameter(s) have been changed from `(*AlertsSuppressionRulesListOptions)` to `(*AlertsSuppressionRulesClientListOptions)`
+- Function `*AlertsSuppressionRulesClient.List` return value(s) have been changed from `(*AlertsSuppressionRulesListPager)` to `(*AlertsSuppressionRulesClientListPager)`
+- Function `*AlertsClient.GetSubscriptionLevel` parameter(s) have been changed from `(context.Context, string, *AlertsGetSubscriptionLevelOptions)` to `(context.Context, string, *AlertsClientGetSubscriptionLevelOptions)`
+- Function `*AlertsClient.GetSubscriptionLevel` return value(s) have been changed from `(AlertsGetSubscriptionLevelResponse, error)` to `(AlertsClientGetSubscriptionLevelResponse, error)`
+- Function `*AssessmentsMetadataClient.ListBySubscription` parameter(s) have been changed from `(*AssessmentsMetadataListBySubscriptionOptions)` to `(*AssessmentsMetadataClientListBySubscriptionOptions)`
+- Function `*AssessmentsMetadataClient.ListBySubscription` return value(s) have been changed from `(*AssessmentsMetadataListBySubscriptionPager)` to `(*AssessmentsMetadataClientListBySubscriptionPager)`
+- Function `*SQLVulnerabilityAssessmentScansClient.List` parameter(s) have been changed from `(context.Context, string, string, *SQLVulnerabilityAssessmentScansListOptions)` to `(context.Context, string, string, *SQLVulnerabilityAssessmentScansClientListOptions)`
+- Function `*SQLVulnerabilityAssessmentScansClient.List` return value(s) have been changed from `(SQLVulnerabilityAssessmentScansListResponse, error)` to `(SQLVulnerabilityAssessmentScansClientListResponse, error)`
+- Function `*ServerVulnerabilityAssessmentClient.ListByExtendedResource` parameter(s) have been changed from `(context.Context, string, string, string, string, *ServerVulnerabilityAssessmentListByExtendedResourceOptions)` to `(context.Context, string, string, string, string, *ServerVulnerabilityAssessmentClientListByExtendedResourceOptions)`
+- Function `*ServerVulnerabilityAssessmentClient.ListByExtendedResource` return value(s) have been changed from `(ServerVulnerabilityAssessmentListByExtendedResourceResponse, error)` to `(ServerVulnerabilityAssessmentClientListByExtendedResourceResponse, error)`
+- Function `*AutomationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AutomationsGetOptions)` to `(context.Context, string, string, *AutomationsClientGetOptions)`
+- Function `*AutomationsClient.Get` return value(s) have been changed from `(AutomationsGetResponse, error)` to `(AutomationsClientGetResponse, error)`
+- Function `*AdaptiveApplicationControlsClient.Get` parameter(s) have been changed from `(context.Context, string, *AdaptiveApplicationControlsGetOptions)` to `(context.Context, string, *AdaptiveApplicationControlsClientGetOptions)`
+- Function `*AdaptiveApplicationControlsClient.Get` return value(s) have been changed from `(AdaptiveApplicationControlsGetResponse, error)` to `(AdaptiveApplicationControlsClientGetResponse, error)`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToActivate` parameter(s) have been changed from `(context.Context, string, string, *AlertsUpdateResourceGroupLevelStateToActivateOptions)` to `(context.Context, string, string, *AlertsClientUpdateResourceGroupLevelStateToActivateOptions)`
+- Function `*AlertsClient.UpdateResourceGroupLevelStateToActivate` return value(s) have been changed from `(AlertsUpdateResourceGroupLevelStateToActivateResponse, error)` to `(AlertsClientUpdateResourceGroupLevelStateToActivateResponse, error)`
+- Function `*AdaptiveNetworkHardeningsClient.ListByExtendedResource` parameter(s) have been changed from `(string, string, string, string, *AdaptiveNetworkHardeningsListByExtendedResourceOptions)` to `(string, string, string, string, *AdaptiveNetworkHardeningsClientListByExtendedResourceOptions)`
+- Function `*AdaptiveNetworkHardeningsClient.ListByExtendedResource` return value(s) have been changed from `(*AdaptiveNetworkHardeningsListByExtendedResourcePager)` to `(*AdaptiveNetworkHardeningsClientListByExtendedResourcePager)`
+- Function `*RegulatoryComplianceStandardsClient.List` parameter(s) have been changed from `(*RegulatoryComplianceStandardsListOptions)` to `(*RegulatoryComplianceStandardsClientListOptions)`
+- Function `*RegulatoryComplianceStandardsClient.List` return value(s) have been changed from `(*RegulatoryComplianceStandardsListPager)` to `(*RegulatoryComplianceStandardsClientListPager)`
+- Function `*AutomationsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AutomationsListByResourceGroupOptions)` to `(string, *AutomationsClientListByResourceGroupOptions)`
+- Function `*AutomationsClient.ListByResourceGroup` return value(s) have been changed from `(*AutomationsListByResourceGroupPager)` to `(*AutomationsClientListByResourceGroupPager)`
+- Function `*AlertsClient.ListResourceGroupLevelByRegion` parameter(s) have been changed from `(string, *AlertsListResourceGroupLevelByRegionOptions)` to `(string, *AlertsClientListResourceGroupLevelByRegionOptions)`
+- Function `*AlertsClient.ListResourceGroupLevelByRegion` return value(s) have been changed from `(*AlertsListResourceGroupLevelByRegionPager)` to `(*AlertsClientListResourceGroupLevelByRegionPager)`
+- Function `*ComplianceResultsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ComplianceResultsGetOptions)` to `(context.Context, string, string, *ComplianceResultsClientGetOptions)`
+- Function `*ComplianceResultsClient.Get` return value(s) have been changed from `(ComplianceResultsGetResponse, error)` to `(ComplianceResultsClientGetResponse, error)`
+- Function `*IngestionSettingsClient.Delete` parameter(s) have been changed from `(context.Context, string, *IngestionSettingsDeleteOptions)` to `(context.Context, string, *IngestionSettingsClientDeleteOptions)`
+- Function `*IngestionSettingsClient.Delete` return value(s) have been changed from `(IngestionSettingsDeleteResponse, error)` to `(IngestionSettingsClientDeleteResponse, error)`
+- Function `*WorkspaceSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, *WorkspaceSettingsGetOptions)` to `(context.Context, string, *WorkspaceSettingsClientGetOptions)`
+- Function `*WorkspaceSettingsClient.Get` return value(s) have been changed from `(WorkspaceSettingsGetResponse, error)` to `(WorkspaceSettingsClientGetResponse, error)`
+- Function `*MdeOnboardingsClient.List` parameter(s) have been changed from `(context.Context, *MdeOnboardingsListOptions)` to `(context.Context, *MdeOnboardingsClientListOptions)`
+- Function `*MdeOnboardingsClient.List` return value(s) have been changed from `(MdeOnboardingsListResponse, error)` to `(MdeOnboardingsClientListResponse, error)`
+- Function `*IotSecuritySolutionClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *IotSecuritySolutionDeleteOptions)` to `(context.Context, string, string, *IotSecuritySolutionClientDeleteOptions)`
+- Function `*IotSecuritySolutionClient.Delete` return value(s) have been changed from `(IotSecuritySolutionDeleteResponse, error)` to `(IotSecuritySolutionClientDeleteResponse, error)`
+- Function `*AutomationsClient.Validate` parameter(s) have been changed from `(context.Context, string, string, Automation, *AutomationsValidateOptions)` to `(context.Context, string, string, Automation, *AutomationsClientValidateOptions)`
+- Function `*AutomationsClient.Validate` return value(s) have been changed from `(AutomationsValidateResponse, error)` to `(AutomationsClientValidateResponse, error)`
+- Function `*MdeOnboardingsClient.Get` parameter(s) have been changed from `(context.Context, *MdeOnboardingsGetOptions)` to `(context.Context, *MdeOnboardingsClientGetOptions)`
+- Function `*MdeOnboardingsClient.Get` return value(s) have been changed from `(MdeOnboardingsGetResponse, error)` to `(MdeOnboardingsClientGetResponse, error)`
+- Function `*CustomAssessmentAutomationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *CustomAssessmentAutomationsDeleteOptions)` to `(context.Context, string, string, *CustomAssessmentAutomationsClientDeleteOptions)`
+- Function `*CustomAssessmentAutomationsClient.Delete` return value(s) have been changed from `(CustomAssessmentAutomationsDeleteResponse, error)` to `(CustomAssessmentAutomationsClientDeleteResponse, error)`
+- Function `*TopologyClient.ListByHomeRegion` parameter(s) have been changed from `(*TopologyListByHomeRegionOptions)` to `(*TopologyClientListByHomeRegionOptions)`
+- Function `*TopologyClient.ListByHomeRegion` return value(s) have been changed from `(*TopologyListByHomeRegionPager)` to `(*TopologyClientListByHomeRegionPager)`
+- Function `*CompliancesClient.List` parameter(s) have been changed from `(string, *CompliancesListOptions)` to `(string, *CompliancesClientListOptions)`
+- Function `*CompliancesClient.List` return value(s) have been changed from `(*CompliancesListPager)` to `(*CompliancesClientListPager)`
+- Function `*SettingsClient.Update` parameter(s) have been changed from `(context.Context, Enum79, SettingClassification, *SettingsUpdateOptions)` to `(context.Context, Enum77, SettingClassification, *SettingsClientUpdateOptions)`
+- Function `*SettingsClient.Update` return value(s) have been changed from `(SettingsUpdateResponse, error)` to `(SettingsClientUpdateResponse, error)`
+- Function `*IotSecuritySolutionAnalyticsClient.List` parameter(s) have been changed from `(context.Context, string, string, *IotSecuritySolutionAnalyticsListOptions)` to `(context.Context, string, string, *IotSecuritySolutionAnalyticsClientListOptions)`
+- Function `*IotSecuritySolutionAnalyticsClient.List` return value(s) have been changed from `(IotSecuritySolutionAnalyticsListResponse, error)` to `(IotSecuritySolutionAnalyticsClientListResponse, error)`
+- Function `*IotSecuritySolutionClient.ListByResourceGroup` parameter(s) have been changed from `(string, *IotSecuritySolutionListByResourceGroupOptions)` to `(string, *IotSecuritySolutionClientListByResourceGroupOptions)`
+- Function `*IotSecuritySolutionClient.ListByResourceGroup` return value(s) have been changed from `(*IotSecuritySolutionListByResourceGroupPager)` to `(*IotSecuritySolutionClientListByResourceGroupPager)`
+- Function `*JitNetworkAccessPoliciesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *JitNetworkAccessPoliciesDeleteOptions)` to `(context.Context, string, string, *JitNetworkAccessPoliciesClientDeleteOptions)`
+- Function `*JitNetworkAccessPoliciesClient.Delete` return value(s) have been changed from `(JitNetworkAccessPoliciesDeleteResponse, error)` to `(JitNetworkAccessPoliciesClientDeleteResponse, error)`
+- Function `*ExternalSecuritySolutionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ExternalSecuritySolutionsGetOptions)` to `(context.Context, string, string, *ExternalSecuritySolutionsClientGetOptions)`
+- Function `*ExternalSecuritySolutionsClient.Get` return value(s) have been changed from `(ExternalSecuritySolutionsGetResponse, error)` to `(ExternalSecuritySolutionsClientGetResponse, error)`
+- Function `*DiscoveredSecuritySolutionsClient.List` parameter(s) have been changed from `(*DiscoveredSecuritySolutionsListOptions)` to `(*DiscoveredSecuritySolutionsClientListOptions)`
+- Function `*DiscoveredSecuritySolutionsClient.List` return value(s) have been changed from `(*DiscoveredSecuritySolutionsListPager)` to `(*DiscoveredSecuritySolutionsClientListPager)`
+- Function `*RegulatoryComplianceControlsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RegulatoryComplianceControlsGetOptions)` to `(context.Context, string, string, *RegulatoryComplianceControlsClientGetOptions)`
+- Function `*RegulatoryComplianceControlsClient.Get` return value(s) have been changed from `(RegulatoryComplianceControlsGetResponse, error)` to `(RegulatoryComplianceControlsClientGetResponse, error)`
+- Function `*DeviceSecurityGroupsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DeviceSecurityGroupsDeleteOptions)` to `(context.Context, string, string, *DeviceSecurityGroupsClientDeleteOptions)`
+- Function `*DeviceSecurityGroupsClient.Delete` return value(s) have been changed from `(DeviceSecurityGroupsDeleteResponse, error)` to `(DeviceSecurityGroupsClientDeleteResponse, error)`
+- Function `*AutomationsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Automation, *AutomationsCreateOrUpdateOptions)` to `(context.Context, string, string, Automation, *AutomationsClientCreateOrUpdateOptions)`
+- Function `*AutomationsClient.CreateOrUpdate` return value(s) have been changed from `(AutomationsCreateOrUpdateResponse, error)` to `(AutomationsClientCreateOrUpdateResponse, error)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *SQLVulnerabilityAssessmentBaselineRulesDeleteOptions)` to `(context.Context, string, string, string, *SQLVulnerabilityAssessmentBaselineRulesClientDeleteOptions)`
+- Function `*SQLVulnerabilityAssessmentBaselineRulesClient.Delete` return value(s) have been changed from `(SQLVulnerabilityAssessmentBaselineRulesDeleteResponse, error)` to `(SQLVulnerabilityAssessmentBaselineRulesClientDeleteResponse, error)`
+- Function `*ConnectorsClient.List` parameter(s) have been changed from `(*ConnectorsListOptions)` to `(*ConnectorsClientListOptions)`
+- Function `*ConnectorsClient.List` return value(s) have been changed from `(*ConnectorsListPager)` to `(*ConnectorsClientListPager)`
+- Function `*InformationProtectionPoliciesClient.List` parameter(s) have been changed from `(string, *InformationProtectionPoliciesListOptions)` to `(string, *InformationProtectionPoliciesClientListOptions)`
+- Function `*InformationProtectionPoliciesClient.List` return value(s) have been changed from `(*InformationProtectionPoliciesListPager)` to `(*InformationProtectionPoliciesClientListPager)`
+- Function `*DiscoveredSecuritySolutionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DiscoveredSecuritySolutionsGetOptions)` to `(context.Context, string, string, *DiscoveredSecuritySolutionsClientGetOptions)`
+- Function `*DiscoveredSecuritySolutionsClient.Get` return value(s) have been changed from `(DiscoveredSecuritySolutionsGetResponse, error)` to `(DiscoveredSecuritySolutionsClientGetResponse, error)`
+- Function `*CustomEntityStoreAssignmentsClient.Create` parameter(s) have been changed from `(context.Context, string, string, CustomEntityStoreAssignmentRequest, *CustomEntityStoreAssignmentsCreateOptions)` to `(context.Context, string, string, CustomEntityStoreAssignmentRequest, *CustomEntityStoreAssignmentsClientCreateOptions)`
+- Function `*CustomEntityStoreAssignmentsClient.Create` return value(s) have been changed from `(CustomEntityStoreAssignmentsCreateResponse, error)` to `(CustomEntityStoreAssignmentsClientCreateResponse, error)`
+- Function `*IngestionSettingsClient.List` parameter(s) have been changed from `(*IngestionSettingsListOptions)` to `(*IngestionSettingsClientListOptions)`
+- Function `*IngestionSettingsClient.List` return value(s) have been changed from `(*IngestionSettingsListPager)` to `(*IngestionSettingsClientListPager)`
+- Function `*DeviceSecurityGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DeviceSecurityGroupsGetOptions)` to `(context.Context, string, string, *DeviceSecurityGroupsClientGetOptions)`
+- Function `*DeviceSecurityGroupsClient.Get` return value(s) have been changed from `(DeviceSecurityGroupsGetResponse, error)` to `(DeviceSecurityGroupsClientGetResponse, error)`
+- Function `*RegulatoryComplianceAssessmentsClient.List` parameter(s) have been changed from `(string, string, *RegulatoryComplianceAssessmentsListOptions)` to `(string, string, *RegulatoryComplianceAssessmentsClientListOptions)`
+- Function `*RegulatoryComplianceAssessmentsClient.List` return value(s) have been changed from `(*RegulatoryComplianceAssessmentsListPager)` to `(*RegulatoryComplianceAssessmentsClientListPager)`
+- Function `*AutomationsClient.List` parameter(s) have been changed from `(*AutomationsListOptions)` to `(*AutomationsClientListOptions)`
+- Function `*AutomationsClient.List` return value(s) have been changed from `(*AutomationsListPager)` to `(*AutomationsClientListPager)`
+- Function `*DeviceSecurityGroupsClient.List` parameter(s) have been changed from `(string, *DeviceSecurityGroupsListOptions)` to `(string, *DeviceSecurityGroupsClientListOptions)`
+- Function `*DeviceSecurityGroupsClient.List` return value(s) have been changed from `(*DeviceSecurityGroupsListPager)` to `(*DeviceSecurityGroupsClientListPager)`
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *JitNetworkAccessPoliciesListByResourceGroupOptions)` to `(string, *JitNetworkAccessPoliciesClientListByResourceGroupOptions)`
+- Function `*JitNetworkAccessPoliciesClient.ListByResourceGroup` return value(s) have been changed from `(*JitNetworkAccessPoliciesListByResourceGroupPager)` to `(*JitNetworkAccessPoliciesClientListByResourceGroupPager)`
+- Function `*CustomEntityStoreAssignmentsClient.ListBySubscription` parameter(s) have been changed from `(*CustomEntityStoreAssignmentsListBySubscriptionOptions)` to `(*CustomEntityStoreAssignmentsClientListBySubscriptionOptions)`
+- Function `*CustomEntityStoreAssignmentsClient.ListBySubscription` return value(s) have been changed from `(*CustomEntityStoreAssignmentsListBySubscriptionPager)` to `(*CustomEntityStoreAssignmentsClientListBySubscriptionPager)`
+- Function `*DeviceSecurityGroupsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DeviceSecurityGroup, *DeviceSecurityGroupsCreateOrUpdateOptions)` to `(context.Context, string, string, DeviceSecurityGroup, *DeviceSecurityGroupsClientCreateOrUpdateOptions)`
+- Function `*DeviceSecurityGroupsClient.CreateOrUpdate` return value(s) have been changed from `(DeviceSecurityGroupsCreateOrUpdateResponse, error)` to `(DeviceSecurityGroupsClientCreateOrUpdateResponse, error)`
+- Function `*ServerVulnerabilityAssessmentClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, Enum33, *ServerVulnerabilityAssessmentBeginDeleteOptions)` to `(context.Context, string, string, string, string, Enum31, *ServerVulnerabilityAssessmentClientBeginDeleteOptions)`
+- Function `*ServerVulnerabilityAssessmentClient.BeginDelete` return value(s) have been changed from `(ServerVulnerabilityAssessmentDeletePollerResponse, error)` to `(ServerVulnerabilityAssessmentClientDeletePollerResponse, error)`
+- Function `*TasksClient.GetSubscriptionLevelTask` parameter(s) have been changed from `(context.Context, string, *TasksGetSubscriptionLevelTaskOptions)` to `(context.Context, string, *TasksClientGetSubscriptionLevelTaskOptions)`
+- Function `*TasksClient.GetSubscriptionLevelTask` return value(s) have been changed from `(TasksGetSubscriptionLevelTaskResponse, error)` to `(TasksClientGetSubscriptionLevelTaskResponse, error)`
+- Function `*AssessmentsMetadataClient.DeleteInSubscription` parameter(s) have been changed from `(context.Context, string, *AssessmentsMetadataDeleteInSubscriptionOptions)` to `(context.Context, string, *AssessmentsMetadataClientDeleteInSubscriptionOptions)`
+- Function `*AssessmentsMetadataClient.DeleteInSubscription` return value(s) have been changed from `(AssessmentsMetadataDeleteInSubscriptionResponse, error)` to `(AssessmentsMetadataClientDeleteInSubscriptionResponse, error)`
+- Function `*AllowedConnectionsClient.ListByHomeRegion` parameter(s) have been changed from `(*AllowedConnectionsListByHomeRegionOptions)` to `(*AllowedConnectionsClientListByHomeRegionOptions)`
+- Function `*AllowedConnectionsClient.ListByHomeRegion` return value(s) have been changed from `(*AllowedConnectionsListByHomeRegionPager)` to `(*AllowedConnectionsClientListByHomeRegionPager)`
+- Function `*AlertsClient.BeginSimulate` parameter(s) have been changed from `(context.Context, AlertSimulatorRequestBody, *AlertsBeginSimulateOptions)` to `(context.Context, AlertSimulatorRequestBody, *AlertsClientBeginSimulateOptions)`
+- Function `*AlertsClient.BeginSimulate` return value(s) have been changed from `(AlertsSimulatePollerResponse, error)` to `(AlertsClientSimulatePollerResponse, error)`
+- Function `*IngestionSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, *IngestionSettingsGetOptions)` to `(context.Context, string, *IngestionSettingsClientGetOptions)`
+- Function `*IngestionSettingsClient.Get` return value(s) have been changed from `(IngestionSettingsGetResponse, error)` to `(IngestionSettingsClientGetResponse, error)`
+- Function `*LocationsClient.List` parameter(s) have been changed from `(*LocationsListOptions)` to `(*LocationsClientListOptions)`
+- Function `*LocationsClient.List` return value(s) have been changed from `(*LocationsListPager)` to `(*LocationsClientListPager)`
+- Function `*PricingsClient.Get` parameter(s) have been changed from `(context.Context, string, *PricingsGetOptions)` to `(context.Context, string, *PricingsClientGetOptions)`
+- Function `*PricingsClient.Get` return value(s) have been changed from `(PricingsGetResponse, error)` to `(PricingsClientGetResponse, error)`
+- Function `*TopologyClient.List` parameter(s) have been changed from `(*TopologyListOptions)` to `(*TopologyClientListOptions)`
+- Function `*TopologyClient.List` return value(s) have been changed from `(*TopologyListPager)` to `(*TopologyClientListPager)`
+- Function `*AdaptiveNetworkHardeningsClient.BeginEnforce` parameter(s) have been changed from `(context.Context, string, string, string, string, string, Enum53, AdaptiveNetworkHardeningEnforceRequest, *AdaptiveNetworkHardeningsBeginEnforceOptions)` to `(context.Context, string, string, string, string, string, Enum51, AdaptiveNetworkHardeningEnforceRequest, *AdaptiveNetworkHardeningsClientBeginEnforceOptions)`
+- Function `*AdaptiveNetworkHardeningsClient.BeginEnforce` return value(s) have been changed from `(AdaptiveNetworkHardeningsEnforcePollerResponse, error)` to `(AdaptiveNetworkHardeningsClientEnforcePollerResponse, error)`
+- Function `*IngestionSettingsClient.ListTokens` parameter(s) have been changed from `(context.Context, string, *IngestionSettingsListTokensOptions)` to `(context.Context, string, *IngestionSettingsClientListTokensOptions)`
+- Function `*IngestionSettingsClient.ListTokens` return value(s) have been changed from `(IngestionSettingsListTokensResponse, error)` to `(IngestionSettingsClientListTokensResponse, error)`
+- Function `*JitNetworkAccessPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *JitNetworkAccessPoliciesGetOptions)` to `(context.Context, string, string, *JitNetworkAccessPoliciesClientGetOptions)`
+- Function `*JitNetworkAccessPoliciesClient.Get` return value(s) have been changed from `(JitNetworkAccessPoliciesGetResponse, error)` to `(JitNetworkAccessPoliciesClientGetResponse, error)`
+- Type of `IngestionSetting.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `AlertEntity.AdditionalProperties` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `AscLocation.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Const `Enum18Resolve` has been removed
+- Const `Enum79MCAS` has been removed
+- Const `ImplementationEffortEnumHigh` has been removed
+- Const `ImplementationEffortEnumLow` has been removed
+- Const `Enum79Sentinel` has been removed
+- Const `UserImpactEnumHigh` has been removed
+- Const `Enum20Custom` has been removed
+- Const `ImplementationEffortEnumModerate` has been removed
+- Const `Enum58Initiate` has been removed
+- Const `Enum18Dismiss` has been removed
+- Const `Enum18Activate` has been removed
+- Const `Enum18Start` has been removed
+- Const `Enum18Close` has been removed
+- Const `UserImpactEnumLow` has been removed
+- Const `Enum33Default` has been removed
+- Const `Enum7Current` has been removed
+- Const `Enum79WDATPEXCLUDELINUXPUBLICPREVIEW` has been removed
+- Const `Enum53Enforce` has been removed
+- Const `Enum79WDATP` has been removed
+- Const `UserImpactEnumModerate` has been removed
+- Const `Enum20Effective` has been removed
+- Function `*SettingsUpdateResult.UnmarshalJSON` has been removed
+- Function `*AutomationsListPager.PageResponse` has been removed
+- Function `SecureScoreControlDetails.MarshalJSON` has been removed
+- Function `*AlertsSimulatePoller.Done` has been removed
+- Function `*AutomationAction.UnmarshalJSON` has been removed
+- Function `*ServerVulnerabilityAssessmentDeletePollerResponse.Resume` has been removed
+- Function `*IotSecuritySolutionListByResourceGroupPager.Err` has been removed
+- Function `AssessmentStatus.MarshalJSON` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*SecurityTaskProperties.UnmarshalJSON` has been removed
+- Function `SecureScoreItem.MarshalJSON` has been removed
+- Function `*SecureScoreControlsListPager.PageResponse` has been removed
+- Function `*AlertsListPager.NextPage` has been removed
+- Function `*Compliance.UnmarshalJSON` has been removed
+- Function `SecurityAssessmentMetadata.MarshalJSON` has been removed
+- Function `*DiscoveredSecuritySolutionsListPager.NextPage` has been removed
+- Function `*CustomAssessmentAutomationsListBySubscriptionPager.Err` has been removed
+- Function `*TopologyListByHomeRegionPager.Err` has been removed
+- Function `*TagsResource.UnmarshalJSON` has been removed
+- Function `*JitNetworkAccessPoliciesListPager.NextPage` has been removed
+- Function `*IotSecuritySolutionListBySubscriptionPager.PageResponse` has been removed
+- Function `SecurityAssessmentProperties.MarshalJSON` has been removed
+- Function `*Automation.UnmarshalJSON` has been removed
+- Function `*CustomAssessmentAutomationsListBySubscriptionPager.NextPage` has been removed
+- Function `*SoftwareInventoriesListByExtendedResourcePager.PageResponse` has been removed
+- Function `SecuritySubAssessmentList.MarshalJSON` has been removed
+- Function `*CustomEntityStoreAssignmentsListByResourceGroupPager.Err` has been removed
+- Function `*JitNetworkAccessPoliciesListByRegionPager.Err` has been removed
+- Function `*ServerVulnerabilityAssessmentDeletePoller.FinalResponse` has been removed
+- Function `*TasksListByResourceGroupPager.Err` has been removed
+- Function `SecurityContactList.MarshalJSON` has been removed
+- Function `*SecurityConnectorsClient.ListByResourceGroup` has been removed
+- Function `IoTSecuritySolutionAnalyticsModel.MarshalJSON` has been removed
+- Function `*JitNetworkAccessPoliciesListPager.PageResponse` has been removed
+- Function `*SecurityContactsClient.Get` has been removed
+- Function `PossibleUserImpactEnumValues` has been removed
+- Function `PossibleImplementationEffortEnumValues` has been removed
+- Function `*IotSecuritySolutionListByResourceGroupPager.NextPage` has been removed
+- Function `*SecuritySolutionsListPager.PageResponse` has been removed
+- Function `*ComplianceResultsListPager.PageResponse` has been removed
+- Function `*SubAssessmentsListPager.NextPage` has been removed
+- Function `*IngestionSettingsListPager.NextPage` has been removed
+- Function `*RegulatoryComplianceAssessmentsListPager.PageResponse` has been removed
+- Function `*SecuritySolutionsListPager.Err` has been removed
+- Function `*TasksListPager.Err` has been removed
+- Function `NewSecuritySolutionsClient` has been removed
+- Function `*CustomEntityStoreAssignmentsListBySubscriptionPager.Err` has been removed
+- Function `*AutomationsListByResourceGroupPager.Err` has been removed
+- Function `Enum53.ToPtr` has been removed
+- Function `*AlertsSuppressionRulesListPager.Err` has been removed
+- Function `*SecureScoreControlsListBySecureScorePager.NextPage` has been removed
+- Function `*AutoProvisioningSetting.UnmarshalJSON` has been removed
+- Function `*AlertsListByResourceGroupPager.NextPage` has been removed
+- Function `*CustomAssessmentAutomationRequest.UnmarshalJSON` has been removed
+- Function `*JitNetworkAccessPoliciesListByRegionPager.PageResponse` has been removed
+- Function `*SecurityConnectorsClient.List` has been removed
+- Function `*AlertsSuppressionRulesListPager.NextPage` has been removed
+- Function `ETag.MarshalJSON` has been removed
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertListPager.NextPage` has been removed
+- Function `*AutomationsListByResourceGroupPager.PageResponse` has been removed
+- Function `*SecurityContactsClient.List` has been removed
+- Function `*TasksListPager.NextPage` has been removed
+- Function `*IotSecuritySolutionListBySubscriptionPager.Err` has been removed
+- Function `*ServerVulnerabilityAssessment.UnmarshalJSON` has been removed
+- Function `*CustomAssessmentAutomationsListByResourceGroupPager.NextPage` has been removed
+- Function `SecuritySubAssessmentProperties.MarshalJSON` has been removed
+- Function `*DiscoveredSecuritySolutionsListPager.Err` has been removed
+- Function `*AssessmentStatus.UnmarshalJSON` has been removed
+- Function `AzureTrackedResourceLocation.MarshalJSON` has been removed
+- Function `CustomAssessmentAutomationRequest.MarshalJSON` has been removed
+- Function `AADConnectivityStateAutoGenerated.MarshalJSON` has been removed
+- Function `*AlertsListSubscriptionLevelByRegionPager.PageResponse` has been removed
+- Function `ExternalSecuritySolution.MarshalJSON` has been removed
+- Function `SecurityAssessmentMetadataResponseList.MarshalJSON` has been removed
+- Function `*SecurityConnectorsListByResourceGroupPager.Err` has been removed
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertListPager.PageResponse` has been removed
+- Function `SecurityContact.MarshalJSON` has been removed
+- Function `*AlertsListByResourceGroupPager.Err` has been removed
+- Function `*JitNetworkAccessPolicy.UnmarshalJSON` has been removed
+- Function `*SecurityAssessmentMetadataResponse.UnmarshalJSON` has been removed
+- Function `*SecureScoreControlDefinitionsListBySubscriptionPager.NextPage` has been removed
+- Function `PossibleEnum58Values` has been removed
+- Function `*SettingsListPager.Err` has been removed
+- Function `ConnectorSetting.MarshalJSON` has been removed
+- Function `*SoftwareInventoriesListByExtendedResourcePager.NextPage` has been removed
+- Function `*RuleResults.UnmarshalJSON` has been removed
+- Function `*SubAssessmentsListPager.PageResponse` has been removed
+- Function `*SecurityConnectorsListPager.PageResponse` has been removed
+- Function `*Scan.UnmarshalJSON` has been removed
+- Function `*SecurityTask.UnmarshalJSON` has been removed
+- Function `*ETag.UnmarshalJSON` has been removed
+- Function `*AssessmentsMetadataListPager.NextPage` has been removed
+- Function `Enum79.ToPtr` has been removed
+- Function `*AllowedConnectionsListByHomeRegionPager.PageResponse` has been removed
+- Function `*SecureScoreControlsListPager.NextPage` has been removed
+- Function `*IotSecuritySolutionsAnalyticsRecommendationListPager.NextPage` has been removed
+- Function `*CompliancesListPager.PageResponse` has been removed
+- Function `*RegulatoryComplianceAssessmentsListPager.NextPage` has been removed
+- Function `ImplementationEffortEnum.ToPtr` has been removed
+- Function `*RegulatoryComplianceStandardsListPager.Err` has been removed
+- Function `*AlertsListSubscriptionLevelByRegionPager.Err` has been removed
+- Function `*CustomAssessmentAutomationsListByResourceGroupPager.Err` has been removed
+- Function `*TopologyListPager.PageResponse` has been removed
+- Function `Enum58.ToPtr` has been removed
+- Function `*SecuritySubAssessment.UnmarshalJSON` has been removed
+- Function `*AllowedConnectionsListPager.Err` has been removed
+- Function `RegulatoryComplianceStandard.MarshalJSON` has been removed
+- Function `*SecurityContact.UnmarshalJSON` has been removed
+- Function `*Tags.UnmarshalJSON` has been removed
+- Function `AscLocation.MarshalJSON` has been removed
+- Function `*CustomEntityStoreAssignmentsListBySubscriptionPager.NextPage` has been removed
+- Function `*SecureScoreControlDefinitionsListBySubscriptionPager.Err` has been removed
+- Function `*DiscoveredSecuritySolutionsListByHomeRegionPager.Err` has been removed
+- Function `SecurityConnectorsList.MarshalJSON` has been removed
+- Function `*WorkspaceSettingsListPager.NextPage` has been removed
+- Function `*SettingsListPager.NextPage` has been removed
+- Function `*SecureScoreControlDefinitionsListPager.Err` has been removed
+- Function `*IotSecuritySolutionListBySubscriptionPager.NextPage` has been removed
+- Function `SecureScoreControlDefinitionItem.MarshalJSON` has been removed
+- Function `AdaptiveApplicationControlGroup.MarshalJSON` has been removed
+- Function `*CloudOffering.UnmarshalJSON` has been removed
+- Function `ScanResult.MarshalJSON` has been removed
+- Function `*AssessmentsListPager.PageResponse` has been removed
+- Function `*TasksListByHomeRegionPager.NextPage` has been removed
+- Function `*AdaptiveNetworkHardeningsEnforcePoller.Done` has been removed
+- Function `*SecureScoreItem.UnmarshalJSON` has been removed
+- Function `*AlertsListPager.PageResponse` has been removed
+- Function `*JitNetworkAccessPoliciesListByResourceGroupAndRegionPager.Err` has been removed
+- Function `SecurityAssessmentPropertiesResponse.MarshalJSON` has been removed
+- Function `NewSecuritySolutionsReferenceDataClient` has been removed
+- Function `SecurityAssessmentMetadataPropertiesResponse.MarshalJSON` has been removed
+- Function `*AdaptiveNetworkHardeningsListByExtendedResourcePager.Err` has been removed
+- Function `Enum33.ToPtr` has been removed
+- Function `SecurityTaskProperties.MarshalJSON` has been removed
+- Function `*SecurityConnectorProperties.UnmarshalJSON` has been removed
+- Function `*SecuritySolutionsReferenceData.UnmarshalJSON` has been removed
+- Function `*ExternalSecuritySolutionsListByHomeRegionPager.PageResponse` has been removed
+- Function `DeviceSecurityGroup.MarshalJSON` has been removed
+- Function `*AutomationsListPager.Err` has been removed
+- Function `*Alert.UnmarshalJSON` has been removed
+- Function `*AssessmentsListPager.NextPage` has been removed
+- Function `*AutoProvisioningSettingsListPager.NextPage` has been removed
+- Function `ServerVulnerabilityAssessment.MarshalJSON` has been removed
+- Function `*AssessmentsMetadataListBySubscriptionPager.Err` has been removed
+- Function `*AdaptiveNetworkHardeningsEnforcePoller.ResumeToken` has been removed
+- Function `PossibleEnum7Values` has been removed
+- Function `*SecurityConnectorsListByResourceGroupPager.PageResponse` has been removed
+- Function `*IngestionSetting.UnmarshalJSON` has been removed
+- Function `*Pricing.UnmarshalJSON` has been removed
+- Function `*RegulatoryComplianceControl.UnmarshalJSON` has been removed
+- Function `*SecureScoresListPager.NextPage` has been removed
+- Function `*SecureScoreControlDetails.UnmarshalJSON` has been removed
+- Function `*SecurityTaskParameters.UnmarshalJSON` has been removed
+- Function `*AllowedConnectionsListByHomeRegionPager.Err` has been removed
+- Function `*AlertsSimulatePoller.FinalResponse` has been removed
+- Function `*LocationsListPager.PageResponse` has been removed
+- Function `SecurityAssessmentResponse.MarshalJSON` has been removed
+- Function `*SecurityAssessmentPropertiesResponse.UnmarshalJSON` has been removed
+- Function `*JitNetworkAccessPoliciesListByResourceGroupPager.Err` has been removed
+- Function `*DiscoveredSecuritySolutionsListPager.PageResponse` has been removed
+- Function `*IotSecuritySolutionsAnalyticsAggregatedAlertListPager.Err` has been removed
+- Function `AdvancedThreatProtectionSetting.MarshalJSON` has been removed
+- Function `TopologyResource.MarshalJSON` has been removed
+- Function `CustomAssessmentAutomation.MarshalJSON` has been removed
+- Function `*JitNetworkAccessPoliciesListByResourceGroupAndRegionPager.NextPage` has been removed
+- Function `PossibleEnum79Values` has been removed
+- Function `*DiscoveredSecuritySolution.UnmarshalJSON` has been removed
+- Function `*DeviceSecurityGroupsListPager.PageResponse` has been removed
+- Function `*WorkspaceSettingsListPager.Err` has been removed
+- Function `*SecurityConnectorsListPager.Err` has been removed
+- Function `*IngestionSettingsListPager.PageResponse` has been removed
+- Function `*RegulatoryComplianceAssessmentsListPager.Err` has been removed
+- Function `*AdaptiveNetworkHardeningsEnforcePollerResponse.Resume` has been removed
+- Function `*InformationProtectionPoliciesListPager.Err` has been removed
+- Function `SecurityTaskList.MarshalJSON` has been removed
+- Function `IngestionSetting.MarshalJSON` has been removed
+- Function `*SecurityConnector.UnmarshalJSON` has been removed
+- Function `*LocationsListPager.NextPage` has been removed
+- Function `*JitNetworkAccessPoliciesListByResourceGroupPager.PageResponse` has been removed
+- Function `*CustomAlertRule.UnmarshalJSON` has been removed
+- Function `*AssessmentsMetadataListBySubscriptionPager.PageResponse` has been removed
+- Function `SecuritySolutionsReferenceDataList.MarshalJSON` has been removed
+- Function `*CompliancesListPager.NextPage` has been removed
+- Function `SecurityAssessmentMetadataResponse.MarshalJSON` has been removed
+- Function `*IoTSecuritySolutionAnalyticsModel.UnmarshalJSON` has been removed
+- Function `*RegulatoryComplianceControlsListPager.NextPage` has been removed
+- Function `*JitNetworkAccessPoliciesListByResourceGroupAndRegionPager.PageResponse` has been removed
+- Function `*SubAssessmentsListAllPager.Err` has been removed
+- Function `*AADConnectivityStateAutoGenerated.UnmarshalJSON` has been removed
+- Function `*SecurityAssessmentProperties.UnmarshalJSON` has been removed
+- Function `Location.MarshalJSON` has been removed
+- Function `*JitNetworkAccessPoliciesListByResourceGroupPager.NextPage` has been removed
+- Function `*AssessmentsMetadataListPager.PageResponse` has been removed
+- Function `ServerVulnerabilityAssessmentDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AdaptiveNetworkHardeningsEnforcePoller.Poll` has been removed
+- Function `*SecurityContactsListPager.Err` has been removed
+- Function `*SecurityAssessmentResponse.UnmarshalJSON` has been removed
+- Function `*ConnectorsListPager.Err` has been removed
+- Function `*AscLocation.UnmarshalJSON` has been removed
+- Function `*IoTSecurityAggregatedAlert.UnmarshalJSON` has been removed
+- Function `*TasksListPager.PageResponse` has been removed
+- Function `UserImpactEnum.ToPtr` has been removed
+- Function `KindAutoGenerated.MarshalJSON` has been removed
+- Function `*AlertsSuppressionRulesListPager.PageResponse` has been removed
+- Function `*AlertsListResourceGroupLevelByRegionPager.Err` has been removed
+- Function `*AlertsListResourceGroupLevelByRegionPager.PageResponse` has been removed
+- Function `*AssessmentsMetadataListBySubscriptionPager.NextPage` has been removed
+- Function `*ServerVulnerabilityAssessmentDeletePoller.Done` has been removed
+- Function `SecurityAssessmentPropertiesBase.MarshalJSON` has been removed
+- Function `*ComplianceResultsListPager.Err` has been removed
+- Function `SecurityConnectorPropertiesOrganizationalData.MarshalJSON` has been removed
+- Function `Pricing.MarshalJSON` has been removed
+- Function `*AzureTrackedResourceLocation.UnmarshalJSON` has been removed
+- Function `*CustomEntityStoreAssignmentsListByResourceGroupPager.PageResponse` has been removed
+- Function `PossibleEnum33Values` has been removed
+- Function `*TasksListByResourceGroupPager.NextPage` has been removed
+- Function `*CustomEntityStoreAssignmentsListByResourceGroupPager.NextPage` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*SecurityConnectorsClient.CreateOrUpdate` has been removed
+- Function `*CustomEntityStoreAssignment.UnmarshalJSON` has been removed
+- Function `*AlertsListByResourceGroupPager.PageResponse` has been removed
+- Function `*SoftwareInventoriesListBySubscriptionPager.PageResponse` has been removed
+- Function `*SecureScoreControlDefinitionsListBySubscriptionPager.PageResponse` has been removed
+- Function `*Software.UnmarshalJSON` has been removed
+- Function `*CustomAssessmentAutomationsListByResourceGroupPager.PageResponse` has been removed
+- Function `*AdaptiveNetworkHardeningsEnforcePoller.FinalResponse` has been removed
+- Function `*AdaptiveNetworkHardeningsListByExtendedResourcePager.NextPage` has been removed
+- Function `*AuthenticationDetailsProperties.UnmarshalJSON` has been removed
+- Function `MdeOnboardingData.MarshalJSON` has been removed
+- Function `*ScanResult.UnmarshalJSON` has been removed
+- Function `*IotSecuritySolutionsAnalyticsRecommendationListPager.Err` has been removed
+- Function `*WorkspaceSetting.UnmarshalJSON` has been removed
+- Function `*ConnectorSetting.UnmarshalJSON` has been removed
+- Function `*SecurityAssessment.UnmarshalJSON` has been removed
+- Function `*SoftwareInventoriesListBySubscriptionPager.NextPage` has been removed
+- Function `*Location.UnmarshalJSON` has been removed
+- Function `*InformationProtectionPoliciesListPager.NextPage` has been removed
+- Function `*TopologyListByHomeRegionPager.PageResponse` has been removed
+- Function `*AlertsSimulatePollerResponse.Resume` has been removed
+- Function `*SettingsGetResult.UnmarshalJSON` has been removed
+- Function `DiscoveredSecuritySolution.MarshalJSON` has been removed
+- Function `*TopologyListByHomeRegionPager.NextPage` has been removed
+- Function `AllowedConnectionsResource.MarshalJSON` has been removed
+- Function `RuleResults.MarshalJSON` has been removed
+- Function `*ResourceIdentifier.UnmarshalJSON` has been removed
+- Function `*ExternalSecuritySolutionsListByHomeRegionPager.NextPage` has been removed
+- Function `*SecurityContactsListPager.NextPage` has been removed
+- Function `*ExternalSecuritySolutionKindAutoGenerated.UnmarshalJSON` has been removed
+- Function `*InformationProtectionPoliciesListPager.PageResponse` has been removed
+- Function `*DeviceSecurityGroup.UnmarshalJSON` has been removed
+- Function `*JitNetworkAccessPoliciesListByRegionPager.NextPage` has been removed
+- Function `*InformationProtectionPolicy.UnmarshalJSON` has been removed
+- Function `*SecureScoreControlDefinitionItem.UnmarshalJSON` has been removed
+- Function `*ConnectorsListPager.PageResponse` has been removed
+- Function `*AlertsSimulatePoller.ResumeToken` has been removed
+- Function `*MdeOnboardingData.UnmarshalJSON` has been removed
+- Function `*ServerVulnerabilityAssessmentDeletePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*RegulatoryComplianceStandardsListPager.PageResponse` has been removed
+- Function `AdaptiveNetworkHardening.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*IngestionSettingsListPager.Err` has been removed
+- Function `*SecureScoreControlsListPager.Err` has been removed
+- Function `*SecurityConnectorsListPager.NextPage` has been removed
+- Function `*LocationsListPager.Err` has been removed
+- Function `*SubAssessmentsListPager.Err` has been removed
+- Function `*DeviceSecurityGroupsListPager.Err` has been removed
+- Function `Scan.MarshalJSON` has been removed
+- Function `*SecuritySolution.UnmarshalJSON` has been removed
+- Function `*IoTSecuritySolutionModel.UnmarshalJSON` has been removed
+- Function `*TasksListByHomeRegionPager.PageResponse` has been removed
+- Function `RegulatoryComplianceControl.MarshalJSON` has been removed
+- Function `*SecuritySolutionsListPager.NextPage` has been removed
+- Function `NewSecurityConnectorsClient` has been removed
+- Function `*AdaptiveApplicationControlGroup.UnmarshalJSON` has been removed
+- Function `*TasksListByHomeRegionPager.Err` has been removed
+- Function `Enum7.ToPtr` has been removed
+- Function `*AdvancedThreatProtectionSetting.UnmarshalJSON` has been removed
+- Function `NewSecurityContactsClient` has been removed
+- Function `*AllowedConnectionsListByHomeRegionPager.NextPage` has been removed
+- Function `AdaptiveNetworkHardeningsEnforcePollerResponse.PollUntilDone` has been removed
+- Function `*ExternalSecuritySolutionsListByHomeRegionPager.Err` has been removed
+- Function `*SecurityContactsClient.Create` has been removed
+- Function `*IotSecuritySolutionListByResourceGroupPager.PageResponse` has been removed
+- Function `*DeviceSecurityGroupsListPager.NextPage` has been removed
+- Function `*AdaptiveNetworkHardening.UnmarshalJSON` has been removed
+- Function `*SoftwareInventoriesListBySubscriptionPager.Err` has been removed
+- Function `*AutomationsListByResourceGroupPager.NextPage` has been removed
+- Function `*SubAssessmentsListAllPager.NextPage` has been removed
+- Function `*SecureScoreControlsListBySecureScorePager.PageResponse` has been removed
+- Function `*ComplianceResultsListPager.NextPage` has been removed
+- Function `*AlertsListSubscriptionLevelByRegionPager.NextPage` has been removed
+- Function `RegulatoryComplianceAssessment.MarshalJSON` has been removed
+- Function `*AllowedConnectionsResource.UnmarshalJSON` has been removed
+- Function `*CustomEntityStoreAssignmentsListBySubscriptionPager.PageResponse` has been removed
+- Function `*AutoProvisioningSettingsListPager.PageResponse` has been removed
+- Function `*SecurityConnectorsClient.Delete` has been removed
+- Function `PossibleEnum20Values` has been removed
+- Function `*ServerVulnerabilityAssessmentDeletePoller.Poll` has been removed
+- Function `*SecurityConnectorsListByResourceGroupPager.NextPage` has been removed
+- Function `SecuritySubAssessment.MarshalJSON` has been removed
+- Function `*SecureScoresListPager.Err` has been removed
+- Function `*AutomationsListPager.NextPage` has been removed
+- Function `SecurityAssessmentMetadataProperties.MarshalJSON` has been removed
+- Function `*AllowedConnectionsListPager.NextPage` has been removed
+- Function `SecurityTaskParameters.MarshalJSON` has been removed
+- Function `SecuritySolutionsReferenceData.MarshalJSON` has been removed
+- Function `ComplianceResult.MarshalJSON` has been removed
+- Function `*AssessmentsListPager.Err` has been removed
+- Function `*TasksListByResourceGroupPager.PageResponse` has been removed
+- Function `Compliance.MarshalJSON` has been removed
+- Function `*ExternalSecuritySolutionsListPager.PageResponse` has been removed
+- Function `*IoTSecurityAggregatedRecommendation.UnmarshalJSON` has been removed
+- Function `*DiscoveredSecuritySolutionsListByHomeRegionPager.PageResponse` has been removed
+- Function `ExternalSecuritySolutionKindAutoGenerated.MarshalJSON` has been removed
+- Function `*SecurityConnectorsClient.Get` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*SecurityContactsClient.Delete` has been removed
+- Function `*SecuritySolutionsClient.Get` has been removed
+- Function `*AdaptiveNetworkHardeningsListByExtendedResourcePager.PageResponse` has been removed
+- Function `*SecureScoresListPager.PageResponse` has been removed
+- Function `*RegulatoryComplianceAssessment.UnmarshalJSON` has been removed
+- Function `*WorkspaceSettingsListPager.PageResponse` has been removed
+- Function `*TopologyListPager.NextPage` has been removed
+- Function `*AssessmentsMetadataListPager.Err` has been removed
+- Function `*SecuritySolutionsClient.List` has been removed
+- Function `*RegulatoryComplianceControlsListPager.PageResponse` has been removed
+- Function `*JitNetworkAccessPoliciesListPager.Err` has been removed
+- Function `*Setting.UnmarshalJSON` has been removed
+- Function `*RegulatoryComplianceStandard.UnmarshalJSON` has been removed
+- Function `SecurityConnector.MarshalJSON` has been removed
+- Function `SecurityConnectorProperties.MarshalJSON` has been removed
+- Function `PossibleEnum53Values` has been removed
+- Function `*UpdateIotSecuritySolutionData.UnmarshalJSON` has been removed
+- Function `*AutoProvisioningSettingsListPager.Err` has been removed
+- Function `*SecurityContactsClient.Update` has been removed
+- Function `*CompliancesListPager.Err` has been removed
+- Function `SecurityAssessment.MarshalJSON` has been removed
+- Function `InformationProtectionPolicy.MarshalJSON` has been removed
+- Function `*SecureScoreControlDefinitionsListPager.NextPage` has been removed
+- Function `*IotSecuritySolutionsAnalyticsRecommendationListPager.PageResponse` has been removed
+- Function `*SecuritySolutionsReferenceDataClient.List` has been removed
+- Function `JitNetworkAccessPolicy.MarshalJSON` has been removed
+- Function `*TopologyResource.UnmarshalJSON` has been removed
+- Function `*SecuritySolutionsReferenceDataClient.ListByHomeRegion` has been removed
+- Function `*AllowedConnectionsListPager.PageResponse` has been removed
+- Function `*ExternalSecuritySolutionsListPager.Err` has been removed
+- Function `*SecureScoreControlsListBySecureScorePager.Err` has been removed
+- Function `*CustomAssessmentAutomation.UnmarshalJSON` has been removed
+- Function `AlertsSuppressionRule.MarshalJSON` has been removed
+- Function `*ExternalSecuritySolutionsListPager.NextPage` has been removed
+- Function `*TopologyListPager.Err` has been removed
+- Function `Enum20.ToPtr` has been removed
+- Function `AlertsSimulatePollerResponse.PollUntilDone` has been removed
+- Function `AutoProvisioningSetting.MarshalJSON` has been removed
+- Function `*SubAssessmentsListAllPager.PageResponse` has been removed
+- Function `*KindAutoGenerated.UnmarshalJSON` has been removed
+- Function `SecuritySolution.MarshalJSON` has been removed
+- Function `*DiscoveredSecuritySolutionsListByHomeRegionPager.NextPage` has been removed
+- Function `*AlertsListResourceGroupLevelByRegionPager.NextPage` has been removed
+- Function `*SecureScoreControlDefinitionsListPager.PageResponse` has been removed
+- Function `SecuritySolutionList.MarshalJSON` has been removed
+- Function `*AlertsSuppressionRule.UnmarshalJSON` has been removed
+- Function `CustomEntityStoreAssignment.MarshalJSON` has been removed
+- Function `*ConnectorsListPager.NextPage` has been removed
+- Function `*AlertsSimulatePoller.Poll` has been removed
+- Function `*SecurityContactsListPager.PageResponse` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `*SoftwareInventoriesListByExtendedResourcePager.Err` has been removed
+- Function `*AlertsListPager.Err` has been removed
+- Function `Software.MarshalJSON` has been removed
+- Function `CloudError.Error` has been removed
+- Function `SecurityAssessmentList.MarshalJSON` has been removed
+- Function `*RegulatoryComplianceStandardsListPager.NextPage` has been removed
+- Function `Alert.MarshalJSON` has been removed
+- Function `*RegulatoryComplianceControlsListPager.Err` has been removed
+- Function `SecurityTask.MarshalJSON` has been removed
+- Function `*SettingsListPager.PageResponse` has been removed
+- Function `*ComplianceResult.UnmarshalJSON` has been removed
+- Function `*SecurityAssessmentPropertiesBase.UnmarshalJSON` has been removed
+- Function `*SecuritySubAssessmentProperties.UnmarshalJSON` has been removed
+- Function `*SecurityAssessmentMetadata.UnmarshalJSON` has been removed
+- Function `*SecurityConnectorsClient.Update` has been removed
+- Function `*AdditionalData.UnmarshalJSON` has been removed
+- Function `*CustomAssessmentAutomationsListBySubscriptionPager.PageResponse` has been removed
+- Struct `AdaptiveApplicationControlsDeleteOptions` has been removed
+- Struct `AdaptiveApplicationControlsDeleteResponse` has been removed
+- Struct `AdaptiveApplicationControlsGetOptions` has been removed
+- Struct `AdaptiveApplicationControlsGetResponse` has been removed
+- Struct `AdaptiveApplicationControlsGetResult` has been removed
+- Struct `AdaptiveApplicationControlsListOptions` has been removed
+- Struct `AdaptiveApplicationControlsListResponse` has been removed
+- Struct `AdaptiveApplicationControlsListResult` has been removed
+- Struct `AdaptiveApplicationControlsPutOptions` has been removed
+- Struct `AdaptiveApplicationControlsPutResponse` has been removed
+- Struct `AdaptiveApplicationControlsPutResult` has been removed
+- Struct `AdaptiveNetworkHardeningsBeginEnforceOptions` has been removed
+- Struct `AdaptiveNetworkHardeningsEnforcePoller` has been removed
+- Struct `AdaptiveNetworkHardeningsEnforcePollerResponse` has been removed
+- Struct `AdaptiveNetworkHardeningsEnforceResponse` has been removed
+- Struct `AdaptiveNetworkHardeningsGetOptions` has been removed
+- Struct `AdaptiveNetworkHardeningsGetResponse` has been removed
+- Struct `AdaptiveNetworkHardeningsGetResult` has been removed
+- Struct `AdaptiveNetworkHardeningsListByExtendedResourceOptions` has been removed
+- Struct `AdaptiveNetworkHardeningsListByExtendedResourcePager` has been removed
+- Struct `AdaptiveNetworkHardeningsListByExtendedResourceResponse` has been removed
+- Struct `AdaptiveNetworkHardeningsListByExtendedResourceResult` has been removed
+- Struct `AdvancedThreatProtectionCreateOptions` has been removed
+- Struct `AdvancedThreatProtectionCreateResponse` has been removed
+- Struct `AdvancedThreatProtectionCreateResult` has been removed
+- Struct `AdvancedThreatProtectionGetOptions` has been removed
+- Struct `AdvancedThreatProtectionGetResponse` has been removed
+- Struct `AdvancedThreatProtectionGetResult` has been removed
+- Struct `AlertsBeginSimulateOptions` has been removed
+- Struct `AlertsGetResourceGroupLevelOptions` has been removed
+- Struct `AlertsGetResourceGroupLevelResponse` has been removed
+- Struct `AlertsGetResourceGroupLevelResult` has been removed
+- Struct `AlertsGetSubscriptionLevelOptions` has been removed
+- Struct `AlertsGetSubscriptionLevelResponse` has been removed
+- Struct `AlertsGetSubscriptionLevelResult` has been removed
+- Struct `AlertsListByResourceGroupOptions` has been removed
+- Struct `AlertsListByResourceGroupPager` has been removed
+- Struct `AlertsListByResourceGroupResponse` has been removed
+- Struct `AlertsListByResourceGroupResult` has been removed
+- Struct `AlertsListOptions` has been removed
+- Struct `AlertsListPager` has been removed
+- Struct `AlertsListResourceGroupLevelByRegionOptions` has been removed
+- Struct `AlertsListResourceGroupLevelByRegionPager` has been removed
+- Struct `AlertsListResourceGroupLevelByRegionResponse` has been removed
+- Struct `AlertsListResourceGroupLevelByRegionResult` has been removed
+- Struct `AlertsListResponse` has been removed
+- Struct `AlertsListResult` has been removed
+- Struct `AlertsListSubscriptionLevelByRegionOptions` has been removed
+- Struct `AlertsListSubscriptionLevelByRegionPager` has been removed
+- Struct `AlertsListSubscriptionLevelByRegionResponse` has been removed
+- Struct `AlertsListSubscriptionLevelByRegionResult` has been removed
+- Struct `AlertsSimulatePoller` has been removed
+- Struct `AlertsSimulatePollerResponse` has been removed
+- Struct `AlertsSimulateResponse` has been removed
+- Struct `AlertsSuppressionRulesDeleteOptions` has been removed
+- Struct `AlertsSuppressionRulesDeleteResponse` has been removed
+- Struct `AlertsSuppressionRulesGetOptions` has been removed
+- Struct `AlertsSuppressionRulesGetResponse` has been removed
+- Struct `AlertsSuppressionRulesGetResult` has been removed
+- Struct `AlertsSuppressionRulesListOptions` has been removed
+- Struct `AlertsSuppressionRulesListPager` has been removed
+- Struct `AlertsSuppressionRulesListResponse` has been removed
+- Struct `AlertsSuppressionRulesListResult` has been removed
+- Struct `AlertsSuppressionRulesUpdateOptions` has been removed
+- Struct `AlertsSuppressionRulesUpdateResponse` has been removed
+- Struct `AlertsSuppressionRulesUpdateResult` has been removed
+- Struct `AlertsUpdateResourceGroupLevelStateToActivateOptions` has been removed
+- Struct `AlertsUpdateResourceGroupLevelStateToActivateResponse` has been removed
+- Struct `AlertsUpdateResourceGroupLevelStateToDismissOptions` has been removed
+- Struct `AlertsUpdateResourceGroupLevelStateToDismissResponse` has been removed
+- Struct `AlertsUpdateResourceGroupLevelStateToResolveOptions` has been removed
+- Struct `AlertsUpdateResourceGroupLevelStateToResolveResponse` has been removed
+- Struct `AlertsUpdateSubscriptionLevelStateToActivateOptions` has been removed
+- Struct `AlertsUpdateSubscriptionLevelStateToActivateResponse` has been removed
+- Struct `AlertsUpdateSubscriptionLevelStateToDismissOptions` has been removed
+- Struct `AlertsUpdateSubscriptionLevelStateToDismissResponse` has been removed
+- Struct `AlertsUpdateSubscriptionLevelStateToResolveOptions` has been removed
+- Struct `AlertsUpdateSubscriptionLevelStateToResolveResponse` has been removed
+- Struct `AllowedConnectionsGetOptions` has been removed
+- Struct `AllowedConnectionsGetResponse` has been removed
+- Struct `AllowedConnectionsGetResult` has been removed
+- Struct `AllowedConnectionsListByHomeRegionOptions` has been removed
+- Struct `AllowedConnectionsListByHomeRegionPager` has been removed
+- Struct `AllowedConnectionsListByHomeRegionResponse` has been removed
+- Struct `AllowedConnectionsListByHomeRegionResult` has been removed
+- Struct `AllowedConnectionsListOptions` has been removed
+- Struct `AllowedConnectionsListPager` has been removed
+- Struct `AllowedConnectionsListResponse` has been removed
+- Struct `AllowedConnectionsListResult` has been removed
+- Struct `AssessmentsCreateOrUpdateOptions` has been removed
+- Struct `AssessmentsCreateOrUpdateResponse` has been removed
+- Struct `AssessmentsCreateOrUpdateResult` has been removed
+- Struct `AssessmentsDeleteOptions` has been removed
+- Struct `AssessmentsDeleteResponse` has been removed
+- Struct `AssessmentsGetOptions` has been removed
+- Struct `AssessmentsGetResponse` has been removed
+- Struct `AssessmentsGetResult` has been removed
+- Struct `AssessmentsListOptions` has been removed
+- Struct `AssessmentsListPager` has been removed
+- Struct `AssessmentsListResponse` has been removed
+- Struct `AssessmentsListResult` has been removed
+- Struct `AssessmentsMetadataCreateInSubscriptionOptions` has been removed
+- Struct `AssessmentsMetadataCreateInSubscriptionResponse` has been removed
+- Struct `AssessmentsMetadataCreateInSubscriptionResult` has been removed
+- Struct `AssessmentsMetadataDeleteInSubscriptionOptions` has been removed
+- Struct `AssessmentsMetadataDeleteInSubscriptionResponse` has been removed
+- Struct `AssessmentsMetadataGetInSubscriptionOptions` has been removed
+- Struct `AssessmentsMetadataGetInSubscriptionResponse` has been removed
+- Struct `AssessmentsMetadataGetInSubscriptionResult` has been removed
+- Struct `AssessmentsMetadataGetOptions` has been removed
+- Struct `AssessmentsMetadataGetResponse` has been removed
+- Struct `AssessmentsMetadataGetResult` has been removed
+- Struct `AssessmentsMetadataListBySubscriptionOptions` has been removed
+- Struct `AssessmentsMetadataListBySubscriptionPager` has been removed
+- Struct `AssessmentsMetadataListBySubscriptionResponse` has been removed
+- Struct `AssessmentsMetadataListBySubscriptionResult` has been removed
+- Struct `AssessmentsMetadataListOptions` has been removed
+- Struct `AssessmentsMetadataListPager` has been removed
+- Struct `AssessmentsMetadataListResponse` has been removed
+- Struct `AssessmentsMetadataListResult` has been removed
+- Struct `AutoProvisioningSettingsCreateOptions` has been removed
+- Struct `AutoProvisioningSettingsCreateResponse` has been removed
+- Struct `AutoProvisioningSettingsCreateResult` has been removed
+- Struct `AutoProvisioningSettingsGetOptions` has been removed
+- Struct `AutoProvisioningSettingsGetResponse` has been removed
+- Struct `AutoProvisioningSettingsGetResult` has been removed
+- Struct `AutoProvisioningSettingsListOptions` has been removed
+- Struct `AutoProvisioningSettingsListPager` has been removed
+- Struct `AutoProvisioningSettingsListResponse` has been removed
+- Struct `AutoProvisioningSettingsListResult` has been removed
+- Struct `AutomationsCreateOrUpdateOptions` has been removed
+- Struct `AutomationsCreateOrUpdateResponse` has been removed
+- Struct `AutomationsCreateOrUpdateResult` has been removed
+- Struct `AutomationsDeleteOptions` has been removed
+- Struct `AutomationsDeleteResponse` has been removed
+- Struct `AutomationsGetOptions` has been removed
+- Struct `AutomationsGetResponse` has been removed
+- Struct `AutomationsGetResult` has been removed
+- Struct `AutomationsListByResourceGroupOptions` has been removed
+- Struct `AutomationsListByResourceGroupPager` has been removed
+- Struct `AutomationsListByResourceGroupResponse` has been removed
+- Struct `AutomationsListByResourceGroupResult` has been removed
+- Struct `AutomationsListOptions` has been removed
+- Struct `AutomationsListPager` has been removed
+- Struct `AutomationsListResponse` has been removed
+- Struct `AutomationsListResult` has been removed
+- Struct `AutomationsValidateOptions` has been removed
+- Struct `AutomationsValidateResponse` has been removed
+- Struct `AutomationsValidateResult` has been removed
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+- Struct `ComplianceResultsGetOptions` has been removed
+- Struct `ComplianceResultsGetResponse` has been removed
+- Struct `ComplianceResultsGetResult` has been removed
+- Struct `ComplianceResultsListOptions` has been removed
+- Struct `ComplianceResultsListPager` has been removed
+- Struct `ComplianceResultsListResponse` has been removed
+- Struct `ComplianceResultsListResult` has been removed
+- Struct `CompliancesGetOptions` has been removed
+- Struct `CompliancesGetResponse` has been removed
+- Struct `CompliancesGetResult` has been removed
+- Struct `CompliancesListOptions` has been removed
+- Struct `CompliancesListPager` has been removed
+- Struct `CompliancesListResponse` has been removed
+- Struct `CompliancesListResult` has been removed
+- Struct `ConnectorsCreateOrUpdateOptions` has been removed
+- Struct `ConnectorsCreateOrUpdateResponse` has been removed
+- Struct `ConnectorsCreateOrUpdateResult` has been removed
+- Struct `ConnectorsDeleteOptions` has been removed
+- Struct `ConnectorsDeleteResponse` has been removed
+- Struct `ConnectorsGetOptions` has been removed
+- Struct `ConnectorsGetResponse` has been removed
+- Struct `ConnectorsGetResult` has been removed
+- Struct `ConnectorsListOptions` has been removed
+- Struct `ConnectorsListPager` has been removed
+- Struct `ConnectorsListResponse` has been removed
+- Struct `ConnectorsListResult` has been removed
+- Struct `CustomAssessmentAutomationsCreateOptions` has been removed
+- Struct `CustomAssessmentAutomationsCreateResponse` has been removed
+- Struct `CustomAssessmentAutomationsCreateResult` has been removed
+- Struct `CustomAssessmentAutomationsDeleteOptions` has been removed
+- Struct `CustomAssessmentAutomationsDeleteResponse` has been removed
+- Struct `CustomAssessmentAutomationsGetOptions` has been removed
+- Struct `CustomAssessmentAutomationsGetResponse` has been removed
+- Struct `CustomAssessmentAutomationsGetResult` has been removed
+- Struct `CustomAssessmentAutomationsListByResourceGroupOptions` has been removed
+- Struct `CustomAssessmentAutomationsListByResourceGroupPager` has been removed
+- Struct `CustomAssessmentAutomationsListByResourceGroupResponse` has been removed
+- Struct `CustomAssessmentAutomationsListByResourceGroupResult` has been removed
+- Struct `CustomAssessmentAutomationsListBySubscriptionOptions` has been removed
+- Struct `CustomAssessmentAutomationsListBySubscriptionPager` has been removed
+- Struct `CustomAssessmentAutomationsListBySubscriptionResponse` has been removed
+- Struct `CustomAssessmentAutomationsListBySubscriptionResult` has been removed
+- Struct `CustomEntityStoreAssignmentsCreateOptions` has been removed
+- Struct `CustomEntityStoreAssignmentsCreateResponse` has been removed
+- Struct `CustomEntityStoreAssignmentsCreateResult` has been removed
+- Struct `CustomEntityStoreAssignmentsDeleteOptions` has been removed
+- Struct `CustomEntityStoreAssignmentsDeleteResponse` has been removed
+- Struct `CustomEntityStoreAssignmentsGetOptions` has been removed
+- Struct `CustomEntityStoreAssignmentsGetResponse` has been removed
+- Struct `CustomEntityStoreAssignmentsGetResult` has been removed
+- Struct `CustomEntityStoreAssignmentsListByResourceGroupOptions` has been removed
+- Struct `CustomEntityStoreAssignmentsListByResourceGroupPager` has been removed
+- Struct `CustomEntityStoreAssignmentsListByResourceGroupResponse` has been removed
+- Struct `CustomEntityStoreAssignmentsListByResourceGroupResult` has been removed
+- Struct `CustomEntityStoreAssignmentsListBySubscriptionOptions` has been removed
+- Struct `CustomEntityStoreAssignmentsListBySubscriptionPager` has been removed
+- Struct `CustomEntityStoreAssignmentsListBySubscriptionResponse` has been removed
+- Struct `CustomEntityStoreAssignmentsListBySubscriptionResult` has been removed
+- Struct `DeviceSecurityGroupsCreateOrUpdateOptions` has been removed
+- Struct `DeviceSecurityGroupsCreateOrUpdateResponse` has been removed
+- Struct `DeviceSecurityGroupsCreateOrUpdateResult` has been removed
+- Struct `DeviceSecurityGroupsDeleteOptions` has been removed
+- Struct `DeviceSecurityGroupsDeleteResponse` has been removed
+- Struct `DeviceSecurityGroupsGetOptions` has been removed
+- Struct `DeviceSecurityGroupsGetResponse` has been removed
+- Struct `DeviceSecurityGroupsGetResult` has been removed
+- Struct `DeviceSecurityGroupsListOptions` has been removed
+- Struct `DeviceSecurityGroupsListPager` has been removed
+- Struct `DeviceSecurityGroupsListResponse` has been removed
+- Struct `DeviceSecurityGroupsListResult` has been removed
+- Struct `DiscoveredSecuritySolutionsGetOptions` has been removed
+- Struct `DiscoveredSecuritySolutionsGetResponse` has been removed
+- Struct `DiscoveredSecuritySolutionsGetResult` has been removed
+- Struct `DiscoveredSecuritySolutionsListByHomeRegionOptions` has been removed
+- Struct `DiscoveredSecuritySolutionsListByHomeRegionPager` has been removed
+- Struct `DiscoveredSecuritySolutionsListByHomeRegionResponse` has been removed
+- Struct `DiscoveredSecuritySolutionsListByHomeRegionResult` has been removed
+- Struct `DiscoveredSecuritySolutionsListOptions` has been removed
+- Struct `DiscoveredSecuritySolutionsListPager` has been removed
+- Struct `DiscoveredSecuritySolutionsListResponse` has been removed
+- Struct `DiscoveredSecuritySolutionsListResult` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ExternalSecuritySolutionsGetOptions` has been removed
+- Struct `ExternalSecuritySolutionsGetResponse` has been removed
+- Struct `ExternalSecuritySolutionsGetResult` has been removed
+- Struct `ExternalSecuritySolutionsListByHomeRegionOptions` has been removed
+- Struct `ExternalSecuritySolutionsListByHomeRegionPager` has been removed
+- Struct `ExternalSecuritySolutionsListByHomeRegionResponse` has been removed
+- Struct `ExternalSecuritySolutionsListByHomeRegionResult` has been removed
+- Struct `ExternalSecuritySolutionsListOptions` has been removed
+- Struct `ExternalSecuritySolutionsListPager` has been removed
+- Struct `ExternalSecuritySolutionsListResponse` has been removed
+- Struct `ExternalSecuritySolutionsListResult` has been removed
+- Struct `InformationProtectionPoliciesCreateOrUpdateOptions` has been removed
+- Struct `InformationProtectionPoliciesCreateOrUpdateResponse` has been removed
+- Struct `InformationProtectionPoliciesCreateOrUpdateResult` has been removed
+- Struct `InformationProtectionPoliciesGetOptions` has been removed
+- Struct `InformationProtectionPoliciesGetResponse` has been removed
+- Struct `InformationProtectionPoliciesGetResult` has been removed
+- Struct `InformationProtectionPoliciesListOptions` has been removed
+- Struct `InformationProtectionPoliciesListPager` has been removed
+- Struct `InformationProtectionPoliciesListResponse` has been removed
+- Struct `InformationProtectionPoliciesListResult` has been removed
+- Struct `IngestionSettingsCreateOptions` has been removed
+- Struct `IngestionSettingsCreateResponse` has been removed
+- Struct `IngestionSettingsCreateResult` has been removed
+- Struct `IngestionSettingsDeleteOptions` has been removed
+- Struct `IngestionSettingsDeleteResponse` has been removed
+- Struct `IngestionSettingsGetOptions` has been removed
+- Struct `IngestionSettingsGetResponse` has been removed
+- Struct `IngestionSettingsGetResult` has been removed
+- Struct `IngestionSettingsListConnectionStringsOptions` has been removed
+- Struct `IngestionSettingsListConnectionStringsResponse` has been removed
+- Struct `IngestionSettingsListConnectionStringsResult` has been removed
+- Struct `IngestionSettingsListOptions` has been removed
+- Struct `IngestionSettingsListPager` has been removed
+- Struct `IngestionSettingsListResponse` has been removed
+- Struct `IngestionSettingsListResult` has been removed
+- Struct `IngestionSettingsListTokensOptions` has been removed
+- Struct `IngestionSettingsListTokensResponse` has been removed
+- Struct `IngestionSettingsListTokensResult` has been removed
+- Struct `IotSecuritySolutionAnalyticsGetOptions` has been removed
+- Struct `IotSecuritySolutionAnalyticsGetResponse` has been removed
+- Struct `IotSecuritySolutionAnalyticsGetResult` has been removed
+- Struct `IotSecuritySolutionAnalyticsListOptions` has been removed
+- Struct `IotSecuritySolutionAnalyticsListResponse` has been removed
+- Struct `IotSecuritySolutionAnalyticsListResult` has been removed
+- Struct `IotSecuritySolutionCreateOrUpdateOptions` has been removed
+- Struct `IotSecuritySolutionCreateOrUpdateResponse` has been removed
+- Struct `IotSecuritySolutionCreateOrUpdateResult` has been removed
+- Struct `IotSecuritySolutionDeleteOptions` has been removed
+- Struct `IotSecuritySolutionDeleteResponse` has been removed
+- Struct `IotSecuritySolutionGetOptions` has been removed
+- Struct `IotSecuritySolutionGetResponse` has been removed
+- Struct `IotSecuritySolutionGetResult` has been removed
+- Struct `IotSecuritySolutionListByResourceGroupOptions` has been removed
+- Struct `IotSecuritySolutionListByResourceGroupPager` has been removed
+- Struct `IotSecuritySolutionListByResourceGroupResponse` has been removed
+- Struct `IotSecuritySolutionListByResourceGroupResult` has been removed
+- Struct `IotSecuritySolutionListBySubscriptionOptions` has been removed
+- Struct `IotSecuritySolutionListBySubscriptionPager` has been removed
+- Struct `IotSecuritySolutionListBySubscriptionResponse` has been removed
+- Struct `IotSecuritySolutionListBySubscriptionResult` has been removed
+- Struct `IotSecuritySolutionUpdateOptions` has been removed
+- Struct `IotSecuritySolutionUpdateResponse` has been removed
+- Struct `IotSecuritySolutionUpdateResult` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertDismissOptions` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertGetOptions` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertGetResult` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertListOptions` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertListPager` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertListResponse` has been removed
+- Struct `IotSecuritySolutionsAnalyticsAggregatedAlertListResult` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationGetOptions` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationGetResponse` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationGetResult` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationListOptions` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationListPager` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationListResponse` has been removed
+- Struct `IotSecuritySolutionsAnalyticsRecommendationListResult` has been removed
+- Struct `JitNetworkAccessPoliciesCreateOrUpdateOptions` has been removed
+- Struct `JitNetworkAccessPoliciesCreateOrUpdateResponse` has been removed
+- Struct `JitNetworkAccessPoliciesCreateOrUpdateResult` has been removed
+- Struct `JitNetworkAccessPoliciesDeleteOptions` has been removed
+- Struct `JitNetworkAccessPoliciesDeleteResponse` has been removed
+- Struct `JitNetworkAccessPoliciesGetOptions` has been removed
+- Struct `JitNetworkAccessPoliciesGetResponse` has been removed
+- Struct `JitNetworkAccessPoliciesGetResult` has been removed
+- Struct `JitNetworkAccessPoliciesInitiateOptions` has been removed
+- Struct `JitNetworkAccessPoliciesInitiateResponse` has been removed
+- Struct `JitNetworkAccessPoliciesInitiateResult` has been removed
+- Struct `JitNetworkAccessPoliciesListByRegionOptions` has been removed
+- Struct `JitNetworkAccessPoliciesListByRegionPager` has been removed
+- Struct `JitNetworkAccessPoliciesListByRegionResponse` has been removed
+- Struct `JitNetworkAccessPoliciesListByRegionResult` has been removed
+- Struct `JitNetworkAccessPoliciesListByResourceGroupAndRegionOptions` has been removed
+- Struct `JitNetworkAccessPoliciesListByResourceGroupAndRegionPager` has been removed
+- Struct `JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse` has been removed
+- Struct `JitNetworkAccessPoliciesListByResourceGroupAndRegionResult` has been removed
+- Struct `JitNetworkAccessPoliciesListByResourceGroupOptions` has been removed
+- Struct `JitNetworkAccessPoliciesListByResourceGroupPager` has been removed
+- Struct `JitNetworkAccessPoliciesListByResourceGroupResponse` has been removed
+- Struct `JitNetworkAccessPoliciesListByResourceGroupResult` has been removed
+- Struct `JitNetworkAccessPoliciesListOptions` has been removed
+- Struct `JitNetworkAccessPoliciesListPager` has been removed
+- Struct `JitNetworkAccessPoliciesListResponse` has been removed
+- Struct `JitNetworkAccessPoliciesListResult` has been removed
+- Struct `LocationsGetOptions` has been removed
+- Struct `LocationsGetResponse` has been removed
+- Struct `LocationsGetResult` has been removed
+- Struct `LocationsListOptions` has been removed
+- Struct `LocationsListPager` has been removed
+- Struct `LocationsListResponse` has been removed
+- Struct `LocationsListResult` has been removed
+- Struct `MdeOnboardingsGetOptions` has been removed
+- Struct `MdeOnboardingsGetResponse` has been removed
+- Struct `MdeOnboardingsGetResult` has been removed
+- Struct `MdeOnboardingsListOptions` has been removed
+- Struct `MdeOnboardingsListResponse` has been removed
+- Struct `MdeOnboardingsListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PricingsGetOptions` has been removed
+- Struct `PricingsGetResponse` has been removed
+- Struct `PricingsGetResult` has been removed
+- Struct `PricingsListOptions` has been removed
+- Struct `PricingsListResponse` has been removed
+- Struct `PricingsListResult` has been removed
+- Struct `PricingsUpdateOptions` has been removed
+- Struct `PricingsUpdateResponse` has been removed
+- Struct `PricingsUpdateResult` has been removed
+- Struct `RegulatoryComplianceAssessmentsGetOptions` has been removed
+- Struct `RegulatoryComplianceAssessmentsGetResponse` has been removed
+- Struct `RegulatoryComplianceAssessmentsGetResult` has been removed
+- Struct `RegulatoryComplianceAssessmentsListOptions` has been removed
+- Struct `RegulatoryComplianceAssessmentsListPager` has been removed
+- Struct `RegulatoryComplianceAssessmentsListResponse` has been removed
+- Struct `RegulatoryComplianceAssessmentsListResult` has been removed
+- Struct `RegulatoryComplianceControlsGetOptions` has been removed
+- Struct `RegulatoryComplianceControlsGetResponse` has been removed
+- Struct `RegulatoryComplianceControlsGetResult` has been removed
+- Struct `RegulatoryComplianceControlsListOptions` has been removed
+- Struct `RegulatoryComplianceControlsListPager` has been removed
+- Struct `RegulatoryComplianceControlsListResponse` has been removed
+- Struct `RegulatoryComplianceControlsListResult` has been removed
+- Struct `RegulatoryComplianceStandardsGetOptions` has been removed
+- Struct `RegulatoryComplianceStandardsGetResponse` has been removed
+- Struct `RegulatoryComplianceStandardsGetResult` has been removed
+- Struct `RegulatoryComplianceStandardsListOptions` has been removed
+- Struct `RegulatoryComplianceStandardsListPager` has been removed
+- Struct `RegulatoryComplianceStandardsListResponse` has been removed
+- Struct `RegulatoryComplianceStandardsListResult` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesAddOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesAddResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesAddResult` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateResult` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesDeleteOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesDeleteResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesGetOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesGetResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesGetResult` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesListOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesListResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentBaselineRulesListResult` has been removed
+- Struct `SQLVulnerabilityAssessmentScanResultsGetOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentScanResultsGetResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentScanResultsGetResult` has been removed
+- Struct `SQLVulnerabilityAssessmentScanResultsListOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentScanResultsListResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentScanResultsListResult` has been removed
+- Struct `SQLVulnerabilityAssessmentScansGetOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentScansGetResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentScansGetResult` has been removed
+- Struct `SQLVulnerabilityAssessmentScansListOptions` has been removed
+- Struct `SQLVulnerabilityAssessmentScansListResponse` has been removed
+- Struct `SQLVulnerabilityAssessmentScansListResult` has been removed
+- Struct `SecureScoreControlDefinitionsListBySubscriptionOptions` has been removed
+- Struct `SecureScoreControlDefinitionsListBySubscriptionPager` has been removed
+- Struct `SecureScoreControlDefinitionsListBySubscriptionResponse` has been removed
+- Struct `SecureScoreControlDefinitionsListBySubscriptionResult` has been removed
+- Struct `SecureScoreControlDefinitionsListOptions` has been removed
+- Struct `SecureScoreControlDefinitionsListPager` has been removed
+- Struct `SecureScoreControlDefinitionsListResponse` has been removed
+- Struct `SecureScoreControlDefinitionsListResult` has been removed
+- Struct `SecureScoreControlScore` has been removed
+- Struct `SecureScoreControlsListBySecureScoreOptions` has been removed
+- Struct `SecureScoreControlsListBySecureScorePager` has been removed
+- Struct `SecureScoreControlsListBySecureScoreResponse` has been removed
+- Struct `SecureScoreControlsListBySecureScoreResult` has been removed
+- Struct `SecureScoreControlsListOptions` has been removed
+- Struct `SecureScoreControlsListPager` has been removed
+- Struct `SecureScoreControlsListResponse` has been removed
+- Struct `SecureScoreControlsListResult` has been removed
+- Struct `SecureScoresGetOptions` has been removed
+- Struct `SecureScoresGetResponse` has been removed
+- Struct `SecureScoresGetResult` has been removed
+- Struct `SecureScoresListOptions` has been removed
+- Struct `SecureScoresListPager` has been removed
+- Struct `SecureScoresListResponse` has been removed
+- Struct `SecureScoresListResult` has been removed
+- Struct `SecurityAssessment` has been removed
+- Struct `SecurityAssessmentList` has been removed
+- Struct `SecurityAssessmentMetadata` has been removed
+- Struct `SecurityAssessmentMetadataPartnerData` has been removed
+- Struct `SecurityAssessmentMetadataProperties` has been removed
+- Struct `SecurityAssessmentMetadataPropertiesResponse` has been removed
+- Struct `SecurityAssessmentMetadataPropertiesResponsePublishDates` has been removed
+- Struct `SecurityAssessmentMetadataResponse` has been removed
+- Struct `SecurityAssessmentMetadataResponseList` has been removed
+- Struct `SecurityAssessmentPartnerData` has been removed
+- Struct `SecurityAssessmentProperties` has been removed
+- Struct `SecurityAssessmentPropertiesBase` has been removed
+- Struct `SecurityAssessmentPropertiesResponse` has been removed
+- Struct `SecurityAssessmentResponse` has been removed
+- Struct `SecurityConnector` has been removed
+- Struct `SecurityConnectorProperties` has been removed
+- Struct `SecurityConnectorPropertiesOrganizationalData` has been removed
+- Struct `SecurityConnectorsClient` has been removed
+- Struct `SecurityConnectorsCreateOrUpdateOptions` has been removed
+- Struct `SecurityConnectorsCreateOrUpdateResponse` has been removed
+- Struct `SecurityConnectorsCreateOrUpdateResult` has been removed
+- Struct `SecurityConnectorsDeleteOptions` has been removed
+- Struct `SecurityConnectorsDeleteResponse` has been removed
+- Struct `SecurityConnectorsGetOptions` has been removed
+- Struct `SecurityConnectorsGetResponse` has been removed
+- Struct `SecurityConnectorsGetResult` has been removed
+- Struct `SecurityConnectorsList` has been removed
+- Struct `SecurityConnectorsListByResourceGroupOptions` has been removed
+- Struct `SecurityConnectorsListByResourceGroupPager` has been removed
+- Struct `SecurityConnectorsListByResourceGroupResponse` has been removed
+- Struct `SecurityConnectorsListByResourceGroupResult` has been removed
+- Struct `SecurityConnectorsListOptions` has been removed
+- Struct `SecurityConnectorsListPager` has been removed
+- Struct `SecurityConnectorsListResponse` has been removed
+- Struct `SecurityConnectorsListResult` has been removed
+- Struct `SecurityConnectorsUpdateOptions` has been removed
+- Struct `SecurityConnectorsUpdateResponse` has been removed
+- Struct `SecurityConnectorsUpdateResult` has been removed
+- Struct `SecurityContact` has been removed
+- Struct `SecurityContactList` has been removed
+- Struct `SecurityContactProperties` has been removed
+- Struct `SecurityContactsClient` has been removed
+- Struct `SecurityContactsCreateOptions` has been removed
+- Struct `SecurityContactsCreateResponse` has been removed
+- Struct `SecurityContactsCreateResult` has been removed
+- Struct `SecurityContactsDeleteOptions` has been removed
+- Struct `SecurityContactsDeleteResponse` has been removed
+- Struct `SecurityContactsGetOptions` has been removed
+- Struct `SecurityContactsGetResponse` has been removed
+- Struct `SecurityContactsGetResult` has been removed
+- Struct `SecurityContactsListOptions` has been removed
+- Struct `SecurityContactsListPager` has been removed
+- Struct `SecurityContactsListResponse` has been removed
+- Struct `SecurityContactsListResult` has been removed
+- Struct `SecurityContactsUpdateOptions` has been removed
+- Struct `SecurityContactsUpdateResponse` has been removed
+- Struct `SecurityContactsUpdateResult` has been removed
+- Struct `SecuritySolution` has been removed
+- Struct `SecuritySolutionList` has been removed
+- Struct `SecuritySolutionProperties` has been removed
+- Struct `SecuritySolutionsClient` has been removed
+- Struct `SecuritySolutionsGetOptions` has been removed
+- Struct `SecuritySolutionsGetResponse` has been removed
+- Struct `SecuritySolutionsGetResult` has been removed
+- Struct `SecuritySolutionsListOptions` has been removed
+- Struct `SecuritySolutionsListPager` has been removed
+- Struct `SecuritySolutionsListResponse` has been removed
+- Struct `SecuritySolutionsListResult` has been removed
+- Struct `SecuritySolutionsReferenceData` has been removed
+- Struct `SecuritySolutionsReferenceDataClient` has been removed
+- Struct `SecuritySolutionsReferenceDataList` has been removed
+- Struct `SecuritySolutionsReferenceDataListByHomeRegionOptions` has been removed
+- Struct `SecuritySolutionsReferenceDataListByHomeRegionResponse` has been removed
+- Struct `SecuritySolutionsReferenceDataListByHomeRegionResult` has been removed
+- Struct `SecuritySolutionsReferenceDataListOptions` has been removed
+- Struct `SecuritySolutionsReferenceDataListResponse` has been removed
+- Struct `SecuritySolutionsReferenceDataListResult` has been removed
+- Struct `SecuritySolutionsReferenceDataProperties` has been removed
+- Struct `SecuritySubAssessment` has been removed
+- Struct `SecuritySubAssessmentList` has been removed
+- Struct `SecuritySubAssessmentProperties` has been removed
+- Struct `SecurityTask` has been removed
+- Struct `SecurityTaskList` has been removed
+- Struct `SecurityTaskParameters` has been removed
+- Struct `SecurityTaskProperties` has been removed
+- Struct `ServerVulnerabilityAssessmentBeginDeleteOptions` has been removed
+- Struct `ServerVulnerabilityAssessmentCreateOrUpdateOptions` has been removed
+- Struct `ServerVulnerabilityAssessmentCreateOrUpdateResponse` has been removed
+- Struct `ServerVulnerabilityAssessmentCreateOrUpdateResult` has been removed
+- Struct `ServerVulnerabilityAssessmentDeletePoller` has been removed
+- Struct `ServerVulnerabilityAssessmentDeletePollerResponse` has been removed
+- Struct `ServerVulnerabilityAssessmentDeleteResponse` has been removed
+- Struct `ServerVulnerabilityAssessmentGetOptions` has been removed
+- Struct `ServerVulnerabilityAssessmentGetResponse` has been removed
+- Struct `ServerVulnerabilityAssessmentGetResult` has been removed
+- Struct `ServerVulnerabilityAssessmentListByExtendedResourceOptions` has been removed
+- Struct `ServerVulnerabilityAssessmentListByExtendedResourceResponse` has been removed
+- Struct `ServerVulnerabilityAssessmentListByExtendedResourceResult` has been removed
+- Struct `SettingsGetOptions` has been removed
+- Struct `SettingsGetResponse` has been removed
+- Struct `SettingsGetResult` has been removed
+- Struct `SettingsListOptions` has been removed
+- Struct `SettingsListPager` has been removed
+- Struct `SettingsListResponse` has been removed
+- Struct `SettingsListResult` has been removed
+- Struct `SettingsUpdateOptions` has been removed
+- Struct `SettingsUpdateResponse` has been removed
+- Struct `SettingsUpdateResult` has been removed
+- Struct `SoftwareInventoriesGetOptions` has been removed
+- Struct `SoftwareInventoriesGetResponse` has been removed
+- Struct `SoftwareInventoriesGetResult` has been removed
+- Struct `SoftwareInventoriesListByExtendedResourceOptions` has been removed
+- Struct `SoftwareInventoriesListByExtendedResourcePager` has been removed
+- Struct `SoftwareInventoriesListByExtendedResourceResponse` has been removed
+- Struct `SoftwareInventoriesListByExtendedResourceResult` has been removed
+- Struct `SoftwareInventoriesListBySubscriptionOptions` has been removed
+- Struct `SoftwareInventoriesListBySubscriptionPager` has been removed
+- Struct `SoftwareInventoriesListBySubscriptionResponse` has been removed
+- Struct `SoftwareInventoriesListBySubscriptionResult` has been removed
+- Struct `SubAssessmentsGetOptions` has been removed
+- Struct `SubAssessmentsGetResponse` has been removed
+- Struct `SubAssessmentsGetResult` has been removed
+- Struct `SubAssessmentsListAllOptions` has been removed
+- Struct `SubAssessmentsListAllPager` has been removed
+- Struct `SubAssessmentsListAllResponse` has been removed
+- Struct `SubAssessmentsListAllResult` has been removed
+- Struct `SubAssessmentsListOptions` has been removed
+- Struct `SubAssessmentsListPager` has been removed
+- Struct `SubAssessmentsListResponse` has been removed
+- Struct `SubAssessmentsListResult` has been removed
+- Struct `TasksGetResourceGroupLevelTaskOptions` has been removed
+- Struct `TasksGetResourceGroupLevelTaskResponse` has been removed
+- Struct `TasksGetResourceGroupLevelTaskResult` has been removed
+- Struct `TasksGetSubscriptionLevelTaskOptions` has been removed
+- Struct `TasksGetSubscriptionLevelTaskResponse` has been removed
+- Struct `TasksGetSubscriptionLevelTaskResult` has been removed
+- Struct `TasksListByHomeRegionOptions` has been removed
+- Struct `TasksListByHomeRegionPager` has been removed
+- Struct `TasksListByHomeRegionResponse` has been removed
+- Struct `TasksListByHomeRegionResult` has been removed
+- Struct `TasksListByResourceGroupOptions` has been removed
+- Struct `TasksListByResourceGroupPager` has been removed
+- Struct `TasksListByResourceGroupResponse` has been removed
+- Struct `TasksListByResourceGroupResult` has been removed
+- Struct `TasksListOptions` has been removed
+- Struct `TasksListPager` has been removed
+- Struct `TasksListResponse` has been removed
+- Struct `TasksListResult` has been removed
+- Struct `TasksUpdateResourceGroupLevelTaskStateOptions` has been removed
+- Struct `TasksUpdateResourceGroupLevelTaskStateResponse` has been removed
+- Struct `TasksUpdateSubscriptionLevelTaskStateOptions` has been removed
+- Struct `TasksUpdateSubscriptionLevelTaskStateResponse` has been removed
+- Struct `TopologyGetOptions` has been removed
+- Struct `TopologyGetResponse` has been removed
+- Struct `TopologyGetResult` has been removed
+- Struct `TopologyListByHomeRegionOptions` has been removed
+- Struct `TopologyListByHomeRegionPager` has been removed
+- Struct `TopologyListByHomeRegionResponse` has been removed
+- Struct `TopologyListByHomeRegionResult` has been removed
+- Struct `TopologyListOptions` has been removed
+- Struct `TopologyListPager` has been removed
+- Struct `TopologyListResponse` has been removed
+- Struct `TopologyListResult` has been removed
+- Struct `WorkspaceSettingsCreateOptions` has been removed
+- Struct `WorkspaceSettingsCreateResponse` has been removed
+- Struct `WorkspaceSettingsCreateResult` has been removed
+- Struct `WorkspaceSettingsDeleteOptions` has been removed
+- Struct `WorkspaceSettingsDeleteResponse` has been removed
+- Struct `WorkspaceSettingsGetOptions` has been removed
+- Struct `WorkspaceSettingsGetResponse` has been removed
+- Struct `WorkspaceSettingsGetResult` has been removed
+- Struct `WorkspaceSettingsListOptions` has been removed
+- Struct `WorkspaceSettingsListPager` has been removed
+- Struct `WorkspaceSettingsListResponse` has been removed
+- Struct `WorkspaceSettingsListResult` has been removed
+- Struct `WorkspaceSettingsUpdateOptions` has been removed
+- Struct `WorkspaceSettingsUpdateResponse` has been removed
+- Struct `WorkspaceSettingsUpdateResult` has been removed
+- Field `TrackedResource` of struct `Automation` has been removed
+- Field `AdditionalData` of struct `SQLServerVulnerabilityProperties` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `MqttC2DRejectedMessagesNotInAllowedRange` has been removed
+- Field `Resource` of struct `AdvancedThreatProtectionSetting` has been removed
+- Field `Resource` of struct `IoTSecuritySolutionModel` has been removed
+- Field `TagsResource` of struct `IoTSecuritySolutionModel` has been removed
+- Field `AdditionalData` of struct `ServerVulnerabilityProperties` has been removed
+- Field `Resource` of struct `IngestionSetting` has been removed
+- Field `AutomationAction` of struct `AutomationActionLogicApp` has been removed
+- Field `ExternalSecuritySolutionProperties` of struct `AtaSolutionProperties` has been removed
+- Field `Resource` of struct `CustomEntityStoreAssignment` has been removed
+- Field `Resource` of struct `Compliance` has been removed
+- Field `Resource` of struct `AutoProvisioningSetting` has been removed
+- Field `UserImpact` of struct `CustomAssessmentAutomationRequestProperties` has been removed
+- Field `ImplementationEffort` of struct `CustomAssessmentAutomationRequestProperties` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `FailedLocalLoginsNotInAllowedRange` has been removed
+- Field `Resource` of struct `ScanResult` has been removed
+- Field `ExternalSecuritySolutionKindAutoGenerated` of struct `ExternalSecuritySolution` has been removed
+- Field `Location` of struct `ExternalSecuritySolution` has been removed
+- Field `Resource` of struct `ExternalSecuritySolution` has been removed
+- Field `ListCustomAlertRule` of struct `DenylistCustomAlertRule` has been removed
+- Field `ExternalSecuritySolutionProperties` of struct `CefSolutionProperties` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `FileUploadsNotInAllowedRange` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `ActiveConnectionsNotInAllowedRange` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `MqttC2DMessagesNotInAllowedRange` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `QueuePurgesNotInAllowedRange` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `AmqpC2DMessagesNotInAllowedRange` has been removed
+- Field `AdditionalData` of struct `ContainerRegistryVulnerabilityProperties` has been removed
+- Field `AllowlistCustomAlertRule` of struct `ConnectionFromIPNotAllowed` has been removed
+- Field `KindAutoGenerated` of struct `JitNetworkAccessPolicy` has been removed
+- Field `Location` of struct `JitNetworkAccessPolicy` has been removed
+- Field `Resource` of struct `JitNetworkAccessPolicy` has been removed
+- Field `CloudOffering` of struct `DefenderForServersAwsOffering` has been removed
+- Field `Resource` of struct `CustomAssessmentAutomationRequest` has been removed
+- Field `Resource` of struct `InformationProtectionPolicy` has been removed
+- Field `AllowlistCustomAlertRule` of struct `ConnectionToIPNotAllowed` has been removed
+- Field `ResourceIdentifier` of struct `LogAnalyticsIdentifier` has been removed
+- Field `Resource` of struct `WorkspaceSetting` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `HTTPC2DMessagesNotInAllowedRange` has been removed
+- Field `AutomationAction` of struct `AutomationActionWorkspace` has been removed
+- Field `Resource` of struct `MdeOnboardingData` has been removed
+- Field `CustomAlertRule` of struct `ListCustomAlertRule` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `AmqpD2CMessagesNotInAllowedRange` has been removed
+- Field `Location` of struct `AllowedConnectionsResource` has been removed
+- Field `Resource` of struct `AllowedConnectionsResource` has been removed
+- Field `Resource` of struct `Software` has been removed
+- Field `AuthenticationDetailsProperties` of struct `AwsCredsAuthenticationDetailsProperties` has been removed
+- Field `ResourceIdentifier` of struct `AzureResourceIdentifier` has been removed
+- Field `AADConnectivityStateAutoGenerated` of struct `AADSolutionProperties` has been removed
+- Field `ExternalSecuritySolutionProperties` of struct `AADSolutionProperties` has been removed
+- Field `Resource` of struct `Setting` has been removed
+- Field `AllowlistCustomAlertRule` of struct `LocalUserNotAllowed` has been removed
+- Field `AuthenticationDetailsProperties` of struct `AwAssumeRoleAuthenticationDetailsProperties` has been removed
+- Field `Resource` of struct `Alert` has been removed
+- Field `Resource` of struct `ComplianceResult` has been removed
+- Field `AutomationAction` of struct `AutomationActionEventHub` has been removed
+- Field `Resource` of struct `AlertsSuppressionRule` has been removed
+- Field `Resource` of struct `RegulatoryComplianceControl` has been removed
+- Field `Location` of struct `DiscoveredSecuritySolution` has been removed
+- Field `Resource` of struct `DiscoveredSecuritySolution` has been removed
+- Field `ThresholdCustomAlertRule` of struct `TimeWindowCustomAlertRule` has been removed
+- Field `TagsResource` of struct `UpdateIotSecuritySolutionData` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `UnauthorizedOperationsNotInAllowedRange` has been removed
+- Field `Resource` of struct `ServerVulnerabilityAssessment` has been removed
+- Field `UserImpact` of struct `CustomAssessmentAutomationProperties` has been removed
+- Field `ImplementationEffort` of struct `CustomAssessmentAutomationProperties` has been removed
+- Field `Resource` of struct `SecureScoreItem` has been removed
+- Field `Resource` of struct `RegulatoryComplianceStandard` has been removed
+- Field `Resource` of struct `Scan` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `HTTPC2DRejectedMessagesNotInAllowedRange` has been removed
+- Field `ExternalSecuritySolution` of struct `CefExternalSecuritySolution` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `TwinUpdatesNotInAllowedRange` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `AmqpC2DRejectedMessagesNotInAllowedRange` has been removed
+- Field `Resource` of struct `AscLocation` has been removed
+- Field `CustomAlertRule` of struct `ThresholdCustomAlertRule` has been removed
+- Field `AzureTrackedResourceLocation` of struct `TrackedResource` has been removed
+- Field `ETag` of struct `TrackedResource` has been removed
+- Field `KindAutoGenerated` of struct `TrackedResource` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Tags` of struct `TrackedResource` has been removed
+- Field `ExternalSecuritySolution` of struct `AADExternalSecuritySolution` has been removed
+- Field `Resource` of struct `AdaptiveNetworkHardening` has been removed
+- Field `Location` of struct `TopologyResource` has been removed
+- Field `Resource` of struct `TopologyResource` has been removed
+- Field `ListCustomAlertRule` of struct `AllowlistCustomAlertRule` has been removed
+- Field `Resource` of struct `Pricing` has been removed
+- Field `Resource` of struct `ConnectorSetting` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `MqttD2CMessagesNotInAllowedRange` has been removed
+- Field `Resource` of struct `DeviceSecurityGroup` has been removed
+- Field `AuthenticationDetailsProperties` of struct `GcpCredentialsDetailsProperties` has been removed
+- Field `AssessmentStatus` of struct `AssessmentStatusResponse` has been removed
+- Field `Resource` of struct `RuleResults` has been removed
+- Field `CloudOffering` of struct `DefenderForContainersAwsOffering` has been removed
+- Field `Setting` of struct `AlertSyncSettings` has been removed
+- Field `Location` of struct `AdaptiveApplicationControlGroup` has been removed
+- Field `Resource` of struct `AdaptiveApplicationControlGroup` has been removed
+- Field `AlertSimulatorRequestProperties` of struct `AlertSimulatorBundlesRequestProperties` has been removed
+- Field `Resource` of struct `CustomAssessmentAutomation` has been removed
+- Field `Resource` of struct `SecureScoreControlDetails` has been removed
+- Field `Resource` of struct `RegulatoryComplianceAssessment` has been removed
+- Field `Resource` of struct `IoTSecurityAggregatedAlert` has been removed
+- Field `TagsResource` of struct `IoTSecurityAggregatedAlert` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `HTTPD2CMessagesNotInAllowedRange` has been removed
+- Field `Resource` of struct `IoTSecuritySolutionAnalyticsModel` has been removed
+- Field `TimeWindowCustomAlertRule` of struct `DirectMethodInvokesNotInAllowedRange` has been removed
+- Field `CloudOffering` of struct `CspmMonitorAwsOffering` has been removed
+- Field `Setting` of struct `DataExportSettings` has been removed
+- Field `Resource` of struct `SecureScoreControlDefinitionItem` has been removed
+- Field `ExternalSecuritySolution` of struct `AtaExternalSecuritySolution` has been removed
+- Field `AllowlistCustomAlertRule` of struct `ProcessNotAllowed` has been removed
+- Field `Resource` of struct `IoTSecurityAggregatedRecommendation` has been removed
+- Field `TagsResource` of struct `IoTSecurityAggregatedRecommendation` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `Enum51Enforce`
+- New const `Enum77WDATP`
+- New const `Enum16Start`
+- New const `Enum5Current`
+- New const `Enum16Resolve`
+- New const `Enum16Activate`
+- New const `Enum77MCAS`
+- New const `Enum18Effective`
+- New const `Enum18Custom`
+- New const `Enum77Sentinel`
+- New const `Enum16Close`
+- New const `Enum77WDATPEXCLUDELINUXPUBLICPREVIEW`
+- New const `Enum56Initiate`
+- New const `Enum16Dismiss`
+- New const `Enum31Default`
+- New function `*CustomEntityStoreAssignmentsClientListByResourceGroupPager.Err() error`
+- New function `*IngestionSettingsClientListPager.PageResponse() IngestionSettingsClientListResponse`
+- New function `SolutionsReferenceDataList.MarshalJSON() ([]byte, error)`
+- New function `*HTTPC2DRejectedMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*AllowedConnectionsClientListPager.Err() error`
+- New function `*AzureResourceIdentifier.GetResourceIdentifier() *ResourceIdentifier`
+- New function `*SecureScoreControlDefinitionsClientListBySubscriptionPager.PageResponse() SecureScoreControlDefinitionsClientListBySubscriptionResponse`
+- New function `SolutionList.MarshalJSON() ([]byte, error)`
+- New function `*ComplianceResultsClientListPager.PageResponse() ComplianceResultsClientListResponse`
+- New function `*SoftwareInventoriesClientListByExtendedResourcePager.NextPage(context.Context) bool`
+- New function `*SolutionsReferenceDataClient.List(context.Context, *SolutionsReferenceDataClientListOptions) (SolutionsReferenceDataClientListResponse, error)`
+- New function `*AlertsClientListPager.PageResponse() AlertsClientListResponse`
+- New function `*FileUploadsNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*FailedLocalLoginsNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*HTTPC2DRejectedMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*ThresholdCustomAlertRule.GetCustomAlertRule() *CustomAlertRule`
+- New function `*UnauthorizedOperationsNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `SubAssessmentList.MarshalJSON() ([]byte, error)`
+- New function `*AlertsClientSimulatePoller.ResumeToken() (string, error)`
+- New function `*OnPremiseSQLResourceDetails.UnmarshalJSON([]byte) error`
+- New function `*AutoProvisioningSettingsClientListPager.Err() error`
+- New function `OnPremiseResourceDetails.MarshalJSON() ([]byte, error)`
+- New function `*DefenderForServersAwsOffering.GetCloudOffering() *CloudOffering`
+- New function `*AmqpC2DMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*AdaptiveNetworkHardeningsClientEnforcePoller.ResumeToken() (string, error)`
+- New function `*TopologyClientListPager.NextPage(context.Context) bool`
+- New function `*RegulatoryComplianceStandardsClientListPager.PageResponse() RegulatoryComplianceStandardsClientListResponse`
+- New function `*ExternalSecuritySolutionsClientListPager.NextPage(context.Context) bool`
+- New function `AlertsClientSimulatePollerResponse.PollUntilDone(context.Context, time.Duration) (AlertsClientSimulateResponse, error)`
+- New function `*FailedLocalLoginsNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*ConnectorsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ComplianceResultsClientListPager.Err() error`
+- New function `TaskList.MarshalJSON() ([]byte, error)`
+- New function `TaskProperties.MarshalJSON() ([]byte, error)`
+- New function `*AmqpC2DMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*ContactsClient.Delete(context.Context, string, *ContactsClientDeleteOptions) (ContactsClientDeleteResponse, error)`
+- New function `*IotSecuritySolutionClientListByResourceGroupPager.Err() error`
+- New function `*SubAssessmentsClientListPager.NextPage(context.Context) bool`
+- New function `*JitNetworkAccessPoliciesClientListPager.Err() error`
+- New function `*AssessmentsMetadataClientListBySubscriptionPager.PageResponse() AssessmentsMetadataClientListBySubscriptionResponse`
+- New function `*ConnectionFromIPNotAllowed.GetCustomAlertRule() *CustomAlertRule`
+- New function `*WorkspaceSettingsClientListPager.PageResponse() WorkspaceSettingsClientListResponse`
+- New function `Enum77.ToPtr() *Enum77`
+- New function `*ConnectionFromIPNotAllowed.GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule`
+- New function `*ContactsClientListPager.Err() error`
+- New function `*ComplianceResultsClientListPager.NextPage(context.Context) bool`
+- New function `*TasksClientListByHomeRegionPager.PageResponse() TasksClientListByHomeRegionResponse`
+- New function `*AdaptiveNetworkHardeningsClientListByExtendedResourcePager.NextPage(context.Context) bool`
+- New function `*LogAnalyticsIdentifier.GetResourceIdentifier() *ResourceIdentifier`
+- New function `TaskParameters.MarshalJSON() ([]byte, error)`
+- New function `*AutomationsClientListByResourceGroupPager.Err() error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*AllowedConnectionsClientListByHomeRegionPager.NextPage(context.Context) bool`
+- New function `*JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager.PageResponse() JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse`
+- New function `*AlertsClientListByResourceGroupPager.Err() error`
+- New function `*ExternalSecuritySolutionsClientListByHomeRegionPager.PageResponse() ExternalSecuritySolutionsClientListByHomeRegionResponse`
+- New function `*AmqpD2CMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*AccountConnectorsClient.Delete(context.Context, string, *AccountConnectorsClientDeleteOptions) (AccountConnectorsClientDeleteResponse, error)`
+- New function `PossibleEnum56Values() []Enum56`
+- New function `*SecureScoreControlDefinitionsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*IotSecuritySolutionsAnalyticsRecommendationClientListPager.PageResponse() IotSecuritySolutionsAnalyticsRecommendationClientListResponse`
+- New function `*AdaptiveNetworkHardeningsClientListByExtendedResourcePager.Err() error`
+- New function `*RegulatoryComplianceControlsClientListPager.PageResponse() RegulatoryComplianceControlsClientListResponse`
+- New function `*MqttC2DMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*SettingsClientListPager.Err() error`
+- New function `*AlertSimulatorBundlesRequestProperties.GetAlertSimulatorRequestProperties() *AlertSimulatorRequestProperties`
+- New function `*QueuePurgesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*RegulatoryComplianceAssessmentsClientListPager.Err() error`
+- New function `*AssessmentsClientListPager.PageResponse() AssessmentsClientListResponse`
+- New function `*ContactsClientListPager.NextPage(context.Context) bool`
+- New function `*AlertsSuppressionRulesClientListPager.PageResponse() AlertsSuppressionRulesClientListResponse`
+- New function `*LocalUserNotAllowed.UnmarshalJSON([]byte) error`
+- New function `*TasksClientListByHomeRegionPager.Err() error`
+- New function `Enum31.ToPtr() *Enum31`
+- New function `*DiscoveredSecuritySolutionsClientListByHomeRegionPager.PageResponse() DiscoveredSecuritySolutionsClientListByHomeRegionResponse`
+- New function `*AutomationsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `AssessmentProperties.MarshalJSON() ([]byte, error)`
+- New function `*SecureScoreControlsClientListPager.NextPage(context.Context) bool`
+- New function `Enum51.ToPtr() *Enum51`
+- New function `*TimeWindowCustomAlertRule.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*AssessmentsClientListPager.NextPage(context.Context) bool`
+- New function `*SoftwareInventoriesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*DirectMethodInvokesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*AssessmentsMetadataClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `AssessmentPropertiesBase.MarshalJSON() ([]byte, error)`
+- New function `*AssessmentsMetadataClientListBySubscriptionPager.Err() error`
+- New function `*CustomAssessmentAutomationsClientListBySubscriptionPager.Err() error`
+- New function `*UnauthorizedOperationsNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*SubAssessmentsClientListPager.PageResponse() SubAssessmentsClientListResponse`
+- New function `ConnectorPropertiesOrganizationalData.MarshalJSON() ([]byte, error)`
+- New function `*AmqpD2CMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*GcpCredentialsDetailsProperties.GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties`
+- New function `*FailedLocalLoginsNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `AssessmentPropertiesResponse.MarshalJSON() ([]byte, error)`
+- New function `*TasksClientListByResourceGroupPager.PageResponse() TasksClientListByResourceGroupResponse`
+- New function `*MqttD2CMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*AdaptiveNetworkHardeningsClientEnforcePoller.FinalResponse(context.Context) (AdaptiveNetworkHardeningsClientEnforceResponse, error)`
+- New function `*JitNetworkAccessPoliciesClientListByRegionPager.PageResponse() JitNetworkAccessPoliciesClientListByRegionResponse`
+- New function `*SecureScoreControlDefinitionsClientListPager.PageResponse() SecureScoreControlDefinitionsClientListResponse`
+- New function `*AssessmentPropertiesResponse.UnmarshalJSON([]byte) error`
+- New function `*SubAssessmentProperties.UnmarshalJSON([]byte) error`
+- New function `*SecureScoresClientListPager.NextPage(context.Context) bool`
+- New function `*TwinUpdatesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*SoftwareInventoriesClientListBySubscriptionPager.Err() error`
+- New function `*AutomationActionEventHub.GetAutomationAction() *AutomationAction`
+- New function `Enum5.ToPtr() *Enum5`
+- New function `*InformationProtectionPoliciesClientListPager.PageResponse() InformationProtectionPoliciesClientListResponse`
+- New function `*SQLServerVulnerabilityProperties.GetAdditionalData() *AdditionalData`
+- New function `*LocationsClientListPager.Err() error`
+- New function `*DirectMethodInvokesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*AutomationActionWorkspace.GetAutomationAction() *AutomationAction`
+- New function `*ServerVulnerabilityAssessmentClientDeletePoller.FinalResponse(context.Context) (ServerVulnerabilityAssessmentClientDeleteResponse, error)`
+- New function `*DiscoveredSecuritySolutionsClientListByHomeRegionPager.Err() error`
+- New function `*OnPremiseResourceDetails.GetResourceDetails() *ResourceDetails`
+- New function `*AutomationsClientListPager.PageResponse() AutomationsClientListResponse`
+- New function `AADSolutionProperties.MarshalJSON() ([]byte, error)`
+- New function `*RegulatoryComplianceAssessmentsClientListPager.PageResponse() RegulatoryComplianceAssessmentsClientListResponse`
+- New function `*TopologyClientListPager.PageResponse() TopologyClientListResponse`
+- New function `*JitNetworkAccessPoliciesClientListByRegionPager.Err() error`
+- New function `*RegulatoryComplianceAssessmentsClientListPager.NextPage(context.Context) bool`
+- New function `*ExternalSecuritySolutionsClientListByHomeRegionPager.NextPage(context.Context) bool`
+- New function `*ContactsClientListPager.PageResponse() ContactsClientListResponse`
+- New function `*ConnectionFromIPNotAllowed.GetListCustomAlertRule() *ListCustomAlertRule`
+- New function `ConnectorsList.MarshalJSON() ([]byte, error)`
+- New function `*HTTPC2DMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*DenylistCustomAlertRule.GetListCustomAlertRule() *ListCustomAlertRule`
+- New function `*ContactsClient.Update(context.Context, string, Contact, *ContactsClientUpdateOptions) (ContactsClientUpdateResponse, error)`
+- New function `*MqttC2DRejectedMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*SecureScoreControlDefinitionsClientListBySubscriptionPager.Err() error`
+- New function `*DiscoveredSecuritySolutionsClientListPager.PageResponse() DiscoveredSecuritySolutionsClientListResponse`
+- New function `*ConnectionToIPNotAllowed.GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule`
+- New function `*ConnectionToIPNotAllowed.GetCustomAlertRule() *CustomAlertRule`
+- New function `*LocalUserNotAllowed.GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule`
+- New function `AzureResourceDetails.MarshalJSON() ([]byte, error)`
+- New function `*JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager.NextPage(context.Context) bool`
+- New function `*AllowedConnectionsClientListByHomeRegionPager.PageResponse() AllowedConnectionsClientListByHomeRegionResponse`
+- New function `*AlertsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `PossibleEnum16Values() []Enum16`
+- New function `*ContactsClient.List(*ContactsClientListOptions) *ContactsClientListPager`
+- New function `*SettingsClientListPager.PageResponse() SettingsClientListResponse`
+- New function `*TaskParameters.UnmarshalJSON([]byte) error`
+- New function `*TasksClientListByResourceGroupPager.Err() error`
+- New function `*AmqpC2DRejectedMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*SoftwareInventoriesClientListByExtendedResourcePager.PageResponse() SoftwareInventoriesClientListByExtendedResourceResponse`
+- New function `*AlertsClientListByResourceGroupPager.PageResponse() AlertsClientListByResourceGroupResponse`
+- New function `PossibleEnum5Values() []Enum5`
+- New function `*DiscoveredSecuritySolutionsClientListPager.Err() error`
+- New function `Enum16.ToPtr() *Enum16`
+- New function `*MqttC2DRejectedMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*CustomEntityStoreAssignmentsClientListBySubscriptionPager.Err() error`
+- New function `*QueuePurgesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `NewAccountConnectorsClient(string, azcore.TokenCredential, *arm.ClientOptions) *AccountConnectorsClient`
+- New function `*AllowedConnectionsClientListByHomeRegionPager.Err() error`
+- New function `OnPremiseSQLResourceDetails.MarshalJSON() ([]byte, error)`
+- New function `*SettingsClientListPager.NextPage(context.Context) bool`
+- New function `*DeviceSecurityGroupsClientListPager.PageResponse() DeviceSecurityGroupsClientListResponse`
+- New function `*ConnectorsClient.Update(context.Context, string, string, Connector, *ConnectorsClientUpdateOptions) (ConnectorsClientUpdateResponse, error)`
+- New function `*JitNetworkAccessPoliciesClientListByResourceGroupPager.PageResponse() JitNetworkAccessPoliciesClientListByResourceGroupResponse`
+- New function `*CspmMonitorAwsOffering.GetCloudOffering() *CloudOffering`
+- New function `*TasksClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AssessmentsMetadataClientListPager.NextPage(context.Context) bool`
+- New function `*InformationProtectionPoliciesClientListPager.Err() error`
+- New function `*DirectMethodInvokesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*AlertsSuppressionRulesClientListPager.NextPage(context.Context) bool`
+- New function `*AdaptiveNetworkHardeningsClientEnforcePollerResponse.Resume(context.Context, *AdaptiveNetworkHardeningsClient, string) error`
+- New function `*AutomationsClientListPager.Err() error`
+- New function `*AllowlistCustomAlertRule.GetListCustomAlertRule() *ListCustomAlertRule`
+- New function `*ConnectorsClientListPager.Err() error`
+- New function `*ConnectorsClientListPager.NextPage(context.Context) bool`
+- New function `*FileUploadsNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `ContactList.MarshalJSON() ([]byte, error)`
+- New function `*RegulatoryComplianceControlsClientListPager.NextPage(context.Context) bool`
+- New function `*ConnectionFromIPNotAllowed.UnmarshalJSON([]byte) error`
+- New function `*AzureResourceDetails.UnmarshalJSON([]byte) error`
+- New function `Contact.MarshalJSON() ([]byte, error)`
+- New function `*HTTPC2DMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*CustomAssessmentAutomationsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `AdaptiveNetworkHardeningsClientEnforcePollerResponse.PollUntilDone(context.Context, time.Duration) (AdaptiveNetworkHardeningsClientEnforceResponse, error)`
+- New function `*AADSolutionProperties.UnmarshalJSON([]byte) error`
+- New function `*TopologyClientListByHomeRegionPager.PageResponse() TopologyClientListByHomeRegionResponse`
+- New function `*ActiveConnectionsNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*ActiveConnectionsNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*SecureScoreControlDefinitionsClientListPager.NextPage(context.Context) bool`
+- New function `*CompliancesClientListPager.PageResponse() CompliancesClientListResponse`
+- New function `*AlertsClientListPager.Err() error`
+- New function `*CompliancesClientListPager.NextPage(context.Context) bool`
+- New function `*AlertsClientListSubscriptionLevelByRegionPager.Err() error`
+- New function `*SettingsClientUpdateResult.UnmarshalJSON([]byte) error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*CustomEntityStoreAssignmentsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `Enum56.ToPtr() *Enum56`
+- New function `AssessmentMetadataProperties.MarshalJSON() ([]byte, error)`
+- New function `NewSolutionsClient(string, string, azcore.TokenCredential, *arm.ClientOptions) *SolutionsClient`
+- New function `*SubAssessmentsClientListAllPager.NextPage(context.Context) bool`
+- New function `*AlertsClientListSubscriptionLevelByRegionPager.PageResponse() AlertsClientListSubscriptionLevelByRegionResponse`
+- New function `PossibleEnum31Values() []Enum31`
+- New function `*OnPremiseResourceDetails.GetOnPremiseResourceDetails() *OnPremiseResourceDetails`
+- New function `*AllowedConnectionsClientListPager.PageResponse() AllowedConnectionsClientListResponse`
+- New function `*AwAssumeRoleAuthenticationDetailsProperties.GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties`
+- New function `*ConnectorsClientListByResourceGroupPager.Err() error`
+- New function `*ConnectionToIPNotAllowed.UnmarshalJSON([]byte) error`
+- New function `*AmqpC2DRejectedMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*HTTPD2CMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*AlertsClientSimulatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PossibleEnum77Values() []Enum77`
+- New function `*MqttC2DMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `AlertSimulatorRequestProperties.MarshalJSON() ([]byte, error)`
+- New function `*TasksClientListPager.NextPage(context.Context) bool`
+- New function `*SolutionsClient.List(*SolutionsClientListOptions) *SolutionsClientListPager`
+- New function `*AccountConnectorsClientListPager.NextPage(context.Context) bool`
+- New function `*AutomationActionLogicApp.GetAutomationAction() *AutomationAction`
+- New function `*SecureScoresClientListPager.Err() error`
+- New function `*SubAssessmentsClientListAllPager.PageResponse() SubAssessmentsClientListAllResponse`
+- New function `*FailedLocalLoginsNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*JitNetworkAccessPoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*CustomAssessmentAutomationsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AlertsSuppressionRulesClientListPager.Err() error`
+- New function `*AlertsClientListResourceGroupLevelByRegionPager.PageResponse() AlertsClientListResourceGroupLevelByRegionResponse`
+- New function `ListCustomAlertRule.MarshalJSON() ([]byte, error)`
+- New function `*ActiveConnectionsNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `NewContactsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ContactsClient`
+- New function `*SecureScoreControlsClientListPager.Err() error`
+- New function `*ContainerRegistryVulnerabilityProperties.GetAdditionalData() *AdditionalData`
+- New function `*AmqpC2DRejectedMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*MqttD2CMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*ServerVulnerabilityProperties.GetAdditionalData() *AdditionalData`
+- New function `*IotSecuritySolutionsAnalyticsRecommendationClientListPager.Err() error`
+- New function `*SecureScoreControlDefinitionsClientListPager.Err() error`
+- New function `*DataExportSettings.GetSetting() *Setting`
+- New function `*SolutionsClientListPager.NextPage(context.Context) bool`
+- New function `*CustomEntityStoreAssignmentsClientListBySubscriptionPager.PageResponse() CustomEntityStoreAssignmentsClientListBySubscriptionResponse`
+- New function `*CustomAssessmentAutomationsClientListByResourceGroupPager.PageResponse() CustomAssessmentAutomationsClientListByResourceGroupResponse`
+- New function `*JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager.Err() error`
+- New function `*DirectMethodInvokesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*ConnectorsClient.ListByResourceGroup(string, *ConnectorsClientListByResourceGroupOptions) *ConnectorsClientListByResourceGroupPager`
+- New function `*ContactsClient.Create(context.Context, string, Contact, *ContactsClientCreateOptions) (ContactsClientCreateResponse, error)`
+- New function `*SettingsClientGetResult.UnmarshalJSON([]byte) error`
+- New function `*ExternalSecuritySolutionsClientListPager.Err() error`
+- New function `*UnauthorizedOperationsNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*SecureScoreControlsClientListBySecureScorePager.NextPage(context.Context) bool`
+- New function `*SecureScoresClientListPager.PageResponse() SecureScoresClientListResponse`
+- New function `TrackedResource.MarshalJSON() ([]byte, error)`
+- New function `*AdaptiveNetworkHardeningsClientEnforcePoller.Done() bool`
+- New function `*AccountConnectorsClientListPager.Err() error`
+- New function `*JitNetworkAccessPoliciesClientListByResourceGroupPager.Err() error`
+- New function `*DiscoveredSecuritySolutionsClientListPager.NextPage(context.Context) bool`
+- New function `*ProcessNotAllowed.UnmarshalJSON([]byte) error`
+- New function `*CompliancesClientListPager.Err() error`
+- New function `*AlertsClientListSubscriptionLevelByRegionPager.NextPage(context.Context) bool`
+- New function `*JitNetworkAccessPoliciesClientListPager.PageResponse() JitNetworkAccessPoliciesClientListResponse`
+- New function `ServerVulnerabilityAssessmentClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServerVulnerabilityAssessmentClientDeleteResponse, error)`
+- New function `*AlertsClientListResourceGroupLevelByRegionPager.Err() error`
+- New function `*AzureResourceDetails.GetResourceDetails() *ResourceDetails`
+- New function `*IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager.NextPage(context.Context) bool`
+- New function `*IotSecuritySolutionClientListBySubscriptionPager.Err() error`
+- New function `*AwsCredsAuthenticationDetailsProperties.GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties`
+- New function `*AccountConnectorsClientListPager.PageResponse() AccountConnectorsClientListResponse`
+- New function `*IngestionSettingsClientListPager.Err() error`
+- New function `*RegulatoryComplianceStandardsClientListPager.Err() error`
+- New function `*UnauthorizedOperationsNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager.PageResponse() IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse`
+- New function `*ServerVulnerabilityAssessmentClientDeletePollerResponse.Resume(context.Context, *ServerVulnerabilityAssessmentClient, string) error`
+- New function `*CustomEntityStoreAssignmentsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*AssessmentsMetadataClientListPager.PageResponse() AssessmentsMetadataClientListResponse`
+- New function `AuthenticationDetailsProperties.MarshalJSON() ([]byte, error)`
+- New function `*TimeWindowCustomAlertRule.GetCustomAlertRule() *CustomAlertRule`
+- New function `*ListCustomAlertRule.GetCustomAlertRule() *CustomAlertRule`
+- New function `*FileUploadsNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*AlertsClientSimulatePoller.FinalResponse(context.Context) (AlertsClientSimulateResponse, error)`
+- New function `*MqttC2DMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*DiscoveredSecuritySolutionsClientListByHomeRegionPager.NextPage(context.Context) bool`
+- New function `ConnectorProperties.MarshalJSON() ([]byte, error)`
+- New function `AssessmentMetadataPropertiesResponse.MarshalJSON() ([]byte, error)`
+- New function `*SoftwareInventoriesClientListByExtendedResourcePager.Err() error`
+- New function `*HTTPC2DMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*AutoProvisioningSettingsClientListPager.PageResponse() AutoProvisioningSettingsClientListResponse`
+- New function `*OnPremiseSQLResourceDetails.GetResourceDetails() *ResourceDetails`
+- New function `*TwinUpdatesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*IotSecuritySolutionClientListBySubscriptionPager.PageResponse() IotSecuritySolutionClientListBySubscriptionResponse`
+- New function `*ConnectorsClientListByResourceGroupPager.PageResponse() ConnectorsClientListByResourceGroupResponse`
+- New function `*SecureScoreControlsClientListPager.PageResponse() SecureScoreControlsClientListResponse`
+- New function `*HTTPD2CMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*RegulatoryComplianceStandardsClientListPager.NextPage(context.Context) bool`
+- New function `*SubAssessmentsClientListPager.Err() error`
+- New function `*QueuePurgesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*SoftwareInventoriesClientListBySubscriptionPager.PageResponse() SoftwareInventoriesClientListBySubscriptionResponse`
+- New function `*WorkspaceSettingsClientListPager.Err() error`
+- New function `*MqttC2DRejectedMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*TasksClientListPager.Err() error`
+- New function `*AssessmentsClientListPager.Err() error`
+- New function `*LocationsClientListPager.PageResponse() LocationsClientListResponse`
+- New function `*ProcessNotAllowed.GetCustomAlertRule() *CustomAlertRule`
+- New function `*IngestionSettingsClientListPager.NextPage(context.Context) bool`
+- New function `*AllowedConnectionsClientListPager.NextPage(context.Context) bool`
+- New function `*SecureScoreControlsClientListBySecureScorePager.Err() error`
+- New function `*SolutionsReferenceDataClient.ListByHomeRegion(context.Context, *SolutionsReferenceDataClientListByHomeRegionOptions) (SolutionsReferenceDataClientListByHomeRegionResponse, error)`
+- New function `*LocationsClientListPager.NextPage(context.Context) bool`
+- New function `*AmqpD2CMessagesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*AccountConnectorsClient.Get(context.Context, string, *AccountConnectorsClientGetOptions) (AccountConnectorsClientGetResponse, error)`
+- New function `*ExternalSecuritySolutionsClientListByHomeRegionPager.Err() error`
+- New function `*CustomAssessmentAutomationsClientListBySubscriptionPager.PageResponse() CustomAssessmentAutomationsClientListBySubscriptionResponse`
+- New function `*RegulatoryComplianceControlsClientListPager.Err() error`
+- New function `*JitNetworkAccessPoliciesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AlertsClientListResourceGroupLevelByRegionPager.NextPage(context.Context) bool`
+- New function `*CustomEntityStoreAssignmentsClientListByResourceGroupPager.PageResponse() CustomEntityStoreAssignmentsClientListByResourceGroupResponse`
+- New function `*ConnectorsClientListPager.PageResponse() ConnectorsClientListResponse`
+- New function `*LocalUserNotAllowed.GetCustomAlertRule() *CustomAlertRule`
+- New function `*ExternalSecuritySolutionsClientListPager.PageResponse() ExternalSecuritySolutionsClientListResponse`
+- New function `*HTTPC2DRejectedMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*ServerVulnerabilityAssessmentClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AlertsClientSimulatePollerResponse.Resume(context.Context, *AlertsClient, string) error`
+- New function `*LocalUserNotAllowed.GetListCustomAlertRule() *ListCustomAlertRule`
+- New function `*AlertSyncSettings.GetSetting() *Setting`
+- New function `*HTTPD2CMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*TwinUpdatesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*AdaptiveNetworkHardeningsClientEnforcePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AssessmentProperties.UnmarshalJSON([]byte) error`
+- New function `*ActiveConnectionsNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*TaskProperties.UnmarshalJSON([]byte) error`
+- New function `*DenylistCustomAlertRule.GetCustomAlertRule() *CustomAlertRule`
+- New function `*AssessmentsMetadataClientListPager.Err() error`
+- New function `*JitNetworkAccessPoliciesClientListByRegionPager.NextPage(context.Context) bool`
+- New function `*FileUploadsNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*AlertsClientSimulatePoller.Done() bool`
+- New function `*AdaptiveNetworkHardeningsClientListByExtendedResourcePager.PageResponse() AdaptiveNetworkHardeningsClientListByExtendedResourceResponse`
+- New function `ThresholdCustomAlertRule.MarshalJSON() ([]byte, error)`
+- New function `*ConnectionToIPNotAllowed.GetListCustomAlertRule() *ListCustomAlertRule`
+- New function `*ServerVulnerabilityAssessmentClientDeletePoller.Done() bool`
+- New function `*TopologyClientListByHomeRegionPager.NextPage(context.Context) bool`
+- New function `SubAssessmentProperties.MarshalJSON() ([]byte, error)`
+- New function `*CustomAssessmentAutomationsClientListByResourceGroupPager.Err() error`
+- New function `*HTTPD2CMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*AmqpD2CMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*SecureScoreControlsClientListBySecureScorePager.PageResponse() SecureScoreControlsClientListBySecureScoreResponse`
+- New function `AssessmentList.MarshalJSON() ([]byte, error)`
+- New function `*SolutionsClient.Get(context.Context, string, string, *SolutionsClientGetOptions) (SolutionsClientGetResponse, error)`
+- New function `*AssessmentPropertiesBase.UnmarshalJSON([]byte) error`
+- New function `PossibleEnum51Values() []Enum51`
+- New function `*DeviceSecurityGroupsClientListPager.NextPage(context.Context) bool`
+- New function `*MqttD2CMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*SolutionsClientListPager.PageResponse() SolutionsClientListResponse`
+- New function `*ProcessNotAllowed.GetListCustomAlertRule() *ListCustomAlertRule`
+- New function `*MqttC2DMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*TwinUpdatesNotInAllowedRange.GetCustomAlertRule() *CustomAlertRule`
+- New function `*IotSecuritySolutionsAnalyticsRecommendationClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*SubAssessmentsClientListAllPager.Err() error`
+- New function `*MqttD2CMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*TopologyClientListPager.Err() error`
+- New function `*TasksClientListByHomeRegionPager.NextPage(context.Context) bool`
+- New function `Connector.MarshalJSON() ([]byte, error)`
+- New function `*IotSecuritySolutionClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `AssessmentMetadataResponseList.MarshalJSON() ([]byte, error)`
+- New function `*IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager.Err() error`
+- New function `*ConnectorProperties.UnmarshalJSON([]byte) error`
+- New function `*AmqpC2DRejectedMessagesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*AmqpC2DMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*TasksClientListPager.PageResponse() TasksClientListResponse`
+- New function `*AllowlistCustomAlertRule.GetCustomAlertRule() *CustomAlertRule`
+- New function `*DeviceSecurityGroupsClientListPager.Err() error`
+- New function `*HTTPC2DMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*AlertsClientListPager.NextPage(context.Context) bool`
+- New function `*AccountConnectorsClient.List(*AccountConnectorsClientListOptions) *AccountConnectorsClientListPager`
+- New function `NewSolutionsReferenceDataClient(string, string, azcore.TokenCredential, *arm.ClientOptions) *SolutionsReferenceDataClient`
+- New function `*OnPremiseResourceDetails.UnmarshalJSON([]byte) error`
+- New function `*AutomationsClientListByResourceGroupPager.PageResponse() AutomationsClientListByResourceGroupResponse`
+- New function `*AutomationsClientListPager.NextPage(context.Context) bool`
+- New function `*InformationProtectionPoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*ProcessNotAllowed.GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule`
+- New function `*IotSecuritySolutionClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ContactsClient.Get(context.Context, string, *ContactsClientGetOptions) (ContactsClientGetResponse, error)`
+- New function `*TopologyClientListByHomeRegionPager.Err() error`
+- New function `*ServerVulnerabilityAssessmentClientDeletePoller.ResumeToken() (string, error)`
+- New function `*AccountConnectorsClient.CreateOrUpdate(context.Context, string, ConnectorSetting, *AccountConnectorsClientCreateOrUpdateOptions) (AccountConnectorsClientCreateOrUpdateResponse, error)`
+- New function `*DefenderForContainersAwsOffering.GetCloudOffering() *CloudOffering`
+- New function `*WorkspaceSettingsClientListPager.NextPage(context.Context) bool`
+- New function `*QueuePurgesNotInAllowedRange.GetThresholdCustomAlertRule() *ThresholdCustomAlertRule`
+- New function `*AmqpC2DMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*AutoProvisioningSettingsClientListPager.NextPage(context.Context) bool`
+- New function `*OnPremiseSQLResourceDetails.GetOnPremiseResourceDetails() *OnPremiseResourceDetails`
+- New function `*HTTPC2DRejectedMessagesNotInAllowedRange.GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule`
+- New function `*IotSecuritySolutionClientListByResourceGroupPager.PageResponse() IotSecuritySolutionClientListByResourceGroupResponse`
+- New function `*MqttC2DRejectedMessagesNotInAllowedRange.UnmarshalJSON([]byte) error`
+- New function `*SolutionsClientListPager.Err() error`
+- New struct `AccountConnectorsClient`
+- New struct `AccountConnectorsClientCreateOrUpdateOptions`
+- New struct `AccountConnectorsClientCreateOrUpdateResponse`
+- New struct `AccountConnectorsClientCreateOrUpdateResult`
+- New struct `AccountConnectorsClientDeleteOptions`
+- New struct `AccountConnectorsClientDeleteResponse`
+- New struct `AccountConnectorsClientGetOptions`
+- New struct `AccountConnectorsClientGetResponse`
+- New struct `AccountConnectorsClientGetResult`
+- New struct `AccountConnectorsClientListOptions`
+- New struct `AccountConnectorsClientListPager`
+- New struct `AccountConnectorsClientListResponse`
+- New struct `AccountConnectorsClientListResult`
+- New struct `AdaptiveApplicationControlsClientDeleteOptions`
+- New struct `AdaptiveApplicationControlsClientDeleteResponse`
+- New struct `AdaptiveApplicationControlsClientGetOptions`
+- New struct `AdaptiveApplicationControlsClientGetResponse`
+- New struct `AdaptiveApplicationControlsClientGetResult`
+- New struct `AdaptiveApplicationControlsClientListOptions`
+- New struct `AdaptiveApplicationControlsClientListResponse`
+- New struct `AdaptiveApplicationControlsClientListResult`
+- New struct `AdaptiveApplicationControlsClientPutOptions`
+- New struct `AdaptiveApplicationControlsClientPutResponse`
+- New struct `AdaptiveApplicationControlsClientPutResult`
+- New struct `AdaptiveNetworkHardeningsClientBeginEnforceOptions`
+- New struct `AdaptiveNetworkHardeningsClientEnforcePoller`
+- New struct `AdaptiveNetworkHardeningsClientEnforcePollerResponse`
+- New struct `AdaptiveNetworkHardeningsClientEnforceResponse`
+- New struct `AdaptiveNetworkHardeningsClientGetOptions`
+- New struct `AdaptiveNetworkHardeningsClientGetResponse`
+- New struct `AdaptiveNetworkHardeningsClientGetResult`
+- New struct `AdaptiveNetworkHardeningsClientListByExtendedResourceOptions`
+- New struct `AdaptiveNetworkHardeningsClientListByExtendedResourcePager`
+- New struct `AdaptiveNetworkHardeningsClientListByExtendedResourceResponse`
+- New struct `AdaptiveNetworkHardeningsClientListByExtendedResourceResult`
+- New struct `AdvancedThreatProtectionClientCreateOptions`
+- New struct `AdvancedThreatProtectionClientCreateResponse`
+- New struct `AdvancedThreatProtectionClientCreateResult`
+- New struct `AdvancedThreatProtectionClientGetOptions`
+- New struct `AdvancedThreatProtectionClientGetResponse`
+- New struct `AdvancedThreatProtectionClientGetResult`
+- New struct `AlertsClientBeginSimulateOptions`
+- New struct `AlertsClientGetResourceGroupLevelOptions`
+- New struct `AlertsClientGetResourceGroupLevelResponse`
+- New struct `AlertsClientGetResourceGroupLevelResult`
+- New struct `AlertsClientGetSubscriptionLevelOptions`
+- New struct `AlertsClientGetSubscriptionLevelResponse`
+- New struct `AlertsClientGetSubscriptionLevelResult`
+- New struct `AlertsClientListByResourceGroupOptions`
+- New struct `AlertsClientListByResourceGroupPager`
+- New struct `AlertsClientListByResourceGroupResponse`
+- New struct `AlertsClientListByResourceGroupResult`
+- New struct `AlertsClientListOptions`
+- New struct `AlertsClientListPager`
+- New struct `AlertsClientListResourceGroupLevelByRegionOptions`
+- New struct `AlertsClientListResourceGroupLevelByRegionPager`
+- New struct `AlertsClientListResourceGroupLevelByRegionResponse`
+- New struct `AlertsClientListResourceGroupLevelByRegionResult`
+- New struct `AlertsClientListResponse`
+- New struct `AlertsClientListResult`
+- New struct `AlertsClientListSubscriptionLevelByRegionOptions`
+- New struct `AlertsClientListSubscriptionLevelByRegionPager`
+- New struct `AlertsClientListSubscriptionLevelByRegionResponse`
+- New struct `AlertsClientListSubscriptionLevelByRegionResult`
+- New struct `AlertsClientSimulatePoller`
+- New struct `AlertsClientSimulatePollerResponse`
+- New struct `AlertsClientSimulateResponse`
+- New struct `AlertsClientUpdateResourceGroupLevelStateToActivateOptions`
+- New struct `AlertsClientUpdateResourceGroupLevelStateToActivateResponse`
+- New struct `AlertsClientUpdateResourceGroupLevelStateToDismissOptions`
+- New struct `AlertsClientUpdateResourceGroupLevelStateToDismissResponse`
+- New struct `AlertsClientUpdateResourceGroupLevelStateToResolveOptions`
+- New struct `AlertsClientUpdateResourceGroupLevelStateToResolveResponse`
+- New struct `AlertsClientUpdateSubscriptionLevelStateToActivateOptions`
+- New struct `AlertsClientUpdateSubscriptionLevelStateToActivateResponse`
+- New struct `AlertsClientUpdateSubscriptionLevelStateToDismissOptions`
+- New struct `AlertsClientUpdateSubscriptionLevelStateToDismissResponse`
+- New struct `AlertsClientUpdateSubscriptionLevelStateToResolveOptions`
+- New struct `AlertsClientUpdateSubscriptionLevelStateToResolveResponse`
+- New struct `AlertsSuppressionRulesClientDeleteOptions`
+- New struct `AlertsSuppressionRulesClientDeleteResponse`
+- New struct `AlertsSuppressionRulesClientGetOptions`
+- New struct `AlertsSuppressionRulesClientGetResponse`
+- New struct `AlertsSuppressionRulesClientGetResult`
+- New struct `AlertsSuppressionRulesClientListOptions`
+- New struct `AlertsSuppressionRulesClientListPager`
+- New struct `AlertsSuppressionRulesClientListResponse`
+- New struct `AlertsSuppressionRulesClientListResult`
+- New struct `AlertsSuppressionRulesClientUpdateOptions`
+- New struct `AlertsSuppressionRulesClientUpdateResponse`
+- New struct `AlertsSuppressionRulesClientUpdateResult`
+- New struct `AllowedConnectionsClientGetOptions`
+- New struct `AllowedConnectionsClientGetResponse`
+- New struct `AllowedConnectionsClientGetResult`
+- New struct `AllowedConnectionsClientListByHomeRegionOptions`
+- New struct `AllowedConnectionsClientListByHomeRegionPager`
+- New struct `AllowedConnectionsClientListByHomeRegionResponse`
+- New struct `AllowedConnectionsClientListByHomeRegionResult`
+- New struct `AllowedConnectionsClientListOptions`
+- New struct `AllowedConnectionsClientListPager`
+- New struct `AllowedConnectionsClientListResponse`
+- New struct `AllowedConnectionsClientListResult`
+- New struct `Assessment`
+- New struct `AssessmentList`
+- New struct `AssessmentMetadata`
+- New struct `AssessmentMetadataPartnerData`
+- New struct `AssessmentMetadataProperties`
+- New struct `AssessmentMetadataPropertiesResponse`
+- New struct `AssessmentMetadataPropertiesResponsePublishDates`
+- New struct `AssessmentMetadataResponse`
+- New struct `AssessmentMetadataResponseList`
+- New struct `AssessmentPartnerData`
+- New struct `AssessmentProperties`
+- New struct `AssessmentPropertiesBase`
+- New struct `AssessmentPropertiesResponse`
+- New struct `AssessmentResponse`
+- New struct `AssessmentsClientCreateOrUpdateOptions`
+- New struct `AssessmentsClientCreateOrUpdateResponse`
+- New struct `AssessmentsClientCreateOrUpdateResult`
+- New struct `AssessmentsClientDeleteOptions`
+- New struct `AssessmentsClientDeleteResponse`
+- New struct `AssessmentsClientGetOptions`
+- New struct `AssessmentsClientGetResponse`
+- New struct `AssessmentsClientGetResult`
+- New struct `AssessmentsClientListOptions`
+- New struct `AssessmentsClientListPager`
+- New struct `AssessmentsClientListResponse`
+- New struct `AssessmentsClientListResult`
+- New struct `AssessmentsMetadataClientCreateInSubscriptionOptions`
+- New struct `AssessmentsMetadataClientCreateInSubscriptionResponse`
+- New struct `AssessmentsMetadataClientCreateInSubscriptionResult`
+- New struct `AssessmentsMetadataClientDeleteInSubscriptionOptions`
+- New struct `AssessmentsMetadataClientDeleteInSubscriptionResponse`
+- New struct `AssessmentsMetadataClientGetInSubscriptionOptions`
+- New struct `AssessmentsMetadataClientGetInSubscriptionResponse`
+- New struct `AssessmentsMetadataClientGetInSubscriptionResult`
+- New struct `AssessmentsMetadataClientGetOptions`
+- New struct `AssessmentsMetadataClientGetResponse`
+- New struct `AssessmentsMetadataClientGetResult`
+- New struct `AssessmentsMetadataClientListBySubscriptionOptions`
+- New struct `AssessmentsMetadataClientListBySubscriptionPager`
+- New struct `AssessmentsMetadataClientListBySubscriptionResponse`
+- New struct `AssessmentsMetadataClientListBySubscriptionResult`
+- New struct `AssessmentsMetadataClientListOptions`
+- New struct `AssessmentsMetadataClientListPager`
+- New struct `AssessmentsMetadataClientListResponse`
+- New struct `AssessmentsMetadataClientListResult`
+- New struct `AutoProvisioningSettingsClientCreateOptions`
+- New struct `AutoProvisioningSettingsClientCreateResponse`
+- New struct `AutoProvisioningSettingsClientCreateResult`
+- New struct `AutoProvisioningSettingsClientGetOptions`
+- New struct `AutoProvisioningSettingsClientGetResponse`
+- New struct `AutoProvisioningSettingsClientGetResult`
+- New struct `AutoProvisioningSettingsClientListOptions`
+- New struct `AutoProvisioningSettingsClientListPager`
+- New struct `AutoProvisioningSettingsClientListResponse`
+- New struct `AutoProvisioningSettingsClientListResult`
+- New struct `AutomationsClientCreateOrUpdateOptions`
+- New struct `AutomationsClientCreateOrUpdateResponse`
+- New struct `AutomationsClientCreateOrUpdateResult`
+- New struct `AutomationsClientDeleteOptions`
+- New struct `AutomationsClientDeleteResponse`
+- New struct `AutomationsClientGetOptions`
+- New struct `AutomationsClientGetResponse`
+- New struct `AutomationsClientGetResult`
+- New struct `AutomationsClientListByResourceGroupOptions`
+- New struct `AutomationsClientListByResourceGroupPager`
+- New struct `AutomationsClientListByResourceGroupResponse`
+- New struct `AutomationsClientListByResourceGroupResult`
+- New struct `AutomationsClientListOptions`
+- New struct `AutomationsClientListPager`
+- New struct `AutomationsClientListResponse`
+- New struct `AutomationsClientListResult`
+- New struct `AutomationsClientValidateOptions`
+- New struct `AutomationsClientValidateResponse`
+- New struct `AutomationsClientValidateResult`
+- New struct `AzureResourceDetails`
+- New struct `ComplianceResultsClientGetOptions`
+- New struct `ComplianceResultsClientGetResponse`
+- New struct `ComplianceResultsClientGetResult`
+- New struct `ComplianceResultsClientListOptions`
+- New struct `ComplianceResultsClientListPager`
+- New struct `ComplianceResultsClientListResponse`
+- New struct `ComplianceResultsClientListResult`
+- New struct `CompliancesClientGetOptions`
+- New struct `CompliancesClientGetResponse`
+- New struct `CompliancesClientGetResult`
+- New struct `CompliancesClientListOptions`
+- New struct `CompliancesClientListPager`
+- New struct `CompliancesClientListResponse`
+- New struct `CompliancesClientListResult`
+- New struct `Connector`
+- New struct `ConnectorProperties`
+- New struct `ConnectorPropertiesOrganizationalData`
+- New struct `ConnectorsClientCreateOrUpdateOptions`
+- New struct `ConnectorsClientCreateOrUpdateResponse`
+- New struct `ConnectorsClientCreateOrUpdateResult`
+- New struct `ConnectorsClientDeleteOptions`
+- New struct `ConnectorsClientDeleteResponse`
+- New struct `ConnectorsClientGetOptions`
+- New struct `ConnectorsClientGetResponse`
+- New struct `ConnectorsClientGetResult`
+- New struct `ConnectorsClientListByResourceGroupOptions`
+- New struct `ConnectorsClientListByResourceGroupPager`
+- New struct `ConnectorsClientListByResourceGroupResponse`
+- New struct `ConnectorsClientListByResourceGroupResult`
+- New struct `ConnectorsClientListOptions`
+- New struct `ConnectorsClientListPager`
+- New struct `ConnectorsClientListResponse`
+- New struct `ConnectorsClientListResult`
+- New struct `ConnectorsClientUpdateOptions`
+- New struct `ConnectorsClientUpdateResponse`
+- New struct `ConnectorsClientUpdateResult`
+- New struct `ConnectorsList`
+- New struct `Contact`
+- New struct `ContactList`
+- New struct `ContactProperties`
+- New struct `ContactsClient`
+- New struct `ContactsClientCreateOptions`
+- New struct `ContactsClientCreateResponse`
+- New struct `ContactsClientCreateResult`
+- New struct `ContactsClientDeleteOptions`
+- New struct `ContactsClientDeleteResponse`
+- New struct `ContactsClientGetOptions`
+- New struct `ContactsClientGetResponse`
+- New struct `ContactsClientGetResult`
+- New struct `ContactsClientListOptions`
+- New struct `ContactsClientListPager`
+- New struct `ContactsClientListResponse`
+- New struct `ContactsClientListResult`
+- New struct `ContactsClientUpdateOptions`
+- New struct `ContactsClientUpdateResponse`
+- New struct `ContactsClientUpdateResult`
+- New struct `CustomAssessmentAutomationsClientCreateOptions`
+- New struct `CustomAssessmentAutomationsClientCreateResponse`
+- New struct `CustomAssessmentAutomationsClientCreateResult`
+- New struct `CustomAssessmentAutomationsClientDeleteOptions`
+- New struct `CustomAssessmentAutomationsClientDeleteResponse`
+- New struct `CustomAssessmentAutomationsClientGetOptions`
+- New struct `CustomAssessmentAutomationsClientGetResponse`
+- New struct `CustomAssessmentAutomationsClientGetResult`
+- New struct `CustomAssessmentAutomationsClientListByResourceGroupOptions`
+- New struct `CustomAssessmentAutomationsClientListByResourceGroupPager`
+- New struct `CustomAssessmentAutomationsClientListByResourceGroupResponse`
+- New struct `CustomAssessmentAutomationsClientListByResourceGroupResult`
+- New struct `CustomAssessmentAutomationsClientListBySubscriptionOptions`
+- New struct `CustomAssessmentAutomationsClientListBySubscriptionPager`
+- New struct `CustomAssessmentAutomationsClientListBySubscriptionResponse`
+- New struct `CustomAssessmentAutomationsClientListBySubscriptionResult`
+- New struct `CustomEntityStoreAssignmentsClientCreateOptions`
+- New struct `CustomEntityStoreAssignmentsClientCreateResponse`
+- New struct `CustomEntityStoreAssignmentsClientCreateResult`
+- New struct `CustomEntityStoreAssignmentsClientDeleteOptions`
+- New struct `CustomEntityStoreAssignmentsClientDeleteResponse`
+- New struct `CustomEntityStoreAssignmentsClientGetOptions`
+- New struct `CustomEntityStoreAssignmentsClientGetResponse`
+- New struct `CustomEntityStoreAssignmentsClientGetResult`
+- New struct `CustomEntityStoreAssignmentsClientListByResourceGroupOptions`
+- New struct `CustomEntityStoreAssignmentsClientListByResourceGroupPager`
+- New struct `CustomEntityStoreAssignmentsClientListByResourceGroupResponse`
+- New struct `CustomEntityStoreAssignmentsClientListByResourceGroupResult`
+- New struct `CustomEntityStoreAssignmentsClientListBySubscriptionOptions`
+- New struct `CustomEntityStoreAssignmentsClientListBySubscriptionPager`
+- New struct `CustomEntityStoreAssignmentsClientListBySubscriptionResponse`
+- New struct `CustomEntityStoreAssignmentsClientListBySubscriptionResult`
+- New struct `DeviceSecurityGroupsClientCreateOrUpdateOptions`
+- New struct `DeviceSecurityGroupsClientCreateOrUpdateResponse`
+- New struct `DeviceSecurityGroupsClientCreateOrUpdateResult`
+- New struct `DeviceSecurityGroupsClientDeleteOptions`
+- New struct `DeviceSecurityGroupsClientDeleteResponse`
+- New struct `DeviceSecurityGroupsClientGetOptions`
+- New struct `DeviceSecurityGroupsClientGetResponse`
+- New struct `DeviceSecurityGroupsClientGetResult`
+- New struct `DeviceSecurityGroupsClientListOptions`
+- New struct `DeviceSecurityGroupsClientListPager`
+- New struct `DeviceSecurityGroupsClientListResponse`
+- New struct `DeviceSecurityGroupsClientListResult`
+- New struct `DiscoveredSecuritySolutionsClientGetOptions`
+- New struct `DiscoveredSecuritySolutionsClientGetResponse`
+- New struct `DiscoveredSecuritySolutionsClientGetResult`
+- New struct `DiscoveredSecuritySolutionsClientListByHomeRegionOptions`
+- New struct `DiscoveredSecuritySolutionsClientListByHomeRegionPager`
+- New struct `DiscoveredSecuritySolutionsClientListByHomeRegionResponse`
+- New struct `DiscoveredSecuritySolutionsClientListByHomeRegionResult`
+- New struct `DiscoveredSecuritySolutionsClientListOptions`
+- New struct `DiscoveredSecuritySolutionsClientListPager`
+- New struct `DiscoveredSecuritySolutionsClientListResponse`
+- New struct `DiscoveredSecuritySolutionsClientListResult`
+- New struct `ExternalSecuritySolutionsClientGetOptions`
+- New struct `ExternalSecuritySolutionsClientGetResponse`
+- New struct `ExternalSecuritySolutionsClientGetResult`
+- New struct `ExternalSecuritySolutionsClientListByHomeRegionOptions`
+- New struct `ExternalSecuritySolutionsClientListByHomeRegionPager`
+- New struct `ExternalSecuritySolutionsClientListByHomeRegionResponse`
+- New struct `ExternalSecuritySolutionsClientListByHomeRegionResult`
+- New struct `ExternalSecuritySolutionsClientListOptions`
+- New struct `ExternalSecuritySolutionsClientListPager`
+- New struct `ExternalSecuritySolutionsClientListResponse`
+- New struct `ExternalSecuritySolutionsClientListResult`
+- New struct `InformationProtectionPoliciesClientCreateOrUpdateOptions`
+- New struct `InformationProtectionPoliciesClientCreateOrUpdateResponse`
+- New struct `InformationProtectionPoliciesClientCreateOrUpdateResult`
+- New struct `InformationProtectionPoliciesClientGetOptions`
+- New struct `InformationProtectionPoliciesClientGetResponse`
+- New struct `InformationProtectionPoliciesClientGetResult`
+- New struct `InformationProtectionPoliciesClientListOptions`
+- New struct `InformationProtectionPoliciesClientListPager`
+- New struct `InformationProtectionPoliciesClientListResponse`
+- New struct `InformationProtectionPoliciesClientListResult`
+- New struct `IngestionSettingsClientCreateOptions`
+- New struct `IngestionSettingsClientCreateResponse`
+- New struct `IngestionSettingsClientCreateResult`
+- New struct `IngestionSettingsClientDeleteOptions`
+- New struct `IngestionSettingsClientDeleteResponse`
+- New struct `IngestionSettingsClientGetOptions`
+- New struct `IngestionSettingsClientGetResponse`
+- New struct `IngestionSettingsClientGetResult`
+- New struct `IngestionSettingsClientListConnectionStringsOptions`
+- New struct `IngestionSettingsClientListConnectionStringsResponse`
+- New struct `IngestionSettingsClientListConnectionStringsResult`
+- New struct `IngestionSettingsClientListOptions`
+- New struct `IngestionSettingsClientListPager`
+- New struct `IngestionSettingsClientListResponse`
+- New struct `IngestionSettingsClientListResult`
+- New struct `IngestionSettingsClientListTokensOptions`
+- New struct `IngestionSettingsClientListTokensResponse`
+- New struct `IngestionSettingsClientListTokensResult`
+- New struct `IotSecuritySolutionAnalyticsClientGetOptions`
+- New struct `IotSecuritySolutionAnalyticsClientGetResponse`
+- New struct `IotSecuritySolutionAnalyticsClientGetResult`
+- New struct `IotSecuritySolutionAnalyticsClientListOptions`
+- New struct `IotSecuritySolutionAnalyticsClientListResponse`
+- New struct `IotSecuritySolutionAnalyticsClientListResult`
+- New struct `IotSecuritySolutionClientCreateOrUpdateOptions`
+- New struct `IotSecuritySolutionClientCreateOrUpdateResponse`
+- New struct `IotSecuritySolutionClientCreateOrUpdateResult`
+- New struct `IotSecuritySolutionClientDeleteOptions`
+- New struct `IotSecuritySolutionClientDeleteResponse`
+- New struct `IotSecuritySolutionClientGetOptions`
+- New struct `IotSecuritySolutionClientGetResponse`
+- New struct `IotSecuritySolutionClientGetResult`
+- New struct `IotSecuritySolutionClientListByResourceGroupOptions`
+- New struct `IotSecuritySolutionClientListByResourceGroupPager`
+- New struct `IotSecuritySolutionClientListByResourceGroupResponse`
+- New struct `IotSecuritySolutionClientListByResourceGroupResult`
+- New struct `IotSecuritySolutionClientListBySubscriptionOptions`
+- New struct `IotSecuritySolutionClientListBySubscriptionPager`
+- New struct `IotSecuritySolutionClientListBySubscriptionResponse`
+- New struct `IotSecuritySolutionClientListBySubscriptionResult`
+- New struct `IotSecuritySolutionClientUpdateOptions`
+- New struct `IotSecuritySolutionClientUpdateResponse`
+- New struct `IotSecuritySolutionClientUpdateResult`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissOptions`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissResponse`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientGetOptions`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResult`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListPager`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse`
+- New struct `IotSecuritySolutionsAnalyticsAggregatedAlertClientListResult`
+- New struct `IotSecuritySolutionsAnalyticsRecommendationClientGetOptions`
+- New struct `IotSecuritySolutionsAnalyticsRecommendationClientGetResponse`
+- New struct `IotSecuritySolutionsAnalyticsRecommendationClientGetResult`
+- New struct `IotSecuritySolutionsAnalyticsRecommendationClientListOptions`
+- New struct `IotSecuritySolutionsAnalyticsRecommendationClientListPager`
+- New struct `IotSecuritySolutionsAnalyticsRecommendationClientListResponse`
+- New struct `IotSecuritySolutionsAnalyticsRecommendationClientListResult`
+- New struct `JitNetworkAccessPoliciesClientCreateOrUpdateOptions`
+- New struct `JitNetworkAccessPoliciesClientCreateOrUpdateResponse`
+- New struct `JitNetworkAccessPoliciesClientCreateOrUpdateResult`
+- New struct `JitNetworkAccessPoliciesClientDeleteOptions`
+- New struct `JitNetworkAccessPoliciesClientDeleteResponse`
+- New struct `JitNetworkAccessPoliciesClientGetOptions`
+- New struct `JitNetworkAccessPoliciesClientGetResponse`
+- New struct `JitNetworkAccessPoliciesClientGetResult`
+- New struct `JitNetworkAccessPoliciesClientInitiateOptions`
+- New struct `JitNetworkAccessPoliciesClientInitiateResponse`
+- New struct `JitNetworkAccessPoliciesClientInitiateResult`
+- New struct `JitNetworkAccessPoliciesClientListByRegionOptions`
+- New struct `JitNetworkAccessPoliciesClientListByRegionPager`
+- New struct `JitNetworkAccessPoliciesClientListByRegionResponse`
+- New struct `JitNetworkAccessPoliciesClientListByRegionResult`
+- New struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions`
+- New struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionPager`
+- New struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse`
+- New struct `JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResult`
+- New struct `JitNetworkAccessPoliciesClientListByResourceGroupOptions`
+- New struct `JitNetworkAccessPoliciesClientListByResourceGroupPager`
+- New struct `JitNetworkAccessPoliciesClientListByResourceGroupResponse`
+- New struct `JitNetworkAccessPoliciesClientListByResourceGroupResult`
+- New struct `JitNetworkAccessPoliciesClientListOptions`
+- New struct `JitNetworkAccessPoliciesClientListPager`
+- New struct `JitNetworkAccessPoliciesClientListResponse`
+- New struct `JitNetworkAccessPoliciesClientListResult`
+- New struct `LocationsClientGetOptions`
+- New struct `LocationsClientGetResponse`
+- New struct `LocationsClientGetResult`
+- New struct `LocationsClientListOptions`
+- New struct `LocationsClientListPager`
+- New struct `LocationsClientListResponse`
+- New struct `LocationsClientListResult`
+- New struct `MdeOnboardingsClientGetOptions`
+- New struct `MdeOnboardingsClientGetResponse`
+- New struct `MdeOnboardingsClientGetResult`
+- New struct `MdeOnboardingsClientListOptions`
+- New struct `MdeOnboardingsClientListResponse`
+- New struct `MdeOnboardingsClientListResult`
+- New struct `OnPremiseResourceDetails`
+- New struct `OnPremiseSQLResourceDetails`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PricingsClientGetOptions`
+- New struct `PricingsClientGetResponse`
+- New struct `PricingsClientGetResult`
+- New struct `PricingsClientListOptions`
+- New struct `PricingsClientListResponse`
+- New struct `PricingsClientListResult`
+- New struct `PricingsClientUpdateOptions`
+- New struct `PricingsClientUpdateResponse`
+- New struct `PricingsClientUpdateResult`
+- New struct `RegulatoryComplianceAssessmentsClientGetOptions`
+- New struct `RegulatoryComplianceAssessmentsClientGetResponse`
+- New struct `RegulatoryComplianceAssessmentsClientGetResult`
+- New struct `RegulatoryComplianceAssessmentsClientListOptions`
+- New struct `RegulatoryComplianceAssessmentsClientListPager`
+- New struct `RegulatoryComplianceAssessmentsClientListResponse`
+- New struct `RegulatoryComplianceAssessmentsClientListResult`
+- New struct `RegulatoryComplianceControlsClientGetOptions`
+- New struct `RegulatoryComplianceControlsClientGetResponse`
+- New struct `RegulatoryComplianceControlsClientGetResult`
+- New struct `RegulatoryComplianceControlsClientListOptions`
+- New struct `RegulatoryComplianceControlsClientListPager`
+- New struct `RegulatoryComplianceControlsClientListResponse`
+- New struct `RegulatoryComplianceControlsClientListResult`
+- New struct `RegulatoryComplianceStandardsClientGetOptions`
+- New struct `RegulatoryComplianceStandardsClientGetResponse`
+- New struct `RegulatoryComplianceStandardsClientGetResult`
+- New struct `RegulatoryComplianceStandardsClientListOptions`
+- New struct `RegulatoryComplianceStandardsClientListPager`
+- New struct `RegulatoryComplianceStandardsClientListResponse`
+- New struct `RegulatoryComplianceStandardsClientListResult`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientAddOptions`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientAddResponse`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientAddResult`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateOptions`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResponse`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResult`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientDeleteOptions`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientDeleteResponse`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientGetOptions`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientGetResponse`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientGetResult`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientListOptions`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientListResponse`
+- New struct `SQLVulnerabilityAssessmentBaselineRulesClientListResult`
+- New struct `SQLVulnerabilityAssessmentScanResultsClientGetOptions`
+- New struct `SQLVulnerabilityAssessmentScanResultsClientGetResponse`
+- New struct `SQLVulnerabilityAssessmentScanResultsClientGetResult`
+- New struct `SQLVulnerabilityAssessmentScanResultsClientListOptions`
+- New struct `SQLVulnerabilityAssessmentScanResultsClientListResponse`
+- New struct `SQLVulnerabilityAssessmentScanResultsClientListResult`
+- New struct `SQLVulnerabilityAssessmentScansClientGetOptions`
+- New struct `SQLVulnerabilityAssessmentScansClientGetResponse`
+- New struct `SQLVulnerabilityAssessmentScansClientGetResult`
+- New struct `SQLVulnerabilityAssessmentScansClientListOptions`
+- New struct `SQLVulnerabilityAssessmentScansClientListResponse`
+- New struct `SQLVulnerabilityAssessmentScansClientListResult`
+- New struct `SecureScoreControlDefinitionsClientListBySubscriptionOptions`
+- New struct `SecureScoreControlDefinitionsClientListBySubscriptionPager`
+- New struct `SecureScoreControlDefinitionsClientListBySubscriptionResponse`
+- New struct `SecureScoreControlDefinitionsClientListBySubscriptionResult`
+- New struct `SecureScoreControlDefinitionsClientListOptions`
+- New struct `SecureScoreControlDefinitionsClientListPager`
+- New struct `SecureScoreControlDefinitionsClientListResponse`
+- New struct `SecureScoreControlDefinitionsClientListResult`
+- New struct `SecureScoreControlsClientListBySecureScoreOptions`
+- New struct `SecureScoreControlsClientListBySecureScorePager`
+- New struct `SecureScoreControlsClientListBySecureScoreResponse`
+- New struct `SecureScoreControlsClientListBySecureScoreResult`
+- New struct `SecureScoreControlsClientListOptions`
+- New struct `SecureScoreControlsClientListPager`
+- New struct `SecureScoreControlsClientListResponse`
+- New struct `SecureScoreControlsClientListResult`
+- New struct `SecureScoresClientGetOptions`
+- New struct `SecureScoresClientGetResponse`
+- New struct `SecureScoresClientGetResult`
+- New struct `SecureScoresClientListOptions`
+- New struct `SecureScoresClientListPager`
+- New struct `SecureScoresClientListResponse`
+- New struct `SecureScoresClientListResult`
+- New struct `ServerVulnerabilityAssessmentClientBeginDeleteOptions`
+- New struct `ServerVulnerabilityAssessmentClientCreateOrUpdateOptions`
+- New struct `ServerVulnerabilityAssessmentClientCreateOrUpdateResponse`
+- New struct `ServerVulnerabilityAssessmentClientCreateOrUpdateResult`
+- New struct `ServerVulnerabilityAssessmentClientDeletePoller`
+- New struct `ServerVulnerabilityAssessmentClientDeletePollerResponse`
+- New struct `ServerVulnerabilityAssessmentClientDeleteResponse`
+- New struct `ServerVulnerabilityAssessmentClientGetOptions`
+- New struct `ServerVulnerabilityAssessmentClientGetResponse`
+- New struct `ServerVulnerabilityAssessmentClientGetResult`
+- New struct `ServerVulnerabilityAssessmentClientListByExtendedResourceOptions`
+- New struct `ServerVulnerabilityAssessmentClientListByExtendedResourceResponse`
+- New struct `ServerVulnerabilityAssessmentClientListByExtendedResourceResult`
+- New struct `SettingsClientGetOptions`
+- New struct `SettingsClientGetResponse`
+- New struct `SettingsClientGetResult`
+- New struct `SettingsClientListOptions`
+- New struct `SettingsClientListPager`
+- New struct `SettingsClientListResponse`
+- New struct `SettingsClientListResult`
+- New struct `SettingsClientUpdateOptions`
+- New struct `SettingsClientUpdateResponse`
+- New struct `SettingsClientUpdateResult`
+- New struct `SoftwareInventoriesClientGetOptions`
+- New struct `SoftwareInventoriesClientGetResponse`
+- New struct `SoftwareInventoriesClientGetResult`
+- New struct `SoftwareInventoriesClientListByExtendedResourceOptions`
+- New struct `SoftwareInventoriesClientListByExtendedResourcePager`
+- New struct `SoftwareInventoriesClientListByExtendedResourceResponse`
+- New struct `SoftwareInventoriesClientListByExtendedResourceResult`
+- New struct `SoftwareInventoriesClientListBySubscriptionOptions`
+- New struct `SoftwareInventoriesClientListBySubscriptionPager`
+- New struct `SoftwareInventoriesClientListBySubscriptionResponse`
+- New struct `SoftwareInventoriesClientListBySubscriptionResult`
+- New struct `Solution`
+- New struct `SolutionList`
+- New struct `SolutionProperties`
+- New struct `SolutionsClient`
+- New struct `SolutionsClientGetOptions`
+- New struct `SolutionsClientGetResponse`
+- New struct `SolutionsClientGetResult`
+- New struct `SolutionsClientListOptions`
+- New struct `SolutionsClientListPager`
+- New struct `SolutionsClientListResponse`
+- New struct `SolutionsClientListResult`
+- New struct `SolutionsReferenceData`
+- New struct `SolutionsReferenceDataClient`
+- New struct `SolutionsReferenceDataClientListByHomeRegionOptions`
+- New struct `SolutionsReferenceDataClientListByHomeRegionResponse`
+- New struct `SolutionsReferenceDataClientListByHomeRegionResult`
+- New struct `SolutionsReferenceDataClientListOptions`
+- New struct `SolutionsReferenceDataClientListResponse`
+- New struct `SolutionsReferenceDataClientListResult`
+- New struct `SolutionsReferenceDataList`
+- New struct `SolutionsReferenceDataProperties`
+- New struct `SubAssessment`
+- New struct `SubAssessmentList`
+- New struct `SubAssessmentProperties`
+- New struct `SubAssessmentsClientGetOptions`
+- New struct `SubAssessmentsClientGetResponse`
+- New struct `SubAssessmentsClientGetResult`
+- New struct `SubAssessmentsClientListAllOptions`
+- New struct `SubAssessmentsClientListAllPager`
+- New struct `SubAssessmentsClientListAllResponse`
+- New struct `SubAssessmentsClientListAllResult`
+- New struct `SubAssessmentsClientListOptions`
+- New struct `SubAssessmentsClientListPager`
+- New struct `SubAssessmentsClientListResponse`
+- New struct `SubAssessmentsClientListResult`
+- New struct `Task`
+- New struct `TaskList`
+- New struct `TaskParameters`
+- New struct `TaskProperties`
+- New struct `TasksClientGetResourceGroupLevelTaskOptions`
+- New struct `TasksClientGetResourceGroupLevelTaskResponse`
+- New struct `TasksClientGetResourceGroupLevelTaskResult`
+- New struct `TasksClientGetSubscriptionLevelTaskOptions`
+- New struct `TasksClientGetSubscriptionLevelTaskResponse`
+- New struct `TasksClientGetSubscriptionLevelTaskResult`
+- New struct `TasksClientListByHomeRegionOptions`
+- New struct `TasksClientListByHomeRegionPager`
+- New struct `TasksClientListByHomeRegionResponse`
+- New struct `TasksClientListByHomeRegionResult`
+- New struct `TasksClientListByResourceGroupOptions`
+- New struct `TasksClientListByResourceGroupPager`
+- New struct `TasksClientListByResourceGroupResponse`
+- New struct `TasksClientListByResourceGroupResult`
+- New struct `TasksClientListOptions`
+- New struct `TasksClientListPager`
+- New struct `TasksClientListResponse`
+- New struct `TasksClientListResult`
+- New struct `TasksClientUpdateResourceGroupLevelTaskStateOptions`
+- New struct `TasksClientUpdateResourceGroupLevelTaskStateResponse`
+- New struct `TasksClientUpdateSubscriptionLevelTaskStateOptions`
+- New struct `TasksClientUpdateSubscriptionLevelTaskStateResponse`
+- New struct `TopologyClientGetOptions`
+- New struct `TopologyClientGetResponse`
+- New struct `TopologyClientGetResult`
+- New struct `TopologyClientListByHomeRegionOptions`
+- New struct `TopologyClientListByHomeRegionPager`
+- New struct `TopologyClientListByHomeRegionResponse`
+- New struct `TopologyClientListByHomeRegionResult`
+- New struct `TopologyClientListOptions`
+- New struct `TopologyClientListPager`
+- New struct `TopologyClientListResponse`
+- New struct `TopologyClientListResult`
+- New struct `WorkspaceSettingsClientCreateOptions`
+- New struct `WorkspaceSettingsClientCreateResponse`
+- New struct `WorkspaceSettingsClientCreateResult`
+- New struct `WorkspaceSettingsClientDeleteOptions`
+- New struct `WorkspaceSettingsClientDeleteResponse`
+- New struct `WorkspaceSettingsClientGetOptions`
+- New struct `WorkspaceSettingsClientGetResponse`
+- New struct `WorkspaceSettingsClientGetResult`
+- New struct `WorkspaceSettingsClientListOptions`
+- New struct `WorkspaceSettingsClientListPager`
+- New struct `WorkspaceSettingsClientListResponse`
+- New struct `WorkspaceSettingsClientListResult`
+- New struct `WorkspaceSettingsClientUpdateOptions`
+- New struct `WorkspaceSettingsClientUpdateResponse`
+- New struct `WorkspaceSettingsClientUpdateResult`
+- New field `ID` in struct `WorkspaceSetting`
+- New field `Name` in struct `WorkspaceSetting`
+- New field `Type` in struct `WorkspaceSetting`
+- New field `Type` in struct `AlertsSuppressionRule`
+- New field `ID` in struct `AlertsSuppressionRule`
+- New field `Name` in struct `AlertsSuppressionRule`
+- New field `Name` in struct `RuleResults`
+- New field `Type` in struct `RuleResults`
+- New field `ID` in struct `RuleResults`
+- New field `ID` in struct `Compliance`
+- New field `Name` in struct `Compliance`
+- New field `Type` in struct `Compliance`
+- New field `Location` in struct `AdaptiveApplicationControlGroup`
+- New field `Name` in struct `AdaptiveApplicationControlGroup`
+- New field `Type` in struct `AdaptiveApplicationControlGroup`
+- New field `ID` in struct `AdaptiveApplicationControlGroup`
+- New field `ID` in struct `AscLocation`
+- New field `Name` in struct `AscLocation`
+- New field `Type` in struct `AscLocation`
+- New field `DisplayName` in struct `CustomAssessmentAutomationRequestProperties`
+- New field `Description` in struct `MqttC2DMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `MqttC2DMessagesNotInAllowedRange`
+- New field `IsEnabled` in struct `MqttC2DMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `MqttC2DMessagesNotInAllowedRange`
+- New field `MinThreshold` in struct `MqttC2DMessagesNotInAllowedRange`
+- New field `RuleType` in struct `MqttC2DMessagesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `MqttC2DMessagesNotInAllowedRange`
+- New field `Tags` in struct `UpdateIotSecuritySolutionData`
+- New field `ID` in struct `CustomAssessmentAutomation`
+- New field `Name` in struct `CustomAssessmentAutomation`
+- New field `Type` in struct `CustomAssessmentAutomation`
+- New field `Description` in struct `ThresholdCustomAlertRule`
+- New field `DisplayName` in struct `ThresholdCustomAlertRule`
+- New field `IsEnabled` in struct `ThresholdCustomAlertRule`
+- New field `RuleType` in struct `ThresholdCustomAlertRule`
+- New field `IsEnabled` in struct `AmqpC2DRejectedMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `AmqpC2DRejectedMessagesNotInAllowedRange`
+- New field `MinThreshold` in struct `AmqpC2DRejectedMessagesNotInAllowedRange`
+- New field `RuleType` in struct `AmqpC2DRejectedMessagesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `AmqpC2DRejectedMessagesNotInAllowedRange`
+- New field `Description` in struct `AmqpC2DRejectedMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `AmqpC2DRejectedMessagesNotInAllowedRange`
+- New field `DeviceType` in struct `AADSolutionProperties`
+- New field `DeviceVendor` in struct `AADSolutionProperties`
+- New field `Workspace` in struct `AADSolutionProperties`
+- New field `AdditionalProperties` in struct `AADSolutionProperties`
+- New field `ConnectivityState` in struct `AADSolutionProperties`
+- New field `RuleType` in struct `TwinUpdatesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `TwinUpdatesNotInAllowedRange`
+- New field `Description` in struct `TwinUpdatesNotInAllowedRange`
+- New field `DisplayName` in struct `TwinUpdatesNotInAllowedRange`
+- New field `IsEnabled` in struct `TwinUpdatesNotInAllowedRange`
+- New field `MaxThreshold` in struct `TwinUpdatesNotInAllowedRange`
+- New field `MinThreshold` in struct `TwinUpdatesNotInAllowedRange`
+- New field `ID` in struct `Pricing`
+- New field `Name` in struct `Pricing`
+- New field `Type` in struct `Pricing`
+- New field `ID` in struct `DiscoveredSecuritySolution`
+- New field `Location` in struct `DiscoveredSecuritySolution`
+- New field `Name` in struct `DiscoveredSecuritySolution`
+- New field `Type` in struct `DiscoveredSecuritySolution`
+- New field `ValueType` in struct `ProcessNotAllowed`
+- New field `AllowlistValues` in struct `ProcessNotAllowed`
+- New field `IsEnabled` in struct `ProcessNotAllowed`
+- New field `RuleType` in struct `ProcessNotAllowed`
+- New field `Description` in struct `ProcessNotAllowed`
+- New field `DisplayName` in struct `ProcessNotAllowed`
+- New field `TimeWindowSize` in struct `HTTPD2CMessagesNotInAllowedRange`
+- New field `Description` in struct `HTTPD2CMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `HTTPD2CMessagesNotInAllowedRange`
+- New field `IsEnabled` in struct `HTTPD2CMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `HTTPD2CMessagesNotInAllowedRange`
+- New field `MinThreshold` in struct `HTTPD2CMessagesNotInAllowedRange`
+- New field `RuleType` in struct `HTTPD2CMessagesNotInAllowedRange`
+- New field `Description` in struct `DefenderForContainersAwsOffering`
+- New field `OfferingType` in struct `DefenderForContainersAwsOffering`
+- New field `ID` in struct `Software`
+- New field `Name` in struct `Software`
+- New field `Type` in struct `Software`
+- New field `IsEnabled` in struct `AllowlistCustomAlertRule`
+- New field `RuleType` in struct `AllowlistCustomAlertRule`
+- New field `Description` in struct `AllowlistCustomAlertRule`
+- New field `DisplayName` in struct `AllowlistCustomAlertRule`
+- New field `ValueType` in struct `AllowlistCustomAlertRule`
+- New field `Type` in struct `IoTSecuritySolutionAnalyticsModel`
+- New field `ID` in struct `IoTSecuritySolutionAnalyticsModel`
+- New field `Name` in struct `IoTSecuritySolutionAnalyticsModel`
+- New field `Type` in struct `Scan`
+- New field `ID` in struct `Scan`
+- New field `Name` in struct `Scan`
+- New field `Kind` in struct `ExternalSecuritySolution`
+- New field `ID` in struct `ExternalSecuritySolution`
+- New field `Location` in struct `ExternalSecuritySolution`
+- New field `Name` in struct `ExternalSecuritySolution`
+- New field `Type` in struct `ExternalSecuritySolution`
+- New field `Type` in struct `CefExternalSecuritySolution`
+- New field `Kind` in struct `CefExternalSecuritySolution`
+- New field `ID` in struct `CefExternalSecuritySolution`
+- New field `Location` in struct `CefExternalSecuritySolution`
+- New field `Name` in struct `CefExternalSecuritySolution`
+- New field `Description` in struct `AssessmentStatusResponse`
+- New field `Code` in struct `AssessmentStatusResponse`
+- New field `Cause` in struct `AssessmentStatusResponse`
+- New field `DisplayName` in struct `CustomAssessmentAutomationProperties`
+- New field `ActionType` in struct `AutomationActionLogicApp`
+- New field `Kind` in struct `DataExportSettings`
+- New field `ID` in struct `DataExportSettings`
+- New field `Name` in struct `DataExportSettings`
+- New field `Type` in struct `DataExportSettings`
+- New field `OfferingType` in struct `CspmMonitorAwsOffering`
+- New field `Description` in struct `CspmMonitorAwsOffering`
+- New field `ActionType` in struct `AutomationActionWorkspace`
+- New field `RuleType` in struct `AmqpD2CMessagesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `AmqpD2CMessagesNotInAllowedRange`
+- New field `Description` in struct `AmqpD2CMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `AmqpD2CMessagesNotInAllowedRange`
+- New field `IsEnabled` in struct `AmqpD2CMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `AmqpD2CMessagesNotInAllowedRange`
+- New field `MinThreshold` in struct `AmqpD2CMessagesNotInAllowedRange`
+- New field `ID` in struct `AllowedConnectionsResource`
+- New field `Location` in struct `AllowedConnectionsResource`
+- New field `Name` in struct `AllowedConnectionsResource`
+- New field `Type` in struct `AllowedConnectionsResource`
+- New field `IsEnabled` in struct `FileUploadsNotInAllowedRange`
+- New field `MaxThreshold` in struct `FileUploadsNotInAllowedRange`
+- New field `MinThreshold` in struct `FileUploadsNotInAllowedRange`
+- New field `RuleType` in struct `FileUploadsNotInAllowedRange`
+- New field `TimeWindowSize` in struct `FileUploadsNotInAllowedRange`
+- New field `Description` in struct `FileUploadsNotInAllowedRange`
+- New field `DisplayName` in struct `FileUploadsNotInAllowedRange`
+- New field `TimeWindowSize` in struct `DirectMethodInvokesNotInAllowedRange`
+- New field `Description` in struct `DirectMethodInvokesNotInAllowedRange`
+- New field `DisplayName` in struct `DirectMethodInvokesNotInAllowedRange`
+- New field `IsEnabled` in struct `DirectMethodInvokesNotInAllowedRange`
+- New field `MaxThreshold` in struct `DirectMethodInvokesNotInAllowedRange`
+- New field `MinThreshold` in struct `DirectMethodInvokesNotInAllowedRange`
+- New field `RuleType` in struct `DirectMethodInvokesNotInAllowedRange`
+- New field `Name` in struct `CustomAssessmentAutomationRequest`
+- New field `Type` in struct `CustomAssessmentAutomationRequest`
+- New field `ID` in struct `CustomAssessmentAutomationRequest`
+- New field `Tags` in struct `IoTSecuritySolutionModel`
+- New field `ID` in struct `IoTSecuritySolutionModel`
+- New field `Name` in struct `IoTSecuritySolutionModel`
+- New field `Type` in struct `IoTSecuritySolutionModel`
+- New field `Type` in struct `LogAnalyticsIdentifier`
+- New field `ActionType` in struct `AutomationActionEventHub`
+- New field `Description` in struct `DenylistCustomAlertRule`
+- New field `DisplayName` in struct `DenylistCustomAlertRule`
+- New field `ValueType` in struct `DenylistCustomAlertRule`
+- New field `IsEnabled` in struct `DenylistCustomAlertRule`
+- New field `RuleType` in struct `DenylistCustomAlertRule`
+- New field `RuleType` in struct `HTTPC2DRejectedMessagesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `HTTPC2DRejectedMessagesNotInAllowedRange`
+- New field `Description` in struct `HTTPC2DRejectedMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `HTTPC2DRejectedMessagesNotInAllowedRange`
+- New field `IsEnabled` in struct `HTTPC2DRejectedMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `HTTPC2DRejectedMessagesNotInAllowedRange`
+- New field `MinThreshold` in struct `HTTPC2DRejectedMessagesNotInAllowedRange`
+- New field `AssessedResourceType` in struct `SQLServerVulnerabilityProperties`
+- New field `Tags` in struct `IoTSecurityAggregatedRecommendation`
+- New field `ID` in struct `IoTSecurityAggregatedRecommendation`
+- New field `Name` in struct `IoTSecurityAggregatedRecommendation`
+- New field `Type` in struct `IoTSecurityAggregatedRecommendation`
+- New field `ID` in struct `MdeOnboardingData`
+- New field `Name` in struct `MdeOnboardingData`
+- New field `Type` in struct `MdeOnboardingData`
+- New field `RuleType` in struct `MqttD2CMessagesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `MqttD2CMessagesNotInAllowedRange`
+- New field `Description` in struct `MqttD2CMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `MqttD2CMessagesNotInAllowedRange`
+- New field `IsEnabled` in struct `MqttD2CMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `MqttD2CMessagesNotInAllowedRange`
+- New field `MinThreshold` in struct `MqttD2CMessagesNotInAllowedRange`
+- New field `AllowlistValues` in struct `ConnectionFromIPNotAllowed`
+- New field `IsEnabled` in struct `ConnectionFromIPNotAllowed`
+- New field `RuleType` in struct `ConnectionFromIPNotAllowed`
+- New field `Description` in struct `ConnectionFromIPNotAllowed`
+- New field `DisplayName` in struct `ConnectionFromIPNotAllowed`
+- New field `ValueType` in struct `ConnectionFromIPNotAllowed`
+- New field `ID` in struct `SecureScoreControlDetails`
+- New field `Name` in struct `SecureScoreControlDetails`
+- New field `Type` in struct `SecureScoreControlDetails`
+- New field `Description` in struct `TimeWindowCustomAlertRule`
+- New field `DisplayName` in struct `TimeWindowCustomAlertRule`
+- New field `IsEnabled` in struct `TimeWindowCustomAlertRule`
+- New field `MaxThreshold` in struct `TimeWindowCustomAlertRule`
+- New field `MinThreshold` in struct `TimeWindowCustomAlertRule`
+- New field `RuleType` in struct `TimeWindowCustomAlertRule`
+- New field `AssessedResourceType` in struct `ContainerRegistryVulnerabilityProperties`
+- New field `Location` in struct `Automation`
+- New field `Tags` in struct `Automation`
+- New field `ID` in struct `Automation`
+- New field `Name` in struct `Automation`
+- New field `Type` in struct `Automation`
+- New field `Etag` in struct `Automation`
+- New field `Kind` in struct `Automation`
+- New field `Description` in struct `ListCustomAlertRule`
+- New field `DisplayName` in struct `ListCustomAlertRule`
+- New field `IsEnabled` in struct `ListCustomAlertRule`
+- New field `RuleType` in struct `ListCustomAlertRule`
+- New field `ID` in struct `RegulatoryComplianceStandard`
+- New field `Name` in struct `RegulatoryComplianceStandard`
+- New field `Type` in struct `RegulatoryComplianceStandard`
+- New field `ID` in struct `AlertSyncSettings`
+- New field `Name` in struct `AlertSyncSettings`
+- New field `Type` in struct `AlertSyncSettings`
+- New field `Kind` in struct `AlertSyncSettings`
+- New field `AuthenticationType` in struct `AwsCredsAuthenticationDetailsProperties`
+- New field `AuthenticationProvisioningState` in struct `AwsCredsAuthenticationDetailsProperties`
+- New field `GrantedPermissions` in struct `AwsCredsAuthenticationDetailsProperties`
+- New field `Name` in struct `IngestionSetting`
+- New field `Type` in struct `IngestionSetting`
+- New field `ID` in struct `IngestionSetting`
+- New field `Name` in struct `AdaptiveNetworkHardening`
+- New field `Type` in struct `AdaptiveNetworkHardening`
+- New field `ID` in struct `AdaptiveNetworkHardening`
+- New field `Tags` in struct `IoTSecurityAggregatedAlert`
+- New field `ID` in struct `IoTSecurityAggregatedAlert`
+- New field `Name` in struct `IoTSecurityAggregatedAlert`
+- New field `Type` in struct `IoTSecurityAggregatedAlert`
+- New field `ID` in struct `ScanResult`
+- New field `Name` in struct `ScanResult`
+- New field `Type` in struct `ScanResult`
+- New field `Description` in struct `ActiveConnectionsNotInAllowedRange`
+- New field `DisplayName` in struct `ActiveConnectionsNotInAllowedRange`
+- New field `IsEnabled` in struct `ActiveConnectionsNotInAllowedRange`
+- New field `MaxThreshold` in struct `ActiveConnectionsNotInAllowedRange`
+- New field `MinThreshold` in struct `ActiveConnectionsNotInAllowedRange`
+- New field `RuleType` in struct `ActiveConnectionsNotInAllowedRange`
+- New field `TimeWindowSize` in struct `ActiveConnectionsNotInAllowedRange`
+- New field `GrantedPermissions` in struct `GcpCredentialsDetailsProperties`
+- New field `AuthenticationType` in struct `GcpCredentialsDetailsProperties`
+- New field `AuthenticationProvisioningState` in struct `GcpCredentialsDetailsProperties`
+- New field `ID` in struct `AdvancedThreatProtectionSetting`
+- New field `Name` in struct `AdvancedThreatProtectionSetting`
+- New field `Type` in struct `AdvancedThreatProtectionSetting`
+- New field `Type` in struct `DeviceSecurityGroup`
+- New field `ID` in struct `DeviceSecurityGroup`
+- New field `Name` in struct `DeviceSecurityGroup`
+- New field `MinThreshold` in struct `MqttC2DRejectedMessagesNotInAllowedRange`
+- New field `RuleType` in struct `MqttC2DRejectedMessagesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `MqttC2DRejectedMessagesNotInAllowedRange`
+- New field `Description` in struct `MqttC2DRejectedMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `MqttC2DRejectedMessagesNotInAllowedRange`
+- New field `IsEnabled` in struct `MqttC2DRejectedMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `MqttC2DRejectedMessagesNotInAllowedRange`
+- New field `ID` in struct `TopologyResource`
+- New field `Location` in struct `TopologyResource`
+- New field `Name` in struct `TopologyResource`
+- New field `Type` in struct `TopologyResource`
+- New field `Kind` in struct `TrackedResource`
+- New field `Location` in struct `TrackedResource`
+- New field `Tags` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Etag` in struct `TrackedResource`
+- New field `Type` in struct `Setting`
+- New field `ID` in struct `Setting`
+- New field `Name` in struct `Setting`
+- New field `AuthenticationType` in struct `AwAssumeRoleAuthenticationDetailsProperties`
+- New field `AuthenticationProvisioningState` in struct `AwAssumeRoleAuthenticationDetailsProperties`
+- New field `GrantedPermissions` in struct `AwAssumeRoleAuthenticationDetailsProperties`
+- New field `Name` in struct `Alert`
+- New field `Type` in struct `Alert`
+- New field `ID` in struct `Alert`
+- New field `Type` in struct `AzureResourceIdentifier`
+- New field `ID` in struct `ConnectorSetting`
+- New field `Name` in struct `ConnectorSetting`
+- New field `Type` in struct `ConnectorSetting`
+- New field `Name` in struct `AADExternalSecuritySolution`
+- New field `Type` in struct `AADExternalSecuritySolution`
+- New field `Kind` in struct `AADExternalSecuritySolution`
+- New field `ID` in struct `AADExternalSecuritySolution`
+- New field `Location` in struct `AADExternalSecuritySolution`
+- New field `RuleType` in struct `HTTPC2DMessagesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `HTTPC2DMessagesNotInAllowedRange`
+- New field `Description` in struct `HTTPC2DMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `HTTPC2DMessagesNotInAllowedRange`
+- New field `IsEnabled` in struct `HTTPC2DMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `HTTPC2DMessagesNotInAllowedRange`
+- New field `MinThreshold` in struct `HTTPC2DMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `LocalUserNotAllowed`
+- New field `ValueType` in struct `LocalUserNotAllowed`
+- New field `AllowlistValues` in struct `LocalUserNotAllowed`
+- New field `IsEnabled` in struct `LocalUserNotAllowed`
+- New field `RuleType` in struct `LocalUserNotAllowed`
+- New field `Description` in struct `LocalUserNotAllowed`
+- New field `ID` in struct `InformationProtectionPolicy`
+- New field `Name` in struct `InformationProtectionPolicy`
+- New field `Type` in struct `InformationProtectionPolicy`
+- New field `Name` in struct `SecureScoreItem`
+- New field `Type` in struct `SecureScoreItem`
+- New field `ID` in struct `SecureScoreItem`
+- New field `ID` in struct `RegulatoryComplianceControl`
+- New field `Name` in struct `RegulatoryComplianceControl`
+- New field `Type` in struct `RegulatoryComplianceControl`
+- New field `Description` in struct `DefenderForServersAwsOffering`
+- New field `OfferingType` in struct `DefenderForServersAwsOffering`
+- New field `ID` in struct `ServerVulnerabilityAssessment`
+- New field `Name` in struct `ServerVulnerabilityAssessment`
+- New field `Type` in struct `ServerVulnerabilityAssessment`
+- New field `Type` in struct `AutoProvisioningSetting`
+- New field `ID` in struct `AutoProvisioningSetting`
+- New field `Name` in struct `AutoProvisioningSetting`
+- New field `AssessedResourceType` in struct `ServerVulnerabilityProperties`
+- New field `Type` in struct `JitNetworkAccessPolicy`
+- New field `Kind` in struct `JitNetworkAccessPolicy`
+- New field `ID` in struct `JitNetworkAccessPolicy`
+- New field `Location` in struct `JitNetworkAccessPolicy`
+- New field `Name` in struct `JitNetworkAccessPolicy`
+- New field `Description` in struct `AmqpC2DMessagesNotInAllowedRange`
+- New field `DisplayName` in struct `AmqpC2DMessagesNotInAllowedRange`
+- New field `IsEnabled` in struct `AmqpC2DMessagesNotInAllowedRange`
+- New field `MaxThreshold` in struct `AmqpC2DMessagesNotInAllowedRange`
+- New field `MinThreshold` in struct `AmqpC2DMessagesNotInAllowedRange`
+- New field `RuleType` in struct `AmqpC2DMessagesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `AmqpC2DMessagesNotInAllowedRange`
+- New field `Name` in struct `RegulatoryComplianceAssessment`
+- New field `Type` in struct `RegulatoryComplianceAssessment`
+- New field `ID` in struct `RegulatoryComplianceAssessment`
+- New field `Location` in struct `AtaExternalSecuritySolution`
+- New field `Name` in struct `AtaExternalSecuritySolution`
+- New field `Type` in struct `AtaExternalSecuritySolution`
+- New field `Kind` in struct `AtaExternalSecuritySolution`
+- New field `ID` in struct `AtaExternalSecuritySolution`
+- New field `DisplayName` in struct `UnauthorizedOperationsNotInAllowedRange`
+- New field `IsEnabled` in struct `UnauthorizedOperationsNotInAllowedRange`
+- New field `MaxThreshold` in struct `UnauthorizedOperationsNotInAllowedRange`
+- New field `MinThreshold` in struct `UnauthorizedOperationsNotInAllowedRange`
+- New field `RuleType` in struct `UnauthorizedOperationsNotInAllowedRange`
+- New field `TimeWindowSize` in struct `UnauthorizedOperationsNotInAllowedRange`
+- New field `Description` in struct `UnauthorizedOperationsNotInAllowedRange`
+- New field `Kind` in struct `AlertSimulatorBundlesRequestProperties`
+- New field `AdditionalProperties` in struct `AlertSimulatorBundlesRequestProperties`
+- New field `Workspace` in struct `AtaSolutionProperties`
+- New field `AdditionalProperties` in struct `AtaSolutionProperties`
+- New field `DeviceType` in struct `AtaSolutionProperties`
+- New field `DeviceVendor` in struct `AtaSolutionProperties`
+- New field `AdditionalProperties` in struct `CefSolutionProperties`
+- New field `DeviceType` in struct `CefSolutionProperties`
+- New field `DeviceVendor` in struct `CefSolutionProperties`
+- New field `Workspace` in struct `CefSolutionProperties`
+- New field `ID` in struct `CustomEntityStoreAssignment`
+- New field `Name` in struct `CustomEntityStoreAssignment`
+- New field `Type` in struct `CustomEntityStoreAssignment`
+- New field `DisplayName` in struct `QueuePurgesNotInAllowedRange`
+- New field `IsEnabled` in struct `QueuePurgesNotInAllowedRange`
+- New field `MaxThreshold` in struct `QueuePurgesNotInAllowedRange`
+- New field `MinThreshold` in struct `QueuePurgesNotInAllowedRange`
+- New field `RuleType` in struct `QueuePurgesNotInAllowedRange`
+- New field `TimeWindowSize` in struct `QueuePurgesNotInAllowedRange`
+- New field `Description` in struct `QueuePurgesNotInAllowedRange`
+- New field `Description` in struct `ConnectionToIPNotAllowed`
+- New field `DisplayName` in struct `ConnectionToIPNotAllowed`
+- New field `ValueType` in struct `ConnectionToIPNotAllowed`
+- New field `AllowlistValues` in struct `ConnectionToIPNotAllowed`
+- New field `IsEnabled` in struct `ConnectionToIPNotAllowed`
+- New field `RuleType` in struct `ConnectionToIPNotAllowed`
+- New field `ID` in struct `ComplianceResult`
+- New field `Name` in struct `ComplianceResult`
+- New field `Type` in struct `ComplianceResult`
+- New field `ID` in struct `SecureScoreControlDefinitionItem`
+- New field `Name` in struct `SecureScoreControlDefinitionItem`
+- New field `Type` in struct `SecureScoreControlDefinitionItem`
+- New field `DisplayName` in struct `FailedLocalLoginsNotInAllowedRange`
+- New field `IsEnabled` in struct `FailedLocalLoginsNotInAllowedRange`
+- New field `MaxThreshold` in struct `FailedLocalLoginsNotInAllowedRange`
+- New field `MinThreshold` in struct `FailedLocalLoginsNotInAllowedRange`
+- New field `RuleType` in struct `FailedLocalLoginsNotInAllowedRange`
+- New field `TimeWindowSize` in struct `FailedLocalLoginsNotInAllowedRange`
+- New field `Description` in struct `FailedLocalLoginsNotInAllowedRange`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

@@ -10,10 +10,11 @@ package generated
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Attributes - The object attributes managed by the KeyVault service.
@@ -882,6 +883,10 @@ type KeyReleasePolicy struct {
 
 	// Blob encoding the policy rules under which the key can be released.
 	EncodedPolicy []byte `json:"data,omitempty"`
+
+	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed
+	// under any circumstances.
+	Immutable *bool `json:"immutable,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KeyReleasePolicy.
@@ -889,6 +894,7 @@ func (k KeyReleasePolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "contentType", k.ContentType)
 	populateByteArray(objectMap, "data", k.EncodedPolicy, runtime.Base64URLFormat)
+	populate(objectMap, "immutable", k.Immutable)
 	return json.Marshal(objectMap)
 }
 
@@ -906,6 +912,9 @@ func (k *KeyReleasePolicy) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "data":
 			err = runtime.DecodeByteArray(string(val), &k.EncodedPolicy, runtime.Base64URLFormat)
+			delete(rawMsg, key)
+		case "immutable":
+			err = unpopulate(val, &k.Immutable)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1112,11 +1121,6 @@ type KeyVaultClientDeleteKeyOptions struct {
 
 // KeyVaultClientEncryptOptions contains the optional parameters for the KeyVaultClient.Encrypt method.
 type KeyVaultClientEncryptOptions struct {
-	// placeholder for future optional parameters
-}
-
-// KeyVaultClientExportOptions contains the optional parameters for the KeyVaultClient.Export method.
-type KeyVaultClientExportOptions struct {
 	// placeholder for future optional parameters
 }
 

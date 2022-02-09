@@ -11,7 +11,6 @@ package armappservice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // DiagnosticsClient contains the methods for the Diagnostics group.
 // Don't use this type directly, use NewDiagnosticsClient() instead.
 type DiagnosticsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDiagnosticsClient creates a new instance of DiagnosticsClient with the specified values.
+// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &DiagnosticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DiagnosticsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // ExecuteSiteAnalysis - Description for Execute Analysis
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsExecuteSiteAnalysisOptions) (DiagnosticsExecuteSiteAnalysisResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Category Name
+// analysisName - Analysis Resource Name
+// options - DiagnosticsClientExecuteSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysis
+// method.
+func (client *DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsClientExecuteSiteAnalysisOptions) (DiagnosticsClientExecuteSiteAnalysisResponse, error) {
 	req, err := client.executeSiteAnalysisCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, options)
 	if err != nil {
-		return DiagnosticsExecuteSiteAnalysisResponse{}, err
+		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsExecuteSiteAnalysisResponse{}, err
+		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsExecuteSiteAnalysisResponse{}, client.executeSiteAnalysisHandleError(resp)
+		return DiagnosticsClientExecuteSiteAnalysisResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeSiteAnalysisHandleResponse(resp)
 }
 
 // executeSiteAnalysisCreateRequest creates the ExecuteSiteAnalysis request.
-func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsExecuteSiteAnalysisOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsClientExecuteSiteAnalysisOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses/{analysisName}/execute"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,7 +96,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,53 +110,47 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // executeSiteAnalysisHandleResponse handles the ExecuteSiteAnalysis response.
-func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsExecuteSiteAnalysisResponse, error) {
-	result := DiagnosticsExecuteSiteAnalysisResponse{RawResponse: resp}
+func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteAnalysisResponse, error) {
+	result := DiagnosticsClientExecuteSiteAnalysisResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysis); err != nil {
-		return DiagnosticsExecuteSiteAnalysisResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
 	return result, nil
 }
 
-// executeSiteAnalysisHandleError handles the ExecuteSiteAnalysis error response.
-func (client *DiagnosticsClient) executeSiteAnalysisHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ExecuteSiteAnalysisSlot - Description for Execute Analysis
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsExecuteSiteAnalysisSlotOptions) (DiagnosticsExecuteSiteAnalysisSlotResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Category Name
+// analysisName - Analysis Resource Name
+// slot - Slot Name
+// options - DiagnosticsClientExecuteSiteAnalysisSlotOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysisSlot
+// method.
+func (client *DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsClientExecuteSiteAnalysisSlotOptions) (DiagnosticsClientExecuteSiteAnalysisSlotResponse, error) {
 	req, err := client.executeSiteAnalysisSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, slot, options)
 	if err != nil {
-		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, err
+		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, err
+		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, client.executeSiteAnalysisSlotHandleError(resp)
+		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeSiteAnalysisSlotHandleResponse(resp)
 }
 
 // executeSiteAnalysisSlotCreateRequest creates the ExecuteSiteAnalysisSlot request.
-func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsExecuteSiteAnalysisSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsClientExecuteSiteAnalysisSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses/{analysisName}/execute"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -169,7 +176,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -183,53 +190,46 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // executeSiteAnalysisSlotHandleResponse handles the ExecuteSiteAnalysisSlot response.
-func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsExecuteSiteAnalysisSlotResponse, error) {
-	result := DiagnosticsExecuteSiteAnalysisSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteAnalysisSlotResponse, error) {
+	result := DiagnosticsClientExecuteSiteAnalysisSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysis); err != nil {
-		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
 	return result, nil
 }
 
-// executeSiteAnalysisSlotHandleError handles the ExecuteSiteAnalysisSlot error response.
-func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ExecuteSiteDetector - Description for Execute Detector
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *DiagnosticsExecuteSiteDetectorOptions) (DiagnosticsExecuteSiteDetectorResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// detectorName - Detector Resource Name
+// diagnosticCategory - Category Name
+// options - DiagnosticsClientExecuteSiteDetectorOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteDetector
+// method.
+func (client *DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *DiagnosticsClientExecuteSiteDetectorOptions) (DiagnosticsClientExecuteSiteDetectorResponse, error) {
 	req, err := client.executeSiteDetectorCreateRequest(ctx, resourceGroupName, siteName, detectorName, diagnosticCategory, options)
 	if err != nil {
-		return DiagnosticsExecuteSiteDetectorResponse{}, err
+		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsExecuteSiteDetectorResponse{}, err
+		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsExecuteSiteDetectorResponse{}, client.executeSiteDetectorHandleError(resp)
+		return DiagnosticsClientExecuteSiteDetectorResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeSiteDetectorHandleResponse(resp)
 }
 
 // executeSiteDetectorCreateRequest creates the ExecuteSiteDetector request.
-func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *DiagnosticsExecuteSiteDetectorOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *DiagnosticsClientExecuteSiteDetectorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors/{detectorName}/execute"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -251,7 +251,7 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,53 +265,47 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // executeSiteDetectorHandleResponse handles the ExecuteSiteDetector response.
-func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsExecuteSiteDetectorResponse, error) {
-	result := DiagnosticsExecuteSiteDetectorResponse{RawResponse: resp}
+func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteDetectorResponse, error) {
+	result := DiagnosticsClientExecuteSiteDetectorResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorResponse); err != nil {
-		return DiagnosticsExecuteSiteDetectorResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
 	return result, nil
 }
 
-// executeSiteDetectorHandleError handles the ExecuteSiteDetector error response.
-func (client *DiagnosticsClient) executeSiteDetectorHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ExecuteSiteDetectorSlot - Description for Execute Detector
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *DiagnosticsExecuteSiteDetectorSlotOptions) (DiagnosticsExecuteSiteDetectorSlotResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// detectorName - Detector Resource Name
+// diagnosticCategory - Category Name
+// slot - Slot Name
+// options - DiagnosticsClientExecuteSiteDetectorSlotOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteDetectorSlot
+// method.
+func (client *DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *DiagnosticsClientExecuteSiteDetectorSlotOptions) (DiagnosticsClientExecuteSiteDetectorSlotResponse, error) {
 	req, err := client.executeSiteDetectorSlotCreateRequest(ctx, resourceGroupName, siteName, detectorName, diagnosticCategory, slot, options)
 	if err != nil {
-		return DiagnosticsExecuteSiteDetectorSlotResponse{}, err
+		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsExecuteSiteDetectorSlotResponse{}, err
+		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsExecuteSiteDetectorSlotResponse{}, client.executeSiteDetectorSlotHandleError(resp)
+		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeSiteDetectorSlotHandleResponse(resp)
 }
 
 // executeSiteDetectorSlotCreateRequest creates the ExecuteSiteDetectorSlot request.
-func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *DiagnosticsExecuteSiteDetectorSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *DiagnosticsClientExecuteSiteDetectorSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors/{detectorName}/execute"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -337,7 +331,7 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -351,53 +345,45 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // executeSiteDetectorSlotHandleResponse handles the ExecuteSiteDetectorSlot response.
-func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsExecuteSiteDetectorSlotResponse, error) {
-	result := DiagnosticsExecuteSiteDetectorSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteDetectorSlotResponse, error) {
+	result := DiagnosticsClientExecuteSiteDetectorSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorResponse); err != nil {
-		return DiagnosticsExecuteSiteDetectorSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
 	return result, nil
 }
 
-// executeSiteDetectorSlotHandleError handles the ExecuteSiteDetectorSlot error response.
-func (client *DiagnosticsClient) executeSiteDetectorSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetHostingEnvironmentDetectorResponse - Description for Get Hosting Environment Detector Response
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx context.Context, resourceGroupName string, name string, detectorName string, options *DiagnosticsGetHostingEnvironmentDetectorResponseOptions) (DiagnosticsGetHostingEnvironmentDetectorResponseResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - App Service Environment Name
+// detectorName - Detector Resource Name
+// options - DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions contains the optional parameters for the DiagnosticsClient.GetHostingEnvironmentDetectorResponse
+// method.
+func (client *DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx context.Context, resourceGroupName string, name string, detectorName string, options *DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions) (DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse, error) {
 	req, err := client.getHostingEnvironmentDetectorResponseCreateRequest(ctx, resourceGroupName, name, detectorName, options)
 	if err != nil {
-		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, err
+		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, err
+		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, client.getHostingEnvironmentDetectorResponseHandleError(resp)
+		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHostingEnvironmentDetectorResponseHandleResponse(resp)
 }
 
 // getHostingEnvironmentDetectorResponseCreateRequest creates the GetHostingEnvironmentDetectorResponse request.
-func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, name string, detectorName string, options *DiagnosticsGetHostingEnvironmentDetectorResponseOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, name string, detectorName string, options *DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors/{detectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -415,7 +401,7 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,53 +415,46 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHostingEnvironmentDetectorResponseHandleResponse handles the GetHostingEnvironmentDetectorResponse response.
-func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsGetHostingEnvironmentDetectorResponseResponse, error) {
-	result := DiagnosticsGetHostingEnvironmentDetectorResponseResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse, error) {
+	result := DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
-		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
 	return result, nil
 }
 
-// getHostingEnvironmentDetectorResponseHandleError handles the GetHostingEnvironmentDetectorResponse error response.
-func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSiteAnalysis - Description for Get Site Analysis
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsGetSiteAnalysisOptions) (DiagnosticsGetSiteAnalysisResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// analysisName - Analysis Name
+// options - DiagnosticsClientGetSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.GetSiteAnalysis
+// method.
+func (client *DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsClientGetSiteAnalysisOptions) (DiagnosticsClientGetSiteAnalysisResponse, error) {
 	req, err := client.getSiteAnalysisCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, options)
 	if err != nil {
-		return DiagnosticsGetSiteAnalysisResponse{}, err
+		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetSiteAnalysisResponse{}, err
+		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetSiteAnalysisResponse{}, client.getSiteAnalysisHandleError(resp)
+		return DiagnosticsClientGetSiteAnalysisResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSiteAnalysisHandleResponse(resp)
 }
 
 // getSiteAnalysisCreateRequest creates the GetSiteAnalysis request.
-func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsGetSiteAnalysisOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsClientGetSiteAnalysisOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses/{analysisName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -497,58 +476,52 @@ func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSiteAnalysisHandleResponse handles the GetSiteAnalysis response.
-func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsGetSiteAnalysisResponse, error) {
-	result := DiagnosticsGetSiteAnalysisResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteAnalysisResponse, error) {
+	result := DiagnosticsClientGetSiteAnalysisResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisDefinition); err != nil {
-		return DiagnosticsGetSiteAnalysisResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
 	return result, nil
 }
 
-// getSiteAnalysisHandleError handles the GetSiteAnalysis error response.
-func (client *DiagnosticsClient) getSiteAnalysisHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSiteAnalysisSlot - Description for Get Site Analysis
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsGetSiteAnalysisSlotOptions) (DiagnosticsGetSiteAnalysisSlotResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// analysisName - Analysis Name
+// slot - Slot - optional
+// options - DiagnosticsClientGetSiteAnalysisSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteAnalysisSlot
+// method.
+func (client *DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsClientGetSiteAnalysisSlotOptions) (DiagnosticsClientGetSiteAnalysisSlotResponse, error) {
 	req, err := client.getSiteAnalysisSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, slot, options)
 	if err != nil {
-		return DiagnosticsGetSiteAnalysisSlotResponse{}, err
+		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetSiteAnalysisSlotResponse{}, err
+		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetSiteAnalysisSlotResponse{}, client.getSiteAnalysisSlotHandleError(resp)
+		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSiteAnalysisSlotHandleResponse(resp)
 }
 
 // getSiteAnalysisSlotCreateRequest creates the GetSiteAnalysisSlot request.
-func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsGetSiteAnalysisSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsClientGetSiteAnalysisSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses/{analysisName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -574,58 +547,51 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSiteAnalysisSlotHandleResponse handles the GetSiteAnalysisSlot response.
-func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsGetSiteAnalysisSlotResponse, error) {
-	result := DiagnosticsGetSiteAnalysisSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteAnalysisSlotResponse, error) {
+	result := DiagnosticsClientGetSiteAnalysisSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisDefinition); err != nil {
-		return DiagnosticsGetSiteAnalysisSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
 	return result, nil
 }
 
-// getSiteAnalysisSlotHandleError handles the GetSiteAnalysisSlot error response.
-func (client *DiagnosticsClient) getSiteAnalysisSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSiteDetector - Description for Get Detector
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *DiagnosticsGetSiteDetectorOptions) (DiagnosticsGetSiteDetectorResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// detectorName - Detector Name
+// options - DiagnosticsClientGetSiteDetectorOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetector
+// method.
+func (client *DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *DiagnosticsClientGetSiteDetectorOptions) (DiagnosticsClientGetSiteDetectorResponse, error) {
 	req, err := client.getSiteDetectorCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, detectorName, options)
 	if err != nil {
-		return DiagnosticsGetSiteDetectorResponse{}, err
+		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetSiteDetectorResponse{}, err
+		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetSiteDetectorResponse{}, client.getSiteDetectorHandleError(resp)
+		return DiagnosticsClientGetSiteDetectorResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSiteDetectorHandleResponse(resp)
 }
 
 // getSiteDetectorCreateRequest creates the GetSiteDetector request.
-func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *DiagnosticsGetSiteDetectorOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *DiagnosticsClientGetSiteDetectorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors/{detectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -647,58 +613,50 @@ func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSiteDetectorHandleResponse handles the GetSiteDetector response.
-func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsGetSiteDetectorResponse, error) {
-	result := DiagnosticsGetSiteDetectorResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponse, error) {
+	result := DiagnosticsClientGetSiteDetectorResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorDefinitionResource); err != nil {
-		return DiagnosticsGetSiteDetectorResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
 	return result, nil
 }
 
-// getSiteDetectorHandleError handles the GetSiteDetector error response.
-func (client *DiagnosticsClient) getSiteDetectorHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSiteDetectorResponse - Description for Get site detector response
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *DiagnosticsGetSiteDetectorResponseOptions) (DiagnosticsGetSiteDetectorResponseResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// detectorName - Detector Resource Name
+// options - DiagnosticsClientGetSiteDetectorResponseOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorResponse
+// method.
+func (client *DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *DiagnosticsClientGetSiteDetectorResponseOptions) (DiagnosticsClientGetSiteDetectorResponseResponse, error) {
 	req, err := client.getSiteDetectorResponseCreateRequest(ctx, resourceGroupName, siteName, detectorName, options)
 	if err != nil {
-		return DiagnosticsGetSiteDetectorResponseResponse{}, err
+		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetSiteDetectorResponseResponse{}, err
+		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetSiteDetectorResponseResponse{}, client.getSiteDetectorResponseHandleError(resp)
+		return DiagnosticsClientGetSiteDetectorResponseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSiteDetectorResponseHandleResponse(resp)
 }
 
 // getSiteDetectorResponseCreateRequest creates the GetSiteDetectorResponse request.
-func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *DiagnosticsGetSiteDetectorResponseOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *DiagnosticsClientGetSiteDetectorResponseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors/{detectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -716,7 +674,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -730,53 +688,46 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSiteDetectorResponseHandleResponse handles the GetSiteDetectorResponse response.
-func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsGetSiteDetectorResponseResponse, error) {
-	result := DiagnosticsGetSiteDetectorResponseResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponseResponse, error) {
+	result := DiagnosticsClientGetSiteDetectorResponseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
-		return DiagnosticsGetSiteDetectorResponseResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
 	return result, nil
 }
 
-// getSiteDetectorResponseHandleError handles the GetSiteDetectorResponse error response.
-func (client *DiagnosticsClient) getSiteDetectorResponseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSiteDetectorResponseSlot - Description for Get site detector response
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *DiagnosticsGetSiteDetectorResponseSlotOptions) (DiagnosticsGetSiteDetectorResponseSlotResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// detectorName - Detector Resource Name
+// slot - Slot Name
+// options - DiagnosticsClientGetSiteDetectorResponseSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorResponseSlot
+// method.
+func (client *DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *DiagnosticsClientGetSiteDetectorResponseSlotOptions) (DiagnosticsClientGetSiteDetectorResponseSlotResponse, error) {
 	req, err := client.getSiteDetectorResponseSlotCreateRequest(ctx, resourceGroupName, siteName, detectorName, slot, options)
 	if err != nil {
-		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, err
+		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, err
+		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, client.getSiteDetectorResponseSlotHandleError(resp)
+		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSiteDetectorResponseSlotHandleResponse(resp)
 }
 
 // getSiteDetectorResponseSlotCreateRequest creates the GetSiteDetectorResponseSlot request.
-func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *DiagnosticsGetSiteDetectorResponseSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *DiagnosticsClientGetSiteDetectorResponseSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors/{detectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -798,7 +749,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -812,53 +763,47 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSiteDetectorResponseSlotHandleResponse handles the GetSiteDetectorResponseSlot response.
-func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp *http.Response) (DiagnosticsGetSiteDetectorResponseSlotResponse, error) {
-	result := DiagnosticsGetSiteDetectorResponseSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponseSlotResponse, error) {
+	result := DiagnosticsClientGetSiteDetectorResponseSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
-		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
 	return result, nil
 }
 
-// getSiteDetectorResponseSlotHandleError handles the GetSiteDetectorResponseSlot error response.
-func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSiteDetectorSlot - Description for Get Detector
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *DiagnosticsGetSiteDetectorSlotOptions) (DiagnosticsGetSiteDetectorSlotResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// detectorName - Detector Name
+// slot - Slot Name
+// options - DiagnosticsClientGetSiteDetectorSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorSlot
+// method.
+func (client *DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *DiagnosticsClientGetSiteDetectorSlotOptions) (DiagnosticsClientGetSiteDetectorSlotResponse, error) {
 	req, err := client.getSiteDetectorSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, detectorName, slot, options)
 	if err != nil {
-		return DiagnosticsGetSiteDetectorSlotResponse{}, err
+		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetSiteDetectorSlotResponse{}, err
+		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetSiteDetectorSlotResponse{}, client.getSiteDetectorSlotHandleError(resp)
+		return DiagnosticsClientGetSiteDetectorSlotResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSiteDetectorSlotHandleResponse(resp)
 }
 
 // getSiteDetectorSlotCreateRequest creates the GetSiteDetectorSlot request.
-func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *DiagnosticsGetSiteDetectorSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *DiagnosticsClientGetSiteDetectorSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors/{detectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -884,58 +829,50 @@ func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSiteDetectorSlotHandleResponse handles the GetSiteDetectorSlot response.
-func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsGetSiteDetectorSlotResponse, error) {
-	result := DiagnosticsGetSiteDetectorSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorSlotResponse, error) {
+	result := DiagnosticsClientGetSiteDetectorSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorDefinitionResource); err != nil {
-		return DiagnosticsGetSiteDetectorSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
 	return result, nil
 }
 
-// getSiteDetectorSlotHandleError handles the GetSiteDetectorSlot error response.
-func (client *DiagnosticsClient) getSiteDetectorSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSiteDiagnosticCategory - Description for Get Diagnostics Category
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsGetSiteDiagnosticCategoryOptions) (DiagnosticsGetSiteDiagnosticCategoryResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// options - DiagnosticsClientGetSiteDiagnosticCategoryOptions contains the optional parameters for the DiagnosticsClient.GetSiteDiagnosticCategory
+// method.
+func (client *DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientGetSiteDiagnosticCategoryOptions) (DiagnosticsClientGetSiteDiagnosticCategoryResponse, error) {
 	req, err := client.getSiteDiagnosticCategoryCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
 	if err != nil {
-		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, err
+		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, err
+		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, client.getSiteDiagnosticCategoryHandleError(resp)
+		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSiteDiagnosticCategoryHandleResponse(resp)
 }
 
 // getSiteDiagnosticCategoryCreateRequest creates the GetSiteDiagnosticCategory request.
-func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsGetSiteDiagnosticCategoryOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientGetSiteDiagnosticCategoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -953,58 +890,51 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSiteDiagnosticCategoryHandleResponse handles the GetSiteDiagnosticCategory response.
-func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *http.Response) (DiagnosticsGetSiteDiagnosticCategoryResponse, error) {
-	result := DiagnosticsGetSiteDiagnosticCategoryResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDiagnosticCategoryResponse, error) {
+	result := DiagnosticsClientGetSiteDiagnosticCategoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategory); err != nil {
-		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
 	return result, nil
 }
 
-// getSiteDiagnosticCategoryHandleError handles the GetSiteDiagnosticCategory error response.
-func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSiteDiagnosticCategorySlot - Description for Get Diagnostics Category
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsGetSiteDiagnosticCategorySlotOptions) (DiagnosticsGetSiteDiagnosticCategorySlotResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// slot - Slot Name
+// options - DiagnosticsClientGetSiteDiagnosticCategorySlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDiagnosticCategorySlot
+// method.
+func (client *DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientGetSiteDiagnosticCategorySlotOptions) (DiagnosticsClientGetSiteDiagnosticCategorySlotResponse, error) {
 	req, err := client.getSiteDiagnosticCategorySlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
 	if err != nil {
-		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, err
+		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, err
+		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, client.getSiteDiagnosticCategorySlotHandleError(resp)
+		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSiteDiagnosticCategorySlotHandleResponse(resp)
 }
 
 // getSiteDiagnosticCategorySlotCreateRequest creates the GetSiteDiagnosticCategorySlot request.
-func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsGetSiteDiagnosticCategorySlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientGetSiteDiagnosticCategorySlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1026,55 +956,46 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSiteDiagnosticCategorySlotHandleResponse handles the GetSiteDiagnosticCategorySlot response.
-func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(resp *http.Response) (DiagnosticsGetSiteDiagnosticCategorySlotResponse, error) {
-	result := DiagnosticsGetSiteDiagnosticCategorySlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDiagnosticCategorySlotResponse, error) {
+	result := DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategory); err != nil {
-		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
 	return result, nil
 }
 
-// getSiteDiagnosticCategorySlotHandleError handles the GetSiteDiagnosticCategorySlot error response.
-func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListHostingEnvironmentDetectorResponses - Description for List Hosting Environment Detector Responses
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListHostingEnvironmentDetectorResponses(resourceGroupName string, name string, options *DiagnosticsListHostingEnvironmentDetectorResponsesOptions) *DiagnosticsListHostingEnvironmentDetectorResponsesPager {
-	return &DiagnosticsListHostingEnvironmentDetectorResponsesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Site Name
+// options - DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListHostingEnvironmentDetectorResponses
+// method.
+func (client *DiagnosticsClient) ListHostingEnvironmentDetectorResponses(resourceGroupName string, name string, options *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) *DiagnosticsClientListHostingEnvironmentDetectorResponsesPager {
+	return &DiagnosticsClientListHostingEnvironmentDetectorResponsesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listHostingEnvironmentDetectorResponsesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListHostingEnvironmentDetectorResponsesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
 		},
 	}
 }
 
 // listHostingEnvironmentDetectorResponsesCreateRequest creates the ListHostingEnvironmentDetectorResponses request.
-func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *DiagnosticsListHostingEnvironmentDetectorResponsesOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1088,55 +1009,47 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHostingEnvironmentDetectorResponsesHandleResponse handles the ListHostingEnvironmentDetectorResponses response.
-func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsListHostingEnvironmentDetectorResponsesResponse, error) {
-	result := DiagnosticsListHostingEnvironmentDetectorResponsesResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse, error) {
+	result := DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
-		return DiagnosticsListHostingEnvironmentDetectorResponsesResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
 	}
 	return result, nil
 }
 
-// listHostingEnvironmentDetectorResponsesHandleError handles the ListHostingEnvironmentDetectorResponses error response.
-func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSiteAnalyses - Description for Get Site Analyses
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteAnalyses(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsListSiteAnalysesOptions) *DiagnosticsListSiteAnalysesPager {
-	return &DiagnosticsListSiteAnalysesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// options - DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalyses
+// method.
+func (client *DiagnosticsClient) ListSiteAnalyses(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteAnalysesOptions) *DiagnosticsClientListSiteAnalysesPager {
+	return &DiagnosticsClientListSiteAnalysesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSiteAnalysesCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListSiteAnalysesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteAnalysesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticAnalysisCollection.NextLink)
 		},
 	}
 }
 
 // listSiteAnalysesCreateRequest creates the ListSiteAnalyses request.
-func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsListSiteAnalysesOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteAnalysesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1154,55 +1067,48 @@ func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSiteAnalysesHandleResponse handles the ListSiteAnalyses response.
-func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Response) (DiagnosticsListSiteAnalysesResponse, error) {
-	result := DiagnosticsListSiteAnalysesResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteAnalysesResponse, error) {
+	result := DiagnosticsClientListSiteAnalysesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysisCollection); err != nil {
-		return DiagnosticsListSiteAnalysesResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListSiteAnalysesResponse{}, err
 	}
 	return result, nil
 }
 
-// listSiteAnalysesHandleError handles the ListSiteAnalyses error response.
-func (client *DiagnosticsClient) listSiteAnalysesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSiteAnalysesSlot - Description for Get Site Analyses
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteAnalysesSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsListSiteAnalysesSlotOptions) *DiagnosticsListSiteAnalysesSlotPager {
-	return &DiagnosticsListSiteAnalysesSlotPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// slot - Slot Name
+// options - DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalysesSlot
+// method.
+func (client *DiagnosticsClient) ListSiteAnalysesSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteAnalysesSlotOptions) *DiagnosticsClientListSiteAnalysesSlotPager {
+	return &DiagnosticsClientListSiteAnalysesSlotPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSiteAnalysesSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListSiteAnalysesSlotResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteAnalysesSlotResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticAnalysisCollection.NextLink)
 		},
 	}
 }
 
 // listSiteAnalysesSlotCreateRequest creates the ListSiteAnalysesSlot request.
-func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsListSiteAnalysesSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteAnalysesSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1224,55 +1130,46 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSiteAnalysesSlotHandleResponse handles the ListSiteAnalysesSlot response.
-func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.Response) (DiagnosticsListSiteAnalysesSlotResponse, error) {
-	result := DiagnosticsListSiteAnalysesSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteAnalysesSlotResponse, error) {
+	result := DiagnosticsClientListSiteAnalysesSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysisCollection); err != nil {
-		return DiagnosticsListSiteAnalysesSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
 	}
 	return result, nil
 }
 
-// listSiteAnalysesSlotHandleError handles the ListSiteAnalysesSlot error response.
-func (client *DiagnosticsClient) listSiteAnalysesSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSiteDetectorResponses - Description for List Site Detector Responses
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDetectorResponses(resourceGroupName string, siteName string, options *DiagnosticsListSiteDetectorResponsesOptions) *DiagnosticsListSiteDetectorResponsesPager {
-	return &DiagnosticsListSiteDetectorResponsesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// options - DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponses
+// method.
+func (client *DiagnosticsClient) ListSiteDetectorResponses(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDetectorResponsesOptions) *DiagnosticsClientListSiteDetectorResponsesPager {
+	return &DiagnosticsClientListSiteDetectorResponsesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSiteDetectorResponsesCreateRequest(ctx, resourceGroupName, siteName, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListSiteDetectorResponsesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDetectorResponsesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
 		},
 	}
 }
 
 // listSiteDetectorResponsesCreateRequest creates the ListSiteDetectorResponses request.
-func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *DiagnosticsListSiteDetectorResponsesOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDetectorResponsesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1286,55 +1183,47 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSiteDetectorResponsesHandleResponse handles the ListSiteDetectorResponses response.
-func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsListSiteDetectorResponsesResponse, error) {
-	result := DiagnosticsListSiteDetectorResponsesResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorResponsesResponse, error) {
+	result := DiagnosticsClientListSiteDetectorResponsesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
-		return DiagnosticsListSiteDetectorResponsesResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
 	}
 	return result, nil
 }
 
-// listSiteDetectorResponsesHandleError handles the ListSiteDetectorResponses error response.
-func (client *DiagnosticsClient) listSiteDetectorResponsesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSiteDetectorResponsesSlot - Description for List Site Detector Responses
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDetectorResponsesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsListSiteDetectorResponsesSlotOptions) *DiagnosticsListSiteDetectorResponsesSlotPager {
-	return &DiagnosticsListSiteDetectorResponsesSlotPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// slot - Slot Name
+// options - DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponsesSlot
+// method.
+func (client *DiagnosticsClient) ListSiteDetectorResponsesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDetectorResponsesSlotOptions) *DiagnosticsClientListSiteDetectorResponsesSlotPager {
+	return &DiagnosticsClientListSiteDetectorResponsesSlotPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSiteDetectorResponsesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListSiteDetectorResponsesSlotResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDetectorResponsesSlotResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
 		},
 	}
 }
 
 // listSiteDetectorResponsesSlotCreateRequest creates the ListSiteDetectorResponsesSlot request.
-func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, slot string, options *DiagnosticsListSiteDetectorResponsesSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDetectorResponsesSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1352,55 +1241,47 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSiteDetectorResponsesSlotHandleResponse handles the ListSiteDetectorResponsesSlot response.
-func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(resp *http.Response) (DiagnosticsListSiteDetectorResponsesSlotResponse, error) {
-	result := DiagnosticsListSiteDetectorResponsesSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorResponsesSlotResponse, error) {
+	result := DiagnosticsClientListSiteDetectorResponsesSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
-		return DiagnosticsListSiteDetectorResponsesSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
 	}
 	return result, nil
 }
 
-// listSiteDetectorResponsesSlotHandleError handles the ListSiteDetectorResponsesSlot error response.
-func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSiteDetectors - Description for Get Detectors
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDetectors(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsListSiteDetectorsOptions) *DiagnosticsListSiteDetectorsPager {
-	return &DiagnosticsListSiteDetectorsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// options - DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectors
+// method.
+func (client *DiagnosticsClient) ListSiteDetectors(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteDetectorsOptions) *DiagnosticsClientListSiteDetectorsPager {
+	return &DiagnosticsClientListSiteDetectorsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSiteDetectorsCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListSiteDetectorsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDetectorsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticDetectorCollection.NextLink)
 		},
 	}
 }
 
 // listSiteDetectorsCreateRequest creates the ListSiteDetectors request.
-func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsListSiteDetectorsOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteDetectorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1418,55 +1299,48 @@ func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSiteDetectorsHandleResponse handles the ListSiteDetectors response.
-func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Response) (DiagnosticsListSiteDetectorsResponse, error) {
-	result := DiagnosticsListSiteDetectorsResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorsResponse, error) {
+	result := DiagnosticsClientListSiteDetectorsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorCollection); err != nil {
-		return DiagnosticsListSiteDetectorsResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListSiteDetectorsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSiteDetectorsHandleError handles the ListSiteDetectors error response.
-func (client *DiagnosticsClient) listSiteDetectorsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSiteDetectorsSlot - Description for Get Detectors
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDetectorsSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsListSiteDetectorsSlotOptions) *DiagnosticsListSiteDetectorsSlotPager {
-	return &DiagnosticsListSiteDetectorsSlotPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// diagnosticCategory - Diagnostic Category
+// slot - Slot Name
+// options - DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorsSlot
+// method.
+func (client *DiagnosticsClient) ListSiteDetectorsSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteDetectorsSlotOptions) *DiagnosticsClientListSiteDetectorsSlotPager {
+	return &DiagnosticsClientListSiteDetectorsSlotPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSiteDetectorsSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListSiteDetectorsSlotResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDetectorsSlotResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticDetectorCollection.NextLink)
 		},
 	}
 }
 
 // listSiteDetectorsSlotCreateRequest creates the ListSiteDetectorsSlot request.
-func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsListSiteDetectorsSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteDetectorsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1488,55 +1362,46 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSiteDetectorsSlotHandleResponse handles the ListSiteDetectorsSlot response.
-func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.Response) (DiagnosticsListSiteDetectorsSlotResponse, error) {
-	result := DiagnosticsListSiteDetectorsSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorsSlotResponse, error) {
+	result := DiagnosticsClientListSiteDetectorsSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorCollection); err != nil {
-		return DiagnosticsListSiteDetectorsSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
 	}
 	return result, nil
 }
 
-// listSiteDetectorsSlotHandleError handles the ListSiteDetectorsSlot error response.
-func (client *DiagnosticsClient) listSiteDetectorsSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSiteDiagnosticCategories - Description for Get Diagnostics Categories
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDiagnosticCategories(resourceGroupName string, siteName string, options *DiagnosticsListSiteDiagnosticCategoriesOptions) *DiagnosticsListSiteDiagnosticCategoriesPager {
-	return &DiagnosticsListSiteDiagnosticCategoriesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// options - DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategories
+// method.
+func (client *DiagnosticsClient) ListSiteDiagnosticCategories(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDiagnosticCategoriesOptions) *DiagnosticsClientListSiteDiagnosticCategoriesPager {
+	return &DiagnosticsClientListSiteDiagnosticCategoriesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSiteDiagnosticCategoriesCreateRequest(ctx, resourceGroupName, siteName, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListSiteDiagnosticCategoriesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDiagnosticCategoriesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticCategoryCollection.NextLink)
 		},
 	}
 }
 
 // listSiteDiagnosticCategoriesCreateRequest creates the ListSiteDiagnosticCategories request.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *DiagnosticsListSiteDiagnosticCategoriesOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDiagnosticCategoriesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1550,55 +1415,47 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSiteDiagnosticCategoriesHandleResponse handles the ListSiteDiagnosticCategories response.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp *http.Response) (DiagnosticsListSiteDiagnosticCategoriesResponse, error) {
-	result := DiagnosticsListSiteDiagnosticCategoriesResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDiagnosticCategoriesResponse, error) {
+	result := DiagnosticsClientListSiteDiagnosticCategoriesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategoryCollection); err != nil {
-		return DiagnosticsListSiteDiagnosticCategoriesResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
 	}
 	return result, nil
 }
 
-// listSiteDiagnosticCategoriesHandleError handles the ListSiteDiagnosticCategories error response.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSiteDiagnosticCategoriesSlot - Description for Get Diagnostics Categories
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDiagnosticCategoriesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsListSiteDiagnosticCategoriesSlotOptions) *DiagnosticsListSiteDiagnosticCategoriesSlotPager {
-	return &DiagnosticsListSiteDiagnosticCategoriesSlotPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// siteName - Site Name
+// slot - Slot Name
+// options - DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategoriesSlot
+// method.
+func (client *DiagnosticsClient) ListSiteDiagnosticCategoriesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) *DiagnosticsClientListSiteDiagnosticCategoriesSlotPager {
+	return &DiagnosticsClientListSiteDiagnosticCategoriesSlotPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSiteDiagnosticCategoriesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
 		},
-		advancer: func(ctx context.Context, resp DiagnosticsListSiteDiagnosticCategoriesSlotResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticCategoryCollection.NextLink)
 		},
 	}
 }
 
 // listSiteDiagnosticCategoriesSlotCreateRequest creates the ListSiteDiagnosticCategoriesSlot request.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, slot string, options *DiagnosticsListSiteDiagnosticCategoriesSlotOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1616,35 +1473,22 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSiteDiagnosticCategoriesSlotHandleResponse handles the ListSiteDiagnosticCategoriesSlot response.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleResponse(resp *http.Response) (DiagnosticsListSiteDiagnosticCategoriesSlotResponse, error) {
-	result := DiagnosticsListSiteDiagnosticCategoriesSlotResponse{RawResponse: resp}
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse, error) {
+	result := DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategoryCollection); err != nil {
-		return DiagnosticsListSiteDiagnosticCategoriesSlotResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
 	}
 	return result, nil
-}
-
-// listSiteDiagnosticCategoriesSlotHandleError handles the ListSiteDiagnosticCategoriesSlot error response.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armcdn
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // AFDCustomDomainsClient contains the methods for the AFDCustomDomains group.
 // Don't use this type directly, use NewAFDCustomDomainsClient() instead.
 type AFDCustomDomainsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAFDCustomDomainsClient creates a new instance of AFDCustomDomainsClient with the specified values.
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAFDCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AFDCustomDomainsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &AFDCustomDomainsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AFDCustomDomainsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // BeginCreate - Creates a new domain within the specified profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsBeginCreateOptions) (AFDCustomDomainsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// customDomainName - Name of the domain under the profile which is unique globally
+// customDomain - Domain properties
+// options - AFDCustomDomainsClientBeginCreateOptions contains the optional parameters for the AFDCustomDomainsClient.BeginCreate
+// method.
+func (client *AFDCustomDomainsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsClientBeginCreateOptions) (AFDCustomDomainsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, profileName, customDomainName, customDomain, options)
 	if err != nil {
-		return AFDCustomDomainsCreatePollerResponse{}, err
+		return AFDCustomDomainsClientCreatePollerResponse{}, err
 	}
-	result := AFDCustomDomainsCreatePollerResponse{
+	result := AFDCustomDomainsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AFDCustomDomainsClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("AFDCustomDomainsClient.Create", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return AFDCustomDomainsCreatePollerResponse{}, err
+		return AFDCustomDomainsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &AFDCustomDomainsCreatePoller{
+	result.Poller = &AFDCustomDomainsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a new domain within the specified profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AFDCustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, customDomainName, customDomain, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *AFDCustomDomainsClient) create(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsBeginCreateOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,53 +112,48 @@ func (client *AFDCustomDomainsClient) createCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, customDomain)
 }
 
-// createHandleError handles the Create error response.
-func (client *AFDCustomDomainsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDelete - Deletes an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource group and profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsBeginDeleteOptions) (AFDCustomDomainsDeletePollerResponse, error) {
+// BeginDelete - Deletes an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
+// resource group and profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// customDomainName - Name of the domain under the profile which is unique globally.
+// options - AFDCustomDomainsClientBeginDeleteOptions contains the optional parameters for the AFDCustomDomainsClient.BeginDelete
+// method.
+func (client *AFDCustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginDeleteOptions) (AFDCustomDomainsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, customDomainName, options)
 	if err != nil {
-		return AFDCustomDomainsDeletePollerResponse{}, err
+		return AFDCustomDomainsClientDeletePollerResponse{}, err
 	}
-	result := AFDCustomDomainsDeletePollerResponse{
+	result := AFDCustomDomainsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AFDCustomDomainsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AFDCustomDomainsClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return AFDCustomDomainsDeletePollerResponse{}, err
+		return AFDCustomDomainsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AFDCustomDomainsDeletePoller{
+	result.Poller = &AFDCustomDomainsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Deletes an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource group and profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsBeginDeleteOptions) (*http.Response, error) {
+// Delete - Deletes an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource
+// group and profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AFDCustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, customDomainName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +163,13 @@ func (client *AFDCustomDomainsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,49 +187,42 @@ func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AFDCustomDomainsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Gets an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource group and profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) Get(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsGetOptions) (AFDCustomDomainsGetResponse, error) {
+// Get - Gets an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource
+// group and profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// customDomainName - Name of the domain under the profile which is unique globally.
+// options - AFDCustomDomainsClientGetOptions contains the optional parameters for the AFDCustomDomainsClient.Get method.
+func (client *AFDCustomDomainsClient) Get(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientGetOptions) (AFDCustomDomainsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, customDomainName, options)
 	if err != nil {
-		return AFDCustomDomainsGetResponse{}, err
+		return AFDCustomDomainsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AFDCustomDomainsGetResponse{}, err
+		return AFDCustomDomainsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AFDCustomDomainsGetResponse{}, client.getHandleError(resp)
+		return AFDCustomDomainsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AFDCustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsGetOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,55 +240,47 @@ func (client *AFDCustomDomainsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AFDCustomDomainsClient) getHandleResponse(resp *http.Response) (AFDCustomDomainsGetResponse, error) {
-	result := AFDCustomDomainsGetResponse{RawResponse: resp}
+func (client *AFDCustomDomainsClient) getHandleResponse(resp *http.Response) (AFDCustomDomainsClientGetResponse, error) {
+	result := AFDCustomDomainsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDDomain); err != nil {
-		return AFDCustomDomainsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AFDCustomDomainsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AFDCustomDomainsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProfile - Lists existing AzureFrontDoor domains.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDCustomDomainsListByProfileOptions) *AFDCustomDomainsListByProfilePager {
-	return &AFDCustomDomainsListByProfilePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which is unique
+// within the resource group.
+// options - AFDCustomDomainsClientListByProfileOptions contains the optional parameters for the AFDCustomDomainsClient.ListByProfile
+// method.
+func (client *AFDCustomDomainsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDCustomDomainsClientListByProfileOptions) *AFDCustomDomainsClientListByProfilePager {
+	return &AFDCustomDomainsClientListByProfilePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
 		},
-		advancer: func(ctx context.Context, resp AFDCustomDomainsListByProfileResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AFDCustomDomainsClientListByProfileResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AFDDomainListResult.NextLink)
 		},
 	}
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *AFDCustomDomainsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDCustomDomainsListByProfileOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDCustomDomainsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,62 +294,55 @@ func (client *AFDCustomDomainsClient) listByProfileCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByProfileHandleResponse handles the ListByProfile response.
-func (client *AFDCustomDomainsClient) listByProfileHandleResponse(resp *http.Response) (AFDCustomDomainsListByProfileResponse, error) {
-	result := AFDCustomDomainsListByProfileResponse{RawResponse: resp}
+func (client *AFDCustomDomainsClient) listByProfileHandleResponse(resp *http.Response) (AFDCustomDomainsClientListByProfileResponse, error) {
+	result := AFDCustomDomainsClientListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDDomainListResult); err != nil {
-		return AFDCustomDomainsListByProfileResponse{}, runtime.NewResponseError(err, resp)
+		return AFDCustomDomainsClientListByProfileResponse{}, err
 	}
 	return result, nil
 }
 
-// listByProfileHandleError handles the ListByProfile error response.
-func (client *AFDCustomDomainsClient) listByProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRefreshValidationToken - Updates the domain validation token.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) BeginRefreshValidationToken(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsBeginRefreshValidationTokenOptions) (AFDCustomDomainsRefreshValidationTokenPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// customDomainName - Name of the domain under the profile which is unique globally.
+// options - AFDCustomDomainsClientBeginRefreshValidationTokenOptions contains the optional parameters for the AFDCustomDomainsClient.BeginRefreshValidationToken
+// method.
+func (client *AFDCustomDomainsClient) BeginRefreshValidationToken(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (AFDCustomDomainsClientRefreshValidationTokenPollerResponse, error) {
 	resp, err := client.refreshValidationToken(ctx, resourceGroupName, profileName, customDomainName, options)
 	if err != nil {
-		return AFDCustomDomainsRefreshValidationTokenPollerResponse{}, err
+		return AFDCustomDomainsClientRefreshValidationTokenPollerResponse{}, err
 	}
-	result := AFDCustomDomainsRefreshValidationTokenPollerResponse{
+	result := AFDCustomDomainsClientRefreshValidationTokenPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AFDCustomDomainsClient.RefreshValidationToken", "azure-async-operation", resp, client.pl, client.refreshValidationTokenHandleError)
+	pt, err := armruntime.NewPoller("AFDCustomDomainsClient.RefreshValidationToken", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return AFDCustomDomainsRefreshValidationTokenPollerResponse{}, err
+		return AFDCustomDomainsClientRefreshValidationTokenPollerResponse{}, err
 	}
-	result.Poller = &AFDCustomDomainsRefreshValidationTokenPoller{
+	result.Poller = &AFDCustomDomainsClientRefreshValidationTokenPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RefreshValidationToken - Updates the domain validation token.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) refreshValidationToken(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsBeginRefreshValidationTokenOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AFDCustomDomainsClient) refreshValidationToken(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (*http.Response, error) {
 	req, err := client.refreshValidationTokenCreateRequest(ctx, resourceGroupName, profileName, customDomainName, options)
 	if err != nil {
 		return nil, err
@@ -364,14 +351,14 @@ func (client *AFDCustomDomainsClient) refreshValidationToken(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.refreshValidationTokenHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // refreshValidationTokenCreateRequest creates the RefreshValidationToken request.
-func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsBeginRefreshValidationTokenOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}/refreshValidationToken"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -389,53 +376,47 @@ func (client *AFDCustomDomainsClient) refreshValidationTokenCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// refreshValidationTokenHandleError handles the RefreshValidationToken error response.
-func (client *AFDCustomDomainsClient) refreshValidationTokenHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates an existing domain within a profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsBeginUpdateOptions) (AFDCustomDomainsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
+// group.
+// customDomainName - Name of the domain under the profile which is unique globally
+// customDomainUpdateProperties - Domain properties
+// options - AFDCustomDomainsClientBeginUpdateOptions contains the optional parameters for the AFDCustomDomainsClient.BeginUpdate
+// method.
+func (client *AFDCustomDomainsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsClientBeginUpdateOptions) (AFDCustomDomainsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, profileName, customDomainName, customDomainUpdateProperties, options)
 	if err != nil {
-		return AFDCustomDomainsUpdatePollerResponse{}, err
+		return AFDCustomDomainsClientUpdatePollerResponse{}, err
 	}
-	result := AFDCustomDomainsUpdatePollerResponse{
+	result := AFDCustomDomainsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AFDCustomDomainsClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("AFDCustomDomainsClient.Update", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return AFDCustomDomainsUpdatePollerResponse{}, err
+		return AFDCustomDomainsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &AFDCustomDomainsUpdatePoller{
+	result.Poller = &AFDCustomDomainsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates an existing domain within a profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDCustomDomainsClient) update(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AFDCustomDomainsClient) update(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, customDomainName, customDomainUpdateProperties, options)
 	if err != nil {
 		return nil, err
@@ -445,13 +426,13 @@ func (client *AFDCustomDomainsClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AFDCustomDomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsBeginUpdateOptions) (*policy.Request, error) {
+func (client *AFDCustomDomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -469,26 +450,13 @@ func (client *AFDCustomDomainsClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, customDomainUpdateProperties)
-}
-
-// updateHandleError handles the Update error response.
-func (client *AFDCustomDomainsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

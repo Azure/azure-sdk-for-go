@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## `v61.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-01-11-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub`
+
+## `v61.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-11-01/compute`
+
 ## `v61.2.0`
 
 ### New Packages
@@ -13,14 +26,14 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v61.2.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/botservice/mgmt/2021-05-01-preview/botservice/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v61.2.0/services/preview/botservice/mgmt/2021-05-01-preview/botservice/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v61.2.0/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
 
 ## `v61.1.0`
 

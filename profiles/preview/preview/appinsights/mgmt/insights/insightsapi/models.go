@@ -9,7 +9,7 @@
 
 package insightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2021-11-01-preview/insights/insightsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-01-11-preview/insights/insightsapi"
 
 type APIKeysClientAPI = original.APIKeysClientAPI
 type AnalyticsItemsClientAPI = original.AnalyticsItemsClientAPI

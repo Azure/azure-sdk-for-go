@@ -27,19 +27,19 @@ func (pr *PageRange) Raw() (start, end int64) {
 // ending at offset+count. A zero-value HttpRange indicates the entire resource. An HttpRange
 // which has an offset but na zero value count indicates from the offset to the resource's end.
 type HttpRange struct {
-	offset int64
-	count  int64
+	Offset int64
+	Count  int64
 }
 
 func (r HttpRange) pointers() *string {
-	if r.offset == 0 && r.count == 0 { // Do common case first for performance
+	if r.Offset == 0 && r.Count == 0 { // Do common case first for performance
 		return nil // No specified range
 	}
 	endOffset := "" // if count == CountToEnd (0)
-	if r.count > 0 {
-		endOffset = strconv.FormatInt((r.offset+r.count)-1, 10)
+	if r.Count > 0 {
+		endOffset = strconv.FormatInt((r.Offset+r.Count)-1, 10)
 	}
-	dataRange := fmt.Sprintf("bytes=%v-%s", r.offset, endOffset)
+	dataRange := fmt.Sprintf("bytes=%v-%s", r.Offset, endOffset)
 	return &dataRange
 }
 
@@ -58,7 +58,7 @@ func getSourceRange(offset, count *int64) *string {
 		newCount = *count
 	}
 
-	return HttpRange{offset: newOffset, count: newCount}.pointers()
+	return HttpRange{Offset: newOffset, Count: newCount}.pointers()
 }
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {

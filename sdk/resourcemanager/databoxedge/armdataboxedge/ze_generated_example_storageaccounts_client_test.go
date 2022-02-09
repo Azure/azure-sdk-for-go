@@ -30,12 +30,16 @@ func ExampleStorageAccountsClient_ListByDataBoxEdgeDevice() {
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StorageAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleStorageAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StorageAccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/StorageAccountPut.json
@@ -74,9 +78,9 @@ func ExampleStorageAccountsClient_BeginCreateOrUpdate() {
 		armdataboxedge.StorageAccount{
 			Properties: &armdataboxedge.StorageAccountProperties{
 				Description:                to.StringPtr("<description>"),
-				DataPolicy:                 armdataboxedge.DataPolicyCloud.ToPtr(),
+				DataPolicy:                 armdataboxedge.DataPolicy("Cloud").ToPtr(),
 				StorageAccountCredentialID: to.StringPtr("<storage-account-credential-id>"),
-				StorageAccountStatus:       armdataboxedge.StorageAccountStatusOK.ToPtr(),
+				StorageAccountStatus:       armdataboxedge.StorageAccountStatus("OK").ToPtr(),
 			},
 		},
 		nil)
@@ -87,7 +91,7 @@ func ExampleStorageAccountsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StorageAccountsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/StorageAccountDelete.json

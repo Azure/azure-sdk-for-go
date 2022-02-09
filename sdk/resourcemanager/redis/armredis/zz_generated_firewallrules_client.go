@@ -11,7 +11,6 @@ package armredis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // FirewallRulesClient contains the methods for the FirewallRules group.
 // Don't use this type directly, use NewFirewallRulesClient() instead.
 type FirewallRulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFirewallRulesClient creates a new instance of FirewallRulesClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FirewallRulesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &FirewallRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FirewallRulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a redis cache firewall rule
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, parameters RedisFirewallRule, options *FirewallRulesCreateOrUpdateOptions) (FirewallRulesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// cacheName - The name of the Redis cache.
+// ruleName - The name of the firewall rule.
+// parameters - Parameters supplied to the create or update redis firewall rule operation.
+// options - FirewallRulesClientCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.CreateOrUpdate
+// method.
+func (client *FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, parameters FirewallRule, options *FirewallRulesClientCreateOrUpdateOptions) (FirewallRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cacheName, ruleName, parameters, options)
 	if err != nil {
-		return FirewallRulesCreateOrUpdateResponse{}, err
+		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallRulesCreateOrUpdateResponse{}, err
+		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return FirewallRulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return FirewallRulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, parameters RedisFirewallRule, options *FirewallRulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, parameters FirewallRule, options *FirewallRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules/{ruleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,58 +92,49 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FirewallRulesClient) createOrUpdateHandleResponse(resp *http.Response) (FirewallRulesCreateOrUpdateResponse, error) {
-	result := FirewallRulesCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RedisFirewallRule); err != nil {
-		return FirewallRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *FirewallRulesClient) createOrUpdateHandleResponse(resp *http.Response) (FirewallRulesClientCreateOrUpdateResponse, error) {
+	result := FirewallRulesClientCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
+		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *FirewallRulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a single firewall rule in a specified redis cache.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FirewallRulesClient) Delete(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesDeleteOptions) (FirewallRulesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// cacheName - The name of the Redis cache.
+// ruleName - The name of the firewall rule.
+// options - FirewallRulesClientDeleteOptions contains the optional parameters for the FirewallRulesClient.Delete method.
+func (client *FirewallRulesClient) Delete(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesClientDeleteOptions) (FirewallRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cacheName, ruleName, options)
 	if err != nil {
-		return FirewallRulesDeleteResponse{}, err
+		return FirewallRulesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallRulesDeleteResponse{}, err
+		return FirewallRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return FirewallRulesDeleteResponse{}, client.deleteHandleError(resp)
+		return FirewallRulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FirewallRulesDeleteResponse{RawResponse: resp}, nil
+	return FirewallRulesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesDeleteOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules/{ruleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,49 +152,40 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FirewallRulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a single firewall rule in a specified redis cache.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesGetOptions) (FirewallRulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// cacheName - The name of the Redis cache.
+// ruleName - The name of the firewall rule.
+// options - FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
+func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesClientGetOptions) (FirewallRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cacheName, ruleName, options)
 	if err != nil {
-		return FirewallRulesGetResponse{}, err
+		return FirewallRulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallRulesGetResponse{}, err
+		return FirewallRulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallRulesGetResponse{}, client.getHandleError(resp)
+		return FirewallRulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesGetOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, ruleName string, options *FirewallRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules/{ruleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,55 +203,45 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (FirewallRulesGetResponse, error) {
-	result := FirewallRulesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RedisFirewallRule); err != nil {
-		return FirewallRulesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (FirewallRulesClientGetResponse, error) {
+	result := FirewallRulesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
+		return FirewallRulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FirewallRulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets all firewall rules in the specified redis cache.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FirewallRulesClient) List(resourceGroupName string, cacheName string, options *FirewallRulesListOptions) *FirewallRulesListPager {
-	return &FirewallRulesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// cacheName - The name of the Redis cache.
+// options - FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.List method.
+func (client *FirewallRulesClient) List(resourceGroupName string, cacheName string, options *FirewallRulesClientListOptions) *FirewallRulesClientListPager {
+	return &FirewallRulesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, cacheName, options)
 		},
-		advancer: func(ctx context.Context, resp FirewallRulesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RedisFirewallRuleListResult.NextLink)
+		advancer: func(ctx context.Context, resp FirewallRulesClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.FirewallRuleListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *FirewallRulesListOptions) (*policy.Request, error) {
+func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *FirewallRulesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,35 +255,22 @@ func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallRulesClient) listHandleResponse(resp *http.Response) (FirewallRulesListResponse, error) {
-	result := FirewallRulesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RedisFirewallRuleListResult); err != nil {
-		return FirewallRulesListResponse{}, runtime.NewResponseError(err, resp)
+func (client *FirewallRulesClient) listHandleResponse(resp *http.Response) (FirewallRulesClientListResponse, error) {
+	result := FirewallRulesClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRuleListResult); err != nil {
+		return FirewallRulesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *FirewallRulesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -12,6 +12,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -79,6 +80,29 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
 		})
+	}
+}
+
+func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain_mock(t *testing.T) {
+	test := allCertTests[0]
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse()
+	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
+	srv.AppendResponse(mock.WithPredicate(validateJWTRequestContainsHeader(t, "x5c")), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+
+	options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}, SendCertificateChain: true}
+	cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("unexpected token: %s", tk.Token)
 	}
 }
 

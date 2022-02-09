@@ -29,15 +29,19 @@ func ExamplePipelineJobsClient_List() {
 	client := armvideoanalyzer.NewPipelineJobsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
-		&armvideoanalyzer.PipelineJobsListOptions{Filter: nil,
+		&armvideoanalyzer.PipelineJobsClientListOptions{Filter: nil,
 			Top: to.Int32Ptr(2),
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PipelineJob.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -58,7 +62,7 @@ func ExamplePipelineJobsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PipelineJob.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelineJobsClientGetResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/pipeline-job-create.json
@@ -92,7 +96,7 @@ func ExamplePipelineJobsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PipelineJob.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelineJobsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/pipeline-job-delete.json
@@ -134,7 +138,7 @@ func ExamplePipelineJobsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PipelineJob.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelineJobsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/pipeline-job-cancel.json

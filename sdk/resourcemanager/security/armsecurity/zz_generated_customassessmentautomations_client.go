@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,56 @@ import (
 // CustomAssessmentAutomationsClient contains the methods for the CustomAssessmentAutomations group.
 // Don't use this type directly, use NewCustomAssessmentAutomationsClient() instead.
 type CustomAssessmentAutomationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCustomAssessmentAutomationsClient creates a new instance of CustomAssessmentAutomationsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCustomAssessmentAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomAssessmentAutomationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &CustomAssessmentAutomationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CustomAssessmentAutomationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// Create - Creates or updates a custom assessment automation for the provided subscription. Please note that providing an existing custom assessment automation
-// will replace the existing record.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsCreateOptions) (CustomAssessmentAutomationsCreateResponse, error) {
+// Create - Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
+// existing custom assessment automation will replace the existing record.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// customAssessmentAutomationName - Name of the Custom Assessment Automation.
+// customAssessmentAutomationBody - Custom Assessment Automation body
+// options - CustomAssessmentAutomationsClientCreateOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Create
+// method.
+func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsClientCreateOptions) (CustomAssessmentAutomationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody, options)
 	if err != nil {
-		return CustomAssessmentAutomationsCreateResponse{}, err
+		return CustomAssessmentAutomationsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomAssessmentAutomationsCreateResponse{}, err
+		return CustomAssessmentAutomationsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CustomAssessmentAutomationsCreateResponse{}, client.createHandleError(resp)
+		return CustomAssessmentAutomationsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsCreateOptions) (*policy.Request, error) {
+func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -75,7 +87,7 @@ func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context
 		return nil, errors.New("parameter customAssessmentAutomationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customAssessmentAutomationName}", url.PathEscape(customAssessmentAutomationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,46 +99,37 @@ func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context
 }
 
 // createHandleResponse handles the Create response.
-func (client *CustomAssessmentAutomationsClient) createHandleResponse(resp *http.Response) (CustomAssessmentAutomationsCreateResponse, error) {
-	result := CustomAssessmentAutomationsCreateResponse{RawResponse: resp}
+func (client *CustomAssessmentAutomationsClient) createHandleResponse(resp *http.Response) (CustomAssessmentAutomationsClientCreateResponse, error) {
+	result := CustomAssessmentAutomationsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomation); err != nil {
-		return CustomAssessmentAutomationsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return CustomAssessmentAutomationsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *CustomAssessmentAutomationsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a custom assessment automation by name for a provided subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomAssessmentAutomationsClient) Delete(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsDeleteOptions) (CustomAssessmentAutomationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// customAssessmentAutomationName - Name of the Custom Assessment Automation.
+// options - CustomAssessmentAutomationsClientDeleteOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Delete
+// method.
+func (client *CustomAssessmentAutomationsClient) Delete(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsClientDeleteOptions) (CustomAssessmentAutomationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, customAssessmentAutomationName, options)
 	if err != nil {
-		return CustomAssessmentAutomationsDeleteResponse{}, err
+		return CustomAssessmentAutomationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomAssessmentAutomationsDeleteResponse{}, err
+		return CustomAssessmentAutomationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CustomAssessmentAutomationsDeleteResponse{}, client.deleteHandleError(resp)
+		return CustomAssessmentAutomationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CustomAssessmentAutomationsDeleteResponse{RawResponse: resp}, nil
+	return CustomAssessmentAutomationsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomAssessmentAutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsDeleteOptions) (*policy.Request, error) {
+func (client *CustomAssessmentAutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +143,7 @@ func (client *CustomAssessmentAutomationsClient) deleteCreateRequest(ctx context
 		return nil, errors.New("parameter customAssessmentAutomationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customAssessmentAutomationName}", url.PathEscape(customAssessmentAutomationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,38 +154,29 @@ func (client *CustomAssessmentAutomationsClient) deleteCreateRequest(ctx context
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CustomAssessmentAutomationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a single custom assessment automation by name for the provided subscription and resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomAssessmentAutomationsClient) Get(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsGetOptions) (CustomAssessmentAutomationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// customAssessmentAutomationName - Name of the Custom Assessment Automation.
+// options - CustomAssessmentAutomationsClientGetOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Get
+// method.
+func (client *CustomAssessmentAutomationsClient) Get(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsClientGetOptions) (CustomAssessmentAutomationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, customAssessmentAutomationName, options)
 	if err != nil {
-		return CustomAssessmentAutomationsGetResponse{}, err
+		return CustomAssessmentAutomationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomAssessmentAutomationsGetResponse{}, err
+		return CustomAssessmentAutomationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CustomAssessmentAutomationsGetResponse{}, client.getHandleError(resp)
+		return CustomAssessmentAutomationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomAssessmentAutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsGetOptions) (*policy.Request, error) {
+func (client *CustomAssessmentAutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -196,7 +190,7 @@ func (client *CustomAssessmentAutomationsClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter customAssessmentAutomationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customAssessmentAutomationName}", url.PathEscape(customAssessmentAutomationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,43 +202,33 @@ func (client *CustomAssessmentAutomationsClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomAssessmentAutomationsClient) getHandleResponse(resp *http.Response) (CustomAssessmentAutomationsGetResponse, error) {
-	result := CustomAssessmentAutomationsGetResponse{RawResponse: resp}
+func (client *CustomAssessmentAutomationsClient) getHandleResponse(resp *http.Response) (CustomAssessmentAutomationsClientGetResponse, error) {
+	result := CustomAssessmentAutomationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomation); err != nil {
-		return CustomAssessmentAutomationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CustomAssessmentAutomationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CustomAssessmentAutomationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - List custom assessment automations by provided subscription and resource group
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomAssessmentAutomationsClient) ListByResourceGroup(resourceGroupName string, options *CustomAssessmentAutomationsListByResourceGroupOptions) *CustomAssessmentAutomationsListByResourceGroupPager {
-	return &CustomAssessmentAutomationsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - CustomAssessmentAutomationsClientListByResourceGroupOptions contains the optional parameters for the CustomAssessmentAutomationsClient.ListByResourceGroup
+// method.
+func (client *CustomAssessmentAutomationsClient) ListByResourceGroup(resourceGroupName string, options *CustomAssessmentAutomationsClientListByResourceGroupOptions) *CustomAssessmentAutomationsClientListByResourceGroupPager {
+	return &CustomAssessmentAutomationsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp CustomAssessmentAutomationsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CustomAssessmentAutomationsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomAssessmentAutomationsListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *CustomAssessmentAutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CustomAssessmentAutomationsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *CustomAssessmentAutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CustomAssessmentAutomationsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -254,7 +238,7 @@ func (client *CustomAssessmentAutomationsClient) listByResourceGroupCreateReques
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -266,49 +250,38 @@ func (client *CustomAssessmentAutomationsClient) listByResourceGroupCreateReques
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *CustomAssessmentAutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (CustomAssessmentAutomationsListByResourceGroupResponse, error) {
-	result := CustomAssessmentAutomationsListByResourceGroupResponse{RawResponse: resp}
+func (client *CustomAssessmentAutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (CustomAssessmentAutomationsClientListByResourceGroupResponse, error) {
+	result := CustomAssessmentAutomationsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomationsListResult); err != nil {
-		return CustomAssessmentAutomationsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return CustomAssessmentAutomationsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *CustomAssessmentAutomationsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - List custom assessment automations by provided subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomAssessmentAutomationsClient) ListBySubscription(options *CustomAssessmentAutomationsListBySubscriptionOptions) *CustomAssessmentAutomationsListBySubscriptionPager {
-	return &CustomAssessmentAutomationsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - CustomAssessmentAutomationsClientListBySubscriptionOptions contains the optional parameters for the CustomAssessmentAutomationsClient.ListBySubscription
+// method.
+func (client *CustomAssessmentAutomationsClient) ListBySubscription(options *CustomAssessmentAutomationsClientListBySubscriptionOptions) *CustomAssessmentAutomationsClientListBySubscriptionPager {
+	return &CustomAssessmentAutomationsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp CustomAssessmentAutomationsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CustomAssessmentAutomationsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomAssessmentAutomationsListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *CustomAssessmentAutomationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *CustomAssessmentAutomationsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *CustomAssessmentAutomationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *CustomAssessmentAutomationsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/customAssessmentAutomations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -320,23 +293,10 @@ func (client *CustomAssessmentAutomationsClient) listBySubscriptionCreateRequest
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *CustomAssessmentAutomationsClient) listBySubscriptionHandleResponse(resp *http.Response) (CustomAssessmentAutomationsListBySubscriptionResponse, error) {
-	result := CustomAssessmentAutomationsListBySubscriptionResponse{RawResponse: resp}
+func (client *CustomAssessmentAutomationsClient) listBySubscriptionHandleResponse(resp *http.Response) (CustomAssessmentAutomationsClientListBySubscriptionResponse, error) {
+	result := CustomAssessmentAutomationsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomationsListResult); err != nil {
-		return CustomAssessmentAutomationsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return CustomAssessmentAutomationsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *CustomAssessmentAutomationsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

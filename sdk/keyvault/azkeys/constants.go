@@ -82,20 +82,20 @@ func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecov
 type KeyCurveName string
 
 const (
-	// Ed25519 - The Ed25519 Edwards curve.
-	Ed25519 KeyCurveName = "Ed25519"
+	// KeyCurveNameEd25519 - The Ed25519 Edwards curve.
+	KeyCurveNameEd25519 KeyCurveName = "Ed25519"
 
-	// P256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	P256 KeyCurveName = "P-256"
+	// KeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	KeyCurveNameP256 KeyCurveName = "P-256"
 
-	// P256K - The SECG SECP256K1 elliptic curve.
-	P256K KeyCurveName = "P-256K"
+	// KeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
+	KeyCurveNameP256K KeyCurveName = "P-256K"
 
-	// P384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	P384 KeyCurveName = "P-384"
+	// KeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	KeyCurveNameP384 KeyCurveName = "P-384"
 
-	// P521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	P521 KeyCurveName = "P-521"
+	// KeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	KeyCurveNameP521 KeyCurveName = "P-521"
 )
 
 // ToPtr returns a *KeyCurveName pointing to the current value.
@@ -103,21 +103,21 @@ func (c KeyCurveName) ToPtr() *KeyCurveName {
 	return &c
 }
 
-// JSONWebKeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
-type JSONWebKeyOperation string
+// KeyOperation - JSON web key operations. For more information, see KeyOperation.
+type KeyOperation string
 
 const (
-	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
-	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
-	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
-	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
-	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
-	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
-	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
+	KeyOperationDecrypt   KeyOperation = "decrypt"
+	KeyOperationEncrypt   KeyOperation = "encrypt"
+	KeyOperationImport    KeyOperation = "import"
+	KeyOperationSign      KeyOperation = "sign"
+	KeyOperationUnwrapKey KeyOperation = "unwrapKey"
+	KeyOperationVerify    KeyOperation = "verify"
+	KeyOperationWrapKey   KeyOperation = "wrapKey"
 )
 
-// ToPtr returns a *JSONWebKeyOperation pointing to the current value.
-func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
+// ToPtr returns a *KeyOperation pointing to the current value.
+func (c KeyOperation) ToPtr() *KeyOperation {
 	return &c
 }
 

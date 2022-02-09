@@ -27,13 +27,17 @@ func ExampleDevicesClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armdataboxedge.DevicesListBySubscriptionOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListBySubscription(&armdataboxedge.DevicesClientListBySubscriptionOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataBoxEdgeDevice.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -47,13 +51,17 @@ func ExampleDevicesClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armdataboxedge.DevicesListByResourceGroupOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+		&armdataboxedge.DevicesClientListByResourceGroupOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataBoxEdgeDevice.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleDevicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataBoxEdgeDevice.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/DataBoxEdgeDevicePut.json
@@ -87,11 +95,11 @@ func ExampleDevicesClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<device-name>",
 		"<resource-group-name>",
-		armdataboxedge.DataBoxEdgeDevice{
+		armdataboxedge.Device{
 			Location: to.StringPtr("<location>"),
-			SKU: &armdataboxedge.SKU{
-				Name: armdataboxedge.SKUNameEdge.ToPtr(),
-				Tier: armdataboxedge.SKUTierStandard.ToPtr(),
+			SKU: &armdataboxedge.SKUInfo{
+				Name: armdataboxedge.SKUName("Edge").ToPtr(),
+				Tier: armdataboxedge.SKUTier("Standard").ToPtr(),
 			},
 			Tags: map[string]*string{},
 		},
@@ -99,7 +107,7 @@ func ExampleDevicesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataBoxEdgeDevice.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/DataBoxEdgeDeviceDelete.json
@@ -134,8 +142,8 @@ func ExampleDevicesClient_Update() {
 	res, err := client.Update(ctx,
 		"<device-name>",
 		"<resource-group-name>",
-		armdataboxedge.DataBoxEdgeDevicePatch{
-			Properties: &armdataboxedge.DataBoxEdgeDevicePropertiesPatch{
+		armdataboxedge.DevicePatch{
+			Properties: &armdataboxedge.DevicePropertiesPatch{
 				EdgeProfile: &armdataboxedge.EdgeProfilePatch{
 					Subscription: &armdataboxedge.EdgeProfileSubscriptionPatch{
 						ID: to.StringPtr("<id>"),
@@ -147,7 +155,7 @@ func ExampleDevicesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataBoxEdgeDevice.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/DownloadUpdatesPost.json
@@ -179,13 +187,14 @@ func ExampleDevicesClient_GenerateCertificate() {
 	}
 	ctx := context.Background()
 	client := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
-	_, err = client.GenerateCertificate(ctx,
+	res, err := client.GenerateCertificate(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DevicesClientGenerateCertificateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ExtendedInfoPost.json
@@ -203,7 +212,7 @@ func ExampleDevicesClient_GetExtendedInformation() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataBoxEdgeDeviceExtendedInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientGetExtendedInformationResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/InstallUpdatesPost.json
@@ -242,7 +251,7 @@ func ExampleDevicesClient_GetNetworkSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkSettings.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientGetNetworkSettingsResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ScanForUpdatesPost.json
@@ -280,7 +289,7 @@ func ExampleDevicesClient_BeginCreateOrUpdateSecuritySettings() {
 		armdataboxedge.SecuritySettings{
 			Properties: &armdataboxedge.SecuritySettingsProperties{
 				DeviceAdminPassword: &armdataboxedge.AsymmetricEncryptedSecret{
-					EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithmAES256.ToPtr(),
+					EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithm("AES256").ToPtr(),
 					EncryptionCertThumbprint: to.StringPtr("<encryption-cert-thumbprint>"),
 					Value:                    to.StringPtr("<value>"),
 				},
@@ -307,12 +316,12 @@ func ExampleDevicesClient_UpdateExtendedInformation() {
 	res, err := client.UpdateExtendedInformation(ctx,
 		"<device-name>",
 		"<resource-group-name>",
-		armdataboxedge.DataBoxEdgeDeviceExtendedInfoPatch{},
+		armdataboxedge.DeviceExtendedInfoPatch{},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataBoxEdgeDeviceExtendedInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientUpdateExtendedInformationResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/UpdateSummaryGet.json
@@ -330,7 +339,7 @@ func ExampleDevicesClient_GetUpdateSummary() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("UpdateSummary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientGetUpdateSummaryResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/UploadCertificatePost.json
@@ -341,7 +350,7 @@ func ExampleDevicesClient_UploadCertificate() {
 	}
 	ctx := context.Background()
 	client := armdataboxedge.NewDevicesClient("<subscription-id>", cred, nil)
-	_, err = client.UploadCertificate(ctx,
+	res, err := client.UploadCertificate(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		armdataboxedge.UploadCertificateRequest{
@@ -353,4 +362,5 @@ func ExampleDevicesClient_UploadCertificate() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DevicesClientUploadCertificateResult)
 }

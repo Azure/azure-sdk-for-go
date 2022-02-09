@@ -22,7 +22,7 @@ The azblob package allows you to interact with three types of resources :-
 * Containers within those storage accounts.
 * Blobs (block blobs/ page blobs/ append blobs) within those containers.
 
-The Azure Storage Blob (azblob) client library for Go allows you to interact with each of these components through the use of a dedicated client object.
+The Azure Blob Storage (azblob) client library for Go allows you to interact with each of these components through the use of a dedicated client object.
 To create a client object, you will need the account's blob service endpoint URL and a credential that allows you to access the account.
 
 Types of Credentials
@@ -137,7 +137,7 @@ Examples
 	service, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	handle(err)
 
-	// All operations in the Azure Storage Blob SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
+	// All operations in the Azure Blob Storage SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
 	ctx := context.Background() // This example has no expiry.
 
 	// This example showcases several common operations to help you get started, such as:
@@ -145,7 +145,7 @@ Examples
 	// ===== 1. Creating a container =====
 
 	// First, branch off of the service client and create a container client.
-	container := service.NewContainerClient("myContainer")
+	container := service.NewContainerClient("mycontainer")
 	// Then, fire off a create operation on the container client.
 	// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
 	// Specifying nil omits all options.

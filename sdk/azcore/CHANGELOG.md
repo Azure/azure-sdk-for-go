@@ -3,6 +3,7 @@
 ## 0.21.2 (Unreleased)
 
 ### Features Added
+* Added header `WWW-Authenticate` to the default allow-list of headers for logging.
 
 ### Breaking Changes
 

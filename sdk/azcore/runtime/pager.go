@@ -38,21 +38,22 @@ type PageProcessor[T any] struct {
 // Pager provides operations for iterating over paged responses.
 type Pager[T any] struct {
 	current   T
-	handler   PageProcessor[T]
-	lroSecond bool
+	processor PageProcessor[T]
+	firstPage bool
 }
 
 // NewPager creates an instance of Pager using the specified PageProcessor.
-func NewPager[T any](pageHandler PageProcessor[T]) *Pager[T] {
+func NewPager[T any](processor PageProcessor[T]) *Pager[T] {
 	return &Pager[T]{
-		handler: pageHandler,
+		processor: processor,
+		firstPage: true,
 	}
 }
 
 // More returns true if there are more pages to retrieve.
 func (p *Pager[T]) More() bool {
 	if !reflect.ValueOf(p.current).IsZero() {
-		return p.handler.More(p.current)
+		return p.processor.More(p.current)
 	}
 	return true
 }
@@ -61,31 +62,31 @@ func (p *Pager[T]) More() bool {
 func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 	var req *policy.Request
 	var err error
-	if !reflect.ValueOf(p.current).IsZero() && !p.lroSecond {
+	if !reflect.ValueOf(p.current).IsZero() && p.firstPage {
 		// we get here if it's an LRO-pager, we already have the first page
-		p.lroSecond = true
+		p.firstPage = false
 		return p.current, nil
 	} else if !reflect.ValueOf(p.current).IsZero() {
-		if !p.handler.More(p.current) {
+		if !p.processor.More(p.current) {
 			return *new(T), errors.New("no more pages")
 		}
-		req, err = p.handler.Advancer(ctx, p.current)
+		req, err = p.processor.Advancer(ctx, p.current)
 	} else {
-		// non-LRO case, so skip the LRO branch above
-		p.lroSecond = true
-		req, err = p.handler.Requester(ctx)
+		// non-LRO case
+		p.firstPage = false
+		req, err = p.processor.Requester(ctx)
 	}
 	if err != nil {
 		return *new(T), err
 	}
-	resp, err := p.handler.Do(req)
+	resp, err := p.processor.Do(req)
 	if err != nil {
 		return *new(T), err
 	}
 	if !shared.HasStatusCode(resp, http.StatusOK) {
 		return *new(T), shared.NewResponseError(resp)
 	}
-	result, err := p.handler.Responder(resp)
+	result, err := p.processor.Responder(resp)
 	if err != nil {
 		return *new(T), err
 	}

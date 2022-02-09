@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"strconv"
 	"strings"
 )
 
@@ -1228,4 +1229,56 @@ func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
 
 	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
 	_assert.IsTypef(bbClient, BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
+}
+
+func (s *azblobTestSuite) TestListBlobIncludeMetadata() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blobName := generateBlobName(testName)
+	for i := 0; i < 6; i++ {
+		bbClient := getBlockBlobClient(blobName+strconv.Itoa(i), containerClient)
+		cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &UploadBlockBlobOptions{Metadata: basicMetadata})
+		_assert.Nil(err)
+		_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	}
+
+	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
+	})
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		_assert.Len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems, 6)
+		for _, blob := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			_assert.NotNil(blob.Metadata)
+			_assert.Len(blob.Metadata, len(basicMetadata))
+		}
+	}
+	_assert.Nil(pager.Err())
+
+	//----------------------------------------------------------
+
+	pager1 := containerClient.ListBlobsHierarchy("/", &ContainerListBlobHierarchySegmentOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata, ListBlobsIncludeItemTags},
+	})
+
+	for pager1.NextPage(ctx) {
+		resp := pager1.PageResponse()
+		_assert.Len(resp.ListBlobsHierarchySegmentResponse.Segment.BlobItems, 6)
+		for _, blob := range resp.ListBlobsHierarchySegmentResponse.Segment.BlobItems {
+			_assert.NotNil(blob.Metadata)
+			_assert.Len(blob.Metadata, len(basicMetadata))
+		}
+	}
+	_assert.Nil(pager1.Err())
 }

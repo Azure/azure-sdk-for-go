@@ -24,7 +24,7 @@ const (
 	ContainerNameLogs = "$logs"
 )
 
-// A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.
+// A ServiceClient represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type ServiceClient struct {
 	client    *serviceClient
 	u         url.URL
@@ -252,7 +252,7 @@ func (s ServiceClient) GetSASToken(resources AccountSASResourceTypes, permission
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
 func (s ServiceClient) FindBlobsByTags(ctx context.Context, options ServiceFilterBlobsByTagsOptions) (ServiceFilterBlobsResponse, error) {
-	// TODO: Use pager here? Missing support from zz_generated_pagera.go
+	// TODO: Use pager here? Missing support from zz_generated_pagers.go
 	serviceFilterBlobsOptions := options.pointer()
 	return s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)
 }

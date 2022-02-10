@@ -78,9 +78,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	}
 	// if we get here, all credentials returned credentialUnavailableError
 	msg := createChainedErrorMessage(errs)
-	err := newCredentialUnavailableError(c.name, msg)
-	log.Write(EventAuthentication, "Azure Identity => ERROR: "+err.Error())
-	return nil, err
+	return nil, newCredentialUnavailableError(c.name, msg)
 }
 
 func createChainedErrorMessage(errs []error) string {

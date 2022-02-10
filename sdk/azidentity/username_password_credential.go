@@ -73,7 +73,6 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 	}
 	ar, err = c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password)
 	if err != nil {
-		addGetTokenFailureLogs(credNameUserPassword, err, true)
 		return nil, newAuthenticationFailedErrorFromMSALError(credNameUserPassword, err)
 	}
 	c.account = ar.Account

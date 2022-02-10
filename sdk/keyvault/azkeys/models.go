@@ -245,7 +245,7 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 	}
 
 	return &KeyItem{
-		Attributes: keyAttributesFromGenerated(i.Attributes),
+		Attributes: keyPropertiesFromGenerated(i.Attributes),
 		KID:        i.Kid,
 		Tags:       convertGeneratedMap(i.Tags),
 		Managed:    i.Managed,

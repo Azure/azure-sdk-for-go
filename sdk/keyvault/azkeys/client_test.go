@@ -256,9 +256,8 @@ func TestDeleteKey(t *testing.T) {
 			_, err = resp.Poller.FinalResponse(ctx)
 			require.NoError(t, err)
 
-			invalidResp, err := client.BeginDeleteKey(ctx, "nonexistent", nil)
+			_, err = client.BeginDeleteKey(ctx, "nonexistent", nil)
 			require.Error(t, err)
-			require.Nil(t, invalidResp.Poller)
 		})
 	}
 }
@@ -367,9 +366,8 @@ func TestRecoverDeletedKey(t *testing.T) {
 			require.NoError(t, err)
 			require.NotNil(t, getResp.Key)
 
-			invalidResp, err := client.BeginRecoverDeletedKey(ctx, "INVALIDKEYNAME", nil)
+			_, err = client.BeginRecoverDeletedKey(ctx, "INVALIDKEYNAME", nil)
 			require.Error(t, err)
-			require.Nil(t, invalidResp.Poller)
 		})
 	}
 }

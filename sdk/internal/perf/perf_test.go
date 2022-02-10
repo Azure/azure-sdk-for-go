@@ -6,6 +6,7 @@ package perf
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -25,6 +26,7 @@ func (p *perfTestSample) GlobalSetup(ctx context.Context) error {
 	return nil
 }
 func (p *perfTestSample) Run(ctx context.Context) error {
+	time.Sleep(time.Second)
 	return nil
 }
 func (p *perfTestSample) Cleanup(ctx context.Context) error {
@@ -39,20 +41,12 @@ func NewPerfTestSample(options *PerfTestOptions) PerfTest {
 }
 
 func TestRun(t *testing.T) {
-	Duration = 1
+	Duration = 2
 	WarmUp = 0
 	Parallel = 1
 
 	p := NewPerfTestSample(nil)
 
-	err := runGlobalCleanup(p)
-	require.NoError(t, err)
-
-	err = runSetup(p)
-	require.NoError(t, err)
-
-	err = runCleanup(p)
-	require.NoError(t, err)
-	err = runGlobalCleanup(p)
+	err := runPerfTest(NewPerfTestSample)
 	require.NoError(t, err)
 }

@@ -29,9 +29,11 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 
 	// Check if we need to print out results from warmup. Results come in a channel, so we
 	// need to check if all N channels (N = Parallel) have reported final results
-	if len(elapsedTimesWarmup[WarmUp-1]) == Parallel && !printedWarmupResults {
-		printFinalResults(elapsedTimesWarmup, perSecondCountWarmup, true)
-		printedWarmupResults = true
+	if WarmUp > 0 {
+		if len(elapsedTimesWarmup[WarmUp-1]) == Parallel && !printedWarmupResults {
+			printFinalResults(elapsedTimesWarmup, perSecondCountWarmup, true)
+			printedWarmupResults = true
+		}
 	}
 
 	if len(perSecondCount) == 0 {

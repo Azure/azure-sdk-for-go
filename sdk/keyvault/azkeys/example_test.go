@@ -140,7 +140,7 @@ func ExampleClient_BeginDeleteKey() {
 	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
 }
 
-func ExampleClient_ListKeys() {
+func ExampleClient_ListPropertiesOfKeys() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

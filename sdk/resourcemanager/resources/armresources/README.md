@@ -6,7 +6,7 @@ The `armresources` module provides operations for working with Azure Resources.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/resources/armresources)
 
-# Getting started
+## Getting started
 
 ## Prerequisites
 
@@ -38,7 +38,7 @@ For more information on authentication, please see the documentation for `aziden
 Azure Resources modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armresources.NewResourcesClient(<subscription ID>, cred, nil)
+client := armresources.NewClient(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -47,7 +47,7 @@ You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/az
 options = arm.ClientOptions{
     Host: arm.AzureChina,
 }
-client := armresources.NewResourcesClient(<subscription ID>, cred, &options)
+client := armresources.NewClient(<subscription ID>, cred, &options)
 ```
 
 ## More sample code
@@ -62,7 +62,7 @@ client := armresources.NewResourcesClient(<subscription ID>, cred, &options)
 If you encounter bugs or have suggestions, please
 [open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Resources` label.
 
-# Contributing
+## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require
 you to agree to a Contributor License Agreement (CLA) declaring that you have

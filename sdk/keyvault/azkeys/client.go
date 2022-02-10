@@ -571,22 +571,8 @@ func (b *BeginDeleteKeyOptions) toGenerated() *generated.KeyVaultClientDeleteKey
 	return &generated.KeyVaultClientDeleteKeyOptions{}
 }
 
-// DeleteKeyPoller is the interface for the Client.DeleteKey operation.
-type DeleteKeyPoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (DeleteKeyResponse, error)
-}
-
 // The poller returned by the Client.StartDeleteKey operation
-type startDeleteKeyPoller struct {
+type DeleteKeyPoller struct {
 	keyName        string // This is the key to Poll for in GetDeletedKey
 	vaultUrl       string
 	client         *generated.KeyVaultClient
@@ -596,14 +582,14 @@ type startDeleteKeyPoller struct {
 }
 
 // Done returns true if the LRO has reached a terminal state
-func (s *startDeleteKeyPoller) Done() bool {
+func (s *DeleteKeyPoller) Done() bool {
 	return s.lastResponse.RawResponse != nil
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
-func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (s *DeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := s.client.GetDeletedKey(ctx, s.vaultUrl, s.keyName, nil)
 	if err == nil {
 		// Service recognizes DeletedKey, operation is done
@@ -622,13 +608,13 @@ func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error)
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (s *startDeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse, error) {
+func (s *DeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse, error) {
 	return *deleteKeyResponseFromGenerated(&s.deleteResponse), nil
 }
 
 // pollUntilDone continually calls the Poll operation until the operation is completed. In between each
 // Poll is a wait determined by the t parameter.
-func (s *startDeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteKeyResponse, error) {
+func (s *DeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteKeyResponse, error) {
 	for {
 		resp, err := s.Poll(ctx)
 		if err != nil {
@@ -688,7 +674,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 		}
 	}
 
-	s := &startDeleteKeyPoller{
+	s := &DeleteKeyPoller{
 		vaultUrl:       c.vaultUrl,
 		keyName:        keyName,
 		client:         c.kvClient,
@@ -751,22 +737,8 @@ func (c *Client) BackupKey(ctx context.Context, keyName string, options *BackupK
 	return backupKeyResponseFromGenerated(resp), nil
 }
 
-// RecoverDeletedKeyPoller is the interface for the Client.RecoverDeletedKey operation
-type RecoverDeletedKeyPoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (RecoverDeletedKeyResponse, error)
-}
-
-// beginRecoverPoller implements the RecoverDeletedKeyPoller interface
-type beginRecoverPoller struct {
+// RecoverDeletedKeyPoller implements the RecoverDeletedKeyPoller interface
+type RecoverDeletedKeyPoller struct {
 	keyName         string
 	vaultUrl        string
 	client          *generated.KeyVaultClient
@@ -776,16 +748,16 @@ type beginRecoverPoller struct {
 }
 
 // Done returns true when the polling operation is completed
-func (b *beginRecoverPoller) Done() bool {
-	return b.RawResponse.StatusCode == http.StatusOK
+func (p *RecoverDeletedKeyPoller) Done() bool {
+	return p.RawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
-	resp, err := b.client.GetKey(ctx, b.vaultUrl, b.keyName, "", nil)
-	b.lastResponse = resp
+func (p *RecoverDeletedKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
+	resp, err := p.client.GetKey(ctx, p.vaultUrl, p.keyName, "", nil)
+	p.lastResponse = resp
 	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
 		return httpErr.RawResponse, err
@@ -794,24 +766,24 @@ func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedKeyResponse, error) {
-	return recoverDeletedKeyResponseFromGenerated(b.recoverResponse), nil
+func (p *RecoverDeletedKeyPoller) FinalResponse(ctx context.Context) (RecoverDeletedKeyResponse, error) {
+	return recoverDeletedKeyResponseFromGenerated(p.recoverResponse), nil
 }
 
 // pollUntilDone is the method for the Response.PollUntilDone struct
-func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
+func (p *RecoverDeletedKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
 	for {
-		resp, err := b.Poll(ctx)
+		resp, err := p.Poll(ctx)
 		if err != nil {
-			b.RawResponse = resp
+			p.RawResponse = resp
 		}
-		if b.Done() {
+		if p.Done() {
 			break
 		}
-		b.RawResponse = resp
+		p.RawResponse = resp
 		time.Sleep(t)
 	}
-	return recoverDeletedKeyResponseFromGenerated(b.recoverResponse), nil
+	return recoverDeletedKeyResponseFromGenerated(p.recoverResponse), nil
 }
 
 // BeginRecoverDeletedKeyOptions contains the optional parameters for the Client.BeginRecoverDeletedKey operation
@@ -873,7 +845,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 		}
 	}
 
-	b := &beginRecoverPoller{
+	b := &RecoverDeletedKeyPoller{
 		lastResponse:    getResp,
 		keyName:         keyName,
 		client:          c.kvClient,
@@ -976,25 +948,13 @@ func (c *Client) UpdateKeyProperties(ctx context.Context, keyName string, option
 	return updateKeyPropertiesFromGenerated(resp), nil
 }
 
-// ListDeletedKeys is the interface for the Client.ListDeletedKeys operation
-type ListDeletedKeysPager interface {
-	// PageResponse returns the current ListDeletedKeysPage
-	PageResponse() ListDeletedKeysPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-// listDeletedKeysPager is the pager returned by Client.ListDeletedKeys
-type listDeletedKeysPager struct {
+// ListDeletedKeysPager is the pager returned by Client.ListDeletedKeys
+type ListDeletedKeysPager struct {
 	genPager *generated.KeyVaultClientGetDeletedKeysPager
 }
 
 // PageResponse returns the current page of results
-func (l *listDeletedKeysPager) PageResponse() ListDeletedKeysPage {
+func (l *ListDeletedKeysPager) PageResponse() ListDeletedKeysPage {
 	resp := l.genPager.PageResponse()
 
 	var values []*DeletedKeyItem
@@ -1010,12 +970,12 @@ func (l *listDeletedKeysPager) PageResponse() ListDeletedKeysPage {
 }
 
 // Err returns an error if the last operation resulted in an error.
-func (l *listDeletedKeysPager) Err() error {
+func (l *ListDeletedKeysPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next page of results.
-func (l *listDeletedKeysPager) NextPage(ctx context.Context) bool {
+func (l *ListDeletedKeysPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
@@ -1046,7 +1006,7 @@ func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) ListDeletedKey
 		options = &ListDeletedKeysOptions{}
 	}
 
-	return &listDeletedKeysPager{
+	return &ListDeletedKeysPager{
 		genPager: c.kvClient.GetDeletedKeys(c.vaultUrl, options.toGenerated()),
 	}
 }

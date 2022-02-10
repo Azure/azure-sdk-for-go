@@ -45,8 +45,6 @@ func TestRun(t *testing.T) {
 	WarmUp = 0
 	Parallel = 1
 
-	p := NewPerfTestSample(nil)
-
 	err := runPerfTest(NewPerfTestSample)
 	require.NoError(t, err)
 }

@@ -7,7 +7,6 @@ import (
 	"context"
 	"fmt"
 	"hash/fnv"
-	"net/http"
 	"os"
 	"strings"
 	"testing"
@@ -37,7 +36,7 @@ func TestMain(m *testing.M) {
 				os.Exit(1)
 			}
 
-			err := recording.AddURISanitizer("fakeaccount", account, nil)
+			err := recording.AddGeneralRegexSanitizer("fakeaccount", account, nil)
 			if err != nil {
 				panic(err)
 			}
@@ -64,47 +63,6 @@ var pathToPackage = "sdk/data/aztables/testdata"
 
 const tableNamePrefix = "tableName"
 
-type recordingPolicy struct {
-	options recording.RecordingOptions
-	t       *testing.T
-}
-
-func (r recordingPolicy) Host() string {
-	if r.options.UseHTTPS {
-		return "localhost:5001"
-	}
-	return "localhost:5000"
-}
-
-func (r recordingPolicy) Scheme() string {
-	if r.options.UseHTTPS {
-		return "https"
-	}
-	return "http"
-}
-
-func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
-	if o == nil {
-		o = &recording.RecordingOptions{UseHTTPS: true}
-	}
-	p := &recordingPolicy{options: *o, t: t}
-	return p
-}
-
-func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(p.t) {
-		originalURLHost := req.Raw().URL.Host
-		req.Raw().URL.Scheme = p.Scheme()
-		req.Raw().URL.Host = p.Host()
-		req.Raw().Host = p.Host()
-
-		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
-		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
-	}
-	return req.Next()
-}
-
 type FakeCredential struct {
 	accountName string
 	accountKey  string
@@ -122,13 +80,11 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 }
 
 func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
+	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
+		Transport: client,
 	}}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
@@ -139,13 +95,11 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 }
 
 func createClientForRecordingWithNoCredential(t *testing.T, tableName string, serviceURL string) (*Client, error) {
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
+	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
+		Transport: client,
 	}}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
@@ -156,25 +110,21 @@ func createClientForRecordingWithNoCredential(t *testing.T, tableName string, se
 }
 
 func createServiceClientForRecording(t *testing.T, serviceURL string, cred SharedKeyCredential) (*ServiceClient, error) {
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
+	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
+		Transport: client,
 	}}
 	return NewServiceClientWithSharedKey(serviceURL, &cred, options)
 }
 
 func createServiceClientForRecordingWithNoCredential(t *testing.T, serviceURL string) (*ServiceClient, error) {
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
+	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
+		Transport: client,
 	}}
 	return NewServiceClientWithNoCredential(serviceURL, options)
 }
@@ -225,15 +175,6 @@ func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
 		require.NoError(t, err)
 	}
 }
-
-// func getAADCredential(t *testing.T) (azcore.TokenCredential, error) {
-// 	if recording.GetRecordMode() == "playback" {
-// 		cred := NewFakeCredential("fakeaccount", "fakeAccountKey")
-// 		return cred, nil
-// 	}
-
-// 	return azidentity.NewDefaultAzureCredential(nil)
-// }
 
 func getSharedKeyCredential(t *testing.T) (*SharedKeyCredential, error) {
 	if recording.GetRecordMode() == "playback" {

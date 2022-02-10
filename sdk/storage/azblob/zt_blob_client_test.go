@@ -183,7 +183,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_assert.Nil(err)
 	_assert.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
-	_ = resp.Body(RetryReaderOptions{}).Close()
+	_ = resp.Body(nil).Close()
 }
 
 func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
@@ -454,7 +454,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_assert.Nil(err)
 	_assert.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
-	_ = resp2.Body(RetryReaderOptions{}).Close()
+	_ = resp2.Body(nil).Close()
 }
 
 //nolint
@@ -3473,8 +3473,8 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 }
 
 //nolint
-func InjectErrorInRetryReaderOptions(err error) RetryReaderOptions {
-	return RetryReaderOptions{
+func InjectErrorInRetryReaderOptions(err error) *RetryReaderOptions {
+	return &RetryReaderOptions{
 		MaxRetryRequests:       1,
 		doInjectError:          true,
 		doInjectErrorRound:     0,

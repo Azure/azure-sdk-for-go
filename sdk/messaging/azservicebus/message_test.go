@@ -4,6 +4,7 @@
 package azservicebus
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -142,6 +143,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 	require.EqualValues(t, *msg.TimeToLive, amqpMsg.Header.TTL, "ttl")
 	require.EqualValues(t, msg.Subject, amqpMsg.Properties.Subject, "subject")
 	require.EqualValues(t, msg.To, amqpMsg.Properties.To, "to")
+	require.EqualValues(t, MessageStateActive, msg.State)
 
 	body, err := msg.Body()
 	require.NoError(t, err)
@@ -154,4 +156,38 @@ func TestAMQPMessageToMessage(t *testing.T) {
 	require.EqualValues(t, map[string]interface{}{
 		"test": "foo",
 	}, msg.ApplicationProperties)
+}
+
+func TestMessageState(t *testing.T) {
+	testData := []struct {
+		PropValue interface{}
+		Expected  MessageState
+	}{
+		{PropValue: int32(0), Expected: MessageStateActive},
+		{PropValue: int64(0), Expected: MessageStateActive},
+		{PropValue: int32(1), Expected: MessageStateDeferred},
+		{PropValue: int64(1), Expected: MessageStateDeferred},
+		{PropValue: int32(2), Expected: MessageStateScheduled},
+		{PropValue: int64(2), Expected: MessageStateScheduled},
+		{PropValue: "hello", Expected: MessageStateActive},
+		{PropValue: nil, Expected: MessageStateActive},
+	}
+
+	for _, td := range testData {
+		t.Run(fmt.Sprintf("Value '%v' => %d", td.PropValue, td.Expected), func(t *testing.T) {
+			m := newReceivedMessage(&amqp.Message{
+				Annotations: amqp.Annotations{
+					messageStateAnnotation: td.PropValue,
+				},
+			})
+			require.EqualValues(t, td.Expected, m.State)
+		})
+	}
+
+	t.Run("NoAnnotations", func(t *testing.T) {
+		m := newReceivedMessage(&amqp.Message{
+			Annotations: nil,
+		})
+		require.EqualValues(t, MessageStateActive, m.State)
+	})
 }

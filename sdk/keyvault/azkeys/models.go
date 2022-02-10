@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
-// KeyProperties - The properties of a key managed by the key vault service.
+// KeyProperties - The attributes of a key managed by the key vault service.
 type KeyProperties struct {
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -42,7 +42,10 @@ type KeyProperties struct {
 }
 
 // converts a KeyAttributes to *generated.KeyAttributes
-func (k KeyProperties) toGenerated() *generated.KeyAttributes {
+func (k *KeyProperties) toGenerated() *generated.KeyAttributes {
+	if k == nil {
+		return nil
+	}
 	return &generated.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
 		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
@@ -51,6 +54,7 @@ func (k KeyProperties) toGenerated() *generated.KeyAttributes {
 		NotBefore:       k.NotBefore,
 		Created:         k.CreatedOn,
 		Updated:         k.UpdatedOn,
+		Exportable:      k.Exportable,
 	}
 }
 
@@ -68,6 +72,7 @@ func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyProperties {
 		NotBefore:       i.NotBefore,
 		CreatedOn:       i.Created,
 		UpdatedOn:       i.Updated,
+		Exportable:      i.Exportable,
 	}
 }
 
@@ -91,8 +96,8 @@ type KeyVaultKey struct {
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Crv *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	Crv *KeyCurveName `json:"crv,omitempty"`
 
 	// RSA private exponent, or the D component of an EC private key.
 	D []byte `json:"d,omitempty"`
@@ -145,7 +150,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 	}
 
 	return &JSONWebKey{
-		Crv:     (*JSONWebKeyCurveName)(i.Crv),
+		Crv:     (*KeyCurveName)(i.Crv),
 		D:       i.D,
 		DP:      i.DP,
 		DQ:      i.DQ,
@@ -330,7 +335,23 @@ type KeyReleasePolicy struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// Blob encoding the policy rules under which the key can be released.
-	Data []byte `json:"data,omitempty"`
+	EncodedPolicy []byte `json:"data,omitempty"`
+
+	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed
+	// under any circumstances.
+	Immutable *bool `json:"immutable,omitempty"`
+}
+
+func (k *KeyReleasePolicy) toGenerated() *generated.KeyReleasePolicy {
+	if k == nil {
+		return nil
+	}
+
+	return &generated.KeyReleasePolicy{
+		ContentType:   k.ContentType,
+		EncodedPolicy: k.EncodedPolicy,
+		Immutable:     k.Immutable,
+	}
 }
 
 func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePolicy {
@@ -338,8 +359,9 @@ func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePol
 		return nil
 	}
 	return &KeyReleasePolicy{
-		ContentType: i.ContentType,
-		Data:        i.Data,
+		ContentType:   i.ContentType,
+		EncodedPolicy: i.EncodedPolicy,
+		Immutable:     i.Immutable,
 	}
 }
 
@@ -387,7 +409,10 @@ type LifetimeActions struct {
 	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
 }
 
-func (l LifetimeActions) toGenerated() *generated.LifetimeActions {
+func (l *LifetimeActions) toGenerated() *generated.LifetimeActions {
+	if l == nil {
+		return nil
+	}
 	return &generated.LifetimeActions{
 		Action: &generated.LifetimeActionsType{
 			Type: (*generated.ActionType)(l.Action.Type),

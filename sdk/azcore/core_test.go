@@ -91,4 +91,35 @@ func TestIsNullValueMapSlice(t *testing.T) {
 	if !IsNullValue(m) {
 		t.Fatal("expected null value for s")
 	}
+
+	type nullFields struct {
+		Map   map[string]int
+		Slice []string
+	}
+
+	nf := nullFields{}
+	if IsNullValue(nf.Map) {
+		t.Fatal("unexpected null map")
+	}
+	if IsNullValue(nf.Slice) {
+		t.Fatal("unexpected null slice")
+	}
+
+	nf.Map = map[string]int{}
+	nf.Slice = []string{}
+	if IsNullValue(nf.Map) {
+		t.Fatal("unexpected null map")
+	}
+	if IsNullValue(nf.Slice) {
+		t.Fatal("unexpected null slice")
+	}
+
+	nf.Map = NullValue(map[string]int{}).(map[string]int)
+	nf.Slice = NullValue([]string{}).([]string)
+	if !IsNullValue(nf.Map) {
+		t.Fatal("expected null map")
+	}
+	if !IsNullValue(nf.Slice) {
+		t.Fatal("expected null slice")
+	}
 }

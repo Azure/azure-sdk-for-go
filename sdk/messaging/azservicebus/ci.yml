@@ -26,3 +26,8 @@ stages:
   parameters:
     ServiceDirectory: 'messaging/azservicebus'
     RunLiveTests: true
+    EnvVars:
+      AZURE_CLIENT_ID: $(AZSERVICEBUS_CLIENT_ID)
+      AZURE_TENANT_ID: $(AZSERVICEBUS_TENANT_ID)
+      AZURE_CLIENT_SECRET: $(AZSERVICEBUS_CLIENT_SECRET)
+      AZURE_SUBSCRIPTION_ID: $(AZSERVICEBUS_SUBSCRIPTION_ID)

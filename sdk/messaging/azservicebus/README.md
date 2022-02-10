@@ -56,7 +56,7 @@ func main() {
   // The service principal specified by the credential needs to be added to the appropriate Service Bus roles for your
   // resource. More information about Service Bus roles can be found here:
   // https://docs.microsoft.com/azure/service-bus-messaging/service-bus-managed-service-identity#azure-built-in-roles-for-azure-service-bus
-  client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
+  client, err := azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
 
   if err != nil {
     panic(err)
@@ -74,7 +74,7 @@ import (
 func main() {
   // See here for instructions on how to get a Service Bus connection string:
   // https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal#get-the-connection-string
-  client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
+  client, err := azservicebus.NewClientFromConnectionString(connectionString, nil)
 
   if err != nil {
     panic(err)
@@ -131,22 +131,26 @@ You can also send messages in batches, which can be more efficient than sending 
 ```go
 // Create a message batch. It will automatically be sized for the Service Bus
 // Namespace's maximum message size.
-messageBatch, err := sender.NewMessageBatch(context.TODO())
+messageBatch, err := sender.NewMessageBatch(context.TODO(), nil)
 
 if err != nil {
   panic(err)
 }
 
 // Add a message to our message batch. This can be called multiple times.
-err := messageBatch.Add(&azservicebus.Message{
+err = messageBatch.AddMessage(&azservicebus.Message{
     Body: []byte(fmt.Sprintf("hello world")),
 })
 
-if err == azservicebus.ErrMessageTooLarge {
+if errors.Is(err, azservicebus.ErrMessageTooLarge) {
   fmt.Printf("Message batch is full. We should send it and create a new one.\n")
 
   // send what we have since the batch is full
   err := sender.SendMessageBatch(context.TODO(), messageBatch)
+
+  if err != nil {
+    panic(err)
+  }
   
   // Create a new batch, add this message and start again.
 } else if err != nil {
@@ -173,7 +177,7 @@ receiver, err := client.NewReceiverForQueue(
 ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
 defer cancel()
 
-messages, err = receiver.ReceiveMessages(ctx,
+messages, err := receiver.ReceiveMessages(ctx,
   // The number of messages to receive. Note this is merely an upper
   // bound. It is possible to get fewer message (or zero), depending
   // on the contents of the remote queue or subscription and network
@@ -221,6 +225,41 @@ deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",
 ```
 
 To see some example code for receiving messages using the Receiver see the ["Receive messages"](#receive-messages) sample.
+
+## Troubleshooting
+
+### Logging
+
+This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set the environment variable `AZURE_SDK_GO_LOGGING` to `all`. 
+
+Use the `azcore/log` package to control log event output or to enable logs for `azservicebus` only. For example:
+
+```go
+import (
+  "fmt"
+  azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+)
+
+// print log output to stdout
+azlog.SetListener(func(event azlog.Event, s string) {
+    fmt.Printf("[%s] %s\n", event, s)
+})
+
+// pick the set of events to log
+azlog.SetEvents(
+  // connection/reconnect related events)
+  "azsb.Conn",
+  // authentication events
+  "azsb.Auth",
+  // receiver specific events
+  "azsb.Receiver",
+  // management link related events
+  "azsb.Mgmt",
+  // retry related events
+  "azsb.Retry",
+)
+```
+
 
 ## Next steps
 

@@ -50,6 +50,12 @@ options = arm.ClientOptions{
 client := armprivatedns.NewPrivateZonesClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Private Zone](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/privatezone)
+- [Record Sets](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/record_sets)
+- [Virtual Network Link](https://aka.ms/azsdk/go/mgmt/samples?path=privatedns/virtualnetworklink)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

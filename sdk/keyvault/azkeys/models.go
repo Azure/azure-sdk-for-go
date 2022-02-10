@@ -59,7 +59,7 @@ func (k *KeyProperties) toGenerated() *generated.KeyAttributes {
 }
 
 // converts *generated.KeyAttributes to *KeyAttributes
-func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyProperties {
+func keyPropertiesFromGenerated(i *generated.KeyAttributes) *KeyProperties {
 	if i == nil {
 		return &KeyProperties{}
 	}

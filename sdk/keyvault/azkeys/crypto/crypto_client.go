@@ -143,7 +143,6 @@ func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg models.Encryption
 
 func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) responses.EncryptResponse {
 	return responses.EncryptResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -205,7 +204,6 @@ func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg models.Encryption
 
 func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) responses.DecryptResponse {
 	return responses.DecryptResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -266,7 +264,6 @@ func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg models.KeyWrapAlg
 
 func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) responses.WrapKeyResponse {
 	return responses.WrapKeyResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -327,7 +324,6 @@ func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg models.KeyWrapA
 
 func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse) responses.UnwrapKeyResponse {
 	return responses.UnwrapKeyResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -371,7 +367,6 @@ func (s SignOptions) toGenerated() *generated.KeyVaultClientSignOptions {
 
 func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) responses.SignResponse {
 	return responses.SignResponse{
-		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
 			AuthenticationTag:           i.AuthenticationTag,
@@ -416,8 +411,7 @@ func (v VerifyOptions) toGenerated() *generated.KeyVaultClientVerifyOptions {
 
 func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse) responses.VerifyResponse {
 	return responses.VerifyResponse{
-		RawResponse: i.RawResponse,
-		IsValid:     i.Value,
+		IsValid: i.Value,
 	}
 }
 

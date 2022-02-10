@@ -59,7 +59,6 @@ func (l *ListDeletedKeysPager) PageResponse() ListDeletedKeysPage {
 	}
 
 	return ListDeletedKeysPage{
-		RawResponse: resp.RawResponse,
 		NextLink:    resp.NextLink,
 		DeletedKeys: values,
 	}
@@ -108,9 +107,8 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKe
 		keys = append(keys, convert.KeyItemFromGenerated(k))
 	}
 	return ListKeysPage{
-		RawResponse: i.RawResponse,
-		NextLink:    i.NextLink,
-		Keys:        keys,
+		NextLink: i.NextLink,
+		Keys:     keys,
 	}
 }
 
@@ -123,8 +121,7 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsRe
 		}
 	}
 	return ListKeyVersionsPage{
-		RawResponse: i.RawResponse,
-		NextLink:    i.NextLink,
-		Keys:        keys,
+		NextLink: i.NextLink,
+		Keys:     keys,
 	}
 }

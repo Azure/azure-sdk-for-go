@@ -16,7 +16,6 @@ To run with the test proxy, configure your client to route requests to the test 
 ```go
 func (k *keysPerfTest) GlobalSetup() error {
     ...
-    t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
     if err != nil {return err}
     options = &azkeys.ClientOptions{
         ClientOptions: azcore.ClientOptions{

@@ -6,6 +6,7 @@ package perf
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"runtime"
@@ -17,15 +18,14 @@ import (
 )
 
 var (
-	debug     bool
-	Duration  int
-	TestProxy string
-	WarmUp    int
-	Parallel  int
-	wg        sync.WaitGroup
+	debug        bool
+	Duration     int
+	TestProxy    string
+	WarmUp       int
+	Parallel     int
+	wg           sync.WaitGroup
+	numProcesses int
 )
-
-var numProcesses int
 
 type PerfTest interface {
 	// GetMetadata returns the metadta for a test.
@@ -64,39 +64,41 @@ type PerfTestOptions struct {
 type NewPerfTest func(options *PerfTestOptions) PerfTest
 
 func runGlobalSetup(p PerfTest) error {
-	setRecordingMode("live")
-	err := p.GlobalSetup(context.Background())
-	if err != nil {
-		return err
+	if debug {
+		log.Println("running GlobalSetup")
 	}
-	return nil
+	return p.GlobalSetup(context.Background())
 }
 
 func runSetup(p PerfTest) error {
-	err := p.Setup(context.Background())
-	if err != nil {
-		return err
+	if debug {
+		log.Println("running Setup")
 	}
-	return nil
+	return p.Setup(context.Background())
 }
 
 // runTest takes care of the semantics of running a single iteration. It returns the number of times the test ran as an int, the exact number
 // of seconds the test ran as a float64, and any errors.
 func runTest(p PerfTest, index int, c chan runResult) {
 	defer wg.Done()
+	if debug {
+		log.Printf("number of proxies %d", len(proxyTransportsSuite))
+	}
+
+	ID := fmt.Sprintf("%s-%d", p.GetMetadata().Name, p.GetMetadata().parallelIndex)
 
 	// If we are using the test proxy need to set up the in-memory recording.
 	if TestProxy != "" {
 		// First request goes through in Live mode
-		setRecordingMode("live")
+		proxyTransportsSuite[ID].SetMode("live")
 		err := p.Run(context.Background())
 		if err != nil {
 			c <- runResult{err: err}
 		}
 
 		// 2nd request goes through in Record mode
-		setRecordingMode("record")
-		err = start(p.GetMetadata().Name, nil)
+		proxyTransportsSuite[ID].SetMode("record")
+		err = proxyTransportsSuite[ID].start(p.GetMetadata().Name)
 		if err != nil {
 			panic(err)
 		}
@@ -104,14 +106,14 @@ func runTest(p PerfTest, index int, c chan runResult) {
 		if err != nil {
 			c <- runResult{err: err}
 		}
-		err = stop(p.GetMetadata().Name, nil)
+		err = proxyTransportsSuite[ID].stop(p.GetMetadata().Name)
 		if err != nil {
 			panic(err)
 		}
 
 		// All ensuing requests go through in Playback mode
-		setRecordingMode("playback")
-		err = start(p.GetMetadata().Name, nil)
+		proxyTransportsSuite[ID].SetMode("playback")
+		err = proxyTransportsSuite[ID].start(p.GetMetadata().Name)
 		if err != nil {
 			panic(err)
 		}
@@ -200,29 +202,21 @@ func runTest(p PerfTest, index int, c chan runResult) {
 
 	if TestProxy != "" {
 		// Stop the proxy now
-		err := stop(p.GetMetadata().Name, nil)
+		err := proxyTransportsSuite[ID].stop(p.GetMetadata().Name)
 		if err != nil {
 			c <- runResult{err: err}
 		}
-		setRecordingMode("live")
+		proxyTransportsSuite[ID].SetMode("live")
 	}
 }
 
 // runCleanup takes care of the semantics for tearing down a single iteration of a performance test.
 func runCleanup(p PerfTest) error {
-	err := p.Cleanup(context.Background())
-	if err != nil {
-		return err
-	}
-	return nil
+	return p.Cleanup(context.Background())
 }
 
 func runGlobalCleanup(p PerfTest) error {
-	err := p.GlobalCleanup(context.Background())
-	if err != nil {
-		return err
-	}
-	return nil
+	return p.GlobalCleanup(context.Background())
 }
 
 // runResult is the result sent back through the channel for updates and final results
@@ -264,7 +258,11 @@ func runPerfTest(p NewPerfTest) error {
 	for idx := 0; idx < Parallel; idx++ {
 		options := &PerfTestOptions{}
 		if TestProxy != "" {
-			transporter, err := NewProxyTransport(&TransportOptions{TestName: p(nil).GetMetadata().Name})
+			ID := fmt.Sprintf("%s-%d", p(nil).GetMetadata().Name, idx)
+			transporter, err := NewProxyTransport(&TransportOptions{
+				TestName: ID,
+				proxyURL: TestProxy,
+			})
 			if err != nil {
 				panic(err)
 			}
@@ -280,7 +278,7 @@ func runPerfTest(p NewPerfTest) error {
 		// Run the setup for a single instance
 		err := runSetup(perfTest)
 		if err != nil {
-			return err
+			return fmt.Errorf("there was an error with the Setup method: %v", err.Error())
 		}
 	}
 
@@ -298,6 +296,9 @@ func runPerfTest(p NewPerfTest) error {
 
 	// Read incoming messages and handle status updates
 	for msg := range messages {
+		if debug {
+			log.Println("Handling message: ", msg)
+		}
 		if msg.err != nil {
 			panic(err)
 		}
@@ -316,8 +317,11 @@ func runPerfTest(p NewPerfTest) error {
 	}
 
 	err = runGlobalCleanup(p(nil))
+	if err != nil {
+		return fmt.Errorf("there was an error with the GlobalCleanup method: %v", err.Error())
+	}
 
-	return err
+	return nil
 }
 
 // testsToRun trims the slice of PerfTest to only those that are flagged as running.

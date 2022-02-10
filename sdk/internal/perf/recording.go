@@ -21,11 +21,7 @@ import (
 	"time"
 )
 
-var defaultHTTPClient *http.Client
-
 func init() {
-	recordMode = os.Getenv("AZURE_RECORD_MODE")
-
 	localFile, err := findProxyCertLocation()
 	if err != nil {
 		log.Println("Could not find the PROXY_CERT environment variable and was unable to locate the path in eng/common")
@@ -38,7 +34,7 @@ func init() {
 		certPool, err = x509.SystemCertPool()
 		if err != nil {
 			log.Println("could not create a system cert pool")
-			log.Panicf(err.Error())
+			panic(err)
 		}
 	}
 	cert, err := ioutil.ReadFile(localFile)
@@ -96,21 +92,22 @@ const (
 	upstreamURIHeader = "x-recording-upstream-base-uri"
 )
 
-var rootCAs *x509.CertPool
-var recordMode string
-var perfTestSuite = map[string]string{}
+var (
+	defaultHTTPClient    *http.Client
+	rootCAs              *x509.CertPool
+	proxyTransportsSuite = map[string]*RecordingHTTPClient{}
+)
 
 type TransportOptions struct {
 	TestName string
-}
-
-func getRecordMode() string {
-	return recordMode
+	proxyURL string
 }
 
 type RecordingHTTPClient struct {
 	defaultClient *http.Client
 	options       TransportOptions
+	mode          string
+	recID         string
 }
 
 // NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.
@@ -118,16 +115,24 @@ func NewProxyTransport(options *TransportOptions) (*RecordingHTTPClient, error) 
 	if options == nil {
 		options = &TransportOptions{}
 	}
+	if debug {
+		log.Println("Creating a new proxy transport: ", *options)
+	}
 
-	return &RecordingHTTPClient{
+	ret := &RecordingHTTPClient{
 		defaultClient: defaultHTTPClient,
 		options:       *options,
-	}, nil
+		mode:          "live",
+	}
+
+	proxyTransportsSuite[options.TestName] = ret
+
+	return ret, nil
 }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
-	if recordMode != liveMode {
-		err := c.options.replaceAuthority(req)
+	if c.mode != liveMode {
+		err := c.replaceAuthority(req)
 		if err != nil {
 			return nil, err
 		}
@@ -135,10 +140,15 @@ func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	return c.defaultClient.Do(req)
 }
 
-func (r TransportOptions) replaceAuthority(rawReq *http.Request) error {
-	parsedProxyURL, err := url.Parse(TestProxy)
+// Change the recording mode
+func (c *RecordingHTTPClient) SetMode(mode string) {
+	c.mode = mode
+}
+
+func (c *RecordingHTTPClient) replaceAuthority(rawReq *http.Request) error {
+	parsedProxyURL, err := url.Parse(c.options.proxyURL)
 	if err != nil {
-		return err
+		return fmt.Errorf("there was an error parsing url '%s': %s", c.options.proxyURL, err.Error())
 	}
 	originalURLHost := rawReq.URL.Host
 	originalURLScheme := rawReq.URL.Scheme
@@ -147,37 +157,28 @@ func (r TransportOptions) replaceAuthority(rawReq *http.Request) error {
 	rawReq.Host = parsedProxyURL.Host
 
 	rawReq.Header.Set(upstreamURIHeader, fmt.Sprintf("%v://%v", originalURLScheme, originalURLHost))
-	rawReq.Header.Set(modeHeader, getRecordMode())
-	rawReq.Header.Set(idHeader, getRecordingId(r.TestName))
+	rawReq.Header.Set(modeHeader, c.mode)
+	rawReq.Header.Set(idHeader, c.recID)
 	rawReq.Header.Set("x-recording-remove", "false")
 	return nil
 }
 
-func getRecordingId(s string) string {
-	if v, ok := perfTestSuite[s]; ok {
-		return v
-	}
-	return ""
-}
-
-type RecordingOptions struct{}
-
 // start tells the test proxy to begin accepting requests for a given test
-func start(t string, options *RecordingOptions) error {
-	url := fmt.Sprintf("%s/%s/start", TestProxy, recordMode)
+func (c *RecordingHTTPClient) start(t string) error {
+	url := fmt.Sprintf("%s/%s/start", c.options.proxyURL, c.mode)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
-		return err
+		return fmt.Errorf("there was an error creating a START request: %s", err.Error())
 	}
 
-	if recordMode == playbackMode {
-		req.Header.Set(idHeader, perfTestSuite[t])
+	if c.mode == playbackMode {
+		req.Header.Set(idHeader, c.recID)
 	}
 
 	resp, err := defaultHTTPClient.Do(req)
 	if err != nil {
-		return err
+		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())
 	}
 
 	recID := resp.Header.Get(idHeader)
@@ -185,30 +186,28 @@ func start(t string, options *RecordingOptions) error {
 		b, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err != nil {
-			return err
+			return fmt.Errorf("there was an error reading the body: %s", err.Error())
 		}
 		return fmt.Errorf("recording ID was not returned by the response. Response body: %s", b)
 	}
-	perfTestSuite[t] = recID
+	c.recID = recID
 
 	return nil
 }
 
 // stop tells the test proxy to stop accepting requests for a given test
-func stop(t string, options *RecordingOptions) error {
-	url := fmt.Sprintf("%s/%s/stop", TestProxy, recordMode)
+func (c *RecordingHTTPClient) stop(t string) error {
+	url := fmt.Sprintf("%s/%s/stop", c.options.proxyURL, c.mode)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
-		return err
+		return fmt.Errorf("there was an error creating a STOP request: %s", err.Error())
 	}
 
-	var recTest string
-	var ok bool
-	if recTest, ok = perfTestSuite[t]; !ok {
+	if c.recID == "" {
 		return errors.New("recording ID was never set. Did you call Start?")
 	}
 
-	req.Header.Set("x-recording-id", recTest)
+	req.Header.Set("x-recording-id", c.recID) //recTest)
 	resp, err := defaultHTTPClient.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)
@@ -218,14 +217,8 @@ func stop(t string, options *RecordingOptions) error {
 		}
 		return fmt.Errorf("proxy did not stop the recording properly: %s", err.Error())
 	}
-	return err
-}
-
-// This method flips recordMode from "record" to "playback" or vice versa
-func setRecordingMode(m string) {
-	if !(m == liveMode || m == recordingMode || m == playbackMode) {
-		fmt.Printf("Record mode '%s' was not understood.\n", m)
-	} else {
-		recordMode = m
+	if err != nil {
+		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())
 	}
+	return nil
 }

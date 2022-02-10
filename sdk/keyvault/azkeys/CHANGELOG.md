@@ -5,13 +5,18 @@
 ### Features Added
 * Adds the `ReleasePolicy` parameter to the `UpdateKeyPropertiesOptions` struct.
 * Adds the `Immutable` boolean to the `KeyReleasePolicy` model.
+* Added a `ToPtr` method on `KeyType` constant
 
 ### Breaking Changes
 * Changed the `Data` to `EncodedPolicy` on the `KeyReleasePolicy` struct.
-* Changed the `Tags` properties from `map[string]*string` to `map[string]string`.
 * Changed the `Updated`, `Created`, and `Expires` properties to `UpdatedOn`, `CreatedOn`, and `ExpiresOn`.
 * Renamed `JSONWebKeyOperation` to `KeyOperation`.
 * Renamed `JSONWebKeyCurveName` to `KeyCurveName`
+* Prefixed all KeyType constants with `KeyType`
+* Changed `KeyBundle` to `KeyVaultKey` and `DeletedKeyBundle` to `DeletedKey`
+* Renamed `KeyAttributes` to `KeyProperties`
+* Renamed `ListKeyVersions` to `ListPropertiesOfKeyVersions`
+* Removed `Attributes` struct
 
 ### Bugs Fixed
 

@@ -674,7 +674,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 		}
 	}
 
-	s := &DeleteKeyPoller{
+	s := DeleteKeyPoller{
 		vaultUrl:       c.vaultUrl,
 		keyName:        keyName,
 		client:         c.kvClient,
@@ -845,7 +845,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 		}
 	}
 
-	b := &RecoverDeletedKeyPoller{
+	b := RecoverDeletedKeyPoller{
 		lastResponse:    getResp,
 		keyName:         keyName,
 		client:          c.kvClient,
@@ -1006,7 +1006,7 @@ func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) ListDeletedKey
 		options = &ListDeletedKeysOptions{}
 	}
 
-	return &ListDeletedKeysPager{
+	return ListDeletedKeysPager{
 		genPager: c.kvClient.GetDeletedKeys(c.vaultUrl, options.toGenerated()),
 	}
 }
@@ -1294,7 +1294,7 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 		attribs = &KeyRotationPolicyAttributes{
 			ExpiryTime: i.Attributes.ExpiryTime,
 			Created:    i.Attributes.Created,
-			Updated:    i.Attributes.Updated,
+			UpdatedOn:  i.Attributes.Updated,
 		}
 	}
 	return GetKeyRotationPolicyResponse{
@@ -1427,7 +1427,7 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 		attribs = &KeyRotationPolicyAttributes{
 			ExpiryTime: i.Attributes.ExpiryTime,
 			Created:    i.Attributes.Created,
-			Updated:    i.Attributes.Updated,
+			UpdatedOn:  i.Attributes.Updated,
 		}
 	}
 	return UpdateKeyRotationPolicyResponse{

@@ -389,14 +389,14 @@ type KeyRotationPolicyAttributes struct {
 	Created *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; The key rotation policy's last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 func (k KeyRotationPolicyAttributes) toGenerated() *generated.KeyRotationPolicyAttributes {
 	return &generated.KeyRotationPolicyAttributes{
 		ExpiryTime: k.ExpiryTime,
 		Created:    k.Created,
-		Updated:    k.Updated,
+		Updated:    k.UpdatedOn,
 	}
 }
 

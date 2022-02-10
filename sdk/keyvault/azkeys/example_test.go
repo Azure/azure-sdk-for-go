@@ -107,7 +107,7 @@ func ExampleClient_UpdateKeyProperties() {
 		Tags: map[string]string{
 			"Tag1": "val1",
 		},
-		KeyAttributes: &azkeys.KeyProperties{
+		KeyProperties: &azkeys.KeyProperties{
 			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
 		},
 	})

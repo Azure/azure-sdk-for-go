@@ -72,7 +72,7 @@ type CreateKeyOptions struct {
 	Curve *KeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyProperties  `json:"attributes,omitempty"`
+	KeyProperties *KeyProperties  `json:"attributes,omitempty"`
 	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -93,8 +93,8 @@ func (c *CreateKeyOptions) toGenerated() *generated.KeyVaultClientCreateKeyOptio
 // convert CreateKeyOptions to generated.KeyCreateParameters
 func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	var attribs *generated.KeyAttributes
-	if c.KeyAttributes != nil {
-		attribs = c.KeyAttributes.toGenerated()
+	if c.KeyProperties != nil {
+		attribs = c.KeyProperties.toGenerated()
 	}
 
 	var ops []*generated.JSONWebKeyOperation
@@ -292,7 +292,7 @@ type CreateRSAKeyOptions struct {
 	Curve *KeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyProperties  `json:"attributes,omitempty"`
+	KeyProperties *KeyProperties  `json:"attributes,omitempty"`
 	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The policy rules under which the key can be exported.
@@ -314,7 +314,7 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
 		Tags:           convertToGeneratedMap(c.Tags),
-		KeyAttributes:  c.KeyAttributes.toGenerated(),
+		KeyAttributes:  c.KeyProperties.toGenerated(),
 		KeyOps:         keyOps,
 		ReleasePolicy:  c.ReleasePolicy.toGenerated(),
 	}
@@ -895,7 +895,7 @@ type UpdateKeyPropertiesOptions struct {
 	Version string
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyProperties `json:"attributes,omitempty"`
+	KeyProperties *KeyProperties `json:"attributes,omitempty"`
 
 	// Json web key operations. For more information on possible key operations, see KeyOperation.
 	KeyOps []*KeyOperation `json:"key_ops,omitempty"`
@@ -910,8 +910,8 @@ type UpdateKeyPropertiesOptions struct {
 // convert the options to generated.KeyUpdateParameters struct
 func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateParameters {
 	var attribs *generated.KeyAttributes
-	if u.KeyAttributes != nil {
-		attribs = u.KeyAttributes.toGenerated()
+	if u.KeyProperties != nil {
+		attribs = u.KeyProperties.toGenerated()
 	}
 
 	var ops []*generated.JSONWebKeyOperation
@@ -1176,7 +1176,7 @@ type ImportKeyOptions struct {
 	Hsm *bool `json:"Hsm,omitempty"`
 
 	// The key management attributes.
-	KeyAttributes *KeyProperties `json:"attributes,omitempty"`
+	KeyProperties *KeyProperties `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -1184,8 +1184,8 @@ type ImportKeyOptions struct {
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
 	var attribs *generated.KeyAttributes
-	if i.KeyAttributes != nil {
-		attribs = i.KeyAttributes.toGenerated()
+	if i.KeyProperties != nil {
+		attribs = i.KeyProperties.toGenerated()
 	}
 	return generated.KeyImportParameters{
 		Key:           key.toGenerated(),

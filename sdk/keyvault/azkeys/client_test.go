@@ -397,7 +397,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 				Tags: map[string]string{
 					"Tag1": "Val1",
 				},
-				KeyAttributes: &KeyProperties{
+				KeyProperties: &KeyProperties{
 					ExpiresOn: to.TimePtr(time.Now().AddDate(1, 0, 0)),
 				},
 			})
@@ -447,7 +447,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 
 			_, err = client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
 				HardwareProtected: to.BoolPtr(true),
-				KeyAttributes: &KeyProperties{
+				KeyProperties: &KeyProperties{
 					Exportable: to.BoolPtr(true),
 				},
 				ReleasePolicy: &KeyReleasePolicy{

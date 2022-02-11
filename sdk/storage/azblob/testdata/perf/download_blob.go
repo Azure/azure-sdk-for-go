@@ -3,109 +3,138 @@
 
 package main
 
-// import (
-// 	"bytes"
-// 	"context"
-// 	"fmt"
-// 	"os"
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"io"
+	"os"
 
-// 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
-// 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-// )
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/spf13/pflag"
+)
 
-// type downloadPerfTest struct {
-// 	perf.PerfTestOptions
-// 	blobName   string
-// 	blobClient azblob.BlockBlobClient
-// }
+type downloadTestOptions struct {
+	size int
+}
 
-// func (d *downloadPerfTest) GlobalSetup(ctx context.Context) error {
-// 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-// 	if !ok {
-// 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-// 	}
+var downloadTestOpts downloadTestOptions = downloadTestOptions{size: 10240}
 
-// 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.blobName, nil)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	_, err = containerClient.Create(context.Background(), nil)
-// 	if err != nil {
-// 		return err
-// 	}
+// downloadTestRegister is called once per process
+func downloadTestRegister() {
+	pflag.IntVar(&downloadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
+}
 
-// 	blobClient := containerClient.NewBlockBlobClient(d.blobName)
+type downloadTestGlobal struct {
+	perf.PerfTestOptions
+	containerName string
+	blobName      string
+}
 
-// 	data, err := perf.NewRandomStream(int(*size))
-// 	if err != nil {
-// 		return err
-// 	}
+// NewDownloadTest is called once per process
+func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	d := &downloadTestGlobal{
+		PerfTestOptions: options,
+		containerName:   "downloadcontainer",
+		blobName:        "downloadblob",
+	}
 
-// 	_, err = blobClient.Upload(context.Background(), data, nil)
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
 
-// 	return err
-// }
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.containerName, nil)
+	if err != nil {
+		return nil, err
+	}
+	_, err = containerClient.Create(context.Background(), nil)
+	if err != nil {
+		return nil, err
+	}
 
-// func (d *downloadPerfTest) Setup(ctx context.Context) error {
-// 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-// 	if !ok {
-// 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-// 	}
+	blobClient := containerClient.NewBlockBlobClient(d.blobName)
 
-// 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.blobName, &azblob.ClientOptions{Transporter: d.ProxyInstance})
-// 	if err != nil {
-// 		return err
-// 	}
+	data, err := perf.NewRandomStream(downloadTestOpts.size)
+	if err != nil {
+		return nil, err
+	}
 
-// 	d.blobClient = containerClient.NewBlockBlobClient(d.blobName)
+	_, err = blobClient.Upload(context.Background(), data, nil)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return nil
-// }
+	return d, nil
+}
 
-// func (d *downloadPerfTest) Run(ctx context.Context) error {
-// 	get, err := d.blobClient.Download(ctx, nil)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	downloadedData := &bytes.Buffer{}
-// 	reader := get.Body(azblob.RetryReaderOptions{})
-// 	_, err = downloadedData.ReadFrom(reader)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return reader.Close()
-// }
+func (d *downloadTestGlobal) GlobalCleanup(ctx context.Context) error {
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
 
-// func (d *downloadPerfTest) Cleanup(ctx context.Context) error {
-// 	return nil
-// }
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.containerName, nil)
+	if err != nil {
+		return err
+	}
 
-// func (d *downloadPerfTest) GlobalCleanup(ctx context.Context) error {
-// 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-// 	if !ok {
-// 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-// 	}
+	_, err = containerClient.Delete(context.Background(), nil)
+	return err
+}
 
-// 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.blobName, nil)
-// 	if err != nil {
-// 		return err
-// 	}
+type downloadPerfTest struct {
+	*downloadTestGlobal
+	perf.PerfTestOptions
+	data       io.ReadSeekCloser
+	blobClient azblob.BlockBlobClient
+}
 
-// 	_, err = containerClient.Delete(context.Background(), nil)
-// 	return err
-// }
+// NewPerfTest is called once per goroutine
+func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	d := &downloadPerfTest{
+		downloadTestGlobal: g,
+		PerfTestOptions:    *options,
+	}
 
-// func (d *downloadPerfTest) GetMetadata() perf.PerfTestOptions {
-// 	return d.PerfTestOptions
-// }
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
 
-// func NewDownloadTest(options *perf.PerfTestOptions) perf.PerfTest {
-// 	if options == nil {
-// 		options = &perf.PerfTestOptions{}
-// 	}
-// 	options.Name = "BlobDownloadTest"
-// 	return &downloadPerfTest{
-// 		PerfTestOptions: *options,
-// 		blobName:        "downloadtest",
-// 	}
-// }
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
+		Transporter: d.PerfTestOptions.ProxyInstance,
+	})
+	if err != nil {
+		return nil, err
+	}
+	bc := containerClient.NewBlockBlobClient(d.blobName)
+	d.blobClient = bc
+
+	data, err := perf.NewRandomStream(downloadTestOpts.size)
+	if err != nil {
+		return nil, err
+	}
+	d.data = data
+
+	return d, err
+}
+
+func (d *downloadPerfTest) Run(ctx context.Context) error {
+	get, err := d.blobClient.Download(ctx, nil)
+	if err != nil {
+		return err
+	}
+	downloadedData := &bytes.Buffer{}
+	reader := get.Body(azblob.RetryReaderOptions{})
+	_, err = downloadedData.ReadFrom(reader)
+	if err != nil {
+		return err
+	}
+	return reader.Close()
+}
+
+func (*downloadPerfTest) Cleanup(ctx context.Context) error {
+	return nil
+}

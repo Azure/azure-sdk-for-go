@@ -18,12 +18,10 @@ type uploadTestOptions struct {
 	size  int
 }
 
-var uploadTestOpts uploadTestOptions
+var uploadTestOpts uploadTestOptions = uploadTestOptions{size: 10240}
 
 // uploadTestRegister is called once per process
 func uploadTestRegister() {
-	uploadTestOpts = uploadTestOptions{size: 10240}
-	// pflag.IntVar(uploadTestOpts.count, "num-blobs", 100, "Number of blobs to list. Defaults to 100.")
 	pflag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
 }
 
@@ -37,8 +35,8 @@ type uploadTestGlobal struct {
 func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
 	u := &uploadTestGlobal{
 		PerfTestOptions: options,
-		containerName:   "mycontainer",
-		blobName:        "someblob",
+		containerName:   "uploadcontainer",
+		blobName:        "uploadblob",
 	}
 
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")

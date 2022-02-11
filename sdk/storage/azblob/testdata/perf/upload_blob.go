@@ -15,7 +15,7 @@ import (
 )
 
 type uploadTestOptions struct {
-	size  int
+	size int
 }
 
 var uploadTestOpts uploadTestOptions = uploadTestOptions{size: 10240}

@@ -4,39 +4,40 @@
 package perf
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-/*
-type globalPerfTestSample struct {
+type globalNoOpPerfTest struct {
 	PerfTestOptions
 }
 
-func (p *perfTestSample) GetMetadata() PerfTestOptions {
-	return p.PerfTestOptions
+func NewNoOpTest(ctx context.Context, options PerfTestOptions) (GlobalPerfTest, error) {
+	return &globalNoOpPerfTest{
+		PerfTestOptions: options,
+	}, nil
 }
 
-func (p *perfTestSample) Setup(ctx context.Context) error {
-	return nil
-}
-func (p *perfTestSample) GlobalSetup(ctx context.Context) error {
-	return nil
-}
-func (p *perfTestSample) Run(ctx context.Context) error {
-	time.Sleep(time.Second)
-	return nil
-}
-func (p *perfTestSample) Cleanup(ctx context.Context) error {
-	return nil
-}
-func (p *perfTestSample) GlobalCleanup(ctx context.Context) error {
+func (g *globalNoOpPerfTest) GlobalCleanup(ctx context.Context) error {
 	return nil
 }
 
-func NewPerfTestSample(options *PerfTestOptions) PerfTest {
-	return &perfTestSample{PerfTestOptions: PerfTestOptions{Name: "sample"}}
+type noOpPerTest struct {
+	*PerfTestOptions
+}
+
+func (g *globalNoOpPerfTest) NewPerfTest(ctx context.Context, options *PerfTestOptions) (PerfTest, error) {
+	return &noOpPerTest{options}, nil
+}
+
+func (n *noOpPerTest) Run(ctx context.Context) error {
+	return nil
+}
+
+func (n *noOpPerTest) Cleanup(ctx context.Context) error {
+	return nil
 }
 
 func TestRun(t *testing.T) {
@@ -44,14 +45,9 @@ func TestRun(t *testing.T) {
 	warmUpDuration = 0
 	parallelInstances = 1
 
-	tests := map[string]MapInterface{
-
-	}
-
-	err := runPerfTest(NewPerfTestSample)
+	err := runPerfTest("Sleep", NewNoOpTest)
 	require.NoError(t, err)
 }
-*/
 
 func TestParseProxyURLs(t *testing.T) {
 	testProxyURLs = ""

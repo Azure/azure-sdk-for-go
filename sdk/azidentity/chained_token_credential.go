@@ -65,7 +65,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	for _, cred := range c.sources {
 		token, err := cred.GetToken(ctx, opts)
 		if err == nil {
-			log.Writef(EventAuthentication, "Azure Identity => %s authenticated with %s", c.name, extractCredentialName(cred))
+			log.Writef(EventAuthentication, "%s authenticated with %s", c.name, extractCredentialName(cred))
 			c.successfulCredential = cred
 			return token, nil
 		}

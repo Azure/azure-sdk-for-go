@@ -84,7 +84,6 @@ func findProxyCertLocation() (string, error) {
 }
 
 const (
-	recordingMode     = "record"
 	playbackMode      = "playback"
 	liveMode          = "live"
 	idHeader          = "x-recording-id"

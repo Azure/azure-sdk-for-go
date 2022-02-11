@@ -111,7 +111,7 @@ type RecordingHTTPClient struct {
 }
 
 // NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.
-func NewProxyTransport(options *TransportOptions) (*RecordingHTTPClient, error) {
+func NewProxyTransport(options *TransportOptions) *RecordingHTTPClient {
 	if options == nil {
 		options = &TransportOptions{}
 	}
@@ -127,7 +127,7 @@ func NewProxyTransport(options *TransportOptions) (*RecordingHTTPClient, error) 
 
 	proxyTransportsSuite[options.TestName] = ret
 
-	return ret, nil
+	return ret
 }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {

@@ -41,10 +41,28 @@ func NewPerfTestSample(options *PerfTestOptions) PerfTest {
 }
 
 func TestRun(t *testing.T) {
-	Duration = 2
-	WarmUp = 0
-	Parallel = 1
+	duration = 2
+	warmUpDuration = 0
+	parallelInstances = 1
 
 	err := runPerfTest(NewPerfTestSample)
 	require.NoError(t, err)
+}
+
+func TestParseProxyURLs(t *testing.T) {
+	testProxyURLs = ""
+	result := parseProxyURLS()
+	require.Nil(t, result)
+
+	testProxyURLs = "https://localhost:5001"
+	result = parseProxyURLS()
+	require.Equal(t, []string{"https://localhost:5001"}, result)
+
+	testProxyURLs = "https://localhost:5001;https://abc;"
+	result = parseProxyURLS()
+	require.Equal(t, []string{"https://localhost:5001", "https://abc"}, result)
+
+	testProxyURLs = "https://localhost:5001;https://abc;https://def"
+	result = parseProxyURLS()
+	require.Equal(t, []string{"https://localhost:5001", "https://abc", "https://def"}, result)
 }

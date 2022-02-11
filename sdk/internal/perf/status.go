@@ -29,8 +29,8 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 
 	// Check if we need to print out results from warmup. Results come in a channel, so we
 	// need to check if all N channels (N = Parallel) have reported final results
-	if WarmUp > 0 {
-		if len(elapsedTimesWarmup[WarmUp-1]) == Parallel && !printedWarmupResults {
+	if warmUpDuration > 0 {
+		if len(elapsedTimesWarmup[warmUpDuration-1]) == parallelInstances && !printedWarmupResults {
 			printFinalResults(elapsedTimesWarmup, perSecondCountWarmup, true)
 			printedWarmupResults = true
 		}
@@ -38,7 +38,7 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 
 	if len(perSecondCount) == 0 {
 		// Initialize the slice of slices
-		for i := 0; i < Duration; i++ {
+		for i := 0; i < duration; i++ {
 			perSecondCount = append(perSecondCount, []int{})
 			elapsedTimes = append(elapsedTimes, []float64{})
 		}
@@ -48,7 +48,7 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 	perSecondCount[updateSecond] = append(perSecondCount[updateSecond], msg.count)
 	elapsedTimes[updateSecond] = append(elapsedTimes[updateSecond], msg.timeInSeconds)
 
-	if len(perSecondCount[updateSecond]) == Parallel {
+	if len(perSecondCount[updateSecond]) == parallelInstances {
 		if updateSecond == 0 {
 			fmt.Println("\n=== Test ===")
 			fmt.Fprintln(w, "Current\tTotal\tAverage\t")
@@ -79,7 +79,7 @@ func handleMessage(w *tabwriter.Writer, msg runResult) {
 func handleWarmupMessage(w *tabwriter.Writer, msg runResult) {
 	if len(perSecondCountWarmup) == 0 {
 		// Initialize the slice of slices for warmups
-		for i := 0; i < WarmUp; i++ {
+		for i := 0; i < warmUpDuration; i++ {
 			perSecondCountWarmup = append(perSecondCountWarmup, []int{})
 			elapsedTimesWarmup = append(elapsedTimesWarmup, []float64{})
 		}
@@ -89,7 +89,7 @@ func handleWarmupMessage(w *tabwriter.Writer, msg runResult) {
 	perSecondCountWarmup[updateSecond] = append(perSecondCountWarmup[updateSecond], msg.count)
 	elapsedTimesWarmup[updateSecond] = append(elapsedTimesWarmup[updateSecond], msg.timeInSeconds)
 
-	if len(perSecondCountWarmup[updateSecond]) == Parallel {
+	if len(perSecondCountWarmup[updateSecond]) == parallelInstances {
 		if updateSecond == 0 {
 			fmt.Println("\n=== Warmup ===")
 			fmt.Fprintln(w, "Current\tTotal\tAverage\t")
@@ -122,7 +122,7 @@ func handleWarmupMessage(w *tabwriter.Writer, msg runResult) {
 func computeAverageOpsPerSecond(perSecondCount [][]int, elapsedTimes [][]float64) float64 {
 	var avg float64
 
-	for p := 0; p < Parallel; p++ {
+	for p := 0; p < parallelInstances; p++ {
 		threadOps := 0
 		timeElapsed := 0.0
 		for i := 0; i < len(perSecondCount); i++ {
@@ -140,13 +140,13 @@ func computeAverageOpsPerSecond(perSecondCount [][]int, elapsedTimes [][]float64
 }
 
 func printFinalResults(elapsedTimes [][]float64, perSecondCount [][]int, warmup bool) {
-	opsPerRoutine := make([]int, Parallel)
-	secondsPerRoutine := make([]float64, Parallel)
-	innerLoop := Duration
+	opsPerRoutine := make([]int, parallelInstances)
+	secondsPerRoutine := make([]float64, parallelInstances)
+	innerLoop := duration
 	if warmup {
-		innerLoop = WarmUp
+		innerLoop = warmUpDuration
 	}
-	for i := 0; i < Parallel; i++ {
+	for i := 0; i < parallelInstances; i++ {
 		secondsPerRoutine[i] = elapsedTimes[innerLoop-1][i]
 		for j := 0; j < innerLoop; j++ {
 			opsPerRoutine[i] += perSecondCount[j][i]
@@ -154,7 +154,7 @@ func printFinalResults(elapsedTimes [][]float64, perSecondCount [][]int, warmup 
 	}
 
 	opsPerSecond := 0.0
-	for i := 0; i < Parallel; i++ {
+	for i := 0; i < parallelInstances; i++ {
 		opsPerSecond += float64(opsPerRoutine[i]) / secondsPerRoutine[i]
 	}
 

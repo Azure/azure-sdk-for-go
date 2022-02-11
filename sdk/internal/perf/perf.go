@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"strings"
 	"sync"
 	"text/tabwriter"
 	"time"
@@ -18,13 +19,13 @@ import (
 )
 
 var (
-	debug        bool
-	Duration     int
-	TestProxy    string
-	WarmUp       int
-	Parallel     int
-	wg           sync.WaitGroup
-	numProcesses int
+	debug             bool
+	duration          int
+	testProxyURLs     string
+	warmUpDuration    int
+	parallelInstances int
+	wg                sync.WaitGroup
+	numProcesses      int
 )
 
 type PerfTest interface {
@@ -88,7 +89,7 @@ func runTest(p PerfTest, index int, c chan runResult) {
 	ID := fmt.Sprintf("%s-%d", p.GetMetadata().Name, p.GetMetadata().parallelIndex)
 
 	// If we are using the test proxy need to set up the in-memory recording.
-	if TestProxy != "" {
+	if testProxyURLs != "" {
 		// First request goes through in Live mode
 		proxyTransportsSuite[ID].SetMode("live")
 		err := p.Run(context.Background())
@@ -119,12 +120,12 @@ func runTest(p PerfTest, index int, c chan runResult) {
 		}
 	}
 
-	if WarmUp > 0 {
+	if warmUpDuration > 0 {
 		warmUpStart := time.Now()
 		warmUpLastPrint := 1.0
 		warmUpPerSecondCount := make([]int, 0)
 		warmupCount := 0
-		for time.Since(warmUpStart).Seconds() < float64(WarmUp) {
+		for time.Since(warmUpStart).Seconds() < float64(warmUpDuration) {
 			err := p.Run(context.Background())
 			if err != nil {
 				c <- runResult{err: err}
@@ -142,7 +143,7 @@ func runTest(p PerfTest, index int, c chan runResult) {
 
 				warmUpPerSecondCount = append(warmUpPerSecondCount, thisSecondCount)
 				warmUpLastPrint += 1.0
-				if int(warmUpLastPrint) == WarmUp {
+				if int(warmUpLastPrint) == warmUpDuration {
 					// We can have odd scenarios where we send this
 					// message, and the final message below right after
 					warmUpLastPrint += 1.0
@@ -164,7 +165,7 @@ func runTest(p PerfTest, index int, c chan runResult) {
 	totalCount := 0
 	lastPrint := 1.0
 	perSecondCount := make([]int, 0)
-	for time.Since(timeStart).Seconds() < float64(Duration) {
+	for time.Since(timeStart).Seconds() < float64(duration) {
 		err := p.Run(context.Background())
 		if err != nil {
 			c <- runResult{err: err}
@@ -183,7 +184,7 @@ func runTest(p PerfTest, index int, c chan runResult) {
 			lastPrint += 1.0
 			perSecondCount = append(perSecondCount, thisCount)
 
-			if int(lastPrint) == Duration {
+			if int(lastPrint) == duration {
 				// if we are w/in one second of the end time, we do not
 				// want to send any more results, we'll just send a final result
 				lastPrint += 10.0
@@ -200,7 +201,7 @@ func runTest(p PerfTest, index int, c chan runResult) {
 		timeInSeconds: elapsed,
 	}
 
-	if TestProxy != "" {
+	if testProxyURLs != "" {
 		// Stop the proxy now
 		err := proxyTransportsSuite[ID].stop(p.GetMetadata().Name)
 		if err != nil {
@@ -240,6 +241,20 @@ type runResult struct {
 	warmup bool
 }
 
+// parse the TestProxy input into a slice of strings
+func parseProxyURLS() []string {
+	var ret []string
+	if testProxyURLs == "" {
+		return ret
+	}
+
+	testProxyURLs = strings.TrimSuffix(testProxyURLs, ";")
+
+	ret = strings.Split(testProxyURLs, ";")
+
+	return ret
+}
+
 // Spins off each Parallel instance as a separate goroutine, reads messages and runs cleanup/setup methods.
 func runPerfTest(p NewPerfTest) error {
 	err := runGlobalSetup(p(nil))
@@ -248,6 +263,8 @@ func runPerfTest(p NewPerfTest) error {
 	}
 
 	var perfTests []PerfTest
+	proxyURLS := parseProxyURLS()
+	_ = proxyURLS
 
 	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight)
 	if err != nil {
@@ -255,17 +272,17 @@ func runPerfTest(p NewPerfTest) error {
 	}
 
 	messages := make(chan runResult)
-	for idx := 0; idx < Parallel; idx++ {
+	for idx := 0; idx < parallelInstances; idx++ {
 		options := &PerfTestOptions{}
-		if TestProxy != "" {
+		if testProxyURLs != "" {
+
+			proxyURL := proxyURLS[idx%len(proxyURLS)]
+
 			ID := fmt.Sprintf("%s-%d", p(nil).GetMetadata().Name, idx)
-			transporter, err := NewProxyTransport(&TransportOptions{
+			transporter := NewProxyTransport(&TransportOptions{
 				TestName: ID,
-				proxyURL: TestProxy,
+				proxyURL: proxyURL,
 			})
-			if err != nil {
-				panic(err)
-			}
 			options.ProxyInstance = transporter
 		} else {
 			options.ProxyInstance = defaultHTTPClient
@@ -347,13 +364,13 @@ func RegisterArguments(f func()) {
 // Run runs all individual tests
 func Run(perfTests []NewPerfTest) {
 	// Start with adding all of our arguments
-	pflag.IntVarP(&Duration, "duration", "d", 10, "Duration of the test in seconds. Default is 10.")
-	pflag.StringVarP(&TestProxy, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
-	pflag.IntVarP(&WarmUp, "warmup", "w", 5, "Duration of warmup in seconds. Default is 5.")
-	pflag.IntVarP(&Parallel, "parallel", "p", 1, "Degree of parallelism to run with. Default is 1.")
+	pflag.IntVarP(&duration, "duration", "d", 10, "Duration of the test in seconds. Default is 10.")
+	pflag.StringVarP(&testProxyURLs, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
+	pflag.IntVarP(&warmUpDuration, "warmup", "w", 5, "Duration of warmup in seconds. Default is 5.")
+	pflag.IntVarP(&parallelInstances, "parallel", "p", 1, "Degree of parallelism to run with. Default is 1.")
 	pflag.IntVar(&numProcesses, "maxprocs", runtime.NumCPU(), "Number of CPUs to use.")
 
-	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
+	pflag.BoolVar(&debug, "debug", false, "Print debugging information")
 	err := pflag.CommandLine.MarkHidden("debug")
 	if err != nil {
 		panic(err)

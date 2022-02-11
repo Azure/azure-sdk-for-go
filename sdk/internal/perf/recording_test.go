@@ -14,11 +14,11 @@ func TestRecordingHTTPClient_Do(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://www.bing.com", nil)
 	require.NoError(t, err)
 
-	client, err := NewProxyTransport(&TransportOptions{
+	client := NewProxyTransport(&TransportOptions{
 		TestName: t.Name(),
 		proxyURL: "https://localhost:5001/",
 	})
-	require.NoError(t, err)
+	require.NotNil(t, client)
 
 	resp, err := client.Do(req)
 	require.NoError(t, err)
@@ -32,7 +32,7 @@ func TestRecordingHTTPClient_Do(t *testing.T) {
 	require.Equal(t, "https://localhost:5001", resp.Request.URL.String())
 	require.Contains(t, req.Header.Get(upstreamURIHeader), "https://www.bing.com")
 	require.Equal(t, req.Header.Get(modeHeader), "record")
-	require.Equal(t, req.Header.Get(idHeader), client.recordingID)
+	require.Equal(t, req.Header.Get(idHeader), client.recID)
 
 	proxyTransportsSuite[t.Name()].SetMode("playback")
 	req, err = http.NewRequest("POST", "https://www.bing.com", nil)
@@ -42,5 +42,5 @@ func TestRecordingHTTPClient_Do(t *testing.T) {
 	require.Equal(t, "https://localhost:5001", resp.Request.URL.String())
 	require.Contains(t, req.Header.Get(upstreamURIHeader), "https://www.bing.com")
 	require.Equal(t, req.Header.Get(modeHeader), "playback")
-	require.Equal(t, req.Header.Get(idHeader), client.recordingID)
+	require.Equal(t, req.Header.Get(idHeader), client.recID)
 }

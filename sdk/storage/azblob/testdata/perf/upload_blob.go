@@ -9,66 +9,56 @@ import (
 	"io"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/spf13/pflag"
 )
 
-type uploadPerfTest struct {
+type uploadTestOptions struct {
+	size  int
+}
+
+var uploadTestOpts uploadTestOptions
+
+// uploadTestRegister is called once per process
+func uploadTestRegister() {
+	uploadTestOpts = uploadTestOptions{size: 10240}
+	// pflag.IntVar(uploadTestOpts.count, "num-blobs", 100, "Number of blobs to list. Defaults to 100.")
+	pflag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
+}
+
+type uploadTestGlobal struct {
 	perf.PerfTestOptions
 	containerName string
 	blobName      string
-	blobClient    azblob.BlockBlobClient
-	data          io.ReadSeekCloser
 }
 
-func (u *uploadPerfTest) GlobalSetup(ctx context.Context) error {
+// NewUploadTest is called once per process
+func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	u := &uploadTestGlobal{
+		PerfTestOptions: options,
+		containerName:   "mycontainer",
+		blobName:        "someblob",
+	}
+
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
-		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, u.containerName, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	_, err = containerClient.Create(context.Background(), nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return u, nil
 }
 
-func (m *uploadPerfTest) Setup(ctx context.Context) error {
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, &azblob.ClientOptions{Transporter: m.ProxyInstance})
-	if err != nil {
-		return err
-	}
-
-	m.blobClient = containerClient.NewBlockBlobClient(m.blobName)
-	return nil
-}
-
-func (m *uploadPerfTest) Run(ctx context.Context) error {
-	_, err := m.data.Seek(0, io.SeekStart) // rewind to the beginning
-	if err != nil {
-		return err
-	}
-	_, err = m.blobClient.Upload(ctx, m.data, nil)
-	return err
-}
-
-func (m *uploadPerfTest) Cleanup(ctx context.Context) error {
-	return nil
-}
-
-func (m *uploadPerfTest) GlobalCleanup(ctx context.Context) error {
+func (m *uploadTestGlobal) GlobalCleanup(ctx context.Context) error {
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
@@ -83,28 +73,52 @@ func (m *uploadPerfTest) GlobalCleanup(ctx context.Context) error {
 	return err
 }
 
-func (m *uploadPerfTest) GetMetadata() perf.PerfTestOptions {
-	return m.PerfTestOptions
+type uploadPerfTest struct {
+	*uploadTestGlobal
+	perf.PerfTestOptions
+	data       io.ReadSeekCloser
+	blobClient azblob.BlockBlobClient
 }
 
-func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
-	if options == nil {
-		options = &perf.PerfTestOptions{}
-	}
-	options.Name = "BlobUploadTest"
-
-	if size == nil {
-		size = to.Int64Ptr(10240)
+// NewPerfTest is called once per goroutine
+func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	u := &uploadPerfTest{
+		uploadTestGlobal: g,
+		PerfTestOptions:  *options,
 	}
 
-	data, err := perf.NewRandomStream(int(*size))
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, u.uploadTestGlobal.containerName, &azblob.ClientOptions{
+		Transporter: u.PerfTestOptions.ProxyInstance,
+	})
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return &uploadPerfTest{
-		PerfTestOptions: *options,
-		blobName:        "uploadtest",
-		containerName:   "uploadcontainer",
-		data:            data,
+	bc := containerClient.NewBlockBlobClient(u.blobName)
+	u.blobClient = bc
+
+	data, err := perf.NewRandomStream(uploadTestOpts.size)
+	if err != nil {
+		return nil, err
 	}
+	u.data = data
+
+	return u, err
+}
+
+func (m *uploadPerfTest) Run(ctx context.Context) error {
+	_, err := m.data.Seek(0, io.SeekStart) // rewind to the beginning
+	if err != nil {
+		return err
+	}
+	_, err = m.blobClient.Upload(ctx, m.data, nil)
+	return err
+}
+
+func (m *uploadPerfTest) Cleanup(ctx context.Context) error {
+	return nil
 }

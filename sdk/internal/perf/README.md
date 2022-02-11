@@ -246,7 +246,7 @@ go run . CreateEntityTest
 
 To specify flags for a performance test, add them after the first argument:
 ```pwsh
-go run . CreateEntityTest --duration 7 --test-proxies https://localhost:5001
+go run . CreateEntityTest --duration 7 --test-proxies https://localhost:5001 --num-blobs 100
 ```
 
 For help run `go run . --help`. A list of registered performance tests, global command flags, and local command flags will print out.

@@ -163,7 +163,7 @@ func (c *RecordingHTTPClient) replaceAuthority(rawReq *http.Request) error {
 }
 
 // start tells the test proxy to begin accepting requests for a given test
-func (c *RecordingHTTPClient) start(t string) error {
+func (c *RecordingHTTPClient) start() error {
 	url := fmt.Sprintf("%s/%s/start", c.options.proxyURL, c.mode)
 
 	req, err := http.NewRequest("POST", url, nil)
@@ -195,7 +195,7 @@ func (c *RecordingHTTPClient) start(t string) error {
 }
 
 // stop tells the test proxy to stop accepting requests for a given test
-func (c *RecordingHTTPClient) stop(t string) error {
+func (c *RecordingHTTPClient) stop() error {
 	url := fmt.Sprintf("%s/%s/stop", c.options.proxyURL, c.mode)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {

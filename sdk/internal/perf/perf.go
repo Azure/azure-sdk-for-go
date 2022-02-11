@@ -28,24 +28,22 @@ var (
 	numProcesses      int
 )
 
+// GlobalPerfTest methods execute once per process
+type GlobalPerfTest interface {
+	// NewPerfTest creates an instance of a PerfTest for each goroutine.
+	NewPerfTest(context.Context, *PerfTestOptions) (PerfTest, error)
+
+	// GlobalCleanup is run one time per performance test, as the final method.
+	GlobalCleanup(context.Context) error
+}
+
+// PerfTest methods once per goroutine
 type PerfTest interface {
-	// GetMetadata returns the metadta for a test.
-	GetMetadata() PerfTestOptions
-
-	// GlobalSetup is run one time per performance test, as the first method.
-	GlobalSetup(context.Context) error
-
-	// Setup is run once for each parallel instance.
-	Setup(context.Context) error
-
 	// Run is the function that is being measured.
 	Run(context.Context) error
 
 	// Cleanup is run once for each parallel instance.
 	Cleanup(context.Context) error
-
-	// GlobalCleanup is run one time per performance test, as the final method.
-	GlobalCleanup(context.Context) error
 }
 
 // HTTPClient is the same interface as azcore.Transporter
@@ -62,31 +60,15 @@ type PerfTestOptions struct {
 }
 
 // NewPerfTest returns an instance of PerfTest and embeds the given `options` in the struct
-type NewPerfTest func(options *PerfTestOptions) PerfTest
-
-func runGlobalSetup(p PerfTest) error {
-	if debug {
-		log.Println("running GlobalSetup")
-	}
-	return p.GlobalSetup(context.Background())
-}
-
-func runSetup(p PerfTest) error {
-	if debug {
-		log.Println("running Setup")
-	}
-	return p.Setup(context.Background())
-}
+type NewPerfTest func(context.Context, PerfTestOptions) (GlobalPerfTest, error)
 
 // runTest takes care of the semantics of running a single iteration. It returns the number of times the test ran as an int, the exact number
 // of seconds the test ran as a float64, and any errors.
-func runTest(p PerfTest, index int, c chan runResult) {
+func runTest(p PerfTest, index int, c chan runResult, ID string) {
 	defer wg.Done()
 	if debug {
 		log.Printf("number of proxies %d", len(proxyTransportsSuite))
 	}
-
-	ID := fmt.Sprintf("%s-%d", p.GetMetadata().Name, p.GetMetadata().parallelIndex)
 
 	// If we are using the test proxy need to set up the in-memory recording.
 	if testProxyURLs != "" {
@@ -99,7 +81,7 @@ func runTest(p PerfTest, index int, c chan runResult) {
 
 		// 2nd request goes through in Record mode
 		proxyTransportsSuite[ID].SetMode("record")
-		err = proxyTransportsSuite[ID].start(p.GetMetadata().Name)
+		err = proxyTransportsSuite[ID].start()
 		if err != nil {
 			panic(err)
 		}
@@ -107,14 +89,14 @@ func runTest(p PerfTest, index int, c chan runResult) {
 		if err != nil {
 			c <- runResult{err: err}
 		}
-		err = proxyTransportsSuite[ID].stop(p.GetMetadata().Name)
+		err = proxyTransportsSuite[ID].stop()
 		if err != nil {
 			panic(err)
 		}
 
 		// All ensuing requests go through in Playback mode
 		proxyTransportsSuite[ID].SetMode("playback")
-		err = proxyTransportsSuite[ID].start(p.GetMetadata().Name)
+		err = proxyTransportsSuite[ID].start()
 		if err != nil {
 			panic(err)
 		}
@@ -203,7 +185,7 @@ func runTest(p PerfTest, index int, c chan runResult) {
 
 	if testProxyURLs != "" {
 		// Stop the proxy now
-		err := proxyTransportsSuite[ID].stop(p.GetMetadata().Name)
+		err := proxyTransportsSuite[ID].stop()
 		if err != nil {
 			c <- runResult{err: err}
 		}
@@ -214,10 +196,6 @@ func runTest(p PerfTest, index int, c chan runResult) {
 // runCleanup takes care of the semantics for tearing down a single iteration of a performance test.
 func runCleanup(p PerfTest) error {
 	return p.Cleanup(context.Background())
-}
-
-func runGlobalCleanup(p PerfTest) error {
-	return p.GlobalCleanup(context.Background())
 }
 
 // runResult is the result sent back through the channel for updates and final results
@@ -256,29 +234,27 @@ func parseProxyURLS() []string {
 }
 
 // Spins off each Parallel instance as a separate goroutine, reads messages and runs cleanup/setup methods.
-func runPerfTest(p NewPerfTest) error {
-	err := runGlobalSetup(p(nil))
+func runPerfTest(name string, p NewPerfTest) error {
+	globalInstance, err := p(context.TODO(), PerfTestOptions{Name: name})
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	var perfTests []PerfTest
+	var IDs []string
 	proxyURLS := parseProxyURLS()
-	_ = proxyURLS
 
 	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight)
-	if err != nil {
-		panic(err)
-	}
 
 	messages := make(chan runResult)
 	for idx := 0; idx < parallelInstances; idx++ {
 		options := &PerfTestOptions{}
+
+		ID := fmt.Sprintf("%s-%d", name, idx)
+		IDs = append(IDs, ID)
+
 		if testProxyURLs != "" {
-
 			proxyURL := proxyURLS[idx%len(proxyURLS)]
-
-			ID := fmt.Sprintf("%s-%d", p(nil).GetMetadata().Name, idx)
 			transporter := NewProxyTransport(&TransportOptions{
 				TestName: ID,
 				proxyURL: proxyURL,
@@ -289,20 +265,17 @@ func runPerfTest(p NewPerfTest) error {
 		}
 		options.parallelIndex = idx
 
-		perfTest := p(options)
-		perfTests = append(perfTests, perfTest)
-
-		// Run the setup for a single instance
-		err := runSetup(perfTest)
+		perfTest, err := globalInstance.NewPerfTest(context.TODO(), options)
 		if err != nil {
-			return fmt.Errorf("there was an error with the Setup method: %v", err.Error())
+			panic(err)
 		}
+		perfTests = append(perfTests, perfTest)
 	}
 
 	for idx, perfTest := range perfTests {
 		// Create a thread for running a single test
 		wg.Add(1)
-		go runTest(perfTest, idx, messages)
+		go runTest(perfTest, idx, messages, IDs[idx])
 	}
 
 	// Add another goroutine to close the channel after completion
@@ -317,7 +290,7 @@ func runPerfTest(p NewPerfTest) error {
 			log.Println("Handling message: ", msg)
 		}
 		if msg.err != nil {
-			panic(err)
+			panic(msg.err)
 		}
 		handleMessage(w, msg)
 	}
@@ -327,13 +300,13 @@ func runPerfTest(p NewPerfTest) error {
 
 	// Run Cleanup on each parallel instance
 	for _, pTest := range perfTests {
-		err = runCleanup(pTest)
+		err := runCleanup(pTest)
 		if err != nil {
 			panic(err)
 		}
 	}
 
-	err = runGlobalCleanup(p(nil))
+	err = globalInstance.GlobalCleanup(context.TODO())
 	if err != nil {
 		return fmt.Errorf("there was an error with the GlobalCleanup method: %v", err.Error())
 	}
@@ -341,28 +314,13 @@ func runPerfTest(p NewPerfTest) error {
 	return nil
 }
 
-// testsToRun trims the slice of PerfTest to only those that are flagged as running.
-func testsToRun(registered []NewPerfTest) NewPerfTest {
-	args := os.Args[1:]
-	for _, r := range registered {
-		p := r(nil)
-		for _, arg := range args {
-			if p.GetMetadata().Name == arg {
-				return r
-			}
-		}
-	}
-
-	return nil
-}
-
-// RegisterArguments is used to register local arguments. This is called before `pflag.Parse()`
-func RegisterArguments(f func()) {
-	f()
+type MapInterface struct {
+	Register func()
+	New      func(context.Context, PerfTestOptions) (GlobalPerfTest, error)
 }
 
 // Run runs all individual tests
-func Run(perfTests []NewPerfTest) {
+func Run(tests map[string]MapInterface) {
 	// Start with adding all of our arguments
 	pflag.IntVarP(&duration, "duration", "d", 10, "Duration of the test in seconds. Default is 10.")
 	pflag.StringVarP(&testProxyURLs, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
@@ -376,8 +334,6 @@ func Run(perfTests []NewPerfTest) {
 		panic(err)
 	}
 
-	pflag.Parse()
-
 	if numProcesses > 0 {
 		val := runtime.GOMAXPROCS(numProcesses)
 		if debug {
@@ -385,20 +341,25 @@ func Run(perfTests []NewPerfTest) {
 		}
 	}
 
-	perfTestToRun := testsToRun(perfTests)
-
-	if perfTestToRun == nil {
+	var perfTestToRun MapInterface
+	var ok bool
+	if perfTestToRun, ok = tests[os.Args[1]]; !ok {
+		// Error out and show available perf tests
 		fmt.Println("Available performance tests:")
-		for _, p := range perfTests {
-			c := p(nil)
-			fmt.Printf("\t%s\n", c.GetMetadata().Name)
+		for name := range tests {
+			fmt.Printf("\t%s\n", name)
 		}
 		return
 	}
 
-	fmt.Printf("\tRunning %s\n", perfTestToRun(nil).GetMetadata().Name)
+	if perfTestToRun.Register != nil {
+		perfTestToRun.Register()
+	}
+	pflag.Parse()
 
-	err = runPerfTest(perfTestToRun)
+	fmt.Printf("\tRunning %s\n", os.Args[1])
+
+	err = runPerfTest(os.Args[1], perfTestToRun.New)
 	if err != nil {
 		panic(err)
 	}

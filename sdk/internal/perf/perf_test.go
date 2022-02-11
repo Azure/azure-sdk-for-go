@@ -4,14 +4,13 @@
 package perf
 
 import (
-	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
-type perfTestSample struct {
+/*
+type globalPerfTestSample struct {
 	PerfTestOptions
 }
 
@@ -45,9 +44,14 @@ func TestRun(t *testing.T) {
 	warmUpDuration = 0
 	parallelInstances = 1
 
+	tests := map[string]MapInterface{
+
+	}
+
 	err := runPerfTest(NewPerfTestSample)
 	require.NoError(t, err)
 }
+*/
 
 func TestParseProxyURLs(t *testing.T) {
 	testProxyURLs = ""

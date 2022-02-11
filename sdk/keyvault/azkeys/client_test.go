@@ -326,7 +326,7 @@ func TestBackupKey(t *testing.T) {
 			// confirm invalid restore key backup
 			invalidResp2, err := client.RestoreKeyBackup(ctx, []byte("doesnotexist"), nil)
 			require.Error(t, err)
-			require.Nil(t, invalidResp2.RawResponse)
+			require.Empty(t, invalidResp2)
 		})
 	}
 }
@@ -553,7 +553,7 @@ func TestGetRandomBytes(t *testing.T) {
 
 			invalid, err := client.GetRandomBytes(ctx, to.Int32Ptr(-1), nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.RawResponse)
+			require.Empty(t, invalid)
 		})
 	}
 }

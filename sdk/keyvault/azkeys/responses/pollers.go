@@ -167,14 +167,24 @@ func deleteKeyResponseFromGenerated(i *generated.KeyVaultClientDeleteKeyResponse
 		return nil
 	}
 	return &DeleteKey{
-		RawResponse: i.RawResponse,
+		DeletedKeyBundle: models.DeletedKeyBundle{
+			RecoveryID:         i.RecoveryID,
+			DeletedDate:        i.DeletedDate,
+			ScheduledPurgeDate: i.ScheduledPurgeDate,
+			KeyBundle: models.KeyBundle{
+				Managed:       i.Managed,
+				ReleasePolicy: convert.KeyReleasePolicyFromGenerated(i.ReleasePolicy),
+				Tags:          convert.FromGeneratedMap(i.Tags),
+				Attributes:    convert.KeyAttributesFromGenerated(i.Attributes),
+				Key:           convert.JSONWebKeyFromGenerated(i.Key),
+			},
+		},
 	}
 }
 
 // change recover deleted key reponse to the generated version.
 func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKey {
 	return RecoverDeletedKey{
-		RawResponse: i.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(i.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(i.Key),

@@ -118,7 +118,6 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType models.KeyType) generat
 // creates CreateKeyResponse from generated.KeyVaultClient.CreateKeyResponse
 func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) responses.CreateKey {
 	return responses.CreateKey{
-		RawResponse: g.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(g.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(g.Key),
@@ -168,7 +167,6 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType models.KeyType) gener
 // convert the generated.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
 func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) responses.CreateECKey {
 	return responses.CreateECKey{
-		RawResponse: g.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(g.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(g.Key),
@@ -222,7 +220,6 @@ func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType models.KeyType) gene
 // convert generated response to CreateOCTKeyResponse
 func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) responses.CreateOCTKey {
 	return responses.CreateOCTKey{
-		RawResponse: i.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(i.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(i.Key),
@@ -280,7 +277,6 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k models.KeyType) generated.K
 // convert internal response to CreateRSAKeyResponse
 func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) responses.CreateRSAKey {
 	return responses.CreateRSAKey{
-		RawResponse: i.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(i.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(i.Key),
@@ -339,7 +335,6 @@ type GetKeyOptions struct {
 // convert internal response to GetKeyResponse
 func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) responses.GetKey {
 	return responses.GetKey{
-		RawResponse: i.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(i.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(i.Key),
@@ -375,7 +370,6 @@ func (g GetDeletedKeyOptions) toGenerated() *generated.KeyVaultClientGetDeletedK
 // convert generated response to GetDeletedKeyResponse
 func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyResponse) responses.GetDeletedKey {
 	return responses.GetDeletedKey{
-		RawResponse: i.RawResponse,
 		DeletedKeyBundle: models.DeletedKeyBundle{
 			KeyBundle: models.KeyBundle{
 				Attributes: convert.KeyAttributesFromGenerated(i.Attributes),
@@ -416,9 +410,7 @@ func (p *PurgeDeletedKeyOptions) toGenerated() *generated.KeyVaultClientPurgeDel
 
 // Converts the generated response to the publicly exposed version.
 func purgeDeletedKeyResponseFromGenerated(i generated.KeyVaultClientPurgeDeletedKeyResponse) responses.PurgeDeletedKey {
-	return responses.PurgeDeletedKey{
-		RawResponse: i.RawResponse,
-	}
+	return responses.PurgeDeletedKey{}
 }
 
 // PurgeDeletedKey deletes the specified key. The purge deleted key operation removes the key permanently, without the possibility of recovery.
@@ -468,8 +460,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 	})
 
 	return responses.BeginDeleteKey{
-		Poller:      s,
-		RawResponse: resp.RawResponse,
+		Poller: s,
 	}, nil
 }
 
@@ -484,8 +475,7 @@ func (b BackupKeyOptions) toGenerated() *generated.KeyVaultClientBackupKeyOption
 // convert internal reponse to BackupKeyResponse
 func backupKeyResponseFromGenerated(i generated.KeyVaultClientBackupKeyResponse) responses.BackupKey {
 	return responses.BackupKey{
-		RawResponse: i.RawResponse,
-		Value:       i.Value,
+		Value: i.Value,
 	}
 }
 
@@ -548,8 +538,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 	})
 
 	return responses.BeginRecoverDeletedKey{
-		Poller:      b,
-		RawResponse: getResp.RawResponse,
+		Poller: b,
 	}, nil
 }
 
@@ -595,7 +584,6 @@ func (u UpdateKeyPropertiesOptions) toGeneratedOptions() *generated.KeyVaultClie
 // convert the internal response to UpdateKeyPropertiesResponse
 func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyResponse) responses.UpdateKeyProperties {
 	return responses.UpdateKeyProperties{
-		RawResponse: i.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(i.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(i.Key),
@@ -684,7 +672,6 @@ func (r RestoreKeyBackupOptions) toGenerated() *generated.KeyVaultClientRestoreK
 // converts the generated response to the publicly exposed version.
 func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyResponse) responses.RestoreKeyBackup {
 	return responses.RestoreKeyBackup{
-		RawResponse: i.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(i.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(i.Key),
@@ -737,7 +724,6 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 // convert the generated response to the ImportKeyResponse
 func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse) responses.ImportKey {
 	return responses.ImportKey{
-		RawResponse: i.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes: convert.KeyAttributesFromGenerated(i.Attributes),
 			Key:        convert.JSONWebKeyFromGenerated(i.Key),
@@ -789,8 +775,7 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 	}
 
 	return responses.GetRandomBytes{
-		Value:       resp.Value,
-		RawResponse: resp.RawResponse,
+		Value: resp.Value,
 	}, nil
 }
 
@@ -816,7 +801,6 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 	}
 
 	return responses.RotateKey{
-		RawResponse: resp.RawResponse,
 		KeyBundle: models.KeyBundle{
 			Attributes:    convert.KeyAttributesFromGenerated(resp.Attributes),
 			Key:           convert.JSONWebKeyFromGenerated(resp.Key),
@@ -848,7 +832,6 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 		}
 	}
 	return responses.GetKeyRotationPolicy{
-		RawResponse: i.RawResponse,
 		KeyRotationPolicy: models.KeyRotationPolicy{
 			ID:              i.ID,
 			LifetimeActions: acts,
@@ -911,8 +894,7 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 	}
 
 	return responses.ReleaseKey{
-		RawResponse: resp.RawResponse,
-		Value:       resp.Value,
+		Value: resp.Value,
 	}, err
 }
 
@@ -965,7 +947,6 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 		}
 	}
 	return responses.UpdateKeyRotationPolicy{
-		RawResponse: i.RawResponse,
 		KeyRotationPolicy: models.KeyRotationPolicy{
 			ID:              i.ID,
 			LifetimeActions: acts,

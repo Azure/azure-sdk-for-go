@@ -10,17 +10,27 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var (
+	globalCleanup = false
+	newnooptest   = false
+	newperftest   = false
+	run           = false
+	cleanup       = false
+)
+
 type globalNoOpPerfTest struct {
 	PerfTestOptions
 }
 
 func NewNoOpTest(ctx context.Context, options PerfTestOptions) (GlobalPerfTest, error) {
+	newnooptest = true
 	return &globalNoOpPerfTest{
 		PerfTestOptions: options,
 	}, nil
 }
 
 func (g *globalNoOpPerfTest) GlobalCleanup(ctx context.Context) error {
+	globalCleanup = true
 	return nil
 }
 
@@ -29,14 +39,17 @@ type noOpPerTest struct {
 }
 
 func (g *globalNoOpPerfTest) NewPerfTest(ctx context.Context, options *PerfTestOptions) (PerfTest, error) {
+	newperftest = true
 	return &noOpPerTest{options}, nil
 }
 
 func (n *noOpPerTest) Run(ctx context.Context) error {
+	run = true
 	return nil
 }
 
 func (n *noOpPerTest) Cleanup(ctx context.Context) error {
+	cleanup = true
 	return nil
 }
 
@@ -47,6 +60,12 @@ func TestRun(t *testing.T) {
 
 	err := runPerfTest("Sleep", NewNoOpTest)
 	require.NoError(t, err)
+
+	require.True(t, globalCleanup)
+	require.True(t, newnooptest)
+	require.True(t, newperftest)
+	require.True(t, run)
+	require.True(t, cleanup)
 }
 
 func TestParseProxyURLs(t *testing.T) {

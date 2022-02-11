@@ -1,14 +1,10 @@
 # Release History
 
-## 0.3.5 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.3.5 (2022-02-10)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fix panic() when go-amqp was returning an incorrect error on drain failures. (#17036)
 
 ## 0.3.4 (2022-02-08)
 

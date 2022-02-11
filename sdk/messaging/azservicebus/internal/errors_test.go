@@ -171,9 +171,6 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:timeout")},
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:operation-cancelled")},
 		errors.New("link is currently draining"), // not yet exposed from go-amqp
-		fakeNetError{temp: true},
-		fakeNetError{timeout: true},
-		fakeNetError{temp: false, timeout: false},
 		// simple timeouts from the mgmt link
 		mgmtError{Resp: &RPCResponse{Code: 408}},
 		mgmtError{Resp: &RPCResponse{Code: 503}},
@@ -191,6 +188,9 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorConnectionForced},
 		amqp.ErrConnClosed,
 		io.EOF,
+		fakeNetError{temp: true},
+		fakeNetError{timeout: true},
+		fakeNetError{temp: false, timeout: false},
 	}
 
 	for i, err := range connErrors {

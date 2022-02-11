@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fix connection recovery in situations where network errors bubble up from go-amqp (#17048)
+
 ### Other Changes
 
 ## 0.3.5 (2022-02-10)

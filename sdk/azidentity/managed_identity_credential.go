@@ -72,7 +72,7 @@ type ManagedIdentityCredential struct {
 }
 
 // NewManagedIdentityCredential creates a ManagedIdentityCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}

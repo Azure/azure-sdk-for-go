@@ -73,7 +73,7 @@ type DeviceCodeCredential struct {
 }
 
 // NewDeviceCodeCredential creates a DeviceCodeCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
 	cp := DeviceCodeCredentialOptions{}
 	if options != nil {

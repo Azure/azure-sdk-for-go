@@ -8,11 +8,9 @@ import (
 )
 
 func main() {
-	tests := map[string]perf.MapInterface{
+	perf.Run(map[string]perf.PerfMethods{
 		"UploadBlobTest":   {Register: uploadTestRegister, New: NewUploadTest},
 		"ListBlobTest":     {Register: listTestRegister, New: NewListTest},
 		"DownloadBlobTest": {Register: downloadTestRegister, New: NewDownloadTest},
-	}
-
-	perf.Run(tests)
+	})
 }

@@ -22,7 +22,7 @@ var uploadTestOpts uploadTestOptions = uploadTestOptions{size: 10240}
 
 // uploadTestRegister is called once per process
 func uploadTestRegister() {
-	pflag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
+	pflag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests.")
 }
 
 type uploadTestGlobal struct {
@@ -90,9 +90,13 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, u.uploadTestGlobal.containerName, &azblob.ClientOptions{
-		Transporter: u.PerfTestOptions.ProxyInstance,
-	})
+	containerClient, err := azblob.NewContainerClientFromConnectionString(
+		connStr,
+		u.uploadTestGlobal.containerName,
+		&azblob.ClientOptions{
+			Transporter: u.PerfTestOptions.Transporter,
+		},
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +109,7 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 	}
 	u.data = data
 
-	return u, err
+	return u, nil
 }
 
 func (m *uploadPerfTest) Run(ctx context.Context) error {

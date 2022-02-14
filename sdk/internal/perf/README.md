@@ -13,13 +13,16 @@ The `perf` sub-module provides a singular framework for writing performance test
 ## Adding Performance Tests to an SDK
 
 1. Create a performance test directory at `testdata/perf` within your module. For example, the storage performance tests live in `sdk/storage/azblob/testdata/perf`.
-2. Run `go mod init` to create a new module.
-3. Create a `struct` that implements the `perf.PerfTest` interface by implementing the `GlobalSetup`, `Setup`, `Run`, `Cleanup`, `GlobalCleanup`, and `GetMetadata` functions. The first five functions take the `context.Context` type to prevent an erroneous test from blocking. `GetMetadata` should returns the `perf.PerfTestOptions` that is embedded in the struct.
-    `GlobalSetup` and `GlobalCleanup` are called once each, at the beginning and end of the performance test respectively.
-    `Setup` and `Cleanup` are called once for each test instance. If you're running four performance tests in parallel, this method is run four times, once for each parallel instance. If there is nothing to do in any of these steps, you can `return nil`.
-4. Create a `New<Name>Test` method that returns an instantialized struct.
 
-5. Create a main package that uses the `perf.Run` function to provide all the constructor methods.
+2. Run `go mod init` to create a new module.
+
+3. Create a `struct` that maintains all global values for the performance test (ie. account name, blob name, etc.).
+
+4. Implement `GlobalPerfTest` interface by adding the `NewPerfTest(context.Context, *PerfTestOptions) (PerfTest, error)` and the `GlobalCleanup(context.Context)` functions on the global struct. The `NewPerfTest` method creates a new struct that is responsible for running a performance test in its own `goroutine`. `GlobalCleanup` takes care of any session level cleanup.
+
+5. Implement the `PerfTest` interface on the struct returned from the `NewPerfTest` method. Add a `Run(context.Context)` and a `Cleanup(context.Context)` function. The `Run` method is the method you want to measure the performance of. The `Cleanup` method is for cleaning up within a single `goroutine`, most of the time this will be empty.
+
+6. Create a main package that uses the `perf.Run` function to provide all the global constructor methods. `perf.Run` takes a map[string]MapInterface
 
 6. (Optional): Create a method that registers local flags.
 
@@ -27,93 +30,39 @@ The `perf` sub-module provides a singular framework for writing performance test
 package main
 
 import (
-    ...
     "github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 )
 
+// uploadTestRegister registers flags for the "UploadBlobTest"
+func uploadTestRegister() {
+	pflag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
+}
+
 func main() {
-    perf.Run([]perf.NewPerfTest{
-        FirstTestConstructor,
-        SecondTestConstructor,
-        ...
-    })
+	perf.Run(map[string]perf.MapInterface{
+		"UploadBlobTest":   {Register: uploadTestRegister, New: NewUploadTest},
+		"ListBlobTest":     {Register: listTestRegister, New: NewListTest},
+		"DownloadBlobTest": {Register: downloadTestRegister, New: NewDownloadTest},
+	})
 }
 ```
 
 ### Writing a test
 The following walks through the `azblob` Blob Upload performance test:
 
-#### GlobalSetup
-Setup for the test, this is run one time per test. This should not have any struct initializations. In the example, we are creating the container in the storage account.
+#### `GlobalPerfTest` Interface
+This struct handles global set up for your account and spawning structs for each `goroutine`. Make sure to embed the `perf.PerfTestOptions` struct in your global struct.
 ```go
-func (u *uploadPerfTest) GlobalSetup(ctx context.Context) error {
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
-	if err != nil {
-		return err
-	}
-	_, err = containerClient.Create(context.Background(), nil)
-	if err != nil {
-		return err
-	}
-
-	return nil
+type uploadTestGlobal struct {
+	perf.PerfTestOptions
+	containerName string
+	blobName      string
 }
 ```
 
-#### Setup
-In the `Setup` method, initialize your clients for the Run stage. Always use the `ProxyInstance` from the embedded `perf.PerfTestOptions` struct as your ClientOptions.`Transport`. The `ProxyInstance` will handle all routing for performance tests run against a proxy. You should create any clients you will use in the `Run` and `Cleanup` methods.
+The `GlobalCleanup` method cleans up the account, resetting it into the default.
 ```go
-func (u *uploadPerfTest) Setup(ctx context.Context) error {
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, u.containerName, &azblob.ClientOptions{Transporter: u.ProxyInstance})
-	if err != nil {
-		return err
-	}
-
-	m.blobClient = containerClient.NewBlockBlobClient(u.blobName)
-	return nil
-}
-```
-
-In this example we create a `BlobClient` and save it in the struct.
-
-#### Run
-This method is the function you are testing for performance. Use the context from the function signature if your method uses one. This will prevent test runs from hanging or blocking. Don't handle errors in this method, rather return them and let the performance framework handle erro handling.
-
-```go
-func (u *uploadPerfTest) Run(ctx context.Context) error {
-	_, err := u.data.Seek(0, io.SeekStart)
-	if err != nil {
-		return err
-	}
-	_, err = u.blobClient.Upload(ctx, u.data, nil)
-	return err
-}
-```
-
-#### Cleanup
-This method is for cleaning up after a single test run. This method will most likely be empty, just returning `nil`. Don't do any deletions or modifications to the account in this method.
-
-```go
-func (m *uploadPerfTest) Cleanup(ctx context.Context) error {
-	return nil
-}
-```
-
-#### GlobalCleanup
-Use the method to delete any provisioned resources, and restore your account to the defaults.
-
-```go
-func (m *uploadPerfTest) GlobalCleanup(ctx context.Context) error {
+func (m *uploadTestGlobal) GlobalCleanup(ctx context.Context) error {
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
@@ -128,73 +77,120 @@ func (m *uploadPerfTest) GlobalCleanup(ctx context.Context) error {
 	return err
 }
 ```
-#### GetMetadata
-This is the simplest method, just return the `PerfTestOptions` struct from your defined struct.
+
+`NewPerfTest` is called once per `goroutine`, and creates a new `PerfTest` interface which will be used by each goroutine. This method should also include the setup for the eventual returned struct.
+```go
+// NewPerfTest is called once per goroutine
+func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	u := &uploadPerfTest{
+		uploadTestGlobal: g,
+		PerfTestOptions:  *options,
+	}
+
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	containerClient, err := azblob.NewContainerClientFromConnectionString(
+		connStr,
+		u.uploadTestGlobal.containerName,
+		&azblob.ClientOptions{
+			Transporter: u.PerfTestOptions.Transporter,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	bc := containerClient.NewBlockBlobClient(u.blobName)
+	u.blobClient = bc
+
+	data, err := perf.NewRandomStream(uploadTestOpts.size)
+	if err != nil {
+		return nil, err
+	}
+	u.data = data
+
+	return u, nil
+}
+```
+
+#### `PerfTest` Interface
+The `PerfTest` interface is an interface that is responsible for running a single performance test. Each performance test in run within a single `goroutine`, these `goroutine`s are created by the `perf` framework. The `Run` method is the method that is being measured and the `Cleanup` method is responsible for cleanup work after each goroutine.
 
 ```go
-func (m *uploadPerfTest) GetMetadata() perf.PerfTestOptions {
-	return m.PerfTestOptions
+func (m *uploadPerfTest) Run(ctx context.Context) error {
+	_, err := m.data.Seek(0, io.SeekStart) // rewind to the beginning
+	if err != nil {
+		return err
+	}
+	_, err = m.blobClient.Upload(ctx, m.data, nil)
+	return err
+}
+
+func (m *uploadPerfTest) Cleanup(ctx context.Context) error {
+	return nil
 }
 ```
 
 #### Constructor
-Each method needs to have a constructor that returns an instantialized `perf.PerfTest`. This storage example does a few things:
-
-* sets the `Name` parameter on the options struct
-* sets the default value for the size parameter used by this test.
-* Creates a data source from the `perf.RandomStream` (which implements the `io.ReadSeekCloser`).
+Each method needs to have a constructor that returns an instantialized `perf.GlobalPerfTest`.
 ```go
-func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
-	if options == nil {
-		options = &perf.PerfTestOptions{}
-	}
-	options.Name = "BlobUploadTest"
-
-	if size == nil {
-		size = to.Int64Ptr(10240)
-	}
-
-	data, err := perf.NewRandomStream(int(*size))
-	if err != nil {
-		panic(err)
-	}
-	return &uploadPerfTest{
-		PerfTestOptions: *options,
-		blobName:        "uploadtest",
+// NewUploadTest is called once per process
+func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	u := &uploadTestGlobal{
+		PerfTestOptions: options,
 		containerName:   "uploadcontainer",
-		data:            data,
+		blobName:        "uploadblob",
 	}
+
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, u.containerName, nil)
+	if err != nil {
+		return nil, err
+	}
+	_, err = containerClient.Create(context.Background(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return u, nil
 }
 ```
 
 #### `main.go` file
-The main function must have the `perf.Run` method with a slice of each performance test constructor. Flag parsing, test selection, reporting, proxy interfaces, and all other portions are taken care of for the user in the `perf.Run` method.
+The `main` function must have the `perf.Run` method with a map of each performance test constructor. Flag parsing, test selection, reporting, proxy interfaces, and all other portions are taken care of for the user in the `perf.Run` method.
 
 ```go
 package main
 
-import "github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
+)
 
 func main() {
-	perf.RegisterArguments(RegisterArguments)
-	perf.Run([]perf.NewPerfTest{
-		NewDownloadTest,
-		NewListTest,
-		NewUploadTest,
+	perf.Run(map[string]perf.MapInterface{
+		"UploadBlobTest":   {Register: uploadTestRegister, New: NewUploadTest},
+		"ListBlobTest":     {Register: listTestRegister, New: NewListTest},
+		"DownloadBlobTest": {Register: downloadTestRegister, New: NewDownloadTest},
 	})
 }
 ```
 
 ### Running with the test proxy
 
-To run with the test proxy, configure your client to route requests to the test proxy using the `ProxyInstance` parameters for the `Transport` in your client options. For example in `azkeys`:
+To run with the test proxy, configure your client to route requests to the test proxy using the `Transporter` parameters for the `Transport` in your client options. If the `--test-proxy` flag is not specified, `Transporter` is the same default HTTP client from `azcore`.
 
 ```go
 func (k *keysPerfTest) GlobalSetup() error {
     ...
     options = &azkeys.ClientOptions{
         ClientOptions: azcore.ClientOptions{
-            Transport: k.ProxyInstance,
+            Transport: k.Transporter,
         },
     }
 
@@ -208,12 +204,15 @@ func (k *keysPerfTest) GlobalSetup() error {
 We use the `pflag` library for argument parsing (the standard library does not support double dashed arguments). Each perf test suite can have optional arguments and they are registered using the `perf.RegisterArguments` method, which takes a simple function that registers arguments using `pflag.Int32`, `pflag.String`, etc. If you have no local arguments, you can skip this step.
 
 ```go
-var size *int64
-var count *int32
+type uploadTestOptions struct {
+	size int
+}
 
-func RegisterArguments() {
-	count = pflag.Int32("num-blobs", 100, "Number of blobs to list. Defaults to 100.")
-	size = pflag.Int64("size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
+var uploadTestOpts uploadTestOptions = uploadTestOptions{size: 10240}
+
+// uploadTestRegister is called once per process
+func uploadTestRegister() {
+	pflag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests.")
 }
 ```
 
@@ -224,11 +223,10 @@ package main
 import "github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 
 func main() {
-	perf.RegisterArguments(RegisterArguments)
-	perf.Run([]perf.NewPerfTest{
-		NewDownloadTest,
-		NewListTest,
-		NewUploadTest,
+	perf.Run(map[string]perf.MapInterface{
+		"UploadBlobTest":   {Register: uploadTestRegister, New: NewUploadTest},
+		"ListBlobTest":     {Register: listTestRegister, New: NewListTest},
+		"DownloadBlobTest": {Register: downloadTestRegister, New: NewDownloadTest},
 	})
 }
 ```

@@ -104,7 +104,7 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 		connStr,
 		u.listTestGlobal.containerName,
 		&azblob.ClientOptions{
-			Transporter: u.PerfTestOptions.ProxyInstance,
+			Transporter: u.PerfTestOptions.Transporter,
 		},
 	)
 	if err != nil {

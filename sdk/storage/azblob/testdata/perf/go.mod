@@ -9,12 +9,12 @@ replace github.com/Azure/azure-sdk-for-go/sdk/storage/azblob => ../../.
 require github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v0.2.0
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.21.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v0.8.3
 	github.com/spf13/pflag v1.0.5
 )
 
 require (
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.21.0 // indirect
 	golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d // indirect
 	golang.org/x/text v0.3.7 // indirect
 )

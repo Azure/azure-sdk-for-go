@@ -35,7 +35,7 @@ import (
 
 // uploadTestRegister registers flags for the "UploadBlobTest"
 func uploadTestRegister() {
-	pflag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
+	flag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
 }
 
 func main() {
@@ -201,7 +201,7 @@ func (k *keysPerfTest) GlobalSetup() error {
 ```
 
 ### Registering Local Arguments
-We use the `pflag` library for argument parsing (the standard library does not support double dashed arguments). Each perf test suite can have optional arguments and they are registered using the `perf.RegisterArguments` method, which takes a simple function that registers arguments using `pflag.Int32`, `pflag.String`, etc. If you have no local arguments, you can skip this step.
+We use the `flag` library for argument parsing. Each perf test suite can have optional arguments and they are registered using the `perf.RegisterArguments` method, which takes a simple function that registers arguments using `flag.Int`, `flag.String`, etc. If you have no local arguments, you can skip this step.
 
 ```go
 type uploadTestOptions struct {
@@ -212,7 +212,7 @@ var uploadTestOpts uploadTestOptions = uploadTestOptions{size: 10240}
 
 // uploadTestRegister is called once per process
 func uploadTestRegister() {
-	pflag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests.")
+	flag.IntVar(&uploadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests.")
 }
 ```
 

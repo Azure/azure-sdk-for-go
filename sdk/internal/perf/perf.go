@@ -5,12 +5,11 @@ package perf
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"net/http"
 	"os"
 	"runtime"
-
-	"github.com/spf13/pflag"
 )
 
 // GlobalPerfTest methods execute once per process
@@ -61,23 +60,37 @@ type PerfMethods struct {
 // Run runs an individual test, registers, and parses command line flags
 func Run(tests map[string]PerfMethods) {
 	// Start with adding all of our arguments
-	pflag.IntVarP(&duration, "duration", "d", 10, "Duration of the test in seconds. Default is 10.")
-	pflag.StringVarP(&testProxyURLs, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
-	pflag.IntVarP(&warmUpDuration, "warmup", "w", 5, "Duration of warmup in seconds. Default is 5.")
-	pflag.IntVarP(&parallelInstances, "parallel", "p", 1, "Degree of parallelism to run with. Default is 1.")
-	pflag.IntVar(&numProcesses, "maxprocs", runtime.NumCPU(), "Number of CPUs to use.")
+	flag.IntVar(&duration, "d", 10, "Duration of test in seconds.")
+	flag.IntVar(&duration, "duration", 10, "Duration of test in seconds.")
 
-	pflag.BoolVar(&debug, "debug", false, "Print debugging information")
-	err := pflag.CommandLine.MarkHidden("debug")
-	if err != nil {
-		panic(err)
-	}
+	flag.StringVar(&testProxyURLs, "test-proxies", "", "test proxy URLs to target. This can be a semi-colon separated list for multiple proxies.")
+	flag.StringVar(&testProxyURLs, "x", "", "test proxy URLs to target. This can be a semi-colon separated list for multiple proxies.")
+
+	flag.IntVar(&warmUpDuration, "warmup", 5, "Duration of warmup in seconds.")
+	flag.IntVar(&warmUpDuration, "w", 5, "Duration of warmup in seconds.")
+
+	flag.IntVar(&parallelInstances, "parallel", 1, "Degree of parallelism to run with.")
+	flag.IntVar(&parallelInstances, "p", 1, "Degree of parallelism to run with.")
+
+	flag.IntVar(&numProcesses, "maxprocs", runtime.NumCPU(), "Number of CPUs to use.")
+
+	flag.BoolVar(&debug, "debug", false, "Print debugging information")
 
 	if numProcesses > 0 {
 		val := runtime.GOMAXPROCS(numProcesses)
 		if debug {
 			fmt.Printf("Changed GOMAXPROCS from %d to %d\n", val, numProcesses)
 		}
+	}
+
+	if len(os.Args) < 2 {
+		// Error out and show available perf tests
+		fmt.Println("Available performance tests:")
+		for name := range tests {
+			fmt.Printf("\t%s\n", name)
+		}
+		flag.PrintDefaults()
+		return
 	}
 
 	testNameToRun := os.Args[1]
@@ -89,17 +102,27 @@ func Run(tests map[string]PerfMethods) {
 		for name := range tests {
 			fmt.Printf("\t%s\n", name)
 		}
+		flag.PrintDefaults()
 		return
 	}
 
 	if perfTestToRun.Register != nil {
 		perfTestToRun.Register()
 	}
-	pflag.Parse()
+
+	// We strip off the first argument because that is used in determining the test
+	os.Args = os.Args[1:]
+
+	fmt.Println(flag.Args(), os.Args[1:])
+	fmt.Println("Parsing: ", os.Args[1:])
+	flag.Parse()
+	fmt.Printf("Duration: %d\n", duration)
+	fmt.Printf("d: %d\n", duration)
+	fmt.Println("tail:", flag.Args())
 
 	fmt.Printf("\tRunning %s\n", testNameToRun)
 
-	err = runPerfTest(testNameToRun, perfTestToRun.New)
+	err := runPerfTest(testNameToRun, perfTestToRun.New)
 	if err != nil {
 		panic(err)
 	}

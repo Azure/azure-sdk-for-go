@@ -6,13 +6,13 @@ package main
 import (
 	"bytes"
 	"context"
+	"flag"
 	"fmt"
 	"io"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/spf13/pflag"
 )
 
 type downloadTestOptions struct {
@@ -23,7 +23,7 @@ var downloadTestOpts downloadTestOptions = downloadTestOptions{size: 10240}
 
 // downloadTestRegister is called once per process
 func downloadTestRegister() {
-	pflag.IntVar(&downloadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
+	flag.IntVar(&downloadTestOpts.size, "size", 10240, "Size in bytes of data to be transferred in upload or download tests. Default is 10240.")
 }
 
 type downloadTestGlobal struct {

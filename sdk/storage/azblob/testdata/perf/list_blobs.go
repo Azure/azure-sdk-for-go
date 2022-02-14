@@ -6,23 +6,23 @@ package main
 import (
 	"bytes"
 	"context"
+	"flag"
 	"fmt"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/spf13/pflag"
 )
 
 type listTestOptions struct {
-	count int32
+	count int
 }
 
 var listTestOpts listTestOptions = listTestOptions{count: 100}
 
 // uploadTestRegister is called once per process
 func listTestRegister() {
-	pflag.Int32Var(&listTestOpts.count, "num-blobs", 100, "Number of blobs to list.")
+	flag.IntVar(&listTestOpts.count, "num-blobs", 100, "Number of blobs to list.")
 }
 
 type listTestGlobal struct {
@@ -116,8 +116,9 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 }
 
 func (m *listPerfTest) Run(ctx context.Context) error {
+	c := int32(listTestOpts.count)
 	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobFlatSegmentOptions{
-		Maxresults: &listTestOpts.count,
+		Maxresults: &c,
 	})
 	for pager.NextPage(context.Background()) {
 	}

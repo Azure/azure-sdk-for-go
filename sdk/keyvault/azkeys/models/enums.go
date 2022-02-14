@@ -63,3 +63,15 @@ func (KeyType) RSA() KeyType {
 func (KeyType) RSAHSM() KeyType {
 	return "RSA-HSM"
 }
+
+// Values returns the predefined values for the KeyType type.
+func (KeyType) Values() []KeyType {
+	return []KeyType{
+		"EC",
+		"EC-HSM",
+		"oct",
+		"oct-HSM",
+		"RSA",
+		"RSA-HSM",
+	}
+}

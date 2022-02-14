@@ -153,13 +153,13 @@ func ExampleClient_ListKeys() {
 	}
 
 	pager := client.ListKeys(nil)
-	for pager.NextPage(context.TODO()) {
-		for _, key := range pager.PageResponse().Keys {
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		for _, key := range page.Keys {
 			fmt.Println(*key.KID)
 		}
-	}
-
-	if pager.Err() != nil {
-		panic(pager.Err())
 	}
 }

@@ -165,14 +165,15 @@ func TestListKeys(t *testing.T) {
 
 			pager := client.ListKeys(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				count += len(pager.PageResponse().Keys)
-				for _, key := range pager.PageResponse().Keys {
+			for pager.More() {
+				page, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(page.Keys)
+				for _, key := range page.Keys {
 					require.NotNil(t, key)
 				}
 			}
 
-			require.NoError(t, pager.Err())
 			require.GreaterOrEqual(t, count, 4)
 
 			for i := 0; i < 4; i++ {
@@ -458,8 +459,10 @@ func TestListDeletedKeys(t *testing.T) {
 
 			pager := client.ListDeletedKeys(nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				count += len(pager.PageResponse().DeletedKeys)
+			for pager.More() {
+				page, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(page.DeletedKeys)
 			}
 
 			require.GreaterOrEqual(t, count, 3)
@@ -490,10 +493,11 @@ func TestListKeyVersions(t *testing.T) {
 
 			pager := client.ListKeyVersions(key, nil)
 			count := 0
-			for pager.NextPage(ctx) {
-				count += len(pager.PageResponse().Keys)
+			for pager.More() {
+				page, err := pager.NextPage(ctx)
+				require.NoError(t, err)
+				count += len(page.Keys)
 			}
-			require.NoError(t, pager.Err())
 			require.GreaterOrEqual(t, count, 6)
 		})
 	}

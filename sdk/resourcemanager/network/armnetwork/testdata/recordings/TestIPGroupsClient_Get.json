@@ -1,0 +1,216 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256?api-version=2021-05-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256?api-version=2021-05-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "105",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armnetwork/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus",
+        "properties": {
+          "ipAddresses": [
+            "13.64.39.16/32",
+            "40.74.146.80/31",
+            "40.74.147.32/28"
+          ]
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/nfvOperations/6d0f40fd-16e9-48d2-b11f-24158b308ffa?api-version=2021-05-01",
+        "Cache-Control": "no-cache",
+        "Content-Length": "521",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 14 Feb 2022 04:38:04 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Retry-After": "10",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "7a6a4253-54c1-4fd4-b7f9-7bc6f0773422",
+        "x-ms-ratelimit-remaining-subscription-writes": "1198",
+        "x-ms-request-id": [
+          "6d0f40fd-16e9-48d2-b11f-24158b308ffa",
+          "6d0f40fd-16e9-48d2-b11f-24158b308ffa"
+        ],
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T043805Z:7a6a4253-54c1-4fd4-b7f9-7bc6f0773422"
+      },
+      "ResponseBody": [
+        "{\r\n",
+        "  \u0022properties\u0022: {\r\n",
+        "    \u0022firewalls\u0022: [],\r\n",
+        "    \u0022firewallPolicies\u0022: [],\r\n",
+        "    \u0022ipAddresses\u0022: [\r\n",
+        "      \u002213.64.39.16/32\u0022,\r\n",
+        "      \u002240.74.146.80/31\u0022,\r\n",
+        "      \u002240.74.147.32/28\u0022\r\n",
+        "    ],\r\n",
+        "    \u0022provisioningState\u0022: \u0022Updating\u0022\r\n",
+        "  },\r\n",
+        "  \u0022id\u0022: \u0022/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256\u0022,\r\n",
+        "  \u0022name\u0022: \u0022ipg3999102256\u0022,\r\n",
+        "  \u0022type\u0022: \u0022Microsoft.Network/IpGroups\u0022,\r\n",
+        "  \u0022etag\u0022: \u0022b032fedb-7762-455e-a462-7ca756443736\u0022,\r\n",
+        "  \u0022location\u0022: \u0022westus\u0022\r\n",
+        "}"
+      ]
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/nfvOperations/6d0f40fd-16e9-48d2-b11f-24158b308ffa?api-version=2021-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/nfvOperations/6d0f40fd-16e9-48d2-b11f-24158b308ffa?api-version=2021-05-01",
+        ":scheme": "https",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armnetwork/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 14 Feb 2022 04:38:15 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "1b4a7b47-c91b-4b09-bf32-cab852380ab6",
+        "x-ms-ratelimit-remaining-subscription-reads": "11997",
+        "x-ms-request-id": [
+          "030a5028-0c66-49fd-8292-1796b4ecd9f3",
+          "030a5028-0c66-49fd-8292-1796b4ecd9f3"
+        ],
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T043815Z:1b4a7b47-c91b-4b09-bf32-cab852380ab6"
+      },
+      "ResponseBody": [
+        "{\r\n",
+        "  \u0022status\u0022: \u0022Succeeded\u0022\r\n",
+        "}"
+      ]
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256?api-version=2021-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256?api-version=2021-05-01",
+        ":scheme": "https",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armnetwork/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 14 Feb 2022 04:38:16 GMT",
+        "ETag": "\u0022b032fedb-7762-455e-a462-7ca756443736\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "efcfa092-723f-476a-a3f9-223b48b7570e",
+        "x-ms-ratelimit-remaining-subscription-reads": "11996",
+        "x-ms-request-id": "efcfa092-723f-476a-a3f9-223b48b7570e",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T043816Z:efcfa092-723f-476a-a3f9-223b48b7570e"
+      },
+      "ResponseBody": [
+        "{\r\n",
+        "  \u0022properties\u0022: {\r\n",
+        "    \u0022firewalls\u0022: [],\r\n",
+        "    \u0022firewallPolicies\u0022: [],\r\n",
+        "    \u0022ipAddresses\u0022: [\r\n",
+        "      \u002213.64.39.16/32\u0022,\r\n",
+        "      \u002240.74.146.80/31\u0022,\r\n",
+        "      \u002240.74.147.32/28\u0022\r\n",
+        "    ],\r\n",
+        "    \u0022provisioningState\u0022: \u0022Succeeded\u0022\r\n",
+        "  },\r\n",
+        "  \u0022id\u0022: \u0022/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256\u0022,\r\n",
+        "  \u0022name\u0022: \u0022ipg3999102256\u0022,\r\n",
+        "  \u0022type\u0022: \u0022Microsoft.Network/IpGroups\u0022,\r\n",
+        "  \u0022etag\u0022: \u0022b032fedb-7762-455e-a462-7ca756443736\u0022,\r\n",
+        "  \u0022location\u0022: \u0022westus\u0022\r\n",
+        "}"
+      ]
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256?api-version=2021-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256?api-version=2021-05-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armnetwork/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 14 Feb 2022 04:38:16 GMT",
+        "ETag": "\u0022b032fedb-7762-455e-a462-7ca756443736\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "e3bc0d18-44ff-4537-bde6-5b4da0dca414",
+        "x-ms-ratelimit-remaining-subscription-reads": "11995",
+        "x-ms-request-id": "e3bc0d18-44ff-4537-bde6-5b4da0dca414",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T043816Z:e3bc0d18-44ff-4537-bde6-5b4da0dca414"
+      },
+      "ResponseBody": [
+        "{\r\n",
+        "  \u0022properties\u0022: {\r\n",
+        "    \u0022firewalls\u0022: [],\r\n",
+        "    \u0022firewallPolicies\u0022: [],\r\n",
+        "    \u0022ipAddresses\u0022: [\r\n",
+        "      \u002213.64.39.16/32\u0022,\r\n",
+        "      \u002240.74.146.80/31\u0022,\r\n",
+        "      \u002240.74.147.32/28\u0022\r\n",
+        "    ],\r\n",
+        "    \u0022provisioningState\u0022: \u0022Succeeded\u0022\r\n",
+        "  },\r\n",
+        "  \u0022id\u0022: \u0022/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-getIPG3999102256/providers/Microsoft.Network/ipGroups/ipg3999102256\u0022,\r\n",
+        "  \u0022name\u0022: \u0022ipg3999102256\u0022,\r\n",
+        "  \u0022type\u0022: \u0022Microsoft.Network/IpGroups\u0022,\r\n",
+        "  \u0022etag\u0022: \u0022b032fedb-7762-455e-a462-7ca756443736\u0022,\r\n",
+        "  \u0022location\u0022: \u0022westus\u0022\r\n",
+        "}"
+      ]
+    }
+  ],
+  "Variables": {}
+}

@@ -31,9 +31,7 @@ func TestVirtualNetworksClient_BeginCreateOrUpdate(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -71,9 +69,7 @@ func TestVirtualNetworksClient_Get(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -116,9 +112,7 @@ func TestVirtualNetworksClient_List(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -160,9 +154,7 @@ func TestVirtualNetworksClient_UpdateTags(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -216,9 +208,7 @@ func TestVirtualNetworksClient_BeginDelete(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{

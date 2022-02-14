@@ -31,9 +31,7 @@ func TestSubnetsClient_BeginCreateOrUpdate(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -92,9 +90,7 @@ func TestSubnetsClient_Get(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -158,9 +154,7 @@ func TestSubnetsClient_List(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -223,9 +217,7 @@ func TestSubnetsClient_BeginDelete(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{

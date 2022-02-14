@@ -1,4 +1,4 @@
-package azureadb2c
+package azureadexternalidentities
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-// GuestUsagesClient is the CPIM Configuration Client
+// GuestUsagesClient is the external Identities Configuration Client
 type GuestUsagesClient struct {
 	BaseClient
 }
@@ -30,10 +30,11 @@ func NewGuestUsagesClientWithBaseURI(baseURI string, subscriptionID string) Gues
 	return GuestUsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider
+// Create creates a Guest Usages resource, which is used to linking a subscription to an instance of Azure AD External
+// Identities. [Learn more](https://aka.ms/extidbilling).
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the initial domain name of the AAD tenant.
+// resourceName - the initial domain name of the Azure AD B2C tenant.
 // resource - guest Usages resource to be created
 func (client GuestUsagesClient) Create(ctx context.Context, resourceGroupName string, resourceName string, resource *GuestUsagesResource) (result GuestUsagesResource, err error) {
 	if tracing.IsEnabled() {
@@ -48,20 +49,20 @@ func (client GuestUsagesClient) Create(ctx context.Context, resourceGroupName st
 	}
 	req, err := client.CreatePreparer(ctx, resourceGroupName, resourceName, resource)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Create", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Create", resp, "Failure responding to request")
 		return
 	}
 
@@ -76,7 +77,7 @@ func (client GuestUsagesClient) CreatePreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-05-01-preview"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -84,6 +85,7 @@ func (client GuestUsagesClient) CreatePreparer(ctx context.Context, resourceGrou
 	resource.ID = nil
 	resource.Name = nil
 	resource.Type = nil
+	resource.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -118,7 +120,7 @@ func (client GuestUsagesClient) CreateResponder(resp *http.Response) (result Gue
 // Delete deletes a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the initial domain name of the AAD tenant.
+// resourceName - the initial domain name of the Azure AD B2C tenant.
 func (client GuestUsagesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GuestUsagesClient.Delete")
@@ -132,20 +134,20 @@ func (client GuestUsagesClient) Delete(ctx context.Context, resourceGroupName st
 	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Delete", resp, "Failure responding to request")
 		return
 	}
 
@@ -160,7 +162,7 @@ func (client GuestUsagesClient) DeletePreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-05-01-preview"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -184,7 +186,7 @@ func (client GuestUsagesClient) DeleteSender(req *http.Request) (*http.Response,
 func (client GuestUsagesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -193,7 +195,7 @@ func (client GuestUsagesClient) DeleteResponder(resp *http.Response) (result aut
 // Get gets a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the initial domain name of the AAD tenant.
+// resourceName - the initial domain name of the Azure AD B2C tenant.
 func (client GuestUsagesClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result GuestUsagesResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GuestUsagesClient.Get")
@@ -207,20 +209,20 @@ func (client GuestUsagesClient) Get(ctx context.Context, resourceGroupName strin
 	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -235,7 +237,7 @@ func (client GuestUsagesClient) GetPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-05-01-preview"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -283,20 +285,20 @@ func (client GuestUsagesClient) ListByResourceGroup(ctx context.Context, resourc
 	}
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "ListByResourceGroup", resp, "Failure responding to request")
 		return
 	}
 
@@ -310,7 +312,7 @@ func (client GuestUsagesClient) ListByResourceGroupPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-05-01-preview"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -356,20 +358,20 @@ func (client GuestUsagesClient) ListBySubscription(ctx context.Context) (result 
 	}
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "ListBySubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "ListBySubscription", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "ListBySubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "ListBySubscription", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "ListBySubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "ListBySubscription", resp, "Failure responding to request")
 		return
 	}
 
@@ -382,7 +384,7 @@ func (client GuestUsagesClient) ListBySubscriptionPreparer(ctx context.Context) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-05-01-preview"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -416,7 +418,7 @@ func (client GuestUsagesClient) ListBySubscriptionResponder(resp *http.Response)
 // Update updates a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the initial domain name of the AAD tenant.
+// resourceName - the initial domain name of the Azure AD B2C tenant.
 // resourcePatch - guest Usages Resource to be updated
 func (client GuestUsagesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, resourcePatch *GuestUsagesResourcePatch) (result GuestUsagesResource, err error) {
 	if tracing.IsEnabled() {
@@ -431,20 +433,20 @@ func (client GuestUsagesClient) Update(ctx context.Context, resourceGroupName st
 	}
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceName, resourcePatch)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.GuestUsagesClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.GuestUsagesClient", "Update", resp, "Failure responding to request")
 		return
 	}
 
@@ -459,7 +461,7 @@ func (client GuestUsagesClient) UpdatePreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-05-01-preview"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

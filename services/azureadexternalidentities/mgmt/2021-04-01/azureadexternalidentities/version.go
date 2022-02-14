@@ -1,4 +1,4 @@
-package azureadb2c
+package azureadexternalidentities
 
 import "github.com/Azure/azure-sdk-for-go/version"
 
@@ -10,7 +10,7 @@ import "github.com/Azure/azure-sdk-for-go/version"
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/" + Version() + " azureadb2c/2020-05-01-preview"
+	return "Azure-SDK-For-Go/" + Version() + " azureadexternalidentities/2021-04-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

@@ -1,4 +1,4 @@
-package azureadb2c
+package azureadexternalidentities
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the CPIM Configuration Client
+// OperationsClient is the external Identities Configuration Client
 type OperationsClient struct {
 	BaseClient
 }
@@ -31,7 +31,7 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 
 // List lists the operations available from this provider.
-func (client OperationsClient) List(ctx context.Context) (result OperationListResult, err error) {
+func (client OperationsClient) List(ctx context.Context) (result AvailableOperations, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
 		defer func() {
@@ -44,20 +44,20 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 	}
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.OperationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.OperationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "azureadb2c.OperationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.OperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "azureadb2c.OperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "azureadexternalidentities.OperationsClient", "List", resp, "Failure responding to request")
 		return
 	}
 
@@ -66,7 +66,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2020-05-01-preview"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -87,7 +87,7 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
+func (client OperationsClient) ListResponder(resp *http.Response) (result AvailableOperations, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

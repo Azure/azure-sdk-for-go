@@ -1,7 +1,8 @@
-// Package azureadb2c implements the Azure ARM Azureadb2c service API version 2020-05-01-preview.
+// Package azureadexternalidentities implements the Azure ARM Azureadexternalidentities service API version
+// 2020-05-01-preview.
 //
-// CPIM Configuration Client
-package azureadb2c
+// External Identities Configuration Client
+package azureadexternalidentities
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,11 +15,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Azureadb2c
+	// DefaultBaseURI is the default URI used for the service Azureadexternalidentities
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Azureadb2c.
+// BaseClient is the base client for Azureadexternalidentities.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

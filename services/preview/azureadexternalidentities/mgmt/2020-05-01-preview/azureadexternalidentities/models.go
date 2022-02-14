@@ -1,4 +1,4 @@
-package azureadb2c
+package azureadexternalidentities
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,7 +12,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/azureadb2c/mgmt/2020-05-01-preview/azureadb2c"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/azureadexternalidentities/mgmt/2020-05-01-preview/azureadexternalidentities"
 
 // CloudError an error response for a resource management request.
 type CloudError struct {

@@ -27,13 +27,17 @@ func ExampleVideosClient_List() {
 	client := armvideoanalyzer.NewVideosClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
-		&armvideoanalyzer.VideosListOptions{Top: to.Int32Ptr(2)})
-	for pager.NextPage(ctx) {
+		&armvideoanalyzer.VideosClientListOptions{Top: to.Int32Ptr(2)})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VideoEntity.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExampleVideosClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VideoEntity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VideosClientGetResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-create.json
@@ -79,7 +83,7 @@ func ExampleVideosClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VideoEntity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VideosClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-delete.json
@@ -121,7 +125,7 @@ func ExampleVideosClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VideoEntity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VideosClientUpdateResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-listContentToken.json
@@ -132,7 +136,7 @@ func ExampleVideosClient_ListContentToken() {
 	}
 	ctx := context.Background()
 	client := armvideoanalyzer.NewVideosClient("<subscription-id>", cred, nil)
-	_, err = client.ListContentToken(ctx,
+	res, err := client.ListContentToken(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<video-name>",
@@ -140,4 +144,5 @@ func ExampleVideosClient_ListContentToken() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.VideosClientListContentTokenResult)
 }

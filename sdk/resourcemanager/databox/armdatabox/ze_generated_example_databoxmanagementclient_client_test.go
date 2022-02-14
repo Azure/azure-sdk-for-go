@@ -17,13 +17,13 @@ import (
 )
 
 // x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobMitigate.json
-func ExampleDataBoxManagementClient_Mitigate() {
+func ExampleManagementClient_Mitigate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewDataBoxManagementClient("<subscription-id>", cred, nil)
+	client := armdatabox.NewManagementClient("<subscription-id>", cred, nil)
 	_, err = client.Mitigate(ctx,
 		"<job-name>",
 		"<resource-group-name>",

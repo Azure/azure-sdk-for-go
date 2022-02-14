@@ -14,6 +14,8 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
+const credNameAuthCode = "AuthorizationCodeCredential"
+
 // AuthorizationCodeCredentialOptions contains optional parameters for AuthorizationCodeCredential.
 type AuthorizationCodeCredentialOptions struct {
 	azcore.ClientOptions
@@ -90,8 +92,8 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts policy.
 		}
 		ar, err = c.cca.AcquireTokenByAuthCode(ctx, c.authCode, c.redirectURI, opts.Scopes)
 		if err != nil {
-			addGetTokenFailureLogs("Authorization Code Credential", err, true)
-			return nil, newAuthenticationFailedError(err, nil)
+			addGetTokenFailureLogs(credNameAuthCode, err, true)
+			return nil, newAuthenticationFailedErrorFromMSALError(credNameAuthCode, err)
 		}
 		logGetTokenSuccess(c, opts)
 		c.account = ar.Account
@@ -105,8 +107,8 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts policy.
 	}
 	ar, err = c.pca.AcquireTokenByAuthCode(ctx, c.authCode, c.redirectURI, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Authorization Code Credential", err, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		addGetTokenFailureLogs(credNameAuthCode, err, true)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameAuthCode, err)
 	}
 	logGetTokenSuccess(c, opts)
 	c.account = ar.Account

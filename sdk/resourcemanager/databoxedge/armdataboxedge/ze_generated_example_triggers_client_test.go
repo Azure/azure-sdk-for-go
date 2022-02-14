@@ -29,13 +29,17 @@ func ExampleTriggersClient_ListByDataBoxEdgeDevice() {
 	client := armdataboxedge.NewTriggersClient("<subscription-id>", cred, nil)
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
-		&armdataboxedge.TriggersListByDataBoxEdgeDeviceOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armdataboxedge.TriggersClientListByDataBoxEdgeDeviceOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *v.GetTrigger().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleTriggersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *res.GetTrigger().ID)
+	log.Printf("Response result: %#v\n", res.TriggersClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/TriggerPut.json
@@ -72,9 +76,7 @@ func ExampleTriggersClient_BeginCreateOrUpdate() {
 		"<name>",
 		"<resource-group-name>",
 		&armdataboxedge.FileEventTrigger{
-			Trigger: armdataboxedge.Trigger{
-				Kind: armdataboxedge.TriggerEventTypeFileEvent.ToPtr(),
-			},
+			Kind: armdataboxedge.TriggerEventType("FileEvent").ToPtr(),
 			Properties: &armdataboxedge.FileTriggerProperties{
 				CustomContextTag: to.StringPtr("<custom-context-tag>"),
 				SinkInfo: &armdataboxedge.RoleSinkInfo{
@@ -93,7 +95,7 @@ func ExampleTriggersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *res.GetTrigger().ID)
+	log.Printf("Response result: %#v\n", res.TriggersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/TriggerDelete.json

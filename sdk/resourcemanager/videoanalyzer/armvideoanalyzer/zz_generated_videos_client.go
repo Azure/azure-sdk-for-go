@@ -11,7 +11,6 @@ package armvideoanalyzer
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // VideosClient contains the methods for the Videos group.
 // Don't use this type directly, use NewVideosClient() instead.
 type VideosClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVideosClient creates a new instance of VideosClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVideosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VideosClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &VideosClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VideosClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a new video resource or updates an existing video resource with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VideosClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, videoName string, parameters VideoEntity, options *VideosCreateOrUpdateOptions) (VideosCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// videoName - The Video name.
+// parameters - The request parameters
+// options - VideosClientCreateOrUpdateOptions contains the optional parameters for the VideosClient.CreateOrUpdate method.
+func (client *VideosClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, videoName string, parameters VideoEntity, options *VideosClientCreateOrUpdateOptions) (VideosClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, videoName, parameters, options)
 	if err != nil {
-		return VideosCreateOrUpdateResponse{}, err
+		return VideosClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VideosCreateOrUpdateResponse{}, err
+		return VideosClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return VideosCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return VideosClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VideosClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, parameters VideoEntity, options *VideosCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VideosClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, parameters VideoEntity, options *VideosClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/videos/{videoName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +91,7 @@ func (client *VideosClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter videoName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{videoName}", url.PathEscape(videoName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +103,37 @@ func (client *VideosClient) createOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VideosClient) createOrUpdateHandleResponse(resp *http.Response) (VideosCreateOrUpdateResponse, error) {
-	result := VideosCreateOrUpdateResponse{RawResponse: resp}
+func (client *VideosClient) createOrUpdateHandleResponse(resp *http.Response) (VideosClientCreateOrUpdateResponse, error) {
+	result := VideosClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoEntity); err != nil {
-		return VideosCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return VideosClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VideosClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an existing video resource and its underlying data. This operation is irreversible.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VideosClient) Delete(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosDeleteOptions) (VideosDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// videoName - The Video name.
+// options - VideosClientDeleteOptions contains the optional parameters for the VideosClient.Delete method.
+func (client *VideosClient) Delete(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosClientDeleteOptions) (VideosClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, videoName, options)
 	if err != nil {
-		return VideosDeleteResponse{}, err
+		return VideosClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VideosDeleteResponse{}, err
+		return VideosClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return VideosDeleteResponse{}, client.deleteHandleError(resp)
+		return VideosClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VideosDeleteResponse{RawResponse: resp}, nil
+	return VideosClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VideosClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosDeleteOptions) (*policy.Request, error) {
+func (client *VideosClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/videos/{videoName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +151,7 @@ func (client *VideosClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter videoName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{videoName}", url.PathEscape(videoName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +162,29 @@ func (client *VideosClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VideosClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves an existing video resource with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VideosClient) Get(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosGetOptions) (VideosGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// videoName - The Video name.
+// options - VideosClientGetOptions contains the optional parameters for the VideosClient.Get method.
+func (client *VideosClient) Get(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosClientGetOptions) (VideosClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, videoName, options)
 	if err != nil {
-		return VideosGetResponse{}, err
+		return VideosClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VideosGetResponse{}, err
+		return VideosClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VideosGetResponse{}, client.getHandleError(resp)
+		return VideosClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VideosClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosGetOptions) (*policy.Request, error) {
+func (client *VideosClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/videos/{videoName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +202,7 @@ func (client *VideosClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter videoName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{videoName}", url.PathEscape(videoName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +214,33 @@ func (client *VideosClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *VideosClient) getHandleResponse(resp *http.Response) (VideosGetResponse, error) {
-	result := VideosGetResponse{RawResponse: resp}
+func (client *VideosClient) getHandleResponse(resp *http.Response) (VideosClientGetResponse, error) {
+	result := VideosClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoEntity); err != nil {
-		return VideosGetResponse{}, runtime.NewResponseError(err, resp)
+		return VideosClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VideosClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Retrieves a list of video resources that have been created, along with their JSON representations.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VideosClient) List(resourceGroupName string, accountName string, options *VideosListOptions) *VideosListPager {
-	return &VideosListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// options - VideosClientListOptions contains the optional parameters for the VideosClient.List method.
+func (client *VideosClient) List(resourceGroupName string, accountName string, options *VideosClientListOptions) *VideosClientListPager {
+	return &VideosClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp VideosListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VideosClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VideoEntityCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VideosClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *VideosListOptions) (*policy.Request, error) {
+func (client *VideosClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *VideosClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/videos"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +254,7 @@ func (client *VideosClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -285,46 +269,38 @@ func (client *VideosClient) listCreateRequest(ctx context.Context, resourceGroup
 }
 
 // listHandleResponse handles the List response.
-func (client *VideosClient) listHandleResponse(resp *http.Response) (VideosListResponse, error) {
-	result := VideosListResponse{RawResponse: resp}
+func (client *VideosClient) listHandleResponse(resp *http.Response) (VideosClientListResponse, error) {
+	result := VideosClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoEntityCollection); err != nil {
-		return VideosListResponse{}, runtime.NewResponseError(err, resp)
+		return VideosClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *VideosClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListContentToken - Generates a streaming token which can be used for accessing content from video content URLs, for a video resource with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VideosClient) ListContentToken(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosListContentTokenOptions) (VideosListContentTokenResponse, error) {
+// ListContentToken - Generates a streaming token which can be used for accessing content from video content URLs, for a video
+// resource with the given name.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// videoName - The Video name.
+// options - VideosClientListContentTokenOptions contains the optional parameters for the VideosClient.ListContentToken method.
+func (client *VideosClient) ListContentToken(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosClientListContentTokenOptions) (VideosClientListContentTokenResponse, error) {
 	req, err := client.listContentTokenCreateRequest(ctx, resourceGroupName, accountName, videoName, options)
 	if err != nil {
-		return VideosListContentTokenResponse{}, err
+		return VideosClientListContentTokenResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VideosListContentTokenResponse{}, err
+		return VideosClientListContentTokenResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VideosListContentTokenResponse{}, client.listContentTokenHandleError(resp)
+		return VideosClientListContentTokenResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listContentTokenHandleResponse(resp)
 }
 
 // listContentTokenCreateRequest creates the ListContentToken request.
-func (client *VideosClient) listContentTokenCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosListContentTokenOptions) (*policy.Request, error) {
+func (client *VideosClient) listContentTokenCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, options *VideosClientListContentTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/videos/{videoName}/listContentToken"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -342,7 +318,7 @@ func (client *VideosClient) listContentTokenCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter videoName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{videoName}", url.PathEscape(videoName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -354,46 +330,38 @@ func (client *VideosClient) listContentTokenCreateRequest(ctx context.Context, r
 }
 
 // listContentTokenHandleResponse handles the ListContentToken response.
-func (client *VideosClient) listContentTokenHandleResponse(resp *http.Response) (VideosListContentTokenResponse, error) {
-	result := VideosListContentTokenResponse{RawResponse: resp}
+func (client *VideosClient) listContentTokenHandleResponse(resp *http.Response) (VideosClientListContentTokenResponse, error) {
+	result := VideosClientListContentTokenResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoContentToken); err != nil {
-		return VideosListContentTokenResponse{}, runtime.NewResponseError(err, resp)
+		return VideosClientListContentTokenResponse{}, err
 	}
 	return result, nil
 }
 
-// listContentTokenHandleError handles the ListContentToken error response.
-func (client *VideosClient) listContentTokenHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates individual properties of an existing video resource with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VideosClient) Update(ctx context.Context, resourceGroupName string, accountName string, videoName string, parameters VideoEntity, options *VideosUpdateOptions) (VideosUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// videoName - The Video name.
+// parameters - The request parameters
+// options - VideosClientUpdateOptions contains the optional parameters for the VideosClient.Update method.
+func (client *VideosClient) Update(ctx context.Context, resourceGroupName string, accountName string, videoName string, parameters VideoEntity, options *VideosClientUpdateOptions) (VideosClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, videoName, parameters, options)
 	if err != nil {
-		return VideosUpdateResponse{}, err
+		return VideosClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VideosUpdateResponse{}, err
+		return VideosClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VideosUpdateResponse{}, client.updateHandleError(resp)
+		return VideosClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VideosClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, parameters VideoEntity, options *VideosUpdateOptions) (*policy.Request, error) {
+func (client *VideosClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, videoName string, parameters VideoEntity, options *VideosClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/videos/{videoName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -411,7 +379,7 @@ func (client *VideosClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter videoName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{videoName}", url.PathEscape(videoName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -423,23 +391,10 @@ func (client *VideosClient) updateCreateRequest(ctx context.Context, resourceGro
 }
 
 // updateHandleResponse handles the Update response.
-func (client *VideosClient) updateHandleResponse(resp *http.Response) (VideosUpdateResponse, error) {
-	result := VideosUpdateResponse{RawResponse: resp}
+func (client *VideosClient) updateHandleResponse(resp *http.Response) (VideosClientUpdateResponse, error) {
+	result := VideosClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VideoEntity); err != nil {
-		return VideosUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return VideosClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *VideosClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

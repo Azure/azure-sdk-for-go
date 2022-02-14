@@ -50,6 +50,13 @@ options = arm.ClientOptions{
 client := armeventhub.NewPrivateEndpointConnectionsClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/clusters)
+- [Disaster Recovery Config](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/disaster_recovery_config)
+- [Event Hub](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/eventhub)
+- [Namespace](https://aka.ms/azsdk/go/mgmt/samples?path=eventhub/namespace)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

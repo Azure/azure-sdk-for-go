@@ -9,6 +9,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
@@ -19,7 +20,7 @@ type (
 		queueOrTopic   string
 		cleanupOnClose func()
 		links          internal.AMQPLinks
-		retryOptions   internal.RetryOptions
+		retryOptions   utils.RetryOptions
 	}
 )
 
@@ -40,25 +41,10 @@ type MessageBatchOptions struct {
 // messages. Sending a batch of messages is more efficient than sending the
 // messages one at a time.
 func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptions) (*MessageBatch, error) {
-	var lastRevision uint64
 	var batch *MessageBatch
 
-	err := internal.Retry(ctx, "send", func(ctx context.Context, args *internal.RetryFnArgs) error {
-		if args.LastErr != nil {
-			if err := s.links.RecoverIfNeeded(ctx, lastRevision, args.LastErr); err != nil {
-				return err
-			}
-		}
-
-		sender, _, _, lr, err := s.links.Get(ctx)
-
-		if err != nil {
-			return err
-		}
-
-		lastRevision = lr
-
-		maxBytes := sender.MaxMessageSize()
+	err := s.links.Retry(ctx, "send", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		maxBytes := lwid.Sender.MaxMessageSize()
 
 		if options != nil && options.MaxBytes != 0 {
 			maxBytes = options.MaxBytes
@@ -66,7 +52,7 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 
 		batch = newMessageBatch(maxBytes)
 		return nil
-	}, nil, s.retryOptions)
+	}, s.retryOptions)
 
 	if err != nil {
 		return nil, err
@@ -77,55 +63,23 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 
 // SendMessage sends a Message to a queue or topic.
 func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
-	ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendMessage)
-	defer span.End()
+	return s.links.Retry(ctx, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendMessage)
+		defer span.End()
 
-	var lastRevision uint64
-
-	return internal.Retry(ctx, "send", func(ctx context.Context, args *internal.RetryFnArgs) error {
-		if args.LastErr != nil {
-			if err := s.links.RecoverIfNeeded(ctx, lastRevision, args.LastErr); err != nil {
-				return err
-			}
-		}
-
-		sender, _, _, lr, err := s.links.Get(ctx)
-
-		if err != nil {
-			return err
-		}
-
-		lastRevision = lr
-
-		return sender.Send(ctx, message.toAMQPMessage())
-	}, nil, s.retryOptions)
+		return lwid.Sender.Send(ctx, message.toAMQPMessage())
+	}, utils.RetryOptions(s.retryOptions))
 }
 
 // SendMessageBatch sends a MessageBatch to a queue or topic.
 // Message batches can be created using `Sender.NewMessageBatch`.
 func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch) error {
-	ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendBatch)
-	defer span.End()
+	return s.links.Retry(ctx, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendBatch)
+		defer span.End()
 
-	var lastRevision uint64
-
-	return internal.Retry(ctx, "send", func(ctx context.Context, args *internal.RetryFnArgs) error {
-		if args.LastErr != nil {
-			if err := s.links.RecoverIfNeeded(ctx, lastRevision, args.LastErr); err != nil {
-				return err
-			}
-		}
-
-		sender, _, _, lr, err := s.links.Get(ctx)
-
-		if err != nil {
-			return err
-		}
-
-		lastRevision = lr
-
-		return sender.Send(ctx, batch.toAMQPMessage())
-	}, nil, s.retryOptions)
+		return lwid.Sender.Send(ctx, batch.toAMQPMessage())
+	}, utils.RetryOptions(s.retryOptions))
 }
 
 // ScheduleMessages schedules a slice of Messages to appear on Service Bus Queue/Subscription at a later time.
@@ -144,14 +98,10 @@ func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, sche
 // MessageBatch changes
 
 // CancelScheduledMessages cancels multiple messages that were scheduled.
-func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumber []int64) error {
-	_, _, mgmt, _, err := s.links.Get(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	return mgmt.CancelScheduled(ctx, sequenceNumber...)
+func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumbers []int64) error {
+	return s.links.Retry(ctx, "cancelScheduledMessage", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		return internal.CancelScheduledMessages(ctx, lwv.RPC, sequenceNumbers)
+	}, s.retryOptions)
 }
 
 // Close permanently closes the Sender.
@@ -161,13 +111,19 @@ func (s *Sender) Close(ctx context.Context) error {
 }
 
 func (s *Sender) scheduleAMQPMessages(ctx context.Context, messages []*amqp.Message, scheduledEnqueueTime time.Time) ([]int64, error) {
-	_, _, mgmt, _, err := s.links.Get(ctx)
+	var sequenceNumbers []int64
 
-	if err != nil {
-		return nil, err
-	}
+	err := s.links.Retry(ctx, "scheduleMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		sn, err := internal.ScheduleMessages(ctx, lwv.RPC, scheduledEnqueueTime, messages)
 
-	return mgmt.ScheduleMessages(ctx, scheduledEnqueueTime, messages...)
+		if err != nil {
+			return err
+		}
+		sequenceNumbers = sn
+		return nil
+	}, s.retryOptions)
+
+	return sequenceNumbers, err
 }
 
 func (sender *Sender) createSenderLink(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
@@ -184,14 +140,20 @@ func (sender *Sender) createSenderLink(ctx context.Context, session internal.AMQ
 	return amqpSender, nil, nil
 }
 
-func newSender(ns internal.NamespaceWithNewAMQPLinks, queueOrTopic string, cleanupOnClose func()) (*Sender, error) {
+type newSenderArgs struct {
+	ns             internal.NamespaceWithNewAMQPLinks
+	queueOrTopic   string
+	cleanupOnClose func()
+}
+
+func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
 	sender := &Sender{
-		queueOrTopic:   queueOrTopic,
-		cleanupOnClose: cleanupOnClose,
-		retryOptions:   internal.RetryOptions{},
+		queueOrTopic:   args.queueOrTopic,
+		cleanupOnClose: args.cleanupOnClose,
+		retryOptions:   utils.RetryOptions(retryOptions),
 	}
 
-	sender.links = ns.NewAMQPLinks(queueOrTopic, sender.createSenderLink)
+	sender.links = args.ns.NewAMQPLinks(args.queueOrTopic, sender.createSenderLink)
 	return sender, nil
 }
 

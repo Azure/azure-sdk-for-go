@@ -68,12 +68,12 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
 type CreateKeyOptions struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	Curve *KeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
-	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
+	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -82,7 +82,7 @@ type CreateKeyOptions struct {
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert CreateKeyOptions to *generated.KeyVaultClientCreateKeyOptions
@@ -97,9 +97,12 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		attribs = c.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
-	for _, o := range c.KeyOps {
-		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
+	var ops []*generated.JSONWebKeyOperation
+	if c.KeyOperations != nil {
+		ops = make([]*generated.JSONWebKeyOperation, len(c.KeyOperations))
+		for i, o := range c.KeyOperations {
+			ops[i] = (*generated.JSONWebKeyOperation)(o)
+		}
 	}
 
 	return generated.KeyCreateParameters{
@@ -109,7 +112,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		KeyOps:         ops,
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Tags:           convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -127,7 +130,7 @@ func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse)
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(g.Attributes),
 			Key:        jsonWebKeyFromGenerated(g.Key),
-			Tags:       g.Tags,
+			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
 	}
@@ -151,11 +154,11 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 
 // CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
 type CreateECKeyOptions struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	CurveName *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	CurveName *KeyCurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// Whether to create an EC key with HSM protection
 	HardwareProtected bool
@@ -166,7 +169,7 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 	return generated.KeyCreateParameters{
 		Kty:   keyType.toGenerated(),
 		Curve: (*generated.JSONWebKeyCurveName)(c.CurveName),
-		Tags:  c.Tags,
+		Tags:  convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -184,7 +187,7 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(g.Attributes),
 			Key:        jsonWebKeyFromGenerated(g.Key),
-			Tags:       g.Tags,
+			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
 	}
@@ -219,7 +222,7 @@ type CreateOCTKeyOptions struct {
 	KeySize *int32 `json:"key_size,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // conver the CreateOCTKeyOptions to generated.KeyCreateParameters
@@ -227,7 +230,7 @@ func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 	return generated.KeyCreateParameters{
 		Kty:     keyType.toGenerated(),
 		KeySize: c.KeySize,
-		Tags:    c.Tags,
+		Tags:    convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -245,7 +248,7 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -274,7 +277,7 @@ func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateO
 // CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.
 type CreateRSAKeyOptions struct {
 	// Hardware Protected OCT Key
-	HardwareProtected bool
+	HardwareProtected *bool
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -283,16 +286,37 @@ type CreateRSAKeyOptions struct {
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
+
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	Curve *KeyCurveName `json:"crv,omitempty"`
+
+	// The attributes of a key managed by the key vault service.
+	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
+	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
 func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreateParameters {
+	var keyOps []*generated.JSONWebKeyOperation
+	if c.KeyOperations != nil {
+		keyOps = make([]*generated.JSONWebKeyOperation, len(c.KeyOperations))
+		for i, k := range c.KeyOperations {
+			keyOps[i] = (*generated.JSONWebKeyOperation)(k)
+		}
+	}
 	return generated.KeyCreateParameters{
 		Kty:            k.toGenerated(),
+		Curve:          (*generated.JSONWebKeyCurveName)(c.Curve),
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Tags:           convertToGeneratedMap(c.Tags),
+		KeyAttributes:  c.KeyAttributes.toGenerated(),
+		KeyOps:         keyOps,
+		ReleasePolicy:  c.ReleasePolicy.toGenerated(),
 	}
 }
 
@@ -310,7 +334,7 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -322,7 +346,7 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
 	keyType := RSA
 
-	if options != nil && options.HardwareProtected {
+	if options != nil && options.HardwareProtected != nil && *options.HardwareProtected {
 		keyType = RSAHSM
 	} else if options == nil {
 		options = &CreateRSAKeyOptions{}
@@ -438,7 +462,7 @@ func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKe
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -482,7 +506,7 @@ func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyR
 			KeyBundle: KeyBundle{
 				Attributes: keyAttributesFromGenerated(i.Attributes),
 				Key:        jsonWebKeyFromGenerated(i.Key),
-				Tags:       i.Tags,
+				Tags:       convertGeneratedMap(i.Tags),
 				Managed:    i.Managed,
 			},
 			RecoveryID:         i.RecoveryID,
@@ -633,7 +657,22 @@ func (s *startDeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duratio
 		}
 		time.Sleep(t)
 	}
-	return DeleteKeyResponse{}, nil
+
+	return DeleteKeyResponse{
+		RawResponse: s.RawResponse,
+		DeletedKeyBundle: DeletedKeyBundle{
+			RecoveryID:         s.deleteResponse.RecoveryID,
+			DeletedDate:        s.deleteResponse.DeletedDate,
+			ScheduledPurgeDate: s.deleteResponse.ScheduledPurgeDate,
+			KeyBundle: KeyBundle{
+				Managed:       s.deleteResponse.Managed,
+				ReleasePolicy: keyReleasePolicyFromGenerated(s.deleteResponse.ReleasePolicy),
+				Tags:          convertGeneratedMap(s.deleteResponse.Tags),
+				Attributes:    keyAttributesFromGenerated(s.deleteResponse.Attributes),
+				Key:           jsonWebKeyFromGenerated(s.deleteResponse.Key),
+			},
+		},
+	}, nil
 }
 
 // DeleteKeyPollerResponse contains the response from the Client.BeginDeleteKey method
@@ -816,7 +855,7 @@ func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDel
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -877,11 +916,14 @@ type UpdateKeyPropertiesOptions struct {
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
-	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
-	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	// Json web key operations. For more information on possible key operations, see KeyOperation.
+	KeyOps []*KeyOperation `json:"key_ops,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert the options to generated.KeyUpdateParameters struct
@@ -891,15 +933,19 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateP
 		attribs = u.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
-	for _, o := range u.KeyOps {
-		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
+	var ops []*generated.JSONWebKeyOperation
+	if u.KeyOps != nil {
+		ops = make([]*generated.JSONWebKeyOperation, len(u.KeyOps))
+		for i, o := range u.KeyOps {
+			ops[i] = (*generated.JSONWebKeyOperation)(o)
+		}
 	}
 
 	return generated.KeyUpdateParameters{
 		KeyOps:        ops,
 		KeyAttributes: attribs,
-		Tags:          u.Tags,
+		ReleasePolicy: u.ReleasePolicy.toGenerated(),
+		Tags:          convertToGeneratedMap(u.Tags),
 	}
 }
 
@@ -922,7 +968,7 @@ func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyRespons
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1144,7 +1190,7 @@ func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyR
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1174,7 +1220,7 @@ type ImportKeyOptions struct {
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
@@ -1186,7 +1232,7 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 		Key:           key.toGenerated(),
 		Hsm:           i.Hsm,
 		KeyAttributes: attribs,
-		Tags:          i.Tags,
+		Tags:          convertToGeneratedMap(i.Tags),
 	}
 }
 
@@ -1204,7 +1250,7 @@ func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse)
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1299,7 +1345,7 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 			Attributes:    keyAttributesFromGenerated(resp.Attributes),
 			Key:           jsonWebKeyFromGenerated(resp.Key),
 			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
-			Tags:          resp.Tags,
+			Tags:          convertGeneratedMap(resp.Tags),
 			Managed:       resp.Managed,
 		},
 	}, nil
@@ -1393,9 +1439,9 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 		name,
 		options.Version,
 		generated.KeyReleaseParameters{
-			Target: &target,
-			Enc:    (*generated.KeyEncryptionAlgorithm)(options.Enc),
-			Nonce:  options.Nonce,
+			TargetAttestationToken: &target,
+			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Enc),
+			Nonce:                  options.Nonce,
 		},
 		&generated.KeyVaultClientReleaseOptions{},
 	)
@@ -1430,11 +1476,10 @@ func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.KeyRotationPolic
 		attribs = u.Attributes.toGenerated()
 	}
 	var la []*generated.LifetimeActions
-	for _, l := range u.LifetimeActions {
-		if l == nil {
-			la = append(la, nil)
-		} else {
-			la = append(la, l.toGenerated())
+	if la != nil {
+		la = make([]*generated.LifetimeActions, len(u.LifetimeActions))
+		for i, l := range u.LifetimeActions {
+			la[i] = l.toGenerated()
 		}
 	}
 
@@ -1448,6 +1493,7 @@ func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.KeyRotationPolic
 // UpdateKeyRotationPolicyResponse contains the response for the Client.UpdateKeyRotationPolicy function
 type UpdateKeyRotationPolicyResponse struct {
 	KeyRotationPolicy
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }

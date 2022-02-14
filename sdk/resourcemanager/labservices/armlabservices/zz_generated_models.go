@@ -63,7 +63,7 @@ type Credentials struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -98,45 +98,31 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
-type ErrorResponse struct {
-	raw string
-	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
 // Image - Lab services virtual machine image
 type Image struct {
-	ProxyResource
 	// REQUIRED; Image resource properties
 	Properties *ImageProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the image.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Image.
-func (i Image) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "systemData", i.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ImageProperties - Properties of an image resource.
 type ImageProperties struct {
-	ImageUpdateProperties
 	// The available regions of the image in the shared gallery.
 	AvailableRegions []*string `json:"availableRegions,omitempty"`
+
+	// Is the image enabled
+	EnabledState *EnableState `json:"enabledState,omitempty"`
 
 	// READ-ONLY; The image author.
 	Author *string `json:"author,omitempty" azure:"ro"`
@@ -184,11 +170,11 @@ type ImageProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ImageProperties.
 func (i ImageProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.ImageUpdateProperties.marshalInternal(objectMap)
 	populate(objectMap, "author", i.Author)
 	populate(objectMap, "availableRegions", i.AvailableRegions)
 	populate(objectMap, "description", i.Description)
 	populate(objectMap, "displayName", i.DisplayName)
+	populate(objectMap, "enabledState", i.EnabledState)
 	populate(objectMap, "iconUrl", i.IconURL)
 	populate(objectMap, "osState", i.OSState)
 	populate(objectMap, "osType", i.OSType)
@@ -243,35 +229,24 @@ type ImageUpdateProperties struct {
 	EnabledState *EnableState `json:"enabledState,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImageUpdateProperties.
-func (i ImageUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (i ImageUpdateProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "enabledState", i.EnabledState)
-}
-
-// ImagesCreateOrUpdateOptions contains the optional parameters for the Images.CreateOrUpdate method.
-type ImagesCreateOrUpdateOptions struct {
+// ImagesClientCreateOrUpdateOptions contains the optional parameters for the ImagesClient.CreateOrUpdate method.
+type ImagesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ImagesGetOptions contains the optional parameters for the Images.Get method.
-type ImagesGetOptions struct {
+// ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
+type ImagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ImagesListByLabPlanOptions contains the optional parameters for the Images.ListByLabPlan method.
-type ImagesListByLabPlanOptions struct {
+// ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.ListByLabPlan method.
+type ImagesClientListByLabPlanOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
 }
 
-// ImagesUpdateOptions contains the optional parameters for the Images.Update method.
-type ImagesUpdateOptions struct {
+// ImagesClientUpdateOptions contains the optional parameters for the ImagesClient.Update method.
+type ImagesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -283,20 +258,38 @@ type InviteBody struct {
 
 // Lab - The lab resource.
 type Lab struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Lab resource properties
 	Properties *LabProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the lab.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Lab.
 func (l Lab) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", l.ID)
+	populate(objectMap, "location", l.Location)
+	populate(objectMap, "name", l.Name)
 	populate(objectMap, "properties", l.Properties)
 	populate(objectMap, "systemData", l.SystemData)
+	populate(objectMap, "tags", l.Tags)
+	populate(objectMap, "type", l.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -312,24 +305,42 @@ type LabNetworkProfile struct {
 	SubnetID *string `json:"subnetId,omitempty"`
 }
 
-// LabPlan - Lab Plans act as a permission container for creating labs via labs.azure.com. Additionally, they can provide a set of default configurations
-// that will apply at the time of creating a lab, but these
+// LabPlan - Lab Plans act as a permission container for creating labs via labs.azure.com. Additionally, they can provide
+// a set of default configurations that will apply at the time of creating a lab, but these
 // defaults can still be overwritten.
 type LabPlan struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Lab plan resource properties
 	Properties *LabPlanProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the lab plan.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LabPlan.
 func (l LabPlan) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", l.ID)
+	populate(objectMap, "location", l.Location)
+	populate(objectMap, "name", l.Name)
 	populate(objectMap, "properties", l.Properties)
 	populate(objectMap, "systemData", l.SystemData)
+	populate(objectMap, "tags", l.Tags)
+	populate(objectMap, "type", l.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -341,7 +352,31 @@ type LabPlanNetworkProfile struct {
 
 // LabPlanProperties - Lab plan resource properties
 type LabPlanProperties struct {
-	LabPlanUpdateProperties
+	// The allowed regions for the lab creator to use when creating labs using this lab plan.
+	AllowedRegions []*string `json:"allowedRegions,omitempty"`
+
+	// The default lab shutdown profile. This can be changed on a lab resource and only provides a default profile.
+	DefaultAutoShutdownProfile *AutoShutdownProfile `json:"defaultAutoShutdownProfile,omitempty"`
+
+	// The default lab connection profile. This can be changed on a lab resource and only provides a default profile.
+	DefaultConnectionProfile *ConnectionProfile `json:"defaultConnectionProfile,omitempty"`
+
+	// The lab plan network profile. To enforce lab network policies they must be defined here and cannot be changed when there
+	// are existing labs associated with this lab plan.
+	DefaultNetworkProfile *LabPlanNetworkProfile `json:"defaultNetworkProfile,omitempty"`
+
+	// Base Url of the lms instance this lab plan can link lab rosters against.
+	LinkedLmsInstance *string `json:"linkedLmsInstance,omitempty"`
+
+	// Resource ID of the Shared Image Gallery attached to this lab plan. When saving a lab template virtual machine image it
+	// will be persisted in this gallery. Shared images from the gallery can be made
+	// available to use when creating new labs.
+	SharedGalleryID *string `json:"sharedGalleryId,omitempty"`
+
+	// Support contact information and instructions for users of the lab plan. This information is displayed to lab owners and
+	// virtual machine users for all labs in the lab plan.
+	SupportInfo *SupportInfo `json:"supportInfo,omitempty"`
+
 	// READ-ONLY; Current provisioning state of the lab plan.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
@@ -349,23 +384,31 @@ type LabPlanProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type LabPlanProperties.
 func (l LabPlanProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.LabPlanUpdateProperties.marshalInternal(objectMap)
+	populate(objectMap, "allowedRegions", l.AllowedRegions)
+	populate(objectMap, "defaultAutoShutdownProfile", l.DefaultAutoShutdownProfile)
+	populate(objectMap, "defaultConnectionProfile", l.DefaultConnectionProfile)
+	populate(objectMap, "defaultNetworkProfile", l.DefaultNetworkProfile)
+	populate(objectMap, "linkedLmsInstance", l.LinkedLmsInstance)
 	populate(objectMap, "provisioningState", l.ProvisioningState)
+	populate(objectMap, "sharedGalleryId", l.SharedGalleryID)
+	populate(objectMap, "supportInfo", l.SupportInfo)
 	return json.Marshal(objectMap)
 }
 
 // LabPlanUpdate - Contains lab configuration and default settings. This variant is used for PATCH.
 type LabPlanUpdate struct {
-	TrackedResourceUpdate
 	// Lab plan resource update properties
 	Properties *LabPlanUpdateProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags []*string `json:"tags,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LabPlanUpdate.
 func (l LabPlanUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.TrackedResourceUpdate.marshalInternal(objectMap)
 	populate(objectMap, "properties", l.Properties)
+	populate(objectMap, "tags", l.Tags)
 	return json.Marshal(objectMap)
 }
 
@@ -380,31 +423,26 @@ type LabPlanUpdateProperties struct {
 	// The default lab connection profile. This can be changed on a lab resource and only provides a default profile.
 	DefaultConnectionProfile *ConnectionProfile `json:"defaultConnectionProfile,omitempty"`
 
-	// The lab plan network profile. To enforce lab network policies they must be defined here and cannot be changed when there are existing labs associated
-	// with this lab plan.
+	// The lab plan network profile. To enforce lab network policies they must be defined here and cannot be changed when there
+	// are existing labs associated with this lab plan.
 	DefaultNetworkProfile *LabPlanNetworkProfile `json:"defaultNetworkProfile,omitempty"`
 
 	// Base Url of the lms instance this lab plan can link lab rosters against.
 	LinkedLmsInstance *string `json:"linkedLmsInstance,omitempty"`
 
-	// Resource ID of the Shared Image Gallery attached to this lab plan. When saving a lab template virtual machine image it will be persisted in this gallery.
-	// Shared images from the gallery can be made
+	// Resource ID of the Shared Image Gallery attached to this lab plan. When saving a lab template virtual machine image it
+	// will be persisted in this gallery. Shared images from the gallery can be made
 	// available to use when creating new labs.
 	SharedGalleryID *string `json:"sharedGalleryId,omitempty"`
 
-	// Support contact information and instructions for users of the lab plan. This information is displayed to lab owners and virtual machine users for all
-	// labs in the lab plan.
+	// Support contact information and instructions for users of the lab plan. This information is displayed to lab owners and
+	// virtual machine users for all labs in the lab plan.
 	SupportInfo *SupportInfo `json:"supportInfo,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LabPlanUpdateProperties.
 func (l LabPlanUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (l LabPlanUpdateProperties) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "allowedRegions", l.AllowedRegions)
 	populate(objectMap, "defaultAutoShutdownProfile", l.DefaultAutoShutdownProfile)
 	populate(objectMap, "defaultConnectionProfile", l.DefaultConnectionProfile)
@@ -412,49 +450,78 @@ func (l LabPlanUpdateProperties) marshalInternal(objectMap map[string]interface{
 	populate(objectMap, "linkedLmsInstance", l.LinkedLmsInstance)
 	populate(objectMap, "sharedGalleryId", l.SharedGalleryID)
 	populate(objectMap, "supportInfo", l.SupportInfo)
+	return json.Marshal(objectMap)
 }
 
-// LabPlansBeginCreateOrUpdateOptions contains the optional parameters for the LabPlans.BeginCreateOrUpdate method.
-type LabPlansBeginCreateOrUpdateOptions struct {
+// LabPlansClientBeginCreateOrUpdateOptions contains the optional parameters for the LabPlansClient.BeginCreateOrUpdate method.
+type LabPlansClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansBeginDeleteOptions contains the optional parameters for the LabPlans.BeginDelete method.
-type LabPlansBeginDeleteOptions struct {
+// LabPlansClientBeginDeleteOptions contains the optional parameters for the LabPlansClient.BeginDelete method.
+type LabPlansClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansBeginSaveImageOptions contains the optional parameters for the LabPlans.BeginSaveImage method.
-type LabPlansBeginSaveImageOptions struct {
+// LabPlansClientBeginSaveImageOptions contains the optional parameters for the LabPlansClient.BeginSaveImage method.
+type LabPlansClientBeginSaveImageOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansBeginUpdateOptions contains the optional parameters for the LabPlans.BeginUpdate method.
-type LabPlansBeginUpdateOptions struct {
+// LabPlansClientBeginUpdateOptions contains the optional parameters for the LabPlansClient.BeginUpdate method.
+type LabPlansClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansGetOptions contains the optional parameters for the LabPlans.Get method.
-type LabPlansGetOptions struct {
+// LabPlansClientGetOptions contains the optional parameters for the LabPlansClient.Get method.
+type LabPlansClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansListByResourceGroupOptions contains the optional parameters for the LabPlans.ListByResourceGroup method.
-type LabPlansListByResourceGroupOptions struct {
+// LabPlansClientListByResourceGroupOptions contains the optional parameters for the LabPlansClient.ListByResourceGroup method.
+type LabPlansClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansListBySubscriptionOptions contains the optional parameters for the LabPlans.ListBySubscription method.
-type LabPlansListBySubscriptionOptions struct {
+// LabPlansClientListBySubscriptionOptions contains the optional parameters for the LabPlansClient.ListBySubscription method.
+type LabPlansClientListBySubscriptionOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
 }
 
 // LabProperties - Properties of a lab resource.
 type LabProperties struct {
-	LabUpdateProperties
-	// The network profile for the lab, typically applied via a lab plan. This profile cannot be modified once a lab has been created.
+	// The resource auto shutdown configuration for the lab. This controls whether actions are taken on resources that are sitting
+	// idle.
+	AutoShutdownProfile *AutoShutdownProfile `json:"autoShutdownProfile,omitempty"`
+
+	// The connection profile for the lab. This controls settings such as web access to lab resources or whether RDP or SSH ports
+	// are open.
+	ConnectionProfile *ConnectionProfile `json:"connectionProfile,omitempty"`
+
+	// The description of the lab.
+	Description *string `json:"description,omitempty"`
+
+	// The ID of the lab plan. Used during resource creation to provide defaults and acts as a permission container when creating
+	// a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
+	// organization..
+	LabPlanID *string `json:"labPlanId,omitempty"`
+
+	// The network profile for the lab, typically applied via a lab plan. This profile cannot be modified once a lab has been
+	// created.
 	NetworkProfile *LabNetworkProfile `json:"networkProfile,omitempty"`
+
+	// The lab user list management profile.
+	RosterProfile *RosterProfile `json:"rosterProfile,omitempty"`
+
+	// The lab security profile.
+	SecurityProfile *SecurityProfile `json:"securityProfile,omitempty"`
+
+	// The title of the lab.
+	Title *string `json:"title,omitempty"`
+
+	// The profile used for creating lab virtual machines.
+	VirtualMachineProfile *VirtualMachineProfile `json:"virtualMachineProfile,omitempty"`
 
 	// READ-ONLY; Current provisioning state of the lab.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -463,140 +530,38 @@ type LabProperties struct {
 	State *LabState `json:"state,omitempty" azure:"ro"`
 }
 
-// LabServicesSKU - Azure Lab Services resource SKUs
-type LabServicesSKU struct {
-	// The scale out/in options of the SKU.
-	Capacity *LabServicesSKUCapacity `json:"capacity,omitempty"`
-
-	// READ-ONLY; The capabilities of the SKU.
-	Capabilities []*LabServicesSKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata for retrieving price info of a lab services SKUs.
-	Costs []*LabServicesSKUCost `json:"costs,omitempty" azure:"ro"`
-
-	// READ-ONLY; The family of the SKU.
-	Family *string `json:"family,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of locations that are available for a size.
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the SKU.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The lab services resource type.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
-
-	// READ-ONLY; Restrictions of a lab services SKUs.
-	Restrictions []*LabServicesSKURestrictions `json:"restrictions,omitempty" azure:"ro"`
-
-	// READ-ONLY; The SKU size.
-	Size *string `json:"size,omitempty" azure:"ro"`
-
-	// READ-ONLY; The tier of the SKU.
-	Tier *LabServicesSKUTier `json:"tier,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LabServicesSKU.
-func (l LabServicesSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capabilities", l.Capabilities)
-	populate(objectMap, "capacity", l.Capacity)
-	populate(objectMap, "costs", l.Costs)
-	populate(objectMap, "family", l.Family)
-	populate(objectMap, "locations", l.Locations)
-	populate(objectMap, "name", l.Name)
-	populate(objectMap, "resourceType", l.ResourceType)
-	populate(objectMap, "restrictions", l.Restrictions)
-	populate(objectMap, "size", l.Size)
-	populate(objectMap, "tier", l.Tier)
-	return json.Marshal(objectMap)
-}
-
-// LabServicesSKUCapabilities - The array of capabilities of a lab services SKU.
-type LabServicesSKUCapabilities struct {
-	// READ-ONLY; The name of the capability for a SKU.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The value of the capability for a SKU.
-	Value *string `json:"value,omitempty" azure:"ro"`
-}
-
-// LabServicesSKUCapacity - The scale out/in options of the SKU.
-type LabServicesSKUCapacity struct {
-	// READ-ONLY; The default capacity for this resource.
-	Default *int64 `json:"default,omitempty" azure:"ro"`
-
-	// READ-ONLY; The highest permitted capacity for this resource.
-	Maximum *int64 `json:"maximum,omitempty" azure:"ro"`
-
-	// READ-ONLY; The lowest permitted capacity for this resource.
-	Minimum *int64 `json:"minimum,omitempty" azure:"ro"`
-
-	// READ-ONLY; The localized name of the resource.
-	ScaleType *ScaleType `json:"scaleType,omitempty" azure:"ro"`
-}
-
-// LabServicesSKUCost - The array of costs of a lab services SKU.
-type LabServicesSKUCost struct {
-	// READ-ONLY; The extended unit.
-	ExtendedUnit *string `json:"extendedUnit,omitempty" azure:"ro"`
-
-	// READ-ONLY; The meter id.
-	MeterID *string `json:"meterId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The quantity of units charged.
-	Quantity *float32 `json:"quantity,omitempty" azure:"ro"`
-}
-
-// LabServicesSKURestrictions - The restriction details.
-type LabServicesSKURestrictions struct {
-	// READ-ONLY; The reason for the restriction.
-	ReasonCode *RestrictionReasonCode `json:"reasonCode,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of restriction.
-	Type *RestrictionType `json:"type,omitempty" azure:"ro"`
-
-	// READ-ONLY; The values of the restriction.
-	Values []*string `json:"values,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LabServicesSKURestrictions.
-func (l LabServicesSKURestrictions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "reasonCode", l.ReasonCode)
-	populate(objectMap, "type", l.Type)
-	populate(objectMap, "values", l.Values)
-	return json.Marshal(objectMap)
-}
-
 // LabUpdate - The lab resource for updates.
 type LabUpdate struct {
-	TrackedResourceUpdate
 	// Lab resource properties
 	Properties *LabUpdateProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags []*string `json:"tags,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LabUpdate.
 func (l LabUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.TrackedResourceUpdate.marshalInternal(objectMap)
 	populate(objectMap, "properties", l.Properties)
+	populate(objectMap, "tags", l.Tags)
 	return json.Marshal(objectMap)
 }
 
 // LabUpdateProperties - Properties of a lab resource used for updates.
 type LabUpdateProperties struct {
-	// The resource auto shutdown configuration for the lab. This controls whether actions are taken on resources that are sitting idle.
+	// The resource auto shutdown configuration for the lab. This controls whether actions are taken on resources that are sitting
+	// idle.
 	AutoShutdownProfile *AutoShutdownProfile `json:"autoShutdownProfile,omitempty"`
 
-	// The connection profile for the lab. This controls settings such as web access to lab resources or whether RDP or SSH ports are open.
+	// The connection profile for the lab. This controls settings such as web access to lab resources or whether RDP or SSH ports
+	// are open.
 	ConnectionProfile *ConnectionProfile `json:"connectionProfile,omitempty"`
 
 	// The description of the lab.
 	Description *string `json:"description,omitempty"`
 
-	// The ID of the lab plan. Used during resource creation to provide defaults and acts as a permission container when creating a lab via labs.azure.com.
-	// Setting a labPlanId on an existing lab provides
+	// The ID of the lab plan. Used during resource creation to provide defaults and acts as a permission container when creating
+	// a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
 	// organization..
 	LabPlanID *string `json:"labPlanId,omitempty"`
 
@@ -613,43 +578,43 @@ type LabUpdateProperties struct {
 	VirtualMachineProfile *VirtualMachineProfile `json:"virtualMachineProfile,omitempty"`
 }
 
-// LabsBeginCreateOrUpdateOptions contains the optional parameters for the Labs.BeginCreateOrUpdate method.
-type LabsBeginCreateOrUpdateOptions struct {
+// LabsClientBeginCreateOrUpdateOptions contains the optional parameters for the LabsClient.BeginCreateOrUpdate method.
+type LabsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsBeginDeleteOptions contains the optional parameters for the Labs.BeginDelete method.
-type LabsBeginDeleteOptions struct {
+// LabsClientBeginDeleteOptions contains the optional parameters for the LabsClient.BeginDelete method.
+type LabsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsBeginPublishOptions contains the optional parameters for the Labs.BeginPublish method.
-type LabsBeginPublishOptions struct {
+// LabsClientBeginPublishOptions contains the optional parameters for the LabsClient.BeginPublish method.
+type LabsClientBeginPublishOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsBeginSyncGroupOptions contains the optional parameters for the Labs.BeginSyncGroup method.
-type LabsBeginSyncGroupOptions struct {
+// LabsClientBeginSyncGroupOptions contains the optional parameters for the LabsClient.BeginSyncGroup method.
+type LabsClientBeginSyncGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsBeginUpdateOptions contains the optional parameters for the Labs.BeginUpdate method.
-type LabsBeginUpdateOptions struct {
+// LabsClientBeginUpdateOptions contains the optional parameters for the LabsClient.BeginUpdate method.
+type LabsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsGetOptions contains the optional parameters for the Labs.Get method.
-type LabsGetOptions struct {
+// LabsClientGetOptions contains the optional parameters for the LabsClient.Get method.
+type LabsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsListByResourceGroupOptions contains the optional parameters for the Labs.ListByResourceGroup method.
-type LabsListByResourceGroupOptions struct {
+// LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.ListByResourceGroup method.
+type LabsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsListBySubscriptionOptions contains the optional parameters for the Labs.ListBySubscription method.
-type LabsListBySubscriptionOptions struct {
+// LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.ListBySubscription method.
+type LabsClientListBySubscriptionOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
 }
@@ -679,13 +644,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -694,18 +662,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -797,13 +768,13 @@ func (o *OperationResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// OperationResultsGetOptions contains the optional parameters for the OperationResults.Get method.
-type OperationResultsGetOptions struct {
+// OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
+type OperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -841,23 +812,6 @@ func (p PagedLabPlans) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PagedLabServicesSKUs - Paged list of lab services skus.
-type PagedLabServicesSKUs struct {
-	// READ-ONLY; The link to get the next page of sku results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The array page of sku results.
-	Value []*LabServicesSKU `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PagedLabServicesSKUs.
-func (p PagedLabServicesSKUs) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PagedLabs - Paged list of labs.
 type PagedLabs struct {
 	// READ-ONLY; The link to get the next page of image results.
@@ -869,6 +823,23 @@ type PagedLabs struct {
 
 // MarshalJSON implements the json.Marshaller interface for type PagedLabs.
 func (p PagedLabs) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// PagedSKUInfos - Paged list of lab services skus.
+type PagedSKUInfos struct {
+	// READ-ONLY; The link to get the next page of sku results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The array page of sku results.
+	Value []*SKUInfo `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PagedSKUInfos.
+func (p PagedSKUInfos) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
@@ -926,13 +897,17 @@ func (p PagedVirtualMachines) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecurrencePattern - Recurrence pattern of a lab schedule.
@@ -943,8 +918,8 @@ type RecurrencePattern struct {
 	// REQUIRED; The frequency of the recurrence.
 	Frequency *RecurrenceFrequency `json:"frequency,omitempty"`
 
-	// The interval to invoke the schedule on. For example, interval = 2 and RecurrenceFrequency.Daily will run every 2 days. When no interval is supplied,
-	// an interval of 1 is used.
+	// The interval to invoke the schedule on. For example, interval = 2 and RecurrenceFrequency.Daily will run every 2 days.
+	// When no interval is supplied, an interval of 1 is used.
 	Interval *int32 `json:"interval,omitempty"`
 
 	// The week days the schedule runs. Used for when the Frequency is set to Weekly.
@@ -1011,19 +986,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // RosterProfile - The lab user list management profile.
 type RosterProfile struct {
 	// The AAD group ID which this lab roster is populated from. Having this set enables AAD sync mode.
@@ -1047,7 +1009,8 @@ type SKU struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
 
-	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
@@ -1056,12 +1019,119 @@ type SKU struct {
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
 
-	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
 	Tier *SKUTier `json:"tier,omitempty"`
 }
 
-// SKUsListOptions contains the optional parameters for the SKUs.List method.
-type SKUsListOptions struct {
+// SKUCapabilities - The array of capabilities of a lab services SKU.
+type SKUCapabilities struct {
+	// READ-ONLY; The name of the capability for a SKU.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The value of the capability for a SKU.
+	Value *string `json:"value,omitempty" azure:"ro"`
+}
+
+// SKUCapacity - The scale out/in options of the SKU.
+type SKUCapacity struct {
+	// READ-ONLY; The default capacity for this resource.
+	Default *int64 `json:"default,omitempty" azure:"ro"`
+
+	// READ-ONLY; The highest permitted capacity for this resource.
+	Maximum *int64 `json:"maximum,omitempty" azure:"ro"`
+
+	// READ-ONLY; The lowest permitted capacity for this resource.
+	Minimum *int64 `json:"minimum,omitempty" azure:"ro"`
+
+	// READ-ONLY; The localized name of the resource.
+	ScaleType *ScaleType `json:"scaleType,omitempty" azure:"ro"`
+}
+
+// SKUCost - The array of costs of a lab services SKU.
+type SKUCost struct {
+	// READ-ONLY; The extended unit.
+	ExtendedUnit *string `json:"extendedUnit,omitempty" azure:"ro"`
+
+	// READ-ONLY; The meter id.
+	MeterID *string `json:"meterId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The quantity of units charged.
+	Quantity *float32 `json:"quantity,omitempty" azure:"ro"`
+}
+
+// SKUInfo - Azure Lab Services resource SKUs
+type SKUInfo struct {
+	// The scale out/in options of the SKU.
+	Capacity *SKUCapacity `json:"capacity,omitempty"`
+
+	// READ-ONLY; The capabilities of the SKU.
+	Capabilities []*SKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata for retrieving price info of a lab services SKUs.
+	Costs []*SKUCost `json:"costs,omitempty" azure:"ro"`
+
+	// READ-ONLY; The family of the SKU.
+	Family *string `json:"family,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of locations that are available for a size.
+	Locations []*string `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the SKU.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The lab services resource type.
+	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+
+	// READ-ONLY; Restrictions of a lab services SKUs.
+	Restrictions []*SKURestrictions `json:"restrictions,omitempty" azure:"ro"`
+
+	// READ-ONLY; The SKU size.
+	Size *string `json:"size,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tier of the SKU.
+	Tier *LabServicesSKUTier `json:"tier,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKUInfo.
+func (s SKUInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "capabilities", s.Capabilities)
+	populate(objectMap, "capacity", s.Capacity)
+	populate(objectMap, "costs", s.Costs)
+	populate(objectMap, "family", s.Family)
+	populate(objectMap, "locations", s.Locations)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "resourceType", s.ResourceType)
+	populate(objectMap, "restrictions", s.Restrictions)
+	populate(objectMap, "size", s.Size)
+	populate(objectMap, "tier", s.Tier)
+	return json.Marshal(objectMap)
+}
+
+// SKURestrictions - The restriction details.
+type SKURestrictions struct {
+	// READ-ONLY; The reason for the restriction.
+	ReasonCode *RestrictionReasonCode `json:"reasonCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of restriction.
+	Type *RestrictionType `json:"type,omitempty" azure:"ro"`
+
+	// READ-ONLY; The values of the restriction.
+	Values []*string `json:"values,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKURestrictions.
+func (s SKURestrictions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "reasonCode", s.ReasonCode)
+	populate(objectMap, "type", s.Type)
+	populate(objectMap, "values", s.Values)
+	return json.Marshal(objectMap)
+}
+
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+type SKUsClientListOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
 }
@@ -1077,26 +1147,39 @@ type SaveImageBody struct {
 
 // Schedule for automatically turning virtual machines in a lab on and off at specified times.
 type Schedule struct {
-	ProxyResource
 	// REQUIRED; Schedule resource properties
 	Properties *ScheduleProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the schedule.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Schedule.
-func (s Schedule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ScheduleProperties - Schedule resource properties
 type ScheduleProperties struct {
-	ScheduleUpdateProperties
+	// Notes for this schedule.
+	Notes *string `json:"notes,omitempty"`
+
+	// The recurrence pattern of the scheduled actions.
+	RecurrencePattern *RecurrencePattern `json:"recurrencePattern,omitempty"`
+
+	// When lab user virtual machines will be started. Timestamp offsets will be ignored and timeZoneId is used instead.
+	StartAt *time.Time `json:"startAt,omitempty"`
+
+	// When lab user virtual machines will be stopped. Timestamp offsets will be ignored and timeZoneId is used instead.
+	StopAt *time.Time `json:"stopAt,omitempty"`
+
+	// The IANA timezone id for the schedule.
+	TimeZoneID *string `json:"timeZoneId,omitempty"`
+
 	// READ-ONLY; Current provisioning state of the schedule.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
@@ -1104,8 +1187,12 @@ type ScheduleProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ScheduleProperties.
 func (s ScheduleProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ScheduleUpdateProperties.marshalInternal(objectMap)
+	populate(objectMap, "notes", s.Notes)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "recurrencePattern", s.RecurrencePattern)
+	populateTimeRFC3339(objectMap, "startAt", s.StartAt)
+	populateTimeRFC3339(objectMap, "stopAt", s.StopAt)
+	populate(objectMap, "timeZoneId", s.TimeZoneID)
 	return json.Marshal(objectMap)
 }
 
@@ -1118,16 +1205,28 @@ func (s *ScheduleProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "notes":
+			err = unpopulate(val, &s.Notes)
+			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "recurrencePattern":
+			err = unpopulate(val, &s.RecurrencePattern)
+			delete(rawMsg, key)
+		case "startAt":
+			err = unpopulateTimeRFC3339(val, &s.StartAt)
+			delete(rawMsg, key)
+		case "stopAt":
+			err = unpopulateTimeRFC3339(val, &s.StopAt)
+			delete(rawMsg, key)
+		case "timeZoneId":
+			err = unpopulate(val, &s.TimeZoneID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.ScheduleUpdateProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1166,7 +1265,11 @@ type ScheduleUpdateProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ScheduleUpdateProperties.
 func (s ScheduleUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.marshalInternal(objectMap)
+	populate(objectMap, "notes", s.Notes)
+	populate(objectMap, "recurrencePattern", s.RecurrencePattern)
+	populateTimeRFC3339(objectMap, "startAt", s.StartAt)
+	populateTimeRFC3339(objectMap, "stopAt", s.StopAt)
+	populate(objectMap, "timeZoneId", s.TimeZoneID)
 	return json.Marshal(objectMap)
 }
 
@@ -1176,18 +1279,6 @@ func (s *ScheduleUpdateProperties) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return s.unmarshalInternal(rawMsg)
-}
-
-func (s ScheduleUpdateProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "notes", s.Notes)
-	populate(objectMap, "recurrencePattern", s.RecurrencePattern)
-	populateTimeRFC3339(objectMap, "startAt", s.StartAt)
-	populateTimeRFC3339(objectMap, "stopAt", s.StopAt)
-	populate(objectMap, "timeZoneId", s.TimeZoneID)
-}
-
-func (s *ScheduleUpdateProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -1214,29 +1305,29 @@ func (s *ScheduleUpdateProperties) unmarshalInternal(rawMsg map[string]json.RawM
 	return nil
 }
 
-// SchedulesBeginDeleteOptions contains the optional parameters for the Schedules.BeginDelete method.
-type SchedulesBeginDeleteOptions struct {
+// SchedulesClientBeginDeleteOptions contains the optional parameters for the SchedulesClient.BeginDelete method.
+type SchedulesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SchedulesCreateOrUpdateOptions contains the optional parameters for the Schedules.CreateOrUpdate method.
-type SchedulesCreateOrUpdateOptions struct {
+// SchedulesClientCreateOrUpdateOptions contains the optional parameters for the SchedulesClient.CreateOrUpdate method.
+type SchedulesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SchedulesGetOptions contains the optional parameters for the Schedules.Get method.
-type SchedulesGetOptions struct {
+// SchedulesClientGetOptions contains the optional parameters for the SchedulesClient.Get method.
+type SchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SchedulesListByLabOptions contains the optional parameters for the Schedules.ListByLab method.
-type SchedulesListByLabOptions struct {
+// SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.ListByLab method.
+type SchedulesClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
 }
 
-// SchedulesUpdateOptions contains the optional parameters for the Schedules.Update method.
-type SchedulesUpdateOptions struct {
+// SchedulesClientUpdateOptions contains the optional parameters for the SchedulesClient.Update method.
+type SchedulesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1332,27 +1423,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // TrackedResourceUpdate - Base tracked resource type for all PATCH updates.
@@ -1364,12 +1462,8 @@ type TrackedResourceUpdate struct {
 // MarshalJSON implements the json.Marshaller interface for type TrackedResourceUpdate.
 func (t TrackedResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResourceUpdate) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", t.Tags)
+	return json.Marshal(objectMap)
 }
 
 // Usage - The core usage details.
@@ -1399,36 +1493,37 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// UsagesListByLocationOptions contains the optional parameters for the Usages.ListByLocation method.
-type UsagesListByLocationOptions struct {
+// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+type UsagesClientListByLocationOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
 }
 
 // User of a lab that can register for and use virtual machines within the lab.
 type User struct {
-	ProxyResource
 	// REQUIRED; User resource properties
 	Properties *UserProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the user resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type User.
-func (u User) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "systemData", u.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UserProperties - User resource properties
 type UserProperties struct {
-	UserUpdateProperties
 	// REQUIRED; Email address of the user.
 	Email *string `json:"email,omitempty"`
+
+	// The amount of usage quota time the user gets in addition to the lab usage quota.
+	AdditionalUsageQuota *string `json:"additionalUsageQuota,omitempty"`
 
 	// READ-ONLY; Display name of the user, for example user's full name.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
@@ -1452,7 +1547,7 @@ type UserProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type UserProperties.
 func (u UserProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	u.UserUpdateProperties.marshalInternal(objectMap)
+	populate(objectMap, "additionalUsageQuota", u.AdditionalUsageQuota)
 	populate(objectMap, "displayName", u.DisplayName)
 	populate(objectMap, "email", u.Email)
 	populateTimeRFC3339(objectMap, "invitationSent", u.InvitationSent)
@@ -1472,6 +1567,9 @@ func (u *UserProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "additionalUsageQuota":
+			err = unpopulate(val, &u.AdditionalUsageQuota)
+			delete(rawMsg, key)
 		case "displayName":
 			err = unpopulate(val, &u.DisplayName)
 			delete(rawMsg, key)
@@ -1498,9 +1596,6 @@ func (u *UserProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := u.UserUpdateProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -1523,89 +1618,53 @@ type UserUpdateProperties struct {
 	AdditionalUsageQuota *string `json:"additionalUsageQuota,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UserUpdateProperties.
-func (u UserUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UserUpdateProperties.
-func (u *UserUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return u.unmarshalInternal(rawMsg)
-}
-
-func (u UserUpdateProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "additionalUsageQuota", u.AdditionalUsageQuota)
-}
-
-func (u *UserUpdateProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalUsageQuota":
-			err = unpopulate(val, &u.AdditionalUsageQuota)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// UsersBeginCreateOrUpdateOptions contains the optional parameters for the Users.BeginCreateOrUpdate method.
-type UsersBeginCreateOrUpdateOptions struct {
+// UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate method.
+type UsersClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersBeginDeleteOptions contains the optional parameters for the Users.BeginDelete method.
-type UsersBeginDeleteOptions struct {
+// UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
+type UsersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersBeginInviteOptions contains the optional parameters for the Users.BeginInvite method.
-type UsersBeginInviteOptions struct {
+// UsersClientBeginInviteOptions contains the optional parameters for the UsersClient.BeginInvite method.
+type UsersClientBeginInviteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersBeginUpdateOptions contains the optional parameters for the Users.BeginUpdate method.
-type UsersBeginUpdateOptions struct {
+// UsersClientBeginUpdateOptions contains the optional parameters for the UsersClient.BeginUpdate method.
+type UsersClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersGetOptions contains the optional parameters for the Users.Get method.
-type UsersGetOptions struct {
+// UsersClientGetOptions contains the optional parameters for the UsersClient.Get method.
+type UsersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersListByLabOptions contains the optional parameters for the Users.ListByLab method.
-type UsersListByLabOptions struct {
+// UsersClientListByLabOptions contains the optional parameters for the UsersClient.ListByLab method.
+type UsersClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
 }
 
 // VirtualMachine - A lab virtual machine resource.
 type VirtualMachine struct {
-	ProxyResource
 	// REQUIRED; Virtual machine resource properties
 	Properties *VirtualMachineProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System data of the Lab virtual machine.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachine.
-func (v VirtualMachine) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "systemData", v.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VirtualMachineAdditionalCapabilities - The additional capabilities for a lab VM.
@@ -1686,38 +1745,40 @@ type VirtualMachineProperties struct {
 	VMType *VirtualMachineType `json:"vmType,omitempty" azure:"ro"`
 }
 
-// VirtualMachinesBeginRedeployOptions contains the optional parameters for the VirtualMachines.BeginRedeploy method.
-type VirtualMachinesBeginRedeployOptions struct {
+// VirtualMachinesClientBeginRedeployOptions contains the optional parameters for the VirtualMachinesClient.BeginRedeploy
+// method.
+type VirtualMachinesClientBeginRedeployOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesBeginReimageOptions contains the optional parameters for the VirtualMachines.BeginReimage method.
-type VirtualMachinesBeginReimageOptions struct {
+// VirtualMachinesClientBeginReimageOptions contains the optional parameters for the VirtualMachinesClient.BeginReimage method.
+type VirtualMachinesClientBeginReimageOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesBeginResetPasswordOptions contains the optional parameters for the VirtualMachines.BeginResetPassword method.
-type VirtualMachinesBeginResetPasswordOptions struct {
+// VirtualMachinesClientBeginResetPasswordOptions contains the optional parameters for the VirtualMachinesClient.BeginResetPassword
+// method.
+type VirtualMachinesClientBeginResetPasswordOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesBeginStartOptions contains the optional parameters for the VirtualMachines.BeginStart method.
-type VirtualMachinesBeginStartOptions struct {
+// VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart method.
+type VirtualMachinesClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesBeginStopOptions contains the optional parameters for the VirtualMachines.BeginStop method.
-type VirtualMachinesBeginStopOptions struct {
+// VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop method.
+type VirtualMachinesClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesGetOptions contains the optional parameters for the VirtualMachines.Get method.
-type VirtualMachinesGetOptions struct {
+// VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
+type VirtualMachinesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesListByLabOptions contains the optional parameters for the VirtualMachines.ListByLab method.
-type VirtualMachinesListByLabOptions struct {
+// VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.ListByLab method.
+type VirtualMachinesClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
 }

@@ -11,7 +11,6 @@ package armdataboxedge
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,54 @@ import (
 // AvailableSKUsClient contains the methods for the AvailableSKUs group.
 // Don't use this type directly, use NewAvailableSKUsClient() instead.
 type AvailableSKUsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAvailableSKUsClient creates a new instance of AvailableSKUsClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAvailableSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AvailableSKUsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &AvailableSKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AvailableSKUsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // List - List all the available Skus and information related to them.
-// If the operation fails it returns the *CloudError error type.
-func (client *AvailableSKUsClient) List(options *AvailableSKUsListOptions) *AvailableSKUsListPager {
-	return &AvailableSKUsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AvailableSKUsClientListOptions contains the optional parameters for the AvailableSKUsClient.List method.
+func (client *AvailableSKUsClient) List(options *AvailableSKUsClientListOptions) *AvailableSKUsClientListPager {
+	return &AvailableSKUsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AvailableSKUsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataBoxEdgeSKUList.NextLink)
+		advancer: func(ctx context.Context, resp AvailableSKUsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SKUList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AvailableSKUsClient) listCreateRequest(ctx context.Context, options *AvailableSKUsListOptions) (*policy.Request, error) {
+func (client *AvailableSKUsClient) listCreateRequest(ctx context.Context, options *AvailableSKUsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -75,23 +83,10 @@ func (client *AvailableSKUsClient) listCreateRequest(ctx context.Context, option
 }
 
 // listHandleResponse handles the List response.
-func (client *AvailableSKUsClient) listHandleResponse(resp *http.Response) (AvailableSKUsListResponse, error) {
-	result := AvailableSKUsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataBoxEdgeSKUList); err != nil {
-		return AvailableSKUsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *AvailableSKUsClient) listHandleResponse(resp *http.Response) (AvailableSKUsClientListResponse, error) {
+	result := AvailableSKUsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUList); err != nil {
+		return AvailableSKUsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AvailableSKUsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

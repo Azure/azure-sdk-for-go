@@ -11,7 +11,6 @@ package armvideoanalyzer
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // AccessPoliciesClient contains the methods for the AccessPolicies group.
 // Don't use this type directly, use NewAccessPoliciesClient() instead.
 type AccessPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAccessPoliciesClient creates a new instance of AccessPoliciesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAccessPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessPoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &AccessPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AccessPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a new access policy resource or updates an existing one with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccessPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, parameters AccessPolicyEntity, options *AccessPoliciesCreateOrUpdateOptions) (AccessPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// accessPolicyName - The Access Policy name.
+// parameters - The request parameters
+// options - AccessPoliciesClientCreateOrUpdateOptions contains the optional parameters for the AccessPoliciesClient.CreateOrUpdate
+// method.
+func (client *AccessPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, parameters AccessPolicyEntity, options *AccessPoliciesClientCreateOrUpdateOptions) (AccessPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, accessPolicyName, parameters, options)
 	if err != nil {
-		return AccessPoliciesCreateOrUpdateResponse{}, err
+		return AccessPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessPoliciesCreateOrUpdateResponse{}, err
+		return AccessPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return AccessPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return AccessPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, parameters AccessPolicyEntity, options *AccessPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, parameters AccessPolicyEntity, options *AccessPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/accessPolicies/{accessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *AccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter accessPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessPolicyName}", url.PathEscape(accessPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,37 @@ func (client *AccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AccessPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (AccessPoliciesCreateOrUpdateResponse, error) {
-	result := AccessPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *AccessPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (AccessPoliciesClientCreateOrUpdateResponse, error) {
+	result := AccessPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyEntity); err != nil {
-		return AccessPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AccessPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AccessPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an existing access policy resource with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccessPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, options *AccessPoliciesDeleteOptions) (AccessPoliciesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// accessPolicyName - The Access Policy name.
+// options - AccessPoliciesClientDeleteOptions contains the optional parameters for the AccessPoliciesClient.Delete method.
+func (client *AccessPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, options *AccessPoliciesClientDeleteOptions) (AccessPoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, accessPolicyName, options)
 	if err != nil {
-		return AccessPoliciesDeleteResponse{}, err
+		return AccessPoliciesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessPoliciesDeleteResponse{}, err
+		return AccessPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AccessPoliciesDeleteResponse{}, client.deleteHandleError(resp)
+		return AccessPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessPoliciesDeleteResponse{RawResponse: resp}, nil
+	return AccessPoliciesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AccessPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, options *AccessPoliciesDeleteOptions) (*policy.Request, error) {
+func (client *AccessPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, options *AccessPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/accessPolicies/{accessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +152,7 @@ func (client *AccessPoliciesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter accessPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessPolicyName}", url.PathEscape(accessPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +163,29 @@ func (client *AccessPoliciesClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AccessPoliciesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves an existing access policy resource with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccessPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, options *AccessPoliciesGetOptions) (AccessPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// accessPolicyName - The Access Policy name.
+// options - AccessPoliciesClientGetOptions contains the optional parameters for the AccessPoliciesClient.Get method.
+func (client *AccessPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, options *AccessPoliciesClientGetOptions) (AccessPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, accessPolicyName, options)
 	if err != nil {
-		return AccessPoliciesGetResponse{}, err
+		return AccessPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessPoliciesGetResponse{}, err
+		return AccessPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessPoliciesGetResponse{}, client.getHandleError(resp)
+		return AccessPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccessPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, options *AccessPoliciesGetOptions) (*policy.Request, error) {
+func (client *AccessPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, options *AccessPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/accessPolicies/{accessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +203,7 @@ func (client *AccessPoliciesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter accessPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessPolicyName}", url.PathEscape(accessPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +215,33 @@ func (client *AccessPoliciesClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccessPoliciesClient) getHandleResponse(resp *http.Response) (AccessPoliciesGetResponse, error) {
-	result := AccessPoliciesGetResponse{RawResponse: resp}
+func (client *AccessPoliciesClient) getHandleResponse(resp *http.Response) (AccessPoliciesClientGetResponse, error) {
+	result := AccessPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyEntity); err != nil {
-		return AccessPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return AccessPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AccessPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Retrieves all existing access policy resources, along with their JSON representations.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccessPoliciesClient) List(resourceGroupName string, accountName string, options *AccessPoliciesListOptions) *AccessPoliciesListPager {
-	return &AccessPoliciesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// options - AccessPoliciesClientListOptions contains the optional parameters for the AccessPoliciesClient.List method.
+func (client *AccessPoliciesClient) List(resourceGroupName string, accountName string, options *AccessPoliciesClientListOptions) *AccessPoliciesClientListPager {
+	return &AccessPoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp AccessPoliciesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AccessPoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessPolicyEntityCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccessPoliciesListOptions) (*policy.Request, error) {
+func (client *AccessPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccessPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/accessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +255,7 @@ func (client *AccessPoliciesClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -285,46 +270,38 @@ func (client *AccessPoliciesClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessPoliciesClient) listHandleResponse(resp *http.Response) (AccessPoliciesListResponse, error) {
-	result := AccessPoliciesListResponse{RawResponse: resp}
+func (client *AccessPoliciesClient) listHandleResponse(resp *http.Response) (AccessPoliciesClientListResponse, error) {
+	result := AccessPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyEntityCollection); err != nil {
-		return AccessPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return AccessPoliciesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AccessPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates individual properties of an existing access policy resource with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccessPoliciesClient) Update(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, parameters AccessPolicyEntity, options *AccessPoliciesUpdateOptions) (AccessPoliciesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// accessPolicyName - The Access Policy name.
+// parameters - The request parameters
+// options - AccessPoliciesClientUpdateOptions contains the optional parameters for the AccessPoliciesClient.Update method.
+func (client *AccessPoliciesClient) Update(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, parameters AccessPolicyEntity, options *AccessPoliciesClientUpdateOptions) (AccessPoliciesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, accessPolicyName, parameters, options)
 	if err != nil {
-		return AccessPoliciesUpdateResponse{}, err
+		return AccessPoliciesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessPoliciesUpdateResponse{}, err
+		return AccessPoliciesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessPoliciesUpdateResponse{}, client.updateHandleError(resp)
+		return AccessPoliciesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AccessPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, parameters AccessPolicyEntity, options *AccessPoliciesUpdateOptions) (*policy.Request, error) {
+func (client *AccessPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, accessPolicyName string, parameters AccessPolicyEntity, options *AccessPoliciesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/accessPolicies/{accessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -342,7 +319,7 @@ func (client *AccessPoliciesClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter accessPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessPolicyName}", url.PathEscape(accessPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -354,23 +331,10 @@ func (client *AccessPoliciesClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AccessPoliciesClient) updateHandleResponse(resp *http.Response) (AccessPoliciesUpdateResponse, error) {
-	result := AccessPoliciesUpdateResponse{RawResponse: resp}
+func (client *AccessPoliciesClient) updateHandleResponse(resp *http.Response) (AccessPoliciesClientUpdateResponse, error) {
+	result := AccessPoliciesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyEntity); err != nil {
-		return AccessPoliciesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AccessPoliciesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *AccessPoliciesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

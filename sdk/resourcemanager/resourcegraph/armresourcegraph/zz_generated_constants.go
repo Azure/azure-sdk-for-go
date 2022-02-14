@@ -10,7 +10,7 @@ package armresourcegraph
 
 const (
 	moduleName    = "armresourcegraph"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.3.0"
 )
 
 // AuthorizationScopeFilter - Defines what level of authorization resources should be returned based on the which subscriptions

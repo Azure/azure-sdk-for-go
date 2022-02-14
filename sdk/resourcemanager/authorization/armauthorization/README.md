@@ -50,6 +50,12 @@ options = arm.ClientOptions{
 client := armauthorization.NewPermissionsClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Permissions](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/permissions)
+- [Role Assignment](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/role_assignment)
+- [Role Definition](https://aka.ms/azsdk/go/mgmt/samples?path=authorization/role_definition)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

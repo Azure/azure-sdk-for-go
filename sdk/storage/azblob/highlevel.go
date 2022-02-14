@@ -269,7 +269,7 @@ func (b BlobClient) DownloadBlobToWriterAt(ctx context.Context, offset int64, co
 			if err != nil {
 				return err
 			}
-			body := dr.Body(o.RetryReaderOptionsPerBlock)
+			body := dr.Body(&o.RetryReaderOptionsPerBlock)
 			if o.Progress != nil {
 				rangeProgress := int64(0)
 				body = streaming.NewResponseProgress(

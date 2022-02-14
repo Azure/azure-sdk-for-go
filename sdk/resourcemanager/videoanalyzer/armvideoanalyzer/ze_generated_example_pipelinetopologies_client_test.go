@@ -27,15 +27,19 @@ func ExamplePipelineTopologiesClient_List() {
 	client := armvideoanalyzer.NewPipelineTopologiesClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
-		&armvideoanalyzer.PipelineTopologiesListOptions{Filter: nil,
+		&armvideoanalyzer.PipelineTopologiesClientListOptions{Filter: nil,
 			Top: to.Int32Ptr(2),
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PipelineTopology.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExamplePipelineTopologiesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PipelineTopology.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelineTopologiesClientGetResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/pipeline-topology-create.json
@@ -72,34 +76,30 @@ func ExamplePipelineTopologiesClient_CreateOrUpdate() {
 		"<account-name>",
 		"<pipeline-topology-name>",
 		armvideoanalyzer.PipelineTopology{
-			Kind: armvideoanalyzer.KindLive.ToPtr(),
+			Kind: armvideoanalyzer.Kind("Live").ToPtr(),
 			Properties: &armvideoanalyzer.PipelineTopologyProperties{
 				Description: to.StringPtr("<description>"),
 				Parameters: []*armvideoanalyzer.ParameterDeclaration{
 					{
 						Name:        to.StringPtr("<name>"),
-						Type:        armvideoanalyzer.ParameterTypeString.ToPtr(),
+						Type:        armvideoanalyzer.ParameterType("String").ToPtr(),
 						Description: to.StringPtr("<description>"),
 						Default:     to.StringPtr("<default>"),
 					},
 					{
 						Name:        to.StringPtr("<name>"),
-						Type:        armvideoanalyzer.ParameterTypeSecretString.ToPtr(),
+						Type:        armvideoanalyzer.ParameterType("SecretString").ToPtr(),
 						Description: to.StringPtr("<description>"),
 						Default:     to.StringPtr("<default>"),
 					}},
 				Sinks: []armvideoanalyzer.SinkNodeBaseClassification{
 					&armvideoanalyzer.VideoSink{
-						SinkNodeBase: armvideoanalyzer.SinkNodeBase{
-							NodeBase: armvideoanalyzer.NodeBase{
-								Name: to.StringPtr("<name>"),
-								Type: to.StringPtr("<type>"),
-							},
-							Inputs: []*armvideoanalyzer.NodeInput{
-								{
-									NodeName: to.StringPtr("<node-name>"),
-								}},
-						},
+						Name: to.StringPtr("<name>"),
+						Type: to.StringPtr("<type>"),
+						Inputs: []*armvideoanalyzer.NodeInput{
+							{
+								NodeName: to.StringPtr("<node-name>"),
+							}},
 						VideoCreationProperties: &armvideoanalyzer.VideoCreationProperties{
 							Description:   to.StringPtr("<description>"),
 							SegmentLength: to.StringPtr("<segment-length>"),
@@ -113,37 +113,29 @@ func ExamplePipelineTopologiesClient_CreateOrUpdate() {
 					}},
 				Sources: []armvideoanalyzer.SourceNodeBaseClassification{
 					&armvideoanalyzer.RtspSource{
-						SourceNodeBase: armvideoanalyzer.SourceNodeBase{
-							NodeBase: armvideoanalyzer.NodeBase{
-								Name: to.StringPtr("<name>"),
-								Type: to.StringPtr("<type>"),
-							},
-						},
+						Name: to.StringPtr("<name>"),
+						Type: to.StringPtr("<type>"),
 						Endpoint: &armvideoanalyzer.UnsecuredEndpoint{
-							EndpointBase: armvideoanalyzer.EndpointBase{
-								Type: to.StringPtr("<type>"),
-								Credentials: &armvideoanalyzer.UsernamePasswordCredentials{
-									CredentialsBase: armvideoanalyzer.CredentialsBase{
-										Type: to.StringPtr("<type>"),
-									},
-									Password: to.StringPtr("<password>"),
-									Username: to.StringPtr("<username>"),
-								},
-								URL: to.StringPtr("<url>"),
+							Type: to.StringPtr("<type>"),
+							Credentials: &armvideoanalyzer.UsernamePasswordCredentials{
+								Type:     to.StringPtr("<type>"),
+								Password: to.StringPtr("<password>"),
+								Username: to.StringPtr("<username>"),
 							},
+							URL: to.StringPtr("<url>"),
 						},
-						Transport: armvideoanalyzer.RtspTransportHTTP.ToPtr(),
+						Transport: armvideoanalyzer.RtspTransport("Http").ToPtr(),
 					}},
 			},
 			SKU: &armvideoanalyzer.SKU{
-				Name: armvideoanalyzer.SKUNameLiveS1.ToPtr(),
+				Name: armvideoanalyzer.SKUName("Live_S1").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PipelineTopology.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelineTopologiesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/pipeline-topology-delete.json
@@ -185,5 +177,5 @@ func ExamplePipelineTopologiesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PipelineTopology.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelineTopologiesClientUpdateResult)
 }

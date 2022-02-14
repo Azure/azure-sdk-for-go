@@ -11,7 +11,6 @@ package armvideoanalyzer
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,46 +25,59 @@ import (
 // LivePipelinesClient contains the methods for the LivePipelines group.
 // Don't use this type directly, use NewLivePipelinesClient() instead.
 type LivePipelinesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLivePipelinesClient creates a new instance of LivePipelinesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLivePipelinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LivePipelinesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &LivePipelinesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LivePipelinesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // BeginActivate - Activates a live pipeline with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) BeginActivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesBeginActivateOptions) (LivePipelinesActivatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// livePipelineName - Live pipeline unique identifier.
+// options - LivePipelinesClientBeginActivateOptions contains the optional parameters for the LivePipelinesClient.BeginActivate
+// method.
+func (client *LivePipelinesClient) BeginActivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginActivateOptions) (LivePipelinesClientActivatePollerResponse, error) {
 	resp, err := client.activate(ctx, resourceGroupName, accountName, livePipelineName, options)
 	if err != nil {
-		return LivePipelinesActivatePollerResponse{}, err
+		return LivePipelinesClientActivatePollerResponse{}, err
 	}
-	result := LivePipelinesActivatePollerResponse{
+	result := LivePipelinesClientActivatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LivePipelinesClient.Activate", "", resp, client.pl, client.activateHandleError)
+	pt, err := armruntime.NewPoller("LivePipelinesClient.Activate", "", resp, client.pl)
 	if err != nil {
-		return LivePipelinesActivatePollerResponse{}, err
+		return LivePipelinesClientActivatePollerResponse{}, err
 	}
-	result.Poller = &LivePipelinesActivatePoller{
+	result.Poller = &LivePipelinesClientActivatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Activate - Activates a live pipeline with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) activate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesBeginActivateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LivePipelinesClient) activate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginActivateOptions) (*http.Response, error) {
 	req, err := client.activateCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +87,13 @@ func (client *LivePipelinesClient) activate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.activateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // activateCreateRequest creates the Activate request.
-func (client *LivePipelinesClient) activateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesBeginActivateOptions) (*policy.Request, error) {
+func (client *LivePipelinesClient) activateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginActivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines/{livePipelineName}/activate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,7 +111,7 @@ func (client *LivePipelinesClient) activateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter livePipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{livePipelineName}", url.PathEscape(livePipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,38 +122,31 @@ func (client *LivePipelinesClient) activateCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// activateHandleError handles the Activate error response.
-func (client *LivePipelinesClient) activateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdate - Creates a new live pipeline or updates an existing one, with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, parameters LivePipeline, options *LivePipelinesCreateOrUpdateOptions) (LivePipelinesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// livePipelineName - Live pipeline unique identifier.
+// parameters - The request parameters
+// options - LivePipelinesClientCreateOrUpdateOptions contains the optional parameters for the LivePipelinesClient.CreateOrUpdate
+// method.
+func (client *LivePipelinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, parameters LivePipeline, options *LivePipelinesClientCreateOrUpdateOptions) (LivePipelinesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, parameters, options)
 	if err != nil {
-		return LivePipelinesCreateOrUpdateResponse{}, err
+		return LivePipelinesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LivePipelinesCreateOrUpdateResponse{}, err
+		return LivePipelinesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return LivePipelinesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return LivePipelinesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LivePipelinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, parameters LivePipeline, options *LivePipelinesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LivePipelinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, parameters LivePipeline, options *LivePipelinesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines/{livePipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -159,7 +164,7 @@ func (client *LivePipelinesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter livePipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{livePipelineName}", url.PathEscape(livePipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,50 +176,42 @@ func (client *LivePipelinesClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LivePipelinesClient) createOrUpdateHandleResponse(resp *http.Response) (LivePipelinesCreateOrUpdateResponse, error) {
-	result := LivePipelinesCreateOrUpdateResponse{RawResponse: resp}
+func (client *LivePipelinesClient) createOrUpdateHandleResponse(resp *http.Response) (LivePipelinesClientCreateOrUpdateResponse, error) {
+	result := LivePipelinesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LivePipeline); err != nil {
-		return LivePipelinesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return LivePipelinesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LivePipelinesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeactivate - Deactivates a live pipeline with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) BeginDeactivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesBeginDeactivateOptions) (LivePipelinesDeactivatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// livePipelineName - Live pipeline unique identifier.
+// options - LivePipelinesClientBeginDeactivateOptions contains the optional parameters for the LivePipelinesClient.BeginDeactivate
+// method.
+func (client *LivePipelinesClient) BeginDeactivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginDeactivateOptions) (LivePipelinesClientDeactivatePollerResponse, error) {
 	resp, err := client.deactivate(ctx, resourceGroupName, accountName, livePipelineName, options)
 	if err != nil {
-		return LivePipelinesDeactivatePollerResponse{}, err
+		return LivePipelinesClientDeactivatePollerResponse{}, err
 	}
-	result := LivePipelinesDeactivatePollerResponse{
+	result := LivePipelinesClientDeactivatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LivePipelinesClient.Deactivate", "", resp, client.pl, client.deactivateHandleError)
+	pt, err := armruntime.NewPoller("LivePipelinesClient.Deactivate", "", resp, client.pl)
 	if err != nil {
-		return LivePipelinesDeactivatePollerResponse{}, err
+		return LivePipelinesClientDeactivatePollerResponse{}, err
 	}
-	result.Poller = &LivePipelinesDeactivatePoller{
+	result.Poller = &LivePipelinesClientDeactivatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Deactivate - Deactivates a live pipeline with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) deactivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesBeginDeactivateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LivePipelinesClient) deactivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginDeactivateOptions) (*http.Response, error) {
 	req, err := client.deactivateCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, options)
 	if err != nil {
 		return nil, err
@@ -224,13 +221,13 @@ func (client *LivePipelinesClient) deactivate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deactivateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deactivateCreateRequest creates the Deactivate request.
-func (client *LivePipelinesClient) deactivateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesBeginDeactivateOptions) (*policy.Request, error) {
+func (client *LivePipelinesClient) deactivateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginDeactivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines/{livePipelineName}/deactivate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -248,7 +245,7 @@ func (client *LivePipelinesClient) deactivateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter livePipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{livePipelineName}", url.PathEscape(livePipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -259,38 +256,29 @@ func (client *LivePipelinesClient) deactivateCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deactivateHandleError handles the Deactivate error response.
-func (client *LivePipelinesClient) deactivateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a live pipeline with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesDeleteOptions) (LivePipelinesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// livePipelineName - Live pipeline unique identifier.
+// options - LivePipelinesClientDeleteOptions contains the optional parameters for the LivePipelinesClient.Delete method.
+func (client *LivePipelinesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientDeleteOptions) (LivePipelinesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, options)
 	if err != nil {
-		return LivePipelinesDeleteResponse{}, err
+		return LivePipelinesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LivePipelinesDeleteResponse{}, err
+		return LivePipelinesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return LivePipelinesDeleteResponse{}, client.deleteHandleError(resp)
+		return LivePipelinesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return LivePipelinesDeleteResponse{RawResponse: resp}, nil
+	return LivePipelinesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LivePipelinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesDeleteOptions) (*policy.Request, error) {
+func (client *LivePipelinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines/{livePipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -308,7 +296,7 @@ func (client *LivePipelinesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter livePipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{livePipelineName}", url.PathEscape(livePipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,39 +307,30 @@ func (client *LivePipelinesClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LivePipelinesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Retrieves a specific live pipeline by name. If a live pipeline with that name has been previously created, the call will return the JSON representation
-// of that instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) Get(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesGetOptions) (LivePipelinesGetResponse, error) {
+// Get - Retrieves a specific live pipeline by name. If a live pipeline with that name has been previously created, the call
+// will return the JSON representation of that instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// livePipelineName - Live pipeline unique identifier.
+// options - LivePipelinesClientGetOptions contains the optional parameters for the LivePipelinesClient.Get method.
+func (client *LivePipelinesClient) Get(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientGetOptions) (LivePipelinesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, options)
 	if err != nil {
-		return LivePipelinesGetResponse{}, err
+		return LivePipelinesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LivePipelinesGetResponse{}, err
+		return LivePipelinesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LivePipelinesGetResponse{}, client.getHandleError(resp)
+		return LivePipelinesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LivePipelinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesGetOptions) (*policy.Request, error) {
+func (client *LivePipelinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines/{livePipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -369,7 +348,7 @@ func (client *LivePipelinesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter livePipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{livePipelineName}", url.PathEscape(livePipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -381,43 +360,33 @@ func (client *LivePipelinesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *LivePipelinesClient) getHandleResponse(resp *http.Response) (LivePipelinesGetResponse, error) {
-	result := LivePipelinesGetResponse{RawResponse: resp}
+func (client *LivePipelinesClient) getHandleResponse(resp *http.Response) (LivePipelinesClientGetResponse, error) {
+	result := LivePipelinesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LivePipeline); err != nil {
-		return LivePipelinesGetResponse{}, runtime.NewResponseError(err, resp)
+		return LivePipelinesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LivePipelinesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Retrieves a list of live pipelines that have been created, along with their JSON representations.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) List(resourceGroupName string, accountName string, options *LivePipelinesListOptions) *LivePipelinesListPager {
-	return &LivePipelinesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// options - LivePipelinesClientListOptions contains the optional parameters for the LivePipelinesClient.List method.
+func (client *LivePipelinesClient) List(resourceGroupName string, accountName string, options *LivePipelinesClientListOptions) *LivePipelinesClientListPager {
+	return &LivePipelinesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp LivePipelinesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LivePipelinesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LivePipelineCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *LivePipelinesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *LivePipelinesListOptions) (*policy.Request, error) {
+func (client *LivePipelinesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *LivePipelinesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -431,7 +400,7 @@ func (client *LivePipelinesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -449,48 +418,40 @@ func (client *LivePipelinesClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *LivePipelinesClient) listHandleResponse(resp *http.Response) (LivePipelinesListResponse, error) {
-	result := LivePipelinesListResponse{RawResponse: resp}
+func (client *LivePipelinesClient) listHandleResponse(resp *http.Response) (LivePipelinesClientListResponse, error) {
+	result := LivePipelinesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LivePipelineCollection); err != nil {
-		return LivePipelinesListResponse{}, runtime.NewResponseError(err, resp)
+		return LivePipelinesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *LivePipelinesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates an existing live pipeline with the given name. Properties that can be updated include: description, bitrateKbps, and parameter definitions.
-// Only the description can be updated while the live
+// Update - Updates an existing live pipeline with the given name. Properties that can be updated include: description, bitrateKbps,
+// and parameter definitions. Only the description can be updated while the live
 // pipeline is active.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LivePipelinesClient) Update(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, parameters LivePipelineUpdate, options *LivePipelinesUpdateOptions) (LivePipelinesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The Azure Video Analyzer account name.
+// livePipelineName - Live pipeline unique identifier.
+// parameters - The request parameters
+// options - LivePipelinesClientUpdateOptions contains the optional parameters for the LivePipelinesClient.Update method.
+func (client *LivePipelinesClient) Update(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, parameters LivePipelineUpdate, options *LivePipelinesClientUpdateOptions) (LivePipelinesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, parameters, options)
 	if err != nil {
-		return LivePipelinesUpdateResponse{}, err
+		return LivePipelinesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LivePipelinesUpdateResponse{}, err
+		return LivePipelinesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LivePipelinesUpdateResponse{}, client.updateHandleError(resp)
+		return LivePipelinesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *LivePipelinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, parameters LivePipelineUpdate, options *LivePipelinesUpdateOptions) (*policy.Request, error) {
+func (client *LivePipelinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, parameters LivePipelineUpdate, options *LivePipelinesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines/{livePipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -508,7 +469,7 @@ func (client *LivePipelinesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter livePipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{livePipelineName}", url.PathEscape(livePipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -520,23 +481,10 @@ func (client *LivePipelinesClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *LivePipelinesClient) updateHandleResponse(resp *http.Response) (LivePipelinesUpdateResponse, error) {
-	result := LivePipelinesUpdateResponse{RawResponse: resp}
+func (client *LivePipelinesClient) updateHandleResponse(resp *http.Response) (LivePipelinesClientUpdateResponse, error) {
+	result := LivePipelinesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LivePipeline); err != nil {
-		return LivePipelinesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return LivePipelinesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *LivePipelinesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

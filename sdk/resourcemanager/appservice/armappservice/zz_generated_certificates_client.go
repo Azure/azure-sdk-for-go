@@ -11,7 +11,6 @@ package armappservice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // CertificatesClient contains the methods for the Certificates group.
 // Don't use this type directly, use NewCertificatesClient() instead.
 type CertificatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCertificatesClient creates a new instance of CertificatesClient with the specified values.
+// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &CertificatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CertificatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // CreateOrUpdate - Description for Create or update a certificate.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, certificateEnvelope Certificate, options *CertificatesCreateOrUpdateOptions) (CertificatesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the certificate.
+// certificateEnvelope - Details of certificate, if it exists already.
+// options - CertificatesClientCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.CreateOrUpdate
+// method.
+func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, certificateEnvelope AppCertificate, options *CertificatesClientCreateOrUpdateOptions) (CertificatesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, certificateEnvelope, options)
 	if err != nil {
-		return CertificatesCreateOrUpdateResponse{}, err
+		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificatesCreateOrUpdateResponse{}, err
+		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificatesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CertificatesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, certificateEnvelope Certificate, options *CertificatesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, certificateEnvelope AppCertificate, options *CertificatesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,58 +86,48 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, certificateEnvelope)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Response) (CertificatesCreateOrUpdateResponse, error) {
-	result := CertificatesCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificatesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Response) (CertificatesClientCreateOrUpdateResponse, error) {
+	result := CertificatesClientCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
+		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CertificatesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Description for Delete a certificate.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName string, name string, options *CertificatesDeleteOptions) (CertificatesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the certificate.
+// options - CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
+func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName string, name string, options *CertificatesClientDeleteOptions) (CertificatesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CertificatesDeleteResponse{}, err
+		return CertificatesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificatesDeleteResponse{}, err
+		return CertificatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CertificatesDeleteResponse{}, client.deleteHandleError(resp)
+		return CertificatesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificatesDeleteResponse{RawResponse: resp}, nil
+	return CertificatesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *CertificatesDeleteOptions) (*policy.Request, error) {
+func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *CertificatesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -139,49 +141,39 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CertificatesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Description for Get a certificate.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, name string, options *CertificatesGetOptions) (CertificatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the certificate.
+// options - CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
+func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, name string, options *CertificatesClientGetOptions) (CertificatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CertificatesGetResponse{}, err
+		return CertificatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificatesGetResponse{}, err
+		return CertificatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificatesGetResponse{}, client.getHandleError(resp)
+		return CertificatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *CertificatesGetOptions) (*policy.Request, error) {
+func (client *CertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *CertificatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -195,66 +187,54 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CertificatesClient) getHandleResponse(resp *http.Response) (CertificatesGetResponse, error) {
-	result := CertificatesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificatesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *CertificatesClient) getHandleResponse(resp *http.Response) (CertificatesClientGetResponse, error) {
+	result := CertificatesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
+		return CertificatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CertificatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Description for Get all certificates for a subscription.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) List(options *CertificatesListOptions) *CertificatesListPager {
-	return &CertificatesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+func (client *CertificatesClient) List(options *CertificatesClientListOptions) *CertificatesClientListPager {
+	return &CertificatesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp CertificatesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateCollection.NextLink)
+		advancer: func(ctx context.Context, resp CertificatesClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppCertificateCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CertificatesClient) listCreateRequest(ctx context.Context, options *CertificatesListOptions) (*policy.Request, error) {
+func (client *CertificatesClient) listCreateRequest(ctx context.Context, options *CertificatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
@@ -266,43 +246,33 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *CertificatesClient) listHandleResponse(resp *http.Response) (CertificatesListResponse, error) {
-	result := CertificatesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
-		return CertificatesListResponse{}, runtime.NewResponseError(err, resp)
+func (client *CertificatesClient) listHandleResponse(resp *http.Response) (CertificatesClientListResponse, error) {
+	result := CertificatesClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificateCollection); err != nil {
+		return CertificatesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *CertificatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Description for Get all certificates in a resource group.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) ListByResourceGroup(resourceGroupName string, options *CertificatesListByResourceGroupOptions) *CertificatesListByResourceGroupPager {
-	return &CertificatesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// options - CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.ListByResourceGroup
+// method.
+func (client *CertificatesClient) ListByResourceGroup(resourceGroupName string, options *CertificatesClientListByResourceGroupOptions) *CertificatesClientListByResourceGroupPager {
+	return &CertificatesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp CertificatesListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateCollection.NextLink)
+		advancer: func(ctx context.Context, resp CertificatesClientListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppCertificateCollection.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *CertificatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CertificatesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *CertificatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CertificatesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -312,58 +282,49 @@ func (client *CertificatesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *CertificatesClient) listByResourceGroupHandleResponse(resp *http.Response) (CertificatesListByResourceGroupResponse, error) {
-	result := CertificatesListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
-		return CertificatesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *CertificatesClient) listByResourceGroupHandleResponse(resp *http.Response) (CertificatesClientListByResourceGroupResponse, error) {
+	result := CertificatesClientListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificateCollection); err != nil {
+		return CertificatesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *CertificatesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Description for Create or update a certificate.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) Update(ctx context.Context, resourceGroupName string, name string, certificateEnvelope CertificatePatchResource, options *CertificatesUpdateOptions) (CertificatesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// name - Name of the certificate.
+// certificateEnvelope - Details of certificate, if it exists already.
+// options - CertificatesClientUpdateOptions contains the optional parameters for the CertificatesClient.Update method.
+func (client *CertificatesClient) Update(ctx context.Context, resourceGroupName string, name string, certificateEnvelope AppCertificatePatchResource, options *CertificatesClientUpdateOptions) (CertificatesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, certificateEnvelope, options)
 	if err != nil {
-		return CertificatesUpdateResponse{}, err
+		return CertificatesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificatesUpdateResponse{}, err
+		return CertificatesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificatesUpdateResponse{}, client.updateHandleError(resp)
+		return CertificatesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, certificateEnvelope CertificatePatchResource, options *CertificatesUpdateOptions) (*policy.Request, error) {
+func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, certificateEnvelope AppCertificatePatchResource, options *CertificatesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -377,35 +338,22 @@ func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, certificateEnvelope)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CertificatesClient) updateHandleResponse(resp *http.Response) (CertificatesUpdateResponse, error) {
-	result := CertificatesUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificatesUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *CertificatesClient) updateHandleResponse(resp *http.Response) (CertificatesClientUpdateResponse, error) {
+	result := CertificatesClientUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppCertificate); err != nil {
+		return CertificatesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *CertificatesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

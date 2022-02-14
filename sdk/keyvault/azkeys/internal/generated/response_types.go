@@ -213,18 +213,6 @@ type KeyVaultClientEncryptResult struct {
 	KeyOperationResult
 }
 
-// KeyVaultClientExportResponse contains the response from method KeyVaultClient.Export.
-type KeyVaultClientExportResponse struct {
-	KeyVaultClientExportResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientExportResult contains the result from method KeyVaultClient.Export.
-type KeyVaultClientExportResult struct {
-	KeyBundle
-}
-
 // KeyVaultClientGetDeletedKeyResponse contains the response from method KeyVaultClient.GetDeletedKey.
 type KeyVaultClientGetDeletedKeyResponse struct {
 	KeyVaultClientGetDeletedKeyResult

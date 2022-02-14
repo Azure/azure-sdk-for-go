@@ -29,13 +29,17 @@ func ExampleEdgeModulesClient_List() {
 	client := armvideoanalyzer.NewEdgeModulesClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
-		&armvideoanalyzer.EdgeModulesListOptions{Top: nil})
-	for pager.NextPage(ctx) {
+		&armvideoanalyzer.EdgeModulesClientListOptions{Top: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("EdgeModuleEntity.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleEdgeModulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("EdgeModuleEntity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EdgeModulesClientGetResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/edge-modules-create.json
@@ -76,7 +80,7 @@ func ExampleEdgeModulesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("EdgeModuleEntity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EdgeModulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/edge-modules-delete.json
@@ -105,7 +109,7 @@ func ExampleEdgeModulesClient_ListProvisioningToken() {
 	}
 	ctx := context.Background()
 	client := armvideoanalyzer.NewEdgeModulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListProvisioningToken(ctx,
+	res, err := client.ListProvisioningToken(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<edge-module-name>",
@@ -116,4 +120,5 @@ func ExampleEdgeModulesClient_ListProvisioningToken() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.EdgeModulesClientListProvisioningTokenResult)
 }

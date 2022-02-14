@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListDeletedWebAppsByLocation.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListDeletedWebAppsByLocation.json
 func ExampleDeletedWebAppsClient_ListByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,17 +26,21 @@ func ExampleDeletedWebAppsClient_ListByLocation() {
 	client := armappservice.NewDeletedWebAppsClient("<subscription-id>", cred, nil)
 	pager := client.ListByLocation("<location>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DeletedSite.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetDeletedWebAppByLocation.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetDeletedWebAppByLocation.json
 func ExampleDeletedWebAppsClient_GetDeletedWebAppByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,5 +55,5 @@ func ExampleDeletedWebAppsClient_GetDeletedWebAppByLocation() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeletedSite.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DeletedWebAppsClientGetDeletedWebAppByLocationResult)
 }

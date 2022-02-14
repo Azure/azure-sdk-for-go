@@ -11,7 +11,6 @@ package armcdn
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,76 +24,73 @@ import (
 // ValidateClient contains the methods for the Validate group.
 // Don't use this type directly, use NewValidateClient() instead.
 type ValidateClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewValidateClient creates a new instance of ValidateClient with the specified values.
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewValidateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ValidateClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &ValidateClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ValidateClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Secret - Validate a Secret in the profile.
-// If the operation fails it returns the *AfdErrorResponse error type.
-func (client *ValidateClient) Secret(ctx context.Context, validateSecretInput ValidateSecretInput, options *ValidateSecretOptions) (ValidateSecretResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// validateSecretInput - The Secret source.
+// options - ValidateClientSecretOptions contains the optional parameters for the ValidateClient.Secret method.
+func (client *ValidateClient) Secret(ctx context.Context, validateSecretInput ValidateSecretInput, options *ValidateClientSecretOptions) (ValidateClientSecretResponse, error) {
 	req, err := client.secretCreateRequest(ctx, validateSecretInput, options)
 	if err != nil {
-		return ValidateSecretResponse{}, err
+		return ValidateClientSecretResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ValidateSecretResponse{}, err
+		return ValidateClientSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ValidateSecretResponse{}, client.secretHandleError(resp)
+		return ValidateClientSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.secretHandleResponse(resp)
 }
 
 // secretCreateRequest creates the Secret request.
-func (client *ValidateClient) secretCreateRequest(ctx context.Context, validateSecretInput ValidateSecretInput, options *ValidateSecretOptions) (*policy.Request, error) {
+func (client *ValidateClient) secretCreateRequest(ctx context.Context, validateSecretInput ValidateSecretInput, options *ValidateClientSecretOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateSecret"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, validateSecretInput)
 }
 
 // secretHandleResponse handles the Secret response.
-func (client *ValidateClient) secretHandleResponse(resp *http.Response) (ValidateSecretResponse, error) {
-	result := ValidateSecretResponse{RawResponse: resp}
+func (client *ValidateClient) secretHandleResponse(resp *http.Response) (ValidateClientSecretResponse, error) {
+	result := ValidateClientSecretResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateSecretOutput); err != nil {
-		return ValidateSecretResponse{}, runtime.NewResponseError(err, resp)
+		return ValidateClientSecretResponse{}, err
 	}
 	return result, nil
-}
-
-// secretHandleError handles the Secret error response.
-func (client *ValidateClient) secretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AfdErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

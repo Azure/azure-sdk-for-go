@@ -6,10 +6,15 @@ package atom
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-func NewResponseError(inner error, resp *http.Response) error {
-	return ResponseError{inner, resp}
+func NewResponseError(resp *http.Response) error {
+	return &azcore.ResponseError{
+		StatusCode:  resp.StatusCode,
+		RawResponse: resp,
+	}
 }
 
 // ResponseError conforms to the older azcore.HTTPResponse

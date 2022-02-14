@@ -40,7 +40,7 @@ type UsernamePasswordCredential struct {
 // clientID: The ID of the application users will authenticate to.
 // username: A username (typically an email address).
 // password: That user's password.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *UsernamePasswordCredentialOptions) (*UsernamePasswordCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)

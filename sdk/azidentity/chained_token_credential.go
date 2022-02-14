@@ -35,7 +35,7 @@ type ChainedTokenCredential struct {
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
 // sources: Credential instances to comprise the chain. GetToken() will invoke them in the given order.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
 		return nil, errors.New("sources must contain at least one TokenCredential")

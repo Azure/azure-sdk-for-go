@@ -655,6 +655,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	for i, expectedTopic := range expectedSubscriptions {
 		props, exists := all[expectedTopic]
 		require.True(t, exists)
+		require.Equal(t, topicName, props.TopicName)
 		require.EqualValues(t, time.Duration(i+1)*time.Minute, *props.DefaultMessageTimeToLive)
 	}
 }

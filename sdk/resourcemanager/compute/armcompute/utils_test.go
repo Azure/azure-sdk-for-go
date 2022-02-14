@@ -87,14 +87,22 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 
 func (r *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(r.t) {
-		originalURLHost := req.Raw().URL.Host
+		oriSchema := req.Raw().URL.Scheme
+		oriHost := req.Raw().URL.Host
 		req.Raw().URL.Scheme = r.Scheme()
 		req.Raw().URL.Host = r.Host()
 		req.Raw().Host = r.Host()
 
-		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", r.Scheme(), originalURLHost))
+		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", oriSchema, oriHost))
 		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
 		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(r.t))
+
+		resp, err = req.Next()
+		if resp != nil {
+			resp.Request.URL.Scheme = oriSchema
+			resp.Request.URL.Host = oriHost
+		}
+		return resp, err
 	}
 	return req.Next()
 }

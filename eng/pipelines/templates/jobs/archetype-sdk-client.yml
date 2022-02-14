@@ -19,7 +19,7 @@ parameters:
     default: 'Public'
   - name: SupportedClouds
     type: string
-    default: 'Public,UsGov,China'
+    default: 'Public'
   - name: UnsupportedClouds
     type: string
     default: ''
@@ -150,7 +150,7 @@ stages:
   - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
     - ${{ each cloud in parameters.CloudConfig }}:
       # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
-      - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+      - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
         - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
           - stage: ${{ cloud.key }}
             displayName: Live Test ${{ cloud.key }}
@@ -189,7 +189,7 @@ stages:
                   Cloud: ${{ cloud.key }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), not(contains(variables['Build.DefinitionName'], 'weekly')), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-go-release.yml
       parameters:
         DependsOn:

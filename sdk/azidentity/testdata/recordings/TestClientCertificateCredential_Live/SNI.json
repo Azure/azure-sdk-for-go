@@ -4,12 +4,9 @@
       "RequestUri": "https://login.microsoftonline.com/common/discovery/instance?api-version=1.1\u0026authorization_endpoint=https%3A%2F%2Flogin.microsoftonline.com%2Ffake-tenant%2Foauth2%2Fv2.0%2Fauthorize",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/common/discovery/instance?api-version=1.1\u0026authorization_endpoint=https%3A%2F%2Flogin.microsoftonline.com%2Ffake-tenant%2Foauth2%2Fv2.0%2Fauthorize",
-        ":scheme": "https",
         "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-azidentity/v0.12.1 azsdk-go-azcore/v0.21.0 (go1.16.7; linux)"
+        "User-Agent": "azsdk-go-azidentity/v0.13.1 azsdk-go-azcore/v0.21.0 (go1.17.6; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -17,19 +14,19 @@
         "Access-Control-Allow-Methods": "GET, OPTIONS",
         "Access-Control-Allow-Origin": "*",
         "Cache-Control": "max-age=86400, private",
-        "Content-Length": "980",
+        "Content-Length": "955",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 23:25:05 GMT",
+        "Date": "Mon, 24 Jan 2022 22:41:10 GMT",
         "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
         "Set-Cookie": [
-          "fpc=AsjBzdusnntBo5pkOcHF3mVKXQmMAgAAAB-GJ9kOAAAA6Q6LwgQAAACfgifZDgAAAA; expires=Fri, 17-Dec-2021 23:25:05 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "fpc=Ak0y6QLJ6d1DnAxcmiQedwBKXQmMAgAAAAUigdkOAAAA; expires=Wed, 23-Feb-2022 22:41:10 GMT; path=/; secure; HttpOnly; SameSite=None",
           "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
           "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
         ],
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-ests-server": "2.1.12231.7 - WUS2 ProdSlices",
-        "x-ms-request-id": "577ddc1c-2667-41de-8a47-67afddfd6f01"
+        "x-ms-ests-server": "2.1.12261.22 - EUS ProdSlices",
+        "x-ms-request-id": "69990d5e-d115-44af-92d0-8728ff0e8800"
       },
       "ResponseBody": {
         "tenant_discovery_endpoint": "https://login.microsoftonline.com/fake-tenant/v2.0/.well-known/openid-configuration",
@@ -82,12 +79,9 @@
       "RequestUri": "https://login.microsoftonline.com/fake-tenant/v2.0/.well-known/openid-configuration",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/fake-tenant/v2.0/.well-known/openid-configuration",
-        ":scheme": "https",
         "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-azidentity/v0.12.1 azsdk-go-azcore/v0.21.0 (go1.16.7; linux)"
+        "User-Agent": "azsdk-go-azidentity/v0.13.1 azsdk-go-azcore/v0.21.0 (go1.17.6; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -95,19 +89,19 @@
         "Access-Control-Allow-Methods": "GET, OPTIONS",
         "Access-Control-Allow-Origin": "*",
         "Cache-Control": "max-age=86400, private",
-        "Content-Length": "1753",
+        "Content-Length": "1578",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 23:25:05 GMT",
+        "Date": "Mon, 24 Jan 2022 22:41:10 GMT",
         "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
         "Set-Cookie": [
-          "fpc=AsjBzdusnntBo5pkOcHF3mVKXQmMAgAAAB-GJ9kOAAAA6Q6LwgQAAACfgifZDgAAAA; expires=Fri, 17-Dec-2021 23:25:05 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "fpc=Ak0y6QLJ6d1DnAxcmiQedwBKXQmMAgAAAAUigdkOAAAA; expires=Wed, 23-Feb-2022 22:41:11 GMT; path=/; secure; HttpOnly; SameSite=None",
           "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
           "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
         ],
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-ests-server": "2.1.12231.7 - NCUS ProdSlices",
-        "x-ms-request-id": "e02afc42-fd18-4135-94d4-2f1066f1fc00"
+        "x-ms-ests-server": "2.1.12261.22 - NCUS ProdSlices",
+        "x-ms-request-id": "61c77800-294d-4552-af47-859469fcae00"
       },
       "ResponseBody": {
         "token_endpoint": "https://login.microsoftonline.com/fake-tenant/oauth2/v2.0/token",
@@ -181,14 +175,11 @@
       "RequestUri": "https://login.microsoftonline.com/fake-tenant/oauth2/v2.0/token",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/fake-tenant/oauth2/v2.0/token",
-        ":scheme": "https",
         "Accept-Encoding": "gzip",
         "Content-Length": "2",
         "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-        "User-Agent": "azsdk-go-azidentity/v0.12.1 azsdk-go-azcore/v0.21.0 (go1.16.7; linux)"
+        "User-Agent": "azsdk-go-azidentity/v0.13.1 azsdk-go-azcore/v0.21.0 (go1.17.6; linux)"
       },
       "RequestBody": {},
       "StatusCode": 200,
@@ -196,19 +187,19 @@
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "89",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 23:25:05 GMT",
+        "Date": "Mon, 24 Jan 2022 22:41:10 GMT",
         "Expires": "-1",
         "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
         "Pragma": "no-cache",
         "Set-Cookie": [
-          "fpc=AsjBzdusnntBo5pkOcHF3mVKXQmMAwAAAB-GJ9kOAAAA6Q6LwgQAAACfgifZDgAAAA; expires=Fri, 17-Dec-2021 23:25:05 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "fpc=Ak0y6QLJ6d1DnAxcmiQedwBKXQmMAwAAAAUigdkOAAAA; expires=Wed, 23-Feb-2022 22:41:11 GMT; path=/; secure; HttpOnly; SameSite=None",
           "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
           "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
         ],
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-ests-server": "2.1.12231.7 - WUS2 ProdSlices",
-        "x-ms-request-id": "ffd89004-21f9-46c0-88ce-250176d58200"
+        "x-ms-ests-server": "2.1.12261.22 - SCUS ProdSlices",
+        "x-ms-request-id": "8cba3351-104c-46eb-a7f8-cb7b8b47d800"
       },
       "ResponseBody": {
         "token_type": "Bearer",

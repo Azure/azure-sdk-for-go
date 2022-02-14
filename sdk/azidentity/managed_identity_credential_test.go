@@ -164,6 +164,22 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 	}
 }
 
+func TestManagedIdentityCredential_CloudShellUserAssigned(t *testing.T) {
+	setEnvironmentVariables(t, map[string]string{msiEndpoint: "http://localhost"})
+	for _, id := range []ManagedIDKind{ClientID("client-id"), ResourceID("/resource/id")} {
+		options := ManagedIdentityCredentialOptions{ID: id}
+		msiCred, err := NewManagedIdentityCredential(&options)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+		var authErr AuthenticationFailedError
+		if !errors.As(err, &authErr) {
+			t.Fatal("expected AuthenticationFailedError")
+		}
+	}
+}
+
 func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock_windows(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()

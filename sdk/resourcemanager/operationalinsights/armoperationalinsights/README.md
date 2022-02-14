@@ -50,6 +50,12 @@ options = arm.ClientOptions{
 client := armoperationalinsights.NewStorageInsightConfigsClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Data Source](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/datasource)
+- [Workspace Purge](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/workspace_purge)
+- [Workspace](https://aka.ms/azsdk/go/mgmt/samples?path=operationalinsights/workspaces)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

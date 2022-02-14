@@ -50,6 +50,16 @@ options = arm.ClientOptions{
 client := armsql.NewInstanceFailoverGroupsClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Database](https://aka.ms/azsdk/go/mgmt/samples?path=sql/database)
+- [Elastic Pool](https://aka.ms/azsdk/go/mgmt/samples?path=sql/elastic_pool)
+- [Failover Group](https://aka.ms/azsdk/go/mgmt/samples?path=sql/failover_group)
+- [Firewall Rule](https://aka.ms/azsdk/go/mgmt/samples?path=sql/firewall_rule)
+- [Job](https://aka.ms/azsdk/go/mgmt/samples?path=sql/job)
+- [Server](https://aka.ms/azsdk/go/mgmt/samples?path=sql/server)
+- [Sync](https://aka.ms/azsdk/go/mgmt/samples?path=sql/sync)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

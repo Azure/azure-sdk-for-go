@@ -20,6 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+const credNameAzureCLI = "AzureCLICredential"
+
 // used by tests to fake invoking the CLI
 type azureCLITokenProvider func(ctx context.Context, resource string, tenantID string) ([]byte, error)
 
@@ -65,13 +67,13 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
-		return nil, errors.New("this credential requires exactly one scope per token request")
+		return nil, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
 	}
 	// CLI expects an AAD v1 resource, not a v2 scope
 	scope := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, scope)
 	if err != nil {
-		addGetTokenFailureLogs("Azure CLI Credential", err, true)
+		addGetTokenFailureLogs(credNameAzureCLI, err, true)
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)
@@ -96,7 +98,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 			return nil, err
 		}
 		if !match {
-			return nil, fmt.Errorf(`unexpected scope "%s". Only alphanumeric characters and ".", ";", "-", and "/" are allowed`, resource)
+			return nil, fmt.Errorf(`%s: unexpected scope "%s". Only alphanumeric characters and ".", ";", "-", and "/" are allowed`, credNameAzureCLI, resource)
 		}
 
 		ctx, cancel := context.WithTimeout(ctx, timeoutCLIRequest)
@@ -110,7 +112,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 		if runtime.GOOS == "windows" {
 			dir := os.Getenv("SYSTEMROOT")
 			if dir == "" {
-				return nil, errors.New("environment variable 'SYSTEMROOT' has no value")
+				return nil, newCredentialUnavailableError(credNameAzureCLI, "environment variable 'SYSTEMROOT' has no value")
 			}
 			cliCmd = exec.CommandContext(ctx, "cmd.exe", "/c", commandLine)
 			cliCmd.Dir = dir
@@ -125,11 +127,14 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 		output, err := cliCmd.Output()
 		if err != nil {
 			msg := stderr.String()
+			var exErr *exec.ExitError
+			if errors.As(err, &exErr); exErr.ExitCode() == 127 || strings.HasPrefix(msg, "'az' is not recognized") {
+				msg = "Azure CLI not found on path"
+			}
 			if msg == "" {
-				// if there's no output in stderr report the error message instead
 				msg = err.Error()
 			}
-			return nil, newCredentialUnavailableError("Azure CLI Credential", msg)
+			return nil, newCredentialUnavailableError(credNameAzureCLI, msg)
 		}
 
 		return output, nil

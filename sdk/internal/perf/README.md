@@ -22,7 +22,7 @@ The `perf` sub-module provides a singular framework for writing performance test
 
 5. Implement the `PerfTest` interface on the struct returned from the `NewPerfTest` method. Add a `Run(context.Context)` and a `Cleanup(context.Context)` function. The `Run` method is the method you want to measure the performance of. The `Cleanup` method is for cleaning up within a single `goroutine`, most of the time this will be empty.
 
-6. Create a main package that uses the `perf.Run` function to provide all the global constructor methods. `perf.Run` takes a map[string]MapInterface
+6. Create a main package that uses the `perf.Run` function to provide all the global constructor methods. `perf.Run` takes a map[string]PerfMethods
 
 6. (Optional): Create a method that registers local flags.
 
@@ -39,7 +39,7 @@ func uploadTestRegister() {
 }
 
 func main() {
-	perf.Run(map[string]perf.MapInterface{
+	perf.Run(map[string]perf.PerfMethods{
 		"UploadBlobTest":   {Register: uploadTestRegister, New: NewUploadTest},
 		"ListBlobTest":     {Register: listTestRegister, New: NewListTest},
 		"DownloadBlobTest": {Register: downloadTestRegister, New: NewDownloadTest},
@@ -173,7 +173,7 @@ import (
 )
 
 func main() {
-	perf.Run(map[string]perf.MapInterface{
+	perf.Run(map[string]perf.PerfMethods{
 		"UploadBlobTest":   {Register: uploadTestRegister, New: NewUploadTest},
 		"ListBlobTest":     {Register: listTestRegister, New: NewListTest},
 		"DownloadBlobTest": {Register: downloadTestRegister, New: NewDownloadTest},
@@ -223,7 +223,7 @@ package main
 import "github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 
 func main() {
-	perf.Run(map[string]perf.MapInterface{
+	perf.Run(map[string]perf.PerfMethods{
 		"UploadBlobTest":   {Register: uploadTestRegister, New: NewUploadTest},
 		"ListBlobTest":     {Register: listTestRegister, New: NewListTest},
 		"DownloadBlobTest": {Register: downloadTestRegister, New: NewDownloadTest},

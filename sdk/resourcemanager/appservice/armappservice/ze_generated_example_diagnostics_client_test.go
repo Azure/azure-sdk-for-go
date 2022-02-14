@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
 func ExampleDiagnosticsClient_ListHostingEnvironmentDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,17 +27,21 @@ func ExampleDiagnosticsClient_ListHostingEnvironmentDetectorResponses() {
 	pager := client.ListHostingEnvironmentDetectorResponses("<resource-group-name>",
 		"<name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DetectorResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
 func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,17 +53,17 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 		"<resource-group-name>",
 		"<name>",
 		"<detector-name>",
-		&armappservice.DiagnosticsGetHostingEnvironmentDetectorResponseOptions{StartTime: nil,
+		&armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DetectorResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetHostingEnvironmentDetectorResponseResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListSiteDetectorResponses.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDetectorResponses.json
 func ExampleDiagnosticsClient_ListSiteDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,17 +74,21 @@ func ExampleDiagnosticsClient_ListSiteDetectorResponses() {
 	pager := client.ListSiteDetectorResponses("<resource-group-name>",
 		"<site-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DetectorResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetSiteDetectorResponse.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteDetectorResponse.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,17 +100,17 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse() {
 		"<resource-group-name>",
 		"<site-name>",
 		"<detector-name>",
-		&armappservice.DiagnosticsGetSiteDetectorResponseOptions{StartTime: nil,
+		&armappservice.DiagnosticsClientGetSiteDetectorResponseOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DetectorResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetSiteDetectorResponseResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
 func ExampleDiagnosticsClient_ListSiteDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,17 +121,21 @@ func ExampleDiagnosticsClient_ListSiteDiagnosticCategories() {
 	pager := client.ListSiteDiagnosticCategories("<resource-group-name>",
 		"<site-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DiagnosticCategory.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,10 +151,10 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticCategory.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetSiteDiagnosticCategoryResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListSiteAnalyses.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteAnalyses.json
 func ExampleDiagnosticsClient_ListSiteAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,17 +166,21 @@ func ExampleDiagnosticsClient_ListSiteAnalyses() {
 		"<site-name>",
 		"<diagnostic-category>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AnalysisDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetSiteAnalysis.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteAnalysis.json
 func ExampleDiagnosticsClient_GetSiteAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,10 +197,10 @@ func ExampleDiagnosticsClient_GetSiteAnalysis() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AnalysisDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetSiteAnalysisResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ExecuteSiteAnalysis.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ExecuteSiteAnalysis.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,17 +213,17 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis() {
 		"<site-name>",
 		"<diagnostic-category>",
 		"<analysis-name>",
-		&armappservice.DiagnosticsExecuteSiteAnalysisOptions{StartTime: nil,
+		&armappservice.DiagnosticsClientExecuteSiteAnalysisOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticAnalysis.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientExecuteSiteAnalysisResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListSiteDetectors.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDetectors.json
 func ExampleDiagnosticsClient_ListSiteDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,17 +235,21 @@ func ExampleDiagnosticsClient_ListSiteDetectors() {
 		"<site-name>",
 		"<diagnostic-category>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DetectorDefinitionResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetSiteDetector.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteDetector.json
 func ExampleDiagnosticsClient_GetSiteDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,10 +266,10 @@ func ExampleDiagnosticsClient_GetSiteDetector() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DetectorDefinitionResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetSiteDetectorResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ExecuteSiteDetector.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ExecuteSiteDetector.json
 func ExampleDiagnosticsClient_ExecuteSiteDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,17 +282,17 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector() {
 		"<site-name>",
 		"<detector-name>",
 		"<diagnostic-category>",
-		&armappservice.DiagnosticsExecuteSiteDetectorOptions{StartTime: nil,
+		&armappservice.DiagnosticsClientExecuteSiteDetectorOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticDetectorResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientExecuteSiteDetectorResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListSiteDetectorResponses.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDetectorResponses.json
 func ExampleDiagnosticsClient_ListSiteDetectorResponsesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,17 +304,21 @@ func ExampleDiagnosticsClient_ListSiteDetectorResponsesSlot() {
 		"<site-name>",
 		"<slot>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DetectorResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetSiteDetectorResponse.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteDetectorResponse.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,17 +331,17 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot() {
 		"<site-name>",
 		"<detector-name>",
 		"<slot>",
-		&armappservice.DiagnosticsGetSiteDetectorResponseSlotOptions{StartTime: nil,
+		&armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DetectorResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetSiteDetectorResponseSlotResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
 func ExampleDiagnosticsClient_ListSiteDiagnosticCategoriesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -329,17 +353,21 @@ func ExampleDiagnosticsClient_ListSiteDiagnosticCategoriesSlot() {
 		"<site-name>",
 		"<slot>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DiagnosticCategory.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,10 +384,10 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticCategory.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetSiteDiagnosticCategorySlotResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListSiteAnalyses.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteAnalyses.json
 func ExampleDiagnosticsClient_ListSiteAnalysesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,17 +400,21 @@ func ExampleDiagnosticsClient_ListSiteAnalysesSlot() {
 		"<diagnostic-category>",
 		"<slot>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AnalysisDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetSiteAnalysis.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteAnalysis.json
 func ExampleDiagnosticsClient_GetSiteAnalysisSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,10 +432,10 @@ func ExampleDiagnosticsClient_GetSiteAnalysisSlot() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AnalysisDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetSiteAnalysisSlotResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ExecuteSiteAnalysis.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ExecuteSiteAnalysis.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,17 +449,17 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot() {
 		"<diagnostic-category>",
 		"<analysis-name>",
 		"<slot>",
-		&armappservice.DiagnosticsExecuteSiteAnalysisSlotOptions{StartTime: nil,
+		&armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticAnalysis.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientExecuteSiteAnalysisSlotResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ListSiteDetectors.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDetectors.json
 func ExampleDiagnosticsClient_ListSiteDetectorsSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,17 +472,21 @@ func ExampleDiagnosticsClient_ListSiteDetectorsSlot() {
 		"<diagnostic-category>",
 		"<slot>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DetectorDefinitionResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_GetSiteDetector.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteDetector.json
 func ExampleDiagnosticsClient_GetSiteDetectorSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,10 +504,10 @@ func ExampleDiagnosticsClient_GetSiteDetectorSlot() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DetectorDefinitionResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientGetSiteDetectorSlotResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/Diagnostics_ExecuteSiteDetector.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ExecuteSiteDetector.json
 func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,12 +521,12 @@ func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot() {
 		"<detector-name>",
 		"<diagnostic-category>",
 		"<slot>",
-		&armappservice.DiagnosticsExecuteSiteDetectorSlotOptions{StartTime: nil,
+		&armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticDetectorResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticsClientExecuteSiteDetectorSlotResult)
 }

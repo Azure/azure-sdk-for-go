@@ -19,53 +19,61 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListAppServicePlans.json
-func ExampleAppServicePlansClient_List() {
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListAppServicePlans.json
+func ExamplePlansClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armappservice.NewAppServicePlansClient("<subscription-id>", cred, nil)
-	pager := client.List(&armappservice.AppServicePlansListOptions{Detailed: nil})
-	for pager.NextPage(ctx) {
+	client := armappservice.NewPlansClient("<subscription-id>", cred, nil)
+	pager := client.List(&armappservice.PlansClientListOptions{Detailed: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AppServicePlan.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListAppServicePlansByResourceGroup.json
-func ExampleAppServicePlansClient_ListByResourceGroup() {
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListAppServicePlansByResourceGroup.json
+func ExamplePlansClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armappservice.NewAppServicePlansClient("<subscription-id>", cred, nil)
+	client := armappservice.NewPlansClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AppServicePlan.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetAppServicePlan.json
-func ExampleAppServicePlansClient_Get() {
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetAppServicePlan.json
+func ExamplePlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armappservice.NewAppServicePlansClient("<subscription-id>", cred, nil)
+	client := armappservice.NewPlansClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -73,26 +81,24 @@ func ExampleAppServicePlansClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AppServicePlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PlansClientGetResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateOrUpdateAppServicePlan.json
-func ExampleAppServicePlansClient_BeginCreateOrUpdate() {
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateAppServicePlan.json
+func ExamplePlansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armappservice.NewAppServicePlansClient("<subscription-id>", cred, nil)
+	client := armappservice.NewPlansClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<name>",
-		armappservice.AppServicePlan{
-			Resource: armappservice.Resource{
-				Kind:     to.StringPtr("<kind>"),
-				Location: to.StringPtr("<location>"),
-			},
-			Properties: &armappservice.AppServicePlanProperties{},
+		armappservice.Plan{
+			Kind:       to.StringPtr("<kind>"),
+			Location:   to.StringPtr("<location>"),
+			Properties: &armappservice.PlanProperties{},
 			SKU: &armappservice.SKUDescription{
 				Name:     to.StringPtr("<name>"),
 				Capacity: to.Int32Ptr(1),
@@ -109,17 +115,17 @@ func ExampleAppServicePlansClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AppServicePlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PlansClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DeleteAppServicePlan.json
-func ExampleAppServicePlansClient_Delete() {
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteAppServicePlan.json
+func ExamplePlansClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armappservice.NewAppServicePlansClient("<subscription-id>", cred, nil)
+	client := armappservice.NewPlansClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<name>",
@@ -129,26 +135,24 @@ func ExampleAppServicePlansClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/PatchAppServicePlan.json
-func ExampleAppServicePlansClient_Update() {
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/PatchAppServicePlan.json
+func ExamplePlansClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armappservice.NewAppServicePlansClient("<subscription-id>", cred, nil)
+	client := armappservice.NewPlansClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<name>",
-		armappservice.AppServicePlanPatchResource{
-			ProxyOnlyResource: armappservice.ProxyOnlyResource{
-				Kind: to.StringPtr("<kind>"),
-			},
-			Properties: &armappservice.AppServicePlanPatchResourceProperties{},
+		armappservice.PlanPatchResource{
+			Kind:       to.StringPtr("<kind>"),
+			Properties: &armappservice.PlanPatchResourceProperties{},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AppServicePlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PlansClientUpdateResult)
 }

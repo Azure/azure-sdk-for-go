@@ -21,6 +21,8 @@ import (
 	"golang.org/x/crypto/pkcs12"
 )
 
+const credNameCert = "ClientCertificateCredential"
+
 // ClientCertificateCredentialOptions contains optional parameters for ClientCertificateCredential.
 type ClientCertificateCredentialOptions struct {
 	azcore.ClientOptions
@@ -61,7 +63,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
-		logCredentialError("Client Certificate Credential", err)
+		logCredentialError(credNameCert, err)
 		return nil, err
 	}
 	cert, err := newCertContents(certs, pk, options.SendCertificateChain)
@@ -98,8 +100,8 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Client Certificate Credential", err, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		addGetTokenFailureLogs(credNameCert, err, true)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
 	}
 	logGetTokenSuccess(c, opts)
 	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err

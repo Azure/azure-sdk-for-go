@@ -83,15 +83,21 @@ func writeChangelogForPackage(r *report.Package) string {
 	md := &markdown.Writer{}
 
 	// write breaking changes
-	md.WriteHeader("Breaking Changes")
-	for _, item := range getBreakingChanges(r.BreakingChanges) {
-		md.WriteListItem(item)
+	breakings := getBreakingChanges(r.BreakingChanges)
+	if len(breakings) > 0 {
+		md.WriteHeader("Breaking Changes")
+		for _, item := range breakings {
+			md.WriteListItem(item)
+		}
 	}
 
 	// write additional changes
-	md.WriteHeader("Features Added")
-	for _, item := range getNewContents(r.AdditiveChanges) {
-		md.WriteListItem(item)
+	additives := getNewContents(r.AdditiveChanges)
+	if len(additives) > 0 {
+		md.WriteHeader("Features Added")
+		for _, item := range additives {
+			md.WriteListItem(item)
+		}
 	}
 
 	return md.String()

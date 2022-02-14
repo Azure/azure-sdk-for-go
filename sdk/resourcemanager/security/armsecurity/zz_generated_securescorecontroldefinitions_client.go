@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,51 @@ import (
 // SecureScoreControlDefinitionsClient contains the methods for the SecureScoreControlDefinitions group.
 // Don't use this type directly, use NewSecureScoreControlDefinitionsClient() instead.
 type SecureScoreControlDefinitionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSecureScoreControlDefinitionsClient creates a new instance of SecureScoreControlDefinitionsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSecureScoreControlDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecureScoreControlDefinitionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &SecureScoreControlDefinitionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SecureScoreControlDefinitionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // List - List the available security controls, their assessments, and the max score
-// If the operation fails it returns the *CloudError error type.
-func (client *SecureScoreControlDefinitionsClient) List(options *SecureScoreControlDefinitionsListOptions) *SecureScoreControlDefinitionsListPager {
-	return &SecureScoreControlDefinitionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SecureScoreControlDefinitionsClientListOptions contains the optional parameters for the SecureScoreControlDefinitionsClient.List
+// method.
+func (client *SecureScoreControlDefinitionsClient) List(options *SecureScoreControlDefinitionsClientListOptions) *SecureScoreControlDefinitionsClientListPager {
+	return &SecureScoreControlDefinitionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SecureScoreControlDefinitionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SecureScoreControlDefinitionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecureScoreControlDefinitionList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context.Context, options *SecureScoreControlDefinitionsListOptions) (*policy.Request, error) {
+func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context.Context, options *SecureScoreControlDefinitionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Security/secureScoreControlDefinitions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -71,49 +80,39 @@ func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context
 }
 
 // listHandleResponse handles the List response.
-func (client *SecureScoreControlDefinitionsClient) listHandleResponse(resp *http.Response) (SecureScoreControlDefinitionsListResponse, error) {
-	result := SecureScoreControlDefinitionsListResponse{RawResponse: resp}
+func (client *SecureScoreControlDefinitionsClient) listHandleResponse(resp *http.Response) (SecureScoreControlDefinitionsClientListResponse, error) {
+	result := SecureScoreControlDefinitionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoreControlDefinitionList); err != nil {
-		return SecureScoreControlDefinitionsListResponse{}, runtime.NewResponseError(err, resp)
+		return SecureScoreControlDefinitionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *SecureScoreControlDefinitionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - For a specified subscription, list the available security controls, their assessments, and the max score
-// If the operation fails it returns the *CloudError error type.
-func (client *SecureScoreControlDefinitionsClient) ListBySubscription(options *SecureScoreControlDefinitionsListBySubscriptionOptions) *SecureScoreControlDefinitionsListBySubscriptionPager {
-	return &SecureScoreControlDefinitionsListBySubscriptionPager{
+// ListBySubscription - For a specified subscription, list the available security controls, their assessments, and the max
+// score
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SecureScoreControlDefinitionsClientListBySubscriptionOptions contains the optional parameters for the SecureScoreControlDefinitionsClient.ListBySubscription
+// method.
+func (client *SecureScoreControlDefinitionsClient) ListBySubscription(options *SecureScoreControlDefinitionsClientListBySubscriptionOptions) *SecureScoreControlDefinitionsClientListBySubscriptionPager {
+	return &SecureScoreControlDefinitionsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SecureScoreControlDefinitionsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SecureScoreControlDefinitionsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecureScoreControlDefinitionList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SecureScoreControlDefinitionsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SecureScoreControlDefinitionsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScoreControlDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -125,23 +124,10 @@ func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateReque
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SecureScoreControlDefinitionsClient) listBySubscriptionHandleResponse(resp *http.Response) (SecureScoreControlDefinitionsListBySubscriptionResponse, error) {
-	result := SecureScoreControlDefinitionsListBySubscriptionResponse{RawResponse: resp}
+func (client *SecureScoreControlDefinitionsClient) listBySubscriptionHandleResponse(resp *http.Response) (SecureScoreControlDefinitionsClientListBySubscriptionResponse, error) {
+	result := SecureScoreControlDefinitionsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoreControlDefinitionList); err != nil {
-		return SecureScoreControlDefinitionsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return SecureScoreControlDefinitionsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *SecureScoreControlDefinitionsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

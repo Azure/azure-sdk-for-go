@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// JobsCreatePoller provides polling facilities until the operation reaches a terminal state.
-type JobsCreatePoller struct {
+// JobsClientCreatePoller provides polling facilities until the operation reaches a terminal state.
+type JobsClientCreatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *JobsCreatePoller) Done() bool {
+func (p *JobsClientCreatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *JobsCreatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *JobsCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *JobsClientCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final JobsCreateResponse will be returned.
-func (p *JobsCreatePoller) FinalResponse(ctx context.Context) (JobsCreateResponse, error) {
-	respType := JobsCreateResponse{}
+// If the final GET succeeded then the final JobsClientCreateResponse will be returned.
+func (p *JobsClientCreatePoller) FinalResponse(ctx context.Context) (JobsClientCreateResponse, error) {
+	respType := JobsClientCreateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.JobResource)
 	if err != nil {
-		return JobsCreateResponse{}, err
+		return JobsClientCreateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *JobsCreatePoller) FinalResponse(ctx context.Context) (JobsCreateRespons
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *JobsCreatePoller) ResumeToken() (string, error) {
+func (p *JobsClientCreatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// JobsDeletePoller provides polling facilities until the operation reaches a terminal state.
-type JobsDeletePoller struct {
+// JobsClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type JobsClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *JobsDeletePoller) Done() bool {
+func (p *JobsClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *JobsDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *JobsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *JobsClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final JobsDeleteResponse will be returned.
-func (p *JobsDeletePoller) FinalResponse(ctx context.Context) (JobsDeleteResponse, error) {
-	respType := JobsDeleteResponse{}
+// If the final GET succeeded then the final JobsClientDeleteResponse will be returned.
+func (p *JobsClientDeletePoller) FinalResponse(ctx context.Context) (JobsClientDeleteResponse, error) {
+	respType := JobsClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return JobsDeleteResponse{}, err
+		return JobsClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *JobsDeletePoller) FinalResponse(ctx context.Context) (JobsDeleteRespons
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *JobsDeletePoller) ResumeToken() (string, error) {
+func (p *JobsClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// JobsUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type JobsUpdatePoller struct {
+// JobsClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type JobsClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *JobsUpdatePoller) Done() bool {
+func (p *JobsClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *JobsUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *JobsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *JobsClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final JobsUpdateResponse will be returned.
-func (p *JobsUpdatePoller) FinalResponse(ctx context.Context) (JobsUpdateResponse, error) {
-	respType := JobsUpdateResponse{}
+// If the final GET succeeded then the final JobsClientUpdateResponse will be returned.
+func (p *JobsClientUpdatePoller) FinalResponse(ctx context.Context) (JobsClientUpdateResponse, error) {
+	respType := JobsClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.JobResource)
 	if err != nil {
-		return JobsUpdateResponse{}, err
+		return JobsClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,6 +139,6 @@ func (p *JobsUpdatePoller) FinalResponse(ctx context.Context) (JobsUpdateRespons
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *JobsUpdatePoller) ResumeToken() (string, error) {
+func (p *JobsClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

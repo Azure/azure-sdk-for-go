@@ -29,13 +29,17 @@ func ExampleUsersClient_ListByLab() {
 	client := armlabservices.NewUsersClient("<subscription-id>", cred, nil)
 	pager := client.ListByLab("<resource-group-name>",
 		"<lab-name>",
-		&armlabservices.UsersListByLabOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armlabservices.UsersClientListByLabOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("User.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleUsersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("User.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.UsersClientGetResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/putUser.json
@@ -73,10 +77,8 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 		"<user-name>",
 		armlabservices.User{
 			Properties: &armlabservices.UserProperties{
-				UserUpdateProperties: armlabservices.UserUpdateProperties{
-					AdditionalUsageQuota: to.StringPtr("<additional-usage-quota>"),
-				},
-				Email: to.StringPtr("<email>"),
+				AdditionalUsageQuota: to.StringPtr("<additional-usage-quota>"),
+				Email:                to.StringPtr("<email>"),
 			},
 		},
 		nil)
@@ -87,7 +89,7 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("User.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.UsersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/patchUser.json
@@ -115,7 +117,7 @@ func ExampleUsersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("User.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.UsersClientUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/deleteUser.json

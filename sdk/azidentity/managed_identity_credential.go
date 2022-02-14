@@ -13,6 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+const credNameManagedIdentity = "ManagedIdentityCredential"
+
 type managedIdentityIDKind int
 
 const (
@@ -77,7 +79,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	}
 	client, err := newManagedIdentityClient(options)
 	if err != nil {
-		logCredentialError("Managed Identity Credential", err)
+		logCredentialError(credNameManagedIdentity, err)
 		return nil, err
 	}
 	return &ManagedIdentityCredential{id: options.ID, client: client}, nil
@@ -88,15 +90,15 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
-		err := errors.New("ManagedIdentityCredential.GetToken() requires exactly one scope")
-		addGetTokenFailureLogs("Managed Identity Credential", err, true)
+		err := errors.New(credNameManagedIdentity + ": GetToken() requires exactly one scope")
+		addGetTokenFailureLogs(credNameManagedIdentity, err, true)
 		return nil, err
 	}
 	// managed identity endpoints require an AADv1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
 	scopes := []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
 	tk, err := c.client.authenticate(ctx, c.id, scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Managed Identity Credential", err, true)
+		addGetTokenFailureLogs(credNameManagedIdentity, err, true)
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)

@@ -12,7 +12,7 @@ package iothub
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2018-01-22/iothub"
+	original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub"
 )
 
 const (
@@ -22,57 +22,97 @@ const (
 type AccessRightsDescription = original.AccessRightsDescription
 
 const (
-	DeviceConnect           AccessRightsDescription = original.DeviceConnect
-	EnrollmentRead          AccessRightsDescription = original.EnrollmentRead
-	EnrollmentWrite         AccessRightsDescription = original.EnrollmentWrite
-	RegistrationStatusRead  AccessRightsDescription = original.RegistrationStatusRead
-	RegistrationStatusWrite AccessRightsDescription = original.RegistrationStatusWrite
-	ServiceConfig           AccessRightsDescription = original.ServiceConfig
+	AccessRightsDescriptionDeviceConnect           AccessRightsDescription = original.AccessRightsDescriptionDeviceConnect
+	AccessRightsDescriptionEnrollmentRead          AccessRightsDescription = original.AccessRightsDescriptionEnrollmentRead
+	AccessRightsDescriptionEnrollmentWrite         AccessRightsDescription = original.AccessRightsDescriptionEnrollmentWrite
+	AccessRightsDescriptionRegistrationStatusRead  AccessRightsDescription = original.AccessRightsDescriptionRegistrationStatusRead
+	AccessRightsDescriptionRegistrationStatusWrite AccessRightsDescription = original.AccessRightsDescriptionRegistrationStatusWrite
+	AccessRightsDescriptionServiceConfig           AccessRightsDescription = original.AccessRightsDescriptionServiceConfig
 )
 
 type AllocationPolicy = original.AllocationPolicy
 
 const (
-	GeoLatency AllocationPolicy = original.GeoLatency
-	Hashed     AllocationPolicy = original.Hashed
-	Static     AllocationPolicy = original.Static
+	AllocationPolicyGeoLatency AllocationPolicy = original.AllocationPolicyGeoLatency
+	AllocationPolicyHashed     AllocationPolicy = original.AllocationPolicyHashed
+	AllocationPolicyStatic     AllocationPolicy = original.AllocationPolicyStatic
 )
 
 type CertificatePurpose = original.CertificatePurpose
 
 const (
-	ClientAuthentication CertificatePurpose = original.ClientAuthentication
-	ServerAuthentication CertificatePurpose = original.ServerAuthentication
+	CertificatePurposeClientAuthentication CertificatePurpose = original.CertificatePurposeClientAuthentication
+	CertificatePurposeServerAuthentication CertificatePurpose = original.CertificatePurposeServerAuthentication
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type IPFilterActionType = original.IPFilterActionType
+
+const (
+	IPFilterActionTypeAccept IPFilterActionType = original.IPFilterActionTypeAccept
+	IPFilterActionTypeReject IPFilterActionType = original.IPFilterActionTypeReject
+)
+
+type IPFilterTargetType = original.IPFilterTargetType
+
+const (
+	IPFilterTargetTypeAll        IPFilterTargetType = original.IPFilterTargetTypeAll
+	IPFilterTargetTypeDeviceAPI  IPFilterTargetType = original.IPFilterTargetTypeDeviceAPI
+	IPFilterTargetTypeServiceAPI IPFilterTargetType = original.IPFilterTargetTypeServiceAPI
 )
 
 type IotDpsSku = original.IotDpsSku
 
 const (
-	S1 IotDpsSku = original.S1
+	IotDpsSkuS1 IotDpsSku = original.IotDpsSkuS1
 )
 
 type NameUnavailabilityReason = original.NameUnavailabilityReason
 
 const (
-	AlreadyExists NameUnavailabilityReason = original.AlreadyExists
-	Invalid       NameUnavailabilityReason = original.Invalid
+	NameUnavailabilityReasonAlreadyExists NameUnavailabilityReason = original.NameUnavailabilityReasonAlreadyExists
+	NameUnavailabilityReasonInvalid       NameUnavailabilityReason = original.NameUnavailabilityReasonInvalid
+)
+
+type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
+
+const (
+	PrivateLinkServiceConnectionStatusApproved     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusApproved
+	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusDisconnected
+	PrivateLinkServiceConnectionStatusPending      PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusPending
+	PrivateLinkServiceConnectionStatusRejected     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusRejected
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type State = original.State
 
 const (
-	Activating       State = original.Activating
-	ActivationFailed State = original.ActivationFailed
-	Active           State = original.Active
-	Deleted          State = original.Deleted
-	Deleting         State = original.Deleting
-	DeletionFailed   State = original.DeletionFailed
-	FailingOver      State = original.FailingOver
-	FailoverFailed   State = original.FailoverFailed
-	Resuming         State = original.Resuming
-	Suspended        State = original.Suspended
-	Suspending       State = original.Suspending
-	Transitioning    State = original.Transitioning
+	StateActivating       State = original.StateActivating
+	StateActivationFailed State = original.StateActivationFailed
+	StateActive           State = original.StateActive
+	StateDeleted          State = original.StateDeleted
+	StateDeleting         State = original.StateDeleting
+	StateDeletionFailed   State = original.StateDeletionFailed
+	StateFailingOver      State = original.StateFailingOver
+	StateFailoverFailed   State = original.StateFailoverFailed
+	StateResuming         State = original.StateResuming
+	StateSuspended        State = original.StateSuspended
+	StateSuspending       State = original.StateSuspending
+	StateTransitioning    State = original.StateTransitioning
 )
 
 type AsyncOperationResult = original.AsyncOperationResult
@@ -85,16 +125,22 @@ type DefinitionDescription = original.DefinitionDescription
 type DpsCertificateClient = original.DpsCertificateClient
 type ErrorDetails = original.ErrorDetails
 type ErrorMesssage = original.ErrorMesssage
+type GroupIDInformation = original.GroupIDInformation
+type GroupIDInformationProperties = original.GroupIDInformationProperties
+type IPFilterRule = original.IPFilterRule
 type IotDpsPropertiesDescription = original.IotDpsPropertiesDescription
 type IotDpsResourceClient = original.IotDpsResourceClient
 type IotDpsResourceCreateOrUpdateFuture = original.IotDpsResourceCreateOrUpdateFuture
+type IotDpsResourceCreateOrUpdatePrivateEndpointConnectionFuture = original.IotDpsResourceCreateOrUpdatePrivateEndpointConnectionFuture
 type IotDpsResourceDeleteFuture = original.IotDpsResourceDeleteFuture
+type IotDpsResourceDeletePrivateEndpointConnectionFuture = original.IotDpsResourceDeletePrivateEndpointConnectionFuture
 type IotDpsResourceUpdateFuture = original.IotDpsResourceUpdateFuture
 type IotDpsSkuDefinition = original.IotDpsSkuDefinition
 type IotDpsSkuDefinitionListResult = original.IotDpsSkuDefinitionListResult
 type IotDpsSkuDefinitionListResultIterator = original.IotDpsSkuDefinitionListResultIterator
 type IotDpsSkuDefinitionListResultPage = original.IotDpsSkuDefinitionListResultPage
 type IotDpsSkuInfo = original.IotDpsSkuInfo
+type ListPrivateEndpointConnection = original.ListPrivateEndpointConnection
 type NameAvailabilityInfo = original.NameAvailabilityInfo
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -103,6 +149,11 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateLinkResources = original.PrivateLinkResources
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProvisioningServiceDescription = original.ProvisioningServiceDescription
 type ProvisioningServiceDescriptionListResult = original.ProvisioningServiceDescriptionListResult
 type ProvisioningServiceDescriptionListResultIterator = original.ProvisioningServiceDescriptionListResultIterator
@@ -112,6 +163,7 @@ type SharedAccessSignatureAuthorizationRuleAccessRightsDescription = original.Sh
 type SharedAccessSignatureAuthorizationRuleListResult = original.SharedAccessSignatureAuthorizationRuleListResult
 type SharedAccessSignatureAuthorizationRuleListResultIterator = original.SharedAccessSignatureAuthorizationRuleListResultIterator
 type SharedAccessSignatureAuthorizationRuleListResultPage = original.SharedAccessSignatureAuthorizationRuleListResultPage
+type SystemData = original.SystemData
 type TagsResource = original.TagsResource
 type VerificationCodeRequest = original.VerificationCodeRequest
 type VerificationCodeResponse = original.VerificationCodeResponse
@@ -174,11 +226,26 @@ func PossibleAllocationPolicyValues() []AllocationPolicy {
 func PossibleCertificatePurposeValues() []CertificatePurpose {
 	return original.PossibleCertificatePurposeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
+func PossibleIPFilterActionTypeValues() []IPFilterActionType {
+	return original.PossibleIPFilterActionTypeValues()
+}
+func PossibleIPFilterTargetTypeValues() []IPFilterTargetType {
+	return original.PossibleIPFilterTargetTypeValues()
+}
 func PossibleIotDpsSkuValues() []IotDpsSku {
 	return original.PossibleIotDpsSkuValues()
 }
 func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
 	return original.PossibleNameUnavailabilityReasonValues()
+}
+func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
+	return original.PossiblePrivateLinkServiceConnectionStatusValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()

@@ -50,6 +50,12 @@ options = arm.ClientOptions{
 client := armkeyvault.NewKeysClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Key](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/key)
+- [Secret](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/secret)
+- [Vault](https://aka.ms/azsdk/go/mgmt/samples?path=keyvault/vault)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

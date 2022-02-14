@@ -8,7 +8,6 @@ package runtime
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -30,12 +29,10 @@ func bodyDownloadPolicy(req *policy.Request) (*http.Response, error) {
 	}
 	// Either bodyDownloadPolicyOpValues was not specified (so skip is false)
 	// or it was specified and skip is false: don't skip downloading the body
-	b, err := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
+	_, err = shared.Payload(resp)
 	if err != nil {
 		return resp, newBodyDownloadError(err, req)
 	}
-	resp.Body = shared.NewNopClosingBytesReader(b)
 	return resp, err
 }
 

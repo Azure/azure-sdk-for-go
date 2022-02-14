@@ -31,14 +31,17 @@ var enableHSM = true
 
 func TestMain(m *testing.M) {
 	// Initialize
-	if recording.GetRecordMode() == "record" {
-		err := recording.ResetProxy(nil)
+	switch recording.GetRecordMode() {
+	case recording.PlaybackMode:
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
+			ExcludedHeaders: []string{":path", ":authority", ":method", ":scheme"},
+		})
 		if err != nil {
 			panic(err)
 		}
-
+	case recording.RecordingMode:
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -74,7 +77,7 @@ func TestMain(m *testing.M) {
 				panic(err)
 			}
 		}
-	} else if recording.GetRecordMode() == "live" {
+	case recording.LiveMode:
 		_, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
 		if !ok {
 			fmt.Println("Did not find managed HSM url, skipping those tests")
@@ -82,19 +85,7 @@ func TestMain(m *testing.M) {
 		}
 	}
 
-	// Run tests
-	exitVal := m.Run()
-
-	// 3. Reset
-	if recording.GetRecordMode() != "live" {
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	// 4. Error out if applicable
-	os.Exit(exitVal)
+	os.Exit(m.Run())
 }
 
 func startTest(t *testing.T) func() {

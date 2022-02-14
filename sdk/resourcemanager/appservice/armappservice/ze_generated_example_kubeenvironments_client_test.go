@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/KubeEnvironments_ListBySubscription.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_ListBySubscription.json
 func ExampleKubeEnvironmentsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,17 +28,21 @@ func ExampleKubeEnvironmentsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armappservice.NewKubeEnvironmentsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("KubeEnvironment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/KubeEnvironments_ListByResourceGroup.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_ListByResourceGroup.json
 func ExampleKubeEnvironmentsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,17 +52,21 @@ func ExampleKubeEnvironmentsClient_ListByResourceGroup() {
 	client := armappservice.NewKubeEnvironmentsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("KubeEnvironment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/KubeEnvironments_Get.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_Get.json
 func ExampleKubeEnvironmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,10 +81,10 @@ func ExampleKubeEnvironmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("KubeEnvironment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KubeEnvironmentsClientGetResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/KubeEnvironments_CreateOrUpdate.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_CreateOrUpdate.json
 func ExampleKubeEnvironmentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,9 +96,7 @@ func ExampleKubeEnvironmentsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<name>",
 		armappservice.KubeEnvironment{
-			Resource: armappservice.Resource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armappservice.KubeEnvironmentProperties{
 				StaticIP: to.StringPtr("<static-ip>"),
 			},
@@ -103,10 +109,10 @@ func ExampleKubeEnvironmentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("KubeEnvironment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KubeEnvironmentsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/KubeEnvironments_Delete.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_Delete.json
 func ExampleKubeEnvironmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +133,7 @@ func ExampleKubeEnvironmentsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/KubeEnvironments_Update.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_Update.json
 func ExampleKubeEnvironmentsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,5 +153,5 @@ func ExampleKubeEnvironmentsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("KubeEnvironment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KubeEnvironmentsClientUpdateResult)
 }

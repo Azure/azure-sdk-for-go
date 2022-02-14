@@ -9,12 +9,12 @@
 package armguestconfiguration
 
 const (
-	module  = "armguestconfiguration"
-	version = "v0.1.0"
+	moduleName    = "armguestconfiguration"
+	moduleVersion = "v0.2.0"
 )
 
-// ActionAfterReboot - Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration and
-// StopConfiguration
+// ActionAfterReboot - Specifies what happens after a reboot during the application of a configuration. The possible values
+// are ContinueConfiguration and StopConfiguration
 type ActionAfterReboot string
 
 const (
@@ -35,8 +35,8 @@ func (c ActionAfterReboot) ToPtr() *ActionAfterReboot {
 	return &c
 }
 
-// AssignmentType - Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect, ApplyAndAutoCorrect
-// and ApplyAndMonitor.
+// AssignmentType - Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect,
+// ApplyAndAutoCorrect and ApplyAndMonitor.
 type AssignmentType string
 
 const (
@@ -84,8 +84,8 @@ func (c ComplianceStatus) ToPtr() *ComplianceStatus {
 	return &c
 }
 
-// ConfigurationMode - Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target nodes. Possible values are ApplyOnly,
-// ApplyAndMonitor, and ApplyAndAutoCorrect.
+// ConfigurationMode - Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target
+// nodes. Possible values are ApplyOnly, ApplyAndMonitor, and ApplyAndAutoCorrect.
 type ConfigurationMode string
 
 const (

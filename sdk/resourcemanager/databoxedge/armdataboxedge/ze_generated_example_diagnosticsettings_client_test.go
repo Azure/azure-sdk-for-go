@@ -34,7 +34,7 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticProactiveLogCollectionSettings
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticProactiveLogCollectionSettings.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/UpdateDiagnosticProactiveLogCollectionSettings.json
@@ -50,7 +50,7 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticProactiveLogCollection
 		"<resource-group-name>",
 		armdataboxedge.DiagnosticProactiveLogCollectionSettings{
 			Properties: &armdataboxedge.ProactiveLogCollectionSettingsProperties{
-				UserConsent: armdataboxedge.ProactiveDiagnosticsConsentEnabled.ToPtr(),
+				UserConsent: armdataboxedge.ProactiveDiagnosticsConsent("Enabled").ToPtr(),
 			},
 		},
 		nil)
@@ -61,7 +61,7 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticProactiveLogCollection
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticProactiveLogCollectionSettings.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/GetDiagnosticRemoteSupportSettings.json
@@ -79,7 +79,7 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticRemoteSupportSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticRemoteSupportSettings.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/UpdateDiagnosticRemoteSupportSettings.json
@@ -97,9 +97,9 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 			Properties: &armdataboxedge.DiagnosticRemoteSupportSettingsProperties{
 				RemoteSupportSettingsList: []*armdataboxedge.RemoteSupportSettings{
 					{
-						AccessLevel:              armdataboxedge.AccessLevelReadWrite.ToPtr(),
+						AccessLevel:              armdataboxedge.AccessLevel("ReadWrite").ToPtr(),
 						ExpirationTimeStampInUTC: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-07T00:00:00+00:00"); return t }()),
-						RemoteApplicationType:    armdataboxedge.RemoteApplicationTypePowershell.ToPtr(),
+						RemoteApplicationType:    armdataboxedge.RemoteApplicationType("Powershell").ToPtr(),
 					}},
 			},
 		},
@@ -111,5 +111,5 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticRemoteSupportSettings.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResult)
 }

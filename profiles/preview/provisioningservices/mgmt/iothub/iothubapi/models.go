@@ -9,7 +9,7 @@
 
 package iothubapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2018-01-22/iothub/iothubapi"
+import original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub/iothubapi"
 
 type DpsCertificateClientAPI = original.DpsCertificateClientAPI
 type IotDpsResourceClientAPI = original.IotDpsResourceClientAPI

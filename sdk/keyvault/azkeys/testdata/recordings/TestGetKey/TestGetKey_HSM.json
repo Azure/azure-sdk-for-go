@@ -4,14 +4,11 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key1478960915/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/key1478960915/create?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -24,7 +21,7 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "8f1b6c72-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-request-id": "000c8f7a-7e05-11ec-a044-000d3a731e50",
         "x-ms-server-latency": "0"
       },
       "ResponseBody": null
@@ -33,19 +30,15 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key1478960915/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/key1478960915/create?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "26",
+        "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
-        "key_ops": [],
         "kty": "RSA"
       },
       "StatusCode": 200,
@@ -59,17 +52,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "8f3b1392-61b3-11ec-985f-000d3aec06d7",
-        "x-ms-server-latency": "225"
+        "x-ms-request-id": "004a3d66-7e05-11ec-a044-000d3a731e50",
+        "x-ms-server-latency": "204"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1640018437,
+          "created": 1643132048,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1640018437
+          "updated": 1643132048
         },
         "key": {
           "e": "AQAB",
@@ -81,9 +74,9 @@
             "sign",
             "verify"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key1478960915/0aee0f0fb9b00bb22a62c9d75432a7ea",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key1478960915/a4c85b7c38270eb6373f145d05f5a157",
           "kty": "RSA-HSM",
-          "n": "qffwvarAn2ZHrrJZb9XQPagjZuFRBm9iJYJStyqshMpeewiQ0f8bxZovPFcC7_igXGxg50OrNkut20qngw2sp5mloB9oKGeEi9YrnnBqQpXnvmJs2nny7Z4W_FT0BA2J1QL8a2WQV8cbxKhoUk7yRAB4jUsX5Mbq3Zyi3tG_XmDdZn2Hq8F_Obyx0oxbOpRDu3J7qhjbmqMeh3GJB305gyd25IBzHdRSi2ybL7IFwBYciMyUR25p8yDCaCEVw4R2pTLwLX4FDNzEyDaIHCxHbfkl7i6HSqICkfZAYrNEThKDsZFejCE0L1N5xgPQhBR3wcgXK_0uJH3DAe8NKq1e9Q"
+          "n": "juHCLu5n8w5IhtNkvGoqCh8jMD5xvo6tR07Bdz0yndm3ShPTvMwW0FZWDlexGT3K5bmpKc2BkXJGop45UjP3Kp_HJqK7WtKdbCS_efdq2HTlz9NBHpwTzHf-pOS_crukm-VZ_2H_CulKix5gZ64WGexZ5TKpWJn6P6TEx1SxJnCTeMqU1eLj1qsIY5bpAgJxgW0Bhup6jr_1u1Q-QB1cAcUMJ29dGbf17kP8Janyepk1gasnrua39NFdRocWYLpS94v4Gq0ha4kzZfDnnT1wJnXAgK3hOYcpQ0fHChq5TVU_KCZVBW7ZsEJBmHjn6sYnT7H310vpl1ZyTV6FEbBCDQ"
         }
       }
     },
@@ -91,14 +84,11 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/key1478960915/?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/keys/key1478960915/?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -110,20 +100,20 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20211206-1-be739728-develop",
+        "x-ms-build-version": "1.0.20220117-1-eb2a1acb-1.0.20211206-1-be739728-develop",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "8f67c478-61b3-11ec-985f-000d3aec06d7",
-        "x-ms-server-latency": "66"
+        "x-ms-request-id": "0073df18-7e05-11ec-a044-000d3a731e50",
+        "x-ms-server-latency": "64"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1640018437,
+          "created": 1643132048,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1640018437
+          "updated": 1643132048
         },
         "key": {
           "e": "AQAB",
@@ -135,9 +125,9 @@
             "encrypt",
             "wrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key1478960915/0aee0f0fb9b00bb22a62c9d75432a7ea",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key1478960915/a4c85b7c38270eb6373f145d05f5a157",
           "kty": "RSA-HSM",
-          "n": "qffwvarAn2ZHrrJZb9XQPagjZuFRBm9iJYJStyqshMpeewiQ0f8bxZovPFcC7_igXGxg50OrNkut20qngw2sp5mloB9oKGeEi9YrnnBqQpXnvmJs2nny7Z4W_FT0BA2J1QL8a2WQV8cbxKhoUk7yRAB4jUsX5Mbq3Zyi3tG_XmDdZn2Hq8F_Obyx0oxbOpRDu3J7qhjbmqMeh3GJB305gyd25IBzHdRSi2ybL7IFwBYciMyUR25p8yDCaCEVw4R2pTLwLX4FDNzEyDaIHCxHbfkl7i6HSqICkfZAYrNEThKDsZFejCE0L1N5xgPQhBR3wcgXK_0uJH3DAe8NKq1e9Q"
+          "n": "juHCLu5n8w5IhtNkvGoqCh8jMD5xvo6tR07Bdz0yndm3ShPTvMwW0FZWDlexGT3K5bmpKc2BkXJGop45UjP3Kp_HJqK7WtKdbCS_efdq2HTlz9NBHpwTzHf-pOS_crukm-VZ_2H_CulKix5gZ64WGexZ5TKpWJn6P6TEx1SxJnCTeMqU1eLj1qsIY5bpAgJxgW0Bhup6jr_1u1Q-QB1cAcUMJ29dGbf17kP8Janyepk1gasnrua39NFdRocWYLpS94v4Gq0ha4kzZfDnnT1wJnXAgK3hOYcpQ0fHChq5TVU_KCZVBW7ZsEJBmHjn6sYnT7H310vpl1ZyTV6FEbBCDQ"
         }
       }
     },
@@ -145,19 +135,15 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/invalidkey%5B%5D%28%29/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/invalidkey%5B%5D%28%29/create?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "26",
+        "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
-        "key_ops": [],
         "kty": "RSA"
       },
       "StatusCode": 400,
@@ -169,13 +155,13 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "8f7c9f10-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-request-id": "008813ca-7e05-11ec-a044-000d3a731e50",
         "x-ms-server-latency": "0"
       },
       "ResponseBody": {
         "error": {
           "code": "BadParameter",
-          "message": "Invalid key identifier or name (Activity ID: 8f7c9f10-61b3-11ec-985f-000d3aec06d7)"
+          "message": "Invalid key identifier or name (Activity ID: 008813ca-7e05-11ec-a044-000d3a731e50)"
         }
       }
     }

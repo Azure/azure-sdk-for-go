@@ -23,21 +23,20 @@ func NewListKeysPager(p *generated.KeyVaultClientGetKeysPager) *ListKeysPager {
 	return &ListKeysPager{genPager: p}
 }
 
-// PageResponse returns the results from the page most recently fetched from the service
-func (l *ListKeysPager) PageResponse() ListKeysPage {
-	return listKeysPageFromGenerated(l.genPager.PageResponse())
-}
-
-// Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *ListKeysPager) Err() error {
-	return l.genPager.Err()
+// More returns true if there are more pages to retrieve.
+func (l *ListKeysPager) More() bool {
+	return l.genPager.More()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *ListKeysPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+func (l *ListKeysPager) NextPage(ctx context.Context) (ListKeysPage, error) {
+	page, err := l.genPager.NextPage(ctx)
+	if err != nil {
+		return ListKeysPage{}, err
+	}
+	return listKeysPageFromGenerated(page), nil
 }
 
 // ListDeletedKeys is the interface for the Client.ListDeletedKeys operation
@@ -49,29 +48,27 @@ func NewListDeletedKeysPager(p *generated.KeyVaultClientGetDeletedKeysPager) *Li
 	return &ListDeletedKeysPager{genPager: p}
 }
 
-// PageResponse returns the current page of results
-func (l *ListDeletedKeysPager) PageResponse() ListDeletedKeysPage {
-	resp := l.genPager.PageResponse()
+// More returns true if there are more pages to retrieve.
+func (l *ListDeletedKeysPager) More() bool {
+	return l.genPager.More()
+}
+
+// NextPage fetches the next page of results.
+func (l *ListDeletedKeysPager) NextPage(ctx context.Context) (ListDeletedKeysPage, error) {
+	page, err := l.genPager.NextPage(ctx)
+	if err != nil {
+		return ListDeletedKeysPage{}, err
+	}
 
 	var values []*models.DeletedKeyItem
-	for _, d := range resp.Value {
+	for _, d := range page.Value {
 		values = append(values, convert.DeletedKeyItemFromGenerated(d))
 	}
 
 	return ListDeletedKeysPage{
-		NextLink:    resp.NextLink,
+		NextLink:    page.NextLink,
 		DeletedKeys: values,
-	}
-}
-
-// Err returns an error if the last operation resulted in an error.
-func (l *ListDeletedKeysPager) Err() error {
-	return l.genPager.Err()
-}
-
-// NextPage fetches the next page of results.
-func (l *ListDeletedKeysPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+	}, nil
 }
 
 // ListKeyVersionsPager is a Pager for Client.ListKeyVersions results
@@ -83,21 +80,20 @@ func NewListKeyVersionsPager(p *generated.KeyVaultClientGetKeyVersionsPager) *Li
 	return &ListKeyVersionsPager{genPager: p}
 }
 
-// PageResponse returns the results from the page most recently fetched from the service.
-func (l *ListKeyVersionsPager) PageResponse() ListKeyVersionsPage {
-	return listKeyVersionsPageFromGenerated(l.genPager.PageResponse())
-}
-
-// Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (l *ListKeyVersionsPager) Err() error {
-	return l.genPager.Err()
+// More returns true if there are more pages to retrieve.
+func (l *ListKeyVersionsPager) More() bool {
+	return l.genPager.More()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *ListKeyVersionsPager) NextPage(ctx context.Context) bool {
-	return l.genPager.NextPage(ctx)
+func (l *ListKeyVersionsPager) NextPage(ctx context.Context) (ListKeyVersionsPage, error) {
+	page, err := l.genPager.NextPage(ctx)
+	if err != nil {
+		return ListKeyVersionsPage{}, err
+	}
+	return listKeyVersionsPageFromGenerated(page), nil
 }
 
 // convert internal Response to ListKeysPage

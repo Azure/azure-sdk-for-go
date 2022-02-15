@@ -71,11 +71,11 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
 type CreateKeyOptions struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *models.JSONWebKeyCurveName `json:"crv,omitempty"`
+	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes                `json:"attributes,omitempty"`
-	KeyOps        []*models.JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
+	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -93,7 +93,7 @@ func (c *CreateKeyOptions) toGenerated() *generated.KeyVaultClientCreateKeyOptio
 }
 
 // convert CreateKeyOptions to generated.KeyCreateParameters
-func (c *CreateKeyOptions) toKeyCreateParameters(keyType models.KeyType) generated.KeyCreateParameters {
+func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	var attribs *generated.KeyAttributes
 	if c.KeyAttributes != nil {
 		attribs = convert.KeyAttributesToGenerated(c.KeyAttributes)
@@ -130,7 +130,7 @@ func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse)
 // CreateKey - The create key operation can be used to create any key type in Azure Key Vault.
 // If the named key already exists, Azure Key Vault creates
 // a new version of the key. It requires the keys/create  permission.
-func (c *Client) CreateKey(ctx context.Context, name string, keyType models.KeyType, options *CreateKeyOptions) (responses.CreateKey, error) {
+func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, options *CreateKeyOptions) (responses.CreateKey, error) {
 	if options == nil {
 		options = &CreateKeyOptions{}
 	}
@@ -146,7 +146,7 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType models.KeyT
 // CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
 type CreateECKeyOptions struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	CurveName *models.JSONWebKeyCurveName `json:"crv,omitempty"`
+	CurveName *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -156,7 +156,7 @@ type CreateECKeyOptions struct {
 }
 
 // convert CreateECKeyOptions to generated.KeyCreateParameters
-func (c *CreateECKeyOptions) toKeyCreateParameters(keyType models.KeyType) generated.KeyCreateParameters {
+func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	return generated.KeyCreateParameters{
 		Kty:   convert.KeyTypeToGenerated(keyType),
 		Curve: (*generated.JSONWebKeyCurveName)(c.CurveName),
@@ -209,7 +209,7 @@ type CreateOCTKeyOptions struct {
 }
 
 // conver the CreateOCTKeyOptions to generated.KeyCreateParameters
-func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType models.KeyType) generated.KeyCreateParameters {
+func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	return generated.KeyCreateParameters{
 		Kty:     convert.KeyTypeToGenerated(keyType),
 		KeySize: c.KeySize,
@@ -265,7 +265,7 @@ type CreateRSAKeyOptions struct {
 }
 
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
-func (c CreateRSAKeyOptions) toKeyCreateParameters(k models.KeyType) generated.KeyCreateParameters {
+func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreateParameters {
 	return generated.KeyCreateParameters{
 		Kty:            convert.KeyTypeToGenerated(k),
 		KeySize:        c.KeySize,
@@ -551,7 +551,7 @@ type UpdateKeyPropertiesOptions struct {
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
-	KeyOps []*models.JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -865,7 +865,7 @@ type ReleaseKeyOptions struct {
 	Version string
 
 	// The encryption algorithm to use to protected the exported key material
-	Enc *models.KeyEncryptionAlgorithm `json:"enc,omitempty"`
+	Enc *KeyEncryptionAlgorithm `json:"enc,omitempty"`
 
 	// A client provided nonce for freshness.
 	Nonce *string `json:"nonce,omitempty"`

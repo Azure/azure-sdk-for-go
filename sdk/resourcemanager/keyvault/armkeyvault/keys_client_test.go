@@ -164,7 +164,7 @@ func TestKeysClient_GetVersion(t *testing.T) {
 	require.Equal(t, keyName, *createResp.Name)
 
 	// get key
-	getResp, err := keysClient.GetVersion(ctx, rgName, vaultName, keyName, "7.2", nil)
+	getResp, err := keysClient.GetVersion(ctx, rgName, vaultName, keyName, "1", nil)
 	require.NoError(t, err)
 	require.Equal(t, keyName, *getResp.Name)
 }

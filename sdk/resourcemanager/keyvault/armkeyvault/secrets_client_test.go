@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"github.com/stretchr/testify/require"
 	"testing"
+	"time"
 )
 
 func TestSecretsClient_CreateOrUpdate(t *testing.T) {
@@ -107,6 +108,9 @@ func TestSecretsClient_Update(t *testing.T) {
 		armkeyvault.SecretPatchParameters{
 			Tags: map[string]*string{
 				"test": to.StringPtr("recording"),
+			},
+			Properties: &armkeyvault.SecretPatchProperties{
+				Value: to.StringPtr("sample-secret-value-update"),
 			},
 		},
 		nil,
@@ -206,8 +210,6 @@ func TestSecretsClient_List(t *testing.T) {
 	// get secret
 	secretPager := secretsClient.List(rgName, *vault.Name, nil)
 	require.NoError(t, secretPager.Err())
-	v := secretPager.PageResponse().Value[0]
-	t.Logf("%+v", v)
 }
 
 func createVault(t *testing.T, ctx context.Context, vaultsClient *armkeyvault.VaultsClient, resourceGroupName, location, tenantID, objectID string) *armkeyvault.Vault {
@@ -251,8 +253,7 @@ func createVault(t *testing.T, ctx context.Context, vaultsClient *armkeyvault.Va
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	vResp, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
 	require.Equal(t, vaultName, *vResp.Name)
 	return &vResp.Vault

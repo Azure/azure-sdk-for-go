@@ -15,25 +15,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-// x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/ListOperations.json
-func ExampleOperationsClient_List() {
+// x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/ListReplicationUsages.json
+func ExampleReplicationUsagesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewOperationsClient(cred, nil)
-	pager := client.List(nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
-		}
+	client := armrecoveryservicesbackup.NewReplicationUsagesClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ReplicationUsagesClientListResult)
 }

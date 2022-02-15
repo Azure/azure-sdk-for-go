@@ -1,5 +1,2057 @@
 # Release History
 
+## 0.3.0 (2022-02-15)
+### Breaking Changes
+
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Const `HTTPStatusCodeBadGateway` has been removed
+- Const `WorkloadItemTypeSAPAseSystem` has been removed
+- Const `JobStatusFailed` has been removed
+- Const `DayOfWeekThursday` has been removed
+- Const `BackupItemTypeSAPHanaDatabase` has been removed
+- Const `ProtectionStatusProtected` has been removed
+- Const `RetentionDurationTypeDays` has been removed
+- Const `ContainerTypeDPMContainer` has been removed
+- Const `HTTPStatusCodeUnsupportedMediaType` has been removed
+- Const `DataSourceTypeAzureSQLDb` has been removed
+- Const `ValidationStatusInvalid` has been removed
+- Const `LastUpdateStatusFirstInitialization` has been removed
+- Const `DataSourceTypeFileFolder` has been removed
+- Const `AzureFileShareTypeXSMB` has been removed
+- Const `SupportStatusSupported` has been removed
+- Const `HealthStatePassed` has been removed
+- Const `RecoveryPointTierStatusDeleted` has been removed
+- Const `DedupStateDisabled` has been removed
+- Const `StorageTypeZoneRedundant` has been removed
+- Const `HealthStateInvalid` has been removed
+- Const `MabServerTypeUnknown` has been removed
+- Const `BackupItemTypeSQLDataBase` has been removed
+- Const `RestorePointTypeIncremental` has been removed
+- Const `EncryptionAtRestTypeInvalid` has been removed
+- Const `MonthOfYearMay` has been removed
+- Const `OperationTypeReregister` has been removed
+- Const `OperationStatusValuesInProgress` has been removed
+- Const `HTTPStatusCodeSwitchingProtocols` has been removed
+- Const `JobOperationTypeUpdateCustomerManagedKey` has been removed
+- Const `BackupItemTypeAzureFileShare` has been removed
+- Const `MonthOfYearJune` has been removed
+- Const `RecoveryPointTierTypeHardenedRP` has been removed
+- Const `RestorePointTypeInvalid` has been removed
+- Const `RestorePointTypeFull` has been removed
+- Const `ProtectionStatusProtectionFailed` has been removed
+- Const `WorkloadTypeSharepoint` has been removed
+- Const `RetentionScheduleFormatWeekly` has been removed
+- Const `MonthOfYearJanuary` has been removed
+- Const `ProtectionStateProtectionPaused` has been removed
+- Const `ContainerTypeInvalid` has been removed
+- Const `OperationStatusValuesCanceled` has been removed
+- Const `XcoolStateEnabled` has been removed
+- Const `WorkloadTypeVM` has been removed
+- Const `StorageTypeStateLocked` has been removed
+- Const `HealthStateActionSuggested` has been removed
+- Const `PolicyTypeIncremental` has been removed
+- Const `MonthOfYearMarch` has been removed
+- Const `RecoveryPointTierStatusDisabled` has been removed
+- Const `RestoreRequestTypeFullShareRestore` has been removed
+- Const `DayOfWeekFriday` has been removed
+- Const `OperationStatusValuesSucceeded` has been removed
+- Const `RecoveryPointTierTypeInstantRP` has been removed
+- Const `PolicyTypeCopyOnlyFull` has been removed
+- Const `StorageTypeInvalid` has been removed
+- Const `RestorePointTypeDifferential` has been removed
+- Const `ProtectedItemStateInvalid` has been removed
+- Const `ProtectionIntentItemTypeRecoveryServiceVaultItem` has been removed
+- Const `ProtectedItemStateProtectionStopped` has been removed
+- Const `ContainerTypeVMAppContainer` has been removed
+- Const `ValidationStatusSucceeded` has been removed
+- Const `RecoveryPointTierStatusValid` has been removed
+- Const `HTTPStatusCodeNoContent` has been removed
+- Const `RetentionDurationTypeInvalid` has been removed
+- Const `ContainerTypeIaasVMContainer` has been removed
+- Const `HealthStateActionRequired` has been removed
+- Const `TypeInvalid` has been removed
+- Const `ContainerTypeVCenter` has been removed
+- Const `DataSourceTypeSharepoint` has been removed
+- Const `ProtectedItemHealthStatusUnhealthy` has been removed
+- Const `BackupItemTypeAzureSQLDb` has been removed
+- Const `HTTPStatusCodeRedirectMethod` has been removed
+- Const `DataSourceTypeVMwareVM` has been removed
+- Const `WorkloadTypeAzureFileShare` has been removed
+- Const `HTTPStatusCodeNotAcceptable` has been removed
+- Const `CreateModeDefault` has been removed
+- Const `ProtectedItemHealthStatusInvalid` has been removed
+- Const `RecoveryPointTierTypeInvalid` has been removed
+- Const `DataSourceTypeGenericDataSource` has been removed
+- Const `BackupManagementTypeAzureStorage` has been removed
+- Const `JobOperationTypeDeleteBackupData` has been removed
+- Const `FabricNameInvalid` has been removed
+- Const `ProtectedItemStateProtectionError` has been removed
+- Const `HTTPStatusCodeMovedPermanently` has been removed
+- Const `SupportStatusInvalid` has been removed
+- Const `SQLDataDirectoryTypeLog` has been removed
+- Const `HTTPStatusCodeBadRequest` has been removed
+- Const `BackupItemTypeInvalid` has been removed
+- Const `MabServerTypeSQLAGWorkLoadContainer` has been removed
+- Const `CreateModeRecover` has been removed
+- Const `HTTPStatusCodeHTTPVersionNotSupported` has been removed
+- Const `BackupItemTypeVMwareVM` has been removed
+- Const `BackupManagementTypeAzureBackupServer` has been removed
+- Const `HTTPStatusCodeProxyAuthenticationRequired` has been removed
+- Const `MonthOfYearFebruary` has been removed
+- Const `HTTPStatusCodeRequestedRangeNotSatisfiable` has been removed
+- Const `WorkloadTypeSQLDataBase` has been removed
+- Const `BackupManagementTypeMAB` has been removed
+- Const `ContainerTypeAzureSQLContainer` has been removed
+- Const `ContainerTypeUnknown` has been removed
+- Const `JobOperationTypeInvalid` has been removed
+- Const `HTTPStatusCodeRequestTimeout` has been removed
+- Const `LastUpdateStatusFailed` has been removed
+- Const `MabServerTypeStorageContainer` has been removed
+- Const `DataSourceTypeSQLDataBase` has been removed
+- Const `RetentionDurationTypeMonths` has been removed
+- Const `HTTPStatusCodeRequestEntityTooLarge` has been removed
+- Const `SQLDataDirectoryTypeData` has been removed
+- Const `MonthOfYearOctober` has been removed
+- Const `HTTPStatusCodeMultipleChoices` has been removed
+- Const `AzureFileShareTypeXSync` has been removed
+- Const `BackupTypeLog` has been removed
+- Const `ScheduleRunTypeDaily` has been removed
+- Const `RecoveryPointTierStatusRehydrated` has been removed
+- Const `MonthOfYearApril` has been removed
+- Const `BackupItemTypeSAPAseDatabase` has been removed
+- Const `JobSupportedActionCancellable` has been removed
+- Const `CopyOptionsCreateCopy` has been removed
+- Const `WeekOfMonthSecond` has been removed
+- Const `WorkloadItemTypeSQLInstance` has been removed
+- Const `MabServerTypeAzureBackupServerContainer` has been removed
+- Const `TypeBackupProtectedItemCountSummary` has been removed
+- Const `WorkloadTypeFileFolder` has been removed
+- Const `WorkloadTypeGenericDataSource` has been removed
+- Const `LastUpdateStatusInvalid` has been removed
+- Const `BackupManagementTypeAzureSQL` has been removed
+- Const `LastUpdateStatusSucceeded` has been removed
+- Const `HTTPStatusCodeForbidden` has been removed
+- Const `ProtectionStateInvalid` has been removed
+- Const `HealthStatusPassed` has been removed
+- Const `CreateModeInvalid` has been removed
+- Const `IntentItemTypeSQLInstance` has been removed
+- Const `WorkloadTypeInvalid` has been removed
+- Const `RecoveryTypeOffline` has been removed
+- Const `InquiryStatusSuccess` has been removed
+- Const `DataSourceTypeSQLDB` has been removed
+- Const `BackupItemTypeSharepoint` has been removed
+- Const `ProtectedItemHealthStatusIRPending` has been removed
+- Const `LastBackupStatusIRPending` has been removed
+- Const `BackupManagementTypeInvalid` has been removed
+- Const `WorkloadTypeAzureSQLDb` has been removed
+- Const `MabServerTypeWindows` has been removed
+- Const `RetentionScheduleFormatInvalid` has been removed
+- Const `HTTPStatusCodeAmbiguous` has been removed
+- Const `ResourceHealthStatusTransientUnhealthy` has been removed
+- Const `HTTPStatusCodeServiceUnavailable` has been removed
+- Const `CopyOptionsSkip` has been removed
+- Const `PolicyTypeDifferential` has been removed
+- Const `HTTPStatusCodeMethodNotAllowed` has been removed
+- Const `RestorePointTypeLog` has been removed
+- Const `InquiryStatusFailed` has been removed
+- Const `OperationStatusValuesInvalid` has been removed
+- Const `HTTPStatusCodeTemporaryRedirect` has been removed
+- Const `ValidationStatusFailed` has been removed
+- Const `HTTPStatusCodeNotModified` has been removed
+- Const `DataSourceTypeAzureFileShare` has been removed
+- Const `ProtectionIntentItemTypeInvalid` has been removed
+- Const `ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent` has been removed
+- Const `DataSourceTypeInvalid` has been removed
+- Const `LastUpdateStatusPartiallySucceeded` has been removed
+- Const `HTTPStatusCodeNonAuthoritativeInformation` has been removed
+- Const `RehydrationPriorityHigh` has been removed
+- Const `JobSupportedActionInvalid` has been removed
+- Const `DayOfWeekMonday` has been removed
+- Const `HTTPStatusCodeRedirectKeepVerb` has been removed
+- Const `StorageTypeReadAccessGeoZoneRedundant` has been removed
+- Const `ProtectionStateIRPending` has been removed
+- Const `HTTPStatusCodePreconditionFailed` has been removed
+- Const `WorkloadTypeClient` has been removed
+- Const `ProtectionStateProtectionError` has been removed
+- Const `RetentionDurationTypeYears` has been removed
+- Const `RestoreRequestTypeItemLevelRestore` has been removed
+- Const `HTTPStatusCodeContinue` has been removed
+- Const `MonthOfYearInvalid` has been removed
+- Const `MabServerTypeIaasVMContainer` has been removed
+- Const `LastUpdateStatusNotEnabled` has been removed
+- Const `LastUpdateStatusPartiallyFailed` has been removed
+- Const `RecoveryPointTierTypeArchivedRP` has been removed
+- Const `SoftDeleteFeatureStateDisabled` has been removed
+- Const `HTTPStatusCodeUnauthorized` has been removed
+- Const `BackupItemTypeExchange` has been removed
+- Const `WorkloadItemTypeSAPAseDatabase` has been removed
+- Const `ProtectionStatusProtecting` has been removed
+- Const `MonthOfYearNovember` has been removed
+- Const `HTTPStatusCodePaymentRequired` has been removed
+- Const `MonthOfYearSeptember` has been removed
+- Const `DayOfWeekSunday` has been removed
+- Const `SupportStatusDefaultOFF` has been removed
+- Const `BackupTypeFull` has been removed
+- Const `WorkloadItemTypeSQLDataBase` has been removed
+- Const `MabServerTypeInvalid` has been removed
+- Const `HTTPStatusCodeResetContent` has been removed
+- Const `ResourceHealthStatusHealthy` has been removed
+- Const `JobOperationTypeBackup` has been removed
+- Const `DedupStateEnabled` has been removed
+- Const `DayOfWeekTuesday` has been removed
+- Const `DataSourceTypeSAPAseDatabase` has been removed
+- Const `InquiryStatusInvalid` has been removed
+- Const `DataMoveLevelInvalid` has been removed
+- Const `StorageTypeLocallyRedundant` has been removed
+- Const `BackupManagementTypeAzureIaasVM` has been removed
+- Const `JobStatusInvalid` has been removed
+- Const `CopyOptionsOverwrite` has been removed
+- Const `WorkloadItemTypeSAPHanaDatabase` has been removed
+- Const `BackupItemTypeSQLDB` has been removed
+- Const `OverwriteOptionsOverwrite` has been removed
+- Const `RecoveryPointTierStatusInvalid` has been removed
+- Const `DedupStateInvalid` has been removed
+- Const `HTTPStatusCodeOK` has been removed
+- Const `StorageTypeStateInvalid` has been removed
+- Const `ScheduleRunTypeWeekly` has been removed
+- Const `DataSourceTypeSAPHanaDatabase` has been removed
+- Const `BackupItemTypeVM` has been removed
+- Const `AcquireStorageAccountLockNotAcquire` has been removed
+- Const `BackupEngineTypeInvalid` has been removed
+- Const `JobOperationTypeDisableBackup` has been removed
+- Const `WeekOfMonthThird` has been removed
+- Const `CopyOptionsInvalid` has been removed
+- Const `BackupItemTypeClient` has been removed
+- Const `HTTPStatusCodePartialContent` has been removed
+- Const `SupportStatusDefaultON` has been removed
+- Const `ContainerTypeAzureBackupServerContainer` has been removed
+- Const `DataMoveLevelContainer` has been removed
+- Const `EnhancedSecurityStateInvalid` has been removed
+- Const `ResourceHealthStatusPersistentUnhealthy` has been removed
+- Const `BackupItemTypeSystemState` has been removed
+- Const `SQLDataDirectoryTypeInvalid` has been removed
+- Const `RecoveryModeFileRecovery` has been removed
+- Const `HealthStatusInvalid` has been removed
+- Const `RecoveryTypeInvalid` has been removed
+- Const `RecoveryTypeOriginalLocation` has been removed
+- Const `HTTPStatusCodeFound` has been removed
+- Const `WorkloadTypeVMwareVM` has been removed
+- Const `DataSourceTypeExchange` has been removed
+- Const `MabServerTypeAzureSQLContainer` has been removed
+- Const `HTTPStatusCodeLengthRequired` has been removed
+- Const `DataMoveLevelVault` has been removed
+- Const `WeekOfMonthFirst` has been removed
+- Const `HTTPStatusCodeNotFound` has been removed
+- Const `JobOperationTypeCrossRegionRestore` has been removed
+- Const `BackupManagementTypeAzureWorkload` has been removed
+- Const `MabServerTypeIaasVMServiceContainer` has been removed
+- Const `EnhancedSecurityStateEnabled` has been removed
+- Const `BackupTypeInvalid` has been removed
+- Const `RecoveryModeWorkloadRecovery` has been removed
+- Const `SoftDeleteFeatureStateInvalid` has been removed
+- Const `MabServerTypeDPMContainer` has been removed
+- Const `StorageTypeStateUnlocked` has been removed
+- Const `ContainerTypeIaasVMServiceContainer` has been removed
+- Const `JobStatusCompletedWithWarnings` has been removed
+- Const `OperationTypeInvalid` has been removed
+- Const `OperationTypeRegister` has been removed
+- Const `MonthOfYearJuly` has been removed
+- Const `MabServerTypeVCenter` has been removed
+- Const `HealthStatusActionSuggested` has been removed
+- Const `LastBackupStatusHealthy` has been removed
+- Const `HTTPStatusCodeCreated` has been removed
+- Const `SupportStatusNotSupported` has been removed
+- Const `EncryptionAtRestTypeMicrosoftManaged` has been removed
+- Const `RestorePointQueryTypeDifferential` has been removed
+- Const `OverwriteOptionsInvalid` has been removed
+- Const `JobStatusCancelled` has been removed
+- Const `RestorePointQueryTypeFull` has been removed
+- Const `ProtectedItemStateIRPending` has been removed
+- Const `ProtectionStatusNotProtected` has been removed
+- Const `ProtectedItemHealthStatusHealthy` has been removed
+- Const `WorkloadTypeSAPHanaDatabase` has been removed
+- Const `HTTPStatusCodeUnused` has been removed
+- Const `JobStatusInProgress` has been removed
+- Const `ContainerTypeMABContainer` has been removed
+- Const `BackupTypeCopyOnlyFull` has been removed
+- Const `AcquireStorageAccountLockAcquire` has been removed
+- Const `ContainerTypeSQLAGWorkLoadContainer` has been removed
+- Const `LastBackupStatusInvalid` has been removed
+- Const `PolicyTypeFull` has been removed
+- Const `XcoolStateInvalid` has been removed
+- Const `ScheduleRunTypeInvalid` has been removed
+- Const `PolicyTypeLog` has been removed
+- Const `MabServerTypeVMAppContainer` has been removed
+- Const `RestorePointQueryTypeIncremental` has been removed
+- Const `BackupItemTypeFileFolder` has been removed
+- Const `ContainerTypeWindows` has been removed
+- Const `ProtectedItemStateProtectionPaused` has been removed
+- Const `CopyOptionsFailOnConflict` has been removed
+- Const `HTTPStatusCodeGatewayTimeout` has been removed
+- Const `WeekOfMonthInvalid` has been removed
+- Const `ProtectedItemHealthStatusNotReachable` has been removed
+- Const `RestorePointQueryTypeInvalid` has been removed
+- Const `WorkloadTypeSAPAseDatabase` has been removed
+- Const `StorageTypeGeoRedundant` has been removed
+- Const `HTTPStatusCodeUseProxy` has been removed
+- Const `BackupItemTypeGenericDataSource` has been removed
+- Const `ContainerTypeGenericContainer` has been removed
+- Const `RestorePointQueryTypeAll` has been removed
+- Const `MonthOfYearDecember` has been removed
+- Const `DayOfWeekSaturday` has been removed
+- Const `OverwriteOptionsFailOnConflict` has been removed
+- Const `RehydrationPriorityStandard` has been removed
+- Const `RecoveryTypeRestoreDisks` has been removed
+- Const `RetentionDurationTypeWeeks` has been removed
+- Const `SoftDeleteFeatureStateEnabled` has been removed
+- Const `HTTPStatusCodeAccepted` has been removed
+- Const `ProtectionStateProtected` has been removed
+- Const `EncryptionAtRestTypeCustomerManaged` has been removed
+- Const `HTTPStatusCodeRequestURITooLong` has been removed
+- Const `RecoveryModeInvalid` has been removed
+- Const `ContainerTypeStorageContainer` has been removed
+- Const `RestoreRequestTypeInvalid` has been removed
+- Const `JobOperationTypeConfigureBackup` has been removed
+- Const `JobSupportedActionRetriable` has been removed
+- Const `JobOperationTypeRegister` has been removed
+- Const `DayOfWeekWednesday` has been removed
+- Const `EnhancedSecurityStateDisabled` has been removed
+- Const `HTTPStatusCodeSeeOther` has been removed
+- Const `XcoolStateDisabled` has been removed
+- Const `HTTPStatusCodeMoved` has been removed
+- Const `ProtectedItemStateProtected` has been removed
+- Const `BackupManagementTypeDPM` has been removed
+- Const `FabricNameAzure` has been removed
+- Const `HTTPStatusCodeRedirect` has been removed
+- Const `MabServerTypeMABContainer` has been removed
+- Const `ResourceHealthStatusInvalid` has been removed
+- Const `JobStatusCancelling` has been removed
+- Const `TypeBackupProtectionContainerCountSummary` has been removed
+- Const `WeekOfMonthLast` has been removed
+- Const `WorkloadItemTypeSAPHanaSystem` has been removed
+- Const `InfrastructureEncryptionStateInvalid` has been removed
+- Const `WorkloadItemTypeInvalid` has been removed
+- Const `ScheduleRunTypeHourly` has been removed
+- Const `JobOperationTypeUnRegister` has been removed
+- Const `DataSourceTypeClient` has been removed
+- Const `BackupManagementTypeDefaultBackup` has been removed
+- Const `MonthOfYearAugust` has been removed
+- Const `JobOperationTypeRestore` has been removed
+- Const `HTTPStatusCodeUpgradeRequired` has been removed
+- Const `IntentItemTypeSQLAvailabilityGroupContainer` has been removed
+- Const `RecoveryTypeAlternateLocation` has been removed
+- Const `HTTPStatusCodeInternalServerError` has been removed
+- Const `LastBackupStatusUnhealthy` has been removed
+- Const `ResourceHealthStatusPersistentDegraded` has been removed
+- Const `WorkloadTypeSystemState` has been removed
+- Const `DataSourceTypeSystemState` has been removed
+- Const `AzureFileShareTypeInvalid` has been removed
+- Const `JobStatusCompleted` has been removed
+- Const `BackupEngineTypeAzureBackupServerEngine` has been removed
+- Const `MabServerTypeCluster` has been removed
+- Const `WeekOfMonthFourth` has been removed
+- Const `WorkloadTypeSQLDB` has been removed
+- Const `ProtectionStateProtectionStopped` has been removed
+- Const `PolicyTypeInvalid` has been removed
+- Const `ResourceHealthStatusTransientDegraded` has been removed
+- Const `LastUpdateStatusInitialized` has been removed
+- Const `DataSourceTypeVM` has been removed
+- Const `OperationStatusValuesFailed` has been removed
+- Const `ProtectionIntentItemTypeAzureResourceItem` has been removed
+- Const `JobOperationTypeUndelete` has been removed
+- Const `HTTPStatusCodeGone` has been removed
+- Const `BackupTypeDifferential` has been removed
+- Const `BackupTypeIncremental` has been removed
+- Const `RestorePointQueryTypeLog` has been removed
+- Const `MabServerTypeGenericContainer` has been removed
+- Const `IntentItemTypeInvalid` has been removed
+- Const `RetentionScheduleFormatDaily` has been removed
+- Const `HealthStatusActionRequired` has been removed
+- Const `ProtectionStatusInvalid` has been removed
+- Const `HTTPStatusCodeConflict` has been removed
+- Const `HTTPStatusCodeExpectationFailed` has been removed
+- Const `RestorePointQueryTypeFullAndDifferential` has been removed
+- Const `BackupEngineTypeDpmBackupEngine` has been removed
+- Const `ContainerTypeCluster` has been removed
+- Const `HTTPStatusCodeNotImplemented` has been removed
+- Const `WorkloadTypeExchange` has been removed
+- Function `MabProtectionPolicy.MarshalJSON` has been removed
+- Function `AzureFileShareProtectionPolicy.MarshalJSON` has been removed
+- Function `*ProtectedItemOperationStatusesClient.Get` has been removed
+- Function `*AzureWorkloadSQLRestoreWithRehydrateRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `*IaasVMRestoreWithRehydrationRequest.GetRestoreRequest` has been removed
+- Function `*BackupJobsClient.List` has been removed
+- Function `*ResourceGuardProxiesClientGetPager.PageResponse` has been removed
+- Function `*AzureWorkloadPointInTimeRestoreRequest.GetRestoreRequest` has been removed
+- Function `*LongTermRetentionPolicy.GetRetentionPolicy` has been removed
+- Function `MabJob.MarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.GetAzureWorkloadSAPHanaRestoreRequest` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseProtectedItem.GetAzureVMWorkloadProtectedItem` has been removed
+- Function `*OperationStatusJobsExtendedInfo.UnmarshalJSON` has been removed
+- Function `NewResourceGuardProxyClient` has been removed
+- Function `NewJobDetailsClient` has been removed
+- Function `PossibleJobStatusValues` has been removed
+- Function `*RecoveryPointResource.UnmarshalJSON` has been removed
+- Function `*BackupEnginesClient.List` has been removed
+- Function `AzureWorkloadContainerExtendedInfo.MarshalJSON` has been removed
+- Function `ExportJobsOperationResultInfo.MarshalJSON` has been removed
+- Function `*JobOperationResultsClient.Get` has been removed
+- Function `StorageType.ToPtr` has been removed
+- Function `*JobCancellationsClient.Trigger` has been removed
+- Function `AzureWorkloadContainer.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadSQLInstanceWorkloadItem.GetAzureVMWorkloadItem` has been removed
+- Function `*BackupEnginesClientListPager.NextPage` has been removed
+- Function `*ProtectionPoliciesClientDeletePollerResponse.Resume` has been removed
+- Function `*SimpleSchedulePolicy.GetSchedulePolicy` has been removed
+- Function `*Client.BeginMoveRecoveryPoint` has been removed
+- Function `*AzureStorageJob.UnmarshalJSON` has been removed
+- Function `RestorePointType.ToPtr` has been removed
+- Function `BackupEngineBaseResource.MarshalJSON` has been removed
+- Function `*AzureSQLProtectedItemExtendedInfo.UnmarshalJSON` has been removed
+- Function `BackupManagementUsageList.MarshalJSON` has been removed
+- Function `*DpmContainer.GetDpmContainer` has been removed
+- Function `*IaasVMRecoveryPoint.UnmarshalJSON` has been removed
+- Function `*ClientBMSTriggerDataMovePoller.Done` has been removed
+- Function `PrivateEndpointConnectionClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.GetRestoreRequest` has been removed
+- Function `EnhancedSecurityState.ToPtr` has been removed
+- Function `*ProtectedItemsClient.Get` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `*PointInTimeRange.UnmarshalJSON` has been removed
+- Function `IaaSVMContainer.MarshalJSON` has been removed
+- Function `NewJobCancellationsClient` has been removed
+- Function `*AzureVMWorkloadSAPHanaSystemWorkloadItem.UnmarshalJSON` has been removed
+- Function `ValidateRestoreOperationRequest.MarshalJSON` has been removed
+- Function `*AzureWorkloadRestoreRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `*OperationStatusJobExtendedInfo.UnmarshalJSON` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseProtectableItem.GetAzureVMWorkloadProtectableItem` has been removed
+- Function `PrivateEndpointConnectionResource.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionClientDeletePoller.Done` has been removed
+- Function `AzureWorkloadJob.MarshalJSON` has been removed
+- Function `*OperationStatusProvisionILRExtendedInfo.GetOperationStatusExtendedInfo` has been removed
+- Function `HTTPStatusCode.ToPtr` has been removed
+- Function `RecoveryPointTierStatus.ToPtr` has been removed
+- Function `*BackupResourceStorageConfigsNonCRRClient.Get` has been removed
+- Function `PossibleRecoveryPointTierStatusValues` has been removed
+- Function `AzureVMWorkloadSAPHanaDatabaseWorkloadItem.MarshalJSON` has been removed
+- Function `*RecoveryPointsClientListPager.NextPage` has been removed
+- Function `BackupResourceVaultConfigResource.MarshalJSON` has been removed
+- Function `*BackupJobsClientListPager.PageResponse` has been removed
+- Function `*WorkloadItem.GetWorkloadItem` has been removed
+- Function `*AzureVMWorkloadSQLInstanceProtectableItem.UnmarshalJSON` has been removed
+- Function `PossibleMonthOfYearValues` has been removed
+- Function `*AzureIaaSVMJobV2.GetJob` has been removed
+- Function `*AzureResourceProtectionIntent.GetProtectionIntent` has been removed
+- Function `*AzureVMWorkloadSAPAseSystemWorkloadItem.GetWorkloadItem` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `*MabContainer.GetProtectionContainer` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `*IaaSVMProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `HourlySchedule.MarshalJSON` has been removed
+- Function `*AzureIaaSComputeVMProtectedItem.GetProtectedItem` has been removed
+- Function `*BackupProtectionContainersClientListPager.NextPage` has been removed
+- Function `*AzureWorkloadPointInTimeRecoveryPoint.GetAzureWorkloadPointInTimeRecoveryPoint` has been removed
+- Function `*ValidateRestoreOperationRequest.GetValidateRestoreOperationRequest` has been removed
+- Function `VaultJobErrorInfo.MarshalJSON` has been removed
+- Function `*AzureWorkloadSQLRecoveryPoint.GetAzureWorkloadRecoveryPoint` has been removed
+- Function `*OperationStatusProvisionILRExtendedInfo.UnmarshalJSON` has been removed
+- Function `ProtectedItemResourceList.MarshalJSON` has been removed
+- Function `*OperationResultInfo.GetOperationResultInfoBase` has been removed
+- Function `IaasVMBackupRequest.MarshalJSON` has been removed
+- Function `*ExportJobsOperationResultsClient.Get` has been removed
+- Function `*AzureWorkloadSQLRecoveryPoint.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `*AzureVMWorkloadProtectedItem.GetProtectedItem` has been removed
+- Function `*BackupProtectedItemsClientListPager.PageResponse` has been removed
+- Function `*DpmContainer.UnmarshalJSON` has been removed
+- Function `*ValidateOperationClient.BeginTrigger` has been removed
+- Function `JobSupportedAction.ToPtr` has been removed
+- Function `AzureWorkloadSQLAutoProtectionIntent.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionClient.BeginPut` has been removed
+- Function `*AzureFileshareProtectedItem.UnmarshalJSON` has been removed
+- Function `*BackupOperationResultsClient.Get` has been removed
+- Function `LongTermRetentionPolicy.MarshalJSON` has been removed
+- Function `WeeklyRetentionSchedule.MarshalJSON` has been removed
+- Function `AzureIaaSClassicComputeVMContainer.MarshalJSON` has been removed
+- Function `*ProtectionContainer.GetProtectionContainer` has been removed
+- Function `*AzureFileshareProtectedItem.GetProtectedItem` has been removed
+- Function `NewJobOperationResultsClient` has been removed
+- Function `ResourceHealthStatus.ToPtr` has been removed
+- Function `PossibleEncryptionAtRestTypeValues` has been removed
+- Function `*BackupEnginesClientListPager.PageResponse` has been removed
+- Function `NewBackupProtectableItemsClient` has been removed
+- Function `*AzureWorkloadPointInTimeRestoreRequest.UnmarshalJSON` has been removed
+- Function `PossibleProtectedItemStateValues` has been removed
+- Function `AzureVMWorkloadSQLDatabaseProtectedItem.MarshalJSON` has been removed
+- Function `PossibleSupportStatusValues` has been removed
+- Function `*IaasVMRestoreRequest.GetIaasVMRestoreRequest` has been removed
+- Function `PossibleOverwriteOptionsValues` has been removed
+- Function `*RecoveryPointsRecommendedForMoveClient.List` has been removed
+- Function `*ResourceGuardProxyClient.Get` has been removed
+- Function `*RecoveryPointsRecommendedForMoveClientListPager.Err` has been removed
+- Function `*ProtectionPolicyOperationStatusesClient.Get` has been removed
+- Function `*RestoresClientTriggerPollerResponse.Resume` has been removed
+- Function `RehydrationPriority.ToPtr` has been removed
+- Function `ProtectionPolicyResourceList.MarshalJSON` has been removed
+- Function `*AzureFileShareRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.MarshalJSON` has been removed
+- Function `*Client.BeginBMSPrepareDataMove` has been removed
+- Function `*ProtectionPoliciesClientDeletePoller.Poll` has been removed
+- Function `*AzureFileShareProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `*PrivateEndpointConnectionClientPutPollerResponse.Resume` has been removed
+- Function `*AzureVMAppContainerProtectionContainer.GetProtectionContainer` has been removed
+- Function `*ClientBMSPrepareDataMovePoller.FinalResponse` has been removed
+- Function `*AzureIaaSClassicComputeVMProtectedItem.UnmarshalJSON` has been removed
+- Function `NewRecoveryPointsClient` has been removed
+- Function `*AzureVMAppContainerProtectableContainer.GetProtectableContainer` has been removed
+- Function `NewBackupProtectionContainersClient` has been removed
+- Function `*ProtectableContainersClientListPager.PageResponse` has been removed
+- Function `BackupResourceEncryptionConfigResource.MarshalJSON` has been removed
+- Function `*AzureBackupServerEngine.GetBackupEngineBase` has been removed
+- Function `SecurityPinBase.MarshalJSON` has been removed
+- Function `*ExportJobsOperationResultInfo.UnmarshalJSON` has been removed
+- Function `*GenericProtectedItem.UnmarshalJSON` has been removed
+- Function `*BackupEngineBase.GetBackupEngineBase` has been removed
+- Function `*RecoveryPointsClient.Get` has been removed
+- Function `NewPrivateEndpointClient` has been removed
+- Function `*RetentionPolicy.GetRetentionPolicy` has been removed
+- Function `*ProtectableContainer.GetProtectableContainer` has been removed
+- Function `AzureIaaSComputeVMContainer.MarshalJSON` has been removed
+- Function `*ResourceGuardProxyClient.Put` has been removed
+- Function `ProtectionContainerResource.MarshalJSON` has been removed
+- Function `BackupEngineExtendedInfo.MarshalJSON` has been removed
+- Function `*BackupProtectionContainersClientListPager.PageResponse` has been removed
+- Function `PossibleRetentionDurationTypeValues` has been removed
+- Function `VaultJobExtendedInfo.MarshalJSON` has been removed
+- Function `HealthStatus.ToPtr` has been removed
+- Function `OperationStatusValidateOperationExtendedInfo.MarshalJSON` has been removed
+- Function `*ProtectionIntentResource.UnmarshalJSON` has been removed
+- Function `*AzureIaaSVMJobTaskDetails.UnmarshalJSON` has been removed
+- Function `MonthOfYear.ToPtr` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `ResourceGuardProxyBaseResourceList.MarshalJSON` has been removed
+- Function `*MabFileFolderProtectedItem.GetProtectedItem` has been removed
+- Function `NewRestoresClient` has been removed
+- Function `AzureIaaSVMProtectedItem.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseProtectedItem.UnmarshalJSON` has been removed
+- Function `*AzureBackupServerEngine.UnmarshalJSON` has been removed
+- Function `StorageTypeState.ToPtr` has been removed
+- Function `NewFeatureSupportClient` has been removed
+- Function `MabFileFolderProtectedItem.MarshalJSON` has been removed
+- Function `*ClientBMSTriggerDataMovePoller.ResumeToken` has been removed
+- Function `RestorePointQueryType.ToPtr` has been removed
+- Function `DPMContainerExtendedInfo.MarshalJSON` has been removed
+- Function `AzureBackupGoalFeatureSupportRequest.MarshalJSON` has been removed
+- Function `*AzureFileShareProtectionPolicy.UnmarshalJSON` has been removed
+- Function `AzureVMAppContainerProtectableContainer.MarshalJSON` has been removed
+- Function `OperationStatusValues.ToPtr` has been removed
+- Function `GenericProtectionPolicy.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaRestoreWithRehydrateRequest.GetAzureWorkloadSAPHanaRestoreRequest` has been removed
+- Function `PossibleIntentItemTypeValues` has been removed
+- Function `*BackupUsageSummariesClient.List` has been removed
+- Function `DpmJobTaskDetails.MarshalJSON` has been removed
+- Function `IaaSVMProtectableItem.MarshalJSON` has been removed
+- Function `IntentItemType.ToPtr` has been removed
+- Function `*BackupPoliciesClient.List` has been removed
+- Function `*DPMProtectedItemExtendedInfo.UnmarshalJSON` has been removed
+- Function `*BackupProtectionContainersClient.List` has been removed
+- Function `*AzureWorkloadSAPHanaRestoreWithRehydrateRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `*ProtectionPolicyOperationResultsClient.Get` has been removed
+- Function `WeekOfMonth.ToPtr` has been removed
+- Function `BackupResourceConfigResource.MarshalJSON` has been removed
+- Function `MabContainerExtendedInfo.MarshalJSON` has been removed
+- Function `SupportStatus.ToPtr` has been removed
+- Function `*ProtectionPolicy.GetProtectionPolicy` has been removed
+- Function `AzureVMWorkloadSQLInstanceProtectableItem.MarshalJSON` has been removed
+- Function `*AzureIaaSComputeVMProtectableItem.UnmarshalJSON` has been removed
+- Function `OverwriteOptions.ToPtr` has been removed
+- Function `*AzureVMWorkloadSAPAseSystemWorkloadItem.GetAzureVMWorkloadItem` has been removed
+- Function `*ResourceGuardProxiesClient.Get` has been removed
+- Function `PrepareDataMoveResponse.MarshalJSON` has been removed
+- Function `*GenericRecoveryPoint.UnmarshalJSON` has been removed
+- Function `*ProtectedItemsClient.CreateOrUpdate` has been removed
+- Function `PossibleStorageTypeValues` has been removed
+- Function `NewBackupEnginesClient` has been removed
+- Function `*AzureSQLProtectionPolicy.GetProtectionPolicy` has been removed
+- Function `*AzureWorkloadSQLAutoProtectionIntent.GetAzureWorkloadAutoProtectionIntent` has been removed
+- Function `SimpleRetentionPolicy.MarshalJSON` has been removed
+- Function `*BackupProtectionIntentClientListPager.PageResponse` has been removed
+- Function `*AzureWorkloadRestoreRequest.UnmarshalJSON` has been removed
+- Function `NewSecurityPINsClient` has been removed
+- Function `*LongTermRetentionPolicy.UnmarshalJSON` has been removed
+- Function `PossibleWorkloadTypeValues` has been removed
+- Function `*ProtectionPoliciesClientDeletePoller.ResumeToken` has been removed
+- Function `*IaaSVMContainer.GetIaaSVMContainer` has been removed
+- Function `PossibleSQLDataDirectoryTypeValues` has been removed
+- Function `*AzureVMWorkloadSQLInstanceWorkloadItem.GetWorkloadItem` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseProtectedItem.GetAzureVMWorkloadProtectedItem` has been removed
+- Function `NewProtectedItemOperationStatusesClient` has been removed
+- Function `InquiryInfo.MarshalJSON` has been removed
+- Function `RecoveryPointResourceList.MarshalJSON` has been removed
+- Function `NewProtectionContainersClient` has been removed
+- Function `*ClientMoveRecoveryPointPoller.FinalResponse` has been removed
+- Function `*RecoveryPointsClientListPager.Err` has been removed
+- Function `*ProtectedItem.GetProtectedItem` has been removed
+- Function `*AzureIaaSVMJob.UnmarshalJSON` has been removed
+- Function `JobQueryObject.MarshalJSON` has been removed
+- Function `*ProtectedItemResource.UnmarshalJSON` has been removed
+- Function `AzureWorkloadContainerAutoProtectionIntent.MarshalJSON` has been removed
+- Function `AzureIaaSClassicComputeVMProtectableItem.MarshalJSON` has been removed
+- Function `AzureIaaSComputeVMProtectableItem.MarshalJSON` has been removed
+- Function `*ResourceGuardProxyClient.UnlockDelete` has been removed
+- Function `*ItemLevelRecoveryConnectionsClient.Provision` has been removed
+- Function `*AzureWorkloadAutoProtectionIntent.GetProtectionIntent` has been removed
+- Function `PossibleRehydrationPriorityValues` has been removed
+- Function `*AzureFileShareBackupRequest.GetBackupRequest` has been removed
+- Function `NewProtectionContainerRefreshOperationResultsClient` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.UnmarshalJSON` has been removed
+- Function `AzureFileShareRecoveryPoint.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadProtectionPolicy.UnmarshalJSON` has been removed
+- Function `AzureStorageProtectableContainer.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadProtectedItemExtendedInfo.UnmarshalJSON` has been removed
+- Function `InquiryStatus.ToPtr` has been removed
+- Function `*ILRRequestResource.UnmarshalJSON` has been removed
+- Function `*IaasVMRestoreWithRehydrationRequest.UnmarshalJSON` has been removed
+- Function `HealthState.ToPtr` has been removed
+- Function `AzureFileShareBackupRequest.MarshalJSON` has been removed
+- Function `*VaultJob.GetJob` has been removed
+- Function `*BackupResourceEncryptionConfigsClient.Get` has been removed
+- Function `*LongTermSchedulePolicy.UnmarshalJSON` has been removed
+- Function `OperationResultInfoBaseResource.MarshalJSON` has been removed
+- Function `*BackupProtectedItemsClient.List` has been removed
+- Function `*AzureWorkloadSQLRecoveryPointExtendedInfo.UnmarshalJSON` has been removed
+- Function `*DpmJob.UnmarshalJSON` has been removed
+- Function `*BackupEnginesClient.Get` has been removed
+- Function `ILRRequestResource.MarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreRequest.GetRestoreRequest` has been removed
+- Function `ProtectionIntentItemType.ToPtr` has been removed
+- Function `NewBackupPoliciesClient` has been removed
+- Function `CreateMode.ToPtr` has been removed
+- Function `PossibleJobSupportedActionValues` has been removed
+- Function `*AzureWorkloadSAPHanaRestoreWithRehydrateRequest.UnmarshalJSON` has been removed
+- Function `AzureIaaSVMProtectedItemExtendedInfo.MarshalJSON` has been removed
+- Function `RecoveryPointDiskConfiguration.MarshalJSON` has been removed
+- Function `*ILRRequest.GetILRRequest` has been removed
+- Function `*AzureWorkloadSAPHanaRecoveryPoint.GetAzureWorkloadRecoveryPoint` has been removed
+- Function `DataSourceType.ToPtr` has been removed
+- Function `*AzureBackupServerContainer.GetProtectionContainer` has been removed
+- Function `ProtectionContainerResourceList.MarshalJSON` has been removed
+- Function `BMSRPQueryObject.MarshalJSON` has been removed
+- Function `RecoveryPointTierInformationV2.MarshalJSON` has been removed
+- Function `*ClientBMSPrepareDataMovePoller.Poll` has been removed
+- Function `AzureFileshareProtectedItemExtendedInfo.MarshalJSON` has been removed
+- Function `AzureVMWorkloadSQLAvailabilityGroupProtectableItem.MarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaRestoreRequest.GetAzureWorkloadSAPHanaRestoreRequest` has been removed
+- Function `AzureSQLProtectionPolicy.MarshalJSON` has been removed
+- Function `NewProtectedItemsClient` has been removed
+- Function `*AzureIaaSClassicComputeVMProtectableItem.GetIaaSVMProtectableItem` has been removed
+- Function `AzureSQLContainer.MarshalJSON` has been removed
+- Function `*OperationStatusJobsExtendedInfo.GetOperationStatusExtendedInfo` has been removed
+- Function `*AzureWorkloadJob.UnmarshalJSON` has been removed
+- Function `DataMoveLevel.ToPtr` has been removed
+- Function `PrepareDataMoveRequest.MarshalJSON` has been removed
+- Function `AzureBackupServerContainer.MarshalJSON` has been removed
+- Function `*AzureWorkloadBackupRequest.GetBackupRequest` has been removed
+- Function `*ProtectableContainerResource.UnmarshalJSON` has been removed
+- Function `*AzureVMWorkloadItem.GetAzureVMWorkloadItem` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseProtectableItem.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSQLRecoveryPoint.GetAzureWorkloadSQLRecoveryPoint` has been removed
+- Function `JobOperationType.ToPtr` has been removed
+- Function `*AzureWorkloadRecoveryPoint.GetAzureWorkloadRecoveryPoint` has been removed
+- Function `NewBackupResourceEncryptionConfigsClient` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreRequest.UnmarshalJSON` has been removed
+- Function `PossibleInquiryStatusValues` has been removed
+- Function `PossibleRestorePointQueryTypeValues` has been removed
+- Function `*AzureWorkloadSQLAutoProtectionIntent.GetProtectionIntent` has been removed
+- Function `PossibleRetentionScheduleFormatValues` has been removed
+- Function `*ProtectionIntentClient.Get` has been removed
+- Function `ProtectionPoliciesClientDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AzureWorkloadPointInTimeRecoveryPoint.GetAzureWorkloadRecoveryPoint` has been removed
+- Function `MABContainerHealthDetails.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadProtectableItem.GetAzureVMWorkloadProtectableItem` has been removed
+- Function `*ProtectionContainersClient.Unregister` has been removed
+- Function `PossibleRestorePointTypeValues` has been removed
+- Function `*ItemLevelRecoveryConnectionsClient.Revoke` has been removed
+- Function `AzureIaaSVMJobV2.MarshalJSON` has been removed
+- Function `AzureSQLAGWorkloadContainerProtectionContainer.MarshalJSON` has been removed
+- Function `ValidationStatus.ToPtr` has been removed
+- Function `BackupResourceVaultConfig.MarshalJSON` has been removed
+- Function `KPIResourceHealthDetails.MarshalJSON` has been removed
+- Function `NewProtectableContainersClient` has been removed
+- Function `*AzureSQLAGWorkloadContainerProtectionContainer.GetAzureWorkloadContainer` has been removed
+- Function `*AzureVMWorkloadProtectableItem.UnmarshalJSON` has been removed
+- Function `*GenericContainer.UnmarshalJSON` has been removed
+- Function `*RestoresClientTriggerPoller.Done` has been removed
+- Function `*AzureStorageProtectableContainer.UnmarshalJSON` has been removed
+- Function `AzureWorkloadAutoProtectionIntent.MarshalJSON` has been removed
+- Function `*AzureWorkloadSQLAutoProtectionIntent.GetAzureRecoveryServiceVaultProtectionIntent` has been removed
+- Function `*AzureWorkloadSAPHanaRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `RestoresClientTriggerPollerResponse.PollUntilDone` has been removed
+- Function `LongTermSchedulePolicy.MarshalJSON` has been removed
+- Function `PossibleCreateModeValues` has been removed
+- Function `*IaasVMILRRegistrationRequest.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRecoveryPoint.GetAzureWorkloadRecoveryPoint` has been removed
+- Function `PossibleJobOperationTypeValues` has been removed
+- Function `*OperationResultInfoBase.GetOperationResultInfoBase` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreRequest.GetAzureWorkloadSAPHanaPointInTimeRestoreRequest` has been removed
+- Function `*AzureIaaSVMProtectionPolicy.UnmarshalJSON` has been removed
+- Function `BackupRequestResource.MarshalJSON` has been removed
+- Function `*RestoreRequest.GetRestoreRequest` has been removed
+- Function `AzureWorkloadRecoveryPoint.MarshalJSON` has been removed
+- Function `*Client.BeginBMSTriggerDataMove` has been removed
+- Function `*AzureWorkloadContainer.UnmarshalJSON` has been removed
+- Function `*BackupProtectionIntentClientListPager.Err` has been removed
+- Function `*AzureIaaSComputeVMContainer.GetIaaSVMContainer` has been removed
+- Function `NewBackupWorkloadItemsClient` has been removed
+- Function `PossibleLastBackupStatusValues` has been removed
+- Function `RestoreRequestResource.MarshalJSON` has been removed
+- Function `*BMSRPQueryObject.UnmarshalJSON` has been removed
+- Function `*ResourceGuardProxyClient.Delete` has been removed
+- Function `AzureIaaSVMJobTaskDetails.MarshalJSON` has been removed
+- Function `GenericRecoveryPoint.MarshalJSON` has been removed
+- Function `*AzureVMResourceFeatureSupportRequest.GetFeatureSupportRequest` has been removed
+- Function `*AzureIaaSClassicComputeVMProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `ProtectionPolicy.MarshalJSON` has been removed
+- Function `*RestoresClientTriggerPoller.ResumeToken` has been removed
+- Function `*RecoveryPoint.GetRecoveryPoint` has been removed
+- Function `*AzureBackupGoalFeatureSupportRequest.GetFeatureSupportRequest` has been removed
+- Function `*AzureVMWorkloadSAPAseSystemProtectableItem.GetAzureVMWorkloadProtectableItem` has been removed
+- Function `*ProtectionPoliciesClientDeletePoller.FinalResponse` has been removed
+- Function `*AzureFileShareProtectionPolicy.GetProtectionPolicy` has been removed
+- Function `*ProtectableContainersClient.List` has been removed
+- Function `*AzureStorageContainer.UnmarshalJSON` has been removed
+- Function `*BackupResourceVaultConfigsClient.Update` has been removed
+- Function `*LogSchedulePolicy.UnmarshalJSON` has been removed
+- Function `IaasVMRestoreWithRehydrationRequest.MarshalJSON` has been removed
+- Function `*AzureIaaSVMProtectedItem.GetAzureIaaSVMProtectedItem` has been removed
+- Function `CopyOptions.ToPtr` has been removed
+- Function `MabFileFolderProtectedItemExtendedInfo.MarshalJSON` has been removed
+- Function `*AzureIaaSVMJob.GetJob` has been removed
+- Function `*RestoresClientTriggerPoller.FinalResponse` has been removed
+- Function `*AzureVMWorkloadSAPHanaSystemWorkloadItem.GetWorkloadItem` has been removed
+- Function `PossibleValidationStatusValues` has been removed
+- Function `*AzureWorkloadJob.GetJob` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseWorkloadItem.GetWorkloadItem` has been removed
+- Function `AzureStorageContainer.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `AzureWorkloadSAPHanaRestoreWithRehydrateRequest.MarshalJSON` has been removed
+- Function `VaultJob.MarshalJSON` has been removed
+- Function `OperationStatusJobExtendedInfo.MarshalJSON` has been removed
+- Function `PossibleDataMoveLevelValues` has been removed
+- Function `*AzureWorkloadSQLRestoreRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `*AzureRecoveryServiceVaultProtectionIntent.UnmarshalJSON` has been removed
+- Function `OperationWorkerResponse.MarshalJSON` has been removed
+- Function `*DpmBackupEngine.GetBackupEngineBase` has been removed
+- Function `*BackupResourceVaultConfigsClient.Get` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRecoveryPoint.UnmarshalJSON` has been removed
+- Function `*LongTermSchedulePolicy.GetSchedulePolicy` has been removed
+- Function `*AzureIaaSVMProtectionPolicy.GetProtectionPolicy` has been removed
+- Function `SubProtectionPolicy.MarshalJSON` has been removed
+- Function `*BackupEngineBaseResource.UnmarshalJSON` has been removed
+- Function `*AzureSQLContainer.UnmarshalJSON` has been removed
+- Function `*ValidateOperationClientTriggerPoller.FinalResponse` has been removed
+- Function `*ProtectionContainersClient.Register` has been removed
+- Function `*Client.GetOperationStatus` has been removed
+- Function `*BackupWorkloadItemsClient.List` has been removed
+- Function `*AzureWorkloadSAPHanaRestoreRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRecoveryPoint.GetAzureWorkloadSQLRecoveryPoint` has been removed
+- Function `*ProtectableContainersClientListPager.NextPage` has been removed
+- Function `*BackupRequestResource.UnmarshalJSON` has been removed
+- Function `RecoveryPointResource.MarshalJSON` has been removed
+- Function `DpmJobExtendedInfo.MarshalJSON` has been removed
+- Function `*IaaSVMProtectableItem.UnmarshalJSON` has been removed
+- Function `*ProtectionContainerResource.UnmarshalJSON` has been removed
+- Function `*SimpleRetentionPolicy.GetRetentionPolicy` has been removed
+- Function `*WorkloadProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `*SubProtectionPolicy.UnmarshalJSON` has been removed
+- Function `BackupEngineBaseResourceList.MarshalJSON` has been removed
+- Function `*BackupProtectableItemsClient.List` has been removed
+- Function `ClientMoveRecoveryPointPollerResponse.PollUntilDone` has been removed
+- Function `*AzureIaaSVMProtectedItem.GetProtectedItem` has been removed
+- Function `*AzureBackupGoalFeatureSupportRequest.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `JobResource.MarshalJSON` has been removed
+- Function `*AzureFileShareProvisionILRRequest.GetILRRequest` has been removed
+- Function `ListRecoveryPointsRecommendedForMoveRequest.MarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaRecoveryPoint.UnmarshalJSON` has been removed
+- Function `DpmContainer.MarshalJSON` has been removed
+- Function `OperationStatusProvisionILRExtendedInfo.MarshalJSON` has been removed
+- Function `AzureVMWorkloadSAPHanaSystemWorkloadItem.MarshalJSON` has been removed
+- Function `MabJobExtendedInfo.MarshalJSON` has been removed
+- Function `RecoveryType.ToPtr` has been removed
+- Function `*AzureIaaSComputeVMProtectedItem.GetAzureIaaSVMProtectedItem` has been removed
+- Function `*AzureWorkloadSQLRestoreRequest.GetRestoreRequest` has been removed
+- Function `OperationType.ToPtr` has been removed
+- Function `*BackupProtectedItemsClientListPager.Err` has been removed
+- Function `UnlockDeleteRequest.MarshalJSON` has been removed
+- Function `*AzureStorageProtectableContainer.GetProtectableContainer` has been removed
+- Function `ProtectedItemHealthStatus.ToPtr` has been removed
+- Function `Job.MarshalJSON` has been removed
+- Function `AzureVMWorkloadSAPAseSystemProtectableItem.MarshalJSON` has been removed
+- Function `AzureIaaSComputeVMProtectedItem.MarshalJSON` has been removed
+- Function `PossibleRecoveryPointTierTypeValues` has been removed
+- Function `*BackupWorkloadItemsClientListPager.NextPage` has been removed
+- Function `*SimpleRetentionPolicy.UnmarshalJSON` has been removed
+- Function `NewBackupStatusClient` has been removed
+- Function `*AzureIaaSVMProtectedItem.UnmarshalJSON` has been removed
+- Function `PossibleContainerTypeValues` has been removed
+- Function `*GenericContainer.GetProtectionContainer` has been removed
+- Function `*SimpleSchedulePolicy.UnmarshalJSON` has been removed
+- Function `*AzureVMWorkloadSQLInstanceProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `*BMSPrepareDataMoveOperationResultClient.Get` has been removed
+- Function `*ValidateRestoreOperationRequest.GetValidateOperationRequest` has been removed
+- Function `PossiblePolicyTypeValues` has been removed
+- Function `AzureVMWorkloadSQLDatabaseWorkloadItem.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadSAPHanaSystemWorkloadItem.GetAzureVMWorkloadItem` has been removed
+- Function `NewProtectionPolicyOperationResultsClient` has been removed
+- Function `*HourlySchedule.UnmarshalJSON` has been removed
+- Function `*BackupProtectionContainersClientListPager.Err` has been removed
+- Function `*IaaSVMContainer.GetProtectionContainer` has been removed
+- Function `*AzureWorkloadSQLRestoreWithRehydrateRequest.GetRestoreRequest` has been removed
+- Function `*AzureVMWorkloadSQLAvailabilityGroupProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `*OperationStatusExtendedInfo.GetOperationStatusExtendedInfo` has been removed
+- Function `LogSchedulePolicy.MarshalJSON` has been removed
+- Function `DPMProtectedItem.MarshalJSON` has been removed
+- Function `PossibleWeekOfMonthValues` has been removed
+- Function `PossibleRestoreRequestTypeValues` has been removed
+- Function `*IaasVMRestoreWithRehydrationRequest.GetIaasVMRestoreRequest` has been removed
+- Function `PossibleDedupStateValues` has been removed
+- Function `NewValidateOperationResultsClient` has been removed
+- Function `*ProtectableContainersClientListPager.Err` has been removed
+- Function `*AzureVMWorkloadSAPHanaSystemProtectableItem.GetAzureVMWorkloadProtectableItem` has been removed
+- Function `*AzureVMWorkloadSAPAseSystemWorkloadItem.UnmarshalJSON` has been removed
+- Function `*AzureIaaSClassicComputeVMProtectedItem.GetAzureIaaSVMProtectedItem` has been removed
+- Function `LastUpdateStatus.ToPtr` has been removed
+- Function `*AzureIaaSClassicComputeVMProtectedItem.GetProtectedItem` has been removed
+- Function `NewBackupOperationStatusesClient` has been removed
+- Function `*AzureIaaSComputeVMProtectableItem.GetIaaSVMProtectableItem` has been removed
+- Function `*RecoveryPointsClient.List` has been removed
+- Function `NewProtectionPoliciesClient` has been removed
+- Function `PrivateEndpointConnectionClientPutPollerResponse.PollUntilDone` has been removed
+- Function `*AzureIaaSClassicComputeVMContainer.UnmarshalJSON` has been removed
+- Function `*ProtectionPoliciesClient.CreateOrUpdate` has been removed
+- Function `*AzureFileShareRestoreRequest.UnmarshalJSON` has been removed
+- Function `PossibleBackupManagementTypeValues` has been removed
+- Function `AzureWorkloadRestoreRequest.MarshalJSON` has been removed
+- Function `*DpmBackupEngine.UnmarshalJSON` has been removed
+- Function `*OperationStatus.UnmarshalJSON` has been removed
+- Function `*AzureIaaSClassicComputeVMContainer.GetProtectionContainer` has been removed
+- Function `*AzureVMWorkloadSAPAseDatabaseWorkloadItem.GetWorkloadItem` has been removed
+- Function `*AzureWorkloadContainer.GetAzureWorkloadContainer` has been removed
+- Function `*RecoveryPointsRecommendedForMoveClientListPager.NextPage` has been removed
+- Function `*ClientBMSPrepareDataMovePoller.ResumeToken` has been removed
+- Function `DiskExclusionProperties.MarshalJSON` has been removed
+- Function `*ValidateIaasVMRestoreOperationRequest.UnmarshalJSON` has been removed
+- Function `*RecoveryPointsRecommendedForMoveClientListPager.PageResponse` has been removed
+- Function `*GenericProtectionPolicy.UnmarshalJSON` has been removed
+- Function `MabJobTaskDetails.MarshalJSON` has been removed
+- Function `PossibleRecoveryModeValues` has been removed
+- Function `AzureFileshareProtectedItem.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionClientPutPoller.FinalResponse` has been removed
+- Function `RetentionDurationType.ToPtr` has been removed
+- Function `*AzureVMWorkloadItem.GetWorkloadItem` has been removed
+- Function `RecoveryPointTierInformation.MarshalJSON` has been removed
+- Function `AzureWorkloadSAPHanaRestoreRequest.MarshalJSON` has been removed
+- Function `PolicyType.ToPtr` has been removed
+- Function `AzureSQLProtectedItem.MarshalJSON` has been removed
+- Function `PossibleMabServerTypeValues` has been removed
+- Function `PossibleOperationStatusValuesValues` has been removed
+- Function `*AzureIaaSClassicComputeVMProtectableItem.UnmarshalJSON` has been removed
+- Function `AzureIaaSVMProtectionPolicy.MarshalJSON` has been removed
+- Function `GenericContainer.MarshalJSON` has been removed
+- Function `*OperationStatusValidateOperationExtendedInfo.GetOperationStatusExtendedInfo` has been removed
+- Function `*AzureWorkloadContainerAutoProtectionIntent.UnmarshalJSON` has been removed
+- Function `AzureVMWorkloadProtectableItem.MarshalJSON` has been removed
+- Function `*AzureWorkloadRecoveryPoint.UnmarshalJSON` has been removed
+- Function `AzureWorkloadPointInTimeRecoveryPoint.MarshalJSON` has been removed
+- Function `AzureVMWorkloadProtectedItem.MarshalJSON` has been removed
+- Function `NewJobsClient` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseWorkloadItem.UnmarshalJSON` has been removed
+- Function `PossibleBackupEngineTypeValues` has been removed
+- Function `*AzureVMWorkloadSAPAseDatabaseProtectedItem.GetAzureVMWorkloadProtectedItem` has been removed
+- Function `*ProtectionContainersClient.Get` has been removed
+- Function `*ProtectionPoliciesClient.BeginDelete` has been removed
+- Function `*AzureWorkloadSQLRestoreWithRehydrateRequest.UnmarshalJSON` has been removed
+- Function `*GenericProtectionPolicy.GetProtectionPolicy` has been removed
+- Function `ResourceHealthDetails.MarshalJSON` has been removed
+- Function `PossibleDayOfWeekValues` has been removed
+- Function `*BackupStatusClient.Get` has been removed
+- Function `RetentionScheduleFormat.ToPtr` has been removed
+- Function `GenericProtectedItem.MarshalJSON` has been removed
+- Function `*MabFileFolderProtectedItemExtendedInfo.UnmarshalJSON` has been removed
+- Function `*PrepareDataMoveResponse.GetVaultStorageConfigOperationResultResponse` has been removed
+- Function `PossibleLastUpdateStatusValues` has been removed
+- Function `*AzureFileShareRecoveryPoint.UnmarshalJSON` has been removed
+- Function `MabErrorInfo.MarshalJSON` has been removed
+- Function `*AzureFileshareProtectedItemExtendedInfo.UnmarshalJSON` has been removed
+- Function `AzureBackupServerEngine.MarshalJSON` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `*AzureWorkloadRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `AzureFileShareProvisionILRRequest.MarshalJSON` has been removed
+- Function `*ClientBMSPrepareDataMovePoller.Done` has been removed
+- Function `PossibleProtectionStateValues` has been removed
+- Function `*BackupPoliciesClientListPager.PageResponse` has been removed
+- Function `*ProtectionIntent.GetProtectionIntent` has been removed
+- Function `AzureWorkloadJobExtendedInfo.MarshalJSON` has been removed
+- Function `DailyRetentionFormat.MarshalJSON` has been removed
+- Function `WorkloadItemType.ToPtr` has been removed
+- Function `AzureVMWorkloadSAPHanaSystemProtectableItem.MarshalJSON` has been removed
+- Function `*BackupPoliciesClientListPager.Err` has been removed
+- Function `DedupState.ToPtr` has been removed
+- Function `ClientBMSTriggerDataMovePollerResponse.PollUntilDone` has been removed
+- Function `NewBackupJobsClient` has been removed
+- Function `*PrivateEndpointConnectionClientPutPoller.Done` has been removed
+- Function `*BackupPoliciesClientListPager.NextPage` has been removed
+- Function `RestoreRequestType.ToPtr` has been removed
+- Function `ProtectableContainerResource.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionClientDeletePoller.ResumeToken` has been removed
+- Function `*ProtectionContainerOperationResultsClient.Get` has been removed
+- Function `*AzureIaaSComputeVMProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseProtectedItem.GetProtectedItem` has been removed
+- Function `*OperationStatusJobExtendedInfo.GetOperationStatusExtendedInfo` has been removed
+- Function `*IaasVMRestoreRequest.UnmarshalJSON` has been removed
+- Function `*BackupManagementUsage.UnmarshalJSON` has been removed
+- Function `*ProtectionPolicyResource.UnmarshalJSON` has been removed
+- Function `AzureVMWorkloadSAPAseDatabaseProtectedItem.MarshalJSON` has been removed
+- Function `*ValidateOperationResultsClient.Get` has been removed
+- Function `*ClientBMSPrepareDataMovePollerResponse.Resume` has been removed
+- Function `*AzureWorkloadContainerAutoProtectionIntent.GetProtectionIntent` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreRequest.GetAzureWorkloadSQLRestoreRequest` has been removed
+- Function `*AzureFileShareProtectableItem.UnmarshalJSON` has been removed
+- Function `ProtectionPolicyResource.MarshalJSON` has been removed
+- Function `*ProtectionIntentClient.CreateOrUpdate` has been removed
+- Function `*PrepareDataMoveResponse.UnmarshalJSON` has been removed
+- Function `*FeatureSupportClient.Validate` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.GetRestoreRequest` has been removed
+- Function `*ClientMoveRecoveryPointPoller.Done` has been removed
+- Function `*OperationResultInfo.UnmarshalJSON` has been removed
+- Function `PossibleRecoveryTypeValues` has been removed
+- Function `*PrivateEndpointConnectionClientDeletePoller.FinalResponse` has been removed
+- Function `*AzureSQLProtectedItem.UnmarshalJSON` has been removed
+- Function `*AzureIaaSComputeVMProtectedItem.UnmarshalJSON` has been removed
+- Function `AzureVMResourceFeatureSupportRequest.MarshalJSON` has been removed
+- Function `LastBackupStatus.ToPtr` has been removed
+- Function `*AzureWorkloadContainer.GetProtectionContainer` has been removed
+- Function `PossibleEnhancedSecurityStateValues` has been removed
+- Function `BackupEngineType.ToPtr` has been removed
+- Function `*BackupResourceStorageConfigsNonCRRClient.Patch` has been removed
+- Function `*OperationResultInfoBaseResource.UnmarshalJSON` has been removed
+- Function `*IaasVMRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `PossibleHealthStateValues` has been removed
+- Function `*ExportJobsOperationResultInfo.GetOperationResultInfoBase` has been removed
+- Function `NewProtectedItemOperationResultsClient` has been removed
+- Function `*AzureResourceProtectionIntent.UnmarshalJSON` has been removed
+- Function `*BackupWorkloadItemsClientListPager.Err` has been removed
+- Function `*VaultJob.UnmarshalJSON` has been removed
+- Function `*AzureBackupServerContainer.GetDpmContainer` has been removed
+- Function `*IaaSVMContainer.UnmarshalJSON` has been removed
+- Function `AzureSQLProtectedItemExtendedInfo.MarshalJSON` has been removed
+- Function `NewClient` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRecoveryPoint.GetAzureWorkloadPointInTimeRecoveryPoint` has been removed
+- Function `*AzureWorkloadAutoProtectionIntent.GetAzureRecoveryServiceVaultProtectionIntent` has been removed
+- Function `*JobQueryObject.UnmarshalJSON` has been removed
+- Function `PossibleHealthStatusValues` has been removed
+- Function `*DpmContainer.GetProtectionContainer` has been removed
+- Function `*BackupOperationStatusesClient.Get` has been removed
+- Function `PossibleStorageTypeStateValues` has been removed
+- Function `*JobsClient.Export` has been removed
+- Function `*AzureIaaSComputeVMContainer.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreRequest.GetAzureWorkloadSAPHanaRestoreRequest` has been removed
+- Function `AzureIaaSClassicComputeVMProtectedItem.MarshalJSON` has been removed
+- Function `*AzureWorkloadSQLRestoreWithRehydrateRequest.GetAzureWorkloadSQLRestoreRequest` has been removed
+- Function `AzureWorkloadSAPHanaRecoveryPoint.MarshalJSON` has been removed
+- Function `*AzureIaaSVMProtectedItemExtendedInfo.UnmarshalJSON` has been removed
+- Function `*BackupRequest.GetBackupRequest` has been removed
+- Function `ProtectedItem.MarshalJSON` has been removed
+- Function `*BackupProtectionIntentClient.List` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseProtectableItem.GetAzureVMWorkloadProtectableItem` has been removed
+- Function `SimpleSchedulePolicy.MarshalJSON` has been removed
+- Function `EncryptionAtRestType.ToPtr` has been removed
+- Function `*ProtectionContainerRefreshOperationResultsClient.Get` has been removed
+- Function `*AzureVMWorkloadSAPHanaSystemProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `IaasVMRestoreRequest.MarshalJSON` has been removed
+- Function `AzureRecoveryServiceVaultProtectionIntent.MarshalJSON` has been removed
+- Function `*AzureWorkloadBackupRequest.UnmarshalJSON` has been removed
+- Function `AzureFileShareRestoreRequest.MarshalJSON` has been removed
+- Function `*AzureSQLAGWorkloadContainerProtectionContainer.GetProtectionContainer` has been removed
+- Function `*AzureWorkloadSAPHanaRestoreWithRehydrateRequest.GetRestoreRequest` has been removed
+- Function `*DpmJobTaskDetails.UnmarshalJSON` has been removed
+- Function `PossibleAzureFileShareTypeValues` has been removed
+- Function `*JobResource.UnmarshalJSON` has been removed
+- Function `*BackupProtectableItemsClientListPager.PageResponse` has been removed
+- Function `*BackupProtectableItemsClientListPager.Err` has been removed
+- Function `*BMSPrepareDataMoveOperationResultClientGetResult.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreRequest.GetRestoreRequest` has been removed
+- Function `*ClientMoveRecoveryPointPoller.Poll` has been removed
+- Function `*AzureWorkloadPointInTimeRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `*AzureWorkloadPointInTimeRecoveryPoint.UnmarshalJSON` has been removed
+- Function `AzureWorkloadErrorInfo.MarshalJSON` has been removed
+- Function `*ValidateRestoreOperationRequest.UnmarshalJSON` has been removed
+- Function `NewBMSPrepareDataMoveOperationResultClient` has been removed
+- Function `ProtectedItemState.ToPtr` has been removed
+- Function `*DPMContainerExtendedInfo.UnmarshalJSON` has been removed
+- Function `*ClientBMSTriggerDataMovePoller.FinalResponse` has been removed
+- Function `*MabJob.GetJob` has been removed
+- Function `*RecoveryPointsClientListPager.PageResponse` has been removed
+- Function `*AzureRecoveryServiceVaultProtectionIntent.GetAzureRecoveryServiceVaultProtectionIntent` has been removed
+- Function `*BackupResourceVaultConfigsClient.Put` has been removed
+- Function `*WorkloadProtectableItemResource.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSQLRestoreRequest.GetAzureWorkloadSQLRestoreRequest` has been removed
+- Function `DpmErrorInfo.MarshalJSON` has been removed
+- Function `*BackupJobsClientListPager.Err` has been removed
+- Function `*AzureVMWorkloadSAPHanaSystemProtectableItem.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.GetAzureWorkloadSAPHanaPointInTimeRestoreRequest` has been removed
+- Function `GenericContainerExtendedInfo.MarshalJSON` has been removed
+- Function `ProtectionIntentResourceList.MarshalJSON` has been removed
+- Function `RecoveryPointTierType.ToPtr` has been removed
+- Function `SQLDataDirectoryType.ToPtr` has been removed
+- Function `PossibleAcquireStorageAccountLockValues` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.GetAzureWorkloadSQLPointInTimeRestoreRequest` has been removed
+- Function `*AzureBackupServerContainer.UnmarshalJSON` has been removed
+- Function `*MabProtectionPolicy.GetProtectionPolicy` has been removed
+- Function `*DPMProtectedItem.UnmarshalJSON` has been removed
+- Function `NewBackupProtectedItemsClient` has been removed
+- Function `*AzureFileShareProvisionILRRequest.UnmarshalJSON` has been removed
+- Function `*ValidateOperationClientTriggerPoller.Done` has been removed
+- Function `ResourceGuardProxyBaseResource.MarshalJSON` has been removed
+- Function `*BackupProtectedItemsClientListPager.NextPage` has been removed
+- Function `*ResourceGuardProxiesClientGetPager.NextPage` has been removed
+- Function `NewBackupProtectionIntentClient` has been removed
+- Function `*RestoresClientTriggerPoller.Poll` has been removed
+- Function `NewBackupUsageSummariesClient` has been removed
+- Function `RecoveryMode.ToPtr` has been removed
+- Function `NewBackupResourceStorageConfigsNonCRRClient` has been removed
+- Function `*ValidateOperationClientTriggerPoller.ResumeToken` has been removed
+- Function `BackupType.ToPtr` has been removed
+- Function `*AzureVMAppContainerProtectionContainer.GetAzureWorkloadContainer` has been removed
+- Function `*ClientMoveRecoveryPointPollerResponse.Resume` has been removed
+- Function `Type.ToPtr` has been removed
+- Function `AzureVMWorkloadProtectionPolicy.MarshalJSON` has been removed
+- Function `OperationStatus.MarshalJSON` has been removed
+- Function `PossibleResourceHealthStatusValues` has been removed
+- Function `PossibleProtectionStatusValues` has been removed
+- Function `AzureWorkloadSQLPointInTimeRestoreRequest.MarshalJSON` has been removed
+- Function `*ValidateOperationRequest.GetValidateOperationRequest` has been removed
+- Function `*AzureVMWorkloadProtectionPolicy.GetProtectionPolicy` has been removed
+- Function `BackupManagementType.ToPtr` has been removed
+- Function `*JobDetailsClient.Get` has been removed
+- Function `*MabContainerExtendedInfo.UnmarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionClient.BeginDelete` has been removed
+- Function `*ClientMoveRecoveryPointPoller.ResumeToken` has been removed
+- Function `NewOperationClient` has been removed
+- Function `AzureWorkloadBackupRequest.MarshalJSON` has been removed
+- Function `AcquireStorageAccountLock.ToPtr` has been removed
+- Function `*SecurityPINsClient.Get` has been removed
+- Function `*BackupProtectionIntentClientListPager.NextPage` has been removed
+- Function `*IaaSVMProtectableItem.GetIaaSVMProtectableItem` has been removed
+- Function `*AzureWorkloadSQLRestoreRequest.UnmarshalJSON` has been removed
+- Function `FabricName.ToPtr` has been removed
+- Function `AzureWorkloadSQLRestoreWithRehydrateRequest.MarshalJSON` has been removed
+- Function `AzureWorkloadSAPHanaPointInTimeRestoreRequest.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseWorkloadItem.GetAzureVMWorkloadItem` has been removed
+- Function `NewBackupOperationResultsClient` has been removed
+- Function `NewItemLevelRecoveryConnectionsClient` has been removed
+- Function `*AzureVMWorkloadSAPAseDatabaseWorkloadItem.GetAzureVMWorkloadItem` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseWorkloadItem.GetWorkloadItem` has been removed
+- Function `AzureIaaSVMHealthDetails.MarshalJSON` has been removed
+- Function `*WorkloadItemResource.UnmarshalJSON` has been removed
+- Function `*BackupJobsClientListPager.NextPage` has been removed
+- Function `DayOfWeek.ToPtr` has been removed
+- Function `*ProtectedItemOperationResultsClient.Get` has been removed
+- Function `WorkloadProtectableItemResource.MarshalJSON` has been removed
+- Function `*DPMProtectedItem.GetProtectedItem` has been removed
+- Function `XcoolState.ToPtr` has been removed
+- Function `*AzureVMWorkloadSAPAseSystemProtectableItem.UnmarshalJSON` has been removed
+- Function `*AzureRecoveryServiceVaultProtectionIntent.GetProtectionIntent` has been removed
+- Function `WorkloadProtectableItemResourceList.MarshalJSON` has been removed
+- Function `NewRecoveryPointsRecommendedForMoveClient` has been removed
+- Function `NewBackupsClient` has been removed
+- Function `AzureVMWorkloadProtectedItemExtendedInfo.MarshalJSON` has been removed
+- Function `AzureStorageJob.MarshalJSON` has been removed
+- Function `*VaultStorageConfigOperationResultResponse.GetVaultStorageConfigOperationResultResponse` has been removed
+- Function `WeeklyRetentionFormat.MarshalJSON` has been removed
+- Function `AzureWorkloadPointInTimeRestoreRequest.MarshalJSON` has been removed
+- Function `PossibleFabricNameValues` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.GetAzureWorkloadSQLRestoreRequest` has been removed
+- Function `PossibleCopyOptionsValues` has been removed
+- Function `ProtectedItemResource.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `OperationResultInfo.MarshalJSON` has been removed
+- Function `*IaasVMRestoreRequest.GetRestoreRequest` has been removed
+- Function `*BackupWorkloadItemsClientListPager.PageResponse` has been removed
+- Function `NewValidateOperationStatusesClient` has been removed
+- Function `AzureIaaSVMJobExtendedInfo.MarshalJSON` has been removed
+- Function `*IaasVMBackupRequest.GetBackupRequest` has been removed
+- Function `*FeatureSupportRequest.GetFeatureSupportRequest` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRecoveryPoint.UnmarshalJSON` has been removed
+- Function `MabContainer.MarshalJSON` has been removed
+- Function `AzureWorkloadSQLRestoreRequest.MarshalJSON` has been removed
+- Function `*PrivateEndpointClient.GetOperationStatus` has been removed
+- Function `PossibleProtectionIntentItemTypeValues` has been removed
+- Function `*ClientBMSTriggerDataMovePollerResponse.Resume` has been removed
+- Function `*SchedulePolicy.GetSchedulePolicy` has been removed
+- Function `*AzureWorkloadSQLAutoProtectionIntent.UnmarshalJSON` has been removed
+- Function `AzureWorkloadSQLRecoveryPoint.MarshalJSON` has been removed
+- Function `*OperationClient.Validate` has been removed
+- Function `*AzureVMWorkloadProtectedItem.UnmarshalJSON` has been removed
+- Function `ProtectionStatus.ToPtr` has been removed
+- Function `ClientBMSPrepareDataMovePollerResponse.PollUntilDone` has been removed
+- Function `*BackupProtectableItemsClientListPager.NextPage` has been removed
+- Function `AzureWorkloadSAPHanaPointInTimeRecoveryPoint.MarshalJSON` has been removed
+- Function `*ValidateIaasVMRestoreOperationRequest.GetValidateOperationRequest` has been removed
+- Function `*ClientBMSTriggerDataMovePoller.Poll` has been removed
+- Function `*AzureWorkloadSAPHanaRestoreRequest.GetRestoreRequest` has been removed
+- Function `NewExportJobsOperationResultsClient` has been removed
+- Function `*AzureVMAppContainerProtectableContainer.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreRequest.UnmarshalJSON` has been removed
+- Function `*ResourceGuardProxiesClientGetPager.Err` has been removed
+- Function `*ValidateOperationStatusesClient.Get` has been removed
+- Function `NewBackupResourceVaultConfigsClient` has been removed
+- Function `DpmBackupEngine.MarshalJSON` has been removed
+- Function `DpmJob.MarshalJSON` has been removed
+- Function `*ProtectionContainersClient.Refresh` has been removed
+- Function `NewValidateOperationClient` has been removed
+- Function `*AzureWorkloadSAPHanaRestoreRequest.UnmarshalJSON` has been removed
+- Function `PossibleTypeValues` has been removed
+- Function `*PrivateEndpointConnectionClientDeletePoller.Poll` has been removed
+- Function `PossibleSoftDeleteFeatureStateValues` has been removed
+- Function `*ProtectionIntentClient.Validate` has been removed
+- Function `PossibleOperationTypeValues` has been removed
+- Function `AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.MarshalJSON` has been removed
+- Function `*AzureVMResourceFeatureSupportRequest.UnmarshalJSON` has been removed
+- Function `DailyRetentionSchedule.MarshalJSON` has been removed
+- Function `*GenericProtectedItem.GetProtectedItem` has been removed
+- Function `PossibleWorkloadItemTypeValues` has been removed
+- Function `WorkloadItemResource.MarshalJSON` has been removed
+- Function `AzureIaaSVMJob.MarshalJSON` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRecoveryPoint.GetAzureWorkloadRecoveryPoint` has been removed
+- Function `*ProtectionContainersClient.Inquire` has been removed
+- Function `ValidateOperationResponse.MarshalJSON` has been removed
+- Function `PossibleBackupItemTypeValues` has been removed
+- Function `*AzureWorkloadAutoProtectionIntent.UnmarshalJSON` has been removed
+- Function `*AzureIaaSVMJobV2.UnmarshalJSON` has been removed
+- Function `*AzureIaaSComputeVMContainer.GetProtectionContainer` has been removed
+- Function `ProtectionState.ToPtr` has been removed
+- Function `*BackupEngineExtendedInfo.UnmarshalJSON` has been removed
+- Function `*AzureVMWorkloadSAPAseDatabaseProtectedItem.GetProtectedItem` has been removed
+- Function `*LogSchedulePolicy.GetSchedulePolicy` has been removed
+- Function `NewProtectionPolicyOperationStatusesClient` has been removed
+- Function `AzureVMWorkloadSAPHanaDatabaseProtectableItem.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadSQLInstanceProtectableItem.GetAzureVMWorkloadProtectableItem` has been removed
+- Function `*AzureWorkloadRestoreRequest.GetRestoreRequest` has been removed
+- Function `BackupManagementUsage.MarshalJSON` has been removed
+- Function `OperationStatusJobsExtendedInfo.MarshalJSON` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreRequest.GetAzureWorkloadSQLPointInTimeRestoreRequest` has been removed
+- Function `DPMProtectedItemExtendedInfo.MarshalJSON` has been removed
+- Function `*MabJob.UnmarshalJSON` has been removed
+- Function `NewProtectionIntentClient` has been removed
+- Function `AzureFileShareType.ToPtr` has been removed
+- Function `*RestoreRequestResource.UnmarshalJSON` has been removed
+- Function `*AzureSQLAGWorkloadContainerProtectionContainer.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadSQLPointInTimeRestoreRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `*AzureVMWorkloadSAPAseDatabaseWorkloadItem.UnmarshalJSON` has been removed
+- Function `ContainerType.ToPtr` has been removed
+- Function `PossibleDataSourceTypeValues` has been removed
+- Function `*AzureVMWorkloadSQLInstanceWorkloadItem.UnmarshalJSON` has been removed
+- Function `AzureStorageErrorInfo.MarshalJSON` has been removed
+- Function `*OperationStatusValidateOperationExtendedInfo.UnmarshalJSON` has been removed
+- Function `*MabProtectionPolicy.UnmarshalJSON` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseProtectedItem.UnmarshalJSON` has been removed
+- Function `BackupResourceEncryptionConfigExtendedResource.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseWorkloadItem.GetAzureVMWorkloadItem` has been removed
+- Function `AzureVMWorkloadSAPAseDatabaseWorkloadItem.MarshalJSON` has been removed
+- Function `InstantItemRecoveryTarget.MarshalJSON` has been removed
+- Function `MabServerType.ToPtr` has been removed
+- Function `BackupItemType.ToPtr` has been removed
+- Function `*ProtectionIntentClient.Delete` has been removed
+- Function `*AzureVMWorkloadSAPAseDatabaseProtectedItem.UnmarshalJSON` has been removed
+- Function `*BackupResourceStorageConfigsNonCRRClient.Update` has been removed
+- Function `*AzureVMWorkloadSQLAvailabilityGroupProtectableItem.GetAzureVMWorkloadProtectableItem` has been removed
+- Function `AzureVMWorkloadItem.MarshalJSON` has been removed
+- Function `ResourceGuardProxyBase.MarshalJSON` has been removed
+- Function `*AzureIaaSClassicComputeVMContainer.GetIaaSVMContainer` has been removed
+- Function `*PrivateEndpointConnectionClientPutPoller.Poll` has been removed
+- Function `AzureWorkloadSQLRecoveryPointExtendedInfo.MarshalJSON` has been removed
+- Function `WorkloadType.ToPtr` has been removed
+- Function `AzureWorkloadSQLPointInTimeRecoveryPoint.MarshalJSON` has been removed
+- Function `NewPrivateEndpointConnectionClient` has been removed
+- Function `*BackupResourceEncryptionConfigsClient.Update` has been removed
+- Function `*AzureStorageJob.GetJob` has been removed
+- Function `*AzureVMWorkloadSAPHanaDatabaseProtectableItem.UnmarshalJSON` has been removed
+- Function `NewErrorResponseError.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadItem.UnmarshalJSON` has been removed
+- Function `*AzureStorageContainer.GetProtectionContainer` has been removed
+- Function `ValidateOperationClientTriggerPollerResponse.PollUntilDone` has been removed
+- Function `*MabContainer.UnmarshalJSON` has been removed
+- Function `*AzureSQLProtectedItem.GetProtectedItem` has been removed
+- Function `*ProtectedItemsClient.Delete` has been removed
+- Function `*MabJobTaskDetails.UnmarshalJSON` has been removed
+- Function `*ValidateIaasVMRestoreOperationRequest.GetValidateRestoreOperationRequest` has been removed
+- Function `JobStatus.ToPtr` has been removed
+- Function `*ProtectedItem.UnmarshalJSON` has been removed
+- Function `AzureResourceProtectionIntent.MarshalJSON` has been removed
+- Function `ScheduleRunType.ToPtr` has been removed
+- Function `*MabFileFolderProtectedItem.UnmarshalJSON` has been removed
+- Function `*Job.UnmarshalJSON` has been removed
+- Function `*AzureVMWorkloadSAPAseSystemProtectableItem.GetWorkloadProtectableItem` has been removed
+- Function `ValidateIaasVMRestoreOperationRequest.MarshalJSON` has been removed
+- Function `ProtectableContainerResourceList.MarshalJSON` has been removed
+- Function `MonthlyRetentionSchedule.MarshalJSON` has been removed
+- Function `*Job.GetJob` has been removed
+- Function `IaasVMRecoveryPoint.MarshalJSON` has been removed
+- Function `AzureVMWorkloadSAPAseSystemWorkloadItem.MarshalJSON` has been removed
+- Function `*ProtectionPoliciesClient.Get` has been removed
+- Function `*ValidateOperationClientTriggerPollerResponse.Resume` has been removed
+- Function `*IaasVMILRRegistrationRequest.GetILRRequest` has been removed
+- Function `*AzureFileShareRestoreRequest.GetRestoreRequest` has been removed
+- Function `*BackupEnginesClientListPager.Err` has been removed
+- Function `IaasVMILRRegistrationRequest.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadSQLAvailabilityGroupProtectableItem.UnmarshalJSON` has been removed
+- Function `NewProtectionContainerOperationResultsClient` has been removed
+- Function `AzureVMAppContainerProtectionContainer.MarshalJSON` has been removed
+- Function `*DpmJob.GetJob` has been removed
+- Function `PossibleHTTPStatusCodeValues` has been removed
+- Function `*AzureVMAppContainerProtectionContainer.UnmarshalJSON` has been removed
+- Function `*IaasVMBackupRequest.UnmarshalJSON` has been removed
+- Function `*AzureWorkloadAutoProtectionIntent.GetAzureWorkloadAutoProtectionIntent` has been removed
+- Function `JobResourceList.MarshalJSON` has been removed
+- Function `AzureIaaSVMErrorInfo.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionClientPutPoller.ResumeToken` has been removed
+- Function `*BackupsClient.Trigger` has been removed
+- Function `*GenericRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `AzureStorageJobExtendedInfo.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionClientDeletePollerResponse.Resume` has been removed
+- Function `PossibleXcoolStateValues` has been removed
+- Function `SoftDeleteFeatureState.ToPtr` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseWorkloadItem.UnmarshalJSON` has been removed
+- Function `*RestoresClient.BeginTrigger` has been removed
+- Function `PossibleProtectedItemHealthStatusValues` has been removed
+- Function `AzureVMWorkloadSQLInstanceWorkloadItem.MarshalJSON` has been removed
+- Function `*AzureSQLContainer.GetProtectionContainer` has been removed
+- Function `*AzureSQLProtectionPolicy.UnmarshalJSON` has been removed
+- Function `AzureFileShareProtectableItem.MarshalJSON` has been removed
+- Function `TriggerDataMoveRequest.MarshalJSON` has been removed
+- Function `*ValidateOperationClientTriggerPoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionClient.Get` has been removed
+- Function `YearlyRetentionSchedule.MarshalJSON` has been removed
+- Function `*AzureWorkloadSQLRecoveryPoint.GetRecoveryPoint` has been removed
+- Function `PossibleBackupTypeValues` has been removed
+- Function `AzureVMWorkloadSAPHanaDatabaseProtectedItem.MarshalJSON` has been removed
+- Function `WorkloadItemResourceList.MarshalJSON` has been removed
+- Function `PointInTimeRange.MarshalJSON` has been removed
+- Function `ProtectionIntentResource.MarshalJSON` has been removed
+- Function `AzureVMWorkloadSQLDatabaseProtectableItem.MarshalJSON` has been removed
+- Function `*AzureVMWorkloadProtectedItem.GetAzureVMWorkloadProtectedItem` has been removed
+- Function `*AzureVMWorkloadSQLDatabaseProtectedItem.GetProtectedItem` has been removed
+- Function `*ProtectionPoliciesClientDeletePoller.Done` has been removed
+- Function `*AzureWorkloadPointInTimeRestoreRequest.GetAzureWorkloadRestoreRequest` has been removed
+- Function `NewResourceGuardProxiesClient` has been removed
+- Function `*AzureFileShareBackupRequest.UnmarshalJSON` has been removed
+- Function `PossibleScheduleRunTypeValues` has been removed
+- Struct `AzureBackupGoalFeatureSupportRequest` has been removed
+- Struct `AzureBackupServerContainer` has been removed
+- Struct `AzureBackupServerEngine` has been removed
+- Struct `AzureFileShareBackupRequest` has been removed
+- Struct `AzureFileShareProtectableItem` has been removed
+- Struct `AzureFileShareProtectionPolicy` has been removed
+- Struct `AzureFileShareProvisionILRRequest` has been removed
+- Struct `AzureFileShareRecoveryPoint` has been removed
+- Struct `AzureFileShareRestoreRequest` has been removed
+- Struct `AzureFileshareProtectedItem` has been removed
+- Struct `AzureFileshareProtectedItemExtendedInfo` has been removed
+- Struct `AzureIaaSClassicComputeVMContainer` has been removed
+- Struct `AzureIaaSClassicComputeVMProtectableItem` has been removed
+- Struct `AzureIaaSClassicComputeVMProtectedItem` has been removed
+- Struct `AzureIaaSComputeVMContainer` has been removed
+- Struct `AzureIaaSComputeVMProtectableItem` has been removed
+- Struct `AzureIaaSComputeVMProtectedItem` has been removed
+- Struct `AzureIaaSVMErrorInfo` has been removed
+- Struct `AzureIaaSVMHealthDetails` has been removed
+- Struct `AzureIaaSVMJob` has been removed
+- Struct `AzureIaaSVMJobExtendedInfo` has been removed
+- Struct `AzureIaaSVMJobTaskDetails` has been removed
+- Struct `AzureIaaSVMJobV2` has been removed
+- Struct `AzureIaaSVMProtectedItem` has been removed
+- Struct `AzureIaaSVMProtectedItemExtendedInfo` has been removed
+- Struct `AzureIaaSVMProtectionPolicy` has been removed
+- Struct `AzureRecoveryServiceVaultProtectionIntent` has been removed
+- Struct `AzureResourceProtectionIntent` has been removed
+- Struct `AzureSQLAGWorkloadContainerProtectionContainer` has been removed
+- Struct `AzureSQLContainer` has been removed
+- Struct `AzureSQLProtectedItem` has been removed
+- Struct `AzureSQLProtectedItemExtendedInfo` has been removed
+- Struct `AzureSQLProtectionPolicy` has been removed
+- Struct `AzureStorageContainer` has been removed
+- Struct `AzureStorageErrorInfo` has been removed
+- Struct `AzureStorageJob` has been removed
+- Struct `AzureStorageJobExtendedInfo` has been removed
+- Struct `AzureStorageJobTaskDetails` has been removed
+- Struct `AzureStorageProtectableContainer` has been removed
+- Struct `AzureVMAppContainerProtectableContainer` has been removed
+- Struct `AzureVMAppContainerProtectionContainer` has been removed
+- Struct `AzureVMResourceFeatureSupportRequest` has been removed
+- Struct `AzureVMResourceFeatureSupportResponse` has been removed
+- Struct `AzureVMWorkloadItem` has been removed
+- Struct `AzureVMWorkloadProtectableItem` has been removed
+- Struct `AzureVMWorkloadProtectedItem` has been removed
+- Struct `AzureVMWorkloadProtectedItemExtendedInfo` has been removed
+- Struct `AzureVMWorkloadProtectionPolicy` has been removed
+- Struct `AzureVMWorkloadSAPAseDatabaseProtectedItem` has been removed
+- Struct `AzureVMWorkloadSAPAseDatabaseWorkloadItem` has been removed
+- Struct `AzureVMWorkloadSAPAseSystemProtectableItem` has been removed
+- Struct `AzureVMWorkloadSAPAseSystemWorkloadItem` has been removed
+- Struct `AzureVMWorkloadSAPHanaDatabaseProtectableItem` has been removed
+- Struct `AzureVMWorkloadSAPHanaDatabaseProtectedItem` has been removed
+- Struct `AzureVMWorkloadSAPHanaDatabaseWorkloadItem` has been removed
+- Struct `AzureVMWorkloadSAPHanaSystemProtectableItem` has been removed
+- Struct `AzureVMWorkloadSAPHanaSystemWorkloadItem` has been removed
+- Struct `AzureVMWorkloadSQLAvailabilityGroupProtectableItem` has been removed
+- Struct `AzureVMWorkloadSQLDatabaseProtectableItem` has been removed
+- Struct `AzureVMWorkloadSQLDatabaseProtectedItem` has been removed
+- Struct `AzureVMWorkloadSQLDatabaseWorkloadItem` has been removed
+- Struct `AzureVMWorkloadSQLInstanceProtectableItem` has been removed
+- Struct `AzureVMWorkloadSQLInstanceWorkloadItem` has been removed
+- Struct `AzureWorkloadAutoProtectionIntent` has been removed
+- Struct `AzureWorkloadBackupRequest` has been removed
+- Struct `AzureWorkloadContainer` has been removed
+- Struct `AzureWorkloadContainerAutoProtectionIntent` has been removed
+- Struct `AzureWorkloadContainerExtendedInfo` has been removed
+- Struct `AzureWorkloadErrorInfo` has been removed
+- Struct `AzureWorkloadJob` has been removed
+- Struct `AzureWorkloadJobExtendedInfo` has been removed
+- Struct `AzureWorkloadJobTaskDetails` has been removed
+- Struct `AzureWorkloadPointInTimeRecoveryPoint` has been removed
+- Struct `AzureWorkloadPointInTimeRestoreRequest` has been removed
+- Struct `AzureWorkloadRecoveryPoint` has been removed
+- Struct `AzureWorkloadRestoreRequest` has been removed
+- Struct `AzureWorkloadSAPHanaPointInTimeRecoveryPoint` has been removed
+- Struct `AzureWorkloadSAPHanaPointInTimeRestoreRequest` has been removed
+- Struct `AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest` has been removed
+- Struct `AzureWorkloadSAPHanaRecoveryPoint` has been removed
+- Struct `AzureWorkloadSAPHanaRestoreRequest` has been removed
+- Struct `AzureWorkloadSAPHanaRestoreWithRehydrateRequest` has been removed
+- Struct `AzureWorkloadSQLAutoProtectionIntent` has been removed
+- Struct `AzureWorkloadSQLPointInTimeRecoveryPoint` has been removed
+- Struct `AzureWorkloadSQLPointInTimeRestoreRequest` has been removed
+- Struct `AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest` has been removed
+- Struct `AzureWorkloadSQLRecoveryPoint` has been removed
+- Struct `AzureWorkloadSQLRecoveryPointExtendedInfo` has been removed
+- Struct `AzureWorkloadSQLRestoreRequest` has been removed
+- Struct `AzureWorkloadSQLRestoreWithRehydrateRequest` has been removed
+- Struct `BEKDetails` has been removed
+- Struct `BMSBackupEngineQueryObject` has been removed
+- Struct `BMSBackupEnginesQueryObject` has been removed
+- Struct `BMSBackupSummariesQueryObject` has been removed
+- Struct `BMSContainerQueryObject` has been removed
+- Struct `BMSContainersInquiryQueryObject` has been removed
+- Struct `BMSPOQueryObject` has been removed
+- Struct `BMSPrepareDataMoveOperationResultClient` has been removed
+- Struct `BMSPrepareDataMoveOperationResultClientGetOptions` has been removed
+- Struct `BMSPrepareDataMoveOperationResultClientGetResponse` has been removed
+- Struct `BMSPrepareDataMoveOperationResultClientGetResult` has been removed
+- Struct `BMSRPQueryObject` has been removed
+- Struct `BMSRefreshContainersQueryObject` has been removed
+- Struct `BMSWorkloadItemQueryObject` has been removed
+- Struct `BackupEngineBase` has been removed
+- Struct `BackupEngineBaseResource` has been removed
+- Struct `BackupEngineBaseResourceList` has been removed
+- Struct `BackupEngineExtendedInfo` has been removed
+- Struct `BackupEnginesClient` has been removed
+- Struct `BackupEnginesClientGetOptions` has been removed
+- Struct `BackupEnginesClientGetResponse` has been removed
+- Struct `BackupEnginesClientGetResult` has been removed
+- Struct `BackupEnginesClientListOptions` has been removed
+- Struct `BackupEnginesClientListPager` has been removed
+- Struct `BackupEnginesClientListResponse` has been removed
+- Struct `BackupEnginesClientListResult` has been removed
+- Struct `BackupJobsClient` has been removed
+- Struct `BackupJobsClientListOptions` has been removed
+- Struct `BackupJobsClientListPager` has been removed
+- Struct `BackupJobsClientListResponse` has been removed
+- Struct `BackupJobsClientListResult` has been removed
+- Struct `BackupManagementUsage` has been removed
+- Struct `BackupManagementUsageList` has been removed
+- Struct `BackupOperationResultsClient` has been removed
+- Struct `BackupOperationResultsClientGetOptions` has been removed
+- Struct `BackupOperationResultsClientGetResponse` has been removed
+- Struct `BackupOperationStatusesClient` has been removed
+- Struct `BackupOperationStatusesClientGetOptions` has been removed
+- Struct `BackupOperationStatusesClientGetResponse` has been removed
+- Struct `BackupOperationStatusesClientGetResult` has been removed
+- Struct `BackupPoliciesClient` has been removed
+- Struct `BackupPoliciesClientListOptions` has been removed
+- Struct `BackupPoliciesClientListPager` has been removed
+- Struct `BackupPoliciesClientListResponse` has been removed
+- Struct `BackupPoliciesClientListResult` has been removed
+- Struct `BackupProtectableItemsClient` has been removed
+- Struct `BackupProtectableItemsClientListOptions` has been removed
+- Struct `BackupProtectableItemsClientListPager` has been removed
+- Struct `BackupProtectableItemsClientListResponse` has been removed
+- Struct `BackupProtectableItemsClientListResult` has been removed
+- Struct `BackupProtectedItemsClient` has been removed
+- Struct `BackupProtectedItemsClientListOptions` has been removed
+- Struct `BackupProtectedItemsClientListPager` has been removed
+- Struct `BackupProtectedItemsClientListResponse` has been removed
+- Struct `BackupProtectedItemsClientListResult` has been removed
+- Struct `BackupProtectionContainersClient` has been removed
+- Struct `BackupProtectionContainersClientListOptions` has been removed
+- Struct `BackupProtectionContainersClientListPager` has been removed
+- Struct `BackupProtectionContainersClientListResponse` has been removed
+- Struct `BackupProtectionContainersClientListResult` has been removed
+- Struct `BackupProtectionIntentClient` has been removed
+- Struct `BackupProtectionIntentClientListOptions` has been removed
+- Struct `BackupProtectionIntentClientListPager` has been removed
+- Struct `BackupProtectionIntentClientListResponse` has been removed
+- Struct `BackupProtectionIntentClientListResult` has been removed
+- Struct `BackupRequest` has been removed
+- Struct `BackupRequestResource` has been removed
+- Struct `BackupResourceConfig` has been removed
+- Struct `BackupResourceConfigResource` has been removed
+- Struct `BackupResourceEncryptionConfig` has been removed
+- Struct `BackupResourceEncryptionConfigExtended` has been removed
+- Struct `BackupResourceEncryptionConfigExtendedResource` has been removed
+- Struct `BackupResourceEncryptionConfigResource` has been removed
+- Struct `BackupResourceEncryptionConfigsClient` has been removed
+- Struct `BackupResourceEncryptionConfigsClientGetOptions` has been removed
+- Struct `BackupResourceEncryptionConfigsClientGetResponse` has been removed
+- Struct `BackupResourceEncryptionConfigsClientGetResult` has been removed
+- Struct `BackupResourceEncryptionConfigsClientUpdateOptions` has been removed
+- Struct `BackupResourceEncryptionConfigsClientUpdateResponse` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClient` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClientGetOptions` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClientGetResponse` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClientGetResult` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClientPatchOptions` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClientPatchResponse` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClientUpdateOptions` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClientUpdateResponse` has been removed
+- Struct `BackupResourceStorageConfigsNonCRRClientUpdateResult` has been removed
+- Struct `BackupResourceVaultConfig` has been removed
+- Struct `BackupResourceVaultConfigResource` has been removed
+- Struct `BackupResourceVaultConfigsClient` has been removed
+- Struct `BackupResourceVaultConfigsClientGetOptions` has been removed
+- Struct `BackupResourceVaultConfigsClientGetResponse` has been removed
+- Struct `BackupResourceVaultConfigsClientGetResult` has been removed
+- Struct `BackupResourceVaultConfigsClientPutOptions` has been removed
+- Struct `BackupResourceVaultConfigsClientPutResponse` has been removed
+- Struct `BackupResourceVaultConfigsClientPutResult` has been removed
+- Struct `BackupResourceVaultConfigsClientUpdateOptions` has been removed
+- Struct `BackupResourceVaultConfigsClientUpdateResponse` has been removed
+- Struct `BackupResourceVaultConfigsClientUpdateResult` has been removed
+- Struct `BackupStatusClient` has been removed
+- Struct `BackupStatusClientGetOptions` has been removed
+- Struct `BackupStatusClientGetResponse` has been removed
+- Struct `BackupStatusClientGetResult` has been removed
+- Struct `BackupStatusRequest` has been removed
+- Struct `BackupStatusResponse` has been removed
+- Struct `BackupUsageSummariesClient` has been removed
+- Struct `BackupUsageSummariesClientListOptions` has been removed
+- Struct `BackupUsageSummariesClientListResponse` has been removed
+- Struct `BackupUsageSummariesClientListResult` has been removed
+- Struct `BackupWorkloadItemsClient` has been removed
+- Struct `BackupWorkloadItemsClientListOptions` has been removed
+- Struct `BackupWorkloadItemsClientListPager` has been removed
+- Struct `BackupWorkloadItemsClientListResponse` has been removed
+- Struct `BackupWorkloadItemsClientListResult` has been removed
+- Struct `BackupsClient` has been removed
+- Struct `BackupsClientTriggerOptions` has been removed
+- Struct `BackupsClientTriggerResponse` has been removed
+- Struct `Client` has been removed
+- Struct `ClientBMSPrepareDataMovePoller` has been removed
+- Struct `ClientBMSPrepareDataMovePollerResponse` has been removed
+- Struct `ClientBMSPrepareDataMoveResponse` has been removed
+- Struct `ClientBMSTriggerDataMovePoller` has been removed
+- Struct `ClientBMSTriggerDataMovePollerResponse` has been removed
+- Struct `ClientBMSTriggerDataMoveResponse` has been removed
+- Struct `ClientBeginBMSPrepareDataMoveOptions` has been removed
+- Struct `ClientBeginBMSTriggerDataMoveOptions` has been removed
+- Struct `ClientBeginMoveRecoveryPointOptions` has been removed
+- Struct `ClientGetOperationStatusOptions` has been removed
+- Struct `ClientGetOperationStatusResponse` has been removed
+- Struct `ClientGetOperationStatusResult` has been removed
+- Struct `ClientMoveRecoveryPointPoller` has been removed
+- Struct `ClientMoveRecoveryPointPollerResponse` has been removed
+- Struct `ClientMoveRecoveryPointResponse` has been removed
+- Struct `ClientScriptForConnect` has been removed
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+- Struct `ContainerIdentityInfo` has been removed
+- Struct `DPMContainerExtendedInfo` has been removed
+- Struct `DPMProtectedItem` has been removed
+- Struct `DPMProtectedItemExtendedInfo` has been removed
+- Struct `DailyRetentionFormat` has been removed
+- Struct `DailyRetentionSchedule` has been removed
+- Struct `Day` has been removed
+- Struct `DiskExclusionProperties` has been removed
+- Struct `DiskInformation` has been removed
+- Struct `DistributedNodesInfo` has been removed
+- Struct `DpmBackupEngine` has been removed
+- Struct `DpmContainer` has been removed
+- Struct `DpmErrorInfo` has been removed
+- Struct `DpmJob` has been removed
+- Struct `DpmJobExtendedInfo` has been removed
+- Struct `DpmJobTaskDetails` has been removed
+- Struct `EncryptionDetails` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ExportJobsOperationResultInfo` has been removed
+- Struct `ExportJobsOperationResultsClient` has been removed
+- Struct `ExportJobsOperationResultsClientGetOptions` has been removed
+- Struct `ExportJobsOperationResultsClientGetResponse` has been removed
+- Struct `ExportJobsOperationResultsClientGetResult` has been removed
+- Struct `ExtendedProperties` has been removed
+- Struct `FeatureSupportClient` has been removed
+- Struct `FeatureSupportClientValidateOptions` has been removed
+- Struct `FeatureSupportClientValidateResponse` has been removed
+- Struct `FeatureSupportClientValidateResult` has been removed
+- Struct `FeatureSupportRequest` has been removed
+- Struct `GenericContainer` has been removed
+- Struct `GenericContainerExtendedInfo` has been removed
+- Struct `GenericProtectedItem` has been removed
+- Struct `GenericProtectionPolicy` has been removed
+- Struct `GenericRecoveryPoint` has been removed
+- Struct `GetProtectedItemQueryObject` has been removed
+- Struct `HourlySchedule` has been removed
+- Struct `ILRRequest` has been removed
+- Struct `ILRRequestResource` has been removed
+- Struct `IaaSVMContainer` has been removed
+- Struct `IaaSVMProtectableItem` has been removed
+- Struct `IaasVMBackupRequest` has been removed
+- Struct `IaasVMILRRegistrationRequest` has been removed
+- Struct `IaasVMRecoveryPoint` has been removed
+- Struct `IaasVMRestoreRequest` has been removed
+- Struct `IaasVMRestoreWithRehydrationRequest` has been removed
+- Struct `IdentityBasedRestoreDetails` has been removed
+- Struct `IdentityInfo` has been removed
+- Struct `InquiryInfo` has been removed
+- Struct `InquiryValidation` has been removed
+- Struct `InstantItemRecoveryTarget` has been removed
+- Struct `InstantRPAdditionalDetails` has been removed
+- Struct `ItemLevelRecoveryConnectionsClient` has been removed
+- Struct `ItemLevelRecoveryConnectionsClientProvisionOptions` has been removed
+- Struct `ItemLevelRecoveryConnectionsClientProvisionResponse` has been removed
+- Struct `ItemLevelRecoveryConnectionsClientRevokeOptions` has been removed
+- Struct `ItemLevelRecoveryConnectionsClientRevokeResponse` has been removed
+- Struct `Job` has been removed
+- Struct `JobCancellationsClient` has been removed
+- Struct `JobCancellationsClientTriggerOptions` has been removed
+- Struct `JobCancellationsClientTriggerResponse` has been removed
+- Struct `JobDetailsClient` has been removed
+- Struct `JobDetailsClientGetOptions` has been removed
+- Struct `JobDetailsClientGetResponse` has been removed
+- Struct `JobDetailsClientGetResult` has been removed
+- Struct `JobOperationResultsClient` has been removed
+- Struct `JobOperationResultsClientGetOptions` has been removed
+- Struct `JobOperationResultsClientGetResponse` has been removed
+- Struct `JobQueryObject` has been removed
+- Struct `JobResource` has been removed
+- Struct `JobResourceList` has been removed
+- Struct `JobsClient` has been removed
+- Struct `JobsClientExportOptions` has been removed
+- Struct `JobsClientExportResponse` has been removed
+- Struct `KEKDetails` has been removed
+- Struct `KPIResourceHealthDetails` has been removed
+- Struct `KeyAndSecretDetails` has been removed
+- Struct `ListRecoveryPointsRecommendedForMoveRequest` has been removed
+- Struct `LogSchedulePolicy` has been removed
+- Struct `LongTermRetentionPolicy` has been removed
+- Struct `LongTermSchedulePolicy` has been removed
+- Struct `MABContainerHealthDetails` has been removed
+- Struct `MabContainer` has been removed
+- Struct `MabContainerExtendedInfo` has been removed
+- Struct `MabErrorInfo` has been removed
+- Struct `MabFileFolderProtectedItem` has been removed
+- Struct `MabFileFolderProtectedItemExtendedInfo` has been removed
+- Struct `MabJob` has been removed
+- Struct `MabJobExtendedInfo` has been removed
+- Struct `MabJobTaskDetails` has been removed
+- Struct `MabProtectionPolicy` has been removed
+- Struct `MonthlyRetentionSchedule` has been removed
+- Struct `MoveRPAcrossTiersRequest` has been removed
+- Struct `NewErrorResponse` has been removed
+- Struct `NewErrorResponseError` has been removed
+- Struct `OperationClient` has been removed
+- Struct `OperationClientValidateOptions` has been removed
+- Struct `OperationClientValidateResponse` has been removed
+- Struct `OperationClientValidateResult` has been removed
+- Struct `OperationResultInfo` has been removed
+- Struct `OperationResultInfoBase` has been removed
+- Struct `OperationResultInfoBaseResource` has been removed
+- Struct `OperationStatus` has been removed
+- Struct `OperationStatusError` has been removed
+- Struct `OperationStatusExtendedInfo` has been removed
+- Struct `OperationStatusJobExtendedInfo` has been removed
+- Struct `OperationStatusJobsExtendedInfo` has been removed
+- Struct `OperationStatusProvisionILRExtendedInfo` has been removed
+- Struct `OperationStatusValidateOperationExtendedInfo` has been removed
+- Struct `OperationWorkerResponse` has been removed
+- Struct `PointInTimeRange` has been removed
+- Struct `PreBackupValidation` has been removed
+- Struct `PreValidateEnableBackupRequest` has been removed
+- Struct `PreValidateEnableBackupResponse` has been removed
+- Struct `PrepareDataMoveRequest` has been removed
+- Struct `PrepareDataMoveResponse` has been removed
+- Struct `PrivateEndpointClient` has been removed
+- Struct `PrivateEndpointClientGetOperationStatusOptions` has been removed
+- Struct `PrivateEndpointClientGetOperationStatusResponse` has been removed
+- Struct `PrivateEndpointClientGetOperationStatusResult` has been removed
+- Struct `PrivateEndpointConnectionClient` has been removed
+- Struct `PrivateEndpointConnectionClientBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionClientBeginPutOptions` has been removed
+- Struct `PrivateEndpointConnectionClientDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionClientDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionClientDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionClientGetOptions` has been removed
+- Struct `PrivateEndpointConnectionClientGetResponse` has been removed
+- Struct `PrivateEndpointConnectionClientGetResult` has been removed
+- Struct `PrivateEndpointConnectionClientPutPoller` has been removed
+- Struct `PrivateEndpointConnectionClientPutPollerResponse` has been removed
+- Struct `PrivateEndpointConnectionClientPutResponse` has been removed
+- Struct `PrivateEndpointConnectionClientPutResult` has been removed
+- Struct `PrivateEndpointConnectionResource` has been removed
+- Struct `ProtectableContainer` has been removed
+- Struct `ProtectableContainerResource` has been removed
+- Struct `ProtectableContainerResourceList` has been removed
+- Struct `ProtectableContainersClient` has been removed
+- Struct `ProtectableContainersClientListOptions` has been removed
+- Struct `ProtectableContainersClientListPager` has been removed
+- Struct `ProtectableContainersClientListResponse` has been removed
+- Struct `ProtectableContainersClientListResult` has been removed
+- Struct `ProtectedItem` has been removed
+- Struct `ProtectedItemOperationResultsClient` has been removed
+- Struct `ProtectedItemOperationResultsClientGetOptions` has been removed
+- Struct `ProtectedItemOperationResultsClientGetResponse` has been removed
+- Struct `ProtectedItemOperationResultsClientGetResult` has been removed
+- Struct `ProtectedItemOperationStatusesClient` has been removed
+- Struct `ProtectedItemOperationStatusesClientGetOptions` has been removed
+- Struct `ProtectedItemOperationStatusesClientGetResponse` has been removed
+- Struct `ProtectedItemOperationStatusesClientGetResult` has been removed
+- Struct `ProtectedItemQueryObject` has been removed
+- Struct `ProtectedItemResource` has been removed
+- Struct `ProtectedItemResourceList` has been removed
+- Struct `ProtectedItemsClient` has been removed
+- Struct `ProtectedItemsClientCreateOrUpdateOptions` has been removed
+- Struct `ProtectedItemsClientCreateOrUpdateResponse` has been removed
+- Struct `ProtectedItemsClientCreateOrUpdateResult` has been removed
+- Struct `ProtectedItemsClientDeleteOptions` has been removed
+- Struct `ProtectedItemsClientDeleteResponse` has been removed
+- Struct `ProtectedItemsClientGetOptions` has been removed
+- Struct `ProtectedItemsClientGetResponse` has been removed
+- Struct `ProtectedItemsClientGetResult` has been removed
+- Struct `ProtectionContainer` has been removed
+- Struct `ProtectionContainerOperationResultsClient` has been removed
+- Struct `ProtectionContainerOperationResultsClientGetOptions` has been removed
+- Struct `ProtectionContainerOperationResultsClientGetResponse` has been removed
+- Struct `ProtectionContainerOperationResultsClientGetResult` has been removed
+- Struct `ProtectionContainerRefreshOperationResultsClient` has been removed
+- Struct `ProtectionContainerRefreshOperationResultsClientGetOptions` has been removed
+- Struct `ProtectionContainerRefreshOperationResultsClientGetResponse` has been removed
+- Struct `ProtectionContainerResource` has been removed
+- Struct `ProtectionContainerResourceList` has been removed
+- Struct `ProtectionContainersClient` has been removed
+- Struct `ProtectionContainersClientGetOptions` has been removed
+- Struct `ProtectionContainersClientGetResponse` has been removed
+- Struct `ProtectionContainersClientGetResult` has been removed
+- Struct `ProtectionContainersClientInquireOptions` has been removed
+- Struct `ProtectionContainersClientInquireResponse` has been removed
+- Struct `ProtectionContainersClientRefreshOptions` has been removed
+- Struct `ProtectionContainersClientRefreshResponse` has been removed
+- Struct `ProtectionContainersClientRegisterOptions` has been removed
+- Struct `ProtectionContainersClientRegisterResponse` has been removed
+- Struct `ProtectionContainersClientRegisterResult` has been removed
+- Struct `ProtectionContainersClientUnregisterOptions` has been removed
+- Struct `ProtectionContainersClientUnregisterResponse` has been removed
+- Struct `ProtectionIntent` has been removed
+- Struct `ProtectionIntentClient` has been removed
+- Struct `ProtectionIntentClientCreateOrUpdateOptions` has been removed
+- Struct `ProtectionIntentClientCreateOrUpdateResponse` has been removed
+- Struct `ProtectionIntentClientCreateOrUpdateResult` has been removed
+- Struct `ProtectionIntentClientDeleteOptions` has been removed
+- Struct `ProtectionIntentClientDeleteResponse` has been removed
+- Struct `ProtectionIntentClientGetOptions` has been removed
+- Struct `ProtectionIntentClientGetResponse` has been removed
+- Struct `ProtectionIntentClientGetResult` has been removed
+- Struct `ProtectionIntentClientValidateOptions` has been removed
+- Struct `ProtectionIntentClientValidateResponse` has been removed
+- Struct `ProtectionIntentClientValidateResult` has been removed
+- Struct `ProtectionIntentQueryObject` has been removed
+- Struct `ProtectionIntentResource` has been removed
+- Struct `ProtectionIntentResourceList` has been removed
+- Struct `ProtectionPoliciesClient` has been removed
+- Struct `ProtectionPoliciesClientBeginDeleteOptions` has been removed
+- Struct `ProtectionPoliciesClientCreateOrUpdateOptions` has been removed
+- Struct `ProtectionPoliciesClientCreateOrUpdateResponse` has been removed
+- Struct `ProtectionPoliciesClientCreateOrUpdateResult` has been removed
+- Struct `ProtectionPoliciesClientDeletePoller` has been removed
+- Struct `ProtectionPoliciesClientDeletePollerResponse` has been removed
+- Struct `ProtectionPoliciesClientDeleteResponse` has been removed
+- Struct `ProtectionPoliciesClientGetOptions` has been removed
+- Struct `ProtectionPoliciesClientGetResponse` has been removed
+- Struct `ProtectionPoliciesClientGetResult` has been removed
+- Struct `ProtectionPolicy` has been removed
+- Struct `ProtectionPolicyOperationResultsClient` has been removed
+- Struct `ProtectionPolicyOperationResultsClientGetOptions` has been removed
+- Struct `ProtectionPolicyOperationResultsClientGetResponse` has been removed
+- Struct `ProtectionPolicyOperationResultsClientGetResult` has been removed
+- Struct `ProtectionPolicyOperationStatusesClient` has been removed
+- Struct `ProtectionPolicyOperationStatusesClientGetOptions` has been removed
+- Struct `ProtectionPolicyOperationStatusesClientGetResponse` has been removed
+- Struct `ProtectionPolicyOperationStatusesClientGetResult` has been removed
+- Struct `ProtectionPolicyQueryObject` has been removed
+- Struct `ProtectionPolicyResource` has been removed
+- Struct `ProtectionPolicyResourceList` has been removed
+- Struct `RecoveryPoint` has been removed
+- Struct `RecoveryPointDiskConfiguration` has been removed
+- Struct `RecoveryPointMoveReadinessInfo` has been removed
+- Struct `RecoveryPointRehydrationInfo` has been removed
+- Struct `RecoveryPointResource` has been removed
+- Struct `RecoveryPointResourceList` has been removed
+- Struct `RecoveryPointTierInformation` has been removed
+- Struct `RecoveryPointTierInformationV2` has been removed
+- Struct `RecoveryPointsClient` has been removed
+- Struct `RecoveryPointsClientGetOptions` has been removed
+- Struct `RecoveryPointsClientGetResponse` has been removed
+- Struct `RecoveryPointsClientGetResult` has been removed
+- Struct `RecoveryPointsClientListOptions` has been removed
+- Struct `RecoveryPointsClientListPager` has been removed
+- Struct `RecoveryPointsClientListResponse` has been removed
+- Struct `RecoveryPointsClientListResult` has been removed
+- Struct `RecoveryPointsRecommendedForMoveClient` has been removed
+- Struct `RecoveryPointsRecommendedForMoveClientListOptions` has been removed
+- Struct `RecoveryPointsRecommendedForMoveClientListPager` has been removed
+- Struct `RecoveryPointsRecommendedForMoveClientListResponse` has been removed
+- Struct `RecoveryPointsRecommendedForMoveClientListResult` has been removed
+- Struct `ResourceGuardOperationDetail` has been removed
+- Struct `ResourceGuardProxiesClient` has been removed
+- Struct `ResourceGuardProxiesClientGetOptions` has been removed
+- Struct `ResourceGuardProxiesClientGetPager` has been removed
+- Struct `ResourceGuardProxiesClientGetResponse` has been removed
+- Struct `ResourceGuardProxiesClientGetResult` has been removed
+- Struct `ResourceGuardProxyBase` has been removed
+- Struct `ResourceGuardProxyBaseResource` has been removed
+- Struct `ResourceGuardProxyBaseResourceList` has been removed
+- Struct `ResourceGuardProxyClient` has been removed
+- Struct `ResourceGuardProxyClientDeleteOptions` has been removed
+- Struct `ResourceGuardProxyClientDeleteResponse` has been removed
+- Struct `ResourceGuardProxyClientGetOptions` has been removed
+- Struct `ResourceGuardProxyClientGetResponse` has been removed
+- Struct `ResourceGuardProxyClientGetResult` has been removed
+- Struct `ResourceGuardProxyClientPutOptions` has been removed
+- Struct `ResourceGuardProxyClientPutResponse` has been removed
+- Struct `ResourceGuardProxyClientPutResult` has been removed
+- Struct `ResourceGuardProxyClientUnlockDeleteOptions` has been removed
+- Struct `ResourceGuardProxyClientUnlockDeleteResponse` has been removed
+- Struct `ResourceGuardProxyClientUnlockDeleteResult` has been removed
+- Struct `ResourceHealthDetails` has been removed
+- Struct `ResourceList` has been removed
+- Struct `RestoreFileSpecs` has been removed
+- Struct `RestoreRequest` has been removed
+- Struct `RestoreRequestResource` has been removed
+- Struct `RestoresClient` has been removed
+- Struct `RestoresClientBeginTriggerOptions` has been removed
+- Struct `RestoresClientTriggerPoller` has been removed
+- Struct `RestoresClientTriggerPollerResponse` has been removed
+- Struct `RestoresClientTriggerResponse` has been removed
+- Struct `RetentionDuration` has been removed
+- Struct `RetentionPolicy` has been removed
+- Struct `SQLDataDirectory` has been removed
+- Struct `SQLDataDirectoryMapping` has been removed
+- Struct `SchedulePolicy` has been removed
+- Struct `SecurityPINsClient` has been removed
+- Struct `SecurityPINsClientGetOptions` has been removed
+- Struct `SecurityPINsClientGetResponse` has been removed
+- Struct `SecurityPINsClientGetResult` has been removed
+- Struct `SecurityPinBase` has been removed
+- Struct `Settings` has been removed
+- Struct `SimpleRetentionPolicy` has been removed
+- Struct `SimpleSchedulePolicy` has been removed
+- Struct `SubProtectionPolicy` has been removed
+- Struct `TargetAFSRestoreInfo` has been removed
+- Struct `TargetRestoreInfo` has been removed
+- Struct `TokenInformation` has been removed
+- Struct `TriggerDataMoveRequest` has been removed
+- Struct `UnlockDeleteRequest` has been removed
+- Struct `UnlockDeleteResponse` has been removed
+- Struct `ValidateIaasVMRestoreOperationRequest` has been removed
+- Struct `ValidateOperationClient` has been removed
+- Struct `ValidateOperationClientBeginTriggerOptions` has been removed
+- Struct `ValidateOperationClientTriggerPoller` has been removed
+- Struct `ValidateOperationClientTriggerPollerResponse` has been removed
+- Struct `ValidateOperationClientTriggerResponse` has been removed
+- Struct `ValidateOperationRequest` has been removed
+- Struct `ValidateOperationResponse` has been removed
+- Struct `ValidateOperationResultsClient` has been removed
+- Struct `ValidateOperationResultsClientGetOptions` has been removed
+- Struct `ValidateOperationResultsClientGetResponse` has been removed
+- Struct `ValidateOperationResultsClientGetResult` has been removed
+- Struct `ValidateOperationStatusesClient` has been removed
+- Struct `ValidateOperationStatusesClientGetOptions` has been removed
+- Struct `ValidateOperationStatusesClientGetResponse` has been removed
+- Struct `ValidateOperationStatusesClientGetResult` has been removed
+- Struct `ValidateOperationsResponse` has been removed
+- Struct `ValidateRestoreOperationRequest` has been removed
+- Struct `VaultJob` has been removed
+- Struct `VaultJobErrorInfo` has been removed
+- Struct `VaultJobExtendedInfo` has been removed
+- Struct `VaultStorageConfigOperationResultResponse` has been removed
+- Struct `WeeklyRetentionFormat` has been removed
+- Struct `WeeklyRetentionSchedule` has been removed
+- Struct `WorkloadInquiryDetails` has been removed
+- Struct `WorkloadItem` has been removed
+- Struct `WorkloadItemResource` has been removed
+- Struct `WorkloadItemResourceList` has been removed
+- Struct `WorkloadProtectableItem` has been removed
+- Struct `WorkloadProtectableItemResource` has been removed
+- Struct `WorkloadProtectableItemResourceList` has been removed
+- Struct `YearlyRetentionSchedule` has been removed
+- Field `ActionRequired` of struct `PrivateLinkServiceConnectionState` has been removed
+- Field `ETag` of struct `Resource` has been removed
+- Field `Location` of struct `Resource` has been removed
+- Field `Tags` of struct `Resource` has been removed
+
+### Features Added
+
+- New const `ResourceMoveStateCriticalFailure`
+- New const `AuthTypeInvalid`
+- New const `VaultUpgradeStateFailed`
+- New const `TriggerTypeForcedUpgrade`
+- New const `VaultUpgradeStateUnknown`
+- New const `ResourceMoveStateMoveSucceeded`
+- New const `SKUNameRS0`
+- New const `AuthTypeAzureActiveDirectory`
+- New const `ResourceMoveStateInProgress`
+- New const `ResourceMoveStateCommitFailed`
+- New const `ResourceIdentityTypeNone`
+- New const `VaultUpgradeStateUpgraded`
+- New const `AuthTypeACS`
+- New const `VaultPrivateEndpointStateEnabled`
+- New const `AuthTypeAAD`
+- New const `ResourceIdentityTypeUserAssigned`
+- New const `ResourceMoveStateUnknown`
+- New const `CreatedByTypeApplication`
+- New const `CreatedByTypeManagedIdentity`
+- New const `AuthTypeAccessControlService`
+- New const `SKUNameStandard`
+- New const `VaultPrivateEndpointStateNone`
+- New const `VaultUpgradeStateInProgress`
+- New const `CreatedByTypeKey`
+- New const `CreatedByTypeUser`
+- New const `ResourceMoveStatePartialSuccess`
+- New const `ResourceIdentityTypeSystemAssigned`
+- New const `ResourceMoveStatePrepareFailed`
+- New const `TriggerTypeUserTriggered`
+- New const `ResourceIdentityTypeSystemAssignedUserAssigned`
+- New const `ResourceMoveStateCommitTimedout`
+- New const `ResourceMoveStatePrepareTimedout`
+- New const `ResourceMoveStateFailure`
+- New function `VaultCertificateResponse.MarshalJSON() ([]byte, error)`
+- New function `*RecoveryServicesClient.GetOperationStatus(context.Context, string, string, string, *RecoveryServicesClientGetOperationStatusOptions) (RecoveryServicesClientGetOperationStatusResponse, error)`
+- New function `CreatedByType.ToPtr() *CreatedByType`
+- New function `OperationResource.MarshalJSON() ([]byte, error)`
+- New function `*ResourceCertificateDetails.GetResourceCertificateDetails() *ResourceCertificateDetails`
+- New function `NewPrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) *PrivateLinkResourcesClient`
+- New function `*VaultCertificatesClient.Create(context.Context, string, string, string, CertificateRequest, *VaultCertificatesClientCreateOptions) (VaultCertificatesClientCreateResponse, error)`
+- New function `VaultProperties.MarshalJSON() ([]byte, error)`
+- New function `*VaultsClient.ListByResourceGroup(string, *VaultsClientListByResourceGroupOptions) *VaultsClientListByResourceGroupPager`
+- New function `AuthType.ToPtr() *AuthType`
+- New function `*VaultsClientUpdatePollerResponse.Resume(context.Context, *VaultsClient, string) error`
+- New function `Vault.MarshalJSON() ([]byte, error)`
+- New function `VaultUpgradeState.ToPtr() *VaultUpgradeState`
+- New function `*VaultsClient.Get(context.Context, string, string, *VaultsClientGetOptions) (VaultsClientGetResponse, error)`
+- New function `NewVaultsClient(string, azcore.TokenCredential, *arm.ClientOptions) *VaultsClient`
+- New function `PossibleVaultPrivateEndpointStateValues() []VaultPrivateEndpointState`
+- New function `VaultPropertiesMoveDetails.MarshalJSON() ([]byte, error)`
+- New function `*VaultsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ResourceCertificateAndAcsDetails.UnmarshalJSON([]byte) error`
+- New function `*VaultsClientListByResourceGroupPager.Err() error`
+- New function `*VaultPropertiesMoveDetails.UnmarshalJSON([]byte) error`
+- New function `*VaultsClientListBySubscriptionIDPager.NextPage(context.Context) bool`
+- New function `NewRegisteredIdentitiesClient(string, azcore.TokenCredential, *arm.ClientOptions) *RegisteredIdentitiesClient`
+- New function `PossibleAuthTypeValues() []AuthType`
+- New function `PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `UpgradeDetails.MarshalJSON() ([]byte, error)`
+- New function `*VaultsClientListByResourceGroupPager.PageResponse() VaultsClientListByResourceGroupResponse`
+- New function `*PrivateLinkResourcesClientListPager.Err() error`
+- New function `RawCertificateData.MarshalJSON() ([]byte, error)`
+- New function `PossibleResourceMoveStateValues() []ResourceMoveState`
+- New function `NewVaultExtendedInfoClient(string, azcore.TokenCredential, *arm.ClientOptions) *VaultExtendedInfoClient`
+- New function `VaultsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VaultsClientUpdateResponse, error)`
+- New function `*VaultsClientListBySubscriptionIDPager.PageResponse() VaultsClientListBySubscriptionIDResponse`
+- New function `*UpgradeDetails.UnmarshalJSON([]byte) error`
+- New function `ResourceCertificateDetails.MarshalJSON() ([]byte, error)`
+- New function `PossibleResourceIdentityTypeValues() []ResourceIdentityType`
+- New function `ReplicationUsageList.MarshalJSON() ([]byte, error)`
+- New function `SKUName.ToPtr() *SKUName`
+- New function `*VaultsClient.BeginCreateOrUpdate(context.Context, string, string, Vault, *VaultsClientBeginCreateOrUpdateOptions) (VaultsClientCreateOrUpdatePollerResponse, error)`
+- New function `VaultsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VaultsClientCreateOrUpdateResponse, error)`
+- New function `*VaultsClientCreateOrUpdatePoller.Done() bool`
+- New function `NewRecoveryServicesClient(string, azcore.TokenCredential, *arm.ClientOptions) *RecoveryServicesClient`
+- New function `PrivateLinkResources.MarshalJSON() ([]byte, error)`
+- New function `*VaultsClientListBySubscriptionIDPager.Err() error`
+- New function `*ResourceCertificateAndAADDetails.GetResourceCertificateDetails() *ResourceCertificateDetails`
+- New function `*VaultExtendedInfoClient.CreateOrUpdate(context.Context, string, string, VaultExtendedInfoResource, *VaultExtendedInfoClientCreateOrUpdateOptions) (VaultExtendedInfoClientCreateOrUpdateResponse, error)`
+- New function `*VaultsClient.BeginUpdate(context.Context, string, string, PatchVault, *VaultsClientBeginUpdateOptions) (VaultsClientUpdatePollerResponse, error)`
+- New function `ResourceMoveState.ToPtr() *ResourceMoveState`
+- New function `ResourceIdentityType.ToPtr() *ResourceIdentityType`
+- New function `PossibleSKUNameValues() []SKUName`
+- New function `*PrivateLinkResourcesClient.List(string, string, *PrivateLinkResourcesClientListOptions) *PrivateLinkResourcesClientListPager`
+- New function `IdentityData.MarshalJSON() ([]byte, error)`
+- New function `*ResourceCertificateDetails.UnmarshalJSON([]byte) error`
+- New function `*VaultCertificateResponse.UnmarshalJSON([]byte) error`
+- New function `*RecoveryServicesClient.GetOperationResult(context.Context, string, string, string, *RecoveryServicesClientGetOperationResultOptions) (RecoveryServicesClientGetOperationResultResponse, error)`
+- New function `*ReplicationUsagesClient.List(context.Context, string, string, *ReplicationUsagesClientListOptions) (ReplicationUsagesClientListResponse, error)`
+- New function `TriggerType.ToPtr() *TriggerType`
+- New function `*VaultsClientCreateOrUpdatePoller.FinalResponse(context.Context) (VaultsClientCreateOrUpdateResponse, error)`
+- New function `VaultUsageList.MarshalJSON() ([]byte, error)`
+- New function `*VaultExtendedInfoClient.Update(context.Context, string, string, VaultExtendedInfoResource, *VaultExtendedInfoClientUpdateOptions) (VaultExtendedInfoClientUpdateResponse, error)`
+- New function `*VaultsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `PatchTrackedResource.MarshalJSON() ([]byte, error)`
+- New function `*VaultsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `NewVaultCertificatesClient(string, azcore.TokenCredential, *arm.ClientOptions) *VaultCertificatesClient`
+- New function `*VaultsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VaultsClientUpdatePoller.Done() bool`
+- New function `VaultPrivateEndpointState.ToPtr() *VaultPrivateEndpointState`
+- New function `VaultExtendedInfoResource.MarshalJSON() ([]byte, error)`
+- New function `*RawCertificateData.UnmarshalJSON([]byte) error`
+- New function `*VaultsClientUpdatePoller.FinalResponse(context.Context) (VaultsClientUpdateResponse, error)`
+- New function `*VaultExtendedInfoClient.Get(context.Context, string, string, *VaultExtendedInfoClientGetOptions) (VaultExtendedInfoClientGetResponse, error)`
+- New function `*ResourceCertificateAndAADDetails.UnmarshalJSON([]byte) error`
+- New function `*ResourceCertificateAndAcsDetails.GetResourceCertificateDetails() *ResourceCertificateDetails`
+- New function `*PrivateLinkResourcesClientListPager.PageResponse() PrivateLinkResourcesClientListResponse`
+- New function `*VaultUsage.UnmarshalJSON([]byte) error`
+- New function `NewReplicationUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) *ReplicationUsagesClient`
+- New function `PatchVault.MarshalJSON() ([]byte, error)`
+- New function `ResourceCertificateAndAcsDetails.MarshalJSON() ([]byte, error)`
+- New function `*RegisteredIdentitiesClient.Delete(context.Context, string, string, string, *RegisteredIdentitiesClientDeleteOptions) (RegisteredIdentitiesClientDeleteResponse, error)`
+- New function `VaultUsage.MarshalJSON() ([]byte, error)`
+- New function `*VaultsClient.ListBySubscriptionID(*VaultsClientListBySubscriptionIDOptions) *VaultsClientListBySubscriptionIDPager`
+- New function `VaultList.MarshalJSON() ([]byte, error)`
+- New function `*VaultsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*UsagesClient.ListByVaults(context.Context, string, string, *UsagesClientListByVaultsOptions) (UsagesClientListByVaultsResponse, error)`
+- New function `*PrivateLinkResourcesClient.Get(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error)`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `*VaultsClient.Delete(context.Context, string, string, *VaultsClientDeleteOptions) (VaultsClientDeleteResponse, error)`
+- New function `PossibleVaultUpgradeStateValues() []VaultUpgradeState`
+- New function `NewUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) *UsagesClient`
+- New function `*VaultsClientCreateOrUpdatePollerResponse.Resume(context.Context, *VaultsClient, string) error`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `*PrivateLinkResourcesClientListPager.NextPage(context.Context) bool`
+- New function `TrackedResource.MarshalJSON() ([]byte, error)`
+- New function `*OperationResource.UnmarshalJSON([]byte) error`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `ResourceCertificateAndAADDetails.MarshalJSON() ([]byte, error)`
+- New function `PossibleTriggerTypeValues() []TriggerType`
+- New function `Error.MarshalJSON() ([]byte, error)`
+- New struct `CertificateRequest`
+- New struct `CheckNameAvailabilityParameters`
+- New struct `CheckNameAvailabilityResult`
+- New struct `CmkKekIdentity`
+- New struct `CmkKeyVaultProperties`
+- New struct `Error`
+- New struct `IdentityData`
+- New struct `JobsSummary`
+- New struct `MonitoringSummary`
+- New struct `OperationResource`
+- New struct `PatchTrackedResource`
+- New struct `PatchVault`
+- New struct `PrivateEndpointConnectionVaultProperties`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkResources`
+- New struct `PrivateLinkResourcesClient`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListPager`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `RawCertificateData`
+- New struct `RecoveryServicesClient`
+- New struct `RecoveryServicesClientCheckNameAvailabilityOptions`
+- New struct `RecoveryServicesClientCheckNameAvailabilityResponse`
+- New struct `RecoveryServicesClientCheckNameAvailabilityResult`
+- New struct `RecoveryServicesClientGetOperationResultOptions`
+- New struct `RecoveryServicesClientGetOperationResultResponse`
+- New struct `RecoveryServicesClientGetOperationResultResult`
+- New struct `RecoveryServicesClientGetOperationStatusOptions`
+- New struct `RecoveryServicesClientGetOperationStatusResponse`
+- New struct `RecoveryServicesClientGetOperationStatusResult`
+- New struct `RegisteredIdentitiesClient`
+- New struct `RegisteredIdentitiesClientDeleteOptions`
+- New struct `RegisteredIdentitiesClientDeleteResponse`
+- New struct `ReplicationUsage`
+- New struct `ReplicationUsageList`
+- New struct `ReplicationUsagesClient`
+- New struct `ReplicationUsagesClientListOptions`
+- New struct `ReplicationUsagesClientListResponse`
+- New struct `ReplicationUsagesClientListResult`
+- New struct `ResourceCertificateAndAADDetails`
+- New struct `ResourceCertificateAndAcsDetails`
+- New struct `ResourceCertificateDetails`
+- New struct `SKU`
+- New struct `SystemData`
+- New struct `TrackedResource`
+- New struct `UpgradeDetails`
+- New struct `UsagesClient`
+- New struct `UsagesClientListByVaultsOptions`
+- New struct `UsagesClientListByVaultsResponse`
+- New struct `UsagesClientListByVaultsResult`
+- New struct `UserIdentity`
+- New struct `Vault`
+- New struct `VaultCertificateResponse`
+- New struct `VaultCertificatesClient`
+- New struct `VaultCertificatesClientCreateOptions`
+- New struct `VaultCertificatesClientCreateResponse`
+- New struct `VaultCertificatesClientCreateResult`
+- New struct `VaultExtendedInfo`
+- New struct `VaultExtendedInfoClient`
+- New struct `VaultExtendedInfoClientCreateOrUpdateOptions`
+- New struct `VaultExtendedInfoClientCreateOrUpdateResponse`
+- New struct `VaultExtendedInfoClientCreateOrUpdateResult`
+- New struct `VaultExtendedInfoClientGetOptions`
+- New struct `VaultExtendedInfoClientGetResponse`
+- New struct `VaultExtendedInfoClientGetResult`
+- New struct `VaultExtendedInfoClientUpdateOptions`
+- New struct `VaultExtendedInfoClientUpdateResponse`
+- New struct `VaultExtendedInfoClientUpdateResult`
+- New struct `VaultExtendedInfoResource`
+- New struct `VaultList`
+- New struct `VaultProperties`
+- New struct `VaultPropertiesEncryption`
+- New struct `VaultPropertiesMoveDetails`
+- New struct `VaultUsage`
+- New struct `VaultUsageList`
+- New struct `VaultsClient`
+- New struct `VaultsClientBeginCreateOrUpdateOptions`
+- New struct `VaultsClientBeginUpdateOptions`
+- New struct `VaultsClientCreateOrUpdatePoller`
+- New struct `VaultsClientCreateOrUpdatePollerResponse`
+- New struct `VaultsClientCreateOrUpdateResponse`
+- New struct `VaultsClientCreateOrUpdateResult`
+- New struct `VaultsClientDeleteOptions`
+- New struct `VaultsClientDeleteResponse`
+- New struct `VaultsClientGetOptions`
+- New struct `VaultsClientGetResponse`
+- New struct `VaultsClientGetResult`
+- New struct `VaultsClientListByResourceGroupOptions`
+- New struct `VaultsClientListByResourceGroupPager`
+- New struct `VaultsClientListByResourceGroupResponse`
+- New struct `VaultsClientListByResourceGroupResult`
+- New struct `VaultsClientListBySubscriptionIDOptions`
+- New struct `VaultsClientListBySubscriptionIDPager`
+- New struct `VaultsClientListBySubscriptionIDResponse`
+- New struct `VaultsClientListBySubscriptionIDResult`
+- New struct `VaultsClientUpdatePoller`
+- New struct `VaultsClientUpdatePollerResponse`
+- New struct `VaultsClientUpdateResponse`
+- New struct `VaultsClientUpdateResult`
+- New field `Etag` in struct `Resource`
+- New field `ActionsRequired` in struct `PrivateLinkServiceConnectionState`
+
+
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

@@ -220,7 +220,7 @@ func unmarshalProtectionContainerClassification(rawMsg json.RawMessage) (Protect
 		b = &AzureBackupServerContainer{}
 	case string(ContainerTypeAzureSQLContainer):
 		b = &AzureSQLContainer{}
-	case "AzureWorkloadContainer":
+	case string(ContainerTypeAzureWorkloadContainer):
 		b = &AzureWorkloadContainer{}
 	case string(ContainerTypeDPMContainer):
 		b = &DpmContainer{}
@@ -228,9 +228,9 @@ func unmarshalProtectionContainerClassification(rawMsg json.RawMessage) (Protect
 		b = &GenericContainer{}
 	case "IaaSVMContainer":
 		b = &IaaSVMContainer{}
-	case "Microsoft.ClassicCompute/virtualMachines":
+	case string(ContainerTypeMicrosoftClassicComputeVirtualMachines):
 		b = &AzureIaaSClassicComputeVMContainer{}
-	case "Microsoft.Compute/virtualMachines":
+	case string(ContainerTypeMicrosoftComputeVirtualMachines):
 		b = &AzureIaaSComputeVMContainer{}
 	case string(ContainerTypeSQLAGWorkLoadContainer):
 		b = &AzureSQLAGWorkloadContainerProtectionContainer{}
@@ -258,11 +258,11 @@ func unmarshalProtectionIntentClassification(rawMsg json.RawMessage) (Protection
 	switch m["protectionIntentItemType"] {
 	case string(ProtectionIntentItemTypeAzureResourceItem):
 		b = &AzureResourceProtectionIntent{}
-	case "AzureWorkloadAutoProtectionIntent":
+	case "ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent":
 		b = &AzureWorkloadAutoProtectionIntent{}
 	case string(ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent):
 		b = &AzureWorkloadContainerAutoProtectionIntent{}
-	case "AzureWorkloadSQLAutoProtectionIntent":
+	case "ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent":
 		b = &AzureWorkloadSQLAutoProtectionIntent{}
 	case string(ProtectionIntentItemTypeRecoveryServiceVaultItem):
 		b = &AzureRecoveryServiceVaultProtectionIntent{}
@@ -412,6 +412,8 @@ func unmarshalSchedulePolicyClassification(rawMsg json.RawMessage) (SchedulePoli
 		b = &LongTermSchedulePolicy{}
 	case "SimpleSchedulePolicy":
 		b = &SimpleSchedulePolicy{}
+	case "SimpleSchedulePolicyV2":
+		b = &SimpleSchedulePolicyV2{}
 	default:
 		b = &SchedulePolicy{}
 	}

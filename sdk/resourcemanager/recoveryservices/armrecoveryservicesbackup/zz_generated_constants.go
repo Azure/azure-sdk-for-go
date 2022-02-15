@@ -10,7 +10,7 @@ package armrecoveryservicesbackup
 
 const (
 	moduleName    = "armrecoveryservicesbackup"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.3.0"
 )
 
 // AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
@@ -195,21 +195,24 @@ func (c BackupType) ToPtr() *BackupType {
 type ContainerType string
 
 const (
-	ContainerTypeAzureBackupServerContainer ContainerType = "AzureBackupServerContainer"
-	ContainerTypeAzureSQLContainer          ContainerType = "AzureSqlContainer"
-	ContainerTypeCluster                    ContainerType = "Cluster"
-	ContainerTypeDPMContainer               ContainerType = "DPMContainer"
-	ContainerTypeGenericContainer           ContainerType = "GenericContainer"
-	ContainerTypeIaasVMContainer            ContainerType = "IaasVMContainer"
-	ContainerTypeIaasVMServiceContainer     ContainerType = "IaasVMServiceContainer"
-	ContainerTypeInvalid                    ContainerType = "Invalid"
-	ContainerTypeMABContainer               ContainerType = "MABContainer"
-	ContainerTypeSQLAGWorkLoadContainer     ContainerType = "SQLAGWorkLoadContainer"
-	ContainerTypeStorageContainer           ContainerType = "StorageContainer"
-	ContainerTypeUnknown                    ContainerType = "Unknown"
-	ContainerTypeVCenter                    ContainerType = "VCenter"
-	ContainerTypeVMAppContainer             ContainerType = "VMAppContainer"
-	ContainerTypeWindows                    ContainerType = "Windows"
+	ContainerTypeAzureBackupServerContainer             ContainerType = "AzureBackupServerContainer"
+	ContainerTypeAzureSQLContainer                      ContainerType = "AzureSqlContainer"
+	ContainerTypeAzureWorkloadContainer                 ContainerType = "AzureWorkloadContainer"
+	ContainerTypeCluster                                ContainerType = "Cluster"
+	ContainerTypeDPMContainer                           ContainerType = "DPMContainer"
+	ContainerTypeGenericContainer                       ContainerType = "GenericContainer"
+	ContainerTypeIaasVMContainer                        ContainerType = "IaasVMContainer"
+	ContainerTypeIaasVMServiceContainer                 ContainerType = "IaasVMServiceContainer"
+	ContainerTypeInvalid                                ContainerType = "Invalid"
+	ContainerTypeMABContainer                           ContainerType = "MABContainer"
+	ContainerTypeMicrosoftClassicComputeVirtualMachines ContainerType = "Microsoft.ClassicCompute/virtualMachines"
+	ContainerTypeMicrosoftComputeVirtualMachines        ContainerType = "Microsoft.Compute/virtualMachines"
+	ContainerTypeSQLAGWorkLoadContainer                 ContainerType = "SQLAGWorkLoadContainer"
+	ContainerTypeStorageContainer                       ContainerType = "StorageContainer"
+	ContainerTypeUnknown                                ContainerType = "Unknown"
+	ContainerTypeVCenter                                ContainerType = "VCenter"
+	ContainerTypeVMAppContainer                         ContainerType = "VMAppContainer"
+	ContainerTypeWindows                                ContainerType = "Windows"
 )
 
 // PossibleContainerTypeValues returns the possible values for the ContainerType const type.
@@ -217,6 +220,7 @@ func PossibleContainerTypeValues() []ContainerType {
 	return []ContainerType{
 		ContainerTypeAzureBackupServerContainer,
 		ContainerTypeAzureSQLContainer,
+		ContainerTypeAzureWorkloadContainer,
 		ContainerTypeCluster,
 		ContainerTypeDPMContainer,
 		ContainerTypeGenericContainer,
@@ -224,6 +228,8 @@ func PossibleContainerTypeValues() []ContainerType {
 		ContainerTypeIaasVMServiceContainer,
 		ContainerTypeInvalid,
 		ContainerTypeMABContainer,
+		ContainerTypeMicrosoftClassicComputeVirtualMachines,
+		ContainerTypeMicrosoftComputeVirtualMachines,
 		ContainerTypeSQLAGWorkLoadContainer,
 		ContainerTypeStorageContainer,
 		ContainerTypeUnknown,
@@ -636,6 +642,28 @@ func PossibleHealthStatusValues() []HealthStatus {
 
 // ToPtr returns a *HealthStatus pointing to the current value.
 func (c HealthStatus) ToPtr() *HealthStatus {
+	return &c
+}
+
+type IAASVMPolicyType string
+
+const (
+	IAASVMPolicyTypeInvalid IAASVMPolicyType = "Invalid"
+	IAASVMPolicyTypeV1      IAASVMPolicyType = "V1"
+	IAASVMPolicyTypeV2      IAASVMPolicyType = "V2"
+)
+
+// PossibleIAASVMPolicyTypeValues returns the possible values for the IAASVMPolicyType const type.
+func PossibleIAASVMPolicyTypeValues() []IAASVMPolicyType {
+	return []IAASVMPolicyType{
+		IAASVMPolicyTypeInvalid,
+		IAASVMPolicyTypeV1,
+		IAASVMPolicyTypeV2,
+	}
+}
+
+// ToPtr returns a *IAASVMPolicyType pointing to the current value.
+func (c IAASVMPolicyType) ToPtr() *IAASVMPolicyType {
 	return &c
 }
 
@@ -1133,7 +1161,9 @@ type ProtectionIntentItemType string
 
 const (
 	ProtectionIntentItemTypeAzureResourceItem                          ProtectionIntentItemType = "AzureResourceItem"
+	ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent          ProtectionIntentItemType = "AzureWorkloadAutoProtectionIntent"
 	ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent ProtectionIntentItemType = "AzureWorkloadContainerAutoProtectionIntent"
+	ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent       ProtectionIntentItemType = "AzureWorkloadSQLAutoProtectionIntent"
 	ProtectionIntentItemTypeInvalid                                    ProtectionIntentItemType = "Invalid"
 	ProtectionIntentItemTypeRecoveryServiceVaultItem                   ProtectionIntentItemType = "RecoveryServiceVaultItem"
 )
@@ -1142,7 +1172,9 @@ const (
 func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
 	return []ProtectionIntentItemType{
 		ProtectionIntentItemTypeAzureResourceItem,
+		ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent,
 		ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent,
+		ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent,
 		ProtectionIntentItemTypeInvalid,
 		ProtectionIntentItemTypeRecoveryServiceVaultItem,
 	}

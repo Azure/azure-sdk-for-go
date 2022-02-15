@@ -11,7 +11,7 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armpolicy/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armpolicy/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -19,7 +19,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 06 Jan 2022 05:36:37 GMT",
+        "Date": "Mon, 14 Feb 2022 07:43:14 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Kestrel",
@@ -27,10 +27,10 @@
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "d504ab9f-1500-4291-b913-6cf2be710f63",
-        "x-ms-ratelimit-remaining-subscription-reads": "11998",
-        "x-ms-request-id": "d504ab9f-1500-4291-b913-6cf2be710f63",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220106T053638Z:d504ab9f-1500-4291-b913-6cf2be710f63"
+        "x-ms-correlation-request-id": "d6f5129c-06fe-4f35-bef8-2af739f00424",
+        "x-ms-ratelimit-remaining-subscription-reads": "11996",
+        "x-ms-request-id": "d6f5129c-06fe-4f35-bef8-2af739f00424",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T074314Z:d6f5129c-06fe-4f35-bef8-2af739f00424"
       },
       "ResponseBody": {
         "value": [
@@ -1541,7 +1541,7 @@
               "description": "Requires that prerequisites are deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol. Machines are non-compliant if the Chef InSpec resource indicates that one or more of the packages provided by the parameter are installed.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "3.2.0",
+                "version": "4.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -1847,7 +1847,8 @@
                                         "microsoft-ads",
                                         "center-for-internet-security-inc",
                                         "Oracle",
-                                        "AzureDatabricks"
+                                        "AzureDatabricks",
+                                        "azureopenshift"
                                       ]
                                     }
                                   ]
@@ -1865,12 +1866,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "linux*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "linux*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "linux*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -2083,9 +2104,9 @@
               "mode": "Indexed",
               "description": "Security Center uses the Microsoft Dependency agent to collect network traffic data from your Azure virtual machines to enable advanced network protection features such as traffic visualization on the network map, network hardening recommendations and specific network threats.",
               "metadata": {
-                "version": "1.0.1-preview",
+                "version": "1.0.2-preview",
                 "category": "Monitoring",
-                "preview": "true"
+                "preview": true
               },
               "parameters": {
                 "effect": {
@@ -4376,7 +4397,7 @@
               "description": "Requires that prerequisites are deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol. Machines are non-compliant if the Windows PowerShell command Get-DSCConfigurationStatus returns that the DSC configuration for the machine is not compliant.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -4390,7 +4411,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -4454,7 +4476,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -4568,12 +4590,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -4603,7 +4645,7 @@
               "mode": "Indexed",
               "description": "Ensure that devices ordered from Azure Edge Hardware Center have double encryption support enabled, to secure the data at rest on the device. This option adds a second layer of data encryption.",
               "metadata": {
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "category": "Azure Edge Hardware Center"
               },
               "parameters": {
@@ -4630,6 +4672,10 @@
                     },
                     {
                       "field": "Microsoft.EdgeOrder/orderItems/orderItemDetails.preferences.encryptionPreferences.doubleEncryptionStatus",
+                      "notEquals": "Enabled"
+                    },
+                    {
+                      "field": "Microsoft.EdgeOrder/orderItems/orderItemDetails.productDetails.productDoubleEncryptionStatus",
                       "notEquals": "Enabled"
                     }
                   ]
@@ -5184,7 +5230,7 @@
               "mode": "Indexed",
               "description": "Enforce backup for all virtual machines by backing them up to an existing central recovery services vault in the same location and subscription as the virtual machine. Doing this is useful when there is a central team in your organization managing backups for all resources in a subscription. You can optionally exclude virtual machines containing a specified tag to control the scope of assignment. See https://aka.ms/AzureVMCentralBackupExcludeTag.",
               "metadata": {
-                "version": "5.0.0",
+                "version": "6.0.0",
                 "category": "Backup"
               },
               "parameters": {
@@ -5311,7 +5357,19 @@
                                 "2019-Datacenter-with-Containers",
                                 "2019-Datacenter-with-Containers-smalldisk",
                                 "2019-Datacenter-zhcn",
-                                "2019-datacenter-gensecond"
+                                "2019-datacenter-gensecond",
+                                "2022-datacenter-g2",
+                                "2022-datacenter",
+                                "2022-datacenter-azure-edition",
+                                "2022-datacenter-azure-edition-smalldisk",
+                                "2022-datacenter-azure-edition-core",
+                                "2022-datacenter-azure-edition-core-smalldisk",
+                                "2022-datacenter-smalldisk-g2",
+                                "2022-datacenter-smalldisk",
+                                "2022-datacenter-core-g2",
+                                "2022-datacenter-core",
+                                "2022-datacenter-core-smalldisk-g2",
+                                "2022-datacenter-core-smalldisk"
                               ]
                             }
                           ]
@@ -5870,12 +5928,12 @@
           },
           {
             "properties": {
-              "displayName": "SQL server should use customer-managed keys to encrypt data at rest",
+              "displayName": "SQL servers should use customer-managed keys to encrypt data at rest",
               "policyType": "BuiltIn",
               "mode": "All",
               "description": "Implementing Transparent Data Encryption (TDE) with your own key provides increased transparency and control over the TDE Protector, increased security with an HSM-backed external service, and promotion of separation of duties. This recommendation applies to organizations with a related compliance requirement.",
               "metadata": {
-                "version": "2.0.0",
+                "version": "2.0.1",
                 "category": "SQL"
               },
               "parameters": {
@@ -9061,12 +9119,12 @@
           },
           {
             "properties": {
-              "displayName": "Vulnerabilities in running images should be remediated",
+              "displayName": "Running container images should have vulnerability findings resolved",
               "policyType": "BuiltIn",
               "mode": "Indexed",
-              "description": "Container image vulnerability assessment scans container images running on your Kubernetes clusters for security vulnerabilities and exposes detailed findings for each image. Resolving the vulnerabilities can greatly improve your containers\u0027 security posture and protect them from attacks",
+              "description": "Container image vulnerability assessment scans container images running on your Kubernetes clusters for security vulnerabilities and exposes detailed findings for each image. Resolving the vulnerabilities can greatly improve your containers\u0027 security posture and protect them from attacks.",
               "metadata": {
-                "version": "1.0.0",
+                "version": "1.0.1",
                 "category": "Security Center"
               },
               "parameters": {
@@ -9982,13 +10040,14 @@
           },
           {
             "properties": {
-              "displayName": "Custom subscription owner roles should not exist",
+              "displayName": "[Deprecated]: Custom subscription owner roles should not exist",
               "policyType": "BuiltIn",
               "mode": "All",
-              "description": "This policy ensures that no custom subscription owner roles exist.",
+              "description": "This policy is deprecated.",
               "metadata": {
-                "version": "2.0.0",
-                "category": "General"
+                "version": "2.0.0-deprecated",
+                "category": "General",
+                "deprecated": true
               },
               "parameters": {
                 "effect": {
@@ -10731,7 +10790,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027Security Options - System settings\u0027 for certificate rules on executables for SRP and optional subsystems. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -10748,7 +10807,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -10832,7 +10892,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -10946,12 +11006,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -11026,7 +11106,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027Security Options - Network Security\u0027 for including Local System behavior, PKU2U, LAN Manager, LDAP client, and NTLM SSP. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -11047,7 +11127,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -11163,7 +11244,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -11277,12 +11358,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -13000,7 +13101,7 @@
               "metadata": {
                 "category": "Security Center",
                 "preview": true,
-                "version": "2.2.0-preview"
+                "version": "3.0.0-preview"
               },
               "parameters": {
                 "effect": {
@@ -13030,10 +13131,23 @@
               },
               "policyRule": {
                 "if": {
-                  "field": "type",
-                  "in": [
-                    "Microsoft.Compute/virtualMachines",
-                    "Microsoft.HybridCompute/machines"
+                  "anyof": [
+                    {
+                      "field": "type",
+                      "equals": "Microsoft.Compute/virtualMachines"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "field": "type",
+                          "equals": "Microsoft.HybridCompute/machines"
+                        },
+                        {
+                          "field": "tags",
+                          "notContainsKey": "MDFCSecurityConnector"
+                        }
+                      ]
+                    }
                   ]
                 },
                 "then": {
@@ -13224,7 +13338,7 @@
               "description": "Requires that prerequisites are deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol. Machines are non-compliant if certificates in the specified store have an expiration date out of range for the number of days given as parameter. The policy also provides the option to only check for specific certificates or exclude specific certificates, and whether to report on expired certificates.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -13245,7 +13359,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -13353,7 +13468,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -13467,12 +13582,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -14754,6 +14889,117 @@
             "id": "/providers/Microsoft.Authorization/policyDefinitions/16bfdb59-db38-47a5-88a9-2e9371a638cf",
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "16bfdb59-db38-47a5-88a9-2e9371a638cf"
+          },
+          {
+            "properties": {
+              "displayName": "Azure NetApp Files Volumes of type NFSv4.1 should use Kerberos data integrity or data privacy",
+              "policyType": "BuiltIn",
+              "mode": "All",
+              "description": "Ensure that at least either Kerberos integrity (krb5i) or Kerberos privacy (krb5p) is selected to ensure data integrity and data privacy.",
+              "metadata": {
+                "version": "1.0.0",
+                "category": "Storage"
+              },
+              "parameters": {
+                "effect": {
+                  "type": "String",
+                  "metadata": {
+                    "displayName": "Effect",
+                    "description": "Enable or disable the execution of the policy"
+                  },
+                  "allowedValues": [
+                    "Audit",
+                    "Deny",
+                    "Disabled"
+                  ],
+                  "defaultValue": "Audit"
+                }
+              },
+              "policyRule": {
+                "if": {
+                  "allOf": [
+                    {
+                      "field": "type",
+                      "equals": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+                    },
+                    {
+                      "count": {
+                        "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/protocolTypes[*]",
+                        "where": {
+                          "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/protocolTypes[*]",
+                          "equals": "NFSv4.1"
+                        }
+                      },
+                      "greater": 0
+                    },
+                    {
+                      "anyOf": [
+                        {
+                          "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/kerberosEnabled",
+                          "exists": "false"
+                        },
+                        {
+                          "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/kerberosEnabled",
+                          "equals": "false"
+                        },
+                        {
+                          "allOf": [
+                            {
+                              "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/kerberosEnabled",
+                              "equals": "true"
+                            },
+                            {
+                              "count": {
+                                "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/exportPolicy.rules[*]",
+                                "where": {
+                                  "anyOf": [
+                                    {
+                                      "allOf": [
+                                        {
+                                          "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/exportPolicy.rules[*].kerberos5iReadWrite",
+                                          "equals": "false"
+                                        },
+                                        {
+                                          "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/exportPolicy.rules[*].kerberos5iReadOnly",
+                                          "equals": "false"
+                                        },
+                                        {
+                                          "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/exportPolicy.rules[*].kerberos5pReadWrite",
+                                          "equals": "false"
+                                        },
+                                        {
+                                          "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/exportPolicy.rules[*].kerberos5pReadOnly",
+                                          "equals": "false"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/exportPolicy.rules[*].kerberos5ReadOnly",
+                                      "equals": "true"
+                                    },
+                                    {
+                                      "field": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/exportPolicy.rules[*].kerberos5ReadWrite",
+                                      "equals": "true"
+                                    }
+                                  ]
+                                }
+                              },
+                              "greater": 0
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "then": {
+                  "effect": "[parameters(\u0027effect\u0027)]"
+                }
+              }
+            },
+            "id": "/providers/Microsoft.Authorization/policyDefinitions/16f4af95-96b1-4220-805a-367ca59cd72e",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "16f4af95-96b1-4220-805a-367ca59cd72e"
           },
           {
             "properties": {
@@ -16086,7 +16332,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027System Audit Policies - Logon-Logoff\u0027 for auditing IPSec, network policy, claims, account lockout, group membership, and logon/logoff events. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -16103,7 +16349,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -16193,7 +16440,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -16307,12 +16554,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -22091,7 +22358,7 @@
               "description": "Requires that prerequisites are deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol. Machines are non-compliant if Windows machines that do not have a minimum password age of 1 day",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -22105,7 +22372,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -22181,7 +22449,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -22295,12 +22563,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -23817,13 +24105,14 @@
           },
           {
             "properties": {
-              "displayName": "Configure virtual machines to be onboarded to Azure Automanage",
+              "displayName": "[Deprecated]: Configure virtual machines to be onboarded to Azure Automanage",
               "policyType": "BuiltIn",
               "mode": "Indexed",
               "description": "Azure Automanage enrolls, configures, and monitors virtual machines with best practice as defined in the Microsoft Cloud Adoption Framework for Azure. Use this policy to apply Automanage to your selected scope.",
               "metadata": {
-                "version": "4.1.0",
-                "category": "Automanage"
+                "version": "4.1.0-version-deprecated",
+                "category": "Automanage",
+                "deprecated": true
               },
               "parameters": {
                 "automanageAccount": {
@@ -24481,6 +24770,63 @@
             "id": "/providers/Microsoft.Authorization/policyDefinitions/27a69937-af92-4198-9b86-08d355c7e59a",
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "27a69937-af92-4198-9b86-08d355c7e59a"
+          },
+          {
+            "properties": {
+              "displayName": "Azure Device Update for IoT Hub accounts should use private link",
+              "policyType": "BuiltIn",
+              "mode": "Indexed",
+              "description": "Azure Private Link lets you connect your virtual network to Azure services without a public IP address at the source or destination. The Private Link platform handles the connectivity between the consumer and services over the Azure backbone network. By mapping private endpoints to Azure Device Update for IoT Hub accounts, data leakage risks are reduced.",
+              "metadata": {
+                "version": "1.0.0",
+                "category": "Internet of Things"
+              },
+              "parameters": {
+                "effect": {
+                  "type": "String",
+                  "metadata": {
+                    "displayName": "Effect",
+                    "description": "Enable or disable the execution of the policy"
+                  },
+                  "allowedValues": [
+                    "AuditIfNotExists",
+                    "Disabled"
+                  ],
+                  "defaultValue": "AuditIfNotExists"
+                }
+              },
+              "policyRule": {
+                "if": {
+                  "field": "type",
+                  "equals": "Microsoft.DeviceUpdate/accounts"
+                },
+                "then": {
+                  "effect": "[parameters(\u0027effect\u0027)]",
+                  "details": {
+                    "type": "Microsoft.DeviceUpdate/accounts/privateEndpointConnections",
+                    "existenceCondition": {
+                      "allOf": [
+                        {
+                          "field": "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/privateEndpoint",
+                          "exists": "true"
+                        },
+                        {
+                          "field": "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/provisioningState",
+                          "equals": "Succeeded"
+                        },
+                        {
+                          "field": "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/privateLinkServiceConnectionState.status",
+                          "equals": "Approved"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "id": "/providers/Microsoft.Authorization/policyDefinitions/27d4c5ec-8820-443f-91fe-1215e96f64b2",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "27d4c5ec-8820-443f-91fe-1215e96f64b2"
           },
           {
             "properties": {
@@ -25622,7 +25968,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027System Audit Policies - Policy Change\u0027 for auditing changes to system audit policies. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -25640,7 +25986,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -25744,7 +26091,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -25858,12 +26205,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -27174,7 +27541,7 @@
               "mode": "Indexed",
               "description": "To ensure apps deployed in an App Service Environment are not accessible over public internet, one should deploy App Service Environment with an IP address in virtual network. To set the IP address to a virtual network IP, the App Service Environment must be deployed with an internal load balancer.",
               "metadata": {
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "category": "App Service"
               },
               "parameters": {
@@ -27209,7 +27576,7 @@
                           "allOf": [
                             {
                               "value": "[requestContext().apiVersion]",
-                              "less": "2018-02-01"
+                              "less": "2016-09-01"
                             },
                             {
                               "anyOf": [
@@ -27229,7 +27596,7 @@
                           "allOf": [
                             {
                               "value": "[requestContext().apiVersion]",
-                              "greaterOrEquals": "2018-02-01"
+                              "greaterOrEquals": "2016-09-01"
                             },
                             {
                               "anyOf": [
@@ -27558,7 +27925,7 @@
               "mode": "All",
               "description": "This policy should only be used along with its corresponding deploy policy in an initiative. This definition allows Azure Policy to process the results of auditing Linux virtual machines that allow remote connections from accounts without passwords. For more information on Guest Configuration policies, please visit https://aka.ms/gcpol",
               "metadata": {
-                "version": "3.1.0-deprecated",
+                "version": "4.0.0-deprecated",
                 "category": "Guest Configuration",
                 "deprecated": true
               },
@@ -27822,7 +28189,8 @@
                                         "microsoft-ads",
                                         "center-for-internet-security-inc",
                                         "Oracle",
-                                        "AzureDatabricks"
+                                        "AzureDatabricks",
+                                        "azureopenshift"
                                       ]
                                     }
                                   ]
@@ -28850,7 +29218,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027Security Options - System objects\u0027 for case insensitivity for non-Windows subsystems and permissions of internal system objects. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -28864,7 +29232,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -28940,7 +29309,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -29054,12 +29423,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -29089,9 +29478,9 @@
               "mode": "Indexed",
               "description": "Security Center uses the Microsoft Dependency agent to collect network traffic data from your Azure virtual machines to enable advanced network protection features such as traffic visualization on the network map, network hardening recommendations and specific network threats.",
               "metadata": {
-                "version": "1.0.1-preview",
+                "version": "1.0.2-preview",
                 "category": "Monitoring",
-                "preview": "true"
+                "preview": true
               },
               "parameters": {
                 "effect": {
@@ -29941,13 +30330,192 @@
           },
           {
             "properties": {
+              "displayName": "[Preview]: Configure Association to link Arc machines to default Azure Security Center Data Collection Rule",
+              "policyType": "BuiltIn",
+              "mode": "Indexed",
+              "description": "Configure Arc machines to automatically create an association with the default data collection rule for Azure Security Center. Deleting this association will break the detection of security vulnerabilities for this Arc machine. Target Arc machines must be in a supported location.",
+              "metadata": {
+                "category": "Security Center",
+                "version": "1.0.0-preview",
+                "preview": true
+              },
+              "parameters": {
+                "effect": {
+                  "type": "String",
+                  "metadata": {
+                    "displayName": "Effect",
+                    "description": "Enable or disable the execution of the policy"
+                  },
+                  "allowedValues": [
+                    "DeployIfNotExists",
+                    "Disabled"
+                  ],
+                  "defaultValue": "DeployIfNotExists"
+                }
+              },
+              "policyRule": {
+                "if": {
+                  "allOf": [
+                    {
+                      "field": "type",
+                      "equals": "Microsoft.HybridCompute/machines"
+                    },
+                    {
+                      "field": "location",
+                      "in": [
+                        "australiacentral",
+                        "australiaeast",
+                        "australiasoutheast",
+                        "brazilsouth",
+                        "canadacentral",
+                        "canadaeast",
+                        "centralindia",
+                        "centralus",
+                        "eastasia",
+                        "eastus2euap",
+                        "eastus",
+                        "eastus2",
+                        "francecentral",
+                        "germanywestcentral",
+                        "japaneast",
+                        "japanwest",
+                        "jioindiawest",
+                        "koreacentral",
+                        "koreasouth",
+                        "northcentralus",
+                        "northeurope",
+                        "norwayeast",
+                        "southafricanorth",
+                        "southcentralus",
+                        "southeastasia",
+                        "southindia",
+                        "switzerlandnorth",
+                        "uaenorth",
+                        "uksouth",
+                        "ukwest",
+                        "westcentralus",
+                        "westeurope",
+                        "westindia",
+                        "westus",
+                        "westus2"
+                      ]
+                    }
+                  ]
+                },
+                "then": {
+                  "effect": "[parameters(\u0027effect\u0027)]",
+                  "details": {
+                    "type": "Microsoft.Insights/dataCollectionRuleAssociations",
+                    "name": "Security-RulesAssociation",
+                    "roleDefinitionIds": [
+                      "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ],
+                    "deployment": {
+                      "properties": {
+                        "mode": "incremental",
+                        "parameters": {
+                          "resourceGroup": {
+                            "value": "[resourceGroup().name]"
+                          },
+                          "location": {
+                            "value": "[field(\u0027location\u0027)]"
+                          },
+                          "vmName": {
+                            "value": "[field(\u0027name\u0027)]"
+                          }
+                        },
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "parameters": {
+                            "resourceGroup": {
+                              "type": "string"
+                            },
+                            "location": {
+                              "type": "string"
+                            },
+                            "vmName": {
+                              "type": "string"
+                            }
+                          },
+                          "variables": {
+                            "locationLongNameToShortMap": {
+                              "australiacentral": "CAU",
+                              "australiaeast": "EAU",
+                              "australiasoutheast": "SEAU",
+                              "brazilsouth": "CQ",
+                              "canadacentral": "CCA",
+                              "canadaeast": "CCA",
+                              "centralindia": "CIN",
+                              "centralus": "CUS",
+                              "eastasia": "EA",
+                              "eastus2euap": "eus2p",
+                              "eastus": "EUS",
+                              "eastus2": "EUS2",
+                              "francecentral": "PAR",
+                              "germanywestcentral": "DEWC",
+                              "japaneast": "EJP",
+                              "japanwest": "EJP",
+                              "jioindiawest": "CIN",
+                              "koreacentral": "SE",
+                              "koreasouth": "SE",
+                              "northcentralus": "NCUS",
+                              "northeurope": "NEU",
+                              "norwayeast": "NOE",
+                              "southafricanorth": "JNB",
+                              "southcentralus": "SCUS",
+                              "southeastasia": "SEA",
+                              "southindia": "CIN",
+                              "swedencentral": "SEC",
+                              "switzerlandnorth": "CHN",
+                              "switzerlandwest": "CHW",
+                              "uaenorth": "DXB",
+                              "uksouth": "SUK",
+                              "ukwest": "WUK",
+                              "westcentralus": "WCUS",
+                              "westeurope": "WEU",
+                              "westindia": "CIN",
+                              "westus": "WUS",
+                              "westus2": "WUS2"
+                            },
+                            "locationCode": "[variables(\u0027locationLongNameToShortMap\u0027)[parameters(\u0027location\u0027)]]",
+                            "subscriptionId": "[subscription().subscriptionId]",
+                            "defaultRGName": "[concat(\u0027DefaultResourceGroup-\u0027, variables(\u0027locationCode\u0027))]",
+                            "dcrName": "[concat(\u0027Microsoft-Security-\u0027, parameters(\u0027location\u0027), \u0027-dcr\u0027)]",
+                            "dcrId": "[concat(\u0027/subscriptions/\u0027, variables(\u0027subscriptionId\u0027), \u0027/resourceGroups/\u0027, variables(\u0027defaultRGName\u0027), \u0027/providers/Microsoft.Insights/dataCollectionRules/\u0027, variables(\u0027dcrName\u0027))]",
+                            "dcraName": "[concat(parameters(\u0027vmName\u0027),\u0027/Microsoft.Insights/Security-RulesAssociation\u0027)]"
+                          },
+                          "resources": [
+                            {
+                              "type": "Microsoft.HybridCompute/machines/providers/dataCollectionRuleAssociations",
+                              "name": "[variables(\u0027dcraName\u0027)]",
+                              "apiVersion": "2019-11-01-preview",
+                              "properties": {
+                                "description": "Association of data collection rule for Azure Security Center. Deleting this association will break the detection of security vulnerabilities for this virtual machine.",
+                                "dataCollectionRuleId": "[variables(\u0027dcrId\u0027)]"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "id": "/providers/Microsoft.Authorization/policyDefinitions/30f52897-df47-4ca0-81a8-a3be3e8dd226",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "30f52897-df47-4ca0-81a8-a3be3e8dd226"
+          },
+          {
+            "properties": {
               "displayName": "Audit Windows machines missing any of specified members in the Administrators group",
               "policyType": "BuiltIn",
               "mode": "Indexed",
               "description": "Requires that prerequisites are deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol. Machines are non-compliant if the local Administrators group does not contain one or more members that are listed in the policy parameter.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -29964,7 +30532,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -30035,7 +30604,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -30149,12 +30718,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -31905,7 +32494,7 @@
               "description": "This policy deploys the Linux Guest Configuration extension to Linux virtual machines hosted in Azure that are supported by Guest Configuration. The Linux Guest Configuration extension is a prerequisite for all Linux Guest Configuration assignments and must be deployed to machines before using any Linux Guest Configuration policy definition. For more information on Guest Configuration, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.2.0"
+                "version": "2.0.0"
               },
               "policyRule": {
                 "if": {
@@ -32165,7 +32754,8 @@
                                     "microsoft-ads",
                                     "center-for-internet-security-inc",
                                     "Oracle",
-                                    "AzureDatabricks"
+                                    "AzureDatabricks",
+                                    "azureopenshift"
                                   ]
                                 }
                               ]
@@ -32349,7 +32939,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027Security Options - Audit\u0027 for forcing audit policy subcategory and shutting down if unable to log security audits. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -32366,7 +32956,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -32450,7 +33041,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -32564,12 +33155,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -32643,7 +33254,7 @@
               "mode": "Indexed",
               "description": "Enforce backup for all virtual machines by backing them up to an existing central recovery services vault in the same location and subscription as the virtual machine. Doing this is useful when there is a central team in your organization managing backups for all resources in a subscription. You can optionally include virtual machines containing a specified tag to control the scope of assignment. See https://aka.ms/AzureVMCentralBackupIncludeTag.",
               "metadata": {
-                "version": "5.0.0",
+                "version": "6.0.0",
                 "category": "Backup"
               },
               "parameters": {
@@ -32755,7 +33366,19 @@
                                 "2019-Datacenter-with-Containers",
                                 "2019-Datacenter-with-Containers-smalldisk",
                                 "2019-Datacenter-zhcn",
-                                "2019-datacenter-gensecond"
+                                "2019-datacenter-gensecond",
+                                "2022-datacenter-g2",
+                                "2022-datacenter",
+                                "2022-datacenter-azure-edition",
+                                "2022-datacenter-azure-edition-smalldisk",
+                                "2022-datacenter-azure-edition-core",
+                                "2022-datacenter-azure-edition-core-smalldisk",
+                                "2022-datacenter-smalldisk-g2",
+                                "2022-datacenter-smalldisk",
+                                "2022-datacenter-core-g2",
+                                "2022-datacenter-core",
+                                "2022-datacenter-core-smalldisk-g2",
+                                "2022-datacenter-core-smalldisk"
                               ]
                             }
                           ]
@@ -33184,7 +33807,7 @@
               "mode": "Indexed",
               "description": "This policy creates a Guest Configuration assignment to audit Linux virtual machines that have accounts without passwords. It also creates a system-assigned managed identity and deploys the VM extension for Guest Configuration. This policy should only be used along with its corresponding audit policy in an initiative. For more information on Guest Configuration policies, please visit https://aka.ms/gcpol",
               "metadata": {
-                "version": "3.1.0-deprecated",
+                "version": "4.0.0-deprecated",
                 "category": "Guest Configuration",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
@@ -33451,7 +34074,8 @@
                                         "microsoft-ads",
                                         "center-for-internet-security-inc",
                                         "Oracle",
-                                        "AzureDatabricks"
+                                        "AzureDatabricks",
+                                        "azureopenshift"
                                       ]
                                     }
                                   ]
@@ -34305,7 +34929,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027System Audit Policies - Object Access\u0027 for auditing file, registry, SAM, storage, filtering, kernel, and other system types. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -34324,7 +34948,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -34442,7 +35067,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -34556,12 +35181,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -34689,7 +35334,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027Windows Firewall Properties\u0027 for firewall state, connections, rule management, and notifications. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -34723,7 +35368,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -34943,7 +35589,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -35057,12 +35703,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -35370,7 +36036,7 @@
               "mode": "Indexed",
               "description": "Windows virtual machine scale sets should be monitored and secured through the deployed Azure Monitor Agent. The Azure Monitor Agent collects telemetry data from the guest OS. Virtual machine scale sets with supported OS and in supported regions are monitored for Azure Monitor Agent deployment. Learn more: https://aka.ms/AMAOverview.",
               "metadata": {
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "category": "Monitoring"
               },
               "parameters": {
@@ -35481,7 +36147,19 @@
                                 "2019-Datacenter-smalldisk",
                                 "2019-Datacenter-with-Containers",
                                 "2019-Datacenter-with-Containers-smalldisk",
-                                "2019-Datacenter-zhcn"
+                                "2019-Datacenter-zhcn",
+                                "2022-datacenter",
+                                "2022-datacenter-azure-edition",
+                                "2022-datacenter-azure-edition-core",
+                                "2022-datacenter-azure-edition-core-smalldisk",
+                                "2022-datacenter-azure-edition-smalldisk",
+                                "2022-datacenter-core",
+                                "2022-datacenter-core-g2",
+                                "2022-datacenter-core-smalldisk",
+                                "2022-datacenter-core-smalldisk-g2",
+                                "2022-datacenter-g2",
+                                "2022-datacenter-smalldisk",
+                                "2022-datacenter-smalldisk-g2"
                               ]
                             }
                           ]
@@ -38128,7 +38806,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027Administrative Templates - Control Panel\u0027 for input personalization and prevention of enabling lock screens. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -38142,7 +38820,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -38218,7 +38897,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -38332,12 +39011,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -38533,6 +39232,450 @@
             "id": "/providers/Microsoft.Authorization/policyDefinitions/3afe6c78-6124-4d95-b85c-eb8c0c9539cb",
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "3afe6c78-6124-4d95-b85c-eb8c0c9539cb"
+          },
+          {
+            "properties": {
+              "displayName": "[Preview]: Configure Arc machines to automatically create the Security Center pipeline for Azure Monitor Agent",
+              "policyType": "BuiltIn",
+              "mode": "Indexed",
+              "description": "Configure Arc machines to automatically create the Azure Security Center pipeline for Azure Monitor Agent. Security Center collects events from the agent and uses them to provide security alerts and tailored hardening tasks (recommendations). Create a resource group and Log Analytics workspace in the same region as the machine to store audit records. Target virtual machines must be in a supported location.",
+              "metadata": {
+                "category": "Security Center",
+                "version": "1.0.0-preview",
+                "preview": true
+              },
+              "parameters": {
+                "effect": {
+                  "type": "String",
+                  "metadata": {
+                    "displayName": "Effect",
+                    "description": "Enable or disable the execution of the policy"
+                  },
+                  "allowedValues": [
+                    "DeployIfNotExists",
+                    "Disabled"
+                  ],
+                  "defaultValue": "DeployIfNotExists"
+                }
+              },
+              "policyRule": {
+                "if": {
+                  "allOf": [
+                    {
+                      "field": "type",
+                      "equals": "Microsoft.HybridCompute/machines"
+                    },
+                    {
+                      "field": "location",
+                      "in": [
+                        "australiacentral",
+                        "australiaeast",
+                        "australiasoutheast",
+                        "brazilsouth",
+                        "canadacentral",
+                        "canadaeast",
+                        "centralindia",
+                        "centralus",
+                        "eastasia",
+                        "eastus2euap",
+                        "eastus",
+                        "eastus2",
+                        "francecentral",
+                        "germanywestcentral",
+                        "japaneast",
+                        "japanwest",
+                        "jioindiawest",
+                        "koreacentral",
+                        "koreasouth",
+                        "northcentralus",
+                        "northeurope",
+                        "norwayeast",
+                        "southafricanorth",
+                        "southcentralus",
+                        "southeastasia",
+                        "southindia",
+                        "switzerlandnorth",
+                        "uaenorth",
+                        "uksouth",
+                        "ukwest",
+                        "westcentralus",
+                        "westeurope",
+                        "westindia",
+                        "westus",
+                        "westus2"
+                      ]
+                    }
+                  ]
+                },
+                "then": {
+                  "effect": "[parameters(\u0027effect\u0027)]",
+                  "details": {
+                    "type": "Microsoft.Insights/dataCollectionRules",
+                    "deploymentScope": "subscription",
+                    "roleDefinitionIds": [
+                      "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+                    ],
+                    "existenceScope": "subscription",
+                    "existenceCondition": {
+                      "allOf": [
+                        {
+                          "field": "location",
+                          "equals": "[field(\u0027location\u0027)]"
+                        },
+                        {
+                          "field": "name",
+                          "equals": "[concat(\u0027Microsoft-Security-\u0027, field(\u0027location\u0027), \u0027-dcr\u0027)]"
+                        }
+                      ]
+                    },
+                    "deployment": {
+                      "location": "eastus",
+                      "properties": {
+                        "mode": "incremental",
+                        "parameters": {
+                          "resourceGroup": {
+                            "value": "[resourceGroup().name]"
+                          },
+                          "location": {
+                            "value": "[field(\u0027location\u0027)]"
+                          },
+                          "vmName": {
+                            "value": "[field(\u0027name\u0027)]"
+                          }
+                        },
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "parameters": {
+                            "resourceGroup": {
+                              "type": "string"
+                            },
+                            "location": {
+                              "type": "string"
+                            },
+                            "vmName": {
+                              "type": "string"
+                            }
+                          },
+                          "variables": {
+                            "locationLongNameToShortMap": {
+                              "australiacentral": "CAU",
+                              "australiaeast": "EAU",
+                              "australiasoutheast": "SEAU",
+                              "brazilsouth": "CQ",
+                              "canadacentral": "CCA",
+                              "canadaeast": "CCA",
+                              "centralindia": "CIN",
+                              "centralus": "CUS",
+                              "eastasia": "EA",
+                              "eastus2euap": "eus2p",
+                              "eastus": "EUS",
+                              "eastus2": "EUS2",
+                              "francecentral": "PAR",
+                              "germanywestcentral": "DEWC",
+                              "japaneast": "EJP",
+                              "japanwest": "EJP",
+                              "jioindiawest": "CIN",
+                              "koreacentral": "SE",
+                              "koreasouth": "SE",
+                              "northcentralus": "NCUS",
+                              "northeurope": "NEU",
+                              "norwayeast": "NOE",
+                              "southafricanorth": "JNB",
+                              "southcentralus": "SCUS",
+                              "southeastasia": "SEA",
+                              "southindia": "CIN",
+                              "swedencentral": "SEC",
+                              "switzerlandnorth": "CHN",
+                              "switzerlandwest": "CHW",
+                              "uaenorth": "DXB",
+                              "uksouth": "SUK",
+                              "ukwest": "WUK",
+                              "westcentralus": "WCUS",
+                              "westeurope": "WEU",
+                              "westindia": "CIN",
+                              "westus": "WUS",
+                              "westus2": "WUS2"
+                            },
+                            "locationCode": "[variables(\u0027locationLongNameToShortMap\u0027)[parameters(\u0027location\u0027)]]",
+                            "subscriptionId": "[subscription().subscriptionId]",
+                            "defaultRGName": "[concat(\u0027DefaultResourceGroup-\u0027, variables(\u0027locationCode\u0027))]",
+                            "defaultRGLocation": "[parameters(\u0027location\u0027)]",
+                            "workspaceName": "[concat(\u0027defaultWorkspace-\u0027, variables(\u0027subscriptionId\u0027),\u0027-\u0027, variables(\u0027locationCode\u0027))]",
+                            "dcrName": "[concat(\u0027Microsoft-Security-\u0027, parameters(\u0027location\u0027), \u0027-dcr\u0027)]",
+                            "dcrId": "[concat(\u0027/subscriptions/\u0027, variables(\u0027subscriptionId\u0027), \u0027/resourceGroups/\u0027, variables(\u0027defaultRGName\u0027), \u0027/providers/Microsoft.Insights/dataCollectionRules/\u0027, variables(\u0027dcrName\u0027))]",
+                            "dcraName": "[concat(parameters(\u0027vmName\u0027),\u0027/Microsoft.Insights/Security-RulesAssociation\u0027)]",
+                            "deployDefaultAscResourceGroup": "[concat(\u0027deployDefaultAscResourceGroup-\u0027, uniqueString(deployment().name))]",
+                            "deployDataCollectionRulesAssociation": "[concat(\u0027deployDataCollectionRulesAssociation-\u0027, uniqueString(deployment().name))]"
+                          },
+                          "resources": [
+                            {
+                              "type": "Microsoft.Resources/resourceGroups",
+                              "name": "[variables(\u0027defaultRGName\u0027)]",
+                              "apiVersion": "2019-05-01",
+                              "location": "[variables(\u0027defaultRGLocation\u0027)]"
+                            },
+                            {
+                              "type": "Microsoft.Resources/deployments",
+                              "name": "[variables(\u0027deployDefaultAscResourceGroup\u0027)]",
+                              "apiVersion": "2020-06-01",
+                              "resourceGroup": "[variables(\u0027defaultRGName\u0027)]",
+                              "properties": {
+                                "mode": "Incremental",
+                                "expressionEvaluationOptions": {
+                                  "scope": "inner"
+                                },
+                                "parameters": {
+                                  "defaultRGLocation": {
+                                    "value": "[variables(\u0027defaultRGLocation\u0027)]"
+                                  },
+                                  "workspaceName": {
+                                    "value": "[variables(\u0027workspaceName\u0027)]"
+                                  },
+                                  "dcrName": {
+                                    "value": "[variables(\u0027dcrName\u0027)]"
+                                  }
+                                },
+                                "template": {
+                                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                  "contentVersion": "1.0.0.0",
+                                  "parameters": {
+                                    "defaultRGLocation": {
+                                      "type": "string"
+                                    },
+                                    "workspaceName": {
+                                      "type": "string"
+                                    },
+                                    "dcrName": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "variables": {
+                                    "securityCenterFreeSolution": {
+                                      "Name": "[Concat(\u0027SecurityCenterFree\u0027, \u0027(\u0027, parameters(\u0027workspaceName\u0027), \u0027)\u0027)]",
+                                      "GalleryName": "SecurityCenterFree"
+                                    }
+                                  },
+                                  "resources": [
+                                    {
+                                      "type": "Microsoft.OperationalInsights/workspaces",
+                                      "name": "[parameters(\u0027workspaceName\u0027)]",
+                                      "apiVersion": "2021-06-01",
+                                      "location": "[parameters(\u0027defaultRGLocation\u0027)]",
+                                      "properties": {
+                                        "sku": {
+                                          "name": "pernode"
+                                        },
+                                        "retentionInDays": 30,
+                                        "features": {
+                                          "searchVersion": 1
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "Microsoft.OperationsManagement/solutions",
+                                      "name": "[variables(\u0027securityCenterFreeSolution\u0027).Name]",
+                                      "apiVersion": "2015-11-01-preview",
+                                      "location": "[parameters(\u0027defaultRGLocation\u0027)]",
+                                      "dependsOn": [
+                                        "[parameters(\u0027workspaceName\u0027)]"
+                                      ],
+                                      "properties": {
+                                        "workspaceResourceId": "[resourceId(\u0027Microsoft.OperationalInsights/workspaces/\u0027, parameters(\u0027workspaceName\u0027))]"
+                                      },
+                                      "plan": {
+                                        "name": "[variables(\u0027securityCenterFreeSolution\u0027).Name]",
+                                        "publisher": "Microsoft",
+                                        "product": "[Concat(\u0027OMSGallery/\u0027, variables(\u0027securityCenterFreeSolution\u0027).GalleryName)]",
+                                        "promotionCode": ""
+                                      }
+                                    },
+                                    {
+                                      "type": "Microsoft.Insights/dataCollectionRules",
+                                      "name": "[parameters(\u0027dcrName\u0027)]",
+                                      "apiVersion": "2019-11-01-preview",
+                                      "location": "[parameters(\u0027defaultRGLocation\u0027)]",
+                                      "dependsOn": [
+                                        "[parameters(\u0027workspaceName\u0027)]"
+                                      ],
+                                      "properties": {
+                                        "description": "Data collection rule for Azure Security Center. Deleting this rule will break the detection of security vulnerabilities.",
+                                        "dataSources": {
+                                          "extensions": [
+                                            {
+                                              "extensionName": "AzureSecurityLinuxAgent",
+                                              "name": "AscLinuxDataSource",
+                                              "streams": [
+                                                "Microsoft-OperationLog",
+                                                "Microsoft-ProtectionStatus",
+                                                "Microsoft-SecurityBaseline",
+                                                "Microsoft-SecurityBaselineSummary"
+                                              ],
+                                              "extensionSettings": {
+                                                "scanners": [
+                                                  {
+                                                    "name": "heartbeat",
+                                                    "frequency": "PT1H"
+                                                  },
+                                                  {
+                                                    "name": "time",
+                                                    "frequency": "PT8H"
+                                                  },
+                                                  {
+                                                    "name": "antimalware",
+                                                    "frequency": "PT8H"
+                                                  },
+                                                  {
+                                                    "name": "codeintegrity",
+                                                    "frequency": "P1D"
+                                                  },
+                                                  {
+                                                    "name": "processinvestigator",
+                                                    "frequency": "PT1H"
+                                                  },
+                                                  {
+                                                    "name": "baseline",
+                                                    "frequency": "P1D"
+                                                  },
+                                                  {
+                                                    "name": "docker",
+                                                    "frequency": "P1D"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "extensionName": "AzureSecurityWindowsAgent",
+                                              "name": "AsaWindowsDataSource",
+                                              "streams": [
+                                                "Microsoft-OperationLog",
+                                                "Microsoft-ProtectionStatus",
+                                                "Microsoft-SecurityBaseline",
+                                                "Microsoft-SecurityBaselineSummary"
+                                              ],
+                                              "extensionSettings": {
+                                                "scanners": [
+                                                  {
+                                                    "name": "heartbeat",
+                                                    "frequency": "PT1H"
+                                                  },
+                                                  {
+                                                    "name": "baseline",
+                                                    "frequency": "P1D"
+                                                  },
+                                                  {
+                                                    "name": "antimalware",
+                                                    "frequency": "P1D"
+                                                  },
+                                                  {
+                                                    "name": "processinvestigator",
+                                                    "frequency": "PT1H"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "destinations": {
+                                          "logAnalytics": [
+                                            {
+                                              "workspaceResourceId": "[resourceId(\u0027Microsoft.OperationalInsights/workspaces/\u0027, parameters(\u0027workspaceName\u0027))]",
+                                              "name": "LogAnalyticsDest"
+                                            }
+                                          ]
+                                        },
+                                        "dataFlows": [
+                                          {
+                                            "streams": [
+                                              "Microsoft-OperationLog",
+                                              "Microsoft-ProtectionStatus",
+                                              "Microsoft-SecurityBaseline",
+                                              "Microsoft-SecurityBaselineSummary"
+                                            ],
+                                            "destinations": [
+                                              "LogAnalyticsDest"
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              "dependsOn": [
+                                "[resourceId(\u0027Microsoft.Resources/resourceGroups\u0027, variables(\u0027defaultRGName\u0027))]"
+                              ]
+                            },
+                            {
+                              "type": "Microsoft.Resources/deployments",
+                              "name": "[variables(\u0027deployDataCollectionRulesAssociation\u0027)]",
+                              "apiVersion": "2020-06-01",
+                              "resourceGroup": "[parameters(\u0027resourceGroup\u0027)]",
+                              "dependsOn": [
+                                "[variables(\u0027deployDefaultAscResourceGroup\u0027)]"
+                              ],
+                              "properties": {
+                                "mode": "Incremental",
+                                "expressionEvaluationOptions": {
+                                  "scope": "inner"
+                                },
+                                "parameters": {
+                                  "location": {
+                                    "value": "[parameters(\u0027location\u0027)]"
+                                  },
+                                  "vmName": {
+                                    "value": "[parameters(\u0027vmName\u0027)]"
+                                  },
+                                  "dcrId": {
+                                    "value": "[variables(\u0027dcrId\u0027)]"
+                                  },
+                                  "dcraName": {
+                                    "value": "[variables(\u0027dcraName\u0027)]"
+                                  }
+                                },
+                                "template": {
+                                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                  "contentVersion": "1.0.0.0",
+                                  "parameters": {
+                                    "location": {
+                                      "type": "string"
+                                    },
+                                    "vmName": {
+                                      "type": "string"
+                                    },
+                                    "dcrId": {
+                                      "type": "string"
+                                    },
+                                    "dcraName": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "variables": {},
+                                  "resources": [
+                                    {
+                                      "type": "Microsoft.HybridCompute/machines/providers/dataCollectionRuleAssociations",
+                                      "name": "[parameters(\u0027dcraName\u0027)]",
+                                      "apiVersion": "2019-11-01-preview",
+                                      "properties": {
+                                        "description": "Association of data collection rule for Azure Security Center. Deleting this association will break the detection of security vulnerabilities for this virtual machine.",
+                                        "dataCollectionRuleId": "[parameters(\u0027dcrId\u0027)]"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "id": "/providers/Microsoft.Authorization/policyDefinitions/3b1a8e0a-b2e1-48be-9365-28be2fbef550",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "3b1a8e0a-b2e1-48be-9365-28be2fbef550"
           },
           {
             "properties": {
@@ -39725,7 +40868,7 @@
               "description": "This policy adds a system-assigned managed identity to virtual machines hosted in Azure that are supported by Guest Configuration but do not have any managed identities. A system-assigned managed identity is a prerequisite for all Guest Configuration assignments and must be added to machines before using any Guest Configuration policy definitions. For more information on Guest Configuration, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.1.0"
+                "version": "2.0.0"
               },
               "policyRule": {
                 "if": {
@@ -39973,6 +41116,10 @@
                               ]
                             },
                             {
+                              "field": "Microsoft.Compute/imagePublisher",
+                              "notEquals": "azureopenshift"
+                            },
+                            {
                               "allOf": [
                                 {
                                   "field": "Microsoft.Compute/imagePublisher",
@@ -40196,7 +41343,7 @@
               "description": "Requires that prerequisites are deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol. Machines are non-compliant if the local Administrators group contains members that are not listed in the policy parameter.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -40213,7 +41360,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -40286,7 +41434,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -40400,12 +41548,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -41065,7 +42233,7 @@
               "description": "Requires that prerequisites are deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol. Machines are non-compliant if a module isn\u0027t available in a location specified by the environment variable PSModulePath.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -41082,7 +42250,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -41165,7 +42334,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -41279,12 +42448,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -41550,7 +42739,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027Security Options - Network Access\u0027 for including access for anonymous users, local accounts, and remote access to the registry. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -41569,7 +42758,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -41669,7 +42859,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -41783,12 +42973,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -41998,7 +43208,7 @@
               "description": "Machines are non-compliant if Log Analytics agent is not installed on Azure Arc enabled windows server.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -42012,7 +43222,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -43204,7 +44415,7 @@
               "description": "Requires that prerequisites are deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol. Machines are non-compliant if the machine is pending reboot for any of the following reasons: component based servicing, Windows Update, pending file rename, pending computer rename, configuration manager pending reboot. Each detection has a unique registry path.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "1.0.0",
+                "version": "2.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -43218,7 +44429,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -43282,7 +44494,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -43396,12 +44608,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -44733,7 +45965,7 @@
               "description": "Windows machines should have the specified Group Policy settings in the category \u0027System Audit Policies - Account Logon\u0027 for auditing credential validation and other account logon events. This policy requires that the Guest Configuration prerequisites have been deployed to the policy assignment scope. For details, visit https://aka.ms/gcpol.",
               "metadata": {
                 "category": "Guest Configuration",
-                "version": "2.0.0",
+                "version": "3.0.0",
                 "requiredProviders": [
                   "Microsoft.GuestConfiguration"
                 ],
@@ -44750,7 +45982,8 @@
                   "type": "String",
                   "metadata": {
                     "displayName": "Include Arc connected servers",
-                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+                    "description": "By selecting this option, you agree to be charged monthly per Arc connected machine.",
+                    "portalReview": "true"
                   },
                   "allowedValues": [
                     "true",
@@ -44840,7 +46073,7 @@
                                 },
                                 {
                                   "field": "Microsoft.Compute/imageOffer",
-                                  "equals": "dsvm-windows"
+                                  "like": "dsvm-win*"
                                 }
                               ]
                             },
@@ -44954,12 +46187,32 @@
                           "equals": "true"
                         },
                         {
-                          "field": "type",
-                          "equals": "Microsoft.HybridCompute/machines"
-                        },
-                        {
-                          "field": "Microsoft.HybridCompute/imageOffer",
-                          "like": "windows*"
+                          "anyOf": [
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.HybridCompute/machines"
+                                },
+                                {
+                                  "field": "Microsoft.HybridCompute/imageOffer",
+                                  "like": "windows*"
+                                }
+                              ]
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "field": "type",
+                                  "equals": "Microsoft.ConnectedVMwarevSphere/virtualMachines"
+                                },
+                                {
+                                  "field": "Microsoft.ConnectedVMwarevSphere/virtualMachines/osProfile.osType",
+                                  "like": "windows*"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -46228,212 +47481,9 @@
             "id": "/providers/Microsoft.Authorization/policyDefinitions/4750c32b-89c0-46af-bfcb-2e4541a818d5",
             "type": "Microsoft.Authorization/policyDefinitions",
             "name": "4750c32b-89c0-46af-bfcb-2e4541a818d5"
-          },
-          {
-            "properties": {
-              "displayName": "Auto provisioning of the Log Analytics agent should be enabled on your subscription",
-              "policyType": "BuiltIn",
-              "mode": "All",
-              "description": "To monitor for security vulnerabilities and threats, Azure Security Center collects data from your Azure virtual machines. Data is collected by the Log Analytics agent, formerly known as the Microsoft Monitoring Agent (MMA), which reads various security-related configurations and event logs from the machine and copies the data to your Log Analytics workspace for analysis. We recommend enabling auto provisioning to automatically deploy the agent to all supported Azure VMs and any new ones that are created.",
-              "metadata": {
-                "version": "1.0.1",
-                "category": "Security Center"
-              },
-              "parameters": {
-                "effect": {
-                  "type": "String",
-                  "metadata": {
-                    "displayName": "Effect",
-                    "description": "Enable or disable the execution of the policy"
-                  },
-                  "allowedValues": [
-                    "AuditIfNotExists",
-                    "Disabled"
-                  ],
-                  "defaultValue": "AuditIfNotExists"
-                }
-              },
-              "policyRule": {
-                "if": {
-                  "field": "type",
-                  "equals": "Microsoft.Resources/subscriptions"
-                },
-                "then": {
-                  "effect": "[parameters(\u0027effect\u0027)]",
-                  "details": {
-                    "type": "Microsoft.Security/autoProvisioningSettings",
-                    "existenceCondition": {
-                      "field": "Microsoft.Security/autoProvisioningSettings/autoProvision",
-                      "equals": "On"
-                    }
-                  }
-                }
-              }
-            },
-            "id": "/providers/Microsoft.Authorization/policyDefinitions/475aae12-b88a-4572-8b36-9b712b2b3a17",
-            "type": "Microsoft.Authorization/policyDefinitions",
-            "name": "475aae12-b88a-4572-8b36-9b712b2b3a17"
-          },
-          {
-            "properties": {
-              "displayName": "Adaptive application controls for defining safe applications should be enabled on your machines",
-              "policyType": "BuiltIn",
-              "mode": "All",
-              "description": "Enable application controls to define the list of known-safe applications running on your machines, and alert you when other applications run. This helps harden your machines against malware. To simplify the process of configuring and maintaining your rules, Security Center uses machine learning to analyze the applications running on each machine and suggest the list of known-safe applications.",
-              "metadata": {
-                "version": "3.0.0",
-                "category": "Security Center"
-              },
-              "parameters": {
-                "effect": {
-                  "type": "String",
-                  "metadata": {
-                    "displayName": "Effect",
-                    "description": "Enable or disable the execution of the policy"
-                  },
-                  "allowedValues": [
-                    "AuditIfNotExists",
-                    "Disabled"
-                  ],
-                  "defaultValue": "AuditIfNotExists"
-                }
-              },
-              "policyRule": {
-                "if": {
-                  "field": "type",
-                  "in": [
-                    "Microsoft.Compute/virtualMachines",
-                    "Microsoft.ClassicCompute/virtualMachines"
-                  ]
-                },
-                "then": {
-                  "effect": "[parameters(\u0027effect\u0027)]",
-                  "details": {
-                    "type": "Microsoft.Security/assessments",
-                    "name": "35f45c95-27cf-4e52-891f-8390d1de5828",
-                    "existenceCondition": {
-                      "field": "Microsoft.Security/assessments/status.code",
-                      "in": [
-                        "NotApplicable",
-                        "Healthy"
-                      ]
-                    }
-                  }
-                }
-              }
-            },
-            "id": "/providers/Microsoft.Authorization/policyDefinitions/47a6b606-51aa-4496-8bb7-64b11cf66adc",
-            "type": "Microsoft.Authorization/policyDefinitions",
-            "name": "47a6b606-51aa-4496-8bb7-64b11cf66adc"
-          },
-          {
-            "properties": {
-              "displayName": "Configure Cognitive Services accounts to disable public network access",
-              "policyType": "BuiltIn",
-              "mode": "Indexed",
-              "description": "Disable public network access for your Cognitive Services resource so that it\u0027s not accessible over the public internet. This can reduce data leakage risks. Learn more at: https://go.microsoft.com/fwlink/?linkid=2129800.",
-              "metadata": {
-                "version": "2.0.0",
-                "category": "Cognitive Services"
-              },
-              "parameters": {
-                "effect": {
-                  "type": "String",
-                  "metadata": {
-                    "displayName": "Effect",
-                    "description": "Enable or disable the execution of the policy"
-                  },
-                  "allowedValues": [
-                    "Disabled",
-                    "Modify"
-                  ],
-                  "defaultValue": "Modify"
-                }
-              },
-              "policyRule": {
-                "if": {
-                  "allOf": [
-                    {
-                      "field": "type",
-                      "equals": "Microsoft.CognitiveServices/accounts"
-                    },
-                    {
-                      "field": "Microsoft.CognitiveServices/accounts/publicNetworkAccess",
-                      "notEquals": "Disabled"
-                    },
-                    {
-                      "count": {
-                        "field": "Microsoft.CognitiveServices/accounts/capabilities[*]",
-                        "where": {
-                          "field": "Microsoft.CognitiveServices/accounts/capabilities[*].name",
-                          "equals": "VirtualNetworks"
-                        }
-                      },
-                      "greater": 0
-                    }
-                  ]
-                },
-                "then": {
-                  "effect": "[parameters(\u0027effect\u0027)]",
-                  "details": {
-                    "roleDefinitionIds": [
-                      "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
-                    ],
-                    "conflictEffect": "audit",
-                    "operations": [
-                      {
-                        "condition": "[greaterOrEquals(requestContext().apiVersion, \u00272017-04-18\u0027)]",
-                        "operation": "addOrReplace",
-                        "field": "Microsoft.CognitiveServices/accounts/publicNetworkAccess",
-                        "value": "Disabled"
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            "id": "/providers/Microsoft.Authorization/policyDefinitions/47ba1dd7-28d9-4b07-a8d5-9813bed64e0c",
-            "type": "Microsoft.Authorization/policyDefinitions",
-            "name": "47ba1dd7-28d9-4b07-a8d5-9813bed64e0c"
-          },
-          {
-            "properties": {
-              "displayName": "Microsoft Managed Control 1359 - Incident Response Testing | Coordination With Related Plans",
-              "policyType": "Static",
-              "mode": "Indexed",
-              "description": "Microsoft implements this Incident Response control",
-              "metadata": {
-                "version": "1.0.0",
-                "category": "Regulatory Compliance",
-                "additionalMetadataId": "/providers/Microsoft.PolicyInsights/policyMetadata/ACF1359"
-              },
-              "policyRule": {
-                "if": {
-                  "allOf": [
-                    {
-                      "field": "type",
-                      "in": [
-                        "Microsoft.Resources/subscriptions",
-                        "Microsoft.Resources/subscriptions/resourceGroups"
-                      ]
-                    },
-                    {
-                      "value": "false",
-                      "equals": "true"
-                    }
-                  ]
-                },
-                "then": {
-                  "effect": "audit"
-                }
-              }
-            },
-            "id": "/providers/Microsoft.Authorization/policyDefinitions/47bc7ea0-7d13-4f7c-a154-b903f7194253",
-            "type": "Microsoft.Authorization/policyDefinitions",
-            "name": "47bc7ea0-7d13-4f7c-a154-b903f7194253"
           }
         ],
-        "nextLink": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions?api-version=2021-06-01\u0026$skiptoken=eyJuZXh0UG9saWN5U3RvcmUiOiJDb250cm9sUGxhbmVCdWlsdEluRGVmaW5pdGlvbiIsImNhY2hlU2tpcFRva2VuIjp7Im5leHRJbmRleCI6NTAwLCJuZXh0UG9saWN5TmFtZSI6IjQ3ZTEwOTE2LTZjOWUtNDQ2Yi1iMGJkLWZmNWZkNDM5ZDc5ZCIsImNhY2hlTGVuZ3RoIjoxNzQzfX0%3D"
+        "nextLink": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions?api-version=2021-06-01\u0026$skiptoken=eyJuZXh0UG9saWN5U3RvcmUiOiJDb250cm9sUGxhbmVCdWlsdEluRGVmaW5pdGlvbiIsImNhY2hlU2tpcFRva2VuIjp7Im5leHRJbmRleCI6NTAwLCJuZXh0UG9saWN5TmFtZSI6IjQ3NWFhZTEyLWI4OGEtNDU3Mi04YjM2LTliNzEyYjJiM2ExNyIsImNhY2hlTGVuZ3RoIjoxNzY0fX0%3D"
       }
     }
   ],

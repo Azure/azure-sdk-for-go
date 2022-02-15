@@ -69,7 +69,7 @@ func TestManagementLocksClient_CreateOrUpdateByScope(t *testing.T) {
 		resourceID,
 		"2019-07-01",
 		armresources.GenericResource{
-			Location: to.StringPtr(""),
+			Location: to.StringPtr(location),
 		},
 		nil,
 	)

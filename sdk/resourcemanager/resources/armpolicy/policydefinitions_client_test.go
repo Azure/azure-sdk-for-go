@@ -121,7 +121,7 @@ func TestPolicyDefinitionsClient_List(t *testing.T) {
 	// list policy definition
 	pager := policyDefinitionsClient.List(nil)
 	require.NoError(t, pager.Err())
-	require.False(t, pager.NextPage(context.Background()))
+	require.True(t, pager.NextPage(context.Background()))
 }
 
 func TestPolicyDefinitionsClient_ListBuiltIn(t *testing.T) {
@@ -135,5 +135,5 @@ func TestPolicyDefinitionsClient_ListBuiltIn(t *testing.T) {
 	// list policy definition
 	pager := policyDefinitionsClient.ListBuiltIn(nil)
 	require.NoError(t, pager.Err())
-	require.False(t, pager.NextPage(context.Background()))
+	require.True(t, pager.NextPage(context.Background()))
 }

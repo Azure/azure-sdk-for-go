@@ -1,0 +1,55 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/providers/Microsoft.Resources/deployments/rs1979126161?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/providers/Microsoft.Resources/deployments/rs1979126161?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "330",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "West US",
+        "properties": {
+          "mode": "Incremental",
+          "parametersLink": {
+            "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+          },
+          "templateLink": {
+            "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+          }
+        }
+      },
+      "StatusCode": 403,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Connection": "close",
+        "Content-Length": "401",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 15 Feb 2022 03:47:07 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "08f92675-f006-424a-896b-7d959f5ea447",
+        "x-ms-failure-cause": "gateway",
+        "x-ms-request-id": "08f92675-f006-424a-896b-7d959f5ea447",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T034708Z:08f92675-f006-424a-896b-7d959f5ea447"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "AuthorizationFailed",
+          "message": "The client \u002781fa2eb4-9d84-4df5-ad32-6c22e2feb57e\u0027 with object id \u002781fa2eb4-9d84-4df5-ad32-6c22e2feb57e\u0027 does not have authorization to perform action \u0027Microsoft.Resources/deployments/write\u0027 over scope \u0027/providers/Microsoft.Resources/deployments/rs1979126161\u0027 or the scope is invalid. If access was recently granted, please refresh your credentials."
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

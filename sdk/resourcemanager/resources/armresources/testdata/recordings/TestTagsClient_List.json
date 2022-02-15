@@ -1,0 +1,681 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 15 Feb 2022 04:04:10 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "cdfb6611-bc66-40bd-b3d9-3964c4667536",
+        "x-ms-ratelimit-remaining-subscription-writes": "1150",
+        "x-ms-request-id": "cdfb6611-bc66-40bd-b3d9-3964c4667536",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T040410Z:cdfb6611-bc66-40bd-b3d9-3964c4667536"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608",
+        "tagName": "tag529323608",
+        "count": {
+          "type": "Total",
+          "value": 0
+        },
+        "values": []
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/tagNames?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "11715",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 15 Feb 2022 04:04:10 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "a2c5d603-4b54-483f-873a-ceeb74a1c6ea",
+        "x-ms-ratelimit-remaining-subscription-reads": "11924",
+        "x-ms-request-id": "a2c5d603-4b54-483f-873a-ceeb74a1c6ea",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220215T040411Z:a2c5d603-4b54-483f-873a-ceeb74a1c6ea"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag1",
+            "tagName": "tag1",
+            "count": {
+              "type": "Total",
+              "value": 3
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag1/tagValues/value1",
+                "tagValue": "value1",
+                "count": {
+                  "type": "Total",
+                  "value": 3
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2",
+            "tagName": "tag2",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2/tagValues/value2",
+                "tagValue": "value2",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/Creator",
+            "tagName": "Creator",
+            "count": {
+              "type": "Total",
+              "value": 19
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/Creator/tagValues/Automatically added by NRMS Azure Policy",
+                "tagValue": "Automatically added by NRMS Azure Policy",
+                "count": {
+                  "type": "Total",
+                  "value": 19
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/NRMS-Info",
+            "tagName": "NRMS-Info",
+            "count": {
+              "type": "Total",
+              "value": 19
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/NRMS-Info/tagValues/http://aka.ms/nrms",
+                "tagValue": "http://aka.ms/nrms",
+                "count": {
+                  "type": "Total",
+                  "value": 19
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/NRMS-Version",
+            "tagName": "NRMS-Version",
+            "count": {
+              "type": "Total",
+              "value": 19
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/NRMS-Version/tagValues/2019-03-20",
+                "tagValue": "2019-03-20",
+                "count": {
+                  "type": "Total",
+                  "value": 19
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/key1",
+            "tagName": "key1",
+            "count": {
+              "type": "Total",
+              "value": 3
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/key1/tagValues/value1",
+                "tagValue": "value1",
+                "count": {
+                  "type": "Total",
+                  "value": 3
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/aks-managed-type",
+            "tagName": "aks-managed-type",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/aks-managed-type/tagValues/aks-slb-managed-outbound-ip",
+                "tagValue": "aks-slb-managed-outbound-ip",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/creationSource",
+            "tagName": "creationSource",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/creationSource/tagValues/vmssclient-aks-askagent-18559205-vmss",
+                "tagValue": "vmssclient-aks-askagent-18559205-vmss",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/orchestrator",
+            "tagName": "orchestrator",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/orchestrator/tagValues/Kubernetes:1.21.7",
+                "tagValue": "Kubernetes:1.21.7",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/poolName",
+            "tagName": "poolName",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/poolName/tagValues/askagent",
+                "tagValue": "askagent",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/resourceNameSuffix",
+            "tagName": "resourceNameSuffix",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/resourceNameSuffix/tagValues/40953563",
+                "tagValue": "40953563",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/azsecpack",
+            "tagName": "azsecpack",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/azsecpack/tagValues/nonprod",
+                "tagValue": "nonprod",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/platformsettings.host_environment.service.platform_optedin_for_rootcerts",
+            "tagName": "platformsettings.host_environment.service.platform_optedin_for_rootcerts",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/platformsettings.host_environment.service.platform_optedin_for_rootcerts/tagValues/true",
+                "tagValue": "true",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2597940633",
+            "tagName": "tag2597940633",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2597940633/tagValues/value2597940633",
+                "tagValue": "value2597940633",
+                "count": {
+                  "type": "Total",
+                  "value": 0
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter",
+            "tagName": "DeleteAfter",
+            "count": {
+              "type": "Total",
+              "value": 24
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2020-08-15T07:02:26.327834",
+                "tagValue": "2020-08-15T07:02:26.327834",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T14:10:31",
+                "tagValue": "2021-10-09T14:10:31",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T14:10:41",
+                "tagValue": "2021-10-09T14:10:41",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T14:56:38",
+                "tagValue": "2021-10-09T14:56:38",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T14:57:36",
+                "tagValue": "2021-10-09T14:57:36",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:01:16",
+                "tagValue": "2021-10-09T15:01:16",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T10:35:54",
+                "tagValue": "2021-10-15T10:35:54",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:29:03",
+                "tagValue": "2021-10-09T15:29:03",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:30:03",
+                "tagValue": "2021-10-09T15:30:03",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:30:32",
+                "tagValue": "2021-10-09T15:30:32",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:31:25",
+                "tagValue": "2021-10-09T15:31:25",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:33:20",
+                "tagValue": "2021-10-09T15:33:20",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:34:16",
+                "tagValue": "2021-10-09T15:34:16",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:34:23",
+                "tagValue": "2021-10-09T15:34:23",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:35:37",
+                "tagValue": "2021-10-09T15:35:37",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:36:40",
+                "tagValue": "2021-10-09T15:36:40",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T16:51:51",
+                "tagValue": "2021-10-09T16:51:51",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-14T17:11:14",
+                "tagValue": "2021-10-14T17:11:14",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-14T17:11:22",
+                "tagValue": "2021-10-14T17:11:22",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T09:42:47",
+                "tagValue": "2021-10-15T09:42:47",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T09:42:54",
+                "tagValue": "2021-10-15T09:42:54",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T10:30:32",
+                "tagValue": "2021-10-15T10:30:32",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T10:31:28",
+                "tagValue": "2021-10-15T10:31:28",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T10:34:51",
+                "tagValue": "2021-10-15T10:34:51",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildId",
+            "tagName": "BuildId",
+            "count": {
+              "type": "Total",
+              "value": 23
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildId/tagValues/local",
+                "tagValue": "local",
+                "count": {
+                  "type": "Total",
+                  "value": 23
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildJob",
+            "tagName": "BuildJob",
+            "count": {
+              "type": "Total",
+              "value": 23
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildJob/tagValues/local",
+                "tagValue": "local",
+                "count": {
+                  "type": "Total",
+                  "value": 23
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildNumber",
+            "tagName": "BuildNumber",
+            "count": {
+              "type": "Total",
+              "value": 23
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildNumber/tagValues/local",
+                "tagValue": "local",
+                "count": {
+                  "type": "Total",
+                  "value": 23
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildReason",
+            "tagName": "BuildReason",
+            "count": {
+              "type": "Total",
+              "value": 23
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildReason/tagValues/local",
+                "tagValue": "local",
+                "count": {
+                  "type": "Total",
+                  "value": 23
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/aks-managed-cluster-name",
+            "tagName": "aks-managed-cluster-name",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/aks-managed-cluster-name/tagValues/cluster3255276464",
+                "tagValue": "cluster3255276464",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/aks-managed-cluster-rg",
+            "tagName": "aks-managed-cluster-rg",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/aks-managed-cluster-rg/tagValues/rg3255276464",
+                "tagValue": "rg3255276464",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag3175540232",
+            "tagName": "tag3175540232",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": []
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag4234309224",
+            "tagName": "tag4234309224",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": []
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608",
+            "tagName": "tag529323608",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": []
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tagyyy",
+            "tagName": "tagyyy",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": []
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}

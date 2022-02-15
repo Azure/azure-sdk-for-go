@@ -69,9 +69,38 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 	return p
 }
 
+func (r recordingPolicy) Host() string {
+	if r.options.UseHTTPS {
+		return "localhost:5001"
+	}
+	return "localhost:5000"
+}
+
+func (r recordingPolicy) Scheme() string {
+	if r.options.UseHTTPS {
+		return "https"
+	}
+	return "http"
+}
+
 func (r *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if recording.GetRecordMode() != "live" {
-		r.options.ReplaceAuthority(r.t, req.Raw())
+	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(r.t) {
+		oriSchema := req.Raw().URL.Scheme
+		oriHost := req.Raw().URL.Host
+		req.Raw().URL.Scheme = r.Scheme()
+		req.Raw().URL.Host = r.Host()
+		req.Raw().Host = r.Host()
+
+		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", oriSchema, oriHost))
+		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(r.t))
+
+		resp, err = req.Next()
+		if resp != nil {
+			resp.Request.URL.Scheme = oriSchema
+			resp.Request.URL.Host = oriHost
+		}
+		return resp, err
 	}
 	return req.Next()
 }

@@ -56,9 +56,9 @@ func TestDeploymentOperationsClient_List(t *testing.T) {
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// list deployment operations
-	deploymentOperationsClient := armresources.NewDeploymentOperationsClient(subscriptionID,cred,opt)
-	listPager := deploymentOperationsClient.List(rgName,deploymentName,nil)
-	require.True(t,listPager.NextPage(ctx))
+	deploymentOperationsClient := armresources.NewDeploymentOperationsClient(subscriptionID, cred, opt)
+	listPager := deploymentOperationsClient.List(rgName, deploymentName, nil)
+	require.True(t, listPager.NextPage(ctx))
 }
 
 func TestDeploymentOperationsClient_Get(t *testing.T) {
@@ -102,13 +102,13 @@ func TestDeploymentOperationsClient_Get(t *testing.T) {
 	require.Equal(t, deploymentName, *resp.Name)
 
 	// list deployment operations
-	deploymentOperationsClient := armresources.NewDeploymentOperationsClient(subscriptionID,cred,opt)
-	listPager := deploymentOperationsClient.List(rgName,deploymentName,nil)
-	require.True(t,listPager.NextPage(ctx))
-	operationID := *listPager.PageResponse().Value[0].ID
+	deploymentOperationsClient := armresources.NewDeploymentOperationsClient(subscriptionID, cred, opt)
+	listPager := deploymentOperationsClient.List(rgName, deploymentName, nil)
+	require.True(t, listPager.NextPage(ctx))
+	operationID := *listPager.PageResponse().Value[0].OperationID
 
 	// get deployment operation
-	getResp,err := deploymentOperationsClient.Get(ctx,rgName,deploymentName,operationID,nil)
+	getResp, err := deploymentOperationsClient.Get(ctx, rgName, deploymentName, operationID, nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.OperationID,operationID)
+	require.Equal(t, *getResp.OperationID, operationID)
 }

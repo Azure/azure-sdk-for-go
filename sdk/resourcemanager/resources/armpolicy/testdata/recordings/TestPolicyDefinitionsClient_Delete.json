@@ -11,26 +11,26 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "432",
+        "Content-Length": "488",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armpolicy/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armpolicy/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
-      "RequestBody": "{\u0022properties\u0022:{\u0022description\u0022:\u0022test case\u0022,\u0022parameters\u0022:{\u0022prefix\u0022:{\u0022metadata\u0022:{\u0022description\u0022:\u0022prefix description\u0022,\u0022displayName\u0022:\u0022test case prefix\u0022},\u0022type\u0022:\u0022String\u0022},\u0022suffix\u0022:{\u0022metadata\u0022:{\u0022description\u0022:\u0022suffix description\u0022,\u0022displayName\u0022:\u0022test case suffix\u0022},\u0022type\u0022:\u0022String\u0022}},\u0022policyRule\u0022:{\u0022if\u0022:{\u0022not\u0022:{\u0022field\u0022:\u0022name\u0022,\u0022like\u0022:\u0022[concat(parameters(\u0027prefix\u0027), \u0027*\u0027, parameters(\u0027suffix\u0027))]\u0022}},\u0022then\u0022:{\u0022effect\u0022:\u0022deny\u0022}},\u0022policyType\u0022:\u0022Custom\u0022}}",
+      "RequestBody": "{\u0022properties\u0022:{\u0022description\u0022:\u0022test case\u0022,\u0022metadata\u0022:null,\u0022parameters\u0022:{\u0022prefix\u0022:{\u0022defaultValue\u0022:null,\u0022metadata\u0022:{\u0022description\u0022:\u0022prefix description\u0022,\u0022displayName\u0022:\u0022test case prefix\u0022},\u0022type\u0022:\u0022String\u0022},\u0022suffix\u0022:{\u0022defaultValue\u0022:null,\u0022metadata\u0022:{\u0022description\u0022:\u0022suffix description\u0022,\u0022displayName\u0022:\u0022test case suffix\u0022},\u0022type\u0022:\u0022String\u0022}},\u0022policyRule\u0022:{\u0022if\u0022:{\u0022not\u0022:{\u0022field\u0022:\u0022name\u0022,\u0022like\u0022:\u0022[concat(parameters(\u0027prefix\u0027), \u0027*\u0027, parameters(\u0027suffix\u0027))]\u0022}},\u0022then\u0022:{\u0022effect\u0022:\u0022deny\u0022}},\u0022policyType\u0022:\u0022Custom\u0022}}",
       "StatusCode": 201,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "1081",
+        "Content-Length": "1080",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 06 Jan 2022 05:36:35 GMT",
+        "Date": "Mon, 14 Feb 2022 07:43:13 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Kestrel",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "f9874607-117b-4cc4-85ae-8fbbe6b7566c",
+        "x-ms-correlation-request-id": "a1e5f186-984f-45cd-b3bb-3a0ef81758e9",
         "x-ms-ratelimit-remaining-subscription-writes": "1194",
-        "x-ms-request-id": "f9874607-117b-4cc4-85ae-8fbbe6b7566c",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220106T053636Z:f9874607-117b-4cc4-85ae-8fbbe6b7566c"
+        "x-ms-request-id": "a1e5f186-984f-45cd-b3bb-3a0ef81758e9",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T074313Z:a1e5f186-984f-45cd-b3bb-3a0ef81758e9"
       },
       "ResponseBody": {
         "properties": {
@@ -39,7 +39,7 @@
           "description": "test case",
           "metadata": {
             "createdBy": "81fa2eb4-9d84-4df5-ad32-6c22e2feb57e",
-            "createdOn": "2022-01-06T05:36:36.2986091Z",
+            "createdOn": "2022-02-14T07:43:13.407084Z",
             "updatedBy": null,
             "updatedOn": null
           },
@@ -77,10 +77,10 @@
         "systemData": {
           "createdBy": "a1fc368b-7f40-4802-8fa1-260d3a6ec34b",
           "createdByType": "Application",
-          "createdAt": "2022-01-06T05:36:36.2638147Z",
+          "createdAt": "2022-02-14T07:43:13.3806786Z",
           "lastModifiedBy": "a1fc368b-7f40-4802-8fa1-260d3a6ec34b",
           "lastModifiedByType": "Application",
-          "lastModifiedAt": "2022-01-06T05:36:36.2638147Z"
+          "lastModifiedAt": "2022-02-14T07:43:13.3806786Z"
         }
       }
     },
@@ -95,7 +95,7 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armpolicy/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-armpolicy/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -103,7 +103,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 06 Jan 2022 05:36:36 GMT",
+        "Date": "Mon, 14 Feb 2022 07:43:13 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Kestrel",
@@ -111,10 +111,10 @@
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "7fb298a8-f9de-4a6c-8e87-ff0f1b3898ac",
+        "x-ms-correlation-request-id": "7cd244ee-6794-4d9d-830e-8fe56e1a4d58",
         "x-ms-ratelimit-remaining-subscription-deletes": "14998",
-        "x-ms-request-id": "7fb298a8-f9de-4a6c-8e87-ff0f1b3898ac",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220106T053636Z:7fb298a8-f9de-4a6c-8e87-ff0f1b3898ac"
+        "x-ms-request-id": "7cd244ee-6794-4d9d-830e-8fe56e1a4d58",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T074313Z:7cd244ee-6794-4d9d-830e-8fe56e1a4d58"
       },
       "ResponseBody": {
         "properties": {
@@ -123,7 +123,7 @@
           "description": "test case",
           "metadata": {
             "createdBy": "81fa2eb4-9d84-4df5-ad32-6c22e2feb57e",
-            "createdOn": "2022-01-06T05:36:36.2986091Z",
+            "createdOn": "2022-02-14T07:43:13.407084Z",
             "updatedBy": null,
             "updatedOn": null
           },
@@ -161,10 +161,10 @@
         "systemData": {
           "createdBy": "a1fc368b-7f40-4802-8fa1-260d3a6ec34b",
           "createdByType": "Application",
-          "createdAt": "2022-01-06T05:36:36.2638147Z",
+          "createdAt": "2022-02-14T07:43:13.3806786Z",
           "lastModifiedBy": "a1fc368b-7f40-4802-8fa1-260d3a6ec34b",
           "lastModifiedByType": "Application",
-          "lastModifiedAt": "2022-01-06T05:36:36.2638147Z"
+          "lastModifiedAt": "2022-02-14T07:43:13.3806786Z"
         }
       }
     }

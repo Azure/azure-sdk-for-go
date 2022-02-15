@@ -1121,7 +1121,7 @@ func (a *AzureIaaSClassicComputeVMContainer) GetProtectionContainer() *Protectio
 func (a AzureIaaSClassicComputeVMContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
-	objectMap["containerType"] = "Microsoft.ClassicCompute/virtualMachines"
+	objectMap["containerType"] = ContainerTypeMicrosoftClassicComputeVirtualMachines
 	populate(objectMap, "friendlyName", a.FriendlyName)
 	populate(objectMap, "healthStatus", a.HealthStatus)
 	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
@@ -1634,7 +1634,7 @@ func (a *AzureIaaSComputeVMContainer) GetProtectionContainer() *ProtectionContai
 func (a AzureIaaSComputeVMContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
-	objectMap["containerType"] = "Microsoft.Compute/virtualMachines"
+	objectMap["containerType"] = ContainerTypeMicrosoftComputeVirtualMachines
 	populate(objectMap, "friendlyName", a.FriendlyName)
 	populate(objectMap, "healthStatus", a.HealthStatus)
 	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
@@ -2850,7 +2850,8 @@ type AzureIaaSVMProtectionPolicy struct {
 	InstantRPDetails     *InstantRPAdditionalDetails `json:"instantRPDetails,omitempty"`
 
 	// Instant RP retention policy range in days
-	InstantRpRetentionRangeInDays *int32 `json:"instantRpRetentionRangeInDays,omitempty"`
+	InstantRpRetentionRangeInDays *int32            `json:"instantRpRetentionRangeInDays,omitempty"`
+	PolicyType                    *IAASVMPolicyType `json:"policyType,omitempty"`
 
 	// Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
@@ -2883,6 +2884,7 @@ func (a AzureIaaSVMProtectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap["backupManagementType"] = "AzureIaasVM"
 	populate(objectMap, "instantRPDetails", a.InstantRPDetails)
 	populate(objectMap, "instantRpRetentionRangeInDays", a.InstantRpRetentionRangeInDays)
+	populate(objectMap, "policyType", a.PolicyType)
 	populate(objectMap, "protectedItemsCount", a.ProtectedItemsCount)
 	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "retentionPolicy", a.RetentionPolicy)
@@ -2908,6 +2910,9 @@ func (a *AzureIaaSVMProtectionPolicy) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "instantRpRetentionRangeInDays":
 			err = unpopulate(val, &a.InstantRpRetentionRangeInDays)
+			delete(rawMsg, key)
+		case "policyType":
+			err = unpopulate(val, &a.PolicyType)
 			delete(rawMsg, key)
 		case "protectedItemsCount":
 			err = unpopulate(val, &a.ProtectedItemsCount)
@@ -7556,7 +7561,7 @@ func (a AzureWorkloadAutoProtectionIntent) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "itemId", a.ItemID)
 	populate(objectMap, "policyId", a.PolicyID)
-	objectMap["protectionIntentItemType"] = "AzureWorkloadAutoProtectionIntent"
+	objectMap["protectionIntentItemType"] = "ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent"
 	populate(objectMap, "protectionState", a.ProtectionState)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	return json.Marshal(objectMap)
@@ -7726,7 +7731,7 @@ func (a *AzureWorkloadContainer) GetProtectionContainer() *ProtectionContainer {
 func (a AzureWorkloadContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
-	objectMap["containerType"] = "AzureWorkloadContainer"
+	objectMap["containerType"] = ContainerTypeAzureWorkloadContainer
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
 	populate(objectMap, "healthStatus", a.HealthStatus)
@@ -9215,7 +9220,7 @@ func (a AzureWorkloadSQLAutoProtectionIntent) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "itemId", a.ItemID)
 	populate(objectMap, "policyId", a.PolicyID)
-	objectMap["protectionIntentItemType"] = "AzureWorkloadSQLAutoProtectionIntent"
+	objectMap["protectionIntentItemType"] = "ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent"
 	populate(objectMap, "protectionState", a.ProtectionState)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "workloadItemType", a.WorkloadItemType)
@@ -10115,164 +10120,10 @@ type BEKDetails struct {
 	SecretVaultID *string `json:"secretVaultId,omitempty"`
 }
 
-// BMSBackupEngineQueryObject - Query parameters to fetch list of backup engines.
-type BMSBackupEngineQueryObject struct {
-	// attribute to add extended info
-	Expand *string `json:"expand,omitempty"`
-}
-
-// BMSBackupEnginesQueryObject - Query parameters to fetch list of backup engines.
-type BMSBackupEnginesQueryObject struct {
-	// Backup management type for the backup engine.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Attribute to add extended info.
-	Expand *string `json:"expand,omitempty"`
-
-	// Friendly name of the backup engine.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-}
-
-// BMSBackupSummariesQueryObject - Query parameters to fetch backup summaries.
-type BMSBackupSummariesQueryObject struct {
-	// Backup management type for this container.
-	Type *Type `json:"type,omitempty"`
-}
-
-// BMSContainerQueryObject - The query filters that can be used with the list containers API.
-type BMSContainerQueryObject struct {
-	// REQUIRED; Backup management type for this container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Backup engine name
-	BackupEngineName *string `json:"backupEngineName,omitempty"`
-
-	// Type of container for filter
-	ContainerType *ContainerType `json:"containerType,omitempty"`
-
-	// Fabric name for filter
-	FabricName *string `json:"fabricName,omitempty"`
-
-	// Friendly name of this container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-
-	// Status of registration of this container with the Recovery Services Vault.
-	Status *string `json:"status,omitempty"`
-}
-
-// BMSContainersInquiryQueryObject - The query filters that can be used with the inquire container API.
-type BMSContainersInquiryQueryObject struct {
-	// Backup management type for this container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Workload type for this container.
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
-}
-
-// BMSPOQueryObject - Filters to list items that can be backed up.
-type BMSPOQueryObject struct {
-	// Backup management type.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Full name of the container whose Protectable Objects should be returned.
-	ContainerName *string `json:"containerName,omitempty"`
-
-	// Friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-
-	// Backup status query parameter.
-	Status *string `json:"status,omitempty"`
-
-	// Workload type
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
-}
-
 // BMSPrepareDataMoveOperationResultClientGetOptions contains the optional parameters for the BMSPrepareDataMoveOperationResultClient.Get
 // method.
 type BMSPrepareDataMoveOperationResultClientGetOptions struct {
 	// placeholder for future optional parameters
-}
-
-// BMSRPQueryObject - Filters to list backup copies.
-type BMSRPQueryObject struct {
-	// Backup copies created before this time.
-	EndDate *time.Time `json:"endDate,omitempty"`
-
-	// In Get Recovery Point, it tells whether extended information about recovery point is asked.
-	ExtendedInfo *bool `json:"extendedInfo,omitempty"`
-
-	// Whether the RP can be moved to another tier
-	MoveReadyRPOnly *bool `json:"moveReadyRPOnly,omitempty"`
-
-	// RestorePoint type
-	RestorePointQueryType *RestorePointQueryType `json:"restorePointQueryType,omitempty"`
-
-	// Backup copies created after this time.
-	StartDate *time.Time `json:"startDate,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BMSRPQueryObject.
-func (b BMSRPQueryObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endDate", b.EndDate)
-	populate(objectMap, "extendedInfo", b.ExtendedInfo)
-	populate(objectMap, "moveReadyRPOnly", b.MoveReadyRPOnly)
-	populate(objectMap, "restorePointQueryType", b.RestorePointQueryType)
-	populateTimeRFC3339(objectMap, "startDate", b.StartDate)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BMSRPQueryObject.
-func (b *BMSRPQueryObject) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endDate":
-			err = unpopulateTimeRFC3339(val, &b.EndDate)
-			delete(rawMsg, key)
-		case "extendedInfo":
-			err = unpopulate(val, &b.ExtendedInfo)
-			delete(rawMsg, key)
-		case "moveReadyRPOnly":
-			err = unpopulate(val, &b.MoveReadyRPOnly)
-			delete(rawMsg, key)
-		case "restorePointQueryType":
-			err = unpopulate(val, &b.RestorePointQueryType)
-			delete(rawMsg, key)
-		case "startDate":
-			err = unpopulateTimeRFC3339(val, &b.StartDate)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// BMSRefreshContainersQueryObject - The query filters that can be used with the refresh container API.
-type BMSRefreshContainersQueryObject struct {
-	// Backup management type for this container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-}
-
-// BMSWorkloadItemQueryObject - Filters to list items that can be backed up.
-type BMSWorkloadItemQueryObject struct {
-	// Backup management type.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Backup status query parameter.
-	ProtectionStatus *ProtectionStatus `json:"protectionStatus,omitempty"`
-
-	// Workload Item type
-	WorkloadItemType *WorkloadItemType `json:"workloadItemType,omitempty"`
-
-	// Workload type
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
 }
 
 // BackupEngineBaseClassification provides polymorphic access to related types.
@@ -11217,41 +11068,6 @@ type ClientScriptForConnect struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// CloudError - An error response from the Container Instance service.
-type CloudError struct {
-	// The error object.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the Container Instance service.
-type CloudErrorBody struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", c.AdditionalInfo)
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
-}
-
 // ContainerIdentityInfo - Container identity information
 type ContainerIdentityInfo struct {
 	// Protection container identity - AAD Tenant
@@ -11651,6 +11467,22 @@ func (d DailyRetentionSchedule) MarshalJSON() ([]byte, error) {
 		aux[i] = (*timeRFC3339)(d.RetentionTimes[i])
 	}
 	populate(objectMap, "retentionTimes", aux)
+	return json.Marshal(objectMap)
+}
+
+type DailySchedule struct {
+	// List of times of day this schedule has to be run.
+	ScheduleRunTimes []*time.Time `json:"scheduleRunTimes,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DailySchedule.
+func (d DailySchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	aux := make([]*timeRFC3339, len(d.ScheduleRunTimes), len(d.ScheduleRunTimes))
+	for i := 0; i < len(d.ScheduleRunTimes); i++ {
+		aux[i] = (*timeRFC3339)(d.ScheduleRunTimes[i])
+	}
+	populate(objectMap, "scheduleRunTimes", aux)
 	return json.Marshal(objectMap)
 }
 
@@ -12254,15 +12086,6 @@ type EncryptionDetails struct {
 	SecretKeyVaultID *string `json:"secretKeyVaultId,omitempty"`
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
-
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // ErrorDetail - Error Detail class which encapsulates Code, Message and Recommendations.
 type ErrorDetail struct {
 	// READ-ONLY; Error code.
@@ -12861,12 +12684,6 @@ func (g *GenericRecoveryPoint) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// GetProtectedItemQueryObject - Filters to list backup items.
-type GetProtectedItemQueryObject struct {
-	// Specifies if the additional information should be provided for this item.
-	Expand *string `json:"expand,omitempty"`
 }
 
 type HourlySchedule struct {
@@ -14100,74 +13917,6 @@ type JobOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobQueryObject - Filters to list the jobs.
-type JobQueryObject struct {
-	// Type of backup management for the job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Job has ended at this time. Value is in UTC.
-	EndTime *time.Time `json:"endTime,omitempty"`
-
-	// JobID represents the job uniquely.
-	JobID *string `json:"jobId,omitempty"`
-
-	// Type of operation.
-	Operation *JobOperationType `json:"operation,omitempty"`
-
-	// Job has started at this time. Value is in UTC.
-	StartTime *time.Time `json:"startTime,omitempty"`
-
-	// Status of the job.
-	Status *JobStatus `json:"status,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JobQueryObject.
-func (j JobQueryObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "backupManagementType", j.BackupManagementType)
-	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
-	populate(objectMap, "jobId", j.JobID)
-	populate(objectMap, "operation", j.Operation)
-	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
-	populate(objectMap, "status", j.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JobQueryObject.
-func (j *JobQueryObject) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "backupManagementType":
-			err = unpopulate(val, &j.BackupManagementType)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &j.EndTime)
-			delete(rawMsg, key)
-		case "jobId":
-			err = unpopulate(val, &j.JobID)
-			delete(rawMsg, key)
-		case "operation":
-			err = unpopulate(val, &j.Operation)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &j.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &j.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // JobResource - Defines workload agnostic properties for a job.
 type JobResource struct {
 	// Optional ETag.
@@ -15332,41 +15081,6 @@ type NameInfo struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// NewErrorResponse - The resource management error response.
-type NewErrorResponse struct {
-	// The error object.
-	Error *NewErrorResponseError `json:"error,omitempty"`
-}
-
-// NewErrorResponseError - The error object.
-type NewErrorResponseError struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*NewErrorResponse `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NewErrorResponseError.
-func (n NewErrorResponseError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", n.AdditionalInfo)
-	populate(objectMap, "code", n.Code)
-	populate(objectMap, "details", n.Details)
-	populate(objectMap, "message", n.Message)
-	populate(objectMap, "target", n.Target)
-	return json.Marshal(objectMap)
-}
-
 // OperationClientValidateOptions contains the optional parameters for the OperationClient.Validate method.
 type OperationClientValidateOptions struct {
 	// placeholder for future optional parameters
@@ -16375,36 +16089,6 @@ type ProtectedItemOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectedItemQueryObject - Filters to list backup items.
-type ProtectedItemQueryObject struct {
-	// Backup Engine name
-	BackupEngineName *string `json:"backupEngineName,omitempty"`
-
-	// Backup management type for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Name of the backup set.
-	BackupSetName *string `json:"backupSetName,omitempty"`
-
-	// Name of the container.
-	ContainerName *string `json:"containerName,omitempty"`
-
-	// Name of the fabric.
-	FabricName *string `json:"fabricName,omitempty"`
-
-	// Friendly name of protected item
-	FriendlyName *string `json:"friendlyName,omitempty"`
-
-	// Health State for the backed up item.
-	HealthState *HealthState `json:"healthState,omitempty"`
-
-	// Type of workload this item represents.
-	ItemType *DataSourceType `json:"itemType,omitempty"`
-
-	// Backup policy name associated with the backup item.
-	PolicyName *string `json:"policyName,omitempty"`
-}
-
 // ProtectedItemResource - Base class for backup items.
 type ProtectedItemResource struct {
 	// Optional ETag.
@@ -16742,21 +16426,6 @@ type ProtectionIntentClientValidateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionIntentQueryObject - Filters to list protection intent.
-type ProtectionIntentQueryObject struct {
-	// Backup management type for the backed up item
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Item name of the intent
-	ItemName *string `json:"itemName,omitempty"`
-
-	// Type of workload this item represents
-	ItemType *IntentItemType `json:"itemType,omitempty"`
-
-	// Parent name of the intent
-	ParentName *string `json:"parentName,omitempty"`
-}
-
 // ProtectionIntentResource - Base class for backup ProtectionIntent.
 type ProtectionIntentResource struct {
 	// Optional ETag.
@@ -16910,18 +16579,6 @@ type ProtectionPolicyOperationResultsClientGetOptions struct {
 // method.
 type ProtectionPolicyOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
-}
-
-// ProtectionPolicyQueryObject - Filters the list backup policies API.
-type ProtectionPolicyQueryObject struct {
-	// Backup management type for the backup policy.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
-
-	// Fabric name for filter
-	FabricName *string `json:"fabricName,omitempty"`
-
-	// Workload type for the backup policy.
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
 }
 
 // ProtectionPolicyResource - Base class for backup policy. Workload-specific backup policies are derived from this class.
@@ -17562,7 +17219,7 @@ type SQLDataDirectoryMapping struct {
 // SchedulePolicyClassification provides polymorphic access to related types.
 // Call the interface's GetSchedulePolicy() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *LogSchedulePolicy, *LongTermSchedulePolicy, *SchedulePolicy, *SimpleSchedulePolicy
+// - *LogSchedulePolicy, *LongTermSchedulePolicy, *SchedulePolicy, *SimpleSchedulePolicy, *SimpleSchedulePolicyV2
 type SchedulePolicyClassification interface {
 	// GetSchedulePolicy returns the SchedulePolicy content of the underlying type.
 	GetSchedulePolicy() *SchedulePolicy
@@ -17730,6 +17387,74 @@ func (s *SimpleSchedulePolicy) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "scheduleWeeklyFrequency":
 			err = unpopulate(val, &s.ScheduleWeeklyFrequency)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// SimpleSchedulePolicyV2 - The V2 policy schedule for IaaS that supports hourly backups.
+type SimpleSchedulePolicyV2 struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+
+	// Daily schedule of this policy
+	DailySchedule *DailySchedule `json:"dailySchedule,omitempty"`
+
+	// hourly schedule of this policy
+	HourlySchedule *HourlySchedule `json:"hourlySchedule,omitempty"`
+
+	// Frequency of the schedule operation of this policy.
+	ScheduleRunFrequency *ScheduleRunType `json:"scheduleRunFrequency,omitempty"`
+
+	// Weekly schedule of this policy
+	WeeklySchedule *WeeklySchedule `json:"weeklySchedule,omitempty"`
+}
+
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type SimpleSchedulePolicyV2.
+func (s *SimpleSchedulePolicyV2) GetSchedulePolicy() *SchedulePolicy {
+	return &SchedulePolicy{
+		SchedulePolicyType: s.SchedulePolicyType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SimpleSchedulePolicyV2.
+func (s SimpleSchedulePolicyV2) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "dailySchedule", s.DailySchedule)
+	populate(objectMap, "hourlySchedule", s.HourlySchedule)
+	objectMap["schedulePolicyType"] = "SimpleSchedulePolicyV2"
+	populate(objectMap, "scheduleRunFrequency", s.ScheduleRunFrequency)
+	populate(objectMap, "weeklySchedule", s.WeeklySchedule)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SimpleSchedulePolicyV2.
+func (s *SimpleSchedulePolicyV2) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dailySchedule":
+			err = unpopulate(val, &s.DailySchedule)
+			delete(rawMsg, key)
+		case "hourlySchedule":
+			err = unpopulate(val, &s.HourlySchedule)
+			delete(rawMsg, key)
+		case "schedulePolicyType":
+			err = unpopulate(val, &s.SchedulePolicyType)
+			delete(rawMsg, key)
+		case "scheduleRunFrequency":
+			err = unpopulate(val, &s.ScheduleRunFrequency)
+			delete(rawMsg, key)
+		case "weeklySchedule":
+			err = unpopulate(val, &s.WeeklySchedule)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -18263,6 +17988,25 @@ func (w WeeklyRetentionSchedule) MarshalJSON() ([]byte, error) {
 		aux[i] = (*timeRFC3339)(w.RetentionTimes[i])
 	}
 	populate(objectMap, "retentionTimes", aux)
+	return json.Marshal(objectMap)
+}
+
+type WeeklySchedule struct {
+	ScheduleRunDays []*DayOfWeek `json:"scheduleRunDays,omitempty"`
+
+	// List of times of day this schedule has to be run.
+	ScheduleRunTimes []*time.Time `json:"scheduleRunTimes,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type WeeklySchedule.
+func (w WeeklySchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "scheduleRunDays", w.ScheduleRunDays)
+	aux := make([]*timeRFC3339, len(w.ScheduleRunTimes), len(w.ScheduleRunTimes))
+	for i := 0; i < len(w.ScheduleRunTimes); i++ {
+		aux[i] = (*timeRFC3339)(w.ScheduleRunTimes[i])
+	}
+	populate(objectMap, "scheduleRunTimes", aux)
 	return json.Marshal(objectMap)
 }
 

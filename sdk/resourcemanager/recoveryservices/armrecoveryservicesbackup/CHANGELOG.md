@@ -1,5 +1,57 @@
 # Release History
 
+## 0.3.0 (2022-02-15)
+### Breaking Changes
+
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `NewErrorResponseError.MarshalJSON` has been removed
+- Function `JobQueryObject.MarshalJSON` has been removed
+- Function `BMSRPQueryObject.MarshalJSON` has been removed
+- Function `*JobQueryObject.UnmarshalJSON` has been removed
+- Function `*BMSRPQueryObject.UnmarshalJSON` has been removed
+- Struct `BMSBackupEngineQueryObject` has been removed
+- Struct `BMSBackupEnginesQueryObject` has been removed
+- Struct `BMSBackupSummariesQueryObject` has been removed
+- Struct `BMSContainerQueryObject` has been removed
+- Struct `BMSContainersInquiryQueryObject` has been removed
+- Struct `BMSPOQueryObject` has been removed
+- Struct `BMSRPQueryObject` has been removed
+- Struct `BMSRefreshContainersQueryObject` has been removed
+- Struct `BMSWorkloadItemQueryObject` has been removed
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `GetProtectedItemQueryObject` has been removed
+- Struct `JobQueryObject` has been removed
+- Struct `NewErrorResponse` has been removed
+- Struct `NewErrorResponseError` has been removed
+- Struct `ProtectedItemQueryObject` has been removed
+- Struct `ProtectionIntentQueryObject` has been removed
+- Struct `ProtectionPolicyQueryObject` has been removed
+
+### Features Added
+
+- New const `ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent`
+- New const `ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent`
+- New const `ContainerTypeMicrosoftComputeVirtualMachines`
+- New const `IAASVMPolicyTypeV2`
+- New const `ContainerTypeMicrosoftClassicComputeVirtualMachines`
+- New const `IAASVMPolicyTypeInvalid`
+- New const `ContainerTypeAzureWorkloadContainer`
+- New const `IAASVMPolicyTypeV1`
+- New function `*SimpleSchedulePolicyV2.GetSchedulePolicy() *SchedulePolicy`
+- New function `PossibleIAASVMPolicyTypeValues() []IAASVMPolicyType`
+- New function `DailySchedule.MarshalJSON() ([]byte, error)`
+- New function `SimpleSchedulePolicyV2.MarshalJSON() ([]byte, error)`
+- New function `WeeklySchedule.MarshalJSON() ([]byte, error)`
+- New function `*SimpleSchedulePolicyV2.UnmarshalJSON([]byte) error`
+- New function `IAASVMPolicyType.ToPtr() *IAASVMPolicyType`
+- New struct `DailySchedule`
+- New struct `SimpleSchedulePolicyV2`
+- New struct `WeeklySchedule`
+- New field `PolicyType` in struct `AzureIaaSVMProtectionPolicy`
+
+
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

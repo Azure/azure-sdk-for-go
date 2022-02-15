@@ -205,11 +205,7 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 
 	updatedProps, err = adminClient.UpdateQueue(context.Background(), "non-existent-queue", createdProps.QueueProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
-	require.Contains(t, err.Error(), "404 Not Found")
-
-	var asResponseErr *azcore.ResponseError
-	require.ErrorAs(t, err, &asResponseErr)
-	require.EqualValues(t, 404, asResponseErr.StatusCode)
+	assert404Error(t, err)
 
 	require.Nil(t, updatedProps)
 }
@@ -481,13 +477,14 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 
 	updateResp, err = adminClient.UpdateTopic(context.Background(), "non-existent-topic", addResp.TopicProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
-	require.Contains(t, err.Error(), "404 Not Found")
+	assert404Error(t, err)
+	require.Nil(t, updateResp)
+}
 
+func assert404Error(t *testing.T, err error) {
 	var asResponseErr *azcore.ResponseError
 	require.ErrorAs(t, err, &asResponseErr)
-	require.EqualValues(t, 404, asResponseErr.StatusCode)
-
-	require.Nil(t, updateResp)
+	require.EqualValues(t, http.StatusNotFound, asResponseErr.StatusCode)
 }
 
 func TestAdminClient_ListTopics(t *testing.T) {
@@ -750,11 +747,7 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	require.Nil(t, updateResp)
 
 	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", addResp.CreateSubscriptionResult.SubscriptionProperties, nil)
-	require.Contains(t, err.Error(), "404 Not Found")
-
-	var asResponseErr *azcore.ResponseError
-	require.ErrorAs(t, err, &asResponseErr)
-	require.EqualValues(t, 404, asResponseErr.StatusCode)
+	assert404Error(t, err)
 
 	require.Nil(t, updateResp)
 }
@@ -768,8 +761,7 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	var re *azcore.ResponseError
 
 	_, err := testData.Client.GetQueue(ctx, "not-found-queue", nil)
-	require.ErrorAs(t, err, &re)
-	require.EqualValues(t, http.StatusNotFound, re.StatusCode)
+	assert404Error(t, err)
 
 	_, err = testData.Client.GetQueue(ctx, testData.QueueName, nil)
 	require.Contains(t, err.Error(), "Manage,EntityRead claims required for this operation")
@@ -868,24 +860,16 @@ func TestAdminClient_GetNonExistentQueue(t *testing.T) {
 	require.NoError(t, err)
 
 	queue, err := adminClient.GetQueue(context.Background(), "non-existent-queue", nil)
+	assert404Error(t, err)
 	require.Nil(t, queue)
 
-	var respErr *azcore.ResponseError
-	require.ErrorAs(t, err, &respErr)
-
-	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
-
 	topic, err := adminClient.GetTopic(context.Background(), "non-existent-topic", nil)
+	assert404Error(t, err)
 	require.Nil(t, topic)
 
-	require.ErrorAs(t, err, &respErr)
-	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
-
 	sub, err := adminClient.GetSubscription(context.Background(), "non-existent-topic", "non-existent-sub", nil)
+	assert404Error(t, err)
 	require.Nil(t, sub)
-
-	require.ErrorAs(t, err, &respErr)
-	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
 
 	// for completeness we'll create the topic and make sure the error isn't different
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
@@ -894,10 +878,8 @@ func TestAdminClient_GetNonExistentQueue(t *testing.T) {
 	require.NoError(t, err)
 
 	sub, err = adminClient.GetSubscription(context.Background(), topicName, "non-existent-sub", nil)
+	assert404Error(t, err)
 	require.Nil(t, sub)
-
-	require.ErrorAs(t, err, &respErr)
-	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
 }
 
 type entityManagerForPagerTests struct {

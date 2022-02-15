@@ -419,27 +419,6 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 	}
 }
 
-type feedEmptyError struct {
-	response *http.Response
-}
-
-func (e feedEmptyError) RawResponse() *http.Response {
-	return e.response
-}
-func (e feedEmptyError) Error() string {
-	return "entity does not exist"
-}
-
-func NotFound(err error) (bool, *http.Response) {
-	var feedEmptyError feedEmptyError
-
-	if errors.As(err, &feedEmptyError) {
-		return true, feedEmptyError.RawResponse()
-	}
-
-	return false, nil
-}
-
 func isEmptyFeed(b []byte) bool {
 	var emptyFeed QueueFeed
 	feedErr := xml.Unmarshal(b, &emptyFeed)
@@ -463,7 +442,10 @@ func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, 
 		// ATOM does this interesting thing where, when something doesn't exist, it gives you back an empty feed
 		// check:
 		if isEmptyFeed(bytes) {
-			return nil, feedEmptyError{response: resp}
+			return nil, &azcore.ResponseError{
+				StatusCode:  http.StatusNotFound,
+				RawResponse: resp,
+			}
 		}
 
 		return resp, err

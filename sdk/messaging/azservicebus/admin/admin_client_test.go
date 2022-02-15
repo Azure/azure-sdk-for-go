@@ -765,12 +765,11 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := testData.Client.GetQueue(ctx, "not-found-queue", nil)
-	notFound, resp := atom.NotFound(err)
-	require.True(t, notFound)
-	require.NotNil(t, resp)
-
 	var re *azcore.ResponseError
+
+	_, err := testData.Client.GetQueue(ctx, "not-found-queue", nil)
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, http.StatusNotFound, re.StatusCode)
 
 	_, err = testData.Client.GetQueue(ctx, testData.QueueName, nil)
 	require.Contains(t, err.Error(), "Manage,EntityRead claims required for this operation")
@@ -805,12 +804,11 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := testData.Client.GetTopic(ctx, "not-found-topic", nil)
-	notFound, resp := atom.NotFound(err)
-	require.True(t, notFound)
-	require.NotNil(t, resp)
-
 	var asResponseErr *azcore.ResponseError
+
+	_, err := testData.Client.GetTopic(ctx, "not-found-topic", nil)
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, http.StatusNotFound, asResponseErr.StatusCode)
 
 	_, err = testData.Client.GetTopic(ctx, testData.TopicName, nil)
 	require.Contains(t, err.Error(), ">Manage,EntityRead claims required for this operation")
@@ -863,6 +861,43 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 
 	_, err = testData.Client.DeleteSubscription(ctx, testData.TopicName, testData.SubName, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'DeleteSubscription'")
+}
+
+func TestAdminClient_GetNonExistentQueue(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	queue, err := adminClient.GetQueue(context.Background(), "non-existent-queue", nil)
+	require.Nil(t, queue)
+
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+
+	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
+
+	topic, err := adminClient.GetTopic(context.Background(), "non-existent-topic", nil)
+	require.Nil(t, topic)
+
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
+
+	sub, err := adminClient.GetSubscription(context.Background(), "non-existent-topic", "non-existent-sub", nil)
+	require.Nil(t, sub)
+
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
+
+	// for completeness we'll create the topic and make sure the error isn't different
+	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
+
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
+	require.NoError(t, err)
+
+	sub, err = adminClient.GetSubscription(context.Background(), topicName, "non-existent-sub", nil)
+	require.Nil(t, sub)
+
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
 }
 
 type entityManagerForPagerTests struct {

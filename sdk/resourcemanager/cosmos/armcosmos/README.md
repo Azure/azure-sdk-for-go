@@ -50,6 +50,15 @@ options = arm.ClientOptions{
 client := armcosmos.NewDatabaseClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Cassandra](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/cassandra)
+- [Cosmos DB](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/cosmosdb)
+- [Gremlin](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/gremlin)
+- [Mongo DB](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/mongodb)
+- [Sql](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/sql)
+- [Table](https://aka.ms/azsdk/go/mgmt/samples?path=cosmos/table)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

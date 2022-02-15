@@ -9,11 +9,11 @@
 package armwebpubsub
 
 const (
-	module  = "armwebpubsub"
-	version = "v0.1.0"
+	moduleName    = "armwebpubsub"
+	moduleVersion = "v0.2.0"
 )
 
-// ACLAction - Default action when no other rule matches
+// ACLAction - Azure Networking ACL Action.
 type ACLAction string
 
 const (
@@ -59,7 +59,7 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 	return &c
 }
 
-// KeyType - The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
+// KeyType - The type of access key.
 type KeyType string
 
 const (
@@ -82,7 +82,7 @@ func (c KeyType) ToPtr() *KeyType {
 	return &c
 }
 
-// ManagedIdentityType - Represent the identity type: systemAssigned, userAssigned, None
+// ManagedIdentityType - Represents the identity type: systemAssigned, userAssigned, None
 type ManagedIdentityType string
 
 const (
@@ -105,7 +105,8 @@ func (c ManagedIdentityType) ToPtr() *ManagedIdentityType {
 	return &c
 }
 
-// PrivateLinkServiceConnectionStatus - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+// PrivateLinkServiceConnectionStatus - Indicates whether the connection has been Approved/Rejected/Removed by the owner of
+// the service.
 type PrivateLinkServiceConnectionStatus string
 
 const (
@@ -215,7 +216,7 @@ func (c SharedPrivateLinkResourceStatus) ToPtr() *SharedPrivateLinkResourceStatu
 	return &c
 }
 
-// UpstreamAuthType - Gets or sets the type of auth. None or ManagedIdentity is supported now.
+// UpstreamAuthType - Upstream auth type enum.
 type UpstreamAuthType string
 
 const (
@@ -236,7 +237,7 @@ func (c UpstreamAuthType) ToPtr() *UpstreamAuthType {
 	return &c
 }
 
-// WebPubSubRequestType - Allowed request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
+// WebPubSubRequestType - The incoming request type to the service
 type WebPubSubRequestType string
 
 const (

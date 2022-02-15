@@ -20,34 +20,38 @@ import (
 )
 
 // x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRSharedPrivateLinkResources_List.json
-func ExampleSignalRSharedPrivateLinkResourcesClient_List() {
+func ExampleSharedPrivateLinkResourcesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSignalRSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SharedPrivateLinkResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRSharedPrivateLinkResources_Get.json
-func ExampleSignalRSharedPrivateLinkResourcesClient_Get() {
+func ExampleSharedPrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSignalRSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<shared-private-link-resource-name>",
 		"<resource-group-name>",
@@ -56,17 +60,17 @@ func ExampleSignalRSharedPrivateLinkResourcesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SharedPrivateLinkResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SharedPrivateLinkResourcesClientGetResult)
 }
 
 // x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRSharedPrivateLinkResources_CreateOrUpdate.json
-func ExampleSignalRSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
+func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSignalRSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<shared-private-link-resource-name>",
 		"<resource-group-name>",
@@ -86,17 +90,17 @@ func ExampleSignalRSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SharedPrivateLinkResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SharedPrivateLinkResourcesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRSharedPrivateLinkResources_Delete.json
-func ExampleSignalRSharedPrivateLinkResourcesClient_BeginDelete() {
+func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsignalr.NewSignalRSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client := armsignalr.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<shared-private-link-resource-name>",
 		"<resource-group-name>",

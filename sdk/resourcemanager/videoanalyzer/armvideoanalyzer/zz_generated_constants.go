@@ -9,8 +9,8 @@
 package armvideoanalyzer
 
 const (
-	module  = "armvideoanalyzer"
-	version = "v0.1.0"
+	moduleName    = "armvideoanalyzer"
+	moduleVersion = "v0.2.0"
 )
 
 // AccessPolicyEccAlgo - Elliptical curve algorithm to be used: ES256, ES384 or ES512.
@@ -178,21 +178,25 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 type EncoderSystemPresetType string
 
 const (
-	// EncoderSystemPresetTypeSingleLayer1080PH264AAC - Produces an MP4 file where the video is encoded with H.264 codec at a picture height of 1080 pixels,
-	// and at a maximum bitrate of 6000 Kbps. Encoded video has the same average frame rate as the input. The aspect ratio of the input is preserved. If the
-	// input content has audio, then it is encoded with AAC-LC codec at 128 Kbps
+	// EncoderSystemPresetTypeSingleLayer1080PH264AAC - Produces an MP4 file where the video is encoded with H.264 codec at a
+	// picture height of 1080 pixels, and at a maximum bitrate of 6000 Kbps. Encoded video has the same average frame rate as
+	// the input. The aspect ratio of the input is preserved. If the input content has audio, then it is encoded with AAC-LC codec
+	// at 128 Kbps
 	EncoderSystemPresetTypeSingleLayer1080PH264AAC EncoderSystemPresetType = "SingleLayer_1080p_H264_AAC"
-	// EncoderSystemPresetTypeSingleLayer2160PH264AAC - Produces an MP4 file where the video is encoded with H.264 codec at a picture height of 2160 pixels,
-	// and at a maximum bitrate of 16000 Kbps. Encoded video has the same average frame rate as the input. The aspect ratio of the input is preserved. If the
-	// input content has audio, then it is encoded with AAC-LC codec at 128 Kbps
+	// EncoderSystemPresetTypeSingleLayer2160PH264AAC - Produces an MP4 file where the video is encoded with H.264 codec at a
+	// picture height of 2160 pixels, and at a maximum bitrate of 16000 Kbps. Encoded video has the same average frame rate as
+	// the input. The aspect ratio of the input is preserved. If the input content has audio, then it is encoded with AAC-LC codec
+	// at 128 Kbps
 	EncoderSystemPresetTypeSingleLayer2160PH264AAC EncoderSystemPresetType = "SingleLayer_2160p_H264_AAC"
-	// EncoderSystemPresetTypeSingleLayer540PH264AAC - Produces an MP4 file where the video is encoded with H.264 codec at a picture height of 540 pixels, and
-	// at a maximum bitrate of 2000 Kbps. Encoded video has the same average frame rate as the input. The aspect ratio of the input is preserved. If the input
-	// content has audio, then it is encoded with AAC-LC codec at 96 Kbps
+	// EncoderSystemPresetTypeSingleLayer540PH264AAC - Produces an MP4 file where the video is encoded with H.264 codec at a picture
+	// height of 540 pixels, and at a maximum bitrate of 2000 Kbps. Encoded video has the same average frame rate as the input.
+	// The aspect ratio of the input is preserved. If the input content has audio, then it is encoded with AAC-LC codec at 96
+	// Kbps
 	EncoderSystemPresetTypeSingleLayer540PH264AAC EncoderSystemPresetType = "SingleLayer_540p_H264_AAC"
-	// EncoderSystemPresetTypeSingleLayer720PH264AAC - Produces an MP4 file where the video is encoded with H.264 codec at a picture height of 720 pixels, and
-	// at a maximum bitrate of 3500 Kbps. Encoded video has the same average frame rate as the input. The aspect ratio of the input is preserved. If the input
-	// content has audio, then it is encoded with AAC-LC codec at 96 Kbps
+	// EncoderSystemPresetTypeSingleLayer720PH264AAC - Produces an MP4 file where the video is encoded with H.264 codec at a picture
+	// height of 720 pixels, and at a maximum bitrate of 3500 Kbps. Encoded video has the same average frame rate as the input.
+	// The aspect ratio of the input is preserved. If the input content has audio, then it is encoded with AAC-LC codec at 96
+	// Kbps
 	EncoderSystemPresetTypeSingleLayer720PH264AAC EncoderSystemPresetType = "SingleLayer_720p_H264_AAC"
 )
 
@@ -240,9 +244,9 @@ type LivePipelineState string
 const (
 	// LivePipelineStateActivating - The live pipeline is transitioning into the active state.
 	LivePipelineStateActivating LivePipelineState = "Activating"
-	// LivePipelineStateActive - The live pipeline is active and able to process media. If your data source is not available, for instance, if your RTSP camera
-	// is powered off or unreachable, the pipeline will still be active and periodically retrying the connection. Your Azure subscription will be billed for
-	// the duration in which the live pipeline is in the active state.
+	// LivePipelineStateActive - The live pipeline is active and able to process media. If your data source is not available,
+	// for instance, if your RTSP camera is powered off or unreachable, the pipeline will still be active and periodically retrying
+	// the connection. Your Azure subscription will be billed for the duration in which the live pipeline is in the active state.
 	LivePipelineStateActive LivePipelineState = "Active"
 	// LivePipelineStateDeactivating - The live pipeline is transitioning into the inactive state.
 	LivePipelineStateDeactivating LivePipelineState = "Deactivating"
@@ -475,13 +479,14 @@ func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 
-// RtspTransport - Network transport utilized by the RTSP and RTP exchange: TCP or HTTP. When using TCP, the RTP packets are interleaved on the TCP RTSP
-// connection. When using HTTP, the RTSP messages are exchanged
+// RtspTransport - Network transport utilized by the RTSP and RTP exchange: TCP or HTTP. When using TCP, the RTP packets are
+// interleaved on the TCP RTSP connection. When using HTTP, the RTSP messages are exchanged
 // through long lived HTTP connections, and the RTP packages are interleaved in the HTTP connections alongside the RTSP messages.
 type RtspTransport string
 
 const (
-	// RtspTransportHTTP - HTTP transport. RTSP messages are exchanged over long running HTTP requests and RTP packets are interleaved within the HTTP channel.
+	// RtspTransportHTTP - HTTP transport. RTSP messages are exchanged over long running HTTP requests and RTP packets are interleaved
+	// within the HTTP channel.
 	RtspTransportHTTP RtspTransport = "Http"
 	// RtspTransportTCP - TCP transport. RTSP is used directly over TCP and RTP packets are interleaved within the TCP channel.
 	RtspTransportTCP RtspTransport = "Tcp"
@@ -506,8 +511,8 @@ type SKUName string
 const (
 	// SKUNameBatchS1 - Represents the Batch S1 SKU name. Using this SKU you can create pipeline jobs to process recorded content.
 	SKUNameBatchS1 SKUName = "Batch_S1"
-	// SKUNameLiveS1 - Represents the Live S1 SKU name. Using this SKU you can create live pipelines to capture, record, and stream live video from RTSP-capable
-	// cameras at bitrate settings from 0.5 Kbps to 3000 Kbps.
+	// SKUNameLiveS1 - Represents the Live S1 SKU name. Using this SKU you can create live pipelines to capture, record, and stream
+	// live video from RTSP-capable cameras at bitrate settings from 0.5 Kbps to 3000 Kbps.
 	SKUNameLiveS1 SKUName = "Live_S1"
 )
 
@@ -564,18 +569,18 @@ func (c VideoAnalyzerEndpointType) ToPtr() *VideoAnalyzerEndpointType {
 	return &c
 }
 
-// VideoScaleMode - Describes the video scaling mode to be applied. Default mode is 'Pad'. If the mode is 'Pad' or 'Stretch' then both width and height
-// must be specified. Else if the mode is 'PreserveAspectRatio' then
+// VideoScaleMode - Describes the video scaling mode to be applied. Default mode is 'Pad'. If the mode is 'Pad' or 'Stretch'
+// then both width and height must be specified. Else if the mode is 'PreserveAspectRatio' then
 // only one of width or height need be provided.
 type VideoScaleMode string
 
 const (
-	// VideoScaleModePad - Pads the video with black horizontal stripes (letterbox) or black vertical stripes (pillar-box) so the video is resized to the specified
-	// dimensions while not altering the content aspect ratio.
+	// VideoScaleModePad - Pads the video with black horizontal stripes (letterbox) or black vertical stripes (pillar-box) so
+	// the video is resized to the specified dimensions while not altering the content aspect ratio.
 	VideoScaleModePad VideoScaleMode = "Pad"
-	// VideoScaleModePreserveAspectRatio - Preserves the same aspect ratio as the input video. If only one video dimension is provided, the second dimension
-	// is calculated based on the input video aspect ratio. When 2 dimensions are provided, the video is resized to fit the most constraining dimension, considering
-	// the input video size and aspect ratio.
+	// VideoScaleModePreserveAspectRatio - Preserves the same aspect ratio as the input video. If only one video dimension is
+	// provided, the second dimension is calculated based on the input video aspect ratio. When 2 dimensions are provided, the
+	// video is resized to fit the most constraining dimension, considering the input video size and aspect ratio.
 	VideoScaleModePreserveAspectRatio VideoScaleMode = "PreserveAspectRatio"
 	// VideoScaleModeStretch - Stretches the original video so it resized to the specified dimensions.
 	VideoScaleModeStretch VideoScaleMode = "Stretch"
@@ -599,14 +604,15 @@ func (c VideoScaleMode) ToPtr() *VideoScaleMode {
 type VideoType string
 
 const (
-	// VideoTypeArchive - Archive is flexible format that represents a video stream associated with wall-clock time. The video archive can either be continuous
-	// or discontinuous. An archive is discontinuous when there are gaps in the recording due to various reasons, such as the live pipeline being stopped, camera
-	// being disconnected or due to the use of event based recordings through the use of a signal gate. There is no limit to the archive duration and new video
-	// data can be appended to the existing archive at any time, as long as the same video codec and codec parameters are being used. Videos of this type are
-	// suitable for appending and long term archival.
+	// VideoTypeArchive - Archive is flexible format that represents a video stream associated with wall-clock time. The video
+	// archive can either be continuous or discontinuous. An archive is discontinuous when there are gaps in the recording due
+	// to various reasons, such as the live pipeline being stopped, camera being disconnected or due to the use of event based
+	// recordings through the use of a signal gate. There is no limit to the archive duration and new video data can be appended
+	// to the existing archive at any time, as long as the same video codec and codec parameters are being used. Videos of this
+	// type are suitable for appending and long term archival.
 	VideoTypeArchive VideoType = "Archive"
-	// VideoTypeFile - File represents a video which is stored as a single media file, such as MP4. Videos of this type are suitable to be downloaded for external
-	// consumption.
+	// VideoTypeFile - File represents a video which is stored as a single media file, such as MP4. Videos of this type are suitable
+	// to be downloaded for external consumption.
 	VideoTypeFile VideoType = "File"
 )
 

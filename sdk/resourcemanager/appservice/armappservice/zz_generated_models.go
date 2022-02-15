@@ -24,17 +24,20 @@ type APIDefinitionInfo struct {
 
 // APIKVReference - Description of site key vault references.
 type APIKVReference struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// ApiKVReference resource specific properties
 	Properties *APIKVReferenceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type APIKVReference.
-func (a APIKVReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type APIKVReferenceCollection struct {
@@ -151,17 +154,20 @@ type Address struct {
 
 // AddressResponse - Describes main public IP address and any extra virtual IPs.
 type AddressResponse struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// AddressResponse resource specific properties
 	Properties *AddressResponseProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AddressResponse.
-func (a AddressResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AddressResponseProperties - AddressResponse resource specific properties
@@ -250,23 +256,455 @@ func (a AnalysisData) MarshalJSON() ([]byte, error) {
 
 // AnalysisDefinition - Definition of Analysis
 type AnalysisDefinition struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// AnalysisDefinition resource specific properties
 	Properties *AnalysisDefinitionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AnalysisDefinition.
-func (a AnalysisDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AnalysisDefinitionProperties - AnalysisDefinition resource specific properties
 type AnalysisDefinitionProperties struct {
 	// READ-ONLY; Description of the Analysis
 	Description *string `json:"description,omitempty" azure:"ro"`
+}
+
+// AppCertificate - SSL certificate for an app.
+type AppCertificate struct {
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Certificate resource specific properties
+	Properties *AppCertificateProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AppCertificate.
+func (a AppCertificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "kind", a.Kind)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AppCertificateCollection - Collection of certificates.
+type AppCertificateCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*AppCertificate `json:"value,omitempty"`
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AppCertificateCollection.
+func (a AppCertificateCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AppCertificatePatchResource - ARM resource for a certificate.
+type AppCertificatePatchResource struct {
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// CertificatePatchResource resource specific properties
+	Properties *AppCertificatePatchResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AppCertificatePatchResource.
+func (a AppCertificatePatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "kind", a.Kind)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AppCertificatePatchResourceProperties - CertificatePatchResource resource specific properties
+type AppCertificatePatchResourceProperties struct {
+	// CNAME of the certificate to be issued via free certificate
+	CanonicalName *string `json:"canonicalName,omitempty"`
+
+	// Method of domain validation for free cert
+	DomainValidationMethod *string `json:"domainValidationMethod,omitempty"`
+
+	// Host names the certificate applies to.
+	HostNames []*string `json:"hostNames,omitempty"`
+
+	// Key Vault Csm resource Id.
+	KeyVaultID *string `json:"keyVaultId,omitempty"`
+
+	// Key Vault secret name.
+	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+
+	// Certificate password.
+	Password *string `json:"password,omitempty"`
+
+	// Pfx blob.
+	PfxBlob []byte `json:"pfxBlob,omitempty"`
+
+	// Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
+	ServerFarmID *string `json:"serverFarmId,omitempty"`
+
+	// READ-ONLY; Raw bytes of .cer file
+	CerBlob []byte `json:"cerBlob,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate expiration date.
+	ExpirationDate *time.Time `json:"expirationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Friendly name of the certificate.
+	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specification for the App Service Environment to use for the certificate.
+	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate issue Date.
+	IssueDate *time.Time `json:"issueDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate issuer.
+	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the Key Vault secret.
+	KeyVaultSecretStatus *KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; Public key hash.
+	PublicKeyHash *string `json:"publicKeyHash,omitempty" azure:"ro"`
+
+	// READ-ONLY; Self link.
+	SelfLink *string `json:"selfLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; App name.
+	SiteName *string `json:"siteName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Subject name of the certificate.
+	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate thumbprint.
+	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+
+	// READ-ONLY; Is the certificate valid?.
+	Valid *bool `json:"valid,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AppCertificatePatchResourceProperties.
+func (a AppCertificatePatchResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "canonicalName", a.CanonicalName)
+	populateByteArray(objectMap, "cerBlob", a.CerBlob, runtime.Base64StdFormat)
+	populate(objectMap, "domainValidationMethod", a.DomainValidationMethod)
+	populateTimeRFC3339(objectMap, "expirationDate", a.ExpirationDate)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "hostNames", a.HostNames)
+	populate(objectMap, "hostingEnvironmentProfile", a.HostingEnvironmentProfile)
+	populateTimeRFC3339(objectMap, "issueDate", a.IssueDate)
+	populate(objectMap, "issuer", a.Issuer)
+	populate(objectMap, "keyVaultId", a.KeyVaultID)
+	populate(objectMap, "keyVaultSecretName", a.KeyVaultSecretName)
+	populate(objectMap, "keyVaultSecretStatus", a.KeyVaultSecretStatus)
+	populate(objectMap, "password", a.Password)
+	populateByteArray(objectMap, "pfxBlob", a.PfxBlob, runtime.Base64StdFormat)
+	populate(objectMap, "publicKeyHash", a.PublicKeyHash)
+	populate(objectMap, "selfLink", a.SelfLink)
+	populate(objectMap, "serverFarmId", a.ServerFarmID)
+	populate(objectMap, "siteName", a.SiteName)
+	populate(objectMap, "subjectName", a.SubjectName)
+	populate(objectMap, "thumbprint", a.Thumbprint)
+	populate(objectMap, "valid", a.Valid)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AppCertificatePatchResourceProperties.
+func (a *AppCertificatePatchResourceProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "canonicalName":
+			err = unpopulate(val, &a.CanonicalName)
+			delete(rawMsg, key)
+		case "cerBlob":
+			err = runtime.DecodeByteArray(string(val), &a.CerBlob, runtime.Base64StdFormat)
+			delete(rawMsg, key)
+		case "domainValidationMethod":
+			err = unpopulate(val, &a.DomainValidationMethod)
+			delete(rawMsg, key)
+		case "expirationDate":
+			err = unpopulateTimeRFC3339(val, &a.ExpirationDate)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "hostNames":
+			err = unpopulate(val, &a.HostNames)
+			delete(rawMsg, key)
+		case "hostingEnvironmentProfile":
+			err = unpopulate(val, &a.HostingEnvironmentProfile)
+			delete(rawMsg, key)
+		case "issueDate":
+			err = unpopulateTimeRFC3339(val, &a.IssueDate)
+			delete(rawMsg, key)
+		case "issuer":
+			err = unpopulate(val, &a.Issuer)
+			delete(rawMsg, key)
+		case "keyVaultId":
+			err = unpopulate(val, &a.KeyVaultID)
+			delete(rawMsg, key)
+		case "keyVaultSecretName":
+			err = unpopulate(val, &a.KeyVaultSecretName)
+			delete(rawMsg, key)
+		case "keyVaultSecretStatus":
+			err = unpopulate(val, &a.KeyVaultSecretStatus)
+			delete(rawMsg, key)
+		case "password":
+			err = unpopulate(val, &a.Password)
+			delete(rawMsg, key)
+		case "pfxBlob":
+			err = runtime.DecodeByteArray(string(val), &a.PfxBlob, runtime.Base64StdFormat)
+			delete(rawMsg, key)
+		case "publicKeyHash":
+			err = unpopulate(val, &a.PublicKeyHash)
+			delete(rawMsg, key)
+		case "selfLink":
+			err = unpopulate(val, &a.SelfLink)
+			delete(rawMsg, key)
+		case "serverFarmId":
+			err = unpopulate(val, &a.ServerFarmID)
+			delete(rawMsg, key)
+		case "siteName":
+			err = unpopulate(val, &a.SiteName)
+			delete(rawMsg, key)
+		case "subjectName":
+			err = unpopulate(val, &a.SubjectName)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &a.Thumbprint)
+			delete(rawMsg, key)
+		case "valid":
+			err = unpopulate(val, &a.Valid)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AppCertificateProperties - Certificate resource specific properties
+type AppCertificateProperties struct {
+	// CNAME of the certificate to be issued via free certificate
+	CanonicalName *string `json:"canonicalName,omitempty"`
+
+	// Method of domain validation for free cert
+	DomainValidationMethod *string `json:"domainValidationMethod,omitempty"`
+
+	// Host names the certificate applies to.
+	HostNames []*string `json:"hostNames,omitempty"`
+
+	// Key Vault Csm resource Id.
+	KeyVaultID *string `json:"keyVaultId,omitempty"`
+
+	// Key Vault secret name.
+	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+
+	// Certificate password.
+	Password *string `json:"password,omitempty"`
+
+	// Pfx blob.
+	PfxBlob []byte `json:"pfxBlob,omitempty"`
+
+	// Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
+	ServerFarmID *string `json:"serverFarmId,omitempty"`
+
+	// READ-ONLY; Raw bytes of .cer file
+	CerBlob []byte `json:"cerBlob,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate expiration date.
+	ExpirationDate *time.Time `json:"expirationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Friendly name of the certificate.
+	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specification for the App Service Environment to use for the certificate.
+	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate issue Date.
+	IssueDate *time.Time `json:"issueDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate issuer.
+	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the Key Vault secret.
+	KeyVaultSecretStatus *KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; Public key hash.
+	PublicKeyHash *string `json:"publicKeyHash,omitempty" azure:"ro"`
+
+	// READ-ONLY; Self link.
+	SelfLink *string `json:"selfLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; App name.
+	SiteName *string `json:"siteName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Subject name of the certificate.
+	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate thumbprint.
+	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+
+	// READ-ONLY; Is the certificate valid?.
+	Valid *bool `json:"valid,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AppCertificateProperties.
+func (a AppCertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "canonicalName", a.CanonicalName)
+	populateByteArray(objectMap, "cerBlob", a.CerBlob, runtime.Base64StdFormat)
+	populate(objectMap, "domainValidationMethod", a.DomainValidationMethod)
+	populateTimeRFC3339(objectMap, "expirationDate", a.ExpirationDate)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "hostNames", a.HostNames)
+	populate(objectMap, "hostingEnvironmentProfile", a.HostingEnvironmentProfile)
+	populateTimeRFC3339(objectMap, "issueDate", a.IssueDate)
+	populate(objectMap, "issuer", a.Issuer)
+	populate(objectMap, "keyVaultId", a.KeyVaultID)
+	populate(objectMap, "keyVaultSecretName", a.KeyVaultSecretName)
+	populate(objectMap, "keyVaultSecretStatus", a.KeyVaultSecretStatus)
+	populate(objectMap, "password", a.Password)
+	populateByteArray(objectMap, "pfxBlob", a.PfxBlob, runtime.Base64StdFormat)
+	populate(objectMap, "publicKeyHash", a.PublicKeyHash)
+	populate(objectMap, "selfLink", a.SelfLink)
+	populate(objectMap, "serverFarmId", a.ServerFarmID)
+	populate(objectMap, "siteName", a.SiteName)
+	populate(objectMap, "subjectName", a.SubjectName)
+	populate(objectMap, "thumbprint", a.Thumbprint)
+	populate(objectMap, "valid", a.Valid)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AppCertificateProperties.
+func (a *AppCertificateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "canonicalName":
+			err = unpopulate(val, &a.CanonicalName)
+			delete(rawMsg, key)
+		case "cerBlob":
+			err = runtime.DecodeByteArray(string(val), &a.CerBlob, runtime.Base64StdFormat)
+			delete(rawMsg, key)
+		case "domainValidationMethod":
+			err = unpopulate(val, &a.DomainValidationMethod)
+			delete(rawMsg, key)
+		case "expirationDate":
+			err = unpopulateTimeRFC3339(val, &a.ExpirationDate)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "hostNames":
+			err = unpopulate(val, &a.HostNames)
+			delete(rawMsg, key)
+		case "hostingEnvironmentProfile":
+			err = unpopulate(val, &a.HostingEnvironmentProfile)
+			delete(rawMsg, key)
+		case "issueDate":
+			err = unpopulateTimeRFC3339(val, &a.IssueDate)
+			delete(rawMsg, key)
+		case "issuer":
+			err = unpopulate(val, &a.Issuer)
+			delete(rawMsg, key)
+		case "keyVaultId":
+			err = unpopulate(val, &a.KeyVaultID)
+			delete(rawMsg, key)
+		case "keyVaultSecretName":
+			err = unpopulate(val, &a.KeyVaultSecretName)
+			delete(rawMsg, key)
+		case "keyVaultSecretStatus":
+			err = unpopulate(val, &a.KeyVaultSecretStatus)
+			delete(rawMsg, key)
+		case "password":
+			err = unpopulate(val, &a.Password)
+			delete(rawMsg, key)
+		case "pfxBlob":
+			err = runtime.DecodeByteArray(string(val), &a.PfxBlob, runtime.Base64StdFormat)
+			delete(rawMsg, key)
+		case "publicKeyHash":
+			err = unpopulate(val, &a.PublicKeyHash)
+			delete(rawMsg, key)
+		case "selfLink":
+			err = unpopulate(val, &a.SelfLink)
+			delete(rawMsg, key)
+		case "serverFarmId":
+			err = unpopulate(val, &a.ServerFarmID)
+			delete(rawMsg, key)
+		case "siteName":
+			err = unpopulate(val, &a.SiteName)
+			delete(rawMsg, key)
+		case "subjectName":
+			err = unpopulate(val, &a.SubjectName)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &a.Thumbprint)
+			delete(rawMsg, key)
+		case "valid":
+			err = unpopulate(val, &a.Valid)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AppInsightsWebAppStackSettings - App Insights Web App stack settings.
@@ -290,1466 +728,6 @@ type AppRegistration struct {
 
 	// The app setting name that contains the app secret.
 	AppSecretSettingName *string `json:"appSecretSettingName,omitempty"`
-}
-
-// AppServiceCertificate - Key Vault container for a certificate that is purchased through Azure.
-type AppServiceCertificate struct {
-	// Key Vault resource Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
-
-	// Key Vault secret name.
-	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
-
-	// READ-ONLY; Status of the Key Vault secret.
-	ProvisioningState *KeyVaultSecretStatus `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// AppServiceCertificateCollection - Collection of certificate order certificates.
-type AppServiceCertificateCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*AppServiceCertificateResource `json:"value,omitempty"`
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceCertificateCollection.
-func (a AppServiceCertificateCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceCertificateOrder - SSL certificate purchase order.
-type AppServiceCertificateOrder struct {
-	Resource
-	// AppServiceCertificateOrder resource specific properties
-	Properties *AppServiceCertificateOrderProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceCertificateOrder.
-func (a AppServiceCertificateOrder) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceCertificateOrderCollection - Collection of certificate orders.
-type AppServiceCertificateOrderCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*AppServiceCertificateOrder `json:"value,omitempty"`
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceCertificateOrderCollection.
-func (a AppServiceCertificateOrderCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceCertificateOrderPatchResource - ARM resource for a certificate order that is purchased through Azure.
-type AppServiceCertificateOrderPatchResource struct {
-	ProxyOnlyResource
-	// AppServiceCertificateOrderPatchResource resource specific properties
-	Properties *AppServiceCertificateOrderPatchResourceProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceCertificateOrderPatchResource.
-func (a AppServiceCertificateOrderPatchResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceCertificateOrderPatchResourceProperties - AppServiceCertificateOrderPatchResource resource specific properties
-type AppServiceCertificateOrderPatchResourceProperties struct {
-	// REQUIRED; Certificate product type.
-	ProductType *CertificateProductType `json:"productType,omitempty"`
-
-	// true if the certificate should be automatically renewed when it expires; otherwise, false.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
-
-	// State of the Key Vault secret.
-	Certificates map[string]*AppServiceCertificate `json:"certificates,omitempty"`
-
-	// Last CSR that was created for this order.
-	Csr *string `json:"csr,omitempty"`
-
-	// Certificate distinguished name.
-	DistinguishedName *string `json:"distinguishedName,omitempty"`
-
-	// Certificate key size.
-	KeySize *int32 `json:"keySize,omitempty"`
-
-	// Duration in years (must be 1).
-	ValidityInYears *int32 `json:"validityInYears,omitempty"`
-
-	// READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
-	AppServiceCertificateNotRenewableReasons []*AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem `json:"appServiceCertificateNotRenewableReasons,omitempty" azure:"ro"`
-
-	// READ-ONLY; Contact info
-	Contact *CertificateOrderContact `json:"contact,omitempty" azure:"ro"`
-
-	// READ-ONLY; Domain verification token.
-	DomainVerificationToken *string `json:"domainVerificationToken,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate expiration time.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Intermediate certificate.
-	Intermediate *CertificateDetails `json:"intermediate,omitempty" azure:"ro"`
-
-	// READ-ONLY; true if private key is external; otherwise, false.
-	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate last issuance time.
-	LastCertificateIssuanceTime *time.Time `json:"lastCertificateIssuanceTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Time stamp when the certificate would be auto renewed next
-	NextAutoRenewalTimeStamp *time.Time `json:"nextAutoRenewalTimeStamp,omitempty" azure:"ro"`
-
-	// READ-ONLY; Status of certificate order.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Root certificate.
-	Root *CertificateDetails `json:"root,omitempty" azure:"ro"`
-
-	// READ-ONLY; Current serial number of the certificate.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
-
-	// READ-ONLY; Signed certificate.
-	SignedCertificate *CertificateDetails `json:"signedCertificate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Current order status.
-	Status *CertificateOrderStatus `json:"status,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceCertificateOrderPatchResourceProperties.
-func (a AppServiceCertificateOrderPatchResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appServiceCertificateNotRenewableReasons", a.AppServiceCertificateNotRenewableReasons)
-	populate(objectMap, "autoRenew", a.AutoRenew)
-	populate(objectMap, "certificates", a.Certificates)
-	populate(objectMap, "contact", a.Contact)
-	populate(objectMap, "csr", a.Csr)
-	populate(objectMap, "distinguishedName", a.DistinguishedName)
-	populate(objectMap, "domainVerificationToken", a.DomainVerificationToken)
-	populateTimeRFC3339(objectMap, "expirationTime", a.ExpirationTime)
-	populate(objectMap, "intermediate", a.Intermediate)
-	populate(objectMap, "isPrivateKeyExternal", a.IsPrivateKeyExternal)
-	populate(objectMap, "keySize", a.KeySize)
-	populateTimeRFC3339(objectMap, "lastCertificateIssuanceTime", a.LastCertificateIssuanceTime)
-	populateTimeRFC3339(objectMap, "nextAutoRenewalTimeStamp", a.NextAutoRenewalTimeStamp)
-	populate(objectMap, "productType", a.ProductType)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "root", a.Root)
-	populate(objectMap, "serialNumber", a.SerialNumber)
-	populate(objectMap, "signedCertificate", a.SignedCertificate)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "validityInYears", a.ValidityInYears)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AppServiceCertificateOrderPatchResourceProperties.
-func (a *AppServiceCertificateOrderPatchResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appServiceCertificateNotRenewableReasons":
-			err = unpopulate(val, &a.AppServiceCertificateNotRenewableReasons)
-			delete(rawMsg, key)
-		case "autoRenew":
-			err = unpopulate(val, &a.AutoRenew)
-			delete(rawMsg, key)
-		case "certificates":
-			err = unpopulate(val, &a.Certificates)
-			delete(rawMsg, key)
-		case "contact":
-			err = unpopulate(val, &a.Contact)
-			delete(rawMsg, key)
-		case "csr":
-			err = unpopulate(val, &a.Csr)
-			delete(rawMsg, key)
-		case "distinguishedName":
-			err = unpopulate(val, &a.DistinguishedName)
-			delete(rawMsg, key)
-		case "domainVerificationToken":
-			err = unpopulate(val, &a.DomainVerificationToken)
-			delete(rawMsg, key)
-		case "expirationTime":
-			err = unpopulateTimeRFC3339(val, &a.ExpirationTime)
-			delete(rawMsg, key)
-		case "intermediate":
-			err = unpopulate(val, &a.Intermediate)
-			delete(rawMsg, key)
-		case "isPrivateKeyExternal":
-			err = unpopulate(val, &a.IsPrivateKeyExternal)
-			delete(rawMsg, key)
-		case "keySize":
-			err = unpopulate(val, &a.KeySize)
-			delete(rawMsg, key)
-		case "lastCertificateIssuanceTime":
-			err = unpopulateTimeRFC3339(val, &a.LastCertificateIssuanceTime)
-			delete(rawMsg, key)
-		case "nextAutoRenewalTimeStamp":
-			err = unpopulateTimeRFC3339(val, &a.NextAutoRenewalTimeStamp)
-			delete(rawMsg, key)
-		case "productType":
-			err = unpopulate(val, &a.ProductType)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "root":
-			err = unpopulate(val, &a.Root)
-			delete(rawMsg, key)
-		case "serialNumber":
-			err = unpopulate(val, &a.SerialNumber)
-			delete(rawMsg, key)
-		case "signedCertificate":
-			err = unpopulate(val, &a.SignedCertificate)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &a.Status)
-			delete(rawMsg, key)
-		case "validityInYears":
-			err = unpopulate(val, &a.ValidityInYears)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AppServiceCertificateOrderProperties - AppServiceCertificateOrder resource specific properties
-type AppServiceCertificateOrderProperties struct {
-	// REQUIRED; Certificate product type.
-	ProductType *CertificateProductType `json:"productType,omitempty"`
-
-	// true if the certificate should be automatically renewed when it expires; otherwise, false.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
-
-	// State of the Key Vault secret.
-	Certificates map[string]*AppServiceCertificate `json:"certificates,omitempty"`
-
-	// Last CSR that was created for this order.
-	Csr *string `json:"csr,omitempty"`
-
-	// Certificate distinguished name.
-	DistinguishedName *string `json:"distinguishedName,omitempty"`
-
-	// Certificate key size.
-	KeySize *int32 `json:"keySize,omitempty"`
-
-	// Duration in years (must be 1).
-	ValidityInYears *int32 `json:"validityInYears,omitempty"`
-
-	// READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
-	AppServiceCertificateNotRenewableReasons []*AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem `json:"appServiceCertificateNotRenewableReasons,omitempty" azure:"ro"`
-
-	// READ-ONLY; Contact info
-	Contact *CertificateOrderContact `json:"contact,omitempty" azure:"ro"`
-
-	// READ-ONLY; Domain verification token.
-	DomainVerificationToken *string `json:"domainVerificationToken,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate expiration time.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Intermediate certificate.
-	Intermediate *CertificateDetails `json:"intermediate,omitempty" azure:"ro"`
-
-	// READ-ONLY; true if private key is external; otherwise, false.
-	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate last issuance time.
-	LastCertificateIssuanceTime *time.Time `json:"lastCertificateIssuanceTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Time stamp when the certificate would be auto renewed next
-	NextAutoRenewalTimeStamp *time.Time `json:"nextAutoRenewalTimeStamp,omitempty" azure:"ro"`
-
-	// READ-ONLY; Status of certificate order.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Root certificate.
-	Root *CertificateDetails `json:"root,omitempty" azure:"ro"`
-
-	// READ-ONLY; Current serial number of the certificate.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
-
-	// READ-ONLY; Signed certificate.
-	SignedCertificate *CertificateDetails `json:"signedCertificate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Current order status.
-	Status *CertificateOrderStatus `json:"status,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceCertificateOrderProperties.
-func (a AppServiceCertificateOrderProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appServiceCertificateNotRenewableReasons", a.AppServiceCertificateNotRenewableReasons)
-	populate(objectMap, "autoRenew", a.AutoRenew)
-	populate(objectMap, "certificates", a.Certificates)
-	populate(objectMap, "contact", a.Contact)
-	populate(objectMap, "csr", a.Csr)
-	populate(objectMap, "distinguishedName", a.DistinguishedName)
-	populate(objectMap, "domainVerificationToken", a.DomainVerificationToken)
-	populateTimeRFC3339(objectMap, "expirationTime", a.ExpirationTime)
-	populate(objectMap, "intermediate", a.Intermediate)
-	populate(objectMap, "isPrivateKeyExternal", a.IsPrivateKeyExternal)
-	populate(objectMap, "keySize", a.KeySize)
-	populateTimeRFC3339(objectMap, "lastCertificateIssuanceTime", a.LastCertificateIssuanceTime)
-	populateTimeRFC3339(objectMap, "nextAutoRenewalTimeStamp", a.NextAutoRenewalTimeStamp)
-	populate(objectMap, "productType", a.ProductType)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "root", a.Root)
-	populate(objectMap, "serialNumber", a.SerialNumber)
-	populate(objectMap, "signedCertificate", a.SignedCertificate)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "validityInYears", a.ValidityInYears)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AppServiceCertificateOrderProperties.
-func (a *AppServiceCertificateOrderProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appServiceCertificateNotRenewableReasons":
-			err = unpopulate(val, &a.AppServiceCertificateNotRenewableReasons)
-			delete(rawMsg, key)
-		case "autoRenew":
-			err = unpopulate(val, &a.AutoRenew)
-			delete(rawMsg, key)
-		case "certificates":
-			err = unpopulate(val, &a.Certificates)
-			delete(rawMsg, key)
-		case "contact":
-			err = unpopulate(val, &a.Contact)
-			delete(rawMsg, key)
-		case "csr":
-			err = unpopulate(val, &a.Csr)
-			delete(rawMsg, key)
-		case "distinguishedName":
-			err = unpopulate(val, &a.DistinguishedName)
-			delete(rawMsg, key)
-		case "domainVerificationToken":
-			err = unpopulate(val, &a.DomainVerificationToken)
-			delete(rawMsg, key)
-		case "expirationTime":
-			err = unpopulateTimeRFC3339(val, &a.ExpirationTime)
-			delete(rawMsg, key)
-		case "intermediate":
-			err = unpopulate(val, &a.Intermediate)
-			delete(rawMsg, key)
-		case "isPrivateKeyExternal":
-			err = unpopulate(val, &a.IsPrivateKeyExternal)
-			delete(rawMsg, key)
-		case "keySize":
-			err = unpopulate(val, &a.KeySize)
-			delete(rawMsg, key)
-		case "lastCertificateIssuanceTime":
-			err = unpopulateTimeRFC3339(val, &a.LastCertificateIssuanceTime)
-			delete(rawMsg, key)
-		case "nextAutoRenewalTimeStamp":
-			err = unpopulateTimeRFC3339(val, &a.NextAutoRenewalTimeStamp)
-			delete(rawMsg, key)
-		case "productType":
-			err = unpopulate(val, &a.ProductType)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "root":
-			err = unpopulate(val, &a.Root)
-			delete(rawMsg, key)
-		case "serialNumber":
-			err = unpopulate(val, &a.SerialNumber)
-			delete(rawMsg, key)
-		case "signedCertificate":
-			err = unpopulate(val, &a.SignedCertificate)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &a.Status)
-			delete(rawMsg, key)
-		case "validityInYears":
-			err = unpopulate(val, &a.ValidityInYears)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AppServiceCertificateOrdersBeginCreateOrUpdateCertificateOptions contains the optional parameters for the AppServiceCertificateOrders.BeginCreateOrUpdateCertificate
-// method.
-type AppServiceCertificateOrdersBeginCreateOrUpdateCertificateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersBeginCreateOrUpdateOptions contains the optional parameters for the AppServiceCertificateOrders.BeginCreateOrUpdate method.
-type AppServiceCertificateOrdersBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersDeleteCertificateOptions contains the optional parameters for the AppServiceCertificateOrders.DeleteCertificate method.
-type AppServiceCertificateOrdersDeleteCertificateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersDeleteOptions contains the optional parameters for the AppServiceCertificateOrders.Delete method.
-type AppServiceCertificateOrdersDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersGetCertificateOptions contains the optional parameters for the AppServiceCertificateOrders.GetCertificate method.
-type AppServiceCertificateOrdersGetCertificateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersGetOptions contains the optional parameters for the AppServiceCertificateOrders.Get method.
-type AppServiceCertificateOrdersGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersListByResourceGroupOptions contains the optional parameters for the AppServiceCertificateOrders.ListByResourceGroup method.
-type AppServiceCertificateOrdersListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersListCertificatesOptions contains the optional parameters for the AppServiceCertificateOrders.ListCertificates method.
-type AppServiceCertificateOrdersListCertificatesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersListOptions contains the optional parameters for the AppServiceCertificateOrders.List method.
-type AppServiceCertificateOrdersListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersReissueOptions contains the optional parameters for the AppServiceCertificateOrders.Reissue method.
-type AppServiceCertificateOrdersReissueOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersRenewOptions contains the optional parameters for the AppServiceCertificateOrders.Renew method.
-type AppServiceCertificateOrdersRenewOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersResendEmailOptions contains the optional parameters for the AppServiceCertificateOrders.ResendEmail method.
-type AppServiceCertificateOrdersResendEmailOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersResendRequestEmailsOptions contains the optional parameters for the AppServiceCertificateOrders.ResendRequestEmails method.
-type AppServiceCertificateOrdersResendRequestEmailsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersRetrieveCertificateActionsOptions contains the optional parameters for the AppServiceCertificateOrders.RetrieveCertificateActions
-// method.
-type AppServiceCertificateOrdersRetrieveCertificateActionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersRetrieveCertificateEmailHistoryOptions contains the optional parameters for the AppServiceCertificateOrders.RetrieveCertificateEmailHistory
-// method.
-type AppServiceCertificateOrdersRetrieveCertificateEmailHistoryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersRetrieveSiteSealOptions contains the optional parameters for the AppServiceCertificateOrders.RetrieveSiteSeal method.
-type AppServiceCertificateOrdersRetrieveSiteSealOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersUpdateCertificateOptions contains the optional parameters for the AppServiceCertificateOrders.UpdateCertificate method.
-type AppServiceCertificateOrdersUpdateCertificateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersUpdateOptions contains the optional parameters for the AppServiceCertificateOrders.Update method.
-type AppServiceCertificateOrdersUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersValidatePurchaseInformationOptions contains the optional parameters for the AppServiceCertificateOrders.ValidatePurchaseInformation
-// method.
-type AppServiceCertificateOrdersValidatePurchaseInformationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificateOrdersVerifyDomainOwnershipOptions contains the optional parameters for the AppServiceCertificateOrders.VerifyDomainOwnership method.
-type AppServiceCertificateOrdersVerifyDomainOwnershipOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceCertificatePatchResource - Key Vault container ARM resource for a certificate that is purchased through Azure.
-type AppServiceCertificatePatchResource struct {
-	ProxyOnlyResource
-	// Core resource properties
-	Properties *AppServiceCertificate `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceCertificatePatchResource.
-func (a AppServiceCertificatePatchResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceCertificateResource - Key Vault container ARM resource for a certificate that is purchased through Azure.
-type AppServiceCertificateResource struct {
-	Resource
-	// Core resource properties
-	Properties *AppServiceCertificate `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceCertificateResource.
-func (a AppServiceCertificateResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceEnvironment - Description of an App Service Environment.
-type AppServiceEnvironment struct {
-	// REQUIRED; Description of the Virtual Network.
-	VirtualNetwork *VirtualNetworkProfile `json:"virtualNetwork,omitempty"`
-
-	// Custom settings for changing the behavior of the App Service Environment.
-	ClusterSettings []*NameValuePair `json:"clusterSettings,omitempty"`
-
-	// DNS suffix of the App Service Environment.
-	DNSSuffix *string `json:"dnsSuffix,omitempty"`
-
-	// Dedicated Host Count
-	DedicatedHostCount *int32 `json:"dedicatedHostCount,omitempty"`
-
-	// Scale factor for front-ends.
-	FrontEndScaleFactor *int32 `json:"frontEndScaleFactor,omitempty"`
-
-	// Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment.
-	InternalLoadBalancingMode *LoadBalancingMode `json:"internalLoadBalancingMode,omitempty"`
-
-	// Number of IP SSL addresses reserved for the App Service Environment.
-	IpsslAddressCount *int32 `json:"ipsslAddressCount,omitempty"`
-
-	// Front-end VM size, e.g. "Medium", "Large".
-	MultiSize *string `json:"multiSize,omitempty"`
-
-	// User added ip ranges to whitelist on ASE db
-	UserWhitelistedIPRanges []*string `json:"userWhitelistedIpRanges,omitempty"`
-
-	// Whether or not this App Service Environment is zone-redundant.
-	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
-
-	// READ-ONLY; Flag that displays whether an ASE has linux workers or not
-	HasLinuxWorkers *bool `json:"hasLinuxWorkers,omitempty" azure:"ro"`
-
-	// READ-ONLY; Maximum number of VMs in the App Service Environment.
-	MaximumNumberOfMachines *int32 `json:"maximumNumberOfMachines,omitempty" azure:"ro"`
-
-	// READ-ONLY; Number of front-end instances.
-	MultiRoleCount *int32 `json:"multiRoleCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the App Service Environment.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Current status of the App Service Environment.
-	Status *HostingEnvironmentStatus `json:"status,omitempty" azure:"ro"`
-
-	// READ-ONLY; true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is
-	// no longer available (most likely because NSG blocked the
-	// incoming traffic).
-	Suspended *bool `json:"suspended,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceEnvironment.
-func (a AppServiceEnvironment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "clusterSettings", a.ClusterSettings)
-	populate(objectMap, "dnsSuffix", a.DNSSuffix)
-	populate(objectMap, "dedicatedHostCount", a.DedicatedHostCount)
-	populate(objectMap, "frontEndScaleFactor", a.FrontEndScaleFactor)
-	populate(objectMap, "hasLinuxWorkers", a.HasLinuxWorkers)
-	populate(objectMap, "internalLoadBalancingMode", a.InternalLoadBalancingMode)
-	populate(objectMap, "ipsslAddressCount", a.IpsslAddressCount)
-	populate(objectMap, "maximumNumberOfMachines", a.MaximumNumberOfMachines)
-	populate(objectMap, "multiRoleCount", a.MultiRoleCount)
-	populate(objectMap, "multiSize", a.MultiSize)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "suspended", a.Suspended)
-	populate(objectMap, "userWhitelistedIpRanges", a.UserWhitelistedIPRanges)
-	populate(objectMap, "virtualNetwork", a.VirtualNetwork)
-	populate(objectMap, "zoneRedundant", a.ZoneRedundant)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceEnvironmentCollection - Collection of App Service Environments.
-type AppServiceEnvironmentCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*AppServiceEnvironmentResource `json:"value,omitempty"`
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceEnvironmentCollection.
-func (a AppServiceEnvironmentCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceEnvironmentPatchResource - ARM resource for a app service environment.
-type AppServiceEnvironmentPatchResource struct {
-	ProxyOnlyResource
-	// Core resource properties
-	Properties *AppServiceEnvironment `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceEnvironmentPatchResource.
-func (a AppServiceEnvironmentPatchResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceEnvironmentResource - App Service Environment ARM resource.
-type AppServiceEnvironmentResource struct {
-	Resource
-	// Core resource properties
-	Properties *AppServiceEnvironment `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServiceEnvironmentResource.
-func (a AppServiceEnvironmentResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the AppServiceEnvironments.BeginApproveOrRejectPrivateEndpointConnection
-// method.
-type AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsBeginChangeVnetOptions contains the optional parameters for the AppServiceEnvironments.BeginChangeVnet method.
-type AppServiceEnvironmentsBeginChangeVnetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions contains the optional parameters for the AppServiceEnvironments.BeginCreateOrUpdateMultiRolePool
-// method.
-type AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsBeginCreateOrUpdateOptions contains the optional parameters for the AppServiceEnvironments.BeginCreateOrUpdate method.
-type AppServiceEnvironmentsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions contains the optional parameters for the AppServiceEnvironments.BeginCreateOrUpdateWorkerPool
-// method.
-type AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsBeginDeleteOptions contains the optional parameters for the AppServiceEnvironments.BeginDelete method.
-type AppServiceEnvironmentsBeginDeleteOptions struct {
-	// Specify <code>true</code> to force the deletion even if the App Service Environment contains resources. The default is <code>false</code>.
-	ForceDelete *bool
-}
-
-// AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the AppServiceEnvironments.BeginDeletePrivateEndpointConnection
-// method.
-type AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsBeginResumeOptions contains the optional parameters for the AppServiceEnvironments.BeginResume method.
-type AppServiceEnvironmentsBeginResumeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsBeginSuspendOptions contains the optional parameters for the AppServiceEnvironments.BeginSuspend method.
-type AppServiceEnvironmentsBeginSuspendOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetAseV3NetworkingConfigurationOptions contains the optional parameters for the AppServiceEnvironments.GetAseV3NetworkingConfiguration
-// method.
-type AppServiceEnvironmentsGetAseV3NetworkingConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetDiagnosticsItemOptions contains the optional parameters for the AppServiceEnvironments.GetDiagnosticsItem method.
-type AppServiceEnvironmentsGetDiagnosticsItemOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AppServiceEnvironments.GetInboundNetworkDependenciesEndpoints
-// method.
-type AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetMultiRolePoolOptions contains the optional parameters for the AppServiceEnvironments.GetMultiRolePool method.
-type AppServiceEnvironmentsGetMultiRolePoolOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetOptions contains the optional parameters for the AppServiceEnvironments.Get method.
-type AppServiceEnvironmentsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AppServiceEnvironments.GetOutboundNetworkDependenciesEndpoints
-// method.
-type AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions contains the optional parameters for the AppServiceEnvironments.GetPrivateEndpointConnectionList
-// method.
-type AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetPrivateEndpointConnectionOptions contains the optional parameters for the AppServiceEnvironments.GetPrivateEndpointConnection
-// method.
-type AppServiceEnvironmentsGetPrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetPrivateLinkResourcesOptions contains the optional parameters for the AppServiceEnvironments.GetPrivateLinkResources method.
-type AppServiceEnvironmentsGetPrivateLinkResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetVipInfoOptions contains the optional parameters for the AppServiceEnvironments.GetVipInfo method.
-type AppServiceEnvironmentsGetVipInfoOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsGetWorkerPoolOptions contains the optional parameters for the AppServiceEnvironments.GetWorkerPool method.
-type AppServiceEnvironmentsGetWorkerPoolOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListAppServicePlansOptions contains the optional parameters for the AppServiceEnvironments.ListAppServicePlans method.
-type AppServiceEnvironmentsListAppServicePlansOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListByResourceGroupOptions contains the optional parameters for the AppServiceEnvironments.ListByResourceGroup method.
-type AppServiceEnvironmentsListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListCapacitiesOptions contains the optional parameters for the AppServiceEnvironments.ListCapacities method.
-type AppServiceEnvironmentsListCapacitiesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListDiagnosticsOptions contains the optional parameters for the AppServiceEnvironments.ListDiagnostics method.
-type AppServiceEnvironmentsListDiagnosticsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions contains the optional parameters for the AppServiceEnvironments.ListMultiRoleMetricDefinitions
-// method.
-type AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions contains the optional parameters for the AppServiceEnvironments.ListMultiRolePoolInstanceMetricDefinitions
-// method.
-type AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListMultiRolePoolSKUsOptions contains the optional parameters for the AppServiceEnvironments.ListMultiRolePoolSKUs method.
-type AppServiceEnvironmentsListMultiRolePoolSKUsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListMultiRolePoolsOptions contains the optional parameters for the AppServiceEnvironments.ListMultiRolePools method.
-type AppServiceEnvironmentsListMultiRolePoolsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListMultiRoleUsagesOptions contains the optional parameters for the AppServiceEnvironments.ListMultiRoleUsages method.
-type AppServiceEnvironmentsListMultiRoleUsagesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListOperationsOptions contains the optional parameters for the AppServiceEnvironments.ListOperations method.
-type AppServiceEnvironmentsListOperationsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListOptions contains the optional parameters for the AppServiceEnvironments.List method.
-type AppServiceEnvironmentsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListUsagesOptions contains the optional parameters for the AppServiceEnvironments.ListUsages method.
-type AppServiceEnvironmentsListUsagesOptions struct {
-	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2')
-	// and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
-	Filter *string
-}
-
-// AppServiceEnvironmentsListWebAppsOptions contains the optional parameters for the AppServiceEnvironments.ListWebApps method.
-type AppServiceEnvironmentsListWebAppsOptions struct {
-	// Comma separated list of app properties to include.
-	PropertiesToInclude *string
-}
-
-// AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions contains the optional parameters for the AppServiceEnvironments.ListWebWorkerMetricDefinitions
-// method.
-type AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListWebWorkerUsagesOptions contains the optional parameters for the AppServiceEnvironments.ListWebWorkerUsages method.
-type AppServiceEnvironmentsListWebWorkerUsagesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions contains the optional parameters for the AppServiceEnvironments.ListWorkerPoolInstanceMetricDefinitions
-// method.
-type AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListWorkerPoolSKUsOptions contains the optional parameters for the AppServiceEnvironments.ListWorkerPoolSKUs method.
-type AppServiceEnvironmentsListWorkerPoolSKUsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsListWorkerPoolsOptions contains the optional parameters for the AppServiceEnvironments.ListWorkerPools method.
-type AppServiceEnvironmentsListWorkerPoolsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsRebootOptions contains the optional parameters for the AppServiceEnvironments.Reboot method.
-type AppServiceEnvironmentsRebootOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsUpdateAseNetworkingConfigurationOptions contains the optional parameters for the AppServiceEnvironments.UpdateAseNetworkingConfiguration
-// method.
-type AppServiceEnvironmentsUpdateAseNetworkingConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsUpdateMultiRolePoolOptions contains the optional parameters for the AppServiceEnvironments.UpdateMultiRolePool method.
-type AppServiceEnvironmentsUpdateMultiRolePoolOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsUpdateOptions contains the optional parameters for the AppServiceEnvironments.Update method.
-type AppServiceEnvironmentsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServiceEnvironmentsUpdateWorkerPoolOptions contains the optional parameters for the AppServiceEnvironments.UpdateWorkerPool method.
-type AppServiceEnvironmentsUpdateWorkerPoolOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlan - App Service plan.
-type AppServicePlan struct {
-	Resource
-	// Extended Location.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
-
-	// AppServicePlan resource specific properties
-	Properties *AppServicePlanProperties `json:"properties,omitempty"`
-
-	// Description of a SKU for a scalable resource.
-	SKU *SKUDescription `json:"sku,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServicePlan.
-func (a AppServicePlan) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "extendedLocation", a.ExtendedLocation)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "sku", a.SKU)
-	return json.Marshal(objectMap)
-}
-
-// AppServicePlanCollection - Collection of App Service plans.
-type AppServicePlanCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*AppServicePlan `json:"value,omitempty"`
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServicePlanCollection.
-func (a AppServicePlanCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// AppServicePlanPatchResource - ARM resource for a app service plan.
-type AppServicePlanPatchResource struct {
-	ProxyOnlyResource
-	// AppServicePlanPatchResource resource specific properties
-	Properties *AppServicePlanPatchResourceProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServicePlanPatchResource.
-func (a AppServicePlanPatchResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppServicePlanPatchResourceProperties - AppServicePlanPatchResource resource specific properties
-type AppServicePlanPatchResourceProperties struct {
-	// ServerFarm supports ElasticScale. Apps in this plan will scale as if the ServerFarm was ElasticPremium sku
-	ElasticScaleEnabled *bool `json:"elasticScaleEnabled,omitempty"`
-
-	// The time when the server farm free offer expires.
-	FreeOfferExpirationTime *time.Time `json:"freeOfferExpirationTime,omitempty"`
-
-	// Specification for the App Service Environment to use for the App Service plan.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
-
-	// If Hyper-V container app service plan true, false otherwise.
-	HyperV *bool `json:"hyperV,omitempty"`
-
-	// If true, this App Service Plan owns spot instances.
-	IsSpot *bool `json:"isSpot,omitempty"`
-
-	// Obsolete: If Hyper-V container app service plan true, false otherwise.
-	IsXenon *bool `json:"isXenon,omitempty"`
-
-	// Specification for the Kubernetes Environment to use for the App Service plan.
-	KubeEnvironmentProfile *KubeEnvironmentProfile `json:"kubeEnvironmentProfile,omitempty"`
-
-	// Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
-	MaximumElasticWorkerCount *int32 `json:"maximumElasticWorkerCount,omitempty"`
-
-	// If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances
-	// of the plan.
-	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
-
-	// If Linux app service plan true, false otherwise.
-	Reserved *bool `json:"reserved,omitempty"`
-
-	// The time when the server farm expires. Valid only if it is a spot server farm.
-	SpotExpirationTime *time.Time `json:"spotExpirationTime,omitempty"`
-
-	// Scaling worker count.
-	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
-
-	// Scaling worker size ID.
-	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
-
-	// Target worker tier assigned to the App Service plan.
-	WorkerTierName *string `json:"workerTierName,omitempty"`
-
-	// If true, this App Service Plan will perform availability zone balancing. If false, this App Service Plan will not perform availability zone balancing.
-	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
-
-	// READ-ONLY; Geographical location for the App Service plan.
-	GeoRegion *string `json:"geoRegion,omitempty" azure:"ro"`
-
-	// READ-ONLY; Maximum number of instances that can be assigned to this App Service plan.
-	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty" azure:"ro"`
-
-	// READ-ONLY; Number of apps assigned to this App Service plan.
-	NumberOfSites *int32 `json:"numberOfSites,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the App Service Plan.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource group of the App Service plan.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
-
-	// READ-ONLY; App Service plan status.
-	Status *StatusOptions `json:"status,omitempty" azure:"ro"`
-
-	// READ-ONLY; App Service plan subscription.
-	Subscription *string `json:"subscription,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServicePlanPatchResourceProperties.
-func (a AppServicePlanPatchResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "elasticScaleEnabled", a.ElasticScaleEnabled)
-	populateTimeRFC3339(objectMap, "freeOfferExpirationTime", a.FreeOfferExpirationTime)
-	populate(objectMap, "geoRegion", a.GeoRegion)
-	populate(objectMap, "hostingEnvironmentProfile", a.HostingEnvironmentProfile)
-	populate(objectMap, "hyperV", a.HyperV)
-	populate(objectMap, "isSpot", a.IsSpot)
-	populate(objectMap, "isXenon", a.IsXenon)
-	populate(objectMap, "kubeEnvironmentProfile", a.KubeEnvironmentProfile)
-	populate(objectMap, "maximumElasticWorkerCount", a.MaximumElasticWorkerCount)
-	populate(objectMap, "maximumNumberOfWorkers", a.MaximumNumberOfWorkers)
-	populate(objectMap, "numberOfSites", a.NumberOfSites)
-	populate(objectMap, "perSiteScaling", a.PerSiteScaling)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "reserved", a.Reserved)
-	populate(objectMap, "resourceGroup", a.ResourceGroup)
-	populateTimeRFC3339(objectMap, "spotExpirationTime", a.SpotExpirationTime)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "subscription", a.Subscription)
-	populate(objectMap, "targetWorkerCount", a.TargetWorkerCount)
-	populate(objectMap, "targetWorkerSizeId", a.TargetWorkerSizeID)
-	populate(objectMap, "workerTierName", a.WorkerTierName)
-	populate(objectMap, "zoneRedundant", a.ZoneRedundant)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AppServicePlanPatchResourceProperties.
-func (a *AppServicePlanPatchResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "elasticScaleEnabled":
-			err = unpopulate(val, &a.ElasticScaleEnabled)
-			delete(rawMsg, key)
-		case "freeOfferExpirationTime":
-			err = unpopulateTimeRFC3339(val, &a.FreeOfferExpirationTime)
-			delete(rawMsg, key)
-		case "geoRegion":
-			err = unpopulate(val, &a.GeoRegion)
-			delete(rawMsg, key)
-		case "hostingEnvironmentProfile":
-			err = unpopulate(val, &a.HostingEnvironmentProfile)
-			delete(rawMsg, key)
-		case "hyperV":
-			err = unpopulate(val, &a.HyperV)
-			delete(rawMsg, key)
-		case "isSpot":
-			err = unpopulate(val, &a.IsSpot)
-			delete(rawMsg, key)
-		case "isXenon":
-			err = unpopulate(val, &a.IsXenon)
-			delete(rawMsg, key)
-		case "kubeEnvironmentProfile":
-			err = unpopulate(val, &a.KubeEnvironmentProfile)
-			delete(rawMsg, key)
-		case "maximumElasticWorkerCount":
-			err = unpopulate(val, &a.MaximumElasticWorkerCount)
-			delete(rawMsg, key)
-		case "maximumNumberOfWorkers":
-			err = unpopulate(val, &a.MaximumNumberOfWorkers)
-			delete(rawMsg, key)
-		case "numberOfSites":
-			err = unpopulate(val, &a.NumberOfSites)
-			delete(rawMsg, key)
-		case "perSiteScaling":
-			err = unpopulate(val, &a.PerSiteScaling)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "reserved":
-			err = unpopulate(val, &a.Reserved)
-			delete(rawMsg, key)
-		case "resourceGroup":
-			err = unpopulate(val, &a.ResourceGroup)
-			delete(rawMsg, key)
-		case "spotExpirationTime":
-			err = unpopulateTimeRFC3339(val, &a.SpotExpirationTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &a.Status)
-			delete(rawMsg, key)
-		case "subscription":
-			err = unpopulate(val, &a.Subscription)
-			delete(rawMsg, key)
-		case "targetWorkerCount":
-			err = unpopulate(val, &a.TargetWorkerCount)
-			delete(rawMsg, key)
-		case "targetWorkerSizeId":
-			err = unpopulate(val, &a.TargetWorkerSizeID)
-			delete(rawMsg, key)
-		case "workerTierName":
-			err = unpopulate(val, &a.WorkerTierName)
-			delete(rawMsg, key)
-		case "zoneRedundant":
-			err = unpopulate(val, &a.ZoneRedundant)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AppServicePlanProperties - AppServicePlan resource specific properties
-type AppServicePlanProperties struct {
-	// ServerFarm supports ElasticScale. Apps in this plan will scale as if the ServerFarm was ElasticPremium sku
-	ElasticScaleEnabled *bool `json:"elasticScaleEnabled,omitempty"`
-
-	// The time when the server farm free offer expires.
-	FreeOfferExpirationTime *time.Time `json:"freeOfferExpirationTime,omitempty"`
-
-	// Specification for the App Service Environment to use for the App Service plan.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
-
-	// If Hyper-V container app service plan true, false otherwise.
-	HyperV *bool `json:"hyperV,omitempty"`
-
-	// If true, this App Service Plan owns spot instances.
-	IsSpot *bool `json:"isSpot,omitempty"`
-
-	// Obsolete: If Hyper-V container app service plan true, false otherwise.
-	IsXenon *bool `json:"isXenon,omitempty"`
-
-	// Specification for the Kubernetes Environment to use for the App Service plan.
-	KubeEnvironmentProfile *KubeEnvironmentProfile `json:"kubeEnvironmentProfile,omitempty"`
-
-	// Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
-	MaximumElasticWorkerCount *int32 `json:"maximumElasticWorkerCount,omitempty"`
-
-	// If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances
-	// of the plan.
-	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
-
-	// If Linux app service plan true, false otherwise.
-	Reserved *bool `json:"reserved,omitempty"`
-
-	// The time when the server farm expires. Valid only if it is a spot server farm.
-	SpotExpirationTime *time.Time `json:"spotExpirationTime,omitempty"`
-
-	// Scaling worker count.
-	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
-
-	// Scaling worker size ID.
-	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
-
-	// Target worker tier assigned to the App Service plan.
-	WorkerTierName *string `json:"workerTierName,omitempty"`
-
-	// If true, this App Service Plan will perform availability zone balancing. If false, this App Service Plan will not perform availability zone balancing.
-	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
-
-	// READ-ONLY; Geographical location for the App Service plan.
-	GeoRegion *string `json:"geoRegion,omitempty" azure:"ro"`
-
-	// READ-ONLY; Maximum number of instances that can be assigned to this App Service plan.
-	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty" azure:"ro"`
-
-	// READ-ONLY; Number of apps assigned to this App Service plan.
-	NumberOfSites *int32 `json:"numberOfSites,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the App Service Plan.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource group of the App Service plan.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
-
-	// READ-ONLY; App Service plan status.
-	Status *StatusOptions `json:"status,omitempty" azure:"ro"`
-
-	// READ-ONLY; App Service plan subscription.
-	Subscription *string `json:"subscription,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppServicePlanProperties.
-func (a AppServicePlanProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "elasticScaleEnabled", a.ElasticScaleEnabled)
-	populateTimeRFC3339(objectMap, "freeOfferExpirationTime", a.FreeOfferExpirationTime)
-	populate(objectMap, "geoRegion", a.GeoRegion)
-	populate(objectMap, "hostingEnvironmentProfile", a.HostingEnvironmentProfile)
-	populate(objectMap, "hyperV", a.HyperV)
-	populate(objectMap, "isSpot", a.IsSpot)
-	populate(objectMap, "isXenon", a.IsXenon)
-	populate(objectMap, "kubeEnvironmentProfile", a.KubeEnvironmentProfile)
-	populate(objectMap, "maximumElasticWorkerCount", a.MaximumElasticWorkerCount)
-	populate(objectMap, "maximumNumberOfWorkers", a.MaximumNumberOfWorkers)
-	populate(objectMap, "numberOfSites", a.NumberOfSites)
-	populate(objectMap, "perSiteScaling", a.PerSiteScaling)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "reserved", a.Reserved)
-	populate(objectMap, "resourceGroup", a.ResourceGroup)
-	populateTimeRFC3339(objectMap, "spotExpirationTime", a.SpotExpirationTime)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "subscription", a.Subscription)
-	populate(objectMap, "targetWorkerCount", a.TargetWorkerCount)
-	populate(objectMap, "targetWorkerSizeId", a.TargetWorkerSizeID)
-	populate(objectMap, "workerTierName", a.WorkerTierName)
-	populate(objectMap, "zoneRedundant", a.ZoneRedundant)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AppServicePlanProperties.
-func (a *AppServicePlanProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "elasticScaleEnabled":
-			err = unpopulate(val, &a.ElasticScaleEnabled)
-			delete(rawMsg, key)
-		case "freeOfferExpirationTime":
-			err = unpopulateTimeRFC3339(val, &a.FreeOfferExpirationTime)
-			delete(rawMsg, key)
-		case "geoRegion":
-			err = unpopulate(val, &a.GeoRegion)
-			delete(rawMsg, key)
-		case "hostingEnvironmentProfile":
-			err = unpopulate(val, &a.HostingEnvironmentProfile)
-			delete(rawMsg, key)
-		case "hyperV":
-			err = unpopulate(val, &a.HyperV)
-			delete(rawMsg, key)
-		case "isSpot":
-			err = unpopulate(val, &a.IsSpot)
-			delete(rawMsg, key)
-		case "isXenon":
-			err = unpopulate(val, &a.IsXenon)
-			delete(rawMsg, key)
-		case "kubeEnvironmentProfile":
-			err = unpopulate(val, &a.KubeEnvironmentProfile)
-			delete(rawMsg, key)
-		case "maximumElasticWorkerCount":
-			err = unpopulate(val, &a.MaximumElasticWorkerCount)
-			delete(rawMsg, key)
-		case "maximumNumberOfWorkers":
-			err = unpopulate(val, &a.MaximumNumberOfWorkers)
-			delete(rawMsg, key)
-		case "numberOfSites":
-			err = unpopulate(val, &a.NumberOfSites)
-			delete(rawMsg, key)
-		case "perSiteScaling":
-			err = unpopulate(val, &a.PerSiteScaling)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "reserved":
-			err = unpopulate(val, &a.Reserved)
-			delete(rawMsg, key)
-		case "resourceGroup":
-			err = unpopulate(val, &a.ResourceGroup)
-			delete(rawMsg, key)
-		case "spotExpirationTime":
-			err = unpopulateTimeRFC3339(val, &a.SpotExpirationTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &a.Status)
-			delete(rawMsg, key)
-		case "subscription":
-			err = unpopulate(val, &a.Subscription)
-			delete(rawMsg, key)
-		case "targetWorkerCount":
-			err = unpopulate(val, &a.TargetWorkerCount)
-			delete(rawMsg, key)
-		case "targetWorkerSizeId":
-			err = unpopulate(val, &a.TargetWorkerSizeID)
-			delete(rawMsg, key)
-		case "workerTierName":
-			err = unpopulate(val, &a.WorkerTierName)
-			delete(rawMsg, key)
-		case "zoneRedundant":
-			err = unpopulate(val, &a.ZoneRedundant)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AppServicePlansBeginCreateOrUpdateOptions contains the optional parameters for the AppServicePlans.BeginCreateOrUpdate method.
-type AppServicePlansBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansCreateOrUpdateVnetRouteOptions contains the optional parameters for the AppServicePlans.CreateOrUpdateVnetRoute method.
-type AppServicePlansCreateOrUpdateVnetRouteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansDeleteHybridConnectionOptions contains the optional parameters for the AppServicePlans.DeleteHybridConnection method.
-type AppServicePlansDeleteHybridConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansDeleteOptions contains the optional parameters for the AppServicePlans.Delete method.
-type AppServicePlansDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansDeleteVnetRouteOptions contains the optional parameters for the AppServicePlans.DeleteVnetRoute method.
-type AppServicePlansDeleteVnetRouteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansGetHybridConnectionOptions contains the optional parameters for the AppServicePlans.GetHybridConnection method.
-type AppServicePlansGetHybridConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansGetHybridConnectionPlanLimitOptions contains the optional parameters for the AppServicePlans.GetHybridConnectionPlanLimit method.
-type AppServicePlansGetHybridConnectionPlanLimitOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansGetOptions contains the optional parameters for the AppServicePlans.Get method.
-type AppServicePlansGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansGetRouteForVnetOptions contains the optional parameters for the AppServicePlans.GetRouteForVnet method.
-type AppServicePlansGetRouteForVnetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansGetServerFarmSKUsOptions contains the optional parameters for the AppServicePlans.GetServerFarmSKUs method.
-type AppServicePlansGetServerFarmSKUsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansGetVnetFromServerFarmOptions contains the optional parameters for the AppServicePlans.GetVnetFromServerFarm method.
-type AppServicePlansGetVnetFromServerFarmOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansGetVnetGatewayOptions contains the optional parameters for the AppServicePlans.GetVnetGateway method.
-type AppServicePlansGetVnetGatewayOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansListByResourceGroupOptions contains the optional parameters for the AppServicePlans.ListByResourceGroup method.
-type AppServicePlansListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansListCapabilitiesOptions contains the optional parameters for the AppServicePlans.ListCapabilities method.
-type AppServicePlansListCapabilitiesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansListHybridConnectionKeysOptions contains the optional parameters for the AppServicePlans.ListHybridConnectionKeys method.
-type AppServicePlansListHybridConnectionKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansListHybridConnectionsOptions contains the optional parameters for the AppServicePlans.ListHybridConnections method.
-type AppServicePlansListHybridConnectionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansListOptions contains the optional parameters for the AppServicePlans.List method.
-type AppServicePlansListOptions struct {
-	// Specify <code>true</code> to return all App Service plan properties. The default is <code>false</code>, which returns a subset of the properties.
-	// Retrieval of all properties may increase the API latency.
-	Detailed *bool
-}
-
-// AppServicePlansListRoutesForVnetOptions contains the optional parameters for the AppServicePlans.ListRoutesForVnet method.
-type AppServicePlansListRoutesForVnetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansListUsagesOptions contains the optional parameters for the AppServicePlans.ListUsages method.
-type AppServicePlansListUsagesOptions struct {
-	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
-	Filter *string
-}
-
-// AppServicePlansListVnetsOptions contains the optional parameters for the AppServicePlans.ListVnets method.
-type AppServicePlansListVnetsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansListWebAppsByHybridConnectionOptions contains the optional parameters for the AppServicePlans.ListWebAppsByHybridConnection method.
-type AppServicePlansListWebAppsByHybridConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansListWebAppsOptions contains the optional parameters for the AppServicePlans.ListWebApps method.
-type AppServicePlansListWebAppsOptions struct {
-	// Supported filter: $filter=state eq running. Returns only web apps that are currently running
-	Filter *string
-	// Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including)
-	// the skipToken. Otherwise, the resulting list contains web apps from the start of the list
-	SkipToken *string
-	// List page size. If specified, results are paged.
-	Top *string
-}
-
-// AppServicePlansRebootWorkerOptions contains the optional parameters for the AppServicePlans.RebootWorker method.
-type AppServicePlansRebootWorkerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansRestartWebAppsOptions contains the optional parameters for the AppServicePlans.RestartWebApps method.
-type AppServicePlansRestartWebAppsOptions struct {
-	// Specify <code>true</code> to perform a soft restart, applies the configuration settings and restarts the apps if necessary. The default is <code>false</code>,
-	// which always restarts and reprovisions the apps
-	SoftRestart *bool
-}
-
-// AppServicePlansUpdateOptions contains the optional parameters for the AppServicePlans.Update method.
-type AppServicePlansUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansUpdateVnetGatewayOptions contains the optional parameters for the AppServicePlans.UpdateVnetGateway method.
-type AppServicePlansUpdateVnetGatewayOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppServicePlansUpdateVnetRouteOptions contains the optional parameters for the AppServicePlans.UpdateVnetRoute method.
-type AppServicePlansUpdateVnetRouteOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Apple - The configuration settings of the Apple provider.
@@ -1837,44 +815,20 @@ func (a ApplicationStackCollection) MarshalJSON() ([]byte, error) {
 
 // ApplicationStackResource - ARM resource for a ApplicationStack.
 type ApplicationStackResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *ApplicationStack `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationStackResource.
-func (a ApplicationStackResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// AppserviceGithubToken - Github access token for Appservice CLI github integration.
-type AppserviceGithubToken struct {
-	// Github access token for Appservice CLI github integration
-	AccessToken *string `json:"accessToken,omitempty"`
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// Error message if unable to get token
-	ErrorMessage *string `json:"errorMessage,omitempty"`
-
-	// True if valid github token received, False otherwise
-	GotToken *bool `json:"gotToken,omitempty"`
-
-	// Scope of the github access token
-	Scope *string `json:"scope,omitempty"`
-
-	// token type
-	TokenType *string `json:"tokenType,omitempty"`
-}
-
-// AppserviceGithubTokenRequest - Appservice Github token request content.
-type AppserviceGithubTokenRequest struct {
-	// REQUIRED; Code string to exchange for Github Access token
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; State string used for verification.
-	State *string `json:"state,omitempty"`
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type ArcConfiguration struct {
@@ -1913,17 +867,20 @@ type ArmPlan struct {
 
 // AseV3NetworkingConfiguration - Full view of networking configuration for an ASE.
 type AseV3NetworkingConfiguration struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// AseV3NetworkingConfiguration resource specific properties
 	Properties *AseV3NetworkingConfigurationProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AseV3NetworkingConfiguration.
-func (a AseV3NetworkingConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AseV3NetworkingConfigurationProperties - AseV3NetworkingConfiguration resource specific properties
@@ -1957,14 +914,15 @@ func (a AseV3NetworkingConfigurationProperties) MarshalJSON() ([]byte, error) {
 
 // AuthPlatform - The configuration settings of the platform of App Service Authentication/Authorization.
 type AuthPlatform struct {
-	// The path of the config file containing auth settings if they come from a file. If the path is relative, base will the site's root directory.
+	// The path of the config file containing auth settings if they come from a file. If the path is relative, base will the site's
+	// root directory.
 	ConfigFilePath *string `json:"configFilePath,omitempty"`
 
 	// true if the Authentication / Authorization feature is enabled for the current app; otherwise, false.
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// The RuntimeVersion of the Authentication / Authorization feature in use for the current app. The setting in this value can control the behavior of certain
-	// features in the Authentication /
+	// The RuntimeVersion of the Authentication / Authorization feature in use for the current app. The setting in this value
+	// can control the behavior of certain features in the Authentication /
 	// Authorization module.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
 }
@@ -2037,8 +995,8 @@ type AzureActiveDirectory struct {
 	// false if the Azure Active Directory provider should not be enabled despite the set registration; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling. This is an internal flag primarily intended
-	// to support the Azure Management Portal. Users
+	// Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling. This is an internal
+	// flag primarily intended to support the Azure Management Portal. Users
 	// should not read or write to this property.
 	IsAutoProvisioned *bool `json:"isAutoProvisioned,omitempty"`
 
@@ -2057,7 +1015,8 @@ type AzureActiveDirectoryLogin struct {
 	// true if the www-authenticate provider should be omitted from the request; otherwise, false.
 	DisableWWWAuthenticate *bool `json:"disableWWWAuthenticate,omitempty"`
 
-	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the form "key=value".
+	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the
+	// form "key=value".
 	LoginParameters []*string `json:"loginParameters,omitempty"`
 }
 
@@ -2071,32 +1030,32 @@ func (a AzureActiveDirectoryLogin) MarshalJSON() ([]byte, error) {
 
 // AzureActiveDirectoryRegistration - The configuration settings of the Azure Active Directory app registration.
 type AzureActiveDirectoryRegistration struct {
-	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection authentication with Azure
-	// Active Directory or other 3rd party OpenID
+	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection
+	// authentication with Azure Active Directory or other 3rd party OpenID
 	// Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-10.html
 	ClientID *string `json:"clientId,omitempty"`
 
-	// An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes. This property acts as a replacement for
-	// the Client Secret Certificate Thumbprint. It is
+	// An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes. This property
+	// acts as a replacement for the Client Secret Certificate Thumbprint. It is
 	// also optional.
 	ClientSecretCertificateIssuer *string `json:"clientSecretCertificateIssuer,omitempty"`
 
-	// An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for signing purposes. This property acts as
-	// a replacement for the Client Secret Certificate
+	// An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for signing
+	// purposes. This property acts as a replacement for the Client Secret Certificate
 	// Thumbprint. It is also optional.
 	ClientSecretCertificateSubjectAlternativeName *string `json:"clientSecretCertificateSubjectAlternativeName,omitempty"`
 
-	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as a replacement for the Client
-	// Secret. It is also optional.
+	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts
+	// as a replacement for the Client Secret. It is also optional.
 	ClientSecretCertificateThumbprint *string `json:"clientSecretCertificateThumbprint,omitempty"`
 
 	// The app setting name that contains the client secret of the relying party application.
 	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
 
-	// The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application. When using Azure Active Directory, this value
-	// is the URI of the directory tenant, e.g.
-	// https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More information on OpenID Connect
-	// Discovery:
+	// The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application. When using Azure
+	// Active Directory, this value is the URI of the directory tenant, e.g.
+	// https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More
+	// information on OpenID Connect Discovery:
 	// http://openid.net/specs/openid-connect-discovery-1_0.html
 	OpenIDIssuer *string `json:"openIdIssuer,omitempty"`
 }
@@ -2184,16 +1143,30 @@ type AzureStorageInfoValue struct {
 
 // AzureStoragePropertyDictionaryResource - AzureStorageInfo dictionary resource.
 type AzureStoragePropertyDictionaryResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Azure storage accounts.
 	Properties map[string]*AzureStorageInfoValue `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureStoragePropertyDictionaryResource.
 func (a AzureStoragePropertyDictionaryResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "kind", a.Kind)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2208,17 +1181,20 @@ type AzureTableStorageApplicationLogsConfig struct {
 
 // BackupItem - Backup description.
 type BackupItem struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// BackupItem resource specific properties
 	Properties *BackupItemProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type BackupItem.
-func (b BackupItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BackupItemCollection - Collection of backup items.
@@ -2364,17 +1340,20 @@ func (b *BackupItemProperties) UnmarshalJSON(data []byte) error {
 
 // BackupRequest - Description of a backup which will be performed.
 type BackupRequest struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// BackupRequest resource specific properties
 	Properties *BackupRequestProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type BackupRequest.
-func (b BackupRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BackupRequestProperties - BackupRequest resource specific properties
@@ -2406,16 +1385,19 @@ func (b BackupRequestProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BackupSchedule - Description of a backup schedule. Describes how often should be the backup performed and what should be the retention policy.
+// BackupSchedule - Description of a backup schedule. Describes how often should be the backup performed and what should be
+// the retention policy.
 type BackupSchedule struct {
-	// REQUIRED; How often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should be set to Day)
+	// REQUIRED; How often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should
+	// be set to Day)
 	FrequencyInterval *int32 `json:"frequencyInterval,omitempty"`
 
-	// REQUIRED; The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day and FrequencyInterval should
-	// be set to 7)
+	// REQUIRED; The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day
+	// and FrequencyInterval should be set to 7)
 	FrequencyUnit *FrequencyUnit `json:"frequencyUnit,omitempty"`
 
-	// REQUIRED; True if the retention policy should always keep at least one backup in the storage account, regardless how old it is; false otherwise.
+	// REQUIRED; True if the retention policy should always keep at least one backup in the storage account, regardless how old
+	// it is; false otherwise.
 	KeepAtLeastOneBackup *bool `json:"keepAtLeastOneBackup,omitempty"`
 
 	// REQUIRED; After how many days backups should be deleted.
@@ -2475,19 +1457,23 @@ func (b *BackupSchedule) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// BillingMeter - App Service billing entity that contains information about meter which the Azure billing system utilizes to charge users for services.
+// BillingMeter - App Service billing entity that contains information about meter which the Azure billing system utilizes
+// to charge users for services.
 type BillingMeter struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// BillingMeter resource specific properties
 	Properties *BillingMeterProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type BillingMeter.
-func (b BillingMeter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BillingMeterCollection - Collection of Billing Meters
@@ -2549,25 +1535,22 @@ type Capability struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// Certificate - SSL certificate for an app.
+// Certificate - Key Vault container for a certificate that is purchased through Azure.
 type Certificate struct {
-	Resource
-	// Certificate resource specific properties
-	Properties *CertificateProperties `json:"properties,omitempty"`
+	// Key Vault resource Id.
+	KeyVaultID *string `json:"keyVaultId,omitempty"`
+
+	// Key Vault secret name.
+	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+
+	// READ-ONLY; Status of the Key Vault secret.
+	ProvisioningState *KeyVaultSecretStatus `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Certificate.
-func (c Certificate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// CertificateCollection - Collection of certificates.
+// CertificateCollection - Collection of certificate order certificates.
 type CertificateCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Certificate `json:"value,omitempty"`
+	Value []*CertificateResource `json:"value,omitempty"`
 
 	// READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -2672,17 +1655,20 @@ func (c *CertificateDetails) UnmarshalJSON(data []byte) error {
 
 // CertificateEmail - SSL certificate email.
 type CertificateEmail struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// CertificateEmail resource specific properties
 	Properties *CertificateEmailProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateEmail.
-func (c CertificateEmail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CertificateEmailProperties - CertificateEmail resource specific properties
@@ -2725,19 +1711,59 @@ func (c *CertificateEmailProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CertificateOrderAction - Certificate order action.
-type CertificateOrderAction struct {
-	ProxyOnlyResource
-	// CertificateOrderAction resource specific properties
-	Properties *CertificateOrderActionProperties `json:"properties,omitempty"`
+// CertificateOrder - SSL certificate purchase order.
+type CertificateOrder struct {
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// AppServiceCertificateOrder resource specific properties
+	Properties *CertificateOrderProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateOrderAction.
-func (c CertificateOrderAction) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CertificateOrder.
+func (c CertificateOrder) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
+}
+
+// CertificateOrderAction - Certificate order action.
+type CertificateOrderAction struct {
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// CertificateOrderAction resource specific properties
+	Properties *CertificateOrderActionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CertificateOrderActionProperties - CertificateOrderAction resource specific properties
@@ -2780,6 +1806,23 @@ func (c *CertificateOrderActionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// CertificateOrderCollection - Collection of certificate orders.
+type CertificateOrderCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*CertificateOrder `json:"value,omitempty"`
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CertificateOrderCollection.
+func (c CertificateOrderCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
 type CertificateOrderContact struct {
 	Email     *string `json:"email,omitempty"`
 	NameFirst *string `json:"nameFirst,omitempty"`
@@ -2787,9 +1830,484 @@ type CertificateOrderContact struct {
 	Phone     *string `json:"phone,omitempty"`
 }
 
-// CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions contains the optional parameters for the CertificateOrdersDiagnostics.GetAppServiceCertificateOrderDetectorResponse
+// CertificateOrderPatchResource - ARM resource for a certificate order that is purchased through Azure.
+type CertificateOrderPatchResource struct {
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// AppServiceCertificateOrderPatchResource resource specific properties
+	Properties *CertificateOrderPatchResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CertificateOrderPatchResource.
+func (c CertificateOrderPatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "type", c.Type)
+	return json.Marshal(objectMap)
+}
+
+// CertificateOrderPatchResourceProperties - AppServiceCertificateOrderPatchResource resource specific properties
+type CertificateOrderPatchResourceProperties struct {
+	// REQUIRED; Certificate product type.
+	ProductType *CertificateProductType `json:"productType,omitempty"`
+
+	// true if the certificate should be automatically renewed when it expires; otherwise, false.
+	AutoRenew *bool `json:"autoRenew,omitempty"`
+
+	// State of the Key Vault secret.
+	Certificates map[string]*Certificate `json:"certificates,omitempty"`
+
+	// Last CSR that was created for this order.
+	Csr *string `json:"csr,omitempty"`
+
+	// Certificate distinguished name.
+	DistinguishedName *string `json:"distinguishedName,omitempty"`
+
+	// Certificate key size.
+	KeySize *int32 `json:"keySize,omitempty"`
+
+	// Duration in years (must be 1).
+	ValidityInYears *int32 `json:"validityInYears,omitempty"`
+
+	// READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
+	AppServiceCertificateNotRenewableReasons []*AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem `json:"appServiceCertificateNotRenewableReasons,omitempty" azure:"ro"`
+
+	// READ-ONLY; Contact info
+	Contact *CertificateOrderContact `json:"contact,omitempty" azure:"ro"`
+
+	// READ-ONLY; Domain verification token.
+	DomainVerificationToken *string `json:"domainVerificationToken,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate expiration time.
+	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Intermediate certificate.
+	Intermediate *CertificateDetails `json:"intermediate,omitempty" azure:"ro"`
+
+	// READ-ONLY; true if private key is external; otherwise, false.
+	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate last issuance time.
+	LastCertificateIssuanceTime *time.Time `json:"lastCertificateIssuanceTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Time stamp when the certificate would be auto renewed next
+	NextAutoRenewalTimeStamp *time.Time `json:"nextAutoRenewalTimeStamp,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of certificate order.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Root certificate.
+	Root *CertificateDetails `json:"root,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current serial number of the certificate.
+	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+
+	// READ-ONLY; Signed certificate.
+	SignedCertificate *CertificateDetails `json:"signedCertificate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current order status.
+	Status *CertificateOrderStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CertificateOrderPatchResourceProperties.
+func (c CertificateOrderPatchResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "appServiceCertificateNotRenewableReasons", c.AppServiceCertificateNotRenewableReasons)
+	populate(objectMap, "autoRenew", c.AutoRenew)
+	populate(objectMap, "certificates", c.Certificates)
+	populate(objectMap, "contact", c.Contact)
+	populate(objectMap, "csr", c.Csr)
+	populate(objectMap, "distinguishedName", c.DistinguishedName)
+	populate(objectMap, "domainVerificationToken", c.DomainVerificationToken)
+	populateTimeRFC3339(objectMap, "expirationTime", c.ExpirationTime)
+	populate(objectMap, "intermediate", c.Intermediate)
+	populate(objectMap, "isPrivateKeyExternal", c.IsPrivateKeyExternal)
+	populate(objectMap, "keySize", c.KeySize)
+	populateTimeRFC3339(objectMap, "lastCertificateIssuanceTime", c.LastCertificateIssuanceTime)
+	populateTimeRFC3339(objectMap, "nextAutoRenewalTimeStamp", c.NextAutoRenewalTimeStamp)
+	populate(objectMap, "productType", c.ProductType)
+	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "root", c.Root)
+	populate(objectMap, "serialNumber", c.SerialNumber)
+	populate(objectMap, "signedCertificate", c.SignedCertificate)
+	populate(objectMap, "status", c.Status)
+	populate(objectMap, "validityInYears", c.ValidityInYears)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateOrderPatchResourceProperties.
+func (c *CertificateOrderPatchResourceProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "appServiceCertificateNotRenewableReasons":
+			err = unpopulate(val, &c.AppServiceCertificateNotRenewableReasons)
+			delete(rawMsg, key)
+		case "autoRenew":
+			err = unpopulate(val, &c.AutoRenew)
+			delete(rawMsg, key)
+		case "certificates":
+			err = unpopulate(val, &c.Certificates)
+			delete(rawMsg, key)
+		case "contact":
+			err = unpopulate(val, &c.Contact)
+			delete(rawMsg, key)
+		case "csr":
+			err = unpopulate(val, &c.Csr)
+			delete(rawMsg, key)
+		case "distinguishedName":
+			err = unpopulate(val, &c.DistinguishedName)
+			delete(rawMsg, key)
+		case "domainVerificationToken":
+			err = unpopulate(val, &c.DomainVerificationToken)
+			delete(rawMsg, key)
+		case "expirationTime":
+			err = unpopulateTimeRFC3339(val, &c.ExpirationTime)
+			delete(rawMsg, key)
+		case "intermediate":
+			err = unpopulate(val, &c.Intermediate)
+			delete(rawMsg, key)
+		case "isPrivateKeyExternal":
+			err = unpopulate(val, &c.IsPrivateKeyExternal)
+			delete(rawMsg, key)
+		case "keySize":
+			err = unpopulate(val, &c.KeySize)
+			delete(rawMsg, key)
+		case "lastCertificateIssuanceTime":
+			err = unpopulateTimeRFC3339(val, &c.LastCertificateIssuanceTime)
+			delete(rawMsg, key)
+		case "nextAutoRenewalTimeStamp":
+			err = unpopulateTimeRFC3339(val, &c.NextAutoRenewalTimeStamp)
+			delete(rawMsg, key)
+		case "productType":
+			err = unpopulate(val, &c.ProductType)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &c.ProvisioningState)
+			delete(rawMsg, key)
+		case "root":
+			err = unpopulate(val, &c.Root)
+			delete(rawMsg, key)
+		case "serialNumber":
+			err = unpopulate(val, &c.SerialNumber)
+			delete(rawMsg, key)
+		case "signedCertificate":
+			err = unpopulate(val, &c.SignedCertificate)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &c.Status)
+			delete(rawMsg, key)
+		case "validityInYears":
+			err = unpopulate(val, &c.ValidityInYears)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CertificateOrderProperties - AppServiceCertificateOrder resource specific properties
+type CertificateOrderProperties struct {
+	// REQUIRED; Certificate product type.
+	ProductType *CertificateProductType `json:"productType,omitempty"`
+
+	// true if the certificate should be automatically renewed when it expires; otherwise, false.
+	AutoRenew *bool `json:"autoRenew,omitempty"`
+
+	// State of the Key Vault secret.
+	Certificates map[string]*Certificate `json:"certificates,omitempty"`
+
+	// Last CSR that was created for this order.
+	Csr *string `json:"csr,omitempty"`
+
+	// Certificate distinguished name.
+	DistinguishedName *string `json:"distinguishedName,omitempty"`
+
+	// Certificate key size.
+	KeySize *int32 `json:"keySize,omitempty"`
+
+	// Duration in years (must be 1).
+	ValidityInYears *int32 `json:"validityInYears,omitempty"`
+
+	// READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
+	AppServiceCertificateNotRenewableReasons []*AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem `json:"appServiceCertificateNotRenewableReasons,omitempty" azure:"ro"`
+
+	// READ-ONLY; Contact info
+	Contact *CertificateOrderContact `json:"contact,omitempty" azure:"ro"`
+
+	// READ-ONLY; Domain verification token.
+	DomainVerificationToken *string `json:"domainVerificationToken,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate expiration time.
+	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Intermediate certificate.
+	Intermediate *CertificateDetails `json:"intermediate,omitempty" azure:"ro"`
+
+	// READ-ONLY; true if private key is external; otherwise, false.
+	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate last issuance time.
+	LastCertificateIssuanceTime *time.Time `json:"lastCertificateIssuanceTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Time stamp when the certificate would be auto renewed next
+	NextAutoRenewalTimeStamp *time.Time `json:"nextAutoRenewalTimeStamp,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of certificate order.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Root certificate.
+	Root *CertificateDetails `json:"root,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current serial number of the certificate.
+	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+
+	// READ-ONLY; Signed certificate.
+	SignedCertificate *CertificateDetails `json:"signedCertificate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current order status.
+	Status *CertificateOrderStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CertificateOrderProperties.
+func (c CertificateOrderProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "appServiceCertificateNotRenewableReasons", c.AppServiceCertificateNotRenewableReasons)
+	populate(objectMap, "autoRenew", c.AutoRenew)
+	populate(objectMap, "certificates", c.Certificates)
+	populate(objectMap, "contact", c.Contact)
+	populate(objectMap, "csr", c.Csr)
+	populate(objectMap, "distinguishedName", c.DistinguishedName)
+	populate(objectMap, "domainVerificationToken", c.DomainVerificationToken)
+	populateTimeRFC3339(objectMap, "expirationTime", c.ExpirationTime)
+	populate(objectMap, "intermediate", c.Intermediate)
+	populate(objectMap, "isPrivateKeyExternal", c.IsPrivateKeyExternal)
+	populate(objectMap, "keySize", c.KeySize)
+	populateTimeRFC3339(objectMap, "lastCertificateIssuanceTime", c.LastCertificateIssuanceTime)
+	populateTimeRFC3339(objectMap, "nextAutoRenewalTimeStamp", c.NextAutoRenewalTimeStamp)
+	populate(objectMap, "productType", c.ProductType)
+	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "root", c.Root)
+	populate(objectMap, "serialNumber", c.SerialNumber)
+	populate(objectMap, "signedCertificate", c.SignedCertificate)
+	populate(objectMap, "status", c.Status)
+	populate(objectMap, "validityInYears", c.ValidityInYears)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateOrderProperties.
+func (c *CertificateOrderProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "appServiceCertificateNotRenewableReasons":
+			err = unpopulate(val, &c.AppServiceCertificateNotRenewableReasons)
+			delete(rawMsg, key)
+		case "autoRenew":
+			err = unpopulate(val, &c.AutoRenew)
+			delete(rawMsg, key)
+		case "certificates":
+			err = unpopulate(val, &c.Certificates)
+			delete(rawMsg, key)
+		case "contact":
+			err = unpopulate(val, &c.Contact)
+			delete(rawMsg, key)
+		case "csr":
+			err = unpopulate(val, &c.Csr)
+			delete(rawMsg, key)
+		case "distinguishedName":
+			err = unpopulate(val, &c.DistinguishedName)
+			delete(rawMsg, key)
+		case "domainVerificationToken":
+			err = unpopulate(val, &c.DomainVerificationToken)
+			delete(rawMsg, key)
+		case "expirationTime":
+			err = unpopulateTimeRFC3339(val, &c.ExpirationTime)
+			delete(rawMsg, key)
+		case "intermediate":
+			err = unpopulate(val, &c.Intermediate)
+			delete(rawMsg, key)
+		case "isPrivateKeyExternal":
+			err = unpopulate(val, &c.IsPrivateKeyExternal)
+			delete(rawMsg, key)
+		case "keySize":
+			err = unpopulate(val, &c.KeySize)
+			delete(rawMsg, key)
+		case "lastCertificateIssuanceTime":
+			err = unpopulateTimeRFC3339(val, &c.LastCertificateIssuanceTime)
+			delete(rawMsg, key)
+		case "nextAutoRenewalTimeStamp":
+			err = unpopulateTimeRFC3339(val, &c.NextAutoRenewalTimeStamp)
+			delete(rawMsg, key)
+		case "productType":
+			err = unpopulate(val, &c.ProductType)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &c.ProvisioningState)
+			delete(rawMsg, key)
+		case "root":
+			err = unpopulate(val, &c.Root)
+			delete(rawMsg, key)
+		case "serialNumber":
+			err = unpopulate(val, &c.SerialNumber)
+			delete(rawMsg, key)
+		case "signedCertificate":
+			err = unpopulate(val, &c.SignedCertificate)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &c.Status)
+			delete(rawMsg, key)
+		case "validityInYears":
+			err = unpopulate(val, &c.ValidityInYears)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CertificateOrdersClientBeginCreateOrUpdateCertificateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdateCertificate
 // method.
-type CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions struct {
+type CertificateOrdersClientBeginCreateOrUpdateCertificateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdate
+// method.
+type CertificateOrdersClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientDeleteCertificateOptions contains the optional parameters for the CertificateOrdersClient.DeleteCertificate
+// method.
+type CertificateOrdersClientDeleteCertificateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientDeleteOptions contains the optional parameters for the CertificateOrdersClient.Delete method.
+type CertificateOrdersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientGetCertificateOptions contains the optional parameters for the CertificateOrdersClient.GetCertificate
+// method.
+type CertificateOrdersClientGetCertificateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientGetOptions contains the optional parameters for the CertificateOrdersClient.Get method.
+type CertificateOrdersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientListByResourceGroupOptions contains the optional parameters for the CertificateOrdersClient.ListByResourceGroup
+// method.
+type CertificateOrdersClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientListCertificatesOptions contains the optional parameters for the CertificateOrdersClient.ListCertificates
+// method.
+type CertificateOrdersClientListCertificatesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientListOptions contains the optional parameters for the CertificateOrdersClient.List method.
+type CertificateOrdersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientReissueOptions contains the optional parameters for the CertificateOrdersClient.Reissue method.
+type CertificateOrdersClientReissueOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientRenewOptions contains the optional parameters for the CertificateOrdersClient.Renew method.
+type CertificateOrdersClientRenewOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientResendEmailOptions contains the optional parameters for the CertificateOrdersClient.ResendEmail
+// method.
+type CertificateOrdersClientResendEmailOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientResendRequestEmailsOptions contains the optional parameters for the CertificateOrdersClient.ResendRequestEmails
+// method.
+type CertificateOrdersClientResendRequestEmailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientRetrieveCertificateActionsOptions contains the optional parameters for the CertificateOrdersClient.RetrieveCertificateActions
+// method.
+type CertificateOrdersClientRetrieveCertificateActionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientRetrieveCertificateEmailHistoryOptions contains the optional parameters for the CertificateOrdersClient.RetrieveCertificateEmailHistory
+// method.
+type CertificateOrdersClientRetrieveCertificateEmailHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientRetrieveSiteSealOptions contains the optional parameters for the CertificateOrdersClient.RetrieveSiteSeal
+// method.
+type CertificateOrdersClientRetrieveSiteSealOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientUpdateCertificateOptions contains the optional parameters for the CertificateOrdersClient.UpdateCertificate
+// method.
+type CertificateOrdersClientUpdateCertificateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientUpdateOptions contains the optional parameters for the CertificateOrdersClient.Update method.
+type CertificateOrdersClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientValidatePurchaseInformationOptions contains the optional parameters for the CertificateOrdersClient.ValidatePurchaseInformation
+// method.
+type CertificateOrdersClientValidatePurchaseInformationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersClientVerifyDomainOwnershipOptions contains the optional parameters for the CertificateOrdersClient.VerifyDomainOwnership
+// method.
+type CertificateOrdersClientVerifyDomainOwnershipOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions contains the optional parameters
+// for the CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse method.
+type CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions struct {
 	// The end time for the detector response.
 	EndTime *time.Time
 	// The start time for detector response.
@@ -2798,406 +2316,113 @@ type CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOp
 	TimeGrain *string
 }
 
-// CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseOptions contains the optional parameters for the CertificateOrdersDiagnostics.ListAppServiceCertificateOrderDetectorResponse
-// method.
-type CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseOptions struct {
+// CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions contains the optional parameters
+// for the CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse method.
+type CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatePatchResource - ARM resource for a certificate.
+// CertificatePatchResource - Key Vault container ARM resource for a certificate that is purchased through Azure.
 type CertificatePatchResource struct {
-	ProxyOnlyResource
-	// CertificatePatchResource resource specific properties
-	Properties *CertificatePatchResourceProperties `json:"properties,omitempty"`
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Core resource properties
+	Properties *Certificate `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CertificatePatchResource.
 func (c CertificatePatchResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
-// CertificatePatchResourceProperties - CertificatePatchResource resource specific properties
-type CertificatePatchResourceProperties struct {
-	// CNAME of the certificate to be issued via free certificate
-	CanonicalName *string `json:"canonicalName,omitempty"`
-
-	// Method of domain validation for free cert
-	DomainValidationMethod *string `json:"domainValidationMethod,omitempty"`
-
-	// Host names the certificate applies to.
-	HostNames []*string `json:"hostNames,omitempty"`
-
-	// Key Vault Csm resource Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
-
-	// Key Vault secret name.
-	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
-
-	// Certificate password.
-	Password *string `json:"password,omitempty"`
-
-	// Pfx blob.
-	PfxBlob []byte `json:"pfxBlob,omitempty"`
-
-	// Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-	ServerFarmID *string `json:"serverFarmId,omitempty"`
-
-	// READ-ONLY; Raw bytes of .cer file
-	CerBlob []byte `json:"cerBlob,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Friendly name of the certificate.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Specification for the App Service Environment to use for the certificate.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate issue Date.
-	IssueDate *time.Time `json:"issueDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate issuer.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
-
-	// READ-ONLY; Status of the Key Vault secret.
-	KeyVaultSecretStatus *KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; Public key hash.
-	PublicKeyHash *string `json:"publicKeyHash,omitempty" azure:"ro"`
-
-	// READ-ONLY; Self link.
-	SelfLink *string `json:"selfLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; App name.
-	SiteName *string `json:"siteName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Subject name of the certificate.
-	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
-
-	// READ-ONLY; Is the certificate valid?.
-	Valid *bool `json:"valid,omitempty" azure:"ro"`
+// CertificateRegistrationProviderClientListOperationsOptions contains the optional parameters for the CertificateRegistrationProviderClient.ListOperations
+// method.
+type CertificateRegistrationProviderClientListOperationsOptions struct {
+	// placeholder for future optional parameters
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CertificatePatchResourceProperties.
-func (c CertificatePatchResourceProperties) MarshalJSON() ([]byte, error) {
+// CertificateResource - Key Vault container ARM resource for a certificate that is purchased through Azure.
+type CertificateResource struct {
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Core resource properties
+	Properties *Certificate `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CertificateResource.
+func (c CertificateResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "canonicalName", c.CanonicalName)
-	populateByteArray(objectMap, "cerBlob", c.CerBlob, runtime.Base64StdFormat)
-	populate(objectMap, "domainValidationMethod", c.DomainValidationMethod)
-	populateTimeRFC3339(objectMap, "expirationDate", c.ExpirationDate)
-	populate(objectMap, "friendlyName", c.FriendlyName)
-	populate(objectMap, "hostNames", c.HostNames)
-	populate(objectMap, "hostingEnvironmentProfile", c.HostingEnvironmentProfile)
-	populateTimeRFC3339(objectMap, "issueDate", c.IssueDate)
-	populate(objectMap, "issuer", c.Issuer)
-	populate(objectMap, "keyVaultId", c.KeyVaultID)
-	populate(objectMap, "keyVaultSecretName", c.KeyVaultSecretName)
-	populate(objectMap, "keyVaultSecretStatus", c.KeyVaultSecretStatus)
-	populate(objectMap, "password", c.Password)
-	populateByteArray(objectMap, "pfxBlob", c.PfxBlob, runtime.Base64StdFormat)
-	populate(objectMap, "publicKeyHash", c.PublicKeyHash)
-	populate(objectMap, "selfLink", c.SelfLink)
-	populate(objectMap, "serverFarmId", c.ServerFarmID)
-	populate(objectMap, "siteName", c.SiteName)
-	populate(objectMap, "subjectName", c.SubjectName)
-	populate(objectMap, "thumbprint", c.Thumbprint)
-	populate(objectMap, "valid", c.Valid)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificatePatchResourceProperties.
-func (c *CertificatePatchResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "canonicalName":
-			err = unpopulate(val, &c.CanonicalName)
-			delete(rawMsg, key)
-		case "cerBlob":
-			err = runtime.DecodeByteArray(string(val), &c.CerBlob, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "domainValidationMethod":
-			err = unpopulate(val, &c.DomainValidationMethod)
-			delete(rawMsg, key)
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &c.ExpirationDate)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &c.FriendlyName)
-			delete(rawMsg, key)
-		case "hostNames":
-			err = unpopulate(val, &c.HostNames)
-			delete(rawMsg, key)
-		case "hostingEnvironmentProfile":
-			err = unpopulate(val, &c.HostingEnvironmentProfile)
-			delete(rawMsg, key)
-		case "issueDate":
-			err = unpopulateTimeRFC3339(val, &c.IssueDate)
-			delete(rawMsg, key)
-		case "issuer":
-			err = unpopulate(val, &c.Issuer)
-			delete(rawMsg, key)
-		case "keyVaultId":
-			err = unpopulate(val, &c.KeyVaultID)
-			delete(rawMsg, key)
-		case "keyVaultSecretName":
-			err = unpopulate(val, &c.KeyVaultSecretName)
-			delete(rawMsg, key)
-		case "keyVaultSecretStatus":
-			err = unpopulate(val, &c.KeyVaultSecretStatus)
-			delete(rawMsg, key)
-		case "password":
-			err = unpopulate(val, &c.Password)
-			delete(rawMsg, key)
-		case "pfxBlob":
-			err = runtime.DecodeByteArray(string(val), &c.PfxBlob, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "publicKeyHash":
-			err = unpopulate(val, &c.PublicKeyHash)
-			delete(rawMsg, key)
-		case "selfLink":
-			err = unpopulate(val, &c.SelfLink)
-			delete(rawMsg, key)
-		case "serverFarmId":
-			err = unpopulate(val, &c.ServerFarmID)
-			delete(rawMsg, key)
-		case "siteName":
-			err = unpopulate(val, &c.SiteName)
-			delete(rawMsg, key)
-		case "subjectName":
-			err = unpopulate(val, &c.SubjectName)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &c.Thumbprint)
-			delete(rawMsg, key)
-		case "valid":
-			err = unpopulate(val, &c.Valid)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// CertificateProperties - Certificate resource specific properties
-type CertificateProperties struct {
-	// CNAME of the certificate to be issued via free certificate
-	CanonicalName *string `json:"canonicalName,omitempty"`
-
-	// Method of domain validation for free cert
-	DomainValidationMethod *string `json:"domainValidationMethod,omitempty"`
-
-	// Host names the certificate applies to.
-	HostNames []*string `json:"hostNames,omitempty"`
-
-	// Key Vault Csm resource Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
-
-	// Key Vault secret name.
-	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
-
-	// Certificate password.
-	Password *string `json:"password,omitempty"`
-
-	// Pfx blob.
-	PfxBlob []byte `json:"pfxBlob,omitempty"`
-
-	// Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-	ServerFarmID *string `json:"serverFarmId,omitempty"`
-
-	// READ-ONLY; Raw bytes of .cer file
-	CerBlob []byte `json:"cerBlob,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Friendly name of the certificate.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Specification for the App Service Environment to use for the certificate.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate issue Date.
-	IssueDate *time.Time `json:"issueDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate issuer.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
-
-	// READ-ONLY; Status of the Key Vault secret.
-	KeyVaultSecretStatus *KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; Public key hash.
-	PublicKeyHash *string `json:"publicKeyHash,omitempty" azure:"ro"`
-
-	// READ-ONLY; Self link.
-	SelfLink *string `json:"selfLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; App name.
-	SiteName *string `json:"siteName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Subject name of the certificate.
-	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
-
-	// READ-ONLY; Is the certificate valid?.
-	Valid *bool `json:"valid,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CertificateProperties.
-func (c CertificateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "canonicalName", c.CanonicalName)
-	populateByteArray(objectMap, "cerBlob", c.CerBlob, runtime.Base64StdFormat)
-	populate(objectMap, "domainValidationMethod", c.DomainValidationMethod)
-	populateTimeRFC3339(objectMap, "expirationDate", c.ExpirationDate)
-	populate(objectMap, "friendlyName", c.FriendlyName)
-	populate(objectMap, "hostNames", c.HostNames)
-	populate(objectMap, "hostingEnvironmentProfile", c.HostingEnvironmentProfile)
-	populateTimeRFC3339(objectMap, "issueDate", c.IssueDate)
-	populate(objectMap, "issuer", c.Issuer)
-	populate(objectMap, "keyVaultId", c.KeyVaultID)
-	populate(objectMap, "keyVaultSecretName", c.KeyVaultSecretName)
-	populate(objectMap, "keyVaultSecretStatus", c.KeyVaultSecretStatus)
-	populate(objectMap, "password", c.Password)
-	populateByteArray(objectMap, "pfxBlob", c.PfxBlob, runtime.Base64StdFormat)
-	populate(objectMap, "publicKeyHash", c.PublicKeyHash)
-	populate(objectMap, "selfLink", c.SelfLink)
-	populate(objectMap, "serverFarmId", c.ServerFarmID)
-	populate(objectMap, "siteName", c.SiteName)
-	populate(objectMap, "subjectName", c.SubjectName)
-	populate(objectMap, "thumbprint", c.Thumbprint)
-	populate(objectMap, "valid", c.Valid)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateProperties.
-func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "canonicalName":
-			err = unpopulate(val, &c.CanonicalName)
-			delete(rawMsg, key)
-		case "cerBlob":
-			err = runtime.DecodeByteArray(string(val), &c.CerBlob, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "domainValidationMethod":
-			err = unpopulate(val, &c.DomainValidationMethod)
-			delete(rawMsg, key)
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &c.ExpirationDate)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &c.FriendlyName)
-			delete(rawMsg, key)
-		case "hostNames":
-			err = unpopulate(val, &c.HostNames)
-			delete(rawMsg, key)
-		case "hostingEnvironmentProfile":
-			err = unpopulate(val, &c.HostingEnvironmentProfile)
-			delete(rawMsg, key)
-		case "issueDate":
-			err = unpopulateTimeRFC3339(val, &c.IssueDate)
-			delete(rawMsg, key)
-		case "issuer":
-			err = unpopulate(val, &c.Issuer)
-			delete(rawMsg, key)
-		case "keyVaultId":
-			err = unpopulate(val, &c.KeyVaultID)
-			delete(rawMsg, key)
-		case "keyVaultSecretName":
-			err = unpopulate(val, &c.KeyVaultSecretName)
-			delete(rawMsg, key)
-		case "keyVaultSecretStatus":
-			err = unpopulate(val, &c.KeyVaultSecretStatus)
-			delete(rawMsg, key)
-		case "password":
-			err = unpopulate(val, &c.Password)
-			delete(rawMsg, key)
-		case "pfxBlob":
-			err = runtime.DecodeByteArray(string(val), &c.PfxBlob, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "publicKeyHash":
-			err = unpopulate(val, &c.PublicKeyHash)
-			delete(rawMsg, key)
-		case "selfLink":
-			err = unpopulate(val, &c.SelfLink)
-			delete(rawMsg, key)
-		case "serverFarmId":
-			err = unpopulate(val, &c.ServerFarmID)
-			delete(rawMsg, key)
-		case "siteName":
-			err = unpopulate(val, &c.SiteName)
-			delete(rawMsg, key)
-		case "subjectName":
-			err = unpopulate(val, &c.SubjectName)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &c.Thumbprint)
-			delete(rawMsg, key)
-		case "valid":
-			err = unpopulate(val, &c.Valid)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// CertificateRegistrationProviderListOperationsOptions contains the optional parameters for the CertificateRegistrationProvider.ListOperations method.
-type CertificateRegistrationProviderListOperationsOptions struct {
+// CertificatesClientCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.CreateOrUpdate method.
+type CertificatesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesCreateOrUpdateOptions contains the optional parameters for the Certificates.CreateOrUpdate method.
-type CertificatesCreateOrUpdateOptions struct {
+// CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
+type CertificatesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesDeleteOptions contains the optional parameters for the Certificates.Delete method.
-type CertificatesDeleteOptions struct {
+// CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
+type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesGetOptions contains the optional parameters for the Certificates.Get method.
-type CertificatesGetOptions struct {
+// CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.ListByResourceGroup
+// method.
+type CertificatesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesListByResourceGroupOptions contains the optional parameters for the Certificates.ListByResourceGroup method.
-type CertificatesListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CertificatesListOptions contains the optional parameters for the Certificates.List method.
-type CertificatesListOptions struct {
+// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+type CertificatesClientListOptions struct {
 	// Return only information specified in the filter (using OData syntax). For example: $filter=KeyVaultId eq 'KeyVaultId'
 	Filter *string
 }
 
-// CertificatesUpdateOptions contains the optional parameters for the Certificates.Update method.
-type CertificatesUpdateOptions struct {
+// CertificatesClientUpdateOptions contains the optional parameters for the CertificatesClient.Update method.
+type CertificatesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3214,11 +2439,12 @@ type ClientRegistration struct {
 type CloningInfo struct {
 	// REQUIRED; ARM resource ID of the source app. App resource ID is of the form /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}
 	// for production slots and
-	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
+	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for
+	// other slots.
 	SourceWebAppID *string `json:"sourceWebAppId,omitempty"`
 
-	// Application setting overrides for cloned app. If specified, these settings override the settings cloned from source app. Otherwise, application settings
-	// from source app are retained.
+	// Application setting overrides for cloned app. If specified, these settings override the settings cloned from source app.
+	// Otherwise, application settings from source app are retained.
 	AppSettingsOverrides map[string]*string `json:"appSettingsOverrides,omitempty"`
 
 	// true to clone custom hostnames from source app; otherwise, false.
@@ -3267,6 +2493,33 @@ func (c CloningInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Configuration - Non versioned Container App configuration properties that define the mutable settings of a Container app
+type Configuration struct {
+	// ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple revisions can be
+	// active. If no value if provided, this is the defaultSingle: Only one revision
+	// can be active at a time. Revision weights can not be used in this mode
+	ActiveRevisionsMode *ActiveRevisionsMode `json:"activeRevisionsMode,omitempty"`
+
+	// Ingress configurations.
+	Ingress *Ingress `json:"ingress,omitempty"`
+
+	// Collection of private container registry credentials for containers used by the Container app
+	Registries []*RegistryCredentials `json:"registries,omitempty"`
+
+	// Collection of secrets used by a Container app
+	Secrets []*Secret `json:"secrets,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Configuration.
+func (c Configuration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "activeRevisionsMode", c.ActiveRevisionsMode)
+	populate(objectMap, "ingress", c.Ingress)
+	populate(objectMap, "registries", c.Registries)
+	populate(objectMap, "secrets", c.Secrets)
+	return json.Marshal(objectMap)
+}
+
 // ConnStringInfo - Database connection string information.
 type ConnStringInfo struct {
 	// Connection string value.
@@ -3290,21 +2543,35 @@ type ConnStringValueTypePair struct {
 
 // ConnectionStringDictionary - String dictionary resource.
 type ConnectionStringDictionary struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Connection strings.
 	Properties map[string]*ConnStringValueTypePair `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ConnectionStringDictionary.
 func (c ConnectionStringDictionary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
-// Contact information for domain registration. If 'Domain Privacy' option is not selected then the contact information is made publicly available through
-// the Whois directories as per ICANN requirements.
+// Contact information for domain registration. If 'Domain Privacy' option is not selected then the contact information is
+// made publicly available through the Whois directories as per ICANN requirements.
 type Contact struct {
 	// REQUIRED; Email address.
 	Email *string `json:"email,omitempty"`
@@ -3332,6 +2599,212 @@ type Contact struct {
 
 	// Organization contact belongs to.
 	Organization *string `json:"organization,omitempty"`
+}
+
+// Container App container definition.
+type Container struct {
+	// Container start command arguments.
+	Args []*string `json:"args,omitempty"`
+
+	// Container start command.
+	Command []*string `json:"command,omitempty"`
+
+	// Container environment variables.
+	Env []*EnvironmentVar `json:"env,omitempty"`
+
+	// Container image tag.
+	Image *string `json:"image,omitempty"`
+
+	// Custom container name.
+	Name *string `json:"name,omitempty"`
+
+	// Container resource requirements.
+	Resources *ContainerResources `json:"resources,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Container.
+func (c Container) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "args", c.Args)
+	populate(objectMap, "command", c.Command)
+	populate(objectMap, "env", c.Env)
+	populate(objectMap, "image", c.Image)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "resources", c.Resources)
+	return json.Marshal(objectMap)
+}
+
+// ContainerApp - Container App.
+type ContainerApp struct {
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// ContainerApp resource specific properties
+	Properties *ContainerAppProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ContainerApp.
+func (c ContainerApp) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
+	return json.Marshal(objectMap)
+}
+
+// ContainerAppCollection - Container App collection ARM resource.
+type ContainerAppCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*ContainerApp `json:"value,omitempty"`
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ContainerAppCollection.
+func (c ContainerAppCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// ContainerAppProperties - ContainerApp resource specific properties
+type ContainerAppProperties struct {
+	// Non versioned Container App configuration properties.
+	Configuration *Configuration `json:"configuration,omitempty"`
+
+	// Resource ID of the Container App's KubeEnvironment.
+	KubeEnvironmentID *string `json:"kubeEnvironmentId,omitempty"`
+
+	// Container App versioned application definition.
+	Template *Template `json:"template,omitempty"`
+
+	// READ-ONLY; Fully Qualified Domain Name of the latest revision of the Container App.
+	LatestRevisionFqdn *string `json:"latestRevisionFqdn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the latest revision of the Container App.
+	LatestRevisionName *string `json:"latestRevisionName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the Container App.
+	ProvisioningState *ContainerAppProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// ContainerAppSecret - Container App Secret.
+type ContainerAppSecret struct {
+	// READ-ONLY; Secret Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Secret Value.
+	Value *string `json:"value,omitempty" azure:"ro"`
+}
+
+// ContainerAppsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerAppsClient.BeginCreateOrUpdate
+// method.
+type ContainerAppsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsClientBeginDeleteOptions contains the optional parameters for the ContainerAppsClient.BeginDelete method.
+type ContainerAppsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsClientGetOptions contains the optional parameters for the ContainerAppsClient.Get method.
+type ContainerAppsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsClient.ListByResourceGroup
+// method.
+type ContainerAppsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsClient.ListBySubscription
+// method.
+type ContainerAppsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsClientListSecretsOptions contains the optional parameters for the ContainerAppsClient.ListSecrets method.
+type ContainerAppsClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+type ContainerAppsConfiguration struct {
+	// Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the subnet
+	// defined in appSubnetResourceId. Must not overlap with the IP range defined in
+	// platformReservedCidr, if defined.
+	AppSubnetResourceID *string `json:"appSubnetResourceId,omitempty"`
+
+	// Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the subnet
+	// defined in appSubnetResourceId. Must not overlap with the IP range defined in
+	// platformReservedCidr, if defined.
+	ControlPlaneSubnetResourceID *string `json:"controlPlaneSubnetResourceId,omitempty"`
+
+	// Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry
+	DaprAIInstrumentationKey *string `json:"daprAIInstrumentationKey,omitempty"`
+
+	// CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the IP range
+	// defined in platformReservedCidr, if defined.
+	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
+
+	// IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any
+	// other Subnet IP ranges.
+	PlatformReservedCidr *string `json:"platformReservedCidr,omitempty"`
+
+	// An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server
+	PlatformReservedDNSIP *string `json:"platformReservedDnsIP,omitempty"`
+}
+
+// ContainerAppsRevisionsClientActivateRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.ActivateRevision
+// method.
+type ContainerAppsRevisionsClientActivateRevisionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsRevisionsClientDeactivateRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.DeactivateRevision
+// method.
+type ContainerAppsRevisionsClientDeactivateRevisionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsRevisionsClientGetRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.GetRevision
+// method.
+type ContainerAppsRevisionsClientGetRevisionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.ListRevisions
+// method.
+type ContainerAppsRevisionsClientListRevisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsRevisionsClientRestartRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.RestartRevision
+// method.
+type ContainerAppsRevisionsClientRestartRevisionOptions struct {
+	// placeholder for future optional parameters
 }
 
 type ContainerCPUStatistics struct {
@@ -3441,6 +2914,15 @@ type ContainerNetworkInterfaceStatistics struct {
 	TxPackets *int64 `json:"txPackets,omitempty"`
 }
 
+// ContainerResources - Container App container resource requirements.
+type ContainerResources struct {
+	// Required CPU in cores, e.g. 0.5
+	CPU *float64 `json:"cpu,omitempty"`
+
+	// Required memory, e.g. "250Mb"
+	Memory *string `json:"memory,omitempty"`
+}
+
 type ContainerThrottlingData struct {
 	Periods          *int32 `json:"periods,omitempty"`
 	ThrottledPeriods *int32 `json:"throttledPeriods,omitempty"`
@@ -3449,17 +2931,20 @@ type ContainerThrottlingData struct {
 
 // ContinuousWebJob - Continuous Web Job Information.
 type ContinuousWebJob struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// ContinuousWebJob resource specific properties
 	Properties *ContinuousWebJobProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ContinuousWebJob.
-func (c ContinuousWebJob) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ContinuousWebJobCollection - Collection of Kudu continuous web job information elements.
@@ -3497,7 +2982,7 @@ type ContinuousWebJobProperties struct {
 	RunCommand *string `json:"run_command,omitempty"`
 
 	// Job settings.
-	Settings map[string]map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]interface{} `json:"settings,omitempty"`
 
 	// Job status.
 	Status *ContinuousWebJobStatus `json:"status,omitempty"`
@@ -3539,11 +3024,12 @@ type CookieExpiration struct {
 
 // CorsSettings - Cross-Origin Resource Sharing (CORS) settings for the app.
 type CorsSettings struct {
-	// Gets or sets the list of origins that should be allowed to make cross-origin calls (for example: http://example.com:12345). Use "*" to allow all.
+	// Gets or sets the list of origins that should be allowed to make cross-origin calls (for example: http://example.com:12345).
+	// Use "*" to allow all.
 	AllowedOrigins []*string `json:"allowedOrigins,omitempty"`
 
-	// Gets or sets whether CORS requests with credentials are allowed. See https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requestswithcredentials for
-	// more details.
+	// Gets or sets whether CORS requests with credentials are allowed. See https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requestswithcredentials
+	// for more details.
 	SupportCredentials *bool `json:"supportCredentials,omitempty"`
 }
 
@@ -3555,7 +3041,8 @@ func (c CorsSettings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CsmMoveResourceEnvelope - Object with a list of the resources that need to be moved and the resource group they should be moved to.
+// CsmMoveResourceEnvelope - Object with a list of the resources that need to be moved and the resource group they should
+// be moved to.
 type CsmMoveResourceEnvelope struct {
 	Resources           []*string `json:"resources,omitempty"`
 	TargetResourceGroup *string   `json:"targetResourceGroup,omitempty"`
@@ -3614,17 +3101,20 @@ type CsmOperationDisplay struct {
 
 // CsmPublishingCredentialsPoliciesEntity - Publishing Credentials Policies parameters.
 type CsmPublishingCredentialsPoliciesEntity struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// CsmPublishingCredentialsPoliciesEntity resource specific properties
 	Properties *CsmPublishingCredentialsPoliciesEntityProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CsmPublishingCredentialsPoliciesEntity.
-func (c CsmPublishingCredentialsPoliciesEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CsmPublishingCredentialsPoliciesEntityProperties - CsmPublishingCredentialsPoliciesEntity resource specific properties
@@ -3731,17 +3221,20 @@ func (c CsmUsageQuotaCollection) MarshalJSON() ([]byte, error) {
 
 // CustomHostnameAnalysisResult - Custom domain analysis.
 type CustomHostnameAnalysisResult struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// CustomHostnameAnalysisResult resource specific properties
 	Properties *CustomHostnameAnalysisResultProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CustomHostnameAnalysisResult.
-func (c CustomHostnameAnalysisResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CustomHostnameAnalysisResultProperties - CustomHostnameAnalysisResult resource specific properties
@@ -3797,6 +3290,57 @@ func (c CustomHostnameAnalysisResultProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// CustomHostnameSites - A hostname and its assigned sites
+type CustomHostnameSites struct {
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// CustomHostnameSites resource specific properties
+	Properties *CustomHostnameSitesProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CustomHostnameSitesCollection - Collection of custom hostname sites
+type CustomHostnameSitesCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*CustomHostnameSites `json:"value,omitempty"`
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomHostnameSitesCollection.
+func (c CustomHostnameSitesCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CustomHostnameSitesProperties - CustomHostnameSites resource specific properties
+type CustomHostnameSitesProperties struct {
+	CustomHostname  *string       `json:"customHostname,omitempty"`
+	Region          *string       `json:"region,omitempty"`
+	SiteResourceIDs []*Identifier `json:"siteResourceIds,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomHostnameSitesProperties.
+func (c CustomHostnameSitesProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "customHostname", c.CustomHostname)
+	populate(objectMap, "region", c.Region)
+	populate(objectMap, "siteResourceIds", c.SiteResourceIDs)
+	return json.Marshal(objectMap)
+}
+
 // CustomOpenIDConnectProvider - The configuration settings of the custom Open ID Connect provider.
 type CustomOpenIDConnectProvider struct {
 	// false if the custom Open ID provider provider should not be enabled; otherwise, true.
@@ -3807,6 +3351,89 @@ type CustomOpenIDConnectProvider struct {
 
 	// The configuration settings of the app registration for the custom Open ID Connect provider.
 	Registration *OpenIDConnectRegistration `json:"registration,omitempty"`
+}
+
+// CustomScaleRule - Container App container Custom scaling rule.
+type CustomScaleRule struct {
+	// Authentication secrets for the custom scale rule.
+	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+
+	// Metadata properties to describe custom scale rule.
+	Metadata map[string]*string `json:"metadata,omitempty"`
+
+	// Type of the custom scale rule eg: azure-servicebus, redis etc.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomScaleRule.
+func (c CustomScaleRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "auth", c.Auth)
+	populate(objectMap, "metadata", c.Metadata)
+	populate(objectMap, "type", c.Type)
+	return json.Marshal(objectMap)
+}
+
+// Dapr - Container App Dapr configuration.
+type Dapr struct {
+	// Dapr application identifier
+	AppID *string `json:"appId,omitempty"`
+
+	// Port on which the Dapr side car
+	AppPort *int32 `json:"appPort,omitempty"`
+
+	// Collection of Dapr components
+	Components []*DaprComponent `json:"components,omitempty"`
+
+	// Boolean indicating if the Dapr side car is enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Dapr.
+func (d Dapr) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "appId", d.AppID)
+	populate(objectMap, "appPort", d.AppPort)
+	populate(objectMap, "components", d.Components)
+	populate(objectMap, "enabled", d.Enabled)
+	return json.Marshal(objectMap)
+}
+
+// DaprComponent - Dapr component configuration
+type DaprComponent struct {
+	// Component metadata
+	Metadata []*DaprMetadata `json:"metadata,omitempty"`
+
+	// Component name
+	Name *string `json:"name,omitempty"`
+
+	// Component type
+	Type *string `json:"type,omitempty"`
+
+	// Component version
+	Version *string `json:"version,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DaprComponent.
+func (d DaprComponent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "metadata", d.Metadata)
+	populate(objectMap, "name", d.Name)
+	populate(objectMap, "type", d.Type)
+	populate(objectMap, "version", d.Version)
+	return json.Marshal(objectMap)
+}
+
+// DaprMetadata - Container App Dapr component metadata.
+type DaprMetadata struct {
+	// Metadata property name.
+	Name *string `json:"name,omitempty"`
+
+	// Name of the Container App secret from which to pull the metadata property value.
+	SecretRef *string `json:"secretRef,omitempty"`
+
+	// Metadata property value.
+	Value *string `json:"value,omitempty"`
 }
 
 // DataProviderMetadata - Additional configuration for a data providers
@@ -3880,11 +3507,12 @@ type DatabaseBackupSetting struct {
 	// REQUIRED; Database type (e.g. SqlAzure / MySql).
 	DatabaseType *DatabaseType `json:"databaseType,omitempty"`
 
-	// Contains a connection string to a database which is being backed up or restored. If the restore should happen to a new database, the database name inside
-	// is the new one.
+	// Contains a connection string to a database which is being backed up or restored. If the restore should happen to a new
+	// database, the database name inside is the new one.
 	ConnectionString *string `json:"connectionString,omitempty"`
 
-	// Contains a connection string name that is linked to the SiteConfig.ConnectionStrings. This is used during restore with overwrite connection strings options.
+	// Contains a connection string name that is linked to the SiteConfig.ConnectionStrings. This is used during restore with
+	// overwrite connection strings options.
 	ConnectionStringName *string `json:"connectionStringName,omitempty"`
 	Name                 *string `json:"name,omitempty"`
 }
@@ -3906,73 +3534,22 @@ func (d DefaultAuthorizationPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DefaultErrorResponse - App Service error response.
-// Implements the error and azcore.HTTPResponse interfaces.
-type DefaultErrorResponse struct {
-	raw string
-	// READ-ONLY; Error model.
-	InnerError *DefaultErrorResponseError `json:"error,omitempty" azure:"ro"`
-}
-
-// Error implements the error interface for type DefaultErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e DefaultErrorResponse) Error() string {
-	return e.raw
-}
-
-// DefaultErrorResponseError - Error model.
-type DefaultErrorResponseError struct {
-	Details []*DefaultErrorResponseErrorDetailsItem `json:"details,omitempty"`
-
-	// READ-ONLY; Standardized string to programmatically identify the error.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; More information to debug error.
-	Innererror *string `json:"innererror,omitempty" azure:"ro"`
-
-	// READ-ONLY; Detailed error description and debugging information.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; Detailed error description and debugging information.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DefaultErrorResponseError.
-func (d DefaultErrorResponseError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", d.Code)
-	populate(objectMap, "details", d.Details)
-	populate(objectMap, "innererror", d.Innererror)
-	populate(objectMap, "message", d.Message)
-	populate(objectMap, "target", d.Target)
-	return json.Marshal(objectMap)
-}
-
-// DefaultErrorResponseErrorDetailsItem - Detailed errors.
-type DefaultErrorResponseErrorDetailsItem struct {
-	// READ-ONLY; Standardized string to programmatically identify the error.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; Detailed error description and debugging information.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; Detailed error description and debugging information.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
 // DeletedAppRestoreRequest - Details about restoring a deleted app.
 type DeletedAppRestoreRequest struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// DeletedAppRestoreRequest resource specific properties
 	Properties *DeletedAppRestoreRequestProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DeletedAppRestoreRequest.
-func (d DeletedAppRestoreRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DeletedAppRestoreRequestProperties - DeletedAppRestoreRequest resource specific properties
@@ -3983,7 +3560,8 @@ type DeletedAppRestoreRequestProperties struct {
 	// If true, deleted site configuration, in addition to content, will be restored.
 	RecoverConfiguration *bool `json:"recoverConfiguration,omitempty"`
 
-	// Point in time to restore the deleted app from, formatted as a DateTime string. If unspecified, default value is the time that the app was deleted.
+	// Point in time to restore the deleted app from, formatted as a DateTime string. If unspecified, default value is the time
+	// that the app was deleted.
 	SnapshotTime *string `json:"snapshotTime,omitempty"`
 
 	// If true, the snapshot is retrieved from DRSecondary endpoint.
@@ -3992,17 +3570,20 @@ type DeletedAppRestoreRequestProperties struct {
 
 // DeletedSite - A deleted app.
 type DeletedSite struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// DeletedSite resource specific properties
 	Properties *DeletedSiteProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DeletedSite.
-func (d DeletedSite) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DeletedSiteProperties - DeletedSite resource specific properties
@@ -4049,34 +3630,39 @@ func (d DeletedWebAppCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DeletedWebAppsGetDeletedWebAppByLocationOptions contains the optional parameters for the DeletedWebApps.GetDeletedWebAppByLocation method.
-type DeletedWebAppsGetDeletedWebAppByLocationOptions struct {
+// DeletedWebAppsClientGetDeletedWebAppByLocationOptions contains the optional parameters for the DeletedWebAppsClient.GetDeletedWebAppByLocation
+// method.
+type DeletedWebAppsClientGetDeletedWebAppByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedWebAppsListByLocationOptions contains the optional parameters for the DeletedWebApps.ListByLocation method.
-type DeletedWebAppsListByLocationOptions struct {
+// DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.ListByLocation
+// method.
+type DeletedWebAppsClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedWebAppsListOptions contains the optional parameters for the DeletedWebApps.List method.
-type DeletedWebAppsListOptions struct {
+// DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.List method.
+type DeletedWebAppsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Deployment - User credentials used for publishing activity.
 type Deployment struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Deployment resource specific properties
 	Properties *DeploymentProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Deployment.
-func (d Deployment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DeploymentCollection - Collection of app deployments.
@@ -4102,7 +3688,7 @@ type DeploymentLocations struct {
 	HostingEnvironmentDeploymentInfos []*HostingEnvironmentDeploymentInfo `json:"hostingEnvironmentDeploymentInfos,omitempty"`
 
 	// Available App Service Environments with full descriptions of the environments.
-	HostingEnvironments []*AppServiceEnvironment `json:"hostingEnvironments,omitempty"`
+	HostingEnvironments []*Environment `json:"hostingEnvironments,omitempty"`
 
 	// Available regions.
 	Locations []*GeoRegion `json:"locations,omitempty"`
@@ -4305,17 +3891,20 @@ type DetectorDefinition struct {
 
 // DetectorDefinitionResource - ARM resource for a detector definition
 type DetectorDefinitionResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *DetectorDefinition `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DetectorDefinitionResource.
-func (d DetectorDefinitionResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DetectorInfo - Definition of Detector
@@ -4365,17 +3954,20 @@ func (d DetectorInfo) MarshalJSON() ([]byte, error) {
 
 // DetectorResponse - Class representing Response from Detector
 type DetectorResponse struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// DetectorResponse resource specific properties
 	Properties *DetectorResponseProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DetectorResponse.
-func (d DetectorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DetectorResponseCollection - Collection of detector responses
@@ -4426,17 +4018,20 @@ func (d DetectorResponseProperties) MarshalJSON() ([]byte, error) {
 
 // DiagnosticAnalysis - Class representing a diagnostic analysis done on an application
 type DiagnosticAnalysis struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// DiagnosticAnalysis resource specific properties
 	Properties *DiagnosticAnalysisProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticAnalysis.
-func (d DiagnosticAnalysis) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DiagnosticAnalysisCollection - Collection of Diagnostic Analyses
@@ -4519,17 +4114,20 @@ func (d *DiagnosticAnalysisProperties) UnmarshalJSON(data []byte) error {
 
 // DiagnosticCategory - Class representing detector definition
 type DiagnosticCategory struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// DiagnosticCategory resource specific properties
 	Properties *DiagnosticCategoryProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticCategory.
-func (d DiagnosticCategory) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DiagnosticCategoryCollection - Collection of Diagnostic Categories
@@ -4583,17 +4181,20 @@ func (d DiagnosticDetectorCollection) MarshalJSON() ([]byte, error) {
 
 // DiagnosticDetectorResponse - Class representing Response from Diagnostic Detectors
 type DiagnosticDetectorResponse struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// DiagnosticDetectorResponse resource specific properties
 	Properties *DiagnosticDetectorResponseProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticDetectorResponse.
-func (d DiagnosticDetectorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DiagnosticDetectorResponseProperties - DiagnosticDetectorResponse resource specific properties
@@ -4689,8 +4290,8 @@ type DiagnosticMetricSample struct {
 	// Minimum of the metric sampled during the time period
 	Minimum *float64 `json:"minimum,omitempty"`
 
-	// Role Instance. Null if this counter is not per instance This is returned and should be whichever instance name we desire to be returned i.e. CPU and
-	// Memory return RDWORKERNAME (LargeDed…IN0) where
+	// Role Instance. Null if this counter is not per instance This is returned and should be whichever instance name we desire
+	// to be returned i.e. CPU and Memory return RDWORKERNAME (LargeDed…IN0) where
 	// RDWORKERNAME is Machine name below and RoleInstance name in parenthesis
 	RoleInstance *string `json:"roleInstance,omitempty"`
 
@@ -4816,153 +4417,172 @@ func (d *DiagnosticMetricSet) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DiagnosticsExecuteSiteAnalysisOptions contains the optional parameters for the Diagnostics.ExecuteSiteAnalysis method.
-type DiagnosticsExecuteSiteAnalysisOptions struct {
-	// End Time
-	EndTime *time.Time
-	// Start Time
-	StartTime *time.Time
-	// Time Grain
-	TimeGrain *string
-}
-
-// DiagnosticsExecuteSiteAnalysisSlotOptions contains the optional parameters for the Diagnostics.ExecuteSiteAnalysisSlot method.
-type DiagnosticsExecuteSiteAnalysisSlotOptions struct {
-	// End Time
-	EndTime *time.Time
-	// Start Time
-	StartTime *time.Time
-	// Time Grain
-	TimeGrain *string
-}
-
-// DiagnosticsExecuteSiteDetectorOptions contains the optional parameters for the Diagnostics.ExecuteSiteDetector method.
-type DiagnosticsExecuteSiteDetectorOptions struct {
-	// End Time
-	EndTime *time.Time
-	// Start Time
-	StartTime *time.Time
-	// Time Grain
-	TimeGrain *string
-}
-
-// DiagnosticsExecuteSiteDetectorSlotOptions contains the optional parameters for the Diagnostics.ExecuteSiteDetectorSlot method.
-type DiagnosticsExecuteSiteDetectorSlotOptions struct {
-	// End Time
-	EndTime *time.Time
-	// Start Time
-	StartTime *time.Time
-	// Time Grain
-	TimeGrain *string
-}
-
-// DiagnosticsGetHostingEnvironmentDetectorResponseOptions contains the optional parameters for the Diagnostics.GetHostingEnvironmentDetectorResponse method.
-type DiagnosticsGetHostingEnvironmentDetectorResponseOptions struct {
-	// End Time
-	EndTime *time.Time
-	// Start Time
-	StartTime *time.Time
-	// Time Grain
-	TimeGrain *string
-}
-
-// DiagnosticsGetSiteAnalysisOptions contains the optional parameters for the Diagnostics.GetSiteAnalysis method.
-type DiagnosticsGetSiteAnalysisOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticsGetSiteAnalysisSlotOptions contains the optional parameters for the Diagnostics.GetSiteAnalysisSlot method.
-type DiagnosticsGetSiteAnalysisSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticsGetSiteDetectorOptions contains the optional parameters for the Diagnostics.GetSiteDetector method.
-type DiagnosticsGetSiteDetectorOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticsGetSiteDetectorResponseOptions contains the optional parameters for the Diagnostics.GetSiteDetectorResponse method.
-type DiagnosticsGetSiteDetectorResponseOptions struct {
-	// End Time
-	EndTime *time.Time
-	// Start Time
-	StartTime *time.Time
-	// Time Grain
-	TimeGrain *string
-}
-
-// DiagnosticsGetSiteDetectorResponseSlotOptions contains the optional parameters for the Diagnostics.GetSiteDetectorResponseSlot method.
-type DiagnosticsGetSiteDetectorResponseSlotOptions struct {
-	// End Time
-	EndTime *time.Time
-	// Start Time
-	StartTime *time.Time
-	// Time Grain
-	TimeGrain *string
-}
-
-// DiagnosticsGetSiteDetectorSlotOptions contains the optional parameters for the Diagnostics.GetSiteDetectorSlot method.
-type DiagnosticsGetSiteDetectorSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticsGetSiteDiagnosticCategoryOptions contains the optional parameters for the Diagnostics.GetSiteDiagnosticCategory method.
-type DiagnosticsGetSiteDiagnosticCategoryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticsGetSiteDiagnosticCategorySlotOptions contains the optional parameters for the Diagnostics.GetSiteDiagnosticCategorySlot method.
-type DiagnosticsGetSiteDiagnosticCategorySlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiagnosticsListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the Diagnostics.ListHostingEnvironmentDetectorResponses
+// DiagnosticsClientExecuteSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysis
 // method.
-type DiagnosticsListHostingEnvironmentDetectorResponsesOptions struct {
+type DiagnosticsClientExecuteSiteAnalysisOptions struct {
+	// End Time
+	EndTime *time.Time
+	// Start Time
+	StartTime *time.Time
+	// Time Grain
+	TimeGrain *string
+}
+
+// DiagnosticsClientExecuteSiteAnalysisSlotOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysisSlot
+// method.
+type DiagnosticsClientExecuteSiteAnalysisSlotOptions struct {
+	// End Time
+	EndTime *time.Time
+	// Start Time
+	StartTime *time.Time
+	// Time Grain
+	TimeGrain *string
+}
+
+// DiagnosticsClientExecuteSiteDetectorOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteDetector
+// method.
+type DiagnosticsClientExecuteSiteDetectorOptions struct {
+	// End Time
+	EndTime *time.Time
+	// Start Time
+	StartTime *time.Time
+	// Time Grain
+	TimeGrain *string
+}
+
+// DiagnosticsClientExecuteSiteDetectorSlotOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteDetectorSlot
+// method.
+type DiagnosticsClientExecuteSiteDetectorSlotOptions struct {
+	// End Time
+	EndTime *time.Time
+	// Start Time
+	StartTime *time.Time
+	// Time Grain
+	TimeGrain *string
+}
+
+// DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions contains the optional parameters for the DiagnosticsClient.GetHostingEnvironmentDetectorResponse
+// method.
+type DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions struct {
+	// End Time
+	EndTime *time.Time
+	// Start Time
+	StartTime *time.Time
+	// Time Grain
+	TimeGrain *string
+}
+
+// DiagnosticsClientGetSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.GetSiteAnalysis method.
+type DiagnosticsClientGetSiteAnalysisOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsListSiteAnalysesOptions contains the optional parameters for the Diagnostics.ListSiteAnalyses method.
-type DiagnosticsListSiteAnalysesOptions struct {
+// DiagnosticsClientGetSiteAnalysisSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteAnalysisSlot
+// method.
+type DiagnosticsClientGetSiteAnalysisSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsListSiteAnalysesSlotOptions contains the optional parameters for the Diagnostics.ListSiteAnalysesSlot method.
-type DiagnosticsListSiteAnalysesSlotOptions struct {
+// DiagnosticsClientGetSiteDetectorOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetector method.
+type DiagnosticsClientGetSiteDetectorOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsListSiteDetectorResponsesOptions contains the optional parameters for the Diagnostics.ListSiteDetectorResponses method.
-type DiagnosticsListSiteDetectorResponsesOptions struct {
+// DiagnosticsClientGetSiteDetectorResponseOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorResponse
+// method.
+type DiagnosticsClientGetSiteDetectorResponseOptions struct {
+	// End Time
+	EndTime *time.Time
+	// Start Time
+	StartTime *time.Time
+	// Time Grain
+	TimeGrain *string
+}
+
+// DiagnosticsClientGetSiteDetectorResponseSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorResponseSlot
+// method.
+type DiagnosticsClientGetSiteDetectorResponseSlotOptions struct {
+	// End Time
+	EndTime *time.Time
+	// Start Time
+	StartTime *time.Time
+	// Time Grain
+	TimeGrain *string
+}
+
+// DiagnosticsClientGetSiteDetectorSlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDetectorSlot
+// method.
+type DiagnosticsClientGetSiteDetectorSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsListSiteDetectorResponsesSlotOptions contains the optional parameters for the Diagnostics.ListSiteDetectorResponsesSlot method.
-type DiagnosticsListSiteDetectorResponsesSlotOptions struct {
+// DiagnosticsClientGetSiteDiagnosticCategoryOptions contains the optional parameters for the DiagnosticsClient.GetSiteDiagnosticCategory
+// method.
+type DiagnosticsClientGetSiteDiagnosticCategoryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsListSiteDetectorsOptions contains the optional parameters for the Diagnostics.ListSiteDetectors method.
-type DiagnosticsListSiteDetectorsOptions struct {
+// DiagnosticsClientGetSiteDiagnosticCategorySlotOptions contains the optional parameters for the DiagnosticsClient.GetSiteDiagnosticCategorySlot
+// method.
+type DiagnosticsClientGetSiteDiagnosticCategorySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsListSiteDetectorsSlotOptions contains the optional parameters for the Diagnostics.ListSiteDetectorsSlot method.
-type DiagnosticsListSiteDetectorsSlotOptions struct {
+// DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListHostingEnvironmentDetectorResponses
+// method.
+type DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsListSiteDiagnosticCategoriesOptions contains the optional parameters for the Diagnostics.ListSiteDiagnosticCategories method.
-type DiagnosticsListSiteDiagnosticCategoriesOptions struct {
+// DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalyses method.
+type DiagnosticsClientListSiteAnalysesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the Diagnostics.ListSiteDiagnosticCategoriesSlot method.
-type DiagnosticsListSiteDiagnosticCategoriesSlotOptions struct {
+// DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalysesSlot
+// method.
+type DiagnosticsClientListSiteAnalysesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Dimension of a resource metric. For e.g. instance specific HTTP requests for a web app, where instance name is dimension of the metric HTTP request
+// DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponses
+// method.
+type DiagnosticsClientListSiteDetectorResponsesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponsesSlot
+// method.
+type DiagnosticsClientListSiteDetectorResponsesSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectors
+// method.
+type DiagnosticsClientListSiteDetectorsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorsSlot
+// method.
+type DiagnosticsClientListSiteDetectorsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategories
+// method.
+type DiagnosticsClientListSiteDiagnosticCategoriesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategoriesSlot
+// method.
+type DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Dimension of a resource metric. For e.g. instance specific HTTP requests for a web app, where instance name is dimension
+// of the metric HTTP request
 type Dimension struct {
 	DisplayName            *string `json:"displayName,omitempty"`
 	InternalName           *string `json:"internalName,omitempty"`
@@ -4972,16 +4592,38 @@ type Dimension struct {
 
 // Domain - Information about a domain.
 type Domain struct {
-	Resource
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Domain resource specific properties
 	Properties *DomainProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Domain.
 func (d Domain) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "kind", d.Kind)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -4990,8 +4632,8 @@ type DomainAvailabilityCheckResult struct {
 	// true if domain can be purchased using CreateDomain API; otherwise, false.
 	Available *bool `json:"available,omitempty"`
 
-	// Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this domain will simply restore it
-	// and this operation will not cost anything.
+	// Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this
+	// domain will simply restore it and this operation will not cost anything.
 	DomainType *DomainType `json:"domainType,omitempty"`
 
 	// Name of the domain.
@@ -5029,16 +4671,30 @@ type DomainControlCenterSsoRequest struct {
 
 // DomainOwnershipIdentifier - Domain ownership Identifier.
 type DomainOwnershipIdentifier struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// DomainOwnershipIdentifier resource specific properties
 	Properties *DomainOwnershipIdentifierProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DomainOwnershipIdentifier.
 func (d DomainOwnershipIdentifier) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "kind", d.Kind)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -5067,16 +4723,30 @@ type DomainOwnershipIdentifierProperties struct {
 
 // DomainPatchResource - ARM resource for a domain.
 type DomainPatchResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// DomainPatchResource resource specific properties
 	Properties *DomainPatchResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DomainPatchResource.
 func (d DomainPatchResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "kind", d.Kind)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -5134,8 +4804,8 @@ type DomainPatchResourceProperties struct {
 	// READ-ONLY; Domain provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
-	// READ-ONLY; true if Azure can assign this domain to App Service apps; otherwise, false. This value will be true if domain registration status is active
-	// and it is hosted on name servers Azure has programmatic
+	// READ-ONLY; true if Azure can assign this domain to App Service apps; otherwise, false. This value will be true if domain
+	// registration status is active and it is hosted on name servers Azure has programmatic
 	// access to.
 	ReadyForDNSRecordManagement *bool `json:"readyForDnsRecordManagement,omitempty" azure:"ro"`
 
@@ -5300,8 +4970,8 @@ type DomainProperties struct {
 	// READ-ONLY; Domain provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
-	// READ-ONLY; true if Azure can assign this domain to App Service apps; otherwise, false. This value will be true if domain registration status is active
-	// and it is hosted on name servers Azure has programmatic
+	// READ-ONLY; true if Azure can assign this domain to App Service apps; otherwise, false. This value will be true if domain
+	// registration status is active and it is hosted on name servers Azure has programmatic
 	// access to.
 	ReadyForDNSRecordManagement *bool `json:"readyForDnsRecordManagement,omitempty" azure:"ro"`
 
@@ -5420,7 +5090,8 @@ type DomainPurchaseConsent struct {
 	// Client IP address.
 	AgreedBy *string `json:"agreedBy,omitempty"`
 
-	// List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under TopLevelDomain resource.
+	// List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under TopLevelDomain
+	// resource.
 	AgreementKeys []*string `json:"agreementKeys,omitempty"`
 }
 
@@ -5468,84 +5139,96 @@ type DomainRecommendationSearchParameters struct {
 	MaxDomainRecommendations *int32 `json:"maxDomainRecommendations,omitempty"`
 }
 
-// DomainRegistrationProviderListOperationsOptions contains the optional parameters for the DomainRegistrationProvider.ListOperations method.
-type DomainRegistrationProviderListOperationsOptions struct {
+// DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.ListOperations
+// method.
+type DomainRegistrationProviderClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsBeginCreateOrUpdateOptions contains the optional parameters for the Domains.BeginCreateOrUpdate method.
-type DomainsBeginCreateOrUpdateOptions struct {
+// DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate method.
+type DomainsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsCheckAvailabilityOptions contains the optional parameters for the Domains.CheckAvailability method.
-type DomainsCheckAvailabilityOptions struct {
+// DomainsClientCheckAvailabilityOptions contains the optional parameters for the DomainsClient.CheckAvailability method.
+type DomainsClientCheckAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsCreateOrUpdateOwnershipIdentifierOptions contains the optional parameters for the Domains.CreateOrUpdateOwnershipIdentifier method.
-type DomainsCreateOrUpdateOwnershipIdentifierOptions struct {
+// DomainsClientCreateOrUpdateOwnershipIdentifierOptions contains the optional parameters for the DomainsClient.CreateOrUpdateOwnershipIdentifier
+// method.
+type DomainsClientCreateOrUpdateOwnershipIdentifierOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsDeleteOptions contains the optional parameters for the Domains.Delete method.
-type DomainsDeleteOptions struct {
-	// Specify <code>true</code> to delete the domain immediately. The default is <code>false</code> which deletes the domain after 24 hours.
+// DomainsClientDeleteOptions contains the optional parameters for the DomainsClient.Delete method.
+type DomainsClientDeleteOptions struct {
+	// Specify true to delete the domain immediately. The default is false which deletes the domain after 24 hours.
 	ForceHardDeleteDomain *bool
 }
 
-// DomainsDeleteOwnershipIdentifierOptions contains the optional parameters for the Domains.DeleteOwnershipIdentifier method.
-type DomainsDeleteOwnershipIdentifierOptions struct {
+// DomainsClientDeleteOwnershipIdentifierOptions contains the optional parameters for the DomainsClient.DeleteOwnershipIdentifier
+// method.
+type DomainsClientDeleteOwnershipIdentifierOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsGetControlCenterSsoRequestOptions contains the optional parameters for the Domains.GetControlCenterSsoRequest method.
-type DomainsGetControlCenterSsoRequestOptions struct {
+// DomainsClientGetControlCenterSsoRequestOptions contains the optional parameters for the DomainsClient.GetControlCenterSsoRequest
+// method.
+type DomainsClientGetControlCenterSsoRequestOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsGetOptions contains the optional parameters for the Domains.Get method.
-type DomainsGetOptions struct {
+// DomainsClientGetOptions contains the optional parameters for the DomainsClient.Get method.
+type DomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsGetOwnershipIdentifierOptions contains the optional parameters for the Domains.GetOwnershipIdentifier method.
-type DomainsGetOwnershipIdentifierOptions struct {
+// DomainsClientGetOwnershipIdentifierOptions contains the optional parameters for the DomainsClient.GetOwnershipIdentifier
+// method.
+type DomainsClientGetOwnershipIdentifierOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsListByResourceGroupOptions contains the optional parameters for the Domains.ListByResourceGroup method.
-type DomainsListByResourceGroupOptions struct {
+// DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.ListByResourceGroup method.
+type DomainsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsListOptions contains the optional parameters for the Domains.List method.
-type DomainsListOptions struct {
+// DomainsClientListOptions contains the optional parameters for the DomainsClient.List method.
+type DomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsListOwnershipIdentifiersOptions contains the optional parameters for the Domains.ListOwnershipIdentifiers method.
-type DomainsListOwnershipIdentifiersOptions struct {
+// DomainsClientListOwnershipIdentifiersOptions contains the optional parameters for the DomainsClient.ListOwnershipIdentifiers
+// method.
+type DomainsClientListOwnershipIdentifiersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsListRecommendationsOptions contains the optional parameters for the Domains.ListRecommendations method.
-type DomainsListRecommendationsOptions struct {
+// DomainsClientListRecommendationsOptions contains the optional parameters for the DomainsClient.ListRecommendations method.
+type DomainsClientListRecommendationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsRenewOptions contains the optional parameters for the Domains.Renew method.
-type DomainsRenewOptions struct {
+// DomainsClientRenewOptions contains the optional parameters for the DomainsClient.Renew method.
+type DomainsClientRenewOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsUpdateOptions contains the optional parameters for the Domains.Update method.
-type DomainsUpdateOptions struct {
+// DomainsClientTransferOutOptions contains the optional parameters for the DomainsClient.TransferOut method.
+type DomainsClientTransferOutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsUpdateOwnershipIdentifierOptions contains the optional parameters for the Domains.UpdateOwnershipIdentifier method.
-type DomainsUpdateOwnershipIdentifierOptions struct {
+// DomainsClientUpdateOptions contains the optional parameters for the DomainsClient.Update method.
+type DomainsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DomainsClientUpdateOwnershipIdentifierOptions contains the optional parameters for the DomainsClient.UpdateOwnershipIdentifier
+// method.
+type DomainsClientUpdateOwnershipIdentifierOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5580,11 +5263,429 @@ type EndpointDetail struct {
 	// Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
 	IsAccessible *bool `json:"isAccessible,omitempty"`
 
-	// The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress at this Port.
+	// The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress
+	// at this Port.
 	Latency *float64 `json:"latency,omitempty"`
 
 	// The port an endpoint is connected to.
 	Port *int32 `json:"port,omitempty"`
+}
+
+// Environment - Description of an App Service Environment.
+type Environment struct {
+	// REQUIRED; Description of the Virtual Network.
+	VirtualNetwork *VirtualNetworkProfile `json:"virtualNetwork,omitempty"`
+
+	// Custom settings for changing the behavior of the App Service Environment.
+	ClusterSettings []*NameValuePair `json:"clusterSettings,omitempty"`
+
+	// DNS suffix of the App Service Environment.
+	DNSSuffix *string `json:"dnsSuffix,omitempty"`
+
+	// Dedicated Host Count
+	DedicatedHostCount *int32 `json:"dedicatedHostCount,omitempty"`
+
+	// Scale factor for front-ends.
+	FrontEndScaleFactor *int32 `json:"frontEndScaleFactor,omitempty"`
+
+	// Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment.
+	InternalLoadBalancingMode *LoadBalancingMode `json:"internalLoadBalancingMode,omitempty"`
+
+	// Number of IP SSL addresses reserved for the App Service Environment.
+	IpsslAddressCount *int32 `json:"ipsslAddressCount,omitempty"`
+
+	// Front-end VM size, e.g. "Medium", "Large".
+	MultiSize *string `json:"multiSize,omitempty"`
+
+	// User added ip ranges to whitelist on ASE db
+	UserWhitelistedIPRanges []*string `json:"userWhitelistedIpRanges,omitempty"`
+
+	// Whether or not this App Service Environment is zone-redundant.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+
+	// READ-ONLY; Flag that displays whether an ASE has linux workers or not
+	HasLinuxWorkers *bool `json:"hasLinuxWorkers,omitempty" azure:"ro"`
+
+	// READ-ONLY; Maximum number of VMs in the App Service Environment.
+	MaximumNumberOfMachines *int32 `json:"maximumNumberOfMachines,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of front-end instances.
+	MultiRoleCount *int32 `json:"multiRoleCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the App Service Environment.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current status of the App Service Environment.
+	Status *HostingEnvironmentStatus `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when
+	// the management endpoint is no longer available (most likely because NSG blocked the
+	// incoming traffic).
+	Suspended *bool `json:"suspended,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Environment.
+func (e Environment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "clusterSettings", e.ClusterSettings)
+	populate(objectMap, "dnsSuffix", e.DNSSuffix)
+	populate(objectMap, "dedicatedHostCount", e.DedicatedHostCount)
+	populate(objectMap, "frontEndScaleFactor", e.FrontEndScaleFactor)
+	populate(objectMap, "hasLinuxWorkers", e.HasLinuxWorkers)
+	populate(objectMap, "internalLoadBalancingMode", e.InternalLoadBalancingMode)
+	populate(objectMap, "ipsslAddressCount", e.IpsslAddressCount)
+	populate(objectMap, "maximumNumberOfMachines", e.MaximumNumberOfMachines)
+	populate(objectMap, "multiRoleCount", e.MultiRoleCount)
+	populate(objectMap, "multiSize", e.MultiSize)
+	populate(objectMap, "provisioningState", e.ProvisioningState)
+	populate(objectMap, "status", e.Status)
+	populate(objectMap, "suspended", e.Suspended)
+	populate(objectMap, "userWhitelistedIpRanges", e.UserWhitelistedIPRanges)
+	populate(objectMap, "virtualNetwork", e.VirtualNetwork)
+	populate(objectMap, "zoneRedundant", e.ZoneRedundant)
+	return json.Marshal(objectMap)
+}
+
+// EnvironmentCollection - Collection of App Service Environments.
+type EnvironmentCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*EnvironmentResource `json:"value,omitempty"`
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EnvironmentCollection.
+func (e EnvironmentCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", e.NextLink)
+	populate(objectMap, "value", e.Value)
+	return json.Marshal(objectMap)
+}
+
+// EnvironmentPatchResource - ARM resource for a app service environment.
+type EnvironmentPatchResource struct {
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Core resource properties
+	Properties *Environment `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EnvironmentPatchResource.
+func (e EnvironmentPatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", e.ID)
+	populate(objectMap, "kind", e.Kind)
+	populate(objectMap, "name", e.Name)
+	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "type", e.Type)
+	return json.Marshal(objectMap)
+}
+
+// EnvironmentResource - App Service Environment ARM resource.
+type EnvironmentResource struct {
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Core resource properties
+	Properties *Environment `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EnvironmentResource.
+func (e EnvironmentResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", e.ID)
+	populate(objectMap, "kind", e.Kind)
+	populate(objectMap, "location", e.Location)
+	populate(objectMap, "name", e.Name)
+	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "tags", e.Tags)
+	populate(objectMap, "type", e.Type)
+	return json.Marshal(objectMap)
+}
+
+// EnvironmentVar - Container App container environment variable.
+type EnvironmentVar struct {
+	// Environment variable name.
+	Name *string `json:"name,omitempty"`
+
+	// Name of the Container App secret from which to pull the environment variable value.
+	SecretRef *string `json:"secretRef,omitempty"`
+
+	// Non-secret environment variable value.
+	Value *string `json:"value,omitempty"`
+}
+
+// EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection
+// method.
+type EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientBeginChangeVnetOptions contains the optional parameters for the EnvironmentsClient.BeginChangeVnet method.
+type EnvironmentsClientBeginChangeVnetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions contains the optional parameters for the EnvironmentsClient.BeginCreateOrUpdateMultiRolePool
+// method.
+type EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the EnvironmentsClient.BeginCreateOrUpdate
+// method.
+type EnvironmentsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions contains the optional parameters for the EnvironmentsClient.BeginCreateOrUpdateWorkerPool
+// method.
+type EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientBeginDeleteOptions contains the optional parameters for the EnvironmentsClient.BeginDelete method.
+type EnvironmentsClientBeginDeleteOptions struct {
+	// Specify true to force the deletion even if the App Service Environment contains resources. The default is false.
+	ForceDelete *bool
+}
+
+// EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the EnvironmentsClient.BeginDeletePrivateEndpointConnection
+// method.
+type EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientBeginResumeOptions contains the optional parameters for the EnvironmentsClient.BeginResume method.
+type EnvironmentsClientBeginResumeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientBeginSuspendOptions contains the optional parameters for the EnvironmentsClient.BeginSuspend method.
+type EnvironmentsClientBeginSuspendOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetAseV3NetworkingConfigurationOptions contains the optional parameters for the EnvironmentsClient.GetAseV3NetworkingConfiguration
+// method.
+type EnvironmentsClientGetAseV3NetworkingConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetDiagnosticsItemOptions contains the optional parameters for the EnvironmentsClient.GetDiagnosticsItem
+// method.
+type EnvironmentsClientGetDiagnosticsItemOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.GetInboundNetworkDependenciesEndpoints
+// method.
+type EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetMultiRolePoolOptions contains the optional parameters for the EnvironmentsClient.GetMultiRolePool
+// method.
+type EnvironmentsClientGetMultiRolePoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetOptions contains the optional parameters for the EnvironmentsClient.Get method.
+type EnvironmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.GetOutboundNetworkDependenciesEndpoints
+// method.
+type EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the EnvironmentsClient.GetPrivateEndpointConnectionList
+// method.
+type EnvironmentsClientGetPrivateEndpointConnectionListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetPrivateEndpointConnectionOptions contains the optional parameters for the EnvironmentsClient.GetPrivateEndpointConnection
+// method.
+type EnvironmentsClientGetPrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetPrivateLinkResourcesOptions contains the optional parameters for the EnvironmentsClient.GetPrivateLinkResources
+// method.
+type EnvironmentsClientGetPrivateLinkResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetVipInfoOptions contains the optional parameters for the EnvironmentsClient.GetVipInfo method.
+type EnvironmentsClientGetVipInfoOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientGetWorkerPoolOptions contains the optional parameters for the EnvironmentsClient.GetWorkerPool method.
+type EnvironmentsClientGetWorkerPoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListAppServicePlansOptions contains the optional parameters for the EnvironmentsClient.ListAppServicePlans
+// method.
+type EnvironmentsClientListAppServicePlansOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListByResourceGroupOptions contains the optional parameters for the EnvironmentsClient.ListByResourceGroup
+// method.
+type EnvironmentsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListCapacitiesOptions contains the optional parameters for the EnvironmentsClient.ListCapacities method.
+type EnvironmentsClientListCapacitiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListDiagnosticsOptions contains the optional parameters for the EnvironmentsClient.ListDiagnostics method.
+type EnvironmentsClientListDiagnosticsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListMultiRoleMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRoleMetricDefinitions
+// method.
+type EnvironmentsClientListMultiRoleMetricDefinitionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions
+// method.
+type EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListMultiRolePoolSKUsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePoolSKUs
+// method.
+type EnvironmentsClientListMultiRolePoolSKUsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListMultiRolePoolsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePools
+// method.
+type EnvironmentsClientListMultiRolePoolsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListMultiRoleUsagesOptions contains the optional parameters for the EnvironmentsClient.ListMultiRoleUsages
+// method.
+type EnvironmentsClientListMultiRoleUsagesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListOperationsOptions contains the optional parameters for the EnvironmentsClient.ListOperations method.
+type EnvironmentsClientListOperationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.List method.
+type EnvironmentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListUsagesOptions contains the optional parameters for the EnvironmentsClient.ListUsages method.
+type EnvironmentsClientListUsagesOptions struct {
+	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1'
+	// or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
+	// endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+	Filter *string
+}
+
+// EnvironmentsClientListWebAppsOptions contains the optional parameters for the EnvironmentsClient.ListWebApps method.
+type EnvironmentsClientListWebAppsOptions struct {
+	// Comma separated list of app properties to include.
+	PropertiesToInclude *string
+}
+
+// EnvironmentsClientListWebWorkerMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListWebWorkerMetricDefinitions
+// method.
+type EnvironmentsClientListWebWorkerMetricDefinitionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListWebWorkerUsagesOptions contains the optional parameters for the EnvironmentsClient.ListWebWorkerUsages
+// method.
+type EnvironmentsClientListWebWorkerUsagesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions
+// method.
+type EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListWorkerPoolSKUsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPoolSKUs
+// method.
+type EnvironmentsClientListWorkerPoolSKUsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientListWorkerPoolsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPools method.
+type EnvironmentsClientListWorkerPoolsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientRebootOptions contains the optional parameters for the EnvironmentsClient.Reboot method.
+type EnvironmentsClientRebootOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientUpdateAseNetworkingConfigurationOptions contains the optional parameters for the EnvironmentsClient.UpdateAseNetworkingConfiguration
+// method.
+type EnvironmentsClientUpdateAseNetworkingConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientUpdateMultiRolePoolOptions contains the optional parameters for the EnvironmentsClient.UpdateMultiRolePool
+// method.
+type EnvironmentsClientUpdateMultiRolePoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientUpdateOptions contains the optional parameters for the EnvironmentsClient.Update method.
+type EnvironmentsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentsClientUpdateWorkerPoolOptions contains the optional parameters for the EnvironmentsClient.UpdateWorkerPool
+// method.
+type EnvironmentsClientUpdateWorkerPoolOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ErrorEntity - Body of the error response returned from the API.
@@ -5679,8 +5780,8 @@ type FileSystemHTTPLogsConfig struct {
 	// Retention in days. Remove files older than X days. 0 or lower means no retention.
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 
-	// Maximum size in megabytes that http log files can use. When reached old log files will be removed to make space for new ones. Value can range between
-	// 25 and 100.
+	// Maximum size in megabytes that http log files can use. When reached old log files will be removed to make space for new
+	// ones. Value can range between 25 and 100.
 	RetentionInMb *int32 `json:"retentionInMb,omitempty"`
 }
 
@@ -5874,21 +5975,23 @@ type FunctionAppRuntimes struct {
 
 // FunctionAppStack - Function App Stack.
 type FunctionAppStack struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// FunctionAppStack resource specific properties
 	Properties *FunctionAppStackProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
 	// READ-ONLY; Function App stack location.
 	Location *string `json:"location,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type FunctionAppStack.
-func (f FunctionAppStack) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	f.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "location", f.Location)
-	populate(objectMap, "properties", f.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // FunctionAppStackCollection - Collection of Function app Stacks
@@ -5935,17 +6038,20 @@ func (f FunctionAppStackProperties) MarshalJSON() ([]byte, error) {
 
 // FunctionEnvelope - Function information.
 type FunctionEnvelope struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// FunctionEnvelope resource specific properties
 	Properties *FunctionEnvelopeProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type FunctionEnvelope.
-func (f FunctionEnvelope) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	f.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", f.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // FunctionEnvelopeCollection - Collection of Kudu function information elements.
@@ -5968,7 +6074,7 @@ func (f FunctionEnvelopeCollection) MarshalJSON() ([]byte, error) {
 // FunctionEnvelopeProperties - FunctionEnvelope resource specific properties
 type FunctionEnvelopeProperties struct {
 	// Config information.
-	Config map[string]interface{} `json:"config,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
 	// Config URI.
 	ConfigHref *string `json:"config_href,omitempty"`
@@ -6010,7 +6116,7 @@ type FunctionEnvelopeProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type FunctionEnvelopeProperties.
 func (f FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "config", f.Config)
+	populate(objectMap, "config", &f.Config)
 	populate(objectMap, "config_href", f.ConfigHref)
 	populate(objectMap, "files", f.Files)
 	populate(objectMap, "function_app_id", f.FunctionAppID)
@@ -6037,17 +6143,20 @@ type FunctionSecrets struct {
 
 // GeoRegion - Geographical region.
 type GeoRegion struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// GeoRegion resource specific properties
 	Properties *GeoRegionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type GeoRegion.
-func (g GeoRegion) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GeoRegionCollection - Collection of geographical regions.
@@ -6139,6 +6248,23 @@ type GitHubActionWebAppStackSettings struct {
 	SupportedVersion *string `json:"supportedVersion,omitempty" azure:"ro"`
 }
 
+// GlobalClientGetDeletedWebAppOptions contains the optional parameters for the GlobalClient.GetDeletedWebApp method.
+type GlobalClientGetDeletedWebAppOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GlobalClientGetDeletedWebAppSnapshotsOptions contains the optional parameters for the GlobalClient.GetDeletedWebAppSnapshots
+// method.
+type GlobalClientGetDeletedWebAppSnapshotsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GlobalClientGetSubscriptionOperationWithAsyncResponseOptions contains the optional parameters for the GlobalClient.GetSubscriptionOperationWithAsyncResponse
+// method.
+type GlobalClientGetSubscriptionOperationWithAsyncResponseOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GlobalCsmSKUDescription - A Global SKU Description.
 type GlobalCsmSKUDescription struct {
 	// Capabilities of the SKU, e.g., is traffic manager enabled?
@@ -6176,28 +6302,13 @@ func (g GlobalCsmSKUDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GlobalGetDeletedWebAppOptions contains the optional parameters for the Global.GetDeletedWebApp method.
-type GlobalGetDeletedWebAppOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GlobalGetDeletedWebAppSnapshotsOptions contains the optional parameters for the Global.GetDeletedWebAppSnapshots method.
-type GlobalGetDeletedWebAppSnapshotsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GlobalGetSubscriptionOperationWithAsyncResponseOptions contains the optional parameters for the Global.GetSubscriptionOperationWithAsyncResponse method.
-type GlobalGetSubscriptionOperationWithAsyncResponseOptions struct {
-	// placeholder for future optional parameters
-}
-
 // GlobalValidation - The configuration settings that determines the validation flow of users using App Service Authentication/Authorization.
 type GlobalValidation struct {
 	// The paths for which unauthenticated flow would not be redirected to the login page.
 	ExcludedPaths []*string `json:"excludedPaths,omitempty"`
 
-	// The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple providers are configured and
-	// the unauthenticated client action is set to
+	// The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple
+	// providers are configured and the unauthenticated client action is set to
 	// "RedirectToLoginPage".
 	RedirectToProvider *string `json:"redirectToProvider,omitempty"`
 
@@ -6242,7 +6353,25 @@ type HTTPLogsConfig struct {
 	FileSystem *FileSystemHTTPLogsConfig `json:"fileSystem,omitempty"`
 }
 
-// HTTPSettings - The configuration settings of the HTTP requests for authentication and authorization requests made against App Service Authentication/Authorization.
+// HTTPScaleRule - Container App container Custom scaling rule.
+type HTTPScaleRule struct {
+	// Authentication secrets for the custom scale rule.
+	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+
+	// Metadata properties to describe http scale rule.
+	Metadata map[string]*string `json:"metadata,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HTTPScaleRule.
+func (h HTTPScaleRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "auth", h.Auth)
+	populate(objectMap, "metadata", h.Metadata)
+	return json.Marshal(objectMap)
+}
+
+// HTTPSettings - The configuration settings of the HTTP requests for authentication and authorization requests made against
+// App Service Authentication/Authorization.
 type HTTPSettings struct {
 	// The configuration settings of a forward proxy used to make the requests.
 	ForwardProxy *ForwardProxy `json:"forwardProxy,omitempty"`
@@ -6260,8 +6389,8 @@ type HTTPSettingsRoutes struct {
 	APIPrefix *string `json:"apiPrefix,omitempty"`
 }
 
-// HandlerMapping - The IIS handler mappings used to define which handler processes HTTP requests with certain extension. For example, it is used to configure
-// php-cgi.exe process to handle all HTTP requests with *.php
+// HandlerMapping - The IIS handler mappings used to define which handler processes HTTP requests with certain extension.
+// For example, it is used to configure php-cgi.exe process to handle all HTTP requests with *.php
 // extension.
 type HandlerMapping struct {
 	// Command-line arguments to be passed to the script processor.
@@ -6297,8 +6426,8 @@ func (h HostKeys) MarshalJSON() ([]byte, error) {
 
 // HostName - Details of a hostname derived from a domain.
 type HostName struct {
-	// Name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be the Traffic Manager name otherwise it
-	// will be the app name.
+	// Name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be the Traffic
+	// Manager name otherwise it will be the app name.
 	AzureResourceName *string `json:"azureResourceName,omitempty"`
 
 	// Type of the Azure resource the hostname is assigned to.
@@ -6313,7 +6442,8 @@ type HostName struct {
 	// Name of the hostname.
 	Name *string `json:"name,omitempty"`
 
-	// List of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing to a Traffic Manager.
+	// List of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing to a Traffic
+	// Manager.
 	SiteNames []*string `json:"siteNames,omitempty"`
 }
 
@@ -6331,17 +6461,20 @@ func (h HostName) MarshalJSON() ([]byte, error) {
 
 // HostNameBinding - A hostname binding object.
 type HostNameBinding struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// HostNameBinding resource specific properties
 	Properties *HostNameBindingProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type HostNameBinding.
-func (h HostNameBinding) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	h.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", h.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // HostNameBindingCollection - Collection of hostname bindings.
@@ -6444,16 +6577,30 @@ type HostingEnvironmentProfile struct {
 
 // HybridConnection - Hybrid Connection contract. This is used to configure a Hybrid Connection.
 type HybridConnection struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// HybridConnection resource specific properties
 	Properties *HybridConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type HybridConnection.
 func (h HybridConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", h.ID)
+	populate(objectMap, "kind", h.Kind)
+	populate(objectMap, "name", h.Name)
 	populate(objectMap, "properties", h.Properties)
+	populate(objectMap, "type", h.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6476,17 +6623,20 @@ func (h HybridConnectionCollection) MarshalJSON() ([]byte, error) {
 
 // HybridConnectionKey - Hybrid Connection key contract. This has the send key name and value for a Hybrid Connection.
 type HybridConnectionKey struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// HybridConnectionKey resource specific properties
 	Properties *HybridConnectionKeyProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type HybridConnectionKey.
-func (h HybridConnectionKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	h.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", h.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // HybridConnectionKeyProperties - HybridConnectionKey resource specific properties
@@ -6500,17 +6650,20 @@ type HybridConnectionKeyProperties struct {
 
 // HybridConnectionLimits - Hybrid Connection limits contract. This is used to return the plan limits of Hybrid Connections.
 type HybridConnectionLimits struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// HybridConnectionLimits resource specific properties
 	Properties *HybridConnectionLimitsProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type HybridConnectionLimits.
-func (h HybridConnectionLimits) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	h.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", h.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // HybridConnectionLimitsProperties - HybridConnectionLimits resource specific properties
@@ -6539,8 +6692,8 @@ type HybridConnectionProperties struct {
 	// The name of the Service Bus key which has Send permissions. This is used to authenticate to Service Bus.
 	SendKeyName *string `json:"sendKeyName,omitempty"`
 
-	// The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned normally, use the POST /listKeys
-	// API instead.
+	// The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned normally,
+	// use the POST /listKeys API instead.
 	SendKeyValue *string `json:"sendKeyValue,omitempty"`
 
 	// The name of the Service Bus namespace.
@@ -6558,22 +6711,23 @@ type IPSecurityRestriction struct {
 	// IP restriction rule description.
 	Description *string `json:"description,omitempty"`
 
-	// IP restriction rule headers. X-Forwarded-Host (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples). The matching logic
-	// is ..
+	// IP restriction rule headers. X-Forwarded-Host (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples).
+	// The matching logic is ..
 	// * If the property is null or empty (default), all hosts(or lack of) are allowed.
 	// * A value is compared using ordinal-ignore-case (excluding port number).
-	// * Subdomain wildcards are permitted but don't match the root domain. For example, *.contoso.com matches the subdomain foo.contoso.com but not the root
-	// domain contoso.com or multi-level
+	// * Subdomain wildcards are permitted but don't match the root domain. For example, *.contoso.com matches the subdomain foo.contoso.com
+	// but not the root domain contoso.com or multi-level
 	// foo.bar.contoso.com
 	// * Unicode host names are allowed but are converted to Punycode for matching.
-	// X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples). The matching logic is ..
+	// X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples). The matching logic
+	// is ..
 	// * If the property is null or empty (default), any forwarded-for chains (or lack of) are allowed.
 	// * If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the property.
 	// X-Azure-FDID and X-FD-HealthProbe. The matching logic is exact match.
 	Headers map[string][]*string `json:"headers,omitempty"`
 
-	// IP address the security restriction is valid for. It can be in form of pure ipv4 address (required SubnetMask property) or CIDR notation such as ipv4/mask
-	// (leading bit match). For CIDR, SubnetMask
+	// IP address the security restriction is valid for. It can be in form of pure ipv4 address (required SubnetMask property)
+	// or CIDR notation such as ipv4/mask (leading bit match). For CIDR, SubnetMask
 	// property must not be specified.
 	IPAddress *string `json:"ipAddress,omitempty"`
 
@@ -6618,16 +6772,30 @@ func (i IPSecurityRestriction) MarshalJSON() ([]byte, error) {
 
 // Identifier - A domain specific resource identifier.
 type Identifier struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Identifier resource specific properties
 	Properties *IdentifierProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Identifier.
 func (i Identifier) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", i.ID)
+	populate(objectMap, "kind", i.Kind)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6665,7 +6833,8 @@ type IdentityProviders struct {
 	// The configuration settings of the Azure Static Web Apps provider.
 	AzureStaticWebApps *AzureStaticWebApps `json:"azureStaticWebApps,omitempty"`
 
-	// The map of the name of the alias of each custom Open ID Connect provider to the configuration settings of the custom Open ID Connect provider.
+	// The map of the name of the alias of each custom Open ID Connect provider to the configuration settings of the custom Open
+	// ID Connect provider.
 	CustomOpenIDConnectProviders map[string]*CustomOpenIDConnectProvider `json:"customOpenIdConnectProviders,omitempty"`
 
 	// The configuration settings of the Facebook provider.
@@ -6699,7 +6868,8 @@ func (i IdentityProviders) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// InboundEnvironmentEndpoint - The IP Addresses and Ports that require inbound network access to and within the subnet of the App Service Environment.
+// InboundEnvironmentEndpoint - The IP Addresses and Ports that require inbound network access to and within the subnet of
+// the App Service Environment.
 type InboundEnvironmentEndpoint struct {
 	// Short text describing the purpose of the network traffic.
 	Description *string `json:"description,omitempty"`
@@ -6737,6 +6907,38 @@ func (i InboundEnvironmentEndpointCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Ingress - Container App Ingress configuration.
+type Ingress struct {
+	// Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS
+	// connections
+	AllowInsecure *bool `json:"allowInsecure,omitempty"`
+
+	// Bool indicating if app exposes an external http endpoint
+	External *bool `json:"external,omitempty"`
+
+	// Target Port in containers for traffic from ingress
+	TargetPort *int32           `json:"targetPort,omitempty"`
+	Traffic    []*TrafficWeight `json:"traffic,omitempty"`
+
+	// Ingress transport protocol
+	Transport *IngressTransportMethod `json:"transport,omitempty"`
+
+	// READ-ONLY; Hostname.
+	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Ingress.
+func (i Ingress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "allowInsecure", i.AllowInsecure)
+	populate(objectMap, "external", i.External)
+	populate(objectMap, "fqdn", i.Fqdn)
+	populate(objectMap, "targetPort", i.TargetPort)
+	populate(objectMap, "traffic", i.Traffic)
+	populate(objectMap, "transport", i.Transport)
+	return json.Marshal(objectMap)
+}
+
 // JwtClaimChecks - The configuration settings of the checks that should be made while validating the JWT Claims.
 type JwtClaimChecks struct {
 	// The list of the allowed client applications.
@@ -6767,26 +6969,48 @@ type KeyValuePairStringObject struct {
 	// READ-ONLY
 	Key *string `json:"key,omitempty" azure:"ro"`
 
-	// READ-ONLY; Any object
-	Value map[string]interface{} `json:"value,omitempty" azure:"ro"`
+	// READ-ONLY; Anything
+	Value interface{} `json:"value,omitempty" azure:"ro"`
 }
 
 // KubeEnvironment - A Kubernetes cluster specialized for web workloads by Azure App Service
 type KubeEnvironment struct {
-	Resource
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
 	// Extended Location.
 	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
 
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// KubeEnvironment resource specific properties
 	Properties *KubeEnvironmentProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KubeEnvironment.
 func (k KubeEnvironment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	k.Resource.marshalInternal(objectMap)
 	populate(objectMap, "extendedLocation", k.ExtendedLocation)
+	populate(objectMap, "id", k.ID)
+	populate(objectMap, "kind", k.Kind)
+	populate(objectMap, "location", k.Location)
+	populate(objectMap, "name", k.Name)
 	populate(objectMap, "properties", k.Properties)
+	populate(objectMap, "tags", k.Tags)
+	populate(objectMap, "type", k.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6809,16 +7033,30 @@ func (k KubeEnvironmentCollection) MarshalJSON() ([]byte, error) {
 
 // KubeEnvironmentPatchResource - ARM resource for a KubeEnvironment when patching
 type KubeEnvironmentPatchResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// KubeEnvironmentPatchResource resource specific properties
 	Properties *KubeEnvironmentPatchResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KubeEnvironmentPatchResource.
 func (k KubeEnvironmentPatchResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	k.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", k.ID)
+	populate(objectMap, "kind", k.Kind)
+	populate(objectMap, "name", k.Name)
 	populate(objectMap, "properties", k.Properties)
+	populate(objectMap, "type", k.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6826,12 +7064,16 @@ func (k KubeEnvironmentPatchResource) MarshalJSON() ([]byte, error) {
 type KubeEnvironmentPatchResourceProperties struct {
 	AksResourceID *string `json:"aksResourceID,omitempty"`
 
-	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics" is supported
+	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics"
+	// is supported
 	AppLogsConfiguration *AppLogsConfiguration `json:"appLogsConfiguration,omitempty"`
 
-	// Cluster configuration which determines the ARC cluster components types. Eg: Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType
-	// etc.
+	// Cluster configuration which determines the ARC cluster components types. Eg: Choosing between BuildService kind, FrontEnd
+	// Service ArtifactsStorageType etc.
 	ArcConfiguration *ArcConfiguration `json:"arcConfiguration,omitempty"`
+
+	// Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET Configuration
+	ContainerAppsConfiguration *ContainerAppsConfiguration `json:"containerAppsConfiguration,omitempty"`
 
 	// Only visible within Vnet/Subnet
 	InternalLoadBalancerEnabled *bool `json:"internalLoadBalancerEnabled,omitempty"`
@@ -6865,12 +7107,19 @@ type KubeEnvironmentProfile struct {
 type KubeEnvironmentProperties struct {
 	AksResourceID *string `json:"aksResourceID,omitempty"`
 
-	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics" is supported
+	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics"
+	// is supported
 	AppLogsConfiguration *AppLogsConfiguration `json:"appLogsConfiguration,omitempty"`
 
-	// Cluster configuration which determines the ARC cluster components types. Eg: Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType
-	// etc.
+	// Cluster configuration which determines the ARC cluster components types. Eg: Choosing between BuildService kind, FrontEnd
+	// Service ArtifactsStorageType etc.
 	ArcConfiguration *ArcConfiguration `json:"arcConfiguration,omitempty"`
+
+	// Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET Configuration
+	ContainerAppsConfiguration *ContainerAppsConfiguration `json:"containerAppsConfiguration,omitempty"`
+
+	// Type of Kubernetes Environment. Only supported for Container App Environments with value as Managed
+	EnvironmentType *string `json:"environmentType,omitempty"`
 
 	// Only visible within Vnet/Subnet
 	InternalLoadBalancerEnabled *bool `json:"internalLoadBalancerEnabled,omitempty"`
@@ -6888,33 +7137,36 @@ type KubeEnvironmentProperties struct {
 	ProvisioningState *KubeEnvironmentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// KubeEnvironmentsBeginCreateOrUpdateOptions contains the optional parameters for the KubeEnvironments.BeginCreateOrUpdate method.
-type KubeEnvironmentsBeginCreateOrUpdateOptions struct {
+// KubeEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the KubeEnvironmentsClient.BeginCreateOrUpdate
+// method.
+type KubeEnvironmentsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KubeEnvironmentsBeginDeleteOptions contains the optional parameters for the KubeEnvironments.BeginDelete method.
-type KubeEnvironmentsBeginDeleteOptions struct {
+// KubeEnvironmentsClientBeginDeleteOptions contains the optional parameters for the KubeEnvironmentsClient.BeginDelete method.
+type KubeEnvironmentsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KubeEnvironmentsGetOptions contains the optional parameters for the KubeEnvironments.Get method.
-type KubeEnvironmentsGetOptions struct {
+// KubeEnvironmentsClientGetOptions contains the optional parameters for the KubeEnvironmentsClient.Get method.
+type KubeEnvironmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KubeEnvironmentsListByResourceGroupOptions contains the optional parameters for the KubeEnvironments.ListByResourceGroup method.
-type KubeEnvironmentsListByResourceGroupOptions struct {
+// KubeEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the KubeEnvironmentsClient.ListByResourceGroup
+// method.
+type KubeEnvironmentsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KubeEnvironmentsListBySubscriptionOptions contains the optional parameters for the KubeEnvironments.ListBySubscription method.
-type KubeEnvironmentsListBySubscriptionOptions struct {
+// KubeEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the KubeEnvironmentsClient.ListBySubscription
+// method.
+type KubeEnvironmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KubeEnvironmentsUpdateOptions contains the optional parameters for the KubeEnvironments.Update method.
-type KubeEnvironmentsUpdateOptions struct {
+// KubeEnvironmentsClientUpdateOptions contains the optional parameters for the KubeEnvironmentsClient.Update method.
+type KubeEnvironmentsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7039,8 +7291,8 @@ type LogSpecification struct {
 
 // Login - The configuration settings of the login flow of users using App Service Authentication/Authorization.
 type Login struct {
-	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored. This
-	// is an advanced setting typically only needed by
+	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part
+	// of the URL is ignored. This is an advanced setting typically only needed by
 	// Windows Store application backends. Note that URLs within the current domain are always implicitly allowed.
 	AllowedExternalRedirectUrls []*string `json:"allowedExternalRedirectUrls,omitempty"`
 
@@ -7093,17 +7345,20 @@ func (l LoginScopes) MarshalJSON() ([]byte, error) {
 
 // MSDeploy ARM PUT information
 type MSDeploy struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *MSDeployCore `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MSDeploy.
-func (m MSDeploy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MSDeployCore - MSDeploy ARM PUT core information
@@ -7126,8 +7381,8 @@ type MSDeployCore struct {
 	// URI of MSDeploy Parameters file. Must not be set if SetParameters is used.
 	SetParametersXMLFileURI *string `json:"setParametersXmlFileUri,omitempty"`
 
-	// Controls whether the MSDeploy operation skips the AppData directory. If set to true, the existing AppData directory on the destination will not be deleted,
-	// and any App_Data directory in the source
+	// Controls whether the MSDeploy operation skips the AppData directory. If set to true, the existing AppData directory on
+	// the destination will not be deleted, and any App_Data directory in the source
 	// will be ignored. Setting is false by default.
 	SkipAppData *bool `json:"skipAppData,omitempty"`
 }
@@ -7147,17 +7402,20 @@ func (m MSDeployCore) MarshalJSON() ([]byte, error) {
 
 // MSDeployLog - MSDeploy log
 type MSDeployLog struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// MSDeployLog resource specific properties
 	Properties *MSDeployLogProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MSDeployLog.
-func (m MSDeployLog) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MSDeployLogEntry - MSDeploy log entry
@@ -7222,17 +7480,20 @@ func (m MSDeployLogProperties) MarshalJSON() ([]byte, error) {
 
 // MSDeployStatus - MSDeploy ARM response
 type MSDeployStatus struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// MSDeployStatus resource specific properties
 	Properties *MSDeployStatusProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MSDeployStatus.
-func (m MSDeployStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MSDeployStatusProperties - MSDeployStatus resource specific properties
@@ -7301,7 +7562,8 @@ type ManagedServiceIdentity struct {
 	// Type of managed service identity.
 	Type *ManagedServiceIdentityType `json:"type,omitempty"`
 
-	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be
+	// ARM resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 
@@ -7374,17 +7636,20 @@ func (m MetricSpecification) MarshalJSON() ([]byte, error) {
 
 // MigrateMySQLRequest - MySQL migration request.
 type MigrateMySQLRequest struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// MigrateMySqlRequest resource specific properties
 	Properties *MigrateMySQLRequestProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MigrateMySQLRequest.
-func (m MigrateMySQLRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MigrateMySQLRequestProperties - MigrateMySqlRequest resource specific properties
@@ -7398,17 +7663,20 @@ type MigrateMySQLRequestProperties struct {
 
 // MigrateMySQLStatus - MySQL migration status.
 type MigrateMySQLStatus struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// MigrateMySqlStatus resource specific properties
 	Properties *MigrateMySQLStatusProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MigrateMySQLStatus.
-func (m MigrateMySQLStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MigrateMySQLStatusProperties - MigrateMySqlStatus resource specific properties
@@ -7457,17 +7725,20 @@ type NameValuePair struct {
 
 // NetworkFeatures - Full view of network features for an app (presently VNET integration and Hybrid Connections).
 type NetworkFeatures struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// NetworkFeatures resource specific properties
 	Properties *NetworkFeaturesProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkFeatures.
-func (n NetworkFeatures) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NetworkFeaturesProperties - NetworkFeatures resource specific properties
@@ -7654,9 +7925,11 @@ func (o *Operation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// OutboundEnvironmentEndpoint - Endpoints accessed for a common purpose that the App Service Environment requires outbound network access to.
+// OutboundEnvironmentEndpoint - Endpoints accessed for a common purpose that the App Service Environment requires outbound
+// network access to.
 type OutboundEnvironmentEndpoint struct {
-	// The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
+	// The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active
+	// Directory.
 	Category *string `json:"category,omitempty"`
 
 	// The endpoints that the App Service Environment reaches the service at.
@@ -7825,34 +8098,666 @@ func (p *PerfMonSet) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// Plan - App Service plan.
+type Plan struct {
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Extended Location.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// AppServicePlan resource specific properties
+	Properties *PlanProperties `json:"properties,omitempty"`
+
+	// Description of a SKU for a scalable resource.
+	SKU *SKUDescription `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Plan.
+func (p Plan) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "extendedLocation", p.ExtendedLocation)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "kind", p.Kind)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "sku", p.SKU)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// PlanCollection - Collection of App Service plans.
+type PlanCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*Plan `json:"value,omitempty"`
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PlanCollection.
+func (p PlanCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// PlanPatchResource - ARM resource for a app service plan.
+type PlanPatchResource struct {
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// AppServicePlanPatchResource resource specific properties
+	Properties *PlanPatchResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PlanPatchResource.
+func (p PlanPatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "kind", p.Kind)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// PlanPatchResourceProperties - AppServicePlanPatchResource resource specific properties
+type PlanPatchResourceProperties struct {
+	// ServerFarm supports ElasticScale. Apps in this plan will scale as if the ServerFarm was ElasticPremium sku
+	ElasticScaleEnabled *bool `json:"elasticScaleEnabled,omitempty"`
+
+	// The time when the server farm free offer expires.
+	FreeOfferExpirationTime *time.Time `json:"freeOfferExpirationTime,omitempty"`
+
+	// Specification for the App Service Environment to use for the App Service plan.
+	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
+
+	// If Hyper-V container app service plan true, false otherwise.
+	HyperV *bool `json:"hyperV,omitempty"`
+
+	// If true, this App Service Plan owns spot instances.
+	IsSpot *bool `json:"isSpot,omitempty"`
+
+	// Obsolete: If Hyper-V container app service plan true, false otherwise.
+	IsXenon *bool `json:"isXenon,omitempty"`
+
+	// Specification for the Kubernetes Environment to use for the App Service plan.
+	KubeEnvironmentProfile *KubeEnvironmentProfile `json:"kubeEnvironmentProfile,omitempty"`
+
+	// Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
+	MaximumElasticWorkerCount *int32 `json:"maximumElasticWorkerCount,omitempty"`
+
+	// If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service
+	// plan will scale to all instances of the plan.
+	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
+
+	// If Linux app service plan true, false otherwise.
+	Reserved *bool `json:"reserved,omitempty"`
+
+	// The time when the server farm expires. Valid only if it is a spot server farm.
+	SpotExpirationTime *time.Time `json:"spotExpirationTime,omitempty"`
+
+	// Scaling worker count.
+	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
+
+	// Scaling worker size ID.
+	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
+
+	// Target worker tier assigned to the App Service plan.
+	WorkerTierName *string `json:"workerTierName,omitempty"`
+
+	// If true, this App Service Plan will perform availability zone balancing. If false, this App Service Plan will not perform
+	// availability zone balancing.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+
+	// READ-ONLY; Geographical location for the App Service plan.
+	GeoRegion *string `json:"geoRegion,omitempty" azure:"ro"`
+
+	// READ-ONLY; Maximum number of instances that can be assigned to this App Service plan.
+	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of apps assigned to this App Service plan.
+	NumberOfSites *int32 `json:"numberOfSites,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the App Service Plan.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource group of the App Service plan.
+	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+
+	// READ-ONLY; App Service plan status.
+	Status *StatusOptions `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; App Service plan subscription.
+	Subscription *string `json:"subscription,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PlanPatchResourceProperties.
+func (p PlanPatchResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "elasticScaleEnabled", p.ElasticScaleEnabled)
+	populateTimeRFC3339(objectMap, "freeOfferExpirationTime", p.FreeOfferExpirationTime)
+	populate(objectMap, "geoRegion", p.GeoRegion)
+	populate(objectMap, "hostingEnvironmentProfile", p.HostingEnvironmentProfile)
+	populate(objectMap, "hyperV", p.HyperV)
+	populate(objectMap, "isSpot", p.IsSpot)
+	populate(objectMap, "isXenon", p.IsXenon)
+	populate(objectMap, "kubeEnvironmentProfile", p.KubeEnvironmentProfile)
+	populate(objectMap, "maximumElasticWorkerCount", p.MaximumElasticWorkerCount)
+	populate(objectMap, "maximumNumberOfWorkers", p.MaximumNumberOfWorkers)
+	populate(objectMap, "numberOfSites", p.NumberOfSites)
+	populate(objectMap, "perSiteScaling", p.PerSiteScaling)
+	populate(objectMap, "provisioningState", p.ProvisioningState)
+	populate(objectMap, "reserved", p.Reserved)
+	populate(objectMap, "resourceGroup", p.ResourceGroup)
+	populateTimeRFC3339(objectMap, "spotExpirationTime", p.SpotExpirationTime)
+	populate(objectMap, "status", p.Status)
+	populate(objectMap, "subscription", p.Subscription)
+	populate(objectMap, "targetWorkerCount", p.TargetWorkerCount)
+	populate(objectMap, "targetWorkerSizeId", p.TargetWorkerSizeID)
+	populate(objectMap, "workerTierName", p.WorkerTierName)
+	populate(objectMap, "zoneRedundant", p.ZoneRedundant)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PlanPatchResourceProperties.
+func (p *PlanPatchResourceProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "elasticScaleEnabled":
+			err = unpopulate(val, &p.ElasticScaleEnabled)
+			delete(rawMsg, key)
+		case "freeOfferExpirationTime":
+			err = unpopulateTimeRFC3339(val, &p.FreeOfferExpirationTime)
+			delete(rawMsg, key)
+		case "geoRegion":
+			err = unpopulate(val, &p.GeoRegion)
+			delete(rawMsg, key)
+		case "hostingEnvironmentProfile":
+			err = unpopulate(val, &p.HostingEnvironmentProfile)
+			delete(rawMsg, key)
+		case "hyperV":
+			err = unpopulate(val, &p.HyperV)
+			delete(rawMsg, key)
+		case "isSpot":
+			err = unpopulate(val, &p.IsSpot)
+			delete(rawMsg, key)
+		case "isXenon":
+			err = unpopulate(val, &p.IsXenon)
+			delete(rawMsg, key)
+		case "kubeEnvironmentProfile":
+			err = unpopulate(val, &p.KubeEnvironmentProfile)
+			delete(rawMsg, key)
+		case "maximumElasticWorkerCount":
+			err = unpopulate(val, &p.MaximumElasticWorkerCount)
+			delete(rawMsg, key)
+		case "maximumNumberOfWorkers":
+			err = unpopulate(val, &p.MaximumNumberOfWorkers)
+			delete(rawMsg, key)
+		case "numberOfSites":
+			err = unpopulate(val, &p.NumberOfSites)
+			delete(rawMsg, key)
+		case "perSiteScaling":
+			err = unpopulate(val, &p.PerSiteScaling)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &p.ProvisioningState)
+			delete(rawMsg, key)
+		case "reserved":
+			err = unpopulate(val, &p.Reserved)
+			delete(rawMsg, key)
+		case "resourceGroup":
+			err = unpopulate(val, &p.ResourceGroup)
+			delete(rawMsg, key)
+		case "spotExpirationTime":
+			err = unpopulateTimeRFC3339(val, &p.SpotExpirationTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &p.Status)
+			delete(rawMsg, key)
+		case "subscription":
+			err = unpopulate(val, &p.Subscription)
+			delete(rawMsg, key)
+		case "targetWorkerCount":
+			err = unpopulate(val, &p.TargetWorkerCount)
+			delete(rawMsg, key)
+		case "targetWorkerSizeId":
+			err = unpopulate(val, &p.TargetWorkerSizeID)
+			delete(rawMsg, key)
+		case "workerTierName":
+			err = unpopulate(val, &p.WorkerTierName)
+			delete(rawMsg, key)
+		case "zoneRedundant":
+			err = unpopulate(val, &p.ZoneRedundant)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// PlanProperties - AppServicePlan resource specific properties
+type PlanProperties struct {
+	// ServerFarm supports ElasticScale. Apps in this plan will scale as if the ServerFarm was ElasticPremium sku
+	ElasticScaleEnabled *bool `json:"elasticScaleEnabled,omitempty"`
+
+	// The time when the server farm free offer expires.
+	FreeOfferExpirationTime *time.Time `json:"freeOfferExpirationTime,omitempty"`
+
+	// Specification for the App Service Environment to use for the App Service plan.
+	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
+
+	// If Hyper-V container app service plan true, false otherwise.
+	HyperV *bool `json:"hyperV,omitempty"`
+
+	// If true, this App Service Plan owns spot instances.
+	IsSpot *bool `json:"isSpot,omitempty"`
+
+	// Obsolete: If Hyper-V container app service plan true, false otherwise.
+	IsXenon *bool `json:"isXenon,omitempty"`
+
+	// Specification for the Kubernetes Environment to use for the App Service plan.
+	KubeEnvironmentProfile *KubeEnvironmentProfile `json:"kubeEnvironmentProfile,omitempty"`
+
+	// Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
+	MaximumElasticWorkerCount *int32 `json:"maximumElasticWorkerCount,omitempty"`
+
+	// If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service
+	// plan will scale to all instances of the plan.
+	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
+
+	// If Linux app service plan true, false otherwise.
+	Reserved *bool `json:"reserved,omitempty"`
+
+	// The time when the server farm expires. Valid only if it is a spot server farm.
+	SpotExpirationTime *time.Time `json:"spotExpirationTime,omitempty"`
+
+	// Scaling worker count.
+	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
+
+	// Scaling worker size ID.
+	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
+
+	// Target worker tier assigned to the App Service plan.
+	WorkerTierName *string `json:"workerTierName,omitempty"`
+
+	// If true, this App Service Plan will perform availability zone balancing. If false, this App Service Plan will not perform
+	// availability zone balancing.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+
+	// READ-ONLY; Geographical location for the App Service plan.
+	GeoRegion *string `json:"geoRegion,omitempty" azure:"ro"`
+
+	// READ-ONLY; Maximum number of instances that can be assigned to this App Service plan.
+	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of apps assigned to this App Service plan.
+	NumberOfSites *int32 `json:"numberOfSites,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the App Service Plan.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource group of the App Service plan.
+	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+
+	// READ-ONLY; App Service plan status.
+	Status *StatusOptions `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; App Service plan subscription.
+	Subscription *string `json:"subscription,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PlanProperties.
+func (p PlanProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "elasticScaleEnabled", p.ElasticScaleEnabled)
+	populateTimeRFC3339(objectMap, "freeOfferExpirationTime", p.FreeOfferExpirationTime)
+	populate(objectMap, "geoRegion", p.GeoRegion)
+	populate(objectMap, "hostingEnvironmentProfile", p.HostingEnvironmentProfile)
+	populate(objectMap, "hyperV", p.HyperV)
+	populate(objectMap, "isSpot", p.IsSpot)
+	populate(objectMap, "isXenon", p.IsXenon)
+	populate(objectMap, "kubeEnvironmentProfile", p.KubeEnvironmentProfile)
+	populate(objectMap, "maximumElasticWorkerCount", p.MaximumElasticWorkerCount)
+	populate(objectMap, "maximumNumberOfWorkers", p.MaximumNumberOfWorkers)
+	populate(objectMap, "numberOfSites", p.NumberOfSites)
+	populate(objectMap, "perSiteScaling", p.PerSiteScaling)
+	populate(objectMap, "provisioningState", p.ProvisioningState)
+	populate(objectMap, "reserved", p.Reserved)
+	populate(objectMap, "resourceGroup", p.ResourceGroup)
+	populateTimeRFC3339(objectMap, "spotExpirationTime", p.SpotExpirationTime)
+	populate(objectMap, "status", p.Status)
+	populate(objectMap, "subscription", p.Subscription)
+	populate(objectMap, "targetWorkerCount", p.TargetWorkerCount)
+	populate(objectMap, "targetWorkerSizeId", p.TargetWorkerSizeID)
+	populate(objectMap, "workerTierName", p.WorkerTierName)
+	populate(objectMap, "zoneRedundant", p.ZoneRedundant)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PlanProperties.
+func (p *PlanProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "elasticScaleEnabled":
+			err = unpopulate(val, &p.ElasticScaleEnabled)
+			delete(rawMsg, key)
+		case "freeOfferExpirationTime":
+			err = unpopulateTimeRFC3339(val, &p.FreeOfferExpirationTime)
+			delete(rawMsg, key)
+		case "geoRegion":
+			err = unpopulate(val, &p.GeoRegion)
+			delete(rawMsg, key)
+		case "hostingEnvironmentProfile":
+			err = unpopulate(val, &p.HostingEnvironmentProfile)
+			delete(rawMsg, key)
+		case "hyperV":
+			err = unpopulate(val, &p.HyperV)
+			delete(rawMsg, key)
+		case "isSpot":
+			err = unpopulate(val, &p.IsSpot)
+			delete(rawMsg, key)
+		case "isXenon":
+			err = unpopulate(val, &p.IsXenon)
+			delete(rawMsg, key)
+		case "kubeEnvironmentProfile":
+			err = unpopulate(val, &p.KubeEnvironmentProfile)
+			delete(rawMsg, key)
+		case "maximumElasticWorkerCount":
+			err = unpopulate(val, &p.MaximumElasticWorkerCount)
+			delete(rawMsg, key)
+		case "maximumNumberOfWorkers":
+			err = unpopulate(val, &p.MaximumNumberOfWorkers)
+			delete(rawMsg, key)
+		case "numberOfSites":
+			err = unpopulate(val, &p.NumberOfSites)
+			delete(rawMsg, key)
+		case "perSiteScaling":
+			err = unpopulate(val, &p.PerSiteScaling)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &p.ProvisioningState)
+			delete(rawMsg, key)
+		case "reserved":
+			err = unpopulate(val, &p.Reserved)
+			delete(rawMsg, key)
+		case "resourceGroup":
+			err = unpopulate(val, &p.ResourceGroup)
+			delete(rawMsg, key)
+		case "spotExpirationTime":
+			err = unpopulateTimeRFC3339(val, &p.SpotExpirationTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &p.Status)
+			delete(rawMsg, key)
+		case "subscription":
+			err = unpopulate(val, &p.Subscription)
+			delete(rawMsg, key)
+		case "targetWorkerCount":
+			err = unpopulate(val, &p.TargetWorkerCount)
+			delete(rawMsg, key)
+		case "targetWorkerSizeId":
+			err = unpopulate(val, &p.TargetWorkerSizeID)
+			delete(rawMsg, key)
+		case "workerTierName":
+			err = unpopulate(val, &p.WorkerTierName)
+			delete(rawMsg, key)
+		case "zoneRedundant":
+			err = unpopulate(val, &p.ZoneRedundant)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// PlansClientBeginCreateOrUpdateOptions contains the optional parameters for the PlansClient.BeginCreateOrUpdate method.
+type PlansClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientCreateOrUpdateVnetRouteOptions contains the optional parameters for the PlansClient.CreateOrUpdateVnetRoute
+// method.
+type PlansClientCreateOrUpdateVnetRouteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientDeleteHybridConnectionOptions contains the optional parameters for the PlansClient.DeleteHybridConnection method.
+type PlansClientDeleteHybridConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientDeleteOptions contains the optional parameters for the PlansClient.Delete method.
+type PlansClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientDeleteVnetRouteOptions contains the optional parameters for the PlansClient.DeleteVnetRoute method.
+type PlansClientDeleteVnetRouteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientGetHybridConnectionOptions contains the optional parameters for the PlansClient.GetHybridConnection method.
+type PlansClientGetHybridConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientGetHybridConnectionPlanLimitOptions contains the optional parameters for the PlansClient.GetHybridConnectionPlanLimit
+// method.
+type PlansClientGetHybridConnectionPlanLimitOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientGetOptions contains the optional parameters for the PlansClient.Get method.
+type PlansClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientGetRouteForVnetOptions contains the optional parameters for the PlansClient.GetRouteForVnet method.
+type PlansClientGetRouteForVnetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientGetServerFarmSKUsOptions contains the optional parameters for the PlansClient.GetServerFarmSKUs method.
+type PlansClientGetServerFarmSKUsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientGetVnetFromServerFarmOptions contains the optional parameters for the PlansClient.GetVnetFromServerFarm method.
+type PlansClientGetVnetFromServerFarmOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientGetVnetGatewayOptions contains the optional parameters for the PlansClient.GetVnetGateway method.
+type PlansClientGetVnetGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.ListByResourceGroup method.
+type PlansClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientListCapabilitiesOptions contains the optional parameters for the PlansClient.ListCapabilities method.
+type PlansClientListCapabilitiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientListHybridConnectionKeysOptions contains the optional parameters for the PlansClient.ListHybridConnectionKeys
+// method.
+type PlansClientListHybridConnectionKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.ListHybridConnections method.
+type PlansClientListHybridConnectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientListOptions contains the optional parameters for the PlansClient.List method.
+type PlansClientListOptions struct {
+	// Specify true to return all App Service plan properties. The default is false, which returns a subset of the properties.
+	// Retrieval of all properties may increase the API latency.
+	Detailed *bool
+}
+
+// PlansClientListRoutesForVnetOptions contains the optional parameters for the PlansClient.ListRoutesForVnet method.
+type PlansClientListRoutesForVnetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientListUsagesOptions contains the optional parameters for the PlansClient.ListUsages method.
+type PlansClientListUsagesOptions struct {
+	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1'
+	// or name.value eq 'Metric2').
+	Filter *string
+}
+
+// PlansClientListVnetsOptions contains the optional parameters for the PlansClient.ListVnets method.
+type PlansClientListVnetsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the PlansClient.ListWebAppsByHybridConnection
+// method.
+type PlansClientListWebAppsByHybridConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.ListWebApps method.
+type PlansClientListWebAppsOptions struct {
+	// Supported filter: $filter=state eq running. Returns only web apps that are currently running
+	Filter *string
+	// Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain
+	// web apps starting from (including) the skipToken. Otherwise, the resulting list
+	// contains web apps from the start of the list
+	SkipToken *string
+	// List page size. If specified, results are paged.
+	Top *string
+}
+
+// PlansClientRebootWorkerOptions contains the optional parameters for the PlansClient.RebootWorker method.
+type PlansClientRebootWorkerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientRestartWebAppsOptions contains the optional parameters for the PlansClient.RestartWebApps method.
+type PlansClientRestartWebAppsOptions struct {
+	// Specify true to perform a soft restart, applies the configuration settings and restarts the apps if necessary. The default
+	// is false, which always restarts and reprovisions the apps
+	SoftRestart *bool
+}
+
+// PlansClientUpdateOptions contains the optional parameters for the PlansClient.Update method.
+type PlansClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientUpdateVnetGatewayOptions contains the optional parameters for the PlansClient.UpdateVnetGateway method.
+type PlansClientUpdateVnetGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientUpdateVnetRouteOptions contains the optional parameters for the PlansClient.UpdateVnetRoute method.
+type PlansClientUpdateVnetRouteOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PremierAddOn - Premier add-on.
 type PremierAddOn struct {
-	Resource
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// PremierAddOn resource specific properties
 	Properties *PremierAddOnProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PremierAddOn.
 func (p PremierAddOn) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "kind", p.Kind)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
 // PremierAddOnOffer - Premier add-on offer.
 type PremierAddOnOffer struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// PremierAddOnOffer resource specific properties
 	Properties *PremierAddOnOfferProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PremierAddOnOffer.
-func (p PremierAddOnOffer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PremierAddOnOfferCollection - Collection of premier add-on offers.
@@ -7907,16 +8812,30 @@ type PremierAddOnOfferProperties struct {
 
 // PremierAddOnPatchResource - ARM resource for a PremierAddOn.
 type PremierAddOnPatchResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// PremierAddOnPatchResource resource specific properties
 	Properties *PremierAddOnPatchResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PremierAddOnPatchResource.
 func (p PremierAddOnPatchResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "kind", p.Kind)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -7958,17 +8877,20 @@ type PremierAddOnProperties struct {
 
 // PrivateAccess - Description of the parameters of Private Access for a Web Site.
 type PrivateAccess struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// PrivateAccess resource specific properties
 	Properties *PrivateAccessProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateAccess.
-func (p PrivateAccess) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateAccessProperties - PrivateAccess resource specific properties
@@ -8008,8 +8930,8 @@ type PrivateAccessVirtualNetwork struct {
 	// The ARM uri of the Virtual Network
 	ResourceID *string `json:"resourceId,omitempty"`
 
-	// A List of subnets that access is allowed to on this Virtual Network. An empty array (but not null) is interpreted to mean that all subnets are allowed
-	// within this Virtual Network.
+	// A List of subnets that access is allowed to on this Virtual Network. An empty array (but not null) is interpreted to mean
+	// that all subnets are allowed within this Virtual Network.
 	Subnets []*PrivateAccessSubnet `json:"subnets,omitempty"`
 }
 
@@ -8047,17 +8969,20 @@ type PrivateLinkConnectionApprovalRequest struct {
 
 // PrivateLinkConnectionApprovalRequestResource - Private Endpoint Connection Approval ARM resource.
 type PrivateLinkConnectionApprovalRequestResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *PrivateLinkConnectionApprovalRequest `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkConnectionApprovalRequestResource.
-func (p PrivateLinkConnectionApprovalRequestResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkConnectionState - The state of a private link connection
@@ -8123,17 +9048,20 @@ func (p PrivateLinkResourcesWrapper) MarshalJSON() ([]byte, error) {
 
 // ProcessInfo - Process Information.
 type ProcessInfo struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// ProcessInfo resource specific properties
 	Properties *ProcessInfoProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ProcessInfo.
-func (p ProcessInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ProcessInfoCollection - Collection of Kudu process information elements.
@@ -8433,17 +9361,20 @@ func (p *ProcessInfoProperties) UnmarshalJSON(data []byte) error {
 
 // ProcessModuleInfo - Process Module Information.
 type ProcessModuleInfo struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// ProcessModuleInfo resource specific properties
 	Properties *ProcessModuleInfoProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ProcessModuleInfo.
-func (p ProcessModuleInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ProcessModuleInfoCollection - Collection of Kudu thread information elements.
@@ -8501,17 +9432,20 @@ type ProcessModuleInfoProperties struct {
 
 // ProcessThreadInfo - Process Thread Information.
 type ProcessThreadInfo struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// ProcessThreadInfo resource specific properties
 	Properties *ProcessThreadInfoProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ProcessThreadInfo.
-func (p ProcessThreadInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ProcessThreadInfoCollection - Collection of Kudu thread information elements.
@@ -8641,42 +9575,46 @@ func (p *ProcessThreadInfoProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ProviderGetAvailableStacksOnPremOptions contains the optional parameters for the Provider.GetAvailableStacksOnPrem method.
-type ProviderGetAvailableStacksOnPremOptions struct {
-	OSTypeSelected *ProviderOsTypeSelected
+// ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
+// method.
+type ProviderClientGetAvailableStacksOnPremOptions struct {
+	OSTypeSelected *Enum20
 }
 
-// ProviderGetAvailableStacksOptions contains the optional parameters for the Provider.GetAvailableStacks method.
-type ProviderGetAvailableStacksOptions struct {
-	OSTypeSelected *ProviderOsTypeSelected
+// ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks method.
+type ProviderClientGetAvailableStacksOptions struct {
+	OSTypeSelected *Enum15
 }
 
-// ProviderGetFunctionAppStacksForLocationOptions contains the optional parameters for the Provider.GetFunctionAppStacksForLocation method.
-type ProviderGetFunctionAppStacksForLocationOptions struct {
+// ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacksForLocation
+// method.
+type ProviderClientGetFunctionAppStacksForLocationOptions struct {
 	// Stack OS Type
-	StackOsType *ProviderStackOsType
+	StackOsType *Enum17
 }
 
-// ProviderGetFunctionAppStacksOptions contains the optional parameters for the Provider.GetFunctionAppStacks method.
-type ProviderGetFunctionAppStacksOptions struct {
+// ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacks
+// method.
+type ProviderClientGetFunctionAppStacksOptions struct {
 	// Stack OS Type
-	StackOsType *ProviderStackOsType
+	StackOsType *Enum16
 }
 
-// ProviderGetWebAppStacksForLocationOptions contains the optional parameters for the Provider.GetWebAppStacksForLocation method.
-type ProviderGetWebAppStacksForLocationOptions struct {
+// ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetWebAppStacksForLocation
+// method.
+type ProviderClientGetWebAppStacksForLocationOptions struct {
 	// Stack OS Type
-	StackOsType *ProviderStackOsType
+	StackOsType *Enum18
 }
 
-// ProviderGetWebAppStacksOptions contains the optional parameters for the Provider.GetWebAppStacks method.
-type ProviderGetWebAppStacksOptions struct {
+// ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.GetWebAppStacks method.
+type ProviderClientGetWebAppStacksOptions struct {
 	// Stack OS Type
-	StackOsType *ProviderStackOsType
+	StackOsType *Enum19
 }
 
-// ProviderListOperationsOptions contains the optional parameters for the Provider.ListOperations method.
-type ProviderListOperationsOptions struct {
+// ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.
+type ProviderClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8695,33 +9633,22 @@ type ProxyOnlyResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProxyOnlyResource.
-func (p ProxyOnlyResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (p ProxyOnlyResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "kind", p.Kind)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "type", p.Type)
-}
-
 // PublicCertificate - Public certificate object
 type PublicCertificate struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// PublicCertificate resource specific properties
 	Properties *PublicCertificateProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PublicCertificate.
-func (p PublicCertificate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PublicCertificateCollection - Collection of public certificates
@@ -8807,17 +9734,20 @@ func (p PublishingCredentialsPoliciesCollection) MarshalJSON() ([]byte, error) {
 
 // PushSettings - Push settings for the App.
 type PushSettings struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// PushSettings resource specific properties
 	Properties *PushSettingsProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PushSettings.
-func (p PushSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PushSettingsProperties - PushSettings resource specific properties
@@ -8825,14 +9755,15 @@ type PushSettingsProperties struct {
 	// REQUIRED; Gets or sets a flag indicating whether the Push endpoint is enabled.
 	IsPushEnabled *bool `json:"isPushEnabled,omitempty"`
 
-	// Gets or sets a JSON string containing a list of dynamic tags that will be evaluated from user claims in the push registration endpoint.
+	// Gets or sets a JSON string containing a list of dynamic tags that will be evaluated from user claims in the push registration
+	// endpoint.
 	DynamicTagsJSON *string `json:"dynamicTagsJson,omitempty"`
 
 	// Gets or sets a JSON string containing a list of tags that are whitelisted for use by the push registration endpoint.
 	TagWhitelistJSON *string `json:"tagWhitelistJson,omitempty"`
 
-	// Gets or sets a JSON string containing a list of tags that require user authentication to be used in the push registration endpoint. Tags can consist
-	// of alphanumeric characters and the following: '_',
+	// Gets or sets a JSON string containing a list of tags that require user authentication to be used in the push registration
+	// endpoint. Tags can consist of alphanumeric characters and the following: '_',
 	// '@', '#', '.', ':', '-'. Validation should be performed at the PushRequestHandler.
 	TagsRequiringAuth *string `json:"tagsRequiringAuth,omitempty"`
 }
@@ -8863,22 +9794,45 @@ func (q QueryUtterancesResults) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RampUpRule - Routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to gradually change routing % based on performance.
+// QueueScaleRule - Container App container Azure Queue based scaling rule.
+type QueueScaleRule struct {
+	// Authentication secrets for the queue scale rule.
+	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+
+	// Queue length.
+	QueueLength *int32 `json:"queueLength,omitempty"`
+
+	// Queue name.
+	QueueName *string `json:"queueName,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type QueueScaleRule.
+func (q QueueScaleRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "auth", q.Auth)
+	populate(objectMap, "queueLength", q.QueueLength)
+	populate(objectMap, "queueName", q.QueueName)
+	return json.Marshal(objectMap)
+}
+
+// RampUpRule - Routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to gradually
+// change routing % based on performance.
 type RampUpRule struct {
 	// Hostname of a slot to which the traffic will be redirected if decided to. E.g. myapp-stage.azurewebsites.net.
 	ActionHostName *string `json:"actionHostName,omitempty"`
 
-	// Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See TiPCallback site extension for the scaffold and
-	// contracts.
+	// Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See TiPCallback site
+	// extension for the scaffold and contracts.
 	// https://www.siteextensions.net/packages/TiPCallback/
 	ChangeDecisionCallbackURL *string `json:"changeDecisionCallbackUrl,omitempty"`
 
 	// Specifies interval in minutes to reevaluate ReroutePercentage.
 	ChangeIntervalInMinutes *int32 `json:"changeIntervalInMinutes,omitempty"`
 
-	// In auto ramp up scenario this is the step to add/remove from ReroutePercentage until it reaches \nMinReroutePercentage orMaxReroutePercentage. Site metrics
-	// are checked every N minutes specified in
-	// ChangeIntervalInMinutes.\nCustom decision algorithm can be provided in TiPCallback site extension which URL can be specified in ChangeDecisionCallbackUrl.
+	// In auto ramp up scenario this is the step to add/remove from ReroutePercentage until it reaches \nMinReroutePercentage
+	// orMaxReroutePercentage. Site metrics are checked every N minutes specified in
+	// ChangeIntervalInMinutes.\nCustom decision algorithm can be provided in TiPCallback site extension which URL can be specified
+	// in ChangeDecisionCallbackUrl.
 	ChangeStep *float64 `json:"changeStep,omitempty"`
 
 	// Specifies upper boundary below which ReroutePercentage will stay.
@@ -8896,17 +9850,20 @@ type RampUpRule struct {
 
 // Recommendation - Represents a recommendation result generated by the recommendation engine.
 type Recommendation struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Recommendation resource specific properties
 	Properties *RecommendationProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Recommendation.
-func (r Recommendation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecommendationCollection - Collection of recommendations.
@@ -9115,17 +10072,20 @@ func (r *RecommendationProperties) UnmarshalJSON(data []byte) error {
 
 // RecommendationRule - Represents a recommendation rule that the recommendation engine can perform.
 type RecommendationRule struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// RecommendationRule resource specific properties
 	Properties *RecommendationRuleProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RecommendationRule.
-func (r RecommendationRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecommendationRuleProperties - RecommendationRule resource specific properties
@@ -9160,7 +10120,8 @@ type RecommendationRuleProperties struct {
 	// Localized name of the rule (Good for UI).
 	Message *string `json:"message,omitempty"`
 
-	// Recommendation ID of an associated recommendation object tied to the rule, if exists. If such an object doesn't exist, it is set to null.
+	// Recommendation ID of an associated recommendation object tied to the rule, if exists. If such an object doesn't exist,
+	// it is set to null.
 	RecommendationID *string `json:"recommendationId,omitempty"`
 
 	// Unique name of the rule.
@@ -9189,123 +10150,152 @@ func (r RecommendationRuleProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RecommendationsDisableAllForHostingEnvironmentOptions contains the optional parameters for the Recommendations.DisableAllForHostingEnvironment method.
-type RecommendationsDisableAllForHostingEnvironmentOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecommendationsDisableAllForWebAppOptions contains the optional parameters for the Recommendations.DisableAllForWebApp method.
-type RecommendationsDisableAllForWebAppOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecommendationsDisableRecommendationForHostingEnvironmentOptions contains the optional parameters for the Recommendations.DisableRecommendationForHostingEnvironment
+// RecommendationsClientDisableAllForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.DisableAllForHostingEnvironment
 // method.
-type RecommendationsDisableRecommendationForHostingEnvironmentOptions struct {
+type RecommendationsClientDisableAllForHostingEnvironmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsDisableRecommendationForSiteOptions contains the optional parameters for the Recommendations.DisableRecommendationForSite method.
-type RecommendationsDisableRecommendationForSiteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecommendationsDisableRecommendationForSubscriptionOptions contains the optional parameters for the Recommendations.DisableRecommendationForSubscription
+// RecommendationsClientDisableAllForWebAppOptions contains the optional parameters for the RecommendationsClient.DisableAllForWebApp
 // method.
-type RecommendationsDisableRecommendationForSubscriptionOptions struct {
+type RecommendationsClientDisableAllForWebAppOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsGetRuleDetailsByHostingEnvironmentOptions contains the optional parameters for the Recommendations.GetRuleDetailsByHostingEnvironment
+// RecommendationsClientDisableRecommendationForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForHostingEnvironment
 // method.
-type RecommendationsGetRuleDetailsByHostingEnvironmentOptions struct {
+type RecommendationsClientDisableRecommendationForHostingEnvironmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecommendationsClientDisableRecommendationForSiteOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForSite
+// method.
+type RecommendationsClientDisableRecommendationForSiteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecommendationsClientDisableRecommendationForSubscriptionOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForSubscription
+// method.
+type RecommendationsClientDisableRecommendationForSubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.GetRuleDetailsByHostingEnvironment
+// method.
+type RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions struct {
 	// The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
 	RecommendationID *string
-	// Specify <code>true</code> to update the last-seen timestamp of the recommendation object.
+	// Specify true to update the last-seen timestamp of the recommendation object.
 	UpdateSeen *bool
 }
 
-// RecommendationsGetRuleDetailsByWebAppOptions contains the optional parameters for the Recommendations.GetRuleDetailsByWebApp method.
-type RecommendationsGetRuleDetailsByWebAppOptions struct {
+// RecommendationsClientGetRuleDetailsByWebAppOptions contains the optional parameters for the RecommendationsClient.GetRuleDetailsByWebApp
+// method.
+type RecommendationsClientGetRuleDetailsByWebAppOptions struct {
 	// The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
 	RecommendationID *string
-	// Specify <code>true</code> to update the last-seen timestamp of the recommendation object.
+	// Specify true to update the last-seen timestamp of the recommendation object.
 	UpdateSeen *bool
 }
 
-// RecommendationsListHistoryForHostingEnvironmentOptions contains the optional parameters for the Recommendations.ListHistoryForHostingEnvironment method.
-type RecommendationsListHistoryForHostingEnvironmentOptions struct {
-	// Specify <code>false</code> to return all recommendations. The default is <code>true</code>, which returns only expired recommendations.
-	ExpiredOnly *bool
-	// Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime
-	// eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
-	Filter *string
-}
-
-// RecommendationsListHistoryForWebAppOptions contains the optional parameters for the Recommendations.ListHistoryForWebApp method.
-type RecommendationsListHistoryForWebAppOptions struct {
-	// Specify <code>false</code> to return all recommendations. The default is <code>true</code>, which returns only expired recommendations.
-	ExpiredOnly *bool
-	// Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime
-	// eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
-	Filter *string
-}
-
-// RecommendationsListOptions contains the optional parameters for the Recommendations.List method.
-type RecommendationsListOptions struct {
-	// Specify <code>true</code> to return only the most critical recommendations. The default is <code>false</code>, which returns all recommendations.
-	Featured *bool
-	// Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime
-	// eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
-	Filter *string
-}
-
-// RecommendationsListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the Recommendations.ListRecommendedRulesForHostingEnvironment
+// RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListHistoryForHostingEnvironment
 // method.
-type RecommendationsListRecommendedRulesForHostingEnvironmentOptions struct {
-	// Specify <code>true</code> to return only the most critical recommendations. The default is <code>false</code>, which returns all recommendations.
-	Featured *bool
-	// Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
+type RecommendationsClientListHistoryForHostingEnvironmentOptions struct {
+	// Specify false to return all recommendations. The default is true, which returns only expired recommendations.
+	ExpiredOnly *bool
+	// Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime
+	// eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+	// duration'[PT1H|PT1M|P1D]
 	Filter *string
 }
 
-// RecommendationsListRecommendedRulesForWebAppOptions contains the optional parameters for the Recommendations.ListRecommendedRulesForWebApp method.
-type RecommendationsListRecommendedRulesForWebAppOptions struct {
-	// Specify <code>true</code> to return only the most critical recommendations. The default is <code>false</code>, which returns all recommendations.
-	Featured *bool
-	// Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
-	Filter *string
-}
-
-// RecommendationsResetAllFiltersForHostingEnvironmentOptions contains the optional parameters for the Recommendations.ResetAllFiltersForHostingEnvironment
+// RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.ListHistoryForWebApp
 // method.
-type RecommendationsResetAllFiltersForHostingEnvironmentOptions struct {
+type RecommendationsClientListHistoryForWebAppOptions struct {
+	// Specify false to return all recommendations. The default is true, which returns only expired recommendations.
+	ExpiredOnly *bool
+	// Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime
+	// eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+	// duration'[PT1H|PT1M|P1D]
+	Filter *string
+}
+
+// RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
+type RecommendationsClientListOptions struct {
+	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
+	Featured *bool
+	// Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime
+	// eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+	// duration'[PT1H|PT1M|P1D]
+	Filter *string
+}
+
+// RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForHostingEnvironment
+// method.
+type RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions struct {
+	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
+	Featured *bool
+	// Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api'
+	// or channel eq 'Notification'
+	Filter *string
+}
+
+// RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForWebApp
+// method.
+type RecommendationsClientListRecommendedRulesForWebAppOptions struct {
+	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
+	Featured *bool
+	// Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api'
+	// or channel eq 'Notification'
+	Filter *string
+}
+
+// RecommendationsClientResetAllFiltersForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ResetAllFiltersForHostingEnvironment
+// method.
+type RecommendationsClientResetAllFiltersForHostingEnvironmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsResetAllFiltersForWebAppOptions contains the optional parameters for the Recommendations.ResetAllFiltersForWebApp method.
-type RecommendationsResetAllFiltersForWebAppOptions struct {
+// RecommendationsClientResetAllFiltersForWebAppOptions contains the optional parameters for the RecommendationsClient.ResetAllFiltersForWebApp
+// method.
+type RecommendationsClientResetAllFiltersForWebAppOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsResetAllFiltersOptions contains the optional parameters for the Recommendations.ResetAllFilters method.
-type RecommendationsResetAllFiltersOptions struct {
+// RecommendationsClientResetAllFiltersOptions contains the optional parameters for the RecommendationsClient.ResetAllFilters
+// method.
+type RecommendationsClientResetAllFiltersOptions struct {
 	// placeholder for future optional parameters
+}
+
+// RegistryCredentials - Container App Private Registry
+type RegistryCredentials struct {
+	// The name of the Secret that contains the registry login password
+	PasswordSecretRef *string `json:"passwordSecretRef,omitempty"`
+
+	// Container Registry Server
+	Server *string `json:"server,omitempty"`
+
+	// Container Registry Username
+	Username *string `json:"username,omitempty"`
 }
 
 // ReissueCertificateOrderRequest - Class representing certificate reissue request.
 type ReissueCertificateOrderRequest struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// ReissueCertificateOrderRequest resource specific properties
 	Properties *ReissueCertificateOrderRequestProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ReissueCertificateOrderRequest.
-func (r ReissueCertificateOrderRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ReissueCertificateOrderRequestProperties - ReissueCertificateOrderRequest resource specific properties
@@ -9325,16 +10315,30 @@ type ReissueCertificateOrderRequestProperties struct {
 
 // RelayServiceConnectionEntity - Hybrid Connection for an App Service app.
 type RelayServiceConnectionEntity struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// RelayServiceConnectionEntity resource specific properties
 	Properties *RelayServiceConnectionEntityProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RelayServiceConnectionEntity.
 func (r RelayServiceConnectionEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "kind", r.Kind)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -9351,32 +10355,38 @@ type RelayServiceConnectionEntityProperties struct {
 
 // RemotePrivateEndpointConnection - A remote private endpoint connection
 type RemotePrivateEndpointConnection struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// RemotePrivateEndpointConnection resource specific properties
 	Properties *RemotePrivateEndpointConnectionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RemotePrivateEndpointConnection.
-func (r RemotePrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RemotePrivateEndpointConnectionARMResource - Remote Private Endpoint Connection ARM resource.
 type RemotePrivateEndpointConnectionARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// RemotePrivateEndpointConnectionARMResource resource specific properties
 	Properties *RemotePrivateEndpointConnectionARMResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RemotePrivateEndpointConnectionARMResource.
-func (r RemotePrivateEndpointConnectionARMResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RemotePrivateEndpointConnectionARMResourceProperties - RemotePrivateEndpointConnectionARMResource resource specific properties
@@ -9443,17 +10453,20 @@ type Rendering struct {
 
 // RenewCertificateOrderRequest - Class representing certificate renew request.
 type RenewCertificateOrderRequest struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// RenewCertificateOrderRequest resource specific properties
 	Properties *RenewCertificateOrderRequestProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RenewCertificateOrderRequest.
-func (r RenewCertificateOrderRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RenewCertificateOrderRequestProperties - RenewCertificateOrderRequest resource specific properties
@@ -9501,17 +10514,13 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "kind", r.Kind)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // ResourceCollection - Collection of resources.
@@ -9533,17 +10542,55 @@ func (r ResourceCollection) MarshalJSON() ([]byte, error) {
 
 // ResourceHealthMetadata - Used for getting ResourceHealthCheck settings.
 type ResourceHealthMetadata struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// ResourceHealthMetadata resource specific properties
 	Properties *ResourceHealthMetadataProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceHealthMetadata.
-func (r ResourceHealthMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+// ResourceHealthMetadataClientGetBySiteOptions contains the optional parameters for the ResourceHealthMetadataClient.GetBySite
+// method.
+type ResourceHealthMetadataClientGetBySiteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceHealthMetadataClientGetBySiteSlotOptions contains the optional parameters for the ResourceHealthMetadataClient.GetBySiteSlot
+// method.
+type ResourceHealthMetadataClientGetBySiteSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceHealthMetadataClientListByResourceGroupOptions contains the optional parameters for the ResourceHealthMetadataClient.ListByResourceGroup
+// method.
+type ResourceHealthMetadataClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceHealthMetadataClientListBySiteOptions contains the optional parameters for the ResourceHealthMetadataClient.ListBySite
+// method.
+type ResourceHealthMetadataClientListBySiteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceHealthMetadataClientListBySiteSlotOptions contains the optional parameters for the ResourceHealthMetadataClient.ListBySiteSlot
+// method.
+type ResourceHealthMetadataClientListBySiteSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceHealthMetadataClientListOptions contains the optional parameters for the ResourceHealthMetadataClient.List method.
+type ResourceHealthMetadataClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ResourceHealthMetadataCollection - Collection of resource health metadata.
@@ -9561,36 +10608,6 @@ func (r ResourceHealthMetadataCollection) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
-}
-
-// ResourceHealthMetadataGetBySiteOptions contains the optional parameters for the ResourceHealthMetadata.GetBySite method.
-type ResourceHealthMetadataGetBySiteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceHealthMetadataGetBySiteSlotOptions contains the optional parameters for the ResourceHealthMetadata.GetBySiteSlot method.
-type ResourceHealthMetadataGetBySiteSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceHealthMetadataListByResourceGroupOptions contains the optional parameters for the ResourceHealthMetadata.ListByResourceGroup method.
-type ResourceHealthMetadataListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceHealthMetadataListBySiteOptions contains the optional parameters for the ResourceHealthMetadata.ListBySite method.
-type ResourceHealthMetadataListBySiteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceHealthMetadataListBySiteSlotOptions contains the optional parameters for the ResourceHealthMetadata.ListBySiteSlot method.
-type ResourceHealthMetadataListBySiteSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceHealthMetadataListOptions contains the optional parameters for the ResourceHealthMetadata.List method.
-type ResourceHealthMetadataListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ResourceHealthMetadataProperties - ResourceHealthMetadata resource specific properties
@@ -9613,17 +10630,20 @@ type ResourceMetricAvailability struct {
 
 // ResourceMetricDefinition - Metadata for the metrics.
 type ResourceMetricDefinition struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// ResourceMetricDefinition resource specific properties
 	Properties *ResourceMetricDefinitionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceMetricDefinition.
-func (r ResourceMetricDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ResourceMetricDefinitionCollection - Collection of metric definitions.
@@ -9674,16 +10694,16 @@ func (r ResourceMetricDefinitionProperties) MarshalJSON() ([]byte, error) {
 
 // ResourceNameAvailability - Information regarding availability of a resource name.
 type ResourceNameAvailability struct {
-	// If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements so that the user can
-	// select a valid name. If reason == AlreadyExists,
+	// If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements
+	// so that the user can select a valid name. If reason == AlreadyExists,
 	// explain that resource name is already in use, and direct them to select a different name.
 	Message *string `json:"message,omitempty"`
 
 	// true indicates name is valid and available. false indicates the name is invalid, unavailable, or both.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
 
-	// Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists indicates that the name is already in use and
-	// is therefore unavailable.
+	// Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists indicates that
+	// the name is already in use and is therefore unavailable.
 	Reason *InAvailabilityReasonType `json:"reason,omitempty"`
 }
 
@@ -9699,14 +10719,14 @@ type ResourceNameAvailabilityRequest struct {
 	IsFqdn *bool `json:"isFqdn,omitempty"`
 }
 
-// ResponseMessageEnvelopeRemotePrivateEndpointConnection - Message envelope that contains the common Azure resource manager properties and the resource
-// provider specific content.
+// ResponseMessageEnvelopeRemotePrivateEndpointConnection - Message envelope that contains the common Azure resource manager
+// properties and the resource provider specific content.
 type ResponseMessageEnvelopeRemotePrivateEndpointConnection struct {
 	// Azure-AsyncOperation Error info.
 	Error *ErrorEntity `json:"error,omitempty"`
 
-	// Resource Id. Typically ID is populated only for responses to GET requests. Caller is responsible for passing in this value for GET requests only. For
-	// example:
+	// Resource Id. Typically ID is populated only for responses to GET requests. Caller is responsible for passing in this value
+	// for GET requests only. For example:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupId}/providers/Microsoft.Web/sites/{sitename}
 	ID *string `json:"id,omitempty"`
 
@@ -9766,22 +10786,26 @@ type ResponseMetaData struct {
 
 // RestoreRequest - Description of a restore request.
 type RestoreRequest struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// RestoreRequest resource specific properties
 	Properties *RestoreRequestProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RestoreRequest.
-func (r RestoreRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RestoreRequestProperties - RestoreRequest resource specific properties
 type RestoreRequestProperties struct {
-	// REQUIRED; true if the restore operation can overwrite target app; otherwise, false. true is needed if trying to restore over an existing app.
+	// REQUIRED; true if the restore operation can overwrite target app; otherwise, false. true is needed if trying to restore
+	// over an existing app.
 	Overwrite *bool `json:"overwrite,omitempty"`
 
 	// REQUIRED; SAS URL to the container.
@@ -9802,8 +10826,8 @@ type RestoreRequestProperties struct {
 	// App Service Environment name, if needed (only when restoring an app to an App Service Environment).
 	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
 
-	// Changes a logic when restoring an app with custom domains. true to remove custom domains automatically. If false, custom domains are added to the app's
-	// object when it is being restored, but that might
+	// Changes a logic when restoring an app with custom domains. true to remove custom domains automatically. If false, custom
+	// domains are added to the app's object when it is being restored, but that might
 	// fail due to conflicts during the operation.
 	IgnoreConflictingHostNames *bool `json:"ignoreConflictingHostNames,omitempty"`
 
@@ -9832,6 +10856,150 @@ func (r RestoreRequestProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "siteName", r.SiteName)
 	populate(objectMap, "storageAccountUrl", r.StorageAccountURL)
 	return json.Marshal(objectMap)
+}
+
+// Revision - Container App Revision.
+type Revision struct {
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Revision resource specific properties
+	Properties *RevisionProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Revision.
+func (r Revision) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "kind", r.Kind)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
+}
+
+// RevisionCollection - Container App Revisions collection ARM resource.
+type RevisionCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*Revision `json:"value,omitempty"`
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RevisionCollection.
+func (r RevisionCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", r.NextLink)
+	populate(objectMap, "value", r.Value)
+	return json.Marshal(objectMap)
+}
+
+// RevisionProperties - Revision resource specific properties
+type RevisionProperties struct {
+	// READ-ONLY; Boolean describing if the Revision is Active
+	Active *bool `json:"active,omitempty" azure:"ro"`
+
+	// READ-ONLY; Timestamp describing when the revision was created by controller
+	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Fully qualified domain name of the revision
+	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current health State of the revision
+	HealthState *RevisionHealthState `json:"healthState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Optional Field - Platform Error Message
+	ProvisioningError *string `json:"provisioningError,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current provisioning State of the revision
+	ProvisioningState *RevisionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of pods currently running for this revision
+	Replicas *int32 `json:"replicas,omitempty" azure:"ro"`
+
+	// READ-ONLY; Container App Revision Template with all possible settings and the defaults if user did not provide them. The
+	// defaults are populated as they were at the creation time
+	Template *Template `json:"template,omitempty" azure:"ro"`
+
+	// READ-ONLY; Traffic weight assigned to this revision
+	TrafficWeight *int32 `json:"trafficWeight,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RevisionProperties.
+func (r RevisionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "active", r.Active)
+	populateTimeRFC3339(objectMap, "createdTime", r.CreatedTime)
+	populate(objectMap, "fqdn", r.Fqdn)
+	populate(objectMap, "healthState", r.HealthState)
+	populate(objectMap, "provisioningError", r.ProvisioningError)
+	populate(objectMap, "provisioningState", r.ProvisioningState)
+	populate(objectMap, "replicas", r.Replicas)
+	populate(objectMap, "template", r.Template)
+	populate(objectMap, "trafficWeight", r.TrafficWeight)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RevisionProperties.
+func (r *RevisionProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "active":
+			err = unpopulate(val, &r.Active)
+			delete(rawMsg, key)
+		case "createdTime":
+			err = unpopulateTimeRFC3339(val, &r.CreatedTime)
+			delete(rawMsg, key)
+		case "fqdn":
+			err = unpopulate(val, &r.Fqdn)
+			delete(rawMsg, key)
+		case "healthState":
+			err = unpopulate(val, &r.HealthState)
+			delete(rawMsg, key)
+		case "provisioningError":
+			err = unpopulate(val, &r.ProvisioningError)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &r.ProvisioningState)
+			delete(rawMsg, key)
+		case "replicas":
+			err = unpopulate(val, &r.Replicas)
+			delete(rawMsg, key)
+		case "template":
+			err = unpopulate(val, &r.Template)
+			delete(rawMsg, key)
+		case "trafficWeight":
+			err = unpopulate(val, &r.TrafficWeight)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // SKUCapacity - Description of the App Service plan scale options.
@@ -9960,6 +11128,73 @@ func (s SampleUtterance) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Scale - Container App scaling configurations.
+type Scale struct {
+	// Optional. Maximum number of container replicas. Defaults to 10 if not set.
+	MaxReplicas *int32 `json:"maxReplicas,omitempty"`
+
+	// Optional. Minimum number of container replicas.
+	MinReplicas *int32 `json:"minReplicas,omitempty"`
+
+	// Scaling rules.
+	Rules []*ScaleRule `json:"rules,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Scale.
+func (s Scale) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "maxReplicas", s.MaxReplicas)
+	populate(objectMap, "minReplicas", s.MinReplicas)
+	populate(objectMap, "rules", s.Rules)
+	return json.Marshal(objectMap)
+}
+
+// ScaleRule - Container App container scaling rule.
+type ScaleRule struct {
+	// Azure Queue based scaling.
+	AzureQueue *QueueScaleRule `json:"azureQueue,omitempty"`
+
+	// Custom scale rule.
+	Custom *CustomScaleRule `json:"custom,omitempty"`
+
+	// HTTP requests based scaling.
+	HTTP *HTTPScaleRule `json:"http,omitempty"`
+
+	// Scale Rule Name
+	Name *string `json:"name,omitempty"`
+}
+
+// ScaleRuleAuth - Auth Secrets for Container App Scale Rule
+type ScaleRuleAuth struct {
+	// Name of the Container App secret from which to pull the auth params.
+	SecretRef *string `json:"secretRef,omitempty"`
+
+	// Trigger Parameter that uses the secret
+	TriggerParameter *string `json:"triggerParameter,omitempty"`
+}
+
+// Secret - Container App Secret.
+type Secret struct {
+	// Secret Name.
+	Name *string `json:"name,omitempty"`
+
+	// Secret Value.
+	Value *string `json:"value,omitempty"`
+}
+
+// SecretsCollection - Container App Secrets Collection ARM resource.
+type SecretsCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*ContainerAppSecret `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SecretsCollection.
+func (s SecretsCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
 // ServiceSpecification - Resource metrics service provided by Microsoft.Insights resource provider.
 type ServiceSpecification struct {
 	LogSpecifications    []*LogSpecification    `json:"logSpecifications,omitempty"`
@@ -9976,40 +11211,65 @@ func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
 
 // Site - A web app, a mobile app backend, or an API app.
 type Site struct {
-	Resource
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
 	// Extended Location.
 	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
 
 	// Managed service identity.
 	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Site resource specific properties
 	Properties *SiteProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Site.
 func (s Site) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "extendedLocation", s.ExtendedLocation)
+	populate(objectMap, "id", s.ID)
 	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
 // SiteAuthSettings - Configuration settings for the Azure App Service Authentication / Authorization feature.
 type SiteAuthSettings struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SiteAuthSettings resource specific properties
 	Properties *SiteAuthSettingsProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SiteAuthSettings.
-func (s SiteAuthSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SiteAuthSettingsProperties - SiteAuthSettings resource specific properties
@@ -10017,62 +11277,66 @@ type SiteAuthSettingsProperties struct {
 	// Gets a JSON string containing the Azure AD Acl settings.
 	AADClaimsAuthorization *string `json:"aadClaimsAuthorization,omitempty"`
 
-	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the form "key=value".
+	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the
+	// form "key=value".
 	AdditionalLoginParams []*string `json:"additionalLoginParams,omitempty"`
 
-	// Allowed audience values to consider when validating JWTs issued by Azure Active Directory. Note that the ClientID value is always considered an allowed
-	// audience, regardless of this setting.
+	// Allowed audience values to consider when validating JWTs issued by Azure Active Directory. Note that the ClientID value
+	// is always considered an allowed audience, regardless of this setting.
 	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
 
-	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored. This
-	// is an advanced setting typically only needed by
+	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part
+	// of the URL is ignored. This is an advanced setting typically only needed by
 	// Windows Store application backends. Note that URLs within the current domain are always implicitly allowed.
 	AllowedExternalRedirectUrls []*string `json:"allowedExternalRedirectUrls,omitempty"`
 
 	// The path of the config file containing auth settings. If the path is relative, base will the site's root directory.
 	AuthFilePath *string `json:"authFilePath,omitempty"`
 
-	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection authentication with Azure
-	// Active Directory or other 3rd party OpenID
+	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection
+	// authentication with Azure Active Directory or other 3rd party OpenID
 	// Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-10.html
 	ClientID *string `json:"clientId,omitempty"`
 
-	// The Client Secret of this relying party application (in Azure Active Directory, this is also referred to as the Key). This setting is optional. If no
-	// client secret is configured, the OpenID Connect
-	// implicit auth flow is used to authenticate end users. Otherwise, the OpenID Connect Authorization Code Flow is used to authenticate end users. More information
-	// on OpenID Connect:
+	// The Client Secret of this relying party application (in Azure Active Directory, this is also referred to as the Key). This
+	// setting is optional. If no client secret is configured, the OpenID Connect
+	// implicit auth flow is used to authenticate end users. Otherwise, the OpenID Connect Authorization Code Flow is used to
+	// authenticate end users. More information on OpenID Connect:
 	// http://openid.net/specs/openid-connect-core-1_0.html
 	ClientSecret *string `json:"clientSecret,omitempty"`
 
-	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as a replacement for the Client
-	// Secret. It is also optional.
+	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts
+	// as a replacement for the Client Secret. It is also optional.
 	ClientSecretCertificateThumbprint *string `json:"clientSecretCertificateThumbprint,omitempty"`
 
 	// The app setting name that contains the client secret of the relying party application.
 	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
 
-	// The ConfigVersion of the Authentication / Authorization feature in use for the current app. The setting in this value can control the behavior of the
-	// control plane for Authentication / Authorization.
+	// The ConfigVersion of the Authentication / Authorization feature in use for the current app. The setting in this value can
+	// control the behavior of the control plane for Authentication / Authorization.
 	ConfigVersion *string `json:"configVersion,omitempty"`
 
-	// The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple providers are configured and
-	// the unauthenticated client action is set to
+	// The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple
+	// providers are configured and the unauthenticated client action is set to
 	// "RedirectToLoginPage".
 	DefaultProvider *BuiltInAuthenticationProvider `json:"defaultProvider,omitempty"`
 
 	// true if the Authentication / Authorization feature is enabled for the current app; otherwise, false.
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// The App ID of the Facebook app used for login. This setting is required for enabling Facebook Login. Facebook Login documentation: https://developers.facebook.com/docs/facebook-login
+	// The App ID of the Facebook app used for login. This setting is required for enabling Facebook Login. Facebook Login documentation:
+	// https://developers.facebook.com/docs/facebook-login
 	FacebookAppID *string `json:"facebookAppId,omitempty"`
 
-	// The App Secret of the Facebook app used for Facebook Login. This setting is required for enabling Facebook Login. Facebook Login documentation: https://developers.facebook.com/docs/facebook-login
+	// The App Secret of the Facebook app used for Facebook Login. This setting is required for enabling Facebook Login. Facebook
+	// Login documentation: https://developers.facebook.com/docs/facebook-login
 	FacebookAppSecret *string `json:"facebookAppSecret,omitempty"`
 
 	// The app setting name that contains the app secret used for Facebook Login.
 	FacebookAppSecretSettingName *string `json:"facebookAppSecretSettingName,omitempty"`
 
-	// The OAuth 2.0 scopes that will be requested as part of Facebook Login authentication. This setting is optional. Facebook Login documentation: https://developers.facebook.com/docs/facebook-login
+	// The OAuth 2.0 scopes that will be requested as part of Facebook Login authentication. This setting is optional. Facebook
+	// Login documentation: https://developers.facebook.com/docs/facebook-login
 	FacebookOAuthScopes []*string `json:"facebookOAuthScopes,omitempty"`
 
 	// The Client Id of the GitHub app used for login. This setting is required for enabling Github login
@@ -10087,64 +11351,69 @@ type SiteAuthSettingsProperties struct {
 	// The OAuth 2.0 scopes that will be requested as part of GitHub Login authentication. This setting is optional
 	GitHubOAuthScopes []*string `json:"gitHubOAuthScopes,omitempty"`
 
-	// The OpenID Connect Client ID for the Google web application. This setting is required for enabling Google Sign-In. Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/
+	// The OpenID Connect Client ID for the Google web application. This setting is required for enabling Google Sign-In. Google
+	// Sign-In documentation: https://developers.google.com/identity/sign-in/web/
 	GoogleClientID *string `json:"googleClientId,omitempty"`
 
-	// The client secret associated with the Google web application. This setting is required for enabling Google Sign-In. Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/
+	// The client secret associated with the Google web application. This setting is required for enabling Google Sign-In. Google
+	// Sign-In documentation: https://developers.google.com/identity/sign-in/web/
 	GoogleClientSecret *string `json:"googleClientSecret,omitempty"`
 
 	// The app setting name that contains the client secret associated with the Google web application.
 	GoogleClientSecretSettingName *string `json:"googleClientSecretSettingName,omitempty"`
 
-	// The OAuth 2.0 scopes that will be requested as part of Google Sign-In authentication. This setting is optional. If not specified, "openid", "profile",
-	// and "email" are used as default scopes. Google
+	// The OAuth 2.0 scopes that will be requested as part of Google Sign-In authentication. This setting is optional. If not
+	// specified, "openid", "profile", and "email" are used as default scopes. Google
 	// Sign-In documentation: https://developers.google.com/identity/sign-in/web/
 	GoogleOAuthScopes []*string `json:"googleOAuthScopes,omitempty"`
 
 	// "true" if the auth config settings should be read from a file, "false" otherwise
 	IsAuthFromFile *string `json:"isAuthFromFile,omitempty"`
 
-	// The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application. When using Azure Active Directory, this value
-	// is the URI of the directory tenant, e.g.
-	// https://sts.windows.net/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More information on OpenID Connect Discovery:
+	// The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application. When using Azure
+	// Active Directory, this value is the URI of the directory tenant, e.g.
+	// https://sts.windows.net/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More information
+	// on OpenID Connect Discovery:
 	// http://openid.net/specs/openid-connect-discovery-1_0.html
 	Issuer *string `json:"issuer,omitempty"`
 
-	// The OAuth 2.0 client ID that was created for the app used for authentication. This setting is required for enabling Microsoft Account authentication.
-	// Microsoft Account OAuth documentation:
+	// The OAuth 2.0 client ID that was created for the app used for authentication. This setting is required for enabling Microsoft
+	// Account authentication. Microsoft Account OAuth documentation:
 	// https://dev.onedrive.com/auth/msa_oauth.htm
 	MicrosoftAccountClientID *string `json:"microsoftAccountClientId,omitempty"`
 
-	// The OAuth 2.0 client secret that was created for the app used for authentication. This setting is required for enabling Microsoft Account authentication.
-	// Microsoft Account OAuth documentation:
+	// The OAuth 2.0 client secret that was created for the app used for authentication. This setting is required for enabling
+	// Microsoft Account authentication. Microsoft Account OAuth documentation:
 	// https://dev.onedrive.com/auth/msa_oauth.htm
 	MicrosoftAccountClientSecret *string `json:"microsoftAccountClientSecret,omitempty"`
 
 	// The app setting name containing the OAuth 2.0 client secret that was created for the app used for authentication.
 	MicrosoftAccountClientSecretSettingName *string `json:"microsoftAccountClientSecretSettingName,omitempty"`
 
-	// The OAuth 2.0 scopes that will be requested as part of Microsoft Account authentication. This setting is optional. If not specified, "wl.basic" is used
-	// as the default scope. Microsoft Account Scopes
+	// The OAuth 2.0 scopes that will be requested as part of Microsoft Account authentication. This setting is optional. If not
+	// specified, "wl.basic" is used as the default scope. Microsoft Account Scopes
 	// and permissions documentation: https://msdn.microsoft.com/en-us/library/dn631845.aspx
 	MicrosoftAccountOAuthScopes []*string `json:"microsoftAccountOAuthScopes,omitempty"`
 
-	// The RuntimeVersion of the Authentication / Authorization feature in use for the current app. The setting in this value can control the behavior of certain
-	// features in the Authentication /
+	// The RuntimeVersion of the Authentication / Authorization feature in use for the current app. The setting in this value
+	// can control the behavior of certain features in the Authentication /
 	// Authorization module.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
 
-	// The number of hours after session token expiration that a session token can be used to call the token refresh API. The default is 72 hours.
+	// The number of hours after session token expiration that a session token can be used to call the token refresh API. The
+	// default is 72 hours.
 	TokenRefreshExtensionHours *float64 `json:"tokenRefreshExtensionHours,omitempty"`
 
-	// true to durably store platform-specific security tokens that are obtained during login flows; otherwise, false. The default is false.
+	// true to durably store platform-specific security tokens that are obtained during login flows; otherwise, false. The default
+	// is false.
 	TokenStoreEnabled *bool `json:"tokenStoreEnabled,omitempty"`
 
-	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter Sign-In. Twitter Sign-In documentation:
-	// https://dev.twitter.com/web/sign-in
+	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter
+	// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
 	TwitterConsumerKey *string `json:"twitterConsumerKey,omitempty"`
 
-	// The OAuth 1.0a consumer secret of the Twitter application used for sign-in. This setting is required for enabling Twitter Sign-In. Twitter Sign-In documentation:
-	// https://dev.twitter.com/web/sign-in
+	// The OAuth 1.0a consumer secret of the Twitter application used for sign-in. This setting is required for enabling Twitter
+	// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
 	TwitterConsumerSecret *string `json:"twitterConsumerSecret,omitempty"`
 
 	// The app setting name that contains the OAuth 1.0a consumer secret of the Twitter application used for sign-in.
@@ -10203,17 +11472,20 @@ func (s SiteAuthSettingsProperties) MarshalJSON() ([]byte, error) {
 
 // SiteAuthSettingsV2 - Configuration settings for the Azure App Service Authentication / Authorization V2 feature.
 type SiteAuthSettingsV2 struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SiteAuthSettingsV2 resource specific properties
 	Properties *SiteAuthSettingsV2Properties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SiteAuthSettingsV2.
-func (s SiteAuthSettingsV2) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SiteAuthSettingsV2Properties - SiteAuthSettingsV2 resource specific properties
@@ -10221,7 +11493,8 @@ type SiteAuthSettingsV2Properties struct {
 	// The configuration settings that determines the validation flow of users using App Service Authentication/Authorization.
 	GlobalValidation *GlobalValidation `json:"globalValidation,omitempty"`
 
-	// The configuration settings of the HTTP requests for authentication and authorization requests made against App Service Authentication/Authorization.
+	// The configuration settings of the HTTP requests for authentication and authorization requests made against App Service
+	// Authentication/Authorization.
 	HTTPSettings *HTTPSettings `json:"httpSettings,omitempty"`
 
 	// The configuration settings of each of the identity providers used to configure App Service Authentication/Authorization.
@@ -10245,8 +11518,8 @@ type SiteCloneability struct {
 	// Name of app.
 	Result *CloneAbilityResult `json:"result,omitempty"`
 
-	// List of features enabled on app that are non-blocking but cannot be cloned. The app can still be cloned but the features in this list will not be set
-	// up on cloned app.
+	// List of features enabled on app that are non-blocking but cannot be cloned. The app can still be cloned but the features
+	// in this list will not be set up on cloned app.
 	UnsupportedFeatures []*SiteCloneabilityCriterion `json:"unsupportedFeatures,omitempty"`
 }
 
@@ -10325,11 +11598,12 @@ type SiteConfig struct {
 	// State of FTP / FTPS service
 	FtpsState *FtpsState `json:"ftpsState,omitempty"`
 
-	// Maximum number of workers that a site can scale out to. This setting only applies to the Consumption and Elastic Premium Plans
+	// Maximum number of workers that a site can scale out to. This setting only applies to the Consumption and Elastic Premium
+	// Plans
 	FunctionAppScaleLimit *int32 `json:"functionAppScaleLimit,omitempty"`
 
-	// Gets or sets a value indicating whether functions runtime scale monitoring is enabled. When enabled, the ScaleController will not monitor event sources
-	// directly, but will instead call to the runtime
+	// Gets or sets a value indicating whether functions runtime scale monitoring is enabled. When enabled, the ScaleController
+	// will not monitor event sources directly, but will instead call to the runtime
 	// to get scale status.
 	FunctionsRuntimeScaleMonitoringEnabled *bool `json:"functionsRuntimeScaleMonitoringEnabled,omitempty"`
 
@@ -10456,16 +11730,17 @@ type SiteConfig struct {
 	// The number of private ports assigned to this app. These will be assigned dynamically on runtime.
 	VnetPrivatePortsCount *int32 `json:"vnetPrivatePortsCount,omitempty"`
 
-	// Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.
+	// Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined
+	// Routes applied.
 	VnetRouteAllEnabled *bool `json:"vnetRouteAllEnabled,omitempty"`
 
 	// true if WebSocket is enabled; otherwise, false.
 	WebSocketsEnabled *bool `json:"webSocketsEnabled,omitempty"`
 
-	// Sets the time zone a site uses for generating timestamps. Compatible with Linux and Windows App Service. Setting the WEBSITETIMEZONE app setting takes
-	// precedence over this config. For Linux, expects
-	// tz database values https://www.iana.org/time-zones (for a quick reference see https://en.wikipedia.org/wiki/Listoftzdatabasetimezones). For Windows,
-	// expects one of the time zones listed under HKEY
+	// Sets the time zone a site uses for generating timestamps. Compatible with Linux and Windows App Service. Setting the WEBSITETIMEZONE
+	// app setting takes precedence over this config. For Linux, expects
+	// tz database values https://www.iana.org/time-zones (for a quick reference see https://en.wikipedia.org/wiki/Listoftzdatabasetimezones).
+	// For Windows, expects one of the time zones listed under HKEY
 	// LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
 	WebsiteTimeZone *string `json:"websiteTimeZone,omitempty"`
 
@@ -10787,16 +12062,30 @@ type SiteConfigPropertiesDictionary struct {
 
 // SiteConfigResource - Web app configuration ARM resource.
 type SiteConfigResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *SiteConfig `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SiteConfigResource.
 func (s SiteConfigResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -10819,17 +12108,20 @@ func (s SiteConfigResourceCollection) MarshalJSON() ([]byte, error) {
 
 // SiteConfigurationSnapshotInfo - A snapshot of a web app configuration.
 type SiteConfigurationSnapshotInfo struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SiteConfigurationSnapshotInfo resource specific properties
 	Properties *SiteConfigurationSnapshotInfoProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SiteConfigurationSnapshotInfo.
-func (s SiteConfigurationSnapshotInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SiteConfigurationSnapshotInfoCollection - Collection of metadata for the app configuration snapshots that can be restored.
@@ -10891,17 +12183,20 @@ func (s *SiteConfigurationSnapshotInfoProperties) UnmarshalJSON(data []byte) err
 
 // SiteExtensionInfo - Site Extension Information.
 type SiteExtensionInfo struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SiteExtensionInfo resource specific properties
 	Properties *SiteExtensionInfoProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SiteExtensionInfo.
-func (s SiteExtensionInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SiteExtensionInfoCollection - Collection of Kudu site extension information elements.
@@ -11099,17 +12394,20 @@ type SiteLimits struct {
 
 // SiteLogsConfig - Configuration of App Service site logs.
 type SiteLogsConfig struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SiteLogsConfig resource specific properties
 	Properties *SiteLogsConfigProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SiteLogsConfig.
-func (s SiteLogsConfig) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SiteLogsConfigProperties - SiteLogsConfig resource specific properties
@@ -11144,27 +12442,41 @@ type SiteMachineKey struct {
 
 // SitePatchResource - ARM resource for a site.
 type SitePatchResource struct {
-	ProxyOnlyResource
 	// Managed service identity.
 	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SitePatchResource resource specific properties
 	Properties *SitePatchResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SitePatchResource.
 func (s SitePatchResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
 	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
 // SitePatchResourceProperties - SitePatchResource resource specific properties
 type SitePatchResourceProperties struct {
-	// true to enable client affinity; false to stop sending session affinity cookies, which route client requests in the same session to the same instance.
-	// Default is true.
+	// true to enable client affinity; false to stop sending session affinity cookies, which route client requests in the same
+	// session to the same instance. Default is true.
 	ClientAffinityEnabled *bool `json:"clientAffinityEnabled,omitempty"`
 
 	// true to enable client certificate authentication (TLS mutual authentication); otherwise, false. Default is false.
@@ -11200,7 +12512,8 @@ type SitePatchResourceProperties struct {
 	// Hostname SSL states are used to manage the SSL bindings for app's hostnames.
 	HostNameSSLStates []*HostNameSSLState `json:"hostNameSslStates,omitempty"`
 
-	// true to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management process.
+	// true to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management
+	// process.
 	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
 
 	// App Service Environment to use for the app.
@@ -11233,7 +12546,8 @@ type SitePatchResourceProperties struct {
 	// Checks if Customer provided storage account is required
 	StorageAccountRequired *bool `json:"storageAccountRequired,omitempty"`
 
-	// Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form
+	// Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of
+	// the form
 	// /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
 	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
 
@@ -11243,7 +12557,8 @@ type SitePatchResourceProperties struct {
 	// READ-ONLY; Default hostname of the app. Read-only.
 	DefaultHostName *string `json:"defaultHostName,omitempty" azure:"ro"`
 
-	// READ-ONLY; Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise, the app is not served on those hostnames.
+	// READ-ONLY; Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise, the app
+	// is not served on those hostnames.
 	EnabledHostNames []*string `json:"enabledHostNames,omitempty" azure:"ro"`
 
 	// READ-ONLY; Hostnames associated with the app.
@@ -11261,12 +12576,12 @@ type SitePatchResourceProperties struct {
 	// READ-ONLY; Maximum number of workers. This only applies to Functions container.
 	MaxNumberOfWorkers *int32 `json:"maxNumberOfWorkers,omitempty" azure:"ro"`
 
-	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants that site can be hosted
-	// with current settings. Read-only.
+	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants
+	// that site can be hosted with current settings. Read-only.
 	OutboundIPAddresses *string `json:"outboundIpAddresses,omitempty" azure:"ro"`
 
-	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all tenants except dataComponent.
-	// Read-only.
+	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all
+	// tenants except dataComponent. Read-only.
 	PossibleOutboundIPAddresses *string `json:"possibleOutboundIpAddresses,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name of the repository site.
@@ -11483,17 +12798,20 @@ func (s *SitePatchResourceProperties) UnmarshalJSON(data []byte) error {
 
 // SitePhpErrorLogFlag - Used for getting PHP error logging flag.
 type SitePhpErrorLogFlag struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SitePhpErrorLogFlag resource specific properties
 	Properties *SitePhpErrorLogFlagProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SitePhpErrorLogFlag.
-func (s SitePhpErrorLogFlag) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SitePhpErrorLogFlagProperties - SitePhpErrorLogFlag resource specific properties
@@ -11513,8 +12831,8 @@ type SitePhpErrorLogFlagProperties struct {
 
 // SiteProperties - Site resource specific properties
 type SiteProperties struct {
-	// true to enable client affinity; false to stop sending session affinity cookies, which route client requests in the same session to the same instance.
-	// Default is true.
+	// true to enable client affinity; false to stop sending session affinity cookies, which route client requests in the same
+	// session to the same instance. Default is true.
 	ClientAffinityEnabled *bool `json:"clientAffinityEnabled,omitempty"`
 
 	// true to enable client certificate authentication (TLS mutual authentication); otherwise, false. Default is false.
@@ -11550,7 +12868,8 @@ type SiteProperties struct {
 	// Hostname SSL states are used to manage the SSL bindings for app's hostnames.
 	HostNameSSLStates []*HostNameSSLState `json:"hostNameSslStates,omitempty"`
 
-	// true to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management process.
+	// true to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management
+	// process.
 	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
 
 	// App Service Environment to use for the app.
@@ -11583,7 +12902,8 @@ type SiteProperties struct {
 	// Checks if Customer provided storage account is required
 	StorageAccountRequired *bool `json:"storageAccountRequired,omitempty"`
 
-	// Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form
+	// Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of
+	// the form
 	// /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
 	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
 
@@ -11593,7 +12913,8 @@ type SiteProperties struct {
 	// READ-ONLY; Default hostname of the app. Read-only.
 	DefaultHostName *string `json:"defaultHostName,omitempty" azure:"ro"`
 
-	// READ-ONLY; Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise, the app is not served on those hostnames.
+	// READ-ONLY; Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise, the app
+	// is not served on those hostnames.
 	EnabledHostNames []*string `json:"enabledHostNames,omitempty" azure:"ro"`
 
 	// READ-ONLY; Hostnames associated with the app.
@@ -11611,12 +12932,12 @@ type SiteProperties struct {
 	// READ-ONLY; Maximum number of workers. This only applies to Functions container.
 	MaxNumberOfWorkers *int32 `json:"maxNumberOfWorkers,omitempty" azure:"ro"`
 
-	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants that site can be hosted
-	// with current settings. Read-only.
+	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants
+	// that site can be hosted with current settings. Read-only.
 	OutboundIPAddresses *string `json:"outboundIpAddresses,omitempty" azure:"ro"`
 
-	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all tenants except dataComponent.
-	// Read-only.
+	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all
+	// tenants except dataComponent. Read-only.
 	PossibleOutboundIPAddresses *string `json:"possibleOutboundIpAddresses,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name of the repository site.
@@ -11848,16 +13169,30 @@ type SiteSealRequest struct {
 
 // SiteSourceControl - Source control configuration for an app.
 type SiteSourceControl struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SiteSourceControl resource specific properties
 	Properties *SiteSourceControlProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SiteSourceControl.
 func (s SiteSourceControl) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -11875,7 +13210,8 @@ type SiteSourceControlProperties struct {
 	// true if this is deployed via GitHub action.
 	IsGitHubAction *bool `json:"isGitHubAction,omitempty"`
 
-	// true to limit to manual integration; false to enable continuous integration (which configures webhooks into online repos like GitHub).
+	// true to limit to manual integration; false to enable continuous integration (which configures webhooks into online repos
+	// like GitHub).
 	IsManualIntegration *bool `json:"isManualIntegration,omitempty"`
 
 	// true for a Mercurial repository; false for a Git repository.
@@ -11885,8 +13221,8 @@ type SiteSourceControlProperties struct {
 	RepoURL *string `json:"repoUrl,omitempty"`
 }
 
-// SlotConfigNames - Names for connection strings, application settings, and external Azure storage account configuration identifiers to be marked as sticky
-// to the deployment slot and not moved during a swap operation.
+// SlotConfigNames - Names for connection strings, application settings, and external Azure storage account configuration
+// identifiers to be marked as sticky to the deployment slot and not moved during a swap operation.
 // This is valid for all deployment slots in an app.
 type SlotConfigNames struct {
 	// List of application settings names.
@@ -11910,32 +13246,38 @@ func (s SlotConfigNames) MarshalJSON() ([]byte, error) {
 
 // SlotConfigNamesResource - Slot Config names azure resource.
 type SlotConfigNamesResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *SlotConfigNames `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SlotConfigNamesResource.
-func (s SlotConfigNamesResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SlotDifference - A setting difference between two deployment slots of an app.
 type SlotDifference struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SlotDifference resource specific properties
 	Properties *SlotDifferenceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SlotDifference.
-func (s SlotDifference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SlotDifferenceCollection - Collection of slot differences.
@@ -12043,17 +13385,20 @@ type SlowRequestsBasedTrigger struct {
 
 // Snapshot - A snapshot of an app.
 type Snapshot struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Snapshot resource specific properties
 	Properties *SnapshotProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Snapshot.
-func (s Snapshot) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SnapshotCollection - Collection of snapshots which can be used to revert an app to a previous time.
@@ -12081,9 +13426,10 @@ type SnapshotProperties struct {
 
 // SnapshotRecoverySource - Specifies the web app that snapshot contents will be retrieved from.
 type SnapshotRecoverySource struct {
-	// ARM resource ID of the source app. /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production
-	// slots and
-	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
+	// ARM resource ID of the source app. /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}
+	// for production slots and
+	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for
+	// other slots.
 	ID *string `json:"id,omitempty"`
 
 	// Geographical location of the source web app, e.g. SouthEastAsia, SouthCentralUS
@@ -12092,17 +13438,20 @@ type SnapshotRecoverySource struct {
 
 // SnapshotRestoreRequest - Details about app recovery operation.
 type SnapshotRestoreRequest struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SnapshotRestoreRequest resource specific properties
 	Properties *SnapshotRestoreRequestProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SnapshotRestoreRequest.
-func (s SnapshotRestoreRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SnapshotRestoreRequestProperties - SnapshotRestoreRequest resource specific properties
@@ -12110,13 +13459,15 @@ type SnapshotRestoreRequestProperties struct {
 	// REQUIRED; If true the restore operation can overwrite source app; otherwise, false.
 	Overwrite *bool `json:"overwrite,omitempty"`
 
-	// If true, custom hostname conflicts will be ignored when recovering to a target web app. This setting is only necessary when RecoverConfiguration is enabled.
+	// If true, custom hostname conflicts will be ignored when recovering to a target web app. This setting is only necessary
+	// when RecoverConfiguration is enabled.
 	IgnoreConflictingHostNames *bool `json:"ignoreConflictingHostNames,omitempty"`
 
 	// If true, site configuration, in addition to content, will be reverted.
 	RecoverConfiguration *bool `json:"recoverConfiguration,omitempty"`
 
-	// Optional. Specifies the web app that snapshot contents will be retrieved from. If empty, the targeted web app will be used as the source.
+	// Optional. Specifies the web app that snapshot contents will be retrieved from. If empty, the targeted web app will be used
+	// as the source.
 	RecoverySource *SnapshotRecoverySource `json:"recoverySource,omitempty"`
 
 	// Point in time in which the app restore should be done, formatted as a DateTime string.
@@ -12165,17 +13516,20 @@ func (s Solution) MarshalJSON() ([]byte, error) {
 
 // SourceControl - The source control OAuth token.
 type SourceControl struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SourceControl resource specific properties
 	Properties *SourceControlProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SourceControl.
-func (s SourceControl) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SourceControlCollection - Collection of source controls.
@@ -12252,7 +13606,7 @@ func (s *SourceControlProperties) UnmarshalJSON(data []byte) error {
 // StackMajorVersion - Application stack major version.
 type StackMajorVersion struct {
 	// Example: All the function apps need AppSetting: "FUNCTIONSWORKERRUNTIME" to be set stack name
-	AppSettingsDictionary map[string]map[string]interface{} `json:"appSettingsDictionary,omitempty"`
+	AppSettingsDictionary map[string]interface{} `json:"appSettingsDictionary,omitempty"`
 
 	// true if this supports Application Insights; otherwise, false.
 	ApplicationInsights *bool `json:"applicationInsights,omitempty"`
@@ -12279,7 +13633,7 @@ type StackMajorVersion struct {
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
 
 	// Example: All Linux Function Apps, need Use32BitWorkerProcess to be set to 0
-	SiteConfigPropertiesDictionary map[string]map[string]interface{} `json:"siteConfigPropertiesDictionary,omitempty"`
+	SiteConfigPropertiesDictionary map[string]interface{} `json:"siteConfigPropertiesDictionary,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StackMajorVersion.
@@ -12377,6 +13731,12 @@ type StaticSite struct {
 	// Build properties to configure on the repository.
 	BuildProperties *StaticSiteBuildProperties `json:"buildProperties,omitempty"`
 
+	// State indicating the status of the enterprise grade CDN serving traffic to the static web app.
+	EnterpriseGradeCdnStatus *EnterpriseGradeCdnStatus `json:"enterpriseGradeCdnStatus,omitempty"`
+
+	// The provider that submitted the last deployment to the primary environment of the static site.
+	Provider *string `json:"provider,omitempty"`
+
 	// A user's github repository token. This is used to setup the Github Actions workflow file and API secrets.
 	RepositoryToken *string `json:"repositoryToken,omitempty"`
 
@@ -12404,9 +13764,6 @@ type StaticSite struct {
 	// READ-ONLY; Private endpoint connections
 	PrivateEndpointConnections []*ResponseMessageEnvelopeRemotePrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
 
-	// READ-ONLY; The provider that submitted the last deployment to the primary environment of the static site.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
-
 	// READ-ONLY; User provided function apps registered with the static site
 	UserProvidedFunctionApps []*StaticSiteUserProvidedFunctionApp `json:"userProvidedFunctionApps,omitempty" azure:"ro"`
 }
@@ -12420,6 +13777,7 @@ func (s StaticSite) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "contentDistributionEndpoint", s.ContentDistributionEndpoint)
 	populate(objectMap, "customDomains", s.CustomDomains)
 	populate(objectMap, "defaultHostname", s.DefaultHostname)
+	populate(objectMap, "enterpriseGradeCdnStatus", s.EnterpriseGradeCdnStatus)
 	populate(objectMap, "keyVaultReferenceIdentity", s.KeyVaultReferenceIdentity)
 	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
 	populate(objectMap, "provider", s.Provider)
@@ -12433,40 +13791,65 @@ func (s StaticSite) MarshalJSON() ([]byte, error) {
 
 // StaticSiteARMResource - Static Site ARM resource.
 type StaticSiteARMResource struct {
-	Resource
+	// REQUIRED; Resource Location.
+	Location *string `json:"location,omitempty"`
+
 	// Managed service identity.
 	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
 
 	// Core resource properties
 	Properties *StaticSite `json:"properties,omitempty"`
 
 	// Description of a SKU for a scalable resource.
 	SKU *SKUDescription `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StaticSiteARMResource.
 func (s StaticSiteARMResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
 	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "sku", s.SKU)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
 // StaticSiteBuildARMResource - Static Site Build ARM resource.
 type StaticSiteBuildARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteBuildARMResource resource specific properties
 	Properties *StaticSiteBuildARMResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteBuildARMResource.
-func (s StaticSiteBuildARMResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSiteBuildARMResourceProperties - StaticSiteBuildARMResource resource specific properties
@@ -12614,17 +13997,20 @@ func (s StaticSiteCollection) MarshalJSON() ([]byte, error) {
 
 // StaticSiteCustomDomainOverviewARMResource - Static Site Custom Domain Overview ARM resource.
 type StaticSiteCustomDomainOverviewARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteCustomDomainOverviewARMResource resource specific properties
 	Properties *StaticSiteCustomDomainOverviewARMResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteCustomDomainOverviewARMResource.
-func (s StaticSiteCustomDomainOverviewARMResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSiteCustomDomainOverviewARMResourceProperties - StaticSiteCustomDomainOverviewARMResource resource specific properties
@@ -12707,20 +14093,24 @@ func (s StaticSiteCustomDomainOverviewCollection) MarshalJSON() ([]byte, error) 
 
 // StaticSiteCustomDomainRequestPropertiesARMResource - Static Site Custom Domain Request Properties ARM resource.
 type StaticSiteCustomDomainRequestPropertiesARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteCustomDomainRequestPropertiesARMResource resource specific properties
 	Properties *StaticSiteCustomDomainRequestPropertiesARMResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteCustomDomainRequestPropertiesARMResource.
-func (s StaticSiteCustomDomainRequestPropertiesARMResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
-
-// StaticSiteCustomDomainRequestPropertiesARMResourceProperties - StaticSiteCustomDomainRequestPropertiesARMResource resource specific properties
+// StaticSiteCustomDomainRequestPropertiesARMResourceProperties - StaticSiteCustomDomainRequestPropertiesARMResource resource
+// specific properties
 type StaticSiteCustomDomainRequestPropertiesARMResourceProperties struct {
 	// Validation method for adding a custom domain
 	ValidationMethod *string `json:"validationMethod,omitempty"`
@@ -12728,17 +14118,20 @@ type StaticSiteCustomDomainRequestPropertiesARMResourceProperties struct {
 
 // StaticSiteFunctionOverviewARMResource - Static Site Function Overview ARM resource.
 type StaticSiteFunctionOverviewARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteFunctionOverviewARMResource resource specific properties
 	Properties *StaticSiteFunctionOverviewARMResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteFunctionOverviewARMResource.
-func (s StaticSiteFunctionOverviewARMResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSiteFunctionOverviewARMResourceProperties - StaticSiteFunctionOverviewARMResource resource specific properties
@@ -12769,32 +14162,49 @@ func (s StaticSiteFunctionOverviewCollection) MarshalJSON() ([]byte, error) {
 
 // StaticSitePatchResource - ARM resource for a static site when patching
 type StaticSitePatchResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *StaticSite `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StaticSitePatchResource.
 func (s StaticSitePatchResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
 // StaticSiteResetPropertiesARMResource - Static Site Reset Properties ARM resource.
 type StaticSiteResetPropertiesARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteResetPropertiesARMResource resource specific properties
 	Properties *StaticSiteResetPropertiesARMResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteResetPropertiesARMResource.
-func (s StaticSiteResetPropertiesARMResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSiteResetPropertiesARMResourceProperties - StaticSiteResetPropertiesARMResource resource specific properties
@@ -12826,16 +14236,30 @@ type StaticSiteTemplateOptions struct {
 
 // StaticSiteUserARMResource - Static Site User ARM resource.
 type StaticSiteUserARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteUserARMResource resource specific properties
 	Properties *StaticSiteUserARMResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StaticSiteUserARMResource.
 func (s StaticSiteUserARMResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -12873,17 +14297,20 @@ func (s StaticSiteUserCollection) MarshalJSON() ([]byte, error) {
 
 // StaticSiteUserInvitationRequestResource - Static sites user roles invitation resource.
 type StaticSiteUserInvitationRequestResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteUserInvitationRequestResource resource specific properties
 	Properties *StaticSiteUserInvitationRequestResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteUserInvitationRequestResource.
-func (s StaticSiteUserInvitationRequestResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSiteUserInvitationRequestResourceProperties - StaticSiteUserInvitationRequestResource resource specific properties
@@ -12906,17 +14333,20 @@ type StaticSiteUserInvitationRequestResourceProperties struct {
 
 // StaticSiteUserInvitationResponseResource - Static sites user roles invitation link resource.
 type StaticSiteUserInvitationResponseResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteUserInvitationResponseResource resource specific properties
 	Properties *StaticSiteUserInvitationResponseResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteUserInvitationResponseResource.
-func (s StaticSiteUserInvitationResponseResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSiteUserInvitationResponseResourceProperties - StaticSiteUserInvitationResponseResource resource specific properties
@@ -12961,35 +14391,42 @@ func (s *StaticSiteUserInvitationResponseResourceProperties) UnmarshalJSON(data 
 
 // StaticSiteUserProvidedFunctionApp - A static site user provided function.
 type StaticSiteUserProvidedFunctionApp struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteUserProvidedFunctionApp resource specific properties
 	Properties *StaticSiteUserProvidedFunctionAppProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteUserProvidedFunctionApp.
-func (s StaticSiteUserProvidedFunctionApp) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSiteUserProvidedFunctionAppARMResource - Static Site User Provided Function App ARM resource.
 type StaticSiteUserProvidedFunctionAppARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSiteUserProvidedFunctionAppARMResource resource specific properties
 	Properties *StaticSiteUserProvidedFunctionAppARMResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteUserProvidedFunctionAppARMResource.
-func (s StaticSiteUserProvidedFunctionAppARMResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
-
-// StaticSiteUserProvidedFunctionAppARMResourceProperties - StaticSiteUserProvidedFunctionAppARMResource resource specific properties
+// StaticSiteUserProvidedFunctionAppARMResourceProperties - StaticSiteUserProvidedFunctionAppARMResource resource specific
+// properties
 type StaticSiteUserProvidedFunctionAppARMResourceProperties struct {
 	// The region of the function app registered with the static site
 	FunctionAppRegion *string `json:"functionAppRegion,omitempty"`
@@ -13120,292 +14557,326 @@ type StaticSiteZipDeployment struct {
 
 // StaticSiteZipDeploymentARMResource - Static site zip deployment ARM resource.
 type StaticSiteZipDeploymentARMResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *StaticSiteZipDeployment `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSiteZipDeploymentARMResource.
-func (s StaticSiteZipDeploymentARMResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
-
-// StaticSitesBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the StaticSites.BeginApproveOrRejectPrivateEndpointConnection
+// StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection
 // method.
-type StaticSitesBeginApproveOrRejectPrivateEndpointConnectionOptions struct {
+type StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesBeginCreateOrUpdateStaticSiteCustomDomainOptions contains the optional parameters for the StaticSites.BeginCreateOrUpdateStaticSiteCustomDomain
+// StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions contains the optional parameters for the StaticSitesClient.BeginCreateOrUpdateStaticSiteCustomDomain
 // method.
-type StaticSitesBeginCreateOrUpdateStaticSiteCustomDomainOptions struct {
+type StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesBeginCreateOrUpdateStaticSiteOptions contains the optional parameters for the StaticSites.BeginCreateOrUpdateStaticSite method.
-type StaticSitesBeginCreateOrUpdateStaticSiteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesBeginCreateZipDeploymentForStaticSiteBuildOptions contains the optional parameters for the StaticSites.BeginCreateZipDeploymentForStaticSiteBuild
+// StaticSitesClientBeginCreateOrUpdateStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginCreateOrUpdateStaticSite
 // method.
-type StaticSitesBeginCreateZipDeploymentForStaticSiteBuildOptions struct {
+type StaticSitesClientBeginCreateOrUpdateStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesBeginCreateZipDeploymentForStaticSiteOptions contains the optional parameters for the StaticSites.BeginCreateZipDeploymentForStaticSite method.
-type StaticSitesBeginCreateZipDeploymentForStaticSiteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the StaticSites.BeginDeletePrivateEndpointConnection method.
-type StaticSitesBeginDeletePrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesBeginDeleteStaticSiteBuildOptions contains the optional parameters for the StaticSites.BeginDeleteStaticSiteBuild method.
-type StaticSitesBeginDeleteStaticSiteBuildOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesBeginDeleteStaticSiteCustomDomainOptions contains the optional parameters for the StaticSites.BeginDeleteStaticSiteCustomDomain method.
-type StaticSitesBeginDeleteStaticSiteCustomDomainOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesBeginDeleteStaticSiteOptions contains the optional parameters for the StaticSites.BeginDeleteStaticSite method.
-type StaticSitesBeginDeleteStaticSiteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesBeginDetachStaticSiteOptions contains the optional parameters for the StaticSites.BeginDetachStaticSite method.
-type StaticSitesBeginDetachStaticSiteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions contains the optional parameters for the StaticSites.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild
+// StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.BeginCreateZipDeploymentForStaticSiteBuild
 // method.
-type StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions struct {
-	// Specify <code>true</code> to force the update of the auth configuration on the function app even if an AzureStaticWebApps provider is already configured
-	// on the function app. The default is <code>false</code>.
+type StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginCreateZipDeploymentForStaticSite
+// method.
+type StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the StaticSitesClient.BeginDeletePrivateEndpointConnection
+// method.
+type StaticSitesClientBeginDeletePrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientBeginDeleteStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSiteBuild
+// method.
+type StaticSitesClientBeginDeleteStaticSiteBuildOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSiteCustomDomain
+// method.
+type StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientBeginDeleteStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSite
+// method.
+type StaticSitesClientBeginDeleteStaticSiteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientBeginDetachStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginDetachStaticSite
+// method.
+type StaticSitesClientBeginDetachStaticSiteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions contains the optional parameters for the
+// StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild method.
+type StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions struct {
+	// Specify true to force the update of the auth configuration on the function app even if an AzureStaticWebApps provider is
+	// already configured on the function app. The default is false.
 	IsForced *bool
 }
 
-// StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions contains the optional parameters for the StaticSites.BeginRegisterUserProvidedFunctionAppWithStaticSite
+// StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite
 // method.
-type StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions struct {
-	// Specify <code>true</code> to force the update of the auth configuration on the function app even if an AzureStaticWebApps provider is already configured
-	// on the function app. The default is <code>false</code>.
+type StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions struct {
+	// Specify true to force the update of the auth configuration on the function app even if an AzureStaticWebApps provider is
+	// already configured on the function app. The default is false.
 	IsForced *bool
 }
 
-// StaticSitesBeginValidateCustomDomainCanBeAddedToStaticSiteOptions contains the optional parameters for the StaticSites.BeginValidateCustomDomainCanBeAddedToStaticSite
+// StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite
 // method.
-type StaticSitesBeginValidateCustomDomainCanBeAddedToStaticSiteOptions struct {
+type StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesCreateOrUpdateStaticSiteAppSettingsOptions contains the optional parameters for the StaticSites.CreateOrUpdateStaticSiteAppSettings method.
-type StaticSitesCreateOrUpdateStaticSiteAppSettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsOptions contains the optional parameters for the StaticSites.CreateOrUpdateStaticSiteBuildAppSettings
+// StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateStaticSiteAppSettings
 // method.
-type StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsOptions struct {
+type StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions contains the optional parameters for the StaticSites.CreateOrUpdateStaticSiteBuildFunctionAppSettings
+// StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings
 // method.
-type StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions struct {
+type StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsOptions contains the optional parameters for the StaticSites.CreateOrUpdateStaticSiteFunctionAppSettings
+// StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings
 // method.
-type StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsOptions struct {
+type StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesCreateUserRolesInvitationLinkOptions contains the optional parameters for the StaticSites.CreateUserRolesInvitationLink method.
-type StaticSitesCreateUserRolesInvitationLinkOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesDeleteStaticSiteUserOptions contains the optional parameters for the StaticSites.DeleteStaticSiteUser method.
-type StaticSitesDeleteStaticSiteUserOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildOptions contains the optional parameters for the StaticSites.DetachUserProvidedFunctionAppFromStaticSiteBuild
+// StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings
 // method.
-type StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildOptions struct {
+type StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesDetachUserProvidedFunctionAppFromStaticSiteOptions contains the optional parameters for the StaticSites.DetachUserProvidedFunctionAppFromStaticSite
+// StaticSitesClientCreateUserRolesInvitationLinkOptions contains the optional parameters for the StaticSitesClient.CreateUserRolesInvitationLink
 // method.
-type StaticSitesDetachUserProvidedFunctionAppFromStaticSiteOptions struct {
+type StaticSitesClientCreateUserRolesInvitationLinkOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesGetPrivateEndpointConnectionListOptions contains the optional parameters for the StaticSites.GetPrivateEndpointConnectionList method.
-type StaticSitesGetPrivateEndpointConnectionListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesGetPrivateEndpointConnectionOptions contains the optional parameters for the StaticSites.GetPrivateEndpointConnection method.
-type StaticSitesGetPrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesGetPrivateLinkResourcesOptions contains the optional parameters for the StaticSites.GetPrivateLinkResources method.
-type StaticSitesGetPrivateLinkResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesGetStaticSiteBuildOptions contains the optional parameters for the StaticSites.GetStaticSiteBuild method.
-type StaticSitesGetStaticSiteBuildOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesGetStaticSiteBuildsOptions contains the optional parameters for the StaticSites.GetStaticSiteBuilds method.
-type StaticSitesGetStaticSiteBuildsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesGetStaticSiteCustomDomainOptions contains the optional parameters for the StaticSites.GetStaticSiteCustomDomain method.
-type StaticSitesGetStaticSiteCustomDomainOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesGetStaticSiteOptions contains the optional parameters for the StaticSites.GetStaticSite method.
-type StaticSitesGetStaticSiteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesGetStaticSitesByResourceGroupOptions contains the optional parameters for the StaticSites.GetStaticSitesByResourceGroup method.
-type StaticSitesGetStaticSitesByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildOptions contains the optional parameters for the StaticSites.GetUserProvidedFunctionAppForStaticSiteBuild
+// StaticSitesClientDeleteStaticSiteUserOptions contains the optional parameters for the StaticSitesClient.DeleteStaticSiteUser
 // method.
-type StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildOptions struct {
+type StaticSitesClientDeleteStaticSiteUserOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesGetUserProvidedFunctionAppForStaticSiteOptions contains the optional parameters for the StaticSites.GetUserProvidedFunctionAppForStaticSite
+// StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSiteBuild
 // method.
-type StaticSitesGetUserProvidedFunctionAppForStaticSiteOptions struct {
+type StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildOptions contains the optional parameters for the StaticSites.GetUserProvidedFunctionAppsForStaticSiteBuild
+// StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteOptions contains the optional parameters for the StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSite
 // method.
-type StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildOptions struct {
+type StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesGetUserProvidedFunctionAppsForStaticSiteOptions contains the optional parameters for the StaticSites.GetUserProvidedFunctionAppsForStaticSite
+// StaticSitesClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the StaticSitesClient.GetPrivateEndpointConnectionList
 // method.
-type StaticSitesGetUserProvidedFunctionAppsForStaticSiteOptions struct {
+type StaticSitesClientGetPrivateEndpointConnectionListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesListOptions contains the optional parameters for the StaticSites.List method.
-type StaticSitesListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesListStaticSiteAppSettingsOptions contains the optional parameters for the StaticSites.ListStaticSiteAppSettings method.
-type StaticSitesListStaticSiteAppSettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesListStaticSiteBuildAppSettingsOptions contains the optional parameters for the StaticSites.ListStaticSiteBuildAppSettings method.
-type StaticSitesListStaticSiteBuildAppSettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// StaticSitesListStaticSiteBuildFunctionAppSettingsOptions contains the optional parameters for the StaticSites.ListStaticSiteBuildFunctionAppSettings
+// StaticSitesClientGetPrivateEndpointConnectionOptions contains the optional parameters for the StaticSitesClient.GetPrivateEndpointConnection
 // method.
-type StaticSitesListStaticSiteBuildFunctionAppSettingsOptions struct {
+type StaticSitesClientGetPrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesListStaticSiteBuildFunctionsOptions contains the optional parameters for the StaticSites.ListStaticSiteBuildFunctions method.
-type StaticSitesListStaticSiteBuildFunctionsOptions struct {
+// StaticSitesClientGetPrivateLinkResourcesOptions contains the optional parameters for the StaticSitesClient.GetPrivateLinkResources
+// method.
+type StaticSitesClientGetPrivateLinkResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesListStaticSiteConfiguredRolesOptions contains the optional parameters for the StaticSites.ListStaticSiteConfiguredRoles method.
-type StaticSitesListStaticSiteConfiguredRolesOptions struct {
+// StaticSitesClientGetStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteBuild
+// method.
+type StaticSitesClientGetStaticSiteBuildOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesListStaticSiteCustomDomainsOptions contains the optional parameters for the StaticSites.ListStaticSiteCustomDomains method.
-type StaticSitesListStaticSiteCustomDomainsOptions struct {
+// StaticSitesClientGetStaticSiteBuildsOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteBuilds
+// method.
+type StaticSitesClientGetStaticSiteBuildsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesListStaticSiteFunctionAppSettingsOptions contains the optional parameters for the StaticSites.ListStaticSiteFunctionAppSettings method.
-type StaticSitesListStaticSiteFunctionAppSettingsOptions struct {
+// StaticSitesClientGetStaticSiteCustomDomainOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteCustomDomain
+// method.
+type StaticSitesClientGetStaticSiteCustomDomainOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesListStaticSiteFunctionsOptions contains the optional parameters for the StaticSites.ListStaticSiteFunctions method.
-type StaticSitesListStaticSiteFunctionsOptions struct {
+// StaticSitesClientGetStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetStaticSite method.
+type StaticSitesClientGetStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesListStaticSiteSecretsOptions contains the optional parameters for the StaticSites.ListStaticSiteSecrets method.
-type StaticSitesListStaticSiteSecretsOptions struct {
+// StaticSitesClientGetStaticSitesByResourceGroupOptions contains the optional parameters for the StaticSitesClient.GetStaticSitesByResourceGroup
+// method.
+type StaticSitesClientGetStaticSitesByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesListStaticSiteUsersOptions contains the optional parameters for the StaticSites.ListStaticSiteUsers method.
-type StaticSitesListStaticSiteUsersOptions struct {
+// StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppForStaticSiteBuild
+// method.
+type StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesPreviewWorkflowOptions contains the optional parameters for the StaticSites.PreviewWorkflow method.
-type StaticSitesPreviewWorkflowOptions struct {
+// StaticSitesClientGetUserProvidedFunctionAppForStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppForStaticSite
+// method.
+type StaticSitesClientGetUserProvidedFunctionAppForStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesResetStaticSiteAPIKeyOptions contains the optional parameters for the StaticSites.ResetStaticSiteAPIKey method.
-type StaticSitesResetStaticSiteAPIKeyOptions struct {
+// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild
+// method.
+type StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesUpdateStaticSiteOptions contains the optional parameters for the StaticSites.UpdateStaticSite method.
-type StaticSitesUpdateStaticSiteOptions struct {
+// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite
+// method.
+type StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesUpdateStaticSiteUserOptions contains the optional parameters for the StaticSites.UpdateStaticSiteUser method.
-type StaticSitesUpdateStaticSiteUserOptions struct {
+// StaticSitesClientListOptions contains the optional parameters for the StaticSitesClient.List method.
+type StaticSitesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteAppSettings
+// method.
+type StaticSitesClientListStaticSiteAppSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteBuildAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildAppSettings
+// method.
+type StaticSitesClientListStaticSiteBuildAppSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildFunctionAppSettings
+// method.
+type StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteBuildFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildFunctions
+// method.
+type StaticSitesClientListStaticSiteBuildFunctionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteConfiguredRolesOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteConfiguredRoles
+// method.
+type StaticSitesClientListStaticSiteConfiguredRolesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteCustomDomainsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteCustomDomains
+// method.
+type StaticSitesClientListStaticSiteCustomDomainsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteFunctionAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteFunctionAppSettings
+// method.
+type StaticSitesClientListStaticSiteFunctionAppSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteFunctions
+// method.
+type StaticSitesClientListStaticSiteFunctionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteSecretsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteSecrets
+// method.
+type StaticSitesClientListStaticSiteSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListStaticSiteUsersOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteUsers
+// method.
+type StaticSitesClientListStaticSiteUsersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientPreviewWorkflowOptions contains the optional parameters for the StaticSitesClient.PreviewWorkflow method.
+type StaticSitesClientPreviewWorkflowOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientResetStaticSiteAPIKeyOptions contains the optional parameters for the StaticSitesClient.ResetStaticSiteAPIKey
+// method.
+type StaticSitesClientResetStaticSiteAPIKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientUpdateStaticSiteOptions contains the optional parameters for the StaticSitesClient.UpdateStaticSite method.
+type StaticSitesClientUpdateStaticSiteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientUpdateStaticSiteUserOptions contains the optional parameters for the StaticSitesClient.UpdateStaticSiteUser
+// method.
+type StaticSitesClientUpdateStaticSiteUserOptions struct {
 	// placeholder for future optional parameters
 }
 
 // StaticSitesWorkflowPreview - Preview for the Static Site Workflow to be generated
 type StaticSitesWorkflowPreview struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSitesWorkflowPreview resource specific properties
 	Properties *StaticSitesWorkflowPreviewProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSitesWorkflowPreview.
-func (s StaticSitesWorkflowPreview) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSitesWorkflowPreviewProperties - StaticSitesWorkflowPreview resource specific properties
@@ -13419,17 +14890,20 @@ type StaticSitesWorkflowPreviewProperties struct {
 
 // StaticSitesWorkflowPreviewRequest - Request entity for previewing the Static Site workflow
 type StaticSitesWorkflowPreviewRequest struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StaticSitesWorkflowPreviewRequest resource specific properties
 	Properties *StaticSitesWorkflowPreviewRequestProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StaticSitesWorkflowPreviewRequest.
-func (s StaticSitesWorkflowPreviewRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StaticSitesWorkflowPreviewRequestProperties - StaticSitesWorkflowPreviewRequest resource specific properties
@@ -13489,17 +14963,20 @@ type StatusCodesRangeBasedTrigger struct {
 
 // StorageMigrationOptions - Options for app content migration.
 type StorageMigrationOptions struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StorageMigrationOptions resource specific properties
 	Properties *StorageMigrationOptionsProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StorageMigrationOptions.
-func (s StorageMigrationOptions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StorageMigrationOptionsProperties - StorageMigrationOptions resource specific properties
@@ -13519,52 +14996,84 @@ type StorageMigrationOptionsProperties struct {
 
 // StorageMigrationResponse - Response for a migration of app content request.
 type StorageMigrationResponse struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// StorageMigrationResponse resource specific properties
 	Properties *StorageMigrationResponseProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StorageMigrationResponse.
-func (s StorageMigrationResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StorageMigrationResponseProperties - StorageMigrationResponse resource specific properties
 type StorageMigrationResponseProperties struct {
-	// READ-ONLY; When server starts the migration process, it will return an operation ID identifying that particular migration operation.
+	// READ-ONLY; When server starts the migration process, it will return an operation ID identifying that particular migration
+	// operation.
 	OperationID *string `json:"operationId,omitempty" azure:"ro"`
 }
 
 // StringDictionary - String dictionary resource.
 type StringDictionary struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Settings.
 	Properties map[string]*string `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringDictionary.
 func (s StringDictionary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
 // StringList - String list resource.
 type StringList struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// List of string resources.
 	Properties []*string `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StringList.
 func (s StringList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -13577,29 +15086,70 @@ type SupportTopic struct {
 	PesID *string `json:"pesId,omitempty" azure:"ro"`
 }
 
-// SwiftVirtualNetwork - Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network integration.
+// SwiftVirtualNetwork - Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network
+// integration.
 type SwiftVirtualNetwork struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// SwiftVirtualNetwork resource specific properties
 	Properties *SwiftVirtualNetworkProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SwiftVirtualNetwork.
 func (s SwiftVirtualNetwork) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
 // SwiftVirtualNetworkProperties - SwiftVirtualNetwork resource specific properties
 type SwiftVirtualNetworkProperties struct {
-	// The Virtual Network subnet's resource ID. This is the subnet that this Web App will join. This subnet must have a delegation to Microsoft.Web/serverFarms
-	// defined first.
+	// The Virtual Network subnet's resource ID. This is the subnet that this Web App will join. This subnet must have a delegation
+	// to Microsoft.Web/serverFarms defined first.
 	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
 
 	// A flag that specifies if the scale unit this Web App is on supports Swift integration.
 	SwiftSupported *bool `json:"swiftSupported,omitempty"`
+}
+
+// Template - Container App versioned application definition. Defines the desired state of an immutable revision. Any changes
+// to this section Will result in a new revision being created
+type Template struct {
+	// List of container definitions for the Container App.
+	Containers []*Container `json:"containers,omitempty"`
+
+	// Dapr configuration for the Container App.
+	Dapr *Dapr `json:"dapr,omitempty"`
+
+	// User friendly suffix that is appended to the revision name
+	RevisionSuffix *string `json:"revisionSuffix,omitempty"`
+
+	// Scaling properties for the Container App.
+	Scale *Scale `json:"scale,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Template.
+func (t Template) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "containers", t.Containers)
+	populate(objectMap, "dapr", t.Dapr)
+	populate(objectMap, "revisionSuffix", t.RevisionSuffix)
+	populate(objectMap, "scale", t.Scale)
+	return json.Marshal(objectMap)
 }
 
 // TldLegalAgreement - Legal agreement for a top level domain.
@@ -13639,29 +15189,34 @@ type TokenStore struct {
 	// The configuration settings of the storage of the tokens if blob storage is used.
 	AzureBlobStorage *BlobStorageTokenStore `json:"azureBlobStorage,omitempty"`
 
-	// true to durably store platform-specific security tokens that are obtained during login flows; otherwise, false. The default is false.
+	// true to durably store platform-specific security tokens that are obtained during login flows; otherwise, false. The default
+	// is false.
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// The configuration settings of the storage of the tokens if a file system is used.
 	FileSystem *FileSystemTokenStore `json:"fileSystem,omitempty"`
 
-	// The number of hours after session token expiration that a session token can be used to call the token refresh API. The default is 72 hours.
+	// The number of hours after session token expiration that a session token can be used to call the token refresh API. The
+	// default is 72 hours.
 	TokenRefreshExtensionHours *float64 `json:"tokenRefreshExtensionHours,omitempty"`
 }
 
 // TopLevelDomain - A top level domain object.
 type TopLevelDomain struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// TopLevelDomain resource specific properties
 	Properties *TopLevelDomainProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TopLevelDomain.
-func (t TopLevelDomain) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TopLevelDomainAgreementOption - Options for retrieving the list of top level domain legal agreements.
@@ -13696,34 +15251,50 @@ type TopLevelDomainProperties struct {
 	Privacy *bool `json:"privacy,omitempty"`
 }
 
-// TopLevelDomainsGetOptions contains the optional parameters for the TopLevelDomains.Get method.
-type TopLevelDomainsGetOptions struct {
+// TopLevelDomainsClientGetOptions contains the optional parameters for the TopLevelDomainsClient.Get method.
+type TopLevelDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopLevelDomainsListAgreementsOptions contains the optional parameters for the TopLevelDomains.ListAgreements method.
-type TopLevelDomainsListAgreementsOptions struct {
+// TopLevelDomainsClientListAgreementsOptions contains the optional parameters for the TopLevelDomainsClient.ListAgreements
+// method.
+type TopLevelDomainsClientListAgreementsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopLevelDomainsListOptions contains the optional parameters for the TopLevelDomains.List method.
-type TopLevelDomainsListOptions struct {
+// TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.List method.
+type TopLevelDomainsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// TrafficWeight - Traffic weight assigned to a revision
+type TrafficWeight struct {
+	// Indicates that the traffic weight belongs to a latest stable revision
+	LatestRevision *bool `json:"latestRevision,omitempty"`
+
+	// Name of a revision
+	RevisionName *string `json:"revisionName,omitempty"`
+
+	// Traffic weight assigned to a revision
+	Weight *int32 `json:"weight,omitempty"`
 }
 
 // TriggeredJobHistory - Triggered Web Job History. List of Triggered Web Job Run Information elements.
 type TriggeredJobHistory struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// TriggeredJobHistory resource specific properties
 	Properties *TriggeredJobHistoryProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TriggeredJobHistory.
-func (t TriggeredJobHistory) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TriggeredJobHistoryCollection - Collection of Kudu continuous web job information elements.
@@ -13861,17 +15432,20 @@ func (t *TriggeredJobRun) UnmarshalJSON(data []byte) error {
 
 // TriggeredWebJob - Triggered Web Job Information.
 type TriggeredWebJob struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// TriggeredWebJob resource specific properties
 	Properties *TriggeredWebJobProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TriggeredWebJob.
-func (t TriggeredWebJob) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TriggeredWebJobCollection - Collection of Kudu continuous web job information elements.
@@ -13912,7 +15486,7 @@ type TriggeredWebJobProperties struct {
 	SchedulerLogsURL *string `json:"scheduler_logs_url,omitempty"`
 
 	// Job settings.
-	Settings map[string]map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]interface{} `json:"settings,omitempty"`
 
 	// Job URL.
 	URL *string `json:"url,omitempty"`
@@ -13951,8 +15525,8 @@ type Twitter struct {
 
 // TwitterRegistration - The configuration settings of the app registration for the Twitter provider.
 type TwitterRegistration struct {
-	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter Sign-In. Twitter Sign-In documentation:
-	// https://dev.twitter.com/web/sign-in
+	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter
+	// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
 	ConsumerKey *string `json:"consumerKey,omitempty"`
 
 	// The app setting name that contains the OAuth 1.0a consumer secret of the Twitter application used for sign-in.
@@ -13961,17 +15535,20 @@ type TwitterRegistration struct {
 
 // Usage of the quota resource.
 type Usage struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Usage resource specific properties
 	Properties *UsageProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Usage.
-func (u Usage) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UsageCollection - Collection of usages.
@@ -14075,17 +15652,20 @@ func (u *UsageProperties) UnmarshalJSON(data []byte) error {
 
 // User credentials used for publishing activity.
 type User struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// User resource specific properties
 	Properties *UserProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type User.
-func (u User) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UserAssignedIdentity - User Assigned identity.
@@ -14118,7 +15698,7 @@ type UserProperties struct {
 // ValidateProperties - App properties used for validation.
 type ValidateProperties struct {
 	// App Service Environment Properties
-	AppServiceEnvironment *AppServiceEnvironment `json:"appServiceEnvironment,omitempty"`
+	AppServiceEnvironment *Environment `json:"appServiceEnvironment,omitempty"`
 
 	// Target capacity of the App Service plan (number of VMs).
 	Capacity *int32 `json:"capacity,omitempty"`
@@ -14260,18 +15840,33 @@ type VirtualNetworkProfile struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// VnetGateway - The Virtual Network gateway contract. This is used to give the Virtual Network gateway access to the VPN package.
+// VnetGateway - The Virtual Network gateway contract. This is used to give the Virtual Network gateway access to the VPN
+// package.
 type VnetGateway struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// VnetGateway resource specific properties
 	Properties *VnetGatewayProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VnetGateway.
 func (v VnetGateway) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "kind", v.Kind)
+	populate(objectMap, "name", v.Name)
 	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -14323,32 +15918,49 @@ func (v VnetInfo) MarshalJSON() ([]byte, error) {
 
 // VnetInfoResource - Virtual Network information ARM resource.
 type VnetInfoResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *VnetInfo `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VnetInfoResource.
 func (v VnetInfoResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "kind", v.Kind)
+	populate(objectMap, "name", v.Name)
 	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
 }
 
 // VnetParameters - The required set of inputs to validate a VNET
 type VnetParameters struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// VnetParameters resource specific properties
 	Properties *VnetParametersProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type VnetParameters.
-func (v VnetParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", v.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VnetParametersProperties - VnetParameters resource specific properties
@@ -14368,16 +15980,30 @@ type VnetParametersProperties struct {
 
 // VnetRoute - Virtual Network route contract used to pass routing information for a Virtual Network.
 type VnetRoute struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// VnetRoute resource specific properties
 	Properties *VnetRouteProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VnetRoute.
 func (v VnetRoute) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "kind", v.Kind)
+	populate(objectMap, "name", v.Name)
 	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -14386,8 +16012,8 @@ type VnetRouteProperties struct {
 	// The ending address for this route. If the start address is specified in CIDR notation, this must be omitted.
 	EndAddress *string `json:"endAddress,omitempty"`
 
-	// The type of route this is: DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918 INHERITED - Routes inherited from
-	// the real Virtual Network routes STATIC - Static
+	// The type of route this is: DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918
+	// INHERITED - Routes inherited from the real Virtual Network routes STATIC - Static
 	// route set on the app only
 	// These values will be used for syncing an app's routes with those from a Virtual Network.
 	RouteType *RouteType `json:"routeType,omitempty"`
@@ -14398,17 +16024,20 @@ type VnetRouteProperties struct {
 
 // VnetValidationFailureDetails - A class that describes the reason for a validation failure.
 type VnetValidationFailureDetails struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// VnetValidationFailureDetails resource specific properties
 	Properties *VnetValidationFailureDetailsProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type VnetValidationFailureDetails.
-func (v VnetValidationFailureDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", v.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VnetValidationFailureDetailsProperties - VnetValidationFailureDetails resource specific properties
@@ -14438,17 +16067,20 @@ func (v VnetValidationFailureDetailsProperties) MarshalJSON() ([]byte, error) {
 
 // VnetValidationTestFailure - A class that describes a test that failed during NSG and UDR validation.
 type VnetValidationTestFailure struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// VnetValidationTestFailure resource specific properties
 	Properties *VnetValidationTestFailureProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type VnetValidationTestFailure.
-func (v VnetValidationTestFailure) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", v.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VnetValidationTestFailureProperties - VnetValidationTestFailure resource specific properties
@@ -14640,21 +16272,23 @@ type WebAppRuntimes struct {
 
 // WebAppStack - Web App stack.
 type WebAppStack struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// WebAppStack resource specific properties
 	Properties *WebAppStackProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
 	// READ-ONLY; Web App stack location.
 	Location *string `json:"location,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type WebAppStack.
-func (w WebAppStack) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "location", w.Location)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WebAppStackCollection - Collection of Web app Stacks
@@ -14699,192 +16333,216 @@ func (w WebAppStackProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WebAppsAddPremierAddOnOptions contains the optional parameters for the WebApps.AddPremierAddOn method.
-type WebAppsAddPremierAddOnOptions struct {
+// WebAppsClientAddPremierAddOnOptions contains the optional parameters for the WebAppsClient.AddPremierAddOn method.
+type WebAppsClientAddPremierAddOnOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsAddPremierAddOnSlotOptions contains the optional parameters for the WebApps.AddPremierAddOnSlot method.
-type WebAppsAddPremierAddOnSlotOptions struct {
+// WebAppsClientAddPremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.AddPremierAddOnSlot method.
+type WebAppsClientAddPremierAddOnSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsAnalyzeCustomHostnameOptions contains the optional parameters for the WebApps.AnalyzeCustomHostname method.
-type WebAppsAnalyzeCustomHostnameOptions struct {
+// WebAppsClientAnalyzeCustomHostnameOptions contains the optional parameters for the WebAppsClient.AnalyzeCustomHostname
+// method.
+type WebAppsClientAnalyzeCustomHostnameOptions struct {
 	// Custom hostname.
 	HostName *string
 }
 
-// WebAppsAnalyzeCustomHostnameSlotOptions contains the optional parameters for the WebApps.AnalyzeCustomHostnameSlot method.
-type WebAppsAnalyzeCustomHostnameSlotOptions struct {
+// WebAppsClientAnalyzeCustomHostnameSlotOptions contains the optional parameters for the WebAppsClient.AnalyzeCustomHostnameSlot
+// method.
+type WebAppsClientAnalyzeCustomHostnameSlotOptions struct {
 	// Custom hostname.
 	HostName *string
 }
 
-// WebAppsApplySlotConfigToProductionOptions contains the optional parameters for the WebApps.ApplySlotConfigToProduction method.
-type WebAppsApplySlotConfigToProductionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsApplySlotConfigurationSlotOptions contains the optional parameters for the WebApps.ApplySlotConfigurationSlot method.
-type WebAppsApplySlotConfigurationSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsBackupOptions contains the optional parameters for the WebApps.Backup method.
-type WebAppsBackupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsBackupSlotOptions contains the optional parameters for the WebApps.BackupSlot method.
-type WebAppsBackupSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the WebApps.BeginApproveOrRejectPrivateEndpointConnection
+// WebAppsClientApplySlotConfigToProductionOptions contains the optional parameters for the WebAppsClient.ApplySlotConfigToProduction
 // method.
-type WebAppsBeginApproveOrRejectPrivateEndpointConnectionOptions struct {
+type WebAppsClientApplySlotConfigToProductionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginApproveOrRejectPrivateEndpointConnectionSlotOptions contains the optional parameters for the WebApps.BeginApproveOrRejectPrivateEndpointConnectionSlot
+// WebAppsClientApplySlotConfigurationSlotOptions contains the optional parameters for the WebAppsClient.ApplySlotConfigurationSlot
 // method.
-type WebAppsBeginApproveOrRejectPrivateEndpointConnectionSlotOptions struct {
+type WebAppsClientApplySlotConfigurationSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateFunctionOptions contains the optional parameters for the WebApps.BeginCreateFunction method.
-type WebAppsBeginCreateFunctionOptions struct {
+// WebAppsClientBackupOptions contains the optional parameters for the WebAppsClient.Backup method.
+type WebAppsClientBackupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateInstanceFunctionSlotOptions contains the optional parameters for the WebApps.BeginCreateInstanceFunctionSlot method.
-type WebAppsBeginCreateInstanceFunctionSlotOptions struct {
+// WebAppsClientBackupSlotOptions contains the optional parameters for the WebAppsClient.BackupSlot method.
+type WebAppsClientBackupSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateInstanceMSDeployOperationOptions contains the optional parameters for the WebApps.BeginCreateInstanceMSDeployOperation method.
-type WebAppsBeginCreateInstanceMSDeployOperationOptions struct {
+// WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection
+// method.
+type WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateInstanceMSDeployOperationSlotOptions contains the optional parameters for the WebApps.BeginCreateInstanceMSDeployOperationSlot method.
-type WebAppsBeginCreateInstanceMSDeployOperationSlotOptions struct {
+// WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions contains the optional parameters for the WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot
+// method.
+type WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateMSDeployOperationOptions contains the optional parameters for the WebApps.BeginCreateMSDeployOperation method.
-type WebAppsBeginCreateMSDeployOperationOptions struct {
+// WebAppsClientBeginCreateFunctionOptions contains the optional parameters for the WebAppsClient.BeginCreateFunction method.
+type WebAppsClientBeginCreateFunctionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateMSDeployOperationSlotOptions contains the optional parameters for the WebApps.BeginCreateMSDeployOperationSlot method.
-type WebAppsBeginCreateMSDeployOperationSlotOptions struct {
+// WebAppsClientBeginCreateInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceFunctionSlot
+// method.
+type WebAppsClientBeginCreateInstanceFunctionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateOrUpdateOptions contains the optional parameters for the WebApps.BeginCreateOrUpdate method.
-type WebAppsBeginCreateOrUpdateOptions struct {
+// WebAppsClientBeginCreateInstanceMSDeployOperationOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceMSDeployOperation
+// method.
+type WebAppsClientBeginCreateInstanceMSDeployOperationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateOrUpdateSlotOptions contains the optional parameters for the WebApps.BeginCreateOrUpdateSlot method.
-type WebAppsBeginCreateOrUpdateSlotOptions struct {
+// WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceMSDeployOperationSlot
+// method.
+type WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateOrUpdateSourceControlOptions contains the optional parameters for the WebApps.BeginCreateOrUpdateSourceControl method.
-type WebAppsBeginCreateOrUpdateSourceControlOptions struct {
+// WebAppsClientBeginCreateMSDeployOperationOptions contains the optional parameters for the WebAppsClient.BeginCreateMSDeployOperation
+// method.
+type WebAppsClientBeginCreateMSDeployOperationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginCreateOrUpdateSourceControlSlotOptions contains the optional parameters for the WebApps.BeginCreateOrUpdateSourceControlSlot method.
-type WebAppsBeginCreateOrUpdateSourceControlSlotOptions struct {
+// WebAppsClientBeginCreateMSDeployOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateMSDeployOperationSlot
+// method.
+type WebAppsClientBeginCreateMSDeployOperationSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the WebApps.BeginDeletePrivateEndpointConnection method.
-type WebAppsBeginDeletePrivateEndpointConnectionOptions struct {
+// WebAppsClientBeginCreateOrUpdateOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdate method.
+type WebAppsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginDeletePrivateEndpointConnectionSlotOptions contains the optional parameters for the WebApps.BeginDeletePrivateEndpointConnectionSlot method.
-type WebAppsBeginDeletePrivateEndpointConnectionSlotOptions struct {
+// WebAppsClientBeginCreateOrUpdateSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSlot
+// method.
+type WebAppsClientBeginCreateOrUpdateSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginInstallSiteExtensionOptions contains the optional parameters for the WebApps.BeginInstallSiteExtension method.
-type WebAppsBeginInstallSiteExtensionOptions struct {
+// WebAppsClientBeginCreateOrUpdateSourceControlOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSourceControl
+// method.
+type WebAppsClientBeginCreateOrUpdateSourceControlOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginInstallSiteExtensionSlotOptions contains the optional parameters for the WebApps.BeginInstallSiteExtensionSlot method.
-type WebAppsBeginInstallSiteExtensionSlotOptions struct {
+// WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSourceControlSlot
+// method.
+type WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginListPublishingCredentialsOptions contains the optional parameters for the WebApps.BeginListPublishingCredentials method.
-type WebAppsBeginListPublishingCredentialsOptions struct {
+// WebAppsClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the WebAppsClient.BeginDeletePrivateEndpointConnection
+// method.
+type WebAppsClientBeginDeletePrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginListPublishingCredentialsSlotOptions contains the optional parameters for the WebApps.BeginListPublishingCredentialsSlot method.
-type WebAppsBeginListPublishingCredentialsSlotOptions struct {
+// WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions contains the optional parameters for the WebAppsClient.BeginDeletePrivateEndpointConnectionSlot
+// method.
+type WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginMigrateMySQLOptions contains the optional parameters for the WebApps.BeginMigrateMySQL method.
-type WebAppsBeginMigrateMySQLOptions struct {
+// WebAppsClientBeginInstallSiteExtensionOptions contains the optional parameters for the WebAppsClient.BeginInstallSiteExtension
+// method.
+type WebAppsClientBeginInstallSiteExtensionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginMigrateStorageOptions contains the optional parameters for the WebApps.BeginMigrateStorage method.
-type WebAppsBeginMigrateStorageOptions struct {
+// WebAppsClientBeginInstallSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.BeginInstallSiteExtensionSlot
+// method.
+type WebAppsClientBeginInstallSiteExtensionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginRestoreFromBackupBlobOptions contains the optional parameters for the WebApps.BeginRestoreFromBackupBlob method.
-type WebAppsBeginRestoreFromBackupBlobOptions struct {
+// WebAppsClientBeginListPublishingCredentialsOptions contains the optional parameters for the WebAppsClient.BeginListPublishingCredentials
+// method.
+type WebAppsClientBeginListPublishingCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginRestoreFromBackupBlobSlotOptions contains the optional parameters for the WebApps.BeginRestoreFromBackupBlobSlot method.
-type WebAppsBeginRestoreFromBackupBlobSlotOptions struct {
+// WebAppsClientBeginListPublishingCredentialsSlotOptions contains the optional parameters for the WebAppsClient.BeginListPublishingCredentialsSlot
+// method.
+type WebAppsClientBeginListPublishingCredentialsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginRestoreFromDeletedAppOptions contains the optional parameters for the WebApps.BeginRestoreFromDeletedApp method.
-type WebAppsBeginRestoreFromDeletedAppOptions struct {
+// WebAppsClientBeginMigrateMySQLOptions contains the optional parameters for the WebAppsClient.BeginMigrateMySQL method.
+type WebAppsClientBeginMigrateMySQLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginRestoreFromDeletedAppSlotOptions contains the optional parameters for the WebApps.BeginRestoreFromDeletedAppSlot method.
-type WebAppsBeginRestoreFromDeletedAppSlotOptions struct {
+// WebAppsClientBeginMigrateStorageOptions contains the optional parameters for the WebAppsClient.BeginMigrateStorage method.
+type WebAppsClientBeginMigrateStorageOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginRestoreOptions contains the optional parameters for the WebApps.BeginRestore method.
-type WebAppsBeginRestoreOptions struct {
+// WebAppsClientBeginRestoreFromBackupBlobOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromBackupBlob
+// method.
+type WebAppsClientBeginRestoreFromBackupBlobOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginRestoreSlotOptions contains the optional parameters for the WebApps.BeginRestoreSlot method.
-type WebAppsBeginRestoreSlotOptions struct {
+// WebAppsClientBeginRestoreFromBackupBlobSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromBackupBlobSlot
+// method.
+type WebAppsClientBeginRestoreFromBackupBlobSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginRestoreSnapshotOptions contains the optional parameters for the WebApps.BeginRestoreSnapshot method.
-type WebAppsBeginRestoreSnapshotOptions struct {
+// WebAppsClientBeginRestoreFromDeletedAppOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromDeletedApp
+// method.
+type WebAppsClientBeginRestoreFromDeletedAppOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginRestoreSnapshotSlotOptions contains the optional parameters for the WebApps.BeginRestoreSnapshotSlot method.
-type WebAppsBeginRestoreSnapshotSlotOptions struct {
+// WebAppsClientBeginRestoreFromDeletedAppSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromDeletedAppSlot
+// method.
+type WebAppsClientBeginRestoreFromDeletedAppSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginStartNetworkTraceOptions contains the optional parameters for the WebApps.BeginStartNetworkTrace method.
-type WebAppsBeginStartNetworkTraceOptions struct {
+// WebAppsClientBeginRestoreOptions contains the optional parameters for the WebAppsClient.BeginRestore method.
+type WebAppsClientBeginRestoreOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientBeginRestoreSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSlot method.
+type WebAppsClientBeginRestoreSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientBeginRestoreSnapshotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSnapshot method.
+type WebAppsClientBeginRestoreSnapshotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientBeginRestoreSnapshotSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSnapshotSlot
+// method.
+type WebAppsClientBeginRestoreSnapshotSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientBeginStartNetworkTraceOptions contains the optional parameters for the WebAppsClient.BeginStartNetworkTrace
+// method.
+type WebAppsClientBeginStartNetworkTraceOptions struct {
 	// The duration to keep capturing in seconds.
 	DurationInSeconds *int32
 	// The maximum frame length in bytes (Optional).
@@ -14893,8 +16551,9 @@ type WebAppsBeginStartNetworkTraceOptions struct {
 	SasURL *string
 }
 
-// WebAppsBeginStartNetworkTraceSlotOptions contains the optional parameters for the WebApps.BeginStartNetworkTraceSlot method.
-type WebAppsBeginStartNetworkTraceSlotOptions struct {
+// WebAppsClientBeginStartNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.BeginStartNetworkTraceSlot
+// method.
+type WebAppsClientBeginStartNetworkTraceSlotOptions struct {
 	// The duration to keep capturing in seconds.
 	DurationInSeconds *int32
 	// The maximum frame length in bytes (Optional).
@@ -14903,8 +16562,9 @@ type WebAppsBeginStartNetworkTraceSlotOptions struct {
 	SasURL *string
 }
 
-// WebAppsBeginStartWebSiteNetworkTraceOperationOptions contains the optional parameters for the WebApps.BeginStartWebSiteNetworkTraceOperation method.
-type WebAppsBeginStartWebSiteNetworkTraceOperationOptions struct {
+// WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions contains the optional parameters for the WebAppsClient.BeginStartWebSiteNetworkTraceOperation
+// method.
+type WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions struct {
 	// The duration to keep capturing in seconds.
 	DurationInSeconds *int32
 	// The maximum frame length in bytes (Optional).
@@ -14913,9 +16573,9 @@ type WebAppsBeginStartWebSiteNetworkTraceOperationOptions struct {
 	SasURL *string
 }
 
-// WebAppsBeginStartWebSiteNetworkTraceOperationSlotOptions contains the optional parameters for the WebApps.BeginStartWebSiteNetworkTraceOperationSlot
+// WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot
 // method.
-type WebAppsBeginStartWebSiteNetworkTraceOperationSlotOptions struct {
+type WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions struct {
 	// The duration to keep capturing in seconds.
 	DurationInSeconds *int32
 	// The maximum frame length in bytes (Optional).
@@ -14924,1495 +16584,1690 @@ type WebAppsBeginStartWebSiteNetworkTraceOperationSlotOptions struct {
 	SasURL *string
 }
 
-// WebAppsBeginSwapSlotOptions contains the optional parameters for the WebApps.BeginSwapSlot method.
-type WebAppsBeginSwapSlotOptions struct {
+// WebAppsClientBeginSwapSlotOptions contains the optional parameters for the WebAppsClient.BeginSwapSlot method.
+type WebAppsClientBeginSwapSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsBeginSwapSlotWithProductionOptions contains the optional parameters for the WebApps.BeginSwapSlotWithProduction method.
-type WebAppsBeginSwapSlotWithProductionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateDeploymentOptions contains the optional parameters for the WebApps.CreateDeployment method.
-type WebAppsCreateDeploymentOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateDeploymentSlotOptions contains the optional parameters for the WebApps.CreateDeploymentSlot method.
-type WebAppsCreateDeploymentSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateConfigurationOptions contains the optional parameters for the WebApps.CreateOrUpdateConfiguration method.
-type WebAppsCreateOrUpdateConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateConfigurationSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateConfigurationSlot method.
-type WebAppsCreateOrUpdateConfigurationSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateDomainOwnershipIdentifierOptions contains the optional parameters for the WebApps.CreateOrUpdateDomainOwnershipIdentifier method.
-type WebAppsCreateOrUpdateDomainOwnershipIdentifierOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateDomainOwnershipIdentifierSlot
+// WebAppsClientBeginSwapSlotWithProductionOptions contains the optional parameters for the WebAppsClient.BeginSwapSlotWithProduction
 // method.
-type WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotOptions struct {
+type WebAppsClientBeginSwapSlotWithProductionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsCreateOrUpdateFunctionSecretOptions contains the optional parameters for the WebApps.CreateOrUpdateFunctionSecret method.
-type WebAppsCreateOrUpdateFunctionSecretOptions struct {
+// WebAppsClientCreateDeploymentOptions contains the optional parameters for the WebAppsClient.CreateDeployment method.
+type WebAppsClientCreateDeploymentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsCreateOrUpdateFunctionSecretSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateFunctionSecretSlot method.
-type WebAppsCreateOrUpdateFunctionSecretSlotOptions struct {
+// WebAppsClientCreateDeploymentSlotOptions contains the optional parameters for the WebAppsClient.CreateDeploymentSlot method.
+type WebAppsClientCreateDeploymentSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsCreateOrUpdateHostNameBindingOptions contains the optional parameters for the WebApps.CreateOrUpdateHostNameBinding method.
-type WebAppsCreateOrUpdateHostNameBindingOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateHostNameBindingSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateHostNameBindingSlot method.
-type WebAppsCreateOrUpdateHostNameBindingSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateHostSecretOptions contains the optional parameters for the WebApps.CreateOrUpdateHostSecret method.
-type WebAppsCreateOrUpdateHostSecretOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateHostSecretSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateHostSecretSlot method.
-type WebAppsCreateOrUpdateHostSecretSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateHybridConnectionOptions contains the optional parameters for the WebApps.CreateOrUpdateHybridConnection method.
-type WebAppsCreateOrUpdateHybridConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateHybridConnectionSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateHybridConnectionSlot method.
-type WebAppsCreateOrUpdateHybridConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdatePublicCertificateOptions contains the optional parameters for the WebApps.CreateOrUpdatePublicCertificate method.
-type WebAppsCreateOrUpdatePublicCertificateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdatePublicCertificateSlotOptions contains the optional parameters for the WebApps.CreateOrUpdatePublicCertificateSlot method.
-type WebAppsCreateOrUpdatePublicCertificateSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateRelayServiceConnectionOptions contains the optional parameters for the WebApps.CreateOrUpdateRelayServiceConnection method.
-type WebAppsCreateOrUpdateRelayServiceConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateRelayServiceConnectionSlot method.
-type WebAppsCreateOrUpdateRelayServiceConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions contains the optional parameters for the WebApps.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck
+// WebAppsClientCreateOneDeployOperationOptions contains the optional parameters for the WebAppsClient.CreateOneDeployOperation
 // method.
-type WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions struct {
+type WebAppsClientCreateOneDeployOperationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot
+// WebAppsClientCreateOrUpdateConfigurationOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateConfiguration
 // method.
-type WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions struct {
+type WebAppsClientCreateOrUpdateConfigurationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsCreateOrUpdateVnetConnectionGatewayOptions contains the optional parameters for the WebApps.CreateOrUpdateVnetConnectionGateway method.
-type WebAppsCreateOrUpdateVnetConnectionGatewayOptions struct {
+// WebAppsClientCreateOrUpdateConfigurationSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateConfigurationSlot
+// method.
+type WebAppsClientCreateOrUpdateConfigurationSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsCreateOrUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebApps.CreateOrUpdateVnetConnectionGatewaySlot method.
-type WebAppsCreateOrUpdateVnetConnectionGatewaySlotOptions struct {
+// WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateDomainOwnershipIdentifier
+// method.
+type WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsCreateOrUpdateVnetConnectionOptions contains the optional parameters for the WebApps.CreateOrUpdateVnetConnection method.
-type WebAppsCreateOrUpdateVnetConnectionOptions struct {
+// WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot
+// method.
+type WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsCreateOrUpdateVnetConnectionSlotOptions contains the optional parameters for the WebApps.CreateOrUpdateVnetConnectionSlot method.
-type WebAppsCreateOrUpdateVnetConnectionSlotOptions struct {
+// WebAppsClientCreateOrUpdateFunctionSecretOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateFunctionSecret
+// method.
+type WebAppsClientCreateOrUpdateFunctionSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteBackupConfigurationOptions contains the optional parameters for the WebApps.DeleteBackupConfiguration method.
-type WebAppsDeleteBackupConfigurationOptions struct {
+// WebAppsClientCreateOrUpdateFunctionSecretSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateFunctionSecretSlot
+// method.
+type WebAppsClientCreateOrUpdateFunctionSecretSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteBackupConfigurationSlotOptions contains the optional parameters for the WebApps.DeleteBackupConfigurationSlot method.
-type WebAppsDeleteBackupConfigurationSlotOptions struct {
+// WebAppsClientCreateOrUpdateHostNameBindingOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostNameBinding
+// method.
+type WebAppsClientCreateOrUpdateHostNameBindingOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteBackupOptions contains the optional parameters for the WebApps.DeleteBackup method.
-type WebAppsDeleteBackupOptions struct {
+// WebAppsClientCreateOrUpdateHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostNameBindingSlot
+// method.
+type WebAppsClientCreateOrUpdateHostNameBindingSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteBackupSlotOptions contains the optional parameters for the WebApps.DeleteBackupSlot method.
-type WebAppsDeleteBackupSlotOptions struct {
+// WebAppsClientCreateOrUpdateHostSecretOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostSecret
+// method.
+type WebAppsClientCreateOrUpdateHostSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteContinuousWebJobOptions contains the optional parameters for the WebApps.DeleteContinuousWebJob method.
-type WebAppsDeleteContinuousWebJobOptions struct {
+// WebAppsClientCreateOrUpdateHostSecretSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostSecretSlot
+// method.
+type WebAppsClientCreateOrUpdateHostSecretSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteContinuousWebJobSlotOptions contains the optional parameters for the WebApps.DeleteContinuousWebJobSlot method.
-type WebAppsDeleteContinuousWebJobSlotOptions struct {
+// WebAppsClientCreateOrUpdateHybridConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHybridConnection
+// method.
+type WebAppsClientCreateOrUpdateHybridConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteDeploymentOptions contains the optional parameters for the WebApps.DeleteDeployment method.
-type WebAppsDeleteDeploymentOptions struct {
+// WebAppsClientCreateOrUpdateHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHybridConnectionSlot
+// method.
+type WebAppsClientCreateOrUpdateHybridConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteDeploymentSlotOptions contains the optional parameters for the WebApps.DeleteDeploymentSlot method.
-type WebAppsDeleteDeploymentSlotOptions struct {
+// WebAppsClientCreateOrUpdatePublicCertificateOptions contains the optional parameters for the WebAppsClient.CreateOrUpdatePublicCertificate
+// method.
+type WebAppsClientCreateOrUpdatePublicCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteDomainOwnershipIdentifierOptions contains the optional parameters for the WebApps.DeleteDomainOwnershipIdentifier method.
-type WebAppsDeleteDomainOwnershipIdentifierOptions struct {
+// WebAppsClientCreateOrUpdatePublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdatePublicCertificateSlot
+// method.
+type WebAppsClientCreateOrUpdatePublicCertificateSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebApps.DeleteDomainOwnershipIdentifierSlot method.
-type WebAppsDeleteDomainOwnershipIdentifierSlotOptions struct {
+// WebAppsClientCreateOrUpdateRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateRelayServiceConnection
+// method.
+type WebAppsClientCreateOrUpdateRelayServiceConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteFunctionOptions contains the optional parameters for the WebApps.DeleteFunction method.
-type WebAppsDeleteFunctionOptions struct {
+// WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot
+// method.
+type WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteFunctionSecretOptions contains the optional parameters for the WebApps.DeleteFunctionSecret method.
-type WebAppsDeleteFunctionSecretOptions struct {
+// WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck
+// method.
+type WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteFunctionSecretSlotOptions contains the optional parameters for the WebApps.DeleteFunctionSecretSlot method.
-type WebAppsDeleteFunctionSecretSlotOptions struct {
+// WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot
+// method.
+type WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteHostNameBindingOptions contains the optional parameters for the WebApps.DeleteHostNameBinding method.
-type WebAppsDeleteHostNameBindingOptions struct {
+// WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionGateway
+// method.
+type WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteHostNameBindingSlotOptions contains the optional parameters for the WebApps.DeleteHostNameBindingSlot method.
-type WebAppsDeleteHostNameBindingSlotOptions struct {
+// WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot
+// method.
+type WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteHostSecretOptions contains the optional parameters for the WebApps.DeleteHostSecret method.
-type WebAppsDeleteHostSecretOptions struct {
+// WebAppsClientCreateOrUpdateVnetConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnection
+// method.
+type WebAppsClientCreateOrUpdateVnetConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteHostSecretSlotOptions contains the optional parameters for the WebApps.DeleteHostSecretSlot method.
-type WebAppsDeleteHostSecretSlotOptions struct {
+// WebAppsClientCreateOrUpdateVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionSlot
+// method.
+type WebAppsClientCreateOrUpdateVnetConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteHybridConnectionOptions contains the optional parameters for the WebApps.DeleteHybridConnection method.
-type WebAppsDeleteHybridConnectionOptions struct {
+// WebAppsClientDeleteBackupConfigurationOptions contains the optional parameters for the WebAppsClient.DeleteBackupConfiguration
+// method.
+type WebAppsClientDeleteBackupConfigurationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteHybridConnectionSlotOptions contains the optional parameters for the WebApps.DeleteHybridConnectionSlot method.
-type WebAppsDeleteHybridConnectionSlotOptions struct {
+// WebAppsClientDeleteBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.DeleteBackupConfigurationSlot
+// method.
+type WebAppsClientDeleteBackupConfigurationSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteInstanceFunctionSlotOptions contains the optional parameters for the WebApps.DeleteInstanceFunctionSlot method.
-type WebAppsDeleteInstanceFunctionSlotOptions struct {
+// WebAppsClientDeleteBackupOptions contains the optional parameters for the WebAppsClient.DeleteBackup method.
+type WebAppsClientDeleteBackupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteInstanceProcessOptions contains the optional parameters for the WebApps.DeleteInstanceProcess method.
-type WebAppsDeleteInstanceProcessOptions struct {
+// WebAppsClientDeleteBackupSlotOptions contains the optional parameters for the WebAppsClient.DeleteBackupSlot method.
+type WebAppsClientDeleteBackupSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteInstanceProcessSlotOptions contains the optional parameters for the WebApps.DeleteInstanceProcessSlot method.
-type WebAppsDeleteInstanceProcessSlotOptions struct {
+// WebAppsClientDeleteContinuousWebJobOptions contains the optional parameters for the WebAppsClient.DeleteContinuousWebJob
+// method.
+type WebAppsClientDeleteContinuousWebJobOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteOptions contains the optional parameters for the WebApps.Delete method.
-type WebAppsDeleteOptions struct {
+// WebAppsClientDeleteContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.DeleteContinuousWebJobSlot
+// method.
+type WebAppsClientDeleteContinuousWebJobSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteDeploymentOptions contains the optional parameters for the WebAppsClient.DeleteDeployment method.
+type WebAppsClientDeleteDeploymentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteDeploymentSlotOptions contains the optional parameters for the WebAppsClient.DeleteDeploymentSlot method.
+type WebAppsClientDeleteDeploymentSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.DeleteDomainOwnershipIdentifier
+// method.
+type WebAppsClientDeleteDomainOwnershipIdentifierOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.DeleteDomainOwnershipIdentifierSlot
+// method.
+type WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteFunctionOptions contains the optional parameters for the WebAppsClient.DeleteFunction method.
+type WebAppsClientDeleteFunctionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteFunctionSecretOptions contains the optional parameters for the WebAppsClient.DeleteFunctionSecret method.
+type WebAppsClientDeleteFunctionSecretOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteFunctionSecretSlotOptions contains the optional parameters for the WebAppsClient.DeleteFunctionSecretSlot
+// method.
+type WebAppsClientDeleteFunctionSecretSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteHostNameBindingOptions contains the optional parameters for the WebAppsClient.DeleteHostNameBinding
+// method.
+type WebAppsClientDeleteHostNameBindingOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.DeleteHostNameBindingSlot
+// method.
+type WebAppsClientDeleteHostNameBindingSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteHostSecretOptions contains the optional parameters for the WebAppsClient.DeleteHostSecret method.
+type WebAppsClientDeleteHostSecretOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteHostSecretSlotOptions contains the optional parameters for the WebAppsClient.DeleteHostSecretSlot method.
+type WebAppsClientDeleteHostSecretSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteHybridConnectionOptions contains the optional parameters for the WebAppsClient.DeleteHybridConnection
+// method.
+type WebAppsClientDeleteHybridConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteHybridConnectionSlot
+// method.
+type WebAppsClientDeleteHybridConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.DeleteInstanceFunctionSlot
+// method.
+type WebAppsClientDeleteInstanceFunctionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteInstanceProcessOptions contains the optional parameters for the WebAppsClient.DeleteInstanceProcess
+// method.
+type WebAppsClientDeleteInstanceProcessOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteInstanceProcessSlotOptions contains the optional parameters for the WebAppsClient.DeleteInstanceProcessSlot
+// method.
+type WebAppsClientDeleteInstanceProcessSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteOptions contains the optional parameters for the WebAppsClient.Delete method.
+type WebAppsClientDeleteOptions struct {
 	// Specify false if you want to keep empty App Service plan. By default, empty App Service plan is deleted.
 	DeleteEmptyServerFarm *bool
 	// If true, web app metrics are also deleted.
 	DeleteMetrics *bool
 }
 
-// WebAppsDeletePremierAddOnOptions contains the optional parameters for the WebApps.DeletePremierAddOn method.
-type WebAppsDeletePremierAddOnOptions struct {
+// WebAppsClientDeletePremierAddOnOptions contains the optional parameters for the WebAppsClient.DeletePremierAddOn method.
+type WebAppsClientDeletePremierAddOnOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeletePremierAddOnSlotOptions contains the optional parameters for the WebApps.DeletePremierAddOnSlot method.
-type WebAppsDeletePremierAddOnSlotOptions struct {
+// WebAppsClientDeletePremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.DeletePremierAddOnSlot
+// method.
+type WebAppsClientDeletePremierAddOnSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteProcessOptions contains the optional parameters for the WebApps.DeleteProcess method.
-type WebAppsDeleteProcessOptions struct {
+// WebAppsClientDeleteProcessOptions contains the optional parameters for the WebAppsClient.DeleteProcess method.
+type WebAppsClientDeleteProcessOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteProcessSlotOptions contains the optional parameters for the WebApps.DeleteProcessSlot method.
-type WebAppsDeleteProcessSlotOptions struct {
+// WebAppsClientDeleteProcessSlotOptions contains the optional parameters for the WebAppsClient.DeleteProcessSlot method.
+type WebAppsClientDeleteProcessSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeletePublicCertificateOptions contains the optional parameters for the WebApps.DeletePublicCertificate method.
-type WebAppsDeletePublicCertificateOptions struct {
+// WebAppsClientDeletePublicCertificateOptions contains the optional parameters for the WebAppsClient.DeletePublicCertificate
+// method.
+type WebAppsClientDeletePublicCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeletePublicCertificateSlotOptions contains the optional parameters for the WebApps.DeletePublicCertificateSlot method.
-type WebAppsDeletePublicCertificateSlotOptions struct {
+// WebAppsClientDeletePublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.DeletePublicCertificateSlot
+// method.
+type WebAppsClientDeletePublicCertificateSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteRelayServiceConnectionOptions contains the optional parameters for the WebApps.DeleteRelayServiceConnection method.
-type WebAppsDeleteRelayServiceConnectionOptions struct {
+// WebAppsClientDeleteRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.DeleteRelayServiceConnection
+// method.
+type WebAppsClientDeleteRelayServiceConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteRelayServiceConnectionSlotOptions contains the optional parameters for the WebApps.DeleteRelayServiceConnectionSlot method.
-type WebAppsDeleteRelayServiceConnectionSlotOptions struct {
+// WebAppsClientDeleteRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteRelayServiceConnectionSlot
+// method.
+type WebAppsClientDeleteRelayServiceConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteSiteExtensionOptions contains the optional parameters for the WebApps.DeleteSiteExtension method.
-type WebAppsDeleteSiteExtensionOptions struct {
+// WebAppsClientDeleteSiteExtensionOptions contains the optional parameters for the WebAppsClient.DeleteSiteExtension method.
+type WebAppsClientDeleteSiteExtensionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteSiteExtensionSlotOptions contains the optional parameters for the WebApps.DeleteSiteExtensionSlot method.
-type WebAppsDeleteSiteExtensionSlotOptions struct {
+// WebAppsClientDeleteSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.DeleteSiteExtensionSlot
+// method.
+type WebAppsClientDeleteSiteExtensionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsDeleteSlotOptions contains the optional parameters for the WebApps.DeleteSlot method.
-type WebAppsDeleteSlotOptions struct {
+// WebAppsClientDeleteSlotOptions contains the optional parameters for the WebAppsClient.DeleteSlot method.
+type WebAppsClientDeleteSlotOptions struct {
 	// Specify false if you want to keep empty App Service plan. By default, empty App Service plan is deleted.
 	DeleteEmptyServerFarm *bool
 	// If true, web app metrics are also deleted.
 	DeleteMetrics *bool
 }
 
-// WebAppsDeleteSourceControlOptions contains the optional parameters for the WebApps.DeleteSourceControl method.
-type WebAppsDeleteSourceControlOptions struct {
+// WebAppsClientDeleteSourceControlOptions contains the optional parameters for the WebAppsClient.DeleteSourceControl method.
+type WebAppsClientDeleteSourceControlOptions struct {
 	AdditionalFlags *string
 }
 
-// WebAppsDeleteSourceControlSlotOptions contains the optional parameters for the WebApps.DeleteSourceControlSlot method.
-type WebAppsDeleteSourceControlSlotOptions struct {
+// WebAppsClientDeleteSourceControlSlotOptions contains the optional parameters for the WebAppsClient.DeleteSourceControlSlot
+// method.
+type WebAppsClientDeleteSourceControlSlotOptions struct {
 	AdditionalFlags *string
 }
 
-// WebAppsDeleteSwiftVirtualNetworkOptions contains the optional parameters for the WebApps.DeleteSwiftVirtualNetwork method.
-type WebAppsDeleteSwiftVirtualNetworkOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsDeleteSwiftVirtualNetworkSlotOptions contains the optional parameters for the WebApps.DeleteSwiftVirtualNetworkSlot method.
-type WebAppsDeleteSwiftVirtualNetworkSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsDeleteTriggeredWebJobOptions contains the optional parameters for the WebApps.DeleteTriggeredWebJob method.
-type WebAppsDeleteTriggeredWebJobOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsDeleteTriggeredWebJobSlotOptions contains the optional parameters for the WebApps.DeleteTriggeredWebJobSlot method.
-type WebAppsDeleteTriggeredWebJobSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsDeleteVnetConnectionOptions contains the optional parameters for the WebApps.DeleteVnetConnection method.
-type WebAppsDeleteVnetConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsDeleteVnetConnectionSlotOptions contains the optional parameters for the WebApps.DeleteVnetConnectionSlot method.
-type WebAppsDeleteVnetConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsDiscoverBackupOptions contains the optional parameters for the WebApps.DiscoverBackup method.
-type WebAppsDiscoverBackupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsDiscoverBackupSlotOptions contains the optional parameters for the WebApps.DiscoverBackupSlot method.
-type WebAppsDiscoverBackupSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGenerateNewSitePublishingPasswordOptions contains the optional parameters for the WebApps.GenerateNewSitePublishingPassword method.
-type WebAppsGenerateNewSitePublishingPasswordOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGenerateNewSitePublishingPasswordSlotOptions contains the optional parameters for the WebApps.GenerateNewSitePublishingPasswordSlot method.
-type WebAppsGenerateNewSitePublishingPasswordSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetAppSettingKeyVaultReferenceOptions contains the optional parameters for the WebApps.GetAppSettingKeyVaultReference method.
-type WebAppsGetAppSettingKeyVaultReferenceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetAppSettingKeyVaultReferenceSlotOptions contains the optional parameters for the WebApps.GetAppSettingKeyVaultReferenceSlot method.
-type WebAppsGetAppSettingKeyVaultReferenceSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetAppSettingsKeyVaultReferencesOptions contains the optional parameters for the WebApps.GetAppSettingsKeyVaultReferences method.
-type WebAppsGetAppSettingsKeyVaultReferencesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetAppSettingsKeyVaultReferencesSlotOptions contains the optional parameters for the WebApps.GetAppSettingsKeyVaultReferencesSlot method.
-type WebAppsGetAppSettingsKeyVaultReferencesSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetAuthSettingsOptions contains the optional parameters for the WebApps.GetAuthSettings method.
-type WebAppsGetAuthSettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetAuthSettingsSlotOptions contains the optional parameters for the WebApps.GetAuthSettingsSlot method.
-type WebAppsGetAuthSettingsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetAuthSettingsV2Options contains the optional parameters for the WebApps.GetAuthSettingsV2 method.
-type WebAppsGetAuthSettingsV2Options struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetAuthSettingsV2SlotOptions contains the optional parameters for the WebApps.GetAuthSettingsV2Slot method.
-type WebAppsGetAuthSettingsV2SlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetBackupConfigurationOptions contains the optional parameters for the WebApps.GetBackupConfiguration method.
-type WebAppsGetBackupConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetBackupConfigurationSlotOptions contains the optional parameters for the WebApps.GetBackupConfigurationSlot method.
-type WebAppsGetBackupConfigurationSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetBackupStatusOptions contains the optional parameters for the WebApps.GetBackupStatus method.
-type WebAppsGetBackupStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetBackupStatusSlotOptions contains the optional parameters for the WebApps.GetBackupStatusSlot method.
-type WebAppsGetBackupStatusSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetConfigurationOptions contains the optional parameters for the WebApps.GetConfiguration method.
-type WebAppsGetConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetConfigurationSlotOptions contains the optional parameters for the WebApps.GetConfigurationSlot method.
-type WebAppsGetConfigurationSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetConfigurationSnapshotOptions contains the optional parameters for the WebApps.GetConfigurationSnapshot method.
-type WebAppsGetConfigurationSnapshotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetConfigurationSnapshotSlotOptions contains the optional parameters for the WebApps.GetConfigurationSnapshotSlot method.
-type WebAppsGetConfigurationSnapshotSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetContainerLogsZipOptions contains the optional parameters for the WebApps.GetContainerLogsZip method.
-type WebAppsGetContainerLogsZipOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetContainerLogsZipSlotOptions contains the optional parameters for the WebApps.GetContainerLogsZipSlot method.
-type WebAppsGetContainerLogsZipSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetContinuousWebJobOptions contains the optional parameters for the WebApps.GetContinuousWebJob method.
-type WebAppsGetContinuousWebJobOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetContinuousWebJobSlotOptions contains the optional parameters for the WebApps.GetContinuousWebJobSlot method.
-type WebAppsGetContinuousWebJobSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetDeploymentOptions contains the optional parameters for the WebApps.GetDeployment method.
-type WebAppsGetDeploymentOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetDeploymentSlotOptions contains the optional parameters for the WebApps.GetDeploymentSlot method.
-type WebAppsGetDeploymentSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetDiagnosticLogsConfigurationOptions contains the optional parameters for the WebApps.GetDiagnosticLogsConfiguration method.
-type WebAppsGetDiagnosticLogsConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetDiagnosticLogsConfigurationSlotOptions contains the optional parameters for the WebApps.GetDiagnosticLogsConfigurationSlot method.
-type WebAppsGetDiagnosticLogsConfigurationSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetDomainOwnershipIdentifierOptions contains the optional parameters for the WebApps.GetDomainOwnershipIdentifier method.
-type WebAppsGetDomainOwnershipIdentifierOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebApps.GetDomainOwnershipIdentifierSlot method.
-type WebAppsGetDomainOwnershipIdentifierSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetFtpAllowedOptions contains the optional parameters for the WebApps.GetFtpAllowed method.
-type WebAppsGetFtpAllowedOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetFtpAllowedSlotOptions contains the optional parameters for the WebApps.GetFtpAllowedSlot method.
-type WebAppsGetFtpAllowedSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetFunctionOptions contains the optional parameters for the WebApps.GetFunction method.
-type WebAppsGetFunctionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetFunctionsAdminTokenOptions contains the optional parameters for the WebApps.GetFunctionsAdminToken method.
-type WebAppsGetFunctionsAdminTokenOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetFunctionsAdminTokenSlotOptions contains the optional parameters for the WebApps.GetFunctionsAdminTokenSlot method.
-type WebAppsGetFunctionsAdminTokenSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetHostNameBindingOptions contains the optional parameters for the WebApps.GetHostNameBinding method.
-type WebAppsGetHostNameBindingOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetHostNameBindingSlotOptions contains the optional parameters for the WebApps.GetHostNameBindingSlot method.
-type WebAppsGetHostNameBindingSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetHybridConnectionOptions contains the optional parameters for the WebApps.GetHybridConnection method.
-type WebAppsGetHybridConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetHybridConnectionSlotOptions contains the optional parameters for the WebApps.GetHybridConnectionSlot method.
-type WebAppsGetHybridConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceFunctionSlotOptions contains the optional parameters for the WebApps.GetInstanceFunctionSlot method.
-type WebAppsGetInstanceFunctionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceInfoOptions contains the optional parameters for the WebApps.GetInstanceInfo method.
-type WebAppsGetInstanceInfoOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceInfoSlotOptions contains the optional parameters for the WebApps.GetInstanceInfoSlot method.
-type WebAppsGetInstanceInfoSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceMSDeployLogOptions contains the optional parameters for the WebApps.GetInstanceMSDeployLog method.
-type WebAppsGetInstanceMSDeployLogOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceMSDeployLogSlotOptions contains the optional parameters for the WebApps.GetInstanceMSDeployLogSlot method.
-type WebAppsGetInstanceMSDeployLogSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceMsDeployStatusOptions contains the optional parameters for the WebApps.GetInstanceMsDeployStatus method.
-type WebAppsGetInstanceMsDeployStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceMsDeployStatusSlotOptions contains the optional parameters for the WebApps.GetInstanceMsDeployStatusSlot method.
-type WebAppsGetInstanceMsDeployStatusSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceProcessDumpOptions contains the optional parameters for the WebApps.GetInstanceProcessDump method.
-type WebAppsGetInstanceProcessDumpOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceProcessDumpSlotOptions contains the optional parameters for the WebApps.GetInstanceProcessDumpSlot method.
-type WebAppsGetInstanceProcessDumpSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceProcessModuleOptions contains the optional parameters for the WebApps.GetInstanceProcessModule method.
-type WebAppsGetInstanceProcessModuleOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceProcessModuleSlotOptions contains the optional parameters for the WebApps.GetInstanceProcessModuleSlot method.
-type WebAppsGetInstanceProcessModuleSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceProcessOptions contains the optional parameters for the WebApps.GetInstanceProcess method.
-type WebAppsGetInstanceProcessOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetInstanceProcessSlotOptions contains the optional parameters for the WebApps.GetInstanceProcessSlot method.
-type WebAppsGetInstanceProcessSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetMSDeployLogOptions contains the optional parameters for the WebApps.GetMSDeployLog method.
-type WebAppsGetMSDeployLogOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetMSDeployLogSlotOptions contains the optional parameters for the WebApps.GetMSDeployLogSlot method.
-type WebAppsGetMSDeployLogSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetMSDeployStatusOptions contains the optional parameters for the WebApps.GetMSDeployStatus method.
-type WebAppsGetMSDeployStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetMSDeployStatusSlotOptions contains the optional parameters for the WebApps.GetMSDeployStatusSlot method.
-type WebAppsGetMSDeployStatusSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetMigrateMySQLStatusOptions contains the optional parameters for the WebApps.GetMigrateMySQLStatus method.
-type WebAppsGetMigrateMySQLStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetMigrateMySQLStatusSlotOptions contains the optional parameters for the WebApps.GetMigrateMySQLStatusSlot method.
-type WebAppsGetMigrateMySQLStatusSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetNetworkTraceOperationOptions contains the optional parameters for the WebApps.GetNetworkTraceOperation method.
-type WebAppsGetNetworkTraceOperationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetNetworkTraceOperationSlotOptions contains the optional parameters for the WebApps.GetNetworkTraceOperationSlot method.
-type WebAppsGetNetworkTraceOperationSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetNetworkTraceOperationSlotV2Options contains the optional parameters for the WebApps.GetNetworkTraceOperationSlotV2 method.
-type WebAppsGetNetworkTraceOperationSlotV2Options struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetNetworkTraceOperationV2Options contains the optional parameters for the WebApps.GetNetworkTraceOperationV2 method.
-type WebAppsGetNetworkTraceOperationV2Options struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetNetworkTracesOptions contains the optional parameters for the WebApps.GetNetworkTraces method.
-type WebAppsGetNetworkTracesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetNetworkTracesSlotOptions contains the optional parameters for the WebApps.GetNetworkTracesSlot method.
-type WebAppsGetNetworkTracesSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetNetworkTracesSlotV2Options contains the optional parameters for the WebApps.GetNetworkTracesSlotV2 method.
-type WebAppsGetNetworkTracesSlotV2Options struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetNetworkTracesV2Options contains the optional parameters for the WebApps.GetNetworkTracesV2 method.
-type WebAppsGetNetworkTracesV2Options struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetOptions contains the optional parameters for the WebApps.Get method.
-type WebAppsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPremierAddOnOptions contains the optional parameters for the WebApps.GetPremierAddOn method.
-type WebAppsGetPremierAddOnOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPremierAddOnSlotOptions contains the optional parameters for the WebApps.GetPremierAddOnSlot method.
-type WebAppsGetPremierAddOnSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPrivateAccessOptions contains the optional parameters for the WebApps.GetPrivateAccess method.
-type WebAppsGetPrivateAccessOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPrivateAccessSlotOptions contains the optional parameters for the WebApps.GetPrivateAccessSlot method.
-type WebAppsGetPrivateAccessSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPrivateEndpointConnectionListOptions contains the optional parameters for the WebApps.GetPrivateEndpointConnectionList method.
-type WebAppsGetPrivateEndpointConnectionListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPrivateEndpointConnectionListSlotOptions contains the optional parameters for the WebApps.GetPrivateEndpointConnectionListSlot method.
-type WebAppsGetPrivateEndpointConnectionListSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPrivateEndpointConnectionOptions contains the optional parameters for the WebApps.GetPrivateEndpointConnection method.
-type WebAppsGetPrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPrivateEndpointConnectionSlotOptions contains the optional parameters for the WebApps.GetPrivateEndpointConnectionSlot method.
-type WebAppsGetPrivateEndpointConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPrivateLinkResourcesOptions contains the optional parameters for the WebApps.GetPrivateLinkResources method.
-type WebAppsGetPrivateLinkResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPrivateLinkResourcesSlotOptions contains the optional parameters for the WebApps.GetPrivateLinkResourcesSlot method.
-type WebAppsGetPrivateLinkResourcesSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetProcessDumpOptions contains the optional parameters for the WebApps.GetProcessDump method.
-type WebAppsGetProcessDumpOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetProcessDumpSlotOptions contains the optional parameters for the WebApps.GetProcessDumpSlot method.
-type WebAppsGetProcessDumpSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetProcessModuleOptions contains the optional parameters for the WebApps.GetProcessModule method.
-type WebAppsGetProcessModuleOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetProcessModuleSlotOptions contains the optional parameters for the WebApps.GetProcessModuleSlot method.
-type WebAppsGetProcessModuleSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetProcessOptions contains the optional parameters for the WebApps.GetProcess method.
-type WebAppsGetProcessOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetProcessSlotOptions contains the optional parameters for the WebApps.GetProcessSlot method.
-type WebAppsGetProcessSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPublicCertificateOptions contains the optional parameters for the WebApps.GetPublicCertificate method.
-type WebAppsGetPublicCertificateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetPublicCertificateSlotOptions contains the optional parameters for the WebApps.GetPublicCertificateSlot method.
-type WebAppsGetPublicCertificateSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetRelayServiceConnectionOptions contains the optional parameters for the WebApps.GetRelayServiceConnection method.
-type WebAppsGetRelayServiceConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetRelayServiceConnectionSlotOptions contains the optional parameters for the WebApps.GetRelayServiceConnectionSlot method.
-type WebAppsGetRelayServiceConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetScmAllowedOptions contains the optional parameters for the WebApps.GetScmAllowed method.
-type WebAppsGetScmAllowedOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetScmAllowedSlotOptions contains the optional parameters for the WebApps.GetScmAllowedSlot method.
-type WebAppsGetScmAllowedSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSiteConnectionStringKeyVaultReferenceOptions contains the optional parameters for the WebApps.GetSiteConnectionStringKeyVaultReference method.
-type WebAppsGetSiteConnectionStringKeyVaultReferenceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSiteConnectionStringKeyVaultReferenceSlotOptions contains the optional parameters for the WebApps.GetSiteConnectionStringKeyVaultReferenceSlot
+// WebAppsClientDeleteSwiftVirtualNetworkOptions contains the optional parameters for the WebAppsClient.DeleteSwiftVirtualNetwork
 // method.
-type WebAppsGetSiteConnectionStringKeyVaultReferenceSlotOptions struct {
+type WebAppsClientDeleteSwiftVirtualNetworkOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferencesOptions contains the optional parameters for the WebApps.GetSiteConnectionStringKeyVaultReferences method.
-type WebAppsGetSiteConnectionStringKeyVaultReferencesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSiteConnectionStringKeyVaultReferencesSlotOptions contains the optional parameters for the WebApps.GetSiteConnectionStringKeyVaultReferencesSlot
+// WebAppsClientDeleteSwiftVirtualNetworkSlotOptions contains the optional parameters for the WebAppsClient.DeleteSwiftVirtualNetworkSlot
 // method.
-type WebAppsGetSiteConnectionStringKeyVaultReferencesSlotOptions struct {
+type WebAppsClientDeleteSwiftVirtualNetworkSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsGetSiteExtensionOptions contains the optional parameters for the WebApps.GetSiteExtension method.
-type WebAppsGetSiteExtensionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSiteExtensionSlotOptions contains the optional parameters for the WebApps.GetSiteExtensionSlot method.
-type WebAppsGetSiteExtensionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSitePhpErrorLogFlagOptions contains the optional parameters for the WebApps.GetSitePhpErrorLogFlag method.
-type WebAppsGetSitePhpErrorLogFlagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSitePhpErrorLogFlagSlotOptions contains the optional parameters for the WebApps.GetSitePhpErrorLogFlagSlot method.
-type WebAppsGetSitePhpErrorLogFlagSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSlotOptions contains the optional parameters for the WebApps.GetSlot method.
-type WebAppsGetSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSourceControlOptions contains the optional parameters for the WebApps.GetSourceControl method.
-type WebAppsGetSourceControlOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSourceControlSlotOptions contains the optional parameters for the WebApps.GetSourceControlSlot method.
-type WebAppsGetSourceControlSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebApps.GetSwiftVirtualNetworkConnection method.
-type WebAppsGetSwiftVirtualNetworkConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetSwiftVirtualNetworkConnectionSlotOptions contains the optional parameters for the WebApps.GetSwiftVirtualNetworkConnectionSlot method.
-type WebAppsGetSwiftVirtualNetworkConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetTriggeredWebJobHistoryOptions contains the optional parameters for the WebApps.GetTriggeredWebJobHistory method.
-type WebAppsGetTriggeredWebJobHistoryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebApps.GetTriggeredWebJobHistorySlot method.
-type WebAppsGetTriggeredWebJobHistorySlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetTriggeredWebJobOptions contains the optional parameters for the WebApps.GetTriggeredWebJob method.
-type WebAppsGetTriggeredWebJobOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetTriggeredWebJobSlotOptions contains the optional parameters for the WebApps.GetTriggeredWebJobSlot method.
-type WebAppsGetTriggeredWebJobSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetVnetConnectionGatewayOptions contains the optional parameters for the WebApps.GetVnetConnectionGateway method.
-type WebAppsGetVnetConnectionGatewayOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetVnetConnectionGatewaySlotOptions contains the optional parameters for the WebApps.GetVnetConnectionGatewaySlot method.
-type WebAppsGetVnetConnectionGatewaySlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetVnetConnectionOptions contains the optional parameters for the WebApps.GetVnetConnection method.
-type WebAppsGetVnetConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetVnetConnectionSlotOptions contains the optional parameters for the WebApps.GetVnetConnectionSlot method.
-type WebAppsGetVnetConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetWebJobOptions contains the optional parameters for the WebApps.GetWebJob method.
-type WebAppsGetWebJobOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetWebJobSlotOptions contains the optional parameters for the WebApps.GetWebJobSlot method.
-type WebAppsGetWebJobSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetWebSiteContainerLogsOptions contains the optional parameters for the WebApps.GetWebSiteContainerLogs method.
-type WebAppsGetWebSiteContainerLogsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsGetWebSiteContainerLogsSlotOptions contains the optional parameters for the WebApps.GetWebSiteContainerLogsSlot method.
-type WebAppsGetWebSiteContainerLogsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsIsCloneableOptions contains the optional parameters for the WebApps.IsCloneable method.
-type WebAppsIsCloneableOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsIsCloneableSlotOptions contains the optional parameters for the WebApps.IsCloneableSlot method.
-type WebAppsIsCloneableSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListApplicationSettingsOptions contains the optional parameters for the WebApps.ListApplicationSettings method.
-type WebAppsListApplicationSettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListApplicationSettingsSlotOptions contains the optional parameters for the WebApps.ListApplicationSettingsSlot method.
-type WebAppsListApplicationSettingsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListAzureStorageAccountsOptions contains the optional parameters for the WebApps.ListAzureStorageAccounts method.
-type WebAppsListAzureStorageAccountsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListAzureStorageAccountsSlotOptions contains the optional parameters for the WebApps.ListAzureStorageAccountsSlot method.
-type WebAppsListAzureStorageAccountsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListBackupStatusSecretsOptions contains the optional parameters for the WebApps.ListBackupStatusSecrets method.
-type WebAppsListBackupStatusSecretsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListBackupStatusSecretsSlotOptions contains the optional parameters for the WebApps.ListBackupStatusSecretsSlot method.
-type WebAppsListBackupStatusSecretsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListBackupsOptions contains the optional parameters for the WebApps.ListBackups method.
-type WebAppsListBackupsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListBackupsSlotOptions contains the optional parameters for the WebApps.ListBackupsSlot method.
-type WebAppsListBackupsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListBasicPublishingCredentialsPoliciesOptions contains the optional parameters for the WebApps.ListBasicPublishingCredentialsPolicies method.
-type WebAppsListBasicPublishingCredentialsPoliciesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsListBasicPublishingCredentialsPoliciesSlotOptions contains the optional parameters for the WebApps.ListBasicPublishingCredentialsPoliciesSlot
+// WebAppsClientDeleteTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.DeleteTriggeredWebJob
 // method.
-type WebAppsListBasicPublishingCredentialsPoliciesSlotOptions struct {
+type WebAppsClientDeleteTriggeredWebJobOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListByResourceGroupOptions contains the optional parameters for the WebApps.ListByResourceGroup method.
-type WebAppsListByResourceGroupOptions struct {
-	// Specify <strong>true</strong> to include deployment slots in results. The default is false, which only gives you the production slot of all apps.
+// WebAppsClientDeleteTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.DeleteTriggeredWebJobSlot
+// method.
+type WebAppsClientDeleteTriggeredWebJobSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteVnetConnectionOptions contains the optional parameters for the WebAppsClient.DeleteVnetConnection method.
+type WebAppsClientDeleteVnetConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDeleteVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteVnetConnectionSlot
+// method.
+type WebAppsClientDeleteVnetConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDiscoverBackupOptions contains the optional parameters for the WebAppsClient.DiscoverBackup method.
+type WebAppsClientDiscoverBackupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientDiscoverBackupSlotOptions contains the optional parameters for the WebAppsClient.DiscoverBackupSlot method.
+type WebAppsClientDiscoverBackupSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGenerateNewSitePublishingPasswordOptions contains the optional parameters for the WebAppsClient.GenerateNewSitePublishingPassword
+// method.
+type WebAppsClientGenerateNewSitePublishingPasswordOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGenerateNewSitePublishingPasswordSlotOptions contains the optional parameters for the WebAppsClient.GenerateNewSitePublishingPasswordSlot
+// method.
+type WebAppsClientGenerateNewSitePublishingPasswordSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAppSettingKeyVaultReferenceOptions contains the optional parameters for the WebAppsClient.GetAppSettingKeyVaultReference
+// method.
+type WebAppsClientGetAppSettingKeyVaultReferenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions contains the optional parameters for the WebAppsClient.GetAppSettingKeyVaultReferenceSlot
+// method.
+type WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAppSettingsKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.GetAppSettingsKeyVaultReferences
+// method.
+type WebAppsClientGetAppSettingsKeyVaultReferencesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.GetAppSettingsKeyVaultReferencesSlot
+// method.
+type WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAuthSettingsOptions contains the optional parameters for the WebAppsClient.GetAuthSettings method.
+type WebAppsClientGetAuthSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAuthSettingsSlotOptions contains the optional parameters for the WebAppsClient.GetAuthSettingsSlot method.
+type WebAppsClientGetAuthSettingsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAuthSettingsV2Options contains the optional parameters for the WebAppsClient.GetAuthSettingsV2 method.
+type WebAppsClientGetAuthSettingsV2Options struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAuthSettingsV2SlotOptions contains the optional parameters for the WebAppsClient.GetAuthSettingsV2Slot
+// method.
+type WebAppsClientGetAuthSettingsV2SlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetAuthSettingsV2WithoutSecretsOptions contains the optional parameters for the WebAppsClient.GetAuthSettingsV2WithoutSecrets
+// method.
+type WebAppsClientGetAuthSettingsV2WithoutSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetBackupConfigurationOptions contains the optional parameters for the WebAppsClient.GetBackupConfiguration
+// method.
+type WebAppsClientGetBackupConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetBackupConfigurationSlot
+// method.
+type WebAppsClientGetBackupConfigurationSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetBackupStatusOptions contains the optional parameters for the WebAppsClient.GetBackupStatus method.
+type WebAppsClientGetBackupStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetBackupStatusSlotOptions contains the optional parameters for the WebAppsClient.GetBackupStatusSlot method.
+type WebAppsClientGetBackupStatusSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetConfigurationOptions contains the optional parameters for the WebAppsClient.GetConfiguration method.
+type WebAppsClientGetConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSlot method.
+type WebAppsClientGetConfigurationSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetConfigurationSnapshotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSnapshot
+// method.
+type WebAppsClientGetConfigurationSnapshotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetConfigurationSnapshotSlotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSnapshotSlot
+// method.
+type WebAppsClientGetConfigurationSnapshotSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetContainerLogsZipOptions contains the optional parameters for the WebAppsClient.GetContainerLogsZip method.
+type WebAppsClientGetContainerLogsZipOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetContainerLogsZipSlotOptions contains the optional parameters for the WebAppsClient.GetContainerLogsZipSlot
+// method.
+type WebAppsClientGetContainerLogsZipSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetContinuousWebJobOptions contains the optional parameters for the WebAppsClient.GetContinuousWebJob method.
+type WebAppsClientGetContinuousWebJobOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetContinuousWebJobSlot
+// method.
+type WebAppsClientGetContinuousWebJobSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetDeploymentOptions contains the optional parameters for the WebAppsClient.GetDeployment method.
+type WebAppsClientGetDeploymentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetDeploymentSlotOptions contains the optional parameters for the WebAppsClient.GetDeploymentSlot method.
+type WebAppsClientGetDeploymentSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetDiagnosticLogsConfigurationOptions contains the optional parameters for the WebAppsClient.GetDiagnosticLogsConfiguration
+// method.
+type WebAppsClientGetDiagnosticLogsConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetDiagnosticLogsConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetDiagnosticLogsConfigurationSlot
+// method.
+type WebAppsClientGetDiagnosticLogsConfigurationSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.GetDomainOwnershipIdentifier
+// method.
+type WebAppsClientGetDomainOwnershipIdentifierOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.GetDomainOwnershipIdentifierSlot
+// method.
+type WebAppsClientGetDomainOwnershipIdentifierSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetFtpAllowedOptions contains the optional parameters for the WebAppsClient.GetFtpAllowed method.
+type WebAppsClientGetFtpAllowedOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetFtpAllowedSlotOptions contains the optional parameters for the WebAppsClient.GetFtpAllowedSlot method.
+type WebAppsClientGetFtpAllowedSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetFunctionOptions contains the optional parameters for the WebAppsClient.GetFunction method.
+type WebAppsClientGetFunctionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetFunctionsAdminTokenOptions contains the optional parameters for the WebAppsClient.GetFunctionsAdminToken
+// method.
+type WebAppsClientGetFunctionsAdminTokenOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetFunctionsAdminTokenSlotOptions contains the optional parameters for the WebAppsClient.GetFunctionsAdminTokenSlot
+// method.
+type WebAppsClientGetFunctionsAdminTokenSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetHostNameBindingOptions contains the optional parameters for the WebAppsClient.GetHostNameBinding method.
+type WebAppsClientGetHostNameBindingOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.GetHostNameBindingSlot
+// method.
+type WebAppsClientGetHostNameBindingSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetHybridConnectionOptions contains the optional parameters for the WebAppsClient.GetHybridConnection method.
+type WebAppsClientGetHybridConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetHybridConnectionSlot
+// method.
+type WebAppsClientGetHybridConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceFunctionSlot
+// method.
+type WebAppsClientGetInstanceFunctionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceInfoOptions contains the optional parameters for the WebAppsClient.GetInstanceInfo method.
+type WebAppsClientGetInstanceInfoOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceInfoSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceInfoSlot method.
+type WebAppsClientGetInstanceInfoSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceMSDeployLogOptions contains the optional parameters for the WebAppsClient.GetInstanceMSDeployLog
+// method.
+type WebAppsClientGetInstanceMSDeployLogOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceMSDeployLogSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceMSDeployLogSlot
+// method.
+type WebAppsClientGetInstanceMSDeployLogSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceMsDeployStatusOptions contains the optional parameters for the WebAppsClient.GetInstanceMsDeployStatus
+// method.
+type WebAppsClientGetInstanceMsDeployStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceMsDeployStatusSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceMsDeployStatusSlot
+// method.
+type WebAppsClientGetInstanceMsDeployStatusSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceProcessDumpOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessDump
+// method.
+type WebAppsClientGetInstanceProcessDumpOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceProcessDumpSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessDumpSlot
+// method.
+type WebAppsClientGetInstanceProcessDumpSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceProcessModuleOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessModule
+// method.
+type WebAppsClientGetInstanceProcessModuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceProcessModuleSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessModuleSlot
+// method.
+type WebAppsClientGetInstanceProcessModuleSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceProcessOptions contains the optional parameters for the WebAppsClient.GetInstanceProcess method.
+type WebAppsClientGetInstanceProcessOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetInstanceProcessSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessSlot
+// method.
+type WebAppsClientGetInstanceProcessSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetMSDeployLogOptions contains the optional parameters for the WebAppsClient.GetMSDeployLog method.
+type WebAppsClientGetMSDeployLogOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetMSDeployLogSlotOptions contains the optional parameters for the WebAppsClient.GetMSDeployLogSlot method.
+type WebAppsClientGetMSDeployLogSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetMSDeployStatusOptions contains the optional parameters for the WebAppsClient.GetMSDeployStatus method.
+type WebAppsClientGetMSDeployStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetMSDeployStatusSlotOptions contains the optional parameters for the WebAppsClient.GetMSDeployStatusSlot
+// method.
+type WebAppsClientGetMSDeployStatusSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetMigrateMySQLStatusOptions contains the optional parameters for the WebAppsClient.GetMigrateMySQLStatus
+// method.
+type WebAppsClientGetMigrateMySQLStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetMigrateMySQLStatusSlotOptions contains the optional parameters for the WebAppsClient.GetMigrateMySQLStatusSlot
+// method.
+type WebAppsClientGetMigrateMySQLStatusSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetNetworkTraceOperationOptions contains the optional parameters for the WebAppsClient.GetNetworkTraceOperation
+// method.
+type WebAppsClientGetNetworkTraceOperationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetNetworkTraceOperationSlotOptions contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationSlot
+// method.
+type WebAppsClientGetNetworkTraceOperationSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetNetworkTraceOperationSlotV2Options contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationSlotV2
+// method.
+type WebAppsClientGetNetworkTraceOperationSlotV2Options struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetNetworkTraceOperationV2Options contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationV2
+// method.
+type WebAppsClientGetNetworkTraceOperationV2Options struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetNetworkTracesOptions contains the optional parameters for the WebAppsClient.GetNetworkTraces method.
+type WebAppsClientGetNetworkTracesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetNetworkTracesSlotOptions contains the optional parameters for the WebAppsClient.GetNetworkTracesSlot method.
+type WebAppsClientGetNetworkTracesSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetNetworkTracesSlotV2Options contains the optional parameters for the WebAppsClient.GetNetworkTracesSlotV2
+// method.
+type WebAppsClientGetNetworkTracesSlotV2Options struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetNetworkTracesV2Options contains the optional parameters for the WebAppsClient.GetNetworkTracesV2 method.
+type WebAppsClientGetNetworkTracesV2Options struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetOneDeployStatusOptions contains the optional parameters for the WebAppsClient.GetOneDeployStatus method.
+type WebAppsClientGetOneDeployStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetOptions contains the optional parameters for the WebAppsClient.Get method.
+type WebAppsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPremierAddOnOptions contains the optional parameters for the WebAppsClient.GetPremierAddOn method.
+type WebAppsClientGetPremierAddOnOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.GetPremierAddOnSlot method.
+type WebAppsClientGetPremierAddOnSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPrivateAccessOptions contains the optional parameters for the WebAppsClient.GetPrivateAccess method.
+type WebAppsClientGetPrivateAccessOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPrivateAccessSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateAccessSlot method.
+type WebAppsClientGetPrivateAccessSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnectionList
+// method.
+type WebAppsClientGetPrivateEndpointConnectionListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPrivateEndpointConnectionListSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnectionListSlot
+// method.
+type WebAppsClientGetPrivateEndpointConnectionListSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPrivateEndpointConnectionOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnection
+// method.
+type WebAppsClientGetPrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPrivateEndpointConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnectionSlot
+// method.
+type WebAppsClientGetPrivateEndpointConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPrivateLinkResourcesOptions contains the optional parameters for the WebAppsClient.GetPrivateLinkResources
+// method.
+type WebAppsClientGetPrivateLinkResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPrivateLinkResourcesSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateLinkResourcesSlot
+// method.
+type WebAppsClientGetPrivateLinkResourcesSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetProcessDumpOptions contains the optional parameters for the WebAppsClient.GetProcessDump method.
+type WebAppsClientGetProcessDumpOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetProcessDumpSlotOptions contains the optional parameters for the WebAppsClient.GetProcessDumpSlot method.
+type WebAppsClientGetProcessDumpSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetProcessModuleOptions contains the optional parameters for the WebAppsClient.GetProcessModule method.
+type WebAppsClientGetProcessModuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetProcessModuleSlotOptions contains the optional parameters for the WebAppsClient.GetProcessModuleSlot method.
+type WebAppsClientGetProcessModuleSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetProcessOptions contains the optional parameters for the WebAppsClient.GetProcess method.
+type WebAppsClientGetProcessOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetProcessSlotOptions contains the optional parameters for the WebAppsClient.GetProcessSlot method.
+type WebAppsClientGetProcessSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPublicCertificateOptions contains the optional parameters for the WebAppsClient.GetPublicCertificate method.
+type WebAppsClientGetPublicCertificateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetPublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.GetPublicCertificateSlot
+// method.
+type WebAppsClientGetPublicCertificateSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.GetRelayServiceConnection
+// method.
+type WebAppsClientGetRelayServiceConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetRelayServiceConnectionSlot
+// method.
+type WebAppsClientGetRelayServiceConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetScmAllowedOptions contains the optional parameters for the WebAppsClient.GetScmAllowed method.
+type WebAppsClientGetScmAllowedOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetScmAllowedSlotOptions contains the optional parameters for the WebAppsClient.GetScmAllowedSlot method.
+type WebAppsClientGetScmAllowedSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSiteConnectionStringKeyVaultReferenceOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReference
+// method.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReferenceSlot
+// method.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReferences
+// method.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReferencesSlot
+// method.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSiteExtensionOptions contains the optional parameters for the WebAppsClient.GetSiteExtension method.
+type WebAppsClientGetSiteExtensionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.GetSiteExtensionSlot method.
+type WebAppsClientGetSiteExtensionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSitePhpErrorLogFlagOptions contains the optional parameters for the WebAppsClient.GetSitePhpErrorLogFlag
+// method.
+type WebAppsClientGetSitePhpErrorLogFlagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSitePhpErrorLogFlagSlotOptions contains the optional parameters for the WebAppsClient.GetSitePhpErrorLogFlagSlot
+// method.
+type WebAppsClientGetSitePhpErrorLogFlagSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSlotOptions contains the optional parameters for the WebAppsClient.GetSlot method.
+type WebAppsClientGetSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSourceControlOptions contains the optional parameters for the WebAppsClient.GetSourceControl method.
+type WebAppsClientGetSourceControlOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSourceControlSlotOptions contains the optional parameters for the WebAppsClient.GetSourceControlSlot method.
+type WebAppsClientGetSourceControlSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebAppsClient.GetSwiftVirtualNetworkConnection
+// method.
+type WebAppsClientGetSwiftVirtualNetworkConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetSwiftVirtualNetworkConnectionSlot
+// method.
+type WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobHistory
+// method.
+type WebAppsClientGetTriggeredWebJobHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobHistorySlot
+// method.
+type WebAppsClientGetTriggeredWebJobHistorySlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJob method.
+type WebAppsClientGetTriggeredWebJobOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobSlot
+// method.
+type WebAppsClientGetTriggeredWebJobSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionGateway
+// method.
+type WebAppsClientGetVnetConnectionGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionGatewaySlot
+// method.
+type WebAppsClientGetVnetConnectionGatewaySlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetVnetConnectionOptions contains the optional parameters for the WebAppsClient.GetVnetConnection method.
+type WebAppsClientGetVnetConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionSlot
+// method.
+type WebAppsClientGetVnetConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetWebJobOptions contains the optional parameters for the WebAppsClient.GetWebJob method.
+type WebAppsClientGetWebJobOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetWebJobSlot method.
+type WebAppsClientGetWebJobSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetWebSiteContainerLogsOptions contains the optional parameters for the WebAppsClient.GetWebSiteContainerLogs
+// method.
+type WebAppsClientGetWebSiteContainerLogsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientGetWebSiteContainerLogsSlotOptions contains the optional parameters for the WebAppsClient.GetWebSiteContainerLogsSlot
+// method.
+type WebAppsClientGetWebSiteContainerLogsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientIsCloneableOptions contains the optional parameters for the WebAppsClient.IsCloneable method.
+type WebAppsClientIsCloneableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientIsCloneableSlotOptions contains the optional parameters for the WebAppsClient.IsCloneableSlot method.
+type WebAppsClientIsCloneableSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListApplicationSettingsOptions contains the optional parameters for the WebAppsClient.ListApplicationSettings
+// method.
+type WebAppsClientListApplicationSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListApplicationSettingsSlotOptions contains the optional parameters for the WebAppsClient.ListApplicationSettingsSlot
+// method.
+type WebAppsClientListApplicationSettingsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListAzureStorageAccountsOptions contains the optional parameters for the WebAppsClient.ListAzureStorageAccounts
+// method.
+type WebAppsClientListAzureStorageAccountsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListAzureStorageAccountsSlotOptions contains the optional parameters for the WebAppsClient.ListAzureStorageAccountsSlot
+// method.
+type WebAppsClientListAzureStorageAccountsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListBackupStatusSecretsOptions contains the optional parameters for the WebAppsClient.ListBackupStatusSecrets
+// method.
+type WebAppsClientListBackupStatusSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListBackupStatusSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupStatusSecretsSlot
+// method.
+type WebAppsClientListBackupStatusSecretsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.ListBackups method.
+type WebAppsClientListBackupsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListBackupsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupsSlot method.
+type WebAppsClientListBackupsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListBasicPublishingCredentialsPoliciesOptions contains the optional parameters for the WebAppsClient.ListBasicPublishingCredentialsPolicies
+// method.
+type WebAppsClientListBasicPublishingCredentialsPoliciesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions contains the optional parameters for the WebAppsClient.ListBasicPublishingCredentialsPoliciesSlot
+// method.
+type WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.ListByResourceGroup method.
+type WebAppsClientListByResourceGroupOptions struct {
+	// Specify true to include deployment slots in results. The default is false, which only gives you the production slot of
+	// all apps.
 	IncludeSlots *bool
 }
 
-// WebAppsListConfigurationSnapshotInfoOptions contains the optional parameters for the WebApps.ListConfigurationSnapshotInfo method.
-type WebAppsListConfigurationSnapshotInfoOptions struct {
+// WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfo
+// method.
+type WebAppsClientListConfigurationSnapshotInfoOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebApps.ListConfigurationSnapshotInfoSlot method.
-type WebAppsListConfigurationSnapshotInfoSlotOptions struct {
+// WebAppsClientListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfoSlot
+// method.
+type WebAppsClientListConfigurationSnapshotInfoSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListConfigurationsOptions contains the optional parameters for the WebApps.ListConfigurations method.
-type WebAppsListConfigurationsOptions struct {
+// WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.ListConfigurations method.
+type WebAppsClientListConfigurationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListConfigurationsSlotOptions contains the optional parameters for the WebApps.ListConfigurationsSlot method.
-type WebAppsListConfigurationsSlotOptions struct {
+// WebAppsClientListConfigurationsSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationsSlot
+// method.
+type WebAppsClientListConfigurationsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListConnectionStringsOptions contains the optional parameters for the WebApps.ListConnectionStrings method.
-type WebAppsListConnectionStringsOptions struct {
+// WebAppsClientListConnectionStringsOptions contains the optional parameters for the WebAppsClient.ListConnectionStrings
+// method.
+type WebAppsClientListConnectionStringsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListConnectionStringsSlotOptions contains the optional parameters for the WebApps.ListConnectionStringsSlot method.
-type WebAppsListConnectionStringsSlotOptions struct {
+// WebAppsClientListConnectionStringsSlotOptions contains the optional parameters for the WebAppsClient.ListConnectionStringsSlot
+// method.
+type WebAppsClientListConnectionStringsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListContinuousWebJobsOptions contains the optional parameters for the WebApps.ListContinuousWebJobs method.
-type WebAppsListContinuousWebJobsOptions struct {
+// WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobs
+// method.
+type WebAppsClientListContinuousWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListContinuousWebJobsSlotOptions contains the optional parameters for the WebApps.ListContinuousWebJobsSlot method.
-type WebAppsListContinuousWebJobsSlotOptions struct {
+// WebAppsClientListContinuousWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobsSlot
+// method.
+type WebAppsClientListContinuousWebJobsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListDeploymentLogOptions contains the optional parameters for the WebApps.ListDeploymentLog method.
-type WebAppsListDeploymentLogOptions struct {
+// WebAppsClientListDeploymentLogOptions contains the optional parameters for the WebAppsClient.ListDeploymentLog method.
+type WebAppsClientListDeploymentLogOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListDeploymentLogSlotOptions contains the optional parameters for the WebApps.ListDeploymentLogSlot method.
-type WebAppsListDeploymentLogSlotOptions struct {
+// WebAppsClientListDeploymentLogSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentLogSlot
+// method.
+type WebAppsClientListDeploymentLogSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListDeploymentsOptions contains the optional parameters for the WebApps.ListDeployments method.
-type WebAppsListDeploymentsOptions struct {
+// WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.ListDeployments method.
+type WebAppsClientListDeploymentsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListDeploymentsSlotOptions contains the optional parameters for the WebApps.ListDeploymentsSlot method.
-type WebAppsListDeploymentsSlotOptions struct {
+// WebAppsClientListDeploymentsSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentsSlot method.
+type WebAppsClientListDeploymentsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebApps.ListDomainOwnershipIdentifiers method.
-type WebAppsListDomainOwnershipIdentifiersOptions struct {
+// WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiers
+// method.
+type WebAppsClientListDomainOwnershipIdentifiersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebApps.ListDomainOwnershipIdentifiersSlot method.
-type WebAppsListDomainOwnershipIdentifiersSlotOptions struct {
+// WebAppsClientListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiersSlot
+// method.
+type WebAppsClientListDomainOwnershipIdentifiersSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListFunctionKeysOptions contains the optional parameters for the WebApps.ListFunctionKeys method.
-type WebAppsListFunctionKeysOptions struct {
+// WebAppsClientListFunctionKeysOptions contains the optional parameters for the WebAppsClient.ListFunctionKeys method.
+type WebAppsClientListFunctionKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListFunctionKeysSlotOptions contains the optional parameters for the WebApps.ListFunctionKeysSlot method.
-type WebAppsListFunctionKeysSlotOptions struct {
+// WebAppsClientListFunctionKeysSlotOptions contains the optional parameters for the WebAppsClient.ListFunctionKeysSlot method.
+type WebAppsClientListFunctionKeysSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListFunctionSecretsOptions contains the optional parameters for the WebApps.ListFunctionSecrets method.
-type WebAppsListFunctionSecretsOptions struct {
+// WebAppsClientListFunctionSecretsOptions contains the optional parameters for the WebAppsClient.ListFunctionSecrets method.
+type WebAppsClientListFunctionSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListFunctionSecretsSlotOptions contains the optional parameters for the WebApps.ListFunctionSecretsSlot method.
-type WebAppsListFunctionSecretsSlotOptions struct {
+// WebAppsClientListFunctionSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListFunctionSecretsSlot
+// method.
+type WebAppsClientListFunctionSecretsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListFunctionsOptions contains the optional parameters for the WebApps.ListFunctions method.
-type WebAppsListFunctionsOptions struct {
+// WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.ListFunctions method.
+type WebAppsClientListFunctionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListHostKeysOptions contains the optional parameters for the WebApps.ListHostKeys method.
-type WebAppsListHostKeysOptions struct {
+// WebAppsClientListHostKeysOptions contains the optional parameters for the WebAppsClient.ListHostKeys method.
+type WebAppsClientListHostKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListHostKeysSlotOptions contains the optional parameters for the WebApps.ListHostKeysSlot method.
-type WebAppsListHostKeysSlotOptions struct {
+// WebAppsClientListHostKeysSlotOptions contains the optional parameters for the WebAppsClient.ListHostKeysSlot method.
+type WebAppsClientListHostKeysSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListHostNameBindingsOptions contains the optional parameters for the WebApps.ListHostNameBindings method.
-type WebAppsListHostNameBindingsOptions struct {
+// WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.ListHostNameBindings method.
+type WebAppsClientListHostNameBindingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListHostNameBindingsSlotOptions contains the optional parameters for the WebApps.ListHostNameBindingsSlot method.
-type WebAppsListHostNameBindingsSlotOptions struct {
+// WebAppsClientListHostNameBindingsSlotOptions contains the optional parameters for the WebAppsClient.ListHostNameBindingsSlot
+// method.
+type WebAppsClientListHostNameBindingsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListHybridConnectionsOptions contains the optional parameters for the WebApps.ListHybridConnections method.
-type WebAppsListHybridConnectionsOptions struct {
+// WebAppsClientListHybridConnectionsOptions contains the optional parameters for the WebAppsClient.ListHybridConnections
+// method.
+type WebAppsClientListHybridConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListHybridConnectionsSlotOptions contains the optional parameters for the WebApps.ListHybridConnectionsSlot method.
-type WebAppsListHybridConnectionsSlotOptions struct {
+// WebAppsClientListHybridConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListHybridConnectionsSlot
+// method.
+type WebAppsClientListHybridConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceFunctionsSlotOptions contains the optional parameters for the WebApps.ListInstanceFunctionsSlot method.
-type WebAppsListInstanceFunctionsSlotOptions struct {
+// WebAppsClientListInstanceFunctionsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceFunctionsSlot
+// method.
+type WebAppsClientListInstanceFunctionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceIdentifiersOptions contains the optional parameters for the WebApps.ListInstanceIdentifiers method.
-type WebAppsListInstanceIdentifiersOptions struct {
+// WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiers
+// method.
+type WebAppsClientListInstanceIdentifiersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceIdentifiersSlotOptions contains the optional parameters for the WebApps.ListInstanceIdentifiersSlot method.
-type WebAppsListInstanceIdentifiersSlotOptions struct {
+// WebAppsClientListInstanceIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiersSlot
+// method.
+type WebAppsClientListInstanceIdentifiersSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceProcessModulesOptions contains the optional parameters for the WebApps.ListInstanceProcessModules method.
-type WebAppsListInstanceProcessModulesOptions struct {
+// WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModules
+// method.
+type WebAppsClientListInstanceProcessModulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceProcessModulesSlotOptions contains the optional parameters for the WebApps.ListInstanceProcessModulesSlot method.
-type WebAppsListInstanceProcessModulesSlotOptions struct {
+// WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModulesSlot
+// method.
+type WebAppsClientListInstanceProcessModulesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceProcessThreadsOptions contains the optional parameters for the WebApps.ListInstanceProcessThreads method.
-type WebAppsListInstanceProcessThreadsOptions struct {
+// WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreads
+// method.
+type WebAppsClientListInstanceProcessThreadsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebApps.ListInstanceProcessThreadsSlot method.
-type WebAppsListInstanceProcessThreadsSlotOptions struct {
+// WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreadsSlot
+// method.
+type WebAppsClientListInstanceProcessThreadsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceProcessesOptions contains the optional parameters for the WebApps.ListInstanceProcesses method.
-type WebAppsListInstanceProcessesOptions struct {
+// WebAppsClientListInstanceProcessesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcesses
+// method.
+type WebAppsClientListInstanceProcessesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListInstanceProcessesSlotOptions contains the optional parameters for the WebApps.ListInstanceProcessesSlot method.
-type WebAppsListInstanceProcessesSlotOptions struct {
+// WebAppsClientListInstanceProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessesSlot
+// method.
+type WebAppsClientListInstanceProcessesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListMetadataOptions contains the optional parameters for the WebApps.ListMetadata method.
-type WebAppsListMetadataOptions struct {
+// WebAppsClientListMetadataOptions contains the optional parameters for the WebAppsClient.ListMetadata method.
+type WebAppsClientListMetadataOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListMetadataSlotOptions contains the optional parameters for the WebApps.ListMetadataSlot method.
-type WebAppsListMetadataSlotOptions struct {
+// WebAppsClientListMetadataSlotOptions contains the optional parameters for the WebAppsClient.ListMetadataSlot method.
+type WebAppsClientListMetadataSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListNetworkFeaturesOptions contains the optional parameters for the WebApps.ListNetworkFeatures method.
-type WebAppsListNetworkFeaturesOptions struct {
+// WebAppsClientListNetworkFeaturesOptions contains the optional parameters for the WebAppsClient.ListNetworkFeatures method.
+type WebAppsClientListNetworkFeaturesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListNetworkFeaturesSlotOptions contains the optional parameters for the WebApps.ListNetworkFeaturesSlot method.
-type WebAppsListNetworkFeaturesSlotOptions struct {
+// WebAppsClientListNetworkFeaturesSlotOptions contains the optional parameters for the WebAppsClient.ListNetworkFeaturesSlot
+// method.
+type WebAppsClientListNetworkFeaturesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListOptions contains the optional parameters for the WebApps.List method.
-type WebAppsListOptions struct {
+// WebAppsClientListOptions contains the optional parameters for the WebAppsClient.List method.
+type WebAppsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListPerfMonCountersOptions contains the optional parameters for the WebApps.ListPerfMonCounters method.
-type WebAppsListPerfMonCountersOptions struct {
-	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime
-	// eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+// WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.ListPerfMonCounters method.
+type WebAppsClientListPerfMonCountersOptions struct {
+	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z
+	// and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+	// duration'[Hour|Minute|Day]'.
 	Filter *string
 }
 
-// WebAppsListPerfMonCountersSlotOptions contains the optional parameters for the WebApps.ListPerfMonCountersSlot method.
-type WebAppsListPerfMonCountersSlotOptions struct {
-	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime
-	// eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+// WebAppsClientListPerfMonCountersSlotOptions contains the optional parameters for the WebAppsClient.ListPerfMonCountersSlot
+// method.
+type WebAppsClientListPerfMonCountersSlotOptions struct {
+	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z
+	// and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+	// duration'[Hour|Minute|Day]'.
 	Filter *string
 }
 
-// WebAppsListPremierAddOnsOptions contains the optional parameters for the WebApps.ListPremierAddOns method.
-type WebAppsListPremierAddOnsOptions struct {
+// WebAppsClientListPremierAddOnsOptions contains the optional parameters for the WebAppsClient.ListPremierAddOns method.
+type WebAppsClientListPremierAddOnsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListPremierAddOnsSlotOptions contains the optional parameters for the WebApps.ListPremierAddOnsSlot method.
-type WebAppsListPremierAddOnsSlotOptions struct {
+// WebAppsClientListPremierAddOnsSlotOptions contains the optional parameters for the WebAppsClient.ListPremierAddOnsSlot
+// method.
+type WebAppsClientListPremierAddOnsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListProcessModulesOptions contains the optional parameters for the WebApps.ListProcessModules method.
-type WebAppsListProcessModulesOptions struct {
+// WebAppsClientListProcessModulesOptions contains the optional parameters for the WebAppsClient.ListProcessModules method.
+type WebAppsClientListProcessModulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListProcessModulesSlotOptions contains the optional parameters for the WebApps.ListProcessModulesSlot method.
-type WebAppsListProcessModulesSlotOptions struct {
+// WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessModulesSlot
+// method.
+type WebAppsClientListProcessModulesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListProcessThreadsOptions contains the optional parameters for the WebApps.ListProcessThreads method.
-type WebAppsListProcessThreadsOptions struct {
+// WebAppsClientListProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListProcessThreads method.
+type WebAppsClientListProcessThreadsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListProcessThreadsSlotOptions contains the optional parameters for the WebApps.ListProcessThreadsSlot method.
-type WebAppsListProcessThreadsSlotOptions struct {
+// WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListProcessThreadsSlot
+// method.
+type WebAppsClientListProcessThreadsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListProcessesOptions contains the optional parameters for the WebApps.ListProcesses method.
-type WebAppsListProcessesOptions struct {
+// WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.ListProcesses method.
+type WebAppsClientListProcessesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListProcessesSlotOptions contains the optional parameters for the WebApps.ListProcessesSlot method.
-type WebAppsListProcessesSlotOptions struct {
+// WebAppsClientListProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessesSlot method.
+type WebAppsClientListProcessesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListPublicCertificatesOptions contains the optional parameters for the WebApps.ListPublicCertificates method.
-type WebAppsListPublicCertificatesOptions struct {
+// WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.ListPublicCertificates
+// method.
+type WebAppsClientListPublicCertificatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListPublicCertificatesSlotOptions contains the optional parameters for the WebApps.ListPublicCertificatesSlot method.
-type WebAppsListPublicCertificatesSlotOptions struct {
+// WebAppsClientListPublicCertificatesSlotOptions contains the optional parameters for the WebAppsClient.ListPublicCertificatesSlot
+// method.
+type WebAppsClientListPublicCertificatesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListPublishingProfileXMLWithSecretsOptions contains the optional parameters for the WebApps.ListPublishingProfileXMLWithSecrets method.
-type WebAppsListPublishingProfileXMLWithSecretsOptions struct {
+// WebAppsClientListPublishingProfileXMLWithSecretsOptions contains the optional parameters for the WebAppsClient.ListPublishingProfileXMLWithSecrets
+// method.
+type WebAppsClientListPublishingProfileXMLWithSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListPublishingProfileXMLWithSecretsSlotOptions contains the optional parameters for the WebApps.ListPublishingProfileXMLWithSecretsSlot method.
-type WebAppsListPublishingProfileXMLWithSecretsSlotOptions struct {
+// WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListPublishingProfileXMLWithSecretsSlot
+// method.
+type WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListRelayServiceConnectionsOptions contains the optional parameters for the WebApps.ListRelayServiceConnections method.
-type WebAppsListRelayServiceConnectionsOptions struct {
+// WebAppsClientListRelayServiceConnectionsOptions contains the optional parameters for the WebAppsClient.ListRelayServiceConnections
+// method.
+type WebAppsClientListRelayServiceConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListRelayServiceConnectionsSlotOptions contains the optional parameters for the WebApps.ListRelayServiceConnectionsSlot method.
-type WebAppsListRelayServiceConnectionsSlotOptions struct {
+// WebAppsClientListRelayServiceConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListRelayServiceConnectionsSlot
+// method.
+type WebAppsClientListRelayServiceConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSiteBackupsOptions contains the optional parameters for the WebApps.ListSiteBackups method.
-type WebAppsListSiteBackupsOptions struct {
+// WebAppsClientListSiteBackupsOptions contains the optional parameters for the WebAppsClient.ListSiteBackups method.
+type WebAppsClientListSiteBackupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSiteBackupsSlotOptions contains the optional parameters for the WebApps.ListSiteBackupsSlot method.
-type WebAppsListSiteBackupsSlotOptions struct {
+// WebAppsClientListSiteBackupsSlotOptions contains the optional parameters for the WebAppsClient.ListSiteBackupsSlot method.
+type WebAppsClientListSiteBackupsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSiteExtensionsOptions contains the optional parameters for the WebApps.ListSiteExtensions method.
-type WebAppsListSiteExtensionsOptions struct {
+// WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.ListSiteExtensions method.
+type WebAppsClientListSiteExtensionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSiteExtensionsSlotOptions contains the optional parameters for the WebApps.ListSiteExtensionsSlot method.
-type WebAppsListSiteExtensionsSlotOptions struct {
+// WebAppsClientListSiteExtensionsSlotOptions contains the optional parameters for the WebAppsClient.ListSiteExtensionsSlot
+// method.
+type WebAppsClientListSiteExtensionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSitePushSettingsOptions contains the optional parameters for the WebApps.ListSitePushSettings method.
-type WebAppsListSitePushSettingsOptions struct {
+// WebAppsClientListSitePushSettingsOptions contains the optional parameters for the WebAppsClient.ListSitePushSettings method.
+type WebAppsClientListSitePushSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSitePushSettingsSlotOptions contains the optional parameters for the WebApps.ListSitePushSettingsSlot method.
-type WebAppsListSitePushSettingsSlotOptions struct {
+// WebAppsClientListSitePushSettingsSlotOptions contains the optional parameters for the WebAppsClient.ListSitePushSettingsSlot
+// method.
+type WebAppsClientListSitePushSettingsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSlotConfigurationNamesOptions contains the optional parameters for the WebApps.ListSlotConfigurationNames method.
-type WebAppsListSlotConfigurationNamesOptions struct {
+// WebAppsClientListSlotConfigurationNamesOptions contains the optional parameters for the WebAppsClient.ListSlotConfigurationNames
+// method.
+type WebAppsClientListSlotConfigurationNamesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSlotDifferencesFromProductionOptions contains the optional parameters for the WebApps.ListSlotDifferencesFromProduction method.
-type WebAppsListSlotDifferencesFromProductionOptions struct {
+// WebAppsClientListSlotDifferencesFromProductionOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesFromProduction
+// method.
+type WebAppsClientListSlotDifferencesFromProductionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSlotDifferencesSlotOptions contains the optional parameters for the WebApps.ListSlotDifferencesSlot method.
-type WebAppsListSlotDifferencesSlotOptions struct {
+// WebAppsClientListSlotDifferencesSlotOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesSlot
+// method.
+type WebAppsClientListSlotDifferencesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSlotsOptions contains the optional parameters for the WebApps.ListSlots method.
-type WebAppsListSlotsOptions struct {
+// WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.ListSlots method.
+type WebAppsClientListSlotsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebApps.ListSnapshotsFromDRSecondary method.
-type WebAppsListSnapshotsFromDRSecondaryOptions struct {
+// WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondary
+// method.
+type WebAppsClientListSnapshotsFromDRSecondaryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebApps.ListSnapshotsFromDRSecondarySlot method.
-type WebAppsListSnapshotsFromDRSecondarySlotOptions struct {
+// WebAppsClientListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondarySlot
+// method.
+type WebAppsClientListSnapshotsFromDRSecondarySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSnapshotsOptions contains the optional parameters for the WebApps.ListSnapshots method.
-type WebAppsListSnapshotsOptions struct {
+// WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.ListSnapshots method.
+type WebAppsClientListSnapshotsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSnapshotsSlotOptions contains the optional parameters for the WebApps.ListSnapshotsSlot method.
-type WebAppsListSnapshotsSlotOptions struct {
+// WebAppsClientListSnapshotsSlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsSlot method.
+type WebAppsClientListSnapshotsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSyncFunctionTriggersOptions contains the optional parameters for the WebApps.ListSyncFunctionTriggers method.
-type WebAppsListSyncFunctionTriggersOptions struct {
+// WebAppsClientListSyncFunctionTriggersOptions contains the optional parameters for the WebAppsClient.ListSyncFunctionTriggers
+// method.
+type WebAppsClientListSyncFunctionTriggersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSyncFunctionTriggersSlotOptions contains the optional parameters for the WebApps.ListSyncFunctionTriggersSlot method.
-type WebAppsListSyncFunctionTriggersSlotOptions struct {
+// WebAppsClientListSyncFunctionTriggersSlotOptions contains the optional parameters for the WebAppsClient.ListSyncFunctionTriggersSlot
+// method.
+type WebAppsClientListSyncFunctionTriggersSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSyncStatusOptions contains the optional parameters for the WebApps.ListSyncStatus method.
-type WebAppsListSyncStatusOptions struct {
+// WebAppsClientListSyncStatusOptions contains the optional parameters for the WebAppsClient.ListSyncStatus method.
+type WebAppsClientListSyncStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListSyncStatusSlotOptions contains the optional parameters for the WebApps.ListSyncStatusSlot method.
-type WebAppsListSyncStatusSlotOptions struct {
+// WebAppsClientListSyncStatusSlotOptions contains the optional parameters for the WebAppsClient.ListSyncStatusSlot method.
+type WebAppsClientListSyncStatusSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListTriggeredWebJobHistoryOptions contains the optional parameters for the WebApps.ListTriggeredWebJobHistory method.
-type WebAppsListTriggeredWebJobHistoryOptions struct {
+// WebAppsClientListTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistory
+// method.
+type WebAppsClientListTriggeredWebJobHistoryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebApps.ListTriggeredWebJobHistorySlot method.
-type WebAppsListTriggeredWebJobHistorySlotOptions struct {
+// WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistorySlot
+// method.
+type WebAppsClientListTriggeredWebJobHistorySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListTriggeredWebJobsOptions contains the optional parameters for the WebApps.ListTriggeredWebJobs method.
-type WebAppsListTriggeredWebJobsOptions struct {
+// WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobs method.
+type WebAppsClientListTriggeredWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListTriggeredWebJobsSlotOptions contains the optional parameters for the WebApps.ListTriggeredWebJobsSlot method.
-type WebAppsListTriggeredWebJobsSlotOptions struct {
+// WebAppsClientListTriggeredWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobsSlot
+// method.
+type WebAppsClientListTriggeredWebJobsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListUsagesOptions contains the optional parameters for the WebApps.ListUsages method.
-type WebAppsListUsagesOptions struct {
-	// Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime
-	// eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+// WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.ListUsages method.
+type WebAppsClientListUsagesOptions struct {
+	// Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or
+	// name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
+	// 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
 	Filter *string
 }
 
-// WebAppsListUsagesSlotOptions contains the optional parameters for the WebApps.ListUsagesSlot method.
-type WebAppsListUsagesSlotOptions struct {
-	// Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime
-	// eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+// WebAppsClientListUsagesSlotOptions contains the optional parameters for the WebAppsClient.ListUsagesSlot method.
+type WebAppsClientListUsagesSlotOptions struct {
+	// Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or
+	// name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
+	// 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
 	Filter *string
 }
 
-// WebAppsListVnetConnectionsOptions contains the optional parameters for the WebApps.ListVnetConnections method.
-type WebAppsListVnetConnectionsOptions struct {
+// WebAppsClientListVnetConnectionsOptions contains the optional parameters for the WebAppsClient.ListVnetConnections method.
+type WebAppsClientListVnetConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListVnetConnectionsSlotOptions contains the optional parameters for the WebApps.ListVnetConnectionsSlot method.
-type WebAppsListVnetConnectionsSlotOptions struct {
+// WebAppsClientListVnetConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListVnetConnectionsSlot
+// method.
+type WebAppsClientListVnetConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListWebJobsOptions contains the optional parameters for the WebApps.ListWebJobs method.
-type WebAppsListWebJobsOptions struct {
+// WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.ListWebJobs method.
+type WebAppsClientListWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsListWebJobsSlotOptions contains the optional parameters for the WebApps.ListWebJobsSlot method.
-type WebAppsListWebJobsSlotOptions struct {
+// WebAppsClientListWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListWebJobsSlot method.
+type WebAppsClientListWebJobsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsPutPrivateAccessVnetOptions contains the optional parameters for the WebApps.PutPrivateAccessVnet method.
-type WebAppsPutPrivateAccessVnetOptions struct {
+// WebAppsClientPutPrivateAccessVnetOptions contains the optional parameters for the WebAppsClient.PutPrivateAccessVnet method.
+type WebAppsClientPutPrivateAccessVnetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsPutPrivateAccessVnetSlotOptions contains the optional parameters for the WebApps.PutPrivateAccessVnetSlot method.
-type WebAppsPutPrivateAccessVnetSlotOptions struct {
+// WebAppsClientPutPrivateAccessVnetSlotOptions contains the optional parameters for the WebAppsClient.PutPrivateAccessVnetSlot
+// method.
+type WebAppsClientPutPrivateAccessVnetSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsRecoverSiteConfigurationSnapshotOptions contains the optional parameters for the WebApps.RecoverSiteConfigurationSnapshot method.
-type WebAppsRecoverSiteConfigurationSnapshotOptions struct {
+// WebAppsClientRecoverSiteConfigurationSnapshotOptions contains the optional parameters for the WebAppsClient.RecoverSiteConfigurationSnapshot
+// method.
+type WebAppsClientRecoverSiteConfigurationSnapshotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsRecoverSiteConfigurationSnapshotSlotOptions contains the optional parameters for the WebApps.RecoverSiteConfigurationSnapshotSlot method.
-type WebAppsRecoverSiteConfigurationSnapshotSlotOptions struct {
+// WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions contains the optional parameters for the WebAppsClient.RecoverSiteConfigurationSnapshotSlot
+// method.
+type WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsResetProductionSlotConfigOptions contains the optional parameters for the WebApps.ResetProductionSlotConfig method.
-type WebAppsResetProductionSlotConfigOptions struct {
+// WebAppsClientResetProductionSlotConfigOptions contains the optional parameters for the WebAppsClient.ResetProductionSlotConfig
+// method.
+type WebAppsClientResetProductionSlotConfigOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsResetSlotConfigurationSlotOptions contains the optional parameters for the WebApps.ResetSlotConfigurationSlot method.
-type WebAppsResetSlotConfigurationSlotOptions struct {
+// WebAppsClientResetSlotConfigurationSlotOptions contains the optional parameters for the WebAppsClient.ResetSlotConfigurationSlot
+// method.
+type WebAppsClientResetSlotConfigurationSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsRestartOptions contains the optional parameters for the WebApps.Restart method.
-type WebAppsRestartOptions struct {
-	// Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
+// WebAppsClientRestartOptions contains the optional parameters for the WebAppsClient.Restart method.
+type WebAppsClientRestartOptions struct {
+	// Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts
+	// and reprovisions the app.
 	SoftRestart *bool
 	// Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
 	Synchronous *bool
 }
 
-// WebAppsRestartSlotOptions contains the optional parameters for the WebApps.RestartSlot method.
-type WebAppsRestartSlotOptions struct {
-	// Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
+// WebAppsClientRestartSlotOptions contains the optional parameters for the WebAppsClient.RestartSlot method.
+type WebAppsClientRestartSlotOptions struct {
+	// Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts
+	// and reprovisions the app.
 	SoftRestart *bool
 	// Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
 	Synchronous *bool
 }
 
-// WebAppsRunTriggeredWebJobOptions contains the optional parameters for the WebApps.RunTriggeredWebJob method.
-type WebAppsRunTriggeredWebJobOptions struct {
+// WebAppsClientRunTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.RunTriggeredWebJob method.
+type WebAppsClientRunTriggeredWebJobOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsRunTriggeredWebJobSlotOptions contains the optional parameters for the WebApps.RunTriggeredWebJobSlot method.
-type WebAppsRunTriggeredWebJobSlotOptions struct {
+// WebAppsClientRunTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.RunTriggeredWebJobSlot
+// method.
+type WebAppsClientRunTriggeredWebJobSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsStartContinuousWebJobOptions contains the optional parameters for the WebApps.StartContinuousWebJob method.
-type WebAppsStartContinuousWebJobOptions struct {
+// WebAppsClientStartContinuousWebJobOptions contains the optional parameters for the WebAppsClient.StartContinuousWebJob
+// method.
+type WebAppsClientStartContinuousWebJobOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsStartContinuousWebJobSlotOptions contains the optional parameters for the WebApps.StartContinuousWebJobSlot method.
-type WebAppsStartContinuousWebJobSlotOptions struct {
+// WebAppsClientStartContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.StartContinuousWebJobSlot
+// method.
+type WebAppsClientStartContinuousWebJobSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsStartOptions contains the optional parameters for the WebApps.Start method.
-type WebAppsStartOptions struct {
+// WebAppsClientStartOptions contains the optional parameters for the WebAppsClient.Start method.
+type WebAppsClientStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsStartSlotOptions contains the optional parameters for the WebApps.StartSlot method.
-type WebAppsStartSlotOptions struct {
+// WebAppsClientStartSlotOptions contains the optional parameters for the WebAppsClient.StartSlot method.
+type WebAppsClientStartSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsStartWebSiteNetworkTraceOptions contains the optional parameters for the WebApps.StartWebSiteNetworkTrace method.
-type WebAppsStartWebSiteNetworkTraceOptions struct {
+// WebAppsClientStartWebSiteNetworkTraceOptions contains the optional parameters for the WebAppsClient.StartWebSiteNetworkTrace
+// method.
+type WebAppsClientStartWebSiteNetworkTraceOptions struct {
 	// The duration to keep capturing in seconds.
 	DurationInSeconds *int32
 	// The maximum frame length in bytes (Optional).
@@ -16421,8 +18276,9 @@ type WebAppsStartWebSiteNetworkTraceOptions struct {
 	SasURL *string
 }
 
-// WebAppsStartWebSiteNetworkTraceSlotOptions contains the optional parameters for the WebApps.StartWebSiteNetworkTraceSlot method.
-type WebAppsStartWebSiteNetworkTraceSlotOptions struct {
+// WebAppsClientStartWebSiteNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StartWebSiteNetworkTraceSlot
+// method.
+type WebAppsClientStartWebSiteNetworkTraceSlotOptions struct {
 	// The duration to keep capturing in seconds.
 	DurationInSeconds *int32
 	// The maximum frame length in bytes (Optional).
@@ -16431,306 +18287,340 @@ type WebAppsStartWebSiteNetworkTraceSlotOptions struct {
 	SasURL *string
 }
 
-// WebAppsStopContinuousWebJobOptions contains the optional parameters for the WebApps.StopContinuousWebJob method.
-type WebAppsStopContinuousWebJobOptions struct {
+// WebAppsClientStopContinuousWebJobOptions contains the optional parameters for the WebAppsClient.StopContinuousWebJob method.
+type WebAppsClientStopContinuousWebJobOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsStopContinuousWebJobSlotOptions contains the optional parameters for the WebApps.StopContinuousWebJobSlot method.
-type WebAppsStopContinuousWebJobSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsStopNetworkTraceOptions contains the optional parameters for the WebApps.StopNetworkTrace method.
-type WebAppsStopNetworkTraceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsStopNetworkTraceSlotOptions contains the optional parameters for the WebApps.StopNetworkTraceSlot method.
-type WebAppsStopNetworkTraceSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsStopOptions contains the optional parameters for the WebApps.Stop method.
-type WebAppsStopOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsStopSlotOptions contains the optional parameters for the WebApps.StopSlot method.
-type WebAppsStopSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsStopWebSiteNetworkTraceOptions contains the optional parameters for the WebApps.StopWebSiteNetworkTrace method.
-type WebAppsStopWebSiteNetworkTraceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsStopWebSiteNetworkTraceSlotOptions contains the optional parameters for the WebApps.StopWebSiteNetworkTraceSlot method.
-type WebAppsStopWebSiteNetworkTraceSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsSyncFunctionTriggersOptions contains the optional parameters for the WebApps.SyncFunctionTriggers method.
-type WebAppsSyncFunctionTriggersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsSyncFunctionTriggersSlotOptions contains the optional parameters for the WebApps.SyncFunctionTriggersSlot method.
-type WebAppsSyncFunctionTriggersSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsSyncFunctionsOptions contains the optional parameters for the WebApps.SyncFunctions method.
-type WebAppsSyncFunctionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsSyncFunctionsSlotOptions contains the optional parameters for the WebApps.SyncFunctionsSlot method.
-type WebAppsSyncFunctionsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsSyncRepositoryOptions contains the optional parameters for the WebApps.SyncRepository method.
-type WebAppsSyncRepositoryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsSyncRepositorySlotOptions contains the optional parameters for the WebApps.SyncRepositorySlot method.
-type WebAppsSyncRepositorySlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateApplicationSettingsOptions contains the optional parameters for the WebApps.UpdateApplicationSettings method.
-type WebAppsUpdateApplicationSettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateApplicationSettingsSlotOptions contains the optional parameters for the WebApps.UpdateApplicationSettingsSlot method.
-type WebAppsUpdateApplicationSettingsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateAuthSettingsOptions contains the optional parameters for the WebApps.UpdateAuthSettings method.
-type WebAppsUpdateAuthSettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateAuthSettingsSlotOptions contains the optional parameters for the WebApps.UpdateAuthSettingsSlot method.
-type WebAppsUpdateAuthSettingsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateAuthSettingsV2Options contains the optional parameters for the WebApps.UpdateAuthSettingsV2 method.
-type WebAppsUpdateAuthSettingsV2Options struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateAuthSettingsV2SlotOptions contains the optional parameters for the WebApps.UpdateAuthSettingsV2Slot method.
-type WebAppsUpdateAuthSettingsV2SlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateAzureStorageAccountsOptions contains the optional parameters for the WebApps.UpdateAzureStorageAccounts method.
-type WebAppsUpdateAzureStorageAccountsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateAzureStorageAccountsSlotOptions contains the optional parameters for the WebApps.UpdateAzureStorageAccountsSlot method.
-type WebAppsUpdateAzureStorageAccountsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateBackupConfigurationOptions contains the optional parameters for the WebApps.UpdateBackupConfiguration method.
-type WebAppsUpdateBackupConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateBackupConfigurationSlotOptions contains the optional parameters for the WebApps.UpdateBackupConfigurationSlot method.
-type WebAppsUpdateBackupConfigurationSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateConfigurationOptions contains the optional parameters for the WebApps.UpdateConfiguration method.
-type WebAppsUpdateConfigurationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateConfigurationSlotOptions contains the optional parameters for the WebApps.UpdateConfigurationSlot method.
-type WebAppsUpdateConfigurationSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateConnectionStringsOptions contains the optional parameters for the WebApps.UpdateConnectionStrings method.
-type WebAppsUpdateConnectionStringsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateConnectionStringsSlotOptions contains the optional parameters for the WebApps.UpdateConnectionStringsSlot method.
-type WebAppsUpdateConnectionStringsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateDiagnosticLogsConfigOptions contains the optional parameters for the WebApps.UpdateDiagnosticLogsConfig method.
-type WebAppsUpdateDiagnosticLogsConfigOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateDiagnosticLogsConfigSlotOptions contains the optional parameters for the WebApps.UpdateDiagnosticLogsConfigSlot method.
-type WebAppsUpdateDiagnosticLogsConfigSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateDomainOwnershipIdentifierOptions contains the optional parameters for the WebApps.UpdateDomainOwnershipIdentifier method.
-type WebAppsUpdateDomainOwnershipIdentifierOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebApps.UpdateDomainOwnershipIdentifierSlot method.
-type WebAppsUpdateDomainOwnershipIdentifierSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateFtpAllowedOptions contains the optional parameters for the WebApps.UpdateFtpAllowed method.
-type WebAppsUpdateFtpAllowedOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateFtpAllowedSlotOptions contains the optional parameters for the WebApps.UpdateFtpAllowedSlot method.
-type WebAppsUpdateFtpAllowedSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateHybridConnectionOptions contains the optional parameters for the WebApps.UpdateHybridConnection method.
-type WebAppsUpdateHybridConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateHybridConnectionSlotOptions contains the optional parameters for the WebApps.UpdateHybridConnectionSlot method.
-type WebAppsUpdateHybridConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateMetadataOptions contains the optional parameters for the WebApps.UpdateMetadata method.
-type WebAppsUpdateMetadataOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateMetadataSlotOptions contains the optional parameters for the WebApps.UpdateMetadataSlot method.
-type WebAppsUpdateMetadataSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateOptions contains the optional parameters for the WebApps.Update method.
-type WebAppsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdatePremierAddOnOptions contains the optional parameters for the WebApps.UpdatePremierAddOn method.
-type WebAppsUpdatePremierAddOnOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdatePremierAddOnSlotOptions contains the optional parameters for the WebApps.UpdatePremierAddOnSlot method.
-type WebAppsUpdatePremierAddOnSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateRelayServiceConnectionOptions contains the optional parameters for the WebApps.UpdateRelayServiceConnection method.
-type WebAppsUpdateRelayServiceConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebApps.UpdateRelayServiceConnectionSlot method.
-type WebAppsUpdateRelayServiceConnectionSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateScmAllowedOptions contains the optional parameters for the WebApps.UpdateScmAllowed method.
-type WebAppsUpdateScmAllowedOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateScmAllowedSlotOptions contains the optional parameters for the WebApps.UpdateScmAllowedSlot method.
-type WebAppsUpdateScmAllowedSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateSitePushSettingsOptions contains the optional parameters for the WebApps.UpdateSitePushSettings method.
-type WebAppsUpdateSitePushSettingsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateSitePushSettingsSlotOptions contains the optional parameters for the WebApps.UpdateSitePushSettingsSlot method.
-type WebAppsUpdateSitePushSettingsSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateSlotConfigurationNamesOptions contains the optional parameters for the WebApps.UpdateSlotConfigurationNames method.
-type WebAppsUpdateSlotConfigurationNamesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateSlotOptions contains the optional parameters for the WebApps.UpdateSlot method.
-type WebAppsUpdateSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateSourceControlOptions contains the optional parameters for the WebApps.UpdateSourceControl method.
-type WebAppsUpdateSourceControlOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateSourceControlSlotOptions contains the optional parameters for the WebApps.UpdateSourceControlSlot method.
-type WebAppsUpdateSourceControlSlotOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckOptions contains the optional parameters for the WebApps.UpdateSwiftVirtualNetworkConnectionWithCheck
+// WebAppsClientStopContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.StopContinuousWebJobSlot
 // method.
-type WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckOptions struct {
+type WebAppsClientStopContinuousWebJobSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions contains the optional parameters for the WebApps.UpdateSwiftVirtualNetworkConnectionWithCheckSlot
+// WebAppsClientStopNetworkTraceOptions contains the optional parameters for the WebAppsClient.StopNetworkTrace method.
+type WebAppsClientStopNetworkTraceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientStopNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StopNetworkTraceSlot method.
+type WebAppsClientStopNetworkTraceSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientStopOptions contains the optional parameters for the WebAppsClient.Stop method.
+type WebAppsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientStopSlotOptions contains the optional parameters for the WebAppsClient.StopSlot method.
+type WebAppsClientStopSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientStopWebSiteNetworkTraceOptions contains the optional parameters for the WebAppsClient.StopWebSiteNetworkTrace
 // method.
-type WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions struct {
+type WebAppsClientStopWebSiteNetworkTraceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsUpdateVnetConnectionGatewayOptions contains the optional parameters for the WebApps.UpdateVnetConnectionGateway method.
-type WebAppsUpdateVnetConnectionGatewayOptions struct {
+// WebAppsClientStopWebSiteNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StopWebSiteNetworkTraceSlot
+// method.
+type WebAppsClientStopWebSiteNetworkTraceSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebApps.UpdateVnetConnectionGatewaySlot method.
-type WebAppsUpdateVnetConnectionGatewaySlotOptions struct {
+// WebAppsClientSyncFunctionTriggersOptions contains the optional parameters for the WebAppsClient.SyncFunctionTriggers method.
+type WebAppsClientSyncFunctionTriggersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsUpdateVnetConnectionOptions contains the optional parameters for the WebApps.UpdateVnetConnection method.
-type WebAppsUpdateVnetConnectionOptions struct {
+// WebAppsClientSyncFunctionTriggersSlotOptions contains the optional parameters for the WebAppsClient.SyncFunctionTriggersSlot
+// method.
+type WebAppsClientSyncFunctionTriggersSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsUpdateVnetConnectionSlotOptions contains the optional parameters for the WebApps.UpdateVnetConnectionSlot method.
-type WebAppsUpdateVnetConnectionSlotOptions struct {
+// WebAppsClientSyncFunctionsOptions contains the optional parameters for the WebAppsClient.SyncFunctions method.
+type WebAppsClientSyncFunctionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientSyncFunctionsSlotOptions contains the optional parameters for the WebAppsClient.SyncFunctionsSlot method.
+type WebAppsClientSyncFunctionsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientSyncRepositoryOptions contains the optional parameters for the WebAppsClient.SyncRepository method.
+type WebAppsClientSyncRepositoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientSyncRepositorySlotOptions contains the optional parameters for the WebAppsClient.SyncRepositorySlot method.
+type WebAppsClientSyncRepositorySlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateApplicationSettingsOptions contains the optional parameters for the WebAppsClient.UpdateApplicationSettings
+// method.
+type WebAppsClientUpdateApplicationSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateApplicationSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateApplicationSettingsSlot
+// method.
+type WebAppsClientUpdateApplicationSettingsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateAuthSettingsOptions contains the optional parameters for the WebAppsClient.UpdateAuthSettings method.
+type WebAppsClientUpdateAuthSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateAuthSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateAuthSettingsSlot
+// method.
+type WebAppsClientUpdateAuthSettingsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateAuthSettingsV2Options contains the optional parameters for the WebAppsClient.UpdateAuthSettingsV2 method.
+type WebAppsClientUpdateAuthSettingsV2Options struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateAuthSettingsV2SlotOptions contains the optional parameters for the WebAppsClient.UpdateAuthSettingsV2Slot
+// method.
+type WebAppsClientUpdateAuthSettingsV2SlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateAzureStorageAccountsOptions contains the optional parameters for the WebAppsClient.UpdateAzureStorageAccounts
+// method.
+type WebAppsClientUpdateAzureStorageAccountsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateAzureStorageAccountsSlotOptions contains the optional parameters for the WebAppsClient.UpdateAzureStorageAccountsSlot
+// method.
+type WebAppsClientUpdateAzureStorageAccountsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateBackupConfigurationOptions contains the optional parameters for the WebAppsClient.UpdateBackupConfiguration
+// method.
+type WebAppsClientUpdateBackupConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.UpdateBackupConfigurationSlot
+// method.
+type WebAppsClientUpdateBackupConfigurationSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateConfigurationOptions contains the optional parameters for the WebAppsClient.UpdateConfiguration method.
+type WebAppsClientUpdateConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateConfigurationSlotOptions contains the optional parameters for the WebAppsClient.UpdateConfigurationSlot
+// method.
+type WebAppsClientUpdateConfigurationSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateConnectionStringsOptions contains the optional parameters for the WebAppsClient.UpdateConnectionStrings
+// method.
+type WebAppsClientUpdateConnectionStringsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateConnectionStringsSlotOptions contains the optional parameters for the WebAppsClient.UpdateConnectionStringsSlot
+// method.
+type WebAppsClientUpdateConnectionStringsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateDiagnosticLogsConfigOptions contains the optional parameters for the WebAppsClient.UpdateDiagnosticLogsConfig
+// method.
+type WebAppsClientUpdateDiagnosticLogsConfigOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateDiagnosticLogsConfigSlotOptions contains the optional parameters for the WebAppsClient.UpdateDiagnosticLogsConfigSlot
+// method.
+type WebAppsClientUpdateDiagnosticLogsConfigSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.UpdateDomainOwnershipIdentifier
+// method.
+type WebAppsClientUpdateDomainOwnershipIdentifierOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.UpdateDomainOwnershipIdentifierSlot
+// method.
+type WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateFtpAllowedOptions contains the optional parameters for the WebAppsClient.UpdateFtpAllowed method.
+type WebAppsClientUpdateFtpAllowedOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateFtpAllowedSlotOptions contains the optional parameters for the WebAppsClient.UpdateFtpAllowedSlot method.
+type WebAppsClientUpdateFtpAllowedSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateHybridConnectionOptions contains the optional parameters for the WebAppsClient.UpdateHybridConnection
+// method.
+type WebAppsClientUpdateHybridConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateHybridConnectionSlot
+// method.
+type WebAppsClientUpdateHybridConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateMetadataOptions contains the optional parameters for the WebAppsClient.UpdateMetadata method.
+type WebAppsClientUpdateMetadataOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateMetadataSlotOptions contains the optional parameters for the WebAppsClient.UpdateMetadataSlot method.
+type WebAppsClientUpdateMetadataSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateOptions contains the optional parameters for the WebAppsClient.Update method.
+type WebAppsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdatePremierAddOnOptions contains the optional parameters for the WebAppsClient.UpdatePremierAddOn method.
+type WebAppsClientUpdatePremierAddOnOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdatePremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.UpdatePremierAddOnSlot
+// method.
+type WebAppsClientUpdatePremierAddOnSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.UpdateRelayServiceConnection
+// method.
+type WebAppsClientUpdateRelayServiceConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateRelayServiceConnectionSlot
+// method.
+type WebAppsClientUpdateRelayServiceConnectionSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateScmAllowedOptions contains the optional parameters for the WebAppsClient.UpdateScmAllowed method.
+type WebAppsClientUpdateScmAllowedOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateScmAllowedSlotOptions contains the optional parameters for the WebAppsClient.UpdateScmAllowedSlot method.
+type WebAppsClientUpdateScmAllowedSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateSitePushSettingsOptions contains the optional parameters for the WebAppsClient.UpdateSitePushSettings
+// method.
+type WebAppsClientUpdateSitePushSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateSitePushSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateSitePushSettingsSlot
+// method.
+type WebAppsClientUpdateSitePushSettingsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateSlotConfigurationNamesOptions contains the optional parameters for the WebAppsClient.UpdateSlotConfigurationNames
+// method.
+type WebAppsClientUpdateSlotConfigurationNamesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateSlotOptions contains the optional parameters for the WebAppsClient.UpdateSlot method.
+type WebAppsClientUpdateSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateSourceControlOptions contains the optional parameters for the WebAppsClient.UpdateSourceControl method.
+type WebAppsClientUpdateSourceControlOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateSourceControlSlotOptions contains the optional parameters for the WebAppsClient.UpdateSourceControlSlot
+// method.
+type WebAppsClientUpdateSourceControlSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckOptions contains the optional parameters for the WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheck
+// method.
+type WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions contains the optional parameters for the WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheckSlot
+// method.
+type WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionGateway
+// method.
+type WebAppsClientUpdateVnetConnectionGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionGatewaySlot
+// method.
+type WebAppsClientUpdateVnetConnectionGatewaySlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateVnetConnectionOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnection method.
+type WebAppsClientUpdateVnetConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientUpdateVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionSlot
+// method.
+type WebAppsClientUpdateVnetConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
 // WebJob - Web Job Information.
 type WebJob struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// WebJob resource specific properties
 	Properties *WebJobProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type WebJob.
-func (w WebJob) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WebJobCollection - Collection of Kudu web job information elements.
@@ -16762,7 +18652,7 @@ type WebJobProperties struct {
 	RunCommand *string `json:"run_command,omitempty"`
 
 	// Job settings.
-	Settings map[string]map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]interface{} `json:"settings,omitempty"`
 
 	// Job URL.
 	URL *string `json:"url,omitempty"`
@@ -16788,17 +18678,20 @@ func (w WebJobProperties) MarshalJSON() ([]byte, error) {
 }
 
 type WebSiteInstanceStatus struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// WebSiteInstanceStatus resource specific properties
 	Properties *WebSiteInstanceStatusProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type WebSiteInstanceStatus.
-func (w WebSiteInstanceStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.ProxyOnlyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WebSiteInstanceStatusProperties - WebSiteInstanceStatus resource specific properties
@@ -16832,17 +18725,20 @@ func (w WebSiteInstanceStatusProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WebSiteManagementClientCheckNameAvailabilityOptions contains the optional parameters for the WebSiteManagementClient.CheckNameAvailability method.
+// WebSiteManagementClientCheckNameAvailabilityOptions contains the optional parameters for the WebSiteManagementClient.CheckNameAvailability
+// method.
 type WebSiteManagementClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientGetPublishingUserOptions contains the optional parameters for the WebSiteManagementClient.GetPublishingUser method.
+// WebSiteManagementClientGetPublishingUserOptions contains the optional parameters for the WebSiteManagementClient.GetPublishingUser
+// method.
 type WebSiteManagementClientGetPublishingUserOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientGetSourceControlOptions contains the optional parameters for the WebSiteManagementClient.GetSourceControl method.
+// WebSiteManagementClientGetSourceControlOptions contains the optional parameters for the WebSiteManagementClient.GetSourceControl
+// method.
 type WebSiteManagementClientGetSourceControlOptions struct {
 	// placeholder for future optional parameters
 }
@@ -16853,7 +18749,8 @@ type WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.ListBillingMeters method.
+// WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.ListBillingMeters
+// method.
 type WebSiteManagementClientListBillingMetersOptions struct {
 	// Azure Location of billable resource
 	BillingLocation *string
@@ -16861,19 +18758,27 @@ type WebSiteManagementClientListBillingMetersOptions struct {
 	OSType *string
 }
 
-// WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.ListGeoRegions method.
+// WebSiteManagementClientListCustomHostNameSitesOptions contains the optional parameters for the WebSiteManagementClient.ListCustomHostNameSites
+// method.
+type WebSiteManagementClientListCustomHostNameSitesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.ListGeoRegions
+// method.
 type WebSiteManagementClientListGeoRegionsOptions struct {
-	// Specify <code>true</code> if you want to filter to only regions that support Linux Consumption Workers.
+	// Specify true if you want to filter to only regions that support Linux Consumption Workers.
 	LinuxDynamicWorkersEnabled *bool
-	// Specify <code>true</code> if you want to filter to only regions that support Linux workers.
+	// Specify true if you want to filter to only regions that support Linux workers.
 	LinuxWorkersEnabled *bool
 	// Name of SKU used to filter the regions.
 	SKU *SKUName
-	// Specify <code>true</code> if you want to filter to only regions that support Xenon workers.
+	// Specify true if you want to filter to only regions that support Xenon workers.
 	XenonWorkersEnabled *bool
 }
 
-// WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.ListPremierAddOnOffers method.
+// WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.ListPremierAddOnOffers
+// method.
 type WebSiteManagementClientListPremierAddOnOffersOptions struct {
 	// placeholder for future optional parameters
 }
@@ -16889,7 +18794,8 @@ type WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions struct 
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.ListSourceControls method.
+// WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.ListSourceControls
+// method.
 type WebSiteManagementClientListSourceControlsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -16899,17 +18805,20 @@ type WebSiteManagementClientMoveOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientUpdatePublishingUserOptions contains the optional parameters for the WebSiteManagementClient.UpdatePublishingUser method.
+// WebSiteManagementClientUpdatePublishingUserOptions contains the optional parameters for the WebSiteManagementClient.UpdatePublishingUser
+// method.
 type WebSiteManagementClientUpdatePublishingUserOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientUpdateSourceControlOptions contains the optional parameters for the WebSiteManagementClient.UpdateSourceControl method.
+// WebSiteManagementClientUpdateSourceControlOptions contains the optional parameters for the WebSiteManagementClient.UpdateSourceControl
+// method.
 type WebSiteManagementClientUpdateSourceControlOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientValidateMoveOptions contains the optional parameters for the WebSiteManagementClient.ValidateMove method.
+// WebSiteManagementClientValidateMoveOptions contains the optional parameters for the WebSiteManagementClient.ValidateMove
+// method.
 type WebSiteManagementClientValidateMoveOptions struct {
 	// placeholder for future optional parameters
 }
@@ -17055,20 +18964,34 @@ func (w WorkerPoolCollection) MarshalJSON() ([]byte, error) {
 
 // WorkerPoolResource - Worker pool of an App Service Environment ARM resource.
 type WorkerPoolResource struct {
-	ProxyOnlyResource
+	// Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+
 	// Core resource properties
 	Properties *WorkerPool `json:"properties,omitempty"`
 
 	// Description of a SKU for a scalable resource.
 	SKU *SKUDescription `json:"sku,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WorkerPoolResource.
 func (w WorkerPoolResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.ProxyOnlyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", w.ID)
+	populate(objectMap, "kind", w.Kind)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
 	populate(objectMap, "sku", w.SKU)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 

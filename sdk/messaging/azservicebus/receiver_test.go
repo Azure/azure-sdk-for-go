@@ -11,7 +11,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -68,6 +71,43 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
+
+	// there's only one message, requesting more messages will time out.
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	messages, err := receiver.ReceiveMessages(ctx, 1+1, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t,
+		[]string{"hello"},
+		getSortedBodies(messages))
+
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+}
+
+func TestReceiverDrainHasError(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	// close the link _just_ before the drain credit to simulate connection loss.
+	addStub(t, receiver, &StubAMQPReceiver{
+		stubDrainCredit: func(inner internal.AMQPReceiverCloser, ctx context.Context) error {
+			require.NoError(t, inner.Close(context.Background()))
+			return inner.DrainCredit(ctx)
+		},
+	})
 
 	// there's only one message, requesting more messages will time out.
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -343,6 +383,62 @@ func TestReceiverPeek(t *testing.T) {
 	require.Empty(t, noMessagesExpected)
 }
 
+func TestReceiverDetach(t *testing.T) {
+	// NOTE: uncomment this to see some of the background reconnects
+	// azlog.SetListener(func(e azlog.Event, s string) {
+	// 	log.Printf("%s %s", e, s)
+	// })
+
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	// make sure the receiver link and connection are live.
+	_, err = receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
+	require.NoError(t, sender.Close(context.Background()))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, []string{"hello world"}, getSortedBodies(messages))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	peekedMessages, err := receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, []string{"hello world"}, getSortedBodies(peekedMessages))
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+
+	// and last, check that the queue is properly empty
+	peekedMessages, err = receiver.PeekMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Empty(t, peekedMessages)
+}
+
 func TestReceiver_RenewMessageLock(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
@@ -401,19 +497,23 @@ func TestReceiverOptions(t *testing.T) {
 	require.NoError(t, applyReceiverOptions(receiver, e, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
 		SubQueue:    SubQueueTransfer,
+		retryOptions: utils.RetryOptions{
+			MaxRetries: 101,
+		},
 	}))
 
 	require.EqualValues(t, ReceiveModeReceiveAndDelete, receiver.receiveMode)
 	path, err = e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
+	require.EqualValues(t, 101, receiver.retryOptions.MaxRetries)
 }
 
-type badMgmtClient struct {
-	internal.MgmtClient
+type badRPCLink struct {
+	internal.RPCLink
 }
 
-func (b badMgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
+func (br *badRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*internal.RPCResponse, error) {
 	return nil, errors.New("receive deferred messages failed")
 }
 
@@ -430,13 +530,33 @@ func TestReceiverDeferUnitTests(t *testing.T) {
 
 	r = &Receiver{
 		amqpLinks: &internal.FakeAMQPLinks{
-			Mgmt: &badMgmtClient{},
+			RPC: &badRPCLink{},
 		},
 	}
 
 	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1})
 	require.EqualError(t, err, "receive deferred messages failed")
 	require.Nil(t, messages)
+}
+
+func TestReceiverCancellationUnitTests(t *testing.T) {
+	r := &Receiver{
+		amqpLinks: &internal.FakeAMQPLinks{
+			Receiver: &internal.FakeAMQPReceiver{
+				ReceiveResults: make(chan struct {
+					M *amqp.Message
+					E error
+				}),
+			},
+		},
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	msgs, err := r.ReceiveMessages(ctx, 95, nil)
+	require.Empty(t, msgs)
+	require.NoError(t, err)
 }
 
 type receivedMessageSlice []*ReceivedMessage

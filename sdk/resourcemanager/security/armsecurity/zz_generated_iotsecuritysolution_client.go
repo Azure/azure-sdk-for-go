@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // IotSecuritySolutionClient contains the methods for the IotSecuritySolution group.
 // Don't use this type directly, use NewIotSecuritySolutionClient() instead.
 type IotSecuritySolutionClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIotSecuritySolutionClient creates a new instance of IotSecuritySolutionClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIotSecuritySolutionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotSecuritySolutionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &IotSecuritySolutionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IotSecuritySolutionClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // CreateOrUpdate - Use this method to create or update yours IoT Security solution
-// If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel, options *IotSecuritySolutionCreateOrUpdateOptions) (IotSecuritySolutionCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// solutionName - The name of the IoT Security solution.
+// iotSecuritySolutionData - The security solution data
+// options - IotSecuritySolutionClientCreateOrUpdateOptions contains the optional parameters for the IotSecuritySolutionClient.CreateOrUpdate
+// method.
+func (client *IotSecuritySolutionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel, options *IotSecuritySolutionClientCreateOrUpdateOptions) (IotSecuritySolutionClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, solutionName, iotSecuritySolutionData, options)
 	if err != nil {
-		return IotSecuritySolutionCreateOrUpdateResponse{}, err
+		return IotSecuritySolutionClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotSecuritySolutionCreateOrUpdateResponse{}, err
+		return IotSecuritySolutionClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return IotSecuritySolutionCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return IotSecuritySolutionClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel, options *IotSecuritySolutionCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel, options *IotSecuritySolutionClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +86,7 @@ func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +98,37 @@ func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IotSecuritySolutionClient) createOrUpdateHandleResponse(resp *http.Response) (IotSecuritySolutionCreateOrUpdateResponse, error) {
-	result := IotSecuritySolutionCreateOrUpdateResponse{RawResponse: resp}
+func (client *IotSecuritySolutionClient) createOrUpdateHandleResponse(resp *http.Response) (IotSecuritySolutionClientCreateOrUpdateResponse, error) {
+	result := IotSecuritySolutionClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
-		return IotSecuritySolutionCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IotSecuritySolutionClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IotSecuritySolutionClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Use this method to delete yours IoT Security solution
-// If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionClient) Delete(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionDeleteOptions) (IotSecuritySolutionDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// solutionName - The name of the IoT Security solution.
+// options - IotSecuritySolutionClientDeleteOptions contains the optional parameters for the IotSecuritySolutionClient.Delete
+// method.
+func (client *IotSecuritySolutionClient) Delete(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionClientDeleteOptions) (IotSecuritySolutionClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, solutionName, options)
 	if err != nil {
-		return IotSecuritySolutionDeleteResponse{}, err
+		return IotSecuritySolutionClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotSecuritySolutionDeleteResponse{}, err
+		return IotSecuritySolutionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IotSecuritySolutionDeleteResponse{}, client.deleteHandleError(resp)
+		return IotSecuritySolutionClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IotSecuritySolutionDeleteResponse{RawResponse: resp}, nil
+	return IotSecuritySolutionClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionDeleteOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +142,7 @@ func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +153,28 @@ func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IotSecuritySolutionClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - User this method to get details of a specific IoT Security solution based on solution name
-// If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionClient) Get(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionGetOptions) (IotSecuritySolutionGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// solutionName - The name of the IoT Security solution.
+// options - IotSecuritySolutionClientGetOptions contains the optional parameters for the IotSecuritySolutionClient.Get method.
+func (client *IotSecuritySolutionClient) Get(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionClientGetOptions) (IotSecuritySolutionClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, solutionName, options)
 	if err != nil {
-		return IotSecuritySolutionGetResponse{}, err
+		return IotSecuritySolutionClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotSecuritySolutionGetResponse{}, err
+		return IotSecuritySolutionClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotSecuritySolutionGetResponse{}, client.getHandleError(resp)
+		return IotSecuritySolutionClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionGetOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +188,7 @@ func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,43 +200,33 @@ func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotSecuritySolutionClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionGetResponse, error) {
-	result := IotSecuritySolutionGetResponse{RawResponse: resp}
+func (client *IotSecuritySolutionClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionClientGetResponse, error) {
+	result := IotSecuritySolutionClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
-		return IotSecuritySolutionGetResponse{}, runtime.NewResponseError(err, resp)
+		return IotSecuritySolutionClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IotSecuritySolutionClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Use this method to get the list IoT Security solutions organized by resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionClient) ListByResourceGroup(resourceGroupName string, options *IotSecuritySolutionListByResourceGroupOptions) *IotSecuritySolutionListByResourceGroupPager {
-	return &IotSecuritySolutionListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - IotSecuritySolutionClientListByResourceGroupOptions contains the optional parameters for the IotSecuritySolutionClient.ListByResourceGroup
+// method.
+func (client *IotSecuritySolutionClient) ListByResourceGroup(resourceGroupName string, options *IotSecuritySolutionClientListByResourceGroupOptions) *IotSecuritySolutionClientListByResourceGroupPager {
+	return &IotSecuritySolutionClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp IotSecuritySolutionListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IotSecuritySolutionClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IoTSecuritySolutionsList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IotSecuritySolutionListByResourceGroupOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IotSecuritySolutionClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -253,7 +236,7 @@ func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,49 +251,38 @@ func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx co
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp *http.Response) (IotSecuritySolutionListByResourceGroupResponse, error) {
-	result := IotSecuritySolutionListByResourceGroupResponse{RawResponse: resp}
+func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp *http.Response) (IotSecuritySolutionClientListByResourceGroupResponse, error) {
+	result := IotSecuritySolutionClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionsList); err != nil {
-		return IotSecuritySolutionListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return IotSecuritySolutionClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *IotSecuritySolutionClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Use this method to get the list of IoT Security solutions by subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionClient) ListBySubscription(options *IotSecuritySolutionListBySubscriptionOptions) *IotSecuritySolutionListBySubscriptionPager {
-	return &IotSecuritySolutionListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - IotSecuritySolutionClientListBySubscriptionOptions contains the optional parameters for the IotSecuritySolutionClient.ListBySubscription
+// method.
+func (client *IotSecuritySolutionClient) ListBySubscription(options *IotSecuritySolutionClientListBySubscriptionOptions) *IotSecuritySolutionClientListBySubscriptionPager {
+	return &IotSecuritySolutionClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp IotSecuritySolutionListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IotSecuritySolutionClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IoTSecuritySolutionsList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx context.Context, options *IotSecuritySolutionListBySubscriptionOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx context.Context, options *IotSecuritySolutionClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/iotSecuritySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,46 +297,39 @@ func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx con
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *IotSecuritySolutionClient) listBySubscriptionHandleResponse(resp *http.Response) (IotSecuritySolutionListBySubscriptionResponse, error) {
-	result := IotSecuritySolutionListBySubscriptionResponse{RawResponse: resp}
+func (client *IotSecuritySolutionClient) listBySubscriptionHandleResponse(resp *http.Response) (IotSecuritySolutionClientListBySubscriptionResponse, error) {
+	result := IotSecuritySolutionClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionsList); err != nil {
-		return IotSecuritySolutionListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return IotSecuritySolutionClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *IotSecuritySolutionClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Use this method to update existing IoT Security solution tags or user defined resources. To update other fields use the CreateOrUpdate method.
-// If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionClient) Update(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData, options *IotSecuritySolutionUpdateOptions) (IotSecuritySolutionUpdateResponse, error) {
+// Update - Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
+// use the CreateOrUpdate method.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// solutionName - The name of the IoT Security solution.
+// updateIotSecuritySolutionData - The security solution data
+// options - IotSecuritySolutionClientUpdateOptions contains the optional parameters for the IotSecuritySolutionClient.Update
+// method.
+func (client *IotSecuritySolutionClient) Update(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData, options *IotSecuritySolutionClientUpdateOptions) (IotSecuritySolutionClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, solutionName, updateIotSecuritySolutionData, options)
 	if err != nil {
-		return IotSecuritySolutionUpdateResponse{}, err
+		return IotSecuritySolutionClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotSecuritySolutionUpdateResponse{}, err
+		return IotSecuritySolutionClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotSecuritySolutionUpdateResponse{}, client.updateHandleError(resp)
+		return IotSecuritySolutionClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData, options *IotSecuritySolutionUpdateOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData, options *IotSecuritySolutionClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -378,7 +343,7 @@ func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -390,23 +355,10 @@ func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context
 }
 
 // updateHandleResponse handles the Update response.
-func (client *IotSecuritySolutionClient) updateHandleResponse(resp *http.Response) (IotSecuritySolutionUpdateResponse, error) {
-	result := IotSecuritySolutionUpdateResponse{RawResponse: resp}
+func (client *IotSecuritySolutionClient) updateHandleResponse(resp *http.Response) (IotSecuritySolutionClientUpdateResponse, error) {
+	result := IotSecuritySolutionClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
-		return IotSecuritySolutionUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IotSecuritySolutionClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *IotSecuritySolutionClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

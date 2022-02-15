@@ -4,14 +4,11 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/rng?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -24,7 +21,7 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "acfef2e0-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-request-id": "26964366-7e05-11ec-a044-000d3a731e50",
         "x-ms-server-latency": "0"
       },
       "ResponseBody": null
@@ -33,16 +30,13 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/rng?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "count": 100
@@ -58,27 +52,24 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "ad2074ce-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-request-id": "26d8a3aa-7e05-11ec-a044-000d3a731e50",
         "x-ms-server-latency": "1"
       },
       "ResponseBody": {
-        "value": "XaIS3waclBp-dm7CdScmgd7Ig_RqnlV-W8zMl0_61VzglD2Lo90oXPgsumLOCurraIMzozq0LlvjmPXOAiWndZSK8PK6Jb09_0hX0QoOdveSQJl4XKUHQeDuja0pVuLzQImbNQ"
+        "value": "k_JSNZiS05XCS7LF7eYJpmEEL8Z1Lwtax8X1sXMp9EYMbN-BjRHF0_Ngj5lrWp9ANZZExfCmpb5agy-keuiK-BY6t5a7EhbImj982oQNZVdUV5CM9pmtZ_LPpMe8ZWRpW0QYhQ"
       }
     },
     {
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/rng?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "12",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "count": -1
@@ -92,13 +83,13 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "ad2b07cc-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-request-id": "26e3af20-7e05-11ec-a044-000d3a731e50",
         "x-ms-server-latency": "0"
       },
       "ResponseBody": {
         "error": {
           "code": "BadParameter",
-          "message": "GetRandomBytesRequest: count cannot be greater than 128 or less than 1 (Activity ID: ad2b07cc-61b3-11ec-985f-000d3aec06d7)"
+          "message": "GetRandomBytesRequest: count cannot be greater than 128 or less than 1 (Activity ID: 26e3af20-7e05-11ec-a044-000d3a731e50)"
         }
       }
     }

@@ -49,25 +49,6 @@ func unmarshalAddonClassificationArray(rawMsg json.RawMessage) ([]AddonClassific
 	return fArray, nil
 }
 
-func unmarshalAddonClassificationMap(rawMsg json.RawMessage) (map[string]AddonClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AddonClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAddonClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalRoleClassification(rawMsg json.RawMessage) (RoleClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -111,25 +92,6 @@ func unmarshalRoleClassificationArray(rawMsg json.RawMessage) ([]RoleClassificat
 	return fArray, nil
 }
 
-func unmarshalRoleClassificationMap(rawMsg json.RawMessage) (map[string]RoleClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]RoleClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalRoleClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalTriggerClassification(rawMsg json.RawMessage) (TriggerClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -167,23 +129,4 @@ func unmarshalTriggerClassificationArray(rawMsg json.RawMessage) ([]TriggerClass
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalTriggerClassificationMap(rawMsg json.RawMessage) (map[string]TriggerClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]TriggerClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalTriggerClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

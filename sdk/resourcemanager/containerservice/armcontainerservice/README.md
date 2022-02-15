@@ -50,6 +50,12 @@ options = arm.ClientOptions{
 client := armcontainerservice.NewSnapshotsClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Agent Pool](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/agent_pool)
+- [Maintenance Configuration](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/maintenance_configurations)
+- [Managed Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=containerservice/managed_clusters)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

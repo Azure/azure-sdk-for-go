@@ -50,6 +50,12 @@ options = arm.ClientOptions{
 client := armmonitor.NewAlertRuleIncidentsClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Action Group](https://aka.ms/azsdk/go/mgmt/samples?path=monitor/action_group)
+- [Activity Log Alert](https://aka.ms/azsdk/go/mgmt/samples?path=monitor/activity_log_alert)
+- [Log Profile](https://aka.ms/azsdk/go/mgmt/samples?path=monitor/log_profile)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

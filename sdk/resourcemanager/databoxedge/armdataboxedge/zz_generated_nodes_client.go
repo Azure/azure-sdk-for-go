@@ -11,7 +11,6 @@ package armdataboxedge
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // NodesClient contains the methods for the Nodes group.
 // Don't use this type directly, use NewNodesClient() instead.
 type NodesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewNodesClient creates a new instance of NodesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewNodesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NodesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &NodesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &NodesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // ListByDataBoxEdgeDevice - Gets all the nodes currently configured under this Data Box Edge device
-// If the operation fails it returns the *CloudError error type.
-func (client *NodesClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *NodesListByDataBoxEdgeDeviceOptions) *NodesListByDataBoxEdgeDevicePager {
-	return &NodesListByDataBoxEdgeDevicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - NodesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the NodesClient.ListByDataBoxEdgeDevice
+// method.
+func (client *NodesClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *NodesClientListByDataBoxEdgeDeviceOptions) *NodesClientListByDataBoxEdgeDevicePager {
+	return &NodesClientListByDataBoxEdgeDevicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp NodesListByDataBoxEdgeDeviceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp NodesClientListByDataBoxEdgeDeviceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.NodeList.NextLink)
 		},
 	}
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
-func (client *NodesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *NodesListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
+func (client *NodesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *NodesClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/nodes"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -71,7 +82,7 @@ func (client *NodesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +94,10 @@ func (client *NodesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Cont
 }
 
 // listByDataBoxEdgeDeviceHandleResponse handles the ListByDataBoxEdgeDevice response.
-func (client *NodesClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (NodesListByDataBoxEdgeDeviceResponse, error) {
-	result := NodesListByDataBoxEdgeDeviceResponse{RawResponse: resp}
+func (client *NodesClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (NodesClientListByDataBoxEdgeDeviceResponse, error) {
+	result := NodesClientListByDataBoxEdgeDeviceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeList); err != nil {
-		return NodesListByDataBoxEdgeDeviceResponse{}, runtime.NewResponseError(err, resp)
+		return NodesClientListByDataBoxEdgeDeviceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDataBoxEdgeDeviceHandleError handles the ListByDataBoxEdgeDevice error response.
-func (client *NodesClient) listByDataBoxEdgeDeviceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

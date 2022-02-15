@@ -12,7 +12,7 @@ package datamigration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-07-15-preview/datamigration"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2021-10-30-preview/datamigration"
 )
 
 const (
@@ -22,30 +22,30 @@ const (
 type AuthenticationType = original.AuthenticationType
 
 const (
-	ActiveDirectoryIntegrated AuthenticationType = original.ActiveDirectoryIntegrated
-	ActiveDirectoryPassword   AuthenticationType = original.ActiveDirectoryPassword
-	None                      AuthenticationType = original.None
-	SQLAuthentication         AuthenticationType = original.SQLAuthentication
-	WindowsAuthentication     AuthenticationType = original.WindowsAuthentication
+	AuthenticationTypeActiveDirectoryIntegrated AuthenticationType = original.AuthenticationTypeActiveDirectoryIntegrated
+	AuthenticationTypeActiveDirectoryPassword   AuthenticationType = original.AuthenticationTypeActiveDirectoryPassword
+	AuthenticationTypeNone                      AuthenticationType = original.AuthenticationTypeNone
+	AuthenticationTypeSQLAuthentication         AuthenticationType = original.AuthenticationTypeSQLAuthentication
+	AuthenticationTypeWindowsAuthentication     AuthenticationType = original.AuthenticationTypeWindowsAuthentication
 )
 
 type BackupFileStatus = original.BackupFileStatus
 
 const (
-	Arrived   BackupFileStatus = original.Arrived
-	Cancelled BackupFileStatus = original.Cancelled
-	Queued    BackupFileStatus = original.Queued
-	Restored  BackupFileStatus = original.Restored
-	Restoring BackupFileStatus = original.Restoring
-	Uploaded  BackupFileStatus = original.Uploaded
-	Uploading BackupFileStatus = original.Uploading
+	BackupFileStatusArrived   BackupFileStatus = original.BackupFileStatusArrived
+	BackupFileStatusCancelled BackupFileStatus = original.BackupFileStatusCancelled
+	BackupFileStatusQueued    BackupFileStatus = original.BackupFileStatusQueued
+	BackupFileStatusRestored  BackupFileStatus = original.BackupFileStatusRestored
+	BackupFileStatusRestoring BackupFileStatus = original.BackupFileStatusRestoring
+	BackupFileStatusUploaded  BackupFileStatus = original.BackupFileStatusUploaded
+	BackupFileStatusUploading BackupFileStatus = original.BackupFileStatusUploading
 )
 
 type BackupMode = original.BackupMode
 
 const (
-	CreateBackup   BackupMode = original.CreateBackup
-	ExistingBackup BackupMode = original.ExistingBackup
+	BackupModeCreateBackup   BackupMode = original.BackupModeCreateBackup
+	BackupModeExistingBackup BackupMode = original.BackupModeExistingBackup
 )
 
 type BackupType = original.BackupType
@@ -63,11 +63,11 @@ const (
 type CommandState = original.CommandState
 
 const (
-	Accepted  CommandState = original.Accepted
-	Failed    CommandState = original.Failed
-	Running   CommandState = original.Running
-	Succeeded CommandState = original.Succeeded
-	Unknown   CommandState = original.Unknown
+	CommandStateAccepted  CommandState = original.CommandStateAccepted
+	CommandStateFailed    CommandState = original.CommandStateFailed
+	CommandStateRunning   CommandState = original.CommandStateRunning
+	CommandStateSucceeded CommandState = original.CommandStateSucceeded
+	CommandStateUnknown   CommandState = original.CommandStateUnknown
 )
 
 type CommandType = original.CommandType
@@ -81,26 +81,35 @@ const (
 	CommandTypeRestart                              CommandType = original.CommandTypeRestart
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
 type DatabaseCompatLevel = original.DatabaseCompatLevel
 
 const (
-	CompatLevel100 DatabaseCompatLevel = original.CompatLevel100
-	CompatLevel110 DatabaseCompatLevel = original.CompatLevel110
-	CompatLevel120 DatabaseCompatLevel = original.CompatLevel120
-	CompatLevel130 DatabaseCompatLevel = original.CompatLevel130
-	CompatLevel140 DatabaseCompatLevel = original.CompatLevel140
-	CompatLevel80  DatabaseCompatLevel = original.CompatLevel80
-	CompatLevel90  DatabaseCompatLevel = original.CompatLevel90
+	DatabaseCompatLevelCompatLevel100 DatabaseCompatLevel = original.DatabaseCompatLevelCompatLevel100
+	DatabaseCompatLevelCompatLevel110 DatabaseCompatLevel = original.DatabaseCompatLevelCompatLevel110
+	DatabaseCompatLevelCompatLevel120 DatabaseCompatLevel = original.DatabaseCompatLevelCompatLevel120
+	DatabaseCompatLevelCompatLevel130 DatabaseCompatLevel = original.DatabaseCompatLevelCompatLevel130
+	DatabaseCompatLevelCompatLevel140 DatabaseCompatLevel = original.DatabaseCompatLevelCompatLevel140
+	DatabaseCompatLevelCompatLevel80  DatabaseCompatLevel = original.DatabaseCompatLevelCompatLevel80
+	DatabaseCompatLevelCompatLevel90  DatabaseCompatLevel = original.DatabaseCompatLevelCompatLevel90
 )
 
 type DatabaseFileType = original.DatabaseFileType
 
 const (
-	Filestream   DatabaseFileType = original.Filestream
-	Fulltext     DatabaseFileType = original.Fulltext
-	Log          DatabaseFileType = original.Log
-	NotSupported DatabaseFileType = original.NotSupported
-	Rows         DatabaseFileType = original.Rows
+	DatabaseFileTypeFilestream   DatabaseFileType = original.DatabaseFileTypeFilestream
+	DatabaseFileTypeFulltext     DatabaseFileType = original.DatabaseFileTypeFulltext
+	DatabaseFileTypeLog          DatabaseFileType = original.DatabaseFileTypeLog
+	DatabaseFileTypeNotSupported DatabaseFileType = original.DatabaseFileTypeNotSupported
+	DatabaseFileTypeRows         DatabaseFileType = original.DatabaseFileTypeRows
 )
 
 type DatabaseMigrationStage = original.DatabaseMigrationStage
@@ -117,16 +126,16 @@ const (
 type DatabaseMigrationState = original.DatabaseMigrationState
 
 const (
-	CANCELLED             DatabaseMigrationState = original.CANCELLED
-	COMPLETED             DatabaseMigrationState = original.COMPLETED
-	CUTOVERSTART          DatabaseMigrationState = original.CUTOVERSTART
-	FAILED                DatabaseMigrationState = original.FAILED
-	FULLBACKUPUPLOADSTART DatabaseMigrationState = original.FULLBACKUPUPLOADSTART
-	INITIAL               DatabaseMigrationState = original.INITIAL
-	LOGSHIPPINGSTART      DatabaseMigrationState = original.LOGSHIPPINGSTART
-	POSTCUTOVERCOMPLETE   DatabaseMigrationState = original.POSTCUTOVERCOMPLETE
-	UNDEFINED             DatabaseMigrationState = original.UNDEFINED
-	UPLOADLOGFILESSTART   DatabaseMigrationState = original.UPLOADLOGFILESSTART
+	DatabaseMigrationStateCANCELLED             DatabaseMigrationState = original.DatabaseMigrationStateCANCELLED
+	DatabaseMigrationStateCOMPLETED             DatabaseMigrationState = original.DatabaseMigrationStateCOMPLETED
+	DatabaseMigrationStateCUTOVERSTART          DatabaseMigrationState = original.DatabaseMigrationStateCUTOVERSTART
+	DatabaseMigrationStateFAILED                DatabaseMigrationState = original.DatabaseMigrationStateFAILED
+	DatabaseMigrationStateFULLBACKUPUPLOADSTART DatabaseMigrationState = original.DatabaseMigrationStateFULLBACKUPUPLOADSTART
+	DatabaseMigrationStateINITIAL               DatabaseMigrationState = original.DatabaseMigrationStateINITIAL
+	DatabaseMigrationStateLOGSHIPPINGSTART      DatabaseMigrationState = original.DatabaseMigrationStateLOGSHIPPINGSTART
+	DatabaseMigrationStatePOSTCUTOVERCOMPLETE   DatabaseMigrationState = original.DatabaseMigrationStatePOSTCUTOVERCOMPLETE
+	DatabaseMigrationStateUNDEFINED             DatabaseMigrationState = original.DatabaseMigrationStateUNDEFINED
+	DatabaseMigrationStateUPLOADLOGFILESSTART   DatabaseMigrationState = original.DatabaseMigrationStateUPLOADLOGFILESSTART
 )
 
 type DatabaseState = original.DatabaseState
@@ -151,6 +160,14 @@ const (
 	ErrorTypeWarning ErrorType = original.ErrorTypeWarning
 )
 
+type Kind = original.Kind
+
+const (
+	KindDatabaseMigrationProperties Kind = original.KindDatabaseMigrationProperties
+	KindSQLMi                       Kind = original.KindSQLMi
+	KindSQLVM                       Kind = original.KindSQLVM
+)
+
 type LoginMigrationStage = original.LoginMigrationStage
 
 const (
@@ -168,13 +185,13 @@ const (
 type LoginType = original.LoginType
 
 const (
-	AsymmetricKey LoginType = original.AsymmetricKey
-	Certificate   LoginType = original.Certificate
-	ExternalGroup LoginType = original.ExternalGroup
-	ExternalUser  LoginType = original.ExternalUser
-	SQLLogin      LoginType = original.SQLLogin
-	WindowsGroup  LoginType = original.WindowsGroup
-	WindowsUser   LoginType = original.WindowsUser
+	LoginTypeAsymmetricKey LoginType = original.LoginTypeAsymmetricKey
+	LoginTypeCertificate   LoginType = original.LoginTypeCertificate
+	LoginTypeExternalGroup LoginType = original.LoginTypeExternalGroup
+	LoginTypeExternalUser  LoginType = original.LoginTypeExternalUser
+	LoginTypeSQLLogin      LoginType = original.LoginTypeSQLLogin
+	LoginTypeWindowsGroup  LoginType = original.LoginTypeWindowsGroup
+	LoginTypeWindowsUser   LoginType = original.LoginTypeWindowsUser
 )
 
 type MigrationState = original.MigrationState
@@ -207,9 +224,9 @@ const (
 type MongoDbClusterType = original.MongoDbClusterType
 
 const (
-	BlobContainer MongoDbClusterType = original.BlobContainer
-	CosmosDb      MongoDbClusterType = original.CosmosDb
-	MongoDb       MongoDbClusterType = original.MongoDb
+	MongoDbClusterTypeBlobContainer MongoDbClusterType = original.MongoDbClusterTypeBlobContainer
+	MongoDbClusterTypeCosmosDb      MongoDbClusterType = original.MongoDbClusterTypeCosmosDb
+	MongoDbClusterTypeMongoDb       MongoDbClusterType = original.MongoDbClusterTypeMongoDb
 )
 
 type MongoDbErrorType = original.MongoDbErrorType
@@ -239,41 +256,48 @@ const (
 type MongoDbReplication = original.MongoDbReplication
 
 const (
-	Continuous MongoDbReplication = original.Continuous
-	Disabled   MongoDbReplication = original.Disabled
-	OneTime    MongoDbReplication = original.OneTime
+	MongoDbReplicationContinuous MongoDbReplication = original.MongoDbReplicationContinuous
+	MongoDbReplicationDisabled   MongoDbReplication = original.MongoDbReplicationDisabled
+	MongoDbReplicationOneTime    MongoDbReplication = original.MongoDbReplicationOneTime
 )
 
 type MongoDbShardKeyOrder = original.MongoDbShardKeyOrder
 
 const (
-	Forward MongoDbShardKeyOrder = original.Forward
-	Hashed  MongoDbShardKeyOrder = original.Hashed
-	Reverse MongoDbShardKeyOrder = original.Reverse
+	MongoDbShardKeyOrderForward MongoDbShardKeyOrder = original.MongoDbShardKeyOrderForward
+	MongoDbShardKeyOrderHashed  MongoDbShardKeyOrder = original.MongoDbShardKeyOrderHashed
+	MongoDbShardKeyOrderReverse MongoDbShardKeyOrder = original.MongoDbShardKeyOrderReverse
 )
 
 type MySQLTargetPlatformType = original.MySQLTargetPlatformType
 
 const (
-	AzureDbForMySQL MySQLTargetPlatformType = original.AzureDbForMySQL
-	SQLServer       MySQLTargetPlatformType = original.SQLServer
+	MySQLTargetPlatformTypeAzureDbForMySQL MySQLTargetPlatformType = original.MySQLTargetPlatformTypeAzureDbForMySQL
+	MySQLTargetPlatformTypeSQLServer       MySQLTargetPlatformType = original.MySQLTargetPlatformTypeSQLServer
 )
 
 type NameCheckFailureReason = original.NameCheckFailureReason
 
 const (
-	AlreadyExists NameCheckFailureReason = original.AlreadyExists
-	Invalid       NameCheckFailureReason = original.Invalid
+	NameCheckFailureReasonAlreadyExists NameCheckFailureReason = original.NameCheckFailureReasonAlreadyExists
+	NameCheckFailureReasonInvalid       NameCheckFailureReason = original.NameCheckFailureReasonInvalid
 )
 
 type ObjectType = original.ObjectType
 
 const (
-	Function         ObjectType = original.Function
-	StoredProcedures ObjectType = original.StoredProcedures
-	Table            ObjectType = original.Table
-	User             ObjectType = original.User
-	View             ObjectType = original.View
+	ObjectTypeFunction         ObjectType = original.ObjectTypeFunction
+	ObjectTypeStoredProcedures ObjectType = original.ObjectTypeStoredProcedures
+	ObjectTypeTable            ObjectType = original.ObjectTypeTable
+	ObjectTypeUser             ObjectType = original.ObjectTypeUser
+	ObjectTypeView             ObjectType = original.ObjectTypeView
+)
+
+type OperationOrigin = original.OperationOrigin
+
+const (
+	OperationOriginSystem OperationOrigin = original.OperationOriginSystem
+	OperationOriginUser   OperationOrigin = original.OperationOriginUser
 )
 
 type ProjectProvisioningState = original.ProjectProvisioningState
@@ -326,25 +350,25 @@ const (
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
 
 const (
-	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
-	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+	ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription
+	ResourceSkuRestrictionsReasonCodeQuotaID                     ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCodeQuotaID
 )
 
 type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
 
 const (
-	Location ResourceSkuRestrictionsType = original.Location
+	ResourceSkuRestrictionsTypeLocation ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsTypeLocation
 )
 
 type ResultCode = original.ResultCode
 
 const (
-	Completed                  ResultCode = original.Completed
-	FatalError                 ResultCode = original.FatalError
-	Initial                    ResultCode = original.Initial
-	ObjectNotExistsInSource    ResultCode = original.ObjectNotExistsInSource
-	ObjectNotExistsInTarget    ResultCode = original.ObjectNotExistsInTarget
-	TargetObjectIsInaccessible ResultCode = original.TargetObjectIsInaccessible
+	ResultCodeCompleted                  ResultCode = original.ResultCodeCompleted
+	ResultCodeFatalError                 ResultCode = original.ResultCodeFatalError
+	ResultCodeInitial                    ResultCode = original.ResultCodeInitial
+	ResultCodeObjectNotExistsInSource    ResultCode = original.ResultCodeObjectNotExistsInSource
+	ResultCodeObjectNotExistsInTarget    ResultCode = original.ResultCodeObjectNotExistsInTarget
+	ResultCodeTargetObjectIsInaccessible ResultCode = original.ResultCodeTargetObjectIsInaccessible
 )
 
 type ResultType = original.ResultType
@@ -358,11 +382,21 @@ const (
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutput
 
 const (
-	ResultTypeAgentJobLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeAgentJobLevelOutput
-	ResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeConnectToSourceSQLServerTaskOutput
-	ResultTypeDatabaseLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeDatabaseLevelOutput
-	ResultTypeLoginLevelOutput                   ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeLoginLevelOutput
-	ResultTypeTaskLevelOutput                    ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeTaskLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput                   ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput                    ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
+)
+
+type ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput
+
+const (
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeDatabaseLevelOutput                          ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeErrorOutput                                  ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeMigrateMySQLAzureDbForMySQLOfflineTaskOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeMigrateMySQLAzureDbForMySQLOfflineTaskOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeMigrationLevelOutput                         ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeMigrationLevelOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeTableLevelOutput                             ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputResultTypeTableLevelOutput
 )
 
 type ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput
@@ -452,32 +486,32 @@ const (
 type ResultTypeBasicMongoDbProgress = original.ResultTypeBasicMongoDbProgress
 
 const (
-	ResultTypeCollection      ResultTypeBasicMongoDbProgress = original.ResultTypeCollection
-	ResultTypeDatabase        ResultTypeBasicMongoDbProgress = original.ResultTypeDatabase
-	ResultTypeMigration       ResultTypeBasicMongoDbProgress = original.ResultTypeMigration
-	ResultTypeMongoDbProgress ResultTypeBasicMongoDbProgress = original.ResultTypeMongoDbProgress
+	ResultTypeBasicMongoDbProgressResultTypeCollection      ResultTypeBasicMongoDbProgress = original.ResultTypeBasicMongoDbProgressResultTypeCollection
+	ResultTypeBasicMongoDbProgressResultTypeDatabase        ResultTypeBasicMongoDbProgress = original.ResultTypeBasicMongoDbProgressResultTypeDatabase
+	ResultTypeBasicMongoDbProgressResultTypeMigration       ResultTypeBasicMongoDbProgress = original.ResultTypeBasicMongoDbProgressResultTypeMigration
+	ResultTypeBasicMongoDbProgressResultTypeMongoDbProgress ResultTypeBasicMongoDbProgress = original.ResultTypeBasicMongoDbProgressResultTypeMongoDbProgress
 )
 
 type SQLSourcePlatform = original.SQLSourcePlatform
 
 const (
-	SQLOnPrem SQLSourcePlatform = original.SQLOnPrem
+	SQLSourcePlatformSQLOnPrem SQLSourcePlatform = original.SQLSourcePlatformSQLOnPrem
 )
 
 type ScenarioSource = original.ScenarioSource
 
 const (
-	Access        ScenarioSource = original.Access
-	DB2           ScenarioSource = original.DB2
-	MongoDB       ScenarioSource = original.MongoDB
-	MySQL         ScenarioSource = original.MySQL
-	MySQLRDS      ScenarioSource = original.MySQLRDS
-	Oracle        ScenarioSource = original.Oracle
-	PostgreSQL    ScenarioSource = original.PostgreSQL
-	PostgreSQLRDS ScenarioSource = original.PostgreSQLRDS
-	SQL           ScenarioSource = original.SQL
-	SQLRDS        ScenarioSource = original.SQLRDS
-	Sybase        ScenarioSource = original.Sybase
+	ScenarioSourceAccess        ScenarioSource = original.ScenarioSourceAccess
+	ScenarioSourceDB2           ScenarioSource = original.ScenarioSourceDB2
+	ScenarioSourceMongoDB       ScenarioSource = original.ScenarioSourceMongoDB
+	ScenarioSourceMySQL         ScenarioSource = original.ScenarioSourceMySQL
+	ScenarioSourceMySQLRDS      ScenarioSource = original.ScenarioSourceMySQLRDS
+	ScenarioSourceOracle        ScenarioSource = original.ScenarioSourceOracle
+	ScenarioSourcePostgreSQL    ScenarioSource = original.ScenarioSourcePostgreSQL
+	ScenarioSourcePostgreSQLRDS ScenarioSource = original.ScenarioSourcePostgreSQLRDS
+	ScenarioSourceSQL           ScenarioSource = original.ScenarioSourceSQL
+	ScenarioSourceSQLRDS        ScenarioSource = original.ScenarioSourceSQLRDS
+	ScenarioSourceSybase        ScenarioSource = original.ScenarioSourceSybase
 )
 
 type ScenarioTarget = original.ScenarioTarget
@@ -518,10 +552,10 @@ const (
 type ServerLevelPermissionsGroup = original.ServerLevelPermissionsGroup
 
 const (
-	Default                             ServerLevelPermissionsGroup = original.Default
-	MigrationFromMySQLToAzureDBForMySQL ServerLevelPermissionsGroup = original.MigrationFromMySQLToAzureDBForMySQL
-	MigrationFromSQLServerToAzureDB     ServerLevelPermissionsGroup = original.MigrationFromSQLServerToAzureDB
-	MigrationFromSQLServerToAzureMI     ServerLevelPermissionsGroup = original.MigrationFromSQLServerToAzureMI
+	ServerLevelPermissionsGroupDefault                             ServerLevelPermissionsGroup = original.ServerLevelPermissionsGroupDefault
+	ServerLevelPermissionsGroupMigrationFromMySQLToAzureDBForMySQL ServerLevelPermissionsGroup = original.ServerLevelPermissionsGroupMigrationFromMySQLToAzureDBForMySQL
+	ServerLevelPermissionsGroupMigrationFromSQLServerToAzureDB     ServerLevelPermissionsGroup = original.ServerLevelPermissionsGroupMigrationFromSQLServerToAzureDB
+	ServerLevelPermissionsGroupMigrationFromSQLServerToAzureMI     ServerLevelPermissionsGroup = original.ServerLevelPermissionsGroupMigrationFromSQLServerToAzureMI
 )
 
 type ServiceProvisioningState = original.ServiceProvisioningState
@@ -558,8 +592,8 @@ const (
 type SsisMigrationOverwriteOption = original.SsisMigrationOverwriteOption
 
 const (
-	Ignore    SsisMigrationOverwriteOption = original.Ignore
-	Overwrite SsisMigrationOverwriteOption = original.Overwrite
+	SsisMigrationOverwriteOptionIgnore    SsisMigrationOverwriteOption = original.SsisMigrationOverwriteOptionIgnore
+	SsisMigrationOverwriteOptionOverwrite SsisMigrationOverwriteOption = original.SsisMigrationOverwriteOptionOverwrite
 )
 
 type SsisMigrationStage = original.SsisMigrationStage
@@ -574,7 +608,7 @@ const (
 type SsisStoreType = original.SsisStoreType
 
 const (
-	SsisCatalog SsisStoreType = original.SsisCatalog
+	SsisStoreTypeSsisCatalog SsisStoreType = original.SsisStoreTypeSsisCatalog
 )
 
 type SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingState
@@ -642,10 +676,12 @@ const (
 	TaskTypeConnectToTargetSQLDbSync                           TaskType = original.TaskTypeConnectToTargetSQLDbSync
 	TaskTypeGetTDECertificatesSQL                              TaskType = original.TaskTypeGetTDECertificatesSQL
 	TaskTypeGetUserTablesAzureSQLDbSync                        TaskType = original.TaskTypeGetUserTablesAzureSQLDbSync
+	TaskTypeGetUserTablesMySQL                                 TaskType = original.TaskTypeGetUserTablesMySQL
 	TaskTypeGetUserTablesOracle                                TaskType = original.TaskTypeGetUserTablesOracle
 	TaskTypeGetUserTablesPostgreSQL                            TaskType = original.TaskTypeGetUserTablesPostgreSQL
 	TaskTypeGetUserTablesSQL                                   TaskType = original.TaskTypeGetUserTablesSQL
 	TaskTypeMigrateMongoDb                                     TaskType = original.TaskTypeMigrateMongoDb
+	TaskTypeMigrateMySQLAzureDbForMySQL                        TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQL
 	TaskTypeMigrateMySQLAzureDbForMySQLSync                    TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQLSync
 	TaskTypeMigrateOracleAzureDbForPostgreSQLSync              TaskType = original.TaskTypeMigrateOracleAzureDbForPostgreSQLSync
 	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2        TaskType = original.TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSyncV2
@@ -681,9 +717,9 @@ const (
 type UpdateActionType = original.UpdateActionType
 
 const (
-	AddedOnTarget   UpdateActionType = original.AddedOnTarget
-	ChangedOnTarget UpdateActionType = original.ChangedOnTarget
-	DeletedOnTarget UpdateActionType = original.DeletedOnTarget
+	UpdateActionTypeAddedOnTarget   UpdateActionType = original.UpdateActionTypeAddedOnTarget
+	UpdateActionTypeChangedOnTarget UpdateActionType = original.UpdateActionTypeChangedOnTarget
+	UpdateActionTypeDeletedOnTarget UpdateActionType = original.UpdateActionTypeDeletedOnTarget
 )
 
 type ValidationStatus = original.ValidationStatus
@@ -700,16 +736,21 @@ const (
 )
 
 type APIError = original.APIError
+type AuthenticationKeys = original.AuthenticationKeys
 type AvailableServiceSku = original.AvailableServiceSku
 type AvailableServiceSkuCapacity = original.AvailableServiceSkuCapacity
 type AvailableServiceSkuSku = original.AvailableServiceSkuSku
 type AzureActiveDirectoryApp = original.AzureActiveDirectoryApp
+type AzureBlob = original.AzureBlob
+type BackupConfiguration = original.BackupConfiguration
 type BackupFileInfo = original.BackupFileInfo
 type BackupSetInfo = original.BackupSetInfo
 type BaseClient = original.BaseClient
 type BasicCommandProperties = original.BasicCommandProperties
 type BasicConnectToSourceSQLServerTaskOutput = original.BasicConnectToSourceSQLServerTaskOutput
 type BasicConnectionInfo = original.BasicConnectionInfo
+type BasicDatabaseMigrationProperties = original.BasicDatabaseMigrationProperties
+type BasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput = original.BasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput
 type BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput
 type BasicMigrateOracleAzureDbPostgreSQLSyncTaskOutput = original.BasicMigrateOracleAzureDbPostgreSQLSyncTaskOutput
 type BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
@@ -774,10 +815,29 @@ type DatabaseBackupInfo = original.DatabaseBackupInfo
 type DatabaseFileInfo = original.DatabaseFileInfo
 type DatabaseFileInput = original.DatabaseFileInput
 type DatabaseInfo = original.DatabaseInfo
+type DatabaseMigration = original.DatabaseMigration
+type DatabaseMigrationListResult = original.DatabaseMigrationListResult
+type DatabaseMigrationListResultIterator = original.DatabaseMigrationListResultIterator
+type DatabaseMigrationListResultPage = original.DatabaseMigrationListResultPage
+type DatabaseMigrationProperties = original.DatabaseMigrationProperties
+type DatabaseMigrationPropertiesSQLMi = original.DatabaseMigrationPropertiesSQLMi
+type DatabaseMigrationPropertiesSQLVM = original.DatabaseMigrationPropertiesSQLVM
+type DatabaseMigrationSQLMi = original.DatabaseMigrationSQLMi
+type DatabaseMigrationSQLVM = original.DatabaseMigrationSQLVM
+type DatabaseMigrationsSQLMiCancelFuture = original.DatabaseMigrationsSQLMiCancelFuture
+type DatabaseMigrationsSQLMiClient = original.DatabaseMigrationsSQLMiClient
+type DatabaseMigrationsSQLMiCreateOrUpdateFuture = original.DatabaseMigrationsSQLMiCreateOrUpdateFuture
+type DatabaseMigrationsSQLMiCutoverFuture = original.DatabaseMigrationsSQLMiCutoverFuture
+type DatabaseMigrationsSQLVMCancelFuture = original.DatabaseMigrationsSQLVMCancelFuture
+type DatabaseMigrationsSQLVMClient = original.DatabaseMigrationsSQLVMClient
+type DatabaseMigrationsSQLVMCreateOrUpdateFuture = original.DatabaseMigrationsSQLVMCreateOrUpdateFuture
+type DatabaseMigrationsSQLVMCutoverFuture = original.DatabaseMigrationsSQLVMCutoverFuture
 type DatabaseObjectName = original.DatabaseObjectName
 type DatabaseSummaryResult = original.DatabaseSummaryResult
 type DatabaseTable = original.DatabaseTable
+type DeleteNode = original.DeleteNode
 type Error = original.Error
+type ErrorInfo = original.ErrorInfo
 type ExecutionStatistics = original.ExecutionStatistics
 type FileList = original.FileList
 type FileListIterator = original.FileListIterator
@@ -789,6 +849,9 @@ type GetProjectDetailsNonSQLTaskInput = original.GetProjectDetailsNonSQLTaskInpu
 type GetTdeCertificatesSQLTaskInput = original.GetTdeCertificatesSQLTaskInput
 type GetTdeCertificatesSQLTaskOutput = original.GetTdeCertificatesSQLTaskOutput
 type GetTdeCertificatesSQLTaskProperties = original.GetTdeCertificatesSQLTaskProperties
+type GetUserTablesMySQLTaskInput = original.GetUserTablesMySQLTaskInput
+type GetUserTablesMySQLTaskOutput = original.GetUserTablesMySQLTaskOutput
+type GetUserTablesMySQLTaskProperties = original.GetUserTablesMySQLTaskProperties
 type GetUserTablesOracleTaskInput = original.GetUserTablesOracleTaskInput
 type GetUserTablesOracleTaskOutput = original.GetUserTablesOracleTaskOutput
 type GetUserTablesOracleTaskProperties = original.GetUserTablesOracleTaskProperties
@@ -804,11 +867,20 @@ type GetUserTablesSQLTaskProperties = original.GetUserTablesSQLTaskProperties
 type InstallOCIDriverTaskInput = original.InstallOCIDriverTaskInput
 type InstallOCIDriverTaskOutput = original.InstallOCIDriverTaskOutput
 type InstallOCIDriverTaskProperties = original.InstallOCIDriverTaskProperties
+type IntegrationRuntimeMonitoringData = original.IntegrationRuntimeMonitoringData
 type MiSQLConnectionInfo = original.MiSQLConnectionInfo
 type MigrateMISyncCompleteCommandInput = original.MigrateMISyncCompleteCommandInput
 type MigrateMISyncCompleteCommandOutput = original.MigrateMISyncCompleteCommandOutput
 type MigrateMISyncCompleteCommandProperties = original.MigrateMISyncCompleteCommandProperties
 type MigrateMongoDbTaskProperties = original.MigrateMongoDbTaskProperties
+type MigrateMySQLAzureDbForMySQLOfflineDatabaseInput = original.MigrateMySQLAzureDbForMySQLOfflineDatabaseInput
+type MigrateMySQLAzureDbForMySQLOfflineTaskInput = original.MigrateMySQLAzureDbForMySQLOfflineTaskInput
+type MigrateMySQLAzureDbForMySQLOfflineTaskOutput = original.MigrateMySQLAzureDbForMySQLOfflineTaskOutput
+type MigrateMySQLAzureDbForMySQLOfflineTaskOutputDatabaseLevel = original.MigrateMySQLAzureDbForMySQLOfflineTaskOutputDatabaseLevel
+type MigrateMySQLAzureDbForMySQLOfflineTaskOutputError = original.MigrateMySQLAzureDbForMySQLOfflineTaskOutputError
+type MigrateMySQLAzureDbForMySQLOfflineTaskOutputMigrationLevel = original.MigrateMySQLAzureDbForMySQLOfflineTaskOutputMigrationLevel
+type MigrateMySQLAzureDbForMySQLOfflineTaskOutputTableLevel = original.MigrateMySQLAzureDbForMySQLOfflineTaskOutputTableLevel
+type MigrateMySQLAzureDbForMySQLOfflineTaskProperties = original.MigrateMySQLAzureDbForMySQLOfflineTaskProperties
 type MigrateMySQLAzureDbForMySQLSyncDatabaseInput = original.MigrateMySQLAzureDbForMySQLSyncDatabaseInput
 type MigrateMySQLAzureDbForMySQLSyncTaskInput = original.MigrateMySQLAzureDbForMySQLSyncTaskInput
 type MigrateMySQLAzureDbForMySQLSyncTaskOutput = original.MigrateMySQLAzureDbForMySQLSyncTaskOutput
@@ -850,9 +922,11 @@ type MigrateSQLServerSQLDbSyncTaskProperties = original.MigrateSQLServerSQLDbSyn
 type MigrateSQLServerSQLDbTaskInput = original.MigrateSQLServerSQLDbTaskInput
 type MigrateSQLServerSQLDbTaskOutput = original.MigrateSQLServerSQLDbTaskOutput
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel = original.MigrateSQLServerSQLDbTaskOutputDatabaseLevel
+type MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult = original.MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult
 type MigrateSQLServerSQLDbTaskOutputError = original.MigrateSQLServerSQLDbTaskOutputError
 type MigrateSQLServerSQLDbTaskOutputMigrationLevel = original.MigrateSQLServerSQLDbTaskOutputMigrationLevel
 type MigrateSQLServerSQLDbTaskOutputTableLevel = original.MigrateSQLServerSQLDbTaskOutputTableLevel
+type MigrateSQLServerSQLDbTaskOutputValidationResult = original.MigrateSQLServerSQLDbTaskOutputValidationResult
 type MigrateSQLServerSQLDbTaskProperties = original.MigrateSQLServerSQLDbTaskProperties
 type MigrateSQLServerSQLMIDatabaseInput = original.MigrateSQLServerSQLMIDatabaseInput
 type MigrateSQLServerSQLMISyncTaskInput = original.MigrateSQLServerSQLMISyncTaskInput
@@ -887,7 +961,9 @@ type MigrateSyncCompleteCommandInput = original.MigrateSyncCompleteCommandInput
 type MigrateSyncCompleteCommandOutput = original.MigrateSyncCompleteCommandOutput
 type MigrateSyncCompleteCommandProperties = original.MigrateSyncCompleteCommandProperties
 type MigrationEligibilityInfo = original.MigrationEligibilityInfo
+type MigrationOperationInput = original.MigrationOperationInput
 type MigrationReportResult = original.MigrationReportResult
+type MigrationStatusDetails = original.MigrationStatusDetails
 type MigrationTableMetadata = original.MigrationTableMetadata
 type MigrationValidationDatabaseLevelResult = original.MigrationValidationDatabaseLevelResult
 type MigrationValidationDatabaseSummaryResult = original.MigrationValidationDatabaseSummaryResult
@@ -918,12 +994,19 @@ type MongoDbThrottlingSettings = original.MongoDbThrottlingSettings
 type MySQLConnectionInfo = original.MySQLConnectionInfo
 type NameAvailabilityRequest = original.NameAvailabilityRequest
 type NameAvailabilityResponse = original.NameAvailabilityResponse
+type NodeMonitoringData = original.NodeMonitoringData
 type NonSQLDataMigrationTable = original.NonSQLDataMigrationTable
 type NonSQLDataMigrationTableResult = original.NonSQLDataMigrationTableResult
 type NonSQLMigrationTaskInput = original.NonSQLMigrationTaskInput
 type NonSQLMigrationTaskOutput = original.NonSQLMigrationTaskOutput
 type ODataError = original.ODataError
+type OfflineConfiguration = original.OfflineConfiguration
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type OperationsDefinition = original.OperationsDefinition
+type OperationsDisplayDefinition = original.OperationsDisplayDefinition
 type OracleConnectionInfo = original.OracleConnectionInfo
 type OracleOCIDriverInfo = original.OracleOCIDriverInfo
 type OrphanedUserInfo = original.OrphanedUserInfo
@@ -939,6 +1022,7 @@ type ProjectProperties = original.ProjectProperties
 type ProjectTask = original.ProjectTask
 type ProjectTaskProperties = original.ProjectTaskProperties
 type ProjectsClient = original.ProjectsClient
+type ProxyResource = original.ProxyResource
 type QueryAnalysisValidationResult = original.QueryAnalysisValidationResult
 type QueryExecutionResult = original.QueryExecutionResult
 type Quota = original.Quota
@@ -946,6 +1030,7 @@ type QuotaList = original.QuotaList
 type QuotaListIterator = original.QuotaListIterator
 type QuotaListPage = original.QuotaListPage
 type QuotaName = original.QuotaName
+type RegenAuthKeys = original.RegenAuthKeys
 type ReportableException = original.ReportableException
 type Resource = original.Resource
 type ResourceSku = original.ResourceSku
@@ -957,7 +1042,21 @@ type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
+type SQLBackupFileInfo = original.SQLBackupFileInfo
+type SQLBackupSetInfo = original.SQLBackupSetInfo
 type SQLConnectionInfo = original.SQLConnectionInfo
+type SQLConnectionInformation = original.SQLConnectionInformation
+type SQLFileShare = original.SQLFileShare
+type SQLMigrationListResult = original.SQLMigrationListResult
+type SQLMigrationListResultIterator = original.SQLMigrationListResultIterator
+type SQLMigrationListResultPage = original.SQLMigrationListResultPage
+type SQLMigrationService = original.SQLMigrationService
+type SQLMigrationServiceProperties = original.SQLMigrationServiceProperties
+type SQLMigrationServiceUpdate = original.SQLMigrationServiceUpdate
+type SQLMigrationServicesClient = original.SQLMigrationServicesClient
+type SQLMigrationServicesCreateOrUpdateFuture = original.SQLMigrationServicesCreateOrUpdateFuture
+type SQLMigrationServicesDeleteFuture = original.SQLMigrationServicesDeleteFuture
+type SQLMigrationServicesUpdateFuture = original.SQLMigrationServicesUpdateFuture
 type SQLMigrationTaskInput = original.SQLMigrationTaskInput
 type SQLServerSQLMISyncTaskInput = original.SQLServerSQLMISyncTaskInput
 type SchemaComparisonValidationResult = original.SchemaComparisonValidationResult
@@ -972,8 +1071,6 @@ type ServiceListPage = original.ServiceListPage
 type ServiceOperation = original.ServiceOperation
 type ServiceOperationDisplay = original.ServiceOperationDisplay
 type ServiceOperationList = original.ServiceOperationList
-type ServiceOperationListIterator = original.ServiceOperationListIterator
-type ServiceOperationListPage = original.ServiceOperationListPage
 type ServiceProperties = original.ServiceProperties
 type ServiceSku = original.ServiceSku
 type ServiceSkuList = original.ServiceSkuList
@@ -987,9 +1084,12 @@ type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServicesStartFuture = original.ServicesStartFuture
 type ServicesStopFuture = original.ServicesStopFuture
 type ServicesUpdateFuture = original.ServicesUpdateFuture
+type SourceLocation = original.SourceLocation
 type SsisMigrationInfo = original.SsisMigrationInfo
 type StartMigrationScenarioServerRoleResult = original.StartMigrationScenarioServerRoleResult
 type SyncMigrationDatabaseErrorEvent = original.SyncMigrationDatabaseErrorEvent
+type SystemData = original.SystemData
+type TargetLocation = original.TargetLocation
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
@@ -1017,6 +1117,24 @@ type WaitStatistics = original.WaitStatistics
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewDatabaseMigrationListResultIterator(page DatabaseMigrationListResultPage) DatabaseMigrationListResultIterator {
+	return original.NewDatabaseMigrationListResultIterator(page)
+}
+func NewDatabaseMigrationListResultPage(cur DatabaseMigrationListResult, getNextPage func(context.Context, DatabaseMigrationListResult) (DatabaseMigrationListResult, error)) DatabaseMigrationListResultPage {
+	return original.NewDatabaseMigrationListResultPage(cur, getNextPage)
+}
+func NewDatabaseMigrationsSQLMiClient(subscriptionID string) DatabaseMigrationsSQLMiClient {
+	return original.NewDatabaseMigrationsSQLMiClient(subscriptionID)
+}
+func NewDatabaseMigrationsSQLMiClientWithBaseURI(baseURI string, subscriptionID string) DatabaseMigrationsSQLMiClient {
+	return original.NewDatabaseMigrationsSQLMiClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabaseMigrationsSQLVMClient(subscriptionID string) DatabaseMigrationsSQLVMClient {
+	return original.NewDatabaseMigrationsSQLVMClient(subscriptionID)
+}
+func NewDatabaseMigrationsSQLVMClientWithBaseURI(baseURI string, subscriptionID string) DatabaseMigrationsSQLVMClient {
+	return original.NewDatabaseMigrationsSQLVMClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewFileListIterator(page FileListPage) FileListIterator {
 	return original.NewFileListIterator(page)
 }
@@ -1028,6 +1146,12 @@ func NewFilesClient(subscriptionID string) FilesClient {
 }
 func NewFilesClientWithBaseURI(baseURI string, subscriptionID string) FilesClient {
 	return original.NewFilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -1065,17 +1189,23 @@ func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResu
 func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
 	return original.NewResourceSkusResultPage(cur, getNextPage)
 }
+func NewSQLMigrationListResultIterator(page SQLMigrationListResultPage) SQLMigrationListResultIterator {
+	return original.NewSQLMigrationListResultIterator(page)
+}
+func NewSQLMigrationListResultPage(cur SQLMigrationListResult, getNextPage func(context.Context, SQLMigrationListResult) (SQLMigrationListResult, error)) SQLMigrationListResultPage {
+	return original.NewSQLMigrationListResultPage(cur, getNextPage)
+}
+func NewSQLMigrationServicesClient(subscriptionID string) SQLMigrationServicesClient {
+	return original.NewSQLMigrationServicesClient(subscriptionID)
+}
+func NewSQLMigrationServicesClientWithBaseURI(baseURI string, subscriptionID string) SQLMigrationServicesClient {
+	return original.NewSQLMigrationServicesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewServiceListIterator(page ServiceListPage) ServiceListIterator {
 	return original.NewServiceListIterator(page)
 }
 func NewServiceListPage(cur ServiceList, getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
 	return original.NewServiceListPage(cur, getNextPage)
-}
-func NewServiceOperationListIterator(page ServiceOperationListPage) ServiceOperationListIterator {
-	return original.NewServiceOperationListIterator(page)
-}
-func NewServiceOperationListPage(cur ServiceOperationList, getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
-	return original.NewServiceOperationListPage(cur, getNextPage)
 }
 func NewServiceSkuListIterator(page ServiceSkuListPage) ServiceSkuListIterator {
 	return original.NewServiceSkuListIterator(page)
@@ -1134,6 +1264,9 @@ func PossibleCommandStateValues() []CommandState {
 func PossibleCommandTypeValues() []CommandType {
 	return original.PossibleCommandTypeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDatabaseCompatLevelValues() []DatabaseCompatLevel {
 	return original.PossibleDatabaseCompatLevelValues()
 }
@@ -1151,6 +1284,9 @@ func PossibleDatabaseStateValues() []DatabaseState {
 }
 func PossibleErrorTypeValues() []ErrorType {
 	return original.PossibleErrorTypeValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
 }
 func PossibleLoginMigrationStageValues() []LoginMigrationStage {
 	return original.PossibleLoginMigrationStageValues()
@@ -1188,6 +1324,9 @@ func PossibleNameCheckFailureReasonValues() []NameCheckFailureReason {
 func PossibleObjectTypeValues() []ObjectType {
 	return original.PossibleObjectTypeValues()
 }
+func PossibleOperationOriginValues() []OperationOrigin {
+	return original.PossibleOperationOriginValues()
+}
 func PossibleProjectProvisioningStateValues() []ProjectProvisioningState {
 	return original.PossibleProjectProvisioningStateValues()
 }
@@ -1214,6 +1353,9 @@ func PossibleResultCodeValues() []ResultCode {
 }
 func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
 	return original.PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues()
+}
+func PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputValues() []ResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutput {
+	return original.PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLOfflineTaskOutputValues()
 }
 func PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues() []ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput {
 	return original.PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues()

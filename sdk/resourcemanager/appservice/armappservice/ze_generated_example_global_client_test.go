@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetDeletedWebApp.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetDeletedWebApp.json
 func ExampleGlobalClient_GetDeletedWebApp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,10 +30,10 @@ func ExampleGlobalClient_GetDeletedWebApp() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeletedSite.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.GlobalClientGetDeletedWebAppResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetDeletedWebAppSnapshots.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetDeletedWebAppSnapshots.json
 func ExampleGlobalClient_GetDeletedWebAppSnapshots() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,15 +41,16 @@ func ExampleGlobalClient_GetDeletedWebAppSnapshots() {
 	}
 	ctx := context.Background()
 	client := armappservice.NewGlobalClient("<subscription-id>", cred, nil)
-	_, err = client.GetDeletedWebAppSnapshots(ctx,
+	res, err := client.GetDeletedWebAppSnapshots(ctx,
 		"<deleted-site-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.GlobalClientGetDeletedWebAppSnapshotsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetSubscriptionOperationWithAsyncResponse.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSubscriptionOperationWithAsyncResponse.json
 func ExampleGlobalClient_GetSubscriptionOperationWithAsyncResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GenerateStaticSiteWorkflowPreview.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GenerateStaticSiteWorkflowPreview.json
 func ExampleStaticSitesClient_PreviewWorkflow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,10 +44,10 @@ func ExampleStaticSitesClient_PreviewWorkflow() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSitesWorkflowPreview.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientPreviewWorkflowResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetAllStaticSites.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetAllStaticSites.json
 func ExampleStaticSitesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,17 +56,21 @@ func ExampleStaticSitesClient_List() {
 	ctx := context.Background()
 	client := armappservice.NewStaticSitesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetStaticSites.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSites.json
 func ExampleStaticSitesClient_GetStaticSitesByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,17 +80,21 @@ func ExampleStaticSitesClient_GetStaticSitesByResourceGroup() {
 	client := armappservice.NewStaticSitesClient("<subscription-id>", cred, nil)
 	pager := client.GetStaticSitesByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSite.json
 func ExampleStaticSitesClient_GetStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,10 +109,10 @@ func ExampleStaticSitesClient_GetStaticSite() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientGetStaticSiteResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateOrUpdateStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateStaticSite.json
 func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,9 +124,7 @@ func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSite() {
 		"<resource-group-name>",
 		"<name>",
 		armappservice.StaticSiteARMResource{
-			Resource: armappservice.Resource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armappservice.StaticSite{
 				Branch: to.StringPtr("<branch>"),
 				BuildProperties: &armappservice.StaticSiteBuildProperties{
@@ -142,10 +148,10 @@ func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSite() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientCreateOrUpdateStaticSiteResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DeleteStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteStaticSite.json
 func ExampleStaticSitesClient_BeginDeleteStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +172,7 @@ func ExampleStaticSitesClient_BeginDeleteStaticSite() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/PatchStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/PatchStaticSite.json
 func ExampleStaticSitesClient_UpdateStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,10 +190,10 @@ func ExampleStaticSitesClient_UpdateStaticSite() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientUpdateStaticSiteResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteUsers.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteUsers.json
 func ExampleStaticSitesClient_ListStaticSiteUsers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,17 +205,21 @@ func ExampleStaticSitesClient_ListStaticSiteUsers() {
 		"<name>",
 		"<authprovider>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteUserARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DeleteStaticSiteUser.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteStaticSiteUser.json
 func ExampleStaticSitesClient_DeleteStaticSiteUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +238,7 @@ func ExampleStaticSitesClient_DeleteStaticSiteUser() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/UpdateStaticSiteUser.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/UpdateStaticSiteUser.json
 func ExampleStaticSitesClient_UpdateStaticSiteUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,10 +260,10 @@ func ExampleStaticSitesClient_UpdateStaticSiteUser() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteUserARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientUpdateStaticSiteUserResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetStaticSiteBuilds.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSiteBuilds.json
 func ExampleStaticSitesClient_GetStaticSiteBuilds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,17 +274,21 @@ func ExampleStaticSitesClient_GetStaticSiteBuilds() {
 	pager := client.GetStaticSiteBuilds("<resource-group-name>",
 		"<name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteBuildARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetStaticSiteBuild.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSiteBuild.json
 func ExampleStaticSitesClient_GetStaticSiteBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,10 +304,10 @@ func ExampleStaticSitesClient_GetStaticSiteBuild() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteBuildARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientGetStaticSiteBuildResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DeleteStaticSiteBuild.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteStaticSiteBuild.json
 func ExampleStaticSitesClient_BeginDeleteStaticSiteBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +329,7 @@ func ExampleStaticSitesClient_BeginDeleteStaticSiteBuild() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateOrUpdateStaticSiteBuildAppSettings.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateStaticSiteBuildAppSettings.json
 func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,10 +351,10 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildAppSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateOrUpdateStaticSiteBuildFunctionAppSettings.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateStaticSiteBuildFunctionAppSettings.json
 func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildFunctionAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,10 +376,10 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildFunctionAppSettings()
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteBuildFunctions.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteBuildFunctions.json
 func ExampleStaticSitesClient_ListStaticSiteBuildFunctions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,17 +391,21 @@ func ExampleStaticSitesClient_ListStaticSiteBuildFunctions() {
 		"<name>",
 		"<environment-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteFunctionOverviewARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteBuildAppSettings.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteBuildAppSettings.json
 func ExampleStaticSitesClient_ListStaticSiteBuildAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,10 +421,10 @@ func ExampleStaticSitesClient_ListStaticSiteBuildAppSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientListStaticSiteBuildAppSettingsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteBuildFunctionAppSettings.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteBuildFunctionAppSettings.json
 func ExampleStaticSitesClient_ListStaticSiteBuildFunctionAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,10 +440,10 @@ func ExampleStaticSitesClient_ListStaticSiteBuildFunctionAppSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientListStaticSiteBuildFunctionAppSettingsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetUserProvidedFunctionAppsForStaticSiteBuild.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetUserProvidedFunctionAppsForStaticSiteBuild.json
 func ExampleStaticSitesClient_GetUserProvidedFunctionAppsForStaticSiteBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,17 +455,21 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppsForStaticSiteBuild() {
 		"<name>",
 		"<environment-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteUserProvidedFunctionAppARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetUserProvidedFunctionAppForStaticSiteBuild.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetUserProvidedFunctionAppForStaticSiteBuild.json
 func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSiteBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -464,10 +486,10 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSiteBuild() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteUserProvidedFunctionAppARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
 func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -486,7 +508,7 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 				FunctionAppResourceID: to.StringPtr("<function-app-resource-id>"),
 			},
 		},
-		&armappservice.StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions{IsForced: to.BoolPtr(true)})
+		&armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions{IsForced: to.BoolPtr(true)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -494,10 +516,10 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteUserProvidedFunctionAppARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DetachUserProvidedFunctionAppFromStaticSiteBuild.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DetachUserProvidedFunctionAppFromStaticSiteBuild.json
 func ExampleStaticSitesClient_DetachUserProvidedFunctionAppFromStaticSiteBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +538,7 @@ func ExampleStaticSitesClient_DetachUserProvidedFunctionAppFromStaticSiteBuild()
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/StaticSiteBuildZipDeploy.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StaticSiteBuildZipDeploy.json
 func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSiteBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -547,7 +569,7 @@ func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSiteBuild() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateOrUpdateStaticSiteAppSettings.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateStaticSiteAppSettings.json
 func ExampleStaticSitesClient_CreateOrUpdateStaticSiteAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -568,10 +590,10 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteAppSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateOrUpdateStaticSiteFunctionAppSettings.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateStaticSiteFunctionAppSettings.json
 func ExampleStaticSitesClient_CreateOrUpdateStaticSiteFunctionAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -592,10 +614,10 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteFunctionAppSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateUserRolesInvitationLink.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateUserRolesInvitationLink.json
 func ExampleStaticSitesClient_CreateUserRolesInvitationLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -619,10 +641,10 @@ func ExampleStaticSitesClient_CreateUserRolesInvitationLink() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteUserInvitationResponseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientCreateUserRolesInvitationLinkResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetStaticSiteCustomDomains.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSiteCustomDomains.json
 func ExampleStaticSitesClient_ListStaticSiteCustomDomains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -633,17 +655,21 @@ func ExampleStaticSitesClient_ListStaticSiteCustomDomains() {
 	pager := client.ListStaticSiteCustomDomains("<resource-group-name>",
 		"<name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteCustomDomainOverviewARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetStaticSiteCustomDomain.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSiteCustomDomain.json
 func ExampleStaticSitesClient_GetStaticSiteCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -659,10 +685,10 @@ func ExampleStaticSitesClient_GetStaticSiteCustomDomain() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteCustomDomainOverviewARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientGetStaticSiteCustomDomainResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateOrUpdateStaticSiteCustomDomain.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateStaticSiteCustomDomain.json
 func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSiteCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -685,10 +711,10 @@ func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSiteCustomDomain() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteCustomDomainOverviewARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DeleteStaticSiteCustomDomain.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteStaticSiteCustomDomain.json
 func ExampleStaticSitesClient_BeginDeleteStaticSiteCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +736,7 @@ func ExampleStaticSitesClient_BeginDeleteStaticSiteCustomDomain() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ValidateStaticSiteCustomDomain.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ValidateStaticSiteCustomDomain.json
 func ExampleStaticSitesClient_BeginValidateCustomDomainCanBeAddedToStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -735,7 +761,7 @@ func ExampleStaticSitesClient_BeginValidateCustomDomainCanBeAddedToStaticSite() 
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DetachStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DetachStaticSite.json
 func ExampleStaticSitesClient_BeginDetachStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -756,7 +782,7 @@ func ExampleStaticSitesClient_BeginDetachStaticSite() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteFunctions.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteFunctions.json
 func ExampleStaticSitesClient_ListStaticSiteFunctions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -767,17 +793,21 @@ func ExampleStaticSitesClient_ListStaticSiteFunctions() {
 	pager := client.ListStaticSiteFunctions("<resource-group-name>",
 		"<name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteFunctionOverviewARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteAppSettings.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteAppSettings.json
 func ExampleStaticSitesClient_ListStaticSiteAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -792,10 +822,10 @@ func ExampleStaticSitesClient_ListStaticSiteAppSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientListStaticSiteAppSettingsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteConfiguredRoles.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteConfiguredRoles.json
 func ExampleStaticSitesClient_ListStaticSiteConfiguredRoles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -810,10 +840,10 @@ func ExampleStaticSitesClient_ListStaticSiteConfiguredRoles() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringList.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientListStaticSiteConfiguredRolesResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteFunctionAppSettings.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteFunctionAppSettings.json
 func ExampleStaticSitesClient_ListStaticSiteFunctionAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -828,10 +858,10 @@ func ExampleStaticSitesClient_ListStaticSiteFunctionAppSettings() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientListStaticSiteFunctionAppSettingsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListStaticSiteSecrets.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteSecrets.json
 func ExampleStaticSitesClient_ListStaticSiteSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -846,10 +876,10 @@ func ExampleStaticSitesClient_ListStaticSiteSecrets() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StringDictionary.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientListStaticSiteSecretsResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetSitePrivateEndpointConnectionList.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnectionList.json
 func ExampleStaticSitesClient_GetPrivateEndpointConnectionList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -860,17 +890,21 @@ func ExampleStaticSitesClient_GetPrivateEndpointConnectionList() {
 	pager := client.GetPrivateEndpointConnectionList("<resource-group-name>",
 		"<name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RemotePrivateEndpointConnectionARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetSitePrivateEndpointConnection.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnection.json
 func ExampleStaticSitesClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -886,10 +920,10 @@ func ExampleStaticSitesClient_GetPrivateEndpointConnection() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RemotePrivateEndpointConnectionARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientGetPrivateEndpointConnectionResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ApproveRejectSitePrivateEndpointConnection.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ApproveRejectSitePrivateEndpointConnection.json
 func ExampleStaticSitesClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -918,10 +952,10 @@ func ExampleStaticSitesClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RemotePrivateEndpointConnectionARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientApproveOrRejectPrivateEndpointConnectionResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DeleteSitePrivateEndpointConnection.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteSitePrivateEndpointConnection.json
 func ExampleStaticSitesClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -937,13 +971,14 @@ func ExampleStaticSitesClient_BeginDeletePrivateEndpointConnection() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.StaticSitesClientDeletePrivateEndpointConnectionResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetSitePrivateLinkResources.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateLinkResources.json
 func ExampleStaticSitesClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -951,39 +986,17 @@ func ExampleStaticSitesClient_GetPrivateLinkResources() {
 	}
 	ctx := context.Background()
 	client := armappservice.NewStaticSitesClient("<subscription-id>", cred, nil)
-	_, err = client.GetPrivateLinkResources(ctx,
+	res, err := client.GetPrivateLinkResources(ctx,
 		"<resource-group-name>",
 		"<name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.StaticSitesClientGetPrivateLinkResourcesResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ResetStaticSiteApiKey.json
-func ExampleStaticSitesClient_ResetStaticSiteAPIKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armappservice.NewStaticSitesClient("<subscription-id>", cred, nil)
-	_, err = client.ResetStaticSiteAPIKey(ctx,
-		"<resource-group-name>",
-		"<name>",
-		armappservice.StaticSiteResetPropertiesARMResource{
-			Properties: &armappservice.StaticSiteResetPropertiesARMResourceProperties{
-				RepositoryToken:        to.StringPtr("<repository-token>"),
-				ShouldUpdateRepository: to.BoolPtr(true),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetUserProvidedFunctionAppsForStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetUserProvidedFunctionAppsForStaticSite.json
 func ExampleStaticSitesClient_GetUserProvidedFunctionAppsForStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -994,17 +1007,21 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppsForStaticSite() {
 	pager := client.GetUserProvidedFunctionAppsForStaticSite("<resource-group-name>",
 		"<name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StaticSiteUserProvidedFunctionAppARMResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetUserProvidedFunctionAppForStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetUserProvidedFunctionAppForStaticSite.json
 func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1020,10 +1037,10 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSite() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteUserProvidedFunctionAppARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/RegisterUserProvidedFunctionAppWithStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/RegisterUserProvidedFunctionAppWithStaticSite.json
 func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1041,7 +1058,7 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 				FunctionAppResourceID: to.StringPtr("<function-app-resource-id>"),
 			},
 		},
-		&armappservice.StaticSitesBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions{IsForced: to.BoolPtr(true)})
+		&armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions{IsForced: to.BoolPtr(true)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1049,10 +1066,10 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StaticSiteUserProvidedFunctionAppARMResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DetachUserProvidedFunctionAppFromStaticSite.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DetachUserProvidedFunctionAppFromStaticSite.json
 func ExampleStaticSitesClient_DetachUserProvidedFunctionAppFromStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1070,7 +1087,7 @@ func ExampleStaticSitesClient_DetachUserProvidedFunctionAppFromStaticSite() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/StaticSiteZipDeploy.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StaticSiteZipDeploy.json
 func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

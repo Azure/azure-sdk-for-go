@@ -4,14 +4,10 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/importedKey?api-version=7.3-preview",
       "RequestMethod": "PUT",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "PUT",
-        ":path": "/keys/importedKey?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -24,8 +20,8 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "ac9a36b6-61b3-11ec-985f-000d3aec06d7",
-        "x-ms-server-latency": "0"
+        "x-ms-request-id": "261b3fc2-7e05-11ec-a044-000d3a731e50",
+        "x-ms-server-latency": "1"
       },
       "ResponseBody": null
     },
@@ -33,16 +29,12 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/importedKey?api-version=7.3-preview",
       "RequestMethod": "PUT",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "PUT",
-        ":path": "/keys/importedKey?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "1699",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "key": {
@@ -76,17 +68,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "acbb562a-61b3-11ec-985f-000d3aec06d7",
-        "x-ms-server-latency": "280"
+        "x-ms-request-id": "2655aebe-7e05-11ec-a044-000d3a731e50",
+        "x-ms-server-latency": "239"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1640018486,
+          "created": 1643132112,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1640018486
+          "updated": 1643132112
         },
         "key": {
           "e": "AQAB",
@@ -98,7 +90,7 @@
             "verify",
             "wrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/importedKey/4e1ee0fb18a00c4fa029af86ac5e85a9",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/importedKey/8e237b5cad6f00b711a67f1bd342b4f9",
           "kty": "RSA-HSM",
           "n": "oJFNACNKxoOyG0wV1b7Yh73JWcLlevVK5zTo8Acg13XSdeRVIH43hM7rYKUKRlXdcqepTScejuj3lZpmnKbndb8OI7ra6ZG0Up2XhSi0vZBSHTLdJlZ5a6gra7_HZoyPXutQU3R_0ZkxnSmoRA0I9EEtUn_5MR7acYJZILR7HEaxGrPpHXMWQH6Jx_NA97haNAQs5RdDsn1HGEA9NMe0OK9hgb4F5NEeuYXTglPX_pv1P8LxsALSLS15P6eaUEtqtC0EkoBNcHHXJ6Bs86iJOqVCsVA_gyspY3G2cH1NxuNy-P5n2N7RyQj95FzgO8CGpxSH-nXkOqDgZ5qg0g7-NQ"
         }
@@ -108,16 +100,12 @@
       "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/invalid?api-version=7.3-preview",
       "RequestMethod": "PUT",
       "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "PUT",
-        ":path": "/keys/invalid?api-version=7.3-preview",
-        ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "10",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-generated/v0.3.0 azsdk-go-azcore/v0.21.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "key": {}
@@ -131,13 +119,13 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "acf07e9a-61b3-11ec-985f-000d3aec06d7",
-        "x-ms-server-latency": "1"
+        "x-ms-request-id": "2684ecce-7e05-11ec-a044-000d3a731e50",
+        "x-ms-server-latency": "0"
       },
       "ResponseBody": {
         "error": {
           "code": "BadParameter",
-          "message": "JSON Web Key: kty is missing (Activity ID: acf07e9a-61b3-11ec-985f-000d3aec06d7)"
+          "message": "JSON Web Key: kty is missing (Activity ID: 2684ecce-7e05-11ec-a044-000d3a731e50)"
         }
       }
     }

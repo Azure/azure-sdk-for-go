@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"github.com/stretchr/testify/require"
 	"testing"
+	"time"
 )
 
 func TestVaultsClient_BeginCreateOrUpdate(t *testing.T) {
@@ -72,10 +73,9 @@ func TestVaultsClient_BeginCreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	response, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *response.Name)
+	require.Equal(t, vaultName, *vResp.Name)
 }
 
 func TestVaultsClient_UpdateAccessPolicy(t *testing.T) {
@@ -135,10 +135,9 @@ func TestVaultsClient_UpdateAccessPolicy(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	response, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *response.Name)
+	require.Equal(t, vaultName, *vResp.Name)
 
 	accessPolicyResp, err := vaultsClient.UpdateAccessPolicy(
 		ctx,
@@ -169,7 +168,7 @@ func TestVaultsClient_UpdateAccessPolicy(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *accessPolicyResp.Name)
+	require.Equal(t, 200, accessPolicyResp.RawResponse.StatusCode)
 }
 
 func TestVaultsClient_Get(t *testing.T) {
@@ -230,10 +229,9 @@ func TestVaultsClient_Get(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	response, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *response.Name)
+	require.Equal(t, vaultName, *vResp.Name)
 
 	// get vault
 	getResp, err := vaultsClient.Get(ctx, rgName, vaultName, nil)
@@ -299,10 +297,9 @@ func TestVaultsClient_Update(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	response, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *response.Name)
+	require.Equal(t, vaultName, *vResp.Name)
 
 	// update vault
 	updateResp, err := vaultsClient.Update(
@@ -317,7 +314,7 @@ func TestVaultsClient_Update(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, "recording", updateResp.Tags["test"])
+	require.Equal(t, "recording", *updateResp.Tags["test"])
 }
 
 func TestVaultsClient_ListDeleted(t *testing.T) {
@@ -378,10 +375,9 @@ func TestVaultsClient_ListDeleted(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	response, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *response.Name)
+	require.Equal(t, vaultName, *vResp.Name)
 
 	// list vault deleted
 	deletedPager := vaultsClient.ListDeleted(nil)
@@ -469,10 +465,9 @@ func TestVaultsClient_Delete(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	response, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *response.Name)
+	require.Equal(t, vaultName, *vResp.Name)
 
 	// delete vault
 	delResp, err := vaultsClient.Delete(ctx, rgName, vaultName, nil)
@@ -538,18 +533,17 @@ func TestVaultsClient_GetDeleted(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	response, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *response.Name)
+	require.Equal(t, vaultName, *vResp.Name)
 
 	// delete vault
-	delResp, err := vaultsClient.GetDeleted(ctx, rgName, vaultName, nil)
+	delResp, err := vaultsClient.Delete(ctx, rgName, vaultName, nil)
 	require.NoError(t, err)
 	require.Equal(t, 200, delResp.RawResponse.StatusCode)
 
 	// get deleted vault
-	deletedResp, err := vaultsClient.GetDeleted(ctx, rgName, vaultName, nil)
+	deletedResp, err := vaultsClient.GetDeleted(ctx, vaultName, location, nil)
 	require.NoError(t, err)
 	require.Equal(t, vaultName, *deletedResp.Name)
 }
@@ -611,21 +605,19 @@ func TestVaultsClient_BeginPurgeDeleted(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	//vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
-	response, err := vPollerResp.Poller.FinalResponse(ctx)
+	vResp, err := vPollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
-	require.Equal(t, vaultName, *response.Name)
+	require.Equal(t, vaultName, *vResp.Name)
 
 	// delete vault
-	delResp, err := vaultsClient.GetDeleted(ctx, rgName, vaultName, nil)
+	delResp, err := vaultsClient.Delete(ctx, rgName, vaultName, nil)
 	require.NoError(t, err)
 	require.Equal(t, 200, delResp.RawResponse.StatusCode)
 
 	// purge deleted vault
-	purgePollerResp, err := vaultsClient.BeginPurgeDeleted(ctx, rgName, vaultName, nil)
+	purgePollerResp, err := vaultsClient.BeginPurgeDeleted(ctx, vaultName, location, nil)
 	require.NoError(t, err)
-	//purgeResp, err := purgePollerResp.PollUntilDone(ctx, 10*time.Second)
-	purgeResp, err := purgePollerResp.Poller.FinalResponse(ctx)
+	purgeResp, err := purgePollerResp.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
 	require.Equal(t, 200, purgeResp.RawResponse.StatusCode)
 }

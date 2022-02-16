@@ -213,7 +213,7 @@ func TestSecretsClient_List(t *testing.T) {
 }
 
 func createVault(t *testing.T, ctx context.Context, vaultsClient *armkeyvault.VaultsClient, resourceGroupName, location, tenantID, objectID string) *armkeyvault.Vault {
-	vaultName, _ := createRandomName(t, "vault")
+	vaultName, _ := createRandomName(t, "vaultx")
 	vPollerResp, err := vaultsClient.BeginCreateOrUpdate(
 		ctx,
 		resourceGroupName,

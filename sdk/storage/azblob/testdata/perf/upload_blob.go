@@ -27,8 +27,9 @@ func uploadTestRegister() {
 
 type uploadTestGlobal struct {
 	perf.PerfTestOptions
-	containerName string
-	blobName      string
+	containerName         string
+	blobName              string
+	globalContainerClient azblob.ContainerClient
 }
 
 // NewUploadTest is called once per process
@@ -48,7 +49,8 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 	if err != nil {
 		return nil, err
 	}
-	_, err = containerClient.Create(context.Background(), nil)
+	u.globalContainerClient = containerClient
+	_, err = u.globalContainerClient.Create(context.Background(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -56,18 +58,8 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 	return u, nil
 }
 
-func (m *uploadTestGlobal) GlobalCleanup(ctx context.Context) error {
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
-	if err != nil {
-		return err
-	}
-
-	_, err = containerClient.Delete(context.Background(), nil)
+func (u *uploadTestGlobal) GlobalCleanup(ctx context.Context) error {
+	_, err := u.globalContainerClient.Delete(context.Background(), nil)
 	return err
 }
 

@@ -126,3 +126,10 @@ func WithHTTPHeader(parent context.Context, header http.Header) context.Context 
 func WithRetryOptions(parent context.Context, options RetryOptions) context.Context {
 	return context.WithValue(parent, shared.CtxWithRetryOptionsKey{}, options)
 }
+
+// IncludeResponse applies the HTTP response retrieval annotation to the parent context.
+// Call runtime.ResponseFromContext() to retrieve the HTTP response from the context.
+func IncludeResponse(parent context.Context) context.Context {
+	var rawResp *http.Response
+	return context.WithValue(parent, shared.CtxIncludeResponseKey{}, &rawResp)
+}

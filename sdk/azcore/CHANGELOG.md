@@ -4,6 +4,9 @@
 
 ### Features Added
 * Added header `WWW-Authenticate` to the default allow-list of headers for logging.
+* Added a pipeline policy that enables the retrieval of HTTP responses from API calls.
+  * Added `policy.IncludeResponse` to enable the policy at the API level (off by default).
+  * Added `runtime.ResponseFromContext` to retreive the HTTP response from the context when enabled.
 
 ### Breaking Changes
 

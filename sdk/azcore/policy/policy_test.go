@@ -13,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 func TestWithHTTPHeader(t *testing.T) {
@@ -50,5 +51,15 @@ func TestWithRetryOptions(t *testing.T) {
 	}
 	if opts.MaxRetries != math.MaxInt32 {
 		t.Fatalf("unexpected value %d", opts.MaxRetries)
+	}
+}
+
+func TestIncludeResponse(t *testing.T) {
+	ctx := IncludeResponse(context.Background())
+	require.NotNil(t, ctx)
+	raw := ctx.Value(shared.CtxIncludeResponseKey{})
+	_, ok := raw.(**http.Response)
+	if !ok {
+		t.Fatalf("unexpected type %T", raw)
 	}
 }

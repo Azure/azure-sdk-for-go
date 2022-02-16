@@ -175,11 +175,11 @@ func TestManagedIdentityCredential_AppService(t *testing.T) {
 				t.Fatalf(`unexpected resource "%s"`, v)
 			}
 			if id == nil {
-				if q.Has(qpClientID) || q.Has(qpResID) {
+				if q.Get(qpClientID) != "" || q.Get(qpResID) != "" {
 					t.Fatal("request shouldn't include a user-assigned ID")
 				}
 			} else {
-				if q.Has(qpClientID) && q.Has(qpResID) {
+				if q.Get(qpClientID) != "" && q.Get(qpResID) != "" {
 					t.Fatal("request includes two IDs")
 				}
 				var v string

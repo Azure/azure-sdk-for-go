@@ -4,11 +4,9 @@
 package azidentity
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -34,25 +32,6 @@ func clearEnvVars(envVars ...string) {
 	for _, ev := range envVars {
 		_ = os.Unsetenv(ev)
 	}
-}
-
-// A simple fake IMDS. Similar to mock.Server but doesn't wrap httptest.Server. That's
-// important because IMDS is at 169.254.169.254, not httptest.Server's default 127.0.0.1.
-type mockIMDS struct {
-	resp []http.Response
-}
-
-func newMockImds(responses ...http.Response) (m *mockIMDS) {
-	return &mockIMDS{resp: responses}
-}
-
-func (m *mockIMDS) Do(req *http.Request) (*http.Response, error) {
-	if len(m.resp) > 0 {
-		resp := m.resp[0]
-		m.resp = m.resp[1:]
-		return &resp, nil
-	}
-	panic("no more responses")
 }
 
 // delayPolicy adds a delay to pipeline requests. Used to test timeout behavior.
@@ -257,9 +236,11 @@ func TestManagedIdentityCredential_AppServiceError(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
-	res := http.Response{StatusCode: http.StatusBadRequest, Body: io.NopCloser(bytes.NewBufferString(""))}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusBadRequest), mock.WithBody([]byte("something went wrong")))
 	options := ManagedIdentityCredentialOptions{}
-	options.Transport = newMockImds(res, res, res)
+	options.Transport = srv
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatal(err)
@@ -556,9 +537,11 @@ func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
 
 func TestManagedIdentityCredential_IMDSTimeoutSuccess(t *testing.T) {
 	resetEnvironmentVarsForTest()
-	res := http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewBufferString(accessTokenRespSuccess))}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ManagedIdentityCredentialOptions{}
-	options.Transport = newMockImds(res, res)
+	options.Transport = srv
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatal(err)

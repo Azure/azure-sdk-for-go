@@ -202,7 +202,7 @@ func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
 	require.EqualValues(t, resp.SignedIdentifiers, permissions)
 }
 
-func  TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
+func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
 	stop := start(t)
 	defer stop()
 

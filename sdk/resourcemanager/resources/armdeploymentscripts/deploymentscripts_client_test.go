@@ -145,7 +145,7 @@ func TestDeploymentScriptsClient_Get(t *testing.T) {
 	// get deployment scripts
 	getResp, err := deploymentScriptsClient.Get(ctx, rgName, scriptName, nil)
 	require.NoError(t, err)
-	require.Equal(t, scriptName, getResp.GetDeploymentScript().Name)
+	require.Equal(t, scriptName, *getResp.GetDeploymentScript().Name)
 }
 
 func TestDeploymentScriptsClient_GetLogs(t *testing.T) {
@@ -210,9 +210,10 @@ func TestDeploymentScriptsClient_GetLogs(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, scriptName, *dsResp.GetDeploymentScript().Name)
 
+	// get log
 	getResp, err := deploymentScriptsClient.GetLogs(ctx, rgName, scriptName, nil)
 	require.NoError(t, err)
-	require.Zero(t, len(getResp.Value))
+	require.Equal(t, 1, len(getResp.Value))
 }
 
 func TestDeploymentScriptsClient_GetLogsDefault(t *testing.T) {
@@ -279,7 +280,7 @@ func TestDeploymentScriptsClient_GetLogsDefault(t *testing.T) {
 
 	getResp, err := deploymentScriptsClient.GetLogsDefault(ctx, rgName, scriptName, nil)
 	require.NoError(t, err)
-	require.Equal(t, scriptName, *getResp.Name)
+	require.Equal(t, "default", *getResp.Name)
 }
 
 func TestDeploymentScriptsClient_Update(t *testing.T) {
@@ -358,7 +359,7 @@ func TestDeploymentScriptsClient_Update(t *testing.T) {
 		},
 	)
 	require.NoError(t, err)
-	require.Equal(t, "recording", updateResp.GetDeploymentScript().Tags["test"])
+	require.Equal(t, "recording", *updateResp.GetDeploymentScript().Tags["test"])
 }
 
 func TestDeploymentScriptsClient_Delete(t *testing.T) {

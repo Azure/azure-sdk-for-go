@@ -23,15 +23,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "223",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 14 Feb 2022 06:50:38 GMT",
+        "Date": "Wed, 16 Feb 2022 05:41:14 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "4e740008-a4ae-423d-b083-8f2aba458c20",
+        "x-ms-correlation-request-id": "b2c2c38b-4777-4d4f-8d75-4051cfae1624",
         "x-ms-ratelimit-remaining-subscription-writes": "1181",
-        "x-ms-request-id": "4e740008-a4ae-423d-b083-8f2aba458c20",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T065039Z:4e740008-a4ae-423d-b083-8f2aba458c20"
+        "x-ms-request-id": "b2c2c38b-4777-4d4f-8d75-4051cfae1624",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220216T054115Z:b2c2c38b-4777-4d4f-8d75-4051cfae1624"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg23951210730",
@@ -61,17 +61,17 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Mon, 14 Feb 2022 06:50:39 GMT",
+        "Date": "Wed, 16 Feb 2022 05:41:17 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzIzOTUxMjEwNzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0?api-version=2021-04-01",
         "Pragma": "no-cache",
         "Retry-After": "15",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "177a5658-2214-4697-9fe2-57a4e20940b7",
+        "x-ms-correlation-request-id": "987511ab-0b0e-4d51-8640-d1398afe740b",
         "x-ms-ratelimit-remaining-subscription-deletes": "14993",
-        "x-ms-request-id": "177a5658-2214-4697-9fe2-57a4e20940b7",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220214T065040Z:177a5658-2214-4697-9fe2-57a4e20940b7"
+        "x-ms-request-id": "987511ab-0b0e-4d51-8640-d1398afe740b",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220216T054117Z:987511ab-0b0e-4d51-8640-d1398afe740b"
       },
       "ResponseBody": null
     }

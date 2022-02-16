@@ -14,34 +14,12 @@ import (
 
 // DeletedSecretBundle - A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 type DeletedSecretBundle struct {
-	// The secret management attributes.
-	Attributes *Attributes `json:"attributes,omitempty"`
-
-	// The content type of the secret.
-	ContentType *string `json:"contentType,omitempty"`
-
-	// The secret id.
-	ID *string `json:"id,omitempty"`
-
+	Secret
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
-	// The secret value.
-	Value *string `json:"value,omitempty"`
-
 	// READ-ONLY; The time when the secret was deleted, in UTC
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
-	// certificate.
-	KID *string `json:"kid,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
-	// will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -175,27 +153,12 @@ func secretItemFromGenerated(i *internal.SecretItem) Item {
 
 // DeletedSecretItem - The deleted secret item containing metadata about the deleted secret.
 type DeletedSecretItem struct {
-	// The secret management attributes.
-	Attributes *Attributes `json:"attributes,omitempty"`
-
-	// Type of the secret value such as a password.
-	ContentType *string `json:"contentType,omitempty"`
-
-	// Secret identifier.
-	ID *string `json:"id,omitempty"`
-
+	Item
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
 	// READ-ONLY; The time when the secret was deleted, in UTC
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed
-	// will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -210,11 +173,13 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Attributes:         secretAttributesFromGenerated(i.Attributes),
-		ContentType:        i.ContentType,
-		ID:                 i.ID,
-		Tags:               convertPtrMap(i.Tags),
-		Managed:            i.Managed,
+		Item: Item{
+			Attributes:  secretAttributesFromGenerated(i.Attributes),
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        convertPtrMap(i.Tags),
+			Managed:     i.Managed,
+		},
 	}
 }
 

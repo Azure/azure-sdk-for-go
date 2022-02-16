@@ -1,5 +1,15 @@
 # Release History
 
+## 0.3.0 (2022-02-16)
+### Breaking Changes
+
+- Type of `AzurePowerShellScriptProperties.Outputs` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DeploymentScriptPropertiesBase.Outputs` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `AzureCliScriptProperties.Outputs` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Struct `Error` has been removed
+
+
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

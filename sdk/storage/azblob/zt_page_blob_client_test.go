@@ -7,11 +7,12 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"io/ioutil"
+	"time"
+
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
-	"time"
 )
 
 func (s *azblobTestSuite) TestPutGetPages() {

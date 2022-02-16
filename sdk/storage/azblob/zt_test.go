@@ -266,7 +266,7 @@ func createNewContainer(_assert *assert.Assertions, containerName string, servic
 	containerClient := getContainerClient(containerName, serviceClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 	return containerClient
 }

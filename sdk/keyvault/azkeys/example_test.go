@@ -48,7 +48,7 @@ func ExampleClient_CreateRSAKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
+	fmt.Println(*resp.Key.KeyID)
 	fmt.Println(*resp.Key.KeyType)
 }
 
@@ -68,7 +68,7 @@ func ExampleClient_CreateECKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
+	fmt.Println(*resp.Key.KeyID)
 	fmt.Println(*resp.Key.KeyType)
 }
 
@@ -88,7 +88,7 @@ func ExampleClient_GetKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(*resp.Key.ID)
+	fmt.Println(*resp.Key.KeyID)
 }
 
 func ExampleClient_UpdateKeyProperties() {
@@ -137,7 +137,7 @@ func ExampleClient_BeginDeleteKey() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
+	fmt.Printf("Successfully deleted key %s", *pollResp.Key.KeyID)
 }
 
 func ExampleClient_ListPropertiesOfKeys() {
@@ -155,7 +155,7 @@ func ExampleClient_ListPropertiesOfKeys() {
 	pager := client.ListPropertiesOfKeys(nil)
 	for pager.NextPage(context.TODO()) {
 		for _, key := range pager.PageResponse().Keys {
-			fmt.Println(*key.KID)
+			fmt.Println(*key.KeyID)
 		}
 	}
 

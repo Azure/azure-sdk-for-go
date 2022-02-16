@@ -116,7 +116,7 @@ type JSONWebKey struct {
 	KeyOps []*string `json:"key_ops,omitempty"`
 
 	// Key identifier.
-	ID *string `json:"kid,omitempty"`
+	KeyID *string `json:"kid,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
 	KeyType *KeyType `json:"kty,omitempty"`
@@ -157,7 +157,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 		E:       i.E,
 		K:       i.K,
 		KeyOps:  i.KeyOps,
-		ID:      i.Kid,
+		KeyID:   i.Kid,
 		KeyType: (*KeyType)(i.Kty),
 		N:       i.N,
 		P:       i.P,
@@ -179,7 +179,7 @@ func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 		E:      j.E,
 		K:      j.K,
 		KeyOps: j.KeyOps,
-		Kid:    j.ID,
+		Kid:    j.KeyID,
 		Kty:    (*generated.JSONWebKeyType)(j.KeyType),
 		N:      j.N,
 		P:      j.P,
@@ -225,11 +225,11 @@ func (j KeyType) toGenerated() *generated.JSONWebKeyType {
 
 // KeyItem - The key item containing key metadata.
 type KeyItem struct {
-	// The key management attributes.
-	Attributes *KeyProperties `json:"attributes,omitempty"`
+	// The key management properties.
+	Properties *KeyProperties `json:"attributes,omitempty"`
 
 	// Key identifier.
-	KID *string `json:"kid,omitempty"`
+	KeyID *string `json:"kid,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -245,8 +245,8 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 	}
 
 	return &KeyItem{
-		Attributes: keyPropertiesFromGenerated(i.Attributes),
-		KID:        i.Kid,
+		Properties: keyPropertiesFromGenerated(i.Attributes),
+		KeyID:      i.Kid,
 		Tags:       convertGeneratedMap(i.Tags),
 		Managed:    i.Managed,
 	}
@@ -254,8 +254,8 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 
 // DeletedKey - A DeletedKey consisting of a WebKey plus its Attributes and deletion info
 type DeletedKey struct {
-	// The key management attributes.
-	Attributes *KeyProperties `json:"attributes,omitempty"`
+	// The key management properties.
+	Properties *KeyProperties `json:"attributes,omitempty"`
 
 	// The Json web key.
 	Key *JSONWebKey `json:"key,omitempty"`
@@ -270,7 +270,7 @@ type DeletedKey struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the key was deleted, in UTC
-	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
 	// be true.
@@ -283,10 +283,10 @@ type DeletedKey struct {
 // DeletedKeyItem - The deleted key item containing the deleted key metadata and information about deletion.
 type DeletedKeyItem struct {
 	// The key management attributes.
-	Attributes *KeyProperties `json:"attributes,omitempty"`
+	Properties *KeyProperties `json:"attributes,omitempty"`
 
 	// Key identifier.
-	KID *string `json:"kid,omitempty"`
+	KeyID *string `json:"kid,omitempty"`
 
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
@@ -295,7 +295,7 @@ type DeletedKeyItem struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the key was deleted, in UTC
-	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
 	// be true.
@@ -313,9 +313,9 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 
 	return &DeletedKeyItem{
 		RecoveryID:         i.RecoveryID,
-		DeletedDate:        i.DeletedDate,
+		DeletedOn:          i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Attributes: &KeyProperties{
+		Properties: &KeyProperties{
 			Enabled:         i.Attributes.Enabled,
 			ExpiresOn:       i.Attributes.Expires,
 			NotBefore:       i.Attributes.NotBefore,
@@ -324,7 +324,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 			RecoverableDays: i.Attributes.RecoverableDays,
 			RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 		},
-		KID:     i.Kid,
+		KeyID:   i.Kid,
 		Tags:    convertGeneratedMap(i.Tags),
 		Managed: i.Managed,
 	}
@@ -386,7 +386,7 @@ type KeyRotationPolicyAttributes struct {
 	ExpiryTime *string `json:"expiryTime,omitempty"`
 
 	// READ-ONLY; The key rotation policy created time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; The key rotation policy's last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
@@ -395,7 +395,7 @@ type KeyRotationPolicyAttributes struct {
 func (k KeyRotationPolicyAttributes) toGenerated() *generated.KeyRotationPolicyAttributes {
 	return &generated.KeyRotationPolicyAttributes{
 		ExpiryTime: k.ExpiryTime,
-		Created:    k.Created,
+		Created:    k.CreatedOn,
 		Updated:    k.UpdatedOn,
 	}
 }

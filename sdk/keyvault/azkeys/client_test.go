@@ -233,7 +233,7 @@ func TestDeleteKey(t *testing.T) {
 			deleteResp, err := resp.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 			require.NotNil(t, deleteResp.Key)
-			require.NotNil(t, deleteResp.Key.ID)
+			require.NotNil(t, deleteResp.Key.KeyID)
 
 			_, err = client.GetKey(ctx, key, nil)
 			require.Error(t, err)
@@ -654,7 +654,7 @@ func TestGetDeletedKey(t *testing.T) {
 
 			resp, err := client.GetDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
-			require.Contains(t, *resp.Key.ID, key)
+			require.Contains(t, *resp.Key.KeyID, key)
 
 			_, err = client.PurgeDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
@@ -682,7 +682,7 @@ func TestRotateKey(t *testing.T) {
 			resp, err := client.RotateKey(ctx, key, nil)
 			require.NoError(t, err)
 
-			require.NotEqual(t, *createResp.Key.ID, *resp.Key.ID)
+			require.NotEqual(t, *createResp.Key.KeyID, *resp.Key.KeyID)
 			require.NotEqual(t, createResp.Key.N, resp.Key.N)
 
 			invalid, err := client.RotateKey(ctx, "keynonexistent", nil)

@@ -488,12 +488,12 @@ func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyR
 	return GetDeletedKeyResponse{
 		RawResponse: i.RawResponse,
 		DeletedKey: DeletedKey{
-			Attributes:         keyPropertiesFromGenerated(i.Attributes),
+			Properties:         keyPropertiesFromGenerated(i.Attributes),
 			Key:                jsonWebKeyFromGenerated(i.Key),
 			Tags:               convertGeneratedMap(i.Tags),
 			Managed:            i.Managed,
 			RecoveryID:         i.RecoveryID,
-			DeletedDate:        i.DeletedDate,
+			DeletedOn:        i.DeletedDate,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
 		},
 	}
@@ -631,12 +631,12 @@ func (s *DeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (D
 		RawResponse: s.RawResponse,
 		DeletedKey: DeletedKey{
 			RecoveryID:         s.deleteResponse.RecoveryID,
-			DeletedDate:        s.deleteResponse.DeletedDate,
+			DeletedOn:        s.deleteResponse.DeletedDate,
 			ScheduledPurgeDate: s.deleteResponse.ScheduledPurgeDate,
 			Tags:               convertGeneratedMap(s.deleteResponse.Tags),
 			Managed:            s.deleteResponse.Managed,
 			ReleasePolicy:      keyReleasePolicyFromGenerated(s.deleteResponse.ReleasePolicy),
-			Attributes:         keyPropertiesFromGenerated(s.deleteResponse.Attributes),
+			Properties:         keyPropertiesFromGenerated(s.deleteResponse.Attributes),
 			Key:                jsonWebKeyFromGenerated(s.deleteResponse.Key),
 		},
 	}, nil
@@ -1293,7 +1293,7 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 	if i.Attributes != nil {
 		attribs = &KeyRotationPolicyAttributes{
 			ExpiryTime: i.Attributes.ExpiryTime,
-			Created:    i.Attributes.Created,
+			CreatedOn:    i.Attributes.Created,
 			UpdatedOn:  i.Attributes.Updated,
 		}
 	}
@@ -1426,7 +1426,7 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 	if i.Attributes != nil {
 		attribs = &KeyRotationPolicyAttributes{
 			ExpiryTime: i.Attributes.ExpiryTime,
-			Created:    i.Attributes.Created,
+			CreatedOn:    i.Attributes.Created,
 			UpdatedOn:  i.Attributes.Updated,
 		}
 	}

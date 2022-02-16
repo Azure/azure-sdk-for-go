@@ -1,0 +1,91 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/gocblobstartcopymetadatainvalidfield?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 22:04:06 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 16 Feb 2022 22:04:05 GMT",
+        "ETag": "\u00220x8D9F198407A744A\u0022",
+        "Last-Modified": "Wed, 16 Feb 2022 22:04:06 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "c347456e-e01e-0057-5681-23dfee000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/gocblobstartcopymetadatainvalidfield/gotestblobblobstartcopymetadatainvalidfield",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "15",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-date": "Wed, 16 Feb 2022 22:04:06 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "R29CbG9ja0Jsb2JEYXRh",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
+        "Date": "Wed, 16 Feb 2022 22:04:06 GMT",
+        "ETag": "\u00220x8D9F198408B7B70\u0022",
+        "Last-Modified": "Wed, 16 Feb 2022 22:04:06 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
+        "x-ms-request-id": "c34745a9-e01e-0057-0581-23dfee000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorageaccount.blob.core.windows.net/gocblobstartcopymetadatainvalidfield?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 22:04:06 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 16 Feb 2022 22:04:06 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "c34745ea-e01e-0057-4181-23dfee000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

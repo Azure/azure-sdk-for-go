@@ -98,3 +98,32 @@ func createServiceClient(t *testing.T, accountType testAccountType) (ServiceClie
 		Transporter: transport,
 	})
 }
+
+func createServiceClientFromConnectionString(t *testing.T, accountType testAccountType) (ServiceClient, error) {
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	var accountName string
+	var accountKey string
+	switch accountType {
+	case testAccountDefault:
+		accountName = recording.GetEnvVariable("STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+		accountKey = recording.GetEnvVariable("STORAGE_ACCOUNT_Key", "fakestorageaccountkeykey")
+	case testAccountPremium:
+		accountName = recording.GetEnvVariable("PREMIUM_STORAGE_ACCOUNT_NAME", "premfakestorageaccount")
+		accountKey = recording.GetEnvVariable("PREMIUM_STORAGE_ACCOUNT_Key", "premfakestorageaccountkeykey")
+	case testAccountSecondary:
+		accountName = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_NAME", "secondaryfakestorageaccount")
+		accountKey = recording.GetEnvVariable("SECONDARY_STORAGE_ACCOUNT_Key", "secondaryfakestorageaccountkeykey")
+	default:
+		return ServiceClient{}, fmt.Errorf("invalid test account type: %s", accountType)
+	}
+
+	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/", accountName, accountKey)
+	primaryURL, cred, err := parseConnectionString(connectionString)
+	require.NoError(t, err)
+
+	return NewServiceClientWithSharedKey(primaryURL, cred, &ClientOptions{
+		Transporter: transport,
+	})
+}

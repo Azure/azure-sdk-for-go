@@ -234,7 +234,7 @@ func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
 	require.NoError(t, err)
-	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
+	require.Equal(t, cResp1.RawResponse.StatusCode, 201)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	require.NoError(t, err)
@@ -446,9 +446,9 @@ func TestBlobCreateAppendIfModifiedSinceTrue(t *testing.T) {
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(appendBlobCreateResp.Date)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
@@ -462,7 +462,7 @@ func TestBlobCreateAppendIfModifiedSinceTrue(t *testing.T) {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	validateAppendBlobPut(t, abClient)
 }
@@ -485,9 +485,9 @@ func TestBlobCreateAppendIfModifiedSinceFalse(t *testing.T) {
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(appendBlobCreateResp.Date)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
@@ -501,7 +501,7 @@ func TestBlobCreateAppendIfModifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
@@ -524,9 +524,9 @@ func TestBlobCreateAppendIfUnmodifiedSinceTrue(t *testing.T) {
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(appendBlobCreateResp.Date)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
@@ -540,7 +540,7 @@ func TestBlobCreateAppendIfUnmodifiedSinceTrue(t *testing.T) {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	validateAppendBlobPut(t, abClient)
 }
@@ -781,10 +781,10 @@ func TestBlobAppendBlockNonExistentBlob(t *testing.T) {
 	validateStorageError(_assert, err, StorageErrorCodeBlobNotFound)
 }
 
-func validateBlockAppended(_assert *assert.Assertions, abClient AppendBlobClient, expectedSize int) {
+func validateBlockAppended(t *testing.T, abClient AppendBlobClient, expectedSize int) {
 	resp, err := abClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*resp.ContentLength, int64(expectedSize))
+	require.NoError(t, err)
+	require.Equal(t, *resp.ContentLength, int64(expectedSize))
 }
 
 func TestBlobAppendBlockIfModifiedSinceTrue(t *testing.T) {
@@ -821,7 +821,7 @@ func TestBlobAppendBlockIfModifiedSinceTrue(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	require.NoError(t, err)
 
-	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfModifiedSinceFalse(t *testing.T) {
@@ -895,7 +895,7 @@ func TestBlobAppendBlockIfUnmodifiedSinceTrue(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	require.NoError(t, err)
 
-	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfUnmodifiedSinceFalse(t *testing.T) {
@@ -962,7 +962,7 @@ func TestBlobAppendBlockIfMatchTrue(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfMatchFalse(t *testing.T) {
@@ -1016,7 +1016,7 @@ func TestBlobAppendBlockIfNoneMatchTrue(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
@@ -1114,7 +1114,7 @@ func TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData)*2)
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData)*2)
 }
 
 func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
@@ -1166,7 +1166,7 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
 			AppendPosition: to.Int64Ptr(12),
 		},
 	})
-	_assert.Error(err)
+	require.Error(t, err)
 	validateStorageError(_assert, err, StorageErrorCodeAppendPositionConditionNotMet)
 }
 
@@ -1192,7 +1192,7 @@ func TestBlobAppendBlockIfMaxSizeTrue(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfMaxSizeFalse(t *testing.T) {

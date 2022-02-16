@@ -59,7 +59,5 @@ func TestIncludeResponse(t *testing.T) {
 	require.NotNil(t, ctx)
 	raw := ctx.Value(shared.CtxIncludeResponseKey{})
 	_, ok := raw.(**http.Response)
-	if !ok {
-		t.Fatalf("unexpected type %T", raw)
-	}
+	require.Truef(t, ok, "unexpected type %T", raw)
 }

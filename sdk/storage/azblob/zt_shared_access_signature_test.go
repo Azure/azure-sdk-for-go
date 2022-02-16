@@ -9,15 +9,15 @@ package azblob
 //	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 //	accountKey := os.Getenv("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY")
 //	cred, err := NewSharedKeyCredential(accountName, accountKey)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	containerName := generateContainerName(testName)
 //
 //	containerClient := createNewContainer(_assert, containerName, serviceClient)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	resources := AccountSASResourceTypes{
@@ -40,20 +40,20 @@ package azblob
 //	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 //
 //	sasUrl, err := serviceClient.GetSASToken(resources, permissions, services, start, expiry)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //	svcClient, err := (t, sasUrl, azcore.NewAnonymousCredential())
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	_, err = svcClient.CreateTable(context.Background(), containerName+"002", nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	_, err = svcClient.DeleteTable(context.Background(), containerName+"002", nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //}
 //
 //func TestSASClient(t *testing.T) {
@@ -62,22 +62,22 @@ package azblob
 //	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 //	accountKey := os.Getenv("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY")
 //	cred, err := NewSharedKeyCredential(accountName, accountKey)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	containerName, err := createRandomName(t, containerNamePrefix)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	delete := func() {
 //		_, err := serviceClient.DeleteTable(context.Background(), containerName, nil)
-//		_assert.Nil(err)
+//		_assert.NoError(err)
 //	}
 //	defer delete()
 //
 //	_, err = serviceClient.CreateTable(context.Background(), containerName, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	permissions := SASPermissions{
 //		Read: true,
@@ -88,12 +88,12 @@ package azblob
 //
 //	c := serviceClient.NewClient(containerName)
 //	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	err = recording.StartRecording(t, pathToPackage, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	client, err := createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	defer recording.StopRecording(t, nil) //nolint
 //
 //	entity := map[string]string{
@@ -102,10 +102,10 @@ package azblob
 //		"Value":        "5",
 //	}
 //	marshalled, err := json.Marshal(entity)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	_, err = client.AddEntity(context.Background(), marshalled, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //}
 //
 //func TestSASClientReadOnly(t *testing.T) {
@@ -114,26 +114,26 @@ package azblob
 //	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 //	accountKey := os.Getenv("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY")
 //	cred, err := NewSharedKeyCredential(accountName, accountKey)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	containerName, err := createRandomName(t, containerNamePrefix)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	delete := func() {
 //		_, err := serviceClient.DeleteTable(context.Background(), containerName, nil)
-//		_assert.Nil(err)
+//		_assert.NoError(err)
 //	}
 //	defer delete()
 //
 //	_, err = serviceClient.CreateTable(context.Background(), containerName, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	client := serviceClient.NewClient(containerName)
 //	err = insertNEntities("pk001", 4, client)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	permissions := SASPermissions{
 //		Read: true,
@@ -143,12 +143,12 @@ package azblob
 //
 //	c := serviceClient.NewClient(containerName)
 //	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	err = recording.StartRecording(t, pathToPackage, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	defer recording.StopRecording(t, nil) //nolint
 //
 //	entity := map[string]string{
@@ -157,7 +157,7 @@ package azblob
 //		"Value":        "5",
 //	}
 //	marshalled, err := json.Marshal(entity)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	// Failure on a read
 //	_, err = client.AddEntity(context.Background(), marshalled, nil)
@@ -180,26 +180,26 @@ package azblob
 //	accountName := os.Getenv("TABLES_COSMOS_ACCOUNT_NAME")
 //	accountKey := os.Getenv("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY")
 //	cred, err := NewSharedKeyCredential(accountName, accountKey)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	containerName, err := createRandomName(t, containerNamePrefix)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	delete := func() {
 //		_, err := serviceClient.DeleteTable(context.Background(), containerName, nil)
-//		_assert.Nil(err)
+//		_assert.NoError(err)
 //	}
 //	defer delete()
 //
 //	_, err = serviceClient.CreateTable(context.Background(), containerName, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	client := serviceClient.NewClient(containerName)
 //	err = insertNEntities("pk001", 4, client)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	permissions := SASPermissions{
 //		Read: true,
@@ -209,12 +209,12 @@ package azblob
 //
 //	c := serviceClient.NewClient(containerName)
 //	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	err = recording.StartRecording(t, pathToPackage, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	defer recording.StopRecording(t, nil) //nolint
 //
 //	entity := map[string]string{
@@ -223,7 +223,7 @@ package azblob
 //		"Value":        "5",
 //	}
 //	marshalled, err := json.Marshal(entity)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	// Failure on a read
 //	_, err = client.AddEntity(context.Background(), marshalled, nil)

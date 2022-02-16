@@ -6,12 +6,13 @@ package azblob
 import (
 	"context"
 	"errors"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"sync/atomic"
 	"time"
+
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/assert"
 )
 
 // create a test file
@@ -58,11 +59,11 @@ func performUploadStreamToBlockBlobTest(_assert *assert.Assertions, testName str
 
 	// Download the blob to verify
 	downloadResponse, err := blobClient.Download(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	// Assert that the content is correct
 	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(len(actualBlobData), blobSize)
 	_assert.EqualValues(actualBlobData, blobData)
 }
@@ -472,9 +473,9 @@ func (s *azblobUnrecordedTestSuite) TestBasicDoBatchTransfer() {
 		})
 
 		if test.expectError {
-			_assert.NotNil(err)
+			_assert.Error(err)
 		} else {
-			_assert.Nil(err)
+			_assert.NoError(err)
 			_assert.Equal(totalSizeCount, test.transferSize)
 			_assert.Equal(runCount, ((test.transferSize-1)/test.chunkSize)+1)
 		}

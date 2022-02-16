@@ -5,8 +5,9 @@ package azblob
 
 import (
 	"encoding/base64"
-	"github.com/stretchr/testify/assert"
 	"strings"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func getAccountKey(cred *SharedKeyCredential) string {
@@ -18,7 +19,7 @@ func (s *azblobTestSuite) TestConnectionStringParser() {
 
 	connStr := "DefaultEndpointsProtocol=https;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net")
 	_assert.NotNil(sharedKeyCred)
 
@@ -26,7 +27,7 @@ func (s *azblobTestSuite) TestConnectionStringParser() {
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.NotNil(client)
 	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
@@ -39,7 +40,7 @@ func (s *azblobTestSuite) TestConnectionStringParserHTTP() {
 
 	connStr := "DefaultEndpointsProtocol=http;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(serviceURL, "http://dummyaccount.blob.core.windows.net")
 	_assert.NotNil(sharedKeyCred)
 
@@ -47,7 +48,7 @@ func (s *azblobTestSuite) TestConnectionStringParserHTTP() {
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.NotNil(client)
 	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
@@ -59,7 +60,7 @@ func (s *azblobTestSuite) TestConnectionStringParserBasic() {
 	_assert := assert.New(s.T())
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net")
 	_assert.NotNil(sharedKeyCred)
 
@@ -67,7 +68,7 @@ func (s *azblobTestSuite) TestConnectionStringParserBasic() {
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.NotNil(client)
 	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
@@ -79,7 +80,7 @@ func (s *azblobTestSuite) TestConnectionStringParserCustomDomain() {
 	_assert := assert.New(s.T())
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey;BlobEndpoint=www.mydomain.com;"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(serviceURL, "www.mydomain.com")
 	_assert.NotNil(sharedKeyCred)
 
@@ -87,7 +88,7 @@ func (s *azblobTestSuite) TestConnectionStringParserCustomDomain() {
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.NotNil(client)
 	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
@@ -110,7 +111,7 @@ func (s *azblobTestSuite) TestConnectionStringParserInvalid() {
 
 	for _, badConnStr := range badConnectionStrings {
 		_, _, err := parseConnectionString(badConnStr)
-		_assert.NotNil(err)
+		_assert.Error(err)
 		_assert.Contains(err.Error(), errConnectionString.Error())
 	}
 }
@@ -119,12 +120,12 @@ func (s *azblobTestSuite) TestConnectionStringSAS() {
 	_assert := assert.New(s.T())
 	connStr := "AccountName=dummyaccount;SharedAccessSignature=fakesharedaccesssignature;"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net/?fakesharedaccesssignature")
 	_assert.Nil(cred)
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.NotNil(client)
 	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "https://"))
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
@@ -134,12 +135,12 @@ func (s *azblobTestSuite) TestConnectionStringChinaCloud() {
 	_assert := assert.New(s.T())
 	connStr := "AccountName=dummyaccountname;AccountKey=secretkeykey;DefaultEndpointsProtocol=http;EndpointSuffix=core.chinacloudapi.cn;"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(serviceURL, "http://dummyaccountname.blob.core.chinacloudapi.cn")
 	_assert.NotNil(cred)
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.NotNil(client)
 	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.chinacloudapi.cn"))
@@ -153,12 +154,12 @@ func (s *azblobTestSuite) TestConnectionStringAzurite() {
 	_assert := assert.New(s.T())
 	connStr := "DefaultEndpointsProtocol=http;AccountName=dummyaccountname;AccountKey=secretkeykey;BlobEndpoint=http://local-machine:11002/custom/account/path/faketokensignature;"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(serviceURL, "http://local-machine:11002/custom/account/path/faketokensignature")
 	_assert.NotNil(cred)
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.NotNil(client)
 	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "http://local-machine:11002/custom/account/path/faketokensignature"))

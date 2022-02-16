@@ -67,6 +67,6 @@ func TestDeserializeORSPolicies(t *testing.T) {
 //	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
 //
 //	getResp, err := bbClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	_assert.Nil(getResp.ObjectReplicationRules)
 //}

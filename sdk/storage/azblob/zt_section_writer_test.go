@@ -5,8 +5,9 @@ package azblob
 
 import (
 	"bytes"
-	"github.com/stretchr/testify/assert"
 	"io"
+
+	"github.com/stretchr/testify/assert"
 )
 
 //nolint
@@ -21,7 +22,7 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
 	_assert.Equal(section.position, int64(0))
 
 	count, err := section.Write([]byte{1, 2, 3})
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(count, 3)
 	_assert.Equal(section.position, int64(3))
 	_assert.Equal(b, [10]byte{1, 2, 3, 0, 0, 0, 0, 0, 0, 0})
@@ -46,7 +47,7 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
 	_assert.Equal(section.position, int64(0))
 
 	count, err = section.Write([]byte{6, 7, 8})
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(count, 3)
 	_assert.Equal(section.position, int64(3))
 	_assert.Equal(b, [10]byte{1, 2, 3, 4, 5, 6, 7, 8, 0, 0})
@@ -79,7 +80,7 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriterCopySrcDestEmpty() {
 	section := newSectionWriter(buffer, 0, 0)
 
 	count, err := io.Copy(section, reader)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(count, int64(0))
 }
 

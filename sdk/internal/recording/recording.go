@@ -524,6 +524,7 @@ type RecordingOptions struct {
 	UseHTTPS        bool
 	GroupForReplace string
 	Variables       map[string]interface{}
+	TestInstance    *testing.T
 }
 
 func defaultOptions() *RecordingOptions {
@@ -722,7 +723,11 @@ func Sleep(duration time.Duration) {
 }
 
 func GetRecordingId(t *testing.T) string {
-	return testSuite[t.Name()].recordingId
+	if val, ok := testSuite[t.Name()]; ok {
+		return val.recordingId
+	} else {
+		return ""
+	}
 }
 
 func GetRecordMode() string {

@@ -524,7 +524,7 @@ type RecordingOptions struct {
 	UseHTTPS        bool
 	GroupForReplace string
 	Variables       map[string]interface{}
-	TestInstance 	*testing.T
+	TestInstance    *testing.T
 }
 
 func defaultOptions() *RecordingOptions {

@@ -1,0 +1,182 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://primseankane.blob.core.windows.net/gocgetpropertiesreturnstagscount?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 16:17:08 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 16 Feb 2022 16:17:08 GMT",
+        "ETag": "\u00220x8D9F167C81E3B02\u0022",
+        "Last-Modified": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "4a125ea0-101e-006c-1050-239a4a000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://primseankane.blob.core.windows.net/gocgetpropertiesreturnstagscount/gotestblobgetpropertiesreturnstagscount",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "4",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-blob-cache-control": "control",
+        "x-ms-blob-content-disposition": "my_disposition",
+        "x-ms-blob-content-encoding": "my_encoding",
+        "x-ms-blob-content-language": "my_language",
+        "x-ms-blob-content-type": "my_type",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-date": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "x-ms-meta-foo": "bar",
+        "x-ms-tags": "azure=blob\u0026blob=sdk\u0026sdk=go",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "ZGF0YQ==",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Content-MD5": "jXd/OF09/siBXSD3SWAm3A==",
+        "Date": "Wed, 16 Feb 2022 16:17:08 GMT",
+        "ETag": "\u00220x8D9F167C82E34EA\u0022",
+        "Last-Modified": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-content-crc64": "gCf8jkNhru0=",
+        "x-ms-request-id": "4a125f02-101e-006c-6350-239a4a000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://primseankane.blob.core.windows.net/gocgetpropertiesreturnstagscount/gotestblobgetpropertiesreturnstagscount",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "control",
+        "Content-Disposition": "my_disposition",
+        "Content-Encoding": "my_encoding",
+        "Content-Language": "my_language",
+        "Content-Length": "4",
+        "Content-MD5": "jXd/OF09/siBXSD3SWAm3A==",
+        "Content-Type": "my_type",
+        "Date": "Wed, 16 Feb 2022 16:17:08 GMT",
+        "ETag": "\u00220x8D9F167C82E34EA\u0022",
+        "Last-Modified": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-access-tier": "Hot",
+        "x-ms-access-tier-inferred": "true",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-meta-foo": "bar",
+        "x-ms-request-id": "4a125f68-101e-006c-3650-239a4a000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-tag-count": "3",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://primseankane.blob.core.windows.net/gocgetpropertiesreturnstagscount/gotestblobgetpropertiesreturnstagscount",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":method": "GET",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "control",
+        "Content-Disposition": "my_disposition",
+        "Content-Encoding": "my_encoding",
+        "Content-Language": "my_language",
+        "Content-Length": "4",
+        "Content-MD5": "jXd/OF09/siBXSD3SWAm3A==",
+        "Content-Type": "my_type",
+        "Date": "Wed, 16 Feb 2022 16:17:08 GMT",
+        "ETag": "\u00220x8D9F167C82E34EA\u0022",
+        "Last-Modified": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-meta-foo": "bar",
+        "x-ms-request-id": "4a125fe5-101e-006c-2450-239a4a000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-tag-count": "3",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "ZGF0YQ=="
+    },
+    {
+      "RequestUri": "https://primseankane.blob.core.windows.net/gocgetpropertiesreturnstagscount?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.3.1 azsdk-go-azcore/v0.21.1 (go1.17; Windows_NT)",
+        "x-ms-date": "Wed, 16 Feb 2022 16:17:09 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 16 Feb 2022 16:17:08 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "4a126039-101e-006c-7550-239a4a000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

@@ -42,7 +42,7 @@ func TestManagedIdentityClient_UserAgent(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL(), msiSecret: "..."})
+	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: srv, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t}},
@@ -65,7 +65,7 @@ func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL(), msiSecret: "..."})
+	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	appID := "customvalue"
 	options := ManagedIdentityCredentialOptions{
 		ClientOptions: azcore.ClientOptions{

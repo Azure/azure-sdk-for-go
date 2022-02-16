@@ -5,11 +5,53 @@ package azblob
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
+
+func TestMain(m *testing.M) {
+	// 1. Set up session level sanitizers
+	switch recording.GetRecordMode() {
+	// case recording.PlaybackMode:
+	// 	continue
+	case recording.RecordingMode:
+		vals := [][]string{
+			{"STORAGE_ACCOUNT_NAME", "fakestorageaccount"},
+			{"PREMIUM_STORAGE_ACCOUNT_NAME", "premfakestorageaccount"},
+			{"SECONDARY_STORAGE_ACCOUNT_NAME", "secondaryfakestorageaccount"},
+		}
+		for _, val := range vals {
+			account, ok := os.LookupEnv(val[0])
+			if !ok {
+				fmt.Printf("Could not find environment variable: %s", val)
+			} else {
+
+				err := recording.AddGeneralRegexSanitizer(val[1], account, nil)
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+
+	}
+	// Run tests
+	exitVal := m.Run()
+
+	// 3. Reset
+	// TODO: Add after sanitizer PR
+	if recording.GetRecordMode() != "live" {
+		err := recording.ResetProxy(nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// 4. Error out if applicable
+	os.Exit(exitVal)
+}
 
 var pathToPackage = "sdk/storage/azblob/testdata"
 

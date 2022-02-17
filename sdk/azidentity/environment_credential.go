@@ -51,7 +51,7 @@ type EnvironmentCredential struct {
 }
 
 // NewEnvironmentCredential creates an EnvironmentCredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
 	if options == nil {
 		options = &EnvironmentCredentialOptions{}

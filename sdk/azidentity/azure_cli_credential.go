@@ -48,7 +48,7 @@ type AzureCLICredential struct {
 }
 
 // NewAzureCLICredential constructs an AzureCLICredential.
-// options: Optional configuration.
+// options: Optional configuration. Pass nil to accept default settings.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
 	cp := AzureCLICredentialOptions{}
 	if options != nil {

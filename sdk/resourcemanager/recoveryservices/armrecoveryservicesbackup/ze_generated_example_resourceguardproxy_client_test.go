@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleResourceGuardProxyClient_Get() {
 	log.Printf("Response result: %#v\n", res.ResourceGuardProxyClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleResourceGuardProxyClient_Put() {
 	log.Printf("Response result: %#v\n", res.ResourceGuardProxyClientPutResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleResourceGuardProxyClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_UnlockDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

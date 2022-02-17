@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
 func ExampleClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleClient_GetOperationStatus() {
 	log.Printf("Response result: %#v\n", res.ClientGetOperationStatusResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/BackupDataMove/PrepareDataMove_Post.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/BackupDataMove/PrepareDataMove_Post.json
 func ExampleClient_BeginBMSPrepareDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleClient_BeginBMSPrepareDataMove() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/BackupDataMove/TriggerDataMove_Post.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/BackupDataMove/TriggerDataMove_Post.json
 func ExampleClient_BeginBMSTriggerDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleClient_BeginBMSTriggerDataMove() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/TriggerRecoveryPointMove_Post.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/TriggerRecoveryPointMove_Post.json
 func ExampleClient_BeginMoveRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

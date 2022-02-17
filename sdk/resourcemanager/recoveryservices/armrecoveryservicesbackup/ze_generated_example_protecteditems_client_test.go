@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
 func ExampleProtectedItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleProtectedItemsClient_Get() {
 	log.Printf("Response result: %#v\n", res.ProtectedItemsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ConfigureProtection.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ConfigureProtection.json
 func ExampleProtectedItemsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleProtectedItemsClient_CreateOrUpdate() {
 	log.Printf("Response result: %#v\n", res.ProtectedItemsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Common/ProtectedItem_Delete.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/Common/ProtectedItem_Delete.json
 func ExampleProtectedItemsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

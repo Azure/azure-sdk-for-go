@@ -11,12 +11,21 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
-func TestRawResponsePolicy(t *testing.T) {
+func TestIncludeResponse(t *testing.T) {
+	ctx := IncludeResponse(context.Background())
+	require.NotNil(t, ctx)
+	raw := ctx.Value(shared.CtxIncludeResponseKey{})
+	_, ok := raw.(**http.Response)
+	require.Truef(t, ok, "unexpected type %T", raw)
+}
+
+func TestIncludeResponsePolicy(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// add a generic HTTP 200 response
@@ -30,7 +39,7 @@ func TestRawResponsePolicy(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.Nil(t, ResponseFromContext(ctx))
-	ctxWithResp := policy.IncludeResponse(context.Background())
+	ctxWithResp := IncludeResponse(context.Background())
 	req, err = NewRequest(ctxWithResp, http.MethodGet, srv.URL())
 	require.NoError(t, err)
 	resp, err = pl.Do(req)

@@ -31,7 +31,6 @@ const (
 	headerMetadata           = "Metadata"
 	imdsEndpoint             = "http://169.254.169.254/metadata/identity/oauth2/token"
 	msiEndpoint              = "MSI_ENDPOINT"
-	msiSecret                = "MSI_SECRET"
 	imdsAPIVersion           = "2018-02-01"
 	azureArcAPIVersion       = "2019-08-15"
 	serviceFabricAPIVersion  = "2019-07-01-preview"
@@ -43,8 +42,7 @@ const (
 type msiType int
 
 const (
-	msiTypeAppServiceV20170901 msiType = iota
-	msiTypeAppServiceV20190801
+	msiTypeAppService msiType = iota
 	msiTypeAzureArc
 	msiTypeCloudShell
 	msiTypeIMDS
@@ -116,28 +114,26 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	cp := options.ClientOptions
 	c := managedIdentityClient{id: options.ID, endpoint: imdsEndpoint, msiType: msiTypeIMDS}
 	env := "IMDS"
-	if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
-		if _, ok := os.LookupEnv(msiSecret); ok {
-			env = "App Service"
-			c.endpoint = endpoint
-			c.msiType = msiTypeAppServiceV20170901
-		} else {
-			env = "Cloud Shell"
-			c.endpoint = endpoint
-			c.msiType = msiTypeCloudShell
-		}
-	} else if endpoint, ok := os.LookupEnv(identityEndpoint); ok {
+	if endpoint, ok := os.LookupEnv(identityEndpoint); ok {
 		if _, ok := os.LookupEnv(identityHeader); ok {
 			if _, ok := os.LookupEnv(identityServerThumbprint); ok {
 				env = "Service Fabric"
 				c.endpoint = endpoint
 				c.msiType = msiTypeServiceFabric
+			} else {
+				env = "App Service"
+				c.endpoint = endpoint
+				c.msiType = msiTypeAppService
 			}
 		} else if _, ok := os.LookupEnv(arcIMDSEndpoint); ok {
 			env = "Azure Arc"
 			c.endpoint = endpoint
 			c.msiType = msiTypeAzureArc
 		}
+	} else if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
+		env = "Cloud Shell"
+		c.endpoint = endpoint
+		c.msiType = msiTypeCloudShell
 	} else {
 		setIMDSRetryOptionDefaults(&cp.Retry)
 	}
@@ -216,17 +212,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 		if expiresOn, err := strconv.Atoi(v); err == nil {
 			return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(expiresOn), 0).UTC()}, nil
 		}
-		// this is the case when expires_on is a time string
-		// this is the format of the string coming from the service
-		if expiresOn, err := time.Parse("1/2/2006 15:04:05 PM +00:00", v); err == nil { // the date string specified is for Windows OS
-			eo := expiresOn.UTC()
-			return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
-		} else if expiresOn, err := time.Parse("1/2/2006 15:04:05 +00:00", v); err == nil { // the date string specified is for Linux OS
-			eo := expiresOn.UTC()
-			return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
-		} else {
-			return nil, err
-		}
+		return nil, newAuthenticationFailedError(credNameManagedIdentity, "unexpected expires_on value: "+v, res)
 	default:
 		msg := fmt.Sprintf("unsupported type received in expires_on: %T, %v", v, v)
 		return nil, newAuthenticationFailedError(credNameManagedIdentity, msg, res)
@@ -237,7 +223,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id Manage
 	switch c.msiType {
 	case msiTypeIMDS:
 		return c.createIMDSAuthRequest(ctx, id, scopes)
-	case msiTypeAppServiceV20170901, msiTypeAppServiceV20190801:
+	case msiTypeAppService:
 		return c.createAppServiceAuthRequest(ctx, id, scopes)
 	case msiTypeAzureArc:
 		// need to perform preliminary request to retreive the secret key challenge provided by the HIMDS service
@@ -281,32 +267,17 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
+	request.Raw().Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
 	q := request.Raw().URL.Query()
-	if c.msiType == msiTypeAppServiceV20170901 {
-		request.Raw().Header.Set("secret", os.Getenv(msiSecret))
-		q.Add("api-version", "2017-09-01")
-		q.Add("resource", strings.Join(scopes, " "))
-		if id != nil {
-			if id.idKind() == miResourceID {
-				q.Add(qpResID, id.String())
-			} else {
-				// the legacy 2017 API version specifically specifies "clientid" and not "client_id" as a query param
-				q.Add("clientid", id.String())
-			}
-		}
-	} else if c.msiType == msiTypeAppServiceV20190801 {
-		request.Raw().Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
-		q.Add("api-version", "2019-08-01")
-		q.Add("resource", scopes[0])
-		if id != nil {
-			if id.idKind() == miResourceID {
-				q.Add(qpResID, id.String())
-			} else {
-				q.Add(qpClientID, id.String())
-			}
+	q.Add("api-version", "2019-08-01")
+	q.Add("resource", scopes[0])
+	if id != nil {
+		if id.idKind() == miResourceID {
+			q.Add(qpResID, id.String())
+		} else {
+			q.Add(qpClientID, id.String())
 		}
 	}
-
 	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }

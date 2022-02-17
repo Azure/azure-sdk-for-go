@@ -127,7 +127,7 @@ func TestStorageAccountsClient_GetProperties(t *testing.T) {
 
 	getResp, err := storageAccountsClient.GetProperties(ctx, rgName, scName, nil)
 	require.NoError(t, err)
-	require.Equal(t, scName, getResp.Name)
+	require.Equal(t, scName, *getResp.Name)
 }
 
 func TestStorageAccountsClient_ListByResourceGroup(t *testing.T) {
@@ -371,7 +371,7 @@ func TestStorageAccountsClient_RegenerateKey(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, 1, len(regResp.Keys))
+	require.Greater(t, 1, len(regResp.Keys))
 }
 
 func TestStorageAccountsClient_ListKeys(t *testing.T) {
@@ -540,7 +540,7 @@ func TestStorageAccountsClient_CheckNameAvailability(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.False(t, *resp.NameAvailable)
+	require.True(t, *resp.NameAvailable)
 }
 
 func TestStorageAccountsClient_Delete(t *testing.T) {

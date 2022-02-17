@@ -76,7 +76,7 @@ func TestBlobContainersClient_Create(t *testing.T) {
 	require.NoError(t, err)
 	blobResp, err := blobContainersClient.Create(ctx, rgName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 }
 
 func TestBlobContainersClient_CreateOrUpdateImmutabilityPolicy(t *testing.T) {
@@ -152,7 +152,7 @@ func TestBlobContainersClient_CreateOrUpdateImmutabilityPolicy(t *testing.T) {
 		},
 	)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 }
 
 func TestBlobContainersClient_DeleteImmutabilityPolicy(t *testing.T) {
@@ -228,7 +228,7 @@ func TestBlobContainersClient_DeleteImmutabilityPolicy(t *testing.T) {
 		},
 	)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// delete immutability policy container
 	eTag := *blobResp.ETag
@@ -310,7 +310,7 @@ func TestBlobContainersClient_GetImmutabilityPolicy(t *testing.T) {
 		},
 	)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// get immutability policy
 	getResp, err := blobContainersClient.GetImmutabilityPolicy(ctx, rgName, scName, blobContainerName, nil)
@@ -378,7 +378,7 @@ func TestBlobContainersClient_Get(t *testing.T) {
 	require.NoError(t, err)
 	blobResp, err := blobContainersClient.Create(ctx, rgName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// get
 	getResp, err := blobContainersClient.Get(ctx, rgName, scName, blobContainerName, nil)
@@ -446,7 +446,7 @@ func TestBlobContainersClient_List(t *testing.T) {
 	require.NoError(t, err)
 	blobResp, err := blobContainersClient.Create(ctx, rgName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// list
 	listPager := blobContainersClient.List(rgName, scName, nil)
@@ -513,7 +513,7 @@ func TestBlobContainersClient_SetLegalHold(t *testing.T) {
 	require.NoError(t, err)
 	blobResp, err := blobContainersClient.Create(ctx, rgName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// set legal hold
 	holdResp, err := blobContainersClient.SetLegalHold(
@@ -594,7 +594,7 @@ func TestBlobContainersClient_ClearLegalHold(t *testing.T) {
 	require.NoError(t, err)
 	blobResp, err := blobContainersClient.Create(ctx, rgName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// clear legal hold
 	holdResp, err := blobContainersClient.ClearLegalHold(
@@ -675,7 +675,7 @@ func TestBlobContainersClient_Lease(t *testing.T) {
 	require.NoError(t, err)
 	blobResp, err := blobContainersClient.Create(ctx, rgName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// acquire lease
 	leaseResp, err := blobContainersClient.Lease(
@@ -770,7 +770,7 @@ func TestBlobContainersClient_Update(t *testing.T) {
 	require.NoError(t, err)
 	blobResp, err := blobContainersClient.Create(ctx, rgName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// update
 	updateResp, err := blobContainersClient.Update(
@@ -865,7 +865,7 @@ func TestBlobContainersClient_LockImmutabilityPolicy(t *testing.T) {
 		},
 	)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// lock immutability policy
 	lockResp, err := blobContainersClient.LockImmutabilityPolicy(ctx, rgName, scName, blobContainerName, *blobResp.ETag, nil)
@@ -946,7 +946,7 @@ func TestBlobContainersClient_ExtendImmutabilityPolicy(t *testing.T) {
 		},
 	)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// lock immutability policy
 	//lockResp,err := blobContainersClient.LockImmutabilityPolicy(ctx,rgName,scName,blobContainerName,*blobResp.ETag,nil)
@@ -1018,7 +1018,7 @@ func TestBlobContainersClient_Delete(t *testing.T) {
 	require.NoError(t, err)
 	blobResp, err := blobContainersClient.Create(ctx, rgName, scName, blobContainerName, armstorage.BlobContainer{}, nil)
 	require.NoError(t, err)
-	require.Equal(t, blobContainerName, blobResp.Name)
+	require.Equal(t, blobContainerName, *blobResp.Name)
 
 	// delete
 	delResp, err := blobContainersClient.Delete(ctx, rgName, scName, blobContainerName, nil)

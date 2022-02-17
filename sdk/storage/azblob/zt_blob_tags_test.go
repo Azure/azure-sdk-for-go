@@ -486,6 +486,7 @@ func TestSetBlobTagForSnapshot(t *testing.T) {
 
 // TODO: Once new pacer is done.
 func TestListBlobReturnsTags(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -662,6 +663,7 @@ func TestListBlobReturnsTags(t *testing.T) {
 //}
 
 func TestCreatePageBlobWithTags(t *testing.T) {
+	recording.LiveOnly(t) // bodies do not match
 	stop := start(t)
 	defer stop()
 
@@ -738,6 +740,7 @@ func TestCreatePageBlobWithTags(t *testing.T) {
 }
 
 func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
+	recording.LiveOnly(t) // Body does not match
 	stop := start(t)
 	defer stop()
 

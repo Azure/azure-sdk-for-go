@@ -23,6 +23,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
@@ -488,7 +489,7 @@ func runTestRequiringServiceProperties(_assert *assert.Assertions, bsu ServiceCl
 	err := testImplFunc(_assert, bsu)
 	// We cannot assume that the error indicative of slow update will necessarily be a StorageError. As in ListBlobs.
 	if err != nil && err.Error() == code {
-		time.Sleep(time.Second * 30)
+		recording.Sleep(time.Second * 30)
 		err = testImplFunc(_assert, bsu)
 		_assert.NoError(err)
 	}

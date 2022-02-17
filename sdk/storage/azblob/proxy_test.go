@@ -17,7 +17,7 @@ func TestMain(m *testing.M) {
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
 		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
-			ExcludedHeaders: []string{"x-ms-tags"},
+			ExcludedHeaders: []string{"x-ms-tags", "x-ms-copy-source"},
 		})
 		if err != nil {
 			panic(err)

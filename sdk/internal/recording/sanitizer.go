@@ -417,8 +417,18 @@ func ResetProxy(options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
+
 	url := fmt.Sprintf("%v/Admin/Reset", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
+
+	if options.TestInstance != nil {
+		recordingID := GetRecordingId(options.TestInstance)
+		if recordingID == "" {
+			return fmt.Errorf("did not find a recording ID for test with name '%s'. Did you make sure to call Start?", options.TestInstance.Name())
+		}
+		req.Header.Set("x-recording-id", recordingID)
+	}
+
 	if err != nil {
 		return err
 	}

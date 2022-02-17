@@ -715,7 +715,9 @@ func TestResetSanitizers(t *testing.T) {
 func TestSingleTestSanitizer(t *testing.T) {
 	err := ResetProxy(nil)
 	require.NoError(t, err)
-	
+
+	// The first iteration, add a sanitizer for just that test. The
+	// second iteration, verify that the sanitizer was not applied.
 	for i := 0; i < 2; i++ {
 		t.Run(fmt.Sprintf("%s-%d", t.Name(), i), func(t *testing.T) {
 			err = Start(t, packagePath, nil)

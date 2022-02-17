@@ -679,7 +679,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	if recTest, ok = testSuite[t.Name()]; !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
-	req.Header.Set("x-recording-id", recTest.recordingId)
+	req.Header.Set(IDHeader, recTest.recordingId)
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)
